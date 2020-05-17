@@ -33,6 +33,7 @@ import org.apache.commons.collections.map.HashedMap;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -1326,19 +1327,47 @@ public class ObatBoImpl implements ObatBo {
             throw new GeneralBOException("[ObatPoliBoImpl.getListReporTransaksiObat] ERROR .", e);
         }
 
+        BigDecimal nol = new BigDecimal(0);
+        BigInteger nolB = new BigInteger(String.valueOf(0));
         List<TransaksiStok> listOfTransaksi = new ArrayList<>();
         if (stokEntities.size() > 0){
             for (ItSimrsTransaksiStokEntity stok : stokEntities){
+
                 TransaksiStok trans = new TransaksiStok();
+                trans.setRegisteredDate(stok.getRegisteredDate());
+                trans.setCreatedDate(stok.getCreatedDate());
+                trans.setKeterangan(stok.getKeterangan());
 
                 if (listOfTransaksi.size() == 0){
-                    trans.setRegisteredDate(stok.getRegisteredDate());
-                    trans.setCreatedDate(stok.getCreatedDate());
-                    trans.setKeterangan(stok.getKeterangan());
-                    if ("D".equalsIgnoreCase(stok.getTipe())){
 
+                    if ("D".equalsIgnoreCase(stok.getTipe())){
+                        trans.setQty(stok.getQty());
+                        trans.setTotal(stok.getTotal());
+                        trans.setSubTotal(stok.getSubTotal());
+
+                        trans.setQtyKredit(nolB);
+                        trans.setTotalKredit(nol);
+                        trans.setSubTotalKredit(nol);
+
+                        trans.setQtySaldo(stok.getQty());
+                        trans.setTotalSaldo(stok.getTotal());
+                        trans.setSubTotalSaldo(stok.getSubTotal());
+                    } else {
+
+                        trans.setQty(nolB);
+                        trans.setTotal(nol);
+                        trans.setSubTotal(nol);
+
+                        trans.setQtyKredit(stok.getQty());
+                        trans.setTotalKredit(stok.getTotal());
+                        trans.setSubTotalKredit(stok.getSubTotal());
+
+                        trans.setQtySaldo(stok.getQty());
+                        trans.setTotalSaldo(stok.getTotal());
+                        trans.setSubTotalSaldo(stok.getSubTotal());
                     }
-                    trans.setQty(stok.getQty());
+                } else {
+
                 }
             }
         }
