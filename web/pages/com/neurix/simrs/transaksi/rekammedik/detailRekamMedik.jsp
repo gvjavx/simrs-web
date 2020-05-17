@@ -1162,15 +1162,16 @@
     function viewTelemedic() {
         $('#modal-telemedic').modal({show: true, backdrop: 'static'});
         var video = "";
+        var id = 0;
         CheckupAction.getListVideoRm(idPasien, function (res) {
-            console.log(res);
             if (res.length > 0) {
                 $.each(res, function (i, item) {
                     if(item.videoRm != null){
-                        if(i == 0){
-                            video += '<video id="carousel-'+i+'" class="carousel-img carousel-img-displayed" controls src="'+item.videoRm+'" width="100%" height="420px"></video>';
+                        var count = id++;
+                        if(count == 0){
+                            video += '<video id="carousel-'+count+'" class="carousel-img carousel-img-displayed" controls src="'+item.videoRm+'" width="100%" height="420px"></video>';
                         }else {
-                            video += '<video id="carousel-'+i+'" class="carousel-img carousel-img-noDisplay" controls src="'+item.videoRm+'" width="100%" height="420px"></video>';
+                            video += '<video id="carousel-'+count+'" class="carousel-img carousel-img-noDisplay" controls src="'+item.videoRm+'" width="100%" height="420px"></video>';
                         }
                     }
                 });
