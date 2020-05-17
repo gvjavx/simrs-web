@@ -40,17 +40,5 @@
         <property name="master">
             <column name="master" sql-type="varchar" length="20" not-null="false" />
         </property>
-        <!--<property name="masterId">-->
-            <!--<column name="master_id" sql-type="varchar" length="1" not-null="false" />-->
-        <!--</property>-->
-        <!--<property name="noNota">-->
-            <!--<column name="no_nota" sql-type="varchar" length="1" not-null="false" />-->
-        <!--</property>-->
-        <!--<property name="divisiId">-->
-            <!--<column name="divisi_id" sql-type="varchar" length="1" not-null="false" />-->
-        <!--</property>-->
-        <!--<property name="biaya">-->
-            <!--<column name="biaya" sql-type="varchar" length="1" not-null="false" />-->
-        <!--</property>-->
     </class>
 </hibernate-mapping>

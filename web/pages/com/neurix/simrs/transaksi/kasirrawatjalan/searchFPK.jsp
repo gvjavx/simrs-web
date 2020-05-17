@@ -339,13 +339,14 @@
                                     <%--</div>--%>
                                 <%--</td>--%>
                                 <td>ID Pasien</td>
-                                <td>ID Detail Checkup</td>
+                                <td>ID DCM</td>
                                 <td>No Sep</td>
                                 <td>Nama</td>
                                 <%--<td>Nama Pelayanan</td>--%>
-                                <td>Status</td>
+                                    <td>Biaya</td>
+                                    <td>Status</td>
                                 <td>No FPK</td>
-                                <%--<td align="center">Action</td>--%>
+                                <td align="center">Action</td>
                             </tr>
                             </thead>
                             <tbody>
@@ -369,7 +370,8 @@
                                     <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="NoSep"/></td>
                                     <td><s:property value="namaPasien"/></td>
-                                    <td style="vertical-align: middle" align="center">
+                                        <td style="text-align: right"><s:property value="stTotalBiaya"/></td>
+                                        <td style="vertical-align: middle" align="center">
                                         <s:if test='#row.noFpk != null && #row.noFpk != ""'>
                                             <label class="label label-primary"> create fpk</label>
                                         </s:if>
@@ -382,6 +384,9 @@
                                         </s:else>
                                     </td>
                                     <td><s:property value="noFpk"/></td>
+                                        <td align="center">
+                                            <img onclick="detailCheckup('<s:property value="idDetailCheckup"/>','<s:property value="noSep"/>','<s:property value="idPasien"/>','<s:property value="namaPasien"/>','<s:property value="stTotalBiaya"/>','<s:property value="stTotalBiayaBpjs"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-search-25.png"/>" style="cursor: pointer;">
+                                        </td>
                                 </tr>
                             </s:iterator>
                             </tbody>
@@ -515,8 +520,90 @@
     </div>
 </div>
 
-<script type='text/javascript'>
+<div class="modal fade" id="modal-detail-checkup">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Detail Checkup</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-striped">
+                            <tr>
+                                <td><b>ID Checkup</b></td>
+                                <td><span id="det_id_detail_checkup"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>ID Pasien</b></td>
+                                <td><span id="det_id_pasien"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Nama Pasien</b></td>
+                                <td><span id="det_nama_pasien"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>No. SEP</b></td>
+                                <td><span id="det_no_sep"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Total Biaya</b></td>
+                                <td><span id="det_total_biaya_rs"></span></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <table class="table table-bordered">
+                    <thead>
+                    <td>Poli</td>
+                    <td>Nama Dokter</td>
+                    <td>Nama Tindakan</td>
+                    <td>Biaya</td>
+                    </thead>
+                    <tbody id="body_detail">
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<script type='text/javascript'>
+    function detailCheckup(idDetailCheckup,noSep,idPasien,namaPasien,totalBiayaRs,totalBiayaBpjs){
+        $('#det_id_detail_checkup').text(idDetailCheckup);
+        $('#det_id_pasien').text(idPasien);
+        $('#det_nama_pasien').text(namaPasien);
+        $('#det_no_sep').text(noSep);
+        $('#det_total_biaya_rs').text(totalBiayaRs);
+        $('#det_total_biaya_bpjs').text(totalBiayaBpjs);
+        $('#body_detail').html('');
+
+        var table = "";
+        KasirRawatJalanAction.getRiwayatTindakanDanDokter(idDetailCheckup, function (response) {
+            if(response.length > 0){
+                $.each(response, function (i, item) {
+                    table += '<tr>' +
+                        '<td>'+item.namaPoli+'</td>'+
+                        '<td>'+item.namaDokter+'</td>'+
+                        '<td>'+item.namaTindakan+'</td>'+
+                        '<td>'+item.stTotalTarif+'</td>'+
+                        '</tr>'
+                });
+
+                $('#body_detail').html(table);
+            }else{
+
+            }
+        });
+
+        $('#modal-detail-checkup').modal({show:true, backdrop:'static'});
+    }
     function toContent(){
         var cos = $('#close_pos').val();
         var data = $('#close_val').val();

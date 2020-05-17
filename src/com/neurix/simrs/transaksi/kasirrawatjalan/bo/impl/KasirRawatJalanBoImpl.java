@@ -175,6 +175,10 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
             }catch (HibernateException e){
                 logger.error("Found Error "+e.getMessage());
             }
+            for (HeaderDetailCheckup detailCheckup : list){
+                detailCheckup.setTotalBiaya(checkupDetailDao.getBiayaByNoSep(detailCheckup.getNoSep()).toBigInteger());
+                detailCheckup.setStTotalBiaya(CommonUtil.numbericFormat(checkupDetailDao.getBiayaByNoSep(detailCheckup.getNoSep()),"###,###"));
+            }
         }
         return list;
     }

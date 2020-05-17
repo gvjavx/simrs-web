@@ -51,7 +51,6 @@ To change this template use File | Settings | File Templates.
     <section class="content-header">
         <h1>
             Mutasi / Rotasi
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -334,10 +333,11 @@ To change this template use File | Settings | File Templates.
             dwr.engine.setAsync(false);
             if(noSurat!=''){
                 if (confirm(msg)) {
-                    var addr = "simrs/mutasi/printReportMutasi_mutasi.action?idMutasi="+idMutasi+"&noSurat="+noSurat;
-                    var currentLoc = window.location.href;
-                    var newAdd = currentLoc.split('simrs/')[0] + addr;
-                    window.location.href = newAdd;
+                    var addr = "printReportMutasi_mutasi.action?idMutasi="+idMutasi+"&noSurat="+noSurat;
+                    window.open(addr,'_blank');
+//                    var currentLoc = window.location.href;
+//                    var newAdd = currentLoc.split('simrs/')[0] + addr;
+//                    window.location.href = newAdd;
                 }
             }else{
                 msg2 += "-No Surat\n";
