@@ -25,6 +25,8 @@
          p:vendorDao-ref="vendorDao"
          p:obatGejalaDao-ref="obatGejalaDao"
          p:riwayatBarangDao-ref="riwayatBarangDao"
+         p:transaksiStokDao-ref="transaksiStokDao"
+         p:branchDao-ref="branchDao"
     />
 
     <bean id="permintaanVendorBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -54,6 +56,8 @@
     <bean id="tempObatGejalaDao" class="com.neurix.simrs.transaksi.permintaanvendor.dao.TempObatGejalaDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="riwayatBarangDao" class="com.neurix.simrs.transaksi.riwayatbarang.dao.RiwayatBarangDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="transaksiStokDao" class="com.neurix.simrs.transaksi.riwayatbarang.dao.TransaksiStokDao"
           p:sessionFactory-ref="sessionFactory" />
 
 
