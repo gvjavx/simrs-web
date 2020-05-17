@@ -249,16 +249,17 @@
                         }
 
                         var color = "";
-
+                        var classLbl = 'class="label label-warning"';
                         if(item.belumBayarUangMuka == "Y"){
-                            color = 'bgColor="#dd4b39"';
+                            color = 'style="color:red"';
+                            classLbl = 'class="label label-default"';
                         }
 
                         tableAntrian += '<tr '+color+'>' +
                             '<td>'+pol.toUpperCase()+'</td>'+
                             '<td><i class="fa fa-user"></i> '+item.nama.toUpperCase()+'</td>'+
                             '<td>'+item.namaDesa.toUpperCase()+'</td>'+
-                            '<td style="vertical-align: middle"><label class="label label-warning"> '+item.noAntrian+'</label></td>' +
+                            '<td style="vertical-align: middle"><label '+classLbl+'> '+item.noAntrian+'</label></td>' +
                             '</tr>';
                     });
 

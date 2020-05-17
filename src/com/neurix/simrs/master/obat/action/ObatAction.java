@@ -283,6 +283,7 @@ public class ObatAction extends BaseMasterAction {
         obat.setFlag("Y");
         obat.setAction("C");
         obat.setMinStok(minStok);
+        obat.setHargaTerakhir(new BigDecimal(String.valueOf(0)));
 
         try {
             checkObatResponse = obatBo.checkFisikObatByIdPabrik(obat);

@@ -146,6 +146,16 @@ public class HeaderDetailCheckup extends BaseModel{
     private String videoRm;
     private String flagCall;
 
+    private String tglKeluar;
+
+    public String getTglKeluar() {
+        return tglKeluar;
+    }
+
+    public void setTglKeluar(String tglKeluar) {
+        this.tglKeluar = tglKeluar;
+    }
+
     public String getFlagCall() {
         return flagCall;
     }
