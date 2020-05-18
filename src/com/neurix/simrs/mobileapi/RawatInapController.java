@@ -903,7 +903,7 @@ public class RawatInapController implements ModelDriven<Object> {
             tindakan.setIdKategoriTindakan(idKategoriTindakan);
 
             try {
-               result = tindakanBoProxy.getByCriteria(tindakan);
+               result = tindakanBoProxy.getComboBoxTindakan(tindakan);
             } catch (GeneralBOException e) {
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
@@ -913,9 +913,9 @@ public class RawatInapController implements ModelDriven<Object> {
                     TindakanMobile tindakanMobile = new TindakanMobile();
                     tindakanMobile.setIdKategoriTindakan(item.getIdKategoriTindakan());
                     tindakanMobile.setIdTindakan(item.getIdTindakan());
+                    tindakanMobile.setTindakan(item.getTindakan());
                     tindakanMobile.setTarif(item.getTarif().toString());
                     tindakanMobile.setTarifBpjs(item.getTarifBpjs().toString());
-                    tindakanMobile.setTindakan(item.getTindakan());
                     tindakan.setTindakan(item.getTindakan());
 
                     listOfTindakan.add(tindakanMobile);
