@@ -328,7 +328,7 @@ public class AntrianOnlineController implements ModelDriven<Object> {
         RecordingSDKInstance = recordingSDK;
         RecordingConfig recordingConfig = new RecordingConfig();
         recordingConfig.channelProfile = Common.CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_COMMUNICATION;
-        recordingConfig.appliteDir = CommonConstant.AGORA_DIR;
+        recordingConfig.appliteDir =  CommonUtil.getPropertyParams("upload.folder") + CommonConstant.AGORA_DIR;
         recordingConfig.triggerMode = 0;
         recordingConfig.recordFileRootDir = CommonUtil.getPropertyParams("upload.folder") + CommonConstant.RESOURCE_PATH_VIDEO_RM;
         recordingConfig.idleLimitSec = 5 * 60;
