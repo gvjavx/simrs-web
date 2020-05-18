@@ -1063,7 +1063,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setCreatedDate(obj[3] == null ? null : (Timestamp) obj[3]);
                     checkup.setTglKeluar(obj[4] == null ? null : (Timestamp) obj[4]);
                     if (obj[5] != null) {
-                        checkup.setVideoRm(CommonUtil.getPropertyParams("upload.folder") + obj[5].toString());
+                        checkup.setVideoRm(CommonConstant.EXTERNAL_IMG_URI + obj[5].toString());
                     }
                     checkupList.add(checkup);
                 }
