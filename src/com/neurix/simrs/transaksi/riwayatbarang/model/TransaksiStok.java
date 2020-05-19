@@ -35,6 +35,15 @@ public class TransaksiStok {
     private BigInteger qtyKredit;
     private BigDecimal totalKredit;
     private BigDecimal subTotalKredit;
+    private String namaObat;
+
+    public String getNamaObat() {
+        return namaObat;
+    }
+
+    public void setNamaObat(String namaObat) {
+        this.namaObat = namaObat;
+    }
 
     public BigInteger getQtyKredit() {
         return qtyKredit;

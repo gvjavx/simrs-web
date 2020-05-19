@@ -11,6 +11,7 @@
     <style>
     </style>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PermintaanVendorAction.js"/>'></script>
     <script type='text/javascript'>
 
         $( document ).ready(function() {
@@ -51,30 +52,60 @@
                     <div class="box-body">
                         <div class="form-group">
                             <s:form id="obatForm" method="post" namespace="/obat" action="printReportRiwayat_obat.action" theme="simple" cssClass="form-horizontal">
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Tanggal</label>
-                                    <div class="col-sm-2">
-                                        <div class="input-group date" style="margin-top: 7px">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            <input type="date" name="obat.stTglFrom"/>
-                                            <%----%>
-                                            <%--<s:textfield id="tgl_from" name="obat.stTglFrom" cssClass="form-control"--%>
-                                                         <%--required="false"/>--%>
+
+                                    <div class="row">
+                                        <div class="form-group">
+                                        <label class="col-md-2 col-md-offset-3" style="margin-top: 7px">Nama Obat</label>
+                                        <div class="col-md-4">
+                                                <%--<s:action id="initObat" namespace="/obat"--%>
+                                                <%--name="getListObat_obat"/>--%>
+                                                <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
+                                                <%--list="#initObat.listOfObat" id="nama_obat"--%>
+                                                <%--listKey="idObat + '|' + namaObat + '|' + lembarPerBox + '|' + bijiPerLembar + '|' + idPabrik"--%>
+                                                <%--onchange="var warn =$('#war_po_obat').is(':visible'); if (warn){$('#cor_po_obat').show().fadeOut(3000);$('#war_po_obat').hide()}; resetField(this);"--%>
+                                                <%--listValue="idPabrik +' | '+ namaObat +' | '+'LB/BX:'+lembarPerBox+' | '+'BJ/LB:'+bijiPerLembar"--%>
+                                                <%--headerKey="" headerValue="[Select one]"--%>
+                                                <%--cssClass="form-control select2"/>--%>
+                                            <input type="text" class="form-control" style="margin-top: 7px" id="nama_obat" name="obat.namaObat">
+                                            <input type="hidden" id="idObat" name="obat.idObat">
+                                        </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-3">
-                                        <div class="input-group date" style="margin-top: 7px">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            <input type="date" name="obat.stTglTo"/>
-                                            <%--<s:textfield id="tgl_to" name="obat.stTglTo" cssClass="form-control"--%>
-                                                         <%--required="false"/>--%>
+                                    <div class="row">
+                                        <div class="form-group">
+                                        <label class="col-md-2 col-md-offset-3" style="margin-top: 7px">Bulan</label>
+                                        <div class="col-md-4">
+                                            <s:select list="#{'01':'Januari', '02' : 'Februari', '03':'Maret', '04':'April', '05':'Mei', '06':'Juni', '07':'Juli',
+                                '08': 'Agustus', '09' : 'September', '10' : 'Oktober', '11' : 'November', '12' : 'Desember'}"
+                                                      id="periodeBulan" name=""
+                                                      headerKey="" headerValue="[Select One]" cssClass="form-control" />
+                                        </div>
                                         </div>
                                     </div>
-                                </div>
+
+
+                                    <%--<label class="control-label col-sm-4">Tanggal</label>--%>
+                                    <%--<div class="col-sm-2">--%>
+                                        <%--<div class="input-group date" style="margin-top: 7px">--%>
+                                            <%--<div class="input-group-addon">--%>
+                                                <%--<i class="fa fa-calendar"></i>--%>
+                                            <%--</div>--%>
+                                            <%--<input type="date" name="obat.stTglFrom"/>--%>
+                                            <%--&lt;%&ndash;&ndash;%&gt;--%>
+                                            <%--&lt;%&ndash;<s:textfield id="tgl_from" name="obat.stTglFrom" cssClass="form-control"&ndash;%&gt;--%>
+                                                         <%--&lt;%&ndash;required="false"/>&ndash;%&gt;--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                    <%--<div class="col-sm-3">--%>
+                                        <%--<div class="input-group date" style="margin-top: 7px">--%>
+                                            <%--<div class="input-group-addon">--%>
+                                                <%--<i class="fa fa-calendar"></i>--%>
+                                            <%--</div>--%>
+                                            <%--<input type="date" name="obat.stTglTo"/>--%>
+                                            <%--&lt;%&ndash;<s:textfield id="tgl_to" name="obat.stTglTo" cssClass="form-control"&ndash;%&gt;--%>
+                                                         <%--&lt;%&ndash;required="false"/>&ndash;%&gt;--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
                                 <br>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
@@ -645,19 +676,43 @@
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
-    function showModal(){
+    var functions, mapped;
+    $('#nama_obat').typeahead({
+        minLength: 3,
+        source: function (query, process) {
+            functions = [];
+            mapped = {};
 
-        $('#add_nama_obat, #add_harga_box, #add_harga_lembar, #add_harga_biji, #add_merek, #add_pabrik, #add_box, #add_lembar_box, #add_lembar, #add_biji_lembar, #add_biji, #add_min_stok').val('');
-        $('#add_jenis_obat').val('').trigger('change');
-        $('#form-edit').show();
-        $('#add_box, #add_lembar, #add_biji').removeAttr('disabled');
-        var id = "";
-        $('#load_obat, #war_nama, #war_jenis, #war_pabrik, #war_merek, #war_biji, #war_harga_box, #war_harga_lembar, #war_harga_biji, #war_min_stok').hide();
-        $('#add_box, #add_lembar_box, #add_lembar, #add_biji_lembar').css('border','');
-        $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\')').show();
-        $('#modal-obat').modal('show');
+            var data = [];
+            dwr.engine.setAsync(false);
 
-    }
+            PermintaanVendorAction.searchObat(query, function (listdata) {
+                data = listdata;
+            });
+
+            if (data.length > 0) {
+                console.log(data);
+                $.each(data, function (i, item) {
+                    var labelItem =  item.idObat+"-"+item.idPabrik +"-" + item.namaObat;
+                    mapped[labelItem] = {
+                        id: item.idObat,
+                        nama: item.namaObat,
+                        idPabrik: item.idPabrik,
+                        lb: item.lembarPerBox,
+                        bj: item.bijiPerLembar,
+                        isBpjs: item.flagBpjs
+                    };
+                    functions.push(labelItem);
+                });
+                process(functions);
+            }
+        },
+        updater: function (item) {
+            var selectedObj = mapped[item];
+            $('#idObat').val(selectedObj.id);
+            return selectedObj.nama;
+        }
+    });
 
     function saveObat(id){
 

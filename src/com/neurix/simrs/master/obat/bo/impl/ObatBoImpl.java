@@ -1311,12 +1311,12 @@ public class ObatBoImpl implements ObatBo {
         return response;
     }
 
-    private List<TransaksiStok> getListReporTransaksiObat(String branchId, String bulan, String idObat){
-
+    @Override
+    public List<TransaksiStok> getListReporTransaksiObat(String branchId, String bulan, String idObat) throws GeneralBOException{
 
         Map hsCriteria = new HashMap();
         hsCriteria.put("id_barang", idObat);
-        hsCriteria.put("branch_id", branchId);
+        hsCriteria.put("id_pelayanan", branchId);
         hsCriteria.put("bulan", bulan);
 
         List<ItSimrsTransaksiStokEntity> stokEntities = new ArrayList<>();
@@ -1331,12 +1331,26 @@ public class ObatBoImpl implements ObatBo {
         BigInteger nolB = new BigInteger(String.valueOf(0));
         List<TransaksiStok> listOfTransaksi = new ArrayList<>();
         if (stokEntities.size() > 0){
+
+            int n = 0;
             for (ItSimrsTransaksiStokEntity stok : stokEntities){
 
                 TransaksiStok trans = new TransaksiStok();
                 trans.setRegisteredDate(stok.getRegisteredDate());
                 trans.setCreatedDate(stok.getCreatedDate());
                 trans.setKeterangan(stok.getKeterangan());
+
+                ImSimrsObatEntity obatEntity = new ImSimrsObatEntity();
+                try {
+                    obatEntity = obatDao.getById("idBarang", stok.getIdBarang());
+                } catch (HibernateException e){
+                    logger.error("[ObatPoliBoImpl.getListReporTransaksiObat] ERROR .", e);
+                    throw new GeneralBOException("[ObatPoliBoImpl.getListReporTransaksiObat] ERROR .", e);
+                }
+
+                if (obatEntity != null){
+                    trans.setNamaObat(obatEntity.getNamaObat());
+                }
 
                 if (listOfTransaksi.size() == 0){
 
@@ -1366,8 +1380,40 @@ public class ObatBoImpl implements ObatBo {
                         trans.setTotalSaldo(stok.getTotal());
                         trans.setSubTotalSaldo(stok.getSubTotal());
                     }
+
+                    listOfTransaksi.add(trans);
+                    n++;
                 } else {
 
+                    TransaksiStok minStok = listOfTransaksi.get(n-1);
+                    if ("D".equalsIgnoreCase(stok.getTipe())){
+                        trans.setQty(stok.getQty());
+                        trans.setTotal(stok.getTotal());
+                        trans.setSubTotal(stok.getSubTotal());
+
+                        trans.setQtyKredit(nolB);
+                        trans.setTotalKredit(nol);
+                        trans.setSubTotalKredit(nol);
+
+                        trans.setQtySaldo(minStok.getQtySaldo().add(stok.getQty()));
+                        trans.setTotalSaldo(minStok.getTotalSaldo().add(stok.getTotal()));
+                        trans.setSubTotalSaldo(minStok.getSubTotalSaldo().add(stok.getSubTotal()));
+                    } else {
+
+                        trans.setQty(nolB);
+                        trans.setTotal(nol);
+                        trans.setSubTotal(nol);
+
+                        trans.setQtyKredit(stok.getQty());
+                        trans.setTotalKredit(stok.getTotal());
+                        trans.setSubTotalKredit(stok.getSubTotal());
+
+                        trans.setQtySaldo(minStok.getQtySaldo().subtract(stok.getQty()));
+                        trans.setTotalSaldo(minStok.getTotalSaldo().subtract(stok.getTotal()));
+                        trans.setSubTotalSaldo(minStok.getSubTotalSaldo().subtract(stok.getSubTotal()));
+                    }
+                    listOfTransaksi.add(trans);
+                    n++;
                 }
             }
         }

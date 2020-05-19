@@ -736,16 +736,32 @@ public class ObatAction extends BaseMasterAction {
 
         String branch = CommonUtil.userBranchLogin();
         String branchName = CommonUtil.userBranchNameLogin();
+        String pelayananId = CommonUtil.userPelayananIdLogin();
         String logo = "";
         Branch branches = new Branch();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
 
         try {
             branches = branchBo.getBranchById(branch, "Y");
         } catch (GeneralBOException e) {
             logger.error("Found Error when searhc branch logo");
+        }
+
+        // report list
+        try {
+            report = obatBo.getListReporTransaksiObat(pelayananId, "", obat.getIdObat());
+        } catch (GeneralBOException e){
+            logger.error("[ObatAction.initPrintReportRiwayat] ERROR. ", e);
+            throw new GeneralBOException("[ObatAction.initPrintReportRiwayat] ERROR. " + e);
+        }
+
+        String namaObat = "";
+        if (report.size() > 0){
+            TransaksiStok stok = report.get(0);
+            namaObat = stok.getNamaObat();
         }
 
         if (branches != null) {
@@ -759,6 +775,10 @@ public class ObatAction extends BaseMasterAction {
         reportParams.put("unit", branchName);
         reportParams.put("logo", logo);
         reportParams.put("printDate", formatDate);
+        reportParams.put("qtyLalu", new BigDecimal(0));
+        reportParams.put("totalLalu", new BigDecimal(0));
+        reportParams.put("subTotalLalu", new BigDecimal(0));
+        reportParams.put("namaObat", namaObat);
 
         try {
             preDownload();

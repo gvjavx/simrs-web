@@ -25,6 +25,7 @@
           p:approvalTransaksiObatDao-ref="approvalTransaksiObatDao"
           p:permintaanVendorDao-ref="permintaanVendorDao"
           p:transaksiObatDetailDao-ref="transaksiObatDetailDao"
+          p:transaksiStokDao-ref="transaksiStokDao"
     />
 
     <bean id="obatBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

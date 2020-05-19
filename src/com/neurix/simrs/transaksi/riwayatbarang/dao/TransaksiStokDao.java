@@ -33,6 +33,9 @@ public class TransaksiStokDao extends GenericDao<ItSimrsTransaksiStokEntity, Str
             if (mapCriteria.get("id_barang") != null){
                 criteria.add(Restrictions.eq("idObat", mapCriteria.get("id_barang").toString()));
             }
+            if (mapCriteria.get("id_pelayanan") != null){
+                criteria.add(Restrictions.eq("idPelayanan", mapCriteria.get("id_pelayanan").toString()));
+            }
             if (mapCriteria.get("branch_id") != null){
                 criteria.add(Restrictions.eq("branchId", mapCriteria.get("branch_id").toString()));
             }
