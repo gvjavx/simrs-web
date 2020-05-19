@@ -26,6 +26,7 @@ public class PasienController extends ValidationAwareSupport implements ModelDri
     private String idPasien;
     private String password;
     private String tokenExpo;
+    private String tokenFcm;
     private String id;
     private String os;
     private String action;
@@ -124,7 +125,7 @@ public class PasienController extends ValidationAwareSupport implements ModelDri
                     NotifikasiFcm notifikasiFcm = new NotifikasiFcm();
                     notifikasiFcm.setUserId(model.getIdPasien());
                     notifikasiFcm.setUserName(model.getNama());
-                    notifikasiFcm.setTokenFcm("");
+                    notifikasiFcm.setTokenFcm(tokenFcm == null ? "" : tokenFcm);
                     notifikasiFcm.setTokenExpo(tokenExpo == null ? "" : tokenExpo);
                     notifikasiFcm.setLastUpdateWho(model.getNama());
                     notifikasiFcm.setCreatedWho(model.getNama());

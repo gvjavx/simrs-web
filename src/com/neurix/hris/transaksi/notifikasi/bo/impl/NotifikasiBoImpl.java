@@ -415,6 +415,13 @@ public class NotifikasiBoImpl implements NotifikasiBo {
 //                    break;
 //                }
 //            }
+
+//            for (ItNotifikasiFcmEntity entity : notifikasiFcm){
+//                if(entity.getUserId().equals(bean.getNip())){
+//                    FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), bean.getTipeNotifName(), bean.getNote(), CLICK_IJIN);
+//                    break;
+//                }
+//            }
         }
 
         logger.info("[NotifikasiBoImpl.saveAdd] end process <<<");
@@ -892,7 +899,7 @@ public class NotifikasiBoImpl implements NotifikasiBo {
             }
 
 //            for (ItNotifikasiFcmEntity entity : notifikasiFcm) {
-//                if (entity.getUserId().equals(personilPosition.getNip())) {
+//                if (entity.getUserId().equals("0001")) {
 //                    FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), note, action);
 //                    break;
 //                }
@@ -1112,10 +1119,17 @@ public class NotifikasiBoImpl implements NotifikasiBo {
 
                         for (ItNotifikasiFcmEntity entity : notifikasiFcm){
                             if(entity.getUserId().equals(nipKabid)){
-                                FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), note, CLICK_IJIN);
+                                ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), note, entity.getOs());
                                 break;
                             }
                         }
+
+//                        for (ItNotifikasiFcmEntity entity : notifikasiFcm){
+//                            if(entity.getUserId().equals(nipKabid)){
+//                                FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), note, CLICK_IJIN);
+//                                break;
+//                            }
+//                        }
                     }
                 }else{
                     ImNotifikasiEntity addNotif = new ImNotifikasiEntity();

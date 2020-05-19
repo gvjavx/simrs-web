@@ -684,8 +684,7 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
                     }
                 }
             }
-        }
-        else if ("BPQ".equalsIgnoreCase(tipeLaporan)){
+        } else if ("BPQ".equalsIgnoreCase(tipeLaporan)){
             List<BudgettingDTO> resultListTmp = new ArrayList<>();
             resultListTmp = laporanAkuntansiDao.getBudgettingPerQuartal(unit,tahun,budgetingStatus.getStatus());
             for (BudgettingDTO budgettingDTO : resultListTmp){
@@ -708,8 +707,7 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
                     }
                 }
             }
-        }
-        else if ("BPB".equalsIgnoreCase(tipeLaporan)){
+        } else if ("BPB".equalsIgnoreCase(tipeLaporan)){
             List<BudgettingDTO> resultListTmp = new ArrayList<>();
             resultListTmp = laporanAkuntansiDao.getBudgettingPerBulan(unit,tahun,budgetingStatus.getStatus());
             for (BudgettingDTO budgettingDTO : resultListTmp){
@@ -748,6 +746,19 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
                     }
                 }
             }
+        }else if ("BCPT".equalsIgnoreCase(tipeLaporan)){
+            String tahunLalu = String.valueOf(Integer.parseInt(tahun)-1);
+            String tahunLalu2 = String.valueOf(Integer.parseInt(tahun)-2);
+            resultList = laporanAkuntansiDao.getBudgettingComparingPerTahun(unit,budgetingStatus.getStatus(),tahun,tahunLalu,tahunLalu2);
+        } else if ("BCR".equalsIgnoreCase(tipeLaporan)){
+            List<BudgettingDTO> resultListTmp = new ArrayList<>();
+            resultListTmp = laporanAkuntansiDao.getBudgettingComparingRealisasi(unit,budgetingStatus.getStatus(),tahun);
+            for (BudgettingDTO budgettingDTO : resultListTmp){
+                budgettingDTO.setNilaiTotalSisaBayar(budgettingDTO.getNilaiTotal().subtract(budgettingDTO.getNilaiTotalRealisasi()));
+                resultList.add(budgettingDTO);
+            }
+        }else if ("BPD".equalsIgnoreCase(tipeLaporan)){
+            resultList = laporanAkuntansiDao.getBudgettingPerDivisi(unit,budgetingStatus.getStatus(),tahun);
         }
         logger.info("[LaporanAkuntansiBoImpl.getBudgetting] end process <<<");
         return resultList;

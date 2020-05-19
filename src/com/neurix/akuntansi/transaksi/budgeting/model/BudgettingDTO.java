@@ -12,6 +12,7 @@ public class BudgettingDTO {
     private BigDecimal nilaiTotal;
     private String noBudgetting;
     private String tipe;
+    private String divisi;
 
     private BigDecimal qtySem2;
     private BigDecimal nilaiSem2;
@@ -34,6 +35,51 @@ public class BudgettingDTO {
     private BigDecimal subTotalOktober;
     private BigDecimal subTotalNovember;
     private BigDecimal subTotalDesember;
+
+    private BigDecimal nilaiTotalTahunLalu;
+    private BigDecimal nilaiTotal2TahunLalu;
+    private BigDecimal nilaiTotalRealisasi;
+    private BigDecimal nilaiTotalSisaBayar;
+
+    public String getDivisi() {
+        return divisi;
+    }
+
+    public void setDivisi(String divisi) {
+        this.divisi = divisi;
+    }
+
+    public BigDecimal getNilaiTotalSisaBayar() {
+        return nilaiTotalSisaBayar;
+    }
+
+    public void setNilaiTotalSisaBayar(BigDecimal nilaiTotalSisaBayar) {
+        this.nilaiTotalSisaBayar = nilaiTotalSisaBayar;
+    }
+
+    public BigDecimal getNilaiTotalRealisasi() {
+        return nilaiTotalRealisasi;
+    }
+
+    public void setNilaiTotalRealisasi(BigDecimal nilaiTotalRealisasi) {
+        this.nilaiTotalRealisasi = nilaiTotalRealisasi;
+    }
+
+    public BigDecimal getNilaiTotalTahunLalu() {
+        return nilaiTotalTahunLalu;
+    }
+
+    public void setNilaiTotalTahunLalu(BigDecimal nilaiTotalTahunLalu) {
+        this.nilaiTotalTahunLalu = nilaiTotalTahunLalu;
+    }
+
+    public BigDecimal getNilaiTotal2TahunLalu() {
+        return nilaiTotal2TahunLalu;
+    }
+
+    public void setNilaiTotal2TahunLalu(BigDecimal nilaiTotal2TahunLalu) {
+        this.nilaiTotal2TahunLalu = nilaiTotal2TahunLalu;
+    }
 
     public BigDecimal getSubTotalJanuari() {
         return subTotalJanuari;

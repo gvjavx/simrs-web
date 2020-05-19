@@ -516,6 +516,7 @@ public class PermintaanObatController implements ModelDriven<Object> {
                 permintaanObatPoli.setIdApprovalObat(item.getIdApprovalObat());
                 permintaanObatPoli.setIdObat(item.getIdObat());
                 permintaanObatPoli.setIdPelayanan(item.getIdPelayanan());
+                permintaanObatPoli.setIdTransaksiObatDetail(item.getIdTransaksiObatDetail());
 //            permintaanObatPoli.setQty(item.getQty().toString());
                 permintaanObatPoli.setQtyApprove(item.getQtyApprove().toString());
                 permintaanObatPoli.setFlag(item.getFlag());

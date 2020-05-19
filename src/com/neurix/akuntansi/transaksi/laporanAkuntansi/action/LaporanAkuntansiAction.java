@@ -1300,6 +1300,21 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
                 titleReport="LAPORAN BUDGETTING PER BULAN";
                 result="print_report_budgetting_per_bulan";
                 break;
+            case "BCR":
+                titleReport="LAPORAN BUDGETTING KOMPARASI REALISASI";
+                result="print_report_budgetting_komparasi_realisasi";
+                break;
+            case "BPD":
+                titleReport="LAPORAN BUDGETTING PER DIVISI";
+                result="print_report_budgetting_per_divisi";
+                break;
+            case "BCPT":
+                titleReport="LAPORAN BUDGETTING KOMPARASI PER TAHUN";
+                result="print_report_budgetting_komparasi_tahun";
+                reportParams.put("tahunIni", data.getTahun());
+                reportParams.put("tahunLalu", String.valueOf(Integer.valueOf(data.getTahun())-1));
+                reportParams.put("tahun2Lalu", String.valueOf(Integer.valueOf(data.getTahun())-2));
+                break;
         }
         budgettingDTOList = laporanAkuntansiBo.getBudgetting(data.getTipeLaporan(),data.getUnit(),data.getTahun());
 

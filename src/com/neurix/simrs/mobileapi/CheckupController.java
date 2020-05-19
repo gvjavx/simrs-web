@@ -133,6 +133,15 @@ public class CheckupController implements ModelDriven<Object> {
     private String jenisBayar;
 
     private String flagCall;
+    private String jenisResep;
+
+    public String getJenisResep() {
+        return jenisResep;
+    }
+
+    public void setJenisResep(String jenisResep) {
+        this.jenisResep = jenisResep;
+    }
 
     public String getFlagCall() {
         return flagCall;
@@ -705,6 +714,7 @@ public class CheckupController implements ModelDriven<Object> {
             bean.setCreatedWho(username);
             bean.setLastUpdateWho(username);
             bean.setLastUpdate(now);
+            bean.setJenisResep(jenisResep);
 //            bean.setTtdDokter(base64Ttd);
 
             List<TransaksiObatDetail> list = new ArrayList<>();

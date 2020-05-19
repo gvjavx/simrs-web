@@ -299,6 +299,24 @@
                 <param name="dataSource">budgettingDTOList</param>
                 <param name="reportParameters">reportParams</param>
             </result>
+            <result name="print_report_budgetting_komparasi_tahun" type="jasper">
+                <param name="location">/pages/report/com/neurix/akuntansi/LaporanBudgettingKomparasiPerTahun.jasper</param>
+                <param name="format">PDF</param>
+                <param name="dataSource">budgettingDTOList</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+            <result name="print_report_budgetting_komparasi_realisasi" type="jasper">
+                <param name="location">/pages/report/com/neurix/akuntansi/LaporanBudgettingKomparasiRealisasi.jasper</param>
+                <param name="format">PDF</param>
+                <param name="dataSource">budgettingDTOList</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+            <result name="print_report_budgetting_per_divisi" type="jasper">
+                <param name="location">/pages/report/com/neurix/akuntansi/LaporanBudgettingPerDivisi.jasper</param>
+                <param name="format">PDF</param>
+                <param name="dataSource">budgettingDTOList</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
             <!-- END OF Budgetting -->
         </action>
 

@@ -621,6 +621,9 @@
             var namaVendor=$('#nama_vendor').val();
             var noNota=$('#no_nota').val();
             var rekeningId=$('#rekening_id').val();
+            if (rekeningId==""){
+                rekeningId=$('#coa_lawan').val();
+            }
             var jumlahPembayaran=$('#jumlah_pembayaran').val();
             var divisiId=$('#divisi_id').val();
             var divisiName=$('#nama_divisi').val();
