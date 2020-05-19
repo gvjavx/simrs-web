@@ -1355,6 +1355,10 @@ public class ObatBoImpl implements ObatBo {
 
                 if (listOfTransaksi.size() == 0){
 
+                    trans.setQtyLalu(nolB);
+                    trans.setTotalLalu(nol);
+                    trans.setSubTotalLalu(nol);
+
                     if ("D".equalsIgnoreCase(stok.getTipe())){
                         trans.setQty(stok.getQty());
                         trans.setTotal(stok.getTotal());
@@ -1364,9 +1368,9 @@ public class ObatBoImpl implements ObatBo {
                         trans.setTotalKredit(nol);
                         trans.setSubTotalKredit(nol);
 
-                        trans.setQtySaldo(stok.getQty());
-                        trans.setTotalSaldo(stok.getTotal());
-                        trans.setSubTotalSaldo(stok.getSubTotal());
+                        trans.setQtySaldo(stok.getQty().add(trans.getQtyLalu()));
+                        trans.setTotalSaldo(stok.getTotal().add(trans.getTotalLalu()));
+                        trans.setSubTotalSaldo(stok.getSubTotal().add(trans.getSubTotalLalu()));
                     } else {
 
                         trans.setQty(nolB);
@@ -1377,9 +1381,9 @@ public class ObatBoImpl implements ObatBo {
                         trans.setTotalKredit(stok.getTotal());
                         trans.setSubTotalKredit(stok.getSubTotal());
 
-                        trans.setQtySaldo(stok.getQty());
-                        trans.setTotalSaldo(stok.getTotal());
-                        trans.setSubTotalSaldo(stok.getSubTotal());
+                        trans.setQtySaldo(trans.getQtyLalu().subtract(stok.getQty()));
+                        trans.setTotalSaldo(trans.getTotalLalu().subtract(stok.getTotal()));
+                        trans.setSubTotalSaldo(trans.getSubTotalLalu().subtract(stok.getSubTotal()));
                     }
 
                     listOfTransaksi.add(trans);
