@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.948717100000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="48"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -113,6 +113,12 @@ order by
 		<groupFooter>
 			<band splitType="Stretch"/>
 		</groupFooter>
+	</group>
+	<group name="divisi">
+		<groupExpression><![CDATA[$F{divisi_id}]]></groupExpression>
+	</group>
+	<group name="master">
+		<groupExpression><![CDATA[$F{master_id}]]></groupExpression>
 	</group>
 	<group name="jurnal" isReprintHeaderOnEachPage="true">
 		<groupExpression><![CDATA[$F{kode_rekening}]]></groupExpression>

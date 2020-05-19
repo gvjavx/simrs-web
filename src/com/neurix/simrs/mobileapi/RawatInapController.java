@@ -903,7 +903,7 @@ public class RawatInapController implements ModelDriven<Object> {
             tindakan.setIdKategoriTindakan(idKategoriTindakan);
 
             try {
-               result = tindakanBoProxy.getByCriteria(tindakan);
+               result = tindakanBoProxy.getComboBoxTindakan(tindakan);
             } catch (GeneralBOException e) {
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }

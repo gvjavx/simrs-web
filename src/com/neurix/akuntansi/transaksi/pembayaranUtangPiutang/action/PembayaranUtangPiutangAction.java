@@ -461,13 +461,14 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
             //Membuat Billing
             List<Map> dataMap = new ArrayList<>();
             for (PembayaranUtangPiutangDetail pembayaranUtangPiutangDetail : pembayaranUtangPiutangDetailList){
+                String rekeningId = kodeRekeningBoProxy.getRekeningIdByKodeRekening(pembayaranUtangPiutangDetail.getRekeningId());
                 BigDecimal jumlahPembayaran = new BigDecimal(pembayaranUtangPiutangDetail.getStJumlahPembayaran().replace(".",""));
                 Map hs = new HashMap();
                 hs.put("bukti",pembayaranUtangPiutangDetail.getNoNota());
                 hs.put("nilai",jumlahPembayaran);
                 hs.put("master_id", pembayaranUtangPiutangDetail.getMasterId());
                 hs.put("divisi_id", pembayaranUtangPiutangDetail.getDivisiId());
-                hs.put("rekening_id", pembayaranUtangPiutangDetail.getRekeningId());
+                hs.put("rekening_id", rekeningId);
                 dataMap.add(hs);
             }
 

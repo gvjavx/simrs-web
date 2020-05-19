@@ -274,11 +274,11 @@ public class RuanganAction extends BaseMasterAction {
                 logId = ruanganBoProxy.saveErrorMessage(e.getMessage(), "pasienBO.saveAdd");
             } catch (GeneralBOException e1) {
                 logger.error("[pasienAction.saveAdd] Error when saving error,", e1);
-                return ERROR;
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[pasienAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -308,11 +308,11 @@ public class RuanganAction extends BaseMasterAction {
                 logId = ruanganBoProxy.saveErrorMessage(e.getMessage(), "RuanganBO.saveEdit");
             } catch (GeneralBOException e1) {
                 logger.error("[RuanganAction.saveEdit] Error when saving error,", e1);
-                return ERROR;
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[RuanganAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 
         logger.info("[RuanganAction.saveEdit] end process <<<");

@@ -1588,4 +1588,20 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 .list();
         return results;
     }
+
+    //for typeahead
+    public List<ImBiodataEntity> getBiodataListByLike(String key) {
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImBiodataEntity.class);
+        criteria.add(
+                Restrictions.or(
+                        Restrictions.ilike("namaPegawai", "%" + key + "%"),
+                        Restrictions.ilike("nip", "%" + key + "%")
+                )
+        );
+        criteria.add(Restrictions.eq("flag", "Y"));
+        criteria.addOrder(Order.asc("nip"));
+
+        List<ImBiodataEntity> results = criteria.list();
+        return results;
+    }
 }

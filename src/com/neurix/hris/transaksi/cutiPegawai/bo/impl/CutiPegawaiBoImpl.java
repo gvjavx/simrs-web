@@ -597,6 +597,13 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                                                 break;
                                             }
                                         }
+
+//                                        for (ItNotifikasiFcmEntity entity : notifikasiFcm){
+//                                            if(entity.getUserId().equals(atasanNip)){
+//                                                FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), noteMobile, CLICK_ACTION);
+//                                                break;
+//                                            }
+//                                        }
 //                                        if (cutiPegawaiPltList.size()!=0){
 //                                            for (ItNotifikasiFcmEntity entity : notifikasiFcm) {
 //                                                if (entity.getUserId().equals(plt)) {

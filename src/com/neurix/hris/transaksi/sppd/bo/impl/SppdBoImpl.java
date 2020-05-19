@@ -10,6 +10,7 @@ import com.neurix.authorization.user.model.User;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.common.util.ExpoPushNotif;
 import com.neurix.common.util.FirebasePushNotif;
 import com.neurix.hris.master.biodata.dao.BiodataDao;
 import com.neurix.hris.master.biodata.model.Biodata;
@@ -3295,9 +3296,16 @@ public class SppdBoImpl implements SppdBo {
                             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
                         }
 
+//                        for (ItNotifikasiFcmEntity entity : notifikasiFcm){
+//                            if(entity.getUserId().equals(itPersonilPositionEntity.getNip())){
+//                                FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), itNotifEntity.getTipeNotifName(), itNotifEntity.getNote(), CLICK_ACTION);
+//                                break;
+//                            }
+//                        }
+
                         for (ItNotifikasiFcmEntity entity : notifikasiFcm){
                             if(entity.getUserId().equals(itPersonilPositionEntity.getNip())){
-                                FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), itNotifEntity.getTipeNotifName(), itNotifEntity.getNote(), CLICK_ACTION);
+                                ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), itNotifEntity.getTipeNotifName(), itNotifEntity.getNote(), entity.getOs());
                                 break;
                             }
                         }

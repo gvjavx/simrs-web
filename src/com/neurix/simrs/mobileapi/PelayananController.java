@@ -292,7 +292,7 @@ public class PelayananController implements ModelDriven<Object> {
             List<Pelayanan> result = new ArrayList<>();
 
             try {
-                result = pelayananBoProxy.getListApotek(branchId, "");
+                result = pelayananBoProxy.getListApotek(branchId, "apotek");
 
             } catch (GeneralBOException e) {
                 logger.error("Pelayanan.create] Error when get list apotek",e);

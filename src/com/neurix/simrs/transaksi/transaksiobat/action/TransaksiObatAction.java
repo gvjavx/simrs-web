@@ -2024,8 +2024,8 @@ public class TransaksiObatAction extends BaseMasterAction {
         logger.info("Decoded upload data : " + decodedBytes1.length);
         String fileName1 = "ttd_pasien-" + idResep + "-" + dateFormater("MM") + dateFormater("yy") + ".png";
         String fileName2 = "ttd_apoteker-" + idResep + "-" + dateFormater("MM") + dateFormater("yy") + ".png";
-        String uploadFile1 = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_PASIEN + fileName1;
-        String uploadFile2 = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_APOTEKER + fileName2;
+        String uploadFile1 = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_PASIEN+fileName1;
+        String uploadFile2 = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_APOTEKER+fileName2;
         logger.info("File save path : " + uploadFile1);
         BufferedImage image1 = ImageIO.read(new ByteArrayInputStream(decodedBytes1));
         BufferedImage image2 = ImageIO.read(new ByteArrayInputStream(decodedBytes2));
@@ -2040,6 +2040,7 @@ public class TransaksiObatAction extends BaseMasterAction {
             // write the image
             ImageIO.write(image1, "png", f1);
             ImageIO.write(image2, "png", f2);
+
             response.setStatus("success");
             response = transaksiObatBo.setTtdPasien(idResep, fileName1, fileName2);
         }

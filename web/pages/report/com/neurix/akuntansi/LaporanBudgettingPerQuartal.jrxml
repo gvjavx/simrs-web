@@ -37,6 +37,10 @@
 	<field name="qtySem2" class="java.math.BigDecimal"/>
 	<field name="nilaiSem2" class="java.math.BigDecimal"/>
 	<field name="subTotalSem2" class="java.math.BigDecimal"/>
+	<field name="subTotalQ1" class="java.lang.String"/>
+	<field name="subTotalQ2" class="java.lang.String"/>
+	<field name="subTotalQ3" class="java.lang.String"/>
+	<field name="subTotalQ4" class="java.lang.String"/>
 	<variable name="SUM_nilai_total" class="java.math.BigDecimal" resetType="Group" resetGroup="rekening" calculation="Sum">
 		<variableExpression><![CDATA[$F{nilaiTotal}]]></variableExpression>
 	</variable>
@@ -290,20 +294,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Nama Rekening]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-28" mode="Transparent" x="337" y="2" width="180" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="d5539f9b-dbb0-4c76-9379-0c038fbed249"/>
-				<box leftPadding="2" rightPadding="2">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
-				</textElement>
-				<text><![CDATA[Semester 1]]></text>
-			</staticText>
-			<staticText>
-				<reportElement key="staticText-28" mode="Transparent" x="387" y="22" width="59" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="c81954e3-8e20-41ec-8589-135c79eddfb2"/>
+				<reportElement key="staticText-28" mode="Transparent" x="427" y="2" width="90" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="c81954e3-8e20-41ec-8589-135c79eddfb2"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -313,10 +304,10 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[Harga Satuan]]></text>
+				<text><![CDATA[Quartal 2]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-28" mode="Transparent" x="337" y="22" width="50" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="8e369d9e-ef3b-4f47-92f0-d0c6f6cec316"/>
+				<reportElement key="staticText-28" mode="Transparent" x="337" y="2" width="90" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="8e369d9e-ef3b-4f47-92f0-d0c6f6cec316"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -326,7 +317,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[Satuan]]></text>
+				<text><![CDATA[Quartal 1]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-26" mode="Transparent" x="227" y="2" width="110" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="7457d5e9-1a13-429b-86fb-873aabc63bab"/>
@@ -342,7 +333,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[No. Budgeting]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-28" mode="Transparent" x="567" y="22" width="59" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="62232fe1-585d-4955-86ac-3924008ab888"/>
+				<reportElement key="staticText-28" mode="Transparent" x="517" y="2" width="90" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="a2086430-b760-4f92-aa44-52fb9393f756"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -352,23 +343,10 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[Harga Satuan]]></text>
+				<text><![CDATA[Quartal 3]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-28" mode="Transparent" x="517" y="2" width="180" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="90a9e319-81c2-4537-8d32-0680ca581a04"/>
-				<box leftPadding="2" rightPadding="2">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
-				</textElement>
-				<text><![CDATA[Semester 2]]></text>
-			</staticText>
-			<staticText>
-				<reportElement key="staticText-28" mode="Transparent" x="517" y="22" width="50" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="7b7ebbcf-8d92-452a-bcb7-7b5f790228cb"/>
+				<reportElement key="staticText-28" mode="Transparent" x="607" y="2" width="90" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="ac517696-600b-437b-b500-c45347f185bf"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -378,40 +356,14 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[Satuan]]></text>
-			</staticText>
-			<staticText>
-				<reportElement key="staticText-28" mode="Transparent" x="446" y="22" width="71" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="a2086430-b760-4f92-aa44-52fb9393f756"/>
-				<box leftPadding="2" rightPadding="2">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
-				</textElement>
-				<text><![CDATA[Sub Total]]></text>
-			</staticText>
-			<staticText>
-				<reportElement key="staticText-28" mode="Transparent" x="626" y="22" width="71" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="ac517696-600b-437b-b500-c45347f185bf"/>
-				<box leftPadding="2" rightPadding="2">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
-				</textElement>
-				<text><![CDATA[Sub Total]]></text>
+				<text><![CDATA[Quartal 4]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="17" splitType="Stretch">
 			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement key="textField-22" x="337" y="0" width="50" height="15" uuid="1ddbcd29-e5d0-4a5a-b697-14fc33fed678"/>
+				<reportElement key="textField-22" x="337" y="0" width="90" height="15" uuid="1ddbcd29-e5d0-4a5a-b697-14fc33fed678"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -421,7 +373,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{qty}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{subTotalQ1}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField" mode="Transparent" x="0" y="0" width="68" height="15" uuid="42653c39-803d-4ccd-b9d3-6903229e0743"/>
@@ -450,19 +402,6 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{kodeRekeningName}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-16" x="387" y="0" width="59" height="15" uuid="4bedb26c-495e-44ab-8c56-f96318f343f7"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{nilai}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-18" x="697" y="0" width="117" height="15" uuid="3f136fc4-38a2-4184-95e8-ddc326e7322d"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -489,7 +428,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{noBudgetting}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-16" x="567" y="0" width="59" height="15" uuid="e54e06ea-bd3e-4c83-a7cf-d7cf40c95384"/>
+				<reportElement key="textField-16" x="517" y="0" width="90" height="15" uuid="e54e06ea-bd3e-4c83-a7cf-d7cf40c95384"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -499,23 +438,10 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{nilaiSem2}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0" isBlankWhenNull="true">
-				<reportElement key="textField-22" x="517" y="0" width="50" height="15" uuid="f99e4fa7-03ed-4541-816e-37ebd3fe032e"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{qtySem2}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{subTotalQ3}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-16" x="446" y="0" width="71" height="15" uuid="28fd044a-58ff-40c9-b970-5d12549fa1e4"/>
+				<reportElement key="textField-16" x="427" y="0" width="90" height="15" uuid="28fd044a-58ff-40c9-b970-5d12549fa1e4"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -525,10 +451,10 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{subTotal}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{subTotalQ2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-16" x="626" y="0" width="71" height="15" uuid="2e8d306d-42c9-431a-8bae-ceb7db0c9413"/>
+				<reportElement key="textField-16" x="607" y="0" width="90" height="15" uuid="2e8d306d-42c9-431a-8bae-ceb7db0c9413"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -538,7 +464,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{subTotalSem2}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{subTotalQ4}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

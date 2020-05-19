@@ -17,7 +17,7 @@
             document.dokterForm.submit();
         };
 
-        $.subscribe('beforeProcessSave', function (event, data) {
+        $.subscribe('beforeProcessSave3', function (event, data) {
             var idDokter = document.getElementById("idDokter1").value;
             console.log(idDokter);
 
@@ -165,7 +165,7 @@
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
                         <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="deleteDokterForm" id="save" name="save"
-                                   onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
+                                   onBeforeTopics="beforeProcessSav3" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                             <i class="fa fa-check"></i>
                             Delete

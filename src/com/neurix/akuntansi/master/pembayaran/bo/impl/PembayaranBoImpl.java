@@ -86,21 +86,45 @@ public class PembayaranBoImpl implements PembayaranBo {
             }
 
             if (entity != null) {
-                entity.setPembayaranId(bean.getPembayaranId());
-                entity.setPembayaranName(bean.getPembayaranName());
-                entity.setCoa(bean.getCoa());
-                entity.setFlag(bean.getFlag());
-                entity.setAction(bean.getAction());
-                entity.setLastUpdateWho(bean.getLastUpdateWho());
-                entity.setLastUpdate(bean.getLastUpdate());
+                if (bean.getPembayaranName().equalsIgnoreCase(entity.getPembayaranName())){
+                    entity.setPembayaranId(bean.getPembayaranId());
+                    entity.setPembayaranName(bean.getPembayaranName());
+                    entity.setCoa(bean.getCoa());
+                    entity.setFlag(bean.getFlag());
+                    entity.setAction(bean.getAction());
+                    entity.setLastUpdateWho(bean.getLastUpdateWho());
+                    entity.setLastUpdate(bean.getLastUpdate());
 
-                try {
-                    // Update into database
-                    pembayaranDao.updateAndSave(entity);
-                    //payrollSkalaGajiDao.addAndSaveHistory(imPayrollSkalaGajiHistoryEntity);
-                } catch (HibernateException e) {
-                    logger.error("[PembayaranBoImpl.saveEdit] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update data Akun Pembayaran, please info to your admin..." + e.getMessage());
+                    try {
+                        // Update into database
+                        pembayaranDao.updateAndSave(entity);
+                        //payrollSkalaGajiDao.addAndSaveHistory(imPayrollSkalaGajiHistoryEntity);
+                    } catch (HibernateException e) {
+                        logger.error("[PembayaranBoImpl.saveEdit] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data Akun Pembayaran, please info to your admin..." + e.getMessage());
+                    }
+                }else {
+                    String status = cekStatus(bean.getPembayaranName());
+                    if (!status.equalsIgnoreCase("exist")){
+                        entity.setPembayaranId(bean.getPembayaranId());
+                        entity.setPembayaranName(bean.getPembayaranName());
+                        entity.setCoa(bean.getCoa());
+                        entity.setFlag(bean.getFlag());
+                        entity.setAction(bean.getAction());
+                        entity.setLastUpdateWho(bean.getLastUpdateWho());
+                        entity.setLastUpdate(bean.getLastUpdate());
+
+                        try {
+                            // Update into database
+                            pembayaranDao.updateAndSave(entity);
+                            //payrollSkalaGajiDao.addAndSaveHistory(imPayrollSkalaGajiHistoryEntity);
+                        } catch (HibernateException e) {
+                            logger.error("[PembayaranBoImpl.saveEdit] Error, " + e.getMessage());
+                            throw new GeneralBOException("Found problem when saving update data Akun Pembayaran, please info to your admin..." + e.getMessage());
+                        }
+                    }else {
+                        throw new GeneralBOException("Maaf Data dengan Nama Akun Pembayaran Tersebut Sudah Ada");
+                    }
                 }
             } else {
                 logger.error("[PembayaranBoImpl.saveEdit] Error, not found data Akun Pembayaran with pembayaran id, please check again your data ...");

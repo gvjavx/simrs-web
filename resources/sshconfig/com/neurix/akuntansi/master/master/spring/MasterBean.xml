@@ -12,6 +12,7 @@
           p:masterDao-ref="masterDao"
           p:dokterDao-ref="dokterDao"
           p:pasienDao-ref="pasienDao"
+          p:biodataDao-ref="biodataDao"
     />
 
     <bean id="masterBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
