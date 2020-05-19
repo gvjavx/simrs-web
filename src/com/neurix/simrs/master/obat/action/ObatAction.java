@@ -44,6 +44,7 @@ public class ObatAction extends BaseMasterAction {
 
     protected static transient Logger logger = Logger.getLogger(ObatAction.class);
     private ObatBo obatBoProxy;
+    private PelayananBo pelayananBoProxy;
     private Obat obat;
     private List<Obat> listOfObat = new ArrayList<>();
     private String idPabrik;
@@ -95,6 +96,10 @@ public class ObatAction extends BaseMasterAction {
 
     public void setObat(Obat obat) {
         this.obat = obat;
+    }
+
+    public void setPelayananBoProxy(PelayananBo pelayananBoProxy) {
+        this.pelayananBoProxy = pelayananBoProxy;
     }
 
     @Override
@@ -736,7 +741,6 @@ public class ObatAction extends BaseMasterAction {
 
         String branch = CommonUtil.userBranchLogin();
         String branchName = CommonUtil.userBranchNameLogin();
-        String pelayananId = CommonUtil.userPelayananIdLogin();
         String logo = "";
         Branch branches = new Branch();
 
@@ -750,9 +754,22 @@ public class ObatAction extends BaseMasterAction {
             logger.error("Found Error when searhc branch logo");
         }
 
+        String namaPelayanan = "";
+        ImSimrsPelayananEntity pelayananEntity = new ImSimrsPelayananEntity();
+        try {
+            pelayananEntity = pelayananBoProxy.getPelayananById(obat.getIdPelayanan());
+        } catch (GeneralBOException e){
+            logger.error("[ObatAction.printReportRiwayat] ERROR. ",e);
+            throw new GeneralBOException("[ObatAction.printReportRiwayat] ERROR. "+e.getMessage());
+        }
+
+        if (pelayananEntity != null){
+            namaPelayanan = pelayananEntity.getNamaPelayanan();
+        }
+
         // report list
         try {
-            report = obatBo.getListReporTransaksiObat(pelayananId, "", obat.getIdObat());
+            report = obatBo.getListReporTransaksiObat(obat.getIdPelayanan(), obat.getTahun(), obat.getBulan(), obat.getIdObat());
         } catch (GeneralBOException e){
             logger.error("[ObatAction.initPrintReportRiwayat] ERROR. ", e);
             throw new GeneralBOException("[ObatAction.initPrintReportRiwayat] ERROR. " + e);
@@ -779,6 +796,8 @@ public class ObatAction extends BaseMasterAction {
         reportParams.put("totalLalu", new BigDecimal(0));
         reportParams.put("subTotalLalu", new BigDecimal(0));
         reportParams.put("namaObat", namaObat);
+        reportParams.put("idObat", obat.getIdObat());
+        reportParams.put("namaPelayanan", namaPelayanan);
 
         try {
             preDownload();

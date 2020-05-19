@@ -4,6 +4,7 @@ import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.riwayatbarang.model.ItSimrsRiwayatBarangMasukEntity;
 import com.neurix.simrs.transaksi.riwayatbarang.model.ItSimrsTransaksiStokEntity;
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 
@@ -44,6 +45,10 @@ public class TransaksiStokDao extends GenericDao<ItSimrsTransaksiStokEntity, Str
             }
             if (mapCriteria.get("id_vendor") != null){
                 criteria.add(Restrictions.eq("idVendor", mapCriteria.get("id_vendor").toString()));
+            }
+
+            if (mapCriteria.get("periode") != null){
+                criteria.add(Restrictions.sqlRestriction("registeredDate::varchar LIKE ?", mapCriteria.get("periode").toString()+"%", Hibernate.STRING));
             }
         }
 

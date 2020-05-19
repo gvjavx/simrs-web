@@ -55,29 +55,40 @@
 
                                     <div class="row">
                                         <div class="form-group">
+                                            <label class="col-md-2 col-md-offset-3" style="margin-top: 7px">Pelayanan</label>
+                                            <div class="col-md-4">
+                                                <s:action id="initComboFarmasi" namespace="/pelayanan" name="initComboPelayananFarmasi_pelayanan"/>
+                                                <s:select list="#initComboFarmasi.listOfComboFarmasi" id="idPelayanan" name="obat.idPelayanan"
+                                                          listKey="idPelayanan" listValue="namaPelayanan" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
                                         <label class="col-md-2 col-md-offset-3" style="margin-top: 7px">Nama Obat</label>
                                         <div class="col-md-4">
-                                                <%--<s:action id="initObat" namespace="/obat"--%>
-                                                <%--name="getListObat_obat"/>--%>
-                                                <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-                                                <%--list="#initObat.listOfObat" id="nama_obat"--%>
-                                                <%--listKey="idObat + '|' + namaObat + '|' + lembarPerBox + '|' + bijiPerLembar + '|' + idPabrik"--%>
-                                                <%--onchange="var warn =$('#war_po_obat').is(':visible'); if (warn){$('#cor_po_obat').show().fadeOut(3000);$('#war_po_obat').hide()}; resetField(this);"--%>
-                                                <%--listValue="idPabrik +' | '+ namaObat +' | '+'LB/BX:'+lembarPerBox+' | '+'BJ/LB:'+bijiPerLembar"--%>
-                                                <%--headerKey="" headerValue="[Select one]"--%>
-                                                <%--cssClass="form-control select2"/>--%>
                                             <input type="text" class="form-control" style="margin-top: 7px" id="nama_obat" name="obat.namaObat">
                                             <input type="hidden" id="idObat" name="obat.idObat">
                                         </div>
                                         </div>
                                     </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-3" style="margin-top: 7px">Tahun</label>
+                                                <div class="col-md-4">
+                                                    <s:select list="#{'2020':'2020', '2021' : '2021', '2022':'2022', '2023':'2023', '2024':'2024'}"
+                                                              id="periodeTahun" name="obat.tahun"
+                                                              headerKey="" headerValue="[Select One]" cssClass="form-control" />
+                                                </div>
+                                            </div>
+                                        </div>
                                     <div class="row">
                                         <div class="form-group">
                                         <label class="col-md-2 col-md-offset-3" style="margin-top: 7px">Bulan</label>
                                         <div class="col-md-4">
                                             <s:select list="#{'01':'Januari', '02' : 'Februari', '03':'Maret', '04':'April', '05':'Mei', '06':'Juni', '07':'Juli',
                                 '08': 'Agustus', '09' : 'September', '10' : 'Oktober', '11' : 'November', '12' : 'Desember'}"
-                                                      id="periodeBulan" name=""
+                                                      id="periodeBulan" name="obat.bulan"
                                                       headerKey="" headerValue="[Select One]" cssClass="form-control" />
                                         </div>
                                         </div>

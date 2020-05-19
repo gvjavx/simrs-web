@@ -40,5 +40,5 @@ public interface ObatBo{
     public List<Obat> detailReturObat(String idRetur) throws GeneralBOException;
     public List<Obat> searchObatByVendor(String idVendor, String branchId) throws GeneralBOException;
     public ImSimrsObatEntity getObatEntityByKodeBarang(String id) throws GeneralBOException;
-    public List<TransaksiStok> getListReporTransaksiObat(String branchId, String bulan, String idObat) throws GeneralBOException;
+    public List<TransaksiStok> getListReporTransaksiObat(String idPelayanan, String tahun, String bulan, String idObat) throws GeneralBOException;
 }

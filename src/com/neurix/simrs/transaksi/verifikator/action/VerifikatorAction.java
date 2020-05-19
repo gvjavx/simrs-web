@@ -1147,6 +1147,7 @@ public class VerifikatorAction extends BaseMasterAction {
             Map mapPajakObat = new HashMap();
             mapPajakObat.put("bukti", invoice);
             mapPajakObat.put("nilai", ppnObat);
+            mapPajakObat.put("master_id", "");
 
             if ("JRJ".equalsIgnoreCase(kode)){
 
@@ -1216,6 +1217,7 @@ public class VerifikatorAction extends BaseMasterAction {
                 Map mapPajakObat = new HashMap();
                 mapPajakObat.put("bukti", invoice);
                 mapPajakObat.put("nilai", ppnObat);
+                mapPajakObat.put("master_id", "");
 
                 Map mapPiutangBpjs = new HashMap();
                 mapPiutangBpjs.put("bukti", detailCheckupEntity.getNoSep());

@@ -70,6 +70,42 @@ public class Obat extends BaseModel {
     private BigDecimal bruto;
     private BigDecimal netto;
     private String keterangan;
+    private String idPelayanan;
+    private String tahun;
+    private String bulan;
+    private String periode;
+
+    public String getPeriode() {
+        return periode;
+    }
+
+    public void setPeriode(String periode) {
+        this.periode = periode;
+    }
+
+    public String getTahun() {
+        return tahun;
+    }
+
+    public void setTahun(String tahun) {
+        this.tahun = tahun;
+    }
+
+    public String getBulan() {
+        return bulan;
+    }
+
+    public void setBulan(String bulan) {
+        this.bulan = bulan;
+    }
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
 
     public String getFlagKronis() {
         return flagKronis;

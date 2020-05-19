@@ -1312,11 +1312,12 @@ public class ObatBoImpl implements ObatBo {
     }
 
     @Override
-    public List<TransaksiStok> getListReporTransaksiObat(String branchId, String bulan, String idObat) throws GeneralBOException{
+    public List<TransaksiStok> getListReporTransaksiObat(String idPelayanan, String bulan, String tahun, String idObat) throws GeneralBOException{
 
         Map hsCriteria = new HashMap();
         hsCriteria.put("id_barang", idObat);
-        hsCriteria.put("id_pelayanan", branchId);
+        hsCriteria.put("id_pelayanan", idPelayanan);
+        hsCriteria.put("periode", tahun+"-"+bulan);
 //        hsCriteria.put("bulan", bulan);
 
         List<ItSimrsTransaksiStokEntity> stokEntities = new ArrayList<>();
