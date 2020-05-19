@@ -47,7 +47,7 @@ public class ObatAction extends BaseMasterAction {
     private Obat obat;
     private List<Obat> listOfObat = new ArrayList<>();
     private String idPabrik;
-    private List<TransaksiStok> report = new ArrayList<>();
+    List<TransaksiStok> report = new ArrayList<>();
 
     public List<TransaksiStok> getReport() {
         return report;

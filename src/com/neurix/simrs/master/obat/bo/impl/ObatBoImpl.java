@@ -1317,7 +1317,7 @@ public class ObatBoImpl implements ObatBo {
         Map hsCriteria = new HashMap();
         hsCriteria.put("id_barang", idObat);
         hsCriteria.put("id_pelayanan", branchId);
-        hsCriteria.put("bulan", bulan);
+//        hsCriteria.put("bulan", bulan);
 
         List<ItSimrsTransaksiStokEntity> stokEntities = new ArrayList<>();
         try {
@@ -1339,6 +1339,7 @@ public class ObatBoImpl implements ObatBo {
                 trans.setRegisteredDate(stok.getRegisteredDate());
                 trans.setCreatedDate(stok.getCreatedDate());
                 trans.setKeterangan(stok.getKeterangan());
+                trans.setTipe(stok.getTipe());
 
                 ImSimrsObatEntity obatEntity = new ImSimrsObatEntity();
                 try {

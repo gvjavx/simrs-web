@@ -828,7 +828,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
                 jurnalMap.put("persediaan_gudang", listMapPersediaan);
                 jurnalMap.put("biaya_persediaan_obat", mapBiaya);
 
-                catatan = "Pengganti Barang Retur Vendor ke Gudang dari Vendor " + requestVendor.getIdVendor() + " - " + namaVendor;
+                catatan = "Pengganti Barang No. Transaksi "+idPermintaanVendor+". Retur Vendor ke Gudang dari Vendor " + requestVendor.getIdVendor() + " - " + namaVendor;
                 transId = "36";
             } else {
 
