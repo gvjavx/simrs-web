@@ -47,8 +47,12 @@ public class TransaksiStokDao extends GenericDao<ItSimrsTransaksiStokEntity, Str
                 criteria.add(Restrictions.eq("idVendor", mapCriteria.get("id_vendor").toString()));
             }
 
-            if (mapCriteria.get("periode") != null){
-                criteria.add(Restrictions.sqlRestriction("registeredDate::varchar LIKE ?", mapCriteria.get("periode").toString()+"%", Hibernate.STRING));
+            if (mapCriteria.get("tahun") != null){
+                criteria.add(Restrictions.sqlRestriction("EXTRACT(YEAR FROM registered_date) = ?", (Integer) mapCriteria.get("tahun"), Hibernate.INTEGER));
+            }
+
+            if (mapCriteria.get("bulan") != null){
+                criteria.add(Restrictions.sqlRestriction("EXTRACT(MONTH FROM registered_date) = ?", (Integer) mapCriteria.get("bulan"), Hibernate.INTEGER));
             }
         }
 
