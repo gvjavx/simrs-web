@@ -43,6 +43,7 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_TTD_RM = "/upload/ttd_rm/";
     public final static String RESOURCE_PATH_DOC_RM = "/upload/cetakan_rm/";
     public final static String RESOURCE_PATH_VIDEO_RM = "/upload/video_rm/";
+    public final static String RESOURCE_PATH_TTD_PETUGAS = "/upload/ttd_petugas/";
 
 
     public final static String RESOURCE_PATH_USER_UPLOAD = "/pages/upload/image/profile/";
@@ -143,7 +144,7 @@ public class CommonConstant {
 
     public static final String AGORA_LIB = "/opt/tomcat/webapps/simrs/WEB-INF/lib";
 
-    public final static String AGORA_DIR = "/home/gondok/workspace/Agora_Recording_SDK_for_Linux_v3.0.1/Agora_Recording_SDK_for_Linux_FULL/bin";
+    public final static String AGORA_DIR = "/upload/lib/agora/";
     public static final String AOGRA_REC_DIR = "/home/gondok/workspace/record ";
     public static final String APP_ID = "5d338ec051e042828420e2da2c90247e";
 

@@ -3020,6 +3020,7 @@
             $('.studyTable').find('thead').remove();
             dwr.engine.setAsync(false);
             var tmp_table = "";
+            console.log("Tes");
             StudyAction.searchData(nip, function (listdata) {
 
                 <s:if test="isAddOrEdit()">
@@ -3103,6 +3104,7 @@
             dwr.engine.setAsync(false);
             var tmp_table = "";
             StudyAction.searchData(nip, function (listdata) {
+                console.log("Tes1");
 
                 <s:if test="isAddOrEdit()">
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
@@ -4160,10 +4162,11 @@
                         }
 
                     }else {
+                        console.log("Tes1"+tanggalKeluar+"Tes");
                         if (aktifFlag == 'Y'){
                             msg+="- Tanggal Selesai harus kosong apabila jabatan masih aktif\n";
                             alert(msg);
-                            $('#pengalamanTanggalKeluar').val("");
+                            $('#pengalamanTanggalKeluar').val('');
                         }else {
                             if (confirm('Apakah anda yakin ingin menyimpan data?')) {
                                 dwr.engine.setAsync(false);
@@ -4249,10 +4252,11 @@
                             }
                         }
                     }else{
+                        console.log("Tes2"+tanggalKeluar+"Tes");
                         if (aktifFlag == 'Y'){
                             msg+="- Tanggal Selesai harus kosong apabila jabatan masih aktif\n";
                             alert(msg);
-                            $('#pengalamanTanggalKeluar').val("");
+                            $('#pengalamanTanggalKeluar').val('');
                         }else{
                             if (confirm('Are you sure you want to save this Record?')) {
                                 dwr.engine.setAsync(false);
@@ -4340,10 +4344,11 @@
                         }
                     }
                     else{
+                        console.log("Tes3"+tanggalKeluar+"Tes");
                         if (aktifFlag == 'Y'){
                             msg+="- Tanggal Selesai harus kosong apabila jabatan masih aktif\n";
                             alert(msg);
-                            $('#pengalamanTanggalKeluar').val("");
+                            $('#pengalamanTanggalKeluar').val('');
                         }else{
                             if (confirm('Are you sure you want to save this Record?')) {
                                 dwr.engine.setAsync(false);
@@ -4402,10 +4407,11 @@
                         alert(msg+"Harus Diisi\n"+msg2);
                     }
                     else{
-                        if (aktifFlag == 'Y'){
+                        console.log("Tes4"+tanggalKeluar+"Tes");
+                        if (aktifFlag == 'Y' && tanggalKeluar != ''){
                             msg+="- Tanggal Selesai harus kosong apabila jabatan masih aktif\n";
                             alert(msg);
-                            $('#pengalamanTanggalKeluar').val("");
+                            $('#pengalamanTanggalKeluar').val('');
                         }
                         else{
                             if (confirm('Are you sure you want to save this Record?')) {

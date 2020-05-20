@@ -149,7 +149,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'B':'Budgetting', 'BPS' : 'Budgetting Per Semester'}"
+                                                        <s:select list="#{'B':'Budgetting', 'BPS' : 'Budgetting Per Semester','BPQ' : 'Budgetting Per Quartal','BPB' : 'Budgetting Per Bulan'}"
                                                                   id="tipeLaporan" name="laporanAkuntansi.tipeLaporan"
                                                                   headerKey="" headerValue="[Select One]" cssClass="form-control" />
                                                     </table>

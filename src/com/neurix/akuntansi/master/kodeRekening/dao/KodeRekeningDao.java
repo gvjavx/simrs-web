@@ -251,7 +251,7 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
                 " j.* \n" +
                 " from \n" +
                 "\t im_akun_mapping_jurnal j \n" +
-                "\t left join im_akun_kode_rekening kr ON kr.kode_rekening ILIKE '%' || j.kode_rekening || '%' \n" +
+                "\t left join im_akun_kode_rekening kr ON kr.kode_rekening ILIKE j.kode_rekening || '%' \n" +
                 " where \n" +
                 "\t kr.level=5 \n"+
                 "\t and trans_id='"+transId+"' " +

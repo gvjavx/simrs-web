@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.periksalab.dao;
 
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.dokter.model.Dokter;
@@ -359,10 +360,19 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
     public PeriksaLab getNamaLab(String idPeriksa){
         PeriksaLab lab = new PeriksaLab();
         if(idPeriksa != null && !"".equalsIgnoreCase(idPeriksa)){
-            String SQL = "SELECT \n" +
+            String SQL = "SELECT\n" +
                     "a.id_periksa_lab, \n" +
-                    "b.nama_lab FROM it_simrs_periksa_lab a\n" +
+                    "b.nama_lab,\n" +
+                    "a.id_dokter,\n" +
+                    "c.nama_dokter,\n" +
+                    "a.ttd_dokter,\n" +
+                    "a.ttd_petugas,\n" +
+                    "a.id_pemeriksa,\n" +
+                    "d.user_name\n" +
+                    "FROM it_simrs_periksa_lab a\n" +
                     "INNER JOIN im_simrs_lab b ON a.id_lab = b.id_lab\n" +
+                    "LEFT JOIN im_simrs_dokter c ON a.id_dokter = c.id_dokter\n" +
+                    "LEFT JOIN im_users d ON a.id_pemeriksa = d.user_id\n" +
                     "WHERE id_periksa_lab = :idPeriksaLab";
             List<Objects[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -372,6 +382,12 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                 Object[] objects = result.get(0);
                 lab.setIdPeriksaLab(objects[0] == null ? "" : objects[0].toString());
                 lab.setKategoriLabName(objects[1] == null ? "" : objects[1].toString());
+                lab.setIdDokter(objects[2] == null ? "" : objects[2].toString());
+                lab.setNamaDokter(objects[3] == null ? "" : objects[3].toString());
+                lab.setTtdDokter(objects[4] == null ? "" : CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_DOKTER+objects[4].toString());
+                lab.setTtdPetugas(objects[5] == null ? "" : CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_PETUGAS+objects[5].toString());
+                lab.setIdPemeriksa(objects[6] == null ? "" : objects[6].toString());
+                lab.setNamaPetugas(objects[7] == null ? "" : objects[7].toString());
             }
         }
         return lab;

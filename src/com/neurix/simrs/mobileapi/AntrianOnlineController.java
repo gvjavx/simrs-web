@@ -52,13 +52,15 @@ class CreatChannelRunnable implements Runnable {
     String channelId;
     String uid;
     RecordingConfig recordingConfig;
+    RecordingEventHandler recordingEventHandler;
 
 
-    public CreatChannelRunnable(RecordingSDK recordingSDK, String channelId, String uid, RecordingConfig recordingConfig) {
+    public CreatChannelRunnable(RecordingSDK recordingSDK, String channelId, String uid, RecordingConfig recordingConfig, RecordingEventHandler recordingEventHandler) {
         this.recordingSDK = recordingSDK;
         this.channelId = channelId;
         this.uid = uid;
         this.recordingConfig = recordingConfig;
+        this.recordingEventHandler = recordingEventHandler;
     }
 
     @Override
@@ -66,6 +68,18 @@ class CreatChannelRunnable implements Runnable {
         recordingSDK.createChannel(CommonConstant.APP_ID, "", channelId, Integer.valueOf(uid), recordingConfig, 5);
         recordingSDK.startService();
     }
+
+
+    public boolean stop() {
+        RecordingEngineProperties recordingEngineProperties = recordingSDK.getProperties();
+        boolean isLeave = recordingSDK.leaveChannel();
+        recordingSDK.unRegisterOberserver(recordingEventHandler);
+        return isLeave;
+    }
+
+
+
+
 }
 
 public class AntrianOnlineController implements ModelDriven<Object> {
@@ -139,6 +153,8 @@ public class AntrianOnlineController implements ModelDriven<Object> {
 
     private String videoFileName;
     private String audioFileName;
+
+    private Thread recordThread;
 
 
     public CheckupDetailBo getCheckupDetailBoProxy() {
@@ -308,13 +324,11 @@ public class AntrianOnlineController implements ModelDriven<Object> {
     public HttpHeaders create() {
         logger.info("[AntrianOnlineController.create] start process POST / <<<");
 
-        String test = getVideoFileName(new File("/mnt/images/upload/video_rm/20200514/RS0104200035_020415_271083945/"));
-
         RecordingSDK recordingSDK = new RecordingSDK();
         RecordingSDKInstance = recordingSDK;
         RecordingConfig recordingConfig = new RecordingConfig();
         recordingConfig.channelProfile = Common.CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_COMMUNICATION;
-        recordingConfig.appliteDir = CommonConstant.AGORA_DIR;
+        recordingConfig.appliteDir =  CommonUtil.getPropertyParams("upload.folder") + CommonConstant.AGORA_DIR;
         recordingConfig.triggerMode = 0;
         recordingConfig.recordFileRootDir = CommonUtil.getPropertyParams("upload.folder") + CommonConstant.RESOURCE_PATH_VIDEO_RM;
         recordingConfig.idleLimitSec = 5 * 60;
@@ -394,8 +408,11 @@ public class AntrianOnlineController implements ModelDriven<Object> {
                 audioFileName = getAudioFileName(new File(storageDir));
                 logger.info("File name : " + videoFileName + " "+ audioFileName);
                 String path = storageDir+videoFileName;
+
+                //TODO CHECK
+                String newPath = path.replace(CommonUtil.getPropertyParams("upload.folder"), "");
                 try {
-                     checkupDetailBoProxy.editVideoRm(idDetailCheckup, path);
+                     checkupDetailBoProxy.editVideoRm(idDetailCheckup, newPath);
                 } catch (GeneralBOException e) {
                     logger.error("[AntrianOnlineController.getAntrianAll] Error get antrian all " + e.getMessage());
                     throw new GeneralBOException("[AntrianOnlineController.getAntrianAll] Error When Error get antrian all");
@@ -440,8 +457,10 @@ public class AntrianOnlineController implements ModelDriven<Object> {
                 audioFileName = getAudioFileName(new File(storageDir));
                 logger.info("File name : " + videoFileName + " "+ audioFileName + " UID:" + uid);
                 String path = storageDir+videoFileName;
+
+                String newPath = path.replace(CommonUtil.getPropertyParams("upload.folder"), "");
                 try {
-                    checkupDetailBoProxy.editVideoRm(idDetailCheckup, path);
+                    checkupDetailBoProxy.editVideoRm(idDetailCheckup, newPath);
                 } catch (GeneralBOException e) {
                     logger.error("[AntrianOnlineController.getAntrianAll] Error get antrian all " + e.getMessage());
                     throw new GeneralBOException("[AntrianOnlineController.getAntrianAll] Error When Error get antrian all");
@@ -449,6 +468,10 @@ public class AntrianOnlineController implements ModelDriven<Object> {
                 m_peers.remove(uid);
                 //PrintUsersInfo(m_peers);
                 SetVideoMixingLayout();
+                RecordingEngineProperties recordingEngineProperties = recordingSDK.getProperties();
+                boolean isLeave = recordingSDK.leaveChannel();
+                logger.info("Channel leave : " + isLeave);
+                recordingSDK.unRegisterOberserver(this);
             }
 
             @Override
@@ -708,17 +731,18 @@ public class AntrianOnlineController implements ModelDriven<Object> {
                 logger.info("No system env:KEEPMEDIATIME");
             }
 
-            new Thread(new CreatChannelRunnable(RecordingSDKInstance, channelId, uid, recordingConfig)).start();
+           recordThread = new Thread(new CreatChannelRunnable(RecordingSDKInstance, channelId, uid, recordingConfig, recordingEventHandler));
+            recordThread.start();
+            if (recordThread.isAlive()) {
+                model.setMessage("Success");
+            }
         }
 
         if (action.equalsIgnoreCase("pauseRecord")) {
             RecordingSDKInstance.stopService();
         }
         if(action.equalsIgnoreCase("stopRecord")){
-            RecordingEngineProperties recordingEngineProperties = RecordingSDKInstance.getProperties();
-            boolean isLeave = RecordingSDKInstance.leaveChannel();
-            RecordingSDKInstance.unRegisterOberserver(recordingEventHandler);
-            logger.info("Leave channel: " + isLeave);
+
         }
 
         logger.info("[AntrianOnlineController.create] end process POST / <<<");
@@ -836,7 +860,6 @@ public class AntrianOnlineController implements ModelDriven<Object> {
         return fileName;
 
     }
-
 
     private int SetVideoMixingLayout() {
         Common ei = new Common();

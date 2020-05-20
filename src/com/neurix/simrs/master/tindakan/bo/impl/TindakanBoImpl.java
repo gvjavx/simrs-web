@@ -93,29 +93,52 @@ public class TindakanBoImpl implements TindakanBo {
                 throw new GeneralBOException("Found problem when searching data Tindakan by idTindakan, please inform to your admin...," + e.getMessage());
             }
 
-//            Ruangan editRuangan = new Ruangan();
-//            editRuangan.setIdRuangan(ruangan.getIdRuangan());
-//            MtSimrsRuanganEntity mtSimrsRuanganEntity = getEntityByCriteria(editRuangan).get(0);
-
             if (simrsTindakanEntity != null) {
-                simrsTindakanEntity.setIdTindakan(bean.getIdTindakan());
-                simrsTindakanEntity.setTindakan(bean.getTindakan());
-                simrsTindakanEntity.setIdKategoriTindakan(bean.getIdKategoriTindakan());
-                simrsTindakanEntity.setTarif(bean.getTarif());
-                simrsTindakanEntity.setTarifBpjs(bean.getTarifBpjs());
-                simrsTindakanEntity.setKategoriInaBpjs(bean.getIdKategoriTindakanIna());
-                simrsTindakanEntity.setBranchId(bean.getBranchId());
-                simrsTindakanEntity.setDiskon(bean.getDiskon());
-                simrsTindakanEntity.setFlag(bean.getFlag());
-                simrsTindakanEntity.setAction(bean.getAction());
-                simrsTindakanEntity.setLastUpdate(bean.getLastUpdate());
-                simrsTindakanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                if (bean.getTindakan().equalsIgnoreCase(simrsTindakanEntity.getTindakan())){
+                    simrsTindakanEntity.setIdTindakan(bean.getIdTindakan());
+                    simrsTindakanEntity.setTindakan(bean.getTindakan());
+                    simrsTindakanEntity.setIdKategoriTindakan(bean.getIdKategoriTindakan());
+                    simrsTindakanEntity.setTarif(bean.getTarif());
+                    simrsTindakanEntity.setTarifBpjs(bean.getTarifBpjs());
+                    simrsTindakanEntity.setKategoriInaBpjs(bean.getIdKategoriTindakanIna());
+                    simrsTindakanEntity.setBranchId(bean.getBranchId());
+                    simrsTindakanEntity.setDiskon(bean.getDiskon());
+                    simrsTindakanEntity.setFlag(bean.getFlag());
+                    simrsTindakanEntity.setAction(bean.getAction());
+                    simrsTindakanEntity.setLastUpdate(bean.getLastUpdate());
+                    simrsTindakanEntity.setLastUpdateWho(bean.getLastUpdateWho());
 
-                try {
-                    tindakanDao.updateAndSave(simrsTindakanEntity);
-                } catch (HibernateException e) {
-                    logger.error("[TindakanBoImpl.saveAdd] Error when Updating data ruangan", e);
-                    throw new GeneralBOException(" Error when Updating data ruangan " + e.getMessage());
+                    try {
+                        tindakanDao.updateAndSave(simrsTindakanEntity);
+                    } catch (HibernateException e) {
+                        logger.error("[TindakanBoImpl.saveAdd] Error when Updating data ruangan", e);
+                        throw new GeneralBOException(" Error when Updating data ruangan " + e.getMessage());
+                    }
+                }else {
+                    String status = cekStatus(bean.getTindakan());
+                    if (!status.equalsIgnoreCase("exist")){
+                        simrsTindakanEntity.setIdTindakan(bean.getIdTindakan());
+                        simrsTindakanEntity.setTindakan(bean.getTindakan());
+                        simrsTindakanEntity.setIdKategoriTindakan(bean.getIdKategoriTindakan());
+                        simrsTindakanEntity.setTarif(bean.getTarif());
+                        simrsTindakanEntity.setTarifBpjs(bean.getTarifBpjs());
+                        simrsTindakanEntity.setKategoriInaBpjs(bean.getIdKategoriTindakanIna());
+                        simrsTindakanEntity.setBranchId(bean.getBranchId());
+                        simrsTindakanEntity.setDiskon(bean.getDiskon());
+                        simrsTindakanEntity.setFlag(bean.getFlag());
+                        simrsTindakanEntity.setAction(bean.getAction());
+                        simrsTindakanEntity.setLastUpdate(bean.getLastUpdate());
+                        simrsTindakanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                        try {
+                            tindakanDao.updateAndSave(simrsTindakanEntity);
+                        } catch (HibernateException e) {
+                            logger.error("[TindakanBoImpl.saveAdd] Error when Updating data ruangan", e);
+                            throw new GeneralBOException(" Error when Updating data ruangan " + e.getMessage());
+                        }
+                    }else {
+                        throw new GeneralBOException("Maaf Data dengan Nama Tindakan Tersebut Sudah Ada");
+                    }
                 }
             } else {
                 logger.error("[TindakanBoImpl.saveAdd] Error when get entity ruangan is null");

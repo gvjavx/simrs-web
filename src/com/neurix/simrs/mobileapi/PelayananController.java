@@ -6,8 +6,11 @@ import com.neurix.hris.transaksi.jadwalShiftKerja.bo.JadwalShiftKerjaBo;
 import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalPelayananDTO;
 import com.neurix.simrs.master.dokter.bo.DokterBo;
 import com.neurix.simrs.master.dokter.model.Dokter;
+import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
+import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
+import com.neurix.simrs.mobileapi.model.JenisPeriksaMobile;
 import com.neurix.simrs.mobileapi.model.PelayananMobile;
 import com.neurix.simrs.transaksi.antrianonline.bo.AntrianOnlineBo;
 import com.neurix.simrs.transaksi.antrianonline.model.AntianOnline;
@@ -31,7 +34,9 @@ public class PelayananController implements ModelDriven<Object> {
     private AntrianOnlineBo antrianOnlineBoProxy;
     private DokterBo dokterBoProxy;
     private JadwalShiftKerjaBo jadwalShiftKerjaBoProxy;
+    private JenisPriksaPasienBo jenisPriksaPasienBoProxy;
     private Collection<PelayananMobile> listOfPelayanan = new ArrayList<>();
+    private Collection<JenisPeriksaMobile> listOfJenisPeriksa = new ArrayList<>();
 
     private String tglCheckup;
     private String idPelayanan;
@@ -42,6 +47,22 @@ public class PelayananController implements ModelDriven<Object> {
     private String nip;
     private String channelId;
     private String tipePelayanan;
+
+    public Collection<JenisPeriksaMobile> getListOfJenisPerika() {
+        return listOfJenisPeriksa;
+    }
+
+    public void setListOfJenisPerika(Collection<JenisPeriksaMobile> listOfJenisPerika) {
+        this.listOfJenisPeriksa = listOfJenisPerika;
+    }
+
+    public JenisPriksaPasienBo getJenisPriksaPasienBoProxy() {
+        return jenisPriksaPasienBoProxy;
+    }
+
+    public void setJenisPriksaPasienBoProxy(JenisPriksaPasienBo jenisPriksaPasienBoProxy) {
+        this.jenisPriksaPasienBoProxy = jenisPriksaPasienBoProxy;
+    }
 
     public String getTipePelayanan() {
         return tipePelayanan;
@@ -166,7 +187,18 @@ public class PelayananController implements ModelDriven<Object> {
 
     @Override
     public Object getModel() {
-        return (listOfPelayanan != null ? listOfPelayanan : model);
+       switch (action) {
+           case "show" :
+               return listOfPelayanan;
+           case "getListPelayanan" :
+               return  listOfPelayanan;
+           case "getListApotek" :
+               return listOfPelayanan;
+           case "getJenisPeriksaPasien" :
+               return listOfJenisPeriksa;
+           default:
+               return model;
+       }
     }
 
     public HttpHeaders index() {
@@ -292,7 +324,7 @@ public class PelayananController implements ModelDriven<Object> {
             List<Pelayanan> result = new ArrayList<>();
 
             try {
-                result = pelayananBoProxy.getListApotek(branchId, "");
+                result = pelayananBoProxy.getListApotek(branchId, "apotek");
 
             } catch (GeneralBOException e) {
                 logger.error("Pelayanan.create] Error when get list apotek",e);
@@ -304,6 +336,26 @@ public class PelayananController implements ModelDriven<Object> {
                 pelayananMobile.setIdPelayanan(item.getIdPelayanan());
 
                 listOfPelayanan.add(pelayananMobile);
+            }
+        }
+
+        if  (action.equalsIgnoreCase("getJenisPeriksaPasien")) {
+            List<JenisPriksaPasien> result = new ArrayList<>();
+
+            JenisPriksaPasien bean = new JenisPriksaPasien();
+
+            try {
+                result = jenisPriksaPasienBoProxy.getListAllJenisPeriksa(bean);
+            } catch (GeneralBOException e){
+                logger.error("Pelayanan.create] Error when get list jenis periksa pasien",e);
+            }
+
+            for (JenisPriksaPasien item : result){
+                JenisPeriksaMobile jenisPeriksaMobile = new JenisPeriksaMobile();
+                jenisPeriksaMobile.setIdJenisPeriksaPasien(item.getIdJenisPeriksaPasien());
+                jenisPeriksaMobile.setKeterangan(item.getKeterangan());
+
+                listOfJenisPeriksa.add(jenisPeriksaMobile);
             }
         }
 

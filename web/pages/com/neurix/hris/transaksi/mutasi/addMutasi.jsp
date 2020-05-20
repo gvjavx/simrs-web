@@ -632,32 +632,46 @@
 
     $('.sppdPersonTable').on('click', '.item-edit', function(){
         $("#nip2").attr("readonly", false);
+        console.log("Tes");
         /*$("#branchLamaId1").attr("disabled", false);
         $("#positionLamaId1").attr("disabled", false);
         $("#divisiLamaId1").attr("disabled", false);*/
-        $("#branchBaruId1").prop("disabled", false);
-        $("#divisiBaruId2").prop("disabled", false);
-        $("#positionBaruId1").prop("disabled", false);
-        $("#penggantiId").prop("disabled", false);
-        $("#pjsBaru").prop("disabled", false);
-
-        $('#branchBaruId1').val('').change();
-        $('#divisiBaruId2').val('').change();
-        $('#positionBaruId1').val('').change();
-        $('#penggantiId').val('').change();
+//        $("#branchBaruId1").prop("disabled", false);
+//        $("#divisiBaruId2").prop("disabled", false);
+//        $("#positionBaruId1").prop("disabled", false);
+//        $("#penggantiId").prop("disabled", false);
+//        $("#pjsBaru").prop("disabled", false);
+//
+//        $('#branchBaruId1').val('').change();
+//        $('#divisiBaruId2').val('').change();
+//        $('#positionBaruId1').val('').change();
+//        $('#penggantiId').val('').change();
 
         var nip = $(this).attr('data');
         MutasiAction.searchMutasiPersonEdit(nip ,function(listdata) {
             $.each(listdata, function (i, item) {
+//                $('#statusMutasi').val(item.status);
+//                $('#statusMutasi').prop("disabled", false);
+//                $('#nip1').val(item.nip);
+//                $('#nipOld').val(item.nip);
+//                $('#nip').val(item.nama);
+//
+//                $('#branchLamaId1').val(item.branchLamaId).change();
+//                $('#positionLamaId1').val(item.positionLamaId).change();
+//                $('#divisiLamaId1').val(item.divisiLamaId).change();
                 $('#statusMutasi').val(item.status);
-                $('#statusMutasi').prop("disabled", false);
+                $('#statusMutasi').prop("disabled", true);
+                $('#tipeMutasi').val(item.tipeMutasi);
+                $('#tipeMutasi').prop("disabled", true);
                 $('#nip1').val(item.nip);
+                $('#nip2').val(item.nama);
                 $('#nipOld').val(item.nip);
-                $('#nip').val(item.nama);
 
                 $('#branchLamaId1').val(item.branchLamaId).change();
                 $('#positionLamaId1').val(item.positionLamaId).change();
                 $('#divisiLamaId1').val(item.divisiLamaId).change();
+                $('#golonganLamaId1').val(item.levelLama).change();
+                $('#golonganBaruId1').val(item.levelBaru).change();
 
                 if(item.status == "R" || item.status == "P"){
                     $("#branchBaruId1").prop("disabled", true);
@@ -690,6 +704,41 @@
                     $("#txtPjsBaru").val('N');
                 }
 
+                //batas
+//                $('#statusMutasi').val(item.status);
+//                $('#statusMutasi').prop("disabled", true);
+//                $('#tipeMutasi').val(item.tipeMutasi);
+//                $('#tipeMutasi').prop("disabled", true);
+//                $('#nip1').val(item.nip);
+//                $('#nip2').val(item.nama);
+//
+//                $('#branchLamaId1').val(item.branchLamaId).change();
+//                $('#positionLamaId1').val(item.positionLamaId).change();
+//                $('#divisiLamaId1').val(item.divisiLamaId).change();
+//                $('#golonganLamaId1').val(item.levelLama).change();
+//                $('#golonganBaruId1').val(item.levelBaru).change();
+//
+//                //listPosisi(item.branchBaruId, item.divisiBaruId);
+//                $('#branchBaruId1').val(item.branchBaruId).change();
+//                $('#divisiBaruId2').val(item.divisiBaruId).change();
+//                $('#positionBaruId1').val(item.positionBaruId).change();
+//
+//
+//                if(item.pjsLama == 'Y'){
+//                    document.getElementById("pjsLama").checked = true;
+//                    $("#txtPjsLama").val('Y');
+//                }else{
+//                    document.getElementById("pjsLama").checked = false;
+//                    $("#txtPjsLama").val('N');
+//                }
+//
+//                if(item.pjs == 'Y'){
+//                    document.getElementById("pjsBaru").checked = true;
+//                    $("#txtPjsBaru").val('Y');
+//                }else{
+//                    document.getElementById("pjsBaru").checked = false;
+//                    $("#txtPjsBaru").val('N');
+//                }
                 //document.getElementById("Check1").checked = item.pjs;
             });
         });
@@ -821,7 +870,7 @@
                                 dwr.engine.setAsync(false);
                                 MutasiAction.saveAnggotaEdit(nipOld,nip, personName, branchLamaId, branchLamaName, divisiLamaId, divisiLamaName, positionLamaId, positionLamaName,
                                     txtPjsLama, menggantikanId, menggantikanNama, branchBaruId, branchBaruName, divisiBaruId, divisiBaruName, positionBaruId, positionBaruName,
-                                    txtPjsBaru,  status ,function(listdata) {
+                                    txtPjsBaru, status,function(listdata) {
                                         if(listdata){
                                             alert('Data Successfully Updated');
                                             $('#modal-edit').modal('hide');
