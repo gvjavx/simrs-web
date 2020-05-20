@@ -721,7 +721,9 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "k.is_laka, \n" +
                     "b.flag_call, \n" +
                     "a.created_date, \n" +
-                    "b.video_rm \n" +
+                    "b.video_rm, \n" +
+                    "l.keterangan_diagnosa, \n" +
+                    "l.id_diagnosa\n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
@@ -733,6 +735,16 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "INNER JOIN im_simrs_pasien j ON a.id_pasien = j.id_pasien\n" +
                     "LEFT JOIN it_simrs_rawat_inap i ON b.id_detail_checkup = i.id_detail_checkup\n" +
                     "LEFT JOIN im_simrs_asuransi k ON b.id_asuransi = k.id_asuransi\n" +
+                    "LEFT JOIN (\n" +
+                    "SELECT\n" +
+                    "id_diagnosa,\n" +
+                    "id_detail_checkup,\n" +
+                    "id_diagnosa_rawat, \n" +
+                    "keterangan_diagnosa \n" +
+                    "FROM it_simrs_diagnosa_rawat \n" +
+                    "WHERE id_detail_checkup = :id \n" +
+                    "ORDER BY created_date DESC \n" +
+                    "LIMIT 1) l ON l.id_detail_checkup = b.id_detail_checkup \n"+
                     "WHERE b.id_detail_checkup = :id";
 
             List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -796,11 +808,43 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setFlagCall(obj[44] == null ? "" : obj[44].toString());
                     checkup.setCreatedDate(obj[45] == null ? null : (Timestamp) obj[45]);
                     checkup.setVideoRm(obj[46] == null ? null : obj[46].toString());
+                    checkup.setNamaDiagnosa(obj[47] == null ? "" : obj[47].toString());
+                    checkup.setDiagnosa(obj[48] == null ? "" : obj[48].toString());
+                    checkup.setAlergi(getAlergiPasien(obj[0].toString()));
                 }
             }
         }
 
         return checkup;
+    }
+
+    public String getAlergiPasien(String noCheckup){
+        String alergi = "";
+        if(noCheckup != null && !"".equalsIgnoreCase(noCheckup)){
+            String SQL = "SELECT \n" +
+                    "id_alergi, \n" +
+                    "no_checkup, \n" +
+                    "alergi \n" +
+                    "FROM it_simrs_checkup_alergi \n" +
+                    "WHERE no_checkup = :id";
+
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", noCheckup)
+                    .list();
+            if(result.size() > 0){
+                for (Object[] obj: result){
+                    if(obj[2] != null){
+                        if(alergi != ""){
+                            alergi = alergi +", "+obj[2].toString();
+                        }else {
+                            alergi = obj[2].toString();
+                        }
+                    }
+                }
+            }
+        }
+        return alergi;
     }
 
     public String getAsuransiName(String id) {

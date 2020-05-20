@@ -179,10 +179,10 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
                 PeriksaLab periksalb = new PeriksaLab();
                 try {
                     periksalb = periksaLabBoProxy.getNamaLab(lab);
-                }catch (GeneralBOException e){
-                    logger.error("Found Error "+e.getMessage());
+                } catch (GeneralBOException e) {
+                    logger.error("Found Error " + e.getMessage());
                 }
-                if(periksalb.getIdPeriksaLab() != null){
+                if (periksalb.getIdPeriksaLab() != null) {
                     periksaLab.setKategoriLabName(periksalb.getKategoriLabName());
                 }
 
@@ -199,8 +199,8 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
 
                 try {
                     periksaLabBoProxy.saveEditStatusPeriksa(periksa);
-                }catch (GeneralBOException e){
-                    logger.error("Found Error when "+e.getMessage());
+                } catch (GeneralBOException e) {
+                    logger.error("Found Error when " + e.getMessage());
                 }
 
             } else {
@@ -248,7 +248,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
         } catch (GeneralBOException e) {
             Long logId = null;
             logger.error("[PeriksaRadiologiAction.search] Error when searching periksa radilogi by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
             return ERROR;
         }
 
@@ -292,7 +292,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
         return null;
     }
 
-    public CheckResponse saveRadiologi(String idPeriksaRadiologi, String kesimpulan){
+    public CheckResponse saveRadiologi(String idPeriksaRadiologi, String kesimpulan) {
 
         logger.info("[PeriksaRadiologiAction.saveRadiologi] start process >>>");
         CheckResponse response = new CheckResponse();
@@ -312,17 +312,17 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
             PeriksaRadiologiBo periksaRadiologiBo = (PeriksaRadiologiBo) ctx.getBean("periksaRadiologiBoProxy");
             response = periksaRadiologiBo.saveEdit(periksaRadiologi);
 
-        }catch (GeneralBOException e) {
+        } catch (GeneralBOException e) {
             logger.error("Found Error");
             response.setStatus("error");
-            response.setMessage("Found Error "+e.getMessage());
+            response.setMessage("Found Error " + e.getMessage());
         }
 
         logger.info("[PeriksaRadiologiAction.saveRadiologi] end process >>>");
         return response;
     }
 
-    public CheckResponse saveDokterRadiologi(String idPeriksaLab, String idDokter){
+    public CheckResponse saveDokterRadiologi(String idPeriksaLab, String idDokter) {
 
         logger.info("[PeriksaRadiologiAction.saveRadiologi] start process >>>");
         CheckResponse response = new CheckResponse();
@@ -342,17 +342,17 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
             PeriksaRadiologiBo periksaRadiologiBo = (PeriksaRadiologiBo) ctx.getBean("periksaRadiologiBoProxy");
             response = periksaRadiologiBo.saveDokterRadiologi(periksaRadiologi);
 
-        }catch (GeneralBOException e) {
+        } catch (GeneralBOException e) {
             logger.error("Found Error");
             response.setStatus("error");
-            response.setMessage("Found Error "+e.getMessage());
+            response.setMessage("Found Error " + e.getMessage());
         }
 
         logger.info("[PeriksaRadiologiAction.saveRadiologi] end process >>>");
         return response;
     }
 
-    public List<PeriksaRadiologi> getIdPemeriksaRadiologi(String idPeriksaLab){
+    public List<PeriksaRadiologi> getIdPemeriksaRadiologi(String idPeriksaLab) {
 
         logger.info("[PeriksaLabAction.listParameterPemeriksaan] start process >>>");
         List<PeriksaRadiologi> periksaRadiologilList = new ArrayList<>();
@@ -363,10 +363,10 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PeriksaRadiologiBo periksaRadiologiBo = (PeriksaRadiologiBo) ctx.getBean("periksaRadiologiBoProxy");
 
-        if(!"".equalsIgnoreCase(idPeriksaLab)){
+        if (!"".equalsIgnoreCase(idPeriksaLab)) {
             try {
                 periksaRadiologilList = periksaRadiologiBo.getListPeriksaRadioLogiByCriteria(periksaRadiologi);
-            }catch (GeneralBOException e){
+            } catch (GeneralBOException e) {
                 logger.error("[PeriksaLabAction.listParameterPemeriksaan] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
                 addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
             }
@@ -374,7 +374,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
             logger.info("[PeriksaLabAction.listParameterPemeriksaan] start process >>>");
             return periksaRadiologilList;
 
-        }else{
+        } else {
             return null;
         }
     }
@@ -411,12 +411,12 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
             PeriksaLab periksalb = new PeriksaLab();
             try {
                 periksalb = periksaLabBoProxy.getNamaLab(lab);
-            }catch (HibernateException e){
-                logger.error("Found Error "+e.getMessage());
+            } catch (HibernateException e) {
+                logger.error("Found Error " + e.getMessage());
             }
 
-            if(periksalb.getIdPeriksaLab() != null){
-                reportParams.put("title", "Hasil Periksa Lab "+periksalb.getKategoriLabName());
+            if (periksalb.getIdPeriksaLab() != null) {
+                reportParams.put("title", "Hasil Periksa Lab " + periksalb.getKategoriLabName());
             }
 
             reportParams.put("area", CommonUtil.userAreaName());
@@ -433,6 +433,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
             } else {
                 jk = "Perempuan";
             }
+
             reportParams.put("jenisKelamin", jk);
             reportParams.put("jenisPasien", checkup.getStatusPeriksaName());
             reportParams.put("poli", checkup.getNamaPelayanan());
@@ -440,6 +441,12 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
             reportParams.put("kabupaten", checkup.getNamaKota());
             reportParams.put("kecamatan", checkup.getNamaKecamatan());
             reportParams.put("desa", checkup.getNamaDesa());
+            reportParams.put("diagnosa", checkup.getNamaDiagnosa());
+            reportParams.put("petugas", periksalb.getNamaPetugas());
+            reportParams.put("dokter", periksalb.getNamaDokter());
+            reportParams.put("ttdDokter", periksalb.getTtdDokter());
+            reportParams.put("ttdPetugas", periksalb.getTtdPetugas());
+            reportParams.put("umur", calculateAge(checkup.getTglLahir()));
 
             try {
                 preDownload();
@@ -451,6 +458,71 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
         }
 
         return "print_radiologi";
+    }
+
+    private String calculateAge(Date birthDate) {
+        String umur = "";
+        if (birthDate != null && !"".equalsIgnoreCase(birthDate.toString())) {
+            int years = 0;
+            int months = 0;
+            int days = 0;
+
+            //create calendar object for birth day
+            Calendar birthDay = Calendar.getInstance();
+            birthDay.setTimeInMillis(birthDate.getTime());
+
+            //create calendar object for current day
+            long currentTime = System.currentTimeMillis();
+            Calendar now = Calendar.getInstance();
+            now.setTimeInMillis(currentTime);
+
+            //Get difference between years
+            years = now.get(Calendar.YEAR) - birthDay.get(Calendar.YEAR);
+            int currMonth = now.get(Calendar.MONTH) + 1;
+            int birthMonth = birthDay.get(Calendar.MONTH) + 1;
+
+            //Get difference between months
+            months = currMonth - birthMonth;
+
+            //if month difference is in negative then reduce years by one
+            //and calculate the number of months.
+            if (months < 0) {
+                years--;
+                months = 12 - birthMonth + currMonth;
+                if (now.get(Calendar.DATE) < birthDay.get(Calendar.DATE))
+                    months--;
+            } else if (months == 0 && now.get(Calendar.DATE) < birthDay.get(Calendar.DATE)) {
+                years--;
+                months = 11;
+            }
+
+            //Calculate the days
+            if (now.get(Calendar.DATE) > birthDay.get(Calendar.DATE))
+                days = now.get(Calendar.DATE) - birthDay.get(Calendar.DATE);
+            else if (now.get(Calendar.DATE) < birthDay.get(Calendar.DATE)) {
+                int today = now.get(Calendar.DAY_OF_MONTH);
+                now.add(Calendar.MONTH, -1);
+                days = now.getActualMaximum(Calendar.DAY_OF_MONTH) - birthDay.get(Calendar.DAY_OF_MONTH) + today;
+            } else {
+                days = 0;
+                if (months == 12) {
+                    years++;
+                    months = 0;
+                }
+            }
+
+
+            if (days > 0) {
+                umur = years + " Tahun, " + months + " Bulan, " + days + " Hari";
+            } else if (months > 0) {
+                umur = years + " Tahun, " + months + " Bulan";
+            } else {
+                umur = years + " Tahun";
+            }
+
+        }
+
+        return umur;
     }
 
     public PeriksaRadiologiBo getPeriksaRadiologiBoProxy() {

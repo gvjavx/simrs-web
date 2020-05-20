@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printHasilPeriksaLab" language="groovy" pageWidth="421" pageHeight="595" whenNoDataType="AllSectionsNoDetail" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="1.7715610000000075"/>
-	<property name="ireport.x" value="23"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.x" value="21"/>
+	<property name="ireport.y" value="424"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -41,6 +41,9 @@
 	<parameter name="reportParams.petugas" class="java.lang.String"/>
 	<parameter name="reportParams.dokter" class="java.lang.String"/>
 	<parameter name="title" class="java.lang.String"/>
+	<parameter name="reportParams.diagnosa" class="java.lang.String"/>
+	<parameter name="reportParams.ttdDokter" class="java.lang.String"/>
+	<parameter name="reportParams.ttdPetugas" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
 a.id_detail_checkup,
@@ -62,7 +65,7 @@ WHERE a.id_periksa_lab = $P{reportParams.idPeriksaLab}]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="143" splitType="Stretch">
+		<band height="171" splitType="Stretch">
 			<image>
 				<reportElement x="0" y="0" width="94" height="39" uuid="7919286e-e855-436b-98b4-eaeedb81ef26"/>
 				<imageExpression><![CDATA[$P{reportParams.logo}]]></imageExpression>
@@ -266,6 +269,28 @@ WHERE a.id_periksa_lab = $P{reportParams.idPeriksaLab}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{title} == null ? "" : $P{title}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="0" y="129" width="90" height="15" uuid="127693a0-e5a5-44b6-93d6-76b34d07f4b6"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Diagnosa]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="94" y="129" width="110" height="38" uuid="d629158a-a7ad-426c-9736-a08c57820adc"/>
+				<box topPadding="3" leftPadding="1"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.diagnosa} == null ? "" : $P{reportParams.diagnosa}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="89" y="129" width="5" height="15" uuid="6d49b789-7643-44a1-a5f1-e273ab2109d1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
 		</band>
 	</title>
 	<columnHeader>
@@ -285,7 +310,7 @@ WHERE a.id_periksa_lab = $P{reportParams.idPeriksaLab}]]>
 				<text><![CDATA[Pemeriksaan]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="145" y="0" width="110" height="20" backcolor="#FFFFFF" uuid="abdf2507-5adb-42ff-8771-15b4277ad4cd"/>
+				<reportElement mode="Opaque" x="145" y="0" width="236" height="20" backcolor="#FFFFFF" uuid="abdf2507-5adb-42ff-8771-15b4277ad4cd"/>
 				<box leftPadding="6">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -297,34 +322,6 @@ WHERE a.id_periksa_lab = $P{reportParams.idPeriksaLab}]]>
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Hasil]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="255" y="0" width="64" height="20" backcolor="#FFFFFF" uuid="35495048-4ef5-432b-9529-64f83bfa7777"/>
-				<box leftPadding="0">
-					<pen lineWidth="0.25"/>
-					<topPen lineWidth="0.25"/>
-					<leftPen lineWidth="0.25"/>
-					<bottomPen lineWidth="0.25"/>
-					<rightPen lineWidth="0.25"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Nilai Rujukan]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="319" y="0" width="62" height="20" backcolor="#FFFFFF" uuid="04d3eceb-8e1a-4557-8a4b-b37a54251ad2"/>
-				<box leftPadding="6">
-					<pen lineWidth="0.25"/>
-					<topPen lineWidth="0.25"/>
-					<leftPen lineWidth="0.25"/>
-					<bottomPen lineWidth="0.25"/>
-					<rightPen lineWidth="0.25"/>
-				</box>
-				<textElement textAlignment="Justified" verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Satuan]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -345,7 +342,7 @@ WHERE a.id_periksa_lab = $P{reportParams.idPeriksaLab}]]>
 				<textFieldExpression><![CDATA[$F{nama_detail_periksa} == null ? '' : $F{nama_detail_periksa}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="145" y="0" width="110" height="15" uuid="685eaf89-a89d-41b7-aad3-8914812411dd"/>
+				<reportElement x="145" y="0" width="236" height="15" uuid="685eaf89-a89d-41b7-aad3-8914812411dd"/>
 				<box leftPadding="2">
 					<pen lineStyle="Dashed"/>
 					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -353,38 +350,10 @@ WHERE a.id_periksa_lab = $P{reportParams.idPeriksaLab}]]>
 					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
 					<rightPen lineStyle="Dashed"/>
 				</box>
-				<textElement verticalAlignment="Middle">
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{kesimpulan} == null ? '' : $F{kesimpulan}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="255" y="0" width="64" height="15" uuid="966286d5-69eb-4b88-bbe3-17af2ab1723e"/>
-				<box leftPadding="2">
-					<pen lineStyle="Dashed"/>
-					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-					<leftPen lineStyle="Dashed"/>
-					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-					<rightPen lineStyle="Dashed"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{keterangan_acuan} == null ? '' : $F{keterangan_acuan}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="319" y="0" width="62" height="15" uuid="07fe93ce-b425-4ccc-8114-eb332eda2601"/>
-				<box leftPadding="2">
-					<pen lineStyle="Dashed"/>
-					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-					<leftPen lineStyle="Dashed"/>
-					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-					<rightPen lineStyle="Dashed"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{satuan} == null ? '' : $F{satuan}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -414,6 +383,32 @@ WHERE a.id_periksa_lab = $P{reportParams.idPeriksaLab}]]>
 				</textElement>
 				<text><![CDATA[Dokter]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="12" y="0" width="115" height="14" uuid="eca0d581-c440-4096-913f-87cbd82daafa"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Penanggung Jawab]]></text>
+			</staticText>
+			<line>
+				<reportElement x="3" y="79" width="133" height="1" uuid="bdf57181-603b-4d3e-a0e0-fc70df11f4ba"/>
+			</line>
+			<textField>
+				<reportElement x="12" y="65" width="115" height="15" uuid="78e36763-1925-443c-ba03-2ea161b484ac"/>
+				<box leftPadding="1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.petugas} == null ? "" : $P{reportParams.petugas}]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Blank">
+				<reportElement x="23" y="14" width="94" height="50" uuid="3115a19a-33bc-4811-bd02-bdae97136175"/>
+				<imageExpression><![CDATA[$P{reportParams.ttdPetugas}]]></imageExpression>
+			</image>
+			<image onErrorType="Blank">
+				<reportElement x="265" y="14" width="94" height="50" uuid="77c6b5bb-7418-4890-8aba-4cbca7879298"/>
+				<imageExpression><![CDATA[$P{reportParams.ttdDokter}]]></imageExpression>
+			</image>
 		</band>
 	</lastPageFooter>
 	<summary>
