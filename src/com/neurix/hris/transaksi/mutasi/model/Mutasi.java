@@ -42,6 +42,10 @@ public class Mutasi extends BaseModel {
     private String penggantiNama;
     private String tipeMutasi;
     private String tipeMutasiName;
+    private String profesiLamaId;
+    private String profesiLamaName;
+    private String profesiBaruId;
+    private String profesiBaruName;
 
     private String label1;
     private String label2;
@@ -399,5 +403,37 @@ public class Mutasi extends BaseModel {
 
     public void setPositionBaruName(String positionBaruName) {
         this.positionBaruName = positionBaruName;
+    }
+
+    public String getProfesiBaruId() {
+        return profesiBaruId;
+    }
+
+    public void setProfesiBaruId(String profesiBaruId) {
+        this.profesiBaruId = profesiBaruId;
+    }
+
+    public String getProfesiBaruName() {
+        return profesiBaruName;
+    }
+
+    public void setProfesiBaruName(String profesiBaruName) {
+        this.profesiBaruName = profesiBaruName;
+    }
+
+    public String getProfesiLamaId() {
+        return profesiLamaId;
+    }
+
+    public void setProfesiLamaId(String profesiLamaId) {
+        this.profesiLamaId = profesiLamaId;
+    }
+
+    public String getProfesiLamaName() {
+        return profesiLamaName;
+    }
+
+    public void setProfesiLamaName(String profesiLamaName) {
+        this.profesiLamaName = profesiLamaName;
     }
 }
