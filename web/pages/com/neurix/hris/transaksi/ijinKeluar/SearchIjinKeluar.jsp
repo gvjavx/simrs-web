@@ -343,6 +343,14 @@
                                                                        requestURI="paging_displaytag_ijinKeluar.action" export="true" id="row" pagesize="14" style="font-size:10">
 
                                                             <display:column media="html" title="Batal">
+                                                                <%--<s:if test=""--%>
+                                                                <%--<s:url var="urlCancel" namespace="/ijinKeluar" action="cancel_ijinKeluar" escapeAmp="false">--%>
+                                                                    <%--<s:param name="id"><s:property value="#attr.row.ijinKeluarId" /></s:param>--%>
+                                                                    <%--<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>--%>
+                                                                <%--</s:url>--%>
+                                                                <%--<sj:a onClickTopics="showDialogMenuView" href="%{urlCancel}">--%>
+                                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">--%>
+                                                                <%--</sj:a>--%>
                                                                 <s:if test="#attr.row.cancel">
                                                                     <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
                                                                 </s:if>

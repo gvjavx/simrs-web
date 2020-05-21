@@ -179,7 +179,6 @@
     <section class="content-header">
         <h1>
             Function Information
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -424,15 +423,32 @@
                                                             Save
                                                         </sj:submit>
 
-                                                        <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
-                                                                   resizable="false" position="center"
-                                                                   height="250" width="600" autoOpen="false" title="Saving ...">
+                                                        <%--<sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"--%>
+                                                                   <%--resizable="false" position="center"--%>
+                                                                   <%--height="250" width="600" autoOpen="false" title="Saving ...">--%>
+                                                            <%--Please don't close this window, server is processing your request ...--%>
+                                                            <%--</br>--%>
+                                                            <%--</br>--%>
+                                                            <%--</br>--%>
+                                                            <%--<img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>"--%>
+                                                                 <%--name="image_indicator_write">--%>
+                                                        <%--</sj:dialog>--%>
+                                                        <sj:dialog id="waiting_dialog" openTopics="showDialog"
+                                                                   closeTopics="closeDialog" modal="true"
+                                                                   resizable="false"
+                                                                   height="250" width="600" autoOpen="false"
+                                                                   title="Saving ...">
                                                             Please don't close this window, server is processing your request ...
-                                                            </br>
-                                                            </br>
-                                                            </br>
-                                                            <img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>"
-                                                                 name="image_indicator_write">
+                                                            <br>
+                                                            <center>
+                                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                                     name="image_indicator_write">
+                                                                <br>
+                                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                                     name="image_indicator_write">
+                                                            </center>
                                                         </sj:dialog>
 
                                                         <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
@@ -487,17 +503,34 @@
                                                             <i class="icon-trash icon-white"></i>
                                                             Delete
                                                         </sj:submit>
-
-                                                        <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
+                                                        <sj:dialog id="waiting_dialog" openTopics="showDialog"
+                                                                   closeTopics="closeDialog" modal="true"
                                                                    resizable="false"
-                                                                   height="250" width="600" autoOpen="false" title="Deleting ...">
+                                                                   height="250" width="600" autoOpen="false"
+                                                                   title="Deleting ...">
                                                             Please don't close this window, server is processing your request ...
-                                                            </br>
-                                                            </br>
-                                                            </br>
-                                                            <img border="0" src="<s:url value="/pages/images/indicator-trash.gif"/>"
-                                                                 name="image_indicator_trash">
+                                                            <br>
+                                                            <center>
+                                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                                     name="image_indicator_write">
+                                                                <br>
+                                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                                     name="image_indicator_write">
+                                                            </center>
                                                         </sj:dialog>
+
+                                                        <%--<sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"--%>
+                                                                   <%--resizable="false"--%>
+                                                                   <%--height="250" width="600" autoOpen="false" title="Deleting ...">--%>
+                                                            <%--Please don't close this window, server is processing your request ...--%>
+                                                            <%--</br>--%>
+                                                            <%--</br>--%>
+                                                            <%--</br>--%>
+                                                            <%--<img border="0" src="<s:url value="/pages/images/indicator-trash.gif"/>"--%>
+                                                                 <%--name="image_indicator_trash">--%>
+                                                        <%--</sj:dialog>--%>
 
                                                         <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
                                                                    position="center" height="200" width="400" autoOpen="false" title="Infomation Dialog"
@@ -523,15 +556,32 @@
                                                     </s:elseif>
                                                     <s:else>
 
-                                                        <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
+                                                        <%--<sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"--%>
+                                                                   <%--resizable="false"--%>
+                                                                   <%--position="center" height="250" width="600" autoOpen="false" title="Searching...">--%>
+                                                            <%--Please don't close this window, server is processing your request ...--%>
+                                                            <%--</br>--%>
+                                                            <%--</br>--%>
+                                                            <%--</br>--%>
+                                                            <%--<img border="0" src="<s:url value="/pages/images/indicator-read.gif"/>"--%>
+                                                                 <%--name="image_indicator_read">--%>
+                                                        <%--</sj:dialog>--%>
+                                                        <sj:dialog id="waiting_dialog" openTopics="showDialog"
+                                                                   closeTopics="closeDialog" modal="true"
                                                                    resizable="false"
-                                                                   position="center" height="250" width="600" autoOpen="false" title="Searching...">
+                                                                   height="250" width="600" autoOpen="false"
+                                                                   title="Searching ...">
                                                             Please don't close this window, server is processing your request ...
-                                                            </br>
-                                                            </br>
-                                                            </br>
-                                                            <img border="0" src="<s:url value="/pages/images/indicator-read.gif"/>"
-                                                                 name="image_indicator_read">
+                                                            <br>
+                                                            <center>
+                                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                                     name="image_indicator_write">
+                                                                <br>
+                                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                                     name="image_indicator_write">
+                                                            </center>
                                                         </sj:dialog>
                                                         <sj:submit type="button" cssClass="btn btn-primary" formIds="functionForm" id="search"
                                                                    name="search"

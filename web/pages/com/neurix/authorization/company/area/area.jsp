@@ -97,7 +97,6 @@
     <section class="content-header">
         <h1>
             Area Information
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -206,15 +205,20 @@
                                                     Save
                                                 </sj:submit>
 
-                                                <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
+                                                <sj:dialog id="waiting_dialog" openTopics="showDialog"
+                                                           closeTopics="closeDialog" modal="true"
                                                            resizable="false"
-                                                           height="250" width="600" autoOpen="false" title="Saving ...">
+                                                           height="250" width="600" autoOpen="false"
+                                                           title="Saving ...">
                                                     Please don't close this window, server is processing your request ...
-                                                    </br>
-                                                    </br>
-                                                    </br>
+                                                    <br>
                                                     <center>
-                                                        <img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>"
+                                                        <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                             src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                             name="image_indicator_write">
+                                                        <br>
+                                                        <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                             src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
                                                              name="image_indicator_write">
                                                     </center>
                                                 </sj:dialog>
@@ -277,15 +281,22 @@
                                                     Delete
                                                 </sj:submit>
 
-                                                <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
+                                                <sj:dialog id="waiting_dialog" openTopics="showDialog"
+                                                           closeTopics="closeDialog" modal="true"
                                                            resizable="false"
-                                                           height="250" width="600" autoOpen="false" title="Deleting ...">
+                                                           height="250" width="600" autoOpen="false"
+                                                           title="Saving ...">
                                                     Please don't close this window, server is processing your request ...
-                                                    </br>
-                                                    </br>
-                                                    </br>
-                                                    <img border="0" src="<s:url value="/pages/images/indicator-trash.gif"/>"
-                                                         name="image_indicator_trash">
+                                                    <br>
+                                                    <center>
+                                                        <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                             src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                             name="image_indicator_write">
+                                                        <br>
+                                                        <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                             src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                             name="image_indicator_write">
+                                                    </center>
                                                 </sj:dialog>
 
                                                 <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
@@ -317,17 +328,24 @@
                                             </s:elseif>
 
                                             <s:else>
-                                                <sj:dialog id="waiting_dialog" openTopics="showDialog1" closeTopics="closeDialog" modal="true"
+                                                <sj:dialog id="waiting_dialog" openTopics="showDialog1"
+                                                           closeTopics="closeDialog" modal="true"
                                                            resizable="false"
-                                                           height="250" width="600" autoOpen="false" title="Searching...">
+                                                           height="250" width="600" autoOpen="false"
+                                                           title="Saving ...">
                                                     Please don't close this window, server is processing your request ...
-                                                    </br>
-                                                    </br>
-                                                    </br>
+                                                    <br>
                                                     <center>
-                                                        <img border="0" src="<s:url value="/pages/images/loading-horizontal.gif"/>" name="image_indicator_read">
+                                                        <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                             src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                             name="image_indicator_write">
+                                                        <br>
+                                                        <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                             src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                             name="image_indicator_write">
                                                     </center>
                                                 </sj:dialog>
+
                                                 <sj:submit type="button" cssClass="btn btn-primary" formIds="areaForm" id="search"
                                                            name="search"
                                                            onClickTopics="showDialog" onCompleteTopics="closeDialog">
@@ -355,59 +373,61 @@
 
                                     </div>
                                     <br>
-                                    <s:if test="!isAddOrEdit() && !isDelete()">
-                                        <table align="center">
-                                            <tr>
-                                                <td align="center">
+                                    <center>
+                                        <s:if test="!isAddOrEdit() && !isDelete()">
+                                            <table align="center">
+                                                <tr>
+                                                    <td align="center">
 
-                                                    <s:set name="listOfAreas" value="#session.listOfResult" scope="request"/>
-                                                    <display:table name="listOfAreas" class="table table-condensed table-striped table-hover"
-                                                                   requestURI="paging_displaytag.action" id="row" export="true" pagesize="20" style="font-size:12">
+                                                        <s:set name="listOfAreas" value="#session.listOfResult" scope="request"/>
+                                                        <display:table name="listOfAreas" class="table table-condensed table-striped table-hover"
+                                                                       requestURI="paging_displaytag.action" id="row" export="true" pagesize="20" style="font-size:12">
 
-                                                        <display:column media="html" title="Edit">
-                                                            <s:if test="#attr.row.flagYes">
-                                                                <s:url var="urlView" namespace="/admin/area" action="edit_area" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.areaId"/></s:param>
-                                                                    <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
-                                                                </s:url>
-                                                                <s:a href="%{urlView}">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
-                                                                </s:a>
-                                                            </s:if>
-                                                        </display:column>
+                                                            <display:column media="html" title="Edit">
+                                                                <s:if test="#attr.row.flagYes">
+                                                                    <s:url var="urlView" namespace="/admin/area" action="edit_area" escapeAmp="false">
+                                                                        <s:param name="id"><s:property value="#attr.row.areaId"/></s:param>
+                                                                        <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
+                                                                    </s:url>
+                                                                    <s:a href="%{urlView}">
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
+                                                                    </s:a>
+                                                                </s:if>
+                                                            </display:column>
 
-                                                        <display:column media="html" title="Delete">
-                                                            <s:if test="#attr.row.flagYes">
-                                                                <s:url var="urlView" namespace="/admin/area" action="delete_area" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.areaId"/></s:param>
-                                                                    <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
-                                                                </s:url>
-                                                                <s:a href="%{urlView}">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
-                                                                </s:a>
-                                                            </s:if>
-                                                        </display:column>
+                                                            <display:column media="html" title="Delete">
+                                                                <s:if test="#attr.row.flagYes">
+                                                                    <s:url var="urlView" namespace="/admin/area" action="delete_area" escapeAmp="false">
+                                                                        <s:param name="id"><s:property value="#attr.row.areaId"/></s:param>
+                                                                        <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
+                                                                    </s:url>
+                                                                    <s:a href="%{urlView}">
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
+                                                                    </s:a>
+                                                                </s:if>
+                                                            </display:column>
 
-                                                        <display:column property="areaId" sortable="true" title="Id"/>
-                                                        <display:column property="areaName" sortable="true" title="Area.Name"/>
-                                                        <display:column property="createdDate" sortable="true" title="CreatedDate"
-                                                                        decorator="com.neurix.common.displaytag.LongDateWrapper"/>
-                                                        <display:column property="createdWho" sortable="true" title="CreatedWho"/>
-                                                        <display:column property="lastUpdate" sortable="true" title="Updated"
-                                                                        decorator="com.neurix.common.displaytag.LongDateWrapper"/>
-                                                        <display:column property="lastUpdateWho" sortable="true" title="UpdatedWho"/>
-                                                        <display:column property="action" sortable="true" title="Action"/>
-                                                        <display:column property="flag" sortable="true" title="Flag"/>
-                                                        <display:setProperty name="paging.banner.item_name">Area</display:setProperty>
-                                                        <display:setProperty name="paging.banner.items_name">Areas</display:setProperty>
-                                                        <display:setProperty name="export.excel.filename">Areas.xls</display:setProperty>
-                                                        <display:setProperty name="export.csv.filename">Areas.csv</display:setProperty>
-                                                        <display:setProperty name="export.pdf.filename">Areas.pdf</display:setProperty>
-                                                    </display:table>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </s:if>
+                                                            <display:column property="areaId" sortable="true" title="Id"/>
+                                                            <display:column property="areaName" sortable="true" title="Area.Name"/>
+                                                            <display:column property="createdDate" sortable="true" title="CreatedDate"
+                                                                            decorator="com.neurix.common.displaytag.LongDateWrapper"/>
+                                                            <display:column property="createdWho" sortable="true" title="CreatedWho"/>
+                                                            <display:column property="lastUpdate" sortable="true" title="Updated"
+                                                                            decorator="com.neurix.common.displaytag.LongDateWrapper"/>
+                                                            <display:column property="lastUpdateWho" sortable="true" title="UpdatedWho"/>
+                                                            <display:column property="action" sortable="true" title="Action"/>
+                                                            <display:column property="flag" sortable="true" title="Flag"/>
+                                                            <display:setProperty name="paging.banner.item_name">Area</display:setProperty>
+                                                            <display:setProperty name="paging.banner.items_name">Areas</display:setProperty>
+                                                            <display:setProperty name="export.excel.filename">Areas.xls</display:setProperty>
+                                                            <display:setProperty name="export.csv.filename">Areas.csv</display:setProperty>
+                                                            <display:setProperty name="export.pdf.filename">Areas.pdf</display:setProperty>
+                                                        </display:table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </s:if>
+                                    </center>
                             </s:form>
                         </div>
                     </div>

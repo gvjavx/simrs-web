@@ -30,6 +30,7 @@
             var jamAwal = document.getElementById("jamAwal").value;
             var jamAkhir = document.getElementById("jamAkhir").value;
             var lamaJam = document.getElementById("lamaJam").value;
+//            var tipeLembur = document.getElementById("tipeLembur").value;
             var ket="";
             var ket2="";
             LemburAction.testTanggal(tglAwal,tglAkhir,nip, function (data) {
@@ -38,7 +39,18 @@
                 }
             });
 
-            if (nip != ''/*&& tglAwal !=''&& tglAkhir !=''&& tipeLembur !=''&& ket == ''&&ket2 == ''&& jamAwal == ''&& jamAkhir == ''&& lamaJam == ''*/) {
+
+            console.log(nip);
+            console.log(tglAwal);
+            console.log(tglAkhir);
+            console.log(tipeLembur);
+            console.log(ket);
+            console.log(ket2);
+            console.log(jamAwal);
+            console.log(jamAkhir);
+            console.log(lamaJam);
+
+            if (nip != '' && tglAwal !=''&& tglAkhir !=''&& tipeLembur !=''&& ket == ''&&ket2 == ''&& jamAwal != ''&& jamAkhir != ''&& lamaJam == '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -55,6 +67,9 @@
                 if (nip === '') {
                     msg += 'Field <strong>NIP</strong>kosong.' + '<br/>';
                 }
+                if (tipeLembur === '') {
+                    msg += 'Field <strong>Tipe Lembur</strong>kosong.' + '<br/>';
+                }
                 if (tglAwal === '') {
                     msg += 'Field <strong>Tanggal Awal</strong>kosong.' + '<br/>';
                 }
@@ -66,9 +81,6 @@
                 }
                 if (jamAkhir === '') {
                     msg += 'Field <strong>Jam Akhir </strong>kosong.' + '<br/>';
-                }
-                if (tipeLembur === '') {
-                    msg += 'Field <strong>Tipe Lembur</strong>kosong.' + '<br/>';
                 }
                 if (ket != "") {
                     $('#tglAwal').val("");
