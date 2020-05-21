@@ -571,7 +571,7 @@ public class ObatAction extends BaseMasterAction {
                 Obat obat = new Obat();
                 obat.setIdObat(obj.getString("id_obat"));
                 obat.setIdBarang(obj.getString("id_barang"));
-                obat.setQty(new BigInteger(obj.getString("qty")));
+                //obat.setQty(new BigInteger(obj.getString("qty")));
                 obatList.add(obat);
             }
 
@@ -595,30 +595,8 @@ public class ObatAction extends BaseMasterAction {
                 bean.setLastUpdate(time);
             }
 
-            List<Map> listMapObat = new ArrayList<>();
-            BigDecimal totalHarga = new BigDecimal(0);
-            for (Obat obat : obatList){
-
-
-                ImSimrsObatEntity obatEntity = obatBo.getObatByIdBarang(obat.getIdBarang());
-                BigDecimal harga = new BigDecimal(0);
-                if (obatEntity != null){
-                    harga = obatEntity.getAverageHargaBox().multiply( new BigDecimal(obat.getQty()));
-                } else {
-                    logger.error("[ObatAction.saveReturObat] Tidak ditemukan data Obat.");
-                    response.setStatus("error");
-                    response.setMessage("[ObatAction.saveReturObat] Tidak ditemukan data Obat.");
-                    return response;
-                }
-                totalHarga = totalHarga.add(harga);
-
-                Map mapObat = new HashMap();
-                mapObat.put("kd_barang", obat.getIdBarang());
-                mapObat.put("nilai", harga);
-                listMapObat.add(mapObat);
-            }
-
             String divisiId = "";
+            String pelayananName = "";
             ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(CommonUtil.userPelayananIdLogin());
             if (pelayananEntity != null){
 
@@ -633,6 +611,52 @@ public class ObatAction extends BaseMasterAction {
                 response.setMessage("[ObatAction.saveReturObat] Tidak ditemukan divisi_id.");
                 return response;
             }
+
+            List<Map> listMapObat = new ArrayList<>();
+            BigDecimal totalHarga = new BigDecimal(0);
+            for (Obat obat : obatList){
+
+
+                ImSimrsObatEntity obatEntity = obatBo.getObatByIdBarang(obat.getIdBarang());
+                BigDecimal harga = new BigDecimal(0);
+                if (obatEntity != null){
+
+                    BigInteger cons = obatEntity.getLembarPerBox().multiply(obatEntity.getBijiPerLembar());
+                    BigInteger consLembar = obat.getBijiPerLembar();
+
+                    // get total qty (satuan terkecil)
+                    BigInteger ttlQtyBox = obatEntity.getQtyBox().multiply(cons);
+                    BigInteger ttlQtyLembar = obatEntity.getQtyLembar().multiply(consLembar);
+                    BigInteger ttlQtyTerkecil = ttlQtyBox.add(ttlQtyLembar).add(obatEntity.getQtyBiji());
+
+                    harga = obatEntity.getHargaTerakhir().multiply( new BigDecimal(ttlQtyTerkecil));
+
+                    // set qty
+                    obat.setQty(ttlQtyTerkecil);
+                    obat.setHargaTerakhir(obatEntity.getHargaTerakhir());
+                    obat.setIdVendor(bean.getIdVendor());
+                    obat.setNamaVendor(bean.getNamaVendor());
+                    obat.setLastUpdate(time);
+                    obat.setLastUpdateWho(userLogin);
+                    obat.setIdPelayanan(obat.getIdPelayanan());
+                    obat.setNamaPelayanan(obat.getNamaPelayanan());
+                    obatBo.saveTransaksiStokOpname(obat);
+
+                } else {
+                    logger.error("[ObatAction.saveReturObat] Tidak ditemukan data Obat.");
+                    response.setStatus("error");
+                    response.setMessage("[ObatAction.saveReturObat] Tidak ditemukan data Obat.");
+                    return response;
+                }
+                totalHarga = totalHarga.add(harga);
+
+                Map mapObat = new HashMap();
+                mapObat.put("kd_barang", obat.getIdBarang());
+                mapObat.put("nilai", harga);
+                listMapObat.add(mapObat);
+            }
+
+
 
             Map mapBiaya = new HashMap();
             mapBiaya.put("divisi_id", divisiId);

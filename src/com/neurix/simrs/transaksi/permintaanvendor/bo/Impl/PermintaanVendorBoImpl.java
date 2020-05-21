@@ -1018,7 +1018,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
             java.util.Date now = new java.util.Date();
             SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
-            String seq = riwayatBarangDao.getNextSeq();
+            String seq = transaksiStokDao.getNextSeq();
             String idBarangMasuk = "RB"+ obatEntity.getBranchId() + f.format(now) + seq;
 
             ItSimrsTransaksiStokEntity transaksiStokEntity = new ItSimrsTransaksiStokEntity();

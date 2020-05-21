@@ -12,6 +12,7 @@ import com.neurix.simrs.master.obat.dao.ReturObatDetailDao;
 import com.neurix.simrs.master.obat.model.*;
 import com.neurix.simrs.master.obatgejala.dao.ObatGejalaDao;
 import com.neurix.simrs.master.obatgejala.model.ImSimrsObatGejalaEntity;
+import com.neurix.simrs.master.vendor.model.ImSimrsVendorEntity;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.hargaobat.dao.HargaObatDao;
 import com.neurix.simrs.transaksi.hargaobat.model.HargaObat;
@@ -37,6 +38,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -1094,14 +1096,15 @@ public class ObatBoImpl implements ObatBo {
                     obatDetailEntity.setLembarPerBox(obatEntity.getLembarPerBox());
                     obatDetailEntity.setBijiPerLembar(obatEntity.getBijiPerLembar());
                     obatDetailEntity.setQty(obatDetail.getQty());
-                    obatDetailEntity.setAverageHargaBox(obatEntity.getHargaTerakhir());
+//                    obatDetailEntity.setAverageHargaBox(obatEntity.getHargaTerakhir());
+                    obatDetailEntity.setAverageHargaBiji(obatEntity.getHargaTerakhir());
                     obatDetailEntity.setFlag("Y");
                     obatDetailEntity.setAction("C");
                     obatDetailEntity.setCreatedDate(bean.getCreatedDate());
                     obatDetailEntity.setCreatedWho(bean.getCreatedWho());
                     obatDetailEntity.setLastUpdate(bean.getLastUpdate());
                     obatDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                    obatDetailEntity.setJenisSatuan("box");
+                    obatDetailEntity.setJenisSatuan("biji");
                     obatDetailEntity.setKeterangan("Reture Obat");
                     obatDetailEntity.setFlagObatBpjs(obatEntity.getFlagBpjs());
 
@@ -1137,7 +1140,7 @@ public class ObatBoImpl implements ObatBo {
                         obt.setIdBarang(obatDetail.getIdBarang());
                         obt.setIdObat(obatDetail.getIdObat());
                         obt.setQtyApprove(obatDetail.getQty());
-                        obt.setJenisSatuan("box");
+                        obt.setJenisSatuan("biji");
                         obt.setLastUpdate(bean.getLastUpdate());
                         obt.setLastUpdateWho(bean.getLastUpdateWho());
 
@@ -1425,6 +1428,47 @@ public class ObatBoImpl implements ObatBo {
         }
 
         return listOfTransaksi;
+    }
+
+    @Override
+    public void saveTransaksiStokOpname(Obat bean) throws GeneralBOException {
+        BigDecimal hargaBarang = bean.getHargaTerakhir();
+
+        java.util.Date now = new java.util.Date();
+        SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
+        String seq = transaksiStokDao.getNextSeq();
+        String idBarangMasuk = "RB"+ bean.getBranchId() + f.format(now) + seq;
+
+        String namaObat = "";
+        ImSimrsObatEntity obatEntity = obatDao.getById("idBarang", bean.getIdBarang());
+        if (obatEntity != null){
+            namaObat = obatEntity.getNamaObat();
+        }
+
+        ItSimrsTransaksiStokEntity transaksiStokEntity = new ItSimrsTransaksiStokEntity();
+        transaksiStokEntity.setIdTransaksi(idBarangMasuk);
+        transaksiStokEntity.setIdObat(bean.getIdObat());
+        transaksiStokEntity.setKeterangan("Retur " + namaObat + ". dari "+bean.getNamaPelayanan()+" ke Vendor " + bean.getNamaVendor());
+        transaksiStokEntity.setTipe("K");
+        transaksiStokEntity.setBranchId(bean.getBranchId());
+        transaksiStokEntity.setQty(bean.getQty());
+        transaksiStokEntity.setTotal(hargaBarang);
+        transaksiStokEntity.setSubTotal(hargaBarang.multiply(new BigDecimal(bean.getQty())));
+        transaksiStokEntity.setRegisteredDate(new Date(bean.getLastUpdate().getTime()));
+        transaksiStokEntity.setCreatedDate(bean.getLastUpdate());
+        transaksiStokEntity.setCreatedWho(bean.getLastUpdateWho());
+        transaksiStokEntity.setLastUpdate(bean.getLastUpdate());
+        transaksiStokEntity.setLastUpdateWho(bean.getLastUpdateWho());
+        transaksiStokEntity.setIdVendor(bean.getIdVendor());
+        transaksiStokEntity.setIdBarang(bean.getIdBarang());
+        transaksiStokEntity.setIdPelayanan(bean.getIdPelayanan());
+
+        try {
+            transaksiStokDao.addAndSave(transaksiStokEntity);
+        } catch (HibernateException e){
+            logger.error("[ObatBoImpl.saveTransaksiStokOpname] ERROR.", e);
+            throw new GeneralBOException("[ObatBoImpl.saveTransaksiStokOpname] ERROR." + e.getMessage());
+        }
     }
 
     @Override

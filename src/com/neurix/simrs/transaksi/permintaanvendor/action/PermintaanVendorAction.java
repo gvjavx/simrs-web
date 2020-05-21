@@ -295,9 +295,11 @@ public class PermintaanVendorAction extends BaseMasterAction {
         }
 
         logger.info("[PermintaanVendorAction.edit] END <<<<<<<");
-        if (isNew) {
+        if (isNew && "reture".equalsIgnoreCase(tipe)) {
+            return "init_edit_reture";
+        } else if (isNew){
             return "init_edit";
-        } else {
+        }else {
             return initListBatch(idApproval, id);
         }
     }
