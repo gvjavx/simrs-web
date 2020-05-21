@@ -2078,6 +2078,82 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
             data.setNoBudgetting((String) row[3]);
             if (row[4]!=null){
                 data.setNilaiTotal(BigDecimal.valueOf(Double.parseDouble(row[4].toString())));
+            }else{
+                data.setNilaiTotal(BigDecimal.ZERO);
+            }
+            if (row[5]!=null){
+                data.setQty(BigDecimal.valueOf(Double.parseDouble(row[5].toString())));
+            }else{
+                data.setQty(BigDecimal.ZERO);
+            }
+            if (row[6]!=null){
+                data.setNilai(BigDecimal.valueOf(Double.parseDouble(row[6].toString())));
+            }else{
+                data.setNilai(BigDecimal.ZERO);
+            }
+            if (row[7]!=null){
+                data.setSubTotal(BigDecimal.valueOf(Double.parseDouble(row[7].toString())));
+            }else{
+                data.setSubTotal(BigDecimal.ZERO);
+            }
+            data.setTipe((String) row[8]);
+            listOfResult.add(data);
+        }
+        return listOfResult;
+    }
+
+    public List<BudgettingDTO> getBudgettingPerQuartal(String unit, String tahun,String status){
+        List<BudgettingDTO> listOfResult = new ArrayList<>();
+
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "SELECT\n" +
+                "\trkg.nama_kode_rekening as grup,\n" +
+                "\trk.kode_rekening,\n" +
+                "\trk.nama_kode_rekening,\n" +
+                "\tbgt.no_budgeting,\n" +
+                "\tbgt.nilai_total,\n" +
+                "\tbgtd.qty,\n" +
+                "\tbgtd.nilai,\n" +
+                "\tbgtd.sub_total,\n" +
+                "\tbgtd.tipe\n" +
+                "FROM\n" +
+                "\tit_akun_budgeting bgt LEFT JOIN\n" +
+                "\t( select * from im_akun_kode_rekening where flag ='Y' ) rk ON bgt.rekening_id = rk.rekening_id \n" +
+                "\tLEFT JOIN \n" +
+                "\t( \n" +
+                "\t\tSELECT \n" +
+                "\t\t\tno_budgeting,\n" +
+                "\t\t\ttipe,\n" +
+                "\t\t\tavg(nilai) as nilai,\n" +
+                "\t\t\tsum(qty) as qty,\n" +
+                "\t\t\tsum(sub_total) as sub_total\n" +
+                "\t\tFROM \n" +
+                "\t\t\tit_akun_budgeting_detail \n" +
+                "\t\tWHERE \n" +
+                "\t\t\tflag='Y'\n" +
+                "\t\tgroup by\n" +
+                "\t\t\tno_budgeting,\n" +
+                "\t\t\ttipe\n" +
+                "\t) bgtd ON bgt.no_budgeting = bgtd.no_budgeting\n" +
+                "\tLEFT JOIN im_akun_kode_rekening rkg ON rkg.kode_rekening = split_part(rk.kode_rekening, '.', 1)\n" +
+                "WHERE\n" +
+                "\tbranch_id='"+unit+"' AND\n" +
+                "\ttahun='"+tahun+"' AND\n" +
+                "\tstatus='"+status+"'\n" +
+                "ORDER BY\n" +
+                "\tkode_rekening,tipe";
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results) {
+            BudgettingDTO data= new BudgettingDTO();
+            data.setGrup((String) row[0]);
+            data.setKodeRekening((String) row[1]);
+            data.setKodeRekeningName((String) row[2]);
+            data.setNoBudgetting((String) row[3]);
+            if (row[4]!=null){
+                data.setNilaiTotal(BigDecimal.valueOf(Double.parseDouble(row[4].toString())));
             }
             if (row[5]!=null){
                 data.setQty(BigDecimal.valueOf(Double.parseDouble(row[5].toString())));
@@ -2089,6 +2165,288 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 data.setSubTotal(BigDecimal.valueOf(Double.parseDouble(row[7].toString())));
             }
             data.setTipe((String) row[8]);
+
+            //generate zero
+            data.setSubTotalQ1(BigDecimal.ZERO);
+            data.setSubTotalQ2(BigDecimal.ZERO);
+            data.setSubTotalQ3(BigDecimal.ZERO);
+            data.setSubTotalQ4(BigDecimal.ZERO);
+            listOfResult.add(data);
+        }
+        return listOfResult;
+    }
+    public List<BudgettingDTO> getBudgettingPerBulan(String unit, String tahun,String status){
+        List<BudgettingDTO> listOfResult = new ArrayList<>();
+
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "SELECT\n" +
+                "\trkg.nama_kode_rekening as grup,\n" +
+                "\trk.kode_rekening,\n" +
+                "\trk.nama_kode_rekening,\n" +
+                "\tbgt.no_budgeting,\n" +
+                "\tbgt.nilai_total,\n" +
+                "\tbgtd.qty,\n" +
+                "\tbgtd.nilai,\n" +
+                "\tbgtd.sub_total,\n" +
+                "\tbgtd.tipe\n" +
+                "FROM\n" +
+                "\tit_akun_budgeting bgt LEFT JOIN\n" +
+                "\t( select * from im_akun_kode_rekening where flag ='Y' ) rk ON bgt.rekening_id = rk.rekening_id \n" +
+                "\tLEFT JOIN \n" +
+                "\t( \n" +
+                "\t\tSELECT \n" +
+                "\t\t\tno_budgeting,\n" +
+                "\t\t\ttipe,\n" +
+                "\t\t\tavg(nilai) as nilai,\n" +
+                "\t\t\tsum(qty) as qty,\n" +
+                "\t\t\tsum(sub_total) as sub_total\n" +
+                "\t\tFROM \n" +
+                "\t\t\tit_akun_budgeting_detail \n" +
+                "\t\tWHERE \n" +
+                "\t\t\tflag='Y'\n" +
+                "\t\tgroup by\n" +
+                "\t\t\tno_budgeting,\n" +
+                "\t\t\ttipe\n" +
+                "\t) bgtd ON bgt.no_budgeting = bgtd.no_budgeting\n" +
+                "\tLEFT JOIN im_akun_kode_rekening rkg ON rkg.kode_rekening = split_part(rk.kode_rekening, '.', 1)\n" +
+                "WHERE\n" +
+                "\tbranch_id='"+unit+"' AND\n" +
+                "\ttahun='"+tahun+"' AND\n" +
+                "\tstatus='"+status+"'\n" +
+                "ORDER BY\n" +
+                "\tkode_rekening,tipe";
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results) {
+            BudgettingDTO data= new BudgettingDTO();
+            data.setGrup((String) row[0]);
+            data.setKodeRekening((String) row[1]);
+            data.setKodeRekeningName((String) row[2]);
+            data.setNoBudgetting((String) row[3]);
+            if (row[4]!=null){
+                data.setNilaiTotal(BigDecimal.valueOf(Double.parseDouble(row[4].toString())));
+            }
+            if (row[5]!=null){
+                data.setQty(BigDecimal.valueOf(Double.parseDouble(row[5].toString())));
+            }
+            if (row[6]!=null){
+                data.setNilai(BigDecimal.valueOf(Double.parseDouble(row[6].toString())));
+            }
+            if (row[7]!=null){
+                data.setSubTotal(BigDecimal.valueOf(Double.parseDouble(row[7].toString())));
+            }
+            data.setTipe((String) row[8]);
+
+            //generate zero value
+            data.setSubTotalJanuari(BigDecimal.ZERO);
+            data.setSubTotalFebruari(BigDecimal.ZERO);
+            data.setSubTotalMaret(BigDecimal.ZERO);
+            data.setSubTotalApril(BigDecimal.ZERO);
+            data.setSubTotalMei(BigDecimal.ZERO);
+            data.setSubTotalJuni(BigDecimal.ZERO);
+            data.setSubTotalJuli(BigDecimal.ZERO);
+            data.setSubTotalAgustus(BigDecimal.ZERO);
+            data.setSubTotalSeptember(BigDecimal.ZERO);
+            data.setSubTotalOktober(BigDecimal.ZERO);
+            data.setSubTotalNovember(BigDecimal.ZERO);
+            data.setSubTotalDesember(BigDecimal.ZERO);
+            listOfResult.add(data);
+        }
+        return listOfResult;
+    }
+
+    public List<BudgettingDTO> getBudgettingComparingPerTahun(String unit, String status,String tahun,String tahunLalu,String tahunLalu2){
+
+        List<BudgettingDTO> listOfResult = new ArrayList<>();
+
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "SELECT\n" +
+                "\trkg.nama_kode_rekening as grup,\n" +
+                "\trk.kode_rekening,\n" +
+                "\trk.nama_kode_rekening,\n" +
+                "\tbgt.no_budgeting,\n" +
+                "\tbgt.nilai_total,\n" +
+                "\tbgtd.qty,\n" +
+                "\tbgtd.nilai,\n" +
+                "\tbgtd.sub_total\n" +
+                "FROM\n" +
+                "\tit_akun_budgeting bgt LEFT JOIN\n" +
+                "\t( select * from im_akun_kode_rekening where flag ='Y' ) rk ON bgt.rekening_id = rk.rekening_id \n" +
+                "\tLEFT JOIN \n" +
+                "\t( \n" +
+                "\t\tSELECT \n" +
+                "\t\t\tno_budgeting,\n" +
+                "\t\t\tavg(nilai) as nilai,\n" +
+                "\t\t\tsum(qty) as qty,\n" +
+                "\t\t\tsum(sub_total) as sub_total\n" +
+                "\t\tFROM \n" +
+                "\t\t\tit_akun_budgeting_detail \n" +
+                "\t\tWHERE \n" +
+                "\t\t\tflag='Y'\n" +
+                "\t\tgroup by\n" +
+                "\t\t\tno_budgeting\n" +
+                "\t) bgtd ON bgt.no_budgeting = bgtd.no_budgeting\n" +
+                "\tLEFT JOIN im_akun_kode_rekening rkg ON rkg.kode_rekening = split_part(rk.kode_rekening, '.', 1)\n" +
+                "WHERE\n" +
+                "\tbranch_id='"+unit+"' AND\n" +
+                "\ttahun='"+tahun+"' AND\n" +
+                "\tstatus='"+status+"'\n" +
+                "ORDER BY\n" +
+                "\tkode_rekening";
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results) {
+            BudgettingDTO data= new BudgettingDTO();
+            data.setGrup((String) row[0]);
+            data.setKodeRekening((String) row[1]);
+            data.setKodeRekeningName((String) row[2]);
+            data.setNoBudgetting((String) row[3]);
+            if (row[4]!=null){
+                data.setNilaiTotal(BigDecimal.valueOf(Double.parseDouble(row[4].toString())));
+            }
+            if (row[5]!=null){
+                data.setQty(BigDecimal.valueOf(Double.parseDouble(row[5].toString())));
+            }
+            if (row[6]!=null){
+                data.setNilai(BigDecimal.valueOf(Double.parseDouble(row[6].toString())));
+            }
+            if (row[7]!=null){
+                data.setSubTotal(BigDecimal.valueOf(Double.parseDouble(row[7].toString())));
+            }
+            listOfResult.add(data);
+        }
+        return listOfResult;
+    }
+
+    public List<BudgettingDTO> getBudgettingComparingRealisasi(String unit, String status,String tahun){
+
+        List<BudgettingDTO> listOfResult = new ArrayList<>();
+
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "SELECT\n" +
+                "\trkg.nama_kode_rekening as grup,\n" +
+                "\trk.kode_rekening,\n" +
+                "\trk.nama_kode_rekening,\n" +
+                "\tbgt.no_budgeting,\n" +
+                "\tbgt.nilai_total,\n" +
+                "\tbgtd.qty,\n" +
+                "\tbgtd.nilai,\n" +
+                "\tbgtd.sub_total\n" +
+                "FROM\n" +
+                "\tit_akun_budgeting bgt LEFT JOIN\n" +
+                "\t( select * from im_akun_kode_rekening where flag ='Y' ) rk ON bgt.rekening_id = rk.rekening_id \n" +
+                "\tLEFT JOIN \n" +
+                "\t( \n" +
+                "\t\tSELECT \n" +
+                "\t\t\tno_budgeting,\n" +
+                "\t\t\tavg(nilai) as nilai,\n" +
+                "\t\t\tsum(qty) as qty,\n" +
+                "\t\t\tsum(sub_total) as sub_total\n" +
+                "\t\tFROM \n" +
+                "\t\t\tit_akun_budgeting_detail \n" +
+                "\t\tWHERE \n" +
+                "\t\t\tflag='Y'\n" +
+                "\t\tgroup by\n" +
+                "\t\t\tno_budgeting\n" +
+                "\t) bgtd ON bgt.no_budgeting = bgtd.no_budgeting\n" +
+                "\tLEFT JOIN im_akun_kode_rekening rkg ON rkg.kode_rekening = split_part(rk.kode_rekening, '.', 1)\n" +
+                "WHERE\n" +
+                "\tbranch_id='"+unit+"' AND\n" +
+                "\ttahun='"+tahun+"' AND\n" +
+                "\tstatus='"+status+"'\n" +
+                "ORDER BY\n" +
+                "\tkode_rekening";
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results) {
+            BudgettingDTO data= new BudgettingDTO();
+            data.setGrup((String) row[0]);
+            data.setKodeRekening((String) row[1]);
+            data.setKodeRekeningName((String) row[2]);
+            data.setNoBudgetting((String) row[3]);
+            if (row[4]!=null){
+                data.setNilaiTotal(BigDecimal.valueOf(Double.parseDouble(row[4].toString())));
+            }
+            if (row[5]!=null){
+                data.setQty(BigDecimal.valueOf(Double.parseDouble(row[5].toString())));
+            }
+            if (row[6]!=null){
+                data.setNilai(BigDecimal.valueOf(Double.parseDouble(row[6].toString())));
+            }
+            if (row[7]!=null){
+                data.setSubTotal(BigDecimal.valueOf(Double.parseDouble(row[7].toString())));
+            }
+            listOfResult.add(data);
+        }
+        return listOfResult;
+    }
+
+    public List<BudgettingDTO> getBudgettingPerDivisi(String unit, String status,String tahun){
+
+        List<BudgettingDTO> listOfResult = new ArrayList<>();
+
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "SELECT\n" +
+                "\trkg.nama_kode_rekening as grup,\n" +
+                "\trk.kode_rekening,\n" +
+                "\trk.nama_kode_rekening,\n" +
+                "\tbgt.no_budgeting,\n" +
+                "\tbgt.nilai_total,\n" +
+                "\tbgtd.qty,\n" +
+                "\tbgtd.nilai,\n" +
+                "\tbgtd.sub_total\n" +
+                "FROM\n" +
+                "\tit_akun_budgeting bgt LEFT JOIN\n" +
+                "\t( select * from im_akun_kode_rekening where flag ='Y' ) rk ON bgt.rekening_id = rk.rekening_id \n" +
+                "\tLEFT JOIN \n" +
+                "\t( \n" +
+                "\t\tSELECT \n" +
+                "\t\t\tno_budgeting,\n" +
+                "\t\t\tavg(nilai) as nilai,\n" +
+                "\t\t\tsum(qty) as qty,\n" +
+                "\t\t\tsum(sub_total) as sub_total\n" +
+                "\t\tFROM \n" +
+                "\t\t\tit_akun_budgeting_detail \n" +
+                "\t\tWHERE \n" +
+                "\t\t\tflag='Y'\n" +
+                "\t\tgroup by\n" +
+                "\t\t\tno_budgeting\n" +
+                "\t) bgtd ON bgt.no_budgeting = bgtd.no_budgeting\n" +
+                "\tLEFT JOIN im_akun_kode_rekening rkg ON rkg.kode_rekening = split_part(rk.kode_rekening, '.', 1)\n" +
+                "WHERE\n" +
+                "\tbranch_id='"+unit+"' AND\n" +
+                "\ttahun='"+tahun+"' AND\n" +
+                "\tstatus='"+status+"'\n" +
+                "ORDER BY\n" +
+                "\tkode_rekening";
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results) {
+            BudgettingDTO data= new BudgettingDTO();
+            data.setGrup((String) row[0]);
+            data.setKodeRekening((String) row[1]);
+            data.setKodeRekeningName((String) row[2]);
+            data.setNoBudgetting((String) row[3]);
+            if (row[4]!=null){
+                data.setNilaiTotal(BigDecimal.valueOf(Double.parseDouble(row[4].toString())));
+            }
+            if (row[5]!=null){
+                data.setQty(BigDecimal.valueOf(Double.parseDouble(row[5].toString())));
+            }
+            if (row[6]!=null){
+                data.setNilai(BigDecimal.valueOf(Double.parseDouble(row[6].toString())));
+            }
+            if (row[7]!=null){
+                data.setSubTotal(BigDecimal.valueOf(Double.parseDouble(row[7].toString())));
+            }
             listOfResult.add(data);
         }
         return listOfResult;

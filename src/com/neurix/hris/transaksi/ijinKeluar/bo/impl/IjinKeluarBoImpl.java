@@ -25,6 +25,7 @@ import com.neurix.hris.master.strukturJabatan.model.ImStrukturJabatanEntity;
 import com.neurix.hris.master.strukturJabatan.model.StrukturJabatan;
 import com.neurix.hris.transaksi.absensi.dao.AbsensiPegawaiDao;
 import com.neurix.hris.transaksi.absensi.model.AbsensiPegawaiEntity;
+import com.neurix.hris.transaksi.cutiPegawai.model.ItCutiPegawaiEntity;
 import com.neurix.hris.transaksi.ijinKeluar.bo.IjinKeluarBo;
 import com.neurix.hris.transaksi.ijinKeluar.dao.IjinKeluarAnggotaDao;
 import com.neurix.hris.transaksi.ijinKeluar.dao.IjinKeluarDao;
@@ -50,6 +51,7 @@ import org.hibernate.Session;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -383,7 +385,6 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
         List<Notifikasi> notifikasiList = new ArrayList<>();
         if (bean != null) {
             String ijinKeluarId;
-
             Map hsCriteria = new HashMap();
             if (bean.getNip() != null && !"".equalsIgnoreCase(bean.getNip())) {
                 hsCriteria.put("nip", bean.getNip());
@@ -1334,5 +1335,25 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
 
             ijinKeluarDao.addAndSave(imIjinKeluarEntity);
         }
+    }
+
+    private String cekStatus(String nip, Date tglAwal, Date tglAkhir){
+        String status = "";
+        List<ItCutiPegawaiEntity> itCutiPegawaiEntities = new ArrayList<>();
+
+        try{
+            itCutiPegawaiEntities = ijinKeluarDao.cekData(nip, tglAwal, tglAkhir);
+        }catch (HibernateException e){
+            logger.error("[IjinKeluarBoImpl.cekStatus] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        if (itCutiPegawaiEntities.size() > 0){
+            status = "exist";
+        }else {
+            status = "notExist";
+        }
+
+        return status;
     }
 }

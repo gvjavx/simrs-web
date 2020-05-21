@@ -50,7 +50,6 @@
     <section class="content-header">
         <h1>
             Mesin Absensi Detail
-            <small>e-HEALTH</small>
         </h1>
         <%--<ol class="breadcrumb">--%>
         <%--<li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>--%>
@@ -190,10 +189,28 @@
                             <table id="showdata" width="60%">
                                 <tr>
                                     <td align="center">
-                                        <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                   height="500" width="550" autoOpen="false"
-                                                   title="Mesin Abs. Detail ">
-                                            <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
+                                        <%--<sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"--%>
+                                                   <%--height="500" width="550" autoOpen="false"--%>
+                                                   <%--title="Mesin Abs. Detail ">--%>
+                                            <%--<center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>--%>
+                                        <%--</sj:dialog>--%>
+
+                                        <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu"
+                                                   closeTopics="closeDialog" modal="true"
+                                                   resizable="false"
+                                                   height="250" width="600" autoOpen="false"
+                                                   title="Mesin Abs. Detail">
+                                            Please don't close this window, server is processing your request ...
+                                            <br>
+                                            <center>
+                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                     name="image_indicator_write">
+                                                <br>
+                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                     name="image_indicator_write">
+                                            </center>
                                         </sj:dialog>
 
                                         <s:set name="listOfMesinAbsensiDetail" value="#session.listOfResult" scope="request" />

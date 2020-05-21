@@ -70,7 +70,7 @@
         </global-exception-mappings>
 
         <action name="*_asuransi"
-                class="com.neurix.simrs.master.asuransi.action.AsuransiAction" method="{1}">
+                class="com.neurix.simrs.master.jenisperiksapasien.action.AsuransiAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
 
             <result name="search">/pages/com/neurix/simrs/master/asuransi/searchAsuransi.jsp</result>
@@ -94,7 +94,7 @@
 
 
         <action name="paging_displaytag_asuransi"
-                class="com.neurix.simrs.master.asuransi.action.AsuransiAction" method="paging">
+                class="com.neurix.simrs.master.jenisperiksapasien.action.AsuransiAction" method="paging">
             <interceptor-ref name="defaultStack"/>
             <result name="success">/pages/com/neurix/simrs/master/asuransi/searchAsuransi.jsp</result>
         </action>

@@ -590,20 +590,20 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                                             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
                                         }
 
-                                        for (ItNotifikasiFcmEntity entity : notifikasiFcm){
-                                            if(entity.getUserId().equals(atasanNip)){
-                                                String message = ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), noteMobile, bean.getOs());
-                                                logger.info("[CutiPegawaiBoImpl.saveAdd] Expo Notif: " + message);
-                                                break;
-                                            }
-                                        }
-
 //                                        for (ItNotifikasiFcmEntity entity : notifikasiFcm){
 //                                            if(entity.getUserId().equals(atasanNip)){
-//                                                FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), noteMobile, CLICK_ACTION);
+//                                                String message = ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), noteMobile, bean.getOs());
+//                                                logger.info("[CutiPegawaiBoImpl.saveAdd] Expo Notif: " + message);
 //                                                break;
 //                                            }
 //                                        }
+
+                                        for (ItNotifikasiFcmEntity entity : notifikasiFcm){
+                                            if(entity.getUserId().equals(atasanNip)){
+                                                FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), noteMobile, CLICK_ACTION, bean.getOs());
+                                                break;
+                                            }
+                                        }
 //                                        if (cutiPegawaiPltList.size()!=0){
 //                                            for (ItNotifikasiFcmEntity entity : notifikasiFcm) {
 //                                                if (entity.getUserId().equals(plt)) {

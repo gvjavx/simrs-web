@@ -1287,14 +1287,36 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
             case "B":
                 titleReport="LAPORAN BUDGETTING";
                 result="print_report_budgetting";
-                budgettingDTOList = laporanAkuntansiBo.getBudgetting(data.getTipeLaporan(),data.getUnit(),data.getTahun());
                 break;
             case "BPS":
                 titleReport="LAPORAN BUDGETTING PER SEMESTER";
                 result="print_report_budgetting_per_semester";
-                budgettingDTOList = laporanAkuntansiBo.getBudgetting(data.getTipeLaporan(),data.getUnit(),data.getTahun());
+                break;
+            case "BPQ":
+                titleReport="LAPORAN BUDGETTING PER QUARTAL";
+                result="print_report_budgetting_per_quartal";
+                break;
+            case "BPB":
+                titleReport="LAPORAN BUDGETTING PER BULAN";
+                result="print_report_budgetting_per_bulan";
+                break;
+            case "BCR":
+                titleReport="LAPORAN BUDGETTING KOMPARASI REALISASI";
+                result="print_report_budgetting_komparasi_realisasi";
+                break;
+            case "BPD":
+                titleReport="LAPORAN BUDGETTING PER DIVISI";
+                result="print_report_budgetting_per_divisi";
+                break;
+            case "BCPT":
+                titleReport="LAPORAN BUDGETTING KOMPARASI PER TAHUN";
+                result="print_report_budgetting_komparasi_tahun";
+                reportParams.put("tahunIni", data.getTahun());
+                reportParams.put("tahunLalu", String.valueOf(Integer.valueOf(data.getTahun())-1));
+                reportParams.put("tahun2Lalu", String.valueOf(Integer.valueOf(data.getTahun())-2));
                 break;
         }
+        budgettingDTOList = laporanAkuntansiBo.getBudgetting(data.getTipeLaporan(),data.getUnit(),data.getTahun());
 
         reportParams.put("reportTitle", titleReport);
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());

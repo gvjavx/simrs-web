@@ -3296,19 +3296,19 @@ public class SppdBoImpl implements SppdBo {
                             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
                         }
 
-//                        for (ItNotifikasiFcmEntity entity : notifikasiFcm){
-//                            if(entity.getUserId().equals(itPersonilPositionEntity.getNip())){
-//                                FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), itNotifEntity.getTipeNotifName(), itNotifEntity.getNote(), CLICK_ACTION);
-//                                break;
-//                            }
-//                        }
-
                         for (ItNotifikasiFcmEntity entity : notifikasiFcm){
                             if(entity.getUserId().equals(itPersonilPositionEntity.getNip())){
-                                ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), itNotifEntity.getTipeNotifName(), itNotifEntity.getNote(), entity.getOs());
+                                FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), itNotifEntity.getTipeNotifName(), itNotifEntity.getNote(), CLICK_ACTION, entity.getOs());
                                 break;
                             }
                         }
+
+//                        for (ItNotifikasiFcmEntity entity : notifikasiFcm){
+//                            if(entity.getUserId().equals(itPersonilPositionEntity.getNip())){
+//                                ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), itNotifEntity.getTipeNotifName(), itNotifEntity.getNote(), entity.getOs());
+//                                break;
+//                            }
+//                        }
 
 
                     }

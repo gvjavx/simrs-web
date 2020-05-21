@@ -232,7 +232,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement>
 					<font size="9" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Divisi : "+$P{divisiName}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[( $P{divisiName} == null ? "" : "Divisi : "+$P{divisiName} )]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

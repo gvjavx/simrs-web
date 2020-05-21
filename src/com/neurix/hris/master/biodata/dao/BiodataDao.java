@@ -559,6 +559,41 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\torder by \n" +
                 "\titPosisi.position_id";
 
+//        String query = "select DISTINCT \n" +
+//                "\titPosisi.branch_id,\n" +
+//                "\tdivisi.department_id,\n" +
+//                "\titPosisi.position_id,\n" +
+//                "\tprovinsi_name,\n" +
+//                "\tkabupaten.kota_name,\n" +
+//                "\tkecamatan.kecamatan_name,\n" +
+//                "\tdesa.desa_name,\n" +
+//                "\ttipePegawai.tipe_pegawai_name,\n" +
+//                "\tdivisi.department_id,\n" +
+//                "\tdivisi.department_name,\n" +
+//                "\titPosisi.pjs_flag,\n" +
+//                "\tpegawai.*,\n" +
+//                "\tbagian.bagian_id,\n" +
+//                "\tbagian.nama_bagian,\n" +
+//                "\titPosisi.profesi_id,\n" +
+//                "\thistory.profesi_id AS history_profesi \n" +
+//                "from\n" +
+//                "\tim_hris_pegawai pegawai \n" +
+//                "\tleft join it_hris_pegawai_position itPosisi on itPosisi.nip = pegawai.nip \n" +
+//                "\tleft join im_hris_provinsi provinsi on provinsi.provinsi_id = pegawai.provinsi\n" +
+//                "\tleft join im_hris_kota kabupaten on kabupaten.kota_id = pegawai.kabupaten\n" +
+//                "\tleft join im_hris_kecamatan kecamatan on kecamatan.kecamatan_id = pegawai.kecamatan\n" +
+//                "\tleft join im_hris_desa desa on desa.desa_id= pegawai.desa\n" +
+//                "\tleft join im_hris_tipe_pegawai tipePegawai on tipePegawai.tipe_pegawai_id = pegawai.tipe_pegawai\n" +
+//                "\tleft join im_position posisi on posisi.position_id = itPosisi.position_id\n" +
+//                "\tleft join im_hris_department divisi on divisi.department_id = posisi.department_id\n" +
+//                "\tleft join im_hris_position_bagian bagian on bagian.bagian_id = posisi.bagian_id\n" +
+//                "\tleft join imt_hris_history_jabatan_pegawai history on history.nip = pegawai.nip\n" +
+//                "where " +
+//                "\t itPosisi.flag='"+flag+"' AND" +
+//                "\tpegawai.flag = '"+flag+"'\n" + searchNip + searchNama + searchBranchId + searchDivisiId + searchTipePegawai +
+//                "\torder by \n" +
+//                "\titPosisi.position_id";
+
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
                 .list();
@@ -603,7 +638,10 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setGolongan((String) row[34]);
             result.setStatusPegawai((String) row[35]);
             result.setStatusKeluarga((String) row[36]);
-            result.setJumlahAnak(BigInteger.valueOf(Integer.valueOf(row[37].toString())));
+            if (row[37] != null)
+                result.setJumlahAnak(BigInteger.valueOf(Integer.valueOf(row[37].toString())));
+            else
+                result.setJumlahAnak(BigInteger.valueOf(Integer.valueOf(0)));
             result.setGender((String) row[38]);
             result.setStatusGiling((String) row[39]);
             result.setNoSkAktif((String) row[40]);
@@ -1586,6 +1624,22 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 .add(Restrictions.eq("shift", shift))
                 .add(Restrictions.isNotNull("pin"))
                 .list();
+        return results;
+    }
+
+    //for typeahead
+    public List<ImBiodataEntity> getBiodataListByLike(String key) {
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImBiodataEntity.class);
+        criteria.add(
+                Restrictions.or(
+                        Restrictions.ilike("namaPegawai", "%" + key + "%"),
+                        Restrictions.ilike("nip", "%" + key + "%")
+                )
+        );
+        criteria.add(Restrictions.eq("flag", "Y"));
+        criteria.addOrder(Order.asc("nip"));
+
+        List<ImBiodataEntity> results = criteria.list();
         return results;
     }
 }

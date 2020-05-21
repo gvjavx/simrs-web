@@ -684,7 +684,81 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
                     }
                 }
             }
-
+        } else if ("BPQ".equalsIgnoreCase(tipeLaporan)){
+            List<BudgettingDTO> resultListTmp = new ArrayList<>();
+            resultListTmp = laporanAkuntansiDao.getBudgettingPerQuartal(unit,tahun,budgetingStatus.getStatus());
+            for (BudgettingDTO budgettingDTO : resultListTmp){
+                if (budgettingDTO.getTipe()==null){
+                    resultList.add(budgettingDTO);
+                }else {
+                    if ("quartal1".equalsIgnoreCase(budgettingDTO.getTipe())){
+                        for (BudgettingDTO budgettingDTOQuartal : resultListTmp){
+                            if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"quartal1".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
+                                budgettingDTO.setSubTotalQ1(budgettingDTOQuartal.getSubTotal());
+                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"quartal2".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
+                                budgettingDTO.setSubTotalQ2(budgettingDTOQuartal.getSubTotal());
+                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"quartal3".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
+                                budgettingDTO.setSubTotalQ3(budgettingDTOQuartal.getSubTotal());
+                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"quartal4".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
+                                budgettingDTO.setSubTotalQ4(budgettingDTOQuartal.getSubTotal());
+                            }
+                        }
+                        resultList.add(budgettingDTO);
+                    }
+                }
+            }
+        } else if ("BPB".equalsIgnoreCase(tipeLaporan)){
+            List<BudgettingDTO> resultListTmp = new ArrayList<>();
+            resultListTmp = laporanAkuntansiDao.getBudgettingPerBulan(unit,tahun,budgetingStatus.getStatus());
+            for (BudgettingDTO budgettingDTO : resultListTmp){
+                if (budgettingDTO.getTipe()==null){
+                    resultList.add(budgettingDTO);
+                }else {
+                    if ("januari".equalsIgnoreCase(budgettingDTO.getTipe())){
+                        for (BudgettingDTO budgettingDTOQuartal : resultListTmp){
+                            if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"januari".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
+                                budgettingDTO.setSubTotalJanuari(budgettingDTOQuartal.getSubTotal());
+                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"februari".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
+                                budgettingDTO.setSubTotalFebruari(budgettingDTOQuartal.getSubTotal());
+                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"maret".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
+                                budgettingDTO.setSubTotalMaret(budgettingDTOQuartal.getSubTotal());
+                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"april".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
+                                budgettingDTO.setSubTotalApril(budgettingDTOQuartal.getSubTotal());
+                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"mei".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
+                                budgettingDTO.setSubTotalMei(budgettingDTOQuartal.getSubTotal());
+                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"juni".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
+                                budgettingDTO.setSubTotalJuni(budgettingDTOQuartal.getSubTotal());
+                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"juli".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
+                                budgettingDTO.setSubTotalJuli(budgettingDTOQuartal.getSubTotal());
+                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"agustus".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
+                                budgettingDTO.setSubTotalAgustus(budgettingDTOQuartal.getSubTotal());
+                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"september".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
+                                budgettingDTO.setSubTotalSeptember(budgettingDTOQuartal.getSubTotal());
+                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"oktober".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
+                                budgettingDTO.setSubTotalOktober(budgettingDTOQuartal.getSubTotal());
+                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"november".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
+                                budgettingDTO.setSubTotalNovember(budgettingDTOQuartal.getSubTotal());
+                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"desember".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
+                                budgettingDTO.setSubTotalDesember(budgettingDTOQuartal.getSubTotal());
+                            }
+                        }
+                        resultList.add(budgettingDTO);
+                    }
+                }
+            }
+        }else if ("BCPT".equalsIgnoreCase(tipeLaporan)){
+            String tahunLalu = String.valueOf(Integer.parseInt(tahun)-1);
+            String tahunLalu2 = String.valueOf(Integer.parseInt(tahun)-2);
+            resultList = laporanAkuntansiDao.getBudgettingComparingPerTahun(unit,budgetingStatus.getStatus(),tahun,tahunLalu,tahunLalu2);
+        } else if ("BCR".equalsIgnoreCase(tipeLaporan)){
+            List<BudgettingDTO> resultListTmp = new ArrayList<>();
+            resultListTmp = laporanAkuntansiDao.getBudgettingComparingRealisasi(unit,budgetingStatus.getStatus(),tahun);
+            for (BudgettingDTO budgettingDTO : resultListTmp){
+                budgettingDTO.setNilaiTotalSisaBayar(budgettingDTO.getNilaiTotal().subtract(budgettingDTO.getNilaiTotalRealisasi()));
+                resultList.add(budgettingDTO);
+            }
+        }else if ("BPD".equalsIgnoreCase(tipeLaporan)){
+            resultList = laporanAkuntansiDao.getBudgettingPerDivisi(unit,budgetingStatus.getStatus(),tahun);
         }
         logger.info("[LaporanAkuntansiBoImpl.getBudgetting] end process <<<");
         return resultList;

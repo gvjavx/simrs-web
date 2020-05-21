@@ -50,7 +50,6 @@
     <section class="content-header">
         <h1>
             Notifikasi
-            <small>e-HEALTH</small>
         </h1>
     </section>
 

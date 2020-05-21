@@ -941,6 +941,8 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                 }
             }
             //Pengecekan apakah antara debet dan kredit sudah balance
+            totalDebit = totalDebit.setScale(2, BigDecimal.ROUND_HALF_UP);
+            totalKredit = totalKredit.setScale(2, BigDecimal.ROUND_HALF_UP);
             BigDecimal balance = totalDebit.subtract(totalKredit);
             if (balance.compareTo(new BigDecimal(0)) == 0){
                 if (periodSudahTutup==null||("Y").equalsIgnoreCase(periodSudahTutup)){

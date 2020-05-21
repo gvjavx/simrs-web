@@ -2,6 +2,7 @@ package com.neurix.hris.transaksi.ijinKeluar.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.hris.master.biodata.model.ImBiodataEntity;
+import com.neurix.hris.transaksi.cutiPegawai.model.ItCutiPegawaiEntity;
 import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluarEntity;
 import com.neurix.hris.transaksi.personilPosition.model.ItPersonilPositionEntity;
 import org.hibernate.Criteria;
@@ -390,5 +391,20 @@ public class IjinKeluarDao extends GenericDao<IjinKeluarEntity, String> {
             result="";
         }
         return result;
+    }
+
+    public List<ItCutiPegawaiEntity> cekData(String nip, Date tglAwal, Date tglAkhir) throws HibernateException{
+        List<ItCutiPegawaiEntity> results = new ArrayList<>();
+
+        String query = "SELECT * FROM it_hris_cuti_pegawai \n" +
+                "\tWHERE \n" +
+                "\t(nip = '"+nip+"' AND approval_flag = 'Y' AND action = 'U') AND \n" +
+                "\t(tanggal_selesai >= '"+tglAwal+"' AND tanggal_selesai <= '"+tglAkhir+"')";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        return results;
     }
 }

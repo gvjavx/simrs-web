@@ -96,22 +96,47 @@ public class KategoriLabBoImpl implements KategoriLabBo {
             }
 
             if (entity != null) {
-                entity.setIdKategoriLab(bean.getIdKategoriLab());
-                entity.setNamaKategori(bean.getNamaKategori());
-                entity.setDivisiId(bean.getDivisiId());
-                entity.setFlag(bean.getFlag());
-                entity.setAction(bean.getAction());
-                entity.setLastUpdateWho(bean.getLastUpdateWho());
-                entity.setLastUpdate(bean.getLastUpdate());
+                if (bean.getNamaKategori().equalsIgnoreCase(entity.getNamaKategori())){
+                    entity.setIdKategoriLab(bean.getIdKategoriLab());
+                    entity.setNamaKategori(bean.getNamaKategori());
+                    entity.setDivisiId(bean.getDivisiId());
+                    entity.setFlag(bean.getFlag());
+                    entity.setAction(bean.getAction());
+                    entity.setLastUpdateWho(bean.getLastUpdateWho());
+                    entity.setLastUpdate(bean.getLastUpdate());
 
-                String flag;
-                try {
-                    // Update into database
-                    kategoriLabDao.updateAndSave(entity);
-                    //payrollSkalaGajiDao.addAndSaveHistory(imPayrollSkalaGajiHistoryEntity);
-                } catch (HibernateException e) {
-                    logger.error("[KategoriLabBoImpl.saveEdit] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update data KategoriLab, please info to your admin..." + e.getMessage());
+                    String flag;
+                    try {
+                        // Update into database
+                        kategoriLabDao.updateAndSave(entity);
+                        //payrollSkalaGajiDao.addAndSaveHistory(imPayrollSkalaGajiHistoryEntity);
+                    } catch (HibernateException e) {
+                        logger.error("[KategoriLabBoImpl.saveEdit] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data KategoriLab, please info to your admin..." + e.getMessage());
+                    }
+                }else {
+                    String status = cekStatus(bean.getNamaKategori());
+                    if (!status.equalsIgnoreCase("exist")){
+                        entity.setIdKategoriLab(bean.getIdKategoriLab());
+                        entity.setNamaKategori(bean.getNamaKategori());
+                        entity.setDivisiId(bean.getDivisiId());
+                        entity.setFlag(bean.getFlag());
+                        entity.setAction(bean.getAction());
+                        entity.setLastUpdateWho(bean.getLastUpdateWho());
+                        entity.setLastUpdate(bean.getLastUpdate());
+
+                        String flag;
+                        try {
+                            // Update into database
+                            kategoriLabDao.updateAndSave(entity);
+                            //payrollSkalaGajiDao.addAndSaveHistory(imPayrollSkalaGajiHistoryEntity);
+                        } catch (HibernateException e) {
+                            logger.error("[KategoriLabBoImpl.saveEdit] Error, " + e.getMessage());
+                            throw new GeneralBOException("Found problem when saving update data KategoriLab, please info to your admin..." + e.getMessage());
+                        }
+                    }else {
+                        throw new GeneralBOException("Maaf Data dengan Nama Kategori Lab Tersebut Sudah Ada");
+                    }
                 }
             } else {
                 logger.error("[KategoriLabBoImpl.saveEdit] Error, not found data Lab with request id, please check again your data ...");

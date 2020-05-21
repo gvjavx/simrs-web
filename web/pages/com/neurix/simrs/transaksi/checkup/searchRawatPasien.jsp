@@ -779,15 +779,15 @@
 
                         if (tanggalToday == tanggalCheckup) {
                             if(Math.abs(timeToday) <= Math.abs(timeDaftar)){
-                                var tipe = "";
+                                // var tipe = "";
+                                //
+                                // if (response.idJenisPeriksaPasien == "bpjs") {
+                                //     tipe = "bpjs";
+                                // } else {
+                                //     tipe = "umum";
+                                // }
 
-                                if (response.idJenisPeriksaPasien == "bpjs") {
-                                    tipe = "bpjs";
-                                } else {
-                                    tipe = "umum";
-                                }
-
-                                window.location.href = 'add_checkup.action?tipe='+tipe+'&noCheckupOnline='+response.noCheckupOnline;
+                                window.location.href = 'add_checkup.action?tipe='+response.idJenisPeriksaPasien+'&noCheckupOnline='+response.noCheckupOnline;
                                 $('#load_resep').hide();
                                 $('#save_resep').show();
                             }else{

@@ -399,7 +399,8 @@ public class MutasiBoImpl implements MutasiBo {
                         historyJabatanPegawai.setBidangId(mutasi.getDivisiBaruId());
                         historyJabatanPegawai.setBidangName(mutasi.getDivisiBaruName());
                         historyJabatanPegawai.setPositionId(mutasi.getPositionBaruId());
-                        historyJabatanPegawai.setProfesiId(profesiId);
+//                        historyJabatanPegawai.setProfesiId(profesiId);
+                        historyJabatanPegawai.setProfesiId(mutasi.getProfesiBaruId());
 //                    historyJabatanPegawai.setTanggalKeluar(CommonUtil.convertTimestampToString(bean.getTanggalEfektif()));
                         historyJabatanPegawai.setTanggalSkMutasi(CommonUtil.convertStringToDate(bean.getStTanggalEfektif()));
                         historyJabatanPegawai.setPoint("0");
@@ -508,7 +509,8 @@ public class MutasiBoImpl implements MutasiBo {
                         for(ItPersonilPositionEntity itPersonilPositionEntity: itPersonil){
                             itPersonilPositionEntity.setNip(mutasi.getNip());
                             itPersonilPositionEntity.setPjs(mutasi.getPjs());
-                            itPersonilPositionEntity.setProfesiId(profesiId);
+//                            itPersonilPositionEntity.setProfesiId(profesiId);
+                            itPersonilPositionEntity.setProfesiId(mutasi.getProfesiBaruId());
                             //tanggal aktif digunakan untuk mengisi kolom tanggal / tahun diangkat di biodata-riwayat kerja
                             itPersonilPositionEntity.setTanggalAktif(bean.getTanggalEfektif());
 

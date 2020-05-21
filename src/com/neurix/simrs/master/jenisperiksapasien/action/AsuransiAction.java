@@ -1,4 +1,4 @@
-package com.neurix.simrs.master.asuransi.action;
+package com.neurix.simrs.master.jenisperiksapasien.action;
 
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
