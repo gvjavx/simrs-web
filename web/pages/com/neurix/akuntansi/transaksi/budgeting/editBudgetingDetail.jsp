@@ -103,11 +103,11 @@
                                     <td>:</td>
                                     <td> <s:property value="budgeting.kodeRekening"></s:property> - <s:property value="budgeting.namaKodeRekening"></s:property></td>
                                 </tr>
-                                <tr>
-                                    <td>Data lain (tipe coa - master id - divisi id) </td>
-                                    <td>:</td>
-                                    <td><s:property value="budgeting.tipeCoa"></s:property> - <s:property value="budgeting.flagMaster"></s:property> - <s:property value="budgeting.flagDivisi"></s:property></td>
-                                </tr>
+                                <%--<tr>--%>
+                                    <%--<td>Data lain (tipe coa - master id - divisi id) </td>--%>
+                                    <%--<td>:</td>--%>
+                                    <%--<td><s:property value="budgeting.tipeCoa"></s:property> - <s:property value="budgeting.flagMaster"></s:property> - <s:property value="budgeting.flagDivisi"></s:property></td>--%>
+                                <%--</tr>--%>
                             </tbody>
                         </table>
 
@@ -251,13 +251,13 @@
                                         <div class="row">
                                             <label class="control-label col-sm-2">QTY</label>
                                             <div class="col-sm-4">
-                                                <input type="number" class="form-control" id="qty"/>
+                                                <input type="number" value="0" class="form-control" id="qty" onchange="hitungSubTotal('divisi')"/>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <label class="control-label col-sm-2">Tarif (Satuan)</label>
                                             <div class="col-sm-4">
-                                                <input type="number" class="form-control" id="nilai"/>
+                                                <input type="number" value="0" class="form-control" id="nilai" onchange="hitungSubTotal('divisi')"/>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -308,7 +308,7 @@
 
                         <div class="alert alert-warning alert-dismissable" id="alert-error" style="display: none">
                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                            <strong>Error!</strong><span id="error-msg"></span>
+                            <strong>Warning!</strong><span id="error-msg"></span>
                         </div>
 
                         <%--table informasi quartal--%>
@@ -340,7 +340,13 @@
                                                     <td align="center"><s:property value="qty"/></td>
                                                     <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
                                                     <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
-                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                                                                      <td align="center">
+                                                        <s:if test='#row.flagEdit != "N"'>
+                                                            <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
+                                                        </s:if>
+                                                    </td>
+
+
                                                 </tr>
                                             </s:if>
                                         </s:iterator>
@@ -376,7 +382,11 @@
                                                     <td align="center"><s:property value="qty"/></td>
                                                     <td align="center"><s:property value="nilai"/></td>
                                                     <td align="center"><s:property value="subTotal"/></td>
-                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                    <td align="center">
+                                                        <s:if test='#row.flagEdit != "N"'>
+                                                            <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
+                                                        </s:if>
+                                                    </td>
                                                 </tr>
                                             </s:if>
                                         </s:iterator>
@@ -412,7 +422,11 @@
                                                     <td align="center"><s:property value="qty"/></td>
                                                     <td align="center"><s:property value="nilai"/></td>
                                                     <td align="center"><s:property value="subTotal"/></td>
-                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                    <td align="center">
+                                                        <s:if test='#row.flagEdit != "N"'>
+                                                            <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
+                                                        </s:if>
+                                                    </td>
                                                 </tr>
                                             </s:if>
                                         </s:iterator>
@@ -448,7 +462,11 @@
                                                     <td align="center"><s:property value="qty"/></td>
                                                     <td align="center"><s:property value="nilai"/></td>
                                                     <td align="center"><s:property value="subTotal"/></td>
-                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                    <td align="center">
+                                                        <s:if test='#row.flagEdit != "N"'>
+                                                            <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
+                                                        </s:if>
+                                                    </td>
                                                 </tr>
                                             </s:if>
                                         </s:iterator>
@@ -488,7 +506,11 @@
                                                     <td align="center"><s:property value="qty"/></td>
                                                     <td align="center"><s:property value="nilai"/></td>
                                                     <td align="center"><s:property value="subTotal"/></td>
-                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                    <td align="center">
+                                                        <s:if test='#row.flagEdit != "N"'>
+                                                            <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
+                                                        </s:if>
+                                                    </td>
                                                 </tr>
                                             </s:if>
                                         </s:iterator>
@@ -523,7 +545,11 @@
                                                     <td align="center"><s:property value="qty"/></td>
                                                     <td align="center"><s:property value="nilai"/></td>
                                                     <td align="center"><s:property value="subTotal"/></td>
-                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                    <td align="center">
+                                                        <s:if test='#row.flagEdit != "N"'>
+                                                            <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
+                                                        </s:if>
+                                                    </td>
                                                 </tr>
                                             </s:if>
                                         </s:iterator>
@@ -561,7 +587,11 @@
                                                     <td align="center"><s:property value="qty"/></td>
                                                     <td align="center"><s:property value="nilai"/></td>
                                                     <td align="center"><s:property value="subTotal"/></td>
-                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                    <td align="center">
+                                                        <s:if test='#row.flagEdit != "N"'>
+                                                            <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
+                                                        </s:if>
+                                                    </td>
                                                 </tr>
                                             </s:if>
                                         </s:iterator>
@@ -600,7 +630,11 @@
                                                     <td align="center"><s:property value="qty"/></td>
                                                     <td align="center"><s:property value="nilai"/></td>
                                                     <td align="center"><s:property value="subTotal"/></td>
-                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                    <td align="center">
+                                                        <s:if test='#row.flagEdit != "N"'>
+                                                            <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
+                                                        </s:if>
+                                                    </td>
                                                 </tr>
                                             </s:if>
                                         </s:iterator>
@@ -633,7 +667,11 @@
                                                     <td align="center"><s:property value="qty"/></td>
                                                     <td align="center"><s:property value="nilai"/></td>
                                                     <td align="center"><s:property value="subTotal"/></td>
-                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                    <td align="center">
+                                                        <s:if test='#row.flagEdit != "N"'>
+                                                            <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
+                                                        </s:if>
+                                                    </td>
                                                 </tr>
                                             </s:if>
                                         </s:iterator>
@@ -666,7 +704,11 @@
                                                     <td align="center"><s:property value="qty"/></td>
                                                     <td align="center"><s:property value="nilai"/></td>
                                                     <td align="center"><s:property value="subTotal"/></td>
-                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                    <td align="center">
+                                                        <s:if test='#row.flagEdit != "N"'>
+                                                            <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
+                                                        </s:if>
+                                                    </td>
                                                 </tr>
                                             </s:if>
                                         </s:iterator>
@@ -699,7 +741,11 @@
                                                     <td align="center"><s:property value="qty"/></td>
                                                     <td align="center"><s:property value="nilai"/></td>
                                                     <td align="center"><s:property value="subTotal"/></td>
-                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                    <td align="center">
+                                                        <s:if test='#row.flagEdit != "N"'>
+                                                            <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
+                                                        </s:if>
+                                                    </td>
                                                 </tr>
                                             </s:if>
                                         </s:iterator>
@@ -732,7 +778,11 @@
                                                     <td align="center"><s:property value="qty"/></td>
                                                     <td align="center"><s:property value="nilai"/></td>
                                                     <td align="center"><s:property value="subTotal"/></td>
-                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                    <td align="center">
+                                                        <s:if test='#row.flagEdit != "N"'>
+                                                            <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
+                                                        </s:if>
+                                                    </td>
                                                 </tr>
                                             </s:if>
                                         </s:iterator>
@@ -765,7 +815,11 @@
                                                     <td align="center"><s:property value="qty"/></td>
                                                     <td align="center"><s:property value="nilai"/></td>
                                                     <td align="center"><s:property value="subTotal"/></td>
-                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                    <td align="center">
+                                                        <s:if test='#row.flagEdit != "N"'>
+                                                            <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
+                                                        </s:if>
+                                                    </td>
                                                 </tr>
                                             </s:if>
                                         </s:iterator>
@@ -798,7 +852,11 @@
                                                     <td align="center"><s:property value="qty"/></td>
                                                     <td align="center"><s:property value="nilai"/></td>
                                                     <td align="center"><s:property value="subTotal"/></td>
-                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                    <td align="center">
+                                                        <s:if test='#row.flagEdit != "N"'>
+                                                            <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
+                                                        </s:if>
+                                                    </td>
                                                 </tr>
                                             </s:if>
                                         </s:iterator>
@@ -831,7 +889,11 @@
                                                     <td align="center"><s:property value="qty"/></td>
                                                     <td align="center"><s:property value="nilai"/></td>
                                                     <td align="center"><s:property value="subTotal"/></td>
-                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                    <td align="center">
+                                                        <s:if test='#row.flagEdit != "N"'>
+                                                            <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
+                                                        </s:if>
+                                                    </td>
                                                 </tr>
                                             </s:if>
                                         </s:iterator>
@@ -864,7 +926,11 @@
                                                     <td align="center"><s:property value="qty"/></td>
                                                     <td align="center"><s:property value="nilai"/></td>
                                                     <td align="center"><s:property value="subTotal"/></td>
-                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                    <td align="center">
+                                                        <s:if test='#row.flagEdit != "N"'>
+                                                            <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
+                                                        </s:if>
+                                                    </td>
                                                 </tr>
                                             </s:if>
                                         </s:iterator>
@@ -897,7 +963,11 @@
                                                     <td align="center"><s:property value="qty"/></td>
                                                     <td align="center"><s:property value="nilai"/></td>
                                                     <td align="center"><s:property value="subTotal"/></td>
-                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                    <td align="center">
+                                                        <s:if test='#row.flagEdit != "N"'>
+                                                            <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
+                                                        </s:if>
+                                                    </td>
                                                 </tr>
                                             </s:if>
                                         </s:iterator>
@@ -930,7 +1000,11 @@
                                                     <td align="center"><s:property value="qty"/></td>
                                                     <td align="center"><s:property value="nilai"/></td>
                                                     <td align="center"><s:property value="subTotal"/></td>
-                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                    <td align="center">
+                                                        <s:if test='#row.flagEdit != "N"'>
+                                                            <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
+                                                        </s:if>
+                                                    </td>
                                                 </tr>
                                             </s:if>
                                         </s:iterator>
@@ -963,7 +1037,11 @@
                                                     <td align="center"><s:property value="qty"/></td>
                                                     <td align="center"><s:property value="nilai"/></td>
                                                     <td align="center"><s:property value="subTotal"/></td>
-                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                    <td align="center">
+                                                        <s:if test='#row.flagEdit != "N"'>
+                                                            <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
+                                                        </s:if>
+                                                    </td>
                                                 </tr>
                                             </s:if>
                                         </s:iterator>
@@ -977,7 +1055,7 @@
 
                         <div class="form-group" style="margin-top: 10px">
                             <div class="col-md-4 col-md-offset-5">
-                                <button class="btn btn-success" onclick="back()"><i class="fa fa-check"></i> Save</button>
+                                <button class="btn btn-success" onclick="back()" id="btn-save-all"><i class="fa fa-check"></i> Save</button>
                                 <%--<button class="btn btn-success" id="btn-save" onclick="save()"><i class="fa fa-check"></i> Save </button>--%>
                             </div>
                         </div>
@@ -1124,21 +1202,46 @@
         enableDisable();
     });
 
+    function hitungSubTotal(var1) {
+        var total = 0;
+        if ("divisi" == var1){
+
+            var qty = $("#qty").val();
+            var nilai = $("#nilai").val();
+
+            total = qty*nilai;
+            $("#total-divisi").val(total);
+        }
+    }
+
     function enableDisable() {
-        if (flagDivisi == "N" && flagMaster == "N"){
+        if ((flagDivisi == "N" || flagDivisi == null || flagDivisi == "") && (flagMaster == "N" || flagMaster == null || flagMaster == "") && tipeCoa == "04"){
             $("#form-divisi").hide();
             $("#form-master").hide();
             $("#form-periode").hide();
             $("#btn-save-add").html("<i class='fa fa-plus'></i> Add Investasi");
             $(".list-label-divisi-id").text("Investasi Id");
             $(".list-label-divisi-name").text("Nama Investasi");
+        } else {
+            if (flagDivisi == "N" && flagMaster == "N"){
+                $("#alert-error").show();
+                $("#error-msg").text(" Tidak Bisa Edit Data Budgeting. Lengkapi Data Kode Rekening Terlebih Dahulu.");
+                $("#btn-save-add").hide();
+                $("#form-divisi").hide();
+                $("#form-master").hide();
+                $("#form-periode").hide();
+                $("#btn-save-all").text("Back");
+            } else {
+                if (flagDivisi == "N"){
+                    $("#form-divisi").hide();
+                }
+                if (flagMaster == "N"){
+                    $("#form-master").hide();
+                }
+            }
+
         }
-        if (flagDivisi == "N"){
-            $("#form-divisi").hide();
-        }
-        if (flagMaster == "N"){
-            $("#form-master").hide();
-        }
+
     }
 
     function comboTipe() {

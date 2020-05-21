@@ -2,7 +2,9 @@ package com.neurix.akuntansi.transaksi.budgeting.model;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by reza on 29/04/20.
@@ -65,6 +67,8 @@ public class Budgeting {
     private String masterId;
     private String masterName;
     private String branchName;
+
+    private List<BudgetingPeriode> listPeriode = new ArrayList<>();
 
     public static Comparator<Budgeting> kodeRekeningSorting = new Comparator<Budgeting>() {
 
@@ -517,5 +521,13 @@ public class Budgeting {
 
     public void setBranchName(String branchName) {
         this.branchName = branchName;
+    }
+
+    public List<BudgetingPeriode> getListPeriode() {
+        return listPeriode;
+    }
+
+    public void setListPeriode(List<BudgetingPeriode> listPeriode) {
+        this.listPeriode = listPeriode;
     }
 }
