@@ -58,11 +58,11 @@
 				<imageExpression><![CDATA[$P{reportParams.logo}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="317" y="12" width="172" height="20" uuid="e3af36e9-e291-40da-ab09-c31164c4fffb"/>
+				<reportElement x="298" y="19" width="211" height="20" uuid="e3af36e9-e291-40da-ab09-c31164c4fffb"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[laporan Obat Opname]]></text>
+				<text><![CDATA[Report Mutasi Persediaan Barang]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="42" y="88" width="100" height="20" uuid="c2c6554c-7471-4017-abf5-e95198468fba"/>
@@ -130,7 +130,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<text><![CDATA[Tanggal Transaksi]]></text>
+				<text><![CDATA[Tanggal]]></text>
 			</staticText>
 			<line>
 				<reportElement x="-17" y="0" width="836" height="1" uuid="d7fe8f46-de70-4a3e-adac-10a371ae7cd3"/>
@@ -246,21 +246,21 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<text><![CDATA[Saldo Keluar]]></text>
+				<text><![CDATA[Mutasi Barang Keluar]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="351" y="1" width="146" height="20" uuid="35ecf9d2-ba02-44c9-8d91-d510d0dce868"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<text><![CDATA[Saldo Masuk]]></text>
+				<text><![CDATA[Mutasi Barang Masuk]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="670" y="1" width="149" height="20" uuid="60a839fc-ffaa-4079-80eb-3bbd457a8164"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<text><![CDATA[Saldo Total]]></text>
+				<text><![CDATA[Saldo S/D]]></text>
 			</staticText>
 			<line>
 				<reportElement x="165" y="21" width="174" height="1" uuid="d2b2b72a-f915-4507-a457-c38c9ea8f10f"/>
@@ -290,7 +290,7 @@
 	</columnHeader>
 	<detail>
 		<band height="21" splitType="Stretch">
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="-17" y="1" width="72" height="20" uuid="14d3940e-a64b-4b90-abeb-662255b958f5"/>
 				<box leftPadding="3" rightPadding="3"/>
 				<textElement verticalAlignment="Middle">
@@ -298,7 +298,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{registeredDate}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="55" y="1" width="99" height="20" uuid="0e421ae7-a67a-49e1-a6e2-9a5229c66f10"/>
 				<box leftPadding="3" rightPadding="3"/>
 				<textElement verticalAlignment="Middle">
@@ -306,7 +306,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{keterangan}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="339" y="1" width="37" height="20" uuid="1ed07d61-bb7b-4103-bc85-ab5dcb950997"/>
 				<box leftPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -314,7 +314,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{qty}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="376" y="1" width="54" height="20" uuid="e4506c8c-59a1-470f-b09e-33490e19d66d"/>
 				<box leftPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -322,7 +322,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="430" y="1" width="67" height="20" uuid="d4562d8a-d461-48d5-8c25-79d8f2e00ef0"/>
 				<box leftPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -330,7 +330,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{subTotal}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="497" y="1" width="43" height="20" uuid="0c315621-0829-4562-9bf7-4f214cb6d5d0"/>
 				<box leftPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -338,7 +338,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{qtyKredit}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="540" y="1" width="54" height="20" uuid="a56f843f-8b41-4b50-a021-a57424ff8cc6"/>
 				<box leftPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -346,7 +346,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{totalKredit}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="594" y="1" width="63" height="20" uuid="7edcd25b-ed76-4aed-a929-5b8500ea52b6"/>
 				<box leftPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -354,7 +354,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{subTotalKredit}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="657" y="1" width="42" height="20" uuid="6d63782a-24ff-4647-a667-f92e493cdcc4"/>
 				<box leftPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -362,7 +362,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{qtySaldo}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="699" y="1" width="54" height="20" uuid="f06cf22c-cd94-43d7-b4e9-48757e132eb2"/>
 				<box leftPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -370,7 +370,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{totalSaldo}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="753" y="1" width="66" height="20" uuid="2e3de485-441b-4f0d-b0e9-33843ed6713e"/>
 				<box leftPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">

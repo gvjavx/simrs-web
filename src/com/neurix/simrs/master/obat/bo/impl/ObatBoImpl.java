@@ -1373,7 +1373,7 @@ public class ObatBoImpl implements ObatBo {
                         trans.setSubTotalKredit(nol);
 
                         trans.setQtySaldo(stok.getQty().add(trans.getQtyLalu()));
-                        trans.setTotalSaldo(stok.getTotal().add(trans.getTotalLalu()));
+                        trans.setTotalSaldo(trans.getSubTotalLalu().add(trans.getTotalLalu()));
                         trans.setSubTotalSaldo(stok.getSubTotal().add(trans.getSubTotalLalu()));
                     } else {
 
@@ -1393,6 +1393,8 @@ public class ObatBoImpl implements ObatBo {
                     listOfTransaksi.add(trans);
                     n++;
                 } else {
+
+
 
                     TransaksiStok minStok = listOfTransaksi.get(n-1);
                     if ("D".equalsIgnoreCase(stok.getTipe())){
