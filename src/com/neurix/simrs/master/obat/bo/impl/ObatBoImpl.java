@@ -1340,11 +1340,6 @@ public class ObatBoImpl implements ObatBo {
             for (ItSimrsTransaksiStokEntity stok : stokEntities){
 
                 TransaksiStok trans = new TransaksiStok();
-                trans.setRegisteredDate(stok.getRegisteredDate());
-                trans.setCreatedDate(stok.getCreatedDate());
-                trans.setKeterangan(stok.getKeterangan());
-                trans.setTipe(stok.getTipe());
-
                 ImSimrsObatEntity obatEntity = new ImSimrsObatEntity();
                 try {
                     obatEntity = obatDao.getById("idBarang", stok.getIdBarang());
@@ -1359,9 +1354,24 @@ public class ObatBoImpl implements ObatBo {
 
                 if (listOfTransaksi.size() == 0){
 
+                    // saldo bulan lalu tanpa data pendukung
                     trans.setQtyLalu(nolB);
                     trans.setTotalLalu(nol);
                     trans.setSubTotalLalu(nol);
+                    if (stok.getQtyLalu() != null && stok.getQtyLalu().compareTo(new BigInteger(String.valueOf(0))) == 1){
+                        trans.setQtyLalu(stok.getQtyLalu());
+                        trans.setTotalLalu(stok.getTotalLalu());
+                        trans.setSubTotalLalu(stok.getSubTotalLalu());
+                        listOfTransaksi.add(trans);
+                        n++;
+                    }
+
+                    // data pendukung
+                    trans.setRegisteredDate(stok.getRegisteredDate());
+                    trans.setCreatedDate(stok.getCreatedDate());
+                    trans.setKeterangan(stok.getKeterangan());
+                    trans.setTipe(stok.getTipe());
+
 
                     if ("D".equalsIgnoreCase(stok.getTipe())){
                         trans.setQty(stok.getQty());
@@ -1372,9 +1382,14 @@ public class ObatBoImpl implements ObatBo {
                         trans.setTotalKredit(nol);
                         trans.setSubTotalKredit(nol);
 
-                        trans.setQtySaldo(stok.getQty().add(trans.getQtyLalu()));
-                        trans.setTotalSaldo(trans.getSubTotalLalu().add(trans.getTotalLalu()));
-                        trans.setSubTotalSaldo(stok.getSubTotal().add(trans.getSubTotalLalu()));
+                        // qty saldo = qty masuk + qty lalu;
+                        trans.setQtySaldo(trans.getQtyLalu().add(stok.getQty()));
+
+                        // total saldo = sub total lalu + sub total / qty saldo
+                        trans.setTotalSaldo(trans.getSubTotalLalu().add(stok.getSubTotal()).divide(new BigDecimal(trans.getQtySaldo()), 2, BigDecimal.ROUND_HALF_UP));
+
+                        // sub total saldo = total saldo * qty saldo
+                        trans.setSubTotalSaldo(trans.getTotal().multiply(new BigDecimal(trans.getQtySaldo())));
                     } else {
 
                         trans.setQty(nolB);
@@ -1385,18 +1400,28 @@ public class ObatBoImpl implements ObatBo {
                         trans.setTotalKredit(stok.getTotal());
                         trans.setSubTotalKredit(stok.getSubTotal());
 
+                        // qty saldo = qty bulan lalu - qty masuk
                         trans.setQtySaldo(trans.getQtyLalu().subtract(stok.getQty()));
-                        trans.setTotalSaldo(trans.getTotalLalu().subtract(stok.getTotal()));
-                        trans.setSubTotalSaldo(trans.getSubTotalLalu().subtract(stok.getSubTotal()));
+
+                        // total saldo = total lalu
+                        trans.setTotalSaldo(stok.getTotalLalu());
+
+                        // sub total saldo = total saldo * qty saldo
+                        trans.setSubTotalSaldo(trans.getTotal().multiply(new BigDecimal(trans.getQtySaldo())));
                     }
 
                     listOfTransaksi.add(trans);
                     n++;
                 } else {
 
-
+                    // data pendukung
+                    trans.setRegisteredDate(stok.getRegisteredDate());
+                    trans.setCreatedDate(stok.getCreatedDate());
+                    trans.setKeterangan(stok.getKeterangan());
+                    trans.setTipe(stok.getTipe());
 
                     TransaksiStok minStok = listOfTransaksi.get(n-1);
+
                     if ("D".equalsIgnoreCase(stok.getTipe())){
                         trans.setQty(stok.getQty());
                         trans.setTotal(stok.getTotal());
@@ -1406,9 +1431,14 @@ public class ObatBoImpl implements ObatBo {
                         trans.setTotalKredit(nol);
                         trans.setSubTotalKredit(nol);
 
+                        // qty saldo = qty saldo lalu + qty
                         trans.setQtySaldo(minStok.getQtySaldo().add(stok.getQty()));
-                        trans.setTotalSaldo(minStok.getTotalSaldo().add(stok.getTotal()));
-                        trans.setSubTotalSaldo(minStok.getSubTotalSaldo().add(stok.getSubTotal()));
+
+                        // total saldo = sub total saldo lalu + sub total / qty saldo
+                        trans.setTotalSaldo(minStok.getSubTotalSaldo().add(stok.getSubTotal()).divide(new BigDecimal(trans.getQtySaldo()), 2, BigDecimal.ROUND_HALF_UP));
+
+                        // sub total saldo = sub total saldo
+                        trans.setSubTotalSaldo(trans.getTotalSaldo().multiply(new BigDecimal(trans.getQtySaldo())));
                     } else {
 
                         trans.setQty(nolB);
@@ -1419,9 +1449,14 @@ public class ObatBoImpl implements ObatBo {
                         trans.setTotalKredit(stok.getTotal());
                         trans.setSubTotalKredit(stok.getSubTotal());
 
+                        // qty saldo = qty saldo - qty
                         trans.setQtySaldo(minStok.getQtySaldo().subtract(stok.getQty()));
-                        trans.setTotalSaldo(minStok.getTotalSaldo().subtract(stok.getTotal()));
-                        trans.setSubTotalSaldo(minStok.getSubTotalSaldo().subtract(stok.getSubTotal()));
+
+                        // total saldo = total saldo lalu
+                        trans.setTotalSaldo(minStok.getTotalSaldo());
+
+                        // sub total saldo = sub total saldo
+                        trans.setSubTotalSaldo(trans.getTotalSaldo().multiply(new BigDecimal(trans.getQtySaldo())));
                     }
                     listOfTransaksi.add(trans);
                     n++;
