@@ -29,3 +29,12 @@ V2.1.5 ( 8-04-2019 )
     ** absensi => perubahan uang makan
     ** ijin keluar => penambahan anggota
     ** notifikasi => penambahan modul notifikasi ke kabid , kabag
+
+// === 2020-05-22 === //
+
+ALTER TABLE it_simrs_transaksi_stok
+ADD COLUMN qty_lalu bigint,
+ADD COLUMN total_lalu numeric,
+ADD COLUMN sub_total_lalu numeric
+
+// ======//
