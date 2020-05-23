@@ -30,11 +30,18 @@ V2.1.5 ( 8-04-2019 )
     ** ijin keluar => penambahan anggota
     ** notifikasi => penambahan modul notifikasi ke kabid , kabag
 
-// === 2020-05-22 === //
+// === 2020-05-22, Sigit === //
 
 ALTER TABLE it_simrs_transaksi_stok
 ADD COLUMN qty_lalu bigint,
 ADD COLUMN total_lalu numeric,
 ADD COLUMN sub_total_lalu numeric
+
+// ======//
+
+// === 2020-05-23, Sigit === //
+
+ALTER TABLE mt_simrs_item_paket_periksa
+ADD COLUMN harga bigint
 
 // ======//

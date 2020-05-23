@@ -286,6 +286,14 @@
 
       <!--DWR FOR SIMRS-->
 
+      <!--Tindakan-->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.master.tindakan.action.TindakanAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.master.tindakan.model.Tindakan"/>
+      <convert converter="bean" match="com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity"/>
+
+
       <!--Tindaakan Rawat-->
       <create creator="new">
           <param name="class" value="com.neurix.simrs.transaksi.tindakanrawat.action.TindakanRawatAction"/>
