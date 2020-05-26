@@ -53,15 +53,15 @@
                 <!--<prop key="hibernate.connection.username">postgres</prop>-->
                 <!--<prop key="hibernate.connection.password">123456</prop>-->
 
-                <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/db_simrs_15052020</prop>-->
-                <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
-                <!--<prop key="hibernate.connection.username">postgres</prop>-->
-                <!--<prop key="hibernate.connection.password">123456</prop>-->
-
-                <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs_15052020</prop>
+                <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs_21052020</prop>
                 <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
                 <prop key="hibernate.connection.username">postgres</prop>
                 <prop key="hibernate.connection.password">123456</prop>
+
+                <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs_11052020</prop>-->
+                <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
+                <!--<prop key="hibernate.connection.username">postgres</prop>-->
+                <!--<prop key="hibernate.connection.password">123456</prop>-->
 
                 <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs_17052020</prop>-->
                 <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
