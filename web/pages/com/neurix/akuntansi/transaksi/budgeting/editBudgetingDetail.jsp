@@ -340,7 +340,7 @@
                                                     <td align="center"><s:property value="qty"/></td>
                                                     <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
                                                     <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
-                                                                                                      <td align="center">
+                                                    <td align="center">
                                                         <s:if test='#row.flagEdit != "N"'>
                                                             <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
                                                         </s:if>
@@ -380,8 +380,8 @@
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
-                                                    <td align="center"><s:property value="nilai"/></td>
-                                                    <td align="center"><s:property value="subTotal"/></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
                                                     <td align="center">
                                                         <s:if test='#row.flagEdit != "N"'>
                                                             <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
@@ -420,8 +420,8 @@
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
-                                                    <td align="center"><s:property value="nilai"/></td>
-                                                    <td align="center"><s:property value="subTotal"/></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
                                                     <td align="center">
                                                         <s:if test='#row.flagEdit != "N"'>
                                                             <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
@@ -460,8 +460,8 @@
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
-                                                    <td align="center"><s:property value="nilai"/></td>
-                                                    <td align="center"><s:property value="subTotal"/></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
                                                     <td align="center">
                                                         <s:if test='#row.flagEdit != "N"'>
                                                             <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
@@ -504,8 +504,8 @@
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
-                                                    <td align="center"><s:property value="nilai"/></td>
-                                                    <td align="center"><s:property value="subTotal"/></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
                                                     <td align="center">
                                                         <s:if test='#row.flagEdit != "N"'>
                                                             <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
@@ -543,8 +543,8 @@
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
-                                                    <td align="center"><s:property value="nilai"/></td>
-                                                    <td align="center"><s:property value="subTotal"/></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
                                                     <td align="center">
                                                         <s:if test='#row.flagEdit != "N"'>
                                                             <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
@@ -585,8 +585,8 @@
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
-                                                    <td align="center"><s:property value="nilai"/></td>
-                                                    <td align="center"><s:property value="subTotal"/></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
                                                     <td align="center">
                                                         <s:if test='#row.flagEdit != "N"'>
                                                             <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
@@ -628,8 +628,8 @@
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
-                                                    <td align="center"><s:property value="nilai"/></td>
-                                                    <td align="center"><s:property value="subTotal"/></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
                                                     <td align="center">
                                                         <s:if test='#row.flagEdit != "N"'>
                                                             <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
@@ -665,8 +665,8 @@
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
-                                                    <td align="center"><s:property value="nilai"/></td>
-                                                    <td align="center"><s:property value="subTotal"/></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
                                                     <td align="center">
                                                         <s:if test='#row.flagEdit != "N"'>
                                                             <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
@@ -702,8 +702,8 @@
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
-                                                    <td align="center"><s:property value="nilai"/></td>
-                                                    <td align="center"><s:property value="subTotal"/></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
                                                     <td align="center">
                                                         <s:if test='#row.flagEdit != "N"'>
                                                             <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
@@ -739,8 +739,8 @@
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
-                                                    <td align="center"><s:property value="nilai"/></td>
-                                                    <td align="center"><s:property value="subTotal"/></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
                                                     <td align="center">
                                                         <s:if test='#row.flagEdit != "N"'>
                                                             <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
@@ -776,8 +776,8 @@
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
-                                                    <td align="center"><s:property value="nilai"/></td>
-                                                    <td align="center"><s:property value="subTotal"/></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
                                                     <td align="center">
                                                         <s:if test='#row.flagEdit != "N"'>
                                                             <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
@@ -813,8 +813,8 @@
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
-                                                    <td align="center"><s:property value="nilai"/></td>
-                                                    <td align="center"><s:property value="subTotal"/></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
                                                     <td align="center">
                                                         <s:if test='#row.flagEdit != "N"'>
                                                             <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
@@ -850,8 +850,8 @@
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
-                                                    <td align="center"><s:property value="nilai"/></td>
-                                                    <td align="center"><s:property value="subTotal"/></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
                                                     <td align="center">
                                                         <s:if test='#row.flagEdit != "N"'>
                                                             <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
@@ -887,8 +887,8 @@
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
-                                                    <td align="center"><s:property value="nilai"/></td>
-                                                    <td align="center"><s:property value="subTotal"/></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
                                                     <td align="center">
                                                         <s:if test='#row.flagEdit != "N"'>
                                                             <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
@@ -924,8 +924,8 @@
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
-                                                    <td align="center"><s:property value="nilai"/></td>
-                                                    <td align="center"><s:property value="subTotal"/></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
                                                     <td align="center">
                                                         <s:if test='#row.flagEdit != "N"'>
                                                             <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
@@ -961,8 +961,8 @@
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
-                                                    <td align="center"><s:property value="nilai"/></td>
-                                                    <td align="center"><s:property value="subTotal"/></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
                                                     <td align="center">
                                                         <s:if test='#row.flagEdit != "N"'>
                                                             <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
@@ -998,8 +998,8 @@
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
-                                                    <td align="center"><s:property value="nilai"/></td>
-                                                    <td align="center"><s:property value="subTotal"/></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
                                                     <td align="center">
                                                         <s:if test='#row.flagEdit != "N"'>
                                                             <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
@@ -1035,8 +1035,8 @@
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
-                                                    <td align="center"><s:property value="nilai"/></td>
-                                                    <td align="center"><s:property value="subTotal"/></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
                                                     <td align="center">
                                                         <s:if test='#row.flagEdit != "N"'>
                                                             <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
