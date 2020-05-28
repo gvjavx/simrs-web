@@ -1305,7 +1305,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                     Map mapPajakObat = new HashMap();
                     mapPajakObat.put("bukti", invoice);
                     mapPajakObat.put("nilai", ppnObat);
-                    mapPajakObat.put("master_id", "");
+                    mapPajakObat.put("master_id", "03.001");
 
                     Map hsCriteria = new HashMap();
                     BigDecimal jumlah = new BigDecimal(0);
