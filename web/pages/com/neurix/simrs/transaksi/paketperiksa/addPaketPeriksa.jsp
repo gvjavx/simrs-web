@@ -311,10 +311,10 @@
                                     <div class="form-group">
                                         <label class="col-md-3" style="margin-top: 7px">Parameter</label>
                                         <div class="col-md-7">
-                                            <select class="form-control select2" multiple
+                                            <select class="form-control select2"
                                                     style="margin-top: 7px; width: 100%"
                                                     id="lab_parameter"
-                                                    onchange="var warn =$('#war_parameter').is(':visible'); if (warn){$('#cor_parameter').show().fadeOut(3000);$('#war_parameter').hide()}">
+                                                    onchange="getTarifLab(this.value); var warn =$('#war_parameter').is(':visible'); if (warn){$('#cor_parameter').show().fadeOut(3000);$('#war_parameter').hide()}">
                                                 <option value=''>[Select One]</option>
                                             </select>
                                         </div>
@@ -481,6 +481,19 @@
                 $("#tin_tarif").val(tindakan.tarif);
             }
         })
+    }
+
+    function getTarifLab(var1) {
+
+//        console.log(id);
+//        console.log(idParameter);
+        console.log(var1);
+        LabDetailAction.labDetailEntityByIdLab(var1, function (response) {
+            console.log(response);
+            if (response != null && response.idLabDetail != null){
+                $("#lab_tarif").val(response.tarif);
+            }
+        });
     }
 
     function formatRupiah2(angka) {
