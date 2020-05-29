@@ -704,7 +704,7 @@
                         <div class="form-group">
                             <table class="table table-bordered table-striped" style="font-size: 12px">
                                 <thead>
-                                <tr>
+                                <tr style="font-weight: bold">
                                     <td colspan="3" align="center" style="vertical-align: middle">Durasi Waktu</td>
                                     <td rowspan="2" align="center" style="vertical-align: middle" width="30%">Pelaksanaan Edukasi</td>
                                     <td colspan="3" align="center" style="vertical-align: middle">Pemahaman Awal</td>
@@ -712,8 +712,8 @@
                                     <td colspan="4" align="center" style="vertical-align: middle">Media Edukasi</td>
                                     <td colspan="3" align="center" style="vertical-align: middle">Evaluasi/Verifikasi</td>
                                 </tr>
-                                <tr>
-                                    <td align="center">3</td>
+                                <tr style="font-weight: bold">
+                                    <td align="center" title="3 menit">3</td>
                                     <td align="center">5</td>
                                     <td align="center">10</td>
                                     <td align="center">B</td>
@@ -999,6 +999,58 @@
                                 </tr>
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-1">Tanggal</label>
+                            <div class="col-md-3">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input class="form-control tgl">
+                                </div>
+                            </div>
+                            <label class="col-md-1">Jam</label>
+                            <div class="col-md-3">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input class="form-control jam">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <label >TTD</label>
+                                <canvas class="paint-canvas-ttd" id="cpo9" width="220"
+                                        onmouseover="paintTtd('cpo9')"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>Keterangan</label>
+                        </div>
+                        <div class="col-md-3">
+                            <ul>
+                                <li>Tingkat Pemahanan</li>
+                                <li>Metode Edukasi</li>
+                                <li>Medis Edukasi</li>
+                                <li>Evaluasi/Verifikasi</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-8">
+                            <ul style="list-style-type: none">
+                                <li>Baik (B), Cukup (C), Kurang (K)</li>
+                                <li>Wawancara (1), Diskusi (2), Ceramah (3), Demonstrasi (4)</li>
+                                <li>Lisan (1), Leaflet (2), Brosur (3), Lembar Balik (4)</li>
+                                <li>Mengerti (1), Re Edukasi (2), Re Demontrasi (3)</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
