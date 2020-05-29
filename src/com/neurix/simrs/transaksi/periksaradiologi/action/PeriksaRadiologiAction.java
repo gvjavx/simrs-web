@@ -446,7 +446,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
             reportParams.put("dokter", periksalb.getNamaDokter());
             reportParams.put("ttdDokter", periksalb.getTtdDokter());
             reportParams.put("ttdPetugas", periksalb.getTtdPetugas());
-            reportParams.put("umur", calculateAge(checkup.getTglLahir()));
+            reportParams.put("umur", calculateAge(checkup.getTglLahir(), false));
 
             try {
                 preDownload();
@@ -460,7 +460,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
         return "print_radiologi";
     }
 
-    private String calculateAge(Date birthDate) {
+    private String calculateAge(Date birthDate, boolean justTahun) {
         String umur = "";
         if (birthDate != null && !"".equalsIgnoreCase(birthDate.toString())) {
             int years = 0;
@@ -511,13 +511,16 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
                 }
             }
 
-
-            if (days > 0) {
-                umur = years + " Tahun, " + months + " Bulan, " + days + " Hari";
-            } else if (months > 0) {
-                umur = years + " Tahun, " + months + " Bulan";
-            } else {
-                umur = years + " Tahun";
+            if(justTahun){
+                umur = years+" Tahun";
+            }else{
+                if (days > 0) {
+                    umur = years + " Tahun, " + months + " Bulan, " + days + " Hari";
+                } else if (months > 0) {
+                    umur = years + " Tahun, " + months + " Bulan";
+                } else {
+                    umur = years + " Tahun";
+                }
             }
 
         }

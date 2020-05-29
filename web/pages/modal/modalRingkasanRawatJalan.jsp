@@ -1,4 +1,4 @@
-<div class="modal fade" id="modal-ina-ringkasan_rj">
+<div class="modal fade" id="modal-rj-ringkasan_rj">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
@@ -10,12 +10,12 @@
             <div class="modal-body">
                 <div class="box-body btn-hide">
                     <div class="alert alert-success alert-dismissible" style="display: none"
-                         id="warning_ina_ringkasan_rj">
+                         id="warning_rj_ringkasan_rj">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
-                        <p id="msg_ina_ringkasan_rj"></p>
+                        <p id="msg_rj_ringkasan_rj"></p>
                     </div>
                     <div class="btn-group">
-                        <button type="button" onclick="showModalAsesmenRawatInap('ringkasan_rj_pasien')" class="btn btn-success"><i class="fa fa-plus"></i> Profil Rawat Jalan
+                        <button type="button" onclick="showModalRj('ringkasan_rj_pasien')" class="btn btn-success"><i class="fa fa-plus"></i> Profil Rawat Jalan
                         </button>
                     </div>
                 </div>
@@ -43,7 +43,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-ina-ringkasan_rj_pasien">
+<div class="modal fade" id="modal-rj-ringkasan_rj_pasien">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
@@ -54,9 +54,9 @@
             </div>
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none"
-                     id="warning_ina_ringkasan_rj_pasien">
+                     id="warning_rj_ringkasan_rj_pasien">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    <p id="msg_ina_ringkasan_rj_pasien"></p>
+                    <p id="msg_rj_ringkasan_rj_pasien"></p>
                 </div>
                 <div class="box-body">
                     <div class="row">
@@ -119,11 +119,11 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_ina_ringkasan_rj_pasien" class="btn btn-success pull-right"
+                <button id="save_rj_ringkasan_rj_pasien" class="btn btn-success pull-right"
                         onclick="saveRekamMedisRJ('ringkasan_rj_pasien','ringkasan_rj')"><i class="fa fa-check"></i>
                     Save
                 </button>
-                <button id="load_ina_ringkasan_rj_pasien" style="display: none; cursor: no-drop" type="button"
+                <button id="load_rj_ringkasan_rj_pasien" style="display: none; cursor: no-drop" type="button"
                         class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>

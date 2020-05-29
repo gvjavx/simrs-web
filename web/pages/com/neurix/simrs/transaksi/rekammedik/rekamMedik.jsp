@@ -107,6 +107,55 @@
             transform: scale(1);
         }
 
+        .custom03 input[type="radio"] {
+            display: none;
+        }
+        .custom03 label {
+            position: relative;
+            display: inline-block;
+            padding: 3px 3px 3px 12px;
+            cursor: pointer;
+        }
+        .custom03 label::before,
+        .custom03 label::after {
+            position: absolute;
+            content: '';
+            top: 50%;
+            border-radius: 100%;
+            -webkit-transition: all .2s;
+            transition: all .2s;
+        }
+        .custom03 label::before {
+            left: 0;
+            width: 14px;
+            height: 14px;
+            margin-top: -8px;
+            background: #f3f3f3;
+            border: 1px solid #ccc;
+        }
+        .custom03 label:hover::before {
+            background: #fff;
+        }
+        .custom03 label::after {
+            opacity: 0;
+            left: 3px;
+            width: 8px;
+            height: 8px;
+            margin-top: -5px;
+            background: #3498db;
+            -webkit-transform: scale(2);
+            transform: scale(2);
+        }
+        .custom03 input[type="radio"]:checked + label::before {
+            background: #fff;
+            border: 1px solid #3498db;
+        }
+        .custom03 input[type="radio"]:checked + label::after {
+            opacity: 1;
+            -webkit-transform: scale(1);
+            transform: scale(1);
+        }
+
         .radio-margin{
             margin-top: -7px;
             margin-left: 1px;
@@ -547,6 +596,7 @@
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
                                         <li><a style="cursor: pointer" onclick="showModalAsesmenRawatInap('edukasi_pasien')"><i class="fa fa-circle-o"></i>Edukasi Pasien dan Keluarga</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalAsesmenRawatInap('edukasi_pasien_terintegrasi')"><i class="fa fa-circle-o"></i>Edukasi Pasien dan Keluarga Terintegrasi</a></li>
                                     </ul>
                                 </div>
                             </div>
