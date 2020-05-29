@@ -723,7 +723,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "a.created_date, \n" +
                     "b.video_rm, \n" +
                     "l.keterangan_diagnosa, \n" +
-                    "l.id_diagnosa\n" +
+                    "l.id_diagnosa, \n" +
+                    "a.anamnese\n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
@@ -811,6 +812,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setNamaDiagnosa(obj[47] == null ? "" : obj[47].toString());
                     checkup.setDiagnosa(obj[48] == null ? "" : obj[48].toString());
                     checkup.setAlergi(getAlergiPasien(obj[0].toString()));
+                    checkup.setAnamnese(obj[49] == null ? "" : obj[49].toString());
                 }
             }
         }

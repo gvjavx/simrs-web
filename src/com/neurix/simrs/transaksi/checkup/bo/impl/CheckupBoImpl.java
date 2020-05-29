@@ -2442,6 +2442,32 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     }
 
     @Override
+    public CrudResponse updateAnamnese(HeaderCheckup bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        ItSimrsHeaderChekupEntity chekupEntity = new ItSimrsHeaderChekupEntity();
+        try{
+            chekupEntity = headerCheckupDao.getById("noCheckup", bean.getNoCheckup());
+            if(chekupEntity.getNoCheckup() != null){
+                chekupEntity.setAnamnese(bean.getAnamnese());
+                chekupEntity.setLastUpdate(bean.getLastUpdate());
+                chekupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                try {
+                    headerCheckupDao.updateAndSave(chekupEntity);
+                    response.setMsg("Berhasil");
+                    response.setStatus("success");
+                }catch (HibernateException e){
+                    response.setMsg("Error when update data "+e.getMessage());
+                    response.setStatus("error");
+                }
+            }
+        }catch (HibernateException e){
+            response.setMsg("Error when update data "+e.getMessage());
+            response.setStatus("error");
+        }
+        return response;
+    }
+
+    @Override
     public List<MasterVendor> getComboListPtpn() throws GeneralBOException {
         List<MasterVendor> vendorList = new ArrayList<>();
         try {

@@ -3425,4 +3425,28 @@ public class CheckupAction extends BaseMasterAction {
         }
         return checkupList;
     }
+
+    public CrudResponse saveAnamnese(String anamnese, String noCheckup) {
+        logger.info("[CheckupAction.savePenunjangPasien] start process >>>");
+        CrudResponse response = new CrudResponse();
+        HeaderCheckup headerCheckup = new HeaderCheckup();
+        headerCheckup.setNoCheckup(noCheckup);
+        headerCheckup.setAnamnese(anamnese);
+        headerCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+        headerCheckup.setLastUpdateWho(CommonUtil.userLogin());
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        try {
+            response = checkupBo.updateAnamnese(headerCheckup);
+        } catch (GeneralBOException e) {
+            response.setStatus("error");
+            response.setMsg("Error when update data "+e.getMessage());
+        }
+
+        logger.info("[CheckupAction.savePenunjangPasien] end process <<<");
+        return response;
+    }
+
 }

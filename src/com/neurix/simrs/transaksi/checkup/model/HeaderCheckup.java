@@ -136,6 +136,16 @@ public class HeaderCheckup {
     private String namaDetailLab;
     private String idDetailTindakan;
 
+    private String anamnese;
+
+    public String getAnamnese() {
+        return anamnese;
+    }
+
+    public void setAnamnese(String anamnese) {
+        this.anamnese = anamnese;
+    }
+
     public String getIdDetailTindakan() {
         return idDetailTindakan;
     }

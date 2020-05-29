@@ -148,6 +148,16 @@ public class HeaderDetailCheckup extends BaseModel{
 
     private String tglKeluar;
 
+    private String anamnese;
+
+    public String getAnamnese() {
+        return anamnese;
+    }
+
+    public void setAnamnese(String anamnese) {
+        this.anamnese = anamnese;
+    }
+
     public String getTglKeluar() {
         return tglKeluar;
     }
