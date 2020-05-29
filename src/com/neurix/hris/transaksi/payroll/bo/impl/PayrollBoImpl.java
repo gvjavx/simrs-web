@@ -7,6 +7,7 @@ import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.authorization.company.model.ImCompany;
 import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.authorization.position.model.ImPosition;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.dao.BiodataDao;
@@ -10110,7 +10111,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
 
         Map kas = new HashMap();
         kas.put("metode_bayar","transfer");
-        kas.put("bank","1.1.01.02.03");
+        kas.put("bank", CommonConstant.COA_PAYROLL);
         kas.put("nilai",total);
 
         dataPayroll.put("kas",kas);

@@ -65,6 +65,8 @@ public class Budgeting {
     private String masterId;
     private String masterName;
     private String branchName;
+    private String divisi;
+    private String coa;
 
     public static Comparator<Budgeting> kodeRekeningSorting = new Comparator<Budgeting>() {
 
@@ -79,12 +81,28 @@ public class Budgeting {
 //            return kdRekening2.compareTo(kdRekening1);
         }};
 
+    public String getDivisi() {
+        return divisi;
+    }
+
+    public void setDivisi(String divisi) {
+        this.divisi = divisi;
+    }
+
     public static Comparator<Budgeting> getKodeRekeningSorting() {
         return kodeRekeningSorting;
     }
 
     public static void setKodeRekeningSorting(Comparator<Budgeting> kodeRekeningSorting) {
         Budgeting.kodeRekeningSorting = kodeRekeningSorting;
+    }
+
+    public String getCoa() {
+        return coa;
+    }
+
+    public void setCoa(String coa) {
+        this.coa = coa;
     }
 
     public String getFlagDisable() {

@@ -7,10 +7,13 @@
 
     <bean id="pengajuanBiayaAction" class="com.neurix.akuntansi.transaksi.pengajuanBiaya.action.PengajuanBiayaAction"
           p:pengajuanBiayaBoProxy-ref="pengajuanBiayaBoProxy"
+          p:notifikasiBoProxy-ref="notifikasiBoProxy"
+          p:kodeRekeningBoProxy-ref="kodeRekeningBoProxy"
     />
 
     <bean id="pengajuanBiayaBo" class="com.neurix.akuntansi.transaksi.pengajuanBiaya.bo.impl.PengajuanBiayaBoImpl"
           p:pengajuanBiayaDao-ref="pengajuanBiayaDao"
+          p:userDao-ref="userDao"
     />
 
     <bean id="pengajuanBiayaBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

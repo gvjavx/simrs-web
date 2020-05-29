@@ -13,6 +13,8 @@ public class BudgettingDTO {
     private String noBudgetting;
     private String tipe;
     private String divisi;
+    private String divisiId;
+    private String tahun;
 
     private BigDecimal qtySem2;
     private BigDecimal nilaiSem2;
@@ -40,6 +42,22 @@ public class BudgettingDTO {
     private BigDecimal nilaiTotal2TahunLalu;
     private BigDecimal nilaiTotalRealisasi;
     private BigDecimal nilaiTotalSisaBayar;
+
+    public String getDivisiId() {
+        return divisiId;
+    }
+
+    public void setDivisiId(String divisiId) {
+        this.divisiId = divisiId;
+    }
+
+    public String getTahun() {
+        return tahun;
+    }
+
+    public void setTahun(String tahun) {
+        this.tahun = tahun;
+    }
 
     public String getDivisi() {
         return divisi;

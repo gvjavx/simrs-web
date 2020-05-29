@@ -9,8 +9,10 @@
 <head>
     <%@ include file="/pages/common/header.jsp" %>
     <script type='text/javascript' src='<s:url value="/dwr/interface/KodeRekeningAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/MasterAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/KasirRawatJalanAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/akuntansi.js"/>'></script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/BudgetingAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PositionAction.js"/>'></script>
     <script type='text/javascript'>
         function callSearch2() {
             $('#view_dialog_menu').dialog('close');
@@ -22,14 +24,12 @@
 
         $.subscribe('beforeProcessSave', function (event, data) {
             var unit  = document.getElementById("branch_id").value;
-            var divisi  = document.getElementById("divisi_id").value;
             var tanggal  = document.getElementById("tanggal").value;
-            var coaBiaya  = document.getElementById("coa_biaya").value;
+            var coaRk  = document.getElementById("coa_rk").value;
             var coaGiro  = document.getElementById("coa_giro").value;
             var jumlah  = document.getElementById("bayar").value;
-            var sisaBudget  = document.getElementById("sisa_budget").value;
             var keterangan  = document.getElementById("keterangan").value;
-            if ( unit != ''&& tanggal != ''&& coaBiaya != '' && coaGiro != ''&&jumlah!=""&&keterangan!=""&&divisi!=""&&sisaBudget!="") {
+            if ( unit != ''&& tanggal != ''&& coaRk != '' && coaGiro != ''&&jumlah!=""&&keterangan!="") {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -46,17 +46,11 @@
                 if ( tanggal == '') {
                     msg += 'Field <strong>Tanggal</strong> is required.' + '<br/>';
                 }
-                if ( coaBiaya == '') {
-                    msg += 'Field <strong>COA Biaya</strong> is required.' + '<br/>';
+                if ( coaRk == '') {
+                    msg += 'Field <strong>COA RK</strong> is required.' + '<br/>';
                 }
                 if ( coaGiro == '') {
                     msg += 'Field <strong>COA Giro</strong> is required.' + '<br/>';
-                }
-                if ( divisi == '') {
-                    msg += 'Field <strong>Divisi</strong> is required.' + '<br/>';
-                }
-                if ( sisaBudget == '') {
-                    msg += 'Field <strong>Sisa Budget</strong> is required.' + '<br/>';
                 }
                 if ( jumlah == '') {
                     msg += 'Field <strong>Jumlah</strong> is required.' + '<br/>';
@@ -64,6 +58,7 @@
                 if ( keterangan != '') {
                     msg += 'Field <strong>Keterangan</strong> is required.' + '<br/>';
                 }
+                console.log(msg);
                 document.getElementById('errorMessage').innerHTML = msg;
                 $.publish('showErrorValidationDialog');
             }
@@ -97,7 +92,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Pengajuan Biaya
+            Transaksi RK
         </h1>
     </section>
 
@@ -108,10 +103,11 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-user-plus"></i> Input Pengajuan Biaya</h3>
+                        <h3 class="box-title"><i class="fa fa-user-plus"></i> Input Transaksi RK</h3>
                     </div>
                     <s:form id="addPengajuanBiayaForm" enctype="multipart/form-data" method="post" namespace="/pengajuanBiaya"
-                            action="saveAddPengajuan_pengajuanBiaya.action" theme="simple">
+                            action="saveAdd_pengajuanBiaya.action" theme="simple">
+                        <s:hidden name="pengajuanBiaya.tipePembayaran" value="KK" />
                         <div class="box-body">
                             <div class="alert alert-danger alert-dismissible" id="warning_pembayaran" style="display: none">
                                 <h4><i class="icon fa fa-ban"></i> Warning!</h4>
@@ -124,27 +120,36 @@
                                 <div class="row">
                                     <div class="col-md-8">
                                         <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Unit</label>
-                                            <div class="col-md-8"  style="margin-top: 7px">
+                                            <label class="col-md-4" style="margin-top: 7px">Kantor Pusat</label>
+                                            <div class="col-md-8">
                                                 <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
-                                                <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branch_id_view" name="pengajuanBiaya.branchId" required="true" disabled="true"
+                                                <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branch_id_kanpus_view" name="pengajuanBiaya.branchIdKanpus" required="true" disabled="true"
                                                           listKey="branchId" listValue="branchName" headerKey="" headerValue="" />
-                                                <s:hidden name="pengajuanBiaya.branchId" id="branch_id" />
+
+                                                <s:hidden name="pengajuanBiaya.branchIdKanpus" id="branch_id_kanpus" />
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Divisi</label>
+                                            <label class="col-md-4" style="margin-top: 7px">Unit</label>
                                             <div class="col-md-8"  style="margin-top: 7px">
-                                                <s:action id="comboPosition" namespace="/admin/user" name="initComboPosition_user"/>
-                                                <s:select cssClass="form-control" list="#comboPosition.listOfComboPositions" id="divisi_id_view" disabled="true" name="pengajuanBiaya.divisiId" required="false" readonly="true"
-                                                          listKey="stPositionId" listValue="positionName" headerKey="" headerValue="[Select one]"/>
-                                                <s:hidden  id="divisi_id" name="pengajuanBiaya.divisiId" cssClass="form-control"/>
+                                                <s:if test='pengajuanBiaya.branchId == "KP"'>
+                                                    <s:action id="combo Branch" namespace="/admin/user" name="initComboBranchSelainKp_user"/>
+                                                    <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branch_id"  onchange="isiKeteterangan()" name="pengajuanBiaya.branchId" required="true"
+                                                              listKey="branchId" listValue="branchName" headerKey="" headerValue="" />
+                                                </s:if>
+                                                <s:else>
+                                                    <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
+                                                    <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branch_id_view" name="pengajuanBiaya.branchId" required="true" disabled="true"
+                                                              listKey="branchId" listValue="branchName" headerKey="" headerValue="" />
+
+                                                    <s:hidden name="pengajuanBiaya.branchId" id="branch_id" />
+                                                </s:else>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Transaksi</label>
                                             <div class="col-md-8" style="margin-top: 7px">
-                                                <s:select list="#{'PB':'Pengajuan Biaya'}" onchange="initCoa(this.value)"
+                                                <s:select list="#{'PDU':'Swift Kas Unit ke Pusat','SMK':'Setoran Modal Kerja ke Unit'}" onchange="initCoa(this.value)"
                                                           id="transaksi_view" name="pengajuanBiaya.transaksi"
                                                           headerKey="" headerValue="[Select One]" cssClass="form-control" />
                                                 <s:hidden id="transaksi" />
@@ -174,9 +179,9 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">COA Biaya </label>
+                                            <label class="col-md-4" style="margin-top: 7px">COA RK </label>
                                             <div class="col-md-8">
-                                                <select class="form-control" id="coa_biaya" onchange="isiKeteterangan(),getSisaBudget(this.value)" style="margin-top: 7px" name="pengajuanBiaya.coaAjuan">
+                                                <select class="form-control" id="coa_rk" onchange="isiKeteterangan()" style="margin-top: 7px" name="pengajuanBiaya.coaAjuan">
                                                     <option value="" ></option>
                                                 </select>
                                             </div>
@@ -193,20 +198,6 @@
                                             <label class="col-md-4" style="margin-top: 7px">Jumlah</label>
                                             <div class="col-md-8">
                                                 <s:textfield id="bayar" name="pengajuanBiaya.stTotalBiaya"  onkeyup="formatRupiah2(this)"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Budget Biaya</label>
-                                            <div class="col-md-8">
-                                                <s:textfield id="sisa_budget" name="pengajuanBiaya.stBudgetSaatIni" readonly="true"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Budget Terpakai</label>
-                                            <div class="col-md-8">
-                                                <s:textfield id="budget_terpakai" name="pengajuanBiaya.stBudgetTerpakai" readonly="true"
                                                              cssClass="form-control" cssStyle="margin-top: 7px" />
                                             </div>
                                         </div>
@@ -315,13 +306,14 @@
     function isiKeteterangan() {
         var transaksi = $('#transaksi_view option:selected').text();
         var transaksiId = $('#transaksi').val();
-        var divisi = $('#divisi_id_view option:selected').text();
-        var coaBiaya = $('#coa_biaya option:selected').text();
         var coaGiro = $('#coa_giro option:selected').text();
-        var unit = $('#branch_id_view option:selected').text();
+        var coa_rk = $('#coa_rk option:selected').text();
+        var unit = $('#branch_id option:selected').text();
         var keterangan ="";
-        if (transaksiId == "PB"){
-            keterangan= transaksi+" "+coaBiaya+" "+unit+" divisi "+divisi+" pada giro "+coaGiro;
+        if (transaksiId == "SMK"){
+            keterangan= transaksi +" "+unit+" pada giro "+coaGiro;
+        } else if (transaksiId == "PDU"){
+            keterangan= transaksi +" "+unit+" ke Kantor Pusat pada giro "+coaGiro;
         }
         $('#keterangan').val(keterangan);
     }
@@ -331,30 +323,12 @@
         var transaksi = "";
         var posisi ="";
         switch(value) {
-            case "PB":
+            case "SMK":
                 transaksi = "59";
                 posisi="K";
                 break;
-        }
-        KodeRekeningAction.getKodeRekeningLawanByTransId(transaksi,posisi,function (res) {
-            if(res.length > 0){
-                $.each(res, function (i, item) {
-                    option += '<option value="'+item.kodeRekening+'">'+item.namaKodeRekening+'</option>';
-                });
-                $('#coa_giro').html(option);
-            }else{
-                $('#coa_giro').html(option);
-            }
-        });
-    }
-
-    function getCoaBiaya(value) {
-        var option = '<option value=""></option>';
-        var transaksi = "";
-        var posisi ="";
-        switch(value) {
-            case "PB":
-                transaksi = "59";
+            case "PDU":
+                transaksi = "62";
                 posisi="D";
                 break;
         }
@@ -363,20 +337,36 @@
                 $.each(res, function (i, item) {
                     option += '<option value="'+item.kodeRekening+'">'+item.namaKodeRekening+'</option>';
                 });
-                $('#coa_biaya').html(option);
+                $('#coa_giro').html(option);
             }else{
-                $('#coa_biaya').html(option);
+                $('#coa_giro').html(option);
             }
         });
     }
 
-    function getSisaBudget(value) {
-        var divisi_Id=$('#divisi_id').val();
-        var branch_id=$('#branch_id').val();
-        var tanggal=$('#st_tgl').val();
-        BudgetingAction.getBudgetSaatIni(branch_id,divisi_Id,tanggal,value,function (res) {
-            $('#sisa_budget').val(res);
-            $('#budget_terpakai').val(res);
+    function getCoaRk(value) {
+        var option = '<option value=""></option>';
+        var transaksi = "";
+        var posisi ="";
+        switch(value) {
+            case "SMK":
+                transaksi = "59";
+                posisi="D";
+                break;
+            case "PDU":
+                transaksi = "62";
+                posisi="K";
+                break;
+        }
+        KodeRekeningAction.getKodeRekeningLawanByTransId(transaksi,posisi,function (res) {
+            if(res.length > 0){
+                $.each(res, function (i, item) {
+                    option += '<option value="'+item.kodeRekening+'">'+item.tampilanCoa+'</option>';
+                });
+                $('#coa_rk').html(option);
+            }else{
+                $('#coa_rk').html(option);
+            }
         });
     }
 
@@ -398,14 +388,19 @@
 
     function initCoa(value){
         getCoaGiro(value);
-        getCoaBiaya(value);
+        getCoaRk(value);
         switch(value) {
-            case "PB":
-                $('#transaksi').val("PB");
+            case "SMK":
+                $('#transaksi').val("SMK");
                 $('#tipe_transaksi').val("59");
+                break;
+            case "PDU":
+                $('#transaksi').val("PDU");
+                $('#tipe_transaksi').val("62");
                 break;
         }
     }
+
     $(document).ready(function(){
 
     })

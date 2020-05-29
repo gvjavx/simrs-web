@@ -102,6 +102,7 @@
             <result name="search_laporan_biaya">/pages/com/neurix/akuntansi/transaksi/laporanAkuntansi/report/searchBiayaLaporanAkuntansi.jsp</result>
             <result name="search_kompilasi">/pages/com/neurix/akuntansi/transaksi/laporanAkuntansi/report/searchKompilasiLaporanAkuntansi.jsp</result>
             <result name="search_laporan_budgetting">/pages/com/neurix/akuntansi/transaksi/laporanAkuntansi/report/searchBudgettingLaporanAkuntansi.jsp</result>
+            <result name="search_laporan_persediaan">/pages/com/neurix/akuntansi/transaksi/laporanAkuntansi/report/searchPersediaanLaporanAkuntansi.jsp</result>
 
             <!-- HASIL LAPORAN -->
             <result name="print_report_akuntansi_neraca_saldo" type="jasper">

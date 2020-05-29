@@ -31,12 +31,12 @@
         $.subscribe('beforeProcessSave', function (event, data) {
             var unit    = document.getElementById("branchId").value;
             var periodeTahun = document.getElementById("periodeTahun").value;
-            var tipeLaporan = document.getElementById("tipeLaporan").value;
-            // var positionId = document.getElementById("positionId").value;
+            var periodeBulan = document.getElementById("periodeBulan").value;
+            var tipePendapatan = document.getElementById("tipePendapatan").value;
 
-            if ( unit != '' && periodeTahun != ''&&tipeLaporan!='') {
+            if ( unit != '' && periodeTahun != ''&& periodeBulan != ''&&tipePendapatan!='') {
                 event.originalEvent.options.submit = false;
-                var url = "printReportBudgetting_laporanAkuntansi.action?laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="+periodeTahun+"&laporanAkuntansi.tipeLaporan="+tipeLaporan;
+                var url = "printReportBiaya_laporanAkuntansi.action?laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="+periodeTahun+"&laporanAkuntansi.bulan="+periodeBulan+"&laporanAkuntansi.tipeLaporan="+tipePendapatan;
                 window.open(url,'_blank');
             } else {
                 event.originalEvent.options.submit = false;
@@ -47,8 +47,11 @@
                 if ( periodeTahun == '') {
                     msg += 'Field <strong>Tahun </strong> masih belum dipilih' + '<br/>';
                 }
-                if ( tipeLaporan == '') {
-                    msg += 'Field <strong>Tipe Laporan</strong> masih belum dipilih' + '<br/>';
+                if ( periodeBulan == '') {
+                    msg += 'Field <strong>Bulan </strong> masih belum dipilih' + '<br/>';
+                }
+                if ( tipePendapatan == '') {
+                    msg += 'Field <strong>Tipe Pendapatan</strong> masih belum dipilih' + '<br/>';
                 }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
@@ -81,7 +84,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Laporan Budgetting
+            Laporan Biaya
         </h1>
     </section>
     <!-- Main content -->
@@ -90,13 +93,13 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Laporan Budgetting</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Laporan Biaya</h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">
                             <tr>
                                 <td align="center">
-                                    <s:form id="laporanAkuntansiForm" method="post"  theme="simple" namespace="/laporanAkuntansi" action="printReportBudgetting_laporanAkuntansi.action" cssClass="form-horizontal">
+                                    <s:form id="laporanAkuntansiForm" method="post"  theme="simple" namespace="/laporanAkuntansi" action="printReportNeracaMutasi_laporanAkuntansi.action" cssClass="form-horizontal">
                                         <s:hidden name="laporanAkuntansi.tipeLaporan" id="tipeLaporanId"/>
                                         <table>
                                             <tr>
@@ -113,12 +116,12 @@
                                                 <td>
                                                     <table>
                                                         <s:if test='laporanAkuntansi.unit == "KP"'>
-                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranchAkuntansi_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="laporanAkuntansi.unit"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                         </s:if>
                                                         <s:else>
-                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranchAkuntansi_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchIdView" name="laporanAkuntansi.unit" disabled="true"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                             <s:hidden id="branchId" name="laporanAkuntansi.unit" />
@@ -128,7 +131,15 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Periode Tahun :</small></label>
+                                                    <label class="control-label"><small>Periode :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:select list="#{'01':'Januari', '02' : 'Februari', '03':'Maret', '04':'April', '05':'Mei', '06':'Juni', '07':'Juli',
+                                '08': 'Agustus', '09' : 'September', '10' : 'Oktober', '11' : 'November', '12' : 'Desember'}"
+                                                                  id="periodeBulan" name="laporanAkuntansi.bulan"
+                                                                  headerKey="" headerValue="[Select One]" cssClass="form-control" />
+                                                    </table>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -140,17 +151,18 @@
                                                 </td>
                                                 <script>
                                                     var dt = new Date();
+                                                    $('#periodeBulan').val(("0" + (dt.getMonth() + 1)).slice(-2));
                                                     $('#periodeTahun').val(dt.getFullYear());
                                                 </script>
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Tipe Laporan :</small></label>
+                                                    <label class="control-label"><small>Tipe Biaya :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'B':'Budgetting', 'BPS' : 'Budgetting Per Semester','BPQ' : 'Budgetting Per Quartal','BPB' : 'Budgetting Per Bulan','BCR' : 'Budgetting Komparasi Realisasi','BPD' : 'Budgetting Per Divisi','BCPT' : 'Budgetting Komparasi Per Tahun'}"
-                                                                  id="tipeLaporan" name="laporanAkuntansi.tipeLaporan"
+                                                        <s:select list="#{'B':'Biaya', 'BD' : 'Biaya Per Divisi'}"
+                                                                  id="tipePendapatan" name="laporanAkuntansi.tipeLaporan"
                                                                   headerKey="" headerValue="[Select One]" cssClass="form-control" />
                                                     </table>
                                                 </td>
@@ -168,7 +180,7 @@
                                                         </sj:submit>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="searchReportBudgetting_laporanAkuntansi.action"/>'">
+                                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="searchReportNeracaMutasi_laporanAkuntansi.action"/>'">
                                                             <i class="fa fa-refresh"></i> Reset
                                                         </button>
                                                     </td>

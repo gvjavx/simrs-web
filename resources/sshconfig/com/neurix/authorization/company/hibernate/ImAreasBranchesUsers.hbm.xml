@@ -3,7 +3,6 @@
   "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-
     <class name="com.neurix.authorization.company.model.ImAreasBranchesUsers" table="im_areas_branches_users"
             schema="public">
         <composite-id name="primaryKey" class="com.neurix.authorization.company.model.ImAreasBranchesUsersPK">
@@ -47,8 +46,5 @@
                      insert="false" update="false" fetch="select" cascade="none">
             <column name="area_id"/>
         </many-to-one>
-
-
-
     </class>
 </hibernate-mapping>

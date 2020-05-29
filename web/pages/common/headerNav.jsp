@@ -117,6 +117,12 @@
                             "<span class='label label-success'>Rekruitmen Pabrik</span> "+item.note+""+
                             "</a>"+
                             "</li>";
+                }else if (item.tipeNotifId == "TN01"){
+                    tmp_data_approve += "<li>"+
+                        "<a href='<s:property value="appname" />notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
+                        "<span class='label label-success'>Keuangan</span> "+item.note+""+
+                        "</a>"+
+                        "</li>";
                 }
                 else {
                     tmp_data_pemberitahuan += "<li class='pemberitahuan' data-id='"+item.notifId+"~"+item.note+"'>"+
