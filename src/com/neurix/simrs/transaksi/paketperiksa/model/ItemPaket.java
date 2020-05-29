@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.paketperiksa.model;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
@@ -19,6 +20,15 @@ public class ItemPaket {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private BigDecimal tarif;
+
+    public BigDecimal getTarif() {
+        return tarif;
+    }
+
+    public void setTarif(BigDecimal tarif) {
+        this.tarif = tarif;
+    }
 
     public String getIdItemPaket() {
         return idItemPaket;

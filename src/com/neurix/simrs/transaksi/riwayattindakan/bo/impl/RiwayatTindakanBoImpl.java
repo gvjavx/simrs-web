@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.riwayattindakan.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.paketperiksa.dao.ItemPaketDao;
+import com.neurix.simrs.transaksi.paketperiksa.model.ItemPaket;
 import com.neurix.simrs.transaksi.paketperiksa.model.MtSimrsItemPaketEntity;
 import com.neurix.simrs.transaksi.permintaanresep.model.ImSimrsPermintaanResepEntity;
 import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
@@ -344,7 +345,8 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
         return null;
     }
 
-    public BigDecimal getSumTarifPaketLab(String idPaket, String idLab) throws GeneralBOException{
+    @Override
+    public ItemPaket getTarifPaketLab(String idPaket, String idLab) throws GeneralBOException{
         return itemPaketDao.getSumTarifPaketLab(idPaket, idLab);
     }
 }

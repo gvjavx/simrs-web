@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.paketperiksa.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.simrs.transaksi.paketperiksa.model.ItemPaket;
 import com.neurix.simrs.transaksi.paketperiksa.model.MtSimrsItemPaketEntity;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -54,7 +55,7 @@ public class ItemPaketDao extends GenericDao<MtSimrsItemPaketEntity, String> {
         return sId;
     }
 
-    public BigDecimal getSumTarifPaketLab(String idPaket, String idLab){
+    public ItemPaket getSumTarifPaketLab(String idPaket, String idLab){
 
         String SQL = "SELECT \n" +
                 "id_paket, \n" +
@@ -70,14 +71,17 @@ public class ItemPaketDao extends GenericDao<MtSimrsItemPaketEntity, String> {
                 .setParameter("idlab", idLab)
                 .list();
 
+        ItemPaket itemPaket = new ItemPaket();
         BigDecimal total = new BigDecimal(0);
         if (results.size() > 0){
             for (Object[] obj : results){
+                itemPaket.setIdPaket(obj[0] == null ? "" : obj[0].toString());
+                itemPaket.setIdKategoriItem(obj[1] == null ? "" : obj[1].toString());
                 total = obj[2] == null ? new BigDecimal(0) : (BigDecimal) obj[2];
+                itemPaket.setTarif(total);
             }
-
+            return itemPaket;
         }
-
-        return total;
+        return null;
     }
 }
