@@ -11,6 +11,7 @@ import com.neurix.akuntansi.transaksi.budgeting.dao.BudgetingDetailDao;
 import com.neurix.akuntansi.transaksi.budgeting.dao.BudgetingPengadaanDao;
 import com.neurix.akuntansi.transaksi.budgeting.model.*;
 import com.neurix.akuntansi.transaksi.saldoakhir.model.SaldoAkhir;
+import com.neurix.akuntansi.transaksi.laporanAkuntansi.dao.LaporanAkuntansiDao;
 import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.authorization.position.model.ImPosition;
@@ -39,6 +40,15 @@ public class BudgetingBoImpl implements BudgetingBo {
     private BranchDao branchDao;
     private PositionDao positionDao;
     private MasterDao masterDao;
+    private LaporanAkuntansiDao laporanAkuntansiDao;
+
+    public LaporanAkuntansiDao getLaporanAkuntansiDao() {
+        return laporanAkuntansiDao;
+    }
+
+    public void setLaporanAkuntansiDao(LaporanAkuntansiDao laporanAkuntansiDao) {
+        this.laporanAkuntansiDao = laporanAkuntansiDao;
+    }
 
     @Override
     public List<Budgeting> getSearchByCriteria(Budgeting bean) throws GeneralBOException {
@@ -1152,5 +1162,27 @@ public class BudgetingBoImpl implements BudgetingBo {
 
     public void setMasterDao(MasterDao masterDao) {
         this.masterDao = masterDao;
+    }
+
+    @Override
+    public String getBudgetBiayaDivisiSaatIni(Budgeting bean){
+        logger.info("[BudgetingBoImpl.getBudgetBiayaDivisiSaatIni] START >>>");
+        List<BudgettingDTO> budgettingDTOList;
+        BigDecimal budget = BigDecimal.ZERO;
+        try {
+            ImPosition position = positionDao.getById("positionId",bean.getDivisi());
+
+            budgettingDTOList = laporanAkuntansiDao.getBudgettingPerDivisi(bean.getBranchId(),bean.getStatus(),bean.getTahun(),position.getKodering(),bean.getCoa());
+        } catch (HibernateException e){
+            logger.error("[BudgetingBoImpl.getBudgetBiayaDivisiSaatIni] ERROR. ",e);
+            throw new GeneralBOException("[BudgetingBoImpl.getBudgetBiayaDivisiSaatIni] ERROR. ",e);
+        }
+
+        for (BudgettingDTO budgettingDTO : budgettingDTOList){
+            budget = budgettingDTO.getSubTotal();
+        }
+
+        logger.info("[BudgetingBoImpl.getBudgetBiayaDivisiSaatIni] END <<<<");
+        return  CommonUtil.numbericFormat(budget,"###,###");
     }
 }

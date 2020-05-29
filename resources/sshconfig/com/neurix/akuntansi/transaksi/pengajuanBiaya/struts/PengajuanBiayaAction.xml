@@ -68,12 +68,19 @@
         <action name="*_pengajuanBiaya"
                 class="com.neurix.akuntansi.transaksi.pengajuanBiaya.action.PengajuanBiayaAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
-            <result name="input">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/SearchPengajuanBiaya.jsp</result>
-            <result name="success">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/SearchPengajuanBiaya.jsp</result>
+            <result name="input">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/SearchTransaksiRk.jsp</result>
+            <result name="success">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/SearchTransaksiRk.jsp</result>
 
-            <result name="error">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/addPengajuanBiaya.jsp</result>
-            <result name="init_add">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/addPengajuanBiaya.jsp</result>
-            <result name="success_save_add">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/addPengajuanBiaya.jsp</result>
+            <result name="error">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/addTransaksiRk.jsp</result>
+            <result name="init_add">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/addTransaksiRk.jsp</result>
+            <result name="success_save_add">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/addTransaksiRk.jsp</result>
+
+            <result name="input_pengajuan">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/SearchPengajuanBiaya.jsp</result>
+            <result name="success_pengajuan">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/SearchPengajuanBiaya.jsp</result>
+
+            <result name="error_pengajuan">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/addPengajuanBiaya.jsp</result>
+            <result name="init_add_pengajuan">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/addPengajuanBiaya.jsp</result>
+            <result name="success_save_add_pengajuan">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/addPengajuanBiaya.jsp</result>
         </action>
 
         <action name="paging_displaytag_pengajuanBiaya"

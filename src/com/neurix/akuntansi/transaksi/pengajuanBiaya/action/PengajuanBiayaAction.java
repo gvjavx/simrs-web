@@ -16,6 +16,8 @@ import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
+import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
@@ -39,8 +41,17 @@ public class PengajuanBiayaAction extends BaseMasterAction {
     private MappingJurnalBo mappingJurnalBoProxy;
     private TipeJurnalBo tipeJurnalBoProxy;
     private KodeRekeningBo kodeRekeningBoProxy;
+    private NotifikasiBo notifikasiBoProxy;
     private PengajuanBiaya pengajuanBiaya;
     private List<PengajuanBiaya> listOfComboPengajuanBiaya = new ArrayList<PengajuanBiaya>();
+
+    public NotifikasiBo getNotifikasiBoProxy() {
+        return notifikasiBoProxy;
+    }
+
+    public void setNotifikasiBoProxy(NotifikasiBo notifikasiBoProxy) {
+        this.notifikasiBoProxy = notifikasiBoProxy;
+    }
 
     public KodeRekeningBo getKodeRekeningBoProxy() {
         return kodeRekeningBoProxy;
@@ -161,21 +172,40 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         logger.info("[PengajuanBiayaAction.add] start process >>>");
         PengajuanBiaya addPengajuanBiaya = new PengajuanBiaya();
         String branchId = CommonUtil.userBranchLogin();
+        addPengajuanBiaya.setBranchIdKanpus("KP");
         if (branchId!=null){
             addPengajuanBiaya.setBranchId(branchId);
         }else{
             addPengajuanBiaya.setBranchId("");
         }
         setPengajuanBiaya(addPengajuanBiaya);
-        setAddOrEdit(true);
-        setAdd(true);
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
-        session.removeAttribute("listOfResultPembayaranDetail");
 
         logger.info("[PengajuanBiayaAction.add] stop process >>>");
         return "init_add";
+    }
+
+    public String addPengajuan() {
+        logger.info("[PengajuanBiayaAction.addPengajuan] start process >>>");
+        PengajuanBiaya addPengajuanBiaya = new PengajuanBiaya();
+        String branchId = CommonUtil.userBranchLogin();
+        String divisiId = CommonUtil.userPosisiId();
+
+        if (branchId!=null){
+            addPengajuanBiaya.setBranchId(branchId);
+            addPengajuanBiaya.setDivisiId(divisiId);
+        }else{
+            addPengajuanBiaya.setBranchId("");
+        }
+        setPengajuanBiaya(addPengajuanBiaya);
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResult");
+
+        logger.info("[PengajuanBiayaAction.addPengajuan] stop process >>>");
+        return "init_add_pengajuan";
     }
 
     public String addPemasukan() {
@@ -434,7 +464,8 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         PengajuanBiaya pengajuanBiaya = getPengajuanBiaya();
         String userLogin = CommonUtil.userLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-
+        BigDecimal bayar = BigDecimal.valueOf(Double.valueOf(pengajuanBiaya.getStTotalBiaya().replace(".","")));
+        pengajuanBiaya.setTotalBiaya(bayar);
         pengajuanBiaya.setCreatedWho(userLogin);
         pengajuanBiaya.setLastUpdate(updateTime);
         pengajuanBiaya.setCreatedDate(updateTime);
@@ -442,7 +473,35 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         pengajuanBiaya.setAction("C");
         pengajuanBiaya.setFlag("Y");
 
+        String branchId = "";
+        if (("SMK").equalsIgnoreCase(pengajuanBiaya.getTransaksi())){
+            branchId = CommonConstant.ID_KANPUS;
+        }else if (("PDU").equalsIgnoreCase(pengajuanBiaya.getTransaksi())){
+            branchId = CommonConstant.ID_KANPUS;
+        }
+
+        //membuat mapping
+        Map dataMap = new HashMap();
+
+        Map rkUnit = new HashMap();
+        rkUnit.put("nilai",bayar);
+        rkUnit.put("rekening_id",kodeRekeningBoProxy.getRekeningIdByKodeRekening(pengajuanBiaya.getCoaAjuan()));
+        dataMap.put("rk_kd_unit",rkUnit);
+
+        Map giro = new HashMap();
+        giro.put("nilai",bayar);
+        giro.put("rekening_id",kodeRekeningBoProxy.getRekeningIdByKodeRekening(pengajuanBiaya.getCoaTarget()));
+        dataMap.put("metode_bayar",giro);
+
         try {
+            noJurnal= billingSystemBoProxy.createJurnal(pengajuanBiaya.getTipeTransaksi(),dataMap,branchId,pengajuanBiaya.getKeterangan(),"Y");
+
+            pengajuanBiaya.setNoJurnal(noJurnal);
+            List<Notifikasi> notif = pengajuanBiayaBoProxy.saveAddPengajuanBiaya(pengajuanBiaya);
+
+            for (Notifikasi notifikasi : notif ){
+                notifikasiBoProxy.sendNotif(notifikasi);
+            }
 
         }catch (GeneralBOException e) {
             Long logId = null;
@@ -458,10 +517,74 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         }
 
         session.removeAttribute("listOfResult");
-        session.removeAttribute("listOfResultPembayaranDetail");
 
         logger.info("[PengajuanBiayaAction.saveAdd] end process >>>");
         return "success_save_add";
+    }
+
+    public String saveAddPengajuan(){
+        logger.info("[PengajuanBiayaAction.saveAddPengajuan] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        String noJurnal="";
+
+        PengajuanBiaya pengajuanBiaya = getPengajuanBiaya();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        BigDecimal bayar = BigDecimal.valueOf(Double.valueOf(pengajuanBiaya.getStTotalBiaya().replace(".","")));
+        BigDecimal sisaBudget = BigDecimal.valueOf(Double.valueOf(pengajuanBiaya.getStBudgetSaatIni().replace(".","")));
+        BigDecimal budgetTerpakai = BigDecimal.valueOf(Double.valueOf(pengajuanBiaya.getStBudgetTerpakai().replace(".","")));
+        pengajuanBiaya.setTotalBiaya(bayar);
+        pengajuanBiaya.setBudgetSaatIni(sisaBudget);
+        pengajuanBiaya.setBudgetTerpakai(budgetTerpakai);
+        pengajuanBiaya.setCreatedWho(userLogin);
+        pengajuanBiaya.setLastUpdate(updateTime);
+        pengajuanBiaya.setCreatedDate(updateTime);
+        pengajuanBiaya.setLastUpdateWho(userLogin);
+        pengajuanBiaya.setAction("C");
+        pengajuanBiaya.setFlag("Y");
+
+        String branchId = pengajuanBiaya.getBranchId();
+
+        //membuat mapping
+        Map dataMap = new HashMap();
+
+        Map rkUnit = new HashMap();
+        rkUnit.put("nilai",bayar);
+        rkUnit.put("rekening_id",kodeRekeningBoProxy.getRekeningIdByKodeRekening(pengajuanBiaya.getCoaAjuan()));
+        dataMap.put("rk_kd_unit",rkUnit);
+
+        Map giro = new HashMap();
+        giro.put("nilai",bayar);
+        giro.put("rekening_id",kodeRekeningBoProxy.getRekeningIdByKodeRekening(pengajuanBiaya.getCoaTarget()));
+        dataMap.put("metode_bayar",giro);
+
+        try {
+            noJurnal= billingSystemBoProxy.createJurnal(pengajuanBiaya.getTipeTransaksi(),dataMap,branchId,pengajuanBiaya.getKeterangan(),"Y");
+
+            pengajuanBiaya.setNoJurnal(noJurnal);
+            List<Notifikasi> notif = pengajuanBiayaBoProxy.saveAddPengajuanBiaya(pengajuanBiaya);
+
+            for (Notifikasi notifikasi : notif ){
+                notifikasiBoProxy.sendNotif(notifikasi);
+            }
+
+        }catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = pengajuanBiayaBoProxy.saveErrorMessage(e.getMessage(), "PengajuanBiayaAction.saveAddPengajuan");
+            } catch (GeneralBOException e1) {
+                logger.error("[PengajuanBiayaAction.saveAddPengajuan] Error when saving error,", e1);
+                throw new GeneralBOException(e1.getMessage());
+            }
+            logger.error("[PengajuanBiayaAction.saveAddPengajuan] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            throw new GeneralBOException(e.getMessage());
+        }
+
+        session.removeAttribute("listOfResult");
+
+        logger.info("[PengajuanBiayaAction.saveAddPengajuan] end process >>>");
+        return "success_save_add_pengajuan";
     }
 
     @Override
@@ -487,8 +610,6 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
 
         session.removeAttribute("listOfResult");
-        session.removeAttribute("listOfResultKodeRekening");
-        session.removeAttribute("listPembayaranDetailModal");
         session.setAttribute("listOfResult", listOfsearchPengajuanBiaya);
 
         String branchId = CommonUtil.userBranchLogin();
@@ -501,6 +622,42 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         logger.info("[PengajuanBiayaAction.search] end process <<<");
 
         return SUCCESS;
+    }
+
+    public String searchPengajuan() {
+        logger.info("[PengajuanBiayaAction.searchPengajuan] start process >>>");
+        PengajuanBiaya searchPengajuanBiaya = getPengajuanBiaya();
+        List<PengajuanBiaya> listOfsearchPengajuanBiaya = new ArrayList();
+        try {
+            listOfsearchPengajuanBiaya = pengajuanBiayaBoProxy.getByCriteria(searchPengajuanBiaya);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = pengajuanBiayaBoProxy.saveErrorMessage(e.getMessage(), "PengajuanBiayaBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[PengajuanBiayaAction.searchPengajuan] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[PengajuanBiayaAction.searchPengajuan] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            return ERROR;
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        session.removeAttribute("listOfResult");
+        session.setAttribute("listOfResult", listOfsearchPengajuanBiaya);
+
+        String branchId = CommonUtil.userBranchLogin();
+        if (branchId!=null){
+            searchPengajuanBiaya.setBranchId(branchId);
+        }else{
+            searchPengajuanBiaya.setBranchId("");
+        }
+        setPengajuanBiaya(searchPengajuanBiaya);
+        logger.info("[PengajuanBiayaAction.searchPengajuan] end process <<<");
+
+        return "success_pengajuan";
     }
 
     @Override
@@ -516,10 +673,123 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         }
         setPengajuanBiaya(data);
         session.removeAttribute("listOfResult");
-        session.removeAttribute("listOfResultPembayaranDetail");
         logger.info("[PengajuanBiayaAction.initForm] end process >>>");
         return INPUT;
     }
+
+    public String initFormPengajuan() {
+        logger.info("[PengajuanBiayaAction.initFormPengajuan] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        String branchId = CommonUtil.userBranchLogin();
+        PengajuanBiaya data = new PengajuanBiaya();
+        if (branchId!=null){
+            data.setBranchId(branchId);
+        }else{
+            data.setBranchId("");
+        }
+        setPengajuanBiaya(data);
+        session.removeAttribute("listOfResult");
+        logger.info("[PengajuanBiayaAction.initFormPengajuan] end process >>>");
+        return "input_pengajuan";
+    }
+
+    public List<PengajuanBiaya> approveAtasan(String id) {
+        logger.info("[PengajuanBiayaAction.approveAtasan] start process >>>");
+        String itemFlag = "Y";
+        List<PengajuanBiaya> pengajuanBiayaList = new ArrayList<PengajuanBiaya>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PengajuanBiayaBo pengajuanBiayaBo= (PengajuanBiayaBo) ctx.getBean("pengajuanBiayaBoProxy");
+
+        if(itemFlag != null){
+            try {
+                PengajuanBiaya search = new PengajuanBiaya();
+                search.setFlag("Y");
+                search.setPengajuanBiayaId(id);
+                pengajuanBiayaList=pengajuanBiayaBo.getByCriteria(search);
+            } catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = pengajuanBiayaBoProxy.saveErrorMessage(e.getMessage(), "PengajuanBiayaAction.approveAtasan");
+                } catch (GeneralBOException e1) {
+                    logger.error("[PengajuanBiayaAction.approveAtasan] Error when retrieving edit data,", e1);
+                }
+                logger.error("[PengajuanBiayaAction.approveAtasan] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for edit, please inform to your admin.");
+            }
+        }
+
+        setAddOrEdit(true);
+        logger.info("[PengajuanBiayaAction.approveAtasan] end process >>>");
+        return pengajuanBiayaList;
+    }
+    public String saveApprove(String id, String statusApprove, String who,String coaBank,String coaRk,String jumlah,String tipeTransaksi,String branchId,String keterangan){
+        logger.info("[PengajuanBiayaAction.saveApprove] start process >>>");
+        PengajuanBiaya editPengajuanBiaya = new PengajuanBiaya();
+        List<Notifikasi> notifikasiList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
+        PengajuanBiayaBo pengajuanBiayaBo= (PengajuanBiayaBo) ctx.getBean("pengajuanBiayaBoProxy");
+        KodeRekeningBo kodeRekeningBo= (KodeRekeningBo) ctx.getBean("kodeRekeningBoProxy");
+        BillingSystemBo billingSystemBo= (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+
+        editPengajuanBiaya.setPengajuanBiayaId(id);
+        if(who.equals("atasan")){
+            if(statusApprove.equals("Y")){
+                editPengajuanBiaya.setAprovalFlag(statusApprove);
+            }else{
+                editPengajuanBiaya.setAprovalFlag("N");
+            }
+        }
+
+        BigDecimal bayar = BigDecimal.valueOf(Double.valueOf(jumlah.replace(".","")));
+
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+        editPengajuanBiaya.setLastUpdateWho(userLogin);
+        editPengajuanBiaya.setLastUpdate(updateTime);
+        editPengajuanBiaya.setAction("U");
+        editPengajuanBiaya.setFlag("Y");
+        editPengajuanBiaya.setAprovalDate(new Date(updateTime.getTime()));
+
+        try {
+            //membuat mapping
+            Map dataMap = new HashMap();
+
+            Map rkUnit = new HashMap();
+            rkUnit.put("nilai",bayar);
+            rkUnit.put("rekening_id",kodeRekeningBo.getRekeningIdByKodeRekening(coaRk));
+            dataMap.put("rk_kd_unit",rkUnit);
+
+            Map giro = new HashMap();
+            giro.put("nilai",bayar);
+            giro.put("rekening_id",kodeRekeningBo.getRekeningIdByKodeRekening(coaBank));
+            dataMap.put("metode_bayar",giro);
+
+            notifikasiList  = pengajuanBiayaBo.saveApprove(editPengajuanBiaya);
+
+            billingSystemBo.createJurnal(tipeTransaksi,dataMap,branchId,keterangan,"Y");
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = pengajuanBiayaBo.saveErrorMessage(e.getMessage(), "PengajuanBiayaAction.saveApprove");
+            } catch (GeneralBOException e1) {
+                logger.error("[PengajuanBiayaAction.saveApprove] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[PengajuanBiayaAction.saveApprove] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+        for (Notifikasi notifikasi : notifikasiList){
+            notifikasiBo.sendNotif(notifikasi);
+        }
+
+        logger.info("[PengajuanBiayaAction.saveApprove] end process <<<");
+
+        return "success_save_edit";
+    }
+
     public String paging(){
         return SUCCESS;
     }

@@ -32,7 +32,7 @@
 	<field name="noBudgetting" class="java.lang.String"/>
 	<field name="nilaiTotal" class="java.math.BigDecimal"/>
 	<field name="nilaiTotalRealisasi" class="java.math.BigDecimal"/>
-	<field name="nilaiTotalSisaBiaya" class="java.math.BigDecimal"/>
+	<field name="nilaiTotalSisaBayar" class="java.math.BigDecimal"/>
 	<variable name="SUM_nilai_total" class="java.math.BigDecimal" resetType="Group" resetGroup="rekening" calculation="Sum">
 		<variableExpression><![CDATA[$F{nilaiTotal}]]></variableExpression>
 	</variable>
@@ -290,7 +290,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA["RKAP"]]></textFieldExpression>
@@ -303,7 +303,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Realisasi"]]></textFieldExpression>
@@ -316,7 +316,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Sisa Biaya"]]></textFieldExpression>
@@ -375,7 +375,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{nilaiTotalSisaBiaya}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nilaiTotalSisaBayar}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField" mode="Transparent" x="226" y="0" width="104" height="15" isPrintWhenDetailOverflows="true" uuid="dc3e0632-00bc-4654-b715-e939f149437e"/>
@@ -398,7 +398,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nilaiTotal}]]></textFieldExpression>

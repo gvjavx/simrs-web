@@ -1659,6 +1659,22 @@ public class BudgetingAction {
         return response;
     }
 
+
+    public String getBudgetSaatIni(String branchId,String divisiId,String tanggal,String coaBiaya){
+        String budgetSaatIni ;
+        String[] arrTanggal = tanggal.split("-");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
+        Budgeting budgetingStatus = findLastStatus(branchId,arrTanggal[0]);
+        budgetingStatus.setDivisi(divisiId);
+        budgetingStatus.setCoa(coaBiaya);
+
+        budgetSaatIni = budgetingBo.getBudgetBiayaDivisiSaatIni(budgetingStatus);
+
+        return budgetSaatIni;
+    }
+
     public void setBudgetingBoProxy(BudgetingBo budgetingBoProxy) {
         this.budgetingBoProxy = budgetingBoProxy;
     }

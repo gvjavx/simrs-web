@@ -18,13 +18,18 @@ public class ImPengajuanBiayaEntity implements Serializable {
     private String divisiId;
     private String coaAjuan;
     private BigDecimal totalBiaya;
-    private String tahun;
+    private Date tanggal;
     private String aprovalId;
     private String aprovalName;
-    private String aprovalDate;
+    private Date aprovalDate;
     private String aprovalFlag;
     private String branchId;
     private BigDecimal budgetSaatIni;
+    private BigDecimal budgetTerpakai;
+    private String transaksi;
+    private String coaTarget;
+    private String keterangan;
+    private String noJurnal;
 
     private String flag;
     private String action;
@@ -32,6 +37,30 @@ public class ImPengajuanBiayaEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public BigDecimal getBudgetTerpakai() {
+        return budgetTerpakai;
+    }
+
+    public void setBudgetTerpakai(BigDecimal budgetTerpakai) {
+        this.budgetTerpakai = budgetTerpakai;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getNoJurnal() {
+        return noJurnal;
+    }
+
+    public void setNoJurnal(String noJurnal) {
+        this.noJurnal = noJurnal;
+    }
 
     public BigDecimal getBudgetSaatIni() {
         return budgetSaatIni;
@@ -81,12 +110,28 @@ public class ImPengajuanBiayaEntity implements Serializable {
         this.totalBiaya = totalBiaya;
     }
 
-    public String getTahun() {
-        return tahun;
+    public Date getTanggal() {
+        return tanggal;
     }
 
-    public void setTahun(String tahun) {
-        this.tahun = tahun;
+    public void setTanggal(Date tanggal) {
+        this.tanggal = tanggal;
+    }
+
+    public String getTransaksi() {
+        return transaksi;
+    }
+
+    public void setTransaksi(String transaksi) {
+        this.transaksi = transaksi;
+    }
+
+    public String getCoaTarget() {
+        return coaTarget;
+    }
+
+    public void setCoaTarget(String coaTarget) {
+        this.coaTarget = coaTarget;
     }
 
     public String getAprovalId() {
@@ -105,11 +150,11 @@ public class ImPengajuanBiayaEntity implements Serializable {
         this.aprovalName = aprovalName;
     }
 
-    public String getAprovalDate() {
+    public Date getAprovalDate() {
         return aprovalDate;
     }
 
-    public void setAprovalDate(String aprovalDate) {
+    public void setAprovalDate(Date aprovalDate) {
         this.aprovalDate = aprovalDate;
     }
 

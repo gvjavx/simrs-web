@@ -245,6 +245,38 @@ public class UserAction extends BaseMasterAction {
         return "init_combo_branch";
     }
 
+    public String initComboBranchSelainKp() {
+
+        Branch braches = new Branch();
+        braches.setFlag("Y");
+
+        List<Branch> listOfBranches = new ArrayList<Branch>();
+        List<Branch> listOfResult = new ArrayList<Branch>();
+        try {
+            listOfBranches = branchBoProxy.getByCriteria(braches);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = branchBoProxy.saveErrorMessage(e.getMessage(), "BranchBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[UserAction.initComboBranchSelainKp] Error when saving error,", e1);
+            }
+            logger.error("[UserAction.initComboBranchSelainKp] Error when searching data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
+            return "failure";
+        }
+
+        for (Branch branch : listOfBranches){
+            if (!"KP".equalsIgnoreCase(branch.getBranchId())){
+                listOfResult.add(branch);
+            }
+        }
+
+        listOfComboBranches.addAll(listOfResult);
+
+        return "init_combo_branch";
+    }
+
     public String initComboPosition() {
 
         Position position = new Position();

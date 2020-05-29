@@ -67,7 +67,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Pengajuan Biaya
+            Transaksi RK
         </h1>
     </section>
     <!-- Main content -->
@@ -76,7 +76,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Pengajuan Biaya </h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Transaksi RK </h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">
@@ -112,7 +112,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'PDU':'Penarikan Pendapatan Unit','SMK':'Setoran Modal Kerja ke Unit'}"
+                                                        <s:select list="#{'PDU':'Swift Kas Unit ke Pusat','SMK':'Setoran Modal Kerja ke Unit'}"
                                                                   id="transaksi" name="pengajuanBiaya.transaksi"
                                                                   headerKey="" headerValue="[Select One]" cssClass="form-control" />
                                                     </table>
@@ -120,7 +120,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Pengajuan Biaya ID :</small></label>
+                                                    <label class="control-label"><small>Transaksi RK ID :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -181,10 +181,10 @@
                                                         </sj:submit>
                                                     </td>
                                                     <td>
-                                                        <a href="addPengajuan_pengajuanBiaya.action" class="btn btn-success" ><i class="fa fa-plus"></i> Add Pengajuan Biaya</a>
+                                                        <a href="add_pengajuanBiaya.action" class="btn btn-success" ><i class="fa fa-plus"></i> Add Transaksi RK</a>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initFormPengajuan_pengajuanBiaya"/>'">
+                                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_pengajuanBiaya"/>'">
                                                             <i class="fa fa-refresh"></i> Reset
                                                         </button>
                                                     </td>
@@ -212,7 +212,7 @@
                                                                     <img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_view">
                                                                 </a>
                                                             </display:column>
-                                                            <display:column property="pengajuanBiayaId" sortable="true" title="Pengajuan Biaya ID" />
+                                                            <display:column property="pengajuanBiayaId" sortable="true" title="Transaksi RK ID" />
                                                             <display:column property="tanggal" sortable="true" title="Tanggal" />
                                                             <display:column property="noJurnal" sortable="true" title="No. Jurnal" />
                                                             <display:column property="keterangan" sortable="true" title="Keterangan" />

@@ -688,6 +688,11 @@
       <convert converter="bean" match="com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity"/>
       <convert converter="bean" match="com.neurix.hris.master.dokterKsoTindakan.model.DokterKsoTindakan"/>
       <convert converter="bean" match="com.neurix.hris.master.dokterKsoTindakan.model.ImSimrsDokterKsoTindakan"/>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.akuntansi.transaksi.pengajuanBiaya.action.PengajuanBiayaAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.akuntansi.transaksi.pengajuanBiaya.model.PengajuanBiaya"/>
   </allow>
 
 </dwr>
