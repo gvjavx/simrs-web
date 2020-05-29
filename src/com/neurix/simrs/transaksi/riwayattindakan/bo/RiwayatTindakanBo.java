@@ -11,6 +11,7 @@ import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -29,4 +30,5 @@ public interface RiwayatTindakanBo {
     public ItSimrsRiwayatTindakanEntity getRiwayatTindakanResep(String idDetail, String jenisPasien) throws GeneralBOException;
     public List<String> getListKeteranganByIdDetailCheckup(String idDetailCheckup) throws GeneralBOException;
     public MtSimrsItemPaketEntity getItemPaketEntity(String idPaket, String idItem) throws GeneralBOException;
+    public BigDecimal getSumTarifPaketLab(String idPaket, String idLab) throws GeneralBOException;
 }

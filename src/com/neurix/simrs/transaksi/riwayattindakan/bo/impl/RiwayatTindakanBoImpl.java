@@ -16,6 +16,7 @@ import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -343,4 +344,7 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
         return null;
     }
 
+    public BigDecimal getSumTarifPaketLab(String idPaket, String idLab) throws GeneralBOException{
+        return itemPaketDao.getSumTarifPaketLab(idPaket, idLab);
+    }
 }
