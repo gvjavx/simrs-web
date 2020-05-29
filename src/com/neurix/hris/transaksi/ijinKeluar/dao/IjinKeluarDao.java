@@ -269,7 +269,7 @@ public class IjinKeluarDao extends GenericDao<IjinKeluarEntity, String> {
         List<IjinKeluarEntity> results = this.sessionFactory.getCurrentSession().createCriteria(IjinKeluarEntity.class)
                 .add(Restrictions.eq("nip", nip))
                 .add(Restrictions.eq("approvalFlag", "Y"))
-                .add(Restrictions.eq("approvalSdmFlag", "Y"))
+//                .add(Restrictions.eq("approvalSdmFlag", "Y"))
                 .add(Restrictions.ne("cancelFlag","Y"))
                 .add(Restrictions.ne("ijinId","IJ001"))
                 .add(Restrictions.le("tanggalAwal",tanggal))

@@ -65,6 +65,8 @@ public class Mutasi extends BaseModel {
     private String levelLamaName;
     private String levelBaruName;
 
+    private String tipePegawai;
+
     public String getLevelBaruName() {
         return levelBaruName;
     }
@@ -435,5 +437,13 @@ public class Mutasi extends BaseModel {
 
     public void setProfesiLamaName(String profesiLamaName) {
         this.profesiLamaName = profesiLamaName;
+    }
+
+    public String getTipePegawai() {
+        return tipePegawai;
+    }
+
+    public void setTipePegawai(String tipePegawai) {
+        this.tipePegawai = tipePegawai;
     }
 }

@@ -674,7 +674,7 @@ public class MutasiAction extends BaseMasterAction{
     public String saveAnggotaAdd(String nip, String personName, String branchLamaId, String branchLamaName, String divisiLamaId, String divisiLamaName,
                                String positionLamaId, String positionLamaName, String pjsLama, String menggantikanId, String menggantikanNama, String branchBaruId, String branchBaruName,
                                String divisiBaruId, String divisiBaruName, String positionBaruId, String positionBaruName, String pjsBaru, String status, String tipe, String levelLama,
-                                  String levelBaru, String levelLamaName, String levelBaruName, String profesiLamaId, String profesiLamaName, String profesiBaruId, String profesiBaruName){
+                                  String levelBaru, String levelLamaName, String levelBaruName, String profesiLamaId, String profesiLamaName, String profesiBaruId, String profesiBaruName, String tipePegawai){
         logger.info("[SppdAction.saveAdd] start process >>>");
         String statusSave="";
         List<Mutasi> mutasiList = null;
@@ -720,6 +720,7 @@ public class MutasiAction extends BaseMasterAction{
                 mutasi.setPjs(pjsBaru);
                 mutasi.setProfesiBaruId(profesiBaruId);
                 mutasi.setProfesiBaruName(profesiBaruName);
+                mutasi.setTipePegawai(tipePegawai);
 
                 mutasi.setStatus(status);
 
@@ -796,7 +797,7 @@ public class MutasiAction extends BaseMasterAction{
     public boolean saveAnggotaEdit(String nipOld, String nip, String personName, String branchLamaId, String branchLamaName,String divisiLamaId, String divisiLamaName,
                                    String positionLamaId, String positionLamaName, String pjsLama, String menggantikanId, String menggantikanNama, String branchBaruId,
                                    String branchBaruName, String divisiBaruId, String divisiBaruName, String positionBaruId, String positionBaruName,String pjsBaru, String status,
-                                   String levelLamaId, String levelBaruId, String levelLamaName, String levelBaruName, String profesiLamaId, String profesiLamName, String profesiBaruId, String profesiBaruName){
+                                   String levelLamaId, String levelBaruId, String levelLamaName, String levelBaruName, String profesiLamaId, String profesiLamName, String profesiBaruId, String profesiBaruName, String tipePegawai){
         logger.info("[KeluargaAction.search] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<Mutasi> mutasiList = (List<Mutasi>) session.getAttribute("listOfMutasi");
@@ -839,6 +840,7 @@ public class MutasiAction extends BaseMasterAction{
                             mutasi.setProfesiLamaName(profesiLamName);
                             mutasi.setProfesiBaruId(profesiBaruId);
                             mutasi.setProfesiBaruName(profesiBaruName);
+                            mutasi.setTipePegawai(tipePegawai);
 
                             listHasil.add(mutasi);
                         }else{

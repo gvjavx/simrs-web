@@ -371,7 +371,7 @@
                                         $.each(data, function (i, item) {
                                             var labelItem =item.namaPegawai;
                                             mapped[labelItem] = {pegawai:item.namaPegawai, id: item.nip, label: labelItem, branchId : item.branch,
-                                                divisiId: item.divisi, positionId : item.positionId, pjs : item.pjs, golongan:item.golongan, profesiId:item.profesiId };
+                                                divisiId: item.divisi, positionId : item.positionId, pjs : item.pjs, golongan:item.golongan, profesiId:item.profesiId, tipePegawai:item.tipePegawai };
                                             functions.push(labelItem);
                                         });
                                         process(functions);
@@ -384,6 +384,7 @@
                                         $('#divisiLamaId1').val("").change();
                                         $('#golonganLamaId1').val("").change();
                                         $('#profesiLamaId1').val("").change();
+                                        $('#tipePegawai1').val("").change();
                                     }
                                 },
                                 updater: function (item) {
@@ -393,14 +394,20 @@
                                     $('#positionLamaId1').val(selectedObj.positionId).change();
                                     $('#branchLamaId1').val(selectedObj.branchId).change();
                                     $('#divisiLamaId1').val(selectedObj.divisiId).change();
-                                    $('#golonganLamaId1').val(selectedObj.golongan).change();
+//                                    $('#golonganLamaId1').val(selectedObj.golongan).change();
                                     $('#profesiLamaId1').val(selectedObj.profesiId).change();
+                                    $('#tipePegawai1').val(selectedObj.tipePegawai).change();
                                     if(selectedObj.pjs == 'Y'){
                                         document.getElementById("pjsLama").checked = true;
                                         $("#txtPjsLama").val('Y');
                                     }else{
                                         document.getElementById("pjsLama").checked = false;
                                         $("#txtPjsLama").val('N');
+                                    }
+                                    if (selectedObj.tipePegawai == 'TP01'){
+                                        $('#golonganLamaId1').val(selectedObj.golongan).change();
+                                    }else {
+                                        $('#golonganLamaId2').val(selectedObj.golongan).change();
                                     }
                                     return namaAlat;
                                 }
@@ -445,12 +452,34 @@
                         </div>
                     </div>
 
+                    <%--<div class="form-group">--%>
+                        <%--<label class="control-label col-sm-4" for="positionLamaId1">Level Lama:</label>--%>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>--%>
+                            <%--<s:select list="#initComboTipe.listComboGolongan" id="golonganLamaId1" name="mutasi.levelLama" disabled="true"--%>
+                                      <%--listKey="golonganId" listValue="stLevel" headerKey="" headerValue="" cssClass="form-control"/>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                    <div style="display: none" class="form-group">
+                        <label class="control-label col-sm-4" >Status Pegawai: </label>
+                        <div class="col-sm-8">
+                            <s:action id="initComboTipe" namespace="/tipepegawai" name="searchTipePegawai_tipepegawai"/>
+                            <s:select list="#initComboTipe.listComboTipePegawai" id="tipePegawai1" name="mutasi.tipePegawai" onchange="changePegawai(this.value)"
+                                      listKey="tipePegawaiId" listValue="tipePegawaiName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <label class="control-label col-sm-4" for="positionLamaId1">Level Lama:</label>
-                        <div class="col-sm-8">
+                        <div id="golongan1Group" class="col-sm-8">
                             <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
                             <s:select list="#initComboTipe.listComboGolongan" id="golonganLamaId1" name="mutasi.levelLama" disabled="true"
-                                      listKey="golonganId" listValue="stLevel" headerKey="" headerValue="" cssClass="form-control"/>
+                                      listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                        </div>
+                        <div style="display: none" id="golongan2Group" class="col-sm-8">
+                            <s:action id="initComboTipe" namespace="/golongan" name="initComboGolonganPkwt_golongan"/>
+                            <s:select list="#initComboTipe.listComboGolonganPkwt" id="golonganLamaId2" name="mutasi.levelLama" disabled="true"
+                                      listKey="golonganPkwtId" listValue="golonganPkwtName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                         </div>
                     </div>
 
@@ -540,6 +569,16 @@
 </html>
 
 <script>
+
+    window.changePegawai = function (id) {
+        if (id == "TP01") {
+            $('#golongan1Group').show();
+            $('#golongan2Group').hide();
+        } else {
+            $('#golongan1Group').hide();
+            $('#golongan2Group').show();
+        }
+    };
 
     window.listDivisi= function(){
         var branch = document.getElementById("branchBaruId1").value;
@@ -693,7 +732,13 @@
                 $('#branchLamaId1').val(item.branchLamaId).change();
                 $('#positionLamaId1').val(item.positionLamaId).change();
                 $('#divisiLamaId1').val(item.divisiLamaId).change();
-                $('#golonganLamaId1').val(item.levelLama).change();
+//                $('#golonganLamaId1').val(item.levelLama).change();
+                console.log(item.tipePegawai);
+                if (item.tipePegawai == 'TP01'){
+                    $('#golonganLamaId1').val(item.levelLama).change();
+                }else {
+                    $('#golonganLamaId2').val(item.levelLama).change();
+                }
                 $('#golonganBaruId1').val(item.levelBaru).change();
 
                 if(item.status == "R" || item.status == "P"){
@@ -790,7 +835,14 @@
                 $('#branchLamaId1').val(item.branchLamaId).change();
                 $('#positionLamaId1').val(item.positionLamaId).change();
                 $('#divisiLamaId1').val(item.divisiLamaId).change();
-                $('#golonganLamaId1').val(item.levelLama).change();
+                $('#tipePegawai1').val(item.tipePegawai).change();
+                console.log(item.tipePegawai);
+                if (item.tipePegawai == 'TP01'){
+                    $('#golonganLamaId1').val(item.levelLama).change();
+                }else {
+                    $('#golonganLamaId2').val(item.levelLama).change();
+                }
+
                 $('#golonganBaruId1').val(item.levelBaru).change();
 
                 //listPosisi(item.branchBaruId, item.divisiBaruId);
@@ -846,13 +898,22 @@
         var branchLamaId  = document.getElementById("branchLamaId1").value;
         var divisiLamaId    = document.getElementById("divisiLamaId1").value;
         var positionLamaId = document.getElementById("positionLamaId1").value;
-        var levelLamaId = document.getElementById("golonganLamaId1").value;
+//        var levelLamaId = document.getElementById("golonganLamaId1").value;
         var txtPjsLama = document.getElementById("txtPjsLama").value;
 
         var branchLamaName      = $('#branchLamaId1 option:selected').text();
         var divisiLamaName      = $('#divisiLamaId1 option:selected').text();
         var positionLamaName    = $('#positionLamaId1 option:selected').text();
-        var levelLamaName    = $('#golonganLamaId1 option:selected').text();
+//        var levelLamaName    = $('#golonganLamaId1 option:selected').text();
+
+        var tipePegawai = document.getElementById("tipePegawai1").value;
+        if (tipePegawai == 'TP01'){
+            var levelLamaId = document.getElementById("golonganLamaId1").value;
+            var levelLamaName    = $('#golonganLamaId1 option:selected').text();
+        }else {
+            var levelLamaId = document.getElementById("golonganLamaId2").value;
+            var levelLamaName    = $('#golonganLamaId2 option:selected').text();
+        }
 
         var menggantikanId      = document.getElementById("penggantiId").value;
         var menggantikanNama    = $('#penggantiId option:selected').text();
@@ -885,7 +946,7 @@
                     console.log(profesiBaruName);
                     MutasiAction.saveAnggotaAdd(nip, personName, branchLamaId, branchLamaName, divisiLamaId, divisiLamaName, positionLamaId, positionLamaName, txtPjsLama,
                         menggantikanId, menggantikanNama, branchBaruId, branchBaruName, divisiBaruId, divisiBaruName, positionBaruId, positionBaruName, txtPjsBaru,  status,
-                        tipe,levelLamaId,levelBaruId,levelLamaName,levelBaruName, profesiLamaId, profesiLamaName, profesiBaruId, profesiBaruName, function(result) {
+                        tipe,levelLamaId,levelBaruId,levelLamaName,levelBaruName, profesiLamaId, profesiLamaName, profesiBaruId, profesiBaruName, tipePegawai, function(result) {
                             if(result==""){
                                 alert('Data Successfully Added');
                                 $('#modal-edit').modal('hide');
@@ -906,7 +967,7 @@
                                 dwr.engine.setAsync(false);
                                 MutasiAction.saveAnggotaEdit(nipOld,nip, personName, branchLamaId, branchLamaName, divisiLamaId, divisiLamaName, positionLamaId, positionLamaName,
                                     txtPjsLama, menggantikanId, menggantikanNama, branchBaruId, branchBaruName, divisiBaruId, divisiBaruName, positionBaruId, positionBaruName,
-                                    txtPjsBaru, status, levelLamaId,levelBaruId,levelLamaName,levelBaruName,profesiLamaId, profesiLamaName, profesiBaruId, profesiBaruName,function(listdata) {
+                                    txtPjsBaru, status, levelLamaId,levelBaruId,levelLamaName,levelBaruName,profesiLamaId, profesiLamaName, profesiBaruId, profesiBaruName, tipePegawai,function(listdata) {
                                         if(listdata){
                                             alert('Data Successfully Updated');
                                             $('#modal-edit').modal('hide');

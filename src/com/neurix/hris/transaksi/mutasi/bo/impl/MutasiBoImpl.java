@@ -461,9 +461,22 @@ public class MutasiBoImpl implements MutasiBo {
                             imBiodataEntitys = biodataDao.findBiodataLikeNip(mutasi.getNip());
                             if (imBiodataEntitys != null){
                                 for (ImBiodataEntity imBiodataEntity : imBiodataEntitys) {
-                                    historyJabatanPegawai.setTipePegawaiId(imBiodataEntity.getTipePegawai());
-                                    tipePegawaiName = historyJabatanPegawaiDao.getTipePegawaiById(imBiodataEntity.getTipePegawai());
-                                    historyJabatanPegawai.setTipePegawaiName(tipePegawaiName);
+
+                                    if (imBiodataEntity.getTipePegawai().equalsIgnoreCase("TP01")){
+                                        historyJabatanPegawai.setGolonganId(mutasi.getLevelBaru());
+                                        golonganName = historyJabatanPegawaiDao.getGolonganById(mutasi.getLevelBaru());
+                                        historyJabatanPegawai.setGolonganName(golonganName);
+                                        historyJabatanPegawai.setTipePegawaiId(imBiodataEntity.getTipePegawai());
+                                        tipePegawaiName = historyJabatanPegawaiDao.getTipePegawaiById(imBiodataEntity.getTipePegawai());
+                                        historyJabatanPegawai.setTipePegawaiName(tipePegawaiName);
+                                    }else {
+                                        historyJabatanPegawai.setGolonganId(mutasi.getLevelBaru());
+                                        golonganName = historyJabatanPegawaiDao.getGolonganById(mutasi.getLevelBaru());
+                                        historyJabatanPegawai.setGolonganName(golonganName);
+                                        historyJabatanPegawai.setTipePegawaiId("TP01");
+                                        tipePegawaiName = historyJabatanPegawaiDao.getTipePegawaiById("TP01");
+                                        historyJabatanPegawai.setTipePegawaiName(tipePegawaiName);
+                                    }
                                 }
                             }
 
@@ -531,10 +544,17 @@ public class MutasiBoImpl implements MutasiBo {
                                 }else {
                                     imBiodataEntity.setKeterangan("Telah Move Holding pada tanggal " + bean.getTanggalEfektif());
                                 }
+
                             }else{
                                 itPersonilPositionEntity.setBranchId(mutasi.getBranchBaruId());
                                 itPersonilPositionEntity.setPositionId(mutasi.getPositionBaruId());
                                 itPersonilPositionEntity.setAction("U");
+                            }
+                            if (imBiodataEntity.getTipePegawai().equalsIgnoreCase("TP03")){
+                                imBiodataEntity.setTipePegawai("TP01");
+                                imBiodataEntity.setGolongan(mutasi.getLevelBaru());
+                            }else {
+                                imBiodataEntity.setGolongan(mutasi.getLevelBaru());
                             }
 
                             itPersonilPositionEntity.setLastUpdateWho(bean.getLastUpdateWho());
