@@ -354,8 +354,9 @@
                                 <table class="table table-bordered table-striped" style="margin-top: 20px" id="table_lab">
                                     <thead>
                                     <tr bgcolor="#90ee90">
-                                        <td>Pemeriksaan</td>
                                         <td>Jenis Lab</td>
+                                        <td>Pemeriksaan</td>
+                                        <td>Item Periksa</td>
                                         <td align="center" width="10%">Action</td>
                                     </tr>
                                     </thead>
@@ -709,6 +710,8 @@
         var idKategori = $('#lab_kategori').val();
         var idLab = $('#lab_lab').val();
         var idParameter = $('#lab_parameter').val();
+        var tarif = $('#lab_tarif_paket').val();
+        var namaParameter = $('#lab_parameter').text();
 
         if (idKategori != '' && idLab != '') {
 
@@ -735,8 +738,8 @@
                     '<td>'+idLab.split("|")[1]+'<input type="hidden" id="kategori_lab'+row+'" value="'+idk+'">'+'</td>' +
                     '<td>'+idKategori.split("|")[1]+
                     '<input type="hidden" id="lab_id'+row+'" value="'+idl+'">'+
-                    '<input type="hidden" id="parameter_id'+row+'" value="'+idParameter+'">'+
                     '</td>' +
+                    '<td>'+ namaParameter + '<input type="hidden" id="parameter_id'+row+'" value="'+idParameter+'"></td>'+
                     '<td align="center">' + '<img border="0" class="hvr-grow" onclick="delRow(\''+idl+'\')" src="<s:url value="/pages/images/icons8-cancel-25.png"/>" style="cursor: pointer;">' + '</td>'+
                     '</tr>';
                 $('#body_lab').append(table);
