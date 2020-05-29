@@ -1,6 +1,8 @@
 package com.neurix.simrs.transaksi.riwayattindakan.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.transaksi.paketperiksa.dao.ItemPaketDao;
+import com.neurix.simrs.transaksi.paketperiksa.model.MtSimrsItemPaketEntity;
 import com.neurix.simrs.transaksi.permintaanresep.model.ImSimrsPermintaanResepEntity;
 import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
 import com.neurix.simrs.transaksi.riwayattindakan.dao.RiwayatTindakanDao;
@@ -24,6 +26,12 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
 
     private RiwayatTindakanDao riwayatTindakanDao;
     private TindakanTransitorisDao tindakanTransitorisDao;
+    private ItemPaketDao itemPaketDao;
+
+    public void setItemPaketDao(ItemPaketDao itemPaketDao) {
+        this.itemPaketDao = itemPaketDao;
+    }
+
     private static transient Logger logger = Logger.getLogger(RiwayatTindakanBoImpl.class);
 
     public void setRiwayatTindakanDao(RiwayatTindakanDao riwayatTindakanDao) {
@@ -312,4 +320,27 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
     public List<String> getListKeteranganByIdDetailCheckup(String idDetailCheckup) throws GeneralBOException {
         return riwayatTindakanDao.listOfKeteranganExistByIdDetailCheckup(idDetailCheckup);
     }
+
+    @Override
+    public MtSimrsItemPaketEntity getItemPaketEntity(String idPaket, String idItem) throws GeneralBOException{
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_paket", idPaket);
+        hsCriteria.put("id_item", idItem);
+
+        List<MtSimrsItemPaketEntity> itemPaketEntities = new ArrayList<>();
+        try {
+            itemPaketEntities = itemPaketDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[CheckupDetailAction.getItemPaketEntity] ERROR. ", e);
+            throw new GeneralBOException("[CheckupDetailAction.getItemPaketEntity] ERROR. "+ e.getMessage());
+        }
+
+        if (itemPaketEntities.size() > 0){
+            return itemPaketEntities.get(0);
+        }
+
+        return null;
+    }
+
 }
