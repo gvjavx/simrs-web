@@ -103,50 +103,49 @@
                                                     <%--<option value="DRAFT">DRAFT</option>--%>
                                                     <%--<option value="FINAL">FINAL</option>--%>
                                                     <%--<option value="REVISI">REVISI</option>--%>
-                                                <%--</select>--%>
+                                                <%--</select>--%>  <%--<div class="row">--%>
+                                        <%--<label class="control-label col-sm-2">Coa</label>--%>
+                                        <%--<div class="col-sm-2">--%>
+                                        <%--<input type="text" class="form-control" id="coa">--%>
+                                        <%--<script>--%>
+                                        <%--$(document).ready(function() {--%>
+                                        <%--var functions, mapped;--%>
+                                        <%--$('#coa').typeahead({--%>
+                                        <%--minLength: 1,--%>
+                                        <%--source: function (query, process) {--%>
+                                        <%--functions = [];--%>
+                                        <%--mapped = {};--%>
+                                        <%--var data = [];--%>
+                                        <%--dwr.engine.setAsync(false);--%>
+                                        <%--KodeRekeningAction.initTypeaheadKodeRekening(query,function (listdata) {--%>
+                                        <%--data = listdata;--%>
+                                        <%--});--%>
+                                        <%--$.each(data, function (i, item) {--%>
+                                        <%--var labelItem = item.kodeRekening + " | " + item.namaKodeRekening;--%>
+                                        <%--mapped[labelItem] = {--%>
+                                        <%--id: item.rekeningId,--%>
+                                        <%--nama: item.namaKodeRekening,--%>
+                                        <%--kode : item.kodeRekening,--%>
+                                        <%--parent :item.parentId--%>
+                                        <%--};--%>
+                                        <%--functions.push(labelItem);--%>
+                                        <%--});--%>
+                                        <%--process(functions);--%>
+                                        <%--},--%>
+                                        <%--updater: function (item) {--%>
+                                        <%--var selectedObj = mapped[item];--%>
+                                        <%--$('#rekeningid').val(selectedObj.id);--%>
+                                        <%--return selectedObj.kode;--%>
+                                        <%--}--%>
+                                        <%--});--%>
+                                        <%--});--%>
+                                        <%--</script>--%>
+                                        <%--</div>--%>
+                                        <%--</div>
                                             <%--</div>--%>
                                         <%--</div>--%>
-                                        <div class="row">
-                                            <label class="control-label col-sm-2">Coa</label>
-                                            <div class="col-sm-2">
-                                                <input type="text" class="form-control" id="coa">
-                                                <script>
-                                                    $(document).ready(function() {
-                                                        var functions, mapped;
-                                                        $('#coa').typeahead({
-                                                            minLength: 1,
-                                                            source: function (query, process) {
-                                                                functions = [];
-                                                                mapped = {};
-                                                                var data = [];
-                                                                dwr.engine.setAsync(false);
-                                                                KodeRekeningAction.initTypeaheadKodeRekening(query,function (listdata) {
-                                                                    data = listdata;
-                                                                });
-                                                                $.each(data, function (i, item) {
-                                                                    var labelItem = item.kodeRekening + " | " + item.namaKodeRekening;
-                                                                    mapped[labelItem] = {
-                                                                        id: item.rekeningId,
-                                                                        nama: item.namaKodeRekening,
-                                                                        kode : item.kodeRekening,
-                                                                        parent :item.parentId
-                                                                    };
-                                                                    functions.push(labelItem);
-                                                                });
-                                                                process(functions);
-                                                            },
-                                                            updater: function (item) {
-                                                                var selectedObj = mapped[item];
-                                                                $('#rekeningid').val(selectedObj.id);
-                                                                return selectedObj.kode;
-                                                            }
-                                                        });
-                                                    });
-                                                </script>
-                                                <input type="hidden" id="rekeningid">
-                                            </div>
-                                        </div>
 
+                                        <input type="hidden" id="rekeningid">
 
                                     </div>
                                 </div>

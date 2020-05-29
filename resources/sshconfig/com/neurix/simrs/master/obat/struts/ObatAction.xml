@@ -86,7 +86,8 @@
 
             <result name="print_riwayat" type="jasper">
                 <param name="location">/pages/report/com/neurix/simrs/printReportRiwayatObatMasuk.jasper</param>
-                <param name="connection">connection</param>
+                <!--<param name="connection">connection</param>-->
+                <param name="dataSource">report</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
             </result>

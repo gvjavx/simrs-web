@@ -241,6 +241,11 @@ public class LabDetailBoImpl implements LabDetailBo {
     }
 
     @Override
+    public ImSimrsLabDetailEntity getLabDetailEntityById(String idParameter) throws GeneralBOException {
+        return labDetailDao.getById("idLabDetail", idParameter);
+    }
+
+    @Override
     public List<LabDetail> getAll() throws GeneralBOException {
         return null;
     }

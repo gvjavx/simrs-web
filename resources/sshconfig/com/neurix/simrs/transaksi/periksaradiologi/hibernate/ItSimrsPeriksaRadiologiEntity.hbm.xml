@@ -58,7 +58,9 @@
         <property name="namaDetailPeriksa">
             <column name="nama_detail_periksa" sql-type="varchar" length="100" not-null="false" />
         </property>
-
+        <!--<property name="harga">-->
+            <!--<column name="harga" sql-type="numeric" not-null="false" />-->
+        <!--</property>-->
 
     </class>
 </hibernate-mapping>

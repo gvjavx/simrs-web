@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.periksaradiologi.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 public class ItSimrsPeriksaRadiologiEntity implements Serializable{
@@ -22,6 +23,7 @@ public class ItSimrsPeriksaRadiologiEntity implements Serializable{
 
     private String idLabDetail;
     private String namaDetailPeriksa;
+    private BigDecimal harga;
 
     public String getIdLabDetail() {
         return idLabDetail;
@@ -149,5 +151,13 @@ public class ItSimrsPeriksaRadiologiEntity implements Serializable{
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public BigDecimal getHarga() {
+        return harga;
+    }
+
+    public void setHarga(BigDecimal harga) {
+        this.harga = harga;
     }
 }

@@ -23,6 +23,8 @@ import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.obatpoli.dao.ObatPoliDao;
 import com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
+import com.neurix.simrs.transaksi.riwayatbarang.dao.TransaksiStokDao;
+import com.neurix.simrs.transaksi.riwayatbarang.model.ItSimrsTransaksiStokEntity;
 import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
 import com.neurix.simrs.transaksi.transaksiobat.dao.*;
 import com.neurix.simrs.transaksi.transaksiobat.model.*;
@@ -55,6 +57,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
     private VendorDao vendorDao;
     private TransaksiObatDetailBatchDao batchDao;
     private HargaObatDao hargaObatDao;
+    private TransaksiStokDao transaksiStokDao;
 
     @Override
     public List<TransaksiObatDetail> getSearchObatTransaksiByCriteria(TransaksiObatDetail bean) throws GeneralBOException {
@@ -510,8 +513,74 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                 logger.error("[ObatPoliBoImpl.updateSubstractStockObatApotek] ERROR when update master obat poli. ", e);
                 throw new GeneralBOException("[ObatPoliBoImpl.updateSubstractStockObatApotek] ERROR when update master obat poli. ", e);
             }
+
+            saveTransaksiStok(bean, bean.getJenisSatuan(), bean.getIdPelayanan(), bean.getIdPermintaanResep());
         }
         logger.info("[ObatPoliBoImpl.updateSubstractStockObatApotek] END <<<<<<<<<<");
+    }
+
+    private void saveTransaksiStok(TransaksiObatDetail bean, String jenisSatuan, String idPelayanan, String idPermintanResep){
+
+        String pelayananAsal = "";
+        ImSimrsPelayananEntity pelayananEntity = pelayananDao.getById("idPelayanan",idPelayanan);
+        if (pelayananEntity != null){
+            pelayananAsal = pelayananEntity.getNamaPelayanan();
+        }
+
+        String namaObat = "";
+        String idObat = "";
+        BigInteger consBox = new BigInteger(String.valueOf(0));
+        BigInteger consLembar = new BigInteger(String.valueOf(0));
+        BigDecimal hargaBijian = new BigDecimal(String.valueOf(0));
+        ImSimrsObatEntity obatEntity = obatDao.getById("idBarang", bean.getIdBarang());
+        if (obatEntity != null){
+            namaObat = obatEntity.getNamaObat();
+            consLembar = obatEntity.getBijiPerLembar();
+            consBox = obatEntity.getLembarPerBox().multiply(consLembar);
+            idObat = obatEntity.getIdObat();
+            hargaBijian = obatEntity.getAverageHargaBiji();
+        }
+
+        //BigDecimal hargaObat = new BigDecimal(0);
+        BigInteger qty = new BigInteger(String.valueOf(0));
+
+        if ("box".equalsIgnoreCase(jenisSatuan)){
+            qty = bean.getQtyApprove().multiply(consBox);
+        } else if ("lembar".equalsIgnoreCase(jenisSatuan)){
+            qty = bean.getQtyApprove().multiply(consLembar);
+        } else {
+            qty = bean.getQtyApprove();
+        }
+
+
+        java.util.Date now = new java.util.Date();
+        SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
+        String seq = transaksiStokDao.getNextSeq();
+        String idBarangMasuk = "RB"+ bean.getBranchId() + f.format(now) + seq;
+
+        ItSimrsTransaksiStokEntity transaksiStokEntity = new ItSimrsTransaksiStokEntity();
+        transaksiStokEntity.setIdTransaksi(idBarangMasuk);
+        transaksiStokEntity.setIdObat(idObat);
+        transaksiStokEntity.setKeterangan("Pengeluaran Obat "+pelayananAsal+" Obat "+namaObat+" No. Transaksi Resep "+bean.getIdPermintaanResep());
+        transaksiStokEntity.setTipe("K");
+        transaksiStokEntity.setBranchId(bean.getBranchId());
+        transaksiStokEntity.setQty(qty);
+        transaksiStokEntity.setTotal(hargaBijian);
+        transaksiStokEntity.setSubTotal(hargaBijian.multiply(new BigDecimal(qty)));
+        transaksiStokEntity.setRegisteredDate(new java.sql.Date(obatEntity.getLastUpdate().getTime()));
+        transaksiStokEntity.setCreatedDate(obatEntity.getLastUpdate());
+        transaksiStokEntity.setCreatedWho(obatEntity.getLastUpdateWho());
+        transaksiStokEntity.setLastUpdate(obatEntity.getLastUpdate());
+        transaksiStokEntity.setLastUpdateWho(obatEntity.getLastUpdateWho());
+        transaksiStokEntity.setIdBarang(bean.getIdBarang());
+        transaksiStokEntity.setIdPelayanan(bean.getIdPelayanan());
+        transaksiStokEntity.setBranchId(bean.getBranchId());
+        try {
+            transaksiStokDao.addAndSave(transaksiStokEntity);
+        } catch (HibernateException e){
+            logger.error("[PermintaanVendorBoImpl.saveToRiwayatBarangMasuk] ERROR.", e);
+            throw new GeneralBOException("[PermintaanVendorBoImpl.saveToRiwayatBarangMasuk] ERROR." + e.getMessage());
+        }
     }
 
     private List<MtSimrsObatPoliEntity> getListEntityObatPoli(ObatPoli bean) throws GeneralBOException {
@@ -1195,6 +1264,9 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                                     newObatDetail.setQtyApprove(batchEntity.getQtyApprove());
                                     newObatDetail.setJenisSatuan(batchEntity.getJenisSatuan());
                                     newObatDetail.setExpDate(batchEntity.getExpiredDate());
+                                    newObatDetail.setIdPermintaanResep(resepEntity.getIdPermintaanResep());
+                                    newObatDetail.setIdPelayanan(resepEntity.getTujuanPelayanan());
+                                    newObatDetail.setBranchId(CommonUtil.userBranchLogin());
 
                                     // update substract stock in apotik
                                     updateSubstractStockObatApotek(newObatDetail, bean.getIdPelayanan(), bean.getBranchId());
@@ -2043,5 +2115,9 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
 
     public void setHargaObatDao(HargaObatDao hargaObatDao) {
         this.hargaObatDao = hargaObatDao;
+    }
+
+    public void setTransaksiStokDao(TransaksiStokDao transaksiStokDao) {
+        this.transaksiStokDao = transaksiStokDao;
     }
 }

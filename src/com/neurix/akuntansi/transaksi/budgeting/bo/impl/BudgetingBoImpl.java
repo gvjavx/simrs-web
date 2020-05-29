@@ -10,6 +10,7 @@ import com.neurix.akuntansi.transaksi.budgeting.dao.BudgetingDao;
 import com.neurix.akuntansi.transaksi.budgeting.dao.BudgetingDetailDao;
 import com.neurix.akuntansi.transaksi.budgeting.dao.BudgetingPengadaanDao;
 import com.neurix.akuntansi.transaksi.budgeting.model.*;
+import com.neurix.akuntansi.transaksi.saldoakhir.model.SaldoAkhir;
 import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.authorization.position.model.ImPosition;
@@ -116,6 +117,20 @@ public class BudgetingBoImpl implements BudgetingBo {
                     budgeting.setFlagDivisi(kodeRekeningEntity.getFlagDivisi());
                     budgeting.setFlagMaster(kodeRekeningEntity.getFlagMaster());
                 }
+
+                // mencari list periode;
+                List<BudgetingPeriode> budgetingPeriodes = new ArrayList<>();
+                SaldoAkhir saldoPeriod = budgetingDao.getSaldoAkhirLastPeriod(budgetingEntity.getTahun(), budgetingEntity.getRekeningId(), budgetingEntity.getBranchId());
+                if (saldoPeriod != null){
+                    BudgetingPeriode budgetingPeriode = new BudgetingPeriode();
+                    for (BudgetingPeriode periode : budgetingPeriode.getListBudgetingPeriode()){
+                        if (saldoPeriod.getBulan().compareTo(periode.getBulan()) == 1 || saldoPeriod.getBulan().compareTo(periode.getBulan()) == 0){
+                            budgetingPeriodes.add(periode);
+                        }
+                    }
+                }
+                budgeting.setListPeriode(budgetingPeriodes);
+                // list periode end;
 
                 budgetings.add(budgeting);
             }
@@ -1040,9 +1055,22 @@ public class BudgetingBoImpl implements BudgetingBo {
                     ItAkunBudgetingEntity budgetingEntity = budgetingDao.getById("idBudgeting", budgetingDetail.getIdBudgeting());
                     if (budgetingEntity != null){
                         budgetingDetail.setRekeningId(budgetingEntity.getRekeningId());
+
+                        // mencari list periode;
+                        List<BudgetingPeriode> budgetingPeriodes = new ArrayList<>();
+                        SaldoAkhir saldoPeriod = budgetingDao.getSaldoAkhirLastPeriod(budgetingEntity.getTahun(), budgetingEntity.getRekeningId(), budgetingEntity.getBranchId());
+                            if (saldoPeriod != null){
+                                BudgetingPeriode budgetingPeriode = new BudgetingPeriode();
+                                for (BudgetingPeriode periode : budgetingPeriode.getListBudgetingPeriode()){
+                                    if (saldoPeriod.getBulan().compareTo(periode.getBulan()) == 1 || saldoPeriod.getBulan().compareTo(periode.getBulan()) == 0){
+                                        budgetingPeriodes.add(periode);
+                                    }
+                                }
+                            }
+                        budgetingDetail.setListPeriode(budgetingPeriodes);
+                        // list periode end;
                     }
                 }
-
                 budgetingDetails.add(budgetingDetail);
             }
         }

@@ -234,6 +234,11 @@ public class TindakanBoImpl implements TindakanBo {
         return tindakanList;
     }
 
+    @Override
+    public ImSimrsTindakanEntity getEntityTindakanById(String idTindakan) throws GeneralBOException {
+        return tindakanDao.getById("idTindakan", idTindakan);
+    }
+
     protected List<ImSimrsTindakanEntity> getListEntityTindakan(Tindakan bean) throws GeneralBOException{
         logger.info("[TindakanBoImpl.getListEntityTindakan] Start >>>>>>>");
         List<ImSimrsTindakanEntity> results = new ArrayList<>();

@@ -1,15 +1,14 @@
 package com.neurix.simrs.transaksi.riwayatbarang.model;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
- * Created by reza on 14/05/20.
+ * Created by reza on 17/05/20.
  */
-public class ItSimrsTransaksiStokEntity implements Serializable {
+public class TransaksiStok {
 
     private String idTransaksi;
     private String idObat;
@@ -30,13 +29,44 @@ public class ItSimrsTransaksiStokEntity implements Serializable {
     private BigInteger qtyLalu;
     private BigDecimal totalLalu;
     private BigDecimal subTotalLalu;
+    private BigInteger qtySaldo;
+    private BigDecimal totalSaldo;
+    private BigDecimal subTotalSaldo;
+    private BigInteger qtyKredit;
+    private BigDecimal totalKredit;
+    private BigDecimal subTotalKredit;
+    private String namaObat;
 
-    public String getIdPelayanan() {
-        return idPelayanan;
+    public String getNamaObat() {
+        return namaObat;
     }
 
-    public void setIdPelayanan(String idPelayanan) {
-        this.idPelayanan = idPelayanan;
+    public void setNamaObat(String namaObat) {
+        this.namaObat = namaObat;
+    }
+
+    public BigInteger getQtyKredit() {
+        return qtyKredit;
+    }
+
+    public void setQtyKredit(BigInteger qtyKredit) {
+        this.qtyKredit = qtyKredit;
+    }
+
+    public BigDecimal getTotalKredit() {
+        return totalKredit;
+    }
+
+    public void setTotalKredit(BigDecimal totalKredit) {
+        this.totalKredit = totalKredit;
+    }
+
+    public BigDecimal getSubTotalKredit() {
+        return subTotalKredit;
+    }
+
+    public void setSubTotalKredit(BigDecimal subTotalKredit) {
+        this.subTotalKredit = subTotalKredit;
     }
 
     public String getIdTransaksi() {
@@ -159,6 +189,14 @@ public class ItSimrsTransaksiStokEntity implements Serializable {
         this.idBarang = idBarang;
     }
 
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
+
     public BigInteger getQtyLalu() {
         return qtyLalu;
     }
@@ -181,5 +219,29 @@ public class ItSimrsTransaksiStokEntity implements Serializable {
 
     public void setSubTotalLalu(BigDecimal subTotalLalu) {
         this.subTotalLalu = subTotalLalu;
+    }
+
+    public BigInteger getQtySaldo() {
+        return qtySaldo;
+    }
+
+    public void setQtySaldo(BigInteger qtySaldo) {
+        this.qtySaldo = qtySaldo;
+    }
+
+    public BigDecimal getTotalSaldo() {
+        return totalSaldo;
+    }
+
+    public void setTotalSaldo(BigDecimal totalSaldo) {
+        this.totalSaldo = totalSaldo;
+    }
+
+    public BigDecimal getSubTotalSaldo() {
+        return subTotalSaldo;
+    }
+
+    public void setSubTotalSaldo(BigDecimal subTotalSaldo) {
+        this.subTotalSaldo = subTotalSaldo;
     }
 }
