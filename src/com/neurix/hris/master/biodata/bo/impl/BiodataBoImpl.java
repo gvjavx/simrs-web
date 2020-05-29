@@ -491,6 +491,7 @@ public class BiodataBoImpl implements BiodataBo {
                                 imBiodataEntity.setNoRekBank(bean.getNoRekBank());
                                 imBiodataEntity.setCabangBank(bean.getCabangBank());
 
+                                imBiodataEntity.setZakatProfesi(bean.getFlagZakat());
                                 imBiodataEntity.setTanggalPraPensiun(bean.getTanggalPraPensiun());
 
                                 imBiodataEntity.setMasaKerjaGolongan(Integer.parseInt(bean.getStMasaKerjaGol()));
@@ -872,6 +873,7 @@ public class BiodataBoImpl implements BiodataBo {
                 imBiodataEntity.setNamaBank(bean.getNamaBank());
                 imBiodataEntity.setCabangBank(bean.getCabangBank());
                 imBiodataEntity.setNoRekBank(bean.getNoRekBank());
+                imBiodataEntity.setZakatProfesi(bean.getFlagZakat());
 
                 imBiodataEntity.setFlag(bean.getFlag());
                 imBiodataEntity.setAction(bean.getAction());
@@ -1647,6 +1649,7 @@ public class BiodataBoImpl implements BiodataBo {
                     returnBiodata.setNoBpjsKesehatan(personalEntity.getNoBpjsKesehatan());
                     returnBiodata.setAgama(personalEntity.getAgama());
 
+                    returnBiodata.setFlagZakat(personalEntity.getZakatProfesi());
                     returnBiodata.setNamaBank(personalEntity.getNamaBank());
                     returnBiodata.setNoRekBank(personalEntity.getNoRekBank());
                     returnBiodata.setCabangBank(personalEntity.getCabangBank());
@@ -1669,8 +1672,9 @@ public class BiodataBoImpl implements BiodataBo {
                     returnBiodata.setFlag(personalEntity.getFlag());
                     returnBiodata.setStatusPegawai(personalEntity.getStatusPegawai());
                     if(personalEntity.getFotoUpload() != null){
-                        returnBiodata.setPathFoto(ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD
-                                + personalEntity.getFotoUpload());
+//                        returnBiodata.setPathFoto(ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD
+//                                + personalEntity.getFotoUpload());
+                        returnBiodata.setPathFoto(CommonConstant.EXTERNAL_IMG_URI_PROFILE + CommonConstant.RESOURCE_PATH_PHOTO_PROFILE + personalEntity.getFotoUpload());
                     }else{
                         if ("L".equalsIgnoreCase(personalEntity.getGender())){
                             returnBiodata.setPathFoto(ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD
