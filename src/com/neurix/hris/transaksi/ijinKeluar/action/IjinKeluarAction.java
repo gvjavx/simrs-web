@@ -23,6 +23,7 @@ import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluarAnggota;
 import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
 import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
@@ -30,6 +31,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -48,6 +51,34 @@ public class IjinKeluarAction extends BaseMasterAction {
     private IjinKeluar ijinKeluar;
     private PositionBagianBo positionBagianBoProxy;
     private boolean admin = false;
+    private boolean dispenLahir = false;
+    private File fileUpload;
+    private String fileUploadContentType;
+    private String fileUploadFileName;
+
+    public String getFileUploadContentType() {
+        return fileUploadContentType;
+    }
+
+    public void setFileUploadContentType(String fileUploadContentType) {
+        this.fileUploadContentType = fileUploadContentType;
+    }
+
+    public String getFileUploadFileName() {
+        return fileUploadFileName;
+    }
+
+    public void setFileUploadFileName(String fileUploadFileName) {
+        this.fileUploadFileName = fileUploadFileName;
+    }
+
+    public File getFileUpload() {
+        return fileUpload;
+    }
+
+    public void setFileUpload(File fileUpload) {
+        this.fileUpload = fileUpload;
+    }
 
     public boolean isAdmin() {
         return admin;
@@ -99,6 +130,14 @@ public class IjinKeluarAction extends BaseMasterAction {
         this.initComboAlat = initComboAlat;
     }
 
+    public boolean isDispenLahir() {
+        return dispenLahir;
+    }
+
+    public void setDispenLahir(boolean dispenLahir) {
+        this.dispenLahir = dispenLahir;
+    }
+
     public IjinKeluar init(String kode, String flag){
         logger.info("[IjinKeluar.init] start process >>>");
         List<IjinKeluar> listOfResultIjinKeluar = new ArrayList<>();
@@ -112,7 +151,13 @@ public class IjinKeluarAction extends BaseMasterAction {
             if(listOfResultIjinKeluar != null){
                 for (IjinKeluar ijinKeluar: listOfResultIjinKeluar) {
                     if(kode.equalsIgnoreCase(ijinKeluar.getIjinKeluarId()) && flag.equalsIgnoreCase(ijinKeluar.getFlag())){
-                        setIjinKeluar(ijinKeluar);
+
+                        if (ijinKeluar.getIjinId().equalsIgnoreCase("IJ013")){
+                            setDispenLahir(true);
+                            setIjinKeluar(ijinKeluar);
+                        }else {
+                            setIjinKeluar(ijinKeluar);
+                        }
                         break;
                     }
                 }
@@ -435,15 +480,57 @@ public class IjinKeluarAction extends BaseMasterAction {
 
     public String saveEdit(){
         logger.info("[IjinKeluar.saveEdit] start process >>>");
-        try {
 
+        try {
             IjinKeluar editIjinKeluar = getIjinKeluar();
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            java.sql.Date dateEnd = CommonUtil.convertToDate(editIjinKeluar.getStTanggalAkhir());
+            editIjinKeluar.setTanggalAkhir(dateEnd);
             editIjinKeluar.setLastUpdateWho(userLogin);
             editIjinKeluar.setLastUpdate(updateTime);
             editIjinKeluar.setAction("U");
             editIjinKeluar.setFlag("Y");
+            if (isDispenLahir())
+                editIjinKeluar.setDispenLahir(true);
+            else
+                editIjinKeluar.setDispenLahir(false);
+
+            if (this.fileUpload != null){
+                String idSuratDokter = ijinKeluarBoProxy.getNextSuratDokterId();
+                String fileName = idSuratDokter+"_"+this.fileUploadFileName;
+                String fileContentType = this.fileUploadContentType;
+                String filePath = CommonConstant.RESOURCE_PATH_USER_UPLOAD_SURAT_DOKTER;
+                File fileToCreate = new File(filePath, fileName);
+                String path = filePath+fileName;
+
+                byte[] contentFile = null;
+                try{
+                    FileUtils.copyFile(this.fileUpload, fileToCreate);
+                    contentFile = FileUtils.readFileToByteArray(this.fileUpload);
+                } catch (IOException e) {
+                    Long logId = null;
+                    try{
+                        logId = ijinKeluarBoProxy.saveErrorMessage(e.getMessage(), "IjinKeluar.saveEdit");
+                    }catch (GeneralBOException e1){
+                        logger.error("[IjinKeluar.saveEdit] Error when saving error, ", e1);
+                    }
+                    logger.error("[IjinKeluar.saveEdit] Error when uploading and saving Study," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+                    addActionError("Error, " + "[code=" + logId + "] Found problem when uploading and saving user, please inform to your admin. Cause : " + e.getMessage());
+                    return ERROR;
+                }
+
+                if (contentFile != null){
+                    editIjinKeluar.setUploadFile(fileName);
+                    if ("image/jpeg".equalsIgnoreCase(fileContentType)) {
+                        editIjinKeluar.setFileType("IMG");
+                    }else if ("application/pdf".equalsIgnoreCase(fileContentType)){
+                        editIjinKeluar.setFileType("PDF");
+                    }
+                }
+                editIjinKeluar.setFilePath(path);
+            }
+
 //            String condition;
             ijinKeluarBoProxy.saveEdit(editIjinKeluar);
 
@@ -519,6 +606,42 @@ public class IjinKeluarAction extends BaseMasterAction {
         ijinKeluar.setFlag("Y");
         ijinKeluar.setApprovalFlag("N");
 
+        String path = null;
+        if (this.fileUpload != null){
+            String idSuratDokter = ijinKeluarBoProxy.getNextSuratDokterId();
+            String fileName = idSuratDokter+"_"+this.fileUploadFileName;
+            String fileContentType = this.fileUploadContentType;
+            String filePath = CommonConstant.RESOURCE_PATH_USER_UPLOAD_SURAT_DOKTER;
+            File fileToCreate = new File(filePath, fileName);
+            path = filePath+fileName;
+
+            byte[] contentFile = null;
+            try{
+                FileUtils.copyFile(this.fileUpload, fileToCreate);
+                contentFile = FileUtils.readFileToByteArray(this.fileUpload);
+            }catch (IOException e){
+                Long logId = null;
+                try{
+                    logId = ijinKeluarBoProxy.saveErrorMessage(e.getMessage(), "IjinKeluarAction.saveAdd");
+                }catch (GeneralBOException e1){
+                    logger.error("[IjinKeluar.addIjinKeluar] Error when saving error, ", e1);
+                }
+                logger.error("[IjinKeluar.addIjinKeluar] Error when uploading and saving IjinKeluar," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + logId + "] Found problem when uploading and saving user, please inform to your admin. Cause : " + e.getMessage());
+                return ERROR;
+            }
+
+            if (contentFile != null){
+                ijinKeluar.setUploadFile(fileName);
+                if ("image/jpeg".equalsIgnoreCase(fileContentType)) {
+                    ijinKeluar.setFileType("IMG");
+                }else if ("application/pdf".equalsIgnoreCase(fileContentType)){
+                    ijinKeluar.setFileType("PDF");
+                }
+            }
+            ijinKeluar.setFilePath(path);
+        }
+
         try {
             notifikasiList = ijinKeluarBoProxy.saveAddIjinKeluar(ijinKeluar);
         }catch (GeneralBOException e) {
@@ -527,11 +650,11 @@ public class IjinKeluarAction extends BaseMasterAction {
                 logId = ijinKeluarBoProxy.saveErrorMessage(e.getMessage(), "ijinKeluarBO.saveAdd");
             } catch (GeneralBOException e1) {
                 logger.error("[ijinKeluarAction.saveAdd] Error when saving error,", e1);
-                return ERROR;
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[ijinKeluarAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 
         for (Notifikasi notifikasi : notifikasiList){

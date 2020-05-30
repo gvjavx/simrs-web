@@ -72,6 +72,17 @@ public class ImBiodataEntity implements Serializable {
     private String flagTunjanganSiaga;
     private String flagTunjanganProfesional;
 
+    private String flagPlt;
+    private String flagPjs;
+    private String flagFingerMobile;
+    private String flagTunjRumah;
+    private String flagTunjAir;
+    private String flagTunjListrik;
+    private String flagTunjBbm;
+    private String flagBpjsKs;
+    private String flagBpjsTk;
+    private String flagPercobaan;
+
 
     public String getFlagTunjanganSupervisi() {
         return flagTunjanganSupervisi;
@@ -950,4 +961,83 @@ public class ImBiodataEntity implements Serializable {
         this.lastUpdateWho = lastUpdateWho;
     }
 
+    public String getFlagBpjsKs() {
+        return flagBpjsKs;
+    }
+
+    public void setFlagBpjsKs(String flagBpjsKs) {
+        this.flagBpjsKs = flagBpjsKs;
+    }
+
+    public String getFlagBpjsTk() {
+        return flagBpjsTk;
+    }
+
+    public void setFlagBpjsTk(String flagBpjsTk) {
+        this.flagBpjsTk = flagBpjsTk;
+    }
+
+    public String getFlagFingerMobile() {
+        return flagFingerMobile;
+    }
+
+    public void setFlagFingerMobile(String flagFingerMobile) {
+        this.flagFingerMobile = flagFingerMobile;
+    }
+
+    public String getFlagPercobaan() {
+        return flagPercobaan;
+    }
+
+    public void setFlagPercobaan(String flagPercobaan) {
+        this.flagPercobaan = flagPercobaan;
+    }
+
+    public String getFlagPjs() {
+        return flagPjs;
+    }
+
+    public void setFlagPjs(String flagPjs) {
+        this.flagPjs = flagPjs;
+    }
+
+    public String getFlagPlt() {
+        return flagPlt;
+    }
+
+    public void setFlagPlt(String flagPlt) {
+        this.flagPlt = flagPlt;
+    }
+
+    public String getFlagTunjAir() {
+        return flagTunjAir;
+    }
+
+    public void setFlagTunjAir(String flagTunjAir) {
+        this.flagTunjAir = flagTunjAir;
+    }
+
+    public String getFlagTunjBbm() {
+        return flagTunjBbm;
+    }
+
+    public void setFlagTunjBbm(String flagTunjBbm) {
+        this.flagTunjBbm = flagTunjBbm;
+    }
+
+    public String getFlagTunjListrik() {
+        return flagTunjListrik;
+    }
+
+    public void setFlagTunjListrik(String flagTunjListrik) {
+        this.flagTunjListrik = flagTunjListrik;
+    }
+
+    public String getFlagTunjRumah() {
+        return flagTunjRumah;
+    }
+
+    public void setFlagTunjRumah(String flagTunjRumah) {
+        this.flagTunjRumah = flagTunjRumah;
+    }
 }

@@ -48,6 +48,7 @@ public class CommonConstant {
 //    public final static String RESOURCE_PATH_USER_UPLOAD = CommonUtil.getPropertyParams("resource.dir")+"/profile/";
     public final static String RESOURCE_PATH_USER_UPLOAD = "/pages/upload/image/profile/";
     public final static String RESOURCE_PATH_USER_UPLOAD_IJAZAH = CommonUtil.getPropertyParams("resource.dir")+"mnt/ijazah/";
+    public final static String RESOURCE_PATH_USER_UPLOAD_SURAT_DOKTER = CommonUtil.getPropertyParams("resource.dir")+"mnt/surat/";
 
     //sodiq, 18 Nov 2019, Upload KTP pasien
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = CommonUtil.getPropertyParams("upload.external.dir");

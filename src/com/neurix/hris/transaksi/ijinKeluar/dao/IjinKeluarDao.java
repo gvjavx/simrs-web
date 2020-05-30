@@ -407,4 +407,26 @@ public class IjinKeluarDao extends GenericDao<IjinKeluarEntity, String> {
 
         return results;
     }
+
+    public String getNextSuratDokteId() throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_surat_dokter')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%03d", iter.next());
+
+        return "SD"+sId;
+    }
+
+    public List<IjinKeluarEntity> cekHajiZiarah(String nip){
+        List<IjinKeluarEntity> results = new ArrayList<>();
+
+        String query = "SELECT * FROM it_hris_ijin_keluar \n" +
+                "\tWHERE nip = '"+nip+"' AND approval_flag = 'Y' AND\n" +
+                "\tcancel_flag = 'N' AND (ijin_id = 'IJ010' OR ijin_id = 'IJ032')";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        return results;
+    }
 }

@@ -239,6 +239,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                 itCutiPegawaiEntity.setCancelDate(bean.getCancelDate());
                 itCutiPegawaiEntity.setCancelPerson(bean.getCancelPerson());
                 itCutiPegawaiEntity.setCancelNote(bean.getCancelNote());
+                itCutiPegawaiEntity.setAlamatCuti(bean.getAlamatCuti());
                 itCutiPegawaiEntity.setKeterangan(bean.getKeterangan());
                 
                 itCutiPegawaiEntity.setFlag(bean.getFlag());
@@ -335,9 +336,18 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                 throw new GeneralBOException("Found problem when getting sequence alat id, please info to your admin..." + e.getMessage());
             }
             itCutiPegawaiEntity.setPegawaiPenggantiSementara(bean.getPegawaiPenggantiSementara());
-            itCutiPegawaiEntity.setCutiId(bean.getCutiId());
+            if (!"normal".equalsIgnoreCase(bean.getJenisCuti()))
+                itCutiPegawaiEntity.setCutiId(bean.getCutiTanggunganId());
+            else
+                itCutiPegawaiEntity.setCutiId(bean.getCutiId());
+
             itCutiPegawaiEntity.setLamaHariCuti(bean.getLamaHariCuti());
-            itCutiPegawaiEntity.setSisaCutiHari(jumlahCutiPegawai.subtract(bean.getLamaHariCuti()));
+
+            if (!"normal".equalsIgnoreCase(bean.getJenisCuti()))
+                itCutiPegawaiEntity.setSisaCutiHari(BigInteger.valueOf(1095));
+            else
+                itCutiPegawaiEntity.setSisaCutiHari(jumlahCutiPegawai.subtract(bean.getLamaHariCuti()));
+
             itCutiPegawaiEntity.setApprovalId(bean.getApprovalId());
             itCutiPegawaiEntity.setKeterangan(bean.getKeterangan());
             itCutiPegawaiEntity.setAlamatCuti(bean.getAlamatCuti());
@@ -354,6 +364,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
             itCutiPegawaiEntity.setCreatedDate(bean.getCreatedDate());
             itCutiPegawaiEntity.setLastUpdate(bean.getLastUpdate());
             itCutiPegawaiEntity.setFlagPerbaikan("N");
+            itCutiPegawaiEntity.setJenisCuti(bean.getJenisCuti());
 
             try {
                 // insert into database
@@ -874,6 +885,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                         }
                     }
 
+                    returnCutiPegawai.setJenisCuti(cutiPegawaiEntity.getJenisCuti());
                     returnCutiPegawai.setAction(cutiPegawaiEntity.getAction());
                     returnCutiPegawai.setFlag(cutiPegawaiEntity.getFlag());
                     returnCutiPegawai.setCreatedWho(cutiPegawaiEntity.getCreatedWho());
@@ -1088,7 +1100,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
             throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
         }
 
-        if (listSisaCutiPegawai .size()!=0) {
+        if (listSisaCutiPegawai.size()!=0) {
             for (ItCutiPegawaiEntity itCutiPegawaiEntity : listSisaCutiPegawai) {
                 CutiPegawai itemComboCutiPegawai = new CutiPegawai();
                 itemComboCutiPegawai.setCutiPegawaiId(itCutiPegawaiEntity.getCutiPegawaiId());
@@ -1789,6 +1801,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
         }
         return listOfResult;
     }
+
     @Override
     public List<CutiPegawai> getListSetCuti(String nip){
         List<ItCutiPegawaiEntity> cutiPegawaiEntityList = new ArrayList<>();
@@ -1827,6 +1840,66 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
             result.setSisaCutiHari(sisaCutiTahunan);
             result.setCutiId("CT002");
         }
+        listOfResult.add(result);
+        return listOfResult;
+    }
+
+    @Override
+    public List<CutiPegawai> getListSetCuti2(String nip, String jenisCuti){
+        List<ItCutiPegawaiEntity> cutiPegawaiEntityList = new ArrayList<>();
+        List<CutiPegawai> listOfResult = new ArrayList<>();
+        CutiPegawai result = new CutiPegawai();
+        BigInteger sisaCutiTahunan = BigInteger.valueOf(0);
+        BigInteger sisaCutiPanjang = BigInteger.valueOf(0);
+        BigInteger sisaCutiDiluarTanggungan = BigInteger.valueOf(0);
+
+        if (jenisCuti.equalsIgnoreCase("normal")){
+            try {
+                cutiPegawaiEntityList = cutiPegawaiDao.getListSisaCutiPegawai(nip,"CT002");
+            } catch (HibernateException e) {
+                logger.error("[CutiPegawaiBoImpl.getListSetCuti] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when retieving list , please info to your admin..." + e.getMessage());
+            }
+            for (ItCutiPegawaiEntity cutiPegawaiEntity : cutiPegawaiEntityList){
+                sisaCutiTahunan=cutiPegawaiEntity.getSisaCutiHari();
+            }
+            if (sisaCutiTahunan.equals(BigInteger.valueOf(0))){
+                try {
+                    cutiPegawaiEntityList = cutiPegawaiDao.getListSisaCutiPegawai(nip,"CT006");
+                } catch (HibernateException e) {
+                    logger.error("[CutiPegawaiBoImpl.getListSetCuti] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when retieving list , please info to your admin..." + e.getMessage());
+                }
+
+                for (ItCutiPegawaiEntity cutiPegawaiEntity : cutiPegawaiEntityList){
+                    sisaCutiPanjang=cutiPegawaiEntity.getSisaCutiHari();
+                }
+                if (sisaCutiPanjang.equals(BigInteger.valueOf(0))){
+                    result.setSisaCutiHari(sisaCutiTahunan);
+                    result.setCutiId("CT002");
+                }else{
+                    result.setSisaCutiHari(sisaCutiPanjang);
+                    result.setCutiId("CT006");
+                }
+            }else{
+                result.setSisaCutiHari(sisaCutiTahunan);
+                result.setCutiId("CT002");
+            }
+        }else {
+            try{
+                cutiPegawaiEntityList = cutiPegawaiDao.getListSisaCutiPegawai(nip, "CT007");
+            }catch (HibernateException e){
+                logger.error("[CutiPegawaiBoImpl.getListSetCuti] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when retieving list , please info to your admin..." + e.getMessage());
+            }
+
+            for (ItCutiPegawaiEntity cutiPegawaiEntity : cutiPegawaiEntityList){
+                sisaCutiDiluarTanggungan = cutiPegawaiEntity.getSisaCutiHari();
+            }
+            result.setSisaCutiHari(sisaCutiDiluarTanggungan);
+            result.setCutiId("CT007");
+        }
+
         listOfResult.add(result);
         return listOfResult;
     }

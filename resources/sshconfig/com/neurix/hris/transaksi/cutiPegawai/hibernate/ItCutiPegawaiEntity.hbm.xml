@@ -104,6 +104,9 @@
         <property name="flagPerbaikan">
             <column name="flag_perbaikan" sql-type="varchar" length="1" not-null="false" />
         </property>
+        <property name="jenisCuti">
+            <column name="jenis_cuti" sql-type="varchar" length="20" not-null="false" />
+        </property>
 
         <many-to-one name="imBiodataEntity" class="com.neurix.hris.master.biodata.model.ImBiodataEntity"
                      insert="false" update="false" fetch="select" cascade="all">

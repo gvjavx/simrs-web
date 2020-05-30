@@ -77,7 +77,11 @@ public class IjinKeluar extends BaseModel {
 
     private String os;
     private String checkedValue;
-
+    private String stTglMelahirkan;
+    private boolean dispenLahir = false;
+    private String uploadFile;
+    private String fileType;
+    private String filePath;
 
     public String getOs() {
         return os;
@@ -556,5 +560,45 @@ public class IjinKeluar extends BaseModel {
 
     public void setUserNameActive(String userNameActive) {
         this.userNameActive = userNameActive;
+    }
+
+    public String getStTglMelahirkan() {
+        return stTglMelahirkan;
+    }
+
+    public void setStTglMelahirkan(String stTglMelahirkan) {
+        this.stTglMelahirkan = stTglMelahirkan;
+    }
+
+    public boolean isDispenLahir() {
+        return dispenLahir;
+    }
+
+    public void setDispenLahir(boolean dispenLahir) {
+        this.dispenLahir = dispenLahir;
+    }
+
+    public String getUploadFile() {
+        return uploadFile;
+    }
+
+    public void setUploadFile(String uploadFile) {
+        this.uploadFile = uploadFile;
+    }
+
+    public String getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 }
