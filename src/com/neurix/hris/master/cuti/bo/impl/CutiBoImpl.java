@@ -260,6 +260,10 @@ public class CutiBoImpl implements CutiBo {
                 hsCriteria.put("branch_id", searchBean.getBranchId());
             }
 
+            if (searchBean.getJenisCuti() != null && !"".equalsIgnoreCase(searchBean.getJenisCuti())){
+                hsCriteria.put("jenis_cuti", searchBean.getJenisCuti());
+            }
+
             if (searchBean.getFlag() != null && !"".equalsIgnoreCase(searchBean.getFlag())) {
                 if ("N".equalsIgnoreCase(searchBean.getFlag())) {
                     hsCriteria.put("flag", "N");

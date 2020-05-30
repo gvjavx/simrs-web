@@ -28,6 +28,15 @@ public class CutiAction extends BaseMasterAction {
     private CutiBo cutiBoProxy;
     private Cuti cuti;
     private List<Cuti> listComboCuti = new ArrayList<Cuti>();
+    private List<Cuti> listComboCuti2 = new ArrayList<Cuti>();
+
+    public List<Cuti> getListComboCuti2() {
+        return listComboCuti2;
+    }
+
+    public void setListComboCuti2(List<Cuti> listComboCuti2) {
+        this.listComboCuti2 = listComboCuti2;
+    }
 
     public List<Cuti> getListComboCuti() {
         return listComboCuti;
@@ -395,6 +404,7 @@ public class CutiAction extends BaseMasterAction {
         Cuti searchCuti = new Cuti();
         List<Cuti> listOfSearchCuti = new ArrayList();
         searchCuti.setFlag("Y");
+        searchCuti.setJenisCuti("normal");
         try {
             listOfSearchCuti = cutiBoProxy.getByCriteria(searchCuti);
         } catch (GeneralBOException e) {
@@ -410,6 +420,33 @@ public class CutiAction extends BaseMasterAction {
         }
 
         listComboCuti.addAll(listOfSearchCuti);
+        logger.info("[BranchAction.search] end process <<<");
+
+        return SUCCESS;
+    }
+
+    public String initComboCuti2() {
+        logger.info("[BranchAction.search] start process >>>");
+
+        Cuti searchCuti = new Cuti();
+        List<Cuti> listOfSearchCuti = new ArrayList();
+        searchCuti.setCutiId("CT007");
+        searchCuti.setFlag("Y");
+        try {
+            listOfSearchCuti = cutiBoProxy.getByCriteria(searchCuti);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = cutiBoProxy.saveErrorMessage(e.getMessage(), "CutiBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[CutiAction.search] Error when saving error,", e1);
+            }
+            logger.error("[CutiAction.save] Error when searching function by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            return "failure";
+        }
+
+        listComboCuti2.addAll(listOfSearchCuti);
         logger.info("[BranchAction.search] end process <<<");
 
         return SUCCESS;
