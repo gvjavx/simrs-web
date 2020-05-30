@@ -1154,7 +1154,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         // jika piutang
         String invNumber = "";
-        if ("non_tunai".equalsIgnoreCase(jenis) || "bpjs".equalsIgnoreCase(jenis) || "asuransi".equalsIgnoreCase(jenis)) {
+        if ("non_tunai".equalsIgnoreCase(jenis) || "bpjs".equalsIgnoreCase(jenis) || "asuransi".equalsIgnoreCase(jenis) || "paket_individu".equalsIgnoreCase(jenis)) {
 
             if (!"asuransi".equalsIgnoreCase(jenis)){
                 if (detailCheckupEntity != null && detailCheckupEntity.getInvoice() != null){
@@ -1218,6 +1218,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
                         mapPajakObat.put("bukti", invoiceNumber);
                         mapPajakObat.put("nilai", ppnObat);
+                        mapPajakObat.put("master_id", CommonConstant.MASTER_PAJAK_OBAT);
 
                         mapJurnal.put("ppn_keluaran", mapPajakObat);
                         mapJurnal.put("pendapatan_rawat_jalan_asuransi", listOfMapTindakanAsuransi);
