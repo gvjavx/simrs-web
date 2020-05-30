@@ -33,6 +33,7 @@ public class DokterController implements ModelDriven<Object> {
     private String lat;
     private String lon;
     private String flagCall;
+    private String flagTele;
 
     public String getFlagCall() {
         return flagCall;
@@ -130,6 +131,14 @@ public class DokterController implements ModelDriven<Object> {
         this.namaSpesialis = namaSpesialis;
     }
 
+    public String getFlagTele() {
+        return flagTele;
+    }
+
+    public void setFlagTele(String flagTele) {
+        this.flagTele = flagTele;
+    }
+
     @Override
     public Object getModel() {
         return (listOfDokter != null ? listOfDokter : model);
@@ -184,6 +193,14 @@ public class DokterController implements ModelDriven<Object> {
         if  (action.equalsIgnoreCase("editFlagCall")) {
             try {
                 dokterBoProxy.editFlagCall(idDokter, flagCall);
+            } catch (GeneralBOException e) {
+                logger.error("[DokterController.create] Error, " + e.getMessage());
+            }
+        }
+
+        if  (action.equalsIgnoreCase("editFlagTele")) {
+            try {
+                dokterBoProxy.editFlagTele(idDokter, flagTele);
             } catch (GeneralBOException e) {
                 logger.error("[DokterController.create] Error, " + e.getMessage());
             }

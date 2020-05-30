@@ -22,6 +22,15 @@ public class ImSimrsDokterEntity implements Serializable {
     private String kodeDpjp;
     private String kodering;
     private String flagCall;
+    private String flagTele;
+
+    public String getFlagTele() {
+        return flagTele;
+    }
+
+    public void setFlagTele(String flagTele) {
+        this.flagTele = flagTele;
+    }
 
     public String getFlagCall() {
         return flagCall;

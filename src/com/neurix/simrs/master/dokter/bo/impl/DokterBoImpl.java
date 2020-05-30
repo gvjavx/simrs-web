@@ -472,6 +472,32 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
         return isSuccess;
     }
 
+    public boolean editFlagTele(String idDokter, String flagTele) {
+        logger.info("[DokterBoImpl.editFlagCall] Start <<<<<<<<");
+
+        ImSimrsDokterEntity dokter = null;
+        boolean isSuccess = false;
+
+        try {
+            dokter = dokterDao.getById("idDokter", idDokter, "Y");
+        } catch (GeneralBOException e) {
+            logger.info("[DokterBoImpl.editKuota] Error when editKuota ", e);
+        }
+
+        if (dokter != null) {
+            dokter.setFlagTele(flagTele);
+            try {
+                dokterDao.updateAndSave(dokter);
+                isSuccess = true;
+            } catch (GeneralBOException e) {
+                logger.info("[DokterBoImpl.editKuota] Error when editKuota ", e);
+            }
+        }
+
+        logger.info("[DokterBoImpl.editFlagCall] End <<<<<<<<");
+        return isSuccess;
+    }
+
     @Override
     public List<Dokter> getDokterByPelayanan(String idPelayanan) throws GeneralBOException {
         List<Dokter> dokterList = new ArrayList<>();
