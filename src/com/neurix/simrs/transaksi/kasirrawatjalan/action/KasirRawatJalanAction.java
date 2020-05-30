@@ -1130,6 +1130,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
                 mapPajakObat.put("bukti", invoiceNumber);
                 mapPajakObat.put("nilai", ppnObat);
+                mapPajakObat.put("master_id", CommonConstant.MASTER_PAJAK_OBAT);
                 mapJurnal.put("ppn_keluaran", mapPajakObat);
 
                 transId = "15";

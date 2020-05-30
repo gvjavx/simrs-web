@@ -151,5 +151,6 @@ public class CommonConstant {
     //AKUNTANSI
     public final static String COA_PAYROLL = CommonUtil.getPropertyParams("coa.bank.payroll");
     public final static String ID_KANPUS = "KP";
+    public final static String MASTER_PAJAK_OBAT = "03.00";
 
 }
