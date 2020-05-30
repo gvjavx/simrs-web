@@ -197,9 +197,11 @@ public class BudgetingBoImpl implements BudgetingBo {
         if (bean.getApproveFlag() != null){
             hsCriteria.put("approve_flag", bean.getApproveFlag());
         }
-
         if (bean.getBranchId() != null){
             hsCriteria.put("branch_id", bean.getBranchId());
+        }
+        if (bean.getIdBudgeting() != null){
+            hsCriteria.put("id_budgeting", bean.getIdBudgeting());
         }
 
         List<ItAkunBudgetingEntity> budgetingEntities = new ArrayList<>();
@@ -1127,6 +1129,11 @@ public class BudgetingBoImpl implements BudgetingBo {
     @Override
     public Budgeting checkBudgeting(String branchId, String tahun) throws GeneralBOException {
         return budgetingDao.getCheckTransaksi(branchId, tahun);
+    }
+
+    @Override
+    public ItAkunBudgetingEntity getBudgetingEntityById(String id) throws GeneralBOException {
+        return budgetingDao.getById("idBudgeting", id);
     }
 
     @Override

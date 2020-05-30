@@ -4,10 +4,7 @@ import com.neurix.akuntansi.master.kodeRekening.bo.KodeRekeningBo;
 import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
 import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.transaksi.budgeting.bo.BudgetingBo;
-import com.neurix.akuntansi.transaksi.budgeting.model.Budgeting;
-import com.neurix.akuntansi.transaksi.budgeting.model.BudgetingDetail;
-import com.neurix.akuntansi.transaksi.budgeting.model.BudgetingPengadaan;
-import com.neurix.akuntansi.transaksi.budgeting.model.BudgetingPeriode;
+import com.neurix.akuntansi.transaksi.budgeting.model.*;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.authorization.company.model.ImBranches;
@@ -1673,6 +1670,35 @@ public class BudgetingAction {
         budgetSaatIni = budgetingBo.getBudgetBiayaDivisiSaatIni(budgetingStatus);
 
         return budgetSaatIni;
+    }
+
+    public Budgeting view(String idBudgeting){
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
+
+        Budgeting budgeting = new Budgeting();
+        budgeting.setIdBudgeting(idBudgeting);
+
+        List<Budgeting> budgetings = budgetingBo.getSearchByCriteria(budgeting);
+        if (budgetings.size() > 0){
+            budgeting = new Budgeting();
+            budgeting = budgetings.get(0);
+        }
+        // set budgeting
+        setBudgeting(budgeting);
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<BudgetingDetail> sessionDetail = (List<BudgetingDetail>) session.getAttribute("listOfDetailView");
+        if (sessionDetail == null)
+            sessionDetail = new ArrayList<>();
+
+        List<BudgetingDetail> budgetingDetails = budgetingBo.getListBudgetingDetailByNoBudgeting(idBudgeting);
+        sessionDetail.addAll(budgetingDetails);
+
+        session.removeAttribute("listOfDetailView");
+        session.setAttribute("listOfDetailView", sessionDetail);
+        return budgeting;
     }
 
     public void setBudgetingBoProxy(BudgetingBo budgetingBoProxy) {
