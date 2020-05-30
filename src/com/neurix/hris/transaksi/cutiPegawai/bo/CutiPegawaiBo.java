@@ -65,6 +65,8 @@ public interface CutiPegawaiBo extends BaseMasterBo<CutiPegawai> {
 
     List<CutiPegawai> getListSetCuti(String nip);
 
+    List<CutiPegawai> getListSetCuti2(String nip, String jenisCuti);
+
     List getListCutiForView(String nip) throws GeneralBOException;
     public String findCutiAktif(String branchId);
     public String getBagianPegawai(String positionId);
