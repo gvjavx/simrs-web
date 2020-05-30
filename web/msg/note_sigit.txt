@@ -22,3 +22,38 @@ ADD COLUMN harga numeric;
 ALTER TABLE it_simrs_periksa_radiologi
 ADD COLUMN harga numeric;
 // ====== //
+
+
+// === 2020-05-30 ===//
+
+INSERT INTO im_akun_trans
+(trans_id, trans_name, flag, action, created_who, last_update_who, created_date, last_update, flag_sumber_baru)
+VALUES
+(
+	'61',
+ 	'Closing Paket Periksa Tanpa Obat',
+	'Y',
+	'C',
+	'Admin',
+	'Admin',
+	now(),
+	now(),
+	'Y'
+);
+
+INSERT INTO im_akun_trans
+(trans_id, trans_name, flag, action, created_who, last_update_who, created_date, last_update, flag_sumber_baru)
+VALUES
+(
+	'62',
+ 	'Closing Paket Periksa Dengan Obat',
+	'Y',
+	'C',
+	'Admin',
+	'Admin',
+	now(),
+	now(),
+	'Y'
+);
+
+// ============= //

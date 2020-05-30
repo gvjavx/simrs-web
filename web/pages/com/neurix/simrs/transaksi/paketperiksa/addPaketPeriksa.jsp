@@ -357,6 +357,8 @@
                                         <td>Jenis Lab</td>
                                         <td>Pemeriksaan</td>
                                         <td>Item Periksa</td>
+                                        <td>Tarif Asli</td>
+                                        <td>Tarif Paket</td>
                                         <td align="center" width="10%">Action</td>
                                     </tr>
                                     </thead>
@@ -480,19 +482,18 @@
         TindakanAction.getDataTindakanById(id, function (tindakan) {
             if (tindakan != null && tindakan.idTindakan != null){
                 $("#tin_tarif").val(tindakan.tarif);
+                $("#tin_tarif_paket").val(tindakan.tarif);
             }
         })
     }
 
     function getTarifLab(var1) {
-
-//        console.log(id);
-//        console.log(idParameter);
         console.log(var1);
         LabDetailAction.labDetailEntityByIdLab(var1, function (response) {
             console.log(response);
             if (response != null && response.idLabDetail != null){
                 $("#lab_tarif").val(response.tarif);
+                $("#lab_tarif_paket").val(response.tarif);
             }
         });
     }
@@ -642,6 +643,8 @@
                 $('#tin_qty').css('border', 'red solid 1px');
             }
         }
+
+        hitungTotal();
     }
 
     function delRow(id){
@@ -710,8 +713,9 @@
         var idKategori = $('#lab_kategori').val();
         var idLab = $('#lab_lab').val();
         var idParameter = $('#lab_parameter').val();
-        var tarif = $('#lab_tarif_paket').val();
-        var namaParameter = $('#lab_parameter').text();
+        var tarifAsli = $('#lab_tarif').val();
+        var tarifPaket = $('#lab_tarif_paket').val();
+        var namaParameter = $('#lab_parameter option:selected').text();
 
         if (idKategori != '' && idLab != '') {
 
@@ -735,11 +739,13 @@
                 $('#msg_lab').text("Data sudah ada di dalam list...!");
             }else{
                 var table = '<tr id="row'+idl+'">' +
-                    '<td>'+idLab.split("|")[1]+'<input type="hidden" id="kategori_lab'+row+'" value="'+idk+'">'+'</td>' +
                     '<td>'+idKategori.split("|")[1]+
                     '<input type="hidden" id="lab_id'+row+'" value="'+idl+'">'+
                     '</td>' +
+                    '<td>'+idLab.split("|")[1]+'<input type="hidden" id="kategori_lab'+row+'" value="'+idk+'">'+'</td>' +
                     '<td>'+ namaParameter + '<input type="hidden" id="parameter_id'+row+'" value="'+idParameter+'"></td>'+
+                    '<td>'+ tarifAsli + '</td>'+
+                    '<td>'+ tarifPaket + '<input type="hidden" id="lab_tarif_id'+row+'" value="'+tarifPaket+'"></td>'+
                     '<td align="center">' + '<img border="0" class="hvr-grow" onclick="delRow(\''+idl+'\')" src="<s:url value="/pages/images/icons8-cancel-25.png"/>" style="cursor: pointer;">' + '</td>'+
                     '</tr>';
                 $('#body_lab').append(table);
@@ -759,6 +765,32 @@
                 $('#war_parameter').show();
             }
         }
+
+        hitungTotal();
+    }
+
+    function hitungTotal(){
+        var tindakan = $('#table_tindakan').tableToJSON();
+        var lab = $('#table_lab').tableToJSON();
+
+
+        var totalTindakan = 0;
+        $.each(tindakan, function (i, item) {
+            var tarifTindakan = $('#tin_tarif_id'+i).val();
+            totalTindakan = parseInt(totalTindakan) + parseInt(tarifTindakan);
+        });
+
+        var totalLab = 0;
+        $.each(lab, function (i, item) {
+            var tarifpaket = $('#lab_tarif_id'+i).val();
+            totalLab = parseInt(totalLab) + parseInt(tarifpaket);
+        });
+
+
+        var total = 0; total = totalTindakan + totalLab;
+        $('#tarif_paket').val(total);
+        $('#nominal_tarif_paket').val(total);
+        console.log("total -> "+total);
     }
 
     function savePaket(){
@@ -782,14 +814,15 @@
             var idLab = $('#lab_id'+i).val();
             var idParameter = $('#parameter_id'+i).val();
             var jenisLab = lab[i]["Jenis Lab"];
+            var tarifpaket = $('#lab_tarif_id'+i).val();
 
             if(idParameter != '' && idParameter != 'null'){
                 var params = idParameter.split(",");
                 for(i = 0; i < params.length; i++){
-                    result.push({'kategori_item':idLab, 'id_item':params[i], 'jenis_item':jenisLab.toLowerCase()});
+                    result.push({'kategori_item':idLab, 'id_item':params[i], 'jenis_item':jenisLab.toLowerCase(), 'tarif':tarifpaket});
                 }
             }else{
-                result.push({'kategori_item':idLab, 'id_item':'', 'jenis_item':jenisLab.toLowerCase(), 'tarif':"0"});
+                result.push({'kategori_item':idLab, 'id_item':params[i], 'jenis_item':jenisLab.toLowerCase(), 'tarif':tarifpaket});
             }
         });
 
