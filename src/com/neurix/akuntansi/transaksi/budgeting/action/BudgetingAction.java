@@ -1674,6 +1674,8 @@ public class BudgetingAction {
 
     public Budgeting view(String idBudgeting){
 
+        logger.info("[BudgetingAction.view] START >>>");
+
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
 
@@ -1685,19 +1687,11 @@ public class BudgetingAction {
             budgeting = new Budgeting();
             budgeting = budgetings.get(0);
         }
-        // set budgeting
-        setBudgeting(budgeting);
-
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        List<BudgetingDetail> sessionDetail = (List<BudgetingDetail>) session.getAttribute("listOfDetailView");
-        if (sessionDetail == null)
-            sessionDetail = new ArrayList<>();
 
         List<BudgetingDetail> budgetingDetails = budgetingBo.getListBudgetingDetailByNoBudgeting(idBudgeting);
-        sessionDetail.addAll(budgetingDetails);
+        budgeting.setBudgetingDetailList(budgetingDetails);
 
-        session.removeAttribute("listOfDetailView");
-        session.setAttribute("listOfDetailView", sessionDetail);
+        logger.info("[BudgetingAction.view] END <<<");
         return budgeting;
     }
 

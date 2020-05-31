@@ -1410,6 +1410,10 @@
 
     $(".tree").on('click', ".item-view", function () {
         var id = $(this).attr('data');
+        BudgetingAction.view(id, function(response){
+
+        });
+
         $("#modal-view").modal('show');
         $("#view-id").val(id);
     });

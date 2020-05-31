@@ -71,6 +71,7 @@ public class Budgeting {
     private String coa;
 
     private List<BudgetingPeriode> listPeriode = new ArrayList<>();
+    private List<BudgetingDetail> budgetingDetailList = new ArrayList<>();
 
     public static Comparator<Budgeting> kodeRekeningSorting = new Comparator<Budgeting>() {
 
@@ -547,5 +548,13 @@ public class Budgeting {
 
     public void setListPeriode(List<BudgetingPeriode> listPeriode) {
         this.listPeriode = listPeriode;
+    }
+
+    public List<BudgetingDetail> getBudgetingDetailList() {
+        return budgetingDetailList;
+    }
+
+    public void setBudgetingDetailList(List<BudgetingDetail> budgetingDetailList) {
+        this.budgetingDetailList = budgetingDetailList;
     }
 }
