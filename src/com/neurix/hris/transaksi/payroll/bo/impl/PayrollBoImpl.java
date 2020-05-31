@@ -9965,14 +9965,14 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
     }
     @Override
     public void approvePayrollUnit(Payroll bean) throws GeneralBOException {
-        if(bean.getApprovalUnitFlag().equalsIgnoreCase("Y")){
-            payrollDao.approvePayrollUnit(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getApprovalUnitFlag(), bean.getTipe());
-        }else{
-            payrollDao.approvePayrollUnit(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getApprovalUnitFlag(), bean.getTipe());
-            HttpSession session = ServletActionContext.getRequest().getSession();
-            session.removeAttribute("listOfResult");
-        }
+        payrollDao.approvePayrollUnit(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getApprovalUnitFlag(), bean.getTipe());
     }
+
+    @Override
+    public void approvePayrollSdm(Payroll bean) throws GeneralBOException {
+        payrollDao.approvePayrollSdm(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getApprovalUnitFlag(), bean.getTipe());
+    }
+
     @Override
     public void saveEdit(Payroll bean) throws GeneralBOException {
         logger.info("[PayrollBoImpl.saveEdit] start process >>>");

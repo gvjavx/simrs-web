@@ -1174,6 +1174,7 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
 
     public void approvePayrollUnit(String branchId, String bulan, String tahun, String statusApprove, String tipe){
         String id = CommonUtil.userIdLogin();
+        String name = CommonUtil.userLogin();
         String tipeWhere = "";
         if(tipe.equalsIgnoreCase("PR")){
             tipeWhere = "and flag_payroll = 'Y' ";
@@ -1194,7 +1195,44 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
         String query = "UPDATE it_hris_payroll\n" +
                 "SET approval_unit_id = '"+id+"',\n" +
                 "    approval_unit_date = now(),\n" +
+                "    approval_unit_name = '"+name+"',\n" +
                 "    approval_unit_flag = '"+statusApprove+"'\n" +
+                "WHERE bulan = '"+bulan+"'\n" +
+                "AND tahun = '"+tahun+"'\n" +
+                tipeWhere+
+                "AND branch_id = '"+branchId+"'\n" +
+                "AND flag = 'Y'";
+
+        this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .executeUpdate();
+    }
+
+    public void approvePayrollSdm(String branchId, String bulan, String tahun, String statusApprove, String tipe){
+        String id = CommonUtil.userIdLogin();
+        String name = CommonUtil.userLogin();
+        String tipeWhere = "";
+        if(tipe.equalsIgnoreCase("PR")){
+            tipeWhere = "and flag_payroll = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("T")){
+            tipeWhere = "and flag_thr = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("PD")){
+            tipeWhere = "and flag_pendidikan = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("R")){
+            tipeWhere = "and flag_rapel= 'Y' ";
+        }else if(tipe.equalsIgnoreCase("JP")){
+            tipeWhere = "and flag_jasprod = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("JB")){
+            tipeWhere = "and flag_jubileum = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("PN")){
+            tipeWhere = "and flag_pensiun= 'Y' ";
+        }
+
+        String query = "UPDATE it_hris_payroll\n" +
+                "SET approval_sdm_id = '"+id+"',\n" +
+                "    approval_sdm_date = now(),\n" +
+                "    approval_sdm_name = '"+name+"',\n" +
+                "    approval_sdm_flag = '"+statusApprove+"'\n" +
                 "WHERE bulan = '"+bulan+"'\n" +
                 "AND tahun = '"+tahun+"'\n" +
                 tipeWhere+

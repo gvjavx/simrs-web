@@ -426,6 +426,53 @@
     </div>
 </div>
 
+<div id="modal-approve-sdm" class="modal fade" role="dialog">
+    <div class="modal-dialog " style="width:400px;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body" >
+                <form class="form-horizontal" id="myFormApproveSdm">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Bulan</label>
+                        <div class="col-sm-8">
+                            <input readonly type="text" class="form-control nip" id="approveBulanSdm">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Tahun</label>
+                        <div class="col-sm-8">
+                            <input readonly type="text" class="form-control nip" id="approveTahunSdm">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Unit</label>
+                        <div class="col-sm-8">
+                            <input readonly type="text" class="form-control nip" id="approveBranchSdm">
+                            <input readonly type="text" class="form-control nip" style="display: none" id="approveBranchIdSdm">
+                        </div>
+                    </div>
+                    <div class="form-group" style="display: none">
+                        <label class="control-label col-sm-4" >Tipe</label>
+                        <div class="col-sm-8">
+                            <input readonly type="text" class="form-control nip"  id="tipeId2Sdm" >
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a type="button" id="btnApproveSdm" class="btn btn-success"><i class="fa fa-check"></i> Approve</a>
+                <a type="button" id="btnNotApproveSdm" class="btn btn-danger"><i class="fa fa-close"></i> Not Approve</a>
+                <a type="button" class="btn btn-default" data-dismiss="modal"> Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div id="modal-draft" class="modal fade modal2" role="dialog">
     <div class="modal-dialog " style="width:500px;">
 
@@ -606,6 +653,40 @@
             }
         });
 
+        $('#btnApproveSdm').click(function(){
+            if (confirm('Apakah Anda ingin Mesetujui Data Payroll?')) {
+                var branchId = document.getElementById("approveBranchIdSdm").value;
+                var bulan = document.getElementById("approveBulanSdm").value;
+                var tahun = document.getElementById("approveTahunSdm").value;
+                var tipe = document.getElementById("tipeId2Sdm").value;
+                var statusApprove = "Y";
+
+                PayrollAction.approvePayrollSdm(branchId, bulan, tahun, statusApprove, tipe, function(listdata){
+                    alert('Payroll Berhasil Disetujui');
+                    $('#modal-approve').modal('hide');
+                    $('#myForm')[0].reset();
+                    window.location.href="<s:url action='initForm_payroll.action'/>";
+                });
+            }
+        });
+
+        $('#btnNotApproveSdm').click(function(){
+            if (confirm('Apakah Anda ingin menolak Data Payroll?')) {
+                var branchId = document.getElementById("approveBranchIdSdm").value;
+                var bulan = document.getElementById("approveBulanSdm").value;
+                var tahun = document.getElementById("approveTahunSdm").value;
+                var tipe = document.getElementById("tipeId2Sdm").value;
+                var statusApprove = "N";
+
+                PayrollAction.approvePayrollUnit(branchId, bulan, tahun, statusApprove, tipe, function(listdata){
+                    alert('Payroll Berhasil Tidak Di Approve');
+                    $('#modal-approve').modal('hide');
+                    $('#myForm')[0].reset();
+                    window.location.href="<s:url action='initForm_payroll.action'/>";
+                });
+            }
+        });
+
         $('#btnPrint').click(function(){
             if (confirm('Apakah Anda ingin mencetak draft Payroll?')) {
                 var branchId = document.getElementById("draftBranchId").value;
@@ -636,22 +717,7 @@
                 });
             }
         });
-        $('#btnNotApproveUnit').click(function(){
-            if (confirm('Apakah Anda ingin menolak Data Payroll?')) {
-                var branchId = document.getElementById("approveBranchId").value;
-                var bulan = document.getElementById("approveBulan").value;
-                var tahun = document.getElementById("approveTahun").value;
-                var tipe = document.getElementById("tipeId2").value;
-                var statusApprove = "N";
 
-                PayrollAction.approvePayrollUnit(branchId, bulan, tahun, statusApprove, tipe, function(listdata){
-                    alert('Payroll Berhasil Ditolak');
-                    $('#modal-approve').modal('hide');
-                    $('#myForm')[0].reset();
-                    location.reload();
-                });
-            }
-        });
         $('.tablePayroll').on('click', '.item-edit', function(){
             var tipe = $(this).attr('tipe');
             var bulan = $(this).attr('bulan');
@@ -707,6 +773,34 @@
                 $('#modal-approve-unit').modal('show');
             });
         });
+
+        $('.tablePayroll').on('click', '.item-approve-sdm', function(){
+            var tipe = $(this).attr('tipe');
+            var bulan = $(this).attr('bulan');
+            var tahun = $(this).attr('tahun');
+            var branchId = $(this).attr('branchId');
+            var branchName = $(this).attr('branchName');
+
+            $('#approveBulanSdm').val(bulan);
+            $('#approveTahunSdm').val(tahun);
+            $('#approveBranchSdm').val(branchName);
+            $('#approveBranchIdSdm').val(branchId);
+            $('#tipeId2Sdm').val(tipe);
+
+            PayrollAction.getApprovalUnit(branchId, bulan, tahun, tipe, function(listdata){
+                var hasil = "";
+                if(listdata.approvalFlag == 'Y'){
+                    hasil = "Disetujui";
+                } else if(listdata.approvalFlag == 'N'){
+                    hasil = "Tidak Disetujui";
+                }
+                $('#approveStatusSdm').val(hasil);
+                $('#approveTanggalSdm').val(listdata.stApprovalDate);
+                $('#modal-approve-sdm').find('.modal-title').text('Approve Payroll SDM Kantor Pusat');
+                $('#modal-approve-sdm').modal('show');
+            });
+        });
+
         $('.tablePayroll').on('click', '.item-draft', function(){
             var tipe = $(this).attr('draftTipe');
             var bulan = $(this).attr('draftBulan');

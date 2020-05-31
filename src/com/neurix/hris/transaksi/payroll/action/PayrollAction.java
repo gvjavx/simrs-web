@@ -2704,6 +2704,19 @@ public class PayrollAction extends BaseMasterAction{
         payrollBo.approvePayrollUnit(searchPayroll);
     }
 
+    public void approvePayrollSdm(String branchId, String bulan, String tahun, String statusApprove, String tipe){
+        Payroll searchPayroll = new Payroll();
+        searchPayroll.setBranchId(branchId);
+        searchPayroll.setBulan(bulan);
+        searchPayroll.setTahun(tahun);
+        searchPayroll.setTipe(tipe);
+        searchPayroll.setApprovalSdmFlag(statusApprove);
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
+        payrollBo.approvePayrollSdm(searchPayroll);
+    }
+
     public String saveDelete(){
         logger.info("[PayrollAction.saveDelete] start process >>>");
         try {
