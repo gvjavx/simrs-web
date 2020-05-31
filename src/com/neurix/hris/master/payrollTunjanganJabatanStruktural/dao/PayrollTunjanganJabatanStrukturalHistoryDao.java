@@ -2,6 +2,7 @@ package com.neurix.hris.master.payrollTunjanganJabatanStruktural.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.hris.transaksi.payroll.model.ImPayrollTunjanganJabatanStrukturalEntity;
+import com.neurix.hris.transaksi.payroll.model.ImPayrollTunjanganJabatanStrukturalHistoryEntity;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -20,16 +21,16 @@ import java.util.Map;
  * Time: 13:58
  * To change this template use File | Settings | File Templates.
  */
-public class PayrollTunjanganJabatanStrukturalDao extends GenericDao<ImPayrollTunjanganJabatanStrukturalEntity, String> {
+public class PayrollTunjanganJabatanStrukturalHistoryDao extends GenericDao<ImPayrollTunjanganJabatanStrukturalHistoryEntity, String> {
 
     @Override
-    protected Class<ImPayrollTunjanganJabatanStrukturalEntity>  getEntityClass() {
-        return ImPayrollTunjanganJabatanStrukturalEntity.class;
+    protected Class<ImPayrollTunjanganJabatanStrukturalHistoryEntity>  getEntityClass() {
+        return ImPayrollTunjanganJabatanStrukturalHistoryEntity.class;
     }
 
     @Override
-    public List<ImPayrollTunjanganJabatanStrukturalEntity> getByCriteria(Map mapCriteria) {
-        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImPayrollTunjanganJabatanStrukturalEntity.class);
+    public List<ImPayrollTunjanganJabatanStrukturalHistoryEntity> getByCriteria(Map mapCriteria) {
+        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImPayrollTunjanganJabatanStrukturalHistoryEntity.class);
 
         // Get Collection and sorting
         if (mapCriteria!=null) {
@@ -47,17 +48,8 @@ public class PayrollTunjanganJabatanStrukturalDao extends GenericDao<ImPayrollTu
 
         // Order by
         criteria.addOrder(Order.desc("tunjJabStrukturId"));
-        List<ImPayrollTunjanganJabatanStrukturalEntity> results = criteria.list();
+        List<ImPayrollTunjanganJabatanStrukturalHistoryEntity> results = criteria.list();
         return results;
-    }
-
-    // Generate surrogate id from postgre
-    public String getNextTunjanganJabatanStruktural() throws HibernateException {
-        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_payroll_tunjangan_jabatan_struktural')");
-        Iterator<BigInteger> iter=query.list().iterator();
-        String sId = String.format("%05d", iter.next());
-
-        return "TJS" + sId;
     }
 
     public String getNextTunjanganJabatanStrukturalIdHistory() throws HibernateException {
@@ -66,14 +58,5 @@ public class PayrollTunjanganJabatanStrukturalDao extends GenericDao<ImPayrollTu
         String sId = String.format("%05d", iter.next());
 
         return "TJSH" + sId;
-    }
-
-    public List<ImPayrollTunjanganJabatanStrukturalEntity> getData2(String kelompokId) throws HibernateException {
-        List<ImPayrollTunjanganJabatanStrukturalEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImPayrollTunjanganJabatanStrukturalEntity.class)
-                .add(Restrictions.eq("kelompokId", kelompokId))
-                .add(Restrictions.eq("flag", "Y"))
-                .list();
-
-        return results;
     }
 }

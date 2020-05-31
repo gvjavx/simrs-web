@@ -1,4 +1,4 @@
-package com.neurix.hris.master.payrollSkalaGaji.model;
+package com.neurix.hris.master.payrollSkalaGajiPensiunRni.model;
 
 import com.neurix.hris.master.golongan.model.ImGolonganEntity;
 
@@ -13,13 +13,13 @@ import java.sql.Timestamp;
  * Time: 14:05
  * To change this template use File | Settings | File Templates.
  */
-public class ImPayrollSkalaGajiEntity implements Serializable {
+public class ImPayrollSkalaGajiPensiunRniHistoryEntity implements Serializable {
+    private String skalaGajiPensiunIdHistory;
+    private String skalaGajiPensiunId;
+    private String golonganId;
+    private int poin;
+    private BigDecimal nilai;
 
-    private String skalaGajiId ;
-    private String golonganId ;
-    private int point ;
-    private BigDecimal nilai ;
-    private String tahun;
     private String flag;
     private String action;
     private Timestamp createdDate;
@@ -27,70 +27,12 @@ public class ImPayrollSkalaGajiEntity implements Serializable {
     private String createdWho;
     private String lastUpdateWho;
 
-
-
-    private BigDecimal santunanKhusus;
-    private BigDecimal rumah;
-    private BigDecimal listrik;
-    private BigDecimal air;
-    private BigDecimal bbm;
-    private BigDecimal total;
-    private String noSk;
-
-    public BigDecimal getAir() {
-        return air;
+    public String getSkalaGajiPensiunIdHistory() {
+        return skalaGajiPensiunIdHistory;
     }
 
-    public void setAir(BigDecimal air) {
-        this.air = air;
-    }
-
-    public BigDecimal getBbm() {
-        return bbm;
-    }
-
-    public void setBbm(BigDecimal bbm) {
-        this.bbm = bbm;
-    }
-
-    public BigDecimal getListrik() {
-        return listrik;
-    }
-
-    public void setListrik(BigDecimal listrik) {
-        this.listrik = listrik;
-    }
-
-    public BigDecimal getRumah() {
-        return rumah;
-    }
-
-    public void setRumah(BigDecimal rumah) {
-        this.rumah = rumah;
-    }
-
-    public BigDecimal getSantunanKhusus() {
-        return santunanKhusus;
-    }
-
-    public void setSantunanKhusus(BigDecimal santunanKhusus) {
-        this.santunanKhusus = santunanKhusus;
-    }
-
-    public BigDecimal getTotal() {
-        return total;
-    }
-
-    public void setTotal(BigDecimal total) {
-        this.total = total;
-    }
-
-    public String getTahun() {
-        return tahun;
-    }
-
-    public void setTahun(String tahun) {
-        this.tahun = tahun;
+    public void setSkalaGajiPensiunIdHistory(String skalaGajiPensiunIdHistory) {
+        this.skalaGajiPensiunIdHistory = skalaGajiPensiunIdHistory;
     }
 
     private ImGolonganEntity imGolonganEntity;
@@ -159,14 +101,6 @@ public class ImPayrollSkalaGajiEntity implements Serializable {
         this.lastUpdateWho = lastUpdateWho;
     }
 
-    public int getPoint() {
-        return point;
-    }
-
-    public void setPoint(int point) {
-        this.point = point;
-    }
-
     public BigDecimal getNilai() {
         return nilai;
     }
@@ -175,19 +109,19 @@ public class ImPayrollSkalaGajiEntity implements Serializable {
         this.nilai = nilai;
     }
 
-    public String getSkalaGajiId() {
-        return skalaGajiId;
+    public int getPoin() {
+        return poin;
     }
 
-    public void setSkalaGajiId(String skalaGajiId) {
-        this.skalaGajiId = skalaGajiId;
+    public void setPoin(int poin) {
+        this.poin = poin;
     }
 
-    public String getNoSk() {
-        return noSk;
+    public String getSkalaGajiPensiunId() {
+        return skalaGajiPensiunId;
     }
 
-    public void setNoSk(String noSk) {
-        this.noSk = noSk;
+    public void setSkalaGajiPensiunId(String skalaGajiPensiunId) {
+        this.skalaGajiPensiunId = skalaGajiPensiunId;
     }
 }

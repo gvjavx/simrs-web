@@ -233,7 +233,15 @@
                 <value>sshconfig/com/neurix/hris/master/payrollFaktorKeluarga/hibernate/ImPayrollFaktorKeluargaEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/payrollMasaKerjaPensiun/hibernate/ImPayrollMasaKerjaPensiunEntity.hbm.xml</value>
 
+                <!--history-->
                 <value>sshconfig/com/neurix/hris/master/branchTunjangan/hibernate/ImBranchTunjanganHistoryEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ImPayrollTunjanganJabatanStrukturalHistoryEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/payrollSkalaGajiPkwt/hibernate/ImPayrollSkalaGajiPkwtHistoryEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiunRni/hibernate/ImPayrollSkalaGajiPensiunRniHistoryEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiunDplk/hibernate/ImPayrollSkalaGajiPensiunDplkHistoryEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ImPayrollBpjsHistoryEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ImPayrollTunjanganStrategisHistoryEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/payrollSkalaGaji/hibernate/ImPayrollSkalaGajiHistoryEntity.hbm.xml</value>
 
                 <!--<value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrolInsentifEntity.hbm.xml</value>-->
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/imPayrolInsentifNilaiSmkEntity.hbm.xml</value>

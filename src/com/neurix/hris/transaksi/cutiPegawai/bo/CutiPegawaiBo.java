@@ -20,6 +20,8 @@ public interface CutiPegawaiBo extends BaseMasterBo<CutiPegawai> {
     public void saveDelete(CutiPegawai bean) throws GeneralBOException;
     public void saveEdit(CutiPegawai bean) throws GeneralBOException;
 
+    public void saveCancel(CutiPegawai bean) throws GeneralBOException;
+
     List<Notifikasi> saveAddCuti(CutiPegawai bean) throws GeneralBOException;
 
     CutiPegawai saveCutiBersama(CutiPegawai bean) throws GeneralBOException;

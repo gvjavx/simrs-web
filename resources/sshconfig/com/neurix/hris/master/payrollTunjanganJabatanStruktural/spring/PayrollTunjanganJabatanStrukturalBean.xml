@@ -13,6 +13,7 @@
           p:positionDao-ref="positionDao"
           p:branchDao-ref="branchDao"
           p:kelompokPositionDao-ref="kelompokPositionDao"
+          p:payrollTunjanganJabatanStrukturalHistoryDao-ref="payrollTunjanganJabatanStrukturalHistoryDao"
     />
 
     <bean id="payrollTunjanganJabatanStrukturalBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -38,6 +39,8 @@
     <bean id="payrollTunjanganJabatanStrukturalDao" class="com.neurix.hris.master.payrollTunjanganJabatanStruktural.dao.PayrollTunjanganJabatanStrukturalDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="kelompokPositionDao" class="com.neurix.hris.master.kelompokPosition.dao.KelompokPositionDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="payrollTunjanganJabatanStrukturalHistoryDao" class="com.neurix.hris.master.payrollTunjanganJabatanStruktural.dao.PayrollTunjanganJabatanStrukturalHistoryDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>
