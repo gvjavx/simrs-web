@@ -60,6 +60,14 @@ public class PayrollTunjanganJabatanStrukturalDao extends GenericDao<ImPayrollTu
         return "TJS" + sId;
     }
 
+    public String getNextTunjanganJabatanStrukturalIdHistory() throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_payroll_tunjangan_jabatan_struktural_history')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%05d", iter.next());
+
+        return "TJSH" + sId;
+    }
+
     public List<ImPayrollTunjanganJabatanStrukturalEntity> getData2(String kelompokId) throws HibernateException {
         List<ImPayrollTunjanganJabatanStrukturalEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImPayrollTunjanganJabatanStrukturalEntity.class)
                 .add(Restrictions.eq("kelompokId", kelompokId))

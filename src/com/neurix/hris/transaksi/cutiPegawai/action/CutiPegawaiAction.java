@@ -450,8 +450,9 @@ public class CutiPegawaiAction extends BaseMasterAction {
             cancelCutiPegawai.setFlag("Y");
 
 //            Edit sisa cuti jika cancel
-            cutiPegawaiBoProxy.editSisaCuti(cancelCutiPegawai);
-            cutiPegawaiBoProxy.saveEdit(cancelCutiPegawai);
+            if ("normal".equalsIgnoreCase(cancelCutiPegawai.getJenisCuti()))
+                cutiPegawaiBoProxy.editSisaCuti(cancelCutiPegawai);
+            cutiPegawaiBoProxy.saveCancel(cancelCutiPegawai);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
