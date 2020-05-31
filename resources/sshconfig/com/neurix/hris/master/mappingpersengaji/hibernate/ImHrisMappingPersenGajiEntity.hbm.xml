@@ -17,7 +17,7 @@
             <column name="jenis_gaji" sql-type="varchar" length="20" not-null="true" />
         </property>
         <property name="presentase">
-            <column name="presentase" sql-type="int" not-null="true"/>
+            <column name="persentase" sql-type="int" not-null="true"/>
         </property>
 
         <property name="flag">

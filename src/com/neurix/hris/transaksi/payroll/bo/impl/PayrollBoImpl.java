@@ -25,6 +25,8 @@ import com.neurix.hris.master.golonganPkwt.model.GolonganPkwt;
 import com.neurix.hris.master.golonganPkwt.model.ImGolonganPkwtEntity;
 import com.neurix.hris.master.keluarga.dao.KeluargaDao;
 import com.neurix.hris.master.keluarga.model.ImKeluargaEntity;
+import com.neurix.hris.master.mappingpersengaji.dao.MappingPersenGajiDao;
+import com.neurix.hris.master.mappingpersengaji.model.ImHrisMappingPersenGaji;
 import com.neurix.hris.master.masaTanam.dao.MasaTanamDao;
 import com.neurix.hris.master.masaTanam.model.ImMasaTanamEntity;
 import com.neurix.hris.master.payrollAirListrik.dao.PayrollAirListrikDao;
@@ -132,6 +134,15 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
     private HistoryJabatanPegawaiDao historyJabatanPegawaiDao;
     private PayrollPttDao payrollPttDao;
     private PayrollParamBpjsDao payrollParamBpjsDao;
+    private MappingPersenGajiDao mappingPersenGajiDao;
+
+    public MappingPersenGajiDao getMappingPersenGajiDao() {
+        return mappingPersenGajiDao;
+    }
+
+    public void setMappingPersenGajiDao(MappingPersenGajiDao mappingPersenGajiDao) {
+        this.mappingPersenGajiDao = mappingPersenGajiDao;
+    }
 
     public PayrollParamBpjsDao getPayrollParamBpjsDao() {
         return payrollParamBpjsDao;
@@ -1858,6 +1869,47 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     Integer persenTFungsional = 100;
                     Integer persenTTambahan = 100;
                     Integer persenRlab = 100;
+
+                    //update 31-05-2020
+                    //persentase dari gaji
+                    String tipeGaji ="";
+                    if ("Y".equalsIgnoreCase(biodataEntity.getFlagPercobaan())){
+                        tipeGaji="percobaan";
+                    }else if ("Y".equalsIgnoreCase(biodataEntity.getFlagPjs())){
+                        tipeGaji="pjs";
+                    }else if ("Y".equalsIgnoreCase(biodataEntity.getFlagPlt())){
+                        tipeGaji="plt";
+                    }
+
+                    if (!"".equalsIgnoreCase(tipeGaji)){
+                        List<ImHrisMappingPersenGaji> mappingPersenGajiList = mappingPersenGajiDao.getListMappingPersenGaji(tipeGaji);
+                        for (ImHrisMappingPersenGaji persenGaji : mappingPersenGajiList){
+                            switch (persenGaji.getJenisGaji()){
+                                case "gaji_golongan":
+                                    persenGapok=persenGaji.getPresentase();
+                                    break;
+                                case "tunjangan_umk":
+                                    persenSankhus=persenGaji.getPresentase();
+                                    break;
+                                case "tunjangan_jabatan":
+                                    persenTJabatan=persenGaji.getPresentase();
+                                    break;
+                                case "tunjangan_jabatan_struktural":
+                                    persenTStruktural=persenGaji.getPresentase();
+                                    break;
+                                case "tunjangan_strategis":
+                                    persenTFungsional=persenGaji.getPresentase();
+                                    break;
+                                case "tunjangan_tambahan":
+                                    persenTTambahan=persenGaji.getPresentase();
+                                    break;
+                                case "tunjangan_rlab":
+                                    persenRlab=persenGaji.getPresentase();
+                                    break;
+                            }
+                        }
+                    }
+
 
                     //flag untuk testing Tambahan Lain
                     String flagTestTambahanLain = "N";
@@ -9970,7 +10022,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
 
     @Override
     public void approvePayrollSdm(Payroll bean) throws GeneralBOException {
-        payrollDao.approvePayrollSdm(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getApprovalUnitFlag(), bean.getTipe());
+        payrollDao.approvePayrollSdm(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getApprovalSdmFlag(), bean.getTipe());
     }
 
     @Override

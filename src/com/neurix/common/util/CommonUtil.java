@@ -105,7 +105,25 @@ public class CommonUtil {
             throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
         }
     }
+    public static String roleIdAsLogin() throws UsernameNotFoundException {
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        if (session.getAttribute("SPRING_SECURITY_CONTEXT") != null) {
+            SecurityContextImpl securityContextImpl = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
+            if (securityContextImpl.getAuthentication() != null) {
+                UserDetailsLogin userDetailsLogin=(UserDetailsLogin)securityContextImpl.getAuthentication().getPrincipal();
+//                String username=userDetailsLogin.getUsername();
 
+                String roleId=((Roles)userDetailsLogin.getRoles().get(0)).getStRoleId();
+
+                return roleId;
+            } else {
+                throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
+            }
+
+        } else {
+            throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
+        }
+    }
     public static String userAreaId() throws UsernameNotFoundException {
         HttpSession session = ServletActionContext.getRequest().getSession();
         if (session.getAttribute("SPRING_SECURITY_CONTEXT") != null) {

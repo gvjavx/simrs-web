@@ -83,6 +83,7 @@
           p:payrollSkalaGajiBodDao-ref="payrollSkalaGajiBodDao"
           p:payrollPttDao-ref="payrollPttDao"
           p:payrollParamBpjsDao-ref="payrollParamBpjsDao"
+          p:mappingPersenGajiDao-ref="mappingPersenGajiDao"
     />
 
     <bean id="payrollBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

@@ -89,6 +89,7 @@
 
     <!-- for Payroll -->
     <import resource="sshconfig/com/neurix/hris/master/payrollTunjanganStrategis/spring/PayrollTunjanganStrategisBean.xml"/>
+    <import resource="sshconfig/com/neurix/hris/master/mappingpersengaji/spring/MappingPersenGajiBean.xml"/>
 
     <import resource="sshconfig/com/neurix/hris/master/payrollTunjanganJabatanStruktural/spring/PayrollTunjanganJabatanStrukturalBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/transaksi/payroll/spring/PayrollBean.xml"/>

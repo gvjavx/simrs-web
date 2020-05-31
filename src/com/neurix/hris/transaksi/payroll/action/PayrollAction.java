@@ -10437,6 +10437,10 @@ public class PayrollAction extends BaseMasterAction{
         if (("KP").equalsIgnoreCase(branchId)){
             searchPayroll.setKantorPusat(true);
         }
+
+        if ("39".equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
+            searchPayroll.setKeuanganKantorPusat(true);
+        }
         payroll=searchPayroll;
 
         logger.info("[PayrollAction.search] end process <<<");

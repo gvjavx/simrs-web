@@ -198,6 +198,7 @@
                 <!-- For Payroll -->
 
                 <value>sshconfig/com/neurix/hris/master/payrollTunjanganJabatanStruktural/hibernate/ImmPayrollTunjanganJabatanStrukturalEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/mappingpersengaji/hibernate/ImHrisMappingPersenGajiEntity.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/payrollSkalaGaji/hibernate/ImPayrollSkalaGajiEntity.hbm.xml</value>
