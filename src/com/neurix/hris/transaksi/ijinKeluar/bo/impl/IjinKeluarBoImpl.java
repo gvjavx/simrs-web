@@ -281,6 +281,23 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
                 imIjinKeluarEntity.setCancelPerson(bean.getCancelPerson());
                 imIjinKeluarEntity.setCancelNote(bean.getCancelNote());
 
+//                try {
+//                    java.util.Date dateTglMelahirkan = new SimpleDateFormat("yyyy-MM-dd").parse(bean.getStTglMelahirkan());
+//                    imIjinKeluarEntity.setTglMelahirkan(dateTglMelahirkan);
+//                } catch (ParseException e) {
+//                    logger.error("[IjinKeluarBoImpl.saveEdit] Error, " + e.getMessage());
+//                }
+//                Date dateTglMelahirkan = Date.valueOf(bean.getStTglMelahirkan());
+//                imIjinKeluarEntity.setTglMelahirkan(dateTglMelahirkan);
+                SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+                try {
+                    java.util.Date date = format.parse(bean.getStTglMelahirkan().toString());
+                    Date tglMelahirkan = new Date(date.getTime());
+                    imIjinKeluarEntity.setTglMelahirkan(tglMelahirkan);
+                } catch (ParseException e) {
+                    logger.error("[IjinKeluarBoImpl.saveEdit] Error, " + e.getMessage());
+                }
+
                 imIjinKeluarEntity.setFlag(bean.getFlag());
                 imIjinKeluarEntity.setAction(bean.getAction());
                 imIjinKeluarEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -290,7 +307,8 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
                 }
 
                 if (bean.getTanggalAkhir() != null)
-                    imIjinKeluarEntity.setTglAkhirUpdate(bean.getTanggalAkhir());
+                    imIjinKeluarEntity.setTanggalAkhir(bean.getTanggalAkhir());
+//                    imIjinKeluarEntity.setTglAkhirUpdate(bean.getTanggalAkhir());
 
                 try {
                     // Update into database
@@ -808,18 +826,25 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
                                 DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                                 returnIjinKeluar.setStTanggalAwal(df.format(ijinKeluarEntity.getTanggalAwal()));
 
-                                if (ijinKeluarEntity.getTglAkhirUpdate() != null){
-                                    returnIjinKeluar.setStTanggalAkhir(df.format(ijinKeluarEntity.getTglAkhirUpdate()));
-                                    Date tgl = ijinKeluarEntity.getTglAkhirUpdate();
-                                    Calendar calendar = Calendar.getInstance();
-                                    calendar.setTime(tgl);
-                                    calendar.add(Calendar.DATE, -45);
-                                    returnIjinKeluar.setStTglMelahirkan(df.format(calendar.getTime()));
+//                                if (ijinKeluarEntity.getTglAkhirUpdate() != null){
+                                if ("IJ013".equalsIgnoreCase(ijinKeluarEntity.getIjinId())){
+//                                    returnIjinKeluar.setStTanggalAkhir(df.format(ijinKeluarEntity.getTglAkhirUpdate()));
+//                                    Date tgl = ijinKeluarEntity.getTglAkhirUpdate();
+//                                    Calendar calendar = Calendar.getInstance();
+//                                    calendar.setTime(tgl);
+//                                    calendar.add(Calendar.DATE, -45);
+//                                    returnIjinKeluar.setStTglMelahirkan(df.format(calendar.getTime()));
+//                                    returnIjinKeluar.setDispenLahir(true);
+//                                    returnIjinKeluar.setUploadFile(ijinKeluarEntity.getSuratDokter());
+                                    returnIjinKeluar.setStTanggalAkhir(df.format(ijinKeluarEntity.getTanggalAkhir()));
+                                    if (ijinKeluarEntity.getTglMelahirkan() != null)
+                                        returnIjinKeluar.setStTglMelahirkan(df.format(ijinKeluarEntity.getTglMelahirkan()));
                                     returnIjinKeluar.setDispenLahir(true);
                                     returnIjinKeluar.setUploadFile(ijinKeluarEntity.getSuratDokter());
-                                }else {
-                                    returnIjinKeluar.setStTanggalAkhir(df.format(ijinKeluarEntity.getTanggalAkhir()));
                                 }
+//                                else {
+//                                    returnIjinKeluar.setStTanggalAkhir(df.format(ijinKeluarEntity.getTanggalAkhir()));
+//                                }
 
                                 if(searchBean.isMobile()) {
 

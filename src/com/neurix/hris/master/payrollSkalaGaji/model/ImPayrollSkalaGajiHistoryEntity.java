@@ -1,6 +1,9 @@
 package com.neurix.hris.master.payrollSkalaGaji.model;
 
+import com.neurix.hris.master.golongan.model.ImGolonganEntity;
+
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
@@ -12,9 +15,12 @@ import java.sql.Timestamp;
  */
 public class ImPayrollSkalaGajiHistoryEntity implements Serializable {
 
-    private String id;
-    private String departmentId;
-    private String departmentName;
+    private String skalaGajiHistoryId;
+    private String skalaGajiId ;
+    private String golonganId ;
+    private int point ;
+    private BigDecimal nilai ;
+    private String tahun;
     private String flag;
     private String action;
     private Timestamp createdDate;
@@ -22,36 +28,31 @@ public class ImPayrollSkalaGajiHistoryEntity implements Serializable {
     private String createdWho;
     private String lastUpdateWho;
 
-    public String getId() {
-        return id;
+
+
+    private BigDecimal santunanKhusus;
+    private BigDecimal rumah;
+    private BigDecimal listrik;
+    private BigDecimal air;
+    private BigDecimal bbm;
+    private BigDecimal total;
+    private String noSk;
+    private ImGolonganEntity imGolonganEntity;
+
+    public ImGolonganEntity getImGolonganEntity() {
+        return imGolonganEntity;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setImGolonganEntity(ImGolonganEntity imGolonganEntity) {
+        this.imGolonganEntity = imGolonganEntity;
     }
 
-    public String getDepartmentId() {
-        return departmentId;
+    public String getSkalaGajiHistoryId() {
+        return skalaGajiHistoryId;
     }
 
-    public void setDepartmentId(String departmentId) {
-        this.departmentId = departmentId;
-    }
-
-    public String getDepartmentName() {
-        return departmentName;
-    }
-
-    public void setDepartmentName(String departmentName) {
-        this.departmentName = departmentName;
-    }
-
-    public String getFlag() {
-        return flag;
-    }
-
-    public void setFlag(String flag) {
-        this.flag = flag;
+    public void setSkalaGajiHistoryId(String skalaGajiHistoryId) {
+        this.skalaGajiHistoryId = skalaGajiHistoryId;
     }
 
     public String getAction() {
@@ -62,20 +63,28 @@ public class ImPayrollSkalaGajiHistoryEntity implements Serializable {
         this.action = action;
     }
 
+    public BigDecimal getAir() {
+        return air;
+    }
+
+    public void setAir(BigDecimal air) {
+        this.air = air;
+    }
+
+    public BigDecimal getBbm() {
+        return bbm;
+    }
+
+    public void setBbm(BigDecimal bbm) {
+        this.bbm = bbm;
+    }
+
     public Timestamp getCreatedDate() {
         return createdDate;
     }
 
     public void setCreatedDate(Timestamp createdDate) {
         this.createdDate = createdDate;
-    }
-
-    public Timestamp getLastUpdate() {
-        return lastUpdate;
-    }
-
-    public void setLastUpdate(Timestamp lastUpdate) {
-        this.lastUpdate = lastUpdate;
     }
 
     public String getCreatedWho() {
@@ -86,11 +95,107 @@ public class ImPayrollSkalaGajiHistoryEntity implements Serializable {
         this.createdWho = createdWho;
     }
 
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
+
+    public String getGolonganId() {
+        return golonganId;
+    }
+
+    public void setGolonganId(String golonganId) {
+        this.golonganId = golonganId;
+    }
+
+    public Timestamp getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(Timestamp lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
+
     public String getLastUpdateWho() {
         return lastUpdateWho;
     }
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public BigDecimal getListrik() {
+        return listrik;
+    }
+
+    public void setListrik(BigDecimal listrik) {
+        this.listrik = listrik;
+    }
+
+    public BigDecimal getNilai() {
+        return nilai;
+    }
+
+    public void setNilai(BigDecimal nilai) {
+        this.nilai = nilai;
+    }
+
+    public String getNoSk() {
+        return noSk;
+    }
+
+    public void setNoSk(String noSk) {
+        this.noSk = noSk;
+    }
+
+    public int getPoint() {
+        return point;
+    }
+
+    public void setPoint(int point) {
+        this.point = point;
+    }
+
+    public BigDecimal getRumah() {
+        return rumah;
+    }
+
+    public void setRumah(BigDecimal rumah) {
+        this.rumah = rumah;
+    }
+
+    public BigDecimal getSantunanKhusus() {
+        return santunanKhusus;
+    }
+
+    public void setSantunanKhusus(BigDecimal santunanKhusus) {
+        this.santunanKhusus = santunanKhusus;
+    }
+
+    public String getSkalaGajiId() {
+        return skalaGajiId;
+    }
+
+    public void setSkalaGajiId(String skalaGajiId) {
+        this.skalaGajiId = skalaGajiId;
+    }
+
+    public String getTahun() {
+        return tahun;
+    }
+
+    public void setTahun(String tahun) {
+        this.tahun = tahun;
+    }
+
+    public BigDecimal getTotal() {
+        return total;
+    }
+
+    public void setTotal(BigDecimal total) {
+        this.total = total;
     }
 }

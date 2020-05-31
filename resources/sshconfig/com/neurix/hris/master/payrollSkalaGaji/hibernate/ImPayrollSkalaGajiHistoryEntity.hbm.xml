@@ -3,16 +3,15 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.neurix.hris.master.payrollSkalaGaji.model.ImPayrollSkalaGajiEntity" dynamic-update="true"
-           table="im_hris_payroll_skala_gaji" select-before-update="true" schema="public">
+    <class name="com.neurix.hris.master.payrollSkalaGaji.model.ImPayrollSkalaGajiHistoryEntity" dynamic-update="true"
+           table="im_hris_payroll_skala_gaji_history" select-before-update="true" schema="public">
 
-
-        <id name="skalaGajiId">
-            <column name="skala_gaji_id" sql-type="varchar" length="8" not-null="true" />
+        <id name="skalaGajiHistoryId">
+            <column name="skala_gaji_history_id" sql-type="varchar" length="15" not-null="true" />
         </id>
 
-        <property name="golonganId">
-            <column name="golongan_id" sql-type="varchar" length="5" not-null="true" />
+        <property name="skalaGajiId">
+            <column name="skala_gaji_id" sql-type="varchar" length="15" not-null="true" />
         </property>
         <property name="golonganId">
             <column name="golongan_id" sql-type="varchar" length="5" not-null="true" />
@@ -20,8 +19,39 @@
         <property name="point">
             <column name="point" sql-type="int"  not-null="true" />
         </property>
+
+
         <property name="nilai">
-            <column name="nilai" sql-type="numeric" length="5" precision="2" not-null="true" />
+            <column name="nilai" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="santunanKhusus">
+            <column name="santunan_khusus" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="rumah">
+            <column name="rumah" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="air">
+            <column name="air" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="listrik">
+            <column name="listrik" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="bbm">
+            <column name="bbm" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="total">
+            <column name="total" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+
+
+
+
+
+        <property name="tahun">
+            <column name="tahun" sql-type="varchar" length="4" not-null="false" />
+        </property>
+        <property name="noSk">
+            <column name="no_sk" sql-type="varchar" length="15" not-null="false" />
         </property>
 
         <property name="flag">

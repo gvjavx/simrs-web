@@ -278,8 +278,8 @@
                                         <td>
                                             <input type="file" id="file" class="form-control" name="fileUpload"/>
                                             <input type="text" id="cpiddoc" class="form-control" accept="application/pdf,image/jpeg"
-                                                   name="ijinKeluar.uploadFile" readonly style="display: none;" />
-                                            <s:textfield id="cpiddoc" name="ijinKeluar.uploadFile" cssClass="form-control pull-right"
+                                                   name="ijinKeluar.uploadFile1" readonly style="display: none;" />
+                                            <s:textfield id="cpiddoc1" name="ijinKeluar.uploadFile" cssClass="form-control pull-right"
                                                          required="false" readonly="true" cssStyle=""/>
                                         </td>
                                     </tr>
