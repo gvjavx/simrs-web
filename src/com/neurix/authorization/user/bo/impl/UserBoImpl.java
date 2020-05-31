@@ -1533,7 +1533,8 @@ public class UserBoImpl implements UserBo {
             }
             userDetailsLogin.setIdDevice(loginUser.getIdDevice());
 
-//            userDetailsLogin.setJenisKelamin(biodata.getGender());
+            userDetailsLogin.setJenisKelamin(biodata.getGender());
+            userDetailsLogin.setFlagFingerMoblie(biodata.getFlagFingerMobile());
 
         }
 

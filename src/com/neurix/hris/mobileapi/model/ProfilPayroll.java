@@ -50,6 +50,15 @@ public class ProfilPayroll implements Serializable {
     private String listrik;
     private String iuranProfesi;
     private String potonganLain;
+    private String tunjanganLemburNilai;
+
+    public String getTunjanganLemburNilai() {
+        return tunjanganLemburNilai;
+    }
+
+    public void setTunjanganLemburNilai(String tunjanganLemburNilai) {
+        this.tunjanganLemburNilai = tunjanganLemburNilai;
+    }
 
     public String getIurDpPerush() {
         return iurDpPerush;

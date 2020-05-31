@@ -28,8 +28,17 @@ public class Dispensasi {
     private String golonganId;
     private String golonganName;
     private String gender;
+    private String tanggalKelahiran;
 
     private String actionError;
+
+    public String getTanggalKelahiran() {
+        return tanggalKelahiran;
+    }
+
+    public void setTanggalKelahiran(String tanggalKelahiran) {
+        this.tanggalKelahiran = tanggalKelahiran;
+    }
 
     public String getActionError() {
         return actionError;

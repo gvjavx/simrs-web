@@ -1,6 +1,7 @@
 package com.neurix.hris.mobileapi;
 
 import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.ijin.bo.IjinBo;
@@ -13,15 +14,19 @@ import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluar;
 import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
 import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import com.opensymphony.xwork2.ModelDriven;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
 
+import java.io.File;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author gondok
@@ -40,6 +45,45 @@ public class DispensasiController implements ModelDriven<Object> {
     private String id;
     private String statusApprove;
 
+    private String gender;
+
+    private String action;
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    private File fileSurat;
+    private String fileNameSurat;
+
+    public File getFileSurat() {
+        return fileSurat;
+    }
+
+    public void setFileSurat(File fileSurat) {
+        this.fileSurat = fileSurat;
+    }
+
+    public String getFileNameSurat() {
+        return fileNameSurat;
+    }
+
+    public void setFileNameSurat(String fileNameSurat) {
+        this.fileNameSurat = fileNameSurat;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
     public void setIjinBoProxy(IjinBo ijinBoProxy) {
         this.ijinBoProxy = ijinBoProxy;
     }
@@ -52,40 +96,97 @@ public class DispensasiController implements ModelDriven<Object> {
         this.notifikasiBoProxy = notifikasiBoProxy;
     }
 
-    public HttpHeaders index() {
+    public HttpHeaders create() {
 
         logger.info("[DispensasiController.index] end process POST /branch <<<");
 
-        List<Ijin> modelIjin = null;
-        try {
-            Ijin search = new Ijin();
+        if  (action.equalsIgnoreCase("edit")) {
+            com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluar search = new IjinKeluar();
+            search.setIjinKeluarId(model.getIjinKeluarId());
             search.setFlag("Y");
+            search.setFrom("ijinKeluar");
+            search.setMobile(true);
 
-            modelIjin = ijinBoProxy.getByCriteria(search);
-        } catch (GeneralBOException e) {
-            Long logId = null;
+            List<IjinKeluar> listOfIjinKeluar = null;
+
             try {
-                logId = ijinBoProxy.saveErrorMessage(e.getMessage(), "DispensasiController.isFoundOtherSessionActiveUserSessionLog");
-            } catch (GeneralBOException e1) {
-                logger.error("[DispensasiController.isFoundOtherSessionActiveUserSessionLog] Error when saving error,", e1);
+                listOfIjinKeluar = ijinKeluarBoProxy.getByCriteria(search);
+            } catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = ijinBoProxy.saveErrorMessage(e.getMessage(), "DispensasiController.isFoundOtherSessionActiveUserSessionLog");
+                } catch (GeneralBOException e1) {
+                    logger.error("[DispensasiController.isFoundOtherSessionActiveUserSessionLog] Error when saving error,", e1);
+                }
+                logger.error("[DispensasiController.isFoundOtherSessionActiveUserSessionLog] Error when searching / inquiring data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+                throw new GeneralBOException(e);
             }
-            logger.error("[DispensasiController.isFoundOtherSessionActiveUserSessionLog] Error when searching / inquiring data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            throw new GeneralBOException(e);
+
+            String path = null;
+            if (fileSurat != null) {
+                String idSuratDokter = ijinKeluarBoProxy.getNextSuratDokterId();
+
+                String fileNamePhoto = idSuratDokter+"_"+fileNameSurat;
+                String filePath = CommonConstant.RESOURCE_PATH_USER_UPLOAD_SURAT_DOKTER;
+                File fileCreate = new File(filePath, fileNamePhoto);
+                path = filePath+fileNamePhoto;
+                try {
+                    FileUtils.copyFile(fileSurat, fileCreate);
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+                listOfIjinKeluar.get(0).setFileType("IMG");
+                listOfIjinKeluar.get(0).setFilePath(path);
+
+            }
+            listOfIjinKeluar.get(0).setLastUpdate(new Timestamp(System.currentTimeMillis()));
+            listOfIjinKeluar.get(0).setLastUpdateWho(model.getNamaPegawai());
+            listOfIjinKeluar.get(0).setFlag("Y");
+            listOfIjinKeluar.get(0).setAction("U");
+            listOfIjinKeluar.get(0).setDispenLahir(true);
+            listOfIjinKeluar.get(0).setStTglMelahirkan(model.getTanggalKelahiran());
+            listOfIjinKeluar.get(0).setTanggalAkhir(CommonUtil.convertToDate(model.getTanggalAkhir()));
+
+            try{
+                ijinKeluarBoProxy.saveEdit(listOfIjinKeluar.get(0));
+            } catch (GeneralBOException e) {
+                logger.error("[DispensasiController.saveEdit] Error when saving dispen,", e);
+            }
+
+        } else {
+            List<Ijin> modelIjin = null;
+            try {
+                Ijin search = new Ijin();
+                search.setFlag("Y");
+                search.setGender(gender);
+
+                modelIjin = ijinBoProxy.getByCriteria(search);
+            } catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = ijinBoProxy.saveErrorMessage(e.getMessage(), "DispensasiController.isFoundOtherSessionActiveUserSessionLog");
+                } catch (GeneralBOException e1) {
+                    logger.error("[DispensasiController.isFoundOtherSessionActiveUserSessionLog] Error when saving error,", e1);
+                }
+                logger.error("[DispensasiController.isFoundOtherSessionActiveUserSessionLog] Error when searching / inquiring data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+                throw new GeneralBOException(e);
+            }
+
+            listOfDispensasi = new ArrayList<>();
+
+            if(modelIjin != null){
+                for(Ijin item : modelIjin){
+                    Dispensasi dispensasi = new Dispensasi();
+                    dispensasi.setNamaIjin(item.getIjinName());
+                    dispensasi.setMaksimalIjin(item.getJumlahIjin());
+                    dispensasi.setIjinId(item.getIjinId());
+                    dispensasi.setGender(item.getGender());
+
+                    listOfDispensasi.add(dispensasi);
+                }
+            }
         }
 
-        listOfDispensasi = new ArrayList<>();
-
-        if(modelIjin != null){
-            for(Ijin item : modelIjin){
-                Dispensasi dispensasi = new Dispensasi();
-                dispensasi.setNamaIjin(item.getIjinName());
-                dispensasi.setMaksimalIjin(item.getJumlahIjin());
-                dispensasi.setIjinId(item.getIjinId());
-                dispensasi.setGender(item.getGender());
-
-                listOfDispensasi.add(dispensasi);
-            }
-        }
         logger.info("[DispensasiController.index] end process POST /branch <<<");
         return new DefaultHttpHeaders("index").disableCaching();
     }
@@ -126,6 +227,25 @@ public class DispensasiController implements ModelDriven<Object> {
 
             ijinKeluar.setOs(model.getOs());
 
+            String path = null;
+            if (fileSurat != null) {
+                String idSuratDokter = ijinKeluarBoProxy.getNextSuratDokterId();
+
+                String fileNamePhoto = idSuratDokter+"_"+fileNameSurat;
+                String filePath = CommonConstant.RESOURCE_PATH_USER_UPLOAD_SURAT_DOKTER;
+                File fileCreate = new File(filePath, fileNamePhoto);
+                path = filePath+fileNamePhoto;
+                try {
+                    FileUtils.copyFile(fileSurat, fileCreate);
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+                ijinKeluar.setFileType("IMG");
+                ijinKeluar.setFilePath(path);
+
+            }
+
+
             List<Notifikasi> notifikasiList = ijinKeluarBoProxy.saveAddIjinKeluar(ijinKeluar);
 
             for ( Notifikasi notifikasi : notifikasiList){
@@ -152,6 +272,7 @@ public class DispensasiController implements ModelDriven<Object> {
 
         return new DefaultHttpHeaders("update").disableCaching();
     }
+
     public String status() {
         logger.info("[DispensasiController.update] end process POST /dispensasi/{nip}/status <<<");
         String nip = getId();

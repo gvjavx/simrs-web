@@ -110,6 +110,7 @@ public class ViewPayrollController implements ModelDriven<Object> {
                 returnPayroll.setIurDpPerush(CommonUtil.numbericFormat(payrollEntity.getIuranDapenPersh(), "###,###"));
                 returnPayroll.setIurBpjsTkPerush(CommonUtil.numbericFormat(payrollEntity.getIuranBpjsTkPers(), "###,###"));
                 returnPayroll.setIurBpjsKsPerush(CommonUtil.numbericFormat(payrollEntity.getIuranBpjsKsPers(), "###,###"));
+                returnPayroll.setTunjanganLemburNilai(CommonUtil.numbericFormat(payrollEntity.getTunjanganLembur(), "###,###"));
 
                 listOfPayroll.add(returnPayroll);
             }
