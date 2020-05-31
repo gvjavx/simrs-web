@@ -1649,7 +1649,32 @@ public class CutiPegawaiAction extends BaseMasterAction {
         return listOfUser;
     }
 
-    public List initComboSetCuti(String nip) {
+//    public List initComboSetCuti(String nip) {
+//        logger.info("[CutiPegawaiAction.initComboSetCuti] start process >>>");
+//
+//        List<CutiPegawai> listOfCuti= new ArrayList();
+//
+//        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+//        CutiPegawaiBo cutiPegawaiBo= (CutiPegawaiBo) ctx.getBean("cutiPegawaiBoProxy");
+//
+//        try {
+//            listOfCuti = cutiPegawaiBo.getListSetCuti(nip);
+//        } catch (GeneralBOException e) {
+//            Long logId = null;
+//            try {
+//                logId = cutiPegawaiBo.saveErrorMessage(e.getMessage(), "biodataBo.getListOfPersonilOnlyName");
+//            } catch (GeneralBOException e1) {
+//                logger.error("[CutiPegawaiAction.initComboSetCuti] Error when saving error,", e1);
+//            }
+//            logger.error("[CutiPegawaiAction.initComboSetCuti] Error when get combo lokasi kebun," + "[" + logId + "] Found problem when retrieving combo lokasi kebun data, please inform to your admin.", e);
+//        }
+//
+//        logger.info("[CutiPegawaiAction.initComboSetCuti] end process <<<");
+//
+//        return listOfCuti;
+//    }
+
+    public List initComboSetCuti(String nip, String jenisCuti) {
         logger.info("[CutiPegawaiAction.initComboSetCuti] start process >>>");
 
         List<CutiPegawai> listOfCuti= new ArrayList();
@@ -1658,7 +1683,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
         CutiPegawaiBo cutiPegawaiBo= (CutiPegawaiBo) ctx.getBean("cutiPegawaiBoProxy");
 
         try {
-            listOfCuti = cutiPegawaiBo.getListSetCuti(nip);
+            listOfCuti = cutiPegawaiBo.getListSetCuti2(nip, jenisCuti);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {

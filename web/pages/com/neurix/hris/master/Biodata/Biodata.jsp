@@ -248,7 +248,6 @@
     <section class="content-header">
         <h1>
             Biodata Form
-            <small>GO-MEDSYS</small>
         </h1>
     </section>
 
@@ -1010,7 +1009,7 @@
                                         <table>
                                             <s:action id="initComboTipe" namespace="/tipepegawai" name="searchTipePegawai_tipepegawai"/>
                                             <s:if test="isDelete()">
-                                                <s:select list="#initComboTipe.listComboTipePegawai" id="tipePegawai1" name="biodata.tipePegawai" disabled="true"
+                                                <s:select list="#initComboTipe.listComboTipePegawai" id="tipePegawai1" name="biodata.tipePegawai" onchange="changePegawai(this.value)" disabled="true"
                                                           listKey="tipePegawaiId" listValue="tipePegawaiName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                             </s:if>
                                             <s:else>
@@ -1067,7 +1066,7 @@
                                             <s:action id="initComboTipe" namespace="/golongan" name="initComboGolonganPkwt_golongan"/>
                                             <s:if test="isDelete()">
                                                 <%--Untuk list Golongan PKWT--%>
-                                                <s:select list="#initComboTipe.listComboGolongan" id="golongan3" name="biodata.golongan" disabled="true"
+                                                <s:select list="#initComboTipe.listComboGolonganPkwt" id="golongan3" name="biodata.golongan" disabled="true"
                                                           listKey="golonganPkwtId" listValue="golonganPkwtName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                             </s:if>
                                             <s:else>
@@ -1129,7 +1128,7 @@
                                             <s:if test="isDelete()">
                                                 <s:select list="#listComboDanaPensiun.listComboPayrollDanaPensiun"
                                                           id="danaPensiun" name="biodata.danaPensiun" disabled="true"
-                                                          listKey="danaPensiunId" listValue="danaPensiun" headerValue="[Select one]" cssClass="form-control" readonly="true" />
+                                                          listKey="danaPensiunId" listValue="danaPensiun" headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true" />
                                             </s:if>
                                             <s:else>
                                                 <s:select list="#listComboDanaPensiun.listComboPayrollDanaPensiun"

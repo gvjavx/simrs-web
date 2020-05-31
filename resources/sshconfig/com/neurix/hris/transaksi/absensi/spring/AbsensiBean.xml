@@ -42,6 +42,7 @@
           p:pegawaiTambahanDao-ref="pegawaiTambahanDao"
           p:absensiDashboardDao-ref="absensiDashboardDao"
           p:shiftDao-ref="shiftDao"
+          p:companyDao-ref="companyDao"
     />
 
     <bean id="absensiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

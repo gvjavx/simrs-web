@@ -296,13 +296,13 @@
                                       headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true" disabled="true"/>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-3" >Status Giling : </label>
-                        <div class="col-sm-8">
-                            <s:select list="#{'DMG':'Dalam Masa Giling','LMG':'Luar Masa Giling'}" id="statusGiling23" name=""
-                                      headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true" disabled="true"/>
-                        </div>
-                    </div>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="control-label col-sm-3" >Status Giling : </label>--%>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<s:select list="#{'DMG':'Dalam Masa Giling','LMG':'Luar Masa Giling'}" id="statusGiling23" name=""--%>
+                                      <%--headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true" disabled="true"/>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                     <div class="form-group">
                         <label class="control-label col-sm-3" >Tipe Lembur : </label>
                         <div class="col-sm-8">

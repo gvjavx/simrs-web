@@ -279,6 +279,34 @@ public class ItPayrollEntity implements Serializable {
     private ImBiodataEntity imBiodataEntity;
     private ItPayrollPphEntity itPayrollPphEntity;
 
+    // macam peralihan;
+    private BigDecimal peralihanGapok;
+    private BigDecimal peralihanSankhus;
+    private BigDecimal peralihanTunjangan;
+
+    public BigDecimal getPeralihanGapok() {
+        return peralihanGapok;
+    }
+
+    public void setPeralihanGapok(BigDecimal peralihanGapok) {
+        this.peralihanGapok = peralihanGapok;
+    }
+
+    public BigDecimal getPeralihanSankhus() {
+        return peralihanSankhus;
+    }
+
+    public void setPeralihanSankhus(BigDecimal peralihanSankhus) {
+        this.peralihanSankhus = peralihanSankhus;
+    }
+
+    public BigDecimal getPeralihanTunjangan() {
+        return peralihanTunjangan;
+    }
+
+    public void setPeralihanTunjangan(BigDecimal peralihanTunjangan) {
+        this.peralihanTunjangan = peralihanTunjangan;
+    }
 
     public String getApprovalSdmFlag() {
         return approvalSdmFlag;

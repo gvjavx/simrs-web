@@ -454,6 +454,7 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
                 "  SUM(payroll.total_a) as gaji_kotor,\n" +
                 "  payroll.approval_flag,\n" +
                 "  payroll.approval_unit_flag,\n" +
+                "  payroll.approval_sdm_flag,\n" +
                 "  payroll.approval_date,\n" +
                 "  payroll.branch_id,\n" +
                 "  payroll.flag_payroll,\n" +
@@ -479,6 +480,7 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
                 "         branch.branch_name,\n" +
                 "         payroll.approval_flag,\n" +
                 "         payroll.approval_unit_flag,\n" +
+                "         payroll.approval_sdm_flag,\n" +
                 "         payroll.approval_date," +
                 "         payroll.branch_id,\n" +
                 "         payroll.flag_payroll,\n" +
@@ -505,16 +507,17 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
             result.setTotalA(BigDecimal.valueOf(Double.valueOf(row[5].toString())));
             result.setApprovalFlag((String) row[6]);
             result.setApprovalUnitFlag((String) row[7]);
-            result.setApprovalDate((java.sql.Timestamp) row[8]);
-            result.setBranchId((String) row[9]);
-            result.setFlagPayroll((String) row[10]);
-            result.setFlagThr((String) row[11]);
-            result.setFlagCutiTahunan((String) row[12]);
-            result.setFlagCutiPanjang((String) row[13]);
-            result.setFlagJasprod((String) row[14]);
-            result.setFlagJubileum((String) row[15]);
-            result.setFlagPensiun((String) row[16]);
-            result.setFlagInsentif((String) row[17]);
+            result.setApprovalSdmFlag((String) row[8]);
+            result.setApprovalDate((java.sql.Timestamp) row[9]);
+            result.setBranchId((String) row[10]);
+            result.setFlagPayroll((String) row[11]);
+            result.setFlagThr((String) row[12]);
+            result.setFlagCutiTahunan((String) row[13]);
+            result.setFlagCutiPanjang((String) row[14]);
+            result.setFlagJasprod((String) row[15]);
+            result.setFlagJubileum((String) row[16]);
+            result.setFlagPensiun((String) row[17]);
+            result.setFlagInsentif((String) row[18]);
 
             listOfResult.add(result);
         }

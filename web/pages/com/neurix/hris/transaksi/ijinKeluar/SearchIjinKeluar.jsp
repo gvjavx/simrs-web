@@ -343,6 +343,14 @@
                                                                        requestURI="paging_displaytag_ijinKeluar.action" export="true" id="row" pagesize="14" style="font-size:10">
 
                                                             <display:column media="html" title="Batal">
+                                                                <%--<s:if test=""--%>
+                                                                <%--<s:url var="urlCancel" namespace="/ijinKeluar" action="cancel_ijinKeluar" escapeAmp="false">--%>
+                                                                    <%--<s:param name="id"><s:property value="#attr.row.ijinKeluarId" /></s:param>--%>
+                                                                    <%--<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>--%>
+                                                                <%--</s:url>--%>
+                                                                <%--<sj:a onClickTopics="showDialogMenuView" href="%{urlCancel}">--%>
+                                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">--%>
+                                                                <%--</sj:a>--%>
                                                                 <s:if test="#attr.row.cancel">
                                                                     <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
                                                                 </s:if>
@@ -373,15 +381,21 @@
                                                                     </s:a>
                                                                 </s:elseif>
                                                             </display:column>
-                                                            <%--<display:column media="html" title="Edit" style="text-align:center;font-size:9">--%>
-                                                                <%--<s:url var="urlViewDelete" namespace="/ijinKeluar" action="edit_ijinKeluar" escapeAmp="false">--%>
-                                                                    <%--<s:param name="id"><s:property value="#attr.row.ijinKeluarId" /></s:param>--%>
-                                                                    <%--<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>--%>
-                                                                <%--</s:url>--%>
-                                                                <%--<sj:a onClickTopics="showDialogMenuView" href="%{urlViewDelete}">--%>
-                                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_trash">--%>
-                                                                <%--</sj:a>--%>
-                                                            <%--</display:column>--%>
+
+                                                            <display:column media="html" title="Edit" style="text-align:center;font-size:9">
+                                                            <s:if test="#attr.row.cancel">
+                                                            </s:if>
+                                                            <s:elseif test="#attr.row.finish">
+                                                                <s:url var="urlViewDelete" namespace="/ijinKeluar" action="edit_ijinKeluar" escapeAmp="false">
+                                                                    <s:param name="id"><s:property value="#attr.row.ijinKeluarId" /></s:param>
+                                                                    <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                                </s:url>
+                                                                <sj:a onClickTopics="showDialogMenuView" href="%{urlViewDelete}">
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_trash">
+                                                                </sj:a>
+                                                            </s:elseif>
+                                                            </display:column>
+
                                                             <display:column media="html" title="View" style="text-align:center;font-size:9">
                                                                 <s:url var="urlViewDelete" namespace="/ijinKeluar" action="delete_ijinKeluar" escapeAmp="false">
                                                                     <s:param name="id"><s:property value="#attr.row.ijinKeluarId" /></s:param>
@@ -390,6 +404,14 @@
                                                                 <sj:a onClickTopics="showDialogMenuView" href="%{urlViewDelete}">
                                                                     <img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_trash">
                                                                 </sj:a>
+                                                            </display:column>
+
+                                                            <display:column style="text-align:center;" media="html" title="Surat Dokter">
+                                                                <s:if test="#attr.row.dispenLahir">
+                                                                    <a href="javascript:;" data="<s:property value="%{#attr.row.uploadFile}"/>" class="item-surat">
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">
+                                                                    </a>
+                                                                </s:if>
                                                             </display:column>
                                                             <display:column property="ijinKeluarId" sortable="true" title="Id" />
                                                             <display:column property="nip" sortable="true" title="NIP"  />
@@ -695,6 +717,26 @@
         </div>
     </div>
 </div>
+
+<div id="modal-view-document" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">View Surat Dokter</h4>
+            </div>
+            <div class="modal-body">
+                <img src="" class="img-responsive" id="my-image">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $('#tglAwal3').datepicker({
         dateFormat: 'dd/mm/yy'
@@ -901,4 +943,16 @@
             })
         });
     });
+
+    $('.tableIjinKeluar').on('click', '.item-surat', function(){
+        var id = $(this).attr('data');
+        console.log("Test");
+        console.log(id);
+//        $('.tableCuti').find('tbody').remove();
+//        $('.tableCuti').find('thead').remove();
+        dwr.engine.setAsync(false);
+        $("#my-image").attr("src","/mnt/surat/" + id);
+        $('#modal-view-document').modal('show');
+        $('#ViewDocument').attr('action', 'editPerson');
+    })
 </script>

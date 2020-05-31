@@ -169,7 +169,6 @@
     <section class="content-header">
         <h1>
             Company Information
-            <small>e-HEALTH</small>
         </h1>
     </section>
 

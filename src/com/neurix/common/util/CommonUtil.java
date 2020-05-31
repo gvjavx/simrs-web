@@ -333,8 +333,8 @@ public class CommonUtil {
     }
 
     public static String numbericFormat(BigDecimal number,String pattern) {
-        NumberFormat nf = NumberFormat.getNumberInstance(Locale.GERMANY); //for indo money format
-//        NumberFormat nf = NumberFormat.getNumberInstance(Locale.US); //for international money format
+//        NumberFormat nf = NumberFormat.getNumberInstance(Locale.GERMANY); //for indo money format
+        NumberFormat nf = NumberFormat.getNumberInstance(Locale.US); //for international money format
         DecimalFormat df = (DecimalFormat)nf;
         df.applyPattern(pattern);
         return df.format(number);

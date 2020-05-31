@@ -426,7 +426,11 @@
         IjinAction.initComboIjinId(ijinid, function(listdata) {
             $.each(listdata, function (i, item) {
                 $('#Ijin1').val(item.ijinName);
-                $('#Lama1').val(item.jumlahIjin+' hari');
+                if (item.jumlahIjin != null){
+                    $('#Lama1').val(item.jumlahIjin+' hari');
+                }else {
+                    $('#Lama1').val('- hari');
+                }
             })
         });
     });

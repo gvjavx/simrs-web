@@ -252,6 +252,24 @@
                             </table>
                         </td>
                     </tr>
+                    <s:if test="isDispenLahir()">
+                        <tr>
+                            <td>
+                                <label class="control-label"><small>Tanggal Melahirkan :</small></label>
+                            </td>
+                            <td>
+                                <table>
+                                    <div class="input-group date">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <s:textfield id="tglMelahirkan1" name="ijinKeluar.stTglMelahirkan" cssClass="form-control pull-right"
+                                                     required="false"  disabled="true" cssStyle=""/>
+                                    </div>
+                                </table>
+                            </td>
+                        </tr>
+                    </s:if>
                     <tr>
                         <td>
                             <label class="control-label"><small>Keterangan :</small></label>

@@ -142,7 +142,7 @@ public class PayrollSkalaGajiBoImpl implements PayrollSkalaGajiBo {
     public PayrollSkalaGaji saveAdd(PayrollSkalaGaji bean) throws GeneralBOException {
         logger.info("[PayrollSkalaGajiBoImpl.saveAdd] start process >>>");
         if (bean!=null) {
-            String status = cekStatus(bean.getGolonganId());
+            String status = cekStatus(bean.getGolonganId(),bean.getTahun());
             String payrollSkalaGajiId;
             if (!status.equalsIgnoreCase("exist")){
                 try {
@@ -298,11 +298,11 @@ public class PayrollSkalaGajiBoImpl implements PayrollSkalaGajiBo {
     public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {
         return null;
     }
-    public String cekStatus(String golonganId)throws GeneralBOException{
+    public String cekStatus(String golonganId,String tahun)throws GeneralBOException{
         String status ="";
         List<ImPayrollSkalaGajiEntity> skalaGajiEntity = new ArrayList<>();
         try {
-            skalaGajiEntity = payrollSkalaGajiDao.getDataSkalaGajiSimRs(golonganId);
+            skalaGajiEntity = payrollSkalaGajiDao.getDataSkalaGajiSimRs(golonganId,tahun);
         } catch (HibernateException e) {
             logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());

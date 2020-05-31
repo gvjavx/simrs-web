@@ -200,7 +200,7 @@
                                                                        requestURI="paging_displaytag_payroll.action" export="true" id="row" pagesize="24" style="font-size:10">
                                                                 <display:column media="html" title="Approve Keuangan Kanpus">
                                                                     <s:if test='#attr.row.statusApprove=="K"'>
-                                                                        <s:if test="%{payroll.keuanganKantorPusat}">
+                                                                        <s:if test="%{payroll.kantorPusat}">
                                                                         <a href="javascript:;" bulan="<s:property value="%{#attr.row.bulan}"/>"
                                                                            tahun="<s:property value="%{#attr.row.tahun}"/>"
                                                                            branchId="<s:property value="%{#attr.row.branchId}"/>"

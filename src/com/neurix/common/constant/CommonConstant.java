@@ -44,9 +44,12 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_DOC_RM = "/upload/cetakan_rm/";
     public final static String RESOURCE_PATH_VIDEO_RM = "/upload/video_rm/";
 
+    public final static String RESOURCE_PATH_PHOTO_PROFILE = "/upload/profile/";
 
+//    public final static String RESOURCE_PATH_USER_UPLOAD = CommonUtil.getPropertyParams("resource.dir")+"/profile/";
     public final static String RESOURCE_PATH_USER_UPLOAD = "/pages/upload/image/profile/";
     public final static String RESOURCE_PATH_USER_UPLOAD_IJAZAH = CommonUtil.getPropertyParams("resource.dir")+"mnt/ijazah/";
+    public final static String RESOURCE_PATH_USER_UPLOAD_SURAT_DOKTER = CommonUtil.getPropertyParams("resource.dir")+"mnt/surat/";
 
     //sodiq, 18 Nov 2019, Upload KTP pasien
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = CommonUtil.getPropertyParams("upload.external.dir");
@@ -61,6 +64,7 @@ public class CommonConstant {
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "C:\\Users\\user\\Pictures";
 
     public final static String EXTERNAL_IMG_URI = ServletActionContext.getRequest().getContextPath()+"/images";
+    public final static String EXTERNAL_IMG_URI_PROFILE = ServletActionContext.getRequest().getContextPath()+"/images/profile";
     public final static String RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY = CommonUtil.getUploadFolderValue();
 
     public final static String LOGOUT_URL = "/j_spring_security_logout";

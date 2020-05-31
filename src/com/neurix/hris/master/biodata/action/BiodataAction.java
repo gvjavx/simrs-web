@@ -656,7 +656,8 @@ public class BiodataAction extends BaseMasterAction{
 
                     if (this.fileUpload!=null) {
 
-                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD;
+//                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD;
+                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_PHOTO_PROFILE;
                         String fileName = editBiodata.getNip() + ".jpg";
                         File fileToCreate = new File(filePath, fileName);
 
@@ -735,7 +736,8 @@ public class BiodataAction extends BaseMasterAction{
                     }
 
                     if (this.fileUpload!=null) {
-                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD;
+//                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD;
+                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_PHOTO_PROFILE;
                         String fileName = biodata.getNip() + ".jpg";
                         File fileToCreate = new File(filePath, fileName);
 
