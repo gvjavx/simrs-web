@@ -136,49 +136,100 @@
                                 <input class="form-control" id="ket_pkj1" style="margin-top: 7px; display: none">
                             </div>
                         </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Skrening Nyeri</label>
                             <div class="col-md-2">
                                 <div class="custom02" style="margin-top: 7px">
-                                    <input type="radio" value="Tidak" id="pkj21" name="pkj2"/><label
+                                    <input type="radio" value="Tidak" id="pkj21" name="pkj2" onclick="cekNyeri(this.value, 'pkj3')"/><label
                                         for="pkj21">Tidak</label>
                                 </div>
                             </div>
                             <div class="col-md-7">
                                 <div class="custom02" style="margin-top: 7px">
-                                    <input type="radio" value="Ya" id="pkj22" name="pkj2"/><label for="pkj22">Ya</label>
+                                    <input type="radio" value="Ya" id="pkj22" name="pkj2" onclick="cekNyeri(this.value, 'pkj3')"/><label for="pkj22">Ya</label>
                                 </div>
                             </div>
                         </div>
+                        <%--<div class="form-group">--%>
+                            <%--<div class="col-md-offset-3 col-md-7">--%>
+                                <%--<img src="<%= request.getContextPath() %>/pages/images/nyeri-1.jpg"--%>
+                                     <%--style="width: 100%; border: solid 1px black">--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    </div>
+                    <input id="temp_scala" type="hidden">
+                    <canvas id="choice_emoji" style="display: none"></canvas>
+                    <div class="row" style="margin-top: 10px">
                         <div class="form-group">
-                            <div class="col-md-offset-3 col-md-7">
-                                <img src="<%= request.getContextPath() %>/pages/images/nyeri-1.jpg"
-                                     style="width: 100%; border: solid 1px black">
+                            <div class="col-md-2">
+                                <img src="<%= request.getContextPath() %>/pages/images/scala-0.png" class="nyeri"
+                                style="width: 100%; cursor: no-drop;" id="0">
+                                <p class="text-center" style="font-size: 12px; margin-top: 10px">0</p>
+                                <p class="text-center" style="font-size: 12px; margin-top: -10px">Tidak Nyeri</p>
+                            </div>
+                            <div class="col-md-2">
+                                <img src="<%= request.getContextPath() %>/pages/images/scala-2.png" class="nyeri"
+                                     style="width: 100%; cursor: no-drop" id="2" >
+                                <p class="text-center" style="font-size: 12px; margin-top: 10px">2</p>
+                                <p class="text-center" style="font-size: 12px; margin-top: -10px">Sedikit Nyeri</p>
+                            </div>
+                            <div class="col-md-2">
+                                <img src="<%= request.getContextPath() %>/pages/images/scala-4.png" class="nyeri"
+                                     style="width: 100%; cursor: no-drop" id="4" >
+                                <p class="text-center" style="font-size: 12px; margin-top: 10px">4</p>
+                                <p class="text-center" style="font-size: 12px; margin-top: -10px">Sedikit Lebih Nyeri</p>
+                            </div>
+                            <div class="col-md-2">
+                                <img src="<%= request.getContextPath() %>/pages/images/scala-6.png" class="nyeri"
+                                     style="width: 100%; cursor: no-drop" id="6" >
+                                <p class="text-center" style="font-size: 12px; margin-top: 10px">6</p>
+                                <p class="text-center" style="font-size: 12px; margin-top: -10px">Lebih Nyeri</p>
+                            </div>
+                            <div class="col-md-2">
+                                <img src="<%= request.getContextPath() %>/pages/images/scala-8.png" class="nyeri"
+                                     style="width: 100%; cursor: no-drop" id="8" >
+                                <p class="text-center" style="font-size: 12px; margin-top: 10px">8</p>
+                                <p class="text-center" style="font-size: 12px; margin-top: -10px">Sangat Nyeri</p>
+                            </div>
+                            <div class="col-md-2">
+                                <img src="<%= request.getContextPath() %>/pages/images/scala-10.png" class="nyeri"
+                                     style="width: 100%; cursor: no-drop" id="10" >
+                                <p class="text-center" style="font-size: 12px; margin-top: 10px">10</p>
+                                <p class="text-center" style="font-size: 12px; margin-top: -10px">Nyeri Sangat Hebat</p>
                             </div>
                         </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 10px">Skala</label>
                             <div class="col-md-3">
-                                <input class="form-control" style="margin-top: 10px" id="pkj3">
+                                <input class="form-control" style="margin-top: 10px" id="pkj3" readonly>
                             </div>
-                            <label class="col-md-1" style="margin-top: 10px">Lokasi</label>
+                            <label class="col-md-offset-1 col-md-1" style="margin-top: 10px">Lokasi</label>
                             <div class="col-md-3">
                                 <input class="form-control" style="margin-top: 10px" id="pkj4">
                             </div>
                         </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Durasi</label>
                             <div class="col-md-3">
                                 <input type="number" class="form-control" style="margin-top: 7px" id="pkj5">
                             </div>
-                            <label class="col-md-1" style="margin-top: 7px">Jenis</label>
+                            <label class="col-md-offset-1 col-md-1" style="margin-top: 7px">Jenis</label>
                             <div class="col-md-1">
                                 <div class="custom02" style="margin-top: 7px">
                                     <input type="radio" value="Akut" id="pkj61" name="pkj6"/><label
                                         for="pkj61">Akut</label>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-2">
                                 <div class="custom02" style="margin-top: 7px">
                                     <input type="radio" value="Kronis" id="pkj62" name="pkj6"/><label
                                         for="pkj62">Kronis</label>
@@ -186,6 +237,7 @@
                             </div>
                         </div>
                     </div>
+                    <hr class="garis">
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Keadaan Umum</label>
@@ -219,33 +271,31 @@
                                 <input class="form-control" id="ket_pkj7" style="margin-top: 7px; display: none">
                             </div>
                         </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Tekanan Darah</label>
                             <div class="col-md-3">
                                 <div class="input-group" style="margin-top: 7px">
                                     <input type="number" class="form-control" id="pkj8">
-                                    <div class="input-group-addon" style="font-size: 10px">
+                                    <div class="input-group-addon" style="font-size: 10px; width: 50px">
                                         mmHg
                                     </div>
                                 </div>
                             </div>
-                            <label class="col-md-1" style="margin-top: 7px">MAP</label>
-                            <div class="col-md-3">
-                                <input type="number" class="form-control" id="pkj9" style="margin-top: 7px">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Suhu</label>
+                            <label class="col-md-offset-1 col-md-1" style="margin-top: 7px">Suhu</label>
                             <div class="col-md-3">
                                 <div class="input-group" style="margin-top: 7px">
                                     <input type="number" class="form-control" id="pkj10">
                                     <div class="input-group-addon" style="font-size: 10px">
-                                        C
+                                        &#8451
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <hr class="garis">
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Nadi</label>
@@ -255,15 +305,13 @@
                                            name="pkj11"/><label for="pkj111">Reguler</label>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-2">
                                 <div class="custom02" style="margin-top: 7px">
                                     <input type="radio" value="Ireguler" id="pkj112"
-                                           name="pkj11"/><label for="pkj112">Ireguler</label>
+                                           name="pkj11"/><label for="pkj112">Irreguler</label>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Freq Nadi</label>
+                            <label class="col-md-1" style="margin-top: 7px">Freq</label>
                             <div class="col-md-3">
                                 <div class="input-group" style="margin-top: 7px">
                                     <input type="number" class="form-control" id="pkj012">
@@ -274,6 +322,7 @@
                             </div>
                         </div>
                     </div>
+                    <hr class="garis">
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Respirasi</label>
@@ -291,52 +340,52 @@
                             </div>
                             <div class="col-md-5">
                                 <div class="custom02" style="margin-top: 7px">
-                                    <input type="radio" value="Dispnes" id="pkj133"
-                                           name="pkj13"/><label for="pkj133">Dispnes</label>
+                                    <input type="radio" value="Dyspnea" id="pkj133"
+                                           name="pkj13"/><label for="pkj133">Dyspnea</label>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <div class="col-md-offset-3 col-md-8">
+                                <div class="col-md-offset-3 col-md-4">
                                     <div class="custom02" style="margin-top: 7px">
-                                        <input type="radio" value="Edema Parau/Ronohi" id="pkj134"
-                                               name="pkj13"/><label for="pkj134">Edema Parau/Ronohi</label>
+                                        <input type="radio" value="Oedema Paru/Ronchi" id="pkj134"
+                                               name="pkj13"/><label for="pkj134">Oedema Paru/Ronchi</label>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Freq Respirasi</label>
-                            <div class="col-md-3">
-                                <div class="input-group" style="margin-top: 7px">
-                                    <input type="number" class="form-control" id="pkj014">
-                                    <div class="input-group-addon" style="font-size: 10px">
-                                        x/menit
+                                <label class="col-md-1" style="margin-top: 7px">Freq</label>
+                                <div class="col-md-3">
+                                    <div class="input-group" style="margin-top: 7px">
+                                        <input type="number" class="form-control" id="pkj014">
+                                        <div class="input-group-addon" style="font-size: 10px">
+                                            x/menit
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <hr class="garis">
                     <div class="row">
                         <label class="col-md-3">Konjungilva</label>
                         <div class="col-md-3">
-                            <div class="custom02" style="margin-top: 7px">
-                                <input type="radio" onclick="showKetPkj15(this.value)" value="Tidak Perna" id="pkj151"
-                                       name="pkj15"/><label for="pkj151">Tidak Perna</label>
+                            <div class="custom02">
+                                <input type="radio" onclick="showKetPkj15(this.value)" value="Tidak Anemia" id="pkj151"
+                                       name="pkj15"/><label for="pkj151">Tidak Anemia</label>
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <div class="custom02" style="margin-top: 7px">
+                            <div class="custom02">
                                 <input type="radio" onclick="showKetPkj15(this.value)" value="Anemis" id="pkj152"
                                        name="pkj15"/><label for="pkj152">Anemis</label>
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <div class="custom02" style="margin-top: 7px">
+                            <div class="custom02">
                                 <input type="radio" onclick="showKetPkj15(this.value)" value="Lain-Lain" id="pkj153"
                                        name="pkj15"/><label for="pkj153">Lain-Lain</label>
                             </div>
                         </div>
                     </div>
+                    <hr class="garis">
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-offset-3 col-md-7">
@@ -344,21 +393,21 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-3">Ekrimitas</label>
+                            <label class="col-md-3">Ekstemitas</label>
                             <div class="col-md-3">
-                                <div class="custom02" style="margin-top: 7px">
+                                <div class="custom02">
                                     <input type="radio" value="Normal" id="pkj161"
                                            name="pkj16"/><label for="pkj161">Normal</label>
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <div class="custom02" style="margin-top: 7px">
+                                <div class="custom02">
                                     <input type="radio" value="Dehidrasi" id="pkj162"
                                            name="pkj16"/><label for="pkj162">Dehidrasi</label>
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <div class="custom02" style="margin-top: 7px">
+                                <div class="custom02">
                                     <input type="radio" value="Oedema" id="pkj163"
                                            name="pkj16"/><label for="pkj163">Oedema</label>
                                 </div>
@@ -366,91 +415,107 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-offset-3 col-md-3">
-                                <div class="custom02" style="margin-top: 7px">
+                                <div class="custom02">
                                     <input type="radio" value="Oedema Anarsaka" id="pkj164"
                                            name="pkj16"/><label for="pkj164">Oedema Anarsaka</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="custom02" style="margin-top: 7px">
+                                <div class="custom02">
                                     <input type="radio" value="Pucat dan Dingin" id="pkj165"
                                            name="pkj16"/><label for="pkj165">Pucat dan Dingin</label>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
                         <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">BB Kering</label>
-                            <div class="col-md-7">
+                            <label class="col-md-3" style="margin-top: 7px">Berat Badan</label>
+                            <div class="col-md-3">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input type="number" class="form-control" id="pkj17">
-                                    <div class="input-group-addon">
+                                    <input type="number" class="form-control" id="pkj17" placeholder="Pre HD">
+                                    <div class="input-group-addon" style="font-size: 10px">
+                                        Kg
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="input-group" style="margin-top: 7px">
+                                    <input type="number" class="form-control" id="pkj18" placeholder="Post HD">
+                                    <div class="input-group-addon" style="font-size: 10px">
+                                        Kg
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="input-group" style="margin-top: 7px" >
+                                    <input type="number" class="form-control" id="pkj19" placeholder="Kering">
+                                    <div class="input-group-addon" style="font-size: 10px">
                                         Kg
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">BB Post HD</label>
-                            <div class="col-md-7">
-                                <div class="input-group" style="margin-top: 7px">
-                                    <input type="number" class="form-control" id="pkj18">
-                                    <div class="input-group-addon">
-                                        Kg
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">BB Pre HD</label>
-                            <div class="col-md-7">
-                                <div class="input-group" style="margin-top: 7px">
-                                    <input type="number" class="form-control" id="pkj19">
-                                    <div class="input-group-addon">
-                                        Kg
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
                         <div class="form-group">
                             <label class="col-md-3">Abdomen</label>
                             <div class="col-md-2">
-                                <div class="custom02" style="margin-top: 7px">
+                                <div class="custom02">
                                     <input type="radio" value="Normal" id="pkj201"
                                            name="pkj20"/><label for="pkj201">Normal</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="custom02" style="margin-top: 7px">
-                                    <input type="radio" value="Asites" id="pkj202"
-                                           name="pkj20"/><label for="pkj202">Asites</label>
+                                <div class="custom02">
+                                    <input type="radio" value="Ascites" id="pkj202"
+                                           name="pkj20"/><label for="pkj202">Ascites</label>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
                         <div class="form-group">
-                            <label class="col-md-3">Askes Vaskuler</label>
+                            <label class="col-md-3">Akses Vaskuler</label>
                             <div class="col-md-2">
-                                <div class="custom02" style="margin-top: 7px">
+                                <div class="custom02">
                                     <input type="radio" value="AV Vistula" id="pkj211"
                                            name="pkj21"/><label for="pkj211">AV Vistula</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="custom02" style="margin-top: 7px">
+                                <div class="custom02">
                                     <input type="radio" value="Femoral" id="pkj212"
                                            name="pkj21"/><label for="pkj212">Femoral</label>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3">Punctie Arteri</label>
+                            <label class="col-md-2">HD Kateter</label>
+                            <div class="col-md-4">
+                                <input class="form-control" id="pkj23">
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
                         <div class="form-group">
                             <label class="col-md-3">Lokasi</label>
                             <div class="col-md-2">
-                                <div class="custom02" style="margin-top: 7px">
+                                <div class="custom02">
                                     <input type="radio" value="Kanan" id="pkj221"
                                            name="pkj22"/><label for="pkj221">Kanan</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="custom02" style="margin-top: 7px">
+                                <div class="custom02">
                                     <input type="radio" value="Kiri" id="pkj222"
                                            name="pkj22"/><label for="pkj222">Kiri</label>
                                 </div>
@@ -507,7 +572,7 @@
                     </div>
                     <div class="box-header with-border"></div>
                     <div class="row">
-                        <label class="col-md-4" style="margin-top: 7px">Dalgnosa Medis Sekunder > 1</label>
+                        <label class="col-md-4" style="margin-top: 7px">Diagnosa Medis Sekunder > 1</label>
                         <div class="col-md-2">
                             <div class="custom02" style="margin-top: 7px">
                                 <input type="radio" value="Tidak|0" id="res21"
@@ -538,8 +603,8 @@
                         </div>
                         <div class="col-md-4">
                             <div class="custom02" style="margin-top: 7px">
-                                <input type="radio" value="Penompang tingkat|15" id="res32"
-                                       name="res3"/><label for="res32">Penompang tingkat</label>
+                                <input type="radio" value="Penopang tingkat|15" id="res32"
+                                       name="res3"/><label for="res32">Penopang tingkat</label>
                             </div>
                         </div>
                     </div>
@@ -632,7 +697,7 @@
                     <div class="row">
                         <label class="col-md-5">Pemeriksaan penunjang (Lab, RX, lain-lain)</label>
                         <div class="col-md-6">
-                            <input class="form-control" style="margin-top: 7px" id="pem1">
+                            <textarea class="form-control penunjang-medis" rows="3" style="margin-top: 7px" id="pem1"></textarea>
                         </div>
                     </div>
                     <hr class="garis">
@@ -646,12 +711,12 @@
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </div>
-                                <input class="form-control" id="pem2">
+                                <input class="form-control tgl" id="pem2">
                             </div>
                         </div>
                         <label class="col-md-5">Score</label>
                         <div class="col-md-6">
-                            <input class="form-control" style="margin-top: 7px" id="pem3">
+                            <input class="form-control" style="margin-top: 7px" id="pem3" type="number">
                         </div>
                         <label class="col-md-5">Rekomendasi</label>
                         <div class="col-md-6">
@@ -680,6 +745,7 @@
                             </div>
                         </div>
                     </div>
+                    <hr class="garis">
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-5" style="margin-top: 7px">Kendala Komunikasi</label>
@@ -696,6 +762,9 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
                         <div class="form-group">
                             <label class="col-md-5" style="margin-top: 7px">Yang merawat dirumah</label>
                             <div class="col-md-3">
@@ -711,16 +780,19 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
                         <div class="form-group">
-                            <label class="col-md-5" style="margin-top: 7px">Kondisi saat ini</label>
+                            <label class="col-md-5">Kondisi saat ini</label>
                             <div class="col-md-3">
-                                <div class="custom02" style="margin-top: 7px">
+                                <div class="custom02">
                                     <input type="radio" value="Tenang" id="pem81"
                                            name="pem8"/><label for="pem81">Tenang</label>
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <div class="custom02" style="margin-top: 7px">
+                                <div class="custom02">
                                     <input type="radio" value="Gelisah" id="pem82"
                                            name="pem8"/><label for="pem82">Gelisah</label>
                                 </div>
@@ -730,13 +802,13 @@
                             <div class="col-md-offset-5 col-md-3">
                                 <div class="custom02" style="margin-top: 7px">
                                     <input type="radio" value="Marah" id="pem83"
-                                           name="pem8"/><label for="pem83"></label> Marah
+                                           name="pem8"/><label for="pem83">  Marah</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="custom02" style="margin-top: 7px">
                                     <input type="radio" value="Mudah tersinggung" id="pem84"
-                                           name="pem8"/><label for="pem84"></label> Mudah tersinggung
+                                           name="pem8"/><label for="pem84"> Mudah tersinggung</label>
                                 </div>
                             </div>
                         </div>
@@ -744,7 +816,7 @@
                             <div class="col-md-offset-5 col-md-7">
                                 <div class="custom02" style="margin-top: 7px">
                                     <input type="radio" value="Takut terhadap tindakan" id="pem85"
-                                           name="pem8"/><label for="pem85"></label> Takut terhadap tindakan
+                                           name="pem8"/><label for="pem85"> Takut terhadap tindakan</label>
                                 </div>
                             </div>
                         </div>
@@ -1172,33 +1244,33 @@
                         <div class="form-group">
                             <label class="col-md-3">Anamnese</label>
                             <div class="col-md-8">
-                                <textarea rows="5" class="form-control" id="asse1"></textarea>
+                                <textarea rows="5" class="form-control anamnese" id="asse1"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Pemeriksaan Fisik</label>
-                            <div class="col-md-8">
-                                <textarea rows="3" id="asse2" class="form-control" style="margin-top: 7px"></textarea>
-                            </div>
+                            <label class="col-md-12" style="margin-top: 7px">Pemeriksaan Fisik</label>
+                            <%--<div class="col-md-8">--%>
+                                <%--<textarea rows="3" id="asse2" class="form-control" style="margin-top: 7px"></textarea>--%>
+                            <%--</div>--%>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Tensi</label>
                             <div class="col-md-3">
-                                <input class="form-control" style="margin-top: 7px" id="asse3">
+                                <input class="form-control" style="margin-top: 7px" id="asse3" placeholder="mmHg">
                             </div>
                             <label class="col-md-2" style="margin-top: 7px">Nadi</label>
                             <div class="col-md-3">
-                                <input class="form-control" style="margin-top: 7px" id="asse4">
+                                <input class="form-control" style="margin-top: 7px" id="asse4" placeholder="x/menit">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Penrnafasan</label>
+                            <label class="col-md-3" style="margin-top: 7px">Pernafasan</label>
                             <div class="col-md-3">
-                                <input class="form-control" style="margin-top: 7px" id="asse5">
+                                <input class="form-control" style="margin-top: 7px" id="asse5" placeholder="x/menit">
                             </div>
                             <label class="col-md-2" style="margin-top: 7px">Suhu</label>
                             <div class="col-md-3">
-                                <input class="form-control" style="margin-top: 7px" id="asse6">
+                                <input class="form-control" style="margin-top: 7px" id="asse6" placeholder="C">
                             </div>
                         </div>
                     </div>

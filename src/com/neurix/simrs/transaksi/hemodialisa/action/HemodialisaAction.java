@@ -43,7 +43,7 @@ public class HemodialisaAction {
             hemodialisa.setIdDetailCheckup(obj.getString("id_detail_checkup"));
             hemodialisa.setKeterangan(obj.getString("keterangan"));
 
-            if("tranfusi_penyataan".equalsIgnoreCase(obj.getString("keterangan")) || "persetujuan_hd_penyataan".equalsIgnoreCase(obj.getString("keterangan")) || "hd_ttd_dokter".equalsIgnoreCase(obj.getString("jenis")) ){
+            if("tranfusi_penyataan".equalsIgnoreCase(obj.getString("keterangan")) || "persetujuan_hd_penyataan".equalsIgnoreCase(obj.getString("keterangan")) || "hd_ttd_dokter".equalsIgnoreCase(obj.getString("jenis")) || "Scala Nyeri Paint".equalsIgnoreCase(obj.getString("parameter"))){
                 BASE64Decoder decoder = new BASE64Decoder();
                 byte[] decodedBytes = decoder.decodeBuffer(obj.getString("jawaban1"));
                 logger.info("Decoded upload data : " + decodedBytes.length);
@@ -51,7 +51,12 @@ public class HemodialisaAction {
                 String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
                 logger.info("PATTERN :" + patten);
                 String fileName = obj.getString("id_detail_checkup") + "-" + obj.getString("jenis")+i+ "-" + patten + ".png";
-                String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
+                String uploadFile = "";
+                if("Scala Nyeri Paint".equalsIgnoreCase(obj.getString("parameter"))){
+                    uploadFile =  CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_IMG_RM + fileName;
+                }else{
+                    uploadFile =  CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
+                }
                 logger.info("File save path : " + uploadFile);
                 BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
 

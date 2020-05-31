@@ -13,6 +13,28 @@ function showModalHD(jenis) {
     if ("catatan_tranfusi_darah" == jenis) {
         getListMonTransfusiDarah();
     }
+    var jam = $('.jam').length;
+    var tgl = $('.tgl').length;
+    var gejala = $('.anamnese').length;
+    var penMedis = $('.penunjang-medis').length;
+
+    if (jam > 0) {
+        $('.jam').timepicker();
+        $('.jam').val(converterDateTime(new Date()));
+    }
+    if (tgl > 0) {
+        $('.tgl').datepicker({
+            dateFormat: 'dd-mm-yy'
+        });
+        $('.tgl').val(converterDate(new Date()));
+        $('.tgl').inputmask('dd-mm-yyyy', {'placeholder': 'dd-mm-yyyy'});
+    }
+    if(gejala > 0){
+        $('.anamnese').val(anamnese);
+    }
+    if(penMedis > 0){
+        $('.penunjang-medis').val(penunjangMedis);
+    }
     $('#modal-hd-' + jenis).modal({show: true, backdrop: 'static'});
 }
 
@@ -69,9 +91,15 @@ function saveMonHD(jenis, ket) {
         var va20 = $('[name=pkj20]:checked').val();
         var va21 = $('[name=pkj21]:checked').val();
         var va22 = $('[name=pkj22]:checked').val();
+        var va23 = $('#pkj23').val();
+        var canvasArea = document.getElementById('choice_emoji');
+        var cvs = isCanvasBlank(canvasArea);
 
-        if (tVa1 && tVa7 && tVa15 && va3 && va4 && va5 && va8 && va9 && va10 && va12 && va14 && va17 && va18 && va19 != '' &&
+        if (tVa1 && tVa7 && tVa15 && va3 && va4 && va5 && va8 && va10 && va12 && va14 && va17 && va18 && va19 != '' &&
             va6 && va11 && va13 && va16 && va20 && va21 && va22 && va2 != undefined) {
+            var canv = canvasArea.toDataURL("image/png"),
+                canv = canv.replace(/^data:image\/(png|jpg);base64,/, "");
+
             data.push({
                 'parameter': 'Keluhan Utama',
                 'jawaban1': tVa1,
@@ -82,6 +110,13 @@ function saveMonHD(jenis, ket) {
             data.push({
                 'parameter': 'Skrening Nyeri',
                 'jawaban1': va2,
+                'keterangan': jenis,
+                'jenis': 'monitoring_hd',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Scala Nyeri Paint',
+                'jawaban1': canv,
                 'keterangan': jenis,
                 'jenis': 'monitoring_hd',
                 'id_detail_checkup': idDetailCheckup
@@ -128,48 +163,48 @@ function saveMonHD(jenis, ket) {
                 'jenis': 'monitoring_hd',
                 'id_detail_checkup': idDetailCheckup
             });
-            data.push({
-                'parameter': 'MAP',
-                'jawaban1': va9,
-                'keterangan': jenis,
-                'jenis': 'monitoring_hd',
-                'id_detail_checkup': idDetailCheckup
-            });
+            // data.push({
+            //     'parameter': 'MAP',
+            //     'jawaban1': va9,
+            //     'keterangan': jenis,
+            //     'jenis': 'monitoring_hd',
+            //     'id_detail_checkup': idDetailCheckup
+            // });
             data.push({
                 'parameter': 'Suhu',
-                'jawaban1': va10 + ' C',
+                'jawaban1': va10 + ' ˚C',
                 'keterangan': jenis,
                 'jenis': 'monitoring_hd',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Nadi',
-                'jawaban1': va11,
+                'jawaban1': va11+', Freq: '+va12+' x/menit',
                 'keterangan': jenis,
                 'jenis': 'monitoring_hd',
                 'id_detail_checkup': idDetailCheckup
             });
-            data.push({
-                'parameter': 'Freq Nadi',
-                'jawaban1': va12 + ' x/menit',
-                'keterangan': jenis,
-                'jenis': 'monitoring_hd',
-                'id_detail_checkup': idDetailCheckup
-            });
+            // data.push({
+            //     'parameter': 'Freq Nadi',
+            //     'jawaban1': va12 + ' x/menit',
+            //     'keterangan': jenis,
+            //     'jenis': 'monitoring_hd',
+            //     'id_detail_checkup': idDetailCheckup
+            // });
             data.push({
                 'parameter': 'Respirasi',
-                'jawaban1': va13,
+                'jawaban1': va13+', Freq: '+va14+' x/menit',
                 'keterangan': jenis,
                 'jenis': 'monitoring_hd',
                 'id_detail_checkup': idDetailCheckup
             });
-            data.push({
-                'parameter': 'Freq Respirasi',
-                'jawaban1': va14 + ' x/menit',
-                'keterangan': jenis,
-                'jenis': 'monitoring_hd',
-                'id_detail_checkup': idDetailCheckup
-            });
+            // data.push({
+            //     'parameter': 'Freq Respirasi',
+            //     'jawaban1': va14 + ' x/menit',
+            //     'keterangan': jenis,
+            //     'jenis': 'monitoring_hd',
+            //     'id_detail_checkup': idDetailCheckup
+            // });
             data.push({
                 'parameter': 'Konjungilva',
                 'jawaban1': tVa15,
@@ -178,43 +213,50 @@ function saveMonHD(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Ekrimitas',
+                'parameter': 'Ekstemitas',
                 'jawaban1': va16,
                 'keterangan': jenis,
                 'jenis': 'monitoring_hd',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'BB Kering',
-                'jawaban1': va17 + ' Kg',
+                'parameter': 'Berat Badang',
+                'jawaban1': 'Pre HD: '+va17 + ' Kg, Post HD: '+va18+' Kg, Kering: '+va19+' Kg',
                 'keterangan': jenis,
                 'jenis': 'monitoring_hd',
                 'id_detail_checkup': idDetailCheckup
             });
+            // data.push({
+            //     'parameter': 'BB Post HD',
+            //     'jawaban1': va18 + ' Kg',
+            //     'keterangan': jenis,
+            //     'jenis': 'monitoring_hd',
+            //     'id_detail_checkup': idDetailCheckup
+            // });
+            // data.push({
+            //     'parameter': 'BB Pre HD',
+            //     'jawaban1': va19 + ' Kg',
+            //     'keterangan': jenis,
+            //     'jenis': 'monitoring_hd',
+            //     'id_detail_checkup': idDetailCheckup
+            // });
+            // data.push({
+            //     'parameter': 'Abdomen',
+            //     'jawaban1': va20,
+            //     'keterangan': jenis,
+            //     'jenis': 'monitoring_hd',
+            //     'id_detail_checkup': idDetailCheckup
+            // });
             data.push({
-                'parameter': 'BB Post HD',
-                'jawaban1': va18 + ' Kg',
-                'keterangan': jenis,
-                'jenis': 'monitoring_hd',
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'BB Pre HD',
-                'jawaban1': va19 + ' Kg',
-                'keterangan': jenis,
-                'jenis': 'monitoring_hd',
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'Abdomen',
-                'jawaban1': va20,
-                'keterangan': jenis,
-                'jenis': 'monitoring_hd',
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'Askes Vaskuler',
+                'parameter': 'Akses Vaskuler',
                 'jawaban1': va21,
+                'keterangan': jenis,
+                'jenis': 'monitoring_hd',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Punctie Arteri',
+                'jawaban1': 'HD Kateter: '+va23,
                 'keterangan': jenis,
                 'jenis': 'monitoring_hd',
                 'id_detail_checkup': idDetailCheckup
@@ -260,7 +302,7 @@ function saveMonHD(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Dalgnosa Medis Sekunder > 1',
+                'parameter': 'Diagnosa Medis Sekunder > 1',
                 'jawaban1': isi2,
                 'skor': skor2,
                 'keterangan': jenis,
@@ -1386,6 +1428,11 @@ function detailMonHD(jenis) {
                                 '<td>' + jwb + '</td>' +
                                 '</tr>';
                         }
+                    } else if("Scala Nyeri Paint" == item.parameter){
+                        body += '<tr>' +
+                            '<td>' + item.parameter + '</td>' +
+                            '<td>' + '<img src="' + jwb + '" style="width: 100px">' + '</td>' +
+                            '</tr>';
                     } else {
                         body += '<tr>' +
                             '<td width="40%">' + item.parameter + '</td>' +
@@ -1609,5 +1656,43 @@ function saveMonTransfusiDarah(jenis) {
         $('#warning_hd_catatan_tranfusi').show().fadeOut(5000);
         $('#msg_hd_catatan_tranfusi').text("Silahkan cek kembali data inputan anda...!");
         $('#modal-hd-catatan_tranfusi').scrollTop(0);
+    }
+}
+
+function choiceImg(id, url, idSet) {
+    var temp = $('#temp_scala').val();
+    if(temp == ''){
+        $('#temp_scala').val(id);
+        $('#'+id).attr('style', 'width: 100%; cursor: pointer; border-radius: 50%; border: solid 5px red');
+    }else{
+        if(temp == id){
+            $('#'+id).attr('style', 'width: 100%; cursor: pointer; border-radius: 50%; border: solid 5px red');
+        }else{
+            $('#'+temp).attr('style', 'width: 100%; cursor: pointer');
+            $('#'+id).attr('style', 'width: 100%; cursor: pointer; border-radius: 50%; border: solid 5px red');
+            $('#temp_scala').val(id);
+        }
+    }
+    var canvas = document.getElementById('choice_emoji');
+    var ctx = canvas.getContext('2d');
+    var img = new Image();
+    img.src = url;
+    img.onload = function (ev) {
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0);
+    }
+    $('#'+idSet).val(id);
+}
+
+function cekNyeri(val, idSet){
+    if(val == "Ya"){
+        $('.nyeri').attr('style', 'width: 100%; cursor: pointer');
+        $('.nyeri').attr('onclick', 'choiceImg(this.id, $(\'#\'+this.id).attr(\'src\'), \''+idSet+'\')');
+    }else{
+        $('.nyeri').attr('style','width: 100%; cursor: no-drop');
+        $('.nyeri').removeAttr('onclick');
+        $('#'+idSet).val('');
     }
 }

@@ -526,6 +526,9 @@ public class CheckupDetailAction extends BaseMasterAction {
             detailCheckup.setCoverBiaya(checkup.getCoverBiaya());
             detailCheckup.setIsLaka(checkup.getIsLaka());
             detailCheckup.setAnamnese(checkup.getAnamnese());
+            detailCheckup.setDiagnosa(checkup.getDiagnosa());
+            detailCheckup.setAlergi(checkup.getAlergi());
+            detailCheckup.setPenunjangMedis(checkup.getPenunjangMedis());
             setHeaderDetailCheckup(detailCheckup);
 
         } else {

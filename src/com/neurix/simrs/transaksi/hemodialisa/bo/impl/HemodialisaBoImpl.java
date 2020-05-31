@@ -52,8 +52,12 @@ public class HemodialisaBoImpl implements HemodialisaBo {
                     hemodialisa.setIdHemodialisa(entity.getIdHemodialisa());
                     hemodialisa.setIdDetailCheckup(entity.getIdDetailCheckup());
                     hemodialisa.setParameter(entity.getParameter());
-                    if("tranfusi_penyataan".equalsIgnoreCase(entity.getKeterangan()) || "persetujuan_hd_penyataan".equalsIgnoreCase(entity.getKeterangan()) || "hd_ttd_dokter".equalsIgnoreCase(entity.getJenis())){
-                        hemodialisa.setJawaban1(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_RM+entity.getJawaban1());
+                    if("tranfusi_penyataan".equalsIgnoreCase(entity.getKeterangan()) || "persetujuan_hd_penyataan".equalsIgnoreCase(entity.getKeterangan()) || "hd_ttd_dokter".equalsIgnoreCase(entity.getJenis()) || "Scala Nyeri Paint".equalsIgnoreCase(entity.getParameter())){
+                        if("Scala Nyeri Paint".equalsIgnoreCase(entity.getParameter())){
+                            hemodialisa.setJawaban1(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_IMG_RM+entity.getJawaban1());
+                        }else{
+                            hemodialisa.setJawaban1(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_RM+entity.getJawaban1());
+                        }
                     }else{
                         hemodialisa.setJawaban1(entity.getJawaban1());
                     }

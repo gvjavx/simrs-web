@@ -167,7 +167,8 @@
         }
 
         .garis{
-            border: solid 0.5px #ddd;
+            /*border: solid 0.5px #ddd;*/
+            color: #ddd;
         }
     </style>
 </head>

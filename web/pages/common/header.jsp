@@ -140,17 +140,17 @@ apply the skin class to the body tag so the changes take effect.
     }
 
 
-    hr {
-        -moz-border-bottom-colors: none;
-        -moz-border-image: none;
-        -moz-border-left-colors: none;
-        -moz-border-right-colors: none;
-        -moz-border-top-colors: none;
-        border-color: #EEEEEE -moz-use-text-color #FFFFFF;
-        border-style: solid none;
-        border-width: 1px 0;
-        margin: 18px 0;
-    }
+    /*hr {*/
+        /*-moz-border-bottom-colors: none;*/
+        /*-moz-border-image: none;*/
+        /*-moz-border-left-colors: none;*/
+        /*-moz-border-right-colors: none;*/
+        /*-moz-border-top-colors: none;*/
+        /*border-color: #EEEEEE -moz-use-text-color #FFFFFF;*/
+        /*border-style: solid none;*/
+        /*border-width: 1px 0;*/
+        /*margin: 18px 0;*/
+    /*}*/
 
     .card {
         background: #fff;
@@ -511,6 +511,13 @@ apply the skin class to the body tag so the changes take effect.
             today = hh + ':' + min;
         }
         return today;
+    }
+
+    function isCanvasBlank(canvas) {
+        const blank = document.createElement("canvas");
+        blank.width = canvas.width;
+        blank.height = canvas.height;
+        return canvas.toDataURL() === blank.toDataURL();
     }
 
 </script>

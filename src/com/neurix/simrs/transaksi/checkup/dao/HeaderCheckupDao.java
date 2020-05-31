@@ -813,6 +813,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setDiagnosa(obj[48] == null ? "" : obj[48].toString());
                     checkup.setAlergi(getAlergiPasien(obj[0].toString()));
                     checkup.setAnamnese(obj[49] == null ? "" : obj[49].toString());
+                    checkup.setPenunjangMedis(getPenunjangMendis(obj[15].toString()));
                 }
             }
         }
@@ -847,6 +848,32 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
             }
         }
         return alergi;
+    }
+
+    public String getPenunjangMendis(String idDetailCheckup){
+        String res = "";
+        String SQL = "SELECT \n" +
+                "a.id_periksa_lab,\n" +
+                "b.nama_lab\n" +
+                "FROM it_simrs_periksa_lab a\n" +
+                "INNER JOIN im_simrs_lab b ON a.id_lab = b.id_lab \n" +
+                "WHERE id_detail_checkup = :id";
+        List<Object[]> result = new ArrayList<>();
+        result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", idDetailCheckup)
+                .list();
+        if (result.size() > 0){
+            for (Object[] obj: result){
+                if(obj[1] != null){
+                    if("".equalsIgnoreCase(res)){
+                        res = obj[1].toString();
+                    }else{
+                        res = res +", "+obj[1].toString();
+                    }
+                }
+            }
+        }
+        return res;
     }
 
     public String getAsuransiName(String id) {

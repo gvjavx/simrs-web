@@ -418,7 +418,7 @@
                             <div class="col-md-6">
                                 <div class="row">
                                     <div class="col-md-10">
-                                        <textarea class="form-control" rows="4" onchange="saveAnamnese(this.value)"></textarea>
+                                        <s:textarea name="headerDetailCheckup.anamnese" cssClass="form-control" rows="4" onchange="saveAnamnese(this.value)"></s:textarea>
                                     </div>
                                     <div class="col-md-2">
                                         <p id="suc_anamnese" style="color: #449d44; margin-left: -20px; display: none"><i class="fa fa-check"></i> Success</p>
@@ -2078,6 +2078,16 @@
     var tglLhr = '<s:property value="headerDetailCheckup.tglLahir"/>';
     var tglLahir = tglLhr.split("-").reverse().join("-");
     var namaPasien = '<s:property value="headerDetailCheckup.namaPasien"/>';
+    var anamnese = '<s:property value="headerDetailCheckup.anamnese"/>';
+    var penunjangMedis = '<s:property value="headerDetailCheckup.penunjangMedis"/>';
+    var keluhanUtama = '<s:property value="headerDetailCheckup.keluhanUtama"/>';
+    var suhu = '<s:property value="headerDetailCheckup.suhu"/>';
+    var nadi = '<s:property value="headerDetailCheckup.nadi"/>';
+    var tensi = '<s:property value="headerDetailCheckup.tensi"/>';
+    var pernafasan = '<s:property value="headerDetailCheckup.pernafasan"/>';
+    var alergi = '<s:property value="headerDetailCheckup.alergi"/>';
+    var beratBadan = '<s:property value="headerDetailCheckup.berat"/>';
+    var tinggiBadan = '<s:property value="headerDetailCheckup.tinggi"/>';
 
     $(document).ready(function () {
         $('#rawat_jalan').addClass('active');
