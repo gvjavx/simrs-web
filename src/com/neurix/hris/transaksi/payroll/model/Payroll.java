@@ -131,8 +131,47 @@ public class Payroll extends BaseModel {
     private String noAnggotaDapen;
 
     private boolean kantorPusat =  false;
+    private boolean keuanganKantorPusat =  false;
     private boolean cetakSatuan = false;
     private boolean adaCheckBox = false;
+
+    //approve Sdm
+    private String approvalSdmFlag;
+    private String approvalSdmId;
+    private Timestamp approvalSdmDate;
+    private String approvalSdmName;
+
+    public String getApprovalSdmFlag() {
+        return approvalSdmFlag;
+    }
+
+    public void setApprovalSdmFlag(String approvalSdmFlag) {
+        this.approvalSdmFlag = approvalSdmFlag;
+    }
+
+    public String getApprovalSdmId() {
+        return approvalSdmId;
+    }
+
+    public void setApprovalSdmId(String approvalSdmId) {
+        this.approvalSdmId = approvalSdmId;
+    }
+
+    public Timestamp getApprovalSdmDate() {
+        return approvalSdmDate;
+    }
+
+    public void setApprovalSdmDate(Timestamp approvalSdmDate) {
+        this.approvalSdmDate = approvalSdmDate;
+    }
+
+    public String getApprovalSdmName() {
+        return approvalSdmName;
+    }
+
+    public void setApprovalSdmName(String approvalSdmName) {
+        this.approvalSdmName = approvalSdmName;
+    }
 
     public String getNoAnggotaDapen() {
         return noAnggotaDapen;

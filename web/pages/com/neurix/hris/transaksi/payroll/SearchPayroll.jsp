@@ -122,7 +122,7 @@
                                                 </td>
                                                 <script>
                                                     var dt = new Date();
-                                                    $('#bulanPayroll1').val(("0" + (dt.getMonth() + 1)).slice(-2));
+                                                    $('#bulanPayroll1').val("01");
                                                     $('#tahunPayroll1').val(dt.getFullYear());
                                                     $('#bulanPayroll2').val(("0" + (dt.getMonth() + 1)).slice(-2));
                                                     $('#tahunPayroll2').val(dt.getFullYear());
@@ -186,7 +186,7 @@
                                         <br>
                                         <br>
                                         <center>
-                                            <table id="showdata" width="60%">
+                                            <table id="showdata" width="80%">
                                                 <tr>
                                                     <td align="center">
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
@@ -198,9 +198,9 @@
                                                         <s:set name="listOfPayroll" value="#session.listOfResult" scope="request" />
                                                         <display:table name="listOfPayroll" class=" tablePayroll table table-condensed table-striped table-hover"
                                                                        requestURI="paging_displaytag_payroll.action" export="true" id="row" pagesize="24" style="font-size:10">
-                                                                <display:column media="html" title="Approve Kanpus">
+                                                                <display:column media="html" title="Approve Keuangan Kanpus">
                                                                     <s:if test='#attr.row.statusApprove=="K"'>
-                                                                        <s:if test="%{payroll.kantorPusat}">
+                                                                        <s:if test="%{payroll.keuanganKantorPusat}">
                                                                         <a href="javascript:;" bulan="<s:property value="%{#attr.row.bulan}"/>"
                                                                            tahun="<s:property value="%{#attr.row.tahun}"/>"
                                                                            branchId="<s:property value="%{#attr.row.branchId}"/>"
@@ -215,7 +215,27 @@
                                                                         <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
                                                                     </s:elseif>
                                                                 </display:column>
-                                                            <display:column media="html" title="Approve Unit">
+                                                            <display:column media="html" title="Approve SDM KP">
+                                                                <s:if test='#attr.row.statusApprove=="S"'>
+                                                                    <s:if test="%{payroll.kantorPusat}">
+                                                                    <a href="javascript:;" bulan="<s:property value="%{#attr.row.bulan}"/>"
+                                                                       tahun="<s:property value="%{#attr.row.tahun}"/>"
+                                                                       branchId="<s:property value="%{#attr.row.branchId}"/>"
+                                                                       branchName="<s:property value="%{#attr.row.branchName}"/>"
+                                                                       tipe="<s:property value="%{#attr.row.tipe}"/>"
+                                                                       class="item-approve-sdm">
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_approval.ico"/>" name="icon_edit">
+                                                                    </a>
+                                                                    </s:if>
+                                                                </s:if>
+                                                                <s:elseif test='#attr.row.statusApprove=="K"'>
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
+                                                                </s:elseif>
+                                                                <s:elseif test='#attr.row.statusApprove=="D"'>
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
+                                                                </s:elseif>
+                                                            </display:column>
+                                                            <display:column media="html" title="Approve SDM Unit">
                                                                 <s:if test='#attr.row.statusApprove=="U"'>
                                                                     <a href="javascript:;" bulan="<s:property value="%{#attr.row.bulan}"/>"
                                                                        tahun="<s:property value="%{#attr.row.tahun}"/>"
@@ -227,6 +247,9 @@
                                                                     </a>
                                                                 </s:if>
                                                                 <s:elseif test='#attr.row.statusApprove=="K"'>
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
+                                                                </s:elseif>
+                                                                <s:elseif test='#attr.row.statusApprove=="S"'>
                                                                     <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
                                                                 </s:elseif>
                                                                 <s:elseif test='#attr.row.statusApprove=="D"'>

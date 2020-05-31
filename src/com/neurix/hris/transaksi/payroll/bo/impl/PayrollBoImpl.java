@@ -6493,8 +6493,10 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     tanggal = sdf.format(tanggalApp);
                     payroll.setFlagEdit(false);
                     payroll.setStatusApprove("D");
-                }else if (("Y").equalsIgnoreCase(itPayrollEntity1.getApprovalUnitFlag())){
+                }else if (("Y").equalsIgnoreCase(itPayrollEntity1.getApprovalSdmFlag())){
                     payroll.setStatusApprove("K");
+                }else if (("Y").equalsIgnoreCase(itPayrollEntity1.getApprovalUnitFlag())){
+                    payroll.setStatusApprove("S");
                 }else{
                     payroll.setStatusApprove("U");
                 }

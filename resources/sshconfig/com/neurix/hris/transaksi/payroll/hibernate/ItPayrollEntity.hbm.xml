@@ -203,6 +203,18 @@
         <property name="approvalUnitName">
             <column name="approval_unit_name" sql-type="varchar" length="100" not-null="false" />
         </property>
+        <property name="approvalSdmFlag">
+            <column name="approval_sdm_flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="approvalSdmDate">
+            <column name="approval_sdm_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="approvalSdmId">
+            <column name="approval_sdm_id" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="approvalSdmName">
+            <column name="approval_sdm_name" sql-type="varchar" length="100" not-null="false" />
+        </property>
 
         <property name="flagPayroll">
             <column name="flag_payroll" sql-type="varchar" length="1" not-null="false" />
@@ -294,8 +306,6 @@
         <property name="lastUpdate">
             <column name="last_update" sql-type="date" not-null="false" />
         </property>
-
-
 
         <!--Tambahan Irfan-->
         <!--Data Pegawai-->
