@@ -33,6 +33,16 @@ public class PayrollSkalaGaji extends BaseModel {
     private String stBbm;
     private String stTotal;
 
+    private String noSk;
+
+    public String getNoSk() {
+        return noSk;
+    }
+
+    public void setNoSk(String noSk) {
+        this.noSk = noSk;
+    }
+
     public String getStLevel() {
         return stLevel;
     }
