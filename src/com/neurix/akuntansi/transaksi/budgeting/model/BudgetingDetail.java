@@ -33,6 +33,24 @@ public class BudgetingDetail{
     private String masterId;
     private String masterName;
     private String flagEdit;
+    private BigDecimal saldoAkhir;
+    private BigDecimal selisihSaldoAkhir;
+
+    public BigDecimal getSaldoAkhir() {
+        return saldoAkhir;
+    }
+
+    public void setSaldoAkhir(BigDecimal saldoAkhir) {
+        this.saldoAkhir = saldoAkhir;
+    }
+
+    public BigDecimal getSelisihSaldoAkhir() {
+        return selisihSaldoAkhir;
+    }
+
+    public void setSelisihSaldoAkhir(BigDecimal selisihSaldoAkhir) {
+        this.selisihSaldoAkhir = selisihSaldoAkhir;
+    }
 
     public String getFlagEdit() {
         return flagEdit;

@@ -331,7 +331,7 @@
             var result              = '';
             var flagMaster          = $("#flag-master-edit").val();
             var flagDivisi          = $("#flag-divisi-edit").val();
-            var tipeRekening        = $("#tipeRekeningId").val();
+            var tipeRekening        = $("#tipeRekeningIdEdit").val();
 
             if(id != ''&&kodeRekeningName != ''&&kodeRekening != ''){
                 if (confirm('Are you sure you want to save this Record?')) {

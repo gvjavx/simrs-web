@@ -57,3 +57,13 @@ VALUES
 );
 
 // ============= //
+
+// === 2020-05-31 ===//
+DELETE FROM im_akun_tipe_rekening WHERE tipe_rekening_id::integer > 4;
+DELETE FROM im_akun_tipe_rekening WHERE tipe_rekening_id = '00';
+UPDATE im_akun_tipe_rekening SET tipe_rekening_name = 'KAS' WHERE tipe_rekening_id = '01';
+UPDATE im_akun_tipe_rekening SET tipe_rekening_name = 'PENDAPATAN' WHERE tipe_rekening_id = '02';
+UPDATE im_akun_tipe_rekening SET tipe_rekening_name = 'BIAYA' WHERE tipe_rekening_id = '03';
+UPDATE im_akun_tipe_rekening SET tipe_rekening_name = 'INVESTASI' WHERE tipe_rekening_id = '04';
+SELECT * FROM im_akun_tipe_rekening
+// ============= //

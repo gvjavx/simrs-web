@@ -1158,7 +1158,7 @@
                 <div class="row">
                     <label class="control-label col-sm-2">Nama </label>
                     <div class="col-sm-4">
-                       <input type="text" class="form form-control" id="nama-head-pengadaan" readonly/>
+                       <input type="hidden" class="form form-control" id="nama-head-pengadaan"/>
                     </div>
                 </div>
                 <div class="row">
@@ -1223,7 +1223,7 @@
             $(".list-label-divisi-id").text("Investasi Id");
             $(".list-label-divisi-name").text("Nama Investasi");
         } else {
-            if (flagDivisi == "N" && flagMaster == "N"){
+            if ((flagDivisi == "N" || flagDivisi == "" || flagDivisi == null) && (flagMaster == "N" || flagMaster == "" || flagMaster == null)){
                 $("#alert-error").show();
                 $("#error-msg").text(" Tidak Bisa Edit Data Budgeting. Lengkapi Data Kode Rekening Terlebih Dahulu.");
                 $("#btn-save-add").hide();

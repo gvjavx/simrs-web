@@ -70,6 +70,9 @@ public class Budgeting {
     private String divisi;
     private String coa;
 
+    private BigDecimal saldoAkhir;
+    private BigDecimal selisihSaldoAkhir;
+
     private List<BudgetingPeriode> listPeriode = new ArrayList<>();
     private List<BudgetingDetail> budgetingDetailList = new ArrayList<>();
 
@@ -556,5 +559,21 @@ public class Budgeting {
 
     public void setBudgetingDetailList(List<BudgetingDetail> budgetingDetailList) {
         this.budgetingDetailList = budgetingDetailList;
+    }
+
+    public BigDecimal getSaldoAkhir() {
+        return saldoAkhir;
+    }
+
+    public void setSaldoAkhir(BigDecimal saldoAkhir) {
+        this.saldoAkhir = saldoAkhir;
+    }
+
+    public BigDecimal getSelisihSaldoAkhir() {
+        return selisihSaldoAkhir;
+    }
+
+    public void setSelisihSaldoAkhir(BigDecimal selisihSaldoAkhir) {
+        this.selisihSaldoAkhir = selisihSaldoAkhir;
     }
 }

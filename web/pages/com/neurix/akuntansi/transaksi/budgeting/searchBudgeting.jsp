@@ -238,752 +238,53 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-info"></i> View Detail Budgeting
+                <h4 class="modal-title"><i class="fa fa-file"></i> View Detail Budgeting
                 </h4>
             </div>
             <div class="modal-body">
-                <input type="text" id="view-id">
-
-                <%--table informasi quartal--%>
-                <s:if test='budgeting.tipe == "quartal"'>
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1">
-                            <label>Kuartal 1</label>
-                            <table class="table table-bordered table-striped" style="font-size: 15px;">
-                                <thead>
-                                <tr bgcolor="#90ee90">
-                                    <td class="list-label-master-id">Master Id</td>
-                                    <td class="list-label-master-name">Master Name</td>
-                                    <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
-                                    <td align="center" class="list-label-divisi-name">Nama Divisi</td>
-                                    <td align="center">Quantity</td>
-                                    <td align="center">Nilai</td>
-                                    <td align="center">Sub Total</td>
-                                    <td align="center">Action</td>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <s:iterator value="#session.listOfDetailView" var="row">
-                                    <s:if test='#row.tipe == "quartal1"'>
-                                        <tr>
-                                            <td><s:property value="masterId"/></td>
-                                            <td><s:property value="masterName"/></td>
-                                            <td><s:property value="divisiId"/></td>
-                                            <td><s:property value="divisiName"/></td>
-                                            <td align="center"><s:property value="qty"/></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
-                                            <td align="center">
-                                                <s:if test='#row.flagEdit != "N"'>
-                                                    <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
-                                                </s:if>
-                                            </td>
-
-
-                                        </tr>
-                                    </s:if>
-                                </s:iterator>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1">
-                            <label>Kuartal 2</label>
-                            <table class="table table-bordered table-striped" style="font-size: 15px;">
-                                <thead>
-                                <tr bgcolor="#90ee90">
-                                    <td class="list-label-master-id">Master Id</td>
-                                    <td class="list-label-master-name">Master Name</td>
-                                    <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
-                                    <td align="center" class="list-label-divisi-name">Nama Divisi</td>
-                                    <td align="center">Quantity</td>
-                                    <td align="center">Nilai</td>
-                                    <td align="center">Sub Total</td>
-                                    <td align="center">Action</td>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <s:iterator value="#session.listOfDetailView" var="row">
-                                    <s:if test='#row.tipe == "quartal2"'>
-                                        <tr>
-                                            <td><s:property value="masterId"/></td>
-                                            <td><s:property value="masterName"/></td>
-                                            <td><s:property value="divisiId"/></td>
-                                            <td><s:property value="divisiName"/></td>
-                                            <td align="center"><s:property value="qty"/></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
-                                            <td align="center">
-                                                <s:if test='#row.flagEdit != "N"'>
-                                                    <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
-                                                </s:if>
-                                            </td>
-                                        </tr>
-                                    </s:if>
-                                </s:iterator>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1">
-                            <label>Kuartal 3</label>
-                            <table class="table table-bordered table-striped" style="font-size: 15px;">
-                                <thead>
-                                <tr bgcolor="#90ee90">
-                                    <td class="list-label-master-id">Master Id</td>
-                                    <td class="list-label-master-name">Master Name</td>
-                                    <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
-                                    <td align="center" class="list-label-divisi-name">Nama Divisi</td>
-                                    <td align="center">Quantity</td>
-                                    <td align="center">Nilai</td>
-                                    <td align="center">Sub Total</td>
-                                    <td align="center">Action</td>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <s:iterator value="#session.listOfDetailView" var="row">
-                                    <s:if test='#row.tipe == "quartal3"'>
-                                        <tr>
-                                            <td><s:property value="masterId"/></td>
-                                            <td><s:property value="masterName"/></td>
-                                            <td><s:property value="divisiId"/></td>
-                                            <td><s:property value="divisiName"/></td>
-                                            <td align="center"><s:property value="qty"/></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
-                                            <td align="center">
-                                                <s:if test='#row.flagEdit != "N"'>
-                                                    <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
-                                                </s:if>
-                                            </td>
-                                        </tr>
-                                    </s:if>
-                                </s:iterator>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1">
-                            <label>Kuartal 4</label>
-                            <table class="table table-bordered table-striped" style="font-size: 15px;">
-                                <thead>
-                                <tr bgcolor="#90ee90">
-                                    <td class="list-label-master-id">Master Id</td>
-                                    <td class="list-label-master-name">Master Name</td>
-                                    <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
-                                    <td align="center" class="list-label-divisi-name">Nama Divisi</td>
-                                    <td align="center">Quantity</td>
-                                    <td align="center">Nilai</td>
-                                    <td align="center">Sub Total</td>
-                                    <td align="center">Action</td>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <s:iterator value="#session.listOfDetailView" var="row">
-                                    <s:if test='#row.tipe == "quartal4"'>
-                                        <tr>
-                                            <td><s:property value="masterId"/></td>
-                                            <td><s:property value="masterName"/></td>
-                                            <td><s:property value="divisiId"/></td>
-                                            <td><s:property value="divisiName"/></td>
-                                            <td align="center"><s:property value="qty"/></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
-                                            <td align="center">
-                                                <s:if test='#row.flagEdit != "N"'>
-                                                    <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
-                                                </s:if>
-                                            </td>
-                                        </tr>
-                                    </s:if>
-                                </s:iterator>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                </s:if>
-
-                <%--table informasi quartal--%>
-                <s:if test='budgeting.tipe == "semester"'>
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1">
-                            <label>Semester 1</label>
-                            <table class="table table-bordered table-striped" style="font-size: 15px;">
-                                <thead>
-                                <tr bgcolor="#90ee90">
-                                    <td class="list-label-master-id">Master Id</td>
-                                    <td class="list-label-master-name">Master Name</td>
-                                    <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
-                                    <td align="center" class="list-label-divisi-name">Nama Divisi</td>
-                                    <td align="center">Quantity</td>
-                                    <td align="center">Nilai</td>
-                                    <td align="center">Sub Total</td>
-                                    <td align="center">Action</td>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <s:iterator value="#session.listOfDetailView" var="row">
-                                    <s:if test='#row.tipe == "semester1"'>
-                                        <tr>
-                                            <td><s:property value="masterId"/></td>
-                                            <td><s:property value="masterName"/></td>
-                                            <td><s:property value="divisiId"/></td>
-                                            <td><s:property value="divisiName"/></td>
-                                            <td align="center"><s:property value="qty"/></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
-                                            <td align="center">
-                                                <s:if test='#row.flagEdit != "N"'>
-                                                    <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
-                                                </s:if>
-                                            </td>
-                                        </tr>
-                                    </s:if>
-                                </s:iterator>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1">
-                            <label>Semester 2</label>
-                            <table class="table table-bordered table-striped" style="font-size: 15px;">
-                                <thead>
-                                <tr bgcolor="#90ee90">
-                                    <td class="list-label-master-id">Master Id</td>
-                                    <td class="list-label-master-name">Master Name</td>
-                                    <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
-                                    <td align="center" class="list-label-divisi-name">Nama Divisi</td>
-                                    <td align="center">Quantity</td>
-                                    <td align="center">Nilai</td>
-                                    <td align="center">Sub Total</td>
-                                    <td align="center">Action</td>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <s:iterator value="#session.listOfDetailView" var="row">
-                                    <s:if test='#row.tipe == "semester2"'>
-                                        <tr>
-                                            <td><s:property value="masterId"/></td>
-                                            <td><s:property value="masterName"/></td>
-                                            <td><s:property value="divisiId"/></td>
-                                            <td><s:property value="divisiName"/></td>
-                                            <td align="center"><s:property value="qty"/></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
-                                            <td align="center">
-                                                <s:if test='#row.flagEdit != "N"'>
-                                                    <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
-                                                </s:if>
-                                            </td>
-                                        </tr>
-                                    </s:if>
-                                </s:iterator>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </s:if>
-
-                <s:if test='budgeting.tipe == "tahunan"'>
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1">
-                            <label>Periode Tahun</label>
-                            <table class="table table-bordered table-striped" style="font-size: 15px;">
-                                <thead>
-                                <tr bgcolor="#90ee90">
-                                    <td class="list-label-master-id">Master Id</td>
-                                    <td class="list-label-master-name">Master Name</td>
-                                    <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
-                                    <td align="center" class="list-label-divisi-name">Nama Divisi</td>
-                                    <td align="center">Quantity</td>
-                                    <td align="center">Nilai</td>
-                                    <td align="center">Sub Total</td>
-                                    <td align="center">Action</td>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <s:iterator value="#session.listOfDetailView" var="row">
-                                    <s:if test='#row.tipe == "tahunan"'>
-                                        <tr>
-                                            <td><s:property value="masterId"/></td>
-                                            <td><s:property value="masterName"/></td>
-                                            <td><s:property value="divisiId"/></td>
-                                            <td><s:property value="divisiName"/></td>
-                                            <td align="center"><s:property value="qty"/></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
-                                            <td align="center">
-                                                <s:if test='#row.flagEdit != "N"'>
-                                                    <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
-                                                </s:if>
-                                            </td>
-                                        </tr>
-                                    </s:if>
-                                </s:iterator>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </s:if>
-
-                <%--TIPE BULANAN START--%>
-                <s:if test='budgeting.tipe == "bulanan"'>
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1">
-                            <label>Januari</label>
-                            <table class="table table-bordered table-striped" style="font-size: 15px;">
-                                <thead>
-                                <tr bgcolor="#90ee90">
-                                    <td class="list-label-master-id">Master Id</td>
-                                    <td class="list-label-master-name">Master Name</td>
-                                    <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
-                                    <td align="center" class="list-label-divisi-name">Nama Divisi</td>
-                                    <td align="center">Quantity</td>
-                                    <td align="center">Nilai</td>
-                                    <td align="center">Sub Total</td>
-                                    <td align="center">Action</td>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <s:iterator value="#session.listOfDetailView" var="row">
-                                    <s:if test='#row.tipe == "januari"'>
-                                        <tr>
-                                            <td><s:property value="masterId"/></td>
-                                            <td><s:property value="masterName"/></td>
-                                            <td><s:property value="divisiId"/></td>
-                                            <td><s:property value="divisiName"/></td>
-                                            <td align="center"><s:property value="qty"/></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
-                                            <td align="center">
-                                                <s:if test='#row.flagEdit != "N"'>
-                                                    <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
-                                                </s:if>
-                                            </td>
-                                        </tr>
-                                    </s:if>
-                                </s:iterator>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-md-10 col-md-offset-1">
-                            <label>Februari</label>
-                            <table class="table table-bordered table-striped" style="font-size: 15px;">
-                                <thead>
-                                <tr bgcolor="#90ee90">
-                                    <td class="list-label-master-id">Master Id</td>
-                                    <td class="list-label-master-name">Master Name</td>
-                                    <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
-                                    <td align="center" class="list-label-divisi-name">Nama Divisi</td>
-                                    <td align="center">Quantity</td>
-                                    <td align="center">Nilai</td>
-                                    <td align="center">Sub Total</td>
-                                    <td align="center">Action</td>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <s:iterator value="#session.listOfDetailView" var="row">
-                                    <s:if test='#row.tipe == "februari"'>
-                                        <tr>
-                                            <td><s:property value="masterId"/></td>
-                                            <td><s:property value="masterName"/></td>
-                                            <td><s:property value="divisiId"/></td>
-                                            <td><s:property value="divisiName"/></td>
-                                            <td align="center"><s:property value="qty"/></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
-                                            <td align="center">
-                                                <s:if test='#row.flagEdit != "N"'>
-                                                    <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
-                                                </s:if>
-                                            </td>
-                                        </tr>
-                                    </s:if>
-                                </s:iterator>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-md-10 col-md-offset-1">
-                            <label>Maret</label>
-                            <table class="table table-bordered table-striped" style="font-size: 15px;">
-                                <thead>
-                                <tr bgcolor="#90ee90">
-                                    <td class="list-label-master-id">Master Id</td>
-                                    <td class="list-label-master-name">Master Name</td>
-                                    <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
-                                    <td align="center" class="list-label-divisi-name">Nama Divisi</td>
-                                    <td align="center">Quantity</td>
-                                    <td align="center">Nilai</td>
-                                    <td align="center">Sub Total</td>
-                                    <td align="center">Action</td>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <s:iterator value="#session.listOfDetailView" var="row">
-                                    <s:if test='#row.tipe == "maret"'>
-                                        <tr>
-                                            <td><s:property value="masterId"/></td>
-                                            <td><s:property value="masterName"/></td>
-                                            <td><s:property value="divisiId"/></td>
-                                            <td><s:property value="divisiName"/></td>
-                                            <td align="center"><s:property value="qty"/></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
-                                            <td align="center">
-                                                <s:if test='#row.flagEdit != "N"'>
-                                                    <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
-                                                </s:if>
-                                            </td>
-                                        </tr>
-                                    </s:if>
-                                </s:iterator>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-md-10 col-md-offset-1">
-                            <label>April</label>
-                            <table class="table table-bordered table-striped" style="font-size: 15px;">
-                                <thead>
-                                <tr bgcolor="#90ee90">
-                                    <td class="list-label-master-id">Master Id</td>
-                                    <td class="list-label-master-name">Master Name</td>
-                                    <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
-                                    <td align="center" class="list-label-divisi-name">Nama Divisi</td>
-                                    <td align="center">Quantity</td>
-                                    <td align="center">Nilai</td>
-                                    <td align="center">Sub Total</td>
-                                    <td align="center">Action</td>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <s:iterator value="#session.listOfDetailView" var="row">
-                                    <s:if test='#row.tipe == "april"'>
-                                        <tr>
-                                            <td><s:property value="masterId"/></td>
-                                            <td><s:property value="masterName"/></td>
-                                            <td><s:property value="divisiId"/></td>
-                                            <td><s:property value="divisiName"/></td>
-                                            <td align="center"><s:property value="qty"/></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
-                                            <td align="center">
-                                                <s:if test='#row.flagEdit != "N"'>
-                                                    <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
-                                                </s:if>
-                                            </td>
-                                        </tr>
-                                    </s:if>
-                                </s:iterator>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-md-10 col-md-offset-1">
-                            <label>Mei</label>
-                            <table class="table table-bordered table-striped" style="font-size: 15px;">
-                                <thead>
-                                <tr bgcolor="#90ee90">
-                                    <td class="list-label-master-id">Master Id</td>
-                                    <td class="list-label-master-name">Master Name</td>
-                                    <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
-                                    <td align="center" class="list-label-divisi-name">Nama Divisi</td>
-                                    <td align="center">Quantity</td>
-                                    <td align="center">Nilai</td>
-                                    <td align="center">Sub Total</td>
-                                    <td align="center">Action</td>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <s:iterator value="#session.listOfDetailView" var="row">
-                                    <s:if test='#row.tipe == "mei"'>
-                                        <tr>
-                                            <td><s:property value="masterId"/></td>
-                                            <td><s:property value="masterName"/></td>
-                                            <td><s:property value="divisiId"/></td>
-                                            <td><s:property value="divisiName"/></td>
-                                            <td align="center"><s:property value="qty"/></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
-                                            <td align="center">
-                                                <s:if test='#row.flagEdit != "N"'>
-                                                    <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
-                                                </s:if>
-                                            </td>
-                                        </tr>
-                                    </s:if>
-                                </s:iterator>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-md-10 col-md-offset-1">
-                            <label>Juni</label>
-                            <table class="table table-bordered table-striped" style="font-size: 15px;">
-                                <thead>
-                                <tr bgcolor="#90ee90">
-                                    <td class="list-label-master-id">Master Id</td>
-                                    <td class="list-label-master-name">Master Name</td>
-                                    <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
-                                    <td align="center" class="list-label-divisi-name">Nama Divisi</td>
-                                    <td align="center">Quantity</td>
-                                    <td align="center">Nilai</td>
-                                    <td align="center">Sub Total</td>
-                                    <td align="center">Action</td>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <s:iterator value="#session.listOfDetailView" var="row">
-                                    <s:if test='#row.tipe == "juni"'>
-                                        <tr>
-                                            <td><s:property value="masterId"/></td>
-                                            <td><s:property value="masterName"/></td>
-                                            <td><s:property value="divisiId"/></td>
-                                            <td><s:property value="divisiName"/></td>
-                                            <td align="center"><s:property value="qty"/></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
-                                            <td align="center">
-                                                <s:if test='#row.flagEdit != "N"'>
-                                                    <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
-                                                </s:if>
-                                            </td>
-                                        </tr>
-                                    </s:if>
-                                </s:iterator>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-md-10 col-md-offset-1">
-                            <label>Juli</label>
-                            <table class="table table-bordered table-striped" style="font-size: 15px;">
-                                <thead>
-                                <tr bgcolor="#90ee90">
-                                    <td class="list-label-master-id">Master Id</td>
-                                    <td class="list-label-master-name">Master Name</td>
-                                    <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
-                                    <td align="center" class="list-label-divisi-name">Nama Divisi</td>
-                                    <td align="center">Quantity</td>
-                                    <td align="center">Nilai</td>
-                                    <td align="center">Sub Total</td>
-                                    <td align="center">Action</td>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <s:iterator value="#session.listOfDetailView" var="row">
-                                    <s:if test='#row.tipe == "juli"'>
-                                        <tr>
-                                            <td><s:property value="masterId"/></td>
-                                            <td><s:property value="masterName"/></td>
-                                            <td><s:property value="divisiId"/></td>
-                                            <td><s:property value="divisiName"/></td>
-                                            <td align="center"><s:property value="qty"/></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
-                                            <td align="center">
-                                                <s:if test='#row.flagEdit != "N"'>
-                                                    <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
-                                                </s:if>
-                                            </td>
-                                        </tr>
-                                    </s:if>
-                                </s:iterator>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-md-10 col-md-offset-1">
-                            <label>Agustus</label>
-                            <table class="table table-bordered table-striped" style="font-size: 15px;">
-                                <thead>
-                                <tr bgcolor="#90ee90">
-                                    <td class="list-label-master-id">Master Id</td>
-                                    <td class="list-label-master-name">Master Name</td>
-                                    <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
-                                    <td align="center" class="list-label-divisi-name">Nama Divisi</td>
-                                    <td align="center">Quantity</td>
-                                    <td align="center">Nilai</td>
-                                    <td align="center">Sub Total</td>
-                                    <td align="center">Action</td>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <s:iterator value="#session.listOfDetailView" var="row">
-                                    <s:if test='#row.tipe == "agustus"'>
-                                        <tr>
-                                            <td><s:property value="masterId"/></td>
-                                            <td><s:property value="masterName"/></td>
-                                            <td><s:property value="divisiId"/></td>
-                                            <td><s:property value="divisiName"/></td>
-                                            <td align="center"><s:property value="qty"/></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
-                                            <td align="center">
-                                                <s:if test='#row.flagEdit != "N"'>
-                                                    <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
-                                                </s:if>
-                                            </td>
-                                        </tr>
-                                    </s:if>
-                                </s:iterator>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-md-10 col-md-offset-1">
-                            <label>September</label>
-                            <table class="table table-bordered table-striped" style="font-size: 15px;">
-                                <thead>
-                                <tr bgcolor="#90ee90">
-                                    <td class="list-label-master-id">Master Id</td>
-                                    <td class="list-label-master-name">Master Name</td>
-                                    <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
-                                    <td align="center" class="list-label-divisi-name">Nama Divisi</td>
-                                    <td align="center">Quantity</td>
-                                    <td align="center">Nilai</td>
-                                    <td align="center">Sub Total</td>
-                                    <td align="center">Action</td>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <s:iterator value="#session.listOfDetailView" var="row">
-                                    <s:if test='#row.tipe == "september"'>
-                                        <tr>
-                                            <td><s:property value="masterId"/></td>
-                                            <td><s:property value="masterName"/></td>
-                                            <td><s:property value="divisiId"/></td>
-                                            <td><s:property value="divisiName"/></td>
-                                            <td align="center"><s:property value="qty"/></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
-                                            <td align="center">
-                                                <s:if test='#row.flagEdit != "N"'>
-                                                    <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
-                                                </s:if>
-                                            </td>
-                                        </tr>
-                                    </s:if>
-                                </s:iterator>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-md-10 col-md-offset-1">
-                            <label>Oktober</label>
-                            <table class="table table-bordered table-striped" style="font-size: 15px;">
-                                <thead>
-                                <tr bgcolor="#90ee90">
-                                    <td class="list-label-master-id">Master Id</td>
-                                    <td class="list-label-master-name">Master Name</td>
-                                    <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
-                                    <td align="center" class="list-label-divisi-name">Nama Divisi</td>
-                                    <td align="center">Quantity</td>
-                                    <td align="center">Nilai</td>
-                                    <td align="center">Sub Total</td>
-                                    <td align="center">Action</td>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <s:iterator value="#session.listOfDetailView" var="row">
-                                    <s:if test='#row.tipe == "oktober"'>
-                                        <tr>
-                                            <td><s:property value="masterId"/></td>
-                                            <td><s:property value="masterName"/></td>
-                                            <td><s:property value="divisiId"/></td>
-                                            <td><s:property value="divisiName"/></td>
-                                            <td align="center"><s:property value="qty"/></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
-                                            <td align="center">
-                                                <s:if test='#row.flagEdit != "N"'>
-                                                    <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
-                                                </s:if>
-                                            </td>
-                                        </tr>
-                                    </s:if>
-                                </s:iterator>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-md-10 col-md-offset-1">
-                            <label>November</label>
-                            <table class="table table-bordered table-striped" style="font-size: 15px;">
-                                <thead>
-                                <tr bgcolor="#90ee90">
-                                    <td class="list-label-master-id">Master Id</td>
-                                    <td class="list-label-master-name">Master Name</td>
-                                    <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
-                                    <td align="center" class="list-label-divisi-name">Nama Divisi</td>
-                                    <td align="center">Quantity</td>
-                                    <td align="center">Nilai</td>
-                                    <td align="center">Sub Total</td>
-                                    <td align="center">Action</td>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <s:iterator value="#session.listOfDetailView" var="row">
-                                    <s:if test='#row.tipe == "november"'>
-                                        <tr>
-                                            <td><s:property value="masterId"/></td>
-                                            <td><s:property value="masterName"/></td>
-                                            <td><s:property value="divisiId"/></td>
-                                            <td><s:property value="divisiName"/></td>
-                                            <td align="center"><s:property value="qty"/></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
-                                            <td align="center">
-                                                <s:if test='#row.flagEdit != "N"'>
-                                                    <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
-                                                </s:if>
-                                            </td>
-                                        </tr>
-                                    </s:if>
-                                </s:iterator>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-md-10 col-md-offset-1">
-                            <label>Desember</label>
-                            <table class="table table-bordered table-striped" style="font-size: 15px;">
-                                <thead>
-                                <tr bgcolor="#90ee90">
-                                    <td class="list-label-master-id">Master Id</td>
-                                    <td class="list-label-master-name">Master Name</td>
-                                    <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
-                                    <td align="center" class="list-label-divisi-name">Nama Divisi</td>
-                                    <td align="center">Quantity</td>
-                                    <td align="center">Nilai</td>
-                                    <td align="center">Sub Total</td>
-                                    <td align="center">Action</td>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <s:iterator value="#session.listOfDetailView" var="row">
-                                    <s:if test='#row.tipe == "desember"'>
-                                        <tr>
-                                            <td><s:property value="masterId"/></td>
-                                            <td><s:property value="masterName"/></td>
-                                            <td><s:property value="divisiId"/></td>
-                                            <td><s:property value="divisiName"/></td>
-                                            <td align="center"><s:property value="qty"/></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
-                                            <td align="center">
-                                                <s:if test='#row.flagEdit != "N"'>
-                                                    <button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button>
-                                                </s:if>
-                                            </td>
-                                        </tr>
-                                    </s:if>
-                                </s:iterator>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </s:if>
-
+                <input type="hidden" id="view-id">
+                <table style="font-size: 15px; margin-bottom: 10px;" class="table">
+                    <tbody>
+                        <tr>
+                            <td width="20%">Tahun</td>
+                            <td>:</td>
+                            <td id="tahun-view"></td>
+                        </tr>
+                        <tr>
+                            <td>Unit</td>
+                            <td>:</td>
+                            <td id="unit-view"></td>
+                        </tr>
+                        <tr>
+                            <td>COA </td>
+                            <td>:</td>
+                            <td id="coa-view"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-bordered table-striped">
+                    <thead id="head-budgeting-view" style="font-size: 13px">
+                    <tr bgcolor="#90ee90">
+                        <td>Periode</td>
+                        <td id="label-master-id">Master Id</td>
+                        <td align="" id="label-master-name">Master Name</td>
+                        <td align="" id="label-divisi-id">Divisi Id</td>
+                        <td align="" id="label-divisi-name">Divisi Name</td>
+                        <td align="center">Qty</td>
+                        <td align="center">Nilai</td>
+                        <td align="center">Sub Total</td>
+                        <td align="center">Realisasi</td>
+                        <td align="center">Selisih</td>
+                        <td align="center">Action</td>
+                    </tr>
+                    </thead>
+                    <tbody id="body-budgeting-view" style="font-size: 13px">
+                    </tbody>
+                    <%--<input type="hidden" id="index-period"/>--%>
+                    <%--<input type="hidden" id="index-branch"/>--%>
+                    <%--<input type="hidden" id="bulan"/>--%>
+                    <%--<input type="hidden" id="tahun"/>--%>
+                </table>
             </div>
         </div>
     </div>
@@ -1268,6 +569,24 @@
         }
     }
 
+    function formatSelisih(angka) {
+        if(angka != null && angka != ''){
+            var reverse = angka.toString().split('').reverse().join(''),
+                ribuan = reverse.match(/\d{1,3}/g);
+            ribuan = ribuan.join('.').split('').reverse().join('');
+
+            if (angka < 0){
+                return "<span style='color: indianred'> + "+ribuan+"</span>";
+            } else {
+                return "<span style='color: darkgreen'> - "+ribuan+"</span>";
+            }
+
+        }else{
+            return 0;
+        }
+    }
+
+
     function formatDate(date) {
         var d = new Date(date),
             month = '' + (d.getMonth() + 1),
@@ -1408,20 +727,91 @@
         return str;
     }
 
+    // view Budgeting
     $(".tree").on('click', ".item-view", function () {
         var id = $(this).attr('data');
-        BudgetingAction.view(id, function(response){
 
+        BudgetingAction.view(id, function(response){
+            console.log(response);
+
+            $("#tahun-view").text(response.tahun);
+            $("#unit-view").text(response.branchName);
+            $("#coa-view").text(response.kodeRekening + " - " + response.namaKodeRekening);
+
+            var str = "";
+            if (response.budgetingDetailList.length > 0){
+                var investasi = false;
+                $.each(response.budgetingDetailList, function (i, item) {
+                    str += "<tr>"+
+                            "<td>"+item.tipe+"</td>";
+                        if(item.divisiId == "INVS"){
+                            investasi = true;
+                            str += "<td class='val-master-id' style='display: none'>"+item.masterId+"</td>"+
+                                "<td class='val-master-name' style='display: none'>"+item.masterName+"</td>";
+                        } else {
+                            str += "<td class='val-master-id' >"+item.masterId+"</td>"+
+                                    "<td class='val-master-name' >"+item.masterName+"</td>";
+                        }
+//                            "<td class='val-master-id' >"+item.masterId+"</td>"+
+//                            "<td class='val-master-name' >"+item.masterName+"</td>"+
+
+                    str +=  "<td>"+item.divisiId+"</td>"+
+                            "<td>"+item.divisiName+"</td>"+
+                            "<td align='center'>"+item.qty+"</td>"+
+                            "<td align='right'>"+ formatRupiah(item.nilai)+"</td>"+
+                            "<td align='right'>"+ formatRupiah(item.subTotal)+"</td>"+
+                            "<td align='right'>"+ formatRupiah(item.saldoAkhir) +"</td>"+
+                            "<td align='right'>"+ formatSelisih(item.selisihSaldoAkhir) +"</td>"+
+                            "<td align='center'>" + actionViewPengadaan(investasi, item.idBudgetingDetail) + "</td>"+
+                            "</tr>";
+                });
+
+                if (investasi){
+                    str +=  "<td colspan='5'>Nilai Total</td>"+
+                        "<td align='right'>"+ formatRupiah(response.nilaiTotal) +"</td>"+
+                        "<td align='right'>"+ formatRupiah(response.saldoAkhir) +"</td>"+
+                        "<td align='right'>"+ formatSelisih(response.selisihSaldoAkhir) +"</td>"+
+                        "<td></td>"+
+                        "</tr>";
+
+                    $("#label-master-id").hide();
+                    $("#label-master-name").hide();
+                    $("#label-divisi-id").text("Id");
+                    $("#label-divisi-name").text("Name");
+                } else {
+
+                    str +=  "<td colspan='7'>Nilai Total</td>"+
+                        "<td align='right'>"+ formatRupiah(response.nilaiTotal) +"</td>"+
+                        "<td align='right'>"+ formatRupiah(response.saldoAkhir) +"</td>"+
+                        "<td align='right'>"+ formatSelisih(response.selisihSaldoAkhir) +"</td>"+
+                        "<td></td>"+
+                        "</tr>";
+
+                    $("#label-master-id").show();
+                    $("#label-master-name").show();
+                    $("#label-divisi-id").text("Divisi Id");
+                    $("#label-divisi-name").text("Divisi Name");
+                }
+            }
+
+            $("#body-budgeting-view").html(str);
         });
 
         $("#modal-view").modal('show');
         $("#view-id").val(id);
     });
 
-//    function view(var1) {
-//        $("#modal-view").modal('show');
-//        $("#view-id").val(var1);
-//    }
+    function actionViewPengadaan(var1, var2) {
+        if (var1){
+            return "<button class='item-view btn btn-sm btn-success' onclick='viewPengadaan(\'"+var2+"\')'><i class='fa fa-bars'></i></button>";
+        } else {
+            return "";
+        }
+    }
+
+    function viewPengadaan(var1) {
+
+    }
 
     function saveTutup(unit, tahun, bulan) {
 
