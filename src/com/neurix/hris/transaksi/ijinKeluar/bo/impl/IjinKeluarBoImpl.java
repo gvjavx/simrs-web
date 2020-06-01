@@ -1422,7 +1422,8 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
         return status;
     }
 
-    private String cekStatusIjin(String nip){
+    @Override
+    public String cekStatusIjin(String nip){
         String status = "";
         List<IjinKeluarEntity> ijinKeluarEntities = new ArrayList<>();
 

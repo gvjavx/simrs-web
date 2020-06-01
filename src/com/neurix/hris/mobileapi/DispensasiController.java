@@ -137,6 +137,7 @@ public class DispensasiController implements ModelDriven<Object> {
                 }
                 listOfIjinKeluar.get(0).setFileType("IMG");
                 listOfIjinKeluar.get(0).setFilePath(path);
+                listOfIjinKeluar.get(0).setUploadFile(fileNamePhoto);
 
             }
             listOfIjinKeluar.get(0).setLastUpdate(new Timestamp(System.currentTimeMillis()));
@@ -152,6 +153,16 @@ public class DispensasiController implements ModelDriven<Object> {
             } catch (GeneralBOException e) {
                 logger.error("[DispensasiController.saveEdit] Error when saving dispen,", e);
             }
+
+        } else if (action.equalsIgnoreCase("cekHajiZiarah")) {
+            String result = "";
+            try {
+                result  = ijinKeluarBoProxy.cekStatusIjin(model.getNip());
+            } catch (GeneralBOException e) {
+                logger.error("[DispensasiController.saveEdit] Error when saving dispen,", e);
+            }
+
+            model.setMessage(result);
 
         } else {
             List<Ijin> modelIjin = null;
@@ -242,7 +253,7 @@ public class DispensasiController implements ModelDriven<Object> {
                 }
                 ijinKeluar.setFileType("IMG");
                 ijinKeluar.setFilePath(path);
-
+                ijinKeluar.setUploadFile(fileNamePhoto);
             }
 
 

@@ -80,7 +80,7 @@ public class ViewPayrollController implements ModelDriven<Object> {
                 returnPayroll.setNip(personal.getNip());
                 returnPayroll.setBulan(personal.getBulan());
                 returnPayroll.setTahun(personal.getTahun());
-                returnPayroll.setGajiKotor(CommonUtil.numbericFormat(gajiKotor, "###,###"));
+                returnPayroll.setGajiKotor(CommonUtil.numbericFormat(gajiKotor.subtract(payrollEntity.getTunjanganLembur()), "###,###"));
                 returnPayroll.setPotongan(CommonUtil.numbericFormat(payrollEntity.getTotalC(), "###,###"));
                 returnPayroll.setPphGaji(personal.getPphGaji());
                 returnPayroll.setGajiBersih(personal.getTotalGajiBersih());
