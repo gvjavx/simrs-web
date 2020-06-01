@@ -76,4 +76,5 @@ public interface CutiPegawaiBo extends BaseMasterBo<CutiPegawai> {
     public void editSisaCuti(CutiPegawai bean);
     public String getKabidSdmUmum(String branchId);
     public String getTanggalPensiun(String nip);
+    public String cekStatusCuti(String nip, String cutiId, String jenisCuti);
 }

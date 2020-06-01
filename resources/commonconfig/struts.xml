@@ -241,5 +241,5 @@
     <include file="sshconfig/com/neurix/akuntansi/transaksi/pengajuanBiaya/struts/PembayaranUtangPiutangAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/master/pembayaran/struts/PembayaranAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/master/reportKeuanganKonsol/struts/ReportKeuanganKonsolAction.xml"/>
-
+    <include file="sshconfig/com/neurix/hris/master/mappingpersengaji/struts/MappingPersenGajiAction.xml"/>
 </struts>

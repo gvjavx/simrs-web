@@ -637,7 +637,7 @@
             if (day.length < 2)
                 day = '0' + day;
 
-            var dateFinal = [day,month,year].join('-');
+            var dateFinal = [day,month,year].join('/');
             $('#tgl2').val(dateFinal);
 
             console.log(dateFinal);

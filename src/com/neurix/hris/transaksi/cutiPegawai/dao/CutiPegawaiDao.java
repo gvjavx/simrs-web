@@ -703,4 +703,12 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
         return result;
     }
 
+    public List<ItCutiPegawaiEntity> getDataCuti(String nip) throws HibernateException {
+        List<ItCutiPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItCutiPegawaiEntity.class)
+                .add(Restrictions.eq("nip", nip))
+                .add(Restrictions.eq("cutiId", "CT007"))
+                .list();
+
+        return results;
+    }
 }

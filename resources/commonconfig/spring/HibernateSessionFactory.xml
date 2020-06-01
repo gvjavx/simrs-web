@@ -50,10 +50,10 @@
                 <!--<prop key="hibernate.connection.username">root</prop>-->
                 <!--<prop key="hibernate.connection.password">123456</prop>-->
 
-                <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs_temp</prop>
+                <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs_01062020</prop>
                 <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
                 <prop key="hibernate.connection.username">postgres</prop>
-                <prop key="hibernate.connection.password">123456</prop>
+                <prop key="hibernate.connection.password">postgres</prop>
 
 
             </props>
@@ -468,6 +468,8 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/cetakanrm/hibernate/ItSimrsCetakanRmEntity.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/hris/master/DokterKso/hibernate/ImSimrsDokterKsoTindakan.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/mappingpersengaji/hibernate/ImHrisMappingPersenGajiEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/mappingpersengaji/hibernate/ImHrisMappingPersenGajiHistoryEntity.hbm.xml</value>
             </list>
         </property>
     </bean>

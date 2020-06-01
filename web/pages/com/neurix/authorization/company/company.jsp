@@ -253,6 +253,16 @@
                                     </div>
 
                                     <div class="form-group">
+                                        <label class="control-label col-sm-3" for="company.passwordServer">Periode Gaji :</label>
+                                        <div class="col-sm-8">
+                                            <s:action id="comboPeriode" namespace="/rekruitmen" name="initComboPeriodeTahunSekarang10_rekruitmen"/>
+                                            <s:select cssClass="form-control" list="#comboPeriode.listOfComboPeriode" id="tahunPayroll14"
+                                                      name="company.periodeGaji" required="true" headerKey=""
+                                                      headerValue="[Select one]"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
                                         <label class="control-label col-sm-3" for="company.defaultEmailSubject">Default Mail Subject :</label>
                                         <div class="col-sm-8">
                                             <s:textfield id="defaultMailSubject" name="company.defaultEmailSubject" required="true" cssClass="form-control"/>

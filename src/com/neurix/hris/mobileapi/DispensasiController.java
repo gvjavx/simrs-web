@@ -126,7 +126,7 @@ public class DispensasiController implements ModelDriven<Object> {
             if (fileSurat != null) {
                 String idSuratDokter = ijinKeluarBoProxy.getNextSuratDokterId();
 
-                String fileNamePhoto = idSuratDokter+"_"+fileNameSurat;
+                String fileNamePhoto = idSuratDokter+"_"+fileNameSurat+".jpg";
                 String filePath = CommonConstant.RESOURCE_PATH_USER_UPLOAD_SURAT_DOKTER;
                 File fileCreate = new File(filePath, fileNamePhoto);
                 path = filePath+fileNamePhoto;
@@ -146,7 +146,9 @@ public class DispensasiController implements ModelDriven<Object> {
             listOfIjinKeluar.get(0).setAction("U");
             listOfIjinKeluar.get(0).setDispenLahir(true);
             listOfIjinKeluar.get(0).setStTglMelahirkan(model.getTanggalKelahiran());
+            listOfIjinKeluar.get(0).setStTanggalAkhir(model.getTanggalAkhir());
             listOfIjinKeluar.get(0).setTanggalAkhir(CommonUtil.convertToDate(model.getTanggalAkhir()));
+            listOfIjinKeluar.get(0).setLamaIjinBaru(model.getLamaIjin());
 
             try{
                 ijinKeluarBoProxy.saveEdit(listOfIjinKeluar.get(0));
@@ -242,7 +244,7 @@ public class DispensasiController implements ModelDriven<Object> {
             if (fileSurat != null) {
                 String idSuratDokter = ijinKeluarBoProxy.getNextSuratDokterId();
 
-                String fileNamePhoto = idSuratDokter+"_"+fileNameSurat;
+                String fileNamePhoto = idSuratDokter+"_"+fileNameSurat+".jpg";
                 String filePath = CommonConstant.RESOURCE_PATH_USER_UPLOAD_SURAT_DOKTER;
                 File fileCreate = new File(filePath, fileNamePhoto);
                 path = filePath+fileNamePhoto;
