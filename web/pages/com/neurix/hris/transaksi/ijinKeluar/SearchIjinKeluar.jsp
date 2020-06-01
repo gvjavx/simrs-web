@@ -96,7 +96,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Dispensasi
+            Dispensasi/Cuti/Lainnya
         </h1>
     </section>
     <!-- Main content -->
@@ -386,13 +386,15 @@
                                                             <s:if test="#attr.row.cancel">
                                                             </s:if>
                                                             <s:elseif test="#attr.row.finish">
-                                                                <s:url var="urlViewDelete" namespace="/ijinKeluar" action="edit_ijinKeluar" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.ijinKeluarId" /></s:param>
-                                                                    <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                                </s:url>
-                                                                <sj:a onClickTopics="showDialogMenuView" href="%{urlViewDelete}">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_trash">
-                                                                </sj:a>
+                                                                <s:if test='#attr.row.ijinId == "IJ013"'>
+                                                                    <s:url var="urlViewDelete" namespace="/ijinKeluar" action="edit_ijinKeluar" escapeAmp="false">
+                                                                        <s:param name="id"><s:property value="#attr.row.ijinKeluarId" /></s:param>
+                                                                        <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                                    </s:url>
+                                                                    <sj:a onClickTopics="showDialogMenuView" href="%{urlViewDelete}">
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_trash">
+                                                                    </sj:a>
+                                                                </s:if>
                                                             </s:elseif>
                                                             </display:column>
 

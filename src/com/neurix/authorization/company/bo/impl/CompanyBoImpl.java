@@ -13,6 +13,7 @@ import org.hibernate.HibernateException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -94,8 +95,16 @@ public class CompanyBoImpl implements CompanyBo {
                 imCompanyOld.setDefaultEmailSubject(companyNew.getDefaultEmailSubject());
                 imCompanyOld.setDefaultEmailContent(companyNew.getDefaultEmailContent());
                 imCompanyOld.setBiayaJabatanPersentase(new BigDecimal(companyNew.getBiayaJabatanPersentase()));
-                imCompanyOld.setIuranPerusahaanJkmJkk(companyNew.getIuranPerusahaanJkmJkk());
-                imCompanyOld.setBulanJubilium(companyNew.getRemainderJubileum());
+
+                if (companyNew.getIuranPerusahaanJkmJkk() != null)
+                    imCompanyOld.setIuranPerusahaanJkmJkk(companyNew.getIuranPerusahaanJkmJkk());
+                else
+                    imCompanyOld.setIuranPerusahaanJkmJkk(BigDecimal.valueOf(0.0));
+
+                if (imCompanyOld.getBulanJubilium() != null)
+                    imCompanyOld.setBulanJubilium(companyNew.getRemainderJubileum());
+                else
+                    imCompanyOld.setBulanJubilium(BigInteger.valueOf(0));
                 imCompanyOld.setBulanPensiun(companyNew.getRemainderPensiun());
                 imCompanyOld.setKursDolar(companyNew.getKursDolar());
 
@@ -106,6 +115,7 @@ public class CompanyBoImpl implements CompanyBo {
                 imCompanyOld.setMaxBpjsTk(companyNew.getMaxBpjsTk());
                 imCompanyOld.setMaxBpjsPensiun(companyNew.getMaxBpjsPensiun());
                 imCompanyOld.setMaxBpjsKesehatan(companyNew.getMaxBpjsKesehatan());
+                imCompanyOld.setPeriodeGaji(companyNew.getPeriodeGaji());
 
                 imCompanyOld.setLastUpdateWho(companyNew.getLastUpdateWho());
                 imCompanyOld.setLastUpdate(companyNew.getLastUpdate());
@@ -156,6 +166,7 @@ public class CompanyBoImpl implements CompanyBo {
             resultCompany.setStMinimumLuasan(imCompany.getMinimumLuasan().toPlainString());
             resultCompany.setRemainderJubileum(imCompany.getBulanJubilium());
             resultCompany.setRemainderPensiun(imCompany.getBulanPensiun());
+            resultCompany.setPeriodeGaji(imCompany.getPeriodeGaji());
         }
 
         logger.info("[CompanyBoImpl.getBranchById] end process <<<");

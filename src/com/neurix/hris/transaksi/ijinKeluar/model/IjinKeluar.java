@@ -82,6 +82,9 @@ public class IjinKeluar extends BaseModel {
     private String uploadFile;
     private String fileType;
     private String filePath;
+    private Date tglAkhirBaru;
+    private String tanggalAkhirBaru;
+    private BigInteger lamaIjinBaru;
 
     public String getOs() {
         return os;
@@ -600,5 +603,29 @@ public class IjinKeluar extends BaseModel {
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
+    }
+
+    public BigInteger getLamaIjinBaru() {
+        return lamaIjinBaru;
+    }
+
+    public void setLamaIjinBaru(BigInteger lamaIjinBaru) {
+        this.lamaIjinBaru = lamaIjinBaru;
+    }
+
+    public String getTanggalAkhirBaru() {
+        return tanggalAkhirBaru;
+    }
+
+    public void setTanggalAkhirBaru(String tanggalAkhirBaru) {
+        this.tanggalAkhirBaru = tanggalAkhirBaru;
+    }
+
+    public Date getTglAkhirBaru() {
+        return tglAkhirBaru;
+    }
+
+    public void setTglAkhirBaru(Date tglAkhirBaru) {
+        this.tglAkhirBaru = tglAkhirBaru;
     }
 }
