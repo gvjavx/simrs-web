@@ -3,15 +3,13 @@ function paintTtd(id, change){
     const context = paintCanvas.getContext("2d");
 
     context.lineCap = "round";
+    context.lineWidth = "3";
     var colorPicker = "";
     if(change){
         colorPicker = document.querySelector(".js-color-picker-op");
     }else{
         colorPicker = document.querySelector(".js-color-picker");
     }
-
-    console.log(colorPicker);
-    console.log(change);
     // var clr = $('.js-color-picker').val();
     // context.strokeStyle = clr;
 

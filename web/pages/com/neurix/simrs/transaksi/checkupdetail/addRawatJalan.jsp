@@ -427,7 +427,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Action
+                                    <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Profil RJ
                                     </button>
                                     <button onclick="loadModalRM('ringkasan_rj')" type="button" class="btn btn-primary dropdown-toggle"
                                             data-toggle="dropdown" style="height: 34px">
@@ -436,10 +436,16 @@
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
                                         <li><a style="cursor: pointer" onclick="showModalRj('ringkasan_rj')"><i class="fa fa-circle-o"></i>Profil Rekam Medis Rawat Jalan</a></li>
+                                        <li><a target="_blank"
+                                               href="<%= request.getContextPath() %>/rekammedik/printSuratPernyataan_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>&tipe=SP03">
+                                            <i class="fa fa-print"></i>Surat Penolakan Tindakan</a></li>
+                                        <li><a target="_blank"
+                                               href="<%= request.getContextPath() %>/rekammedik/printSuratPernyataan_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>&tipe=SP04">
+                                            <i class="fa fa-print"></i>Surat Pernyataan Kematian</a></li>
                                     </ul>
                                 </div>
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-success"><i class="fa fa-edit"></i> Action
+                                    <button type="button" class="btn btn-success"><i class="fa fa-edit"></i> Hemodialisa
                                     </button>
                                     <button onclick="loadModalRM('hd')" type="button" class="btn btn-success dropdown-toggle"
                                             data-toggle="dropdown" style="height: 34px">
@@ -457,7 +463,7 @@
                                     </ul>
                                 </div>
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Action
+                                    <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Fisioterapi
                                     </button>
                                     <button onclick="loadModalRM('fisioterapi')" type="button" class="btn btn-primary dropdown-toggle"
                                             data-toggle="dropdown" style="height: 34px">
@@ -467,6 +473,24 @@
                                     <ul class="dropdown-menu" role="menu">
                                         <li><a style="cursor: pointer" onclick="pengkajianFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-circle-o"></i>Pengkajian Pasien Fisioterapi</a></li>
                                         <li><a style="cursor: pointer" onclick="addMonitoringFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-circle-o"></i>Kunjungan Fisioterapi</a></li>
+                                    </ul>
+                                </div>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-success"><i class="fa fa-edit"></i> Poli Spesialis
+                                    </button>
+                                    <button onclick="loadModalRM('hd')" type="button" class="btn btn-success dropdown-toggle"
+                                            data-toggle="dropdown" style="height: 34px">
+                                        <span class="caret"></span>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a style="cursor: pointer" onclick="showModalHD('monitoring_hd')"><i class="fa fa-circle-o"></i>Monitoring HD</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalHD('perencanaan_hemodialisa')"><i class="fa fa-circle-o"></i>Perencanaan HD</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalHD('asesmen_hd')"><i class="fa fa-circle-o"></i>Asesmen Awal HD</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalHD('tranfusi_hd')"><i class="fa fa-circle-o"></i>Tindakan Medis Transfusi Darah</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalHD('catatan_tranfusi_darah')"><i class="fa fa-circle-o"></i>Catatan Pemantauan Tranfusi Darah</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalHD('persetujuan_hd')"><i class="fa fa-circle-o"></i>Persetujuan HD</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalHD('travelling')"><i class="fa fa-circle-o"></i>Travelling Dialysis</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -1178,16 +1202,6 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Kategori Tindakan</label>
                         <div class="col-md-7">
-                            <%--<s:action id="initComboKategoriTindakan" namespace="/checkupdetail"--%>
-                                      <%--name="getListComboKategoriTindakan_checkupdetail"/>--%>
-                            <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-                                      <%--onchange="listSelectTindakan(this.value); var warn =$('#war_kategori').is(':visible'); if (warn){$('#cor_kategori').show().fadeOut(3000);$('#war_kategori').hide()}"--%>
-                                      <%--list="#initComboKategoriTindakan.listOfKategoriTindakan"--%>
-                                      <%--id="tin_id_ketgori_tindakan"--%>
-                                      <%--listKey="idKategoriTindakan"--%>
-                                      <%--listValue="kategoriTindakan"--%>
-                                      <%--headerKey="" headerValue="[Select one]"--%>
-                                      <%--cssClass="form-control select2"/>--%>
                                 <select class="form-control select2" style="margin-top: 7px; width: 100%"
                                         id="tin_id_ketgori_tindakan"
                                         onchange="listSelectTindakan(this.value); var warn =$('#war_kategori').is(':visible'); if (warn){$('#cor_kategori').show().fadeOut(3000);$('#war_kategori').hide()}">
@@ -2057,12 +2071,14 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/FisioterapiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/HemodialisaAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/RekamMedisRawatJalanAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/MonitoringTransfusiDarahAction.js"/>'></script>
 
-
+<script type='text/javascript' src='<s:url value="/pages/dist/js/datapasien.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/fisioterapi.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/hd.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/rj.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/addRawatJalan.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
 
 <script type='text/javascript'>
 
@@ -2088,6 +2104,11 @@
     var alergi = '<s:property value="headerDetailCheckup.alergi"/>';
     var beratBadan = '<s:property value="headerDetailCheckup.berat"/>';
     var tinggiBadan = '<s:property value="headerDetailCheckup.tinggi"/>';
+    var diagnosa = '<s:property value="headerDetailCheckup.namaDiagnosa"/>';
+    var umur = '<s:property value="headerDetailCheckup.umur"/>';
+    var alamatLengkap = '<s:property value="headerDetailCheckup.alamatLengkap"/>';
+    var noBpjs = '<s:property value="headerDetailCheckup.noBpjs"/>';
+    var jenisKelamin = '<s:property value="headerDetailCheckup.jenisKelamin"/>';
 
     $(document).ready(function () {
         $('#rawat_jalan').addClass('active');

@@ -2154,7 +2154,7 @@ function defaultValByJenisSatuan(name) {
 
 function saveAnamnese(val){
     if(val != ''){
-        CheckupAction.saveAnamnese(val, noCheckup, function (response) {
+        CheckupAction.saveAnamnese(val, noCheckup, idDetailCheckup, function (response) {
             if (response.status == "success") {
                 $('#suc_anamnese').show().fadeOut(5000);
             }

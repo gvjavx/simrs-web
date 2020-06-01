@@ -2468,6 +2468,31 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     }
 
     @Override
+    public String getDiagnosaPasien(String idDetailCheckup) throws GeneralBOException {
+        return headerCheckupDao.getDiagnosa(idDetailCheckup);
+    }
+
+    @Override
+    public String getTindakanRawat(String idDetailCheckup) throws GeneralBOException {
+        return headerCheckupDao.getTindakanRawat(idDetailCheckup);
+    }
+
+    @Override
+    public String getPenunjangMedis(String idDetailCheckup) throws GeneralBOException {
+        return headerCheckupDao.getPenunjangMendis(idDetailCheckup);
+    }
+
+    @Override
+    public String getResepPasien(String idDetailCheckup) throws GeneralBOException {
+        return headerCheckupDao.getResepPasien(idDetailCheckup);
+    }
+
+    @Override
+    public String getAlergi(String noCheckup) throws GeneralBOException {
+        return headerCheckupDao.getAlergiPasien(noCheckup);
+    }
+
+    @Override
     public List<MasterVendor> getComboListPtpn() throws GeneralBOException {
         List<MasterVendor> vendorList = new ArrayList<>();
         try {

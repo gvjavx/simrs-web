@@ -50,4 +50,8 @@ WITH (
 ALTER TABLE public.im_simrs_detail_asuhan_keperawatan
   OWNER TO postgres;
 
-// SEQUENCE
+//01 Juni 2020
+ALTER TABLE it_simrs_hemodialisa
+is_ttd character varying(1);
+
+

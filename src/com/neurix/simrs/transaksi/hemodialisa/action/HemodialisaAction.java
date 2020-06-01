@@ -34,6 +34,7 @@ public class HemodialisaAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         HemodialisaBo hemodialisaBo = (HemodialisaBo) ctx.getBean("hemodialisaBoProxy");
         JSONArray json = new JSONArray(data);
+        List<Hemodialisa> hemodialisaList = new ArrayList<>();
 
         for (int i = 0; i < json.length(); i++) {
 
@@ -42,35 +43,38 @@ public class HemodialisaAction {
             hemodialisa.setParameter(obj.getString("parameter"));
             hemodialisa.setIdDetailCheckup(obj.getString("id_detail_checkup"));
             hemodialisa.setKeterangan(obj.getString("keterangan"));
+            if(obj.has("is_ttd")){
+                if("Y".equalsIgnoreCase(obj.getString("is_ttd"))){
+                    BASE64Decoder decoder = new BASE64Decoder();
+                    byte[] decodedBytes = decoder.decodeBuffer(obj.getString("jawaban1"));
+                    logger.info("Decoded upload data : " + decodedBytes.length);
+                    String wkt = time.toString();
+                    String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                    logger.info("PATTERN :" + patten);
+                    String fileName = obj.getString("id_detail_checkup") + "-" + obj.getString("jenis")+i+ "-" + patten + ".png";
+                    String uploadFile = "";
+                    if("Scala Nyeri Paint".equalsIgnoreCase(obj.getString("parameter"))){
+                        uploadFile =  CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_IMG_RM + fileName;
+                        hemodialisa.setIsTtd("G");
+                    }else{
+                        uploadFile =  CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
+                        hemodialisa.setIsTtd("Y");
+                    }
+                    logger.info("File save path : " + uploadFile);
+                    BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
 
-            if("tranfusi_penyataan".equalsIgnoreCase(obj.getString("keterangan")) || "persetujuan_hd_penyataan".equalsIgnoreCase(obj.getString("keterangan")) || "hd_ttd_dokter".equalsIgnoreCase(obj.getString("jenis")) || "Scala Nyeri Paint".equalsIgnoreCase(obj.getString("parameter"))){
-                BASE64Decoder decoder = new BASE64Decoder();
-                byte[] decodedBytes = decoder.decodeBuffer(obj.getString("jawaban1"));
-                logger.info("Decoded upload data : " + decodedBytes.length);
-                String wkt = time.toString();
-                String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
-                logger.info("PATTERN :" + patten);
-                String fileName = obj.getString("id_detail_checkup") + "-" + obj.getString("jenis")+i+ "-" + patten + ".png";
-                String uploadFile = "";
-                if("Scala Nyeri Paint".equalsIgnoreCase(obj.getString("parameter"))){
-                    uploadFile =  CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_IMG_RM + fileName;
-                }else{
-                    uploadFile =  CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
+                    if (image == null) {
+                        logger.error("Buffered Image is null");
+                        response.setStatus("error");
+                        response.setMsg("Buffered Image is null");
+                    } else {
+                        File f = new File(uploadFile);
+                        // write the image
+                        ImageIO.write(image, "png", f);
+                        hemodialisa.setJawaban1(fileName);
+                    }
                 }
-                logger.info("File save path : " + uploadFile);
-                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
-
-                if (image == null) {
-                    logger.error("Buffered Image is null");
-                    response.setStatus("error");
-                    response.setMsg("Buffered Image is null");
-                } else {
-                    File f = new File(uploadFile);
-                    // write the image
-                    ImageIO.write(image, "png", f);
-                    hemodialisa.setJawaban1(fileName);
-                }
-            }else {
+            }else{
                 hemodialisa.setJawaban1(obj.getString("jawaban1"));
             }
 
@@ -90,14 +94,15 @@ public class HemodialisaAction {
             hemodialisa.setCreatedDate(time);
             hemodialisa.setLastUpdateWho(userLogin);
             hemodialisa.setLastUpdate(time);
+            hemodialisaList.add(hemodialisa);
+        }
 
-            try {
-                response = hemodialisaBo.saveAdd(hemodialisa);
-            } catch (GeneralBOException e) {
-                response.setStatus("Error");
-                response.setMsg("Found Error " + e.getMessage());
-                return response;
-            }
+        try {
+            response = hemodialisaBo.saveAdd(hemodialisaList);
+        } catch (GeneralBOException e) {
+            response.setStatus("Error");
+            response.setMsg("Found Error " + e.getMessage());
+            return response;
         }
         return response;
     }

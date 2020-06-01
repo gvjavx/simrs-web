@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.fisioterapi.action;
 
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.CrudResponse;
@@ -13,7 +14,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
+import sun.misc.BASE64Decoder;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -23,21 +30,48 @@ public class FisioterapiAction {
 
     public static transient Logger logger = Logger.getLogger(FisioterapiAction.class);
 
-    public CrudResponse saveFisio(String data) throws JSONException {
+    public CrudResponse saveFisio(String data) throws JSONException, IOException {
         CrudResponse response = new CrudResponse();
         String userLogin = CommonUtil.userLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         FisioterapiBo fisioterapiBo = (FisioterapiBo) ctx.getBean("fisioterapiBoProxy");
         JSONArray json = new JSONArray(data);
-
+        List<Fisioterapi> list = new ArrayList<>();
         for (int i = 0; i < json.length(); i++) {
 
             JSONObject obj = json.getJSONObject(i);
             Fisioterapi fisioterapi = new Fisioterapi();
             fisioterapi.setParameter(obj.getString("parameter"));
+
+            if("Scala Nyeri Paint".equalsIgnoreCase(obj.getString("parameter"))){
+                BASE64Decoder decoder = new BASE64Decoder();
+                byte[] decodedBytes = decoder.decodeBuffer(obj.getString("jawaban"));
+                logger.info("Decoded upload data : " + decodedBytes.length);
+                String wkt = time.toString();
+                String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                logger.info("PATTERN :" + patten);
+                String fileName = obj.getString("id_detail_checkup") + "-" + obj.getString("keterangan")+i+ "-" + patten + ".png";
+                String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_IMG_RM + fileName;
+
+                logger.info("File save path : " + uploadFile);
+                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+                if (image == null) {
+                    logger.error("Buffered Image is null");
+                    response.setStatus("error");
+                    response.setMsg("Buffered Image is null");
+                } else {
+                    File f = new File(uploadFile);
+                    // write the image
+                    ImageIO.write(image, "png", f);
+                    fisioterapi.setJawaban(fileName);
+                }
+            }else{
+                fisioterapi.setJawaban(obj.getString("jawaban"));
+            }
+
             fisioterapi.setIdDetailCheckup(obj.getString("id_detail_checkup"));
-            fisioterapi.setJawaban(obj.getString("jawaban"));
             fisioterapi.setKeterangan(obj.getString("keterangan"));
             fisioterapi.setAction("C");
             fisioterapi.setFlag("Y");
@@ -45,14 +79,15 @@ public class FisioterapiAction {
             fisioterapi.setCreatedDate(time);
             fisioterapi.setLastUpdateWho(userLogin);
             fisioterapi.setLastUpdate(time);
+            list.add(fisioterapi);
+        }
 
-            try {
-                response = fisioterapiBo.saveAdd(fisioterapi);
-            } catch (GeneralBOException e) {
-                response.setStatus("Error");
-                response.setMsg("Found Error " + e.getMessage());
-                return response;
-            }
+        try {
+            response = fisioterapiBo.saveAdd(list);
+        } catch (GeneralBOException e) {
+            response.setStatus("Error");
+            response.setMsg("Found Error " + e.getMessage());
+            return response;
         }
         return response;
     }

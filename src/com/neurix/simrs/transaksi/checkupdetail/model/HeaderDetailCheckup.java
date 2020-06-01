@@ -156,6 +156,24 @@ public class HeaderDetailCheckup extends BaseModel{
     private String tensi;
     private String nadi;
     private String pernafasan;
+    private String alamatLengkap;
+    private String umur;
+
+    public String getUmur() {
+        return umur;
+    }
+
+    public void setUmur(String umur) {
+        this.umur = umur;
+    }
+
+    public String getAlamatLengkap() {
+        return alamatLengkap;
+    }
+
+    public void setAlamatLengkap(String alamatLengkap) {
+        this.alamatLengkap = alamatLengkap;
+    }
 
     public String getPenunjangMedis() {
         return penunjangMedis;

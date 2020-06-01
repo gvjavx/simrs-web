@@ -137,7 +137,7 @@
                             <div class="form-group">
                                 <label>Berat Badan</label>
                                 <div class="input-group">
-                                    <input class="form-control" type="number" id="f_berat">
+                                    <input class="form-control berat-pasien" type="number" id="f_berat">
                                     <div class="input-group-addon" style="width: 30%">
                                         kg
                                     </div>
@@ -146,7 +146,7 @@
                             <div class="form-group">
                                 <label style="margin-top: 7px">Tinggi Badan</label>
                                 <div class="input-group">
-                                    <input class="form-control" type="number" id="f_tinggi">
+                                    <input class="form-control tinggi-pasien" type="number" id="f_tinggi">
                                     <div class="input-group-addon" style="width: 30%">
                                         cm
                                     </div>
@@ -490,7 +490,7 @@
                         <div class="form-group">
                             <label style="margin-top: 7px" class="col-md-3">Pemeriksaan Penunjang</label>
                             <div class="col-md-8">
-                                <textarea class="form-control" rows="2" style="margin-top: 7px" id="p_penunjang"></textarea>
+                                <textarea class="form-control penunjang-medis" rows="2" style="margin-top: 7px" id="p_penunjang"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
@@ -588,9 +588,20 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label style="margin-top: 7px" class="col-md-3">Kategori Tindakan</label>
+                            <div class="col-md-8">
+                                <select class="form-control select2" style="margin-top: 7px; width: 100%" id="fis_ketgori_tindakan" onchange="listTindakanPoli(this.value)">
+                                    <option value="">[Select One]</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label style="margin-top: 7px" class="col-md-3">Tindakan</label>
                             <div class="col-md-8">
-                                <textarea class="form-control" rows="2" style="margin-top: 7px" id="mon_tindakan"></textarea>
+                                <select class="form-control select2" style="margin-top: 7px; width: 100%" id="mon_tindakan">
+                                    <option value="">[Select One]</option>
+                                </select>
+                                <%--<textarea class="form-control" rows="2" style="margin-top: 7px" id=""></textarea>--%>
                             </div>
                         </div>
                         <div class="form-group">

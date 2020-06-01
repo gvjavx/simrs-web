@@ -876,6 +876,82 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         return res;
     }
 
+    public String getTindakanRawat(String idDetailCheckup){
+        String res = "";
+        String SQL = "SELECT \n" +
+                "id_tindakan,\n" +
+                "nama_tindakan\n" +
+                "FROM it_simrs_tindakan_rawat\n" +
+                "WHERE id_detail_checkup = :id";
+        List<Object[]> result = new ArrayList<>();
+        result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", idDetailCheckup)
+                .list();
+        if (result.size() > 0){
+            for (Object[] obj: result){
+                if(obj[1] != null){
+                    if("".equalsIgnoreCase(res)){
+                        res = obj[1].toString();
+                    }else{
+                        res = res +", "+obj[1].toString();
+                    }
+                }
+            }
+        }
+        return res;
+    }
+
+    public String getResepPasien(String idDetailCheckup){
+        String res = "";
+        String SQL = "SELECT \n" +
+                "b.id_obat,\n" +
+                "d.nama_obat\n" +
+                "FROM mt_simrs_permintaan_resep a\n" +
+                "INNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
+                "INNER JOIN (\n" +
+                "SELECT id_obat, nama_obat \n" +
+                "FROM im_simrs_obat\n" +
+                "GROUP BY id_obat, nama_obat) d ON b.id_obat = d.id_obat\n" +
+                "WHERE a.id_detail_checkup = :id";
+        List<Object[]> result = new ArrayList<>();
+        result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", idDetailCheckup)
+                .list();
+        if (result.size() > 0){
+            for (Object[] obj: result){
+                if(obj[1] != null){
+                    if("".equalsIgnoreCase(res)){
+                        res = obj[1].toString();
+                    }else{
+                        res = res +", "+obj[1].toString();
+                    }
+                }
+            }
+        }
+        return res;
+    }
+
+    public String getDiagnosa(String idDetailCheckup){
+        String res = "";
+        String SQL = "SELECT \n" +
+                "id_diagnosa,\n" +
+                "keterangan_diagnosa,\n" +
+                "created_date\n" +
+                "FROM it_simrs_diagnosa_rawat\n" +
+                "WHERE id_detail_checkup = :id\n" +
+                "ORDER BY created_date DESC\n" +
+                "LIMIT 1";
+        List<Object[]> result = new ArrayList<>();
+        result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", idDetailCheckup)
+                .list();
+        if (result.size() > 0){
+            Object[] obj = result.get(0);
+            res = obj[1].toString();
+        }
+        return res;
+    }
+
     public String getAsuransiName(String id) {
 
         String nama = "";

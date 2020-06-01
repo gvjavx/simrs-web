@@ -58,6 +58,8 @@ import com.neurix.simrs.transaksi.permintaanresep.bo.PermintaanResepBo;
 import com.neurix.simrs.transaksi.permintaanresep.model.ImSimrsPermintaanResepEntity;
 import com.neurix.simrs.transaksi.permintaanresep.model.ObatKronis;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
+import com.neurix.simrs.transaksi.profilrekammedisrj.bo.RekamMedisRawatJalanBo;
+import com.neurix.simrs.transaksi.profilrekammedisrj.model.RekamMedisRawatJalan;
 import com.neurix.simrs.transaksi.psikososial.model.ItSimrsDataPsikososialEntity;
 
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
@@ -3426,7 +3428,7 @@ public class CheckupAction extends BaseMasterAction {
         return checkupList;
     }
 
-    public CrudResponse saveAnamnese(String anamnese, String noCheckup) {
+    public CrudResponse saveAnamnese(String anamnese, String noCheckup, String idDetailCheckup) {
         logger.info("[CheckupAction.savePenunjangPasien] start process >>>");
         CrudResponse response = new CrudResponse();
         HeaderCheckup headerCheckup = new HeaderCheckup();
@@ -3445,8 +3447,78 @@ public class CheckupAction extends BaseMasterAction {
             response.setMsg("Error when update data "+e.getMessage());
         }
 
+        if("success".equalsIgnoreCase(response.getStatus())){
+            insertProfilRJ(idDetailCheckup, anamnese);
+        }
+
         logger.info("[CheckupAction.savePenunjangPasien] end process <<<");
         return response;
     }
 
+    public CrudResponse insertProfilRJ(String idDetailCheckup, String anamnese){
+        CrudResponse response = new CrudResponse();
+        if(idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)){
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+            RekamMedisRawatJalanBo rekamMedisRawatJalanBo = (RekamMedisRawatJalanBo) ctx.getBean("rekamMedisRawatJalanBoProxy");
+            List<RekamMedisRawatJalan> rekamMedisRawatJalanList = new ArrayList<>();
+            try {
+                RekamMedisRawatJalan rekamMedisRawatJalan = new RekamMedisRawatJalan();
+                rekamMedisRawatJalan.setIdDetailCheckup(idDetailCheckup);
+                rekamMedisRawatJalanList = rekamMedisRawatJalanBo.getByCriteria(rekamMedisRawatJalan);
+                if(rekamMedisRawatJalanList.size() > 0){
+                    RekamMedisRawatJalan rawatJalan = new RekamMedisRawatJalan();
+                    rawatJalan.setWaktu(new Timestamp(System.currentTimeMillis()));
+                    rawatJalan.setAnamnese(anamnese);
+                    rawatJalan.setDiagnosa(checkupBo.getDiagnosaPasien(idDetailCheckup));
+                    rawatJalan.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+                    rawatJalan.setLastUpdateWho(CommonUtil.userLogin());
+                    rawatJalan.setAction("U");
+                    response = rekamMedisRawatJalanBo.saveEdit(rawatJalan);
+                }else{
+                    RekamMedisRawatJalan rawatJalan = new RekamMedisRawatJalan();
+                    rawatJalan.setWaktu(new Timestamp(System.currentTimeMillis()));
+                    rawatJalan.setAnamnese(anamnese);
+                    rawatJalan.setDiagnosa(checkupBo.getDiagnosaPasien(idDetailCheckup));
+                    rawatJalan.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+                    rawatJalan.setLastUpdateWho(CommonUtil.userLogin());
+                    rawatJalan.setCreatedWho(CommonUtil.userLogin());
+                    rawatJalan.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+                    rawatJalan.setIdDetailCheckup(idDetailCheckup);
+                    rawatJalan.setAction("C");
+                    rawatJalan.setFlag("Y");
+                    response = rekamMedisRawatJalanBo.saveAdd(rawatJalan);
+                }
+            }catch (GeneralBOException e){
+                response.setStatus("error");
+                response.setMsg("error");
+            }
+        }
+        return response;
+    }
+
+    public String getDataByKey(String id, String key){
+        String response = "";
+        if(id != null && !"".equalsIgnoreCase(id)){
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+            if("alergi".equalsIgnoreCase(key)){
+                response = checkupBo.getAlergi(id);
+            }
+            if("penunjang_medis".equalsIgnoreCase(key)){
+                response = checkupBo.getPenunjangMedis(id);
+            }
+            if("resep".equalsIgnoreCase(key)){
+                response = checkupBo.getResepPasien(id);
+            }
+            if("diagnosa".equalsIgnoreCase(key)){
+                response = checkupBo.getDiagnosaPasien(id);
+            }
+            if("tindakan".equalsIgnoreCase(key)){
+                response = checkupBo.getTindakanRawat(id);
+            }
+        }
+        return response;
+    }
 }

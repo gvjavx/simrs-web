@@ -52,8 +52,8 @@ public class HemodialisaBoImpl implements HemodialisaBo {
                     hemodialisa.setIdHemodialisa(entity.getIdHemodialisa());
                     hemodialisa.setIdDetailCheckup(entity.getIdDetailCheckup());
                     hemodialisa.setParameter(entity.getParameter());
-                    if("tranfusi_penyataan".equalsIgnoreCase(entity.getKeterangan()) || "persetujuan_hd_penyataan".equalsIgnoreCase(entity.getKeterangan()) || "hd_ttd_dokter".equalsIgnoreCase(entity.getJenis()) || "Scala Nyeri Paint".equalsIgnoreCase(entity.getParameter())){
-                        if("Scala Nyeri Paint".equalsIgnoreCase(entity.getParameter())){
+                    if("Y".equalsIgnoreCase(entity.getIsTtd()) || "G".equalsIgnoreCase(entity.getIsTtd())){
+                        if("G".equalsIgnoreCase(entity.getIsTtd())){
                             hemodialisa.setJawaban1(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_IMG_RM+entity.getJawaban1());
                         }else{
                             hemodialisa.setJawaban1(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_RM+entity.getJawaban1());
@@ -71,6 +71,7 @@ public class HemodialisaBoImpl implements HemodialisaBo {
                     hemodialisa.setCreatedWho(entity.getCreatedWho());
                     hemodialisa.setLastUpdate(entity.getLastUpdate());
                     hemodialisa.setLastUpdateWho(entity.getLastUpdateWho());
+                    hemodialisa.setIsTtd(entity.getIsTtd());
                     list.add(hemodialisa);
                 }
             }
@@ -80,34 +81,36 @@ public class HemodialisaBoImpl implements HemodialisaBo {
     }
 
     @Override
-    public CrudResponse saveAdd(Hemodialisa bean) throws GeneralBOException {
+    public CrudResponse saveAdd(List<Hemodialisa> list) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
-        if(bean != null){
+        if(list.size() > 0){
+            for (Hemodialisa bean: list){
+                ItSimrsHemodialisaEntity hemodialisaEntity = new ItSimrsHemodialisaEntity();
+                hemodialisaEntity.setIdHemodialisa("HDL"+hemodialisaDao.getNextSeq());
+                hemodialisaEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
+                hemodialisaEntity.setParameter(bean.getParameter());
+                hemodialisaEntity.setJawaban1(bean.getJawaban1());
+                hemodialisaEntity.setJawaban2(bean.getJawaban2());
+                hemodialisaEntity.setKeterangan(bean.getKeterangan());
+                hemodialisaEntity.setJenis(bean.getJenis());
+                hemodialisaEntity.setSkor(bean.getSkor());
+                hemodialisaEntity.setAction(bean.getAction());
+                hemodialisaEntity.setFlag(bean.getFlag());
+                hemodialisaEntity.setCreatedDate(bean.getCreatedDate());
+                hemodialisaEntity.setCreatedWho(bean.getCreatedWho());
+                hemodialisaEntity.setLastUpdate(bean.getLastUpdate());
+                hemodialisaEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                hemodialisaEntity.setIsTtd(bean.getIsTtd());
 
-            ItSimrsHemodialisaEntity hemodialisaEntity = new ItSimrsHemodialisaEntity();
-            hemodialisaEntity.setIdHemodialisa("HDL"+hemodialisaDao.getNextSeq());
-            hemodialisaEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
-            hemodialisaEntity.setParameter(bean.getParameter());
-            hemodialisaEntity.setJawaban1(bean.getJawaban1());
-            hemodialisaEntity.setJawaban2(bean.getJawaban2());
-            hemodialisaEntity.setKeterangan(bean.getKeterangan());
-            hemodialisaEntity.setJenis(bean.getJenis());
-            hemodialisaEntity.setSkor(bean.getSkor());
-            hemodialisaEntity.setAction(bean.getAction());
-            hemodialisaEntity.setFlag(bean.getFlag());
-            hemodialisaEntity.setCreatedDate(bean.getCreatedDate());
-            hemodialisaEntity.setCreatedWho(bean.getCreatedWho());
-            hemodialisaEntity.setLastUpdate(bean.getLastUpdate());
-            hemodialisaEntity.setLastUpdateWho(bean.getLastUpdateWho());
-
-            try {
-                hemodialisaDao.addAndSave(hemodialisaEntity);
-                response.setStatus("success");
-                response.setMsg("Berhasil");
-            }catch (HibernateException e){
-                response.setStatus("error");
-                response.setMsg("Found Error "+e.getMessage());
-                logger.error(e.getMessage());
+                try {
+                    hemodialisaDao.addAndSave(hemodialisaEntity);
+                    response.setStatus("success");
+                    response.setMsg("Berhasil");
+                }catch (HibernateException e){
+                    response.setStatus("error");
+                    response.setMsg("Found Error "+e.getMessage());
+                    logger.error(e.getMessage());
+                }
             }
         }
         return response;

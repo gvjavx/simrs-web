@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface FisioterapiBo {
     public List<Fisioterapi> getByCriteria(Fisioterapi bean) throws GeneralBOException;
-    public CrudResponse saveAdd(Fisioterapi bean) throws GeneralBOException;
+    public CrudResponse saveAdd(List<Fisioterapi> list) throws GeneralBOException;
 }

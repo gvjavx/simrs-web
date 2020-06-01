@@ -520,6 +520,14 @@ apply the skin class to the body tag so the changes take effect.
         return canvas.toDataURL() === blank.toDataURL();
     }
 
+    function cekIcons(val) {
+        var fa = val;
+        if (val == "Ya") {
+            fa = '<i class="fa fa-check"></i>'
+        }
+        return fa;
+    }
+
 </script>
 
 

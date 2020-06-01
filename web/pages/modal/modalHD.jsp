@@ -384,14 +384,14 @@
                                        name="pkj15"/><label for="pkj153">Lain-Lain</label>
                             </div>
                         </div>
-                    </div>
-                    <hr class="garis">
-                    <div class="row">
                         <div class="form-group">
                             <div class="col-md-offset-3 col-md-7">
                                 <input class="form-control" id="ket_pkj15" style="display: none">
                             </div>
                         </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
                         <div class="form-group">
                             <label class="col-md-3">Ekstemitas</label>
                             <div class="col-md-3">
@@ -1344,7 +1344,7 @@
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Pemeriksan Penunjang</label>
                             <div class="col-md-8">
-                                <input class="form-control" style="margin-top: 7px" id="asse18">
+                                <input class="form-control penunjang-medis" style="margin-top: 7px" id="asse18">
                             </div>
                         </div>
                     </div>
@@ -1365,6 +1365,20 @@
                             <label class="col-md-3" style="margin-top: 7px">Pengobatan / Tindakan</label>
                             <div class="col-md-8">
                                 <input class="form-control" style="margin-top: 7px" id="asse21">
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3">TTD Dokter</label>
+                            <div class="col-md-4">
+                                <canvas class="paint-canvas-ttd" id="asse22"
+                                        onmouseover="paintTtd('asse22')"></canvas>
+                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('asse22')"><i class="fa fa-trash"></i>
+                                    Clear
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -1681,7 +1695,7 @@
                                     <canvas class="paint-canvas-ttd" id="tranfusi_penyataan1"
                                             onmouseover="paintTtd('tranfusi_penyataan1')"></canvas>
                                     <button style="margin-left: 8px" type="button" class="btn btn-danger"
-                                            onclick="clearConvas('tranfusi_penyataan1')"><i class="fa fa-trash"></i>
+                                            onclick="removePaint('tranfusi_penyataan1')"><i class="fa fa-trash"></i>
                                         Clear
                                     </button>
                                 </td>
@@ -1690,7 +1704,7 @@
                                 <td style="text-align: justify">
                                     <div class="row">
                                         <label style="margin-left: 15px">Dengan ini menyatakan bahwa saya</label>
-                                        <input style="margin-left: 15px; width: 80%" class="form-control" id="tpe2">
+                                        <input style="margin-left: 15px; width: 80%" class="form-control nama-pasien" id="tpe2">
                                         <label style="margin-left: 15px">telah menerima informasi sebagimana di atas
                                             yang saya beri tanda/ paraf di kolom kanannya serta telah diberi kesempatan
                                             untuk bertanya/berdiskusi, dan telah memahaminya</label>
@@ -1700,7 +1714,7 @@
                                     <canvas class="paint-canvas-ttd" id="tranfusi_penyataan2"
                                             onmouseover="paintTtd('tranfusi_penyataan2')"></canvas>
                                     <button style="margin-left: 8px" type="button" class="btn btn-danger"
-                                            onclick="clearConvas('tranfusi_penyataan2')"><i class="fa fa-trash"></i>
+                                            onclick="removePaint('tranfusi_penyataan2')"><i class="fa fa-trash"></i>
                                         Clear
                                     </button>
                                 </td>
@@ -1790,29 +1804,72 @@
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Nama Pasien</label>
                             <div class="col-md-6">
-                                <input class="form-control" id="tperse7" style="margin-top: 7px">
+                                <input class="form-control nama-pasien" id="tperse7" style="margin-top: 7px">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Umur</label>
                             <div class="col-md-6">
-                                <input class="form-control" id="tperse8" style="margin-top: 7px">
+                                <input class="form-control umur-pasien" id="tperse8" style="margin-top: 7px">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Jenis Kelamin</label>
                             <div class="col-md-6">
-                                <select class="form-control" id="tperse9" style="margin-top: 7px">
-                                    <option value="">[Select One]</option>
-                                    <option value="Laki-Laki">Laki-Laki</option>
-                                    <option value="Perempuan">Perempuan</option>
-                                </select>
+                                <input class="form-control jenis-kelamin" id="tperse9" style="margin-top: 7px">
+                                <%--<select class="form-control" id="tperse9" style="margin-top: 7px">--%>
+                                    <%--<option value="">[Select One]</option>--%>
+                                    <%--<option value="Laki-Laki">Laki-Laki</option>--%>
+                                    <%--<option value="Perempuan">Perempuan</option>--%>
+                                <%--</select>--%>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Alamat</label>
                             <div class="col-md-6">
-                                <textarea class="form-control" id="tperse10" style="margin-top: 7px"></textarea>
+                                <textarea class="form-control alamat-pasien" id="tperse10" style="margin-top: 7px"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4">TTD Yang Menyatakan</label>
+                            <div class="col-md-6">
+                                <canvas class="paint-canvas-ttd" id="tperse11"
+                                        onmouseover="paintTtd('tperse11')"></canvas>
+                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('tperse11')"><i class="fa fa-trash"></i>
+                                    Clear
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4">TTD Saksi</label>
+                            <div class="col-md-6">
+                                <canvas class="paint-canvas-ttd" id="tperse12"
+                                        onmouseover="paintTtd('tperse12')"></canvas>
+                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('tperse12')"><i class="fa fa-trash"></i>
+                                    Clear
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4">TTD Pendamping</label>
+                            <div class="col-md-6">
+                                <canvas class="paint-canvas-ttd" id="tperse13"
+                                        onmouseover="paintTtd('tperse13')"></canvas>
+                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('tperse13')"><i class="fa fa-trash"></i>
+                                    Clear
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -1839,7 +1896,7 @@
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-md"></i> Tindakan Medis Transfusi Darah
+                <h4 class="modal-title"><i class="fa fa-user-md"></i> Persetujuan HD
                 </h4>
             </div>
             <div class="modal-body">
@@ -2118,7 +2175,7 @@
                                     <canvas class="paint-canvas-ttd" id="persetujuan_hd_penyataan1"
                                             onmouseover="paintTtd('persetujuan_hd_penyataan1')"></canvas>
                                     <button style="margin-left: 8px" type="button" class="btn btn-danger"
-                                            onclick="clearConvas('persetujuan_hd_penyataan1')"><i
+                                            onclick="removePaint('persetujuan_hd_penyataan1')"><i
                                             class="fa fa-trash"></i> Clear
                                     </button>
                                 </td>
@@ -2127,7 +2184,7 @@
                                 <td style="text-align: justify">
                                     <div class="row">
                                         <label style="margin-left: 15px">Dengan ini menyatakan bahwa saya</label>
-                                        <input style="margin-left: 15px; width: 80%" class="form-control" id="ttpe2">
+                                        <input style="margin-left: 15px; width: 80%" class="form-control nama-pasien" id="ttpe2">
                                         <label style="margin-left: 15px">telah menerima informasi sebagimana di atas
                                             yang saya beri tanda/ paraf di kolom kanannya serta telah diberi kesempatan
                                             untuk bertanya/berdiskusi, dan telah memahaminya</label>
@@ -2137,7 +2194,7 @@
                                     <canvas class="paint-canvas-ttd" id="persetujuan_hd_penyataan2"
                                             onmouseover="paintTtd('persetujuan_hd_penyataan2')"></canvas>
                                     <button style="margin-left: 8px" type="button" class="btn btn-danger"
-                                            onclick="clearConvas('persetujuan_hd_penyataan2')"><i
+                                            onclick="removePaint('persetujuan_hd_penyataan2')"><i
                                             class="fa fa-trash"></i> Clear
                                     </button>
                                 </td>
@@ -2228,29 +2285,72 @@
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Nama Pasien</label>
                             <div class="col-md-6">
-                                <input class="form-control" id="pperse7" style="margin-top: 7px">
+                                <input class="form-control nama-pasien" id="pperse7" style="margin-top: 7px">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Umur</label>
                             <div class="col-md-6">
-                                <input class="form-control" id="pperse8" style="margin-top: 7px">
+                                <input class="form-control umur-pasien" id="pperse8" style="margin-top: 7px">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Jenis Kelamin</label>
                             <div class="col-md-6">
-                                <select class="form-control" id="pperse9" style="margin-top: 7px">
-                                    <option value="">[Select One]</option>
-                                    <option value="Laki-Laki">Laki-Laki</option>
-                                    <option value="Perempuan">Perempuan</option>
-                                </select>
+                                <input class="form-control jenis-kelamin" id="pperse9" style="margin-top: 7px">
+                                <%--<select class="form-control" id="pperse9" style="margin-top: 7px">--%>
+                                    <%--<option value="">[Select One]</option>--%>
+                                    <%--<option value="Laki-Laki">Laki-Laki</option>--%>
+                                    <%--<option value="Perempuan">Perempuan</option>--%>
+                                <%--</select>--%>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Alamat</label>
                             <div class="col-md-6">
-                                <textarea class="form-control" id="pperse10" style="margin-top: 7px"></textarea>
+                                <textarea class="form-control alamat-pasien" id="pperse10" style="margin-top: 7px"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4">TTD Yang Menyatakan</label>
+                            <div class="col-md-6">
+                                <canvas class="paint-canvas-ttd" id="pperse11"
+                                        onmouseover="paintTtd('pperse11')"></canvas>
+                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('pperse11')"><i class="fa fa-trash"></i>
+                                    Clear
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4">TTD Saksi</label>
+                            <div class="col-md-6">
+                                <canvas class="paint-canvas-ttd" id="pperse12"
+                                        onmouseover="paintTtd('pperse12')"></canvas>
+                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('pperse12')"><i class="fa fa-trash"></i>
+                                    Clear
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4">TTD Pendamping</label>
+                            <div class="col-md-6">
+                                <canvas class="paint-canvas-ttd" id="pperse13"
+                                        onmouseover="paintTtd('pperse13')"></canvas>
+                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('pperse13')"><i class="fa fa-trash"></i>
+                                    Clear
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -2755,19 +2855,19 @@
                         <div class="form-group">
                             <label class="col-md-4">Nama Pasien</label>
                             <div class="col-md-6">
-                                <input class="form-control" id="td1">
+                                <input class="form-control nama-pasien" id="td1">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Alamat</label>
                             <div class="col-md-6">
-                                <textarea class="form-control" id="td2" style="margin-top: 7px"></textarea>
+                                <textarea class="form-control alamat-pasien" id="td2" style="margin-top: 7px"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Diagnosa</label>
                             <div class="col-md-6">
-                                <input class="form-control" id="td3" style="margin-top: 7px">
+                                <input class="form-control diagnosa-pasien" id="td3" style="margin-top: 7px">
                             </div>
                         </div>
                         <div class="form-group">
@@ -2849,9 +2949,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-4" style="margin-top: 7px">Allergi</label>
+                            <label class="col-md-4" style="margin-top: 7px">Alergi</label>
                             <div class="col-md-6">
-                                <input class="form-control" id="td17" style="margin-top: 7px">
+                                <input class="form-control alergi-pasien" id="td17" style="margin-top: 7px">
                             </div>
                         </div>
                         <div class="form-group">
@@ -2870,7 +2970,7 @@
                             <label class="col-md-4" style="margin-top: 7px">Tanda Tangan</label>
                             <div class="col-md-6">
                                 <canvas style="margin-left: -1px;" onmouseover="paintTtd('hd_ttd_dokter')" class="paint-canvas-ttd" id="hd_ttd_dokter"></canvas>
-                                <button style="margin-top: -5px; margin-left: -1px" type="button" class="btn btn-danger" onclick="clearConvas('hd_ttd_dokter')"><i class="fa fa-trash"></i> Clear
+                                <button style="margin-top: -5px; margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('hd_ttd_dokter')"><i class="fa fa-trash"></i> Clear
                                 </button>
                             </div>
                         </div>
@@ -2952,25 +3052,31 @@
                         <div class="form-group">
                             <label class="col-md-4">Nama Pasien</label>
                             <div class="col-md-7">
-                                <input class="form-control" id="ph1">
+                                <input class="form-control nama-pasien" id="ph1">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Jenis Kelamin</label>
+                            <div class="col-md-7">
+                                <input class="form-control jenis-kelamin" id="ph13" style="margin-top: 7px">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Umur</label>
                             <div class="col-md-7">
-                                <input class="form-control" id="ph2" style="margin-top: 7px">
+                                <input class="form-control umur-pasien" id="ph2" style="margin-top: 7px">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Alamat</label>
                             <div class="col-md-7">
-                                <textarea rows="3" class="form-control" id="ph3" style="margin-top: 7px"></textarea>
+                                <textarea rows="3" class="form-control alamat-pasien" id="ph3" style="margin-top: 7px"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">No Asuransi/ BPJS/ Swasta</label>
                             <div class="col-md-7">
-                                <input class="form-control" id="ph4" style="margin-top: 7px">
+                                <input class="form-control no-bpjs" id="ph4" style="margin-top: 7px">
                             </div>
                         </div>
                     </div>
@@ -3040,6 +3146,20 @@
                             <label class="col-md-4" style="margin-top: 7px">Catatan</label>
                             <div class="col-md-7">
                                 <textarea rows="3" class="form-control" id="ph12" style="margin-top: 7px"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4">TTD Dokter</label>
+                            <div class="col-md-6">
+                                <canvas class="paint-canvas-ttd" id="ph14"
+                                        onmouseover="paintTtd('ph14')"></canvas>
+                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('ph14')"><i class="fa fa-trash"></i>
+                                    Clear
+                                </button>
                             </div>
                         </div>
                     </div>
