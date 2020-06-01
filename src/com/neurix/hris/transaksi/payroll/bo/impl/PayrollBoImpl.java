@@ -1,5 +1,6 @@
 package com.neurix.hris.transaksi.payroll.bo.impl;
 
+import com.neurix.akuntansi.master.kodeRekening.dao.KodeRekeningDao;
 import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.company.dao.CompanyDao;
 import com.neurix.authorization.company.model.Branch;
@@ -135,6 +136,15 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
     private PayrollPttDao payrollPttDao;
     private PayrollParamBpjsDao payrollParamBpjsDao;
     private MappingPersenGajiDao mappingPersenGajiDao;
+    private KodeRekeningDao kodeRekeningDao;
+
+    public KodeRekeningDao getKodeRekeningDao() {
+        return kodeRekeningDao;
+    }
+
+    public void setKodeRekeningDao(KodeRekeningDao kodeRekeningDao) {
+        this.kodeRekeningDao = kodeRekeningDao;
+    }
 
     public MappingPersenGajiDao getMappingPersenGajiDao() {
         return mappingPersenGajiDao;
@@ -1697,6 +1707,12 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 }
                 // payroll yg diproses hanya karyawan tetap dan pkwt dalam masa kerja tersebut
                 for (ItPayrollEntity payrollEntity : itPayroll) {
+                    //validasi untuk yang melakukan cuti di luar tanggung jawab
+                    List<ItCutiPegawaiEntity> listOrangCutiDiLuarTanggungJawab = cutiPegawaiDao.getListCekCutiLuarTanggungan(payrollEntity.getNip(),bean.getBulan(),bean.getTahun());
+                    if (listOrangCutiDiLuarTanggungJawab.size()!=0){
+                        continue;
+                    }
+
                     ImBiodataEntity biodataEntity = biodataDao.getById("nip",payrollEntity.getNip());
 
                     payroll = new Payroll();
@@ -5565,6 +5581,13 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
             itPayrollEntity.setCreatedWho(bean.getCreatedWho());
             itPayrollEntity.setLastUpdate(bean.getLastUpdate());
             itPayrollEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+            if (CommonConstant.ID_KANPUS.equalsIgnoreCase(payroll1.getBranchId())){
+                itPayrollEntity.setApprovalUnitFlag("Y");
+                itPayrollEntity.setApprovalUnitId(bean.getCreatedWho());
+                itPayrollEntity.setApprovalUnitDate(bean.getCreatedDate());
+                itPayrollEntity.setApprovalUnitName(bean.getCreatedWho());
+            }
 
             payrollDao.addAndSave(itPayrollEntity);
 
@@ -9989,14 +10012,30 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         dataPayroll.put("tunj_lembur_karyawan_tidak_tetap", tunjlemburkaryawantidaktetaplist);
         dataPayroll.put("tunj_lainnya_karyawan_tidak_tetap", tunjlainnyakaryawantidaktetaplist);
 
-        Map kas = new HashMap();
-        kas.put("metode_bayar","transfer");
-        kas.put("bank", CommonConstant.COA_PAYROLL);
-        kas.put("nilai",total);
+        if (bean.isSdm()){
+            Map kas = new HashMap();
+            kas.put("metode_bayar","transfer");
+            kas.put("bank", CommonConstant.COA_PAYROLL);
+            kas.put("nilai",total);
 
-        dataPayroll.put("kas",kas);
+            dataPayroll.put("kas",kas);
+            return dataPayroll;
+        }else{
+            //membuat mapping
+            Map dataMap = new HashMap();
 
-        return dataPayroll;
+            Map rkUnit = new HashMap();
+            rkUnit.put("nilai",total);
+            rkUnit.put("rekening_id",kodeRekeningDao.getRekeningIdByCoa(CommonConstant.COA_RK_GATOEL));
+            dataMap.put("rk_kd_unit",rkUnit);
+
+            Map giro = new HashMap();
+            giro.put("nilai",total);
+            giro.put("rekening_id",kodeRekeningDao.getRekeningIdByCoa(CommonConstant.COA_PAYROLL));
+            dataMap.put("metode_bayar",giro);
+
+            return dataMap;
+        }
     }
 
     @Override

@@ -113,7 +113,7 @@ public class CommonUtil {
                 UserDetailsLogin userDetailsLogin=(UserDetailsLogin)securityContextImpl.getAuthentication().getPrincipal();
 //                String username=userDetailsLogin.getUsername();
 
-                String roleId=((Roles)userDetailsLogin.getRoles().get(0)).getStRoleId();
+                String roleId=String.valueOf(((Roles)userDetailsLogin.getRoles().get(0)).getRoleId());
 
                 return roleId;
             } else {

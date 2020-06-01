@@ -153,6 +153,7 @@ public class CommonConstant {
 
     //AKUNTANSI
     public final static String COA_PAYROLL = CommonUtil.getPropertyParams("coa.bank.payroll");
+    public final static String COA_RK_GATOEL = CommonUtil.getPropertyParams("coa.rk.gatoel");
     public final static String ID_KANPUS = "KP";
 
 }

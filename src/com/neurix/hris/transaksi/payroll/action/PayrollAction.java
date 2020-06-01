@@ -2672,8 +2672,10 @@ public class PayrollAction extends BaseMasterAction{
         return isFlag;
     }
 
-    public void approvePayroll(String branchId, String bulan, String tahun, String statusApprove, String tipe){
+    public void approvePayroll(String branchId, String bulan, String tahun, String statusApprove, String tipe,String from ){
         Payroll searchPayroll = new Payroll();
+        String transId = "";
+        String keterangan = "";
         searchPayroll.setBranchId(branchId);
         searchPayroll.setBulan(bulan);
         searchPayroll.setTahun(tahun);
@@ -2684,11 +2686,38 @@ public class PayrollAction extends BaseMasterAction{
         PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
         BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
 
-        Map data = payrollBo.getDataForBilling(searchPayroll);
+        if (CommonConstant.ID_KANPUS.equalsIgnoreCase(branchId)||"approval".equalsIgnoreCase(from)){
+            transId="37";
+            searchPayroll.setSdm(true);
+            keterangan = "Pembayaran gaji unit "+branchId+" bulan "+bulan+" tahun "+tahun+" Tipe Payroll "+tipe;
 
-        billingSystemBo.createJurnal("37",data,branchId,"Pembayaran gaji unit "+branchId+" bulan "+bulan+" tahun "+tahun+" Tipe Payroll "+tipe,"Y");
+            Map data = payrollBo.getDataForBilling(searchPayroll);
 
-        payrollBo.approvePayroll(searchPayroll);
+            billingSystemBo.createJurnal(transId,data,branchId,keterangan,"Y");
+
+            if (CommonConstant.ID_KANPUS.equalsIgnoreCase(branchId)){
+                payrollBo.approvePayroll(searchPayroll);
+            }else{
+                transId ="60";
+                keterangan = "Penerimaan modal pembayaran payroll unit "+branchId+" bulan "+bulan+" tahun "+tahun+" Tipe Payroll "+tipe;
+                searchPayroll.setSdm(false);
+
+                data = payrollBo.getDataForBilling(searchPayroll);
+
+                billingSystemBo.createJurnal(transId,data,branchId,keterangan,"Y");
+            }
+        }else{
+            transId ="59";
+            keterangan = "Setoran modal pembayaran payroll unit "+branchId+" bulan "+bulan+" tahun "+tahun+" Tipe Payroll "+tipe;
+
+            Map data = payrollBo.getDataForBilling(searchPayroll);
+
+            billingSystemBo.createJurnal(transId,data,branchId,keterangan,"Y");
+
+            payrollBo.approvePayroll(searchPayroll);
+        }
+
+
     }
 
     public void approvePayrollUnit(String branchId, String bulan, String tahun, String statusApprove, String tipe){
@@ -10441,6 +10470,9 @@ public class PayrollAction extends BaseMasterAction{
         if ("39".equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
             searchPayroll.setKeuanganKantorPusat(true);
         }
+        if (CommonUtil.roleIdAsLogin().equalsIgnoreCase("1")){
+            searchPayroll.setSdm(true);
+        }
         payroll=searchPayroll;
 
         logger.info("[PayrollAction.search] end process <<<");
@@ -10565,6 +10597,8 @@ public class PayrollAction extends BaseMasterAction{
         logger.info("[PayrollAction.initForm] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         String branchId = CommonUtil.userBranchLogin();
+        String userRoleId = CommonUtil.roleIdAsLogin();
+
         Payroll data = new Payroll();
         if (branchId!=null) {
             data.setBranchId(branchId);
@@ -10574,6 +10608,11 @@ public class PayrollAction extends BaseMasterAction{
         }else{
             data.setBranchId("");
         }
+
+        if (userRoleId.equalsIgnoreCase("1")){
+            data.setSdm(true);
+        }
+
         payroll=data;
         session.removeAttribute("listOfResult");
         session.removeAttribute("listCekNip");

@@ -134,6 +134,7 @@ public class Payroll extends BaseModel {
     private boolean keuanganKantorPusat =  false;
     private boolean cetakSatuan = false;
     private boolean adaCheckBox = false;
+    private boolean sdm = false ;
 
     //approve Sdm
     private String approvalSdmFlag;
@@ -148,6 +149,14 @@ public class Payroll extends BaseModel {
     private String stPeralihanGapok;
     private String stPeralihanSankhus;
     private String stPeralihanTunjangan;
+
+    public boolean isSdm() {
+        return sdm;
+    }
+
+    public void setSdm(boolean sdm) {
+        this.sdm = sdm;
+    }
 
     public String getStPeralihanGapok() {
         return stPeralihanGapok;
