@@ -370,104 +370,111 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
 
         String nip=bean.getNip(),cutiPegawaiId;
         if (bean!=null) {
-            BigInteger jumlahCutiPegawai = BigInteger.valueOf(0);
-            List<ItCutiPegawaiEntity> cutiPegawaiEntityList = new ArrayList<>();
+            String status = cekStatusCuti(bean.getNip(), bean.getCutiId(), bean.getJenisCuti());
+            if (!status.equalsIgnoreCase("exist")){
 
-            Map hsCriteria = new HashMap();
-            if (bean.getNip() != null && !"".equalsIgnoreCase(bean.getNip())) {
-                hsCriteria.put("nip", bean.getNip());
-            }
-            try {
-                // Generating ID, get from postgre sequence
-                cutiPegawaiId = cutiPegawaiDao.getNextCutiPegawaiId();
+                BigInteger jumlahCutiPegawai = BigInteger.valueOf(0);
+                List<ItCutiPegawaiEntity> cutiPegawaiEntityList = new ArrayList<>();
 
-                cutiPegawaiEntityList = cutiPegawaiDao.getJumlahHariCuti(nip,bean.getCutiId());
-                for (ItCutiPegawaiEntity cutiPegawai : cutiPegawaiEntityList){
-                    jumlahCutiPegawai = cutiPegawai.getSisaCutiHari();
+                Map hsCriteria = new HashMap();
+                if (bean.getNip() != null && !"".equalsIgnoreCase(bean.getNip())) {
+                    hsCriteria.put("nip", bean.getNip());
                 }
-            } catch (HibernateException e) {
-                logger.error("[CutiPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when getting sequence alat id, please info to your admin..." + e.getMessage());
-            }
+                try {
+                    // Generating ID, get from postgre sequence
+                    cutiPegawaiId = cutiPegawaiDao.getNextCutiPegawaiId();
 
-            // creating object entity serializable
-            ItCutiPegawaiEntity itCutiPegawaiEntity = new ItCutiPegawaiEntity();
-
-            itCutiPegawaiEntity.setCutiPegawaiId( cutiPegawaiId);
-            itCutiPegawaiEntity.setNip(bean.getNip());
-            List<Biodata> resultBiodata = new ArrayList<>();
-            try{
-                resultBiodata = cutiPegawaiDao.getBranchDivisiPosisi(bean.getNip());
-                for (Biodata biodata: resultBiodata){
-                    itCutiPegawaiEntity.setUnitId(biodata.getBranch());
-                    itCutiPegawaiEntity.setDivisiId(biodata.getDivisi());
-                    itCutiPegawaiEntity.setPosisiId(biodata.getPositionId());
-                    itCutiPegawaiEntity.setBagianId(biodata.getBagianId());
+                    cutiPegawaiEntityList = cutiPegawaiDao.getJumlahHariCuti(nip,bean.getCutiId());
+                    for (ItCutiPegawaiEntity cutiPegawai : cutiPegawaiEntityList){
+                        jumlahCutiPegawai = cutiPegawai.getSisaCutiHari();
+                    }
+                } catch (HibernateException e) {
+                    logger.error("[CutiPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence alat id, please info to your admin..." + e.getMessage());
                 }
-            }catch (HibernateException e) {
-                logger.error("[CutiPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when getting sequence alat id, please info to your admin..." + e.getMessage());
+
+                // creating object entity serializable
+                ItCutiPegawaiEntity itCutiPegawaiEntity = new ItCutiPegawaiEntity();
+
+                itCutiPegawaiEntity.setCutiPegawaiId( cutiPegawaiId);
+                itCutiPegawaiEntity.setNip(bean.getNip());
+                List<Biodata> resultBiodata = new ArrayList<>();
+                try{
+                    resultBiodata = cutiPegawaiDao.getBranchDivisiPosisi(bean.getNip());
+                    for (Biodata biodata: resultBiodata){
+                        itCutiPegawaiEntity.setUnitId(biodata.getBranch());
+                        itCutiPegawaiEntity.setDivisiId(biodata.getDivisi());
+                        itCutiPegawaiEntity.setPosisiId(biodata.getPositionId());
+                        itCutiPegawaiEntity.setBagianId(biodata.getBagianId());
+                    }
+                }catch (HibernateException e) {
+                    logger.error("[CutiPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence alat id, please info to your admin..." + e.getMessage());
+                }
+                itCutiPegawaiEntity.setPegawaiPenggantiSementara(bean.getPegawaiPenggantiSementara());
+                if (!"normal".equalsIgnoreCase(bean.getJenisCuti()))
+                    itCutiPegawaiEntity.setCutiId(bean.getCutiTanggunganId());
+                else
+                    itCutiPegawaiEntity.setCutiId(bean.getCutiId());
+
+                itCutiPegawaiEntity.setLamaHariCuti(bean.getLamaHariCuti());
+
+                if (!"normal".equalsIgnoreCase(bean.getJenisCuti()))
+                    itCutiPegawaiEntity.setSisaCutiHari(BigInteger.valueOf(1095));
+                else
+                    itCutiPegawaiEntity.setSisaCutiHari(jumlahCutiPegawai.subtract(bean.getLamaHariCuti()));
+
+                itCutiPegawaiEntity.setApprovalId(bean.getApprovalId());
+                itCutiPegawaiEntity.setKeterangan(bean.getKeterangan());
+                itCutiPegawaiEntity.setAlamatCuti(bean.getAlamatCuti());
+                itCutiPegawaiEntity.setApprovalDate(bean.getApprovalDate());
+                itCutiPegawaiEntity.setNote(bean.getNote());
+                itCutiPegawaiEntity.setCancelFlag("N");
+                itCutiPegawaiEntity.setNoteApproval(bean.getNoteApproval());
+                itCutiPegawaiEntity.setTanggalDari((Date) bean.getTanggalDari());
+                itCutiPegawaiEntity.setTanggalSelesai((Date) bean.getTanggalSelesai());
+                itCutiPegawaiEntity.setFlag(bean.getFlag());
+                itCutiPegawaiEntity.setAction(bean.getAction());
+                itCutiPegawaiEntity.setCreatedWho(bean.getCreatedWho());
+                itCutiPegawaiEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                itCutiPegawaiEntity.setCreatedDate(bean.getCreatedDate());
+                itCutiPegawaiEntity.setLastUpdate(bean.getLastUpdate());
+                itCutiPegawaiEntity.setFlagPerbaikan("N");
+                itCutiPegawaiEntity.setJenisCuti(bean.getJenisCuti());
+
+                try {
+                    // insert into database
+                    cutiPegawaiDao.addAndSave(itCutiPegawaiEntity);
+                } catch (HibernateException e) {
+                    logger.error("[CutiPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
+                }
+
+                ImBiodataEntity imBiodataEntity = new ImBiodataEntity();
+
+                try {
+                    imBiodataEntity =  biodataDao.getById("nip", bean.getNip(), "Y");
+                } catch (HibernateException e) {
+                    logger.error("[CutiPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
+                }
+
+                //Send notif ke atasan
+                Notifikasi notifAtasan= new Notifikasi();
+                notifAtasan.setNip(bean.getNip());
+                notifAtasan.setNoRequest(cutiPegawaiId);
+                notifAtasan.setTipeNotifId("TN66");
+                notifAtasan.setTipeNotifName(("Cuti Pegawai"));
+                notifAtasan.setNote("Data Dari User : " + imBiodataEntity.getNamaPegawai() + " Menunggu di Approve");
+                notifAtasan.setCreatedWho(bean.getNip());
+                notifAtasan.setTo("atasan");
+                notifAtasan.setOs(bean.getOs());
+
+                notifikasiList.add(notifAtasan);
+
+            }else {
+                throw new GeneralBOException("Peringatan!!! User sudah melakukan Cuti diluar tanggungan");
             }
-            itCutiPegawaiEntity.setPegawaiPenggantiSementara(bean.getPegawaiPenggantiSementara());
-            if (!"normal".equalsIgnoreCase(bean.getJenisCuti()))
-                itCutiPegawaiEntity.setCutiId(bean.getCutiTanggunganId());
-            else
-                itCutiPegawaiEntity.setCutiId(bean.getCutiId());
-
-            itCutiPegawaiEntity.setLamaHariCuti(bean.getLamaHariCuti());
-
-            if (!"normal".equalsIgnoreCase(bean.getJenisCuti()))
-                itCutiPegawaiEntity.setSisaCutiHari(BigInteger.valueOf(1095));
-            else
-                itCutiPegawaiEntity.setSisaCutiHari(jumlahCutiPegawai.subtract(bean.getLamaHariCuti()));
-
-            itCutiPegawaiEntity.setApprovalId(bean.getApprovalId());
-            itCutiPegawaiEntity.setKeterangan(bean.getKeterangan());
-            itCutiPegawaiEntity.setAlamatCuti(bean.getAlamatCuti());
-            itCutiPegawaiEntity.setApprovalDate(bean.getApprovalDate());
-            itCutiPegawaiEntity.setNote(bean.getNote());
-            itCutiPegawaiEntity.setCancelFlag("N");
-            itCutiPegawaiEntity.setNoteApproval(bean.getNoteApproval());
-            itCutiPegawaiEntity.setTanggalDari((Date) bean.getTanggalDari());
-            itCutiPegawaiEntity.setTanggalSelesai((Date) bean.getTanggalSelesai());
-            itCutiPegawaiEntity.setFlag(bean.getFlag());
-            itCutiPegawaiEntity.setAction(bean.getAction());
-            itCutiPegawaiEntity.setCreatedWho(bean.getCreatedWho());
-            itCutiPegawaiEntity.setLastUpdateWho(bean.getLastUpdateWho());
-            itCutiPegawaiEntity.setCreatedDate(bean.getCreatedDate());
-            itCutiPegawaiEntity.setLastUpdate(bean.getLastUpdate());
-            itCutiPegawaiEntity.setFlagPerbaikan("N");
-            itCutiPegawaiEntity.setJenisCuti(bean.getJenisCuti());
-
-            try {
-                // insert into database
-                cutiPegawaiDao.addAndSave(itCutiPegawaiEntity);
-            } catch (HibernateException e) {
-                logger.error("[CutiPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
-            }
-
-            ImBiodataEntity imBiodataEntity = new ImBiodataEntity();
-
-            try {
-                imBiodataEntity =  biodataDao.getById("nip", bean.getNip(), "Y");
-            } catch (HibernateException e) {
-                logger.error("[CutiPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
-            }
-
-            //Send notif ke atasan
-            Notifikasi notifAtasan= new Notifikasi();
-            notifAtasan.setNip(bean.getNip());
-            notifAtasan.setNoRequest(cutiPegawaiId);
-            notifAtasan.setTipeNotifId("TN66");
-            notifAtasan.setTipeNotifName(("Cuti Pegawai"));
-            notifAtasan.setNote("Data Dari User : " + imBiodataEntity.getNamaPegawai() + " Menunggu di Approve");
-            notifAtasan.setCreatedWho(bean.getNip());
-            notifAtasan.setTo("atasan");
-            notifAtasan.setOs(bean.getOs());
-
-            notifikasiList.add(notifAtasan);
         }
         logger.info("[CutiPegawaiBoImpl.saveAdd] end process <<<");
         return notifikasiList;
@@ -480,6 +487,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
 
         String atasanNip = null,nip=bean.getNip(),cutiPegawaiId;
         if (bean!=null) {
+
             BigInteger jumlahCutiPegawai = BigInteger.valueOf(0);
             List<ItCutiPegawaiEntity> cutiPegawaiEntityList = new ArrayList<>();
 
@@ -2153,5 +2161,29 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
             throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
         }
         return tanggalPensiun;
+    }
+
+    private String cekStatusCuti(String nip, String cutiId, String jenisCuti){
+        String status = "";
+        List<ItCutiPegawaiEntity> itCutiPegawaiEntities = new ArrayList<>();
+
+        if ("diluar_tanggungan".equalsIgnoreCase(jenisCuti)){
+            try{
+                itCutiPegawaiEntities = cutiPegawaiDao.getDataCuti(nip);
+            }catch (HibernateException e){
+                logger.error("[IjinKeluarBoImpl.cekStatus] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+            }
+
+            if (itCutiPegawaiEntities.size() > 0){
+                status = "exist";
+            }else {
+                status = "notExist";
+            }
+        }else {
+            status = "notExist";
+        }
+
+        return status;
     }
 }

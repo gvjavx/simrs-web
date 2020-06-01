@@ -192,7 +192,6 @@ public class CutiBoImpl implements CutiBo {
         logger.info("[CutiBoImpl.saveAdd] start process >>>");
 
         if (bean!=null) {
-
             String cutiId;
             try {
                 // Generating ID, get from postgre sequence

@@ -95,4 +95,5 @@ public class ImHrisMappingPersenGaji implements Serializable{
     public void setPresentase(Integer presentase) {
         this.presentase = presentase;
     }
+
 }

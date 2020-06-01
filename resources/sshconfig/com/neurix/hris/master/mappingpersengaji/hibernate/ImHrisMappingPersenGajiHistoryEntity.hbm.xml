@@ -3,13 +3,17 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.neurix.hris.master.mappingpersengaji.model.ImHrisMappingPersenGaji" dynamic-update="true"
-           table="im_hris_mapping_persen_gaji" select-before-update="true" schema="public">
+    <class name="com.neurix.hris.master.mappingpersengaji.model.ImHrisMappingPersenGajiHistory" dynamic-update="true"
+           table="im_hris_mapping_persen_gaji_history" select-before-update="true" schema="public">
 
 
-        <id name="mappingPersenGajiId">
-            <column name="mapping_persen_gaji_id" sql-type="varchar" length="15" not-null="true" />
+        <id name="mappingPersenGajiHistoryId">
+            <column name="mapping_persen_gaji_history_id" sql-type="varchar" length="15" not-null="true" />
         </id>
+
+        <property name="mappingPersenGajiId">
+            <column name="mapping_persen_gaji_id" sql-type="varchar" length="15" not-null="true" />
+        </property>
         <property name="namaMappingPersenGaji">
             <column name="nama_mapping_persen_gaji" sql-type="varchar" length="30" not-null="true" />
         </property>

@@ -2,6 +2,7 @@ package com.neurix.hris.master.mappingpersengaji.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.hris.master.mappingpersengaji.model.ImHrisMappingPersenGaji;
+import com.neurix.hris.master.mappingpersengaji.model.ImHrisMappingPersenGajiHistory;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -12,14 +13,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class MappingPersenGajiDao extends GenericDao<ImHrisMappingPersenGaji, String> {
+public class MappingPersenGajiHistoryDao extends GenericDao<ImHrisMappingPersenGajiHistory, String> {
     @Override
-    protected Class<ImHrisMappingPersenGaji> getEntityClass() {
-        return ImHrisMappingPersenGaji.class;
+    protected Class<ImHrisMappingPersenGajiHistory> getEntityClass() {
+        return ImHrisMappingPersenGajiHistory.class;
     }
 
     @Override
-    public List<ImHrisMappingPersenGaji> getByCriteria(Map mapCriteria) {
+    public List<ImHrisMappingPersenGajiHistory> getByCriteria(Map mapCriteria) {
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImHrisMappingPersenGaji.class);
         if (mapCriteria != null){
             if (mapCriteria.get("mapping_persen_gaji_id") != null){
@@ -36,24 +37,15 @@ public class MappingPersenGajiDao extends GenericDao<ImHrisMappingPersenGaji, St
             }
         }
 
-        List<ImHrisMappingPersenGaji> result = criteria.list();
+        List<ImHrisMappingPersenGajiHistory> result = criteria.list();
         return result;
     }
 
-    public List<ImHrisMappingPersenGaji> getDataMapping(String namaMapping) throws HibernateException {
-        List<ImHrisMappingPersenGaji> results = this.sessionFactory.getCurrentSession().createCriteria(ImHrisMappingPersenGaji.class)
-                .add(Restrictions.eq("namaMappingPersenGaji", namaMapping))
-                .add(Restrictions.eq("flag", "Y"))
-                .list();
-
-        return results;
-    }
-
-    public String getNextMapping() throws HibernateException {
-        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_mapping_persen_gaji')");
+    public String getNextMappingHistory() throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_mapping_persen_gaji_history')");
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%08d", iter.next());
 
-        return "MPG" + sId;
+        return "MPGH" + sId;
     }
 }
