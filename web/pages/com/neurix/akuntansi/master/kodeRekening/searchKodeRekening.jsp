@@ -331,10 +331,11 @@
             var result              = '';
             var flagMaster          = $("#flag-master-edit").val();
             var flagDivisi          = $("#flag-divisi-edit").val();
+            var tipeRekening        = $("#tipeRekeningIdEdit").val();
 
             if(id != ''&&kodeRekeningName != ''&&kodeRekening != ''){
                 if (confirm('Are you sure you want to save this Record?')) {
-                    KodeRekeningAction.saveEdit(id, kodeRekeningName, kodeRekening,"edit", "",flagMaster, flagDivisi, function(result) {
+                    KodeRekeningAction.saveEdit(id, kodeRekeningName, kodeRekening,"edit", tipeRekening, flagMaster, flagDivisi, function(result) {
                         if (result==""){
                             alert('Record has been saved successfully.');
                             location.reload();
@@ -392,6 +393,8 @@
                     $('#kodeRekeningNameEdit').val(item.namaKodeRekening);
                     $('#kodeRekeningEdit').val(item.kodeRekening);
                     $('#tipeRekeningIdEdit').val(item.tipeRekeningId);
+                    $('#flag-master-edit').val(item.flagMaster);
+                    $('#flag-divisi-edit').val(item.flagDivisi);
                 });
             });
             $('#modal-edit').modal('show');

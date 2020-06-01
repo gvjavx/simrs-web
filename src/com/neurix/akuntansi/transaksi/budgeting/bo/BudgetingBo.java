@@ -2,10 +2,7 @@ package com.neurix.akuntansi.transaksi.budgeting.bo;
 
 import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
 import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
-import com.neurix.akuntansi.transaksi.budgeting.model.Budgeting;
-import com.neurix.akuntansi.transaksi.budgeting.model.BudgetingDetail;
-import com.neurix.akuntansi.transaksi.budgeting.model.BudgetingPengadaan;
-import com.neurix.akuntansi.transaksi.budgeting.model.ItAkunBudgetingPengadaanEntity;
+import com.neurix.akuntansi.transaksi.budgeting.model.*;
 import com.neurix.common.exception.GeneralBOException;
 
 import java.util.List;
@@ -30,6 +27,7 @@ public interface BudgetingBo {
     public String generateBudgetingPengadaan();
     public String checkLastTipeBudgeting();
     public Budgeting checkBudgeting(String branchId, String tahun) throws GeneralBOException;
+    public ItAkunBudgetingEntity getBudgetingEntityById(String id) throws GeneralBOException;
 
     String getBudgetBiayaDivisiSaatIni(Budgeting bean);
 }

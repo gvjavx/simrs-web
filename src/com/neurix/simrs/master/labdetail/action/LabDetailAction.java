@@ -6,6 +6,7 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.lab.bo.LabBo;
 import com.neurix.simrs.master.lab.model.Lab;
 import com.neurix.simrs.master.labdetail.bo.LabDetailBo;
+import com.neurix.simrs.master.labdetail.model.ImSimrsLabDetailEntity;
 import com.neurix.simrs.master.labdetail.model.LabDetail;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -396,5 +397,11 @@ public class LabDetailAction extends BaseMasterAction {
         listOfComboLab.addAll(listOfLab);
 
         return "init_combo";
+    }
+
+    public ImSimrsLabDetailEntity labDetailEntityByIdLab(String idParameter){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        LabDetailBo labDetailBo = (LabDetailBo) ctx.getBean("labDetailBoProxy");
+        return labDetailBo.getLabDetailEntityById(idParameter);
     }
 }

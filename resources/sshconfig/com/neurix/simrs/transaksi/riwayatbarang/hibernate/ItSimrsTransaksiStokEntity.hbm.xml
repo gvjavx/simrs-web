@@ -56,6 +56,15 @@
         <property name="idPelayanan">
             <column name="id_pelayanan" sql-type="varchar" length="50" not-null="false"/>
         </property>
+        <property name="qtyLalu">
+            <column name="qty_lalu" sql-type="bigint" not-null="false"/>
+        </property>
+        <property name="totalLalu">
+            <column name="total_lalu" sql-type="numeric" not-null="false"/>
+        </property>
+        <property name="subTotalLalu">
+            <column name="sub_total_lalu" sql-type="numeric" not-null="false"/>
+        </property>
 
     </class>
 </hibernate-mapping>

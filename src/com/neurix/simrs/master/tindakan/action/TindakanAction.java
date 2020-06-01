@@ -10,9 +10,12 @@ import com.neurix.simrs.master.kategoritindakan.model.KategoriTindakan;
 import com.neurix.simrs.master.kategoritindakanina.bo.KategoriTindakanInaBo;
 import com.neurix.simrs.master.kategoritindakanina.model.KategoriTindakanIna;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
+import com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
@@ -505,5 +508,12 @@ public class TindakanAction extends BaseMasterAction {
         }
         logger.info("[TindakanAction.saveDelete] end process <<<");
         return "success_save_delete";
+    }
+
+    public ImSimrsTindakanEntity getDataTindakanById(String id){
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TindakanBo tindakanBo = (TindakanBo) ctx.getBean("tindakanBoProxy");
+        return tindakanBo.getEntityTindakanById(id);
     }
 }

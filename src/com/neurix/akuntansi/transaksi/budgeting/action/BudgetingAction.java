@@ -4,9 +4,7 @@ import com.neurix.akuntansi.master.kodeRekening.bo.KodeRekeningBo;
 import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
 import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.transaksi.budgeting.bo.BudgetingBo;
-import com.neurix.akuntansi.transaksi.budgeting.model.Budgeting;
-import com.neurix.akuntansi.transaksi.budgeting.model.BudgetingDetail;
-import com.neurix.akuntansi.transaksi.budgeting.model.BudgetingPengadaan;
+import com.neurix.akuntansi.transaksi.budgeting.model.*;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.authorization.company.model.ImBranches;
@@ -360,6 +358,9 @@ public class BudgetingAction {
         budgetingNew.setStLevel(kodeRekeningEntity.getLevel() == null ? "" : String.valueOf(kodeRekeningEntity.getLevel()));
         budgetingNew.setKodeRekening(kodeRekeningEntity.getKodeRekening());
         budgetingNew.setNamaKodeRekening(kodeRekeningEntity.getNamaKodeRekening());
+        budgetingNew.setTipeCoa(kodeRekeningEntity.getTipeRekeningId());
+        budgetingNew.setFlagMaster(kodeRekeningEntity.getFlagMaster());
+        budgetingNew.setFlagDivisi(kodeRekeningEntity.getFlagDivisi());
 
         // escape nilai null
         budgetingNew.setNilaiTotal(nullEscape(budgetingNew.getNilaiTotal()));
@@ -601,6 +602,33 @@ public class BudgetingAction {
                                     budgetingDetailList.addAll(budgetingDetails);
 
                                     for (BudgetingDetail budgetingDetail : budgetingDetails){
+
+                                        if ("bulanan".equalsIgnoreCase(budgetingData.getTipe())){
+                                            if (budgetingData.getListPeriode().size() > 0){
+                                                List<BudgetingPeriode> periodes = budgetingData.getListPeriode().stream().filter(p -> p.getNamaBulan().equalsIgnoreCase(budgetingDetail.getTipe())).collect(Collectors.toList());
+                                                if (periodes.size() > 0){
+                                                    budgetingDetail.setFlagEdit("N");
+                                                }
+                                            }
+                                        }
+
+                                        if ("quartal".equalsIgnoreCase(budgetingData.getTipe())){
+                                            if (budgetingData.getListPeriode().size() > 0){
+                                                List<BudgetingPeriode> periodes = budgetingData.getListPeriode().stream().filter(p -> p.getKuartal().equalsIgnoreCase(budgetingDetail.getTipe())).collect(Collectors.toList());
+                                                if (periodes.size() > 0){
+                                                    budgetingDetail.setFlagEdit("N");
+                                                }
+                                            }
+                                        }
+
+                                        if ("semester".equalsIgnoreCase(budgetingData.getTipe())){
+                                            if (budgetingData.getListPeriode().size() > 0){
+                                                List<BudgetingPeriode> periodes = budgetingData.getListPeriode().stream().filter(p -> p.getSemester().equalsIgnoreCase(budgetingDetail.getTipe())).collect(Collectors.toList());
+                                                if (periodes.size() > 0){
+                                                    budgetingDetail.setFlagEdit("N");
+                                                }
+                                            }
+                                        }
 
                                         // Mencari Budgeting Pengadaan
                                         List<BudgetingPengadaan> pengadaans = budgetingBoProxy.getListBudgetingPengadaanNoDetail(budgetingDetail.getIdBudgetingDetail());
@@ -1642,6 +1670,29 @@ public class BudgetingAction {
         budgetSaatIni = budgetingBo.getBudgetBiayaDivisiSaatIni(budgetingStatus);
 
         return budgetSaatIni;
+    }
+
+    public Budgeting view(String idBudgeting){
+
+        logger.info("[BudgetingAction.view] START >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
+
+        Budgeting budgeting = new Budgeting();
+        budgeting.setIdBudgeting(idBudgeting);
+
+        List<Budgeting> budgetings = budgetingBo.getSearchByCriteria(budgeting);
+        if (budgetings.size() > 0){
+            budgeting = new Budgeting();
+            budgeting = budgetings.get(0);
+        }
+
+        List<BudgetingDetail> budgetingDetails = budgetingBo.getListBudgetingDetailByNoBudgeting(idBudgeting);
+        budgeting.setBudgetingDetailList(budgetingDetails);
+
+        logger.info("[BudgetingAction.view] END <<<");
+        return budgeting;
     }
 
     public void setBudgetingBoProxy(BudgetingBo budgetingBoProxy) {

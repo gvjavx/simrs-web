@@ -2,7 +2,9 @@ package com.neurix.akuntansi.transaksi.budgeting.model;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by reza on 29/04/20.
@@ -67,6 +69,12 @@ public class Budgeting {
     private String branchName;
     private String divisi;
     private String coa;
+
+    private BigDecimal saldoAkhir;
+    private BigDecimal selisihSaldoAkhir;
+
+    private List<BudgetingPeriode> listPeriode = new ArrayList<>();
+    private List<BudgetingDetail> budgetingDetailList = new ArrayList<>();
 
     public static Comparator<Budgeting> kodeRekeningSorting = new Comparator<Budgeting>() {
 
@@ -535,5 +543,37 @@ public class Budgeting {
 
     public void setBranchName(String branchName) {
         this.branchName = branchName;
+    }
+
+    public List<BudgetingPeriode> getListPeriode() {
+        return listPeriode;
+    }
+
+    public void setListPeriode(List<BudgetingPeriode> listPeriode) {
+        this.listPeriode = listPeriode;
+    }
+
+    public List<BudgetingDetail> getBudgetingDetailList() {
+        return budgetingDetailList;
+    }
+
+    public void setBudgetingDetailList(List<BudgetingDetail> budgetingDetailList) {
+        this.budgetingDetailList = budgetingDetailList;
+    }
+
+    public BigDecimal getSaldoAkhir() {
+        return saldoAkhir;
+    }
+
+    public void setSaldoAkhir(BigDecimal saldoAkhir) {
+        this.saldoAkhir = saldoAkhir;
+    }
+
+    public BigDecimal getSelisihSaldoAkhir() {
+        return selisihSaldoAkhir;
+    }
+
+    public void setSelisihSaldoAkhir(BigDecimal selisihSaldoAkhir) {
+        this.selisihSaldoAkhir = selisihSaldoAkhir;
     }
 }

@@ -1063,4 +1063,19 @@ public class CommonUtil {
         }
     }
 
+    public static String getDateParted(Date date, String tipe){
+        //create calander instance and get required params
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+
+        switch (tipe){
+            case "YEAR":
+                int year = cal.get(Calendar.YEAR); return String.valueOf(year);
+            case "MONTH":
+                int month = cal.get(Calendar.MONTH); return String.valueOf(month);
+            case "DAY":
+                int day = cal.get(Calendar.DAY_OF_MONTH); return String.valueOf(day);
+            default: return "";
+        }
+    }
 }

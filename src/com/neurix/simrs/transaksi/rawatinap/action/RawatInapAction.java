@@ -1069,6 +1069,11 @@ public class RawatInapAction extends BaseMasterAction {
             reportParams.put("kabupaten", checkup.getNamaKota());
             reportParams.put("kecamatan", checkup.getNamaKecamatan());
             reportParams.put("desa", checkup.getNamaDesa());
+            reportParams.put("diagnosa", checkup.getNamaDiagnosa());
+            reportParams.put("petugas", CommonUtil.userLogin());
+            reportParams.put("dokter", periksalb.getNamaDokter());
+            reportParams.put("ttdDokter", periksalb.getTtdDokter());
+            reportParams.put("ttdPetugas", periksalb.getTtdPetugas());
 
             try {
                 preDownload();

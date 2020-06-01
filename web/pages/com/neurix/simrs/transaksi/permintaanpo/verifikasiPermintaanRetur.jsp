@@ -43,7 +43,7 @@
     <section class="content-header">
         <h1>
             <span id="label-head">
-                Verifikasi Permintaan Purchase Order (PO)
+                Verifikasi Permintaan Reture
             </span>
         </h1>
     </section>
@@ -719,6 +719,8 @@
     var idApprovalObat = $('#id_approval').val();
 
     $(document).ready(function () {
+
+        console.log(idApprovalObat);
 
         var tipe = '<s:property value="tipe"/>';
         if(tipe == "reture"){

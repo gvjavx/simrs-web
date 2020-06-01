@@ -14,6 +14,10 @@
     <bean id="rawatInapController" class="com.neurix.simrs.mobileapi.RawatInapController"
           p:jenisPriksaPasienBoProxy-ref="jenisPriksaPasienBoProxy"
     />
+
+    <bean id="pelayananController" class="com.neurix.simrs.mobileapi.PelayananController"
+          p:jenisPriksaPasienBoProxy-ref="jenisPriksaPasienBoProxy"
+    />
     <bean id="jenisPriksaPasienBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="jenisPriksaPasienBo">
         <property name="interceptorNames">

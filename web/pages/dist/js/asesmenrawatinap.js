@@ -1,5 +1,4 @@
 function showModalAsesmenRawatInap(jenis) {
-    console.log()
     if (isReadRM) {
         $('.btn-hide').hide();
     } else {
@@ -17,13 +16,13 @@ function showModalAsesmenRawatInap(jenis) {
 
         if (jam > 0) {
             $('.jam').timepicker();
-            $('.jam').val(formaterTime(new Date()));
+            $('.jam').val(converterDateTime(new Date()));
         }
         if (tgl > 0) {
             $('.tgl').datepicker({
                 dateFormat: 'dd-mm-yy'
             });
-            $('.tgl').val(formaterDate(new Date()));
+            $('.tgl').val(converterDate(new Date()));
             $('.tgl').inputmask('dd-mm-yyyy', {'placeholder': 'dd-mm-yyyy'});
         }
     }
@@ -2271,7 +2270,7 @@ function listCatatanTerintegrasi() {
             console.log(res);
             $.each(res, function (i, item) {
                 table += '<tr>' +
-                    '<td>' + formaterDateTime(item.waktu) + '</td>' +
+                    '<td>' + converterDateTime(item.waktu) + '</td>' +
                     '<td>' + cekNull(item.ppa) + '</td>' +
                     '<td>' + cekNull(item.jenis) + '</td>' +
                     '<td>' + cekNull(item.intruksi) + '</td>' +
@@ -2596,7 +2595,7 @@ function listAsuhanKeperawatan() {
                 }
 
                 table += '<tr>' +
-                    '<td>' + formaterDateTime(item.waktu) + '</td>' +
+                    '<td>' + converterDateTime(item.waktu) + '</td>' +
                     '<td>' + ul1 + '</td>' +
                     '<td>' + ul2 + '</td>' +
                     '<td>' + ul3 + '</td>' +
@@ -2768,7 +2767,7 @@ function listRekamMedisRJ() {
         if (res.length > 0) {
             $.each(res, function (i, item) {
                 table += '<tr>' +
-                    '<td>' + formaterDateTime(item.waktu) + '</td>' +
+                    '<td>' + converterDateTime(item.waktu) + '</td>' +
                     '<td>' + cekNull(item.anamnese) + '</td>' +
                     '<td>' + cekNull(item.pemeriksaanFisik) + '</td>' +
                     '<td>' + cekNull(item.diagnosa) + '</td>' +
