@@ -101,20 +101,43 @@ public class CompanyBoImpl implements CompanyBo {
                 else
                     imCompanyOld.setIuranPerusahaanJkmJkk(BigDecimal.valueOf(0.0));
 
-                if (imCompanyOld.getBulanJubilium() != null)
+                if (companyNew.getRemainderJubileum() != null)
                     imCompanyOld.setBulanJubilium(companyNew.getRemainderJubileum());
                 else
                     imCompanyOld.setBulanJubilium(BigInteger.valueOf(0));
-                imCompanyOld.setBulanPensiun(companyNew.getRemainderPensiun());
-                imCompanyOld.setKursDolar(companyNew.getKursDolar());
+                if (companyNew.getRemainderJubileum() != null)
+                    imCompanyOld.setBulanPensiun(companyNew.getRemainderPensiun());
+                else
+                    imCompanyOld.setBulanPensiun(BigInteger.valueOf(0));
+                if (companyNew.getKursDolar() != null)
+                    imCompanyOld.setKursDolar(companyNew.getKursDolar());
+                else
+                    imCompanyOld.setKursDolar(BigDecimal.valueOf(0.0));
 
-                imCompanyOld.setPayrollThrPersentase(companyNew.getPayrollThrPersentase());
-                imCompanyOld.setPayrollPendidikanPersentase(companyNew.getPayrollPendidikanPersentase());
-                imCompanyOld.setPayrollJasprodKali(companyNew.getPayrollJasprodKali());
-
-                imCompanyOld.setMaxBpjsTk(companyNew.getMaxBpjsTk());
-                imCompanyOld.setMaxBpjsPensiun(companyNew.getMaxBpjsPensiun());
-                imCompanyOld.setMaxBpjsKesehatan(companyNew.getMaxBpjsKesehatan());
+                if (companyNew.getPayrollThrPersentase() != null)
+                    imCompanyOld.setPayrollThrPersentase(companyNew.getPayrollThrPersentase());
+                else
+                    imCompanyOld.setPayrollThrPersentase(BigDecimal.valueOf(0.0));
+                if (companyNew.getPayrollPendidikanPersentase() != null)
+                    imCompanyOld.setPayrollPendidikanPersentase(companyNew.getPayrollPendidikanPersentase());
+                else
+                    imCompanyOld.setPayrollPendidikanPersentase(BigDecimal.valueOf(0.0));
+                if (companyNew.getPayrollJasprodKali() != null)
+                    imCompanyOld.setPayrollJasprodKali(companyNew.getPayrollJasprodKali());
+                else
+                    imCompanyOld.setPayrollJasprodKali(BigDecimal.valueOf(0.0));
+                if (companyNew.getMaxBpjsTk() != null)
+                    imCompanyOld.setMaxBpjsTk(companyNew.getMaxBpjsTk());
+                else
+                    imCompanyOld.setMaxBpjsTk(BigDecimal.valueOf(0.0));
+                if (companyNew.getMaxBpjsPensiun() != null)
+                    imCompanyOld.setMaxBpjsPensiun(companyNew.getMaxBpjsPensiun());
+                else
+                    imCompanyOld.setMaxBpjsPensiun(BigDecimal.valueOf(0.0));
+                if (companyNew.getMaxBpjsKesehatan() != null)
+                    imCompanyOld.setMaxBpjsKesehatan(companyNew.getMaxBpjsKesehatan());
+                else
+                    imCompanyOld.setMaxBpjsKesehatan(BigDecimal.valueOf(0.0));
                 imCompanyOld.setPeriodeGaji(companyNew.getPeriodeGaji());
 
                 imCompanyOld.setLastUpdateWho(companyNew.getLastUpdateWho());

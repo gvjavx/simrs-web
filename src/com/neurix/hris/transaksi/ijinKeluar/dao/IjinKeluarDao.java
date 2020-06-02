@@ -429,4 +429,17 @@ public class IjinKeluarDao extends GenericDao<IjinKeluarEntity, String> {
 
         return results;
     }
+
+    public String cekIfAbsensi(String nip, Date tgl){
+        String result="";
+        String query ="select absensi_pegawai_id from it_hris_absensi_pegawai where nip = '"+nip+"' and tanggal = '"+tgl+"'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            result = "ya";
+        }else {
+            result="tidak";
+        }
+        return result;
+    }
 }

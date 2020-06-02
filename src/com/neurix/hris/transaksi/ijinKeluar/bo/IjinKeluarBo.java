@@ -42,4 +42,6 @@ public interface IjinKeluarBo extends BaseMasterBo<IjinKeluar> {
     public void saveAddDispensasiMasal(IjinKeluar bean);
 
     public String getNextSuratDokterId()throws GeneralBOException;
+
+    public String cekIfAbsensi(String nip, String tglDari, String tglSelesai);
 }

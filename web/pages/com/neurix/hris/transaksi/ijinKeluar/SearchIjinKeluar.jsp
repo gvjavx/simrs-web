@@ -421,8 +421,23 @@
                                                             <display:column property="positionName" sortable="true" title="Jabatan"  />
                                                             <display:column property="ijinName" sortable="true" title="Nama Ijin"  />
                                                             <display:column property="stTanggalAwal" sortable="true" title="Tanggal Awal"  />
-                                                            <display:column property="stTanggalAkhir" sortable="true" title="Tanggal Akhir"  />
-                                                            <display:column property="lamaIjin" sortable="true" title="Lama"  />
+
+                                                            <s:if test='#attr.row.ijinId == "IJ013"'>
+                                                                <display:column property="tanggalAkhirBaru" sortable="true" title="Tanggal Akhir"  />
+                                                            </s:if>
+                                                            <s:else>
+                                                                <display:column property="stTanggalAkhir" sortable="true" title="Tanggal Akhir"  />
+                                                            </s:else>
+                                                            <%--<display:column property="stTanggalAkhir" sortable="true" title="Tanggal Akhir"  />--%>
+
+                                                            <s:if test='#attr.row.ijinId == "IJ013"'>
+                                                                <display:column property="lamaIjinBaru" sortable="true" title="Lama"  />
+                                                            </s:if>
+                                                            <s:else>
+                                                                <display:column property="lamaIjin" sortable="true" title="Lama"  />
+                                                            </s:else>
+                                                            <%--<display:column property="lamaIjin" sortable="true" title="Lama"  />--%>
+
                                                             <s:if test="#attr.row.notApprove">
                                                                 <display:column media="html" title="Approve Atasan">
                                                                     <img border="0" src="<s:url value="/pages/images/icon_failure.ico"/>" name="icon_edit">
