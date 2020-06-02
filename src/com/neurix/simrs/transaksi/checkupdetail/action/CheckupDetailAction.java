@@ -1534,10 +1534,10 @@ public class CheckupDetailAction extends BaseMasterAction {
                         MtSimrsPaketEntity paketEntity = paketPeriksaBo.getPaketEntityById(detailCheckupEntity.getIdPaket());
                         String namaPaket = "";
                         if (paketEntity != null){
-                            namaPaket = paketEntity.getNamaPaket();
+                            namaPaket = paketEntity.getNamaPaket()+ " ";
                         }
 
-                        catatan = "Closing Pasien " + namaPaket + ketResep + "No.Detail Checkup " + idDetailCheckup + " Piutang No Pasien " + " " + idPasien + noKartu;
+                        catatan = "Closing Pasien Paket " + namaPaket + ketResep + "No.Detail Checkup " + idDetailCheckup + " Piutang No Pasien " + " " + idPasien + noKartu;
                     } else {
                         catatan = "Closing Pasien " + ketPoli + jenisPasien + ketResep + "No.Detail Checkup " + idDetailCheckup + " Piutang No Pasien " + " " + idPasien + noKartu;
                     }

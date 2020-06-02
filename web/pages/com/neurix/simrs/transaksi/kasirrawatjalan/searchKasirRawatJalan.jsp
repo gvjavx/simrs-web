@@ -552,7 +552,11 @@
                         }else if(response.metodePembayaran == "non_tunai"){
                             metode = "non_tunai";
                         }else{
-                            metode = "bpjs";
+                            if ("bpjs" != jenisPasien){
+                                metode = jenisPasien;
+                            } else {
+                                metode = "bpjs";
+                            }
                         }
 
                         $('#fin_no_rm').html(response.idPasien);
