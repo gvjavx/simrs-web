@@ -2257,6 +2257,8 @@
             arBodyJenisResep.push({"nilai":"asuransi", "label":"ASURANSI"},{"nilai": "umum", "label":"UMUM"});
         } else if (jenisPeriksaPasien == "bpjs") {
             arBodyJenisResep.push({"nilai": "bpjs", "label": "BPJS"});
+        } else if (jenisPeriksaPasien == "paket_individu" || jenisPeriksaPasien == "paket_perusahaan"){
+            arBodyJenisResep.push({"nilai": jenisPeriksaPasien, "label": "PAKET"});
         } else {
             arBodyJenisResep.push({"nilai": "umum", "label": "UMUM"});
         }

@@ -732,6 +732,7 @@
                         //non_tunai umum
                         mapBiaya.push({"type": "kas", "nilai": ((total - uangMuka) + ppnObat)  });
                         mapBiaya.push({"type": "piutang_pasien_non_bpjs", "nilai": ((total - uangMuka) + ppnObat) });
+                        mapBiaya.push({"type": "ppn_keluaran", "nilai": ppnObat});
                     }
                 }
             });
