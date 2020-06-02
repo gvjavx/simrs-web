@@ -813,7 +813,8 @@
 //                            "<td class='val-master-id' >"+item.masterId+"</td>"+
 //                            "<td class='val-master-name' >"+item.masterName+"</td>"+
 
-                    str += "<td>"+item.divisiName+"</td>"+
+                    str +=
+                            "<td>"+item.divisiName+"</td>"+
                             "<td align='center'>"+item.qty+"</td>"+
                             "<td align='right'>"+ formatRupiah(item.nilai)+"</td>"+
                             "<td align='right'>"+ formatRupiah(item.subTotal)+"</td>"+
