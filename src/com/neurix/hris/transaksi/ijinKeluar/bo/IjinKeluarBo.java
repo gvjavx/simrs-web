@@ -47,4 +47,5 @@ public interface IjinKeluarBo extends BaseMasterBo<IjinKeluar> {
     public String cekStatusIjin(String nip) throws GeneralBOException;
     public String cekAgama(String nip, String ijinId, String agama) throws GeneralBOException;
     public String cekStatus(String nip, Date tglAwal, Date tglAkhir) throws GeneralBOException;
+    public String cekIfAbsensi(String nip, String tglDari, String tglSelesai);
 }

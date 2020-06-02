@@ -426,6 +426,7 @@ public class PositionAction extends BaseMasterAction {
                 deletePosition.setLastUpdate(updateTime);
                 deletePosition.setLastUpdateWho(userLogin);
                 deletePosition.setAction("U");
+                deletePosition.setFlag("N");
 
                 positionBoProxy.saveDelete(deletePosition);
 

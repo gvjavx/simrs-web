@@ -171,7 +171,7 @@ public class DispensasiController implements ModelDriven<Object> {
             try {
                 Ijin search = new Ijin();
                 search.setFlag("Y");
-                search.setGender(gender);
+                search.setGender("L");
 
                 modelIjin = ijinBoProxy.getByCriteria(search);
             } catch (GeneralBOException e) {
