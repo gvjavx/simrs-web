@@ -632,9 +632,9 @@
             ribuan = ribuan.join('.').split('').reverse().join('');
 
             if (angka < 0){
-                return "<span style='color: indianred'> + "+ribuan+"</span>";
+                return "<span style='color: indianred'> - "+ribuan+"</span>";
             } else {
-                return "<span style='color: darkgreen'> - "+ribuan+"</span>";
+                return "<span style='color: darkgreen'> + "+ribuan+"</span>";
             }
 
         }else{
