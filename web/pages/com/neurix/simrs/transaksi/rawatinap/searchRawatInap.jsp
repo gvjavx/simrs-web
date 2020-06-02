@@ -50,7 +50,7 @@
                         <div class="form-group">
                             <s:form id="rawatInapForm" method="post" namespace="/rawatinap" action="search_rawatinap.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">ID Pasien</label>
+                                    <label class="control-label col-sm-4">No RM</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="id_pasien" cssStyle="margin-top: 7px"
                                                      name="rawatInap.idPasien" required="false"
@@ -172,8 +172,8 @@
                         <table id="myTable" class="table table-bordered table-striped">
                             <thead >
                             <tr bgcolor="#90ee90">
-                                <td>No Checkup</td>
-                                <td>ID Pasien</td>
+                                <td>ID Detail Checkup</td>
+                                <td>No RM</td>
                                 <td>Nama</td>
                                 <td>Desa</td>
                                 <td>Status</td>
@@ -183,7 +183,7 @@
                             <tbody>
                             <s:iterator value="#session.listOfResult" status="listOfRawatInap">
                                 <tr>
-                                    <td><s:property value="noCheckup"/></td>
+                                    <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="desa"/></td>

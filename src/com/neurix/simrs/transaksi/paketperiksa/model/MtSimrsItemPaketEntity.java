@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.paketperiksa.model;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 
 /**
@@ -18,6 +19,15 @@ public class MtSimrsItemPaketEntity implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private BigInteger harga;
+
+    public BigInteger getHarga() {
+        return harga;
+    }
+
+    public void setHarga(BigInteger harga) {
+        this.harga = harga;
+    }
 
     public String getIdItemPaket() {
         return idItemPaket;

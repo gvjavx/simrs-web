@@ -35,6 +35,7 @@
           p:cutiDao-ref="cutiDao"
           p:notifikasiFcmDao-ref="notifikasiFcmDao"
           p:tipeNotifDao-ref="tipeNotifDao"
+          p:pengajuanBiayaDao-ref="pengajuanBiayaDao"
 
 
     />

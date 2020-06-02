@@ -1252,7 +1252,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Kategori Lab</label>
+                        <label class="col-md-3" style="margin-top: 7px">Kategori</label>
                         <div class="col-md-7">
                             <s:action id="comboLab" namespace="/kategorilab"
                                       name="getListKategoriLab_kategorilab"/>
@@ -1272,7 +1272,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Lab</label>
+                        <label class="col-md-3" style="margin-top: 7px">Unit</label>
                         <div class="col-md-7">
                             <select class="form-control select2" style="margin-top: 7px; width: 100%" id="lab_lab"
                                     onchange="var warn =$('#war_lab').is(':visible'); if (warn){$('#cor_lab').show().fadeOut(3000);$('#war_lab').hide()}; listSelectParameter(this);">

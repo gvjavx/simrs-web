@@ -59,3 +59,9 @@ function paintTtd(id, change){
     paintCanvas.addEventListener("mouseup", stopDrawing);
     paintCanvas.addEventListener("mouseout", stopDrawing);
 }
+
+function removePaint(id){
+    var canvas = document.getElementById(id);
+    const context = canvas.getContext('2d');
+    context.clearRect(0, 0, canvas.width, canvas.height);
+}

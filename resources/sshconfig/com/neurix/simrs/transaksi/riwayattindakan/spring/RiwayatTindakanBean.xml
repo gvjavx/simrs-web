@@ -9,6 +9,7 @@
     <bean id="riwayatTindakanBo" class="com.neurix.simrs.transaksi.riwayattindakan.bo.impl.RiwayatTindakanBoImpl"
           p:riwayatTindakanDao-ref="riwayatTindakanDao"
           p:tindakanTransitorisDao-ref="tindakanTransitorisDao"
+          p:itemPaketDao-ref="itemPaketDao"
     />
 
     <bean id="riwayatTindakanBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

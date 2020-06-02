@@ -442,7 +442,8 @@ public class MutasiAction extends BaseMasterAction{
             MutasiBo mutasiBo = (MutasiBo) ctx.getBean("mutasiBoProxy");
             searchMutasi = mutasiBo.getDataReportMutasi(id);
             Branch branch = new Branch();
-            BigDecimal gajiPegawai = mutasiBo.getGajiPokok(searchMutasi.getLevelBaru());
+            String tahun ="";
+            BigDecimal gajiPegawai = mutasiBo.getGajiPokok(searchMutasi.getLevelBaru(),tahun);
             String stGajiPegawai = CommonUtil.numbericFormat(gajiPegawai,"###,###");
             try{
                 BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");

@@ -56,6 +56,12 @@
 					</textElement>
 					<textFieldExpression><![CDATA[$F{grup}]]></textFieldExpression>
 				</textField>
+				<line>
+					<reportElement key="line-3" x="0" y="0" width="567" height="1" uuid="50849c6a-caa6-4669-9735-1feaf363a243"/>
+					<graphicElement>
+						<pen lineWidth="1.0" lineStyle="Dashed"/>
+					</graphicElement>
+				</line>
 			</band>
 		</groupHeader>
 	</group>
@@ -233,7 +239,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="39" splitType="Stretch">
+		<band height="22" splitType="Stretch">
 			<staticText>
 				<reportElement key="staticText-11" mode="Transparent" x="0" y="2" width="68" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="2b034e0d-b675-47fa-8b70-38a9125e5fc3"/>
 				<box leftPadding="2" rightPadding="2">
@@ -249,12 +255,6 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 			</staticText>
 			<line>
 				<reportElement key="line-2" x="0" y="1" width="567" height="1" uuid="35bca783-b93c-4008-ba30-2e956ada8da3"/>
-				<graphicElement>
-					<pen lineWidth="1.0" lineStyle="Dashed"/>
-				</graphicElement>
-			</line>
-			<line>
-				<reportElement key="line-3" x="0" y="38" width="567" height="1" uuid="50849c6a-caa6-4669-9735-1feaf363a243"/>
 				<graphicElement>
 					<pen lineWidth="1.0" lineStyle="Dashed"/>
 				</graphicElement>
@@ -293,7 +293,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{tahun2Lalu}]]></textFieldExpression>
@@ -306,7 +306,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{tahunLalu}]]></textFieldExpression>
@@ -319,7 +319,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{tahunIni}]]></textFieldExpression>
@@ -336,7 +336,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nilaiTotal2TahunLalu}]]></textFieldExpression>

@@ -9,42 +9,42 @@
 <head>
     <%@ include file="/pages/common/header.jsp" %>
     <script type='text/javascript' src='<s:url value="/dwr/interface/KodeRekeningAction.js"/>'></script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/PembayaranUtangPiutangAction.js"/>'></script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/MasterAction.js"/>'></script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/KasirRawatJalanAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/akuntansi.js"/>'></script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/PositionAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/BudgetingAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PengajuanBiayaAction.js"/>'></script>
     <script type='text/javascript'>
-        function confirm() {
-
-            var tipeTransaksi          = $('#tipe_transaksi').val();
-            var tanggal        = $('#tanggal').val();
-            var metodeBayar           = $('#coa_asal').val();
-            var bayar      = $('#bayar').val();
-            var keterangan    = $('#keterangan').val();
-            var noslipBank     = $('#no_slip_bank').val();
-            var branchId     = $('#branch_id').val();
-            var status ="";
-            PembayaranUtangPiutangAction.cekBeforeSave(tipeTransaksi,tanggal,metodeBayar,bayar,keterangan,noslipBank,branchId,function (result) {
-                status=result;
-            })
-
-            if (status=="") {
-                $('#confirm_dialog').dialog('open');
-            } else {
-                var msg="";
-                if (status!=""){
-                    msg+= status +"\n";
-                }
-                $("html, body").animate({ scrollTop: 0 }, 600);
-                $('#warning_pembayaran').show().fadeOut(10000);
-                $('#errorText').html(msg);
-            }
+        function callSearch2() {
+            $('#view_dialog_menu').dialog('close');
+            $('#info_dialog').dialog('close');
         }
+        function link(){
+            window.location.href="<s:url action='initFormPengajuan_pengajuanBiaya'/>";
+        }
+
         $.subscribe('beforeProcessSave', function (event, data) {
-            event.originalEvent.options.submit = true;
-            $('#confirm_dialog').dialog('close');
-            $.publish('showDialog');
+            var unit  = document.getElementById("branch_id").value;
+            var divisi  = document.getElementById("divisi_id").value;
+
+            if ( unit != ''&&divisi!="") {
+                if (confirm('Do you want to save this record?')) {
+                    event.originalEvent.options.submit = true;
+                    $.publish('showDialog');
+                } else {
+                    // Cancel Submit comes with 1.8.0
+                    event.originalEvent.options.submit = false;
+                }
+            } else {
+                event.originalEvent.options.submit = false;
+                var msg = "";
+                if ( unit == '') {
+                    msg += 'Field <strong>Unit</strong> is required.' + '<br/>';
+                }
+                if ( divisi == '') {
+                    msg += 'Field <strong>Divisi</strong> is required.' + '<br/>';
+                }
+                document.getElementById('errorMessage').innerHTML = msg;
+                $.publish('showErrorValidationDialog');
+            }
         });
 
         $.subscribe('successDialog', function (event, data) {
@@ -75,7 +75,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Pengeluaran Kas/Bank
+            Pengajuan Biaya
         </h1>
     </section>
 
@@ -86,49 +86,37 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-user-plus"></i> Input Pengeluaran Kas/Bank</h3>
+                        <h3 class="box-title"><i class="fa fa-user-plus"></i> Input Pengajuan Biaya</h3>
                     </div>
-                    <s:form id="addPembayaranUtangPiutangForm" enctype="multipart/form-data" method="post" namespace="/pembayaranUtangPiutang"
-                            action="saveAdd_pembayaranUtangPiutang.action" theme="simple">
-                        <s:hidden name="pembayaranUtangPiutang.tipePembayaran" value="KK" />
+                    <s:form id="addPengajuanBiayaForm" enctype="multipart/form-data" method="post" namespace="/pengajuanBiaya"
+                            action="saveAddPengajuan_pengajuanBiaya.action" theme="simple">
                         <div class="box-body">
                             <div class="alert alert-danger alert-dismissible" id="warning_pembayaran" style="display: none">
                                 <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                                 <span id="errorText"></span>
                             </div>
                             <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-user"></i> Form Pembayaran</h3>
+                                <h3 class="box-title"><i class="fa fa-money"></i> Form </h3>
                             </div>
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-md-8">
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Unit</label>
-                                            <div class="col-md-8">
-                                                <s:if test='pembayaranUtangPiutang.branchId == "KP"'>
-                                                    <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
-                                                    <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branch_id"  onchange="isiKeteterangan()" name="pembayaranUtangPiutang.branchId" required="true"
-                                                              listKey="branchId" listValue="branchName" headerKey="" headerValue="" />
-                                                </s:if>
-                                                <s:else>
-                                                    <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
-                                                    <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branch_id_view" name="pembayaranUtangPiutang.branchId" required="true" disabled="true"
-                                                              listKey="branchId" listValue="branchName" headerKey="" headerValue="" />
-
-                                                    <s:hidden name="pembayaranUtangPiutang.branchId" id="branch_id" />
-                                                </s:else>
+                                            <div class="col-md-8"  style="margin-top: 7px">
+                                                <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
+                                                <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branch_id_view" name="pengajuanBiaya.branchId" required="true" disabled="true"
+                                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="" />
+                                                <s:hidden name="pengajuanBiaya.branchId" id="branch_id" />
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Tipe Transaksi</label>
-                                            <div class="col-md-8">
-                                                <s:action id="comboTrans" namespace="/trans" name="initComboTransPembayaran_trans">
-                                                    <s:param name="tipe">KK</s:param>
-                                                </s:action>
-                                                <s:select list="#comboTrans.listOfComboTrans" id="tipe_transaksi" name="pembayaranUtangPiutang.tipeTransaksi"
-                                                          cssStyle="margin-top: 7px" onchange="isiKeteterangan(),getTipeMaster(),getCoaLawan(),getCoaAsal()"
-                                                          listKey="transId" listValue="transName" headerKey="" headerValue="" cssClass="form-control" />
-                                                <s:hidden id="tipeMaster" />
+                                            <label class="col-md-4" style="margin-top: 7px">Divisi</label>
+                                            <div class="col-md-8"  style="margin-top: 7px">
+                                                <s:action id="comboPosition" namespace="/admin/user" name="initComboPosition_user"/>
+                                                <s:select cssClass="form-control" list="#comboPosition.listOfComboPositions" id="divisi_id_view" disabled="true" name="pengajuanBiaya.divisiId" required="false" readonly="true"
+                                                          listKey="stPositionId" listValue="positionName" headerKey="" headerValue="[Select one]"/>
+                                                <s:hidden  id="divisi_id" name="pengajuanBiaya.divisiId" cssClass="form-control"/>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -138,7 +126,7 @@
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
-                                                    <s:textfield id="tanggal" name="pembayaranUtangPiutang.stTanggal"
+                                                    <s:textfield id="tanggal" name="pengajuanBiaya.stTanggal"
                                                                  cssClass="form-control datemask" onchange="$('#st_tgl').css('border','')"/>
                                                     <script>
                                                         $("#tanggal").datepicker({
@@ -154,232 +142,107 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">COA Kas </label>
+                                            <label class="col-md-4" style="margin-top: 7px">Transaksi</label>
+                                            <div class="col-md-8" style="margin-top: 7px">
+                                                <s:select list="#{'R':'Rutin','I':'Investasi'}" onchange="initNoBudget(this.value)"
+                                                          id="transaksi_view" name="pengajuanBiaya.transaksi"
+                                                          headerKey="" headerValue="[Select One]" cssClass="form-control" />
+                                                <s:hidden id="transaksi" />
+                                                <s:hidden name="pengajuanBiaya.tipeTransaksi" id="tipe_transaksi" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4" style="margin-top: 7px">No. Budget </label>
                                             <div class="col-md-8">
-                                                <select class="form-control" id="coa_asal" onchange="isiKeteterangan()" style="margin-top: 7px" name="pembayaranUtangPiutang.metodePembayaran">
+                                                <select class="form-control" id="no_budget" onchange="isiKeteterangan(),getSisaBudget(this.value)" style="margin-top: 7px" name="pengajuanBiaya.noBudget">
                                                     <option value="" ></option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Bayar</label>
+                                            <label class="col-md-4" style="margin-top: 7px">Jumlah</label>
                                             <div class="col-md-8">
-                                                <s:textfield id="bayar" name="pembayaranUtangPiutang.stBayar"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px" readonly="true" />
+                                                <s:textfield id="bayar" name="pengajuanBiaya.stTotalBiaya"  onkeyup="formatRupiah2(this)"
+                                                             cssClass="form-control" cssStyle="margin-top: 7px" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4" style="margin-top: 7px">Budget Biaya</label>
+                                            <div class="col-md-8">
+                                                <s:textfield id="sisa_budget" name="pengajuanBiaya.stBudgetSaatIni" readonly="true"
+                                                             cssClass="form-control" cssStyle="margin-top: 7px" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4" style="margin-top: 7px">Budget Terpakai</label>
+                                            <div class="col-md-8">
+                                                <s:textfield id="budget_terpakai" name="pengajuanBiaya.stBudgetTerpakai" readonly="true"
+                                                             cssClass="form-control" cssStyle="margin-top: 7px" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4" style="margin-top: 7px">Keperluan</label>
+                                            <div class="col-md-8">
+                                                <s:textfield id="keperluan" name="pengajuanBiaya.keperluan"
+                                                             cssClass="form-control" cssStyle="margin-top: 7px" />
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Keterangan</label>
                                             <div class="col-md-8">
                                                 <s:textarea id="keterangan" rows="3" cssStyle="margin-top: 7px" onkeypress="$(this).css('border','')"
-                                                            name="pembayaranUtangPiutang.keterangan" cssClass="form-control"/>
+                                                            name="pengajuanBiaya.keterangan" cssClass="form-control"/>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">No. Referensi</label>
-                                            <div class="col-md-8">
-                                                <s:textfield id="no_slip_bank" name="pembayaranUtangPiutang.noSlipBank" onkeypress="$(this).css('border','')" onchange="isiKeteterangan()"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="box-header with-border"></div>
-                            <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-user"></i> Detail</h3>
-                            </div>
-                            <div class="box-body">
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">COA Lawan</label>
-                                            <div class="col-md-8">
-                                                <select class="form-control" id="coa_lawan" onchange="getDisableTrans()">
-                                                    <option value="" ></option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">ID Divisi</label>
-                                            <div class="col-md-3">
-                                                <s:textfield id="divisi_id" onkeypress="$(this).css('border','')" wajib="Y"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px" />
-                                                <script>
-                                                    $(document).ready(function() {
-                                                        var functions, mapped;
-                                                        $('#divisi_id').typeahead({
-                                                            minLength: 1,
-                                                            source: function (query, process) {
-                                                                functions = [];
-                                                                mapped = {};
-                                                                var data = [];
-                                                                dwr.engine.setAsync(false);
-                                                                PositionAction.typeAheadPosition(query,function (listdata) {
-                                                                    data = listdata;
-                                                                });
-                                                                $.each(data, function (i, item) {
-                                                                    var labelItem = item.kodering + " | " + item.positionName;
-                                                                    mapped[labelItem] = {
-                                                                        id: item.kodering,
-                                                                        nama: item.positionName
-                                                                    };
-                                                                    functions.push(labelItem);
-                                                                });
-                                                                process(functions);
-                                                            },
-                                                            updater: function (item) {
-                                                                var selectedObj = mapped[item];
-                                                                $('#nama_divisi').val(selectedObj.nama);
-                                                                return selectedObj.id;
-                                                            }
-                                                        });
-                                                    });
-                                                </script>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <s:textfield id="nama_divisi" onkeypress="$(this).css('border','')" readonly="true"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Kode Vendor</label>
-                                            <div class="col-md-3">
-                                                <s:textfield id="kode_vendor" onkeypress="$(this).css('border','')" wajib="Y"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px" />
-                                                <script>
-                                                    $(document).ready(function() {
-                                                        var functions, mapped;
-                                                        $('#kode_vendor').typeahead({
-                                                            minLength: 1,
-                                                            source: function (query, process) {
-                                                                functions = [];
-                                                                mapped = {};
-                                                                var data = [];
-                                                                var master = $('#tipeMaster').val();
-                                                                if (master!=""){
-                                                                    dwr.engine.setAsync(false);
-                                                                    MasterAction.initTypeaheadMasterPembayaran(query,master,function (listdata) {
-                                                                        data = listdata;
-                                                                    });
-                                                                    $.each(data, function (i, item) {
-                                                                        var labelItem = item.nomorVendor + " | " + item.nama;
-                                                                        mapped[labelItem] = {
-                                                                            id: item.nomorVendor,
-                                                                            nama: item.nama
-                                                                        };
-                                                                        functions.push(labelItem);
-                                                                    });
-                                                                    process(functions);
-                                                                } else{
-                                                                    alert("belum memilih tipe pembayaran");
-                                                                }
-
-                                                            },
-                                                            updater: function (item) {
-                                                                var selectedObj = mapped[item];
-                                                                $('#nama_vendor').val(selectedObj.nama);
-                                                                return selectedObj.id;
-                                                            }
-                                                        });
-                                                    });
-                                                </script>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <s:textfield id="nama_vendor" onkeypress="$(this).css('border','')" readonly="true"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">No. Nota</label>
-                                            <div class="col-md-7">
-                                                <s:textfield id="no_nota" wajib="Y"
-                                                             cssClass="form-control" readonly="true" cssStyle="margin-top: 7px"/>
-                                                <s:hidden id="rekening_id"/>
-                                            </div>
-                                            <div class="col-md-1">
-                                                <a href="javascript:void(0)">
-                                                    <img  style="margin-top: 10px" id="btnSearchNota" border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_view">
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Jumlah Pembayaran</label>
-                                            <div class="col-md-8">
-                                                <s:textfield id="jumlah_pembayaran" onkeypress="$(this).css('border','')" readonly="true"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px" onkeyup="formatRupiah2(this)" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group" style="display: inline;">
-                                            <div class="col-sm-10 col-md-offset-4" style="margin-top: 7px">
-                                                <button type="button" class="btn btn-success" id="btnSaveDetailPembayaran"><i
-                                                        class="fa fa-save"></i> Add
+                                            <div class="col-md-offset-4 col-md-8">
+                                                <button type="button" class="btn btn-primary" style="margin-top: 40px" id="btnTambahPengajuan">
+                                                    <i class="fa fa-plus"></i> Tambahkan
                                                 </button>
                                             </div>
                                         </div>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <center>
+                                            <table id="showdata" width="100%">
+                                                <tr>
+                                                    <td align="center">
+                                                        <table style="width: 100%;" class="pengajuanBiayaTabel table table-bordered">
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </center>
                                     </div>
                                 </div>
                             </div>
                             <br>
-                            <br>
-                            <br>
-                            <center>
-                                <table id="showdata1" width="80%">
-                                    <tr>
-                                        <td align="center">
-                                            <table style="width: 100%;"
-                                                   class="detailPembayaranTable table table-bordered">
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </center>
-                            <br>
-                            <br>
                             <div class="box-header with-border"></div>
-                            <div class="box-body">
+                            <div class="box-body col-md-offset-4">
                                     <%--<div class="row">--%>
                                     <%--<div class="col-md-6">--%>
                                 <div class="form-group" style="display: inline;">
                                         <%--<div class="col-sm-10 col-md-offset-4" style="margin-top: 7px">--%>
-                                    <button type="button" class="btn btn-success" onclick="confirm()"><i
-                                            class="fa fa-arrow-right"></i> Save
-                                    </button>
+                                            <sj:submit targets="crud" type="button" cssClass="btn btn-success" formIds="addPengajuanBiayaForm" id="save" name="save"
+                                                       onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
+                                                       onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
+                                                <i class="fa fa-save"></i>
+                                                Save
+                                            </sj:submit>
                                     <button type="button" class="btn btn-danger" onclick="resetField()">
                                         <i class="fa fa-refresh"></i> Reset
                                     </button>
-                                    <a type="button" class="btn btn-warning" href="initForm_pembayaranUtangPiutang.action">
+                                    <a type="button" class="btn btn-warning" href="initForm_pengajuanBiaya.action">
                                         <i class="fa fa-arrow-left"></i> Back
                                     </a>
                                 </div>
-                                <div style="display: none">
-                                    <sj:dialog id="confirm_dialog" modal="true" resizable="false" closeOnEscape="false"
-                                               height="200" width="400" autoOpen="false" title="Confirmation Dialog">
-                                        <center><img border="0" style="height: 40px; width: 40px"
-                                                     src="<s:url value="/pages/images/icon_warning.ico"/>"
-                                                     name="icon_success">
-                                            Do you want to save this record?
-                                        </center>
-                                        <br>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-warning"
-                                                    onclick="$('#confirm_dialog').dialog('close')"><i
-                                                    class="fa fa-times"></i> No
-                                            </button>
-                                            <sj:submit targets="crud" type="button" cssClass="btn btn-success"
-                                                       formIds="addPembayaranUtangPiutangForm" id="save" name="save"
-                                                       onBeforeTopics="beforeProcessSave"
-                                                       onCompleteTopics="closeDialog,successDialog"
-                                                       onSuccessTopics="successDialog" onErrorTopics="errorDialog">
-                                                <i class="fa fa-arrow-right"></i>
-                                                yes
-                                            </sj:submit>
-                                        </div>
-                                    </sj:dialog>
-                                    <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog"
-                                               modal="true"
+                                <div>
+                                    <sj:dialog id="waiting_dialog" openTopics="showDialog"
+                                               closeTopics="closeDialog" modal="true"
                                                resizable="false"
-                                               height="250" width="600" autoOpen="false" title="Saving ...">
+                                               height="250" width="600" autoOpen="false"
+                                               title="Searching ...">
                                         Please don't close this window, server is processing your request ...
                                         <br>
                                         <center>
@@ -393,14 +256,15 @@
                                         </center>
                                     </sj:dialog>
 
-                                    <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false" closeOnEscape="false"
+                                    <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
                                                height="200" width="400" autoOpen="false" title="Infomation Dialog"
                                                buttons="{
-                                                                                'OK':function() {
-                                                                                         $('#info_dialog').dialog('close');
-                                                                                         window.location.href = 'initForm_pembayaranUtangPiutang.action';
-                                                                                     }
-                                                                            }"
+                                                              'OK':function() {
+                                                                    //$(this).dialog('close');
+                                                                      callSearch2();
+                                                                      link();
+                                                                   }
+                                                            }"
                                     >
                                         <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
                                         Record has been saved successfully.
@@ -409,12 +273,27 @@
                                     <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
                                                height="250" width="600" autoOpen="false" title="Error Dialog"
                                                buttons="{
-                                                                                'OK':function() { $('#error_dialog').dialog('close'); }
-                                                                            }"
+                                                                        'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                    }"
                                     >
-                                        <div class="alert alert-danger alert-dismissible">
+                                        <div class="alert alert-error fade in">
                                             <label class="control-label" align="left">
                                                 <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
+                                            </label>
+                                        </div>
+                                    </sj:dialog>
+
+                                    <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
+                                               height="280" width="500" autoOpen="false" title="Warning"
+                                               buttons="{
+                                                                        'OK':function() { $('#error_validation_dialog').dialog('close'); }
+                                                                    }"
+                                    >
+                                        <div class="alert alert-error fade in">
+                                            <label class="control-label" align="left">
+                                                <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
+                                                <br/>
+                                                <center><div id="errorValidationMessage"></div></center>
                                             </label>
                                         </div>
                                     </sj:dialog>
@@ -428,401 +307,30 @@
     </section>
     <!-- /.content -->
 </div>
-
-<div class="modal fade" id="modal-search-nota">
-    <div class="modal-dialog modal-flat">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Daftar Nota</h4>
-            </div>
-            <div class="modal-body">
-                <div class="box">
-                    <table class="table table-striped table-bordered" id="tabelDaftarNota">
-                    </table>
-                </div>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-success" id="btnAddCheckedNota" data-dismiss="modal"><i class="fa fa-arrow-right"></i> Add Checked
-                </button>
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
-    function selectPembayaran(){
-        var option = '<option value=""></option>';
-        KasirRawatJalanAction.getListPembayaran(function (res) {
-            if(res.length > 0){
-                $.each(res, function (i, item) {
-                    option += '<option value="'+item.coa+'">'+item.pembayaranName+'</option>';
-                });
-                $('#bank').html(option);
-            }else{
-                $('#bank').html(option);
-            }
-        });
-    }
-
-    $(document).ready(function () {
-        $('#divisi_id').attr('readonly', true);
-        $('#kode_vendor').attr('readonly', true);
-        $('#no_nota').attr('readonly', true);
-        $('#jumlah_pembayaran').attr('readonly', true);
-        $('#btnSearchNota').hide();
-        $('#divisi_id').attr('wajib', "N");
-        $('#kode_vendor').attr('wajib', "N");
-        $('#no_nota').attr('wajib', "N");
-
-        selectPembayaran();
-        $('#btnSearchNota').click(function () {
-            var masterId = $('#kode_vendor').val();
-            var transaksiId = $('#tipe_transaksi').val();
-            var branchId = $('#branch_id').val();
-            var divisiId = $('#divisi_id').val();
-            var coaLawan = $('#coa_lawan').val();
-
-            $('#tabelDaftarNota').find('tbody').remove();
-            $('#tabelDaftarNota').find('thead').remove();
-            dwr.engine.setAsync(false);
-            var tmp_table = "";
-
-            var add=true;
-            if (coaLawan==""||branchId==""||transaksiId==""){
-                add=false;
-            }
-            var statusDivisi=$('#divisi_id').attr('wajib');
-            var statusVendor=$('#kode_vendor').attr('wajib');
-
-            if (statusDivisi=='Y'&& divisiId==""){
-                alert("belum memilih Divisi");
-            } else if (statusVendor=='Y'&& masterId==""){
-                alert("belum memilih Vendor");
-            } else {
-                if (add){
-                    PembayaranUtangPiutangAction.searchNotaPembayaran(masterId,transaksiId,branchId,divisiId,coaLawan,function (listdata) {
-                        tmp_table = "<thead style='font-size: 14px' ><tr class='active'>" +
-                            "<th style='text-align: center; color: #fff; background-color:  #30d196 '>No</th>" +
-                            "<th style='text-align: center; color: #fff; background-color:  #30d196'><input type='checkbox' id='checkAll'></th>"+
-                            "<th style='text-align: center; color: #fff; background-color:  #30d196 '>Kode Vendor</th>" +
-                            "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>Rekening ID</th>" +
-                            "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>No. Nota</th>" +
-                            "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>Debit</th>" +
-                            "<th style='text-align: center; color: #fff; background-color:  #30d196 '>Add</th>" +
-                            "</tr></thead>";
-                        var i = i;
-                        $.each(listdata, function (i, item) {
-                            var combo = '<input type="checkbox" checked id="check_'+i+'">';
-                            tmp_table += '<tr style="font-size: 12px;" ">' +
-                                '<td align="center">' + (i + 1) + '</td>' +
-                                '<td align="center">' + combo + '</td>' +
-                                '<td align="center">' + item.masterId + '</td>' +
-                                '<td align="center">' + item.rekeningId + '</td>' +
-                                '<td align="center">' + item.noNota + '</td>' +
-                                '<td align="center">' + item.stJumlahPembayaran + '</td>' +
-                                '<td align="center">' +
-                                "<a href='javascript:;' class ='item-add-data' data ='" + item.noNota + "' bayar ='" + item.stJumlahPembayaran + "' rekeningId ='" + item.rekeningId + "'>" +
-                                "<img border='0' src='<s:url value='/pages/images/add_task1.png'/>' name='icon_add'>" +
-                                '</a>' +
-                                '</td>' +
-                                "</tr>";
-                        });
-                        $('#tabelDaftarNota').append(tmp_table);
-                        $("#checkAll").change(function(){
-                            $('input:checkbox').not(this).prop('checked', this.checked);
-                        });
-                    });
-                    $("#modal-search-nota").modal('show');
-                } else{
-                    var msg="";
-                    if (transaksiId==""){
-                        msg+="Tipe Transaksi belum dipilih \n";
-                    }
-                    if (branchId==""){
-                        msg+="Unit belum dipilih \n";
-                    }
-                    if (coaLawan==""){
-                        msg+="Coa lawan belum dipilih \n";
-                    }
-                    alert(msg);
-                }
-            }
-        });
-        $('#tabelDaftarNota').on('click', '.item-add-data', function () {
-            var noNota = $(this).attr('data');
-            var bayar = $(this).attr('bayar');
-            var rekeningId = $(this).attr('rekeningId');
-            $('#no_nota').val(noNota);
-            $('#jumlah_pembayaran').val(bayar);
-            $('#rekening_id').val(rekeningId);
-
-            $("#modal-search-nota").modal('hide');
-
-        });
-
-        $('#btnAddCheckedNota').click(function () {
-            var data = $('#tabelDaftarNota').tableToJSON();
-            var kodeVendor=$('#kode_vendor').val();
-            var namaVendor=$('#nama_vendor').val();
-            var divisiId=$('#divisi_id').val();
-            var divisiName=$('#nama_divisi').val();
-            var error="";
-            $.each(data, function (i, item) {
-                var noNota = data[i]["No. Nota"];
-                var bayar = data[i]["Debit"];
-                var rekeningId = data[i]["Rekening ID"];
-                if ($('#check_' + i).prop("checked") == true) {
-                    if (kodeVendor!=''&&noNota!=''&&namaVendor!=''){
-                        PembayaranUtangPiutangAction.saveDetailPembayaran(kodeVendor,namaVendor,noNota,bayar,rekeningId,divisiId,divisiName,function (result) {
-                            if (result==""){
-                                loadDetailPembayaran();
-                                //dihitung totalbayarnya
-                                var totalBayar = $('#bayar').val();
-                                totalBayar=totalBayar.replace(/[.]/g,"");
-                                var strBayar=bayar.replace(/[.]/g,"");
-                                var intTotalBayar=0;
-                                if (totalBayar!=''){
-                                    intTotalBayar = parseInt(totalBayar);
-                                }
-                                var intBayar = parseInt(strBayar);
-                                totalBayar = intTotalBayar+intBayar;
-                                var strTotalBayar = String(totalBayar);
-                                $('#bayar').val(formatRupiahAngka(strTotalBayar));
-                            } else{
-                                error=result;
-                            }
-                        });
-                    } else{
-                        var msg="";
-                        if (kodeVendor==""){
-                            msg+="Kode vendor tidak boleh kosong \n";
-                        }if (noNota==""){
-                            msg+="No nota tidak boleh kosong \n";
-                        }if (jumlahPembayaran==""){
-                            msg+="Jumlah pembayaran tidak boleh kosong \n";
-                        }if (namaVendor==""){
-                            msg+="Nama vendor tidak ditemukan, coba lagi \n";
-                        }
-                        error=msg;
-                    }
-                }
-            });
-            if (error!=""){
-                alert(error);
-            }
-        });
-
-        $('#btnSaveDetailPembayaran').click(function () {
-            var kodeVendor=$('#kode_vendor').val();
-            var namaVendor=$('#nama_vendor').val();
-            var noNota=$('#no_nota').val();
-            var rekeningId=$('#rekening_id').val();
-            var jumlahPembayaran=$('#jumlah_pembayaran').val();
-            var divisiId=$('#divisi_id').val();
-            var divisiName=$('#nama_divisi').val();
-
-            var statusDivisi=$('#divisi_id').attr('wajib');
-            var statusVendor=$('#kode_vendor').attr('wajib');
-            var statusNota=$('#no_nota').attr('wajib');
-
-            if (statusDivisi=='Y'&& divisiId==""){
-                alert("belum memilih Divisi");
-            } else if (statusVendor=='Y'&& kodeVendor==""){
-                alert("belum memilih Vendor");
-            }else if (statusNota=='Y'&& noNota==""){
-                alert("belum memilih No. Nota");
-            }else{
-                PembayaranUtangPiutangAction.saveDetailPembayaran(kodeVendor,namaVendor,noNota,jumlahPembayaran,rekeningId,divisiId,divisiName,function (result) {
-                    if (result==""){
-                        loadDetailPembayaran();
-                        //dihitung totalbayarnya
-                        var totalBayar = $('#bayar').val();
-                        totalBayar=totalBayar.replace(/[.]/g,"");
-                        var strBayar=jumlahPembayaran.replace(/[.]/g,"");
-                        var intTotalBayar=0;
-                        if (totalBayar!=''){
-                            intTotalBayar = parseInt(totalBayar);
-                        }
-                        var intBayar = parseInt(strBayar);
-                        totalBayar = intTotalBayar+intBayar;
-                        var strTotalBayar = String(totalBayar);
-                        $('#bayar').val(formatRupiahAngka(strTotalBayar));
-                    } else{
-                        alert(result);
-                    }
-                });
-            }
-
-        });
-        $('.detailPembayaranTable').on('click', '.item-delete-data', function () {
-            var id = $(this).attr('data');
-            var biaya = $(this).attr('biaya');
-            if (id!=''){
-                PembayaranUtangPiutangAction.deleteDetailPembayaran(id,function (result) {
-                    alert("data berhasil dihapus");
-                    loadDetailPembayaran();
-                    var totalBayar = $('#bayar').val();
-                    totalBayar=totalBayar.replace(/[.]/g,"");
-                    var strBayar=biaya.replace(/[.]/g,"");
-                    var intTotalBayar=0;
-                    if (totalBayar!=''){
-                        intTotalBayar = parseInt(totalBayar);
-                    }
-                    var intBayar = parseInt(strBayar);
-                    totalBayar = intTotalBayar-intBayar;
-                    var strTotalBayar = String(totalBayar);
-                    $('#bayar').val(formatRupiahAngka(strTotalBayar));
-                });
-            } else{
-                var msg="";
-                if (id==""){
-                    msg+="Kode vendor tidak ditemukan \n";
-                }
-                alert(msg);
-            }
-        });
-        window.loadDetailPembayaran = function () {
-            $('.detailPembayaranTable').find('tbody').remove();
-            $('.detailPembayaranTable').find('thead').remove();
-            dwr.engine.setAsync(false);
-            var tmp_table = "";
-            PembayaranUtangPiutangAction.searchDetailPembayaran(function (listdata) {
-                tmp_table = "<thead style='font-size: 14px' ><tr class='active'>" +
-                    "<th style='text-align: center; color: #fff; background-color:  #30d196 '>No</th>" +
-                    "<th style='text-align: center; color: #fff; background-color:  #30d196 '>Rekening ID</th>" +
-                    "<th style='text-align: center; color: #fff; background-color:  #30d196 '>Divisi ID</th>" +
-                    "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>Nama Divisi</th>" +
-                    "<th style='text-align: center; color: #fff; background-color:  #30d196 '>Kode Vendor</th>" +
-                    "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>Nama Vendor</th>" +
-                    "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>No. Nota</th>" +
-                    "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>Jumlah Pembayaran</th>" +
-                    "<th style='text-align: center; color: #fff; background-color:  #30d196 '>Delete</th>" +
-                    "</tr></thead>";
-                var i = i;
-                $.each(listdata, function (i, item) {
-                    tmp_table += '<tr style="font-size: 12px;" ">' +
-                        '<td align="center">' + (i + 1) + '</td>' +
-                        '<td align="center">' + item.rekeningId + '</td>' +
-                        '<td align="center">' + item.divisiId + '</td>' +
-                        '<td align="center">' + item.divisiName + '</td>' +
-                        '<td align="center">' + item.masterId + '</td>' +
-                        '<td align="center">' + item.masterName + '</td>' +
-                        '<td align="center">' + item.noNota + '</td>' +
-                        '<td align="center">' + item.stJumlahPembayaran+ '</td>' +
-                        '<td align="center">' +
-                        "<a href='javascript:;' class ='item-delete-data' data ='" + item.noNota + "' biaya ='" + item.stJumlahPembayaran + "'>" +
-                        "<img border='0' src='<s:url value='/pages/images/delete_task.png'/>' name='icon_delete'>" +
-                        '</a>' +
-                        '</td>' +
-                        "</tr>";
-                });
-                $('.detailPembayaranTable').append(tmp_table);
-            });
-        };
-    });
-
     function isiKeteterangan() {
-        var tipeTransaksi = $('#tipe_transaksi option:selected').text();
-        var metodeBayar = $('#coa_asal option:selected').text();
-        var branchName = $('#branch_id option:selected').text();
-        var noSlipBank = $('#no_slip_bank').val();
+        var transaksi = $('#transaksi_view option:selected').text();
+        var transaksiId = $('#transaksi').val();
+        var divisi = $('#divisi_id_view option:selected').text();
+        var coaBiaya = $('#coa_biaya option:selected').text();
+        var coaGiro = $('#coa_giro option:selected').text();
+        var unit = $('#branch_id_view option:selected').text();
         var keterangan ="";
-        if (metodeBayar!=""){
-            metodeBayar = "dengan metode bayar "+metodeBayar;
+        if (transaksiId == "PB"){
+            keterangan= transaksi+" "+coaBiaya+" "+unit+" divisi "+divisi+" pada giro "+coaGiro;
         }
-        if (noSlipBank!=""){
-            noSlipBank="dengan no referensi bank "+noSlipBank;
-        }
-
-        keterangan= tipeTransaksi +" "+branchName+" "+metodeBayar+" "+noSlipBank;
-
         $('#keterangan').val(keterangan);
     }
 
-    function getTipeMaster() {
-        var tipeTransaksi = $('#tipe_transaksi option:selected').val();
-        PembayaranUtangPiutangAction.getTipeMaster(tipeTransaksi,function (response) {
-            $('#tipeMaster').val(response);
-        })
-    }
-
-    function getCoaAsal() {
-        var option = '<option value=""></option>';
-        var tipeTransaksi = $('#tipe_transaksi option:selected').val();
-        KodeRekeningAction.getKodeRekeningLawanByTransId(tipeTransaksi,"K",function (res) {
-            if(res.length > 0){
-                $.each(res, function (i, item) {
-                    option += '<option value="'+item.kodeRekening+'">'+item.namaKodeRekening+'</option>';
-                });
-                $('#coa_asal').html(option);
-            }else{
-                $('#coa_asal').html(option);
-            }
+    function getSisaBudget(value) {
+        var divisi_Id=$('#divisi_id').val();
+        var branch_id=$('#branch_id').val();
+        var tanggal=$('#tanggal').val();
+        BudgetingAction.getBudgetSaatIni(branch_id,divisi_Id,tanggal,value,function (res) {
+            $('#sisa_budget').val(res);
+            $('#budget_terpakai').val(res);
         });
-    }
-
-    function getCoaLawan() {
-        var option = '<option value=""></option>';
-        var tipeTransaksi = $('#tipe_transaksi option:selected').val();
-        KodeRekeningAction.getKodeRekeningLawanByTransId(tipeTransaksi,"D",function (res) {
-            if(res.length > 0){
-                $.each(res, function (i, item) {
-                    option += '<option value="'+item.kodeRekening+'">'+item.tampilanCoa+'</option>';
-                });
-                $('#coa_lawan').html(option);
-            }else{
-                $('#coa_lawan').html(option);
-            }
-        });
-    }
-
-    function getDisableTrans() {
-        $('#divisi_id').attr('readonly', true);
-        $('#kode_vendor').attr('readonly', true);
-        $('#no_nota').attr('readonly', true);
-        $('#jumlah_pembayaran').attr('readonly', true);
-        $('#btnSearchNota').hide();
-        $('#divisi_id').attr('wajib', "N");
-        $('#kode_vendor').attr('wajib', "N");
-        $('#no_nota').attr('wajib', "N");
-
-        var tipeTransaksi = $('#tipe_transaksi option:selected').val();
-        var coaLawan = $('#coa_lawan option:selected').val();
-        if (tipeTransaksi!=''&&coaLawan!=''){
-            PembayaranUtangPiutangAction.getDisableTrans(tipeTransaksi,coaLawan,function (res) {
-                if (res.divisiId=="Y"){
-                    $('#divisi_id').attr('readonly', false);
-                    $('#divisi_id').attr('wajib', "Y");
-                }
-                if (res.masterId=="Y"){
-                    $('#kode_vendor').attr('readonly', false);
-                    $('#kode_vendor').attr('wajib', "Y");
-                }
-                if (res.noNota=="Y"){
-                    $('#btnSearchNota').show();
-                    $('#no_nota').attr('wajib', "Y");
-                }else{
-                    $('#no_nota').attr('wajib', "N");
-                }
-
-                if (res.biaya=="Y"){
-                    $('#jumlah_pembayaran').attr('readonly', false);
-                }
-            });
-        }else{
-            var msg="";
-            if (tipeTransaksi==""){
-                msg+="Tipe transaksi belum dipilih \n";
-            }
-            if (coaLawan==""){
-                msg+="COA lawan belum dipilih \n";
-            }
-            alert(msg);
-        }
     }
 
     function formatRupiahAngka(angka) {
@@ -841,7 +349,104 @@
         return rupiah;
     }
 
+    function initNoBudget(value){
+        if (value=="R"){
+            var option = '<option value=""></option>';
+            var divisi_Id=$('#divisi_id').val();
+            var branch_id=$('#branch_id').val();
+            var tanggal=$('#tanggal').val();
+            BudgetingAction.getNoBudgetByDivisi(branch_id,divisi_Id,tanggal,function (res) {
+                if(res.length > 0){
+                    $.each(res, function (i, item) {
+                        option += '<option value="'+item.noBudgeting+'">'+item.noBudgeting+'</option>';
+                    });
+                    $('#no_budget').html(option);
+                }else{
+                    $('#no_budget').html(option);
+                }
+            });
+        }
+    }
 
+    window.loadPengajuan =  function(){
+        $('.pengajuanBiayaTabel').find('tbody').remove();
+        $('.pengajuanBiayaTabel').find('thead').remove();
+        dwr.engine.setAsync(false);
+        var tmp_table = "";
+        PengajuanBiayaAction.searchSessionPengajuan(function(listdata){
+            tmp_table = "<thead style='font-size: 10px; color: white' ><tr class='active'>"+
+                "<th style='text-align: center; background-color:  #90ee90'>No</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Delete</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Unit</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Divisi</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Tanggal</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Transaksi</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>No. Budget</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Jumlah</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Budget RKAP</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Budget Terpakai</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Keperluan</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Keterangan</th>"+
+                "</tr></thead>";
+            var i = i ;
+            $.each(listdata, function (i, item) {
+                tmp_table += '<tr style="font-size: 10px;" ">' +
+                    '<td align="center">' + (i + 1) + '</td>' +
+                    '<td align="center">' +
+                    "<a href='javascript:;' class ='item-delete' data ='"+item.Keperluan+"' >" +
+                    "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>"+
+                    '</a>' +
+                    '</td>' +
+                    '<td >' + item.branchId + '</td>' +
+                    '<td align="center">' + item.divisiId+ '</td>' +
+                    '<td align="center">' + item.stTanggal+ '</td>' +
+                    '<td align="center">' + item.transaksi+ '</td>' +
+                    '<td align="center">' + item.noBudgeting+ '</td>' +
+                    '<td align="center">' + item.stJumlah+ '</td>' +
+                    '<td align="center">' + item.stBudgetBiaya+ '</td>' +
+                    '<td align="center">' + item.stBudgetTerpakai+ '</td>' +
+                    '<td align="center">' + item.keperluan+ '</td>' +
+                    '<td align="center">' + item.keterangan+ '</td>' +
+                    "</tr>";
+            });
+            $('.pengajuanBiayaTabel').append(tmp_table);
+        });
+    };
+
+    $(document).ready(function(){
+        $('#btnTambahPengajuan').click(function () {
+            var branchId=$('#branch_id').val();
+            var divisiId=$('#divisi_id').val();
+            var stTanggal=$('#tanggal').val();
+            var transaksi=$('#transaksi_view').val();
+            var noBudgeting=$('#no_budget').val();
+            var stJumlah=$('#bayar').val();
+            var stBudgetBiaya=$('#sisa_budget').val();
+            var stBudgetTerpakai=$('#budget_terpakai').val();
+            var keperluan=$('#keperluan').val();
+            var keterangan=$('#keterangan').val();
+
+            PengajuanBiayaAction.saveSessionPengajuan(branchId,divisiId,stTanggal,transaksi,noBudgeting,stJumlah,stBudgetBiaya,stBudgetTerpakai,keperluan,keterangan,function(){
+                loadPengajuan();
+            })
+        });
+
+        $('.pengajuanBiayaTabel').on('click', '.item-delete-data', function () {
+            var id = $(this).attr('data');
+            if (id!=''){
+                PengajuanBiayaAction.deleteSessionPengajuan(id,function (result) {
+                    alert("data berhasil dihapus");
+                    loadPengajuan();
+                });
+            } else{
+                var msg="";
+                if (id==""){
+                    msg+="data tidak ditemukan \n";
+                }
+                alert(msg);
+            }
+        });
+    })
 </script>
 <%@ include file="/pages/common/footer.jsp" %>
 <%@ include file="/pages/common/lastScript.jsp" %>

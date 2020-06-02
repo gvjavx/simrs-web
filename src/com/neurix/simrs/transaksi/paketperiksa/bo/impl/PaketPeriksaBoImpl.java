@@ -363,6 +363,11 @@ public class PaketPeriksaBoImpl implements PaketPeriksaBo {
         return list;
     }
 
+    @Override
+    public MtSimrsPaketEntity getPaketEntityById(String id) throws GeneralBOException {
+        return paketDao.getById("idPaket", id);
+    }
+
     private String getNextPaketPeriksaId() {
 
         String id = "";

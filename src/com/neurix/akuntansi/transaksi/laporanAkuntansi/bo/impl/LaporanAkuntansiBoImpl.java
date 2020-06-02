@@ -749,7 +749,24 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
         }else if ("BCPT".equalsIgnoreCase(tipeLaporan)){
             String tahunLalu = String.valueOf(Integer.parseInt(tahun)-1);
             String tahunLalu2 = String.valueOf(Integer.parseInt(tahun)-2);
-            resultList = laporanAkuntansiDao.getBudgettingComparingPerTahun(unit,budgetingStatus.getStatus(),tahun,tahunLalu,tahunLalu2);
+            Budgeting budgetingStatusTahunLalu = findLastStatus(unit, tahunLalu);
+            Budgeting budgetingStatus2TahunLalu = findLastStatus(unit, tahunLalu2);
+            List<BudgettingDTO> resultListTmp = new ArrayList<>();
+
+            resultListTmp = laporanAkuntansiDao.getBudgettingComparingPerTahun(unit,budgetingStatus.getStatus(),tahun,tahunLalu,tahunLalu2,budgetingStatusTahunLalu.getStatus(),budgetingStatus2TahunLalu.getStatus());
+
+            for (BudgettingDTO budgettingDTO : resultListTmp){
+                if (tahun.equalsIgnoreCase(budgettingDTO.getTahun())){
+                    for (BudgettingDTO budgettingTahun : resultListTmp){
+                        if (budgettingDTO.getKodeRekening().equalsIgnoreCase(budgettingTahun.getKodeRekening())&&tahunLalu.equalsIgnoreCase(budgettingTahun.getTahun())){
+                            budgettingDTO.setNilaiTotalTahunLalu(budgettingTahun.getNilaiTotal());
+                        }else if (budgettingDTO.getKodeRekening().equalsIgnoreCase(budgettingTahun.getKodeRekening())&&tahunLalu2.equalsIgnoreCase(budgettingTahun.getTahun())){
+                            budgettingDTO.setNilaiTotal2TahunLalu(budgettingTahun.getNilaiTotal());
+                        }
+                    }
+                    resultList.add(budgettingDTO);
+                }
+            }
         } else if ("BCR".equalsIgnoreCase(tipeLaporan)){
             List<BudgettingDTO> resultListTmp = new ArrayList<>();
             resultListTmp = laporanAkuntansiDao.getBudgettingComparingRealisasi(unit,budgetingStatus.getStatus(),tahun);
@@ -758,7 +775,36 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
                 resultList.add(budgettingDTO);
             }
         }else if ("BPD".equalsIgnoreCase(tipeLaporan)){
-            resultList = laporanAkuntansiDao.getBudgettingPerDivisi(unit,budgetingStatus.getStatus(),tahun);
+            List<BudgettingDTO> listDivisi= new ArrayList<>();
+            List<BudgettingDTO> listBudgetting= new ArrayList<>();
+
+            listDivisi = laporanAkuntansiDao.getDivisiDariBudgetting(unit,budgetingStatus.getStatus(),tahun);
+            listBudgetting = laporanAkuntansiDao.getBudgettingMentah(unit,budgetingStatus.getStatus(),tahun);
+
+            for (BudgettingDTO divisi : listDivisi){
+                for (BudgettingDTO budgetting : listBudgetting){
+                    BudgettingDTO finalResult = new BudgettingDTO();
+                    finalResult.setDivisi(divisi.getDivisi());
+                    finalResult.setDivisiId(divisi.getDivisiId());
+                    finalResult.setKodeRekening(budgetting.getKodeRekening());
+                    finalResult.setKodeRekeningName(budgetting.getKodeRekeningName());
+                    finalResult.setGrup(budgetting.getGrup());
+                    finalResult.setNoBudgetting(budgetting.getNoBudgetting());
+                    int level = kodeRekeningDao.getLevelKodeRekening(budgetting.getKodeRekening());
+
+                    List<BudgettingDTO> listBiayaDivisi = laporanAkuntansiDao.getBudgettingPerDivisi(unit,budgetingStatus.getStatus(),tahun,divisi.getDivisiId(),budgetting.getKodeRekening());
+                    for (BudgettingDTO biayaDivisi : listBiayaDivisi){
+                        if (level==5){
+                            finalResult.setQty(biayaDivisi.getQty());
+                            finalResult.setNilai(biayaDivisi.getNilai());
+                        }
+                        finalResult.setSubTotal(biayaDivisi.getSubTotal());
+                    }
+
+
+                    resultList.add(finalResult);
+                }
+            }
         }
         logger.info("[LaporanAkuntansiBoImpl.getBudgetting] end process <<<");
         return resultList;

@@ -939,6 +939,8 @@ public class VerifikatorAction extends BaseMasterAction {
                 Map mapPPN = new HashMap();
                 mapPPN.put("bukti", billingSystemBo.createInvoiceNumber(kode, branchId));
                 mapPPN.put("nilai", ppn);
+                mapPPN.put("master_id", CommonConstant.MASTER_PAJAK_OBAT);
+
                 if (!"rawat_inap".equalsIgnoreCase(typePelayanan)){
                     hsCriteria.put("ppn_keluaran", mapPPN);
                 }
@@ -1147,6 +1149,7 @@ public class VerifikatorAction extends BaseMasterAction {
             Map mapPajakObat = new HashMap();
             mapPajakObat.put("bukti", invoice);
             mapPajakObat.put("nilai", ppnObat);
+            mapPajakObat.put("master_id", CommonConstant.MASTER_PAJAK_OBAT);
 
             if ("JRJ".equalsIgnoreCase(kode)){
 
@@ -1216,6 +1219,7 @@ public class VerifikatorAction extends BaseMasterAction {
                 Map mapPajakObat = new HashMap();
                 mapPajakObat.put("bukti", invoice);
                 mapPajakObat.put("nilai", ppnObat);
+                mapPajakObat.put("master_id", CommonConstant.MASTER_PAJAK_OBAT);
 
                 Map mapPiutangBpjs = new HashMap();
                 mapPiutangBpjs.put("bukti", detailCheckupEntity.getNoSep());

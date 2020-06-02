@@ -732,8 +732,17 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-5" >Tunj. Peralihan</label>
                                 <div class="col-sm-6">
-                                    <input style="text-align: right" type="text" class="form-control nip" id="tunjPeralihan" onfocusout="updateNilai(this.id, this.value)" name="nip">
+                                    <input style="text-align: right" type="text" class="form-control nip" id="tunjPeralihan" readonly onfocusout="updateNilai(this.id, this.value)" name="nip">
                                 </div>
+                                <div class="col-sm-1 pull-right nopadding">
+                                    <button type="button" id="detailPeralihan" class="btn btn-primary">View</button>
+                                </div>
+                                <script>
+                                    $('#detailPeralihan').click(function(){
+                                        $('#modal-peralihan').find('.modal-title').text('Detail Peralihan');
+                                        $('#modal-peralihan').modal('show');
+                                    })
+                                </script>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-5" >Tunj. Lain</label>
@@ -1168,6 +1177,45 @@
         </div>
     </div>
 </div>
+
+<div id="modal-peralihan" class="modal fade" role="dialog">
+    <div class="modal-dialog " style="width:500px;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body" >
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-sm-5" >Peralihan Gapok</label>
+                        <div class="col-sm-6">
+                            <input style="text-align: right"  type="text" class="form-control" onfocusout="updateNilai(this.id, this.value)" id="nilaiModPeralihanGapok">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-5" >Peralihan Sankhus</label>
+                        <div class="col-sm-6">
+                            <input style="text-align: right"  type="text" class="form-control" onfocusout="updateNilai(this.id, this.value)" id="nilaiModPeralihanSankhus">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-5" >Peralihan Tunjangan</label>
+                        <div class="col-sm-6">
+                            <input style="text-align: right"  type="text" class="form-control" onfocusout="updateNilai(this.id, this.value)" id="nilaiModPeralihanTunjangan">
+                        </div>
+                    </div>
+                </form>
+                <br>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <%--Modal detail tunjangan Lain Irfan--%>
 <div id="modal-detailTunjLain" class="modal fade modal2" role="dialog">
     <div class="modal-dialog " style="width:500px;">
@@ -3510,6 +3558,12 @@
         var pemondokan = document.getElementById("pemondokan").value;
         var komunikasi = document.getElementById("komunikasi").value;
 
+        //peralihan
+        //macam peralihan
+        var peralihanGapok = document.getElementById("nilaiModPeralihanGapok").value;
+        var peralihanSankhus = document.getElementById("nilaiModPeralihanSankhus").value;
+        var peralihanTunjangan = document.getElementById("nilaiModPeralihanTunjangan").value;
+
         //komponen rincian potongan
         var kopkar = document.getElementById("kopkar").value;
         var iuranSp = document.getElementById("iuranSp").value;
@@ -3556,7 +3610,7 @@
                 PayrollAction.saveEditData(payrollId, nip, tunjanganPeralihan,pemondokan,
                         komunikasi, kopkar, iuranSp, iuranPiikb,bankBri, bankMandiri, infaq, perkesDanObat,
                         listrik, iuranProfesi, potonganLain,
-                        flagJubileum, flagPensiun, tunjPph, pphGaji,nilaiPtt,totalA,totalB,totalC,gajiBersih,totalPttSetahun,pphSeharusnya,pph11Bulan,selisihPph21,totalPotLainLain,bulan,tahun, function(listdata) {
+                        flagJubileum, flagPensiun, tunjPph, pphGaji,nilaiPtt,totalA,totalB,totalC,gajiBersih,totalPttSetahun,pphSeharusnya,pph11Bulan,selisihPph21,totalPotLainLain,bulan,tahun,peralihanGapok,peralihanSankhus,peralihanTunjangan, function(listdata) {
                             alert('Data Berhasil Dirubah');
                             $('#modal-edit').modal('hide');
                             $('#formEdit')[0].reset();
@@ -4184,6 +4238,7 @@
             var payrollId = $(this).attr('data');
             $('#payrollId').val(payrollId);
             PayrollAction.getDetailEdit(payrollId, function(listdata){
+                console.log(listdata);
                 if(listdata.tipePegawai == "TP03" && listdata.strukturGaji != "G"){
                     $('.detailGaji').show();
                 }else{
@@ -4313,6 +4368,9 @@
                 $('#iuranProfesi').val(listdata.iuranProfesi);
                 $('#potonganLain').val(listdata.potonganLain);
 
+                $('#nilaiModPeralihanGapok').val(listdata.stPeralihanGapok);
+                $('#nilaiModPeralihanSankhus').val(listdata.stPeralihanSankhus);
+                $('#nilaiModPeralihanTunjangan').val(listdata.stPeralihanTunjangan);
 
                 //Total
                 $('#totalA').val(listdata.totalA);
@@ -4719,6 +4777,8 @@
         //var payrollId = $(this).val().replace(/\n|\r/g, "");
         var payrollId = document.getElementById("payrollId").value;
         PayrollAction.getDetailEdit(payrollId, function(listdata){
+            console.log(listdata);
+
             $('#bulan').val(listdata.bulan);
             $('#tahun').val(listdata.tahun);
             $('#nip').val(listdata.nip);
@@ -4792,6 +4852,9 @@
             $('#nilaiPtt').val(listdata.lainLain);
             $('#tipePttId1').val(listdata.idLainLain).change();
 
+            $('#nilaiModPeralihanGapok').val(listdata.stPeralihanGapok);
+            $('#nilaiModPeralihanSankhus').val(listdata.stPeralihanSankhus);
+            $('#nilaiModPeralihanTunjangan').val(listdata.stPeralihanTunjangan);
 
             //Total
             $('#totalA').val(listdata.totalA);
@@ -4813,6 +4876,7 @@
         var payrollId = document.getElementById("payrollId2").value;
 
         PayrollAction.reloadDetailEdit(payrollId, function(listdata){
+            console.log(listdata);
             if(listdata.tipePegawai == "TP03" && listdata.strukturGaji != "G"){
                 $('.detailGaji').show();
             }else{
@@ -4892,11 +4956,17 @@
             $('#nilaiPtt').val(listdata.lainLain);
             $('#tipePttId1').val(listdata.idLainLain).change();
 
+            $('#nilaiModPeralihanGapok').val(listdata.stPeralihanGapok);
+            $('#nilaiModPeralihanSankhus').val(listdata.stPeralihanSankhus);
+            $('#nilaiModPeralihanTunjangan').val(listdata.stPeralihanTunjangan);
+
             //Total
             $('#totalA').val(listdata.totalA);
             $('#totalB').val(listdata.totalB);
             $('#totalC').val(listdata.totalC);
             $('#gajiBersih').val(listdata.totalGajiBersih);
+
+            $('#totalA').val(listdata.totalA);
 
             //pph bulan 12
             $('#totalPtt').val(listdata.totalLain11Bulan);
@@ -5219,6 +5289,11 @@
         var iuranProfesi = document.getElementById("iuranProfesi").value;
         var potonganLain = document.getElementById("potonganLain").value;
 
+        //macam peralihan
+        var peralihanGapok = document.getElementById("nilaiModPeralihanGapok").value;
+        var peralihanSankhus = document.getElementById("nilaiModPeralihanSankhus").value;
+        var peralihanTunjangan = document.getElementById("nilaiModPeralihanTunjangan").value;
+
         var flagPensiun = "N";
         var flagJubileum = "N";
 
@@ -5237,7 +5312,7 @@
                 PayrollAction.saveEditSessionDataUsingPayrollId(payrollId, nip, tunjanganPeralihan,pemondokan,
                         komunikasi, kopkar, iuranSp, iuranPiikb,bankBri, bankMandiri, infaq, perkesDanObat,
                         listrik, iuranProfesi, potonganLain,
-                        flagJubileum, flagPensiun, nilaiPtt,bulan,tahun, function(listdata) {
+                        flagJubileum, flagPensiun, nilaiPtt,bulan,tahun,peralihanGapok,peralihanSankhus,peralihanTunjangan, function(listdata) {
                             reloadDataModal();
                         });
             }else if(tipe == "JP"){

@@ -18,6 +18,9 @@
           p:budgetingPengadaanDao-ref="budgetingPengadaanDao"
           p:kodeRekeningDao-ref="kodeRekeningDao"
           p:masterDao-ref="masterDao"
+          p:laporanAkuntansiDao-ref="laporanAkuntansiDao"
+          p:saldoAkhirDao-ref="saldoAkhirDao"
+          p:saldoAkhirDetailDao-ref="saldoAkhirDetailDao"
     />
 
     <bean id="budgetingBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

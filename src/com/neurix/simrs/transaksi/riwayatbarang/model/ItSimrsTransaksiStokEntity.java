@@ -27,6 +27,9 @@ public class ItSimrsTransaksiStokEntity implements Serializable {
     private String idVendor;
     private String idBarang;
     private String idPelayanan;
+    private BigInteger qtyLalu;
+    private BigDecimal totalLalu;
+    private BigDecimal subTotalLalu;
 
     public String getIdPelayanan() {
         return idPelayanan;
@@ -154,5 +157,29 @@ public class ItSimrsTransaksiStokEntity implements Serializable {
 
     public void setIdBarang(String idBarang) {
         this.idBarang = idBarang;
+    }
+
+    public BigInteger getQtyLalu() {
+        return qtyLalu;
+    }
+
+    public void setQtyLalu(BigInteger qtyLalu) {
+        this.qtyLalu = qtyLalu;
+    }
+
+    public BigDecimal getTotalLalu() {
+        return totalLalu;
+    }
+
+    public void setTotalLalu(BigDecimal totalLalu) {
+        this.totalLalu = totalLalu;
+    }
+
+    public BigDecimal getSubTotalLalu() {
+        return subTotalLalu;
+    }
+
+    public void setSubTotalLalu(BigDecimal subTotalLalu) {
+        this.subTotalLalu = subTotalLalu;
     }
 }

@@ -1371,10 +1371,10 @@ public class MutasiBoImpl implements MutasiBo {
         return hasil;
     }
 
-    public BigDecimal getGajiPokok(String golonganId){
+    public BigDecimal getGajiPokok(String golonganId,String tahun){
         BigDecimal nilai=new BigDecimal(0);
         List<ImPayrollSkalaGajiEntity> gaji = new ArrayList<>();
-        gaji = skalaGajiDao.getDataSkalaGajiSimRs(golonganId);
+        gaji = skalaGajiDao.getDataSkalaGajiSimRs(golonganId,tahun);
         if (gaji!=null){
             for (ImPayrollSkalaGajiEntity gajiEntity: gaji){
                 nilai = gajiEntity.getNilai();
