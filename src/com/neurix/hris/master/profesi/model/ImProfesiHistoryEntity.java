@@ -1,4 +1,4 @@
-package com.neurix.hris.master.positionBagian.model;
+package com.neurix.hris.master.profesi.model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -10,13 +10,11 @@ import java.sql.Timestamp;
  * Time: 14:05
  * To change this template use File | Settings | File Templates.
  */
-public class ImPositionBagianHistoryEntity implements Serializable {
+public class ImProfesiHistoryEntity implements Serializable {
 
-    private String idHistory;
-    private String bagianId;
-    private String bagianName;
-    private String branchId;
-    private String kodering;
+    private String idHistoryProfesi;
+    private String profesiId;
+    private String profesiName;
     private String flag;
     private String action;
     private Timestamp createdDate;
@@ -24,28 +22,20 @@ public class ImPositionBagianHistoryEntity implements Serializable {
     private String createdWho;
     private String lastUpdateWho;
 
-    public String getIdHistory() {
-        return idHistory;
+    public String getProfesiId() {
+        return profesiId;
     }
 
-    public void setIdHistory(String idHistory) {
-        this.idHistory = idHistory;
+    public void setProfesiId(String profesiId) {
+        this.profesiId = profesiId;
     }
 
-    public String getBagianId() {
-        return bagianId;
+    public String getProfesiName() {
+        return profesiName;
     }
 
-    public void setBagianId(String bagianId) {
-        this.bagianId = bagianId;
-    }
-
-    public String getBagianName() {
-        return bagianName;
-    }
-
-    public void setBagianName(String bagianName) {
-        this.bagianName = bagianName;
+    public void setProfesiName(String profesiName) {
+        this.profesiName = profesiName;
     }
 
     public String getFlag() {
@@ -96,19 +86,11 @@ public class ImPositionBagianHistoryEntity implements Serializable {
         this.lastUpdateWho = lastUpdateWho;
     }
 
-    public String getBranchId() {
-        return branchId;
+    public String getIdHistoryProfesi() {
+        return idHistoryProfesi;
     }
 
-    public void setBranchId(String branchId) {
-        this.branchId = branchId;
-    }
-
-    public String getKodering() {
-        return kodering;
-    }
-
-    public void setKodering(String kodering) {
-        this.kodering = kodering;
+    public void setIdHistoryProfesi(String idHistoryProfesi) {
+        this.idHistoryProfesi = idHistoryProfesi;
     }
 }
