@@ -77,7 +77,7 @@
             <result name="input2" type="json">/pages/com/neurix/pmsapb/master/alat/searchAlatApb.jsp</result>
             <result name="error">/pages/com/neurix/hris/master/libur/addLibur</result>
             <result name="init_add">/pages/com/neurix/hris/master/libur/addLibur.jsp</result>
-            <result name="success_save_add">/pages/com/neurix/pmsapb/master/alat/detailAlat.jsp</result>
+            <result name="success_save_add">/pages/com/neurix/hris/master/libur/addLibur.jsp</result>
             <result name="success_save_delete">/pages/com/neurix/hris/master/libur/deleteLibur.jsp</result>
             <result name="init_delete">/pages/com/neurix/hris/master/libur/deleteLibur.jsp</result>
             <result name="init_edit">/pages/com/neurix/hris/master/libur/editLibur.jsp</result>

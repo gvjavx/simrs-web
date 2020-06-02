@@ -480,6 +480,8 @@
                 <value>sshconfig/com/neurix/hris/master/DokterKso/hibernate/ImSimrsDokterKsoTindakan.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/mappingpersengaji/hibernate/ImHrisMappingPersenGajiEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/mappingpersengaji/hibernate/ImHrisMappingPersenGajiHistoryEntity.hbm.xml</value>
+
+                <value>sshconfig/com/neurix/hris/master/studyJurusan/hibernate/ImStudyJurusanHistoryEntity.hbm.xml</value>
             </list>
         </property>
     </bean>

@@ -86,7 +86,6 @@
     <section class="content-header">
         <h1>
             Jam Kerja
-            <small>e-HEALTH</small>
         </h1>
         <%--<ol class="breadcrumb">--%>
         <%--<li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>--%>
