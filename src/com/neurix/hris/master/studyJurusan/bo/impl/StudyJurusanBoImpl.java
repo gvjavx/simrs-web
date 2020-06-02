@@ -4,6 +4,7 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.master.studyJurusan.bo.StudyJurusanBo;
 import com.neurix.hris.master.studyJurusan.dao.StudyJurusanDao;
 import com.neurix.hris.master.studyJurusan.model.ImStudyJurusanEntity;
+import com.neurix.hris.master.studyJurusan.model.ImStudyJurusanHistoryEntity;
 import com.neurix.hris.master.studyJurusan.model.StudyJurusan;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -48,18 +49,29 @@ public class StudyJurusanBoImpl implements StudyJurusanBo {
         if (bean!=null) {
 
             String studyJurusanId = bean.getJurusanId();
-
+            String idHistory = "";
             ImStudyJurusanEntity imStudyJurusanEntity = null;
+            ImStudyJurusanHistoryEntity historyEntity = new ImStudyJurusanHistoryEntity();
 
             try {
                 // Get data from database by ID
                 imStudyJurusanEntity = studyJurusanDao.getById("jurusanId", studyJurusanId);
+                idHistory = studyJurusanDao.getNextStudyJurusanHistoryId();
             } catch (HibernateException e) {
                 logger.error("[StudyJurusanBoImpl.saveDelete] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
             }
 
             if (imStudyJurusanEntity != null) {
+                historyEntity.setId(idHistory);
+                historyEntity.setJurusanId(imStudyJurusanEntity.getJurusanId());
+                historyEntity.setJurusanName(imStudyJurusanEntity.getJurusanName());
+                historyEntity.setAction(imStudyJurusanEntity.getAction());
+                historyEntity.setFlag("Y");
+                historyEntity.setCreatedDate(imStudyJurusanEntity.getCreatedDate());
+                historyEntity.setCreatedWho(imStudyJurusanEntity.getCreatedWho());
+                historyEntity.setLastUpdate(imStudyJurusanEntity.getLastUpdate());
+                historyEntity.setLastUpdateWho(imStudyJurusanEntity.getLastUpdateWho());
 
                 // Modify from bean to entity serializable
                 imStudyJurusanEntity.setJurusanId(bean.getJurusanId());
@@ -72,6 +84,7 @@ public class StudyJurusanBoImpl implements StudyJurusanBo {
                 try {
                     // Delete (Edit) into database
                     studyJurusanDao.updateAndSave(imStudyJurusanEntity);
+                    studyJurusanDao.addAndSaveHistory(historyEntity);
                 } catch (HibernateException e) {
                     logger.error("[StudyJurusanBoImpl.saveDelete] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when saving update data StudyJurusan, please info to your admin..." + e.getMessage());
@@ -100,15 +113,27 @@ public class StudyJurusanBoImpl implements StudyJurusanBo {
                 String studyJurusanId = bean.getJurusanId();
                 String idHistory = "";
                 ImStudyJurusanEntity imStudyJurusanEntity = null;
+                ImStudyJurusanHistoryEntity historyEntity = new ImStudyJurusanHistoryEntity();
+
                 try {
                     // Get data from database by ID
                     imStudyJurusanEntity = studyJurusanDao.getById("jurusanId", studyJurusanId);
+                    idHistory = studyJurusanDao.getNextStudyJurusanHistoryId();
                 } catch (HibernateException e) {
                     logger.error("[StudyJurusanBoImpl.saveEdit] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when searching data StudyJurusan by Kode StudyJurusan, please inform to your admin...," + e.getMessage());
                 }
 
                 if (imStudyJurusanEntity != null) {
+                    historyEntity.setId(idHistory);
+                    historyEntity.setJurusanId(imStudyJurusanEntity.getJurusanId());
+                    historyEntity.setJurusanName(imStudyJurusanEntity.getJurusanName());
+                    historyEntity.setAction(imStudyJurusanEntity.getAction());
+                    historyEntity.setFlag("Y");
+                    historyEntity.setCreatedDate(imStudyJurusanEntity.getCreatedDate());
+                    historyEntity.setCreatedWho(imStudyJurusanEntity.getCreatedWho());
+                    historyEntity.setLastUpdate(imStudyJurusanEntity.getLastUpdate());
+                    historyEntity.setLastUpdateWho(imStudyJurusanEntity.getLastUpdateWho());
 
                     imStudyJurusanEntity.setJurusanId(bean.getJurusanId());
                     imStudyJurusanEntity.setJurusanName(bean.getJurusanName());
@@ -121,6 +146,7 @@ public class StudyJurusanBoImpl implements StudyJurusanBo {
                     try {
                         // Update into database
                         studyJurusanDao.updateAndSave(imStudyJurusanEntity);
+                        studyJurusanDao.addAndSaveHistory(historyEntity);
                     } catch (HibernateException e) {
                         logger.error("[StudyJurusanBoImpl.saveEdit] Error, " + e.getMessage());
                         throw new GeneralBOException("Found problem when saving update data StudyJurusan, please info to your admin..." + e.getMessage());

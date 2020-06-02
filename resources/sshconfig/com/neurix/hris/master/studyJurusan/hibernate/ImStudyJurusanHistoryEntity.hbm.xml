@@ -3,25 +3,19 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.neurix.hris.master.positionBagian.model.ImPositionBagianHistoryEntity" dynamic-update="true"
-           table="im_hris_position_bagian_history" select-before-update="true" schema="public">
+    <class name="com.neurix.hris.master.studyJurusan.model.ImStudyJurusanHistoryEntity" dynamic-update="true"
+           table="im_hris_study_jurusan_history" select-before-update="true" schema="public">
 
 
-        <id name="idHistory">
-            <column name="id_history" sql-type="varchar" length="4" not-null="true" />
+        <id name="id">
+            <column name="id" sql-type="varchar" length="5" not-null="true" />
         </id>
 
-        <property name="bagianId">
-            <column name="bagian_id" sql-type="varchar" length="15" not-null="true" />
+        <property name="jurusanId">
+            <column name="jurusan_id" sql-type="varchar" length="15" not-null="true" />
         </property>
-        <property name="bagianName">
-            <column name="nama_bagian" sql-type="varchar" length="100" not-null="true" />
-        </property>
-        <property name="branchId">
-            <column name="branch_id" sql-type="varchar" length="10" />
-        </property>
-        <property name="kodering">
-            <column name="kodering" sql-type="varchar" length="10" />
+        <property name="jurusanName">
+            <column name="nama_jurusan" sql-type="varchar" length="100" not-null="true" />
         </property>
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />

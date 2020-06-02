@@ -59,16 +59,29 @@ public class IjinBoImpl implements IjinBo {
             String ijinId = bean.getIjinId();
 
             ImIjinEntity imIjinEntity = null;
-
+            ImIjinHistoryEntity imIjinHistoryEntity = new ImIjinHistoryEntity();
+            String idHistory = "";
             try {
                 // Get data from database by ID
                 imIjinEntity = ijinDao.getById("ijinId", ijinId);
+                idHistory = ijinDao.getNextIjinHistoryId();
             } catch (HibernateException e) {
                 logger.error("[IjinBoImpl.saveDelete] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
             }
 
             if (imIjinEntity != null) {
+                imIjinHistoryEntity.setId(idHistory);
+                imIjinHistoryEntity.setIjinId(bean.getIjinId());
+                imIjinHistoryEntity.setIjinName(imIjinEntity.getIjinName());
+                imIjinEntity.setGender(bean.getGender());
+                imIjinHistoryEntity.setJumlahIjin(imIjinEntity.getJumlahIjin());
+                imIjinHistoryEntity.setFlag(imIjinEntity.getFlag());
+                imIjinHistoryEntity.setAction(imIjinEntity.getAction());
+                imIjinHistoryEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                imIjinHistoryEntity.setLastUpdate(bean.getLastUpdate());
+                imIjinHistoryEntity.setCreatedWho(imIjinEntity.getCreatedWho());
+                imIjinHistoryEntity.setCreatedDate(imIjinEntity.getCreatedDate());
 
                 // Modify from bean to entity serializable
                 imIjinEntity.setIjinId(bean.getIjinId());
@@ -85,6 +98,7 @@ public class IjinBoImpl implements IjinBo {
                 try {
                     // Delete (Edit) into database
                     ijinDao.updateAndSave(imIjinEntity);
+                    ijinDao.addAndSaveHistory(imIjinHistoryEntity);
                 } catch (HibernateException e) {
                     logger.error("[IjinBoImpl.saveDelete] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when saving update data Ijin, please info to your admin..." + e.getMessage());

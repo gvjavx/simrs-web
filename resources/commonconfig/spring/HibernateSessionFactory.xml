@@ -474,6 +474,11 @@
                 <value>sshconfig/com/neurix/hris/master/DokterKso/hibernate/ImSimrsDokterKsoTindakan.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/mappingpersengaji/hibernate/ImHrisMappingPersenGajiEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/mappingpersengaji/hibernate/ImHrisMappingPersenGajiHistoryEntity.hbm.xml</value>
+
+                <value>sshconfig/com/neurix/hris/master/studyJurusan/hibernate/ImStudyJurusanHistoryEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/positionBagian/hibernate/ImPositionBagianHistoryEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/profesi/hibernate/ImProfesiHistoryEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/golonganPkwt/hibernate/ImGolonganPkwtHistoryEntity.hbm.xml</value>
             </list>
         </property>
     </bean>

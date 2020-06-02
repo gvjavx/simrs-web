@@ -90,7 +90,6 @@
     <section class="content-header">
         <h1>
             Tipe Libur
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
