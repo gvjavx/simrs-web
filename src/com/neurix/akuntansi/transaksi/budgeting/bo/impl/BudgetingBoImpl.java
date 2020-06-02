@@ -137,9 +137,11 @@ public class BudgetingBoImpl implements BudgetingBo {
                 }
 
                 // mencari list periode;
+                String saldoAkhirId = "";
                 List<BudgetingPeriode> budgetingPeriodes = new ArrayList<>();
                 SaldoAkhir saldoPeriod = budgetingDao.getSaldoAkhirLastPeriod(budgetingEntity.getTahun(), budgetingEntity.getRekeningId(), budgetingEntity.getBranchId());
                 if (saldoPeriod != null){
+                    saldoAkhirId = saldoPeriod.getSaldoAkhirId();
                     BudgetingPeriode budgetingPeriode = new BudgetingPeriode();
                     for (BudgetingPeriode periode : budgetingPeriode.getListBudgetingPeriode()){
                         if (saldoPeriod.getBulan().compareTo(periode.getBulan()) == 1 || saldoPeriod.getBulan().compareTo(periode.getBulan()) == 0){
@@ -169,6 +171,9 @@ public class BudgetingBoImpl implements BudgetingBo {
                     hsCriteria.put("branch_id", budgeting.getBranchId());
                     hsCriteria.put("periode", periode.getBulan() + "-" + budgeting.getTahun());
                     hsCriteria.put("rekening_id", budgeting.getRekeningId());
+                    if (!"".equalsIgnoreCase(saldoAkhirId)){
+                        hsCriteria.put("saldo_akhir_id", saldoAkhirId);
+                    }
 
                     List<ItAkunSaldoAkhirEntity> saldoAkhirEntities = saldoAkhirDao.getByCriteria(hsCriteria);
                     if (saldoAkhirEntities.size() > 0){
@@ -1144,8 +1149,10 @@ public class BudgetingBoImpl implements BudgetingBo {
                     listOfPeriode = budgetingPeriode.getListBudgetingPeriode();
                 }
 
+                Integer periodeBulan = new Integer(0);
                 BigDecimal saldoAkhir = new BigDecimal(0);
                 if (listOfPeriode.size() > 0){
+                    periodeBulan = listOfPeriode.get(0).getBulan();
                     for (BudgetingPeriode periode : listOfPeriode){
                         hsCriteria = new HashMap();
                         hsCriteria.put("divisi_id", budgetingDetail.getDivisiId());
@@ -1165,12 +1172,17 @@ public class BudgetingBoImpl implements BudgetingBo {
                 BigDecimal selisihSaldoAkhir = budgetingDetail.getSubTotal().subtract(saldoAkhir);
                 budgetingDetail.setSaldoAkhir(saldoAkhir);
                 budgetingDetail.setSelisihSaldoAkhir(selisihSaldoAkhir);
+                budgetingDetail.setBulan(periodeBulan);
                 // get saldo akhir and selisih END //
 
                 // set to list
                 budgetingDetails.add(budgetingDetail);
+
             }
         }
+
+        // sorting bulan / periode / tipe
+        Collections.sort(budgetingDetails, BudgetingDetail.getTipePeriodeSorting());
         return budgetingDetails;
     }
 

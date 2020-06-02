@@ -1156,7 +1156,7 @@
                     <input type="hidden" id="id-detail"/>
                 </table>
                 <div class="row">
-                    <label class="control-label col-sm-2">Nama </label>
+                    <%--<label class="control-label col-sm-2">Nama </label>--%>
                     <div class="col-sm-4">
                        <input type="hidden" class="form form-control" id="nama-head-pengadaan"/>
                     </div>

@@ -278,7 +278,7 @@
                         <td align="center">Action</td>
                     </tr>
                     </thead>
-                    <tbody id="body-budgeting-view" style="font-size: 13px">
+                    <tbody id="body-budgeting-view" style="font-size: 11px">
                     </tbody>
                     <%--<input type="hidden" id="index-period"/>--%>
                     <%--<input type="hidden" id="index-branch"/>--%>
@@ -762,6 +762,8 @@
                         }
                     }
                 }
+//                $('.tree').append(strList);
+                $(".tree .ceknull:contains('null')").html("-");
                 $("#body-budgeting").html(strList);
                 $('.tree').treegrid({
                     expanderExpandedClass: 'glyphicon glyphicon-minus',
