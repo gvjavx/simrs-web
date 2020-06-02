@@ -287,32 +287,34 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
                 imIjinKeluarEntity.setCancelPerson(bean.getCancelPerson());
                 imIjinKeluarEntity.setCancelNote(bean.getCancelNote());
 
-                SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-                try {
-                    //tglMelahirkan
-                    java.util.Date date = format.parse(bean.getStTglMelahirkan().toString());
-                    Date tglMelahirkan = new Date(date.getTime());
-                    imIjinKeluarEntity.setTglMelahirkan(tglMelahirkan);
+                if ("IJ013".equalsIgnoreCase(bean.getIjinId())){
+                    SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+                    try {
+                        //tglMelahirkan
+                        java.util.Date date = format.parse(bean.getStTglMelahirkan().toString());
+                        Date tglMelahirkan = new Date(date.getTime());
+                        imIjinKeluarEntity.setTglMelahirkan(tglMelahirkan);
 
-                    //tglAkhirOld
-                    java.util.Date date1 = format.parse(bean.getStTanggalAkhir().toString());
-                    Date tglAkhirOld = new Date(date1.getTime());
-                    imIjinKeluarEntity.setTanggalAkhirOld(tglAkhirOld);
+                        //tglAkhirOld
+                        java.util.Date date1 = format.parse(bean.getStTanggalAkhir().toString());
+                        Date tglAkhirOld = new Date(date1.getTime());
+                        imIjinKeluarEntity.setTanggalAkhirOld(tglAkhirOld);
 
-                    //tglAkhirNew
+                        //tglAkhirNew
 //                    java.util.Date date2 = format.parse(bean.getTanggalAkhirBaru().toString());
 //                    Date tglAkhirNew = new Date(date2.getTime());
 //                    imIjinKeluarEntity.setTanggalAkhir(tglAkhirNew);
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(tglMelahirkan);
-                    calendar.add(Calendar.DAY_OF_MONTH, 45);
-                    Date tglAkhirNew = new Date(calendar.getTimeInMillis());
-                    imIjinKeluarEntity.setTanggalAkhir(tglAkhirNew);
-                } catch (ParseException e) {
-                    logger.error("[IjinKeluarBoImpl.saveEdit] Error, " + e.getMessage());
-                }
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(tglMelahirkan);
+                        calendar.add(Calendar.DAY_OF_MONTH, 45);
+                        Date tglAkhirNew = new Date(calendar.getTimeInMillis());
+                        imIjinKeluarEntity.setTanggalAkhir(tglAkhirNew);
+                    } catch (ParseException e) {
+                        logger.error("[IjinKeluarBoImpl.saveEdit] Error, " + e.getMessage());
+                    }
 
-                imIjinKeluarEntity.setLamaIjin(bean.getLamaIjinBaru());
+                    imIjinKeluarEntity.setLamaIjin(bean.getLamaIjinBaru());
+                }
 
 
 
@@ -1611,6 +1613,42 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
             throw new GeneralBOException("Found problem when getting sequence ijinKeluarId, please info to your admin..." + e.getMessage());
         }
         return suratDokterId;
+    }
+
+    @Override
+    public String cekIfAbsensi(String nip, String tglDari, String tglSelesai) {
+        String status ="";
+        Date tgl;
+        try {
+            if (tglDari.equalsIgnoreCase(tglSelesai)){
+                tgl = CommonUtil.convertStringToDate(tglDari);
+                status = ijinKeluarDao.cekIfAbsensi(nip,tgl);
+            } else {
+                Date dTglDari = CommonUtil.convertStringToDate(tglDari);
+                Date dTglSelesaai = CommonUtil.convertStringToDate(tglSelesai);
+                List<Date> datesInRange = new ArrayList<>();
+                Calendar calendar = new GregorianCalendar();
+                calendar.setTime(dTglDari);
+
+                Calendar endCalendar = new GregorianCalendar();
+                endCalendar.setTime(dTglSelesaai);
+                String tanggal="";
+                while (calendar.before(endCalendar)) {
+                    tanggal = CommonUtil.convertDateToString(calendar.getTime());
+//                    tgl = java.sql.Date.valueOf();
+                    status = ijinKeluarDao.cekIfAbsensi(nip,CommonUtil.convertStringToDate(tanggal));
+                    if (status.equalsIgnoreCase("ya")){
+                        break;
+                    }else {
+                        calendar.add(Calendar.DATE, 1);
+                    }
+                }
+
+            }
+        } catch (GeneralBOException e1) {
+            logger.error("[TrainingAction.printSuratJaminan] Error when downloading ,", e1);
+        }
+        return status;
     }
 
     private String cekStatus(String nip, Date tglAwal, Date tglAkhir){

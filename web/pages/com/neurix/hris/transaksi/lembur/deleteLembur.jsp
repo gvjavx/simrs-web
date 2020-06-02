@@ -107,13 +107,13 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Golongan :</small></label>
+                            <label class="control-label"><small>Level :</small></label>
                         </td>
                         <td>
                             <table>
                                 <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
                                 <s:select list="#initComboTipe.listComboGolongan" id="golonganId" name="lembur.golonganId" disabled="true"
-                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true"/>
+                                          listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true"/>
                                 <s:textfield  id="golonganId1" name="lembur.golonganId" cssStyle="display: none" required="false" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
@@ -128,18 +128,6 @@
                                 <s:select list="#initComboTipe.listComboTipePegawai" id="tipePegawai" name="lembur.tipePegawaiId" listKey="tipePegawaiId" listValue="tipePegawaiName"
                                           headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true" disabled="true"/>
                                 <s:textfield  id="tipePegawai1" name="lembur.tipePegawaiId" required="false" cssStyle="display: none" readonly="true" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Status Giling :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:select list="#{'DMG':'Dalam Masa Giling','LMG':'Luar Masa Giling'}" id="statusGiling12" name="lembur.statusGiling"
-                                          headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true" disabled="true"/>
-                                <s:textfield  id="statusGiling1" cssStyle="display: none" name="lembur.statusGiling" required="false" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>

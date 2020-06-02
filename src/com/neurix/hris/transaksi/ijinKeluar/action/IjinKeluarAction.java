@@ -18,6 +18,7 @@ import com.neurix.hris.master.positionBagian.model.positionBagian;
 import com.neurix.hris.master.strukturJabatan.bo.StrukturJabatanBo;
 import com.neurix.hris.master.strukturJabatan.model.StrukturJabatan;
 import com.neurix.hris.transaksi.ijinKeluar.bo.IjinKeluarBo;
+import com.neurix.hris.transaksi.ijinKeluar.bo.impl.IjinKeluarBoImpl;
 import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluar;
 import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluarAnggota;
 import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
@@ -1786,5 +1787,18 @@ public class IjinKeluarAction extends BaseMasterAction {
 
             logger.info("[ijinKeluarAction.listDispensasiMasal] end process <<<");
         }
+    }
+
+    public String cekIfAbsensi(String nip, String tglDari, String tglSelesai){
+        String status ="";
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        IjinKeluarBo ijinKeluarBo = (IjinKeluarBo) ctx.getBean("ijinKeluarBoProxy");
+
+        try{
+            status = ijinKeluarBo.cekIfAbsensi(nip, tglDari,tglSelesai);
+        }catch (GeneralBOException e1) {
+            logger.error("[TrainingAction.printSuratJaminan] Error when downloading ,", e1);
+        }
+        return status;
     }
 }
