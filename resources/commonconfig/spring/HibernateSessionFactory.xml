@@ -87,8 +87,6 @@
                 <value>sshconfig/com/neurix/hris/master/libur/hibernate/ImLiburEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/biodata/hibernate/ItTunjLainPegEntity.hbm.xml</value>
 
-
-
                 <value>sshconfig/com/neurix/hris/master/tipelibur/hibernate/ImHrisTipeLiburEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/golongan/hibernate/ImGolonganEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/golonganDapen/hibernate/ImGolonganDapenEntity.hbm.xml</value>
@@ -431,6 +429,7 @@
                 <value>sshconfig/com/neurix/akuntansi/transaksi/budgeting/hibernate/ItAkunBudgetingDetailEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/budgeting/hibernate/ItAkunBudgetingPengadaanEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/pengajuanBiaya/hibernate/ImPengajuanBiayaEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/pengajuanBiaya/hibernate/ItPengajuanBiayaDetailEntity.hbm.xml</value>
 
                 <!--Hibernate Config For PAKET SIMRS-->
                 <value>sshconfig/com/neurix/simrs/transaksi/paketperiksa/hiberanate/ImSimrsKelasPaketEntity.hbm.xml</value>

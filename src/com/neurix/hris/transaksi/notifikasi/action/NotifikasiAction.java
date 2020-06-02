@@ -924,6 +924,7 @@ public class NotifikasiAction extends BaseMasterAction{
         RekruitmenPabrikDetail rekruitmenPabrikDetail = getRekruitmenPabrikDetail();
         Lembur lembur = getLembur();
         Indisipliner indisipliner = getIndisipliner();
+        PengajuanBiaya pengajuanBiayaRk = getPengajuanBiaya();
         PengajuanBiaya pengajuanBiaya = getPengajuanBiaya();
         List<TrainingPerson> listOfResult = new ArrayList<TrainingPerson>();
         List<IjinKeluar> listOfResultIK = new ArrayList<IjinKeluar>();
@@ -934,6 +935,7 @@ public class NotifikasiAction extends BaseMasterAction{
         List<Indisipliner> listOfResultID = new ArrayList<Indisipliner>();
         List<RekruitmenPabrikDetail> listOfResultRPD = new ArrayList<RekruitmenPabrikDetail>();
         List<PengajuanBiaya> listOfResultPB = new ArrayList<PengajuanBiaya>();
+        List<PengajuanBiaya> listOfResultPBRK = new ArrayList<PengajuanBiaya>();
         List<Notifikasi> listOfResultAll = new ArrayList<Notifikasi>();
         SppdPerson sppdPerson ;
 
@@ -953,6 +955,12 @@ public class NotifikasiAction extends BaseMasterAction{
             indisipliner.setIndisiplinerId(indisiplinerId);
         }
         if ("TN01".equalsIgnoreCase(tipe)){
+            String pengajuanBiayaId = getRequest();
+
+            pengajuanBiayaRk = new PengajuanBiaya();
+            pengajuanBiayaRk.setPengajuanBiayaId(pengajuanBiayaId);
+        }
+        if ("TN02".equalsIgnoreCase(tipe)){
             String pengajuanBiayaId = getRequest();
 
             pengajuanBiaya = new PengajuanBiaya();
@@ -1174,6 +1182,26 @@ public class NotifikasiAction extends BaseMasterAction{
                 return ERROR;
             }
         }
+
+        if (pengajuanBiayaRk != null){
+            try {
+                setPengajuanBiaya(pengajuanBiayaRk);
+                listOfResultPBRK = notifikasiBoProxy.searchPengajuanBiayaRk(pengajuanBiaya);
+                function = "pengajuanBiayaRk";
+            } catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = notifikasiBoProxy.saveErrorMessage(e.getMessage(), "PersonalBO.getByCriteria");
+                } catch (GeneralBOException e1) {
+                    logger.error("[NotifikasiAction.search] Error when saving error,", e1);
+                    return ERROR;
+                }
+                logger.error("[NotifikasiAction.save] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
+                return ERROR;
+            }
+        }
+
         if (pengajuanBiaya != null){
             try {
                 setPengajuanBiaya(pengajuanBiaya);
@@ -1257,6 +1285,13 @@ public class NotifikasiAction extends BaseMasterAction{
                         listCutiPegawai.setCutiPegawaiApprove(true);
                         listCutiPegawai.setCutiPegawaiApproveStatus(true);
                     }
+            }
+        }
+        if (listOfResultPBRK != null){
+            for (PengajuanBiaya listPengajuanBiaya : listOfResultPBRK){
+                if ("Y".equalsIgnoreCase(listPengajuanBiaya.getAprovalFlag())){
+                    listPengajuanBiaya.setApprovePengajuanBiaya(true);
+                }
             }
         }
         if (listOfResultPB != null){
@@ -1361,6 +1396,12 @@ public class NotifikasiAction extends BaseMasterAction{
             session.removeAttribute("listOfResultIndisipliner");
             session.setAttribute("listOfResultIndisipliner", listOfResultID);
             return "approval_atasan_indisipliner";
+        }
+        else if ("pengajuanBiayaRk".equalsIgnoreCase(function)){
+            HttpSession session = ServletActionContext.getRequest().getSession();
+            session.removeAttribute("listOfResultPengajuanBiayaRk");
+            session.setAttribute("listOfResultPengajuanBiayaRk", listOfResultPBRK);
+            return "approval_pengajuan_biaya_rk";
         }
         else if ("pengajuanBiaya".equalsIgnoreCase(function)){
             HttpSession session = ServletActionContext.getRequest().getSession();

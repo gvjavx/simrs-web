@@ -30,4 +30,6 @@ public interface BudgetingBo {
     public ItAkunBudgetingEntity getBudgetingEntityById(String id) throws GeneralBOException;
 
     String getBudgetBiayaDivisiSaatIni(Budgeting bean);
+
+    List<Budgeting> getNoBudgetByDivisi(Budgeting bean);
 }

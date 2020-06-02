@@ -1,6 +1,7 @@
 
 package com.neurix.akuntansi.transaksi.laporanAkuntansi.dao;
 
+import com.neurix.akuntansi.transaksi.budgeting.model.Budgeting;
 import com.neurix.akuntansi.transaksi.budgeting.model.BudgettingDTO;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.Aging;
 import com.neurix.akuntansi.master.settingReportKeuanganKonsol.model.AkunSettingReportKeuanganKonsolDetail;
@@ -2489,40 +2490,38 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
         }
         return listOfResult;
     }
-    public List<BudgettingDTO> getBudgettingPerDivisi(String unit, String status,String tahun,String divisiId,String kodeRekening){
+    public List<BudgettingDTO> getBudgettingPerDivisi(String unit, String status,String tahun,String divisiId,String noBudgetting){
 
         List<BudgettingDTO> listOfResult = new ArrayList<>();
 
         List<Object[]> results = new ArrayList<Object[]>();
-        String query = "SELECT\n" +
-                "\tsum(bgtd.qty) as qty,\n" +
-                "\tavg(bgtd.nilai) as nilai,\n" +
-                "\tsum(bgtd.sub_total) as sub_total\n" +
-                "FROM\n" +
-                "\tit_akun_budgeting bgt LEFT JOIN\n" +
-                "\t( select * from im_akun_kode_rekening where flag ='Y' ) rk ON bgt.rekening_id = rk.rekening_id \n" +
-                "\tLEFT JOIN \n" +
-                "\t( \n" +
-                "\t\tSELECT \n" +
-                "\t\t\tno_budgeting,\n" +
-                "\t\t\tavg(nilai) as nilai,\n" +
-                "\t\t\tsum(qty) as qty,\n" +
-                "\t\t\tsum(sub_total) as sub_total,\n" +
-                "\t\t\tdivisi_id\n" +
-                "\t\tFROM \n" +
-                "\t\t\tit_akun_budgeting_detail \n" +
-                "\t\tWHERE \n" +
-                "\t\t\tflag='Y'\n" +
-                "\t\tgroup by\n" +
-                "\t\t\tno_budgeting,\n" +
-                "\t\t\tdivisi_id\n" +
-                "\t) bgtd ON bgt.no_budgeting = bgtd.no_budgeting\n" +
-                "WHERE\n" +
-                "\tbranch_id='"+unit+"' AND\n" +
-                "\ttahun='"+tahun+"' AND\n" +
-                "\tstatus='"+status+"' AND \n" +
-                "\trk.kode_rekening ilike '"+kodeRekening+"%' AND\n" +
-                "\tbgtd.divisi_id='"+divisiId+"'";
+        String query = "SELECT \n" +
+                "  sum(bgtd.qty) as qty, \n" +
+                "  avg(bgtd.nilai) as nilai, \n" +
+                "  sum(bgtd.sub_total) as sub_total \n" +
+                "FROM \n" +
+                "  it_akun_budgeting bgt \n" +
+                "  LEFT JOIN (\n" +
+                "    SELECT \n" +
+                "      no_budgeting, \n" +
+                "      avg(nilai) as nilai, \n" +
+                "      sum(qty) as qty, \n" +
+                "      sum(sub_total) as sub_total, \n" +
+                "      divisi_id \n" +
+                "    FROM \n" +
+                "      it_akun_budgeting_detail \n" +
+                "    WHERE \n" +
+                "      flag = 'Y' \n" +
+                "    group by \n" +
+                "      no_budgeting, \n" +
+                "      divisi_id\n" +
+                "  ) bgtd ON bgt.no_budgeting = bgtd.no_budgeting \n" +
+                "WHERE \n" +
+                "  branch_id = '"+unit+"' \n" +
+                "  AND tahun = '"+tahun+"' \n" +
+                "  AND status = '"+status+"' \n" +
+                "  AND bgtd.no_budgeting = '"+noBudgetting+"' \n" +
+                "  AND bgtd.divisi_id = '"+divisiId+"'\n";
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
                 .list();
@@ -2546,6 +2545,50 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
             }
             listOfResult.add(data);
         }
+        return listOfResult;
+    }
+    public List<Budgeting> getNoBudgetByDivisi(String unit, String status, String tahun, String divisiId){
+
+        List<Budgeting> listOfResult = new ArrayList<>();
+
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "SELECT \n" +
+                "  bgt.no_budgeting," +
+                "  bgt.branch_id \n" +
+                "FROM \n" +
+                "  it_akun_budgeting bgt \n" +
+                "  LEFT JOIN (\n" +
+                "    SELECT \n" +
+                "      no_budgeting, \n" +
+                "      avg(nilai) as nilai, \n" +
+                "      sum(qty) as qty, \n" +
+                "      sum(sub_total) as sub_total, \n" +
+                "      divisi_id \n" +
+                "    FROM \n" +
+                "      it_akun_budgeting_detail \n" +
+                "    WHERE \n" +
+                "      flag = 'Y' \n" +
+                "    group by \n" +
+                "      no_budgeting, \n" +
+                "      divisi_id\n" +
+                "  ) bgtd ON bgt.no_budgeting = bgtd.no_budgeting \n" +
+                "WHERE \n" +
+                "  branch_id = '"+unit+"' \n" +
+                "  AND tahun = '"+tahun+"' \n" +
+                "  AND status = '"+status+"' \n" +
+                "  AND bgtd.divisi_id = '"+divisiId+"' \n" +
+                "  AND nilai is not null\n";
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results) {
+            Budgeting data= new Budgeting();
+            data.setNoBudgeting((String) row[0]);
+            data.setBranchId((String) row[1]);
+            listOfResult.add(data);
+        }
+
         return listOfResult;
     }
 }

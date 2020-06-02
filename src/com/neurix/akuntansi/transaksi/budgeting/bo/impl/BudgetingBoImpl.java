@@ -1285,4 +1285,22 @@ public class BudgetingBoImpl implements BudgetingBo {
         logger.info("[BudgetingBoImpl.getBudgetBiayaDivisiSaatIni] END <<<<");
         return  CommonUtil.numbericFormat(budget,"###,###");
     }
+
+
+    @Override
+    public List<Budgeting> getNoBudgetByDivisi(Budgeting bean){
+        logger.info("[BudgetingBoImpl.getNoBudgetByDivisi] START >>>");
+        List<Budgeting> budgetingList;
+        try {
+            ImPosition position = positionDao.getById("positionId",bean.getDivisi());
+
+            budgetingList = laporanAkuntansiDao.getNoBudgetByDivisi(bean.getBranchId(),bean.getStatus(),bean.getTahun(),position.getKodering());
+        } catch (HibernateException e){
+            logger.error("[BudgetingBoImpl.getBudgetBiayaDivisiSaatIni] ERROR. ",e);
+            throw new GeneralBOException("[BudgetingBoImpl.getBudgetBiayaDivisiSaatIni] ERROR. ",e);
+        }
+
+        logger.info("[BudgetingBoImpl.getNoBudgetByDivisi] END <<<<");
+        return  budgetingList;
+    }
 }

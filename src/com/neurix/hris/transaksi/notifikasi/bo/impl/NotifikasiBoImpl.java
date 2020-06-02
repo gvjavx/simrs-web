@@ -2673,4 +2673,28 @@ public class NotifikasiBoImpl implements NotifikasiBo {
         }
         return result;
     }
+    @Override
+    public List<PengajuanBiaya> searchPengajuanBiayaRk(PengajuanBiaya bean) throws GeneralBOException {
+        List<PengajuanBiaya> result = new ArrayList<PengajuanBiaya>();
+        String nip = CommonUtil.userIdLogin();
+
+        if (bean != null){
+            Map hsCriteria = new HashMap();
+            if (!"".equalsIgnoreCase(bean.getPengajuanBiayaId())){
+                hsCriteria.put("pengajuan_biaya_id", bean.getPengajuanBiayaId());
+            }
+            if (!"".equalsIgnoreCase(nip)){
+                hsCriteria.put("nip_atasan", CommonUtil.userIdLogin());
+            }
+            hsCriteria.put("flag","Y");
+
+            try {
+                result = pengajuanBiayaDao.getListPengajuanBiayaForApproval(hsCriteria);
+            } catch (HibernateException e) {
+                logger.error("[UserBoImpl.searchTrainingPerson] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
+            }
+        }
+        return result;
+    }
 }

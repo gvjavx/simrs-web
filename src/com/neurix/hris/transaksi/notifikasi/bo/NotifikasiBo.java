@@ -83,4 +83,6 @@ public interface NotifikasiBo extends BaseMasterBo<Notifikasi>{
     void sendNotifDitentukan(String nip, String id, String tipeNotifId, String tipeNotifName, String note, String createdWho);
 
     List<PengajuanBiaya> searchPengajuanBiaya(PengajuanBiaya bean) throws GeneralBOException;
+
+    List<PengajuanBiaya> searchPengajuanBiayaRk(PengajuanBiaya bean) throws GeneralBOException;
 }
