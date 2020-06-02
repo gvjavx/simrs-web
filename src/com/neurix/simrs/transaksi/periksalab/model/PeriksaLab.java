@@ -68,6 +68,42 @@ public class PeriksaLab extends BaseModel implements Serializable{
 
     private BigDecimal tarif;
     private String branchId;
+    private String namaDokter;
+    private String ttdDokter;
+    private String ttdPetugas;
+    private String namaPetugas;
+
+    public String getNamaPetugas() {
+        return namaPetugas;
+    }
+
+    public void setNamaPetugas(String namaPetugas) {
+        this.namaPetugas = namaPetugas;
+    }
+
+    public String getNamaDokter() {
+        return namaDokter;
+    }
+
+    public void setNamaDokter(String namaDokter) {
+        this.namaDokter = namaDokter;
+    }
+
+    public String getTtdDokter() {
+        return ttdDokter;
+    }
+
+    public void setTtdDokter(String ttdDokter) {
+        this.ttdDokter = ttdDokter;
+    }
+
+    public String getTtdPetugas() {
+        return ttdPetugas;
+    }
+
+    public void setTtdPetugas(String ttdPetugas) {
+        this.ttdPetugas = ttdPetugas;
+    }
 
     public String getBranchId() {
         return branchId;

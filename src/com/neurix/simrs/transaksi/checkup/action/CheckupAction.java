@@ -810,7 +810,8 @@ public class CheckupAction extends BaseMasterAction {
 
                     if (pasienList.size() > 0) {
 
-                        Pasien getPasien = pasienList.get(0);
+                        Pasien getPasien
+                                = pasienList.get(0);
 
                         String kodeDpjs = "";
                         String namaDokter = "";

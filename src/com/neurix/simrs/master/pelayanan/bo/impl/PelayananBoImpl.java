@@ -513,4 +513,9 @@ public class PelayananBoImpl implements PelayananBo{
         }
         return status;
     }
+
+    @Override
+    public List<Pelayanan> getListPelayananFarmasi(String branchId) throws GeneralBOException {
+        return pelayananDao.getListPelayananFarmasi(branchId);
+    }
 }

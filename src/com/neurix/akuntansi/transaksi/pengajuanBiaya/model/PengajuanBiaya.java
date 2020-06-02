@@ -20,13 +20,121 @@ public class PengajuanBiaya extends BaseModel {
     private String namaCoa;
     private BigDecimal totalBiaya;
     private String stTotalBiaya;
-    private String tahun;
+    private Date tanggal;
     private String aprovalId;
     private String aprovalName;
-    private String aprovalDate;
+    private Date aprovalDate;
     private String aprovalFlag;
     private String branchId;
     private BigDecimal budgetSaatIni;
+    private String stBudgetSaatIni;
+    private String transaksi;
+    private String coaTarget;
+    private String branchIdKanpus;
+    private String tipeTransaksi;
+    private String keterangan;
+    private String noJurnal;
+    private String stTanggal;
+    private BigDecimal budgetTerpakai;
+    private String stBudgetTerpakai;
+
+    public BigDecimal getBudgetTerpakai() {
+        return budgetTerpakai;
+    }
+
+    public void setBudgetTerpakai(BigDecimal budgetTerpakai) {
+        this.budgetTerpakai = budgetTerpakai;
+    }
+
+    public String getStBudgetTerpakai() {
+        return stBudgetTerpakai;
+    }
+
+    public void setStBudgetTerpakai(String stBudgetTerpakai) {
+        this.stBudgetTerpakai = stBudgetTerpakai;
+    }
+
+    public String getStBudgetSaatIni() {
+        return stBudgetSaatIni;
+    }
+
+    public void setStBudgetSaatIni(String stBudgetSaatIni) {
+        this.stBudgetSaatIni = stBudgetSaatIni;
+    }
+
+    private boolean approvePengajuanBiaya;
+
+    public boolean isApprovePengajuanBiaya() {
+        return approvePengajuanBiaya;
+    }
+
+    public void setApprovePengajuanBiaya(boolean approvePengajuanBiaya) {
+        this.approvePengajuanBiaya = approvePengajuanBiaya;
+    }
+
+    public String getStTanggal() {
+        return stTanggal;
+    }
+
+    public void setStTanggal(String stTanggal) {
+        this.stTanggal = stTanggal;
+    }
+
+    public String getNoJurnal() {
+        return noJurnal;
+    }
+
+    public void setNoJurnal(String noJurnal) {
+        this.noJurnal = noJurnal;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getTipeTransaksi() {
+        return tipeTransaksi;
+    }
+
+    public void setTipeTransaksi(String tipeTransaksi) {
+        this.tipeTransaksi = tipeTransaksi;
+    }
+
+    public String getBranchIdKanpus() {
+        return branchIdKanpus;
+    }
+
+    public void setBranchIdKanpus(String branchIdKanpus) {
+        this.branchIdKanpus = branchIdKanpus;
+    }
+
+    public Date getTanggal() {
+        return tanggal;
+    }
+
+    public void setTanggal(Date tanggal) {
+        this.tanggal = tanggal;
+    }
+
+    public String getTransaksi() {
+        return transaksi;
+    }
+
+    public void setTransaksi(String transaksi) {
+        this.transaksi = transaksi;
+    }
+
+    public String getCoaTarget() {
+        return coaTarget;
+    }
+
+    public void setCoaTarget(String coaTarget) {
+        this.coaTarget = coaTarget;
+    }
 
     public String getBranchId() {
         return branchId;
@@ -100,14 +208,6 @@ public class PengajuanBiaya extends BaseModel {
         this.stTotalBiaya = stTotalBiaya;
     }
 
-    public String getTahun() {
-        return tahun;
-    }
-
-    public void setTahun(String tahun) {
-        this.tahun = tahun;
-    }
-
     public String getAprovalId() {
         return aprovalId;
     }
@@ -124,11 +224,11 @@ public class PengajuanBiaya extends BaseModel {
         this.aprovalName = aprovalName;
     }
 
-    public String getAprovalDate() {
+    public Date getAprovalDate() {
         return aprovalDate;
     }
 
-    public void setAprovalDate(String aprovalDate) {
+    public void setAprovalDate(Date aprovalDate) {
         this.aprovalDate = aprovalDate;
     }
 

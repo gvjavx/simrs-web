@@ -106,7 +106,7 @@
 
                             <div class="row">
                                 <div class="col-md-6 col-md-offset-6" style="margin-top: 10px">
-                                    <button class="btn btn-success" onclick="add()"><i class="fa fa-plus"></i> Add</button>
+                                    <button class="btn btn-primary" onclick="add()"><i class="fa fa-plus"></i> Add</button>
                                 </div>
                             </div>
                         </div>
@@ -160,7 +160,7 @@
                         </div>
                         <div class="form-group" style="margin-top: 10px">
                             <div class="col-md-4 col-md-offset-5">
-                                <button class="btn btn-success" onclick="initForm()"><i class="fa fa-arrow-left"></i> Back</button>
+                                <button class="btn btn-warning" onclick="initForm()"><i class="fa fa-arrow-left"></i> Back</button>
                                 <button class="btn btn-success" id="btn-save" onclick="saveAdd()"><i class="fa fa-arrow-right"></i> Next </button>
                             </div>
                         </div>

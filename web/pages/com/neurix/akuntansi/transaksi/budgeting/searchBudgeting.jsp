@@ -103,50 +103,49 @@
                                                     <%--<option value="DRAFT">DRAFT</option>--%>
                                                     <%--<option value="FINAL">FINAL</option>--%>
                                                     <%--<option value="REVISI">REVISI</option>--%>
-                                                <%--</select>--%>
+                                                <%--</select>--%>  <%--<div class="row">--%>
+                                        <%--<label class="control-label col-sm-2">Coa</label>--%>
+                                        <%--<div class="col-sm-2">--%>
+                                        <%--<input type="text" class="form-control" id="coa">--%>
+                                        <%--<script>--%>
+                                        <%--$(document).ready(function() {--%>
+                                        <%--var functions, mapped;--%>
+                                        <%--$('#coa').typeahead({--%>
+                                        <%--minLength: 1,--%>
+                                        <%--source: function (query, process) {--%>
+                                        <%--functions = [];--%>
+                                        <%--mapped = {};--%>
+                                        <%--var data = [];--%>
+                                        <%--dwr.engine.setAsync(false);--%>
+                                        <%--KodeRekeningAction.initTypeaheadKodeRekening(query,function (listdata) {--%>
+                                        <%--data = listdata;--%>
+                                        <%--});--%>
+                                        <%--$.each(data, function (i, item) {--%>
+                                        <%--var labelItem = item.kodeRekening + " | " + item.namaKodeRekening;--%>
+                                        <%--mapped[labelItem] = {--%>
+                                        <%--id: item.rekeningId,--%>
+                                        <%--nama: item.namaKodeRekening,--%>
+                                        <%--kode : item.kodeRekening,--%>
+                                        <%--parent :item.parentId--%>
+                                        <%--};--%>
+                                        <%--functions.push(labelItem);--%>
+                                        <%--});--%>
+                                        <%--process(functions);--%>
+                                        <%--},--%>
+                                        <%--updater: function (item) {--%>
+                                        <%--var selectedObj = mapped[item];--%>
+                                        <%--$('#rekeningid').val(selectedObj.id);--%>
+                                        <%--return selectedObj.kode;--%>
+                                        <%--}--%>
+                                        <%--});--%>
+                                        <%--});--%>
+                                        <%--</script>--%>
+                                        <%--</div>--%>
+                                        <%--</div>
                                             <%--</div>--%>
                                         <%--</div>--%>
-                                        <div class="row">
-                                            <label class="control-label col-sm-2">Coa</label>
-                                            <div class="col-sm-2">
-                                                <input type="text" class="form-control" id="coa">
-                                                <script>
-                                                    $(document).ready(function() {
-                                                        var functions, mapped;
-                                                        $('#coa').typeahead({
-                                                            minLength: 1,
-                                                            source: function (query, process) {
-                                                                functions = [];
-                                                                mapped = {};
-                                                                var data = [];
-                                                                dwr.engine.setAsync(false);
-                                                                KodeRekeningAction.initTypeaheadKodeRekening(query,function (listdata) {
-                                                                    data = listdata;
-                                                                });
-                                                                $.each(data, function (i, item) {
-                                                                    var labelItem = item.kodeRekening + " | " + item.namaKodeRekening;
-                                                                    mapped[labelItem] = {
-                                                                        id: item.rekeningId,
-                                                                        nama: item.namaKodeRekening,
-                                                                        kode : item.kodeRekening,
-                                                                        parent :item.parentId
-                                                                    };
-                                                                    functions.push(labelItem);
-                                                                });
-                                                                process(functions);
-                                                            },
-                                                            updater: function (item) {
-                                                                var selectedObj = mapped[item];
-                                                                $('#rekeningid').val(selectedObj.id);
-                                                                return selectedObj.kode;
-                                                            }
-                                                        });
-                                                    });
-                                                </script>
-                                                <input type="hidden" id="rekeningid">
-                                            </div>
-                                        </div>
 
+                                        <input type="hidden" id="rekeningid">
 
                                     </div>
                                 </div>
@@ -233,22 +232,63 @@
     <!-- /.content -->
 </div>
 
-
-<%--<div class="modal fade" id="modal-confirm-dialog">--%>
-    <%--<div class="modal-dialog modal-sm">--%>
-        <%--<div class="modal-content">--%>
-            <%--<div class="modal-header">--%>
-                <%--<button type="button" class="close" data-dismiss="modal" aria-label="Close">--%>
-                    <%--<span aria-hidden="true">&times;</span></button>--%>
-                <%--<h4 class="modal-title"><i class="fa fa-info"></i> Loading Dialog--%>
-                <%--</h4>--%>
-            <%--</div>--%>
-            <%--<div class="modal-body">--%>
-                <%--<h4 class="text-center">Loading ... </h4>--%>
-            <%--</div>--%>
-        <%--</div>--%>
-    <%--</div>--%>
-<%--</div>--%>
+<div class="modal fade" id="modal-view">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-file"></i> View Detail Budgeting
+                </h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="view-id">
+                <table style="font-size: 15px; margin-bottom: 10px;" class="table">
+                    <tbody>
+                        <tr>
+                            <td width="20%">Tahun</td>
+                            <td>:</td>
+                            <td id="tahun-view"></td>
+                        </tr>
+                        <tr>
+                            <td>Unit</td>
+                            <td>:</td>
+                            <td id="unit-view"></td>
+                        </tr>
+                        <tr>
+                            <td>COA </td>
+                            <td>:</td>
+                            <td id="coa-view"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-bordered table-striped">
+                    <thead id="head-budgeting-view" style="font-size: 13px">
+                    <tr bgcolor="#90ee90">
+                        <td>Periode</td>
+                        <td id="label-master-id">Master Id</td>
+                        <td align="" id="label-master-name">Master Name</td>
+                        <td align="" id="label-divisi-id">Divisi Id</td>
+                        <td align="" id="label-divisi-name">Divisi Name</td>
+                        <td align="center">Qty</td>
+                        <td align="center">Nilai</td>
+                        <td align="center">Sub Total</td>
+                        <td align="center">Realisasi</td>
+                        <td align="center">Selisih</td>
+                        <td align="center">Action</td>
+                    </tr>
+                    </thead>
+                    <tbody id="body-budgeting-view" style="font-size: 13px">
+                    </tbody>
+                    <%--<input type="hidden" id="index-period"/>--%>
+                    <%--<input type="hidden" id="index-branch"/>--%>
+                    <%--<input type="hidden" id="bulan"/>--%>
+                    <%--<input type="hidden" id="tahun"/>--%>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type='text/javascript'>
 
@@ -529,6 +569,24 @@
         }
     }
 
+    function formatSelisih(angka) {
+        if(angka != null && angka != ''){
+            var reverse = angka.toString().split('').reverse().join(''),
+                ribuan = reverse.match(/\d{1,3}/g);
+            ribuan = ribuan.join('.').split('').reverse().join('');
+
+            if (angka < 0){
+                return "<span style='color: indianred'> + "+ribuan+"</span>";
+            } else {
+                return "<span style='color: darkgreen'> - "+ribuan+"</span>";
+            }
+
+        }else{
+            return 0;
+        }
+    }
+
+
     function formatDate(date) {
         var d = new Date(date),
             month = '' + (d.getMonth() + 1),
@@ -631,7 +689,7 @@
                                 "<td align='right'>"+formatRupiah(data2[i].nilaiDraf)+"</td>"+
                                 "<td align='right'>"+formatRupiah(data2[i].nilaiFinal)+"</td>"+
                                 "<td align='right'>"+formatRupiah(data2[i].nilaiRevisi)+"</td>"+
-                                "<td>"+data2[i].noBudgeting+"</td>"+
+                                "<td>"+data2[i].noBudgeting+"</td>";
                                 "<td align='center'>"+actionView(data2[i].idBudgeting, data2[i].level)+"</td>"+
                                 "</tr>";
                         } else {
@@ -664,12 +722,94 @@
     function actionView(var1, var2) {
         var str = "";
         if (var2 == "5"){
-        str = "<button class='btn btn-sm btn-success' onclick='"+view(var1)+"'><i class='fa fa-search'></i></button>";
+        str = "<button class='item-view btn btn-sm btn-success' data='"+var1+"'><i class='fa fa-search'></i></button>";
         }
         return str;
     }
 
-    function view(var1) {
+    // view Budgeting
+    $(".tree").on('click', ".item-view", function () {
+        var id = $(this).attr('data');
+
+        BudgetingAction.view(id, function(response){
+            console.log(response);
+
+            $("#tahun-view").text(response.tahun);
+            $("#unit-view").text(response.branchName);
+            $("#coa-view").text(response.kodeRekening + " - " + response.namaKodeRekening);
+
+            var str = "";
+            if (response.budgetingDetailList.length > 0){
+                var investasi = false;
+                $.each(response.budgetingDetailList, function (i, item) {
+                    str += "<tr>"+
+                            "<td>"+item.tipe+"</td>";
+                        if(item.divisiId == "INVS"){
+                            investasi = true;
+                            str += "<td class='val-master-id' style='display: none'>"+item.masterId+"</td>"+
+                                "<td class='val-master-name' style='display: none'>"+item.masterName+"</td>";
+                        } else {
+                            str += "<td class='val-master-id' >"+item.masterId+"</td>"+
+                                    "<td class='val-master-name' >"+item.masterName+"</td>";
+                        }
+//                            "<td class='val-master-id' >"+item.masterId+"</td>"+
+//                            "<td class='val-master-name' >"+item.masterName+"</td>"+
+
+                    str +=  "<td>"+item.divisiId+"</td>"+
+                            "<td>"+item.divisiName+"</td>"+
+                            "<td align='center'>"+item.qty+"</td>"+
+                            "<td align='right'>"+ formatRupiah(item.nilai)+"</td>"+
+                            "<td align='right'>"+ formatRupiah(item.subTotal)+"</td>"+
+                            "<td align='right'>"+ formatRupiah(item.saldoAkhir) +"</td>"+
+                            "<td align='right'>"+ formatSelisih(item.selisihSaldoAkhir) +"</td>"+
+                            "<td align='center'>" + actionViewPengadaan(investasi, item.idBudgetingDetail) + "</td>"+
+                            "</tr>";
+                });
+
+                if (investasi){
+                    str +=  "<td colspan='5'>Nilai Total</td>"+
+                        "<td align='right'>"+ formatRupiah(response.nilaiTotal) +"</td>"+
+                        "<td align='right'>"+ formatRupiah(response.saldoAkhir) +"</td>"+
+                        "<td align='right'>"+ formatSelisih(response.selisihSaldoAkhir) +"</td>"+
+                        "<td></td>"+
+                        "</tr>";
+
+                    $("#label-master-id").hide();
+                    $("#label-master-name").hide();
+                    $("#label-divisi-id").text("Id");
+                    $("#label-divisi-name").text("Name");
+                } else {
+
+                    str +=  "<td colspan='7'>Nilai Total</td>"+
+                        "<td align='right'>"+ formatRupiah(response.nilaiTotal) +"</td>"+
+                        "<td align='right'>"+ formatRupiah(response.saldoAkhir) +"</td>"+
+                        "<td align='right'>"+ formatSelisih(response.selisihSaldoAkhir) +"</td>"+
+                        "<td></td>"+
+                        "</tr>";
+
+                    $("#label-master-id").show();
+                    $("#label-master-name").show();
+                    $("#label-divisi-id").text("Divisi Id");
+                    $("#label-divisi-name").text("Divisi Name");
+                }
+            }
+
+            $("#body-budgeting-view").html(str);
+        });
+
+        $("#modal-view").modal('show');
+        $("#view-id").val(id);
+    });
+
+    function actionViewPengadaan(var1, var2) {
+        if (var1){
+            return "<button class='item-view btn btn-sm btn-success' onclick='viewPengadaan(\'"+var2+"\')'><i class='fa fa-bars'></i></button>";
+        } else {
+            return "";
+        }
+    }
+
+    function viewPengadaan(var1) {
 
     }
 

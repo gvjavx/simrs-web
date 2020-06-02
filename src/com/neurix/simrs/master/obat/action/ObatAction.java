@@ -20,6 +20,7 @@ import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.hargaobat.model.HargaObat;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
+import com.neurix.simrs.transaksi.riwayatbarang.model.TransaksiStok;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
@@ -43,9 +44,19 @@ public class ObatAction extends BaseMasterAction {
 
     protected static transient Logger logger = Logger.getLogger(ObatAction.class);
     private ObatBo obatBoProxy;
+    private PelayananBo pelayananBoProxy;
     private Obat obat;
     private List<Obat> listOfObat = new ArrayList<>();
     private String idPabrik;
+    List<TransaksiStok> report = new ArrayList<>();
+
+    public List<TransaksiStok> getReport() {
+        return report;
+    }
+
+    public void setReport(List<TransaksiStok> report) {
+        this.report = report;
+    }
 
     public String getIdPabrik() {
         return idPabrik;
@@ -85,6 +96,10 @@ public class ObatAction extends BaseMasterAction {
 
     public void setObat(Obat obat) {
         this.obat = obat;
+    }
+
+    public void setPelayananBoProxy(PelayananBo pelayananBoProxy) {
+        this.pelayananBoProxy = pelayananBoProxy;
     }
 
     @Override
@@ -556,7 +571,7 @@ public class ObatAction extends BaseMasterAction {
                 Obat obat = new Obat();
                 obat.setIdObat(obj.getString("id_obat"));
                 obat.setIdBarang(obj.getString("id_barang"));
-                obat.setQty(new BigInteger(obj.getString("qty")));
+                //obat.setQty(new BigInteger(obj.getString("qty")));
                 obatList.add(obat);
             }
 
@@ -580,30 +595,8 @@ public class ObatAction extends BaseMasterAction {
                 bean.setLastUpdate(time);
             }
 
-            List<Map> listMapObat = new ArrayList<>();
-            BigDecimal totalHarga = new BigDecimal(0);
-            for (Obat obat : obatList){
-
-
-                ImSimrsObatEntity obatEntity = obatBo.getObatByIdBarang(obat.getIdBarang());
-                BigDecimal harga = new BigDecimal(0);
-                if (obatEntity != null){
-                    harga = obatEntity.getAverageHargaBox().multiply( new BigDecimal(obat.getQty()));
-                } else {
-                    logger.error("[ObatAction.saveReturObat] Tidak ditemukan data Obat.");
-                    response.setStatus("error");
-                    response.setMessage("[ObatAction.saveReturObat] Tidak ditemukan data Obat.");
-                    return response;
-                }
-                totalHarga = totalHarga.add(harga);
-
-                Map mapObat = new HashMap();
-                mapObat.put("kd_barang", obat.getIdBarang());
-                mapObat.put("nilai", harga);
-                listMapObat.add(mapObat);
-            }
-
             String divisiId = "";
+            String pelayananName = "";
             ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(CommonUtil.userPelayananIdLogin());
             if (pelayananEntity != null){
 
@@ -618,6 +611,52 @@ public class ObatAction extends BaseMasterAction {
                 response.setMessage("[ObatAction.saveReturObat] Tidak ditemukan divisi_id.");
                 return response;
             }
+
+            List<Map> listMapObat = new ArrayList<>();
+            BigDecimal totalHarga = new BigDecimal(0);
+            for (Obat obat : obatList){
+
+
+                ImSimrsObatEntity obatEntity = obatBo.getObatByIdBarang(obat.getIdBarang());
+                BigDecimal harga = new BigDecimal(0);
+                if (obatEntity != null){
+
+                    BigInteger cons = obatEntity.getLembarPerBox().multiply(obatEntity.getBijiPerLembar());
+                    BigInteger consLembar = obat.getBijiPerLembar();
+
+                    // get total qty (satuan terkecil)
+                    BigInteger ttlQtyBox = obatEntity.getQtyBox().multiply(cons);
+                    BigInteger ttlQtyLembar = obatEntity.getQtyLembar().multiply(consLembar);
+                    BigInteger ttlQtyTerkecil = ttlQtyBox.add(ttlQtyLembar).add(obatEntity.getQtyBiji());
+
+                    harga = obatEntity.getHargaTerakhir().multiply( new BigDecimal(ttlQtyTerkecil));
+
+                    // set qty
+                    obat.setQty(ttlQtyTerkecil);
+                    obat.setHargaTerakhir(obatEntity.getHargaTerakhir());
+                    obat.setIdVendor(bean.getIdVendor());
+                    obat.setNamaVendor(bean.getNamaVendor());
+                    obat.setLastUpdate(time);
+                    obat.setLastUpdateWho(userLogin);
+                    obat.setIdPelayanan(obat.getIdPelayanan());
+                    obat.setNamaPelayanan(obat.getNamaPelayanan());
+                    obatBo.saveTransaksiStokOpname(obat);
+
+                } else {
+                    logger.error("[ObatAction.saveReturObat] Tidak ditemukan data Obat.");
+                    response.setStatus("error");
+                    response.setMessage("[ObatAction.saveReturObat] Tidak ditemukan data Obat.");
+                    return response;
+                }
+                totalHarga = totalHarga.add(harga);
+
+                Map mapObat = new HashMap();
+                mapObat.put("kd_barang", obat.getIdBarang());
+                mapObat.put("nilai", harga);
+                listMapObat.add(mapObat);
+            }
+
+
 
             Map mapBiaya = new HashMap();
             mapBiaya.put("divisi_id", divisiId);
@@ -731,11 +770,39 @@ public class ObatAction extends BaseMasterAction {
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
 
         try {
             branches = branchBo.getBranchById(branch, "Y");
         } catch (GeneralBOException e) {
             logger.error("Found Error when searhc branch logo");
+        }
+
+        String namaPelayanan = "";
+        ImSimrsPelayananEntity pelayananEntity = new ImSimrsPelayananEntity();
+        try {
+            pelayananEntity = pelayananBoProxy.getPelayananById(obat.getIdPelayanan());
+        } catch (GeneralBOException e){
+            logger.error("[ObatAction.printReportRiwayat] ERROR. ",e);
+            throw new GeneralBOException("[ObatAction.printReportRiwayat] ERROR. "+e.getMessage());
+        }
+
+        if (pelayananEntity != null){
+            namaPelayanan = pelayananEntity.getNamaPelayanan();
+        }
+
+        // report list
+        try {
+            report = obatBo.getListReporTransaksiObat(obat.getIdPelayanan(), obat.getTahun(), obat.getBulan(), obat.getIdObat());
+        } catch (GeneralBOException e){
+            logger.error("[ObatAction.initPrintReportRiwayat] ERROR. ", e);
+            throw new GeneralBOException("[ObatAction.initPrintReportRiwayat] ERROR. " + e);
+        }
+
+        String namaObat = "";
+        if (report.size() > 0){
+            TransaksiStok stok = report.get(0);
+            namaObat = stok.getNamaObat();
         }
 
         if (branches != null) {
@@ -749,6 +816,12 @@ public class ObatAction extends BaseMasterAction {
         reportParams.put("unit", branchName);
         reportParams.put("logo", logo);
         reportParams.put("printDate", formatDate);
+        reportParams.put("qtyLalu", new BigDecimal(0));
+        reportParams.put("totalLalu", new BigDecimal(0));
+        reportParams.put("subTotalLalu", new BigDecimal(0));
+        reportParams.put("namaObat", namaObat);
+        reportParams.put("idObat", obat.getIdObat());
+        reportParams.put("namaPelayanan", namaPelayanan);
 
         try {
             preDownload();

@@ -1,7 +1,9 @@
 package com.neurix.hris.transaksi.absensi.bo.impl;
 
 import com.neurix.authorization.company.dao.BranchDao;
+import com.neurix.authorization.company.dao.CompanyDao;
 import com.neurix.authorization.company.model.ImBranches;
+import com.neurix.authorization.company.model.ImCompany;
 import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.exception.GeneralBOException;
@@ -117,6 +119,15 @@ public class AbsensiBoImpl implements AbsensiBo {
     private PegawaiTambahanDao pegawaiTambahanDao;
     private PegawaiTambahanAbsensiDao pegawaiTambahanAbsensiDao;
     private ShiftDao shiftDao;
+    private CompanyDao companyDao;
+
+    public CompanyDao getCompanyDao() {
+        return companyDao;
+    }
+
+    public void setCompanyDao(CompanyDao companyDao) {
+        this.companyDao = companyDao;
+    }
 
     public PayrollSkalaGajiPkwtDao getPayrollSkalaGajiPkwtDao() {
         return payrollSkalaGajiPkwtDao;
@@ -1076,20 +1087,35 @@ public class AbsensiBoImpl implements AbsensiBo {
                             faktor = pengaliFaktorLemburEntity.getFaktor();
                         }
 
+                        String tahunGaji="";
+                        try {
+                            ImCompany company = companyDao.getCompanyInfo("Y");
+                            if (!("").equalsIgnoreCase(company.getPeriodeGaji())) {
+                                tahunGaji = company.getPeriodeGaji();
+                            } else {
+                                String status = "Error : tidak ditemukan periode gaji pada Company";
+                                logger.error("[PayrollBoImpl.dataAddPayroll] " + status);
+                                throw new GeneralBOException(status);
+                            }
+                        }catch (HibernateException e){
+                            logger.error("[PayrollBoImpl.dataAddPayroll] " + e.getMessage());
+                            throw new GeneralBOException(e.getMessage());
+                        }
+
                         hsCriteria4 = new HashMap();
                         hsCriteria4.put("golongan_id", biodataEntity.getGolongan());
                         hsCriteria4.put("point", (int) Math.round(biodataEntity.getPoint()));
-                        hsCriteria4.put("tahun", "2019");
+                        hsCriteria4.put("tahun", tahunGaji);
                         hsCriteria4.put("flag", "Y");
                         List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
                         List<ImPayrollSkalaGajiPkwtEntity> payrollSkalaGajiPkwtEntityList = new ArrayList<>();
                         if (biodataEntity.getTipePegawai().equalsIgnoreCase("TP01")){
-                            payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(biodataEntity.getGolongan());
+                            payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(biodataEntity.getGolongan(),tahunGaji);
                             for (ImPayrollSkalaGajiEntity imPayrollSkalaGajiEntity : payrollSkalaGajiList) {
                                 upahLembur = imPayrollSkalaGajiEntity.getNilai().doubleValue();
                             }
                         }else if (biodataEntity.getTipePegawai().equalsIgnoreCase("TP03")){
-                            payrollSkalaGajiPkwtEntityList = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(biodataEntity.getGolongan());
+                            payrollSkalaGajiPkwtEntityList = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(biodataEntity.getGolongan(),tahunGaji);
                             for (ImPayrollSkalaGajiPkwtEntity skalaGajiLoop:payrollSkalaGajiPkwtEntityList){
                                 upahLembur = skalaGajiLoop.getGajiPokok().doubleValue();
                             }

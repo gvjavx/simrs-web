@@ -82,6 +82,8 @@
           p:profesiDao-ref="profesiDao"
           p:payrollSkalaGajiBodDao-ref="payrollSkalaGajiBodDao"
           p:payrollPttDao-ref="payrollPttDao"
+          p:payrollParamBpjsDao-ref="payrollParamBpjsDao"
+          p:mappingPersenGajiDao-ref="mappingPersenGajiDao"
     />
 
     <bean id="payrollBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -195,5 +197,7 @@
     <bean id="profesiDao" class="com.neurix.hris.master.profesi.dao.ProfesiDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="payrollPttDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollPttDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="payrollParamBpjsDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollParamBpjsDao"
           p:sessionFactory-ref="sessionFactory" />
 </beans>

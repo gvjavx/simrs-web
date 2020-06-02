@@ -1,0 +1,53 @@
+// 29-05-2020
+// ALTER TABLE
+ALTER TABLE it_simrs_periksa_lab
+ADD COLUMN ttd_dokter character varying(100),
+ADD COLUMN ttd_petugas character varying(100);
+
+ALTER TABLE it_simrs_header_checkup
+ADD COLUMN Anamnese text;
+
+// CREATE TABLE
+CREATE TABLE public.im_simrs_diagnosa_asuhan_keperawatan
+(
+  id_diagnosa_asuhan_keperawatan character varying(30) NOT NULL,
+  diagnosa text,
+  flag character varying(1),
+  action character varying(1),
+  created_date timestamp without time zone,
+  created_who character varying(100),
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  CONSTRAINT pk_id_diagnosa_asuhan_keperawatan PRIMARY KEY (id_diagnosa_asuhan_keperawatan)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.im_simrs_diagnosa_asuhan_keperawatan
+  OWNER TO postgres;
+
+
+CREATE TABLE public.im_simrs_detail_asuhan_keperawatan
+(
+  id_detail_asuhan_keperawatan character varying(30) NOT NULL,
+  id_diagnosa_asuhan_keperawatan character varying(30),
+  diagnosis text,
+  hasil text,
+  intervensi text,
+  implementasi text,
+  evaluasi text,
+  flag character varying(1),
+  action character varying(1),
+  created_date timestamp without time zone,
+  created_who character varying(100),
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  CONSTRAINT pk_id_detail_asuhan_keperawatan PRIMARY KEY (id_detail_asuhan_keperawatan)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.im_simrs_detail_asuhan_keperawatan
+  OWNER TO postgres;
+
+// SEQUENCE

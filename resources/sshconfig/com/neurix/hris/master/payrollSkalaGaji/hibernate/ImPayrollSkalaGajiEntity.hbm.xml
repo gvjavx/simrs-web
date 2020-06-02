@@ -18,7 +18,6 @@
             <column name="point" sql-type="int"  not-null="true" />
         </property>
 
-
         <property name="nilai">
             <column name="nilai" sql-type="numeric" length="10" precision="2" not-null="true" />
         </property>

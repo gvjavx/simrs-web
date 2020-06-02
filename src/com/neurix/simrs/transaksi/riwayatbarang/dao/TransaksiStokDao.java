@@ -4,6 +4,7 @@ import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.riwayatbarang.model.ItSimrsRiwayatBarangMasukEntity;
 import com.neurix.simrs.transaksi.riwayatbarang.model.ItSimrsTransaksiStokEntity;
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 
@@ -33,6 +34,9 @@ public class TransaksiStokDao extends GenericDao<ItSimrsTransaksiStokEntity, Str
             if (mapCriteria.get("id_barang") != null){
                 criteria.add(Restrictions.eq("idObat", mapCriteria.get("id_barang").toString()));
             }
+            if (mapCriteria.get("id_pelayanan") != null){
+                criteria.add(Restrictions.eq("idPelayanan", mapCriteria.get("id_pelayanan").toString()));
+            }
             if (mapCriteria.get("branch_id") != null){
                 criteria.add(Restrictions.eq("branchId", mapCriteria.get("branch_id").toString()));
             }
@@ -41,6 +45,14 @@ public class TransaksiStokDao extends GenericDao<ItSimrsTransaksiStokEntity, Str
             }
             if (mapCriteria.get("id_vendor") != null){
                 criteria.add(Restrictions.eq("idVendor", mapCriteria.get("id_vendor").toString()));
+            }
+
+            if (mapCriteria.get("tahun") != null){
+                criteria.add(Restrictions.sqlRestriction("EXTRACT(YEAR FROM registered_date) = ?", (Integer) mapCriteria.get("tahun"), Hibernate.INTEGER));
+            }
+
+            if (mapCriteria.get("bulan") != null){
+                criteria.add(Restrictions.sqlRestriction("EXTRACT(MONTH FROM registered_date) = ?", (Integer) mapCriteria.get("bulan"), Hibernate.INTEGER));
             }
         }
 

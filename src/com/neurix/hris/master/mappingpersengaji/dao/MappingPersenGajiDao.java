@@ -5,6 +5,7 @@ import com.neurix.hris.master.mappingpersengaji.model.ImHrisMappingPersenGaji;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.HibernateException;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
@@ -55,5 +56,13 @@ public class MappingPersenGajiDao extends GenericDao<ImHrisMappingPersenGaji, St
         String sId = String.format("%08d", iter.next());
 
         return "MPG" + sId;
+    }
+
+    public List<ImHrisMappingPersenGaji> getListMappingPersenGaji(String namaMapping) throws HibernateException {
+        List<ImHrisMappingPersenGaji> results = this.sessionFactory.getCurrentSession().createCriteria(ImHrisMappingPersenGaji.class)
+                .add(Restrictions.eq("namaMappingPersenGaji", namaMapping))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+        return results;
     }
 }

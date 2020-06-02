@@ -42,7 +42,9 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Verifikasi Permintaan Purchase Order (PO)
+            <span id="label-head">
+                Verifikasi Permintaan Purchase Order (PO)
+            </span>
         </h1>
     </section>
 
@@ -720,6 +722,7 @@
 
         var tipe = '<s:property value="tipe"/>';
         if(tipe == "reture"){
+//            $("#label-head").text("Verifikasi Permintaan Reture");
             $('#retur_obat').addClass('active');
         }else{
             $('#permintaan_po').addClass('active');

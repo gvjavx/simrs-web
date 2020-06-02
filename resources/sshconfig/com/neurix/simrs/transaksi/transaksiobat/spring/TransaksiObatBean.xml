@@ -30,6 +30,7 @@
           p:vendorDao-ref="vendorDao"
           p:batchDao-ref="transaksiObatDetailBatchDao"
           p:hargaObatDao-ref="hargaObatDao"
+          p:transaksiStokDao-ref="transaksiStokDao"
     />
 
     <bean id="transaksiObatBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

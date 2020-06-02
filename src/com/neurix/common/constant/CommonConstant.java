@@ -45,6 +45,7 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_VIDEO_RM = "/upload/video_rm/";
     public final static String RESOURCE_PATH_PAYROLL = "/upload/payroll/";
 
+    public final static String RESOURCE_PATH_TTD_PETUGAS = "/upload/ttd_petugas/";
 
     public final static String RESOURCE_PATH_PHOTO_PROFILE = "/upload/profile/";
 
@@ -153,5 +154,10 @@ public class CommonConstant {
     public static final String AOGRA_REC_DIR = "/home/gondok/workspace/record ";
     public static final String APP_ID = "18016b16da294c7ab3255c5c792384b6";
 
-}
+    //AKUNTANSI
+    public final static String COA_PAYROLL = CommonUtil.getPropertyParams("coa.bank.payroll");
+    public final static String COA_RK_GATOEL = CommonUtil.getPropertyParams("coa.rk.gatoel");
+    public final static String ID_KANPUS = "KP";
+    public final static String MASTER_PAJAK_OBAT = "03.00";
 
+}

@@ -29,5 +29,6 @@ public interface PaketPeriksaBo{
 
     public List<PaketPeriksa> getListPaketRawatJalan(String branchId) throws GeneralBOException;
     public List<PaketPeriksa> getListPaketIgd(String branchId) throws GeneralBOException;
+    public MtSimrsPaketEntity getPaketEntityById(String id) throws GeneralBOException;
 
 }

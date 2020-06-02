@@ -4,6 +4,8 @@ import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
 import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.transaksi.budgeting.model.Budgeting;
 import com.neurix.akuntansi.transaksi.budgeting.model.ItAkunBudgetingEntity;
+import com.neurix.akuntansi.transaksi.saldoakhir.model.SaldoAkhir;
+import com.neurix.akuntansi.transaksi.tutupperiod.model.TutupPeriod;
 import com.neurix.common.dao.GenericDao;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -184,5 +186,37 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
         }
 
         return "";
+    }
+
+    public SaldoAkhir getSaldoAkhirLastPeriod(String tahun, String rekeningId, String branchId){
+
+        String SQL = "SELECT rekening_id, periode FROM it_akun_saldo_akhir WHERE periode LIKE :tahun\n" +
+                "AND rekening_id = :rekeningId  \n" +
+                "AND branch_id = :unit\n" +
+                "ORDER BY periode DESC LIMIT 1";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("rekeningId", rekeningId)
+                .setParameter("tahun", "%"+tahun)
+                .setParameter("unit", branchId)
+                .list();
+
+        if (results.size() > 0){
+            for (Object[] obj : results){
+
+                SaldoAkhir saldoAkhir = new SaldoAkhir();
+                saldoAkhir.setRekeningId(obj[0].toString());
+                saldoAkhir.setPeriode(obj[1].toString());
+
+                String[] arrSt = saldoAkhir.getPeriode().split("-",2);
+                if (arrSt.length > 0){
+                    saldoAkhir.setBulan(Integer.valueOf(arrSt[0].toString()));
+                }
+
+                return saldoAkhir;
+            }
+        }
+
+        return null;
     }
 }

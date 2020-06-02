@@ -18,6 +18,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/LabDetailAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PeriksaLabAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PaketPeriksaAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanAction.js"/>'></script>
 
     <style>
         .form-check {
@@ -198,11 +199,10 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-3" style="margin-top: 7px">Nama Tindakan</label>
-                                        <%--<label style="margin-top: 7px"><s:property value="headerDetailCheckup.idJenisPeriksaPasien"/> </label>--%>
                                         <div class="col-md-7">
                                             <select class="form-control select2" style="margin-top: 7px; width: 100%"
                                                     id="tin_id_tindakan"
-                                                    onchange="var warn =$('#war_tindakan').is(':visible'); if (warn){$('#cor_tindakan').show().fadeOut(3000);$('#war_tindakan').hide()}">
+                                                    onchange="getTarifTindakan(this); var warn =$('#war_tindakan').is(':visible'); if (warn){$('#cor_tindakan').show().fadeOut(3000);$('#war_tindakan').hide();}">
                                                 <option value=''>[Select One]</option>
                                             </select>
                                         </div>
@@ -223,6 +223,24 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
+                                        <label class="col-md-3" style="margin-top: 7px">Tarif Tindakan</label>
+                                        <div class="col-md-7">
+                                            <input type="number" min="1" class="form-control" style="margin-top: 7px"
+                                                   id="tin_tarif"
+                                                   oninput="$(this).css('border','')"
+                                                   onchange="$(this).css('border','')"  disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3" style="margin-top: 7px">Tarif Paket</label>
+                                        <div class="col-md-7">
+                                            <input type="number" min="1" class="form-control" style="margin-top: 7px"
+                                                   id="tin_tarif_paket"
+                                                   oninput="$(this).css('border','')"
+                                                   onchange="$(this).css('border','')">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <div class="col-md-offset-3 col-md-7" style="margin-top: 7px">
                                             <button class="btn btn-danger"><i class="fa fa-refresh"></i> Reset</button>
                                             <button class="btn btn-success" onclick="saveTindakan()"><i class="fa fa-plus"></i> Tambah</button>
@@ -235,6 +253,7 @@
                                     <tr bgcolor="#90ee90">
                                         <td>Tindakan</td>
                                         <td align="center" width="15%">Qty</td>
+                                        <td align="center" width="15%">Tarif Paket</td>
                                         <td align="center" width="10%">Action</td>
                                     </tr>
                                     </thead>
@@ -292,10 +311,10 @@
                                     <div class="form-group">
                                         <label class="col-md-3" style="margin-top: 7px">Parameter</label>
                                         <div class="col-md-7">
-                                            <select class="form-control select2" multiple
+                                            <select class="form-control select2"
                                                     style="margin-top: 7px; width: 100%"
                                                     id="lab_parameter"
-                                                    onchange="var warn =$('#war_parameter').is(':visible'); if (warn){$('#cor_parameter').show().fadeOut(3000);$('#war_parameter').hide()}">
+                                                    onchange="getTarifLab(this.value); var warn =$('#war_parameter').is(':visible'); if (warn){$('#cor_parameter').show().fadeOut(3000);$('#war_parameter').hide()}">
                                                 <option value=''>[Select One]</option>
                                             </select>
                                         </div>
@@ -304,6 +323,24 @@
                                                id="war_parameter"><i class="fa fa-times"></i> required</p>
                                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                                id="cor_parameter"><i class="fa fa-check"></i> correct</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3" style="margin-top: 7px">Tarif Lab</label>
+                                        <div class="col-md-7">
+                                            <input type="number" min="1" class="form-control" style="margin-top: 7px"
+                                                   id="lab_tarif"
+                                                   oninput="$(this).css('border','')"
+                                                   onchange="$(this).css('border','')"  disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3" style="margin-top: 7px">Tarif Paket Lab</label>
+                                        <div class="col-md-7">
+                                            <input type="number" min="1" class="form-control" style="margin-top: 7px"
+                                                   id="lab_tarif_paket"
+                                                   oninput="$(this).css('border','')"
+                                                   onchange="$(this).css('border','')">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -317,8 +354,11 @@
                                 <table class="table table-bordered table-striped" style="margin-top: 20px" id="table_lab">
                                     <thead>
                                     <tr bgcolor="#90ee90">
-                                        <td>Pemeriksaan</td>
                                         <td>Jenis Lab</td>
+                                        <td>Pemeriksaan</td>
+                                        <td>Item Periksa</td>
+                                        <td>Tarif Asli</td>
+                                        <td>Tarif Paket</td>
                                         <td align="center" width="10%">Action</td>
                                     </tr>
                                     </thead>
@@ -430,6 +470,34 @@
         });
     });
 
+    function getTarifTindakan(var1) {
+        var idx = var1.selectedIndex;
+        var idTindakan = var1.options[idx].value;
+
+        var id = "";
+        var tindakan = idTindakan.split("|");
+        if(tindakan[0] != 'null' && tindakan[0] != ''){
+            id = tindakan[0];
+        }
+        TindakanAction.getDataTindakanById(id, function (tindakan) {
+            if (tindakan != null && tindakan.idTindakan != null){
+                $("#tin_tarif").val(tindakan.tarif);
+                $("#tin_tarif_paket").val(tindakan.tarif);
+            }
+        })
+    }
+
+    function getTarifLab(var1) {
+        console.log(var1);
+        LabDetailAction.labDetailEntityByIdLab(var1, function (response) {
+            console.log(response);
+            if (response != null && response.idLabDetail != null){
+                $("#lab_tarif").val(response.tarif);
+                $("#lab_tarif_paket").val(response.tarif);
+            }
+        });
+    }
+
     function formatRupiah2(angka) {
         var number_string = angka.replace(/[^,\d]/g, '').toString(),
             split = number_string.split(','),
@@ -513,11 +581,12 @@
 
         var idKategori = $('#tin_id_ketgori_tindakan').val();
         var idTindakan = $('#tin_id_tindakan').val();
+        var tarifPaket = $("#tin_tarif_paket").val();
         var qty = $('#tin_qty').val();
         var cek = false;
         var data = $('#table_tindakan').tableToJSON();
 
-        if (idTindakan != '' && idTindakan != null && idKategori != null && qty > 0 && idKategori != '') {
+        if (idTindakan != '' && idTindakan != null && idKategori != null && qty > 0 && idKategori != '' && tarifPaket != '') {
 
 
             var id = "";
@@ -551,6 +620,7 @@
                 var table = '<tr id="row'+id+'">' +
                     '<td>' + tin + '<input type="hidden" value="'+id+'" id="tindakan_id'+row+'">' + '</td>' +
                     '<td align="center">' + qty + '<input type="hidden" value="'+idKategori+'" id="kategori_id'+row+'">' +'</td>' +
+                    '<td align="center">' + tarifPaket + '<input type="hidden" value="'+tarifPaket+'" id="tin_tarif_id'+row+'">' +'</td>' +
                     '<td align="center">' + '<img border="0" class="hvr-grow" onclick="delRow(\''+id+'\')" src="<s:url value="/pages/images/icons8-cancel-25.png"/>" style="cursor: pointer;">' + '</td>'
                 '</tr>';
 
@@ -573,6 +643,8 @@
                 $('#tin_qty').css('border', 'red solid 1px');
             }
         }
+
+        hitungTotal();
     }
 
     function delRow(id){
@@ -641,6 +713,9 @@
         var idKategori = $('#lab_kategori').val();
         var idLab = $('#lab_lab').val();
         var idParameter = $('#lab_parameter').val();
+        var tarifAsli = $('#lab_tarif').val();
+        var tarifPaket = $('#lab_tarif_paket').val();
+        var namaParameter = $('#lab_parameter option:selected').text();
 
         if (idKategori != '' && idLab != '') {
 
@@ -664,11 +739,13 @@
                 $('#msg_lab').text("Data sudah ada di dalam list...!");
             }else{
                 var table = '<tr id="row'+idl+'">' +
-                    '<td>'+idLab.split("|")[1]+'<input type="hidden" id="kategori_lab'+row+'" value="'+idk+'">'+'</td>' +
                     '<td>'+idKategori.split("|")[1]+
                     '<input type="hidden" id="lab_id'+row+'" value="'+idl+'">'+
-                    '<input type="hidden" id="parameter_id'+row+'" value="'+idParameter+'">'+
                     '</td>' +
+                    '<td>'+idLab.split("|")[1]+'<input type="hidden" id="kategori_lab'+row+'" value="'+idk+'">'+'</td>' +
+                    '<td>'+ namaParameter + '<input type="hidden" id="parameter_id'+row+'" value="'+idParameter+'"></td>'+
+                    '<td>'+ tarifAsli + '</td>'+
+                    '<td>'+ tarifPaket + '<input type="hidden" id="lab_tarif_id'+row+'" value="'+tarifPaket+'"></td>'+
                     '<td align="center">' + '<img border="0" class="hvr-grow" onclick="delRow(\''+idl+'\')" src="<s:url value="/pages/images/icons8-cancel-25.png"/>" style="cursor: pointer;">' + '</td>'+
                     '</tr>';
                 $('#body_lab').append(table);
@@ -688,6 +765,32 @@
                 $('#war_parameter').show();
             }
         }
+
+        hitungTotal();
+    }
+
+    function hitungTotal(){
+        var tindakan = $('#table_tindakan').tableToJSON();
+        var lab = $('#table_lab').tableToJSON();
+
+
+        var totalTindakan = 0;
+        $.each(tindakan, function (i, item) {
+            var tarifTindakan = $('#tin_tarif_id'+i).val();
+            totalTindakan = parseInt(totalTindakan) + parseInt(tarifTindakan);
+        });
+
+        var totalLab = 0;
+        $.each(lab, function (i, item) {
+            var tarifpaket = $('#lab_tarif_id'+i).val();
+            totalLab = parseInt(totalLab) + parseInt(tarifpaket);
+        });
+
+
+        var total = 0; total = totalTindakan + totalLab;
+        $('#tarif_paket').val(total);
+        $('#nominal_tarif_paket').val(total);
+        console.log("total -> "+total);
     }
 
     function savePaket(){
@@ -702,7 +805,8 @@
         $.each(tindakan, function (i, item) {
             var idTindakan = $('#tindakan_id'+i).val();
             var idKategori = $('#kategori_id'+i).val();
-            result.push({'kategori_item':idKategori, 'id_item':idTindakan, 'jenis_item':'tindakan'});
+            var tarifTindakan = $('#tin_tarif_id'+i).val();
+            result.push({'kategori_item':idKategori, 'id_item':idTindakan, 'jenis_item':'tindakan', 'tarif':tarifTindakan});
         });
 
         $.each(lab, function (i, item) {
@@ -710,14 +814,15 @@
             var idLab = $('#lab_id'+i).val();
             var idParameter = $('#parameter_id'+i).val();
             var jenisLab = lab[i]["Jenis Lab"];
+            var tarifpaket = $('#lab_tarif_id'+i).val();
 
             if(idParameter != '' && idParameter != 'null'){
                 var params = idParameter.split(",");
                 for(i = 0; i < params.length; i++){
-                    result.push({'kategori_item':idLab, 'id_item':params[i], 'jenis_item':jenisLab.toLowerCase()});
+                    result.push({'kategori_item':idLab, 'id_item':params[i], 'jenis_item':jenisLab.toLowerCase(), 'tarif':tarifpaket});
                 }
             }else{
-                result.push({'kategori_item':idLab, 'id_item':'', 'jenis_item':jenisLab.toLowerCase()});
+                result.push({'kategori_item':idLab, 'id_item':params[i], 'jenis_item':jenisLab.toLowerCase(), 'tarif':tarifpaket});
             }
         });
 
