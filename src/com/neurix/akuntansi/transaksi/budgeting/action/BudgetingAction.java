@@ -1695,6 +1695,19 @@ public class BudgetingAction {
         return budgeting;
     }
 
+    public List<BudgetingPengadaan> viewPengadaan(String idBudgetingDetail){
+
+        logger.info("[BudgetingAction.viewPengadaan] START >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
+
+        List<BudgetingPengadaan> budgetingPengadaans = budgetingBo.getListBudgetingPengadaanNoDetail(idBudgetingDetail);
+
+        logger.info("[BudgetingAction.viewPengadaan] END <<<");
+        return budgetingPengadaans;
+    }
+
     public void setBudgetingBoProxy(BudgetingBo budgetingBoProxy) {
         this.budgetingBoProxy = budgetingBoProxy;
     }

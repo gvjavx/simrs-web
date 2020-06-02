@@ -290,6 +290,62 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-view-pengadaan">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-file"></i> View Investasi
+                </h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="view-id-pengadaan">
+                <table style="font-size: 15px; margin-bottom: 10px;" class="table">
+                    <tbody>
+                    <tr>
+                        <td width="20%">Tahun</td>
+                        <td>:</td>
+                        <td id="tahun-view-pengadaan"></td>
+                    </tr>
+                    <tr>
+                        <td>Unit</td>
+                        <td>:</td>
+                        <td id="unit-view-pengadaan"></td>
+                    </tr>
+                    <tr>
+                        <td>COA </td>
+                        <td>:</td>
+                        <td id="coa-view-pengadaan"></td>
+                    </tr>
+                    <tr>
+                        <td>Periode </td>
+                        <td>:</td>
+                        <td id="periode-view-pengadaan"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table class="table table-bordered table-striped">
+                    <thead id="head-budgeting-view-pengadaan" style="font-size: 13px">
+                    <tr bgcolor="#90ee90">
+                        <td>Nama Investasi</td>
+                        <td align="center">Qty</td>
+                        <td align="center">Nilai</td>
+                        <td align="center">Sub Total</td>
+                    </tr>
+                    </thead>
+                    <tbody id="body-budgeting-view-pengadaan" style="font-size: 13px">
+                    </tbody>
+                    <%--<input type="hidden" id="index-period"/>--%>
+                    <%--<input type="hidden" id="index-branch"/>--%>
+                    <%--<input type="hidden" id="bulan"/>--%>
+                    <%--<input type="hidden" id="tahun"/>--%>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type='text/javascript'>
 
     function changeAction(var1){
@@ -747,27 +803,28 @@
                         if(item.divisiId == "INVS"){
                             investasi = true;
                             str += "<td class='val-master-id' style='display: none'>"+item.masterId+"</td>"+
-                                "<td class='val-master-name' style='display: none'>"+item.masterName+"</td>";
+                                "<td class='val-master-name' style='display: none'>"+item.masterName+"</td>" +
+                                "<td style='display: none'>"+item.divisiId+"</td>";
                         } else {
                             str += "<td class='val-master-id' >"+item.masterId+"</td>"+
-                                    "<td class='val-master-name' >"+item.masterName+"</td>";
+                                    "<td class='val-master-name' >"+item.masterName+"</td>"+
+                                    "<td>"+item.divisiId+"</td>";
                         }
 //                            "<td class='val-master-id' >"+item.masterId+"</td>"+
 //                            "<td class='val-master-name' >"+item.masterName+"</td>"+
 
-                    str +=  "<td>"+item.divisiId+"</td>"+
-                            "<td>"+item.divisiName+"</td>"+
+                    str += "<td>"+item.divisiName+"</td>"+
                             "<td align='center'>"+item.qty+"</td>"+
                             "<td align='right'>"+ formatRupiah(item.nilai)+"</td>"+
                             "<td align='right'>"+ formatRupiah(item.subTotal)+"</td>"+
                             "<td align='right'>"+ formatRupiah(item.saldoAkhir) +"</td>"+
                             "<td align='right'>"+ formatSelisih(item.selisihSaldoAkhir) +"</td>"+
-                            "<td align='center'>" + actionViewPengadaan(investasi, item.idBudgetingDetail) + "</td>"+
+                            "<td align='center'>" + actionViewPengadaan(investasi, item.idBudgetingDetail, item.tipe) + "</td>"+
                             "</tr>";
                 });
 
                 if (investasi){
-                    str +=  "<td colspan='5'>Nilai Total</td>"+
+                    str +=  "<td colspan='4'>Nilai Total</td>"+
                         "<td align='right'>"+ formatRupiah(response.nilaiTotal) +"</td>"+
                         "<td align='right'>"+ formatRupiah(response.saldoAkhir) +"</td>"+
                         "<td align='right'>"+ formatSelisih(response.selisihSaldoAkhir) +"</td>"+
@@ -776,6 +833,7 @@
 
                     $("#label-master-id").hide();
                     $("#label-master-name").hide();
+                    $("#label-divisi-id").hide();
                     $("#label-divisi-id").text("Id");
                     $("#label-divisi-name").text("Name");
                 } else {
@@ -789,6 +847,7 @@
 
                     $("#label-master-id").show();
                     $("#label-master-name").show();
+                    $("#label-divisi-id").show();
                     $("#label-divisi-id").text("Divisi Id");
                     $("#label-divisi-name").text("Divisi Name");
                 }
@@ -801,15 +860,46 @@
         $("#view-id").val(id);
     });
 
-    function actionViewPengadaan(var1, var2) {
+    function actionViewPengadaan(var1, var2, var3) {
         if (var1){
-            return "<button class='item-view btn btn-sm btn-success' onclick='viewPengadaan(\'"+var2+"\')'><i class='fa fa-bars'></i></button>";
+            return "<button class='item-view btn btn-sm btn-success' onclick=\"viewPengadaan('"+var2+"','"+var3+"')\"><i class='fa fa-bars'></i></button>";
         } else {
             return "";
         }
     }
 
-    function viewPengadaan(var1) {
+    function viewPengadaan(var1, var2) {
+
+        $("#modal-view-pengadaan").modal('show');
+
+        var tahun = $("#tahun-view").text();
+        var unit = $("#unit-view").text();
+        var coa = $("#coa-view").text();
+
+        $("#tahun-view-pengadaan").text(tahun);
+        $("#unit-view-pengadaan").text(unit);
+        $("#coa-view-pengadaan").text(coa);
+        $("#periode-view-pengadaan").text(var2.toUpperCase());
+
+        BudgetingAction.viewPengadaan(var1, function (response) {
+
+            if (response.length > 0){
+
+                var str = "";
+                $.each(response, function(i, item){
+                    str += "<tr>" +
+                        "<td>"+ item.namPengadaan+"</td>" +
+                        "<td align='right'>"+ item.qty+"</td>" +
+                        "<td align='right'>"+ formatRupiah( item.nilai ) +"</td>" +
+                        "<td align='right'>"+ formatRupiah( item.subTotal )+"</td>" +
+                        "</tr>";
+                });
+
+                $("#body-budgeting-view-pengadaan").html(str);
+            }
+
+        });
+
 
     }
 
