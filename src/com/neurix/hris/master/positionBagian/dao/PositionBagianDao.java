@@ -542,4 +542,12 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
         }
         return listOfResult;
     }
+
+    public String getNextPositionBagianHistoryId() throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_position_bagian_history')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%03d", iter.next());
+        return "PBS"+sId;
+    }
+
 }
