@@ -31,11 +31,94 @@ public class PengajuanBiayaDetail extends BaseModel {
     private String approvalKadivId;
     private Timestamp approvalKadivDate;
 
+    private String approvalGmFlag;
+    private String approvalGmId;
+    private Timestamp approvalGmDate;
+
     private String approvalKeuanganFlag;
     private String approvalKeuanganId;
     private Timestamp approvalKeuanganDate;
 
+    private String approvalKeuanganKpFlag;
+    private String approvalKeuanganKpId;
+    private Timestamp approvalKeuanganKpDate;
+
     private String statusApproval;
+    private String statusUserApproval;
+    private String statusKeuangan;
+    private String noJurnal;
+
+    public String getApprovalKeuanganKpFlag() {
+        return approvalKeuanganKpFlag;
+    }
+
+    public void setApprovalKeuanganKpFlag(String approvalKeuanganKpFlag) {
+        this.approvalKeuanganKpFlag = approvalKeuanganKpFlag;
+    }
+
+    public String getApprovalKeuanganKpId() {
+        return approvalKeuanganKpId;
+    }
+
+    public void setApprovalKeuanganKpId(String approvalKeuanganKpId) {
+        this.approvalKeuanganKpId = approvalKeuanganKpId;
+    }
+
+    public Timestamp getApprovalKeuanganKpDate() {
+        return approvalKeuanganKpDate;
+    }
+
+    public void setApprovalKeuanganKpDate(Timestamp approvalKeuanganKpDate) {
+        this.approvalKeuanganKpDate = approvalKeuanganKpDate;
+    }
+
+    public String getNoJurnal() {
+        return noJurnal;
+    }
+
+    public void setNoJurnal(String noJurnal) {
+        this.noJurnal = noJurnal;
+    }
+
+    public String getStatusKeuangan() {
+        return statusKeuangan;
+    }
+
+    public void setStatusKeuangan(String statusKeuangan) {
+        this.statusKeuangan = statusKeuangan;
+    }
+
+    public String getStatusUserApproval() {
+        return statusUserApproval;
+    }
+
+    public void setStatusUserApproval(String statusUserApproval) {
+        this.statusUserApproval = statusUserApproval;
+    }
+
+    public String getApprovalGmFlag() {
+        return approvalGmFlag;
+    }
+
+    public void setApprovalGmFlag(String approvalGmFlag) {
+        this.approvalGmFlag = approvalGmFlag;
+    }
+
+    public String getApprovalGmId() {
+        return approvalGmId;
+    }
+
+    public void setApprovalGmId(String approvalGmId) {
+        this.approvalGmId = approvalGmId;
+    }
+
+    public Timestamp getApprovalGmDate() {
+        return approvalGmDate;
+    }
+
+    public void setApprovalGmDate(Timestamp approvalGmDate) {
+        this.approvalGmDate = approvalGmDate;
+    }
 
     public String getPengajuanBiayaDetailId() {
         return pengajuanBiayaDetailId;

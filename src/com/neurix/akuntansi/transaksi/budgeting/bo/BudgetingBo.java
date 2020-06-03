@@ -32,4 +32,10 @@ public interface BudgetingBo {
     String getBudgetBiayaDivisiSaatIni(Budgeting bean);
 
     List<Budgeting> getNoBudgetByDivisi(Budgeting bean);
+
+    List<Budgeting> getInvestasiByDivisi(Budgeting bean);
+
+    List<BudgetingPengadaan> getInvestasiByNoBudgeting(String noBudgeting);
+
+    String getBudgetBiayaInvestasiSaatIni(Budgeting bean);
 }

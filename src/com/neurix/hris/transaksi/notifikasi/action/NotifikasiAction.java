@@ -960,7 +960,7 @@ public class NotifikasiAction extends BaseMasterAction{
             pengajuanBiayaRk = new PengajuanBiaya();
             pengajuanBiayaRk.setPengajuanBiayaId(pengajuanBiayaId);
         }
-        if ("TN02".equalsIgnoreCase(tipe)){
+        if ("TN04".equalsIgnoreCase(tipe)){
             String pengajuanBiayaId = getRequest();
 
             pengajuanBiaya = new PengajuanBiaya();
