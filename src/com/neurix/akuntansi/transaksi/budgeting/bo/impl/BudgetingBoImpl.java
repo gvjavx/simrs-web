@@ -515,12 +515,17 @@ public class BudgetingBoImpl implements BudgetingBo {
                                 ItAkunBudgetingDetailEntity budgetingDetailEntity = new ItAkunBudgetingDetailEntity();
                                 budgetingDetailEntity.setIdBudgetingDetail(generateBudgetingDetailId());
                                 budgetingDetailEntity.setIdBudgeting(budgetingEntity.getIdBudgeting());
-                                if (budgetingDetail.getMasterId() != null){
+
+                                if (budgetingDetail != null && !"".equalsIgnoreCase(budgetingDetail.getMasterId())){
+                                    budgetingDetailEntity.setMasterId(budgetingDetail.getMasterId());
+                                }
+
+                                if (budgetingDetailEntity.getMasterId() != null){
                                     budgetingDetailEntity.setNoBudgetingDetail(budgetingEntity.getNoTrans()+"-"+budgetingDetail.getTipe()+"-"+budgetingDetail.getDivisiId()+"-"+budgetingDetail.getMasterId());
                                 } else {
                                     budgetingDetailEntity.setNoBudgetingDetail(budgetingEntity.getNoTrans()+"-"+budgetingDetail.getTipe()+"-"+budgetingDetail.getDivisiId());
                                 }
-                                budgetingDetailEntity.setMasterId(budgetingDetail.getMasterId());
+
                                 budgetingDetailEntity.setNoBudgeting(budgetingEntity.getNoBudgeting());
                                 budgetingDetailEntity.setDivisiId(budgetingDetail.getDivisiId());
                                 budgetingDetailEntity.setNilai(budgetingDetail.getNilai());
@@ -561,7 +566,11 @@ public class BudgetingBoImpl implements BudgetingBo {
                                         pengadaanEntity.setCreatedWho(bean.getCreatedWho());
                                         pengadaanEntity.setLastUpdate(bean.getLastUpdate());
                                         pengadaanEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                                        pengadaanEntity.setNoPengadaan(budgetingDetailEntity.getNoBudgetingDetail()+"-"+pengadaanEntity.getIdPengadaan());
+                                        if (budgetingPengadaan.getNoPengadaan() != null && !"".equalsIgnoreCase(budgetingPengadaan.getNoPengadaan())){
+                                            pengadaanEntity.setNoPengadaan(budgetingPengadaan.getNoPengadaan());
+                                        } else {
+                                            pengadaanEntity.setNoPengadaan(budgetingDetailEntity.getNoBudgetingDetail()+"-"+pengadaanEntity.getIdPengadaan());
+                                        }
 
                                         try {
                                             budgetingPengadaanDao.addAndSave(pengadaanEntity);
@@ -714,7 +723,7 @@ public class BudgetingBoImpl implements BudgetingBo {
                             budgetingDetailEntity.setIdBudgetingDetail(budgetingDetail.getIdBudgetingDetail());
                             budgetingDetailEntity.setIdBudgeting(budgetingEntity.getIdBudgeting());
                             budgetingDetailEntity.setNoBudgeting(budgetingEntity.getNoBudgeting());
-                            if (budgetingDetail.getMasterId() != null){
+                            if (budgetingDetail.getMasterId() != null && !"".equalsIgnoreCase(budgetingDetail.getMasterId())){
                                 budgetingDetailEntity.setNoBudgetingDetail(budgetingEntity.getNoTrans()+"-"+budgetingDetail.getTipe()+"-"+budgetingDetail.getDivisiId()+"-"+budgetingDetail.getMasterId());
                             } else {
                                 budgetingDetailEntity.setNoBudgetingDetail(budgetingEntity.getNoTrans()+"-"+budgetingDetail.getTipe()+"-"+budgetingDetail.getDivisiId());
@@ -1169,10 +1178,15 @@ public class BudgetingBoImpl implements BudgetingBo {
                     periodeBulan = listOfPeriode.get(0).getBulan();
                     for (BudgetingPeriode periode : listOfPeriode){
                         hsCriteria = new HashMap();
-                        hsCriteria.put("divisi_id", budgetingDetail.getDivisiId());
-                        hsCriteria.put("master_id", budgetingDetail.getMasterId());
                         hsCriteria.put("rekening_id", budgetingDetail.getRekeningId());
                         hsCriteria.put("periode", periode.getBulan() + "-" + tahun);
+
+                        if (budgetingDetail.getMasterId() != null && !"".equalsIgnoreCase(budgetingDetail.getMasterId())){
+                            hsCriteria.put("master_id", budgetingDetail.getMasterId());
+                        }
+                        if (budgetingDetail.getDivisiId() != null && !"".equalsIgnoreCase(budgetingDetail.getDivisiId())){
+                            hsCriteria.put("divisi_id", budgetingDetail.getDivisiId());
+                        }
 
                         List<ItAkunSaldoAkhirDetailEntity> saldoAkhirDetailEntities = saldoAkhirDetailDao.getByCriteria(hsCriteria);
                         if (saldoAkhirDetailEntities.size() > 0){

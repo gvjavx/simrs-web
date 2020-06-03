@@ -61,7 +61,7 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
                  kodeRekeningEntity.setNamaKodeRekening(bean.getNamaKodeRekening());
                  kodeRekeningEntity.setTipeRekeningId(bean.getTipeRekeningId());
                  kodeRekeningEntity.setFlagDivisi(bean.getFlagDivisi());
-                 kodeRekeningEntity.setFlagMaster(bean.getFlagDivisi());
+                 kodeRekeningEntity.setFlagMaster(bean.getFlagMaster());
 
                     String[] coa = bean.getKodeRekening().split("\\.");
                     if (coa.length==1){
