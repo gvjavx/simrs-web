@@ -18,6 +18,7 @@
         .color-picker {
             margin: 1rem 1rem 0 1rem;
         }
+
     </style>
 
     <link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/radio_checkbox.css"/>">
@@ -406,7 +407,7 @@
                     <div class="box-header with-border">
                         <div class="row">
                             <div class="col-md-6">
-                                <h3 class="box-title"><i class="fa fa-stethoscope"></i> Anamnese</h3>
+                                <h3 class="box-title"><i class="fa fa-stethoscope"></i> Anamnesa</h3>
                             </div>
                             <div class="col-md-6">
                                 <h3 class="box-title"><i class="fa fa-medkit"></i> Rekam Medis</h3>
@@ -478,19 +479,22 @@
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-success"><i class="fa fa-edit"></i> Poli Spesialis
                                     </button>
-                                    <button onclick="loadModalRM('hd')" type="button" class="btn btn-success dropdown-toggle"
+                                    <button onclick="loadModalRM('spesialis')" type="button" class="btn btn-success dropdown-toggle"
                                             data-toggle="dropdown" style="height: 34px">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a style="cursor: pointer" onclick="showModalHD('monitoring_hd')"><i class="fa fa-circle-o"></i>Monitoring HD</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalHD('perencanaan_hemodialisa')"><i class="fa fa-circle-o"></i>Perencanaan HD</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalHD('asesmen_hd')"><i class="fa fa-circle-o"></i>Asesmen Awal HD</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalHD('tranfusi_hd')"><i class="fa fa-circle-o"></i>Tindakan Medis Transfusi Darah</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalHD('catatan_tranfusi_darah')"><i class="fa fa-circle-o"></i>Catatan Pemantauan Tranfusi Darah</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalHD('persetujuan_hd')"><i class="fa fa-circle-o"></i>Persetujuan HD</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalHD('travelling')"><i class="fa fa-circle-o"></i>Travelling Dialysis</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalSPS('spesialis_tht')"><i class="fa fa-circle-o"></i>Asesmen THT</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalSPS('spesialis_penyakit_dalam')"><i class="fa fa-circle-o"></i>Asesmen Penyakit Dalam</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalSPS('spesialis_bedah')"><i class="fa fa-circle-o"></i>Asesmen Bedah</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalSPS('spesialis_paru')"><i class="fa fa-circle-o"></i>Asesmen Paru</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalSPS('spesialis_anak')"><i class="fa fa-circle-o"></i>Asesmen Spesialis Anak</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalSPS('spesialis_neurologi')"><i class="fa fa-circle-o"></i>Asesmen Neurologi</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalSPS('spesialis_obstetri')"><i class="fa fa-circle-o"></i>Asesmen Obstetri</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalSPS('spesialis_ortopedi')"><i class="fa fa-circle-o"></i>Asesmen Ortopedi</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalSPS('spesialis_ginjal')"><i class="fa fa-circle-o"></i>Asesmen Ginjal</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalSPS('spesialis_jantung')"><i class="fa fa-circle-o"></i>Asesmen Jantung</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -2072,6 +2076,7 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/HemodialisaAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/RekamMedisRawatJalanAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/MonitoringTransfusiDarahAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenSpesialisAction.js"/>'></script>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/datapasien.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/fisioterapi.js"/>'></script>
@@ -2079,6 +2084,7 @@
 <script type='text/javascript' src='<s:url value="/pages/dist/js/rj.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/addRawatJalan.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/spesialis.js"/>'></script>
 
 <script type='text/javascript'>
 
@@ -2273,6 +2279,9 @@
         }
         if(jenis == "ringkasan_rj"){
             context = contextPath+'/pages/modal/modalRingkasanRawatJalan.jsp';
+        }
+        if(jenis == "spesialis"){
+            context = contextPath+'/pages/modal/modalJantung.jsp';
         }
         $('#modal-temp').load(context, function (res) {
 

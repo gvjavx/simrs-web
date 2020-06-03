@@ -450,6 +450,8 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/cetakanrm/hibernate/ItSimrsCetakanRmEntity.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/hris/master/DokterKso/hibernate/ImSimrsDokterKsoTindakan.hbm.xml</value>
+
+                <value>sshconfig/com/neurix/simrs/transaksi/asesmenuspesialis/hibernate/ItSimrsAsesmenSpesialisEntity.hbm.xml</value>
             </list>
         </property>
     </bean>

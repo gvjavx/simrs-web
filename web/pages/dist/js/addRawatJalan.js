@@ -943,7 +943,7 @@ function listTindakan() {
             $.each(data, function (i, item) {
 
                 var tanggal = item.createdDate;
-                var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
+                var dateFormat = converterDate(new Date(tanggal));
                 var tarif = "-";
                 var tarifTotal = "-";
                 var trfTotal = 0;
@@ -1079,7 +1079,7 @@ function listDiagnosa() {
                 var ket = "-";
                 var jen = "-";
                 var tanggal = item.createdDate;
-                var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
+                var dateFormat = converterDate(new Date(tanggal));
 
                 if (item.idDiagnosa != null) {
                     id = item.idDiagnosa;
@@ -1217,7 +1217,7 @@ function listLab() {
                 var status = "-";
                 var lab = "-";
                 var tanggal = item.createdDate;
-                var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
+                var dateFormat = converterDate(new Date(tanggal));
                 var btn = '<img border="0" class="hvr-grow" onclick="editLab(\'' + item.idPeriksaLab + '\',\'' + item.idLab + '\',\'' + item.idKategoriLab + '\',\''+item.kategoriLabName+'\')" src="'+contextPath+'/pages/images/icons8-create-25.png" style="cursor: pointer;">';
                 var tipe = "";
 
@@ -1402,7 +1402,7 @@ function listObat() {
         if (data != null) {
             $.each(data, function (i, item) {
                 var tanggal = item.createdDate;
-                var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
+                var dateFormat = converterDate(new Date(tanggal));
                 var id = "-";
                 var obat = "-";
                 var qty = "-";
@@ -1848,7 +1848,7 @@ function listResepPasien() {
             $.each(data, function (i, item) {
                 var idResep = "";
                 var tanggal = item.createdDate;
-                var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
+                var dateFormat = converterDate(new Date(tanggal));
 
                 if (item.idPermintaanResep != null) {
                     idResep = item.idPermintaanResep;

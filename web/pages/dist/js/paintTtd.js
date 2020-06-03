@@ -60,6 +60,69 @@ function paintTtd(id, change){
 
 function removePaint(id){
     var canvas = document.getElementById(id);
-    const context = canvas.getContext('2d');
-    context.clearRect(0, 0, canvas.width, canvas.height);
+    if ("area_canvas" == id) {
+        const context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        var url = "";
+        if ("Laki-Laki" == jenisKelamin) {
+            url = contextPath+'/pages/images/penanda-laki-laki.jpg';
+        } else {
+            url = contextPath+'/pages/images/penanda-perempuan.jpg';
+        }
+
+        var ctx = canvas.getContext('2d');
+        var img = new Image();
+        img.src = url;
+        img.onload = function (ev) {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0);
+        }
+    }else if("area_paru" == id){
+        const context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        var url = contextPath+'/pages/images/paru-1.png';
+
+        var ctx = canvas.getContext('2d');
+        var img = new Image();
+        img.src = url;
+        img.onload = function (ev) {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0);
+        }
+    }else if("area_ortopedi" == id){
+        const context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        var url = contextPath+'/pages/images/ortopedi.png';
+
+        var ctx = canvas.getContext('2d');
+        var img = new Image();
+        img.src = url;
+        img.onload = function (ev) {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0);
+        }
+    }else if("area_ginjal" == id){
+        const context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        var url = contextPath+'/pages/images/ginjal-1.png';
+
+        var ctx = canvas.getContext('2d');
+        var img = new Image();
+        img.src = url;
+        img.onload = function (ev) {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0);
+        }
+    } else {
+        const context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+    }
 }

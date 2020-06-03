@@ -44,8 +44,8 @@ apply the skin class to the body tag so the changes take effect.
 <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>-->
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.min.js"></script>-->
 
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<script src="<s:url value="/pages/bootstraplte/js/html5shiv.min.js"/>"></script>
+<script src="<s:url value="/pages/bootstraplte/js/respond.min.js"/>"></script>
 <%--<![endif]-->--%>
 
 
@@ -93,6 +93,7 @@ apply the skin class to the body tag so the changes take effect.
 <script src="<s:url value="/pages/bootstraplte/js/jquery.tabletojson.js"/>"></script>
 <script src="<s:url value="/pages/plugins/pace/pace.min.js"/>"></script>
 <script src="<s:url value="/pages/plugins/iCheck/icheck.min.js"/>"></script>
+<script type="text/javascript" src="<s:url value="/pages/bootstraplte/js/jquery-ui.js"/>"></script>
 
 <%--<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>--%>
 <%--<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>--%>
@@ -373,7 +374,6 @@ apply the skin class to the body tag so the changes take effect.
     }
 
 </style>
-<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
 <script>
 
     $(window).load(function() {
@@ -441,10 +441,6 @@ apply the skin class to the body tag so the changes take effect.
 
     });
 
-    function logout(){
-        var host = window.location.hostname;
-        window.location.href = host+"/simrs/j_spring_security_logout";
-    }
     window.checkDec = function(el){
         var ex = /^[0-9]+\.?[0-9]*$/;
         if(ex.test(el.value)==false){
