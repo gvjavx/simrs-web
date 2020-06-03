@@ -1132,7 +1132,7 @@
 </div>
 
 <div class="modal fade" id="modal-pengadaan">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1145,8 +1145,8 @@
                 <table class="table table-bordered table-striped">
                     <thead>
                     <tr>
-                        <td>Nama Rincian</td>
-                        <td>Qty</td>
+                        <td style="width: 50% ;">Nama Rincian</td>
+                        <td style="width: 20% ;">Qty</td>
                         <td>Nilai</td>
                     </tr>
                     </thead>
