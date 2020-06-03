@@ -1214,6 +1214,10 @@ public class BudgetingBoImpl implements BudgetingBo {
                 budgetingPengadaan.setLastUpdate(pengadaanEntity.getLastUpdate());
                 budgetingPengadaan.setLastUpdateWho(pengadaanEntity.getLastUpdateWho());
                 budgetingPengadaan.setIdBudgetingDetail(pengadaanEntity.getIdBudgetingDetail());
+                budgetingPengadaan.setNilaiKontrak(pengadaanEntity.getNilaiKontrak() == null ? new BigDecimal(0) : pengadaanEntity.getNilaiKontrak());
+                budgetingPengadaan.setNoKontrak(pengadaanEntity.getNoKontrak() == null ? "" : pengadaanEntity.getNoKontrak());
+                budgetingPengadaan.setRealisasi(new BigDecimal(0));
+                budgetingPengadaan.setSelisih(budgetingPengadaan.getSubTotal().subtract(budgetingPengadaan.getRealisasi()));
                 budgetingPengadaans.add(budgetingPengadaan);
             }
 

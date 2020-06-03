@@ -51,6 +51,12 @@
         <property name="lastUpdate">
             <column name="last_update" sql-type="timestamp" not-null="false" />
         </property>
+        <property name="noKontrak">
+            <column name="no_kontrak" sql-type="varchar" not-null="false" />
+        </property>
+        <property name="nilaiKontrak">
+            <column name="nilai_kontrak" sql-type="numeric" not-null="false" />
+        </property>
 
     </class>
 </hibernate-mapping>

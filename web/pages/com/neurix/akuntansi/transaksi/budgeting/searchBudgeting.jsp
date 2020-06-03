@@ -329,9 +329,13 @@
                     <thead id="head-budgeting-view-pengadaan" style="font-size: 13px">
                     <tr bgcolor="#90ee90">
                         <td>Nama Investasi</td>
+                        <td>No Kontrak</td>
                         <td align="center">Qty</td>
                         <td align="center">Nilai</td>
                         <td align="center">Sub Total</td>
+                        <td align="center">Nilai Kontrak</td>
+                        <td align="center">Realisasi</td>
+                        <td align="center">Selisih</td>
                     </tr>
                     </thead>
                     <tbody id="body-budgeting-view-pengadaan" style="font-size: 13px">
@@ -892,9 +896,13 @@
                 $.each(response, function(i, item){
                     str += "<tr>" +
                         "<td>"+ item.namPengadaan+"</td>" +
+                        "<td>"+item.noKontrak+"</td>" +
                         "<td align='right'>"+ item.qty+"</td>" +
                         "<td align='right'>"+ formatRupiah( item.nilai ) +"</td>" +
                         "<td align='right'>"+ formatRupiah( item.subTotal )+"</td>" +
+                        "<td align='right'>"+ formatRupiah( item.nilaiKontrak ) +"</td>" +
+                        "<td align='right'>"+ formatRupiah( item.realisasi ) +"</td>" +
+                        "<td align='right'>"+ formatSelisih( item.selisih ) +"</td>" +
                         "</tr>";
                 });
 

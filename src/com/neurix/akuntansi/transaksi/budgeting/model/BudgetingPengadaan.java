@@ -25,6 +25,42 @@ public class BudgetingPengadaan{
     private String lastUpdateWho;
     private String rekeningId;
     private String idBudgetingDetail;
+    private String noKontrak;
+    private BigDecimal nilaiKontrak;
+    private BigDecimal selisih;
+    private BigDecimal realisasi;
+
+    public BigDecimal getSelisih() {
+        return selisih;
+    }
+
+    public void setSelisih(BigDecimal selisih) {
+        this.selisih = selisih;
+    }
+
+    public BigDecimal getRealisasi() {
+        return realisasi;
+    }
+
+    public void setRealisasi(BigDecimal realisasi) {
+        this.realisasi = realisasi;
+    }
+
+    public String getNoKontrak() {
+        return noKontrak;
+    }
+
+    public void setNoKontrak(String noKontrak) {
+        this.noKontrak = noKontrak;
+    }
+
+    public BigDecimal getNilaiKontrak() {
+        return nilaiKontrak;
+    }
+
+    public void setNilaiKontrak(BigDecimal nilaiKontrak) {
+        this.nilaiKontrak = nilaiKontrak;
+    }
 
     public String getIdBudgetingDetail() {
         return idBudgetingDetail;
