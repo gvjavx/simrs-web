@@ -773,7 +773,7 @@
         } else {
             $("#alert-success").hide();
             $("#body-budgeting").html("");
-            alert("Pilih Unit Terlebih Dahulu")
+            alert("Pilih Unit Terlebih Dahulu");
         }
     }
 
