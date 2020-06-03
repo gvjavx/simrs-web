@@ -25,6 +25,7 @@ import com.neurix.hris.master.strukturJabatan.model.ImStrukturJabatanEntity;
 import com.neurix.hris.master.strukturJabatan.model.StrukturJabatan;
 import com.neurix.hris.transaksi.absensi.dao.AbsensiPegawaiDao;
 import com.neurix.hris.transaksi.absensi.model.AbsensiPegawaiEntity;
+import com.neurix.hris.transaksi.cutiPegawai.model.ItCutiPegawaiEntity;
 import com.neurix.hris.transaksi.ijinKeluar.bo.IjinKeluarBo;
 import com.neurix.hris.transaksi.ijinKeluar.dao.IjinKeluarAnggotaDao;
 import com.neurix.hris.transaksi.ijinKeluar.dao.IjinKeluarDao;
@@ -50,13 +51,11 @@ import org.hibernate.Session;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.text.ParseException;
 /**
  * Created by IntelliJ IDEA.
@@ -282,10 +281,35 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
                 imIjinKeluarEntity.setCancelPerson(bean.getCancelPerson());
                 imIjinKeluarEntity.setCancelNote(bean.getCancelNote());
 
+//                try {
+//                    java.util.Date dateTglMelahirkan = new SimpleDateFormat("yyyy-MM-dd").parse(bean.getStTglMelahirkan());
+//                    imIjinKeluarEntity.setTglMelahirkan(dateTglMelahirkan);
+//                } catch (ParseException e) {
+//                    logger.error("[IjinKeluarBoImpl.saveEdit] Error, " + e.getMessage());
+//                }
+//                Date dateTglMelahirkan = Date.valueOf(bean.getStTglMelahirkan());
+//                imIjinKeluarEntity.setTglMelahirkan(dateTglMelahirkan);
+                SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+                try {
+                    java.util.Date date = format.parse(bean.getStTglMelahirkan().toString());
+                    Date tglMelahirkan = new Date(date.getTime());
+                    imIjinKeluarEntity.setTglMelahirkan(tglMelahirkan);
+                } catch (ParseException e) {
+                    logger.error("[IjinKeluarBoImpl.saveEdit] Error, " + e.getMessage());
+                }
+
                 imIjinKeluarEntity.setFlag(bean.getFlag());
                 imIjinKeluarEntity.setAction(bean.getAction());
                 imIjinKeluarEntity.setLastUpdateWho(bean.getLastUpdateWho());
                 imIjinKeluarEntity.setLastUpdate(bean.getLastUpdate());
+                if (bean.getUploadFile() != null){
+                    imIjinKeluarEntity.setSuratDokter(bean.getUploadFile());
+                }
+
+                if (bean.getTanggalAkhir() != null)
+                    imIjinKeluarEntity.setTanggalAkhir(bean.getTanggalAkhir());
+//                    imIjinKeluarEntity.setTglAkhirUpdate(bean.getTanggalAkhir());
+
                 try {
                     // Update into database
                     ijinKeluarDao.updateAndSave(imIjinKeluarEntity);
@@ -322,6 +346,7 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
         }
         logger.info("[IjinKeluarBoImpl.saveEdit] end process <<<");
     }
+
     @Override
     public void saveEditIjinKeluarKantor(IjinKeluar bean) throws GeneralBOException {
         logger.info("[IjinKeluarBoImpl.saveEdit] start process >>>");
@@ -382,166 +407,176 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
         logger.info("[IjinKeluarBoImpl.saveAdd] start process >>>");
         List<Notifikasi> notifikasiList = new ArrayList<>();
         if (bean != null) {
-            String ijinKeluarId;
+            String status = cekStatusIjin(bean.getNip());
+            if (!status.equalsIgnoreCase("exist")){
 
-            Map hsCriteria = new HashMap();
-            if (bean.getNip() != null && !"".equalsIgnoreCase(bean.getNip())) {
-                hsCriteria.put("nip", bean.getNip());
-            }
-            try {
-                // Generating ID, get from postgre sequence
-                if (bean.getJamKeluar()!=null||bean.getJamKembali()!=null){
-                    ijinKeluarId = ijinKeluarDao.getNextIjinKeluarKantorId();
+                String ijinKeluarId;
+                Map hsCriteria = new HashMap();
+                if (bean.getNip() != null && !"".equalsIgnoreCase(bean.getNip())) {
+                    hsCriteria.put("nip", bean.getNip());
                 }
-                else {
-                    ijinKeluarId = ijinKeluarDao.getNextIjinKeluarId();
+                try {
+                    // Generating ID, get from postgre sequence
+                    if (bean.getJamKeluar()!=null||bean.getJamKembali()!=null){
+                        ijinKeluarId = ijinKeluarDao.getNextIjinKeluarKantorId();
+                    }
+                    else {
+                        ijinKeluarId = ijinKeluarDao.getNextIjinKeluarId();
+                    }
+                } catch (HibernateException e) {
+                    logger.error("[IjinKeluarBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence alat id, please info to your admin..." + e.getMessage());
                 }
-            } catch (HibernateException e) {
-                logger.error("[IjinKeluarBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when getting sequence alat id, please info to your admin..." + e.getMessage());
-            }
 
-            // creating object entity serializable
-            IjinKeluarEntity imIjinKeluarEntity = new IjinKeluarEntity();
-            imIjinKeluarEntity.setIjinKeluarId(ijinKeluarId);
-            imIjinKeluarEntity.setIjinId(bean.getIjinId());
-            imIjinKeluarEntity.setIjinName(bean.getIjinName());
-            imIjinKeluarEntity.setLamaIjin(bean.getLamaIjin());
-            imIjinKeluarEntity.setNip(bean.getNip());
-            imIjinKeluarEntity.setCancelFlag("N");
-            imIjinKeluarEntity.setNamaPegawai(bean.getNamaPegawai());
-            imIjinKeluarEntity.setKeterangan(bean.getKeterangan());
-            imIjinKeluarEntity.setApprovalId(bean.getApprovalId());
-            imIjinKeluarEntity.setApprovalName(bean.getApprovalName());
-            imIjinKeluarEntity.setApprovalDate(bean.getApprovalDate());
-            imIjinKeluarEntity.setJamKeluar(bean.getJamKeluar());
-            imIjinKeluarEntity.setJamKembali(bean.getJamKembali());
-            imIjinKeluarEntity.setPositionId(bean.getPositionId());
-            imIjinKeluarEntity.setGolonganId(bean.getGolonganId());
-            imIjinKeluarEntity.setKeperluan(bean.getKeperluan());
+                // creating object entity serializable
+                IjinKeluarEntity imIjinKeluarEntity = new IjinKeluarEntity();
+                imIjinKeluarEntity.setIjinKeluarId(ijinKeluarId);
+                imIjinKeluarEntity.setIjinId(bean.getIjinId());
+                imIjinKeluarEntity.setIjinName(bean.getIjinName());
+                imIjinKeluarEntity.setLamaIjin(bean.getLamaIjin());
+                imIjinKeluarEntity.setNip(bean.getNip());
+                imIjinKeluarEntity.setCancelFlag("N");
+                imIjinKeluarEntity.setNamaPegawai(bean.getNamaPegawai());
+                imIjinKeluarEntity.setKeterangan(bean.getKeterangan());
+                imIjinKeluarEntity.setApprovalId(bean.getApprovalId());
+                imIjinKeluarEntity.setApprovalName(bean.getApprovalName());
+                imIjinKeluarEntity.setApprovalDate(bean.getApprovalDate());
+                imIjinKeluarEntity.setJamKeluar(bean.getJamKeluar());
+                imIjinKeluarEntity.setJamKembali(bean.getJamKembali());
+                imIjinKeluarEntity.setPositionId(bean.getPositionId());
+                imIjinKeluarEntity.setGolonganId(bean.getGolonganId());
+                imIjinKeluarEntity.setKeperluan(bean.getKeperluan());
 
-            //tambahan irfan
-            List<Biodata> resultBiodata = new ArrayList<>();
-            try{
-                resultBiodata = ijinKeluarAnggotaDao.getBranchDivisiPosisi(bean.getNip());
-                for (Biodata biodata: resultBiodata){
-                    imIjinKeluarEntity.setDivisiId(biodata.getDivisi());
-                    imIjinKeluarEntity.setBagianId(biodata.getBagianId());
+                if (bean.getUploadFile() != null){
+                    imIjinKeluarEntity.setSuratDokter(bean.getUploadFile());
                 }
-            }catch (HibernateException e) {
-                logger.error("[CutiPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when getting sequence alat id, please info to your admin..." + e.getMessage());
-            }
+
+                //tambahan irfan
+                List<Biodata> resultBiodata = new ArrayList<>();
+                try{
+                    resultBiodata = ijinKeluarAnggotaDao.getBranchDivisiPosisi(bean.getNip());
+                    for (Biodata biodata: resultBiodata){
+                        imIjinKeluarEntity.setDivisiId(biodata.getDivisi());
+                        imIjinKeluarEntity.setBagianId(biodata.getBagianId());
+                    }
+                }catch (HibernateException e) {
+                    logger.error("[CutiPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence alat id, please info to your admin..." + e.getMessage());
+                }
 
 
-            Map hsCriteria2 =  new HashMap();
-            hsCriteria2.put("position_id",bean.getPositionId());
-            hsCriteria2.put("flag","Y");
-            List<ImPosition> positionEntityList = positionDao.getByCriteria(hsCriteria2);
-            for (ImPosition imPosition : positionEntityList){
-                imIjinKeluarEntity.setPositionName(imPosition.getPositionName());
-            }
-            Map hsCriteria3 =  new HashMap();
-            hsCriteria3.put("golongan_id",bean.getGolonganId());
-            hsCriteria3.put("flag","Y");
-            List<ImGolonganEntity> golonganEntityList = golonganDao.getByCriteria(hsCriteria3);
-            for (ImGolonganEntity imGolonganEntity : golonganEntityList){
-                imIjinKeluarEntity.setGolonganName(imGolonganEntity.getGolonganName());
-            }
-            imIjinKeluarEntity.setNotApprovalNote(bean.getNotApprovalNote());
-            imIjinKeluarEntity.setUnitId(bean.getUnitId());
-            imIjinKeluarEntity.setTanggalAwal(bean.getTanggalAwal());
-            imIjinKeluarEntity.setTanggalAkhir(bean.getTanggalAkhir());
+                Map hsCriteria2 =  new HashMap();
+                hsCriteria2.put("position_id",bean.getPositionId());
+                hsCriteria2.put("flag","Y");
+                List<ImPosition> positionEntityList = positionDao.getByCriteria(hsCriteria2);
+                for (ImPosition imPosition : positionEntityList){
+                    imIjinKeluarEntity.setPositionName(imPosition.getPositionName());
+                }
+                Map hsCriteria3 =  new HashMap();
+                hsCriteria3.put("golongan_id",bean.getGolonganId());
+                hsCriteria3.put("flag","Y");
+                List<ImGolonganEntity> golonganEntityList = golonganDao.getByCriteria(hsCriteria3);
+                for (ImGolonganEntity imGolonganEntity : golonganEntityList){
+                    imIjinKeluarEntity.setGolonganName(imGolonganEntity.getGolonganName());
+                }
+                imIjinKeluarEntity.setNotApprovalNote(bean.getNotApprovalNote());
+                imIjinKeluarEntity.setUnitId(bean.getUnitId());
+                imIjinKeluarEntity.setTanggalAwal(bean.getTanggalAwal());
+                imIjinKeluarEntity.setTanggalAkhir(bean.getTanggalAkhir());
 
-            imIjinKeluarEntity.setFlag(bean.getFlag());
-            imIjinKeluarEntity.setAction(bean.getAction());
-            imIjinKeluarEntity.setCreatedWho(bean.getCreatedWho());
-            imIjinKeluarEntity.setLastUpdateWho(bean.getLastUpdateWho());
-            imIjinKeluarEntity.setCreatedDate(bean.getCreatedDate());
-            imIjinKeluarEntity.setLastUpdate(bean.getLastUpdate());
+                imIjinKeluarEntity.setFlag(bean.getFlag());
+                imIjinKeluarEntity.setAction(bean.getAction());
+                imIjinKeluarEntity.setCreatedWho(bean.getCreatedWho());
+                imIjinKeluarEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                imIjinKeluarEntity.setCreatedDate(bean.getCreatedDate());
+                imIjinKeluarEntity.setLastUpdate(bean.getLastUpdate());
 
-            try {
-                // insert into database
-                ijinKeluarDao.addAndSave(imIjinKeluarEntity);
-            } catch (HibernateException e) {
-                logger.error("[IjinKeluarBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
-            }
+                try {
+                    // insert into database
+                    ijinKeluarDao.addAndSave(imIjinKeluarEntity);
+                } catch (HibernateException e) {
+                    logger.error("[IjinKeluarBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
+                }
 
-            if (("K").equalsIgnoreCase(bean.getKeperluan())){
-                HttpSession session = ServletActionContext.getRequest().getSession();
-                List<IjinKeluar> ijinKeluarList = (List<IjinKeluar>) session.getAttribute("listOfResultAnggotaIjinKeluarKantor");
-                if (ijinKeluarList!=null){
-                    for (IjinKeluar ijinKeluar : ijinKeluarList){
-                        IjinKeluarAnggotaEntity ijinKeluarAnggotaEntity = new IjinKeluarAnggotaEntity();
-                        String ijinKeluarAnggotaId  = ijinKeluarAnggotaDao.getNextIjinKeluarAnggotaId();
-                        ijinKeluarAnggotaEntity.setIjinKeluarAnggotaId(ijinKeluarAnggotaId);
-                        ijinKeluarAnggotaEntity.setIjinKeluarKantorId(ijinKeluarId);
-                        ijinKeluarAnggotaEntity.setNip(ijinKeluar.getNip());
-                        ijinKeluarAnggotaEntity.setNamaPegawai(ijinKeluar.getNamaPegawai());
-                        ijinKeluarAnggotaEntity.setPositionId(ijinKeluar.getPositionId());
-                        ijinKeluarAnggotaEntity.setJamKembali(bean.getJamKembali());
-                        ijinKeluarAnggotaEntity.setJamKeluar(bean.getJamKeluar());
-                        ijinKeluarAnggotaEntity.setTanggal(bean.getTanggalAwal());
+                if (("K").equalsIgnoreCase(bean.getKeperluan())){
+                    HttpSession session = ServletActionContext.getRequest().getSession();
+                    List<IjinKeluar> ijinKeluarList = (List<IjinKeluar>) session.getAttribute("listOfResultAnggotaIjinKeluarKantor");
+                    if (ijinKeluarList!=null){
+                        for (IjinKeluar ijinKeluar : ijinKeluarList){
+                            IjinKeluarAnggotaEntity ijinKeluarAnggotaEntity = new IjinKeluarAnggotaEntity();
+                            String ijinKeluarAnggotaId  = ijinKeluarAnggotaDao.getNextIjinKeluarAnggotaId();
+                            ijinKeluarAnggotaEntity.setIjinKeluarAnggotaId(ijinKeluarAnggotaId);
+                            ijinKeluarAnggotaEntity.setIjinKeluarKantorId(ijinKeluarId);
+                            ijinKeluarAnggotaEntity.setNip(ijinKeluar.getNip());
+                            ijinKeluarAnggotaEntity.setNamaPegawai(ijinKeluar.getNamaPegawai());
+                            ijinKeluarAnggotaEntity.setPositionId(ijinKeluar.getPositionId());
+                            ijinKeluarAnggotaEntity.setJamKembali(bean.getJamKembali());
+                            ijinKeluarAnggotaEntity.setJamKeluar(bean.getJamKeluar());
+                            ijinKeluarAnggotaEntity.setTanggal(bean.getTanggalAwal());
 
-                        //tambahan irfan
+                            //tambahan irfan
 //                        List<Biodata> hasilBiodata = new ArrayList<>();
-                        try{
-                            resultBiodata = ijinKeluarAnggotaDao.getBranchDivisiPosisi(ijinKeluar.getNip());
-                            for (Biodata biodata: resultBiodata){
-                                ijinKeluarAnggotaEntity.setBranchId(biodata.getBranch());
-                                ijinKeluarAnggotaEntity.setBidangId(biodata.getDivisi());
-                                ijinKeluarAnggotaEntity.setBagianId(biodata.getBagianId());
+                            try{
+                                resultBiodata = ijinKeluarAnggotaDao.getBranchDivisiPosisi(ijinKeluar.getNip());
+                                for (Biodata biodata: resultBiodata){
+                                    ijinKeluarAnggotaEntity.setBranchId(biodata.getBranch());
+                                    ijinKeluarAnggotaEntity.setBidangId(biodata.getDivisi());
+                                    ijinKeluarAnggotaEntity.setBagianId(biodata.getBagianId());
+                                }
+                            }catch (HibernateException e) {
+                                logger.error("[CutiPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
+                                throw new GeneralBOException("Found problem when getting sequence alat id, please info to your admin..." + e.getMessage());
                             }
-                        }catch (HibernateException e) {
-                            logger.error("[CutiPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
-                            throw new GeneralBOException("Found problem when getting sequence alat id, please info to your admin..." + e.getMessage());
-                        }
 
-                        ijinKeluarAnggotaEntity.setFlag(bean.getFlag());
-                        ijinKeluarAnggotaEntity.setAction(bean.getAction());
-                        ijinKeluarAnggotaEntity.setCreatedWho(bean.getCreatedWho());
-                        ijinKeluarAnggotaEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                        ijinKeluarAnggotaEntity.setCreatedDate(bean.getCreatedDate());
-                        ijinKeluarAnggotaEntity.setLastUpdate(bean.getLastUpdate());
+                            ijinKeluarAnggotaEntity.setFlag(bean.getFlag());
+                            ijinKeluarAnggotaEntity.setAction(bean.getAction());
+                            ijinKeluarAnggotaEntity.setCreatedWho(bean.getCreatedWho());
+                            ijinKeluarAnggotaEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                            ijinKeluarAnggotaEntity.setCreatedDate(bean.getCreatedDate());
+                            ijinKeluarAnggotaEntity.setLastUpdate(bean.getLastUpdate());
 
-                        try {
-                            ijinKeluarAnggotaDao.addAndSave(ijinKeluarAnggotaEntity);
-                        } catch (HibernateException e) {
-                            logger.error("[IjinKeluarBoImpl.saveAdd] Error, " + e.getMessage());
-                            throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
+                            try {
+                                ijinKeluarAnggotaDao.addAndSave(ijinKeluarAnggotaEntity);
+                            } catch (HibernateException e) {
+                                logger.error("[IjinKeluarBoImpl.saveAdd] Error, " + e.getMessage());
+                                throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
+                            }
                         }
                     }
                 }
+
+                ImBiodataEntity imBiodataEntity;
+
+                try {
+                    imBiodataEntity =  biodataDao.getById("nip", bean.getNip(), "Y");
+                } catch (HibernateException e) {
+                    logger.error("[CutiPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
+                }
+
+                //Send notif ke atasan
+                Notifikasi notifAtasan= new Notifikasi();
+                notifAtasan.setNip(bean.getNip());
+                notifAtasan.setNoRequest(ijinKeluarId);
+                if (bean.getJamKeluar()!=null||bean.getJamKembali()!=null){
+                    notifAtasan.setTipeNotifId("TN88");
+                    notifAtasan.setTipeNotifName("Ijin Keluar Kantor");
+                } else {
+                    notifAtasan.setTipeNotifId("TN55");
+                    notifAtasan.setTipeNotifName("Dispensasi");
+                }
+
+                notifAtasan.setNote("Data dari user : " + imBiodataEntity.getNamaPegawai() + " Menunggu di Approve");
+                notifAtasan.setCreatedWho(bean.getNip());
+                notifAtasan.setTo("atasan");
+                notifAtasan.setOs(bean.getOs());
+
+                notifikasiList.add(notifAtasan);
+
+            }else {
+                throw new GeneralBOException("Maaf dispensasi Haji/Ziarah hanya dapat dilakukan satu kali");
             }
-
-            ImBiodataEntity imBiodataEntity;
-
-            try {
-                imBiodataEntity =  biodataDao.getById("nip", bean.getNip(), "Y");
-            } catch (HibernateException e) {
-                logger.error("[CutiPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
-            }
-
-            //Send notif ke atasan
-            Notifikasi notifAtasan= new Notifikasi();
-            notifAtasan.setNip(bean.getNip());
-            notifAtasan.setNoRequest(ijinKeluarId);
-            if (bean.getJamKeluar()!=null||bean.getJamKembali()!=null){
-                notifAtasan.setTipeNotifId("TN88");
-                notifAtasan.setTipeNotifName("Ijin Keluar Kantor");
-            } else {
-                notifAtasan.setTipeNotifId("TN55");
-                notifAtasan.setTipeNotifName("Dispensasi");
-            }
-
-            notifAtasan.setNote("Data dari user : " + imBiodataEntity.getNamaPegawai() + " Menunggu di Approve");
-            notifAtasan.setCreatedWho(bean.getNip());
-            notifAtasan.setTo("atasan");
-            notifAtasan.setOs(bean.getOs());
-
-            notifikasiList.add(notifAtasan);
         }
 
         logger.info("[IjinKeluarBoImpl.saveAdd] end process <<<");
@@ -790,7 +825,26 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
                                 returnIjinKeluar.setTanggalAkhir(ijinKeluarEntity.getTanggalAkhir());
                                 DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                                 returnIjinKeluar.setStTanggalAwal(df.format(ijinKeluarEntity.getTanggalAwal()));
-                                returnIjinKeluar.setStTanggalAkhir(df.format(ijinKeluarEntity.getTanggalAkhir()));
+
+//                                if (ijinKeluarEntity.getTglAkhirUpdate() != null){
+                                if ("IJ013".equalsIgnoreCase(ijinKeluarEntity.getIjinId())){
+//                                    returnIjinKeluar.setStTanggalAkhir(df.format(ijinKeluarEntity.getTglAkhirUpdate()));
+//                                    Date tgl = ijinKeluarEntity.getTglAkhirUpdate();
+//                                    Calendar calendar = Calendar.getInstance();
+//                                    calendar.setTime(tgl);
+//                                    calendar.add(Calendar.DATE, -45);
+//                                    returnIjinKeluar.setStTglMelahirkan(df.format(calendar.getTime()));
+//                                    returnIjinKeluar.setDispenLahir(true);
+//                                    returnIjinKeluar.setUploadFile(ijinKeluarEntity.getSuratDokter());
+                                    returnIjinKeluar.setStTanggalAkhir(df.format(ijinKeluarEntity.getTanggalAkhir()));
+                                    if (ijinKeluarEntity.getTglMelahirkan() != null)
+                                        returnIjinKeluar.setStTglMelahirkan(df.format(ijinKeluarEntity.getTglMelahirkan()));
+                                    returnIjinKeluar.setDispenLahir(true);
+                                    returnIjinKeluar.setUploadFile(ijinKeluarEntity.getSuratDokter());
+                                }
+//                                else {
+//                                    returnIjinKeluar.setStTanggalAkhir(df.format(ijinKeluarEntity.getTanggalAkhir()));
+//                                }
 
                                 if(searchBean.isMobile()) {
 
@@ -1334,5 +1388,57 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
 
             ijinKeluarDao.addAndSave(imIjinKeluarEntity);
         }
+    }
+
+    @Override
+    public String getNextSuratDokterId() throws GeneralBOException {
+        String suratDokterId;
+        try{
+            suratDokterId = ijinKeluarDao.getNextSuratDokteId();
+        }catch (HibernateException e){
+            logger.error("[IjinKeluarBoImpl.saveAdd] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when getting sequence ijinKeluarId, please info to your admin..." + e.getMessage());
+        }
+        return suratDokterId;
+    }
+
+    private String cekStatus(String nip, Date tglAwal, Date tglAkhir){
+        String status = "";
+        List<ItCutiPegawaiEntity> itCutiPegawaiEntities = new ArrayList<>();
+
+        try{
+            itCutiPegawaiEntities = ijinKeluarDao.cekData(nip, tglAwal, tglAkhir);
+        }catch (HibernateException e){
+            logger.error("[IjinKeluarBoImpl.cekStatus] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        if (itCutiPegawaiEntities.size() > 0){
+            status = "exist";
+        }else {
+            status = "notExist";
+        }
+
+        return status;
+    }
+
+    private String cekStatusIjin(String nip){
+        String status = "";
+        List<IjinKeluarEntity> ijinKeluarEntities = new ArrayList<>();
+
+        try{
+            ijinKeluarEntities = ijinKeluarDao.cekHajiZiarah(nip);
+        }catch (HibernateException e){
+            logger.error("[IjinKeluarBoImpl.cekStatus] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        if (ijinKeluarEntities.size() > 0){
+            status = "exist";
+        }else {
+            status = "notExist";
+        }
+
+        return status;
     }
 }

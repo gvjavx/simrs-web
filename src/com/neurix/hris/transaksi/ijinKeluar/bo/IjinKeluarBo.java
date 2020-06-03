@@ -40,4 +40,6 @@ public interface IjinKeluarBo extends BaseMasterBo<IjinKeluar> {
     public List getListDispensasiMasal(String unit);
 
     public void saveAddDispensasiMasal(IjinKeluar bean);
+
+    public String getNextSuratDokterId()throws GeneralBOException;
 }

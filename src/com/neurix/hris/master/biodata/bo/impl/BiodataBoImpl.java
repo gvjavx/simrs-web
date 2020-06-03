@@ -491,6 +491,7 @@ public class BiodataBoImpl implements BiodataBo {
                                 imBiodataEntity.setNoRekBank(bean.getNoRekBank());
                                 imBiodataEntity.setCabangBank(bean.getCabangBank());
 
+                                imBiodataEntity.setZakatProfesi(bean.getFlagZakat());
                                 imBiodataEntity.setTanggalPraPensiun(bean.getTanggalPraPensiun());
 
                                 imBiodataEntity.setMasaKerjaGolongan(Integer.parseInt(bean.getStMasaKerjaGol()));
@@ -503,6 +504,18 @@ public class BiodataBoImpl implements BiodataBo {
                                 imBiodataEntity.setAction(bean.getAction());
                                 imBiodataEntity.setLastUpdateWho(bean.getLastUpdateWho());
                                 imBiodataEntity.setLastUpdate(bean.getLastUpdate());
+
+                                imBiodataEntity.setFlagMess(bean.getFlagMess());
+                                imBiodataEntity.setFlagPlt(bean.getFlagPLT());
+                                imBiodataEntity.setFlagPjs(bean.getFlagPJS());
+                                imBiodataEntity.setFlagFingerMobile(bean.getFlagFingerMobile());
+                                imBiodataEntity.setFlagTunjRumah(bean.getFlagTunjRumah());
+                                imBiodataEntity.setFlagTunjAir(bean.getFlagTunjAir());
+                                imBiodataEntity.setFlagTunjListrik(bean.getFlagTunjListrik());
+                                imBiodataEntity.setFlagTunjBbm(bean.getFlagTunjBbm());
+                                imBiodataEntity.setFlagBpjsKs(bean.getFlagBpjsKs());
+                                imBiodataEntity.setFlagBpjsTk(bean.getFlagBpjsTk());
+                                imBiodataEntity.setFlagPercobaan(bean.getFlagPercobaan());
 
 //                            if(itPersonilPositionEntity != null){
 //                                for(ItPersonilPositionEntity itPerson : itPersonilPositionEntity){
@@ -872,6 +885,19 @@ public class BiodataBoImpl implements BiodataBo {
                 imBiodataEntity.setNamaBank(bean.getNamaBank());
                 imBiodataEntity.setCabangBank(bean.getCabangBank());
                 imBiodataEntity.setNoRekBank(bean.getNoRekBank());
+                imBiodataEntity.setZakatProfesi(bean.getFlagZakat());
+
+                imBiodataEntity.setFlagMess(bean.getFlagMess());
+                imBiodataEntity.setFlagPlt(bean.getFlagPLT());
+                imBiodataEntity.setFlagPjs(bean.getFlagPJS());
+                imBiodataEntity.setFlagFingerMobile(bean.getFlagFingerMobile());
+                imBiodataEntity.setFlagTunjRumah(bean.getFlagTunjRumah());
+                imBiodataEntity.setFlagTunjAir(bean.getFlagTunjAir());
+                imBiodataEntity.setFlagTunjListrik(bean.getFlagTunjListrik());
+                imBiodataEntity.setFlagTunjBbm(bean.getFlagTunjBbm());
+                imBiodataEntity.setFlagBpjsKs(bean.getFlagBpjsKs());
+                imBiodataEntity.setFlagBpjsTk(bean.getFlagBpjsTk());
+                imBiodataEntity.setFlagPercobaan(bean.getFlagPercobaan());
 
                 imBiodataEntity.setFlag(bean.getFlag());
                 imBiodataEntity.setAction(bean.getAction());
@@ -1647,6 +1673,7 @@ public class BiodataBoImpl implements BiodataBo {
                     returnBiodata.setNoBpjsKesehatan(personalEntity.getNoBpjsKesehatan());
                     returnBiodata.setAgama(personalEntity.getAgama());
 
+                    returnBiodata.setFlagZakat(personalEntity.getZakatProfesi());
                     returnBiodata.setNamaBank(personalEntity.getNamaBank());
                     returnBiodata.setNoRekBank(personalEntity.getNoRekBank());
                     returnBiodata.setCabangBank(personalEntity.getCabangBank());
@@ -1661,6 +1688,18 @@ public class BiodataBoImpl implements BiodataBo {
                         }
                     }
 
+                    returnBiodata.setFlagMess(personalEntity.getFlagMess());
+                    returnBiodata.setFlagPLT(personalEntity.getFlagPlt());
+                    returnBiodata.setFlagPJS(personalEntity.getFlagPjs());
+                    returnBiodata.setFlagFingerMobile(personalEntity.getFlagFingerMobile());
+                    returnBiodata.setFlagTunjRumah(personalEntity.getFlagTunjRumah());
+                    returnBiodata.setFlagTunjAir(personalEntity.getFlagTunjAir());
+                    returnBiodata.setFlagTunjListrik(personalEntity.getFlagTunjListrik());
+                    returnBiodata.setFlagTunjBbm(personalEntity.getFlagTunjBbm());
+                    returnBiodata.setFlagBpjsKs(personalEntity.getFlagBpjsKs());
+                    returnBiodata.setFlagBpjsTk(personalEntity.getFlagBpjsTk());
+                    returnBiodata.setFlagPercobaan(personalEntity.getFlagPercobaan());
+
                     returnBiodata.setCreatedWho(personalEntity.getCreatedWho());
                     returnBiodata.setCreatedDate(personalEntity.getCreatedDate());
                     returnBiodata.setLastUpdate(personalEntity.getLastUpdate());
@@ -1669,8 +1708,9 @@ public class BiodataBoImpl implements BiodataBo {
                     returnBiodata.setFlag(personalEntity.getFlag());
                     returnBiodata.setStatusPegawai(personalEntity.getStatusPegawai());
                     if(personalEntity.getFotoUpload() != null){
-                        returnBiodata.setPathFoto(ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD
-                                + personalEntity.getFotoUpload());
+//                        returnBiodata.setPathFoto(ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD
+//                                + personalEntity.getFotoUpload());
+                        returnBiodata.setPathFoto(CommonConstant.EXTERNAL_IMG_URI_PROFILE + CommonConstant.RESOURCE_PATH_PHOTO_PROFILE + personalEntity.getFotoUpload());
                     }else{
                         if ("L".equalsIgnoreCase(personalEntity.getGender())){
                             returnBiodata.setPathFoto(ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD
@@ -2647,6 +2687,43 @@ public class BiodataBoImpl implements BiodataBo {
 //            }else {
 //                throw new GeneralBOException("Peringatan!!!, User sudah memiliki 1 jabatan aktif");
 //            }
+
+            ImBiodataEntity imBiodataEntity = null;
+            try {
+                // Get data from database by ID
+                imBiodataEntity = biodataDao.getById("nip", bean.getNip());
+//              itPersonilPositionEntity = personilPositionDao.getListNip(bean.getNip());
+            } catch (HibernateException e) {
+                logger.error("[BiodataBoImpl.saveEdit] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data Biodata by Kode Biodata, please inform to your admin...," + e.getMessage());
+            }
+
+            if (imBiodataEntity != null) {
+                imBiodataEntity.setNip(bean.getNip());
+                imBiodataEntity.setBranchId(bean.getBranchId());
+                imBiodataEntity.setDivisiId(bean.getDivisiId());
+                imBiodataEntity.setPosisiId(bean.getPositionId());
+                imBiodataEntity.setProfesiId(bean.getProfesiId());
+                imBiodataEntity.setTipePegawai(bean.getTipePegawaiId());
+                imBiodataEntity.setGolongan(bean.getGolonganId());
+                imBiodataEntity.setFlagPjs(bean.getPjsFlag());
+
+                try {
+                    // Update into database
+                    biodataDao.updateAndSave(imBiodataEntity);
+
+                } catch (HibernateException e) {
+                    logger.error("[BiodataBoImpl.saveEdit] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving update data Biodata, please info to your admin..." + e.getMessage());
+                }
+
+            } else {
+                logger.error("[BiodataBoImpl.saveEdit] Error, not found data Biodata with request id, please check again your data ...");
+                throw new GeneralBOException("Error, not found data Biodata with request id, please check again your data ...");
+
+            }
+
+
             String PengalamanKerjaId = bean.getHistoryJabatanId();
             String golonganName ="";
 //            String pengalamanId;
@@ -2747,6 +2824,7 @@ public class BiodataBoImpl implements BiodataBo {
                     imPengalamanKerjaEntity.setPointLebih(bean.getPointLebih());
                     imPengalamanKerjaEntity.setNilaiSmk(bean.getNilaiSmk());
                     imPengalamanKerjaEntity.setGradeSmk(bean.getGradeSmk());
+                    imPengalamanKerjaEntity.setPjsFlag(bean.getPjsFlag());
 //                imPengalamanKerjaEntity.setGolonganName(bean.getGolonganName());
 
                     try {
@@ -2816,6 +2894,7 @@ public class BiodataBoImpl implements BiodataBo {
                         imPengalamanKerjaEntity.setPointLebih(bean.getPointLebih());
                         imPengalamanKerjaEntity.setNilaiSmk(bean.getNilaiSmk());
                         imPengalamanKerjaEntity.setGradeSmk(bean.getGradeSmk());
+                        imPengalamanKerjaEntity.setPjsFlag(bean.getPjsFlag());
 //                imPengalamanKerjaEntity.setGolonganName(bean.getGolonganName());
 
                         try {

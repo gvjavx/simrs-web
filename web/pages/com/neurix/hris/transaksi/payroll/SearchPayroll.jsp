@@ -122,7 +122,7 @@
                                                 </td>
                                                 <script>
                                                     var dt = new Date();
-                                                    $('#bulanPayroll1').val(("0" + (dt.getMonth() + 1)).slice(-2));
+                                                    $('#bulanPayroll1').val("01");
                                                     $('#tahunPayroll1').val(dt.getFullYear());
                                                     $('#bulanPayroll2').val(("0" + (dt.getMonth() + 1)).slice(-2));
                                                     $('#tahunPayroll2').val(dt.getFullYear());
@@ -172,9 +172,11 @@
                                                             Search
                                                         </sj:submit>
                                                     </td>
+                                                    <s:if test="%{payroll.sdm}">
                                                     <td>
                                                         <a href="add_payroll.action" class="btn btn-success" ><i class="fa fa-plus"></i> Add Payroll</a>
                                                     </td>
+                                                    </s:if>
                                                     <td>
                                                         <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_payroll"/>'">
                                                             <i class="fa fa-refresh"></i> Reset
@@ -186,7 +188,7 @@
                                         <br>
                                         <br>
                                         <center>
-                                            <table id="showdata" width="60%">
+                                            <table id="showdata" width="80%">
                                                 <tr>
                                                     <td align="center">
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
@@ -198,24 +200,48 @@
                                                         <s:set name="listOfPayroll" value="#session.listOfResult" scope="request" />
                                                         <display:table name="listOfPayroll" class=" tablePayroll table table-condensed table-striped table-hover"
                                                                        requestURI="paging_displaytag_payroll.action" export="true" id="row" pagesize="24" style="font-size:10">
-                                                                <display:column media="html" title="Approve Kanpus">
-                                                                    <s:if test='#attr.row.statusApprove=="K"'>
-                                                                        <s:if test="%{payroll.kantorPusat}">
-                                                                        <a href="javascript:;" bulan="<s:property value="%{#attr.row.bulan}"/>"
-                                                                           tahun="<s:property value="%{#attr.row.tahun}"/>"
-                                                                           branchId="<s:property value="%{#attr.row.branchId}"/>"
-                                                                           branchName="<s:property value="%{#attr.row.branchName}"/>"
-                                                                           tipe="<s:property value="%{#attr.row.tipe}"/>"
-                                                                           class="item-edit">
-                                                                            <img border="0" src="<s:url value="/pages/images/icon_approval.ico"/>" name="icon_edit">
-                                                                        </a>
+                                                            <display:column media="html" title="Approve Keuangan Kanpus">
+                                                                <s:if test='#attr.row.statusApprove=="K"'>
+                                                                    <s:if test="%{payroll.kantorPusat}">
+                                                                        <s:if test="%{payroll.keuanganKantorPusat}">
+                                                                            <a href="javascript:;" bulan="<s:property value="%{#attr.row.bulan}"/>"
+                                                                               tahun="<s:property value="%{#attr.row.tahun}"/>"
+                                                                               branchId="<s:property value="%{#attr.row.branchId}"/>"
+                                                                               branchName="<s:property value="%{#attr.row.branchName}"/>"
+                                                                               tipe="<s:property value="%{#attr.row.tipe}"/>"
+                                                                               class="item-edit">
+                                                                                <img border="0" src="<s:url value="/pages/images/icon_approval.ico"/>" name="icon_edit">
+                                                                            </a>
                                                                         </s:if>
                                                                     </s:if>
-                                                                    <s:elseif test='#attr.row.statusApprove=="D"'>
-                                                                        <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
-                                                                    </s:elseif>
-                                                                </display:column>
-                                                            <display:column media="html" title="Approve Unit">
+                                                                </s:if>
+                                                                <s:elseif test='#attr.row.statusApprove=="D"'>
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
+                                                                </s:elseif>
+                                                            </display:column>
+                                                            <display:column media="html" title="Approve SDM KP">
+                                                                <s:if test='#attr.row.statusApprove=="S"'>
+                                                                    <s:if test="%{payroll.kantorPusat}">
+                                                                        <s:if test="%{payroll.sdm}">
+                                                                            <a href="javascript:;" bulan="<s:property value="%{#attr.row.bulan}"/>"
+                                                                               tahun="<s:property value="%{#attr.row.tahun}"/>"
+                                                                               branchId="<s:property value="%{#attr.row.branchId}"/>"
+                                                                               branchName="<s:property value="%{#attr.row.branchName}"/>"
+                                                                               tipe="<s:property value="%{#attr.row.tipe}"/>"
+                                                                               class="item-approve-sdm">
+                                                                                <img border="0" src="<s:url value="/pages/images/icon_approval.ico"/>" name="icon_edit">
+                                                                            </a>
+                                                                        </s:if>
+                                                                    </s:if>
+                                                                </s:if>
+                                                                <s:elseif test='#attr.row.statusApprove=="K"'>
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
+                                                                </s:elseif>
+                                                                <s:elseif test='#attr.row.statusApprove=="D"'>
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
+                                                                </s:elseif>
+                                                            </display:column>
+                                                            <display:column media="html" title="Approve SDM Unit">
                                                                 <s:if test='#attr.row.statusApprove=="U"'>
                                                                     <a href="javascript:;" bulan="<s:property value="%{#attr.row.bulan}"/>"
                                                                        tahun="<s:property value="%{#attr.row.tahun}"/>"
@@ -227,6 +253,9 @@
                                                                     </a>
                                                                 </s:if>
                                                                 <s:elseif test='#attr.row.statusApprove=="K"'>
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
+                                                                </s:elseif>
+                                                                <s:elseif test='#attr.row.statusApprove=="S"'>
                                                                     <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
                                                                 </s:elseif>
                                                                 <s:elseif test='#attr.row.statusApprove=="D"'>
@@ -251,6 +280,11 @@
                                                                         <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" >
                                                                     </s:a>
                                                                 </s:elseif>
+                                                                <s:elseif test='#attr.row.statusApprove=="S"'>
+                                                                    <s:a href="%{urlEdit}">
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" >
+                                                                    </s:a>
+                                                                </s:elseif>
                                                             </display:column>
                                                             <display:column media="html" title="Edit">
                                                                 <s:url var="urlEdit" namespace="/payroll" action="edit_payroll" escapeAmp="false">
@@ -264,8 +298,15 @@
                                                                         <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
                                                                     </s:a>
                                                                 </s:if>
-                                                                <s:else>
-                                                                </s:else>
+                                                                <s:elseif test='#attr.row.statusApprove=="S"'>
+                                                                    <s:if test="%{payroll.kantorPusat}">
+                                                                        <s:if test="%{payroll.sdm}">
+                                                                            <s:a href="%{urlEdit}" id="hrefEdit">
+                                                                                <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
+                                                                            </s:a>
+                                                                        </s:if>
+                                                                    </s:if>
+                                                                </s:elseif>
                                                             </display:column>
                                                             <display:column media="html" title="Print Slip">
                                                                 <s:if test="#attr.row.flagEdit">
@@ -397,6 +438,96 @@
             <div class="modal-footer">
                 <a type="button" id="btnApproveUnit" class="btn btn-success"><i class="fa fa-check"></i> Approve</a>
                 <%--<a type="button" id="btnNotApproveUnit" class="btn btn-danger"><i class="fa fa-close"></i> Not Approve</a>--%>
+                <a type="button" class="btn btn-default" data-dismiss="modal"> Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-approve-sdm" class="modal fade" role="dialog">
+    <div class="modal-dialog " style="width:400px;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body" >
+                <form class="form-horizontal" id="myFormApproveSdm">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Bulan</label>
+                        <div class="col-sm-8">
+                            <input readonly type="text" class="form-control nip" id="approveBulanSdm">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Tahun</label>
+                        <div class="col-sm-8">
+                            <input readonly type="text" class="form-control nip" id="approveTahunSdm">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Unit</label>
+                        <div class="col-sm-8">
+                            <input readonly type="text" class="form-control nip" id="approveBranchSdm">
+                            <input readonly type="text" class="form-control nip" style="display: none" id="approveBranchIdSdm">
+                        </div>
+                    </div>
+                    <div class="form-group" style="display: none">
+                        <label class="control-label col-sm-4" >Tipe</label>
+                        <div class="col-sm-8">
+                            <input readonly type="text" class="form-control nip"  id="tipeId2Sdm" >
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a type="button" id="btnApproveSdm" class="btn btn-success"><i class="fa fa-check"></i> Approve</a>
+                <a type="button" id="btnNotApproveSdm" class="btn btn-danger"><i class="fa fa-close"></i> Not Approve</a>
+                <a type="button" class="btn btn-default" data-dismiss="modal"> Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal-approve-keu-unit" class="modal fade" role="dialog">
+    <div class="modal-dialog " style="width:400px;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body" >
+                <form class="form-horizontal" id="formApprovalKeuUnit">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Bulan</label>
+                        <div class="col-sm-8">
+                            <input readonly type="text" class="form-control nip" id="approveBulanKeuUnit">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Tahun</label>
+                        <div class="col-sm-8">
+                            <input readonly type="text" class="form-control nip" id="approveTahunKeuUnit">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Unit</label>
+                        <div class="col-sm-8">
+                            <input readonly type="text" class="form-control nip" id="approveBranchKeuUnit">
+                            <input readonly type="text" class="form-control nip" style="display: none" id="approveBranchIdKeuUnit">
+                        </div>
+                    </div>
+                    <div class="form-group" style="display: none">
+                        <label class="control-label col-sm-4" >Tipe</label>
+                        <div class="col-sm-8">
+                            <input readonly type="text" class="form-control nip"  id="tipeId2KeuUnit" >
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a type="button" id="btnApproveKeuUnit" class="btn btn-success"><i class="fa fa-check"></i> Approve</a>
                 <a type="button" class="btn btn-default" data-dismiss="modal"> Close</a>
             </div>
         </div>
@@ -556,7 +687,7 @@
                 var tipe = document.getElementById("tipeId2").value;
                 var statusApprove = "Y";
 
-                PayrollAction.approvePayroll(branchId, bulan, tahun, statusApprove, tipe, function(listdata){
+                PayrollAction.approvePayroll(branchId, bulan, tahun, statusApprove, tipe,"payroll", function(listdata){
                     alert('Payroll Berhasil Disetujui');
                     $('#modal-approve').modal('hide');
                     $('#myForm')[0].reset();
@@ -576,6 +707,40 @@
 
                 PayrollAction.approvePayrollUnit(branchId, bulan, tahun, statusApprove, tipe, function(listdata){
                     alert('Payroll Berhasil Disetujui');
+                    $('#modal-approve').modal('hide');
+                    $('#myForm')[0].reset();
+                    window.location.href="<s:url action='initForm_payroll.action'/>";
+                });
+            }
+        });
+
+        $('#btnApproveSdm').click(function(){
+            if (confirm('Apakah Anda ingin Mesetujui Data Payroll?')) {
+                var branchId = document.getElementById("approveBranchIdSdm").value;
+                var bulan = document.getElementById("approveBulanSdm").value;
+                var tahun = document.getElementById("approveTahunSdm").value;
+                var tipe = document.getElementById("tipeId2Sdm").value;
+                var statusApprove = "Y";
+
+                PayrollAction.approvePayrollSdm(branchId, bulan, tahun, statusApprove, tipe, function(listdata){
+                    alert('Payroll Berhasil Disetujui');
+                    $('#modal-approve').modal('hide');
+                    $('#myForm')[0].reset();
+                    window.location.href="<s:url action='initForm_payroll.action'/>";
+                });
+            }
+        });
+
+        $('#btnNotApproveSdm').click(function(){
+            if (confirm('Apakah Anda ingin menolak Data Payroll?')) {
+                var branchId = document.getElementById("approveBranchIdSdm").value;
+                var bulan = document.getElementById("approveBulanSdm").value;
+                var tahun = document.getElementById("approveTahunSdm").value;
+                var tipe = document.getElementById("tipeId2Sdm").value;
+                var statusApprove = "N";
+
+                PayrollAction.approvePayrollUnit(branchId, bulan, tahun, statusApprove, tipe, function(listdata){
+                    alert('Payroll Berhasil Tidak Di Approve');
                     $('#modal-approve').modal('hide');
                     $('#myForm')[0].reset();
                     window.location.href="<s:url action='initForm_payroll.action'/>";
@@ -613,22 +778,7 @@
                 });
             }
         });
-        $('#btnNotApproveUnit').click(function(){
-            if (confirm('Apakah Anda ingin menolak Data Payroll?')) {
-                var branchId = document.getElementById("approveBranchId").value;
-                var bulan = document.getElementById("approveBulan").value;
-                var tahun = document.getElementById("approveTahun").value;
-                var tipe = document.getElementById("tipeId2").value;
-                var statusApprove = "N";
 
-                PayrollAction.approvePayrollUnit(branchId, bulan, tahun, statusApprove, tipe, function(listdata){
-                    alert('Payroll Berhasil Ditolak');
-                    $('#modal-approve').modal('hide');
-                    $('#myForm')[0].reset();
-                    location.reload();
-                });
-            }
-        });
         $('.tablePayroll').on('click', '.item-edit', function(){
             var tipe = $(this).attr('tipe');
             var bulan = $(this).attr('bulan');
@@ -684,6 +834,60 @@
                 $('#modal-approve-unit').modal('show');
             });
         });
+
+        $('.tablePayroll').on('click', '.item-approve-sdm', function(){
+            var tipe = $(this).attr('tipe');
+            var bulan = $(this).attr('bulan');
+            var tahun = $(this).attr('tahun');
+            var branchId = $(this).attr('branchId');
+            var branchName = $(this).attr('branchName');
+
+            $('#approveBulanSdm').val(bulan);
+            $('#approveTahunSdm').val(tahun);
+            $('#approveBranchSdm').val(branchName);
+            $('#approveBranchIdSdm').val(branchId);
+            $('#tipeId2Sdm').val(tipe);
+
+            PayrollAction.getApprovalUnit(branchId, bulan, tahun, tipe, function(listdata){
+                var hasil = "";
+                if(listdata.approvalFlag == 'Y'){
+                    hasil = "Disetujui";
+                } else if(listdata.approvalFlag == 'N'){
+                    hasil = "Tidak Disetujui";
+                }
+                $('#approveStatusSdm').val(hasil);
+                $('#approveTanggalSdm').val(listdata.stApprovalDate);
+                $('#modal-approve-sdm').find('.modal-title').text('Approve Payroll SDM Kantor Pusat');
+                $('#modal-approve-sdm').modal('show');
+            });
+        });
+        $('.tablePayroll').on('click', '.item-approve-keu-unit', function(){
+            var tipe = $(this).attr('tipe');
+            var bulan = $(this).attr('bulan');
+            var tahun = $(this).attr('tahun');
+            var branchId = $(this).attr('branchId');
+            var branchName = $(this).attr('branchName');
+
+            $('#approveBulanKeuUnit').val(bulan);
+            $('#approveTahunKeuUnit').val(tahun);
+            $('#approveBranchKeuUnit').val(branchName);
+            $('#approveBranchIdKeuUnit').val(branchId);
+            $('#tipeId2KeuUnit').val(tipe);
+
+            PayrollAction.getApproval(branchId, bulan, tahun, tipe, function(listdata){
+                var hasil = "";
+                if(listdata.approvalFlag == 'Y'){
+                    hasil = "Disetujui";
+                } else if(listdata.approvalFlag == 'N'){
+                    hasil = "Tidak Disetujui";
+                }
+                $('#approveStatusKeuUnit').val(hasil);
+                $('#approveTanggalKeuUnit').val(listdata.stApprovalDate);
+                $('#modal-approve-keu-unit').find('.modal-title').text('Approve Payroll Keuangan Unit');
+                $('#modal-approve-keu-unit').modal('show');
+            });
+        });
+
         $('.tablePayroll').on('click', '.item-draft', function(){
             var tipe = $(this).attr('draftTipe');
             var bulan = $(this).attr('draftBulan');

@@ -18,6 +18,7 @@ public class Cuti extends BaseModel {
     private String branchName;
     private String branchId;
     private Long jumlahCuti;
+    private String jenisCuti;
 
     public String getGolonganName() {
         return golonganName;
@@ -81,5 +82,13 @@ public class Cuti extends BaseModel {
 
     public void setJumlahCuti(Long jumlahCuti) {
         this.jumlahCuti = jumlahCuti;
+    }
+
+    public String getJenisCuti() {
+        return jenisCuti;
+    }
+
+    public void setJenisCuti(String jenisCuti) {
+        this.jenisCuti = jenisCuti;
     }
 }

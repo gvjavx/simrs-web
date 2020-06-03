@@ -20,6 +20,8 @@ public interface CutiPegawaiBo extends BaseMasterBo<CutiPegawai> {
     public void saveDelete(CutiPegawai bean) throws GeneralBOException;
     public void saveEdit(CutiPegawai bean) throws GeneralBOException;
 
+    public void saveCancel(CutiPegawai bean) throws GeneralBOException;
+
     List<Notifikasi> saveAddCuti(CutiPegawai bean) throws GeneralBOException;
 
     CutiPegawai saveCutiBersama(CutiPegawai bean) throws GeneralBOException;
@@ -64,6 +66,8 @@ public interface CutiPegawaiBo extends BaseMasterBo<CutiPegawai> {
     List<CutiPegawai> getListCutiForReport(CutiPegawai bean);
 
     List<CutiPegawai> getListSetCuti(String nip);
+
+    List<CutiPegawai> getListSetCuti2(String nip, String jenisCuti);
 
     List getListCutiForView(String nip) throws GeneralBOException;
     public String findCutiAktif(String branchId);

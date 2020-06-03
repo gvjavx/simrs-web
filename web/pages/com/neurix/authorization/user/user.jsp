@@ -43,7 +43,6 @@
     <section class="content-header">
         <h1>
             User Information
-            <small>HRIS</small>
         </h1>
     </section>
 

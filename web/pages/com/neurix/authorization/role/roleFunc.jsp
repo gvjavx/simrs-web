@@ -47,7 +47,6 @@
     <section class="content-header">
         <h1>
             Role Function Information
-            <small>e-HEALTH</small>
         </h1>
     </section>
     <!-- Main content -->
@@ -159,17 +158,34 @@
                                             <tr>
                                                 <td>
                                                     <table>
+                                                        <%--<sj:dialog id="waiting_dialog_search" openTopics="showDialogSearch1" closeTopics="closeDialogSearch" modal="true"--%>
+                                                                   <%--resizable="false" height="250" width="600" autoOpen="false" title="Searching...">--%>
+                                                            <%--Please don't close this window, server is processing your request ...--%>
+                                                            <%--</br>--%>
+                                                            <%--</br>--%>
+                                                            <%--</br>--%>
+                                                            <%--<center>--%>
+                                                                <%--<img border="0" src="<s:url value="/pages/images/indicator-read.gif"/>" name="image_indicator_read">--%>
+                                                            <%--</center>--%>
+                                                        <%--</sj:dialog>--%>
+                                                            <sj:dialog id="waiting_dialog_search" openTopics="showDialogSearch1"
+                                                                       closeTopics="closeDialogSearch" modal="true"
+                                                                       resizable="false"
+                                                                       height="250" width="600" autoOpen="false"
+                                                                       title="Searching ...">
+                                                                Please don't close this window, server is processing your request ...
+                                                                <br>
+                                                                <center>
+                                                                    <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                                         src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                                         name="image_indicator_write">
+                                                                    <br>
+                                                                    <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                                         src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                                         name="image_indicator_write">
+                                                                </center>
+                                                            </sj:dialog>
 
-                                                        <sj:dialog id="waiting_dialog_search" openTopics="showDialogSearch1" closeTopics="closeDialogSearch" modal="true"
-                                                                   resizable="false" height="250" width="600" autoOpen="false" title="Searching...">
-                                                            Please don't close this window, server is processing your request ...
-                                                            </br>
-                                                            </br>
-                                                            </br>
-                                                            <center>
-                                                                <img border="0" src="<s:url value="/pages/images/indicator-read.gif"/>" name="image_indicator_read">
-                                                            </center>
-                                                        </sj:dialog>
                                                         <sj:submit type="button" cssClass="btn btn-primary" formIds="rolefuncForm" id="search" name="search"
                                                                    onClickTopics="showDialogSearch" onCompleteTopics="closeDialogSearch">
                                                             <i class="fa fa-search"></i>

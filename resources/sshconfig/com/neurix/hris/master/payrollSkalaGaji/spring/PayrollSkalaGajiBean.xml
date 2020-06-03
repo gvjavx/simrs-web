@@ -9,7 +9,9 @@
           p:payrollSkalaGajiBoProxy-ref="payrollSkalaGajiBoProxy" />
 
     <bean id="payrollSkalaGajiBo" class="com.neurix.hris.master.payrollSkalaGaji.bo.impl.PayrollSkalaGajiBoImpl"
-          p:payrollSkalaGajiDao-ref="payrollSkalaGajiDao" />
+          p:payrollSkalaGajiDao-ref="payrollSkalaGajiDao"
+          p:payrollSkalaGajiHistoryDao-ref="payrollSkalaGajiHistoryDao"
+    />
 
     <bean id="payrollSkalaGajiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="payrollSkalaGajiBo">
@@ -32,6 +34,8 @@
     </bean>
 
     <bean id="payrollSkalaGajiDao" class="com.neurix.hris.master.payrollSkalaGaji.dao.PayrollSkalaGajiDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="payrollSkalaGajiHistoryDao" class="com.neurix.hris.master.payrollSkalaGaji.dao.PayrollSkalaGajiHistoryDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

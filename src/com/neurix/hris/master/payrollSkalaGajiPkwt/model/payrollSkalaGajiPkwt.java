@@ -19,11 +19,20 @@ public class payrollSkalaGajiPkwt extends BaseModel {
     private BigDecimal santunanKhususNilai;
     private BigDecimal tunjFunsionalNilai;
     private BigDecimal tunjtambahanNilai;
+    private String tahun;
 
     private String gajiPokok;
     private String santunanKhusus;
     private String tunjFunsional;
     private String tunjtambahan;
+
+    public String getTahun() {
+        return tahun;
+    }
+
+    public void setTahun(String tahun) {
+        this.tahun = tahun;
+    }
 
     public String getGolonganPkwtName() {
         return golonganPkwtName;

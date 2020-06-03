@@ -131,8 +131,120 @@ public class Payroll extends BaseModel {
     private String noAnggotaDapen;
 
     private boolean kantorPusat =  false;
+    private boolean keuanganKantorPusat =  false;
     private boolean cetakSatuan = false;
     private boolean adaCheckBox = false;
+    private boolean sdm = false ;
+
+    //approve Sdm
+    private String approvalSdmFlag;
+    private String approvalSdmId;
+    private Timestamp approvalSdmDate;
+    private String approvalSdmName;
+
+    // macam peralihan;
+    private BigDecimal peralihanGapok;
+    private BigDecimal peralihanSankhus;
+    private BigDecimal peralihanTunjangan;
+    private String stPeralihanGapok;
+    private String stPeralihanSankhus;
+    private String stPeralihanTunjangan;
+
+    public boolean isSdm() {
+        return sdm;
+    }
+
+    public void setSdm(boolean sdm) {
+        this.sdm = sdm;
+    }
+
+    public String getStPeralihanGapok() {
+        return stPeralihanGapok;
+    }
+
+    public void setStPeralihanGapok(String stPeralihanGapok) {
+        this.stPeralihanGapok = stPeralihanGapok;
+    }
+
+    public String getStPeralihanSankhus() {
+        return stPeralihanSankhus;
+    }
+
+    public void setStPeralihanSankhus(String stPeralihanSankhus) {
+        this.stPeralihanSankhus = stPeralihanSankhus;
+    }
+
+    public String getStPeralihanTunjangan() {
+        return stPeralihanTunjangan;
+    }
+
+    public void setStPeralihanTunjangan(String stPeralihanTunjangan) {
+        this.stPeralihanTunjangan = stPeralihanTunjangan;
+    }
+
+    public boolean isKeuanganKantorPusat() {
+        return keuanganKantorPusat;
+    }
+
+    public void setKeuanganKantorPusat(boolean keuanganKantorPusat) {
+        this.keuanganKantorPusat = keuanganKantorPusat;
+    }
+
+    public BigDecimal getPeralihanGapok() {
+        return peralihanGapok;
+    }
+
+    public void setPeralihanGapok(BigDecimal peralihanGapok) {
+        this.peralihanGapok = peralihanGapok;
+    }
+
+    public BigDecimal getPeralihanSankhus() {
+        return peralihanSankhus;
+    }
+
+    public void setPeralihanSankhus(BigDecimal peralihanSankhus) {
+        this.peralihanSankhus = peralihanSankhus;
+    }
+
+    public BigDecimal getPeralihanTunjangan() {
+        return peralihanTunjangan;
+    }
+
+    public void setPeralihanTunjangan(BigDecimal peralihanTunjangan) {
+        this.peralihanTunjangan = peralihanTunjangan;
+    }
+
+    public String getApprovalSdmFlag() {
+        return approvalSdmFlag;
+    }
+
+    public void setApprovalSdmFlag(String approvalSdmFlag) {
+        this.approvalSdmFlag = approvalSdmFlag;
+    }
+
+    public String getApprovalSdmId() {
+        return approvalSdmId;
+    }
+
+    public void setApprovalSdmId(String approvalSdmId) {
+        this.approvalSdmId = approvalSdmId;
+    }
+
+    public Timestamp getApprovalSdmDate() {
+        return approvalSdmDate;
+    }
+
+    public void setApprovalSdmDate(Timestamp approvalSdmDate) {
+        this.approvalSdmDate = approvalSdmDate;
+    }
+
+    public String getApprovalSdmName() {
+        return approvalSdmName;
+    }
+
+    public void setApprovalSdmName(String approvalSdmName) {
+        this.approvalSdmName = approvalSdmName;
+    }
 
     public String getNoAnggotaDapen() {
         return noAnggotaDapen;

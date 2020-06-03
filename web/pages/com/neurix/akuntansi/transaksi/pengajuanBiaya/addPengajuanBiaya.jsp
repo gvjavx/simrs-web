@@ -11,25 +11,21 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/KodeRekeningAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/akuntansi.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/BudgetingAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PengajuanBiayaAction.js"/>'></script>
     <script type='text/javascript'>
         function callSearch2() {
             $('#view_dialog_menu').dialog('close');
             $('#info_dialog').dialog('close');
         }
         function link(){
-            window.location.href="<s:url action='initForm_pengajuanBiaya'/>";
+            window.location.href="<s:url action='initFormPengajuan_pengajuanBiaya'/>";
         }
 
         $.subscribe('beforeProcessSave', function (event, data) {
             var unit  = document.getElementById("branch_id").value;
             var divisi  = document.getElementById("divisi_id").value;
-            var tanggal  = document.getElementById("tanggal").value;
-            var coaBiaya  = document.getElementById("coa_biaya").value;
-            var coaGiro  = document.getElementById("coa_giro").value;
-            var jumlah  = document.getElementById("bayar").value;
-            var sisaBudget  = document.getElementById("sisa_budget").value;
-            var keterangan  = document.getElementById("keterangan").value;
-            if ( unit != ''&& tanggal != ''&& coaBiaya != '' && coaGiro != ''&&jumlah!=""&&keterangan!=""&&divisi!=""&&sisaBudget!="") {
+
+            if ( unit != ''&&divisi!="") {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -43,26 +39,8 @@
                 if ( unit == '') {
                     msg += 'Field <strong>Unit</strong> is required.' + '<br/>';
                 }
-                if ( tanggal == '') {
-                    msg += 'Field <strong>Tanggal</strong> is required.' + '<br/>';
-                }
-                if ( coaBiaya == '') {
-                    msg += 'Field <strong>COA Biaya</strong> is required.' + '<br/>';
-                }
-                if ( coaGiro == '') {
-                    msg += 'Field <strong>COA Giro</strong> is required.' + '<br/>';
-                }
                 if ( divisi == '') {
                     msg += 'Field <strong>Divisi</strong> is required.' + '<br/>';
-                }
-                if ( sisaBudget == '') {
-                    msg += 'Field <strong>Sisa Budget</strong> is required.' + '<br/>';
-                }
-                if ( jumlah == '') {
-                    msg += 'Field <strong>Jumlah</strong> is required.' + '<br/>';
-                }
-                if ( keterangan != '') {
-                    msg += 'Field <strong>Keterangan</strong> is required.' + '<br/>';
                 }
                 document.getElementById('errorMessage').innerHTML = msg;
                 $.publish('showErrorValidationDialog');
@@ -142,16 +120,6 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Transaksi</label>
-                                            <div class="col-md-8" style="margin-top: 7px">
-                                                <s:select list="#{'PB':'Pengajuan Biaya'}" onchange="initCoa(this.value)"
-                                                          id="transaksi_view" name="pengajuanBiaya.transaksi"
-                                                          headerKey="" headerValue="[Select One]" cssClass="form-control" />
-                                                <s:hidden id="transaksi" />
-                                                <s:hidden name="pengajuanBiaya.tipeTransaksi" id="tipe_transaksi" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Tanggal</label>
                                             <div class="col-md-8">
                                                 <div class="input-group date" style="margin-top: 7px" id="st_tgl">
@@ -174,17 +142,31 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">COA Biaya </label>
+                                            <label class="col-md-4" style="margin-top: 7px">Transaksi</label>
+                                            <div class="col-md-8" style="margin-top: 7px">
+                                                <s:select list="#{'R':'Rutin','I':'Investasi'}" onchange="initNoBudget(this.value)"
+                                                          id="transaksi_view" name="pengajuanBiaya.transaksi"
+                                                          headerKey="" headerValue="[Select One]" cssClass="form-control" />
+                                                <s:hidden id="transaksi" />
+                                                <s:hidden name="pengajuanBiaya.tipeTransaksi" id="tipe_transaksi" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4" style="margin-top: 7px">No. Budget </label>
                                             <div class="col-md-8">
-                                                <select class="form-control" id="coa_biaya" onchange="isiKeteterangan(),getSisaBudget(this.value)" style="margin-top: 7px" name="pengajuanBiaya.coaAjuan">
+                                                <select class="form-control" id="no_budget" onchange="isiKeteterangan(),getSisaBudget(this.value)" style="margin-top: 7px" name="pengajuanBiaya.noBudget">
                                                     <option value="" ></option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">COA Giro </label>
-                                            <div class="col-md-8">
-                                                <select class="form-control" id="coa_giro" onchange="isiKeteterangan()" style="margin-top: 7px" name="pengajuanBiaya.coaTarget">
+                                            <label class="col-md-4" style="margin-top: 7px">Keperluan</label>
+                                            <div class="col-md-8 keperluanText">
+                                                <s:textfield id="keperluanText" name="pengajuanBiaya.keperluan"
+                                                             cssClass="form-control" cssStyle="margin-top: 7px" />
+                                            </div>
+                                            <div class="col-md-8 keperluanCombo" style="display: none">
+                                                <select class="form-control" id="keperluanCombo" onchange="getSisaBudgetInvestasi(this.value)" style="margin-top: 7px" name="pengajuanBiaya.keperluan">
                                                     <option value="" ></option>
                                                 </select>
                                             </div>
@@ -197,7 +179,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Budget Biaya</label>
+                                            <label class="col-md-4" style="margin-top: 7px">Budgeting</label>
                                             <div class="col-md-8">
                                                 <s:textfield id="sisa_budget" name="pengajuanBiaya.stBudgetSaatIni" readonly="true"
                                                              cssClass="form-control" cssStyle="margin-top: 7px" />
@@ -211,15 +193,39 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
+                                            <label class="col-md-4" style="margin-top: 7px">Sisa Budget</label>
+                                            <div class="col-md-8">
+                                                <s:textfield id="sisa_budget_saat_ini" name="pengajuanBiaya.stSisaBudget" readonly="true"
+                                                             cssClass="form-control" cssStyle="margin-top: 7px" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Keterangan</label>
                                             <div class="col-md-8">
                                                 <s:textarea id="keterangan" rows="3" cssStyle="margin-top: 7px" onkeypress="$(this).css('border','')"
                                                             name="pengajuanBiaya.keterangan" cssClass="form-control"/>
                                             </div>
                                         </div>
+                                        <div class="form-group">
+                                            <div class="col-md-offset-4 col-md-8">
+                                                <button type="button" class="btn btn-primary" style="margin-top: 40px" id="btnTambahPengajuan">
+                                                    <i class="fa fa-plus"></i> Tambahkan
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <center>
+                                <table id="showdata" width="100%">
+                                    <tr>
+                                        <td align="center">
+                                            <table style="width: 100%;margin-top: 40px" class="pengajuanBiayaTabel table table-bordered">
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </center>
                             <br>
                             <div class="box-header with-border"></div>
                             <div class="box-body col-md-offset-4">
@@ -326,58 +332,42 @@
         $('#keterangan').val(keterangan);
     }
 
-    function getCoaGiro(value) {
-        var option = '<option value=""></option>';
-        var transaksi = "";
-        var posisi ="";
-        switch(value) {
-            case "PB":
-                transaksi = "59";
-                posisi="K";
-                break;
-        }
-        KodeRekeningAction.getKodeRekeningLawanByTransId(transaksi,posisi,function (res) {
-            if(res.length > 0){
-                $.each(res, function (i, item) {
-                    option += '<option value="'+item.kodeRekening+'">'+item.namaKodeRekening+'</option>';
-                });
-                $('#coa_giro').html(option);
-            }else{
-                $('#coa_giro').html(option);
-            }
-        });
-    }
-
-    function getCoaBiaya(value) {
-        var option = '<option value=""></option>';
-        var transaksi = "";
-        var posisi ="";
-        switch(value) {
-            case "PB":
-                transaksi = "59";
-                posisi="D";
-                break;
-        }
-        KodeRekeningAction.getKodeRekeningLawanByTransId(transaksi,posisi,function (res) {
-            if(res.length > 0){
-                $.each(res, function (i, item) {
-                    option += '<option value="'+item.kodeRekening+'">'+item.namaKodeRekening+'</option>';
-                });
-                $('#coa_biaya').html(option);
-            }else{
-                $('#coa_biaya').html(option);
-            }
-        });
-    }
-
     function getSisaBudget(value) {
+        var transaksi=$('#transaksi_view').val();
         var divisi_Id=$('#divisi_id').val();
         var branch_id=$('#branch_id').val();
-        var tanggal=$('#st_tgl').val();
-        BudgetingAction.getBudgetSaatIni(branch_id,divisi_Id,tanggal,value,function (res) {
-            $('#sisa_budget').val(res);
-            $('#budget_terpakai').val(res);
-        });
+        var tanggal=$('#tanggal').val();
+        if (transaksi=="R"){
+            BudgetingAction.getBudgetSaatIni(branch_id,divisi_Id,tanggal,value,function (res) {
+                $('#sisa_budget').val(res);
+                $('#budget_terpakai').val(0);
+            });
+        }else if (transaksi=="I"){
+            var option = '<option value=""></option>';
+            BudgetingAction.getInvestasiByNoBudgeting(value,function (res) {
+                if(res.length > 0){
+                    $.each(res, function (i, item) {
+                        option += '<option value="'+item.idPengadaan+'">'+item.namPengadaan+'</option>';
+                    });
+                    $('#keperluanCombo').html(option);
+                }else{
+                    $('#keperluanCombo').html(option);
+                }
+            });
+        }
+    }
+
+    function getSisaBudgetInvestasi(value) {
+        var transaksi=$('#transaksi_view').val();
+        var divisi_Id=$('#divisi_id').val();
+        var branch_id=$('#branch_id').val();
+        var tanggal=$('#tanggal').val();
+        if (transaksi=="I"){
+            BudgetingAction.getBudgetInvestasiSaatIni(branch_id,divisi_Id,tanggal,value,function (res) {
+                $('#sisa_budget').val(res);
+                $('#budget_terpakai').val(0);
+            });
+        }
     }
 
     function formatRupiahAngka(angka) {
@@ -396,18 +386,132 @@
         return rupiah;
     }
 
-    function initCoa(value){
-        getCoaGiro(value);
-        getCoaBiaya(value);
-        switch(value) {
-            case "PB":
-                $('#transaksi').val("PB");
-                $('#tipe_transaksi').val("59");
-                break;
+    function initNoBudget(value){
+        if (value=="R"){
+            var option = '<option value=""></option>';
+            var divisi_Id=$('#divisi_id').val();
+            var branch_id=$('#branch_id').val();
+            var tanggal=$('#tanggal').val();
+            BudgetingAction.getNoBudgetByDivisi(branch_id,divisi_Id,tanggal,function (res) {
+                if(res.length > 0){
+                    $.each(res, function (i, item) {
+                        option += '<option value="'+item.noBudgeting+'">'+item.noBudgeting+'</option>';
+                    });
+                    $('#no_budget').html(option);
+                }else{
+                    $('#no_budget').html(option);
+                }
+            });
+            $('.keperluanText').show();
+            $('.keperluanCombo').hide();
+        } else if (value=="I"){
+            var option = '<option value=""></option>';
+            var divisi_Id=$('#divisi_id').val();
+            var branch_id=$('#branch_id').val();
+            var tanggal=$('#tanggal').val();
+            $('.keperluanText').hide();
+            $('.keperluanCombo').show();
+            BudgetingAction.getInvestasiByDivisi(branch_id,divisi_Id,tanggal,function (res) {
+                if(res.length > 0){
+                    $.each(res, function (i, item) {
+                        option += '<option value="'+item.noBudgeting+'">'+item.noBudgeting+'</option>';
+                    });
+                    $('#no_budget').html(option);
+                }else{
+                    $('#no_budget').html(option);
+                }
+            });
         }
     }
-    $(document).ready(function(){
 
+    window.loadPengajuan =  function(){
+        $('.pengajuanBiayaTabel').find('tbody').remove();
+        $('.pengajuanBiayaTabel').find('thead').remove();
+        dwr.engine.setAsync(false);
+        var tmp_table = "";
+        PengajuanBiayaAction.searchSessionPengajuan(function(listdata){
+            tmp_table = "<thead style='font-size: 10px; color: white' ><tr class='active'>"+
+                "<th style='text-align: center; background-color:  #90ee90'>No</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Delete</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Tanggal</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Transaksi</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>No. Budget</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Jumlah</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Budget RKAP</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Budget Terpakai</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Keperluan</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Keterangan</th>"+
+                "</tr></thead>";
+            var i = i ;
+            $.each(listdata, function (i, item) {
+                var transaksi ="";
+                switch (item.transaksi) {
+                    case "R":
+                        transaksi="Rutin";
+                        break;
+                    case "I":
+                        transaksi="Investasi";
+                        break;
+                }
+                tmp_table += '<tr style="font-size: 10px;" ">' +
+                    '<td align="center">' + (i + 1) + '</td>' +
+                    '<td align="center">' +
+                    "<a href='javascript:;' class ='item-delete' data ='"+item.Keperluan+"' >" +
+                    "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>"+
+                    '</a>' +
+                    '</td>' +
+                    '<td align="center">' + item.stTanggal+ '</td>' +
+                    '<td align="center">' + transaksi + '</td>' +
+                    '<td align="center">' + item.noBudgeting+ '</td>' +
+                    '<td align="center">' + item.stJumlah+ '</td>' +
+                    '<td align="center">' + item.stBudgetBiaya+ '</td>' +
+                    '<td align="center">' + item.stBudgetTerpakai+ '</td>' +
+                    '<td align="center">' + item.keperluan+ '</td>' +
+                    '<td align="center">' + item.keterangan+ '</td>' +
+                    "</tr>";
+            });
+            $('.pengajuanBiayaTabel').append(tmp_table);
+        });
+    };
+
+    $(document).ready(function(){
+        $('#btnTambahPengajuan').click(function () {
+            var branchId=$('#branch_id').val();
+            var divisiId=$('#divisi_id').val();
+            var stTanggal=$('#tanggal').val();
+            var transaksi=$('#transaksi_view').val();
+            var noBudgeting=$('#no_budget').val();
+            var stJumlah=$('#bayar').val();
+            var stBudgetBiaya=$('#sisa_budget').val();
+            var stBudgetTerpakai=$('#budget_terpakai').val();
+            var keperluan = "";
+            if (transaksi=="R"){
+                keperluan=$('#keperluanText').val();
+            } else if (transaksi=="I"){
+                keperluan=$('#keperluanCombo').val();
+            }
+            var keterangan=$('#keterangan').val();
+
+            PengajuanBiayaAction.saveSessionPengajuan(branchId,divisiId,stTanggal,transaksi,noBudgeting,stJumlah,stBudgetBiaya,stBudgetTerpakai,keperluan,keterangan,function(){
+                loadPengajuan();
+            })
+        });
+
+        $('.pengajuanBiayaTabel').on('click', '.item-delete-data', function () {
+            var id = $(this).attr('data');
+            if (id!=''){
+                PengajuanBiayaAction.deleteSessionPengajuan(id,function (result) {
+                    alert("data berhasil dihapus");
+                    loadPengajuan();
+                });
+            } else{
+                var msg="";
+                if (id==""){
+                    msg+="data tidak ditemukan \n";
+                }
+                alert(msg);
+            }
+        });
     })
 </script>
 <%@ include file="/pages/common/footer.jsp" %>

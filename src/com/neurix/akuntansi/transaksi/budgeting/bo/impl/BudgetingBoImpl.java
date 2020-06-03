@@ -1330,4 +1330,73 @@ public class BudgetingBoImpl implements BudgetingBo {
         logger.info("[BudgetingBoImpl.getBudgetBiayaDivisiSaatIni] END <<<<");
         return  CommonUtil.numbericFormat(budget,"###,###");
     }
+
+
+    @Override
+    public List<Budgeting> getNoBudgetByDivisi(Budgeting bean){
+        logger.info("[BudgetingBoImpl.getNoBudgetByDivisi] START >>>");
+        List<Budgeting> budgetingList;
+        try {
+            ImPosition position = positionDao.getById("positionId",bean.getDivisi());
+
+            budgetingList = laporanAkuntansiDao.getNoBudgetByDivisi(bean.getBranchId(),bean.getStatus(),bean.getTahun(),position.getKodering());
+        } catch (HibernateException e){
+            logger.error("[BudgetingBoImpl.getBudgetBiayaDivisiSaatIni] ERROR. ",e);
+            throw new GeneralBOException("[BudgetingBoImpl.getBudgetBiayaDivisiSaatIni] ERROR. ",e);
+        }
+
+        logger.info("[BudgetingBoImpl.getNoBudgetByDivisi] END <<<<");
+        return  budgetingList;
+    }
+    @Override
+    public List<Budgeting> getInvestasiByDivisi(Budgeting bean){
+        logger.info("[BudgetingBoImpl.getNoBudgetByDivisi] START >>>");
+        List<Budgeting> budgetingList;
+        try {
+            ImPosition position = positionDao.getById("positionId",bean.getDivisi());
+
+            budgetingList = laporanAkuntansiDao.getInvestasiByDivisi(bean.getBranchId(),bean.getStatus(),bean.getTahun(),position.getKodering());
+        } catch (HibernateException e){
+            logger.error("[BudgetingBoImpl.getBudgetBiayaDivisiSaatIni] ERROR. ",e);
+            throw new GeneralBOException("[BudgetingBoImpl.getBudgetBiayaDivisiSaatIni] ERROR. ",e);
+        }
+
+        logger.info("[BudgetingBoImpl.getNoBudgetByDivisi] END <<<<");
+        return  budgetingList;
+    }
+
+    @Override
+    public List<BudgetingPengadaan> getInvestasiByNoBudgeting(String noBudgeting){
+        logger.info("[BudgetingBoImpl.getInvestasiByNoBudgeting] START >>>");
+        List<BudgetingPengadaan> budgetingList;
+        try {
+            budgetingList = laporanAkuntansiDao.getInvestasiByNoBudgeting(noBudgeting);
+        } catch (HibernateException e){
+            logger.error("[BudgetingBoImpl.getInvestasiByNoBudgeting] ERROR. ",e);
+            throw new GeneralBOException("[BudgetingBoImpl.getInvestasiByNoBudgeting] ERROR. ",e);
+        }
+
+        logger.info("[BudgetingBoImpl.getInvestasiByNoBudgeting] END <<<<");
+        return  budgetingList;
+    }
+    @Override
+    public String getBudgetBiayaInvestasiSaatIni(Budgeting bean){
+        logger.info("[BudgetingBoImpl.getBudgetBiayaDivisiSaatIni] START >>>");
+        List<BudgettingDTO> budgettingDTOList;
+        BigDecimal budget = BigDecimal.ZERO;
+        try {
+            budgettingDTOList = laporanAkuntansiDao.getBudgettingPengadaan(bean.getIdPengadaan());
+        } catch (HibernateException e){
+            logger.error("[BudgetingBoImpl.getBudgetBiayaDivisiSaatIni] ERROR. ",e);
+            throw new GeneralBOException("[BudgetingBoImpl.getBudgetBiayaDivisiSaatIni] ERROR. ",e);
+        }
+
+        for (BudgettingDTO budgettingDTO : budgettingDTOList){
+            budget = budgettingDTO.getSubTotal();
+        }
+
+        logger.info("[BudgetingBoImpl.getBudgetBiayaDivisiSaatIni] END <<<<");
+        return  CommonUtil.numbericFormat(budget,"###,###");
+    }
+
 }

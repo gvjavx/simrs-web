@@ -40,10 +40,25 @@
                 <!--<prop key="hibernate.connection.password">123456</prop>-->
 
 
+                <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs_04052020</prop>-->
+                <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
+                <!--<prop key="hibernate.connection.username">postgres</prop>-->
+                <!--<prop key="hibernate.connection.password">123456</prop>-->
+
+                <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/db_fromdaus</prop>-->
+                <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
+                <!--<prop key="hibernate.connection.username">postgres</prop>-->
+                <!--<prop key="hibernate.connection.password">123456</prop>-->
+
                 <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs</prop>
                 <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
                 <prop key="hibernate.connection.username">postgres</prop>
                 <prop key="hibernate.connection.password">postgres</prop>
+
+                <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs_11052020</prop>-->
+                <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
+                <!--<prop key="hibernate.connection.username">postgres</prop>-->
+                <!--<prop key="hibernate.connection.password">123456</prop>-->
 
 
             </props>
@@ -71,8 +86,6 @@
                 <value>sshconfig/com/neurix/authorization/user/hibernate/ItBusinessObjectLog.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/libur/hibernate/ImLiburEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/biodata/hibernate/ItTunjLainPegEntity.hbm.xml</value>
-
-
 
                 <value>sshconfig/com/neurix/hris/master/tipelibur/hibernate/ImHrisTipeLiburEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/golongan/hibernate/ImGolonganEntity.hbm.xml</value>
@@ -183,6 +196,7 @@
                 <!-- For Payroll -->
 
                 <value>sshconfig/com/neurix/hris/master/payrollTunjanganJabatanStruktural/hibernate/ImmPayrollTunjanganJabatanStrukturalEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/mappingpersengaji/hibernate/ImHrisMappingPersenGajiEntity.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/payrollSkalaGaji/hibernate/ImPayrollSkalaGajiEntity.hbm.xml</value>
@@ -211,6 +225,7 @@
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollJasoprEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollCutiEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ImPayrollBpjsEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ImPayrollParamBpjsEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ImPayrollPtkpEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollInsentifEntity.hbm.xml</value>
 
@@ -223,7 +238,15 @@
                 <value>sshconfig/com/neurix/hris/master/payrollFaktorKeluarga/hibernate/ImPayrollFaktorKeluargaEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/payrollMasaKerjaPensiun/hibernate/ImPayrollMasaKerjaPensiunEntity.hbm.xml</value>
 
+                <!--history-->
                 <value>sshconfig/com/neurix/hris/master/branchTunjangan/hibernate/ImBranchTunjanganHistoryEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ImPayrollTunjanganJabatanStrukturalHistoryEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/payrollSkalaGajiPkwt/hibernate/ImPayrollSkalaGajiPkwtHistoryEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiunRni/hibernate/ImPayrollSkalaGajiPensiunRniHistoryEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiunDplk/hibernate/ImPayrollSkalaGajiPensiunDplkHistoryEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ImPayrollBpjsHistoryEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ImPayrollTunjanganStrategisHistoryEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/payrollSkalaGaji/hibernate/ImPayrollSkalaGajiHistoryEntity.hbm.xml</value>
 
                 <!--<value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrolInsentifEntity.hbm.xml</value>-->
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/imPayrolInsentifNilaiSmkEntity.hbm.xml</value>
@@ -406,6 +429,7 @@
                 <value>sshconfig/com/neurix/akuntansi/transaksi/budgeting/hibernate/ItAkunBudgetingDetailEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/budgeting/hibernate/ItAkunBudgetingPengadaanEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/pengajuanBiaya/hibernate/ImPengajuanBiayaEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/pengajuanBiaya/hibernate/ItPengajuanBiayaDetailEntity.hbm.xml</value>
 
                 <!--Hibernate Config For PAKET SIMRS-->
                 <value>sshconfig/com/neurix/simrs/transaksi/paketperiksa/hiberanate/ImSimrsKelasPaketEntity.hbm.xml</value>

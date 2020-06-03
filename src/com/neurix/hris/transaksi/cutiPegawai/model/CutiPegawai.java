@@ -88,6 +88,10 @@ public class CutiPegawai extends BaseModel {
     private String stTanggalAktif;
     private String flagPerbaikan;
 
+    private String cutiTanggunganId;
+    private String cutiTanggunganName;
+    private String jenisCuti;
+
     public String getProfesiId() {
         return profesiId;
     }
@@ -649,5 +653,29 @@ public class CutiPegawai extends BaseModel {
 
     public void setOs(String os) {
         this.os = os;
+    }
+
+    public String getCutiTanggunganId() {
+        return cutiTanggunganId;
+    }
+
+    public void setCutiTanggunganId(String cutiTanggunganId) {
+        this.cutiTanggunganId = cutiTanggunganId;
+    }
+
+    public String getCutiTanggunganName() {
+        return cutiTanggunganName;
+    }
+
+    public void setCutiTanggunganName(String cutiTanggunganName) {
+        this.cutiTanggunganName = cutiTanggunganName;
+    }
+
+    public String getJenisCuti() {
+        return jenisCuti;
+    }
+
+    public void setJenisCuti(String jenisCuti) {
+        this.jenisCuti = jenisCuti;
     }
 }

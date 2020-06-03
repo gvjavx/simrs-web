@@ -56,6 +56,9 @@ public class IjinKeluarEntity implements Serializable {
 
     private String divisiId;
     private String bagianId;
+    private Date tglAkhirUpdate;
+    private String suratDokter;
+    private Date tglMelahirkan;
 
     public String getBagianId() {
         return bagianId;
@@ -383,5 +386,29 @@ public class IjinKeluarEntity implements Serializable {
 
     public void setJumlahCuti(BigInteger jumlahCuti) {
         this.jumlahCuti = jumlahCuti;
+    }
+
+    public Date getTglAkhirUpdate() {
+        return tglAkhirUpdate;
+    }
+
+    public void setTglAkhirUpdate(Date tglAkhirUpdate) {
+        this.tglAkhirUpdate = tglAkhirUpdate;
+    }
+
+    public String getSuratDokter() {
+        return suratDokter;
+    }
+
+    public void setSuratDokter(String suratDokter) {
+        this.suratDokter = suratDokter;
+    }
+
+    public Date getTglMelahirkan() {
+        return tglMelahirkan;
+    }
+
+    public void setTglMelahirkan(Date tglMelahirkan) {
+        this.tglMelahirkan = tglMelahirkan;
     }
 }

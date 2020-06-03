@@ -9,7 +9,9 @@
           p:payrollSkalaGajiPensiunRniBoProxy-ref="payrollSkalaGajiPensiunRniBoProxy" />
 
     <bean id="payrollSkalaGajiPensiunRniBo" class="com.neurix.hris.master.payrollSkalaGajiPensiunRni.bo.impl.PayrollSkalaGajiPensiunRniBoImpl"
-          p:payrollSkalaGajiPensiunRniDao-ref="payrollSkalaGajiPensiunRniDao" />
+          p:payrollSkalaGajiPensiunRniDao-ref="payrollSkalaGajiPensiunRniDao"
+          p:payrollSkalaGajiPensiunRniHistoryDao-ref="payrollSkalaGajiPensiunRniHistoryDao"
+    />
 
     <bean id="payrollSkalaGajiPensiunRniBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="payrollSkalaGajiPensiunRniBo">
@@ -33,5 +35,6 @@
 
     <bean id="payrollSkalaGajiPensiunRniDao" class="com.neurix.hris.master.payrollSkalaGajiPensiunRni.dao.PayrollSkalaGajiPensiunRniDao"
           p:sessionFactory-ref="sessionFactory" />
-
+    <bean id="payrollSkalaGajiPensiunRniHistoryDao" class="com.neurix.hris.master.payrollSkalaGajiPensiunRni.dao.PayrollSkalaGajiPensiunRniHistoryDao"
+          p:sessionFactory-ref="sessionFactory" />
 </beans>

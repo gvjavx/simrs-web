@@ -656,7 +656,8 @@ public class BiodataAction extends BaseMasterAction{
 
                     if (this.fileUpload!=null) {
 
-                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD;
+//                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD;
+                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_PHOTO_PROFILE;
                         String fileName = editBiodata.getNip() + ".jpg";
                         File fileToCreate = new File(filePath, fileName);
 
@@ -735,7 +736,8 @@ public class BiodataAction extends BaseMasterAction{
                     }
 
                     if (this.fileUpload!=null) {
-                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD;
+//                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD;
+                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_PHOTO_PROFILE;
                         String fileName = biodata.getNip() + ".jpg";
                         File fileToCreate = new File(filePath, fileName);
 
@@ -2615,7 +2617,7 @@ public class BiodataAction extends BaseMasterAction{
     }
 
     public String saveEditPengalamanKerja(String id,String nip, String branchId, String divisiId, String positionId, String tanggal, String tanggalKeluar,
-                                          String tipePegawaiId, String golonganId, String perusahaanLain, String bidangLain, String jabatanLain, String flagAktif){
+                                          String tipePegawaiId, String golonganId, String perusahaanLain, String bidangLain, String jabatanLain, String flagAktif, String profesiId, String pjsFlag){
         logger.info("[PengalamanKerjaAction.saveEdit] start process >>>");
         try {
 
@@ -2653,6 +2655,15 @@ public class BiodataAction extends BaseMasterAction{
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
+            historyJabatanPegawai.setDivisiId(divisiId);
+            historyJabatanPegawai.setPositionId(positionId);
+            historyJabatanPegawai.setProfesiId(profesiId);
+            historyJabatanPegawai.setTanggal(tanggal);
+            historyJabatanPegawai.setTanggalKeluar(tanggalKeluar);
+            historyJabatanPegawai.setTipePegawaiId(tipePegawaiId);
+            historyJabatanPegawai.setGolonganId(golonganId);
+            historyJabatanPegawai.setPjsFlag(pjsFlag);
+            historyJabatanPegawai.setFlagJabatanAktif(flagAktif);
 
             historyJabatanPegawai.setCreatedWho(userLogin);
             historyJabatanPegawai.setLastUpdate(updateTime);
