@@ -91,6 +91,7 @@ public class BudgetingBoImpl implements BudgetingBo {
                 budgeting.setQuartal4(nullEscape(budgetingEntity.getQuartal4()));
                 budgeting.setSelisih(nullEscape(budgetingEntity.getSelisih()));
                 budgeting.setApproveFlag(budgetingEntity.getApproveFlag());
+                budgeting.setNoTrans(budgetingEntity.getNoTrans());
                 if (budgeting.getApproveFlag() != null){
                     budgeting.setNoBudgeting(budgetingEntity.getNoBudgeting());
                 } else {
@@ -370,6 +371,11 @@ public class BudgetingBoImpl implements BudgetingBo {
                         ItAkunBudgetingEntity budgetingEntity = new ItAkunBudgetingEntity();
                         budgetingEntity.setIdBudgeting(generateBudgetingId());
                         budgetingEntity.setNoBudgeting(name+"-"+bean.getBranchId()+"-"+bean.getTahun()+"-"+kodeRekeningEntity.getKodeRekening());
+
+                        // modify
+                        budgetingEntity.setNoTrans(bean.getBranchId()+"-"+bean.getTahun()+"-"+kodeRekeningEntity.getKodeRekening());
+                        //
+
                         budgetingEntity.setRekeningId(kodeRekeningEntity.getRekeningId());
                         budgetingEntity.setTahun(bean.getTahun());
                         budgetingEntity.setBranchId(bean.getBranchId());
@@ -400,6 +406,11 @@ public class BudgetingBoImpl implements BudgetingBo {
 
                         budgetingNew.setIdBudgeting(budgetingEntity.getIdBudgeting());
                         budgetingNew.setNoBudgeting(name+"-"+bean.getBranchId()+"-"+bean.getTahun()+"-"+kodeRekeningEntity.getKodeRekening());
+
+                        // modify
+                        budgetingNew.setNoTrans(bean.getBranchId()+"-"+bean.getTahun()+"-"+kodeRekeningEntity.getKodeRekening());
+                        //
+
                         budgetingNew.setRekeningId(kodeRekeningEntity.getRekeningId());
                         budgetingNew.setParentId(kodeRekeningEntity.getParentId());
                         budgetingNew.setTahun(bean.getTahun());
@@ -505,9 +516,9 @@ public class BudgetingBoImpl implements BudgetingBo {
                                 budgetingDetailEntity.setIdBudgetingDetail(generateBudgetingDetailId());
                                 budgetingDetailEntity.setIdBudgeting(budgetingEntity.getIdBudgeting());
                                 if (budgetingDetail.getMasterId() != null){
-                                    budgetingDetailEntity.setNoBudgetingDetail(budgetingEntity.getNoBudgeting()+"-"+budgetingDetail.getTipe()+"-"+budgetingDetail.getDivisiId()+"-"+budgetingDetail.getMasterId());
+                                    budgetingDetailEntity.setNoBudgetingDetail(budgetingEntity.getNoTrans()+"-"+budgetingDetail.getTipe()+"-"+budgetingDetail.getDivisiId()+"-"+budgetingDetail.getMasterId());
                                 } else {
-                                    budgetingDetailEntity.setNoBudgetingDetail(budgetingEntity.getNoBudgeting()+"-"+budgetingDetail.getTipe()+"-"+budgetingDetail.getDivisiId());
+                                    budgetingDetailEntity.setNoBudgetingDetail(budgetingEntity.getNoTrans()+"-"+budgetingDetail.getTipe()+"-"+budgetingDetail.getDivisiId());
                                 }
                                 budgetingDetailEntity.setMasterId(budgetingDetail.getMasterId());
                                 budgetingDetailEntity.setNoBudgeting(budgetingEntity.getNoBudgeting());
@@ -550,6 +561,7 @@ public class BudgetingBoImpl implements BudgetingBo {
                                         pengadaanEntity.setCreatedWho(bean.getCreatedWho());
                                         pengadaanEntity.setLastUpdate(bean.getLastUpdate());
                                         pengadaanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                                        pengadaanEntity.setNoPengadaan(budgetingDetailEntity.getNoBudgetingDetail()+"-"+pengadaanEntity.getIdPengadaan());
 
                                         try {
                                             budgetingPengadaanDao.addAndSave(pengadaanEntity);
@@ -683,6 +695,7 @@ public class BudgetingBoImpl implements BudgetingBo {
                                         pengadaanEntity.setAction("U");
                                         pengadaanEntity.setLastUpdate(bean.getLastUpdate());
                                         pengadaanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                                        pengadaanEntity.setNoPengadaan(budgetingDetailEntity.getNoBudgetingDetail()+"-"+pengadaanEntity.getIdPengadaan());
 
                                         try {
                                             budgetingPengadaanDao.updateAndSave(pengadaanEntity);
@@ -702,9 +715,9 @@ public class BudgetingBoImpl implements BudgetingBo {
                             budgetingDetailEntity.setIdBudgeting(budgetingEntity.getIdBudgeting());
                             budgetingDetailEntity.setNoBudgeting(budgetingEntity.getNoBudgeting());
                             if (budgetingDetail.getMasterId() != null){
-                                budgetingDetailEntity.setNoBudgetingDetail(budgetingEntity.getNoBudgeting()+"-"+budgetingDetail.getTipe()+"-"+budgetingDetail.getDivisiId()+"-"+budgetingDetail.getMasterId());
+                                budgetingDetailEntity.setNoBudgetingDetail(budgetingEntity.getNoTrans()+"-"+budgetingDetail.getTipe()+"-"+budgetingDetail.getDivisiId()+"-"+budgetingDetail.getMasterId());
                             } else {
-                                budgetingDetailEntity.setNoBudgetingDetail(budgetingEntity.getNoBudgeting()+"-"+budgetingDetail.getTipe()+"-"+budgetingDetail.getDivisiId());
+                                budgetingDetailEntity.setNoBudgetingDetail(budgetingEntity.getNoTrans()+"-"+budgetingDetail.getTipe()+"-"+budgetingDetail.getDivisiId());
                             }
                             budgetingDetailEntity.setMasterId(budgetingDetail.getMasterId());
                             budgetingDetailEntity.setDivisiId(budgetingDetail.getDivisiId());
@@ -745,6 +758,7 @@ public class BudgetingBoImpl implements BudgetingBo {
                                     pengadaanEntity.setLastUpdateWho(bean.getLastUpdateWho());
                                     pengadaanEntity.setCreatedDate(bean.getCreatedDate());
                                     pengadaanEntity.setCreatedWho(bean.getCreatedWho());
+                                    pengadaanEntity.setNoPengadaan(budgetingDetailEntity.getNoBudgetingDetail()+"-"+pengadaanEntity.getIdPengadaan());
 
                                     try {
                                         budgetingPengadaanDao.updateAndSave(pengadaanEntity);
@@ -1218,6 +1232,7 @@ public class BudgetingBoImpl implements BudgetingBo {
                 budgetingPengadaan.setNoKontrak(pengadaanEntity.getNoKontrak() == null ? "" : pengadaanEntity.getNoKontrak());
                 budgetingPengadaan.setRealisasi(new BigDecimal(0));
                 budgetingPengadaan.setSelisih(budgetingPengadaan.getSubTotal().subtract(budgetingPengadaan.getRealisasi()));
+                budgetingPengadaan.setNoPengadaan(pengadaanEntity.getNoPengadaan());
                 budgetingPengadaans.add(budgetingPengadaan);
             }
 

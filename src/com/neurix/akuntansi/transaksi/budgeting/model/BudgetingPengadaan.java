@@ -29,6 +29,15 @@ public class BudgetingPengadaan{
     private BigDecimal nilaiKontrak;
     private BigDecimal selisih;
     private BigDecimal realisasi;
+    private String noPengadaan;
+
+    public String getNoPengadaan() {
+        return noPengadaan;
+    }
+
+    public void setNoPengadaan(String noPengadaan) {
+        this.noPengadaan = noPengadaan;
+    }
 
     public BigDecimal getSelisih() {
         return selisih;

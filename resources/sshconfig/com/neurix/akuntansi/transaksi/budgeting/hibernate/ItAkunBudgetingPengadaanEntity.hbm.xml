@@ -57,6 +57,9 @@
         <property name="nilaiKontrak">
             <column name="nilai_kontrak" sql-type="numeric" not-null="false" />
         </property>
+        <property name="noPengadaan">
+            <column name="no_pengadaan" sql-type="varchar" not-null="false" />
+        </property>
 
     </class>
 </hibernate-mapping>

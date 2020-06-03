@@ -26,6 +26,7 @@ public class ItAkunBudgetingPengadaanEntity implements Serializable {
     private String idBudgetingDetail;
     private String noKontrak;
     private BigDecimal nilaiKontrak;
+    private String noPengadaan;
 
     public String getIdBudgetingDetail() {
         return idBudgetingDetail;
@@ -154,4 +155,13 @@ public class ItAkunBudgetingPengadaanEntity implements Serializable {
     public void setNilaiKontrak(BigDecimal nilaiKontrak) {
         this.nilaiKontrak = nilaiKontrak;
     }
+
+    public String getNoPengadaan() {
+        return noPengadaan;
+    }
+
+    public void setNoPengadaan(String noPengadaan) {
+        this.noPengadaan = noPengadaan;
+    }
+
 }

@@ -116,6 +116,9 @@
         <property name="desember">
             <column name="desember" sql-type="numeric" not-null="false" />
         </property>
+        <property name="noTrans">
+            <column name="no_trans" sql-type="numeric" not-null="false" />
+        </property>
 
     </class>
 </hibernate-mapping>
