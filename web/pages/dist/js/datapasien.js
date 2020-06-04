@@ -60,6 +60,5 @@ function setDataPasien(){
     }
     if (tb > 0) {
         $('.tinggi-pasien').val(tinggiBadan);
-        console.log('cek')
     }
 }

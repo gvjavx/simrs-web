@@ -13,6 +13,7 @@
             border: 1px black solid;
             display: block;
             margin: 1rem;
+            cursor: pointer;
         }
 
         .color-picker {
@@ -495,6 +496,11 @@
                                         <li><a style="cursor: pointer" onclick="showModalSPS('spesialis_ortopedi')"><i class="fa fa-circle-o"></i>Asesmen Ortopedi</a></li>
                                         <li><a style="cursor: pointer" onclick="showModalSPS('spesialis_ginjal')"><i class="fa fa-circle-o"></i>Asesmen Ginjal</a></li>
                                         <li><a style="cursor: pointer" onclick="showModalSPS('spesialis_jantung')"><i class="fa fa-circle-o"></i>Asesmen Jantung</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalSPS('dokter_umum')"><i class="fa fa-circle-o"></i>Asesmen Dokter Umum</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalSPS('spesialis_onkologi')"><i class="fa fa-circle-o"></i>Asesmen Onkologi</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalSPS('spesialis_ginekologi')"><i class="fa fa-circle-o"></i>Asesmen Ginekologi</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalSPS('rehab_medik')"><i class="fa fa-circle-o"></i>Asesmen Rehab Medik</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalSPS('rehab_medik')"><i class="fa fa-circle-o"></i>Asesmen Urologi</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -2281,7 +2287,7 @@
             context = contextPath+'/pages/modal/modalRingkasanRawatJalan.jsp';
         }
         if(jenis == "spesialis"){
-            context = contextPath+'/pages/modal/modalJantung.jsp';
+            context = contextPath+'/pages/modal/modalRehabMedik.jsp';
         }
         $('#modal-temp').load(context, function (res) {
 

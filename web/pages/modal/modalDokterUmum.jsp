@@ -1,17 +1,17 @@
-<div class="modal fade" id="modal-sps-spesialis_penyakit_dalam">
+<div class="modal fade" id="modal-sps-dokter_umum">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-stethoscope"></i> Asesmen Penyakit Dalam
+                <h4 class="modal-title"><i class="fa fa-stethoscope"></i> Asesmen Dokter Umum
                 </h4>
             </div>
             <div class="modal-body">
                 <div class="box-body btn-hide">
-                    <div class="alert alert-success alert-dismissible" style="display: none" id="warning_sps_spesialis_penyakit_dalam">
+                    <div class="alert alert-success alert-dismissible" style="display: none" id="warning_sps_dokter_umum">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
-                        <p id="msg_sps_spesialis_penyakit_dalam"></p>
+                        <p id="msg_sps_dokter_umum"></p>
                     </div>
                     <div class="btn-group btn-hide">
                         <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
@@ -22,11 +22,11 @@
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a onclick="showModalSPS('anamnesa_pd')" style="cursor: pointer"><i
+                            <li><a onclick="showModalSPS('anamnesa_umum')" style="cursor: pointer"><i
                                     class="fa fa-plus"></i> Anamnesa</a></li>
-                            <li><a onclick="showModalSPS('pemeriksaan_pd')" style="cursor: pointer"><i
+                            <li><a onclick="showModalSPS('pemeriksaan_umum')" style="cursor: pointer"><i
                                     class="fa fa-plus"></i> Pemeriksaan</a></li>
-                            <li><a onclick="showModalSPS('edukasi_pd')" style="cursor: pointer"><i
+                            <li><a onclick="showModalSPS('edukasi_umum')" style="cursor: pointer"><i
                                     class="fa fa-plus"></i> Edukasi</a></li>
                         </ul>
                     </div>
@@ -34,24 +34,24 @@
                 <div class="box-body">
                     <table class="table">
                         <tbody>
-                        <tr id="row_sps_anamnesa_pd">
+                        <tr id="row_sps_anamnesa_umum">
                             <td>Anamnesa</td>
-                            <td width="20%" align="center"><img id="btn_sps_anamnesa_pd" class="hvr-grow"
-                                                                onclick="detailSPS('anamnesa_pd')"
+                            <td width="20%" align="center"><img id="btn_sps_anamnesa_umum" class="hvr-grow"
+                                                                onclick="detailSPS('anamnesa_umum')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
-                        <tr id="row_sps_pemeriksaan_pd">
+                        <tr id="row_sps_pemeriksaan_umum">
                             <td>Pemeriksaan</td>
-                            <td width="20%" align="center"><img id="btn_sps_pemeriksaan_pd" class="hvr-grow"
-                                                                onclick="detailSPS('pemeriksaan_pd')"
+                            <td width="20%" align="center"><img id="btn_sps_pemeriksaan_umum" class="hvr-grow"
+                                                                onclick="detailSPS('pemeriksaan_umum')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
-                        <tr id="row_sps_edukasi_pd">
+                        <tr id="row_sps_edukasi_umum">
                             <td>Edukasi</td>
-                            <td width="20%" align="center"><img id="btn_sps_edukasi_pd" class="hvr-grow"
-                                                                onclick="detailSPS('edukasi_pd')"
+                            <td width="20%" align="center"><img id="btn_sps_edukasi_umum" class="hvr-grow"
+                                                                onclick="detailSPS('edukasi_umum')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
@@ -67,7 +67,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-sps-anamnesa_pd">
+<div class="modal fade" id="modal-sps-anamnesa_umum">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
@@ -78,9 +78,9 @@
             </div>
             <div class="modal-body">
                 <div class="box-body">
-                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_sps_anamnesa_pd">
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_sps_anamnesa_umum">
                         <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                        <p id="msg_sps_anamnesa_pd"></p>
+                        <p id="msg_sps_anamnesa_umum"></p>
                     </div>
                     <div class="row">
                         <div class="form-group">
@@ -169,9 +169,9 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button class="btn btn-success pull-right" id="save_sps_anamnesa_pd" onclick="saveSPS('anamnesa_pd', 'spesialis_penyakit_dalam')"><i class="fa fa-check"></i> Save
+                <button class="btn btn-success pull-right" id="save_sps_anamnesa_umum" onclick="saveSPS('anamnesa_umum', 'dokter_umum')"><i class="fa fa-check"></i> Save
                 </button>
-                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_sps_anamnesa_pd"><i
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_sps_anamnesa_umum"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>
@@ -179,7 +179,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-sps-pemeriksaan_pd">
+<div class="modal fade" id="modal-sps-pemeriksaan_umum">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
@@ -190,9 +190,9 @@
             </div>
             <div class="modal-body">
                 <div class="box-body">
-                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_sps_pemeriksaan_pd">
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_sps_pemeriksaan_umum">
                         <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                        <p id="msg_sps_pemeriksaan_pd"></p>
+                        <p id="msg_sps_pemeriksaan_umum"></p>
                     </div>
                     <div class="row">
                         <label class="col-md-4">Kondisi Umum</label>
@@ -276,9 +276,9 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button class="btn btn-success pull-right" id="save_sps_pemeriksaan_pd" onclick="saveSPS('pemeriksaan_pd', 'spesialis_penyakit_dalam')"><i class="fa fa-check"></i> Save
+                <button class="btn btn-success pull-right" id="save_sps_pemeriksaan_umum" onclick="saveSPS('pemeriksaan_umum', 'dokter_umum')"><i class="fa fa-check"></i> Save
                 </button>
-                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_sps_pemeriksaan_pd"><i
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_sps_pemeriksaan_umum"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>
@@ -287,7 +287,7 @@
 </div>
 
 
-<div class="modal fade" id="modal-sps-edukasi_pd">
+<div class="modal fade" id="modal-sps-edukasi_umum">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
@@ -298,9 +298,9 @@
             </div>
             <div class="modal-body">
                 <div class="box-body">
-                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_sps_edukasi_pd">
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_sps_edukasi_umum">
                         <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                        <p id="msg_sps_edukasi_pd"></p>
+                        <p id="msg_sps_edukasi_umum"></p>
                     </div>
                     <div class="row">
                         <label class="col-md-12">Edukasi awal, tentang diagnosis, rencana, tujuan terapi kepada :</label>
@@ -354,9 +354,9 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button class="btn btn-success pull-right" id="save_sps_edukasi_pd" onclick="saveSPS('edukasi_pd', 'spesialis_penyakit_dalam')"><i class="fa fa-check"></i> Save
+                <button class="btn btn-success pull-right" id="save_sps_edukasi_umum" onclick="saveSPS('edukasi_umum', 'dokter_umum')"><i class="fa fa-check"></i> Save
                 </button>
-                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_sps_edukasi_pd"><i
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_sps_edukasi_umum"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>

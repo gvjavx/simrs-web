@@ -484,28 +484,28 @@ function saveMonHD(jenis, ket) {
             });
             data.push({
                 'parameter': 'Tensi',
-                'jawaban1': va3,
+                'jawaban1': va3 +' mmHg',
                 'keterangan': jenis,
                 'jenis': 'asesmen_hd',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Nadi',
-                'jawaban1': va4,
+                'jawaban1': va4 +' x/menit',
                 'keterangan': jenis,
                 'jenis': 'asesmen_hd',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Penrnafasan',
-                'jawaban1': va5,
+                'jawaban1': va5 +' x/menit',
                 'keterangan': jenis,
                 'jenis': 'asesmen_hd',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Suhu',
-                'jawaban1': va6,
+                'jawaban1': va6 +' ˚C',
                 'keterangan': jenis,
                 'jenis': 'asesmen_hd',
                 'id_detail_checkup': idDetailCheckup

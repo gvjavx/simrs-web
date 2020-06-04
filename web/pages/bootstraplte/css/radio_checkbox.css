@@ -153,6 +153,7 @@
 .paint-canvas-ttd {
     border: 1px black solid;
     margin: 1rem;
+    cursor: pointer;
 }
 
 .garis{

@@ -25,7 +25,7 @@
                             <li><a onclick="showModalSPS('anamnesa_anak')" style="cursor: pointer"><i
                                     class="fa fa-plus"></i> Anamnesa</a></li>
                             <li><a onclick="showModalSPS('pemeriksaan_anak')" style="cursor: pointer"><i
-                                    class="fa fa-plus"></i> Pemeriksaan Fisik</a></li>
+                                    class="fa fa-plus"></i> Pemeriksaan</a></li>
                             <li><a onclick="showModalSPS('edukasi_anak')" style="cursor: pointer"><i
                                     class="fa fa-plus"></i> Edukasi</a></li>
                         </ul>
@@ -42,7 +42,7 @@
                             </td>
                         </tr>
                         <tr id="row_sps_pemeriksaan_anak">
-                            <td>Pemeriksaan Fisik</td>
+                            <td>Pemeriksaan</td>
                             <td width="20%" align="center"><img id="btn_sps_pemeriksaan_anak" class="hvr-grow"
                                                                 onclick="detailSPS('pemeriksaan_anak')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
@@ -96,18 +96,13 @@
                         </div>
                     </div>
                     <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">Anamnese</label>
-                            <div class="col-md-9">
-                                <textarea rows="3" class="form-control anamnese" id="kut2"></textarea>
-                            </div>
-                        </div>
+                        <label class="col-md-12">Anamnese</label>
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
                             <label class="col-md-3">Keluhan Utama</label>
                             <div class="col-md-9">
-                                <textarea rows="3" class="form-control" id="kut3"></textarea>
+                                <textarea rows="3" class="form-control anamnese" id="kut3"></textarea>
                             </div>
                         </div>
                     </div>
@@ -188,7 +183,7 @@
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-stethoscope"></i> Pemeriksaan Fisik
+                <h4 class="modal-title"><i class="fa fa-stethoscope"></i> Pemeriksaan
                 </h4>
             </div>
             <div class="modal-body">

@@ -1,17 +1,17 @@
-<div class="modal fade" id="modal-sps-spesialis_penyakit_dalam">
+<div class="modal fade" id="modal-sps-spesialis_onkologi">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-stethoscope"></i> Asesmen Penyakit Dalam
+                <h4 class="modal-title"><i class="fa fa-stethoscope"></i> Asesmen Onkologi
                 </h4>
             </div>
             <div class="modal-body">
                 <div class="box-body btn-hide">
-                    <div class="alert alert-success alert-dismissible" style="display: none" id="warning_sps_spesialis_penyakit_dalam">
+                    <div class="alert alert-success alert-dismissible" style="display: none" id="warning_sps_spesialis_onkologi">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
-                        <p id="msg_sps_spesialis_penyakit_dalam"></p>
+                        <p id="msg_sps_spesialis_onkologi"></p>
                     </div>
                     <div class="btn-group btn-hide">
                         <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
@@ -22,11 +22,11 @@
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a onclick="showModalSPS('anamnesa_pd')" style="cursor: pointer"><i
+                            <li><a onclick="showModalSPS('anamnesa_onkologi')" style="cursor: pointer"><i
                                     class="fa fa-plus"></i> Anamnesa</a></li>
-                            <li><a onclick="showModalSPS('pemeriksaan_pd')" style="cursor: pointer"><i
+                            <li><a onclick="showModalSPS('pemeriksaan_onkologi')" style="cursor: pointer"><i
                                     class="fa fa-plus"></i> Pemeriksaan</a></li>
-                            <li><a onclick="showModalSPS('edukasi_pd')" style="cursor: pointer"><i
+                            <li><a onclick="showModalSPS('edukasi_onkologi')" style="cursor: pointer"><i
                                     class="fa fa-plus"></i> Edukasi</a></li>
                         </ul>
                     </div>
@@ -34,24 +34,24 @@
                 <div class="box-body">
                     <table class="table">
                         <tbody>
-                        <tr id="row_sps_anamnesa_pd">
+                        <tr id="row_sps_anamnesa_onkologi">
                             <td>Anamnesa</td>
-                            <td width="20%" align="center"><img id="btn_sps_anamnesa_pd" class="hvr-grow"
-                                                                onclick="detailSPS('anamnesa_pd')"
+                            <td width="20%" align="center"><img id="btn_sps_anamnesa_onkologi" class="hvr-grow"
+                                                                onclick="detailSPS('anamnesa_onkologi')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
-                        <tr id="row_sps_pemeriksaan_pd">
+                        <tr id="row_sps_pemeriksaan_onkologi">
                             <td>Pemeriksaan</td>
-                            <td width="20%" align="center"><img id="btn_sps_pemeriksaan_pd" class="hvr-grow"
-                                                                onclick="detailSPS('pemeriksaan_pd')"
+                            <td width="20%" align="center"><img id="btn_sps_pemeriksaan_onkologi" class="hvr-grow"
+                                                                onclick="detailSPS('pemeriksaan_onkologi')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
-                        <tr id="row_sps_edukasi_pd">
+                        <tr id="row_sps_edukasi_onkologi">
                             <td>Edukasi</td>
-                            <td width="20%" align="center"><img id="btn_sps_edukasi_pd" class="hvr-grow"
-                                                                onclick="detailSPS('edukasi_pd')"
+                            <td width="20%" align="center"><img id="btn_sps_edukasi_onkologi" class="hvr-grow"
+                                                                onclick="detailSPS('edukasi_onkologi')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
@@ -67,7 +67,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-sps-anamnesa_pd">
+<div class="modal fade" id="modal-sps-anamnesa_onkologi">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
@@ -78,9 +78,9 @@
             </div>
             <div class="modal-body">
                 <div class="box-body">
-                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_sps_anamnesa_pd">
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_sps_anamnesa_onkologi">
                         <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                        <p id="msg_sps_anamnesa_pd"></p>
+                        <p id="msg_sps_anamnesa_onkologi"></p>
                     </div>
                     <div class="row">
                         <div class="form-group">
@@ -116,51 +116,17 @@
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-3">Riwayat Penyakit Keluarga</label>
+                            <label class="col-md-3">Obat-Obat yang sedang dikonsumsi</label>
                             <div class="col-md-9">
                                 <textarea rows="3" class="form-control alergi" id="kut5"></textarea>
                             </div>
                         </div>
                     </div>
-                    <hr class="garis">
                     <div class="row jarak">
-                        <label class="col-md-12">Riwayat Pribadi</label>
                         <div class="form-group">
-                            <label class="col-md-3">Alergi Imunisasi</label>
+                            <label class="col-md-3">Riwayat Alergi Obat</label>
                             <div class="col-md-9">
                                 <textarea rows="3" class="form-control" id="kut6"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">Hobi</label>
-                            <div class="col-md-9">
-                                <textarea rows="3" class="form-control" id="kut7"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">Olahraga</label>
-                            <div class="col-md-9">
-                                <textarea rows="3" class="form-control" id="kut8"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">Kebiasaan Makan/Minum</label>
-                            <div class="col-md-9">
-                                <textarea rows="3" class="form-control" id="kut9"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">Merokok/minuman alkohol</label>
-                            <div class="col-md-9">
-                                <textarea rows="3" class="form-control" id="kut10"></textarea>
                             </div>
                         </div>
                     </div>
@@ -169,9 +135,9 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button class="btn btn-success pull-right" id="save_sps_anamnesa_pd" onclick="saveSPS('anamnesa_pd', 'spesialis_penyakit_dalam')"><i class="fa fa-check"></i> Save
+                <button class="btn btn-success pull-right" id="save_sps_anamnesa_onkologi" onclick="saveSPS('anamnesa_onkologi', 'spesialis_onkologi')"><i class="fa fa-check"></i> Save
                 </button>
-                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_sps_anamnesa_pd"><i
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_sps_anamnesa_onkologi"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>
@@ -179,7 +145,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-sps-pemeriksaan_pd">
+<div class="modal fade" id="modal-sps-pemeriksaan_onkologi">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
@@ -190,85 +156,74 @@
             </div>
             <div class="modal-body">
                 <div class="box-body">
-                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_sps_pemeriksaan_pd">
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_sps_pemeriksaan_onkologi">
                         <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                        <p id="msg_sps_pemeriksaan_pd"></p>
+                        <p id="msg_sps_pemeriksaan_onkologi"></p>
                     </div>
                     <div class="row">
-                        <label class="col-md-4">Kondisi Umum</label>
-                        <div class="col-md-8">
-                            <textarea rows="2" class="form-control" id="pt1"></textarea>
+                        <label class="col-md-12">Pemeriksaan Fisik / Status Lokalitas</label>
+                    </div>
+                    <div class="form-group" style="padding-top: 10px; padding-bottom: 10px">
+                        <div class="col-md-1">
+                            <input type="color" style="margin-left: -6px; margin-top: -8px" class="js-color-picker-op  color-picker pull-left">
                         </div>
                     </div>
                     <div class="row jarak">
-                        <label class="col-md-4">Kepala Leher</label>
-                        <div class="col-md-8">
-                            <textarea rows="2" class="form-control" id="pt2"></textarea>
+                        <div class="col-md-12">
+                            <div class="text-center">
+                                <canvas class="paint-canvas" id="area_canvas" onmouseover="paintTtd('area_canvas', true)"></canvas>
+                            </div>
+                            <canvas style="display: none" id="area_cek"></canvas>
+                            <button type="button" class="btn btn-danger" onclick="removePaint('area_canvas')"><i class="fa fa-trash"></i> Clear
+                            </button>
                         </div>
                     </div>
-                    <div class="row jarak">
-                        <label class="col-md-4">Thorax</label>
-                        <div class="col-md-8">
-                            <textarea rows="2" class="form-control" id="pt3"></textarea>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <label class="col-md-4">Abdomen</label>
-                        <div class="col-md-8">
-                            <textarea rows="2" class="form-control" id="pt4"></textarea>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <label class="col-md-4">Ekstremitas</label>
-                        <div class="col-md-8">
-                            <textarea rows="2" class="form-control" id="pt5"></textarea>
-                        </div>
-                    </div>
+                    <hr class="garis">
                     <div class="row jarak">
                         <label class="col-md-4">Pemeriksaan Penunjang</label>
                         <div class="col-md-8">
-                            <textarea rows="3" class="form-control penunjang-medis" id="pt6"></textarea>
+                            <textarea rows="3" class="form-control penunjang-medis" id="pt2"></textarea>
                         </div>
                     </div>
                     <div class="row jarak">
                         <label class="col-md-4">Diagnosa Kerja</label>
                         <div class="col-md-8">
-                            <textarea rows="2" class="form-control diagnosa-pasien" id="pt7"></textarea>
+                            <textarea rows="2" class="form-control diagnosa-pasien" id="pt3"></textarea>
                         </div>
                     </div>
                     <div class="row jarak">
                         <label class="col-md-4">Diagnosa Banding</label>
                         <div class="col-md-8">
-                            <textarea rows="2" class="form-control diagnosa-pasien" id="pt8"></textarea>
+                            <textarea rows="2" class="form-control diagnosa-pasien" id="pt4"></textarea>
                         </div>
                     </div>
                     <div class="row jarak">
                         <label class="col-md-4">Terapi</label>
                         <div class="col-md-8">
-                            <textarea rows="2" class="form-control" id="pt9"></textarea>
+                            <textarea rows="2" class="form-control" id="pt5"></textarea>
                         </div>
                     </div>
                     <div class="row jarak">
                         <label class="col-md-4">Tindakan / Rencana Tindakan</label>
                         <div class="col-md-8">
-                            <textarea rows="2" class="form-control" id="pt10"></textarea>
+                            <textarea rows="2" class="form-control" id="pt6"></textarea>
                         </div>
                     </div>
                     <div class="row jarak">
-                        <label class="col-md-4">Kontrol Kembali</label>
+                        <label class="col-md-4">Anjuran Kontrol Kembali</label>
                         <div class="col-md-8">
                             <div class="input-group">
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </div>
-                                <input class="form-control tgl" id="pt11">
+                                <input class="form-control tgl" id="pt7">
                             </div>
                         </div>
                     </div>
                     <div class="row jarak">
                         <label class="col-md-4">Indikasi Rawat Inap</label>
                         <div class="col-md-8">
-                            <input class="form-control" id="pt12">
+                            <input class="form-control" id="pt8">
                         </div>
                     </div>
                 </div>
@@ -276,9 +231,9 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button class="btn btn-success pull-right" id="save_sps_pemeriksaan_pd" onclick="saveSPS('pemeriksaan_pd', 'spesialis_penyakit_dalam')"><i class="fa fa-check"></i> Save
+                <button class="btn btn-success pull-right" id="save_sps_pemeriksaan_onkologi" onclick="saveSPS('pemeriksaan_onkologi', 'spesialis_onkologi')"><i class="fa fa-check"></i> Save
                 </button>
-                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_sps_pemeriksaan_pd"><i
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_sps_pemeriksaan_onkologi"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>
@@ -287,7 +242,7 @@
 </div>
 
 
-<div class="modal fade" id="modal-sps-edukasi_pd">
+<div class="modal fade" id="modal-sps-edukasi_onkologi">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
@@ -298,9 +253,9 @@
             </div>
             <div class="modal-body">
                 <div class="box-body">
-                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_sps_edukasi_pd">
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_sps_edukasi_onkologi">
                         <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                        <p id="msg_sps_edukasi_pd"></p>
+                        <p id="msg_sps_edukasi_onkologi"></p>
                     </div>
                     <div class="row">
                         <label class="col-md-12">Edukasi awal, tentang diagnosis, rencana, tujuan terapi kepada :</label>
@@ -354,9 +309,9 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button class="btn btn-success pull-right" id="save_sps_edukasi_pd" onclick="saveSPS('edukasi_pd', 'spesialis_penyakit_dalam')"><i class="fa fa-check"></i> Save
+                <button class="btn btn-success pull-right" id="save_sps_edukasi_onkologi" onclick="saveSPS('edukasi_onkologi', 'spesialis_onkologi')"><i class="fa fa-check"></i> Save
                 </button>
-                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_sps_edukasi_pd"><i
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_sps_edukasi_onkologi"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>
