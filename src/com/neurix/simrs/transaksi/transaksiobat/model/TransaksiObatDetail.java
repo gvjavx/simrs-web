@@ -84,6 +84,15 @@ public class TransaksiObatDetail extends BaseModel {
     private String rekanan;
     private String jenisResep;
     private String idVendor;
+    private String idPelayananTujuan;
+
+    public String getIdPelayananTujuan() {
+        return idPelayananTujuan;
+    }
+
+    public void setIdPelayananTujuan(String idPelayananTujuan) {
+        this.idPelayananTujuan = idPelayananTujuan;
+    }
 
     public String getIdVendor() {
         return idVendor;

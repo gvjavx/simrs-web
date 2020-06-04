@@ -1185,7 +1185,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             transaksiStokEntity.setIdBarang(obatEntity.getIdBarang());
             transaksiStokEntity.setIdPelayanan(idPelayanan);
             // jika ada saldo lalu
-            if (saldoBulanLalu.getQtyLalu().compareTo(new BigInteger(String.valueOf(0))) == 1){
+            if (saldoBulanLalu.getQtyLalu() != null && saldoBulanLalu.getQtyLalu().compareTo(new BigInteger(String.valueOf(0))) == 1){
                 transaksiStokEntity.setQtyLalu(stokBulanLalu.getQtySaldo());
                 transaksiStokEntity.setTotalLalu(saldoBulanLalu.getTotalSaldo());
                 transaksiStokEntity.setSubTotalLalu(saldoBulanLalu.getSubTotal());

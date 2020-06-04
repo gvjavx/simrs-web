@@ -368,6 +368,11 @@ public class PaketPeriksaBoImpl implements PaketPeriksaBo {
         return paketDao.getById("idPaket", id);
     }
 
+    @Override
+    public ItSimrsPaketPasienEntity getPaketPasienEntityByIdPaket(String id) throws GeneralBOException {
+        return paketPasienDao.getById("idPaket", id);
+    }
+
     private String getNextPaketPeriksaId() {
 
         String id = "";
