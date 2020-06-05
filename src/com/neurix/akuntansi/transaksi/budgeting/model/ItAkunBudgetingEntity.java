@@ -46,6 +46,15 @@ public class ItAkunBudgetingEntity implements Serializable {
     private BigDecimal oktober;
     private BigDecimal november;
     private BigDecimal desember;
+    private String noTrans;
+
+    public String getNoTrans() {
+        return noTrans;
+    }
+
+    public void setNoTrans(String noTrans) {
+        this.noTrans = noTrans;
+    }
 
     public String getIdBudgeting() {
         return idBudgeting;

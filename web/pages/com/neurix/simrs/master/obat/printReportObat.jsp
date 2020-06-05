@@ -65,23 +65,14 @@
                                     </div>
                                     <div class="row">
                                         <div class="form-group">
-                                        <label class="col-md-2 col-md-offset-3" style="margin-top: 7px">Nama Obat</label>
-                                        <div class="col-md-4">
-                                            <input type="text" class="form-control" style="margin-top: 7px" id="nama_obat" name="obat.namaObat">
-                                            <input type="hidden" id="idObat" name="obat.idObat">
-                                        </div>
-                                        </div>
-                                    </div>
-                                        <div class="row">
-                                            <div class="form-group">
-                                                <label class="col-md-2 col-md-offset-3" style="margin-top: 7px">Tahun</label>
-                                                <div class="col-md-4">
-                                                    <s:select list="#{'2020':'2020', '2021' : '2021', '2022':'2022', '2023':'2023', '2024':'2024'}"
-                                                              id="periodeTahun" name="obat.tahun"
-                                                              headerKey="" headerValue="[Select One]" cssClass="form-control" />
-                                                </div>
+                                            <label class="col-md-2 col-md-offset-3" style="margin-top: 7px">Tahun</label>
+                                            <div class="col-md-4">
+                                                <s:select list="#{'2020':'2020', '2021' : '2021', '2022':'2022', '2023':'2023', '2024':'2024'}"
+                                                          id="periodeTahun" name="obat.tahun"
+                                                          headerKey="" headerValue="[Select One]" cssClass="form-control" />
                                             </div>
                                         </div>
+                                    </div>
                                     <div class="row">
                                         <div class="form-group">
                                         <label class="col-md-2 col-md-offset-3" style="margin-top: 7px">Bulan</label>
@@ -91,6 +82,15 @@
                                                       id="periodeBulan" name="obat.bulan"
                                                       headerKey="" headerValue="[Select One]" cssClass="form-control" />
                                         </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label class="col-md-2 col-md-offset-3" style="margin-top: 7px">Nama Obat</label>
+                                            <div class="col-md-4">
+                                                <input type="text" class="form-control" style="margin-top: 7px" id="nama_obat" name="obat.namaObat" autocomplete="off">
+                                                <input type="hidden" id="idObat" name="obat.idObat">
+                                            </div>
                                         </div>
                                     </div>
 

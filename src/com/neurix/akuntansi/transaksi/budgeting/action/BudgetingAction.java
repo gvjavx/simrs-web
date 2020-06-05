@@ -1693,6 +1693,22 @@ public class BudgetingAction {
         return budgetSaatIni;
     }
 
+    public List<Budgeting> getNoBudgetByDivisi(String branchId,String divisiId,String tanggal){
+        List<Budgeting> budgetingList = new ArrayList<>();
+        String[] arrTanggal = tanggal.split("-");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
+        Budgeting budgetingStatus = findLastStatus(branchId,arrTanggal[0]);
+        budgetingStatus.setDivisi(divisiId);
+        budgetingStatus.setBranchId(branchId);
+        budgetingStatus.setTahun(arrTanggal[0]);
+
+        budgetingList = budgetingBo.getNoBudgetByDivisi(budgetingStatus);
+
+        return budgetingList;
+    }
+
     public Budgeting view(String idBudgeting){
 
         logger.info("[BudgetingAction.view] START >>>");
@@ -1716,20 +1732,17 @@ public class BudgetingAction {
         return budgeting;
     }
 
-    public List<Budgeting> getNoBudgetByDivisi(String branchId,String divisiId,String tanggal){
-        List<Budgeting> budgetingList = new ArrayList<>();
-        String[] arrTanggal = tanggal.split("-");
+    public List<BudgetingPengadaan> viewPengadaan(String idBudgetingDetail){
+
+        logger.info("[BudgetingAction.viewPengadaan] START >>>");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
-        Budgeting budgetingStatus = findLastStatus(branchId,arrTanggal[0]);
-        budgetingStatus.setDivisi(divisiId);
-        budgetingStatus.setBranchId(branchId);
-        budgetingStatus.setTahun(arrTanggal[0]);
 
-        budgetingList = budgetingBo.getNoBudgetByDivisi(budgetingStatus);
+        List<BudgetingPengadaan> budgetingPengadaans = budgetingBo.getListBudgetingPengadaanNoDetail(idBudgetingDetail);
 
-        return budgetingList;
+        logger.info("[BudgetingAction.viewPengadaan] END <<<");
+        return budgetingPengadaans;
     }
 
     public List<Budgeting> getInvestasiByDivisi(String branchId,String divisiId,String tanggal){
@@ -1748,16 +1761,17 @@ public class BudgetingAction {
         return budgetingList;
     }
 
-    public List<BudgetingPengadaan> getInvestasiByNoBudgeting(String noBudgeting){
+    public List<BudgetingPengadaan> getInvestasiByNoBudgeting(String noBudgeting) {
         List<BudgetingPengadaan> budgetingList = new ArrayList<>();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
 
         budgetingList = budgetingBo.getInvestasiByNoBudgeting(noBudgeting);
-
         return budgetingList;
     }
+
+
 
     public void setBudgetingBoProxy(BudgetingBo budgetingBoProxy) {
         this.budgetingBoProxy = budgetingBoProxy;

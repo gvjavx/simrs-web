@@ -74,6 +74,15 @@ public class Budgeting {
 
     private BigDecimal saldoAkhir;
     private BigDecimal selisihSaldoAkhir;
+    private String noTrans;
+
+    public String getNoTrans() {
+        return noTrans;
+    }
+
+    public void setNoTrans(String noTrans) {
+        this.noTrans = noTrans;
+    }
 
     private List<BudgetingPeriode> listPeriode = new ArrayList<>();
     private List<BudgetingDetail> budgetingDetailList = new ArrayList<>();

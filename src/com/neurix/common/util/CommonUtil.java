@@ -1065,16 +1065,16 @@ public class CommonUtil {
 
     public static String getDateParted(Date date, String tipe){
         //create calander instance and get required params
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-
         switch (tipe){
             case "YEAR":
-                int year = cal.get(Calendar.YEAR); return String.valueOf(year);
+                SimpleDateFormat y = new SimpleDateFormat("yyyy");
+                return y.format(date);
             case "MONTH":
-                int month = cal.get(Calendar.MONTH); return String.valueOf(month);
+                SimpleDateFormat m = new SimpleDateFormat("M");
+                return m.format(date);
             case "DAY":
-                int day = cal.get(Calendar.DAY_OF_MONTH); return String.valueOf(day);
+                SimpleDateFormat d = new SimpleDateFormat("d");
+                return d.format(date);
             default: return "";
         }
     }
