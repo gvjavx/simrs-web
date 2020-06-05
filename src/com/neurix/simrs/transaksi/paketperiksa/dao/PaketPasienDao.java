@@ -37,6 +37,9 @@ public class PaketPasienDao extends GenericDao<ItSimrsPaketPasienEntity, String>
             criteria.add(Restrictions.eq("idPaket", mapCriteria.get("id_paket").toString()));
         if (mapCriteria.get("flag") != null)
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
+        if (mapCriteria.get("flag_selesai_null") != null){
+            criteria.add(Restrictions.isNull("flagSelesai"));
+        }
 
         return criteria.list();
     }
