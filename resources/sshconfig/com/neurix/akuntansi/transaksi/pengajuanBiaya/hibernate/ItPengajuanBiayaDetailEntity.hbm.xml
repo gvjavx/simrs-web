@@ -114,6 +114,10 @@
             <column name="status_keuangan" sql-type="varchar" length="1" not-null="false" />
         </property>
 
+        <property name="noJurnal">
+            <column name="no_jurnal" sql-type="varchar" length="30" not-null="false" />
+        </property>
+
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
         </property>

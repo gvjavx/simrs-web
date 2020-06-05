@@ -2637,6 +2637,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "  AND tahun = '"+tahun+"' \n" +
                 "  AND status = '"+status+"' \n" +
                 "  AND bgtd.divisi_id = '"+divisiId+"' \n" +
+                "  AND approve_flag = 'Y' \n" +
                 "  AND nilai is not null\n";
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)

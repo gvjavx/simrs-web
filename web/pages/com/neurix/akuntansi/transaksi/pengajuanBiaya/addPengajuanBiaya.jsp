@@ -12,6 +12,7 @@
     <script type='text/javascript' src='<s:url value="/pages/dist/js/akuntansi.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/BudgetingAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PengajuanBiayaAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/JurnalAction.js"/>'></script>
     <script type='text/javascript'>
         function callSearch2() {
             $('#view_dialog_menu').dialog('close');
@@ -347,10 +348,12 @@
         var branch_id=$('#branch_id').val();
         var tanggal=$('#tanggal').val();
         if (transaksi=="R"){
-            BudgetingAction.getBudgetSaatIni(branch_id,divisi_Id,tanggal,value,function (res) {
-                $('#sisa_budget').val(res);
-                $('#budget_terpakai').val(0);
-                $('#sisa_budget_saat_ini').val(0);
+            BudgetingAction.getBudgetSaatIni(branch_id,divisi_Id,tanggal,value,function (sisaBudget) {
+                JurnalAction.getBudgetTerpakai(branch_id,divisi_Id,tanggal,value,sisaBudget,function (item) {
+                    $('#budget_terpakai').val(item.stBudgetTerpakai);
+                    $('#sisa_budget_saat_ini').val(item.stSisaBudget);
+                })
+                $('#sisa_budget').val(sisaBudget);
             });
         }else if (transaksi=="I"){
             var option = '<option value=""></option>';

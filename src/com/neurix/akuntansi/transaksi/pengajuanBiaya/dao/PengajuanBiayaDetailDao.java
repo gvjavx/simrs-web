@@ -60,4 +60,17 @@ public class PengajuanBiayaDetailDao extends GenericDao<ItPengajuanBiayaDetailEn
 
         return "PBD"+sId;
     }
+
+
+    public List<ItPengajuanBiayaDetailEntity> getListMasihMengajukan(String branchId,String divisiId) throws HibernateException {
+        List<ItPengajuanBiayaDetailEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPengajuanBiayaDetailEntity.class)
+                .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.eq("branchId", branchId))
+                .add(Restrictions.eq("divisiId", divisiId))
+                .add(Restrictions.isNull("closed"))
+                .addOrder(Order.desc("createdDate"))
+                .list();
+        return results;
+    }
+
 }

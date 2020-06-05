@@ -294,6 +294,15 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
     public  List<Notifikasi> saveAddPengajuan(PengajuanBiaya bean, List<PengajuanBiayaDetail> pengajuanBiayaDetailList) throws GeneralBOException {
         logger.info("[PengajuanBiayaBoImpl.saveAddPengajuan] start process >>>");
         List<Notifikasi> notifikasiList = new ArrayList<>();
+
+        // mengecek dahulu apakah masih mengajukan biaya
+        List<ItPengajuanBiayaDetailEntity> validasiMasihMengajukan = pengajuanBiayaDetailDao.getListMasihMengajukan(bean.getBranchId(),bean.getDivisiId());
+
+        if (validasiMasihMengajukan.size()>0){
+            String status = "[PengajuanBiayaBoImpl.saveAddPengajuan] ERROR : masih ada pengajuan biaya yang belum di approve";
+            logger.error(status);
+            throw new GeneralBOException(status);
+        }
         if (bean!=null) {
             String id = pengajuanBiayaDao.getNextPengajuanBiayaId();
 
