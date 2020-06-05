@@ -70,6 +70,7 @@ public class Budgeting {
     private String divisi;
     private String coa;
     private String idPengadaan;
+    private String bulan;
 
     private BigDecimal saldoAkhir;
     private BigDecimal selisihSaldoAkhir;
@@ -89,6 +90,14 @@ public class Budgeting {
             //descending order
 //            return kdRekening2.compareTo(kdRekening1);
         }};
+
+    public String getBulan() {
+        return bulan;
+    }
+
+    public void setBulan(String bulan) {
+        this.bulan = bulan;
+    }
 
     public String getIdPengadaan() {
         return idPengadaan;

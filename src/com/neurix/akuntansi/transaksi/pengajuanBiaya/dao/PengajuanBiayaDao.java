@@ -41,6 +41,15 @@ public class PengajuanBiayaDao extends GenericDao<ImPengajuanBiayaEntity, String
             if (mapCriteria.get("pengajuan_biaya_id")!=null) {
                 criteria.add(Restrictions.eq("pengajuanBiayaId", (String) mapCriteria.get("pengajuan_biaya_id")));
             }
+            if (mapCriteria.get("transaksi")!=null) {
+                criteria.add(Restrictions.eq("transaksi", (String) mapCriteria.get("transaksi")));
+            }
+            if (mapCriteria.get("branch_id")!=null) {
+                criteria.add(Restrictions.eq("branchId", (String) mapCriteria.get("branch_id")));
+            }
+            if (mapCriteria.get("divisi_id")!=null) {
+                criteria.add(Restrictions.eq("divisiId", (String) mapCriteria.get("divisi_id")));
+            }
             if (mapCriteria.get("no_jurnal")!=null) {
                 criteria.add(Restrictions.eq("noJurnal", (String) mapCriteria.get("no_jurnal")));
             }

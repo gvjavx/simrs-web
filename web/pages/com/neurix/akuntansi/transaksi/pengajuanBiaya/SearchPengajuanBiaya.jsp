@@ -82,7 +82,7 @@
                         <table width="100%" align="center">
                             <tr>
                                 <td align="center">
-                                    <s:form id="pengajuanBiayaForm" method="post"  theme="simple" namespace="/pengajuanBiaya" action="search_pengajuanBiaya.action" cssClass="form-horizontal">
+                                    <s:form id="pengajuanBiayaForm" method="post"  theme="simple" namespace="/pengajuanBiaya" action="searchPengajuan_pengajuanBiaya.action" cssClass="form-horizontal">
                                         <s:hidden name="pengajuanBiaya.tipePembayaran" value="KK" />
                                         <table>
                                             <tr>
@@ -108,13 +108,14 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Tipe Transaksi :</small></label>
+                                                    <label class="control-label"><small>Divisi :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'PDU':'Penarikan Pendapatan Unit','SMK':'Setoran Modal Kerja ke Unit'}"
-                                                                  id="transaksi" name="pengajuanBiaya.transaksi"
-                                                                  headerKey="" headerValue="[Select One]" cssClass="form-control" />
+                                                        <s:action id="comboPosition" namespace="/admin/user" name="initComboPosition_user"/>
+                                                        <s:select cssClass="form-control" list="#comboPosition.listOfComboPositions" id="divisiIdView" disabled="true" name="pengajuanBiaya.divisiId" required="false" readonly="true"
+                                                                  listKey="stPositionId" listValue="positionName" headerKey="" headerValue="[Select one]"/>
+                                                        <s:hidden  id="divisiId" name="pengajuanBiaya.divisiId" cssClass="form-control"/>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -126,46 +127,6 @@
                                                     <table>
                                                         <s:textfield  id="pengajuanBiayaId" name="pengajuanBiaya.pengajuanBiayaId" cssClass="form-control"/>
                                                     </table>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <label class="control-label"><small>Nomor Jurnal :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:textfield  id="nomorJurnal" name="pengajuanBiaya.noJurnal" cssClass="form-control"/>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <label class="control-label"><small>Tanggal :</small></label>
-                                                </td>
-                                                <td>
-                                                    <div class="input-group date">
-                                                        <div class="input-group-addon">
-                                                            <i class="fa fa-calendar"></i>
-                                                        </div>
-                                                        <s:textfield id="tgl1" name="pengajuanBiaya.stTanggalDari" cssClass="form-control pull-right"
-                                                                     required="false"/>
-                                                        <div class="input-group-addon">
-                                                            s/d
-                                                        </div>
-                                                        <div class="input-group-addon">
-                                                            <i class="fa fa-calendar"></i>
-                                                        </div>
-                                                        <s:textfield id="tgl2" name="pengajuanBiaya.stTanggalSelesai" cssClass="form-control pull-right"
-                                                                     required="false"/>
-                                                    </div>
-                                                    <script>
-                                                        $('#tgl1').datepicker({
-                                                            dateFormat: 'dd-mm-yy'
-                                                        });
-                                                        $('#tgl2').datepicker({
-                                                            dateFormat: 'dd-mm-yy'
-                                                        });
-                                                    </script>
                                                 </td>
                                             </tr>
                                         </table>
@@ -213,12 +174,8 @@
                                                                 </a>
                                                             </display:column>
                                                             <display:column property="pengajuanBiayaId" sortable="true" title="Pengajuan Biaya ID" />
-                                                            <display:column property="tanggal" sortable="true" title="Tanggal" />
-                                                            <display:column property="noJurnal" sortable="true" title="No. Jurnal" />
-                                                            <display:column property="keterangan" sortable="true" title="Keterangan" />
-                                                            <display:column property="stTotalBiaya" sortable="true" title="Total Biaya" />
-                                                            <display:column property="coaAjuan" sortable="true" title="Coa Ajuan" />
-                                                            <display:column property="coaTarget" sortable="true" title="Coa Target" />
+                                                            <display:column property="branchName" sortable="true" title="Nama Unit" />
+                                                            <display:column property="divisiName" sortable="true" title="Nama Divisi" />
                                                         </display:table>
                                                     </td>
                                                 </tr>
@@ -330,7 +287,6 @@
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-success" id="btnPostingJurnal" data-dismiss="modal"><i class="fa fa-arrow-right"></i> Posting</button>
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close </button>
             </div>
         </div>
@@ -356,71 +312,5 @@
             $("#modal-posting-jurnal").find('.modal-title').text('View Pembayaran Hutang Piutang');
             $("#modal-posting-jurnal").modal('show');
         });
-
-        $('.tablePengajuanBiaya').on('click', '.item-posting', function() {
-            var pembayaranId = $(this).attr('data');
-            $('#mod_pembayaran_id').val(pembayaranId);
-            PengajuanBiayaAction.getForModalPopUp(pembayaranId,function (data) {
-                $('#mod_no_jurnal').val(data.noJurnal);
-                $('#mod_tipe_transaksi').val(data.stTipeTransaksi);
-                $('#mod_tanggal').val(data.stTanggal);
-                $('#mod_metode_bayar').val(data.metodePembayaranName);
-                $('#mod_no_slip_bank').val(data.noSlipBank);
-                $('#mod_keterangan').val(data.keterangan);
-                $('#mod_total_bayar').val(data.stBayar);
-            });
-            loadPembayaran();
-            $("#modal-posting-jurnal").find('.modal-title').text('Posting Jurnal');
-            $("#modal-posting-jurnal").modal('show');
-            $("#btnPostingJurnal").show();
-
-        });
-        $('.tablePengajuanBiaya').on('click', '.item-cetak-bukti', function() {
-            var noJurnal = $(this).attr('data');
-            var branchId = $(this).attr('unit');
-            var pembayaranId = $(this).attr('pembayaranId');
-            var url = "printReportBuktiPosting_pengajuanBiaya.action?pengajuanBiaya.noJurnal="+noJurnal+"&pengajuanBiaya.branchId="+branchId+"&pengajuanBiaya.pengajuanBiayaId="+pembayaranId;
-            window.open(url,'_blank');
-        });
-        $('#btnPostingJurnal').click(function () {
-            var pembayaranId =  $('#mod_pembayaran_id').val();
-            if (confirm("apakah anda ingin memposting pengeluaran dengan pembayaran id "+pembayaranId +" ?")){
-                PengajuanBiayaAction.postingJurnal(pembayaranId,function (listdata) {
-                    alert(listdata);
-                    window.location.reload();
-                })
-            }
-        })
     });
 </script>
-<script>
-    window.loadPembayaran = function () {
-        $('.pembayaranTable').find('tbody').remove();
-        $('.pembayaranTable').find('thead').remove();
-        dwr.engine.setAsync(false);
-        var tmp_table = "";
-        PengajuanBiayaAction.searchPembayaranDetail(function (listdata) {
-            tmp_table = "<thead style='font-size: 14px' ><tr class='active'>" +
-                "<th style='text-align: center; color: #fff; background-color:  #30d196'>No</th>" +
-                "<th style='text-align: center; color: #fff; background-color:  #30d196''>Detail ID</th>" +
-                "<th style='text-align: center; color: #fff; background-color:  #30d196''>No. Vendor</th>" +
-                "<th style='text-align: center; color: #fff; background-color:  #30d196''>Divisi ID</th>" +
-                "<th style='text-align: center; color: #fff; background-color:  #30d196''>No. Nota</th>" +
-                "<th style='text-align: center; color: #fff; background-color:  #30d196''>Jml Pembayaran</th>" +
-                "</tr></thead>";
-            var i = i;
-            $.each(listdata, function (i, item) {
-                tmp_table += '<tr style="font-size: 12px;" ">' +
-                    '<td align="center">' + (i + 1) + '</td>' +
-                    '<td align="center">' + item.pengajuanBiayaDetailId + '</td>' +
-                    '<td align="center">' + item.masterId + '</td>' +
-                    '<td align="center">' + item.divisiId + '</td>' +
-                    '<td align="center">' + item.noNota + '</td>' +
-                    '<td align="center">' + item.stJumlahPembayaran + '</td>' +
-                    "</tr>";
-            });
-            $('.pembayaranTable').append(tmp_table);
-        });
-    };
-</script>
-

@@ -30,5 +30,5 @@ public interface PengajuanBiayaBo extends BaseMasterBo<PengajuanBiaya> {
 
     List<Notifikasi> saveApproveAtasanPengajuan(PengajuanBiayaDetail bean) throws GeneralBOException;
 
-    void saveApproveKeuanganPengajuan(PengajuanBiayaDetail bean) throws GeneralBOException;
+    List<Notifikasi> saveApproveKeuanganPengajuan(PengajuanBiayaDetail bean) throws GeneralBOException;
 }

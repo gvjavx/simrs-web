@@ -96,6 +96,20 @@
             <column name="approval_keuangan_kp_date" sql-type="date" not-null="false" />
         </property>
 
+        <property name="diterimaFlag">
+            <column name="diterima_flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="diterimaId">
+            <column name="diterima_id" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="diterimaDate">
+            <column name="diterima_date" sql-type="date" not-null="false" />
+        </property>
+
+        <property name="closed">
+            <column name="closed" sql-type="varchar" length="1" not-null="false" />
+        </property>
+
         <property name="statusKeuangan">
             <column name="status_keuangan" sql-type="varchar" length="1" not-null="false" />
         </property>

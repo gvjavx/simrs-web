@@ -333,7 +333,7 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
             ImPengajuanBiayaEntity pengajuanBiayaEntity = new ImPengajuanBiayaEntity();
             pengajuanBiayaEntity.setPengajuanBiayaId(id);
             pengajuanBiayaEntity.setBranchId(bean.getBranchId());
-            pengajuanBiayaEntity.setBranchId(bean.getDivisiId());
+            pengajuanBiayaEntity.setDivisiId(bean.getDivisiId());
             pengajuanBiayaEntity.setTransaksi("PB");
 
             pengajuanBiayaEntity.setCreatedDate(bean.getCreatedDate());
@@ -363,8 +363,8 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                     userList=userDao.getUserByBranchAndPositionAndRole(bean.getBranchId(),imPosition.getPositionId(),"45");
                 }
             }else {
-                //sementara diarahkan ke kadiv langsung
-                List<ImPosition> positionList = positionDao.getListPositionKoderingNKelompokPosition(koderingPosisi[0]+"."+koderingPosisi[1]+"%","KL01");
+                //jika bukan kanpus
+                List<ImPosition> positionList = positionDao.getListPositionKoderingNKelompokPosition(koderingPosisi[0]+"."+koderingPosisi[1]+"%","KL02");
 
                 for (ImPosition imPosition : positionList ){
                     userList=userDao.getUserByBranchAndPositionAndRole(bean.getBranchId(),imPosition.getPositionId(),"45");
@@ -402,6 +402,15 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
 
             if (searchBean.getPengajuanBiayaId() != null && !"".equalsIgnoreCase(searchBean.getPengajuanBiayaId())) {
                 hsCriteria.put("pengajuan_biaya_id", searchBean.getPengajuanBiayaId());
+            }
+            if (searchBean.getBranchId() != null && !"".equalsIgnoreCase(searchBean.getBranchId())) {
+                hsCriteria.put("branch_id", searchBean.getBranchId());
+            }
+            if (searchBean.getDivisiId() != null && !"".equalsIgnoreCase(searchBean.getDivisiId())) {
+                hsCriteria.put("divisi_id", searchBean.getDivisiId());
+            }
+            if (searchBean.getNoJurnal() != null && !"".equalsIgnoreCase(searchBean.getNoJurnal())) {
+                hsCriteria.put("no_jurnal", searchBean.getNoJurnal());
             }
             if (searchBean.getFlag() != null && !"".equalsIgnoreCase(searchBean.getFlag())) {
                 if ("N".equalsIgnoreCase(searchBean.getFlag())) {
@@ -444,6 +453,20 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                     returnPengajuanBiaya.setAprovalName(pengajuanBiayaEntity.getAprovalName());
                     returnPengajuanBiaya.setNoJurnal(pengajuanBiayaEntity.getNoJurnal());
                     returnPengajuanBiaya.setKeterangan(pengajuanBiayaEntity.getKeterangan());
+                    returnPengajuanBiaya.setDivisiName("");
+                    returnPengajuanBiaya.setBranchName("");
+
+                    //melengkapi info
+                    ImPosition position = positionDao.getById("positionId",pengajuanBiayaEntity.getDivisiId());
+                    if (position!=null){
+                        returnPengajuanBiaya.setDivisiName(position.getPositionName());
+                    }
+                    List<ImBranches> branches = branchDao.getListBranchById(pengajuanBiayaEntity.getBranchId());
+                    if (branches.size()!=0){
+                        for (ImBranches imBranches : branches){
+                            returnPengajuanBiaya.setBranchName(imBranches.getBranchName());
+                        }
+                    }
 
                     returnPengajuanBiaya.setCreatedWho(pengajuanBiayaEntity.getCreatedWho());
                     returnPengajuanBiaya.setLastUpdateWho(pengajuanBiayaEntity.getLastUpdateWho());
@@ -563,9 +586,11 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                 returnPengajuanBiayaDetail.setApprovalKeuanganFlag(pengajuanBiayaDetailEntity.getApprovalKeuanganFlag());
                 returnPengajuanBiayaDetail.setApprovalGmFlag(pengajuanBiayaDetailEntity.getApprovalGmFlag());
 
-                if ("Y".equalsIgnoreCase(pengajuanBiayaDetailEntity.getApprovalKeuanganKpFlag())){
+                if ("Y".equalsIgnoreCase(pengajuanBiayaDetailEntity.getDiterimaFlag())){
                     returnPengajuanBiayaDetail.setStatusApproval("D");
-                }if ("KP".equalsIgnoreCase(pengajuanBiayaDetailEntity.getStatusKeuangan())&&"Y".equalsIgnoreCase(pengajuanBiayaDetailEntity.getApprovalKeuanganFlag())){
+                }else if ("Y".equalsIgnoreCase(pengajuanBiayaDetailEntity.getApprovalKeuanganKpFlag())){
+                    returnPengajuanBiayaDetail.setStatusApproval("TKE");
+                }else if ("KP".equalsIgnoreCase(pengajuanBiayaDetailEntity.getStatusKeuangan())&&"Y".equalsIgnoreCase(pengajuanBiayaDetailEntity.getApprovalKeuanganFlag())){
                     returnPengajuanBiayaDetail.setStatusApproval("KEKP");
                 }else if ("A".equalsIgnoreCase(pengajuanBiayaDetailEntity.getStatusKeuangan())&&"Y".equalsIgnoreCase(pengajuanBiayaDetailEntity.getApprovalKeuanganFlag())){
                     returnPengajuanBiayaDetail.setStatusApproval("D");
@@ -586,29 +611,32 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                     kelompokId = imPosition.getKelompokId();
                 }
 
-                switch (kelompokId){
-                    case "KL02":
-                        returnPengajuanBiayaDetail.setStatusUserApproval("KS");
-                        break;
-                    case "KL01":
-                        returnPengajuanBiayaDetail.setStatusUserApproval("KD");
-                        break;
-                    case "KL08":
-                        returnPengajuanBiayaDetail.setStatusUserApproval("KD");
-                        break;
-                    case "KL04":
-                        returnPengajuanBiayaDetail.setStatusUserApproval("GM");
-                        break;
-                    case "KL06":
-                        returnPengajuanBiayaDetail.setStatusUserApproval("GM");
-                        break;
+                if ("39".equalsIgnoreCase(CommonUtil.roleIdAsLogin())&&!CommonConstant.ID_KANPUS.equalsIgnoreCase(CommonUtil.userBranchLogin())&&"Y".equalsIgnoreCase(pengajuanBiayaDetailEntity.getApprovalKeuanganKpFlag())){
+                    returnPengajuanBiayaDetail.setStatusUserApproval("TKE");
+                }else if ("39".equalsIgnoreCase(CommonUtil.roleIdAsLogin())&&!CommonConstant.ID_KANPUS.equalsIgnoreCase(CommonUtil.userBranchLogin())){
+                    returnPengajuanBiayaDetail.setStatusUserApproval("KE");
+                }else if ("39".equalsIgnoreCase(CommonUtil.roleIdAsLogin())&&CommonConstant.ID_KANPUS.equalsIgnoreCase(CommonUtil.userBranchLogin())){
+                    returnPengajuanBiayaDetail.setStatusUserApproval("KEKP");
+                }else{
+                    switch (kelompokId){
+                        case "KL02":
+                            returnPengajuanBiayaDetail.setStatusUserApproval("KS");
+                            break;
+                        case "KL01":
+                            returnPengajuanBiayaDetail.setStatusUserApproval("KD");
+                            break;
+                        case "KL08":
+                            returnPengajuanBiayaDetail.setStatusUserApproval("KD");
+                            break;
+                        case "KL04":
+                            returnPengajuanBiayaDetail.setStatusUserApproval("GM");
+                            break;
+                        case "KL06":
+                            returnPengajuanBiayaDetail.setStatusUserApproval("GM");
+                            break;
+                    }
                 }
 
-                if ("39".equalsIgnoreCase(CommonUtil.roleIdAsLogin())&&!CommonConstant.ID_KANPUS.equalsIgnoreCase(pengajuanBiayaDetailEntity.getBranchId())){
-                    returnPengajuanBiayaDetail.setStatusUserApproval("KE");
-                }else if ("39".equalsIgnoreCase(CommonUtil.roleIdAsLogin())&&CommonConstant.ID_KANPUS.equalsIgnoreCase(pengajuanBiayaDetailEntity.getBranchId())){
-                    returnPengajuanBiayaDetail.setStatusUserApproval("KEKP");
-                }
 
                 returnPengajuanBiayaDetail.setCreatedWho(pengajuanBiayaDetailEntity.getCreatedWho());
                 returnPengajuanBiayaDetail.setLastUpdateWho(pengajuanBiayaDetailEntity.getLastUpdateWho());
@@ -641,32 +669,57 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
         }
 
         if (pengajuanBiayaDetailEntity != null) {
-            //Approve
-            switch (bean.getStatusApproval()){
-                case "KS":
-                    pengajuanBiayaDetailEntity.setApprovalKasubdivFlag(bean.getApprovalKasubdivFlag());
-                    pengajuanBiayaDetailEntity.setApprovalKasubdivId(bean.getApprovalKasubdivId());
-                    pengajuanBiayaDetailEntity.setApprovalKasubdivDate(bean.getApprovalKasubdivDate());
-                    break;
-                case "KD":
-                    pengajuanBiayaDetailEntity.setApprovalKadivFlag(bean.getApprovalKadivFlag());
-                    pengajuanBiayaDetailEntity.setApprovalKadivId(bean.getApprovalKadivId());
-                    pengajuanBiayaDetailEntity.setApprovalKadivDate(bean.getApprovalKadivDate());
-                    userList=userDao.getUserByBranchAndPositionAndRole(pengajuanBiayaDetailEntity.getBranchId(),"P078","45");
-                    break;
-                case "GM":
-                    pengajuanBiayaDetailEntity.setApprovalGmFlag(bean.getApprovalGmFlag());
-                    pengajuanBiayaDetailEntity.setApprovalGmId(bean.getApprovalGmId());
-                    pengajuanBiayaDetailEntity.setApprovalGmDate(bean.getApprovalGmDate());
-                    userList=userDao.getUserByBranchAndRole(pengajuanBiayaDetailEntity.getBranchId(),"39");
-                    break;
-                case "KE":
-                    pengajuanBiayaDetailEntity.setApprovalKeuanganFlag(bean.getApprovalKeuanganFlag());
-                    pengajuanBiayaDetailEntity.setApprovalKeuanganId(bean.getApprovalKeuanganId());
-                    pengajuanBiayaDetailEntity.setApprovalKeuanganDate(bean.getApprovalKeuanganDate());
-                    pengajuanBiayaDetailEntity.setStatusKeuangan(bean.getStatusKeuangan());
-                    userList=userDao.getUserByBranchAndRole(CommonConstant.ID_KANPUS,"39");
-                    break;
+            if (CommonConstant.ID_KANPUS.equalsIgnoreCase(pengajuanBiayaDetailEntity.getBranchId())){
+
+            }else {
+                //Approve
+                switch (bean.getStatusApproval()){
+                    case "KS":
+                        pengajuanBiayaDetailEntity.setApprovalKasubdivFlag(bean.getApprovalKasubdivFlag());
+                        pengajuanBiayaDetailEntity.setApprovalKasubdivId(bean.getApprovalKasubdivId());
+                        pengajuanBiayaDetailEntity.setApprovalKasubdivDate(bean.getApprovalKasubdivDate());
+
+                        ImPosition position = positionDao.getById("positionId",pengajuanBiayaDetailEntity.getDivisiId());
+                        String[] koderingPosisi = position.getKodering().split("\\.");
+                        List<ImPosition> positionList = positionDao.getListPositionKoderingNKelompokPosition(koderingPosisi[0]+"%","KL01");
+
+                        for (ImPosition imPosition : positionList ){
+                            userList=userDao.getUserByBranchAndPositionAndRole(pengajuanBiayaDetailEntity.getBranchId(),imPosition.getPositionId(),"45");
+                        }
+                        break;
+                    case "KD":
+                        pengajuanBiayaDetailEntity.setApprovalKadivFlag(bean.getApprovalKadivFlag());
+                        pengajuanBiayaDetailEntity.setApprovalKadivId(bean.getApprovalKadivId());
+                        pengajuanBiayaDetailEntity.setApprovalKadivDate(bean.getApprovalKadivDate());
+
+                        List<ImBranches> branchesList = branchDao.getListBranchById(pengajuanBiayaDetailEntity.getBranchId());
+                        BigDecimal maxPengajuanBiaya = BigDecimal.ZERO;
+                        for (ImBranches branches : branchesList){
+                            maxPengajuanBiaya = branches.getMaxPengajuanBiaya();
+                        }
+                        if (pengajuanBiayaDetailEntity.getJumlah().compareTo(maxPengajuanBiaya)<0){
+                            pengajuanBiayaDetailEntity.setApprovalGmFlag(bean.getApprovalKadivFlag());
+                            pengajuanBiayaDetailEntity.setApprovalGmId(bean.getApprovalKadivId());
+                            pengajuanBiayaDetailEntity.setApprovalGmDate(bean.getApprovalKadivDate());
+                            userList=userDao.getUserByBranchAndRole(pengajuanBiayaDetailEntity.getBranchId(),"39");
+                        }else{
+                            userList=userDao.getUserByBranchAndPositionAndRole(pengajuanBiayaDetailEntity.getBranchId(),"P078","45");
+                        }
+                        break;
+                    case "GM":
+                        pengajuanBiayaDetailEntity.setApprovalGmFlag(bean.getApprovalGmFlag());
+                        pengajuanBiayaDetailEntity.setApprovalGmId(bean.getApprovalGmId());
+                        pengajuanBiayaDetailEntity.setApprovalGmDate(bean.getApprovalGmDate());
+                        userList=userDao.getUserByBranchAndRole(pengajuanBiayaDetailEntity.getBranchId(),"39");
+                        break;
+                    case "KE":
+                        pengajuanBiayaDetailEntity.setApprovalKeuanganFlag(bean.getApprovalKeuanganFlag());
+                        pengajuanBiayaDetailEntity.setApprovalKeuanganId(bean.getApprovalKeuanganId());
+                        pengajuanBiayaDetailEntity.setApprovalKeuanganDate(bean.getApprovalKeuanganDate());
+                        pengajuanBiayaDetailEntity.setStatusKeuangan(bean.getStatusKeuangan());
+                        userList=userDao.getUserByBranchAndRole(CommonConstant.ID_KANPUS,"39");
+                        break;
+                }
             }
 
             pengajuanBiayaDetailEntity.setAction(bean.getAction());
@@ -703,8 +756,10 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
 
 
     @Override
-    public void saveApproveKeuanganPengajuan(PengajuanBiayaDetail bean) throws GeneralBOException {
+    public List<Notifikasi> saveApproveKeuanganPengajuan(PengajuanBiayaDetail bean) throws GeneralBOException {
         logger.info("[PengajuanBiayaBoImpl.saveApproveKeuanganPengajuan] start process >>>");
+        List<Notifikasi> notifikasiList = new ArrayList<>();
+
         ItPengajuanBiayaDetailEntity pengajuanBiayaDetailEntity = null;
         try {
             // Get data from database by ID
@@ -722,6 +777,22 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                     pengajuanBiayaDetailEntity.setApprovalKeuanganId(bean.getApprovalKeuanganId());
                     pengajuanBiayaDetailEntity.setApprovalKeuanganDate(bean.getApprovalKeuanganDate());
                     pengajuanBiayaDetailEntity.setStatusKeuangan(bean.getStatusKeuangan());
+                    pengajuanBiayaDetailEntity.setClosed("Y");
+                    pengajuanBiayaDetailEntity.setNoJurnal(bean.getNoJurnal());
+                    break;
+                case "KEKP":
+                    pengajuanBiayaDetailEntity.setApprovalKeuanganKpFlag(bean.getApprovalKeuanganKpFlag());
+                    pengajuanBiayaDetailEntity.setApprovalKeuanganKpId(bean.getApprovalKeuanganId());
+                    pengajuanBiayaDetailEntity.setApprovalKeuanganKpDate(bean.getApprovalKeuanganKpDate());
+                    pengajuanBiayaDetailEntity.setStatusKeuangan(bean.getStatusKeuangan());
+                    break;
+                case "TKE":
+                    pengajuanBiayaDetailEntity.setDiterimaFlag(bean.getDiterimaFlag());
+                    pengajuanBiayaDetailEntity.setDiterimaId(bean.getDiterimaId());
+                    pengajuanBiayaDetailEntity.setDiterimaDate(bean.getDiterimaDate());
+                    pengajuanBiayaDetailEntity.setStatusKeuangan(bean.getStatusKeuangan());
+                    pengajuanBiayaDetailEntity.setNoJurnal(bean.getNoJurnal());
+                    pengajuanBiayaDetailEntity.setClosed("Y");
                     break;
             }
 
@@ -738,7 +809,7 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
             }
 
             //jika semua sudah approve
-            if ("KE".equalsIgnoreCase(bean.getStatusApproval())){
+            if ("KE".equalsIgnoreCase(bean.getStatusApproval())&&"A".equalsIgnoreCase(pengajuanBiayaDetailEntity.getStatusKeuangan())||"TKE".equalsIgnoreCase(bean.getStatusApproval())){
                 Map hsCriteria = new HashMap();
                 hsCriteria.put("pengajuan_biaya_id",pengajuanBiayaDetailEntity.getPengajuanBiayaId());
                 hsCriteria.put("flag","Y");
@@ -746,16 +817,10 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
 
                 int count = 0;
                 for (ItPengajuanBiayaDetailEntity detailEntity : pengajuanBiayaDetailEntityList){
-                    //mengetes pengajuan saat ini apakah sudah sampai ke keuangan
-                    if (detailEntity.getPengajuanBiayaDetailId().equalsIgnoreCase(pengajuanBiayaDetailEntity.getPengajuanBiayaDetailId())){
-                        if ("Y".equalsIgnoreCase(pengajuanBiayaDetailEntity.getApprovalKeuanganFlag())||"N".equalsIgnoreCase(pengajuanBiayaDetailEntity.getApprovalKeuanganFlag())){
-                            count++;
-                        }
-                    }else if ("Y".equalsIgnoreCase(detailEntity.getApprovalKeuanganFlag())||"N".equalsIgnoreCase(detailEntity.getApprovalKeuanganFlag())||"N".equalsIgnoreCase(detailEntity.getApprovalGmFlag())||"N".equalsIgnoreCase(detailEntity.getApprovalKadivFlag())||"N".equalsIgnoreCase(detailEntity.getApprovalKasubdivFlag())){
+                    if ("Y".equalsIgnoreCase(detailEntity.getClosed())){
                         count++;
                     }
                 }
-
 
                 // jika semua data sudah di approve oleh keuangan maka langsung di close
                 if (count==pengajuanBiayaDetailEntityList.size()){
@@ -776,8 +841,10 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                     }
                 }
             }
-
         }
+
+
         logger.info("[PengajuanBiayaBoImpl.saveApproveKeuanganPengajuan] end process <<<");
+        return notifikasiList;
     }
 }

@@ -16,12 +16,14 @@ public class PengajuanBiayaDetail extends BaseModel {
     private String stJumlah;
     private String stBudgetBiaya;
     private String stBudgetTerpakai;
+    private String stSisaBudget;
     private String keperluan;
     private String keterangan;
 
     private BigDecimal jumlah;
     private BigDecimal budgetBiaya;
     private BigDecimal budgetTerpakai;
+    private BigDecimal sisaBudget;
 
     private String approvalKasubdivFlag;
     private String approvalKasubdivId;
@@ -43,10 +45,64 @@ public class PengajuanBiayaDetail extends BaseModel {
     private String approvalKeuanganKpId;
     private Timestamp approvalKeuanganKpDate;
 
+    private String diterimaFlag;
+    private String diterimaId;
+    private Timestamp diterimaDate;
+
+    private String closed;
+
     private String statusApproval;
     private String statusUserApproval;
     private String statusKeuangan;
     private String noJurnal;
+
+    public String getClosed() {
+        return closed;
+    }
+
+    public void setClosed(String closed) {
+        this.closed = closed;
+    }
+
+    public String getDiterimaFlag() {
+        return diterimaFlag;
+    }
+
+    public void setDiterimaFlag(String diterimaFlag) {
+        this.diterimaFlag = diterimaFlag;
+    }
+
+    public String getDiterimaId() {
+        return diterimaId;
+    }
+
+    public void setDiterimaId(String diterimaId) {
+        this.diterimaId = diterimaId;
+    }
+
+    public Timestamp getDiterimaDate() {
+        return diterimaDate;
+    }
+
+    public void setDiterimaDate(Timestamp diterimaDate) {
+        this.diterimaDate = diterimaDate;
+    }
+
+    public String getStSisaBudget() {
+        return stSisaBudget;
+    }
+
+    public void setStSisaBudget(String stSisaBudget) {
+        this.stSisaBudget = stSisaBudget;
+    }
+
+    public BigDecimal getSisaBudget() {
+        return sisaBudget;
+    }
+
+    public void setSisaBudget(BigDecimal sisaBudget) {
+        this.sisaBudget = sisaBudget;
+    }
 
     public String getApprovalKeuanganKpFlag() {
         return approvalKeuanganKpFlag;

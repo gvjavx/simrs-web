@@ -609,6 +609,7 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         logger.info("[PengajuanBiayaAction.searchPengajuan] start process >>>");
         PengajuanBiaya searchPengajuanBiaya = getPengajuanBiaya();
         List<PengajuanBiaya> listOfsearchPengajuanBiaya = new ArrayList();
+        searchPengajuanBiaya.setTransaksi("PB");
         try {
             listOfsearchPengajuanBiaya = pengajuanBiayaBoProxy.getByCriteria(searchPengajuanBiaya);
         } catch (GeneralBOException e) {
@@ -652,6 +653,7 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         }else{
             data.setBranchId("");
         }
+
         setPengajuanBiaya(data);
         session.removeAttribute("listOfResult");
         logger.info("[PengajuanBiayaAction.initForm] end process >>>");
@@ -662,11 +664,17 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         logger.info("[PengajuanBiayaAction.initFormPengajuan] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         String branchId = CommonUtil.userBranchLogin();
+        String divisi = CommonUtil.userPosisiId();
         PengajuanBiaya data = new PengajuanBiaya();
         if (branchId!=null){
             data.setBranchId(branchId);
         }else{
             data.setBranchId("");
+        }
+        if (divisi!=null){
+            data.setDivisiId(divisi);
+        }else{
+            data.setDivisiId("");
         }
         setPengajuanBiaya(data);
         session.removeAttribute("listOfResult");
@@ -771,8 +779,9 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         return "success_save_edit";
     }
 
-    public void saveSessionPengajuan(String branchId , String divisiId,String stTanggal,String transaksi, String noBudgeting,String stJumlah,String stSisaBudget,String stBudgetTerpakai,String keperluan,String keterangan) {
+    public String saveSessionPengajuan(String branchId , String divisiId,String stTanggal,String transaksi, String noBudgeting,String stJumlah,String stSisaBudget,String stBudgetTerpakai,String keperluan,String keterangan) {
         logger.info("[PengajuanBiayaAction.saveSessionPengajuan] start process >>>");
+        String error ="";
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<PengajuanBiayaDetail> listOfResult = (List<PengajuanBiayaDetail>) session.getAttribute("listOfResultPengajuanBiayaDetail");
         boolean save = true;
@@ -782,30 +791,38 @@ public class PengajuanBiayaAction extends BaseMasterAction {
             for (PengajuanBiayaDetail pengajuanBiayaDetail : listOfResult){
                 if (keperluan.equalsIgnoreCase(pengajuanBiayaDetail.getKeperluan())){
                     save=false;
+                    error="Data sudah ada";
                 }
             }
         }
-        if (save){
-            PengajuanBiayaDetail result = new PengajuanBiayaDetail();
-            result.setBranchId(branchId);
-            result.setDivisiId(divisiId);
-            result.setStTanggal(stTanggal);
-            result.setTransaksi(transaksi);
-            result.setNoBudgeting(noBudgeting);
-            result.setStJumlah(stJumlah);
-            result.setStBudgetBiaya(stSisaBudget);
-            result.setStBudgetTerpakai(stBudgetTerpakai);
-            result.setKeperluan(keperluan);
-            result.setKeterangan(keterangan);
-            result.setJumlah(BigDecimal.valueOf(Double.valueOf(stJumlah.replace(".","").replace(",",""))));
-            result.setBudgetBiaya(BigDecimal.valueOf(Double.valueOf(stSisaBudget.replace(",",""))));
-            result.setBudgetTerpakai(BigDecimal.valueOf(Double.valueOf(stBudgetTerpakai.replace(",",""))));
+        PengajuanBiayaDetail result = new PengajuanBiayaDetail();
+        result.setBranchId(branchId);
+        result.setDivisiId(divisiId);
+        result.setStTanggal(stTanggal);
+        result.setTransaksi(transaksi);
+        result.setNoBudgeting(noBudgeting);
+        result.setStJumlah(stJumlah);
+        result.setStBudgetBiaya(stSisaBudget);
+        result.setStBudgetTerpakai(stBudgetTerpakai);
+        result.setKeperluan(keperluan);
+        result.setKeterangan(keterangan);
+        result.setJumlah(BigDecimal.valueOf(Double.valueOf(stJumlah.replace(".","").replace(",",""))));
+        result.setBudgetBiaya(BigDecimal.valueOf(Double.valueOf(stSisaBudget.replace(",",""))));
+        result.setBudgetTerpakai(BigDecimal.valueOf(Double.valueOf(stBudgetTerpakai.replace(",",""))));
+        result.setSisaBudget(result.getBudgetBiaya().subtract(result.getBudgetTerpakai().subtract(result.getJumlah())));
+        result.setStSisaBudget(CommonUtil.numbericFormat(result.getSisaBudget(),"###,###"));
 
+        if (result.getJumlah().compareTo(result.getBudgetBiaya())>0){
+            save=false;
+            error = "Jumlah yang dimasukkan melebihi budget";
+        }
+        if (save){
             listOfResult.add(result);
         }
 
         session.setAttribute("listOfResultPengajuanBiayaDetail",listOfResult);
         logger.info("[PengajuanBiayaAction.saveSessionPengajuan] end process <<<");
+        return error;
     }
 
     public List<PengajuanBiayaDetail> searchSessionPengajuan() {
@@ -946,6 +963,93 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         }
     }
 
+    public void saveApproveKeuanganKpPengajuan(String pengajuanId,String status,String statusKeuangan,String branchId,String keterangan,String stJumlah,String noBudgetting,String divisiId,String coaKas){
+        logger.info("[PengajuanBiayaAction.saveApproveKeuanganKpPengajuan] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PengajuanBiayaBo pengajuanBiayaBo= (PengajuanBiayaBo) ctx.getBean("pengajuanBiayaBoProxy");
+        NotifikasiBo notifikasiBo= (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
+        BillingSystemBo billingSystemBo= (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+        KodeRekeningBo kodeRekeningBo= (KodeRekeningBo) ctx.getBean("kodeRekeningBoProxy");
+        PositionBo positionBo= (PositionBo) ctx.getBean("positionBoProxy");
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        List<Notifikasi> notifikasiList = new ArrayList<>();
+        ImPosition kodering = positionBo.getPositionEntityById(divisiId);
+
+        String userLogin = CommonUtil.userIdLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        BigDecimal jumlah = BigDecimal.valueOf(Double.valueOf(stJumlah.replace(".","").replace(",","")));
+        String[] spNobudgetting = noBudgetting.split("-");
+
+        PengajuanBiayaDetail data = new PengajuanBiayaDetail();
+        data.setPengajuanBiayaDetailId(pengajuanId);
+        data.setStatusApproval(status);
+        data.setStatusKeuangan(statusKeuangan);
+        data.setAction("U");
+        data.setLastUpdateWho(userLogin);
+        data.setLastUpdate(updateTime);
+
+        switch (status){
+            case "KEKP":
+                data.setApprovalKeuanganKpFlag("Y");
+                data.setApprovalKeuanganKpId(userLogin);
+                data.setApprovalKeuanganKpDate(updateTime);
+                break;
+            case "TKE":
+                data.setDiterimaFlag("Y");
+                data.setDiterimaId(userLogin);
+                data.setDiterimaDate(updateTime);
+                break;
+        }
+
+        //Membuat Jurnal
+        //membuat mapping
+        Map dataMap = new HashMap();
+
+        Map biaya = new HashMap();
+        biaya.put("nilai",jumlah);
+        biaya.put("rekening_id",kodeRekeningBo.getRekeningIdByKodeRekening(spNobudgetting[3]));
+        biaya.put("divisi_id",kodering.getKodering());
+        dataMap.put("biaya",biaya);
+
+        Map giro = new HashMap();
+        giro.put("nilai",jumlah);
+        giro.put("rekening_id",kodeRekeningBo.getRekeningIdByKodeRekening(coaKas));
+        dataMap.put("metode_bayar",giro);
+
+        //membuat RK pengiriman modal
+        //membuat mapping
+        Map dataRk = new HashMap();
+
+        //mencari coa RK
+        Branch branch = branchBo.getBranchById(branchId,"Y");
+        Map rkUnit = new HashMap();
+        rkUnit.put("nilai",jumlah);
+        rkUnit.put("rekening_id",kodeRekeningBo.getRekeningIdByKodeRekening(branch.getCoaRk()));
+        dataRk.put("rk_kd_unit",rkUnit);
+
+        giro = new HashMap();
+        giro.put("nilai",jumlah);
+        giro.put("rekening_id",kodeRekeningBo.getRekeningIdByKodeRekening(coaKas));
+        dataRk.put("metode_bayar",giro);
+
+        if ("KEKP".equalsIgnoreCase(status)){
+            //membuat jurnal RK dari kantor pusat
+            data.setStatusKeuangan("KP");
+            notifikasiList = pengajuanBiayaBo.saveApproveKeuanganPengajuan(data);
+            billingSystemBo.createJurnal("59",dataRk,CommonConstant.ID_KANPUS,keterangan,"Y");
+        }else if ("TKE".equalsIgnoreCase(status)){
+            // membuat jurnal rk dan jurnal biaya jika data sudah diterima unit
+            String noJurnal= billingSystemBo.createJurnal("63",dataMap,branchId,keterangan,"Y");
+            data.setNoJurnal(noJurnal);
+            notifikasiList = pengajuanBiayaBo.saveApproveKeuanganPengajuan(data);
+            billingSystemBo.createJurnal("60",dataRk,branchId,keterangan,"Y");
+        }
+
+        for (Notifikasi notifikasi : notifikasiList ){
+            notifikasiBo.sendNotif(notifikasi);
+        }
+
+    }
     public String paging(){
         return SUCCESS;
     }

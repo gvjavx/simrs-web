@@ -1668,6 +1668,8 @@ public class BudgetingAction {
         budgetingStatus.setCoa(noBudgetting);
         budgetingStatus.setBranchId(branchId);
         budgetingStatus.setTahun(arrTanggal[0]);
+        budgetingStatus.setBulan(CommonUtil.convertNumberToStringBulan(arrTanggal[1]));
+
 
         budgetSaatIni = budgetingBo.getBudgetBiayaDivisiSaatIni(budgetingStatus);
 

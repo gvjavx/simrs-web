@@ -47,6 +47,25 @@ public class Branch extends BaseModel implements Serializable, Comparable<Branch
     private String payorCd;
     private String coderNik;
 
+    private BigDecimal maxPengajuanBiaya;
+    private String coaRk;
+
+    public String getCoaRk() {
+        return coaRk;
+    }
+
+    public void setCoaRk(String coaRk) {
+        this.coaRk = coaRk;
+    }
+
+    public BigDecimal getMaxPengajuanBiaya() {
+        return maxPengajuanBiaya;
+    }
+
+    public void setMaxPengajuanBiaya(BigDecimal maxPengajuanBiaya) {
+        this.maxPengajuanBiaya = maxPengajuanBiaya;
+    }
+
     public void setAreaId(String areaId) {
         this.areaId = areaId;
     }

@@ -47,6 +47,13 @@ public class ItPengajuanBiayaDetailEntity implements Serializable {
     private String approvalKeuanganKpId;
     private Timestamp approvalKeuanganKpDate;
 
+    private String diterimaFlag;
+    private String diterimaId;
+    private Timestamp diterimaDate;
+
+    private String closed;
+    private String noJurnal;
+
     private String statusApproval;
     private String statusKeuangan;
 
@@ -56,6 +63,46 @@ public class ItPengajuanBiayaDetailEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getNoJurnal() {
+        return noJurnal;
+    }
+
+    public void setNoJurnal(String noJurnal) {
+        this.noJurnal = noJurnal;
+    }
+
+    public String getClosed() {
+        return closed;
+    }
+
+    public void setClosed(String closed) {
+        this.closed = closed;
+    }
+
+    public String getDiterimaFlag() {
+        return diterimaFlag;
+    }
+
+    public void setDiterimaFlag(String diterimaFlag) {
+        this.diterimaFlag = diterimaFlag;
+    }
+
+    public String getDiterimaId() {
+        return diterimaId;
+    }
+
+    public void setDiterimaId(String diterimaId) {
+        this.diterimaId = diterimaId;
+    }
+
+    public Timestamp getDiterimaDate() {
+        return diterimaDate;
+    }
+
+    public void setDiterimaDate(Timestamp diterimaDate) {
+        this.diterimaDate = diterimaDate;
+    }
 
     public String getStatusKeuangan() {
         return statusKeuangan;

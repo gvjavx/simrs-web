@@ -24,8 +24,10 @@
         $.subscribe('beforeProcessSave', function (event, data) {
             var unit  = document.getElementById("branch_id").value;
             var divisi  = document.getElementById("divisi_id").value;
+            var jumlahRow = document.getElementById('pengajuanBiayaTabel').rows.length;
+            jumlahRow = jumlahRow-1;
 
-            if ( unit != ''&&divisi!="") {
+            if ( unit != ''&&divisi!=""&&jumlahRow>0) {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -42,7 +44,10 @@
                 if ( divisi == '') {
                     msg += 'Field <strong>Divisi</strong> is required.' + '<br/>';
                 }
-                document.getElementById('errorMessage').innerHTML = msg;
+                if ( jumlahRow < 1) {
+                    msg += 'Tabel <strong>Pengajuan Masih Kosong</strong> is required.' + '<br/>';
+                }
+                document.getElementById('errorValidationMessage').innerHTML = msg;
                 $.publish('showErrorValidationDialog');
             }
         });
@@ -216,11 +221,15 @@
                                     </div>
                                 </div>
                             </div>
+                            <br>
+                            <div class="box-header with-border">
+                                <h3 class="box-title"><i class="fa fa-bars"></i> Daftar Tabel Pengajuan </h3>
+                            </div>
                             <center>
                                 <table id="showdata" width="100%">
                                     <tr>
                                         <td align="center">
-                                            <table style="width: 100%;margin-top: 40px" class="pengajuanBiayaTabel table table-bordered">
+                                            <table style="width: 100%;margin-top: 40px" id="pengajuanBiayaTabel" class="pengajuanBiayaTabel table table-bordered">
                                             </table>
                                         </td>
                                     </tr>
@@ -341,6 +350,7 @@
             BudgetingAction.getBudgetSaatIni(branch_id,divisi_Id,tanggal,value,function (res) {
                 $('#sisa_budget').val(res);
                 $('#budget_terpakai').val(0);
+                $('#sisa_budget_saat_ini').val(0);
             });
         }else if (transaksi=="I"){
             var option = '<option value=""></option>';
@@ -366,6 +376,7 @@
             BudgetingAction.getBudgetInvestasiSaatIni(branch_id,divisi_Id,tanggal,value,function (res) {
                 $('#sisa_budget').val(res);
                 $('#budget_terpakai').val(0);
+                $('#sisa_budget_saat_ini').val(0);
             });
         }
     }
@@ -430,7 +441,7 @@
         dwr.engine.setAsync(false);
         var tmp_table = "";
         PengajuanBiayaAction.searchSessionPengajuan(function(listdata){
-            tmp_table = "<thead style='font-size: 10px; color: white' ><tr class='active'>"+
+            tmp_table = "<thead style='font-size: 10px;' ><tr class='active'>"+
                 "<th style='text-align: center; background-color:  #90ee90'>No</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>Delete</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>Tanggal</th>"+
@@ -456,7 +467,7 @@
                 tmp_table += '<tr style="font-size: 10px;" ">' +
                     '<td align="center">' + (i + 1) + '</td>' +
                     '<td align="center">' +
-                    "<a href='javascript:;' class ='item-delete' data ='"+item.Keperluan+"' >" +
+                    "<a href='javascript:;' class ='item-delete' data ='"+item.keperluan+"' >" +
                     "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>"+
                     '</a>' +
                     '</td>' +
@@ -492,12 +503,51 @@
             }
             var keterangan=$('#keterangan').val();
 
-            PengajuanBiayaAction.saveSessionPengajuan(branchId,divisiId,stTanggal,transaksi,noBudgeting,stJumlah,stBudgetBiaya,stBudgetTerpakai,keperluan,keterangan,function(){
-                loadPengajuan();
-            })
+            if (branchId!=""&&divisiId!=""&&stTanggal!=""&&transaksi!=""&&noBudgeting!=""&&stJumlah!=""&&stBudgetBiaya!=""&&stBudgetTerpakai!=""&&keterangan!=""&&keperluan!=""){
+                PengajuanBiayaAction.saveSessionPengajuan(branchId,divisiId,stTanggal,transaksi,noBudgeting,stJumlah,stBudgetBiaya,stBudgetTerpakai,keperluan,keterangan,function(result){
+                    if (result==""){
+                        loadPengajuan();
+                    } else{
+                        alert(result);
+                    }
+                })
+            }else{
+                var msg="";
+                if (branchId==""){
+                    msg +="Unit masih kosong \n";
+                }
+                if (divisiId==""){
+                    msg +="Divisi masih kosong \n";
+                }
+                if (stTanggal==""){
+                    msg +="Tanggal masih kosong \n";
+                }
+                if (transaksi==""){
+                    msg +="Transaksi masih kosong \n";
+                }
+                if (noBudgeting==""){
+                    msg +="No. Budgetting masih kosong \n";
+                }
+                if (stJumlah==""){
+                    msg +="Jumlah masih kosong \n";
+                }
+                if (stBudgetBiaya==""){
+                    msg +="Budgeting masih kosong \n";
+                }
+                if (stBudgetTerpakai==""){
+                    msg +="Budget terpakai masih kosong \n";
+                }
+                if (keterangan==""){
+                    msg +="Keterangan masih kosong \n";
+                }
+                if (keperluan==""){
+                    msg +="Keperluan masih kosong \n";
+                }
+                alert(msg);
+            }
         });
 
-        $('.pengajuanBiayaTabel').on('click', '.item-delete-data', function () {
+        $('.pengajuanBiayaTabel').on('click', '.item-delete', function () {
             var id = $(this).attr('data');
             if (id!=''){
                 PengajuanBiayaAction.deleteSessionPengajuan(id,function (result) {

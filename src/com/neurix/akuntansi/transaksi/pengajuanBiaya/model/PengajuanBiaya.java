@@ -38,6 +38,16 @@ public class PengajuanBiaya extends BaseModel {
     private BigDecimal budgetTerpakai;
     private String stBudgetTerpakai;
 
+    private String branchName;
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
     public BigDecimal getBudgetTerpakai() {
         return budgetTerpakai;
     }

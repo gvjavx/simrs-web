@@ -323,6 +323,87 @@
     </div>
 </div>
 
+<div id="modal-approve-keuangan-kp" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Approve Pengajuan Biaya</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="formApprovalKeuanganKp">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >ID : </label>
+                        <div class="col-sm-8">
+                            <input type="text" readonly class="form-control" id="modPengajuanBiayaDetailIdKp">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Unit : </label>
+                        <div class="col-sm-8">
+                            <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
+                            <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="mod_branch_id_keuangan_kp" required="true" disabled="true"
+                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Divisi : </label>
+                        <div class="col-sm-8">
+                            <s:action id="comboPosition" namespace="/admin/user" name="initComboPosition_user"/>
+                            <s:select cssClass="form-control" list="#comboPosition.listOfComboPositions" id="mod_divisi_id_keuangan_kp" name="pengajuanBiaya.divisiId" required="false" readonly="true"
+                                      listKey="stPositionId" listValue="positionName" headerKey="" headerValue="[Select one]"/>
+                        </div>
+                    </div>
+                    <%--<div class="form-group">--%>
+                    <%--<label class="control-label col-sm-3" >Transaksi : </label>--%>
+                    <%--<div class="col-sm-8">--%>
+                    <%--<input type="text" readonly class="form-control" id="mod_transaksi_keuangan">--%>
+                    <%--</div>--%>
+                    <%--</div>--%>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >No. Budgetting : </label>
+                        <div class="col-sm-8">
+                            <input type="text" readonly class="form-control" id="mod_no_budgetting_keuangan_kp">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Jumlah : </label>
+                        <div class="col-sm-8">
+                            <input type="text" readonly class="form-control" id="mod_jumlah_keuangan_kp">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Keterangan : </label>
+                        <div class="col-sm-8">
+                            <input type="text" readonly class="form-control" id="mod_keterangan_keuangan_kp">
+                        </div>
+                    </div>
+                    <%--<div class="form-group">--%>
+                    <%--<label class="control-label col-sm-3" >Budget RKAP : </label>--%>
+                    <%--<div class="col-sm-8">--%>
+                    <%--<input type="text" readonly class="form-control" id="mod_budget_keuangan">--%>
+                    <%--</div>--%>
+                    <%--</div>--%>
+                    <input type="hidden" class="form-control" id="mod_status_approve_kp">
+                    <div class="form-group" id="kas_keuangan_kp">
+                        <label class="control-label col-sm-3" >Kas : </label>
+                        <div class="col-sm-8">
+                            <select class="form-control" id="mod_kas_keuangan_kp">
+                                <option value="" ></option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a id="btnApproveKeuanganKp" type="button" class="btn btn-default btn-primary"><i class="fa fa-check"></i> Approve</a>
+                <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <%@ include file="/pages/common/footer.jsp" %>
 
 <%@ include file="/pages/common/lastScript.jsp" %>
@@ -393,10 +474,10 @@
         dwr.engine.setAsync(false);
         var tmp_table = "";
         PengajuanBiayaAction.searchPengajuanDetail(pengajuanId,function(listdata){
-            tmp_table = "<thead style='font-size: 10px; color: white' ><tr class='active'>"+
-                "<th style='text-align: center; background-color:  #90ee90'>Approval Kasubdiv</th>"+
-                "<th style='text-align: center; background-color:  #90ee90'>Approval Kadiv</th>"+
-                "<th style='text-align: center; background-color:  #90ee90'>Approval Kepala RS / Kabid</th>"+
+            tmp_table = "<thead style='font-size: 10px;' ><tr class='active'>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Approval Kasubdiv / Kasubid</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Approval Kadiv / kabid </th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Approval Kepala RS / Dirkeu</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>Approval Keuangan</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>Approval Keuangan Kanpus</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>Tanggal</th>"+
@@ -407,6 +488,7 @@
                 "<th style='text-align: center; background-color:  #90ee90'>Budget Terpakai</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>Keperluan</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>Keterangan</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Terima KP</th>"+
                 "</tr></thead>";
             var i = i ;
             $.each(listdata, function (i, item) {
@@ -425,7 +507,10 @@
                 var approvalKeuangan ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'"  status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'"  noBudgetting="'+item.noBudgeting+'" class="item-approve-keuangan" >\n' +
                     '<img border="0" src="<s:url value="/pages/images/icon_approval.ico"/>" name="icon_edit">\n' +
                     '</a></td>';
-                var approvalKeuanganKp ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'"  status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'"  noBudgetting="'+item.noBudgeting+'" class="item-approve-keuangan" >\n' +
+                var approvalKeuanganKp ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'"  status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'"  noBudgetting="'+item.noBudgeting+'" class="item-approve-keuangan-kp" >\n' +
+                    '<img border="0" src="<s:url value="/pages/images/icon_approval.ico"/>" name="icon_edit">\n' +
+                    '</a></td>';
+                var terimaKeuangan ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'"  status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'"  noBudgetting="'+item.noBudgeting+'" class="item-approve-keuangan-kp" >\n' +
                     '<img border="0" src="<s:url value="/pages/images/icon_approval.ico"/>" name="icon_edit">\n' +
                     '</a></td>';
                 var success ='<td align="center"><a href="javascript:;">\n' +
@@ -436,6 +521,7 @@
                 var approvalGM='<td ></td>';
                 var approvalKE='<td ></td>';
                 var approvalKEKP='<td ></td>';
+                var terimaKE='<td ></td>';
 
                 if (item.statusApproval=="KS"&&item.statusUserApproval=="KS"){
                     approvalKS = approval;
@@ -447,6 +533,8 @@
                     approvalKE = approvalKeuangan;
                 }else if (item.statusApproval=="KEKP"&&item.statusUserApproval=="KEKP"){
                     approvalKEKP = approvalKeuanganKp;
+                }else if (item.statusApproval=="TKE"&&item.statusUserApproval=="TKE"){
+                    terimaKE = terimaKeuangan;
                 }
                 switch (item.statusApproval) {
                     case "KD":
@@ -466,6 +554,12 @@
                         approvalKD = success;
                         approvalGM = success;
                         approvalKE = success;
+                        break;
+                    case "TKE":
+                        approvalKS = success;
+                        approvalKD = success;
+                        approvalGM = success;
+                        approvalKE = success;
                         approvalKEKP = success;
                         break;
                     case "D":
@@ -474,6 +568,7 @@
                         approvalGM = success;
                         approvalKE = success;
                         approvalKEKP = success;
+                        terimaKE = success;
                         break;
 
                 }
@@ -492,6 +587,7 @@
                     '<td align="center">' + item.stBudgetTerpakai+ '</td>' +
                     '<td align="center">' + item.keperluan+ '</td>' +
                     '<td align="center">' + item.keterangan+ '</td>' +
+                    terimaKE +
                     "</tr>";
 
                 $('#mod_branch_id').val(item.branchId);
@@ -522,12 +618,20 @@
         var jumlah = $('#mod_jumlah_keuangan').val();
         var noBudgetting = $('#mod_no_budgetting_keuangan').val();
         var coaKas = $('#mod_kas_keuangan').val();
-        if (confirm("Apakah anda ingin menyetujui pengajuan biaya ini ?")){
-            PengajuanBiayaAction.saveApproveKeuanganPengajuan(pengajuanId,status,approvalStatus,branchId,keterangan,jumlah,noBudgetting,divisiId,coaKas,function() {
-                alert("Sukses Approve");
-                window.location.reload();
-            });
+
+        if (approvalStatus==""){
+            alert("Belum memilih metode pembiayaan");
+        }else if(approvalStatus=="A"&&coaKas==""){
+            alert("Belum memilih Kas");
+        }else{
+            if (confirm("Apakah anda ingin menyetujui pengajuan biaya ini ?")){
+                PengajuanBiayaAction.saveApproveKeuanganPengajuan(pengajuanId,status,approvalStatus,branchId,keterangan,jumlah,noBudgetting,divisiId,coaKas,function() {
+                    alert("Sukses Approve");
+                    window.location.reload();
+                });
+            }
         }
+
     });
 
     $('.pengajuanBiayaTabel').on('click', '.item-approve-keuangan', function() {
@@ -545,6 +649,34 @@
         $('#modal-approve-keuangan').modal('show');
     });
 
+    $('.pengajuanBiayaTabel').on('click', '.item-approve-keuangan-kp', function() {
+        selectPembayaranKp();
+        $('#modPengajuanBiayaDetailIdKp').val($(this).attr('data'));
+        $('#mod_status_approve_kp').val($(this).attr('status'));
+        $('#mod_branch_id_keuangan_kp').val($(this).attr('unit'));
+        $('#mod_divisi_id_keuangan_kp').val($(this).attr('divisi'));
+        $('#mod_keterangan_keuangan_kp').val($(this).attr('keterangan'));
+        $('#mod_jumlah_keuangan_kp').val($(this).attr('jumlah'));
+        $('#mod_no_budgetting_keuangan_kp').val($(this).attr('noBudgetting'));
+
+        $('#modal-approve-keuangan-kp').find('.modal-title').text('Approve Pengajuan Biaya Keuangan Kantor Pusat');
+        $('#modal-approve-keuangan-kp').modal('show');
+    });
+
+    $('.pengajuanBiayaTabel').on('click', '.item-approve-keuangan-kp', function() {
+        selectPembayaranKp();
+        $('#modPengajuanBiayaDetailIdKp').val($(this).attr('data'));
+        $('#mod_status_approve_kp').val($(this).attr('status'));
+        $('#mod_branch_id_keuangan_kp').val($(this).attr('unit'));
+        $('#mod_divisi_id_keuangan_kp').val($(this).attr('divisi'));
+        $('#mod_keterangan_keuangan_kp').val($(this).attr('keterangan'));
+        $('#mod_jumlah_keuangan_kp').val($(this).attr('jumlah'));
+        $('#mod_no_budgetting_keuangan_kp').val($(this).attr('noBudgetting'));
+
+        $('#modal-approve-keuangan-kp').find('.modal-title').text('Terima Uang Dari Kantor Pusat');
+        $('#modal-approve-keuangan-kp').modal('show');
+    });
+
     function selectPembayaran(){
         var option = '<option value=""></option>';
         KasirRawatJalanAction.getListPembayaran(function (res) {
@@ -558,6 +690,19 @@
             }
         });
     }
+    function selectPembayaranKp(){
+        var option = '<option value=""></option>';
+        KasirRawatJalanAction.getListPembayaran(function (res) {
+            if(res.length > 0){
+                $.each(res, function (i, item) {
+                    option += '<option value="'+item.coa+'">'+item.pembayaranName+'</option>';
+                });
+                $('#mod_kas_keuangan_kp').html(option);
+            }else{
+                $('#mod_kas_keuangan_kp').html(option);
+            }
+        });
+    }
     function changeKas(values) {
         if (values=="A"){
             $('#kas_keuangan').show();
@@ -565,6 +710,28 @@
             $('#kas_keuangan').hide();
         }
     }
+    $('#btnApproveKeuanganKp').click(function() {
+        var pengajuanId = $('#modPengajuanBiayaDetailIdKp').val();
+        var status = $('#mod_status_approve_kp').val();
+        var approvalStatus = $('#mod_status_keuangan_kp').val();
+        var branchId = $('#mod_branch_id_keuangan_kp').val();
+        var divisiId = $('#mod_divisi_id_keuangan_kp').val();
+
+        var keterangan = $('#mod_keterangan_keuangan_kp').val();
+        var jumlah = $('#mod_jumlah_keuangan_kp').val();
+        var noBudgetting = $('#mod_no_budgetting_keuangan_kp').val();
+        var coaKas = $('#mod_kas_keuangan_kp').val();
+        if (coaKas==""){
+            alert("Kas masih belum dipilih");
+        }else{
+            if (confirm("Apakah anda ingin menyetujui pengajuan biaya ini ?")){
+                PengajuanBiayaAction.saveApproveKeuanganKpPengajuan(pengajuanId,status,approvalStatus,branchId,keterangan,jumlah,noBudgetting,divisiId,coaKas,function() {
+                    alert("Sukses Approve");
+                    window.location.reload();
+                });
+            }
+        }
+    });
 </script>
 
 
