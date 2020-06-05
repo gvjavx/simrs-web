@@ -1502,7 +1502,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                                 return response;
                             }
 
-                            // kredit jumlah tindakan asuransi
+                            // kredit jumlah tindakan asuransis
                             hsCriteria.put("pendapatan_rawat_inap_asuransi", listOfTindakan);
 
                             // create map piutang asuransi
