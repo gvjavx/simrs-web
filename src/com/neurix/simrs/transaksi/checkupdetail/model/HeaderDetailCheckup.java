@@ -159,6 +159,25 @@ public class HeaderDetailCheckup extends BaseModel{
     private String alamatLengkap;
     private String umur;
 
+    private String asesmenLabel;
+    private String kategoriPelayanan;
+
+    public String getKategoriPelayanan() {
+        return kategoriPelayanan;
+    }
+
+    public void setKategoriPelayanan(String kategoriPelayanan) {
+        this.kategoriPelayanan = kategoriPelayanan;
+    }
+
+    public String getAsesmenLabel() {
+        return asesmenLabel;
+    }
+
+    public void setAsesmenLabel(String asesmenLabel) {
+        this.asesmenLabel = asesmenLabel;
+    }
+
     public String getUmur() {
         return umur;
     }

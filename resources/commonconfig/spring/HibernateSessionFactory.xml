@@ -452,6 +452,8 @@
                 <value>sshconfig/com/neurix/hris/master/DokterKso/hibernate/ImSimrsDokterKsoTindakan.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/simrs/transaksi/asesmenuspesialis/hibernate/ItSimrsAsesmenSpesialisEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/tindakanrawaticd9/hibernate/ItSimrsTindakanRawatICD9Entity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/tindakanicd9/hibernate/ImSimrsTindakanICD9Entity.hbm.xml</value>
             </list>
         </property>
     </bean>

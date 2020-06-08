@@ -37,6 +37,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatInapAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PermintaanResepAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatPoliAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanRawatICD9Action.js"/>'></script>
 
     <script type='text/javascript'>
 
@@ -446,63 +447,55 @@
                                             <i class="fa fa-print"></i>Surat Pernyataan Kematian</a></li>
                                     </ul>
                                 </div>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-success"><i class="fa fa-edit"></i> Hemodialisa
-                                    </button>
-                                    <button onclick="loadModalRM('hd')" type="button" class="btn btn-success dropdown-toggle"
-                                            data-toggle="dropdown" style="height: 34px">
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a style="cursor: pointer" onclick="showModalHD('monitoring_hd')"><i class="fa fa-circle-o"></i>Monitoring HD</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalHD('perencanaan_hemodialisa')"><i class="fa fa-circle-o"></i>Perencanaan HD</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalHD('asesmen_hd')"><i class="fa fa-circle-o"></i>Asesmen Awal HD</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalHD('tranfusi_hd')"><i class="fa fa-circle-o"></i>Tindakan Medis Transfusi Darah</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalHD('catatan_tranfusi_darah')"><i class="fa fa-circle-o"></i>Catatan Pemantauan Tranfusi Darah</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalHD('persetujuan_hd')"><i class="fa fa-circle-o"></i>Persetujuan HD</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalHD('travelling')"><i class="fa fa-circle-o"></i>Travelling Dialysis</a></li>
-                                    </ul>
-                                </div>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Fisioterapi
-                                    </button>
-                                    <button onclick="loadModalRM('fisioterapi')" type="button" class="btn btn-primary dropdown-toggle"
-                                            data-toggle="dropdown" style="height: 34px">
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a style="cursor: pointer" onclick="pengkajianFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-circle-o"></i>Pengkajian Pasien Fisioterapi</a></li>
-                                        <li><a style="cursor: pointer" onclick="addMonitoringFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-circle-o"></i>Kunjungan Fisioterapi</a></li>
-                                    </ul>
-                                </div>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-success"><i class="fa fa-edit"></i> Poli Spesialis
-                                    </button>
-                                    <button onclick="loadModalRM('spesialis')" type="button" class="btn btn-success dropdown-toggle"
-                                            data-toggle="dropdown" style="height: 34px">
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a style="cursor: pointer" onclick="showModalSPS('spesialis_tht')"><i class="fa fa-circle-o"></i>Asesmen THT</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalSPS('spesialis_penyakit_dalam')"><i class="fa fa-circle-o"></i>Asesmen Penyakit Dalam</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalSPS('spesialis_bedah')"><i class="fa fa-circle-o"></i>Asesmen Bedah</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalSPS('spesialis_paru')"><i class="fa fa-circle-o"></i>Asesmen Paru</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalSPS('spesialis_anak')"><i class="fa fa-circle-o"></i>Asesmen Spesialis Anak</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalSPS('spesialis_neurologi')"><i class="fa fa-circle-o"></i>Asesmen Neurologi</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalSPS('spesialis_obstetri')"><i class="fa fa-circle-o"></i>Asesmen Obstetri</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalSPS('spesialis_ortopedi')"><i class="fa fa-circle-o"></i>Asesmen Ortopedi</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalSPS('spesialis_ginjal')"><i class="fa fa-circle-o"></i>Asesmen Ginjal</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalSPS('spesialis_jantung')"><i class="fa fa-circle-o"></i>Asesmen Jantung</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalSPS('dokter_umum')"><i class="fa fa-circle-o"></i>Asesmen Dokter Umum</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalSPS('spesialis_onkologi')"><i class="fa fa-circle-o"></i>Asesmen Onkologi</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalSPS('spesialis_ginekologi')"><i class="fa fa-circle-o"></i>Asesmen Ginekologi</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalSPS('rehab_medik')"><i class="fa fa-circle-o"></i>Asesmen Rehab Medik</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalSPS('rehab_medik')"><i class="fa fa-circle-o"></i>Asesmen Urologi</a></li>
-                                    </ul>
-                                </div>
+                                <s:if test='headerDetailCheckup.kategoriPelayanan == "hemodialisa"'>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Hemodialisa
+                                        </button>
+                                        <button onclick="loadModalRM('hd')" type="button" class="btn btn-primary dropdown-toggle"
+                                                data-toggle="dropdown" style="height: 34px">
+                                            <span class="caret"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a style="cursor: pointer" onclick="showModalHD('monitoring_hd')"><i class="fa fa-circle-o"></i>Monitoring HD</a></li>
+                                            <li><a style="cursor: pointer" onclick="showModalHD('perencanaan_hemodialisa')"><i class="fa fa-circle-o"></i>Perencanaan HD</a></li>
+                                            <li><a style="cursor: pointer" onclick="showModalHD('asesmen_hd')"><i class="fa fa-circle-o"></i>Asesmen Awal HD</a></li>
+                                            <li><a style="cursor: pointer" onclick="showModalHD('tranfusi_hd')"><i class="fa fa-circle-o"></i>Tindakan Medis Transfusi Darah</a></li>
+                                            <li><a style="cursor: pointer" onclick="showModalHD('catatan_tranfusi_darah')"><i class="fa fa-circle-o"></i>Catatan Pemantauan Tranfusi Darah</a></li>
+                                            <li><a style="cursor: pointer" onclick="showModalHD('persetujuan_hd')"><i class="fa fa-circle-o"></i>Persetujuan HD</a></li>
+                                            <li><a style="cursor: pointer" onclick="showModalHD('travelling')"><i class="fa fa-circle-o"></i>Travelling Dialysis</a></li>
+                                        </ul>
+                                    </div>
+                                </s:if>
+                                <s:elseif test='headerDetailCheckup.kategoriPelayanan == "fisioterapi"'>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Fisioterapi
+                                        </button>
+                                        <button onclick="loadModalRM('fisioterapi')" type="button" class="btn btn-primary dropdown-toggle"
+                                                data-toggle="dropdown" style="height: 34px">
+                                            <span class="caret"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a style="cursor: pointer" onclick="pengkajianFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-circle-o"></i>Pengkajian Pasien Fisioterapi</a></li>
+                                            <li><a style="cursor: pointer" onclick="addMonitoringFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-circle-o"></i>Kunjungan Fisioterapi</a></li>
+                                        </ul>
+                                    </div>
+                                </s:elseif>
+                                <s:else>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Asesmen
+                                        </button>
+                                        <button onclick="loadModalRM('spesialis')" type="button" class="btn btn-primary dropdown-toggle"
+                                                data-toggle="dropdown" style="height: 34px">
+                                            <span class="caret"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a style="cursor: pointer" onclick="showModalSPS('<s:property value="headerDetailCheckup.kategoriPelayanan"/>')"><i class="fa fa-circle-o"></i><s:property value="headerDetailCheckup.asesmenLabel"/></a></li>
+                                        </ul>
+                                    </div>
+                                </s:else>
                             </div>
                         </div>
                     </div>
@@ -777,6 +770,30 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="box-header with-border" id="pos_icd9">
+                    </div>
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-stethoscope"></i> ICD9</h3>
+                    </div>
+                    <div class="box-body">
+                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
+                                onclick="showModal(9)"><i class="fa fa-plus"></i> Tambah ICD9
+                        </button>
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                            <tr bgcolor="#90ee90">
+                                <td>Tanggal</td>
+                                <td>ID ICD9</td>
+                                <td>Nama ICD9</td>
+                                <td align="center">Action</td>
+                            </tr>
+                            </thead>
+                            <tbody id="body_icd9">
+
+                            </tbody>
+                        </table>
                     </div>
 
                     <div class="box-header with-border" id="pos_tin">
@@ -1299,48 +1316,14 @@
                     Silahkan cek kembali data inputan!
                 </div>
                 <div class="row">
-                    <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs" || headerDetailCheckup.idJenisPeriksaPasien == "ptpn"'>
+                    <%--<s:if test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs" || headerDetailCheckup.idJenisPeriksaPasien == "ptpn"'>--%>
                         <div class="form-group">
                         <label class="col-md-3">Diagnosa</label>
                         <div class="col-md-7">
-                        <s:textfield id="nosa_id_diagnosa_bpjs" style="margin-top: 7px"
+                        <s:textfield id="nosa_id_diagnosa" style="margin-top: 7px"
                                      name="headerCheckup.diagnosa"
-                                     onkeypress="var warn =$('#war_diagnosa_bpjs').is(':visible'); if (warn){$('#cor_diagnosa_bpjs').show().fadeOut(3000);$('#war_diagnosa_bpjs').hide()}"
+                                     onkeypress="var warn =$('#war_diagnosa_bpjs').is(':visible'); if (warn){$('#cor_diagnosa_bpjs').show().fadeOut(3000);$('#war_diagnosa_bpjs').hide()}; searchDiagnosa(this.id)"
                                      cssClass="form-control" required="false"/>
-                        <script>
-                            var menus, mapped;
-                            $('#nosa_id_diagnosa_bpjs').typeahead({
-                                minLength: 3,
-                                source: function (query, process) {
-                                    menus = [];
-                                    mapped = {};
-
-                                    var data = [];
-                                    dwr.engine.setAsync(false);
-                                    CheckupAction.getListBpjsDiagnosaAwal(query, function (listdata) {
-                                        data = listdata;
-                                    });
-
-                                    $.each(data, function (i, item) {
-                                        var labelItem = item.namaDiagnosaBpjs;
-                                        mapped[labelItem] = {
-                                            id: item.kodeDiagnosaBpjs,
-                                            label: labelItem,
-                                            name: item.namaDiagnosaBpjs
-                                        };
-                                        menus.push(labelItem);
-                                    });
-
-                                    process(menus);
-                                },
-                                updater: function (item) {
-                                    var selectedObj = mapped[item];
-                                    // insert to textarea diagnosa_ket
-                                    $("#nosa_ket_diagnosa").val(selectedObj.name);
-                                    return selectedObj.id;
-                                }
-                            });
-                        </script>
                         </div>
                             <div class="col-md-2">
                                 <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
@@ -1357,29 +1340,29 @@
                                     cssClass="form-control"></s:textarea>
                         </div>
                         </div>
-                    </s:if>
-                    <s:else>
-                        <div class="form-group">
-                            <label class="col-md-3">Diagnosa</label>
-                            <div class="col-md-7">
-                                <s:action id="initComboDiagnosa" namespace="/checkupdetail"
-                                          name="getListComboDiagnosa_checkupdetail"/>
-                                <s:select cssStyle="margin-top: 7px; width: 100%"
-                                          onchange="var warn =$('#war_diagnosa').is(':visible'); if (warn){$('#cor_diagnosa').show().fadeOut(3000);$('#war_diagnosa').hide()}"
-                                          list="#initComboDiagnosa.listOfComboDiagnosa" id="nosa_id_diagnosa"
-                                          name="headerDetailCheckup.idPelayanan" listKey="idDiagnosa"
-                                          listValue="descOfDiagnosa"
-                                          headerKey="" headerValue="[Select one]"
-                                          cssClass="form-control select2"/>
-                            </div>
-                            <div class="col-md-2">
-                                <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                                   id="war_diagnosa"><i class="fa fa-times"></i> required</p>
-                                <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                                   id="cor_diagnosa"><i class="fa fa-check"></i> correct</p>
-                            </div>
-                        </div>
-                    </s:else>
+                    <%--</s:if>--%>
+                    <%--<s:else>--%>
+                        <%--<div class="form-group">--%>
+                            <%--<label class="col-md-3">Diagnosa</label>--%>
+                            <%--<div class="col-md-7">--%>
+                                <%--<s:action id="initComboDiagnosa" namespace="/checkupdetail"--%>
+                                          <%--name="getListComboDiagnosa_checkupdetail"/>--%>
+                                <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
+                                          <%--onchange="var warn =$('#war_diagnosa').is(':visible'); if (warn){$('#cor_diagnosa').show().fadeOut(3000);$('#war_diagnosa').hide()}"--%>
+                                          <%--list="#initComboDiagnosa.listOfComboDiagnosa" id="nosa_id_diagnosa"--%>
+                                          <%--name="headerDetailCheckup.idPelayanan" listKey="idDiagnosa"--%>
+                                          <%--listValue="descOfDiagnosa"--%>
+                                          <%--headerKey="" headerValue="[Select one]"--%>
+                                          <%--cssClass="form-control select2"/>--%>
+                            <%--</div>--%>
+                            <%--<div class="col-md-2">--%>
+                                <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px"--%>
+                                   <%--id="war_diagnosa"><i class="fa fa-times"></i> required</p>--%>
+                                <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
+                                   <%--id="cor_diagnosa"><i class="fa fa-check"></i> correct</p>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</s:else>--%>
                     <div class="form-group">
                         <label class="col-md-3">Jenis Diagnosa</label>
                         <div class="col-md-7">
@@ -1407,6 +1390,58 @@
                         class="fa fa-arrow-right"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_diagnosa">
+                    <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-icd9">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-stethoscope"></i> Tambah ICD9</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_icd9">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_icd9"></p>
+                </div>
+                <input type="hidden" id="id_edit_icd9">
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3">ICD9</label>
+                        <div class="col-md-7">
+                            <s:textfield id="id_icd9" style="margin-top: 7px"
+                                         onkeypress="var warn =$('#war_id_icd9').is(':visible'); if (warn){$('#cor_id_icd9').show().fadeOut(3000);$('#war_id_icd9').hide()}; searchICD9(this.id)"
+                                         cssClass="form-control" required="false"/>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_id_icd9"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_id_icd9"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-3 col-md-7">
+                            <s:textarea rows="4" id="ket_icd9"
+                                        cssStyle="margin-top: 7px" readonly="true"
+                                        cssClass="form-control"></s:textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_icd9"><i
+                        class="fa fa-arrow-right"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_icd9">
                     <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>
@@ -2136,6 +2171,7 @@
         hitungBmi();
         listSelectTindakanKategori();
         hitungCoverBiaya();
+        listICD9();
 
         $('#img_ktp').on('click', function (e) {
             e.preventDefault();
@@ -2287,10 +2323,10 @@
             context = contextPath+'/pages/modal/modalRingkasanRawatJalan.jsp';
         }
         if(jenis == "spesialis"){
-            context = contextPath+'/pages/modal/modalRehabMedik.jsp';
+            var kat = '<s:property value="headerDetailCheckup.kategoriPelayanan"/>';
+            context = contextPath+'/pages/modal/modal-'+kat+'.jsp';
         }
         $('#modal-temp').load(context, function (res) {
-
         });
     }
 

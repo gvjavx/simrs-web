@@ -33,6 +33,8 @@ import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
+import com.neurix.simrs.master.tindakanicd9.bo.TindakanICD9Bo;
+import com.neurix.simrs.master.tindakanicd9.model.TindakanICD9;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.antrianonline.bo.AntrianOnlineBo;
 import com.neurix.simrs.transaksi.antrianonline.bo.RegistrasiOnlineBo;
@@ -1170,26 +1172,26 @@ public class CheckupAction extends BaseMasterAction {
             }
         }
 
-        if (checkup.getDiagnosa() != null && !"".equalsIgnoreCase(checkup.getDiagnosa())
-                && checkup.getNamaDiagnosa() != null && !"".equalsIgnoreCase(checkup.getNamaDiagnosa())) {
-            //diagnosa ambil dari depan...
-        } else {
-            List<Diagnosa> diagnosaList = new ArrayList<>();
-            Diagnosa diagnosaResult = new Diagnosa();
-
-            Diagnosa diagnosa = new Diagnosa();
-            diagnosa.setIdDiagnosa(checkup.getDiagnosa());
-
-            try {
-                diagnosaList = diagnosaBoProxy.getByCriteria(diagnosa);
-            } catch (GeneralBOException e) {
-                logger.error("[DiagnosaRawatAction.saveDiagnosa] Error when search dec diagnosa by id ," + "Found problem when saving add data, please inform to your admin.", e);
-            }
-            if (!diagnosaList.isEmpty()) {
-                diagnosaResult = diagnosaList.get(0);
-                checkup.setNamaDiagnosa(diagnosaResult.getDescOfDiagnosa());
-            }
-        }
+//        if (checkup.getDiagnosa() != null && !"".equalsIgnoreCase(checkup.getDiagnosa())
+//                && checkup.getNamaDiagnosa() != null && !"".equalsIgnoreCase(checkup.getNamaDiagnosa())) {
+//            //diagnosa ambil dari depan...
+//        } else {
+//            List<Diagnosa> diagnosaList = new ArrayList<>();
+//            Diagnosa diagnosaResult = new Diagnosa();
+//
+//            Diagnosa diagnosa = new Diagnosa();
+//            diagnosa.setIdDiagnosa(checkup.getDiagnosa());
+//
+//            try {
+//                diagnosaList = diagnosaBoProxy.getByCriteria(diagnosa);
+//            } catch (GeneralBOException e) {
+//                logger.error("[DiagnosaRawatAction.saveDiagnosa] Error when search dec diagnosa by id ," + "Found problem when saving add data, please inform to your admin.", e);
+//            }
+//            if (!diagnosaList.isEmpty()) {
+//                diagnosaResult = diagnosaList.get(0);
+//                checkup.setNamaDiagnosa(diagnosaResult.getDescOfDiagnosa());
+//            }
+//        }
 
         try {
 
@@ -3520,5 +3522,43 @@ public class CheckupAction extends BaseMasterAction {
             }
         }
         return response;
+    }
+
+    public List<Diagnosa> getICD10(String key) {
+        logger.info("[CheckupAction.getDiagnosaRawatPasien] start process >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        DiagnosaBo diagnosaBo = (DiagnosaBo) ctx.getBean("diagnosaBoProxy");
+
+        List<Diagnosa> diagnosaList = new ArrayList<>();
+        if(!"".equalsIgnoreCase(key) && key != null){
+            try {
+                diagnosaList = diagnosaBo.getSearchDiagnosa(key);
+            } catch (GeneralBOException e) {
+                logger.error("[CheckupAction.getDiagnosaRawatPasien] Error when searching diagnosa pasien, Found problem when searching data, please inform to your admin.", e);
+            }
+        }
+
+        logger.info("[CheckupAction.getDiagnosaRawatPasien] end process >>>");
+        return diagnosaList;
+    }
+
+    public List<TindakanICD9> getICD9(String key) {
+        logger.info("[CheckupAction.getDiagnosaRawatPasien] start process >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TindakanICD9Bo tindakanICD9Bo = (TindakanICD9Bo) ctx.getBean("tindakanICD9BoProxy");
+
+        List<TindakanICD9> tindakanICD9List = new ArrayList<>();
+        if(!"".equalsIgnoreCase(key) && key != null){
+            try {
+                tindakanICD9List = tindakanICD9Bo.getSearchICD9(key);
+            } catch (GeneralBOException e) {
+                logger.error("[CheckupAction.getDiagnosaRawatPasien] Error when searching diagnosa pasien, Found problem when searching data, please inform to your admin.", e);
+            }
+        }
+
+        logger.info("[CheckupAction.getDiagnosaRawatPasien] end process >>>");
+        return tindakanICD9List;
     }
 }

@@ -292,6 +292,7 @@
       </create>
       <convert converter="bean" match="com.neurix.simrs.master.tindakan.model.Tindakan"/>
       <convert converter="bean" match="com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity"/>
+      <convert converter="bean" match="com.neurix.simrs.master.tindakanicd9.model.TindakanICD9"/>
 
 
       <!--Tindaakan Rawat-->
@@ -324,6 +325,7 @@
           <param name="class" value="com.neurix.simrs.transaksi.diagnosarawat.action.DiagnosaRawatAction"/>
       </create>
       <convert converter="bean" match="com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat"/>
+      <convert converter="bean" match="com.neurix.simrs.master.diagnosa.model.Diagnosa"/>
 
       <!--Checkup Detail -->
       <create creator="new">
@@ -693,6 +695,11 @@
           <param name="class" value="com.neurix.simrs.transaksi.asesmenspesialis.action.AsesmenSpesialisAction"/>
       </create>
       <convert converter="bean" match="com.neurix.simrs.transaksi.asesmenspesialis.model.AsesmenSpesialis"/>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.tindakanrawaticd9.action.TindakanRawatICD9Action"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.tindakanrawaticd9.model.TindakanRawatICD9"/>
   </allow>
 
 </dwr>

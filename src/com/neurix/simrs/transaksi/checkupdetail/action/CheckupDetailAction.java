@@ -532,6 +532,9 @@ public class CheckupDetailAction extends BaseMasterAction {
             detailCheckup.setAlamatLengkap(checkup.getNamaDesa()+", "+checkup.getNamaKecamatan()+", "+checkup.getNamaKota());
             detailCheckup.setNoBpjs(checkup.getNoBpjs());
             detailCheckup.setUmur(calculateAge(checkup.getTglLahir(), true));
+            detailCheckup.setKategoriPelayanan(checkup.getKategoriPelayanan());
+            String label = checkup.getNamaPelayanan().replace("Poli Spesialis","");
+            detailCheckup.setAsesmenLabel("Asesmen "+label);
             setHeaderDetailCheckup(detailCheckup);
 
         } else {

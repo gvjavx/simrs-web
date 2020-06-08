@@ -1,257 +1,157 @@
-package com.neurix.simrs.transaksi.diagnosarawat.action;
+package com.neurix.simrs.transaksi.tindakanrawaticd9.action;
 
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
-import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.bpjs.eklaim.bo.EklaimBo;
 import com.neurix.simrs.bpjs.eklaim.model.*;
-import com.neurix.simrs.master.diagnosa.bo.DiagnosaBo;
-import com.neurix.simrs.master.diagnosa.model.Diagnosa;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
-import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.diagnosarawat.bo.DiagnosaRawatBo;
-import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
-import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
-import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
-import com.neurix.simrs.transaksi.verifikator.bo.VerifikatorBo;
+import com.neurix.simrs.transaksi.tindakanrawaticd9.bo.TindakanRawatICD9Bo;
+import com.neurix.simrs.transaksi.tindakanrawaticd9.model.TindakanRawatICD9;
 import org.apache.log4j.Logger;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
-public class DiagnosaRawatAction extends BaseMasterAction {
-    protected static transient Logger logger = Logger.getLogger(DiagnosaRawatAction.class);
-    private DiagnosaRawatBo diagnosaRawatBoProxy;
-    private DiagnosaRawat diagnosaRawat;
-    private DiagnosaBo diagnosaBoProxy;
+public class TindakanRawatICD9Action {
 
-    private List<Diagnosa> listOfComboDiagnosa = new ArrayList<>();
+    protected static transient Logger logger = Logger.getLogger(TindakanRawatICD9Action.class);
 
-    public List<Diagnosa> getListOfComboDiagnosa() {
-        return listOfComboDiagnosa;
-    }
-
-    public void setListOfComboDiagnosa(List<Diagnosa> listOfComboDiagnosa) {
-        this.listOfComboDiagnosa = listOfComboDiagnosa;
-    }
-
-    public DiagnosaBo getDiagnosaBoProxy() {
-        return diagnosaBoProxy;
-    }
-
-    public void setDiagnosaBoProxy(DiagnosaBo diagnosaBoProxy) {
-        this.diagnosaBoProxy = diagnosaBoProxy;
-    }
-
-    public static Logger getLogger() {
-        return logger;
-    }
-
-    public static void setLogger(Logger logger) {
-        DiagnosaRawatAction.logger = logger;
-    }
-
-    public DiagnosaRawatBo getDiagnosaRawatBoProxy() {
-        return diagnosaRawatBoProxy;
-    }
-
-    public void setDiagnosaRawatBoProxy(DiagnosaRawatBo diagnosaRawatBoProxy) {
-        this.diagnosaRawatBoProxy = diagnosaRawatBoProxy;
-    }
-
-    public DiagnosaRawat getDiagnosaRawat() {
-        return diagnosaRawat;
-    }
-
-    public void setDiagnosaRawat(DiagnosaRawat diagnosaRawat) {
-        this.diagnosaRawat = diagnosaRawat;
-    }
-
-    @Override
-    public String add() {
-        return null;
-    }
-
-    @Override
-    public String edit() {
-        return null;
-    }
-
-    @Override
-    public String delete() {
-        return null;
-    }
-
-    @Override
-    public String view() {
-        return null;
-    }
-
-    @Override
-    public String save() {
-        return null;
-    }
-
-    @Override
-    public String search() {
-        return null;
-    }
-
-    @Override
-    public String initForm() {
-        return null;
-    }
-
-    @Override
-    public String downloadPdf() {
-        return null;
-    }
-
-    @Override
-    public String downloadXls() {
-        return null;
-    }
-
-    public String saveDiagnosa(String idDetailCheckup, String idDiagnosa, String jenisDiagnosa, String ketDiagnosa, String jenisPasien) {
-        logger.info("[DiagnosaRawatAction.saveDiagnosa] start process >>>");
-        try {
-            String userLogin = CommonUtil.userLogin();
-            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-
-            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-            DiagnosaRawatBo diagnosaRawatBo = (DiagnosaRawatBo) ctx.getBean("diagnosaRawatBoProxy");
-            DiagnosaBo diagnosaBo = (DiagnosaBo) ctx.getBean("diagnosaBoProxy");
-
-            DiagnosaRawat diagnosaRawat = new DiagnosaRawat();
-            diagnosaRawat.setIdDetailCheckup(idDetailCheckup);
-            diagnosaRawat.setIdDiagnosa(idDiagnosa);
-            diagnosaRawat.setKeteranganDiagnosa(ketDiagnosa);
-            diagnosaRawat.setJenisDiagnosa(jenisDiagnosa);
-            diagnosaRawat.setCreatedWho(userLogin);
-            diagnosaRawat.setLastUpdate(updateTime);
-            diagnosaRawat.setCreatedDate(updateTime);
-            diagnosaRawat.setLastUpdateWho(userLogin);
-            diagnosaRawat.setAction("C");
-            diagnosaRawat.setFlag("Y");
-
-            if ("bpjs".equalsIgnoreCase(jenisPasien) || "ptpn".equalsIgnoreCase(jenisPasien)) {
-                CrudResponse response = updateCoverBpjs(idDetailCheckup, idDiagnosa);
-                if ("success".equalsIgnoreCase(response.getStatus())) {
-                    diagnosaRawatBo.saveAdd(diagnosaRawat);
-                }else{
-                    return ERROR;
-                }
-            } else {
-                diagnosaRawatBo.saveAdd(diagnosaRawat);
-            }
-
-        } catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[DiagnosaRawatAction.saveDiagnosa] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
-        }
-        logger.info("[DiagnosaRawatAction.saveDiagnosa] end process >>>");
-
-        return SUCCESS;
-    }
-
-    public List<DiagnosaRawat> listDiagnosa(String idDetailCheckup) {
-
-        logger.info("[DiagnosaRawatAction.listDiagnosa] start process >>>");
-        List<DiagnosaRawat> diagnosaRawatList = new ArrayList<>();
-        DiagnosaRawat diagnosaRawat = new DiagnosaRawat();
-        diagnosaRawat.setIdDetailCheckup(idDetailCheckup);
+    public CrudResponse save(String data) throws JSONException {
+        logger.info("[TindakanRawatAction.saveTindakanRawat] start process >>>");
+        CrudResponse response = new CrudResponse();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        DiagnosaRawatBo diagnosaRawatBo = (DiagnosaRawatBo) ctx.getBean("diagnosaRawatBoProxy");
+        TindakanRawatICD9Bo tindakanRawatICD9Bo = (TindakanRawatICD9Bo) ctx.getBean("tindakanRawatICD9BoProxy");
+
+        JSONObject obj = new JSONObject(data);
+        String jenisPasien = obj.getString("jenis_pasien");
+        String idDetailCheckup = obj.getString("id_detail_checkup");
+        String idIcd9 = obj.getString("id_icd9");
+        if(idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)
+           && idIcd9 != null && !"".equalsIgnoreCase(idIcd9)){
+            try {
+
+                TindakanRawatICD9 tindakanRawatICD9 = new TindakanRawatICD9();
+                tindakanRawatICD9.setIdIcd9(idIcd9);
+                tindakanRawatICD9.setNamaIcd9(obj.getString("nama_icd9"));
+                tindakanRawatICD9.setIdDetailCheckup(idDetailCheckup);
+                tindakanRawatICD9.setFlag("Y");
+                tindakanRawatICD9.setAction("C");
+                tindakanRawatICD9.setCreatedWho(userLogin);
+                tindakanRawatICD9.setCreatedDate(time);
+                tindakanRawatICD9.setLastUpdate(time);
+                tindakanRawatICD9.setLastUpdateWho(userLogin);
+
+                if ("bpjs".equalsIgnoreCase(jenisPasien) || "ptpn".equalsIgnoreCase(jenisPasien)) {
+                    response = updateCoverBpjs(idDetailCheckup, idIcd9, "");
+                    if("success".equalsIgnoreCase(response.getStatus())){
+                        response = tindakanRawatICD9Bo.saveAdd(tindakanRawatICD9);
+                    }
+                }else{
+                    response = tindakanRawatICD9Bo.saveAdd(tindakanRawatICD9);
+                }
+
+            }catch (GeneralBOException e){
+                response.setStatus("error");
+                response.setMsg("Found Error When"+ e.getMessage());
+            }
+        }else{
+            response.setStatus("error");
+            response.setMsg("ID Detail Chekup dan Id ICD9  tidak dietmukan");
+        }
+        return response;
+    }
+
+    public CrudResponse edit(String data) throws JSONException {
+        logger.info("[TindakanRawatAction.saveTindakanRawat] start process >>>");
+        CrudResponse response = new CrudResponse();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TindakanRawatICD9Bo tindakanRawatICD9Bo = (TindakanRawatICD9Bo) ctx.getBean("tindakanRawatICD9BoProxy");
+
+        JSONObject obj = new JSONObject(data);
+        String jenisPasien = obj.getString("jenis_pasien");
+        String idTindakanRawatIcd9 = obj.getString("id_tindakan_rawat_icd9");
+        String idDetailCheckup = obj.getString("id_detail_checkup");
+        String idIcd9 = obj.getString("id_icd9");
+        String idEdit = obj.getString("id_edit_icd9");
+
+        if(idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)
+                && idIcd9 != null && !"".equalsIgnoreCase(idIcd9)){
+            try {
+
+                TindakanRawatICD9 tindakanRawatICD9 = new TindakanRawatICD9();
+                tindakanRawatICD9.setIdTindakanRawatIcd9(idTindakanRawatIcd9);
+                tindakanRawatICD9.setIdIcd9(idIcd9);
+                tindakanRawatICD9.setNamaIcd9(obj.getString("nama_icd9"));
+                tindakanRawatICD9.setIdDetailCheckup(idDetailCheckup);
+                tindakanRawatICD9.setLastUpdate(time);
+                tindakanRawatICD9.setLastUpdateWho(userLogin);
+
+                if ("bpjs".equalsIgnoreCase(jenisPasien) || "ptpn".equalsIgnoreCase(jenisPasien)) {
+                    response = updateCoverBpjs(idDetailCheckup, idIcd9, idEdit);
+                    if("success".equalsIgnoreCase(response.getStatus())){
+                        response = tindakanRawatICD9Bo.saveEdit(tindakanRawatICD9);
+                    }
+                }else{
+                    response = tindakanRawatICD9Bo.saveEdit(tindakanRawatICD9);
+                }
+
+            }catch (GeneralBOException e){
+                response.setStatus("error");
+                response.setMsg("Found Error When"+ e.getMessage());
+            }
+        }else{
+            response.setStatus("error");
+            response.setMsg("ID Detail Chekup dan Id ICD9  tidak dietmukan");
+        }
+        return response;
+    }
+
+    public List<TindakanRawatICD9> getListICD9(String idDetailCheckup) {
+
+        logger.info("[DiagnosaRawatAction.listDiagnosa] start process >>>");
+        List<TindakanRawatICD9> tindakanRawatICD9s = new ArrayList<>();
+
+        TindakanRawatICD9 tindakanRawatICD9 = new TindakanRawatICD9();
+        tindakanRawatICD9.setIdDetailCheckup(idDetailCheckup);
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TindakanRawatICD9Bo tindakanRawatICD9Bo = (TindakanRawatICD9Bo) ctx.getBean("tindakanRawatICD9BoProxy");
 
         if (!"".equalsIgnoreCase(idDetailCheckup)) {
             try {
-                diagnosaRawatList = diagnosaRawatBo.getByCriteria(diagnosaRawat);
+                tindakanRawatICD9s = tindakanRawatICD9Bo.getByCriteria(tindakanRawatICD9);
             } catch (GeneralBOException e) {
-                logger.error("[DiagnosaRawatAction.listDiagnosa] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
-                addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+                logger.error("Found Error "+e.getMessage());
             }
 
             logger.info("[DiagnosaRawatAction.listDiagnosa] end process <<<");
-            return diagnosaRawatList;
-        } else {
-            return null;
         }
+        return tindakanRawatICD9s;
     }
 
-    public String getListComboDiagnosa() {
-        logger.info("[DiagnosaRawatAction.getListComboDiagnosa] start process >>>");
 
-        List<Diagnosa> diagnosaList = new ArrayList<>();
-        Diagnosa diagnosa = new Diagnosa();
-
-        try {
-            diagnosaList = diagnosaBoProxy.getByCriteria(diagnosa);
-        } catch (GeneralBOException e) {
-            logger.error("[DiagnosaRawatAction.getListComboDiagnosa] Error when get diagnosa ," + "Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error Found problem when get diagnosa , please inform to your admin.\n" + e.getMessage());
-        }
-
-        listOfComboDiagnosa.addAll(diagnosaList);
-        logger.info("[DiagnosaRawatAction.getListComboDiagnosa] end process <<<");
-        return SUCCESS;
-    }
-
-    public String editDiagnosa(String idRawatDiagnosa, String idDiagnosa, String jenisDiagnosa, String ketDiagnosa, String jenisPasien, String idDetailCheckup) {
-        logger.info("[DiagnosaRawatAction.editDiagnosa] start process >>>");
-        try {
-            String userLogin = CommonUtil.userLogin();
-            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-            DiagnosaBo diagnosaBo = (DiagnosaBo) ctx.getBean("diagnosaBoProxy");
-            DiagnosaRawatBo diagnosaRawatBo = (DiagnosaRawatBo) ctx.getBean("diagnosaRawatBoProxy");
-
-            DiagnosaRawat diagnosaRawat = new DiagnosaRawat();
-            diagnosaRawat.setIdDiagnosaRawat(idRawatDiagnosa);
-            diagnosaRawat.setIdDiagnosa(idDiagnosa);
-            diagnosaRawat.setKeteranganDiagnosa(ketDiagnosa);
-            diagnosaRawat.setJenisDiagnosa(jenisDiagnosa);
-            diagnosaRawat.setLastUpdate(updateTime);
-            diagnosaRawat.setLastUpdateWho(userLogin);
-            diagnosaRawat.setAction("U");
-
-            if ("bpjs".equalsIgnoreCase(jenisPasien) || "ptpn".equalsIgnoreCase(jenisPasien)) {
-                CrudResponse response = updateCoverBpjs(idDetailCheckup, idDiagnosa);
-                if ("success".equalsIgnoreCase(response.getStatus())) {
-                    diagnosaRawatBo.saveEdit(diagnosaRawat);
-                }else{
-                    return ERROR;
-                }
-            } else {
-                diagnosaRawatBo.saveEdit(diagnosaRawat);
-            }
-
-        } catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[DiagnosaRawatAction.editDiagnosa] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
-        }
-        logger.info("[DiagnosaRawatAction.editDiagnosa] end process >>>");
-
-        return SUCCESS;
-    }
-
-    public CrudResponse updateCoverBpjs(String idDetailCheckup, String idDiagnosa) {
+    public CrudResponse updateCoverBpjs(String idDetailCheckup, String idIcd9, String idEdit) {
         CrudResponse response = new CrudResponse();
         String userLogin = CommonUtil.userLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
@@ -344,8 +244,38 @@ public class DiagnosaRawatAction extends BaseMasterAction {
                                     klaimDetailRequest.setAddPaymentPct(klaimResponse.getAddPaymenPct());
                                     klaimDetailRequest.setBirthWeight(klaimResponse.getBeratLahir());
                                     klaimDetailRequest.setDischargeStatus(klaimResponse.getDischargeStatus().toString());
-                                    klaimDetailRequest.setDiagnosa(idDiagnosa);
-                                    klaimDetailRequest.setProcedure(klaimResponse.getProcedure());
+                                    klaimDetailRequest.setDiagnosa(klaimResponse.getDiagnosa());
+                                    String prosedure = "";
+                                    if(!"".equalsIgnoreCase(idEdit)){
+                                        if(klaimResponse.getProcedure() != null &&
+                                           !"".equalsIgnoreCase(klaimResponse.getProcedure())){
+                                            String str = klaimResponse.getProcedure();
+                                            logger.info("ISI STR : "+str);
+                                            List<String> icd9 = Arrays.asList(str.split("#"));
+                                            for (String list: icd9){
+                                                String id = list;
+                                                if(idEdit.equalsIgnoreCase(list)){
+                                                    id = idIcd9;
+                                                }
+
+                                                if("".equalsIgnoreCase(prosedure)){
+                                                    prosedure = id;
+                                                }else{
+                                                    prosedure = prosedure+"#"+id;
+                                                }
+                                                logger.info("LIST INFO : "+id);
+                                            }
+                                        }
+                                    }else{
+                                        if(klaimResponse.getProcedure() != null &&
+                                           !"".equalsIgnoreCase(klaimResponse.getProcedure())){
+                                            prosedure = klaimResponse.getProcedure()+"#"+idIcd9;
+                                        }else{
+                                            prosedure = idIcd9;
+                                        }
+                                    }
+
+                                    klaimDetailRequest.setProcedure(prosedure);
 
                                     klaimDetailRequest.setTarifRsNonBedah(klaimResponse.getTarifRsProsedurNonBedah().toString());
                                     klaimDetailRequest.setTarifRsProsedurBedah(klaimResponse.getTarifRsProsedurBedah().toString());
@@ -458,5 +388,9 @@ public class DiagnosaRawatAction extends BaseMasterAction {
             }
         }
         return response;
+    }
+
+    public static Logger getLogger() {
+        return logger;
     }
 }

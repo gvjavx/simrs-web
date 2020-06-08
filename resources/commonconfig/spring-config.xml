@@ -245,4 +245,6 @@
     <import resource="sshconfig/com/neurix/simrs/master/tindakan/spring/KategoriTindakanPelayananBean.xml"/>
 
     <import resource="sshconfig/com/neurix/simrs/transaksi/asesmenuspesialis/spring/AsesmenSpesialisBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/tindakanrawaticd9/spring/TindakanRawatICD9Bean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/tindakanicd9/spring/TindakanICD9Bean.xml"/>
 </beans>

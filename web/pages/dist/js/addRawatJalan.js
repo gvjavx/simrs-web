@@ -688,6 +688,8 @@ function toContent() {
         desti = '#pos_rssep';
     } else if (back == 10) {
         desti = '#pos_alergi';
+    } else if (back == 11) {
+        desti = '#pos_icd9';
     }
 
     $('html, body').animate({
@@ -713,8 +715,8 @@ function showModal(select) {
         $('#modal-tindakan').modal({show:true, backdrop:'static'});
 
     } else if (select == 3) {
-        $('#nosa_id_diagnosa_bpjs, #nosa_ket_diagnosa').val('');
-        $('#nosa_id_diagnosa, #nosa_jenis_diagnosa').val('').trigger('change');
+        $('#nosa_id_diagnosa, #nosa_ket_diagnosa').val('');
+        $('#nosa_jenis_diagnosa').val('').trigger('change');
         $('#load_diagnosa, #warning_diagnosa, #war_diagnosa, #war_jenis_diagnosa').hide();
         $('#save_diagnosa').attr('onclick', 'saveDiagnosa(\'' + id + '\')').show();
         $('#modal-diagnosa').modal({show:true, backdrop:'static'});
@@ -760,6 +762,11 @@ function showModal(select) {
         $('#load_alergi').hide();
         $('#save_alergi').attr('onclick', 'saveAlergi(\'' + id + '\')').show();
         $('#modal-alergi').modal({show:true, backdrop:'static'});
+    } else if (select == 9) {
+        $('#id_icd9, #ket_icd9').val('');
+        $('#load_icd9').hide();
+        $('#save_icd9').attr('onclick', 'saveICD9(\'' + id + '\')').show();
+        $('#modal-icd9').modal({show:true, backdrop:'static'});
     }
 
 }
@@ -1004,18 +1011,10 @@ function listTindakan() {
 
 function saveDiagnosa(id) {
 
-    var idDiagnosa = $('#nosa_id_diagnosa').val();
-    var idDiagnosaBpjs = $('#nosa_id_diagnosa_bpjs').val();
+    var idDiag = $('#nosa_id_diagnosa').val();
     var ketDiagnosa = $('#nosa_ket_diagnosa').val();
     var jenisDiagnosa = $('#nosa_jenis_diagnosa').val();
     var jenisPasien = $('#jenis_pasien').val();
-    var idDiag = "";
-
-    if(jenisPasien == "bpjs" || jenisPasien == "ptpn"){
-        idDiag = idDiagnosaBpjs;
-    }else{
-        idDiag = idDiagnosa;
-    }
 
     if (idDetailCheckup != '' && idDiag != '' && jenisDiagnosa != '') {
 
@@ -1493,12 +1492,8 @@ function editTindakan(id, idTindakan, idKategori, idPerawat, qty) {
 function editDiagnosa(id, idDiagnosa, jenis, ket) {
     var jenisPasien = $('#jenis_pasien').val();
     $('#load_diagnosa, #warning_diagnosa, #war_diagnosa, #war_jenis_diagnosa').hide();
-    if(jenisPasien == "bpjs" || jenisPasien == "ptpn"){
-        $('#nosa_id_diagnosa_bpjs').val(idDiagnosa);
-        $('#nosa_ket_diagnosa').val(ket);
-    }else{
-        $('#nosa_id_diagnosa').val(idDiagnosa).trigger('change');
-    }
+    $('#nosa_id_diagnosa').val(idDiagnosa);
+    $('#nosa_ket_diagnosa').val(ket);
     $('#nosa_jenis_diagnosa').val(jenis).trigger('change');
     $('#save_diagnosa').attr('onclick', 'saveDiagnosa(\'' + id + '\')').show();
     $('#modal-diagnosa').modal({show:true, backdrop:'static'});
@@ -2160,4 +2155,186 @@ function saveAnamnese(val){
             }
         });
     }
+}
+
+function saveICD9(id) {
+
+    var idIcd9 = $('#id_icd9').val();
+    var ketIcd9 = $('#ket_icd9').val();
+    var idIcd9Edit = $('#id_edit_icd9').val();
+    var jenisPasien = $('#jenis_pasien').val();
+    var data = "";
+
+    if (idDetailCheckup != '' && idIcd9 != '') {
+
+        data = {
+            'id_detail_checkup' :idDetailCheckup,
+            'jenis_pasien': jenisPasien,
+            'id_icd9' : idIcd9,
+            'nama_icd9' : ketIcd9,
+            'id_tindakan_rawat_icd9': id,
+            'id_edit_icd9': idIcd9Edit
+        }
+
+        $('#save_icd9').hide();
+        $('#load_icd9').show();
+        var result = JSON.stringify(data);
+
+        if (id != '') {
+            dwr.engine.setAsync(true);
+            TindakanRawatICD9Action.edit(result, {
+                callback: function (response) {
+                    if (response.status == "success") {
+                        dwr.engine.setAsync(false);
+                        listICD9();
+                        hitungStatusBiaya();
+                        $('#modal-icd9').modal('hide');
+                        $('#info_dialog').dialog('open');
+                        $('#close_pos').val(11);
+                    } else {
+                        $('#save_icd9').show();
+                        $('#load_icd9').hide();
+                        $('#warning_icd9').show().fadeOut(5000);
+                        $('#msg_icd9').text(response.msg);
+                    }
+                }
+            })
+        } else {
+            dwr.engine.setAsync(true);
+            TindakanRawatICD9Action.save(result, {
+                callback: function (response) {
+                    if (response.status == "success") {
+                        dwr.engine.setAsync(false);
+                        listICD9();
+                        hitungStatusBiaya();
+                        $('#modal-icd9').modal('hide');
+                        $('#info_dialog').dialog('open');
+                        $('#close_pos').val(11);
+                    } else {
+                        $('#save_icd9').show();
+                        $('#load_icd9').hide();
+                        $('#warning_icd9').show().fadeOut(5000);
+                        $('#msg_icd9').text(response.msg);
+                    }
+                }
+            })
+        }
+    } else {
+        $('#warning_icd9').show().fadeOut(5000);
+        $('#msg_icd9').text("Silahkan cek kembali inputan anda...!");
+        if (id == '') {
+            $('#war_id_icd9').show();
+        }
+    }
+}
+
+function listICD9() {
+
+    var table = "";
+    var data = [];
+
+    TindakanRawatICD9Action.getListICD9(idDetailCheckup, function (response) {
+        data = response;
+        if (data != null) {
+            $.each(data, function (i, item) {
+                var id = "-";
+                var ket = "-";
+                var tanggal = item.createdDate;
+                var dateFormat = converterDate(new Date(tanggal));
+
+                if (item.idIcd9 != null) {
+                    id = item.idIcd9;
+                }
+                if (item.namaIcd9 != null) {
+                    ket = item.namaIcd9;
+                }
+                table += "<tr>" +
+                    "<td>" + dateFormat + "</td>" +
+                    "<td>" + id + "</td>" +
+                    "<td>" + ket + "</td>" +
+                    "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editICD9(\'' + item.idTindakanRawatIcd9 + '\',\'' + item.idIcd9 + '\',\'' + item.namaIcd9 + '\')" src="'+contextPath+'/pages/images/icons8-create-25.png" style="cursor: pointer;">' + "</td>" +
+                    "</tr>"
+            });
+            $('#body_icd9').html(table);
+        }
+    });
+}
+
+function editICD9(id, idIcd9, ketIcd9) {
+    $('#load_icd9, #warning_icd9, #war_id_icd9').hide();
+    $('#id_icd9').val(idIcd9);
+    $('#id_edit_icd9').val(idIcd9);
+    $('#ket_icd9').val(ketIcd9);
+    $('#save_icd9').attr('onclick', 'saveICD9(\'' + id + '\')').show();
+    $('#modal-icd9').modal({show:true, backdrop:'static'});
+}
+
+function searchDiagnosa(id){
+    var menus, mapped;
+    $('#'+id).typeahead({
+        minLength: 3,
+        source: function (query, process) {
+            menus = [];
+            mapped = {};
+
+            var data = [];
+            dwr.engine.setAsync(false);
+            CheckupAction.getICD10(query, function (listdata) {
+                data = listdata;
+            });
+
+            $.each(data, function (i, item) {
+                var labelItem = item.idDiagnosa +'-'+item.descOfDiagnosa;
+                mapped[labelItem] = {
+                    id: item.idDiagnosa,
+                    label: labelItem,
+                    name: item.descOfDiagnosa
+                };
+                menus.push(labelItem);
+            });
+
+            process(menus);
+        },
+        updater: function (item) {
+            var selectedObj = mapped[item];
+            // insert to textarea diagnosa_ket
+            $("#nosa_ket_diagnosa").val(selectedObj.name);
+            return selectedObj.id;
+        }
+    });
+}
+
+function searchICD9(id){
+    var menus, mapped;
+    $('#'+id).typeahead({
+        minLength: 3,
+        source: function (query, process) {
+            menus = [];
+            mapped = {};
+
+            var data = [];
+            dwr.engine.setAsync(false);
+            CheckupAction.getICD9(query, function (listdata) {
+                data = listdata;
+            });
+
+            $.each(data, function (i, item) {
+                var labelItem = item.idIcd9 +'-'+item.namaIcd9;
+                mapped[labelItem] = {
+                    id: item.idIcd9,
+                    label: labelItem,
+                    name: item.namaIcd9
+                };
+                menus.push(labelItem);
+            });
+
+            process(menus);
+        },
+        updater: function (item) {
+            var selectedObj = mapped[item];
+            // insert to textarea diagnosa_ket
+            $("#ket_icd9").val(selectedObj.name);
+            return selectedObj.id;
+        }
+    });
 }

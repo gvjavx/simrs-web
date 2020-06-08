@@ -145,6 +145,8 @@ public class DiagnosaRawatBoImpl implements DiagnosaRawatBo {
 
                 try {
                     checkupDetailDao.updateAndSave(detailCheckupEntity);
+                    response.setStatus("success");
+                    response.setMsg("Berhasil");
                 }catch (HibernateException e){
                     response.setStatus("error");
                     response.setMsg("Found Error when "+e.getMessage());

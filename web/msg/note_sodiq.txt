@@ -26,7 +26,6 @@ WITH (
 ALTER TABLE public.im_simrs_diagnosa_asuhan_keperawatan
   OWNER TO postgres;
 
-
 CREATE TABLE public.im_simrs_detail_asuhan_keperawatan
 (
   id_detail_asuhan_keperawatan character varying(30) NOT NULL,
@@ -91,5 +90,61 @@ CREATE SEQUENCE public.seq_asesmen_spesialis
   CACHE 1;
 ALTER TABLE public.seq_asesmen_spesialis
   OWNER TO postgres;
+
+//05 junis 2020
+ALTER TABLE im_simrs_pelayanan
+ADD COLUMN kategori_pelayanan character varying(100);
+
+CREATE TABLE public.im_simrs_icd9
+(
+  id_icd9 character varying(30) NOT NULL,
+  nama_icd9 character varying(1000),
+  flag character varying(1),
+  action character varying(1),
+  created_date timestamp without time zone,
+  created_who character varying(100),
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  CONSTRAINT pk_im_simrs_icd9 PRIMARY KEY (id_icd9)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.im_simrs_icd9
+  OWNER TO postgres;
+
+
+CREATE TABLE public.it_simrs_tindakan_rawat_icd9
+(
+  id_tindakan_rawat_icd9 character varying(30) NOT NULL,
+  id_icd9 character varying(30),
+  nama_icd9 text,
+  id_detail_checkup character varying(30),
+  flag character varying(1),
+  action character varying(1),
+  created_date timestamp without time zone,
+  created_who character varying(100),
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  CONSTRAINT pk_it_simrs_tindakan_rawat_icd9 PRIMARY KEY (id_tindakan_rawat_icd9)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_tindakan_rawat_icd9
+  OWNER TO postgres;
+
+// 06 Juni 2020 -- SEQ
+CREATE SEQUENCE public.seq_tindakan_rawat_icd9
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE public.seq_tindakan_rawat_icd9
+  OWNER TO postgres;
+
+
+
 
 

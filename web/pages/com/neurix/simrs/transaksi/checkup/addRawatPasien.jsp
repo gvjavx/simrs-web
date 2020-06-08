@@ -974,7 +974,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Diagnosa Awal</label>
                                             <div class="col-md-8">
-                                                <s:if test='tipe == "bpjs" || tipe == "ptpn"'>
+                                                <%--<s:if test='tipe == "bpjs" || tipe == "ptpn"'>--%>
                                                         <s:textfield id="diagnosa_awal" style="margin-top: 7px"
                                                                      name="headerCheckup.diagnosa"
                                                                      onkeypress="$(this).css('border','')"
@@ -990,16 +990,16 @@
 
                                                                     var data = [];
                                                                     dwr.engine.setAsync(false);
-                                                                    CheckupAction.getListBpjsDiagnosaAwal(query, function (listdata) {
+                                                                    CheckupAction.getICD10(query, function (listdata) {
                                                                         data = listdata;
                                                                     });
 
                                                                     $.each(data, function (i, item) {
-                                                                        var labelItem = item.namaDiagnosaBpjs;
+                                                                        var labelItem = item.idDiagnosa +'-'+item.descOfDiagnosa;
                                                                         mapped[labelItem] = {
-                                                                            id: item.kodeDiagnosaBpjs,
+                                                                            id: item.idDiagnosa,
                                                                             label: labelItem,
-                                                                            name: item.namaDiagnosaBpjs
+                                                                            name: item.descOfDiagnosa
                                                                         };
                                                                         menus.push(labelItem);
                                                                     });
@@ -1019,21 +1019,21 @@
                                                                     name="headerCheckup.namaDiagnosa"
                                                                     cssClass="form-control"></s:textarea>
 
-                                                    </s:if>
-                                                <s:else>
+                                                    <%--</s:if>--%>
+                                                <%--<s:else>--%>
 
-                                                    <s:action id="initComboDiagnosa" namespace="/checkupdetail"
-                                                              name="getListComboDiagnosa_checkupdetail"/>
-                                                    <s:select cssStyle="margin-top: 7px; width: 100%"
-                                                              onchange="var warn =$('#war_diagnosa').is(':visible'); if (warn){$('#cor_diagnosa').show().fadeOut(3000);$('#war_diagnosa').hide()}"
-                                                              list="#initComboDiagnosa.listOfComboDiagnosa"
-                                                              id="nosa_id_diagnosa_1"
-                                                              name="headerCheckup.diagnosa" listKey="idDiagnosa"
-                                                              listValue="descOfDiagnosa"
-                                                              headerKey="" headerValue="[Select one]"
-                                                              cssClass="form-control select2"/>
+                                                    <%--<s:action id="initComboDiagnosa" namespace="/checkupdetail"--%>
+                                                              <%--name="getListComboDiagnosa_checkupdetail"/>--%>
+                                                    <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
+                                                              <%--onchange="var warn =$('#war_diagnosa').is(':visible'); if (warn){$('#cor_diagnosa').show().fadeOut(3000);$('#war_diagnosa').hide()}"--%>
+                                                              <%--list="#initComboDiagnosa.listOfComboDiagnosa"--%>
+                                                              <%--id="nosa_id_diagnosa_1"--%>
+                                                              <%--name="headerCheckup.diagnosa" listKey="idDiagnosa"--%>
+                                                              <%--listValue="descOfDiagnosa"--%>
+                                                              <%--headerKey="" headerValue="[Select one]"--%>
+                                                              <%--cssClass="form-control select2"/>--%>
 
-                                                </s:else>
+                                                <%--</s:else>--%>
                                             </div>
                                         </div>
                                     </div>

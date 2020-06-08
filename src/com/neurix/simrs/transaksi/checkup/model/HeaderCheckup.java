@@ -144,6 +144,16 @@ public class HeaderCheckup {
     private String nadi;
     private String pernafasan;
 
+    private String kategoriPelayanan;
+
+    public String getKategoriPelayanan() {
+        return kategoriPelayanan;
+    }
+
+    public void setKategoriPelayanan(String kategoriPelayanan) {
+        this.kategoriPelayanan = kategoriPelayanan;
+    }
+
     public String getPenunjangMedis() {
         return penunjangMedis;
     }

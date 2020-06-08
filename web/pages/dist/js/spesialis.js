@@ -1659,7 +1659,7 @@ function saveSPS(jenis, ket) {
         }
     }
 
-    if ("anamnesa_rehab_medik" == jenis) {
+    if ("anamnesa_rehab_medik" == jenis || "anamnesa_spesialis_urologi" == jenis) {
         var va1 = $('#kut1').val();
         var va2 = $('#kut2').val();
         var va3 = $('#kut3').val();
@@ -1752,7 +1752,7 @@ function saveSPS(jenis, ket) {
         }
     }
 
-    if ("pemeriksaan_rehab_medik" == jenis) {
+    if ("pemeriksaan_rehab_medik" == jenis || "pemeriksaan_spesialis_urologi" == jenis) {
         var va1 = $('[name=pt1]:checked').val();
         var va2 = $('#pt2').val();
         var va3 = $('[name=pt3]:checked').val();
