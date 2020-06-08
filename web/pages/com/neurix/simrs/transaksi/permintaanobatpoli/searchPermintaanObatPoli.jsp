@@ -59,7 +59,6 @@
     <section class="content-header">
         <h1>
             Permintaan Obat Poli
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -344,12 +343,12 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Jenis Satuan</label>
                         <div class="col-md-7">
-                            <s:select list="#{'box':'Box','lembar':'Lembar','biji':'Biji'}"
-                                      cssStyle="margin-top: 7px; width: 100%"
-                                      onchange="var warn = $('#war_req_jenis_satuan').is(':visible'); if (warn){$('#cor_req_jenis_satuan').show().fadeOut(3000);$('#war_req_jenis_satuan').hide()}"
-                                      id="req_jenis_satuan"
-                                      headerKey="" headerValue="[Select one]"
-                                      cssClass="form-control select2"/>
+                            <%--<s:select list="#{'box':'Box','lembar':'Lembar','biji':'Biji'}"--%>
+                                      <%--cssStyle="margin-top: 7px; width: 100%"--%>
+                                      <%--onchange="var warn = $('#war_req_jenis_satuan').is(':visible'); if (warn){$('#cor_req_jenis_satuan').show().fadeOut(3000);$('#war_req_jenis_satuan').hide()}"--%>
+                                      <%--id="req_jenis_satuan"--%>
+                                      <%--headerKey="" headerValue="[Select one]"--%>
+                                      <%--cssClass="form-control select2"/>--%>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
@@ -863,6 +862,7 @@
                         $('#info_dialog').dialog('open');
                         $('#save_request').show();
                         $('#load_request').hide();
+                        $('body').scrollTop(0);
                     } else {
                         $('#warning_request').show().fadeOut(5000);
                         $('#save_request').show();
@@ -937,6 +937,7 @@
                         $('#info_dialog').dialog('open');
                         $('#save_req_detail').show();
                         $('#load_req_detail').hide();
+                        $('body').scrollTop(0);
                     } else {
                         $('#warning_reture').show().fadeOut(5000);
                         $('#save_reture').show();
@@ -1060,6 +1061,7 @@
                         $('#info_dialog').dialog('open');
                         $('#save_req_detail').show();
                         $('#load_ret_detail').hide();
+                        $('body').scrollTop(0);
                     } else {
                         $('#warning_reture_detail').show().fadeOut(5000);
                         $('#msg_reture_detail').text('Terjadi kesalahan saat menyimpan data...!');

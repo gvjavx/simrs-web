@@ -83,7 +83,6 @@ public class ImBiodataEntity implements Serializable {
     private String flagBpjsTk;
     private String flagPercobaan;
 
-
     public String getFlagTunjanganSupervisi() {
         return flagTunjanganSupervisi;
     }

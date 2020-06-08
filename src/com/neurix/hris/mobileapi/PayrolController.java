@@ -197,7 +197,7 @@ public class PayrolController implements ModelDriven<PayrollPayment> {
 
 
         // return disamakan dengan configurasi tomcat, lihat tomcat/conf/server.xml
-        return "documents/" + idPayroll + ".pdf";
+        return "images" + CommonConstant.RESOURCE_PATH_PAYROLL + idPayroll + ".pdf";
     }
     @Override
     public PayrollPayment getModel() {

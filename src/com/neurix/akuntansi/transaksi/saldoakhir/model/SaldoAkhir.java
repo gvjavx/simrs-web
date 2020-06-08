@@ -26,6 +26,15 @@ public class SaldoAkhir {
     private String masterId;
     private String pasienId;
     private String divisiId;
+    private Integer bulan;
+
+    public Integer getBulan() {
+        return bulan;
+    }
+
+    public void setBulan(Integer bulan) {
+        this.bulan = bulan;
+    }
 
     public String getDivisiId() {
         return divisiId;

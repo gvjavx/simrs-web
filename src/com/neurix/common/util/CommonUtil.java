@@ -105,7 +105,25 @@ public class CommonUtil {
             throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
         }
     }
+    public static String roleIdAsLogin() throws UsernameNotFoundException {
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        if (session.getAttribute("SPRING_SECURITY_CONTEXT") != null) {
+            SecurityContextImpl securityContextImpl = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
+            if (securityContextImpl.getAuthentication() != null) {
+                UserDetailsLogin userDetailsLogin=(UserDetailsLogin)securityContextImpl.getAuthentication().getPrincipal();
+//                String username=userDetailsLogin.getUsername();
 
+                String roleId=String.valueOf(((Roles)userDetailsLogin.getRoles().get(0)).getRoleId());
+
+                return roleId;
+            } else {
+                throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
+            }
+
+        } else {
+            throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
+        }
+    }
     public static String userAreaId() throws UsernameNotFoundException {
         HttpSession session = ServletActionContext.getRequest().getSession();
         if (session.getAttribute("SPRING_SECURITY_CONTEXT") != null) {
@@ -333,8 +351,8 @@ public class CommonUtil {
     }
 
     public static String numbericFormat(BigDecimal number,String pattern) {
-        NumberFormat nf = NumberFormat.getNumberInstance(Locale.GERMANY); //for indo money format
-//        NumberFormat nf = NumberFormat.getNumberInstance(Locale.US); //for international money format
+//        NumberFormat nf = NumberFormat.getNumberInstance(Locale.GERMANY); //for indo money format
+        NumberFormat nf = NumberFormat.getNumberInstance(Locale.US); //for international money format
         DecimalFormat df = (DecimalFormat)nf;
         df.applyPattern(pattern);
         return df.format(number);
@@ -1045,4 +1063,19 @@ public class CommonUtil {
         }
     }
 
+    public static String getDateParted(Date date, String tipe){
+        //create calander instance and get required params
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+
+        switch (tipe){
+            case "YEAR":
+                int year = cal.get(Calendar.YEAR); return String.valueOf(year);
+            case "MONTH":
+                int month = cal.get(Calendar.MONTH); return String.valueOf(month);
+            case "DAY":
+                int day = cal.get(Calendar.DAY_OF_MONTH); return String.valueOf(day);
+            default: return "";
+        }
+    }
 }

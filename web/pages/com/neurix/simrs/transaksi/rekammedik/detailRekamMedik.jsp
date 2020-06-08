@@ -33,7 +33,7 @@
         }
 
         .form-check label:before {
-            content:'';
+            content: '';
             -webkit-appearance: none;
             background-color: transparent;
             border: 2px solid #0079bf;
@@ -58,15 +58,18 @@
             border-width: 0 2px 2px 0;
             transform: rotate(45deg);
         }
+
         .custom02 input[type="radio"] {
             display: none;
         }
+
         .custom02 label {
             position: relative;
             display: inline-block;
             padding: 3px 3px 3px 20px;
             cursor: pointer;
         }
+
         .custom02 label::before,
         .custom02 label::after {
             position: absolute;
@@ -76,6 +79,7 @@
             -webkit-transition: all .2s;
             transition: all .2s;
         }
+
         .custom02 label::before {
             left: 0;
             width: 14px;
@@ -84,9 +88,11 @@
             background: #f3f3f3;
             border: 1px solid #ccc;
         }
+
         .custom02 label:hover::before {
             background: #fff;
         }
+
         .custom02 label::after {
             opacity: 0;
             left: 3px;
@@ -97,17 +103,19 @@
             -webkit-transform: scale(2);
             transform: scale(2);
         }
+
         .custom02 input[type="radio"]:checked + label::before {
             background: #fff;
             border: 1px solid #3498db;
         }
+
         .custom02 input[type="radio"]:checked + label::after {
             opacity: 1;
             -webkit-transform: scale(1);
             transform: scale(1);
         }
 
-        .radio-margin{
+        .radio-margin {
             margin-top: -7px;
             margin-left: 1px;
         }
@@ -117,9 +125,94 @@
             margin: 1rem;
         }
 
-        .garis{
+        .garis {
             border: solid 0.5px #ddd;
         }
+
+        .bungkus {
+            width: 100%;
+            height: 420px;
+            max-width: 100%;
+            max-height: 100%;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        .carousel {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-top: 56.25%;
+            background: #ddd;
+        }
+
+        /* Images */
+
+        .carousel-img {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-width: 100%;
+            -webkit-transition: opacity ease-out 0.5s;
+            transition: opacity ease-out 0.5s;
+        }
+
+        .carousel-img-displayed {
+            display: block;
+            opacity: 1;
+            z-index: 2;
+        }
+
+        .carousel-img-hidden {
+            display: block;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .carousel-img-noDisplay {
+            display: none;
+        }
+
+        /* Flèches de défilement */
+
+        .carousel-arrow {
+            z-index: 3;
+            display: block;
+            position: absolute;
+            width: 36px;
+            height: 36px;
+            top: 50%;
+            margin-top: -50px;
+            border-radius: 50%;
+            border: 0;
+            background-color: #fff;
+            background-image: url("http://res.cloudinary.com/dnqehhgmu/image/upload/v1509720334/blue-arrow_jk1ydw.svg");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 16px 16px;
+            cursor: pointer;
+            -webkit-transition: background-size 0.15s ease-out;
+            transition: background-size 0.15s ease-out;
+        }
+
+        .carousel-arrow:hover,
+        .carousel-arrow:focus {
+            background-size: 22px 22px;
+        }
+
+        .carousel-arrow-next {
+            right: 20px;
+        }
+
+        .carousel-arrow-prev {
+            left: 20px;
+            -webkit-transform: rotateZ(180deg);
+            -ms-transform: rotate(180deg);
+            transform: rotateZ(180deg);
+        }
+
     </style>
 </head>
 
@@ -145,7 +238,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-user"></i> Riwayat Checkup Pasien</h3>
+                        <h3 class="box-title"><i class="fa fa-user"></i> Data Pasien</h3>
                     </div>
                     <div class="box-body">
                         <div style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px; text-align: center"
@@ -154,46 +247,44 @@
                                  style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">
                         </div>
                     </div>
+                    <%--<div class="box-body">--%>
+                    <%--<table id="tableRM" class="table table-bordered table-striped">--%>
+                    <%--<thead>--%>
+                    <%--<tr bgcolor="#90ee90">--%>
+                    <%--<td>ID Detail Checkup</td>--%>
+                    <%--<td>Tanggal Masuk</td>--%>
+                    <%--<td>Tanggal Keluar</td>--%>
+                    <%--<td>Keterangan</td>--%>
+                    <%--<td>Pelayanan</td>--%>
+                    <%--<td align="center">Action</td>--%>
+                    <%--</tr>--%>
+                    <%--</thead>--%>
+                    <%--<tbody>--%>
+                    <%--<s:iterator value="#session.listOfRekamMedis" var="row">--%>
+                    <%--<tr>--%>
+                    <%--<td><s:property value="idDetailCheckup"/></td>--%>
+                    <%--<td><s:property value="stTanggalMasuk"/></td>--%>
+                    <%--<td><s:property value="stTanggalKeluar"/></td>--%>
+                    <%--<td><s:property value="keteranganSelesai"/></td>--%>
+                    <%--<td><s:property value="namaPelayanan"/></td>--%>
+                    <%--<td align="center">--%>
+                    <%--<a href="detail_rekammedis.action?idPasien=<s:property value="detailCheckup.idPasien"/>&id=<s:property value="idDetailCheckup"/>">--%>
+                    <%--<img class="hvr-grow"--%>
+                    <%--src="<s:url value="/pages/images/icons8-search-25.png"/>"--%>
+                    <%--style="cursor: pointer;">--%>
+                    <%--</a>--%>
+                    <%--</td>--%>
+                    <%--</tr>--%>
+                    <%--</s:iterator>--%>
+                    <%--</tbody>--%>
+                    <%--</table>--%>
+                    <%--<a class="btn btn-danger" href="detail_rekammedis.action?idPasien=<s:property value="detailCheckup.idPasien"/>"><i class="fa fa-refresh"></i> Reset</a>--%>
+                    <%--<a class="btn btn-warning" href="initForm_rekammedis.action"><i class="fa fa-times"></i> Back</a>--%>
+                    <%--<a class="btn btn-info" style="display: none" id="btn-vidio-rm" onclick="viewTelemedic()"><i class="fa fa-film"></i> Veiw Telemedic</a>--%>
+                    <%--</div>--%>
+                    <%--<div class="box-header with-border"></div>--%>
+                    <%--<s:if test='detailCheckup.idDetailCheckup != null'>--%>
                     <div class="box-body">
-                        <table id="tableRM" class="table table-bordered table-striped">
-                            <thead>
-                            <tr bgcolor="#90ee90">
-                                <td>ID Detail Checkup</td>
-                                <td>Tanggal Masuk</td>
-                                <td>Tanggal Keluar</td>
-                                <td>Keterangan</td>
-                                <td>Pelayanan</td>
-                                <td align="center">Action</td>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <s:iterator value="#session.listOfRekamMedis" var="row">
-                                <tr>
-                                    <td><s:property value="idDetailCheckup"/></td>
-                                    <td><s:property value="stTanggalMasuk"/></td>
-                                    <td><s:property value="stTanggalKeluar"/></td>
-                                    <td><s:property value="keteranganSelesai"/></td>
-                                    <td><s:property value="namaPelayanan"/></td>
-                                    <td align="center">
-                                        <a href="detail_rekammedis.action?idPasien=<s:property value="detailCheckup.idPasien"/>&id=<s:property value="idDetailCheckup"/>">
-                                            <img class="hvr-grow"
-                                                 src="<s:url value="/pages/images/icons8-search-25.png"/>"
-                                                 style="cursor: pointer;">
-                                        </a>
-                                    </td>
-                                </tr>
-                            </s:iterator>
-                            </tbody>
-                        </table>
-                        <a class="btn btn-danger" href="detail_rekammedis.action?idPasien=<s:property value="detailCheckup.idPasien"/>"><i class="fa fa-refresh"></i> Reset</a>
-                        <a class="btn btn-warning" href="initForm_rekammedis.action"><i class="fa fa-times"></i> Back</a>
-                    </div>
-                    <div class="box-header with-border"></div>
-                    <s:if test='detailCheckup.idDetailCheckup != null'>
-                    <div class="box-body">
-                        <div class="box-header with-border">
-                            <h3 class="box-title"><i class="fa fa-user"></i> Data Pasien</h3>
-                        </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <table class="table table-striped">
@@ -203,17 +294,17 @@
                                     <s:hidden id="id_pasien" name="detailCheckup.idPasien"/>
                                     <s:hidden id="jenis_pasien" name="detailCheckup.idJenisPeriksaPasien"/>
                                     <s:hidden id="jenis_bayar" name="detailCheckup.metodePembayaran"/>
-                                    <s:if test='detailCheckup.idJenisPeriksaPasien == "bpjs"'>
-                                        <tr>
-                                            <td width="45%"><b>No SEP</b></td>
-                                            <td style="vertical-align: middle;">
-                                                <table>
-                                                    <s:label cssClass="label label-success"
-                                                             name="detailCheckup.noSep"></s:label>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    </s:if>
+                                    <%--<s:if test='detailCheckup.idJenisPeriksaPasien == "bpjs"'>--%>
+                                        <%--<tr>--%>
+                                            <%--<td width="45%"><b>No SEP</b></td>--%>
+                                            <%--<td style="vertical-align: middle;">--%>
+                                                <%--<table>--%>
+                                                    <%--<s:label cssClass="label label-success"--%>
+                                                             <%--name="detailCheckup.noSep"></s:label>--%>
+                                                <%--</table>--%>
+                                            <%--</td>--%>
+                                        <%--</tr>--%>
+                                    <%--</s:if>--%>
                                     <tr>
                                         <td><b>No RM</b></td>
                                         <td>
@@ -259,11 +350,6 @@
                                             <table><s:label name="detailCheckup.tempatTglLahir"></s:label></table>
                                         </td>
                                     </tr>
-                                </table>
-                            </div>
-                            <!-- /.col -->
-                            <div class="col-md-6">
-                                <table class="table table-striped">
                                     <tr>
                                         <td><b>Jenis Pasien</b></td>
                                         <td>
@@ -273,6 +359,11 @@
                                             </table>
                                         </td>
                                     </tr>
+                                </table>
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-md-6">
+                                <table class="table table-striped">
                                     <tr>
                                         <td><b>Poli</b></td>
                                         <td>
@@ -308,6 +399,18 @@
                                         <td><b>Provinsi</b></td>
                                         <td>
                                             <table><s:label name="detailCheckup.provinsi"></s:label></table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Terakhir Periksa</b></td>
+                                        <td>
+                                            <table><s:label name="detailCheckup.tglKeluar"></s:label></table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Diagnosa Terakhir</b></td>
+                                        <td>
+                                            <table><s:label name="detailCheckup.diagnosa"></s:label></table>
                                         </td>
                                     </tr>
                                 </table>
@@ -366,6 +469,21 @@
                             </div>
                             <!-- /.col -->
                         </div>
+                        <div class="box-header with-border"></div>
+                        <div class="row" style="padding: 5px">
+                            <div class="col-md-12 text-center">
+                                <a class="btn btn-warning" href="initForm_rekammedis.action"><i class="fa fa-times"></i>
+                                    Back</a>
+                                <a class="btn btn-danger"
+                                   href="detail_rekammedis.action?idPasien=<s:property value="detailCheckup.idPasien"/>"><i
+                                        class="fa fa-refresh"></i> Reset</a>
+                                <a class="btn btn-info" id="btn-vidio-rm2" onclick="viewTelemedic()"><i class="fa fa-film"></i>
+                                    Telemedic</a>
+                                <%--<a class="btn btn-info" onclick="viewRiwayat()"><i class="fa fa-history"></i> Riwayat Pasien</a>--%>
+                                <a class="btn btn-info" onclick="viewHistory()"><i class="fa fa-history"></i> All History</a>
+                            </div>
+                        </div>
+                        <div class="box-header with-border"></div>
                     </div>
                     <div class="box-body">
                         <div class="box-header with-border">
@@ -492,15 +610,22 @@
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Action
                                     </button>
-                                    <button onclick="loadModalRM('ringkasan')" type="button" class="btn btn-primary dropdown-toggle"
+                                    <button onclick="loadModalRM('ringkasan')" type="button"
+                                            class="btn btn-primary dropdown-toggle"
                                             data-toggle="dropdown" style="height: 34px">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a style="cursor: pointer" onclick="showModalRingkasanPasien('ringkasan_pulang')"><i class="fa fa-circle-o"></i>Ringkasan Pulang</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalRingkasanPasien('ringkasan_keluar')"><i class="fa fa-circle-o"></i>Ringkasan Masuk Keluar</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalRingkasanPasien('resume_medis')"><i class="fa fa-circle-o"></i>Resume Medis</a></li>
+                                        <li><a style="cursor: pointer"
+                                               onclick="showModalRingkasanPasien('ringkasan_pulang')"><i
+                                                class="fa fa-circle-o"></i>Ringkasan Pulang</a></li>
+                                        <li><a style="cursor: pointer"
+                                               onclick="showModalRingkasanPasien('ringkasan_keluar')"><i
+                                                class="fa fa-circle-o"></i>Ringkasan Masuk Keluar</a></li>
+                                        <li><a style="cursor: pointer"
+                                               onclick="showModalRingkasanPasien('resume_medis')"><i
+                                                class="fa fa-circle-o"></i>Resume Medis</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -558,13 +683,16 @@
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Action
                                     </button>
-                                    <button onclick="loadModalRM('edukasi_pasien')" type="button" class="btn btn-primary dropdown-toggle"
+                                    <button onclick="loadModalRM('edukasi_pasien')" type="button"
+                                            class="btn btn-primary dropdown-toggle"
                                             data-toggle="dropdown" style="height: 34px">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a style="cursor: pointer" onclick="showModalAsesmenRawatInap('edukasi_pasien')"><i class="fa fa-circle-o"></i>Edukasi Pasien dan Keluarga</a></li>
+                                        <li><a style="cursor: pointer"
+                                               onclick="showModalAsesmenRawatInap('edukasi_pasien')"><i
+                                                class="fa fa-circle-o"></i>Edukasi Pasien dan Keluarga</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -576,13 +704,16 @@
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-success"><i class="fa fa-edit"></i> Action
                                     </button>
-                                    <button onclick="loadModalRM('rencana_gigi')" type="button" class="btn btn-success dropdown-toggle"
+                                    <button onclick="loadModalRM('rencana_gigi')" type="button"
+                                            class="btn btn-success dropdown-toggle"
                                             data-toggle="dropdown" style="height: 34px">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a style="cursor: pointer" onclick="showModalAsesmenRawatInap('rencana_gigi')"><i class="fa fa-circle-o"></i>Rencana Perawatan Gigi</a></li>
+                                        <li><a style="cursor: pointer"
+                                               onclick="showModalAsesmenRawatInap('rencana_gigi')"><i
+                                                class="fa fa-circle-o"></i>Rencana Perawatan Gigi</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -625,17 +756,43 @@
                                         <li><a target="_blank"
                                                href="<%= request.getContextPath() %>/rekammedik/printSuratPernyataan_rekammedik.action?id=<s:property value="detailCheckup.idDetailCheckup"/>&tipe=RI01">
                                             <i class="fa fa-circle-o"></i>Surat Permintaan Rawat Inap</a></li>
-                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('pengkajian_keperawatan')" onclick="showModalPengkajianKep('pengkajian')"><i class="fa fa-circle-o"></i>Pengkajian Ulang Keperawatan dan Tindakan</a></li>
-                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('asesmen_rawat_inap')" onclick="showModalAsesmenRawatInap('asesmen')"><i class="fa fa-circle-o"></i>Asesmen Awal Medis Rawat Inap</a></li>
-                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('asuhan')" onclick="showModalAsesmenRawatInap('asuhan')"><i class="fa fa-circle-o"></i>Rencana Asuhan Keperawatan</a></li>
-                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('discharge_planing')" onclick="showModalAsesmenRawatInap('discharge_planing')"><i class="fa fa-circle-o"></i>Discharge Planing</a></li>
-                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('catatan_integrasi')" onclick="showModalAsesmenRawatInap('catatan_integrasi')"><i class="fa fa-circle-o"></i>Catatan Perkembangan Pasien Terintegrasi</a></li>
-                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('transfer_pasien')" onclick="showModalAsesmenRawatInap('transfer_pasien')"><i class="fa fa-circle-o"></i>Transfer Pasien Antar Ruangan</a></li>
-                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('privasi')" onclick="showModalAsesmenRawatInap('privasi')"><i class="fa fa-circle-o"></i>Privasi Pasien</a></li>
-                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('early_warning')" onclick="showModalAsesmenRawatInap('early_warning')"><i class="fa fa-circle-o"></i>Lembar Observasi Pediatric Early Warning Score</a></li>
-                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('pemberian_obat')" onclick="showModalAsesmenRawatInap('catatan_pemberian')"><i class="fa fa-circle-o"></i>Catatan Pemberian Obat</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalAsesmenRawatInap('injeksi')"><i class="fa fa-circle-o"></i>Injeksi CPO / Jadwal Pemberian Terapi</a></li>
-                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('rekonsiliasi')" onclick="showModalAsesmenRawatInap('rekonsiliasi')"><i class="fa fa-circle-o"></i>Rekonsiliasi Obat</a></li>
+                                        <li><a style="cursor: pointer"
+                                               onmouseover="loadModalRM('pengkajian_keperawatan')"
+                                               onclick="showModalPengkajianKep('pengkajian')"><i
+                                                class="fa fa-circle-o"></i>Pengkajian Ulang Keperawatan dan Tindakan</a>
+                                        </li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('asesmen_rawat_inap')"
+                                               onclick="showModalAsesmenRawatInap('asesmen')"><i
+                                                class="fa fa-circle-o"></i>Asesmen Awal Medis Rawat Inap</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('asuhan')"
+                                               onclick="showModalAsesmenRawatInap('asuhan')"><i
+                                                class="fa fa-circle-o"></i>Rencana Asuhan Keperawatan</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('discharge_planing')"
+                                               onclick="showModalAsesmenRawatInap('discharge_planing')"><i
+                                                class="fa fa-circle-o"></i>Discharge Planing</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('catatan_integrasi')"
+                                               onclick="showModalAsesmenRawatInap('catatan_integrasi')"><i
+                                                class="fa fa-circle-o"></i>Catatan Perkembangan Pasien Terintegrasi</a>
+                                        </li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('transfer_pasien')"
+                                               onclick="showModalAsesmenRawatInap('transfer_pasien')"><i
+                                                class="fa fa-circle-o"></i>Transfer Pasien Antar Ruangan</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('privasi')"
+                                               onclick="showModalAsesmenRawatInap('privasi')"><i
+                                                class="fa fa-circle-o"></i>Privasi Pasien</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('early_warning')"
+                                               onclick="showModalAsesmenRawatInap('early_warning')"><i
+                                                class="fa fa-circle-o"></i>Lembar Observasi Pediatric Early Warning
+                                            Score</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('pemberian_obat')"
+                                               onclick="showModalAsesmenRawatInap('catatan_pemberian')"><i
+                                                class="fa fa-circle-o"></i>Catatan Pemberian Obat</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalAsesmenRawatInap('injeksi')"><i
+                                                class="fa fa-circle-o"></i>Injeksi CPO / Jadwal Pemberian Terapi</a>
+                                        </li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('rekonsiliasi')"
+                                               onclick="showModalAsesmenRawatInap('rekonsiliasi')"><i
+                                                class="fa fa-circle-o"></i>Rekonsiliasi Obat</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -715,13 +872,16 @@
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-success"><i class="fa fa-edit"></i> Action
                                     </button>
-                                    <button onclick="loadModalRM('ringkasan_rj')" type="button" class="btn btn-success dropdown-toggle"
+                                    <button onclick="loadModalRM('ringkasan_rj')" type="button"
+                                            class="btn btn-success dropdown-toggle"
                                             data-toggle="dropdown" style="height: 34px">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a style="cursor: pointer" onclick="showModalAsesmenRawatInap('ringkasan_rj')"><i class="fa fa-circle-o"></i>Profil Rekam Medis Rawat Jalan</a></li>
+                                        <li><a style="cursor: pointer"
+                                               onclick="showModalAsesmenRawatInap('ringkasan_rj')"><i
+                                                class="fa fa-circle-o"></i>Profil Rekam Medis Rawat Jalan</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -747,7 +907,7 @@
                             </div>
                         </div>
                     </div>
-                    </s:if>
+                    <%--</s:if>--%>
                 </div>
             </div>
         </div>
@@ -755,8 +915,125 @@
     <!-- /.content -->
 </div>
 
+<div class="modal fade" id="modal-telemedic">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-md"></i> Telemedic Pasien
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="bungkus">
+                        <div class="carousel">
+                            <button onclick="carouselSwipe('carousel-arrow-prev')" type="button" id="carousel-arrow-prev" class="carousel-arrow carousel-arrow-prev" arial-label="Image précédente"></button>
+                            <button onclick="carouselSwipe('carousel-arrow-next')" type="button" id="carousel-arrow-next" class="carousel-arrow carousel-arrow-next" arial-label="Image suivante"></button>
+                            <div id="body-video-rm">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-riwayat">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-md"></i> Riwayat Pasien
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <table id="tableRM" class="table table-bordered table-striped">
+                        <thead>
+                        <tr bgcolor="#90ee90">
+                            <td>ID Detail Checkup</td>
+                            <td>Tanggal Masuk</td>
+                            <td>Tanggal Keluar</td>
+                            <td>Keterangan</td>
+                            <td>Pelayanan</td>
+                            <td align="center">Action</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <s:iterator value="#session.listOfRekamMedis" var="row">
+                            <tr>
+                                <td><s:property value="idDetailCheckup"/></td>
+                                <td><s:property value="stTanggalMasuk"/></td>
+                                <td><s:property value="stTanggalKeluar"/></td>
+                                <td><s:property value="keteranganSelesai"/></td>
+                                <td><s:property value="namaPelayanan"/></td>
+                                <td align="center">
+                                    <a href="detail_rekammedis.action?idPasien=<s:property value="detailCheckup.idPasien"/>&id=<s:property value="idDetailCheckup"/>">
+                                        <img class="hvr-grow"
+                                             src="<s:url value="/pages/images/icons8-search-25.png"/>"
+                                             style="cursor: pointer;">
+                                    </a>
+                                </td>
+                            </tr>
+                        </s:iterator>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-history">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-md"></i> All History
+                </h4>
+            </div>
+            <div class="modal-body" style="height: 450px;overflow-y: scroll;">
+                <div class="box-body">
+                    <table class="table table-bordered" style="font-size: 12px;">
+                        <thead>
+                        <tr style="font-weight: bold">
+                            <td>Pelayanan</td>
+                            <td>No Transaksi</td>
+                            <td>Waktu</td>
+                            <td>Keterangan</td>
+                            <td>Catatan</td>
+                            <td width="10%" align="center">Action</td>
+                        </tr>
+                        </thead>
+                        <tbody id="body_history">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="modal-temp"></div>
 
+<script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/FisioterapiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenUgdAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenOperasiAction.js"/>'></script>
@@ -789,68 +1066,69 @@
     var isReadRM = true;
     var idDetailCheckup = '<s:property value="detailCheckup.idDetailCheckup"/>';
     var contextPath = '<%= request.getContextPath() %>';
+    var idPasien = $('#id_pasien').val();
 
-    function loadModalRM(jenis){
+    function loadModalRM(jenis) {
         var context = "";
-        if(jenis == "fisioterapi"){
-            context = contextPath+'/pages/modal/modalFisioterapi.jsp';
+        if (jenis == "fisioterapi") {
+            context = contextPath + '/pages/modal/modalFisioterapi.jsp';
         }
-        if(jenis == "operasi"){
-            context = contextPath+'/pages/modal/modalOperasi.jsp';
+        if (jenis == "operasi") {
+            context = contextPath + '/pages/modal/modalOperasi.jsp';
         }
-        if(jenis == "ugd"){
-            context = contextPath+'/pages/modal/modalAsesmenUGD.jsp';
+        if (jenis == "ugd") {
+            context = contextPath + '/pages/modal/modalAsesmenUGD.jsp';
         }
-        if(jenis == "mpp"){
-            context = contextPath+'/pages/modal/modalMpp.jsp';
+        if (jenis == "mpp") {
+            context = contextPath + '/pages/modal/modalMpp.jsp';
         }
-        if(jenis == "hd"){
-            context = contextPath+'/pages/modal/modalHD.jsp';
+        if (jenis == "hd") {
+            context = contextPath + '/pages/modal/modalHD.jsp';
         }
-        if(jenis == "appendecitomy"){
-            context = contextPath+'/pages/modal/modalAppendecitomy.jsp';
+        if (jenis == "appendecitomy") {
+            context = contextPath + '/pages/modal/modalAppendecitomy.jsp';
         }
-        if(jenis == "asesmen_rawat_inap"){
-            context = contextPath+'/pages/modal/modalAsesmenRawatInap.jsp';
+        if (jenis == "asesmen_rawat_inap") {
+            context = contextPath + '/pages/modal/modalAsesmenRawatInap.jsp';
         }
-        if(jenis == "pengkajian_keperawatan"){
-            context = contextPath+'/pages/modal/modalPengkajianKeperawatan.jsp';
+        if (jenis == "pengkajian_keperawatan") {
+            context = contextPath + '/pages/modal/modalPengkajianKeperawatan.jsp';
         }
-        if(jenis == "discharge_planing"){
-            context = contextPath+'/pages/modal/modalPemulanganPasien.jsp';
+        if (jenis == "discharge_planing") {
+            context = contextPath + '/pages/modal/modalPemulanganPasien.jsp';
         }
-        if(jenis == "catatan_integrasi"){
-            context = contextPath+'/pages/modal/modalCatatanTerintegrasi.jsp';
+        if (jenis == "catatan_integrasi") {
+            context = contextPath + '/pages/modal/modalCatatanTerintegrasi.jsp';
         }
-        if(jenis == "early_warning"){
-            context = contextPath+'/pages/modal/modalEWS.jsp';
+        if (jenis == "early_warning") {
+            context = contextPath + '/pages/modal/modalEWS.jsp';
         }
-        if(jenis == "privasi"){
-            context = contextPath+'/pages/modal/modalPrivasiPasien.jsp';
+        if (jenis == "privasi") {
+            context = contextPath + '/pages/modal/modalPrivasiPasien.jsp';
         }
-        if(jenis == "pemberian_obat"){
-            context = contextPath+'/pages/modal/modalPemberianObat.jsp';
+        if (jenis == "pemberian_obat") {
+            context = contextPath + '/pages/modal/modalPemberianObat.jsp';
         }
-        if(jenis == "asuhan"){
-            context = contextPath+'/pages/modal/modalAsuhanKeperawatan.jsp';
+        if (jenis == "asuhan") {
+            context = contextPath + '/pages/modal/modalAsuhanKeperawatan.jsp';
         }
-        if(jenis == "rekonsiliasi"){
-            context = contextPath+'/pages/modal/modalRekonsiliasiObat.jsp';
+        if (jenis == "rekonsiliasi") {
+            context = contextPath + '/pages/modal/modalRekonsiliasiObat.jsp';
         }
-        if(jenis == "edukasi_pasien"){
-            context = contextPath+'/pages/modal/modalEdukasiPasien.jsp';
+        if (jenis == "edukasi_pasien") {
+            context = contextPath + '/pages/modal/modalEdukasiPasien.jsp';
         }
-        if(jenis == "ringkasan_rj"){
-            context = contextPath+'/pages/modal/modalRingkasanRawatJalan.jsp';
+        if (jenis == "ringkasan_rj") {
+            context = contextPath + '/pages/modal/modalRingkasanRawatJalan.jsp';
         }
-        if(jenis == "rencana_gigi"){
-            context = contextPath+'/pages/modal/modalRencanaPerawatanGigi.jsp';
+        if (jenis == "rencana_gigi") {
+            context = contextPath + '/pages/modal/modalRencanaPerawatanGigi.jsp';
         }
-        if(jenis == "ringkasan"){
-            context = contextPath+'/pages/modal/modalRingkasan.jsp';
+        if (jenis == "ringkasan") {
+            context = contextPath + '/pages/modal/modalRingkasan.jsp';
         }
-        if(jenis == "transfer_pasien"){
-            context = contextPath+'/pages/modal/modalTransferPasien.jsp';
+        if (jenis == "transfer_pasien") {
+            context = contextPath + '/pages/modal/modalTransferPasien.jsp';
         }
         $('#modal-temp').load(context, function (res) {
 
@@ -875,10 +1153,185 @@
 
         $('[name=tableRM_length]').html(option);
 
-        if(idDetailCheckup != null && idDetailCheckup != ''){
-            $('[type=search]').val(idDetailCheckup).trigger('input');
-        }
+        // if (idDetailCheckup != null && idDetailCheckup != '') {
+        //     $('[type=search]').val(idDetailCheckup).trigger('input');
+        //     $('#btn-vidio-rm').show();
+        // }
     });
+
+    function viewTelemedic() {
+        $('#modal-telemedic').modal({show: true, backdrop: 'static'});
+        var video = "";
+        var id = 0;
+        CheckupAction.getListVideoRm(idPasien, function (res) {
+            if (res.length > 0) {
+                $.each(res, function (i, item) {
+                    if(item.videoRm != null){
+                        var count = id++;
+                        if(count == 0){
+                            video += '<video id="carousel-'+count+'" class="carousel-img carousel-img-displayed" controls src="'+item.videoRm+'" width="100%" height="420px"></video>';
+                        }else {
+                            video += '<video id="carousel-'+count+'" class="carousel-img carousel-img-noDisplay" controls src="'+item.videoRm+'" width="100%" height="420px"></video>';
+                        }
+                    }
+                });
+                $('#body-video-rm').html(video);
+            }
+        });
+    }
+
+    function viewRiwayat() {
+        $('#modal-riwayat').modal({show: true, backdrop: 'static'});
+    }
+
+    function viewHistory() {
+        $('#modal-history').modal({show: true, backdrop: 'static', keyboard: false});
+        var table = "";
+        CheckupAction.getListHistoryPasien(idPasien, function (res) {
+            if(res.length > 0){
+                $.each(res, function (i, item) {
+                    var btn = "";
+                    var icon = "";
+                    if("resep" == item.keterangan || "laboratorium" == item.keterangan || "radiologi" == item.keterangan){
+                        btn = '<img class="hvr-grow" id="btn_'+item.idRiwayatTindakan+'" \n' +
+                            'onclick="detailTindakan(\''+item.idRiwayatTindakan+'\',\''+item.idTindakan+'\',\''+item.keterangan+'\')"\n' +
+                            'src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">';
+                    }
+                    if(item.idDetailCheckup != null && item.idDetailCheckup != ''){
+                        icon = '<a href="detail_rekammedis.action?idPasien='+idPasien+'&id='+item.idDetailCheckup+'"><i class="fa fa-search"></i></a>';
+                    }
+                    table += '<tr id="row_'+item.idRiwayatTindakan+'">' +
+                        '<td>'+icon+' '+cekDataNull(item.namaPelayanan)+'</td>' +
+                        '<td>'+cekDataNull(item.idDetailCheckup)+'</td>' +
+                        '<td>'+cekDataNull(item.tglTindakan)+'</td>' +
+                        '<td>'+cekDataNull(item.namaTindakan)+'</td>' +
+                        '<td>'+cekDataNull(item.keteranganKeluar)+'</td>' +
+                        '<td align="center">'+btn+'</td>' +
+                        '<tr>';
+                });
+                $('#body_history').html(table);
+            }
+        });
+    }
+
+    function detailTindakan(id, idTindakan, keterangan){
+        if (id && idTindakan && keterangan != '') {
+            var head = "";
+            var body = "";
+            CheckupAction.getListDetailHistoryPasien(idTindakan, keterangan, function (res) {
+                if (res.length > 0) {
+                    $.each(res, function (i, item) {
+                        if(keterangan == "radiologi"){
+                            body += '<tr>' +
+                                '<td>'+cekDataNull(item.namaDetailLab)+'</td>' +
+                                '<td>'+cekDataNull(item.satuan)+'</td>' +
+                                '<td>'+cekDataNull(item.acuan)+'</td>' +
+                                '<td>'+cekDataNull(item.kesimpulan)+'</td>' +
+                                '</tr>';
+                        }
+                        if(keterangan == "laboratorium"){
+                            body += '<tr>' +
+                                '<td>'+cekDataNull(item.namaDetailLab)+'</td>' +
+                                '<td>'+cekDataNull(item.satuan)+'</td>' +
+                                '<td>'+cekDataNull(item.acuan)+'</td>' +
+                                '<td>'+cekDataNull(item.kesimpulan)+'</td>' +
+                                '<td>'+cekDataNull(item.keterangan)+'</td>' +
+                                '</tr>';
+                        }
+                        if(keterangan == "resep"){
+                            body += '<tr>' +
+                                '<td>'+cekDataNull(item.namaObat)+'</td>' +
+                                '<td>'+cekDataNull(item.qty)+' '+cekDataNull(item.satuan)+'</td>' +
+                                '<td>'+cekDataNull(item.keterangan)+'</td>' +
+                                '</tr>';
+                        }
+                    });
+                }
+
+                if(keterangan == "radiologi"){
+                    head = '<tr bgcolor="#ffebcd" style="font-weight: bold">' +
+                        '<td>Pemeriksaan</td>' +
+                        '<td>Satuan</td>' +
+                        '<td>Keterangan Acuan</td>' +
+                        '<td>Hasil</td>' +
+                        '</tr>';
+                }
+                if(keterangan == "laboratorium"){
+                    head = '<tr bgcolor="#ffebcd" style="font-weight: bold">' +
+                        '<td>Pemeriksaan</td>' +
+                        '<td>Satuan</td>' +
+                        '<td>Keterangan Acuan</td>' +
+                        '<td>Hasil</td>' +
+                        '<td>Keterangan</td>' +
+                        '</tr>';
+                }
+                if(keterangan == "resep"){
+                    head = '<tr bgcolor="#ffebcd" style="font-weight: bold">' +
+                        '<td>Nama Obat</td>' +
+                        '<td>Qty</td>' +
+                        '<td>Keterangan</td>' +
+                        '</tr>';
+                }
+
+                var table = '<table style="font-size: 12px" class="table table-bordered">' +
+                    '<thead>' + head + '</thead>' +
+                    '<tbody>' + body + '</tbody>' +
+                    '</table>';
+
+                var newRow = $('<tr id="del_' + id + '"><td colspan="6">' + table + '</td></tr>');
+                newRow.insertAfter($('table').find('#row_' + id));
+                var url = contextPath+'/pages/images/minus-allnew.png';
+                $('#btn_' + id).attr('src', url);
+                $('#btn_' + id).attr('onclick', 'delDetail(\'' + id + '\',\''+idTindakan+'\', \''+keterangan+'\')');
+            });
+        }
+    }
+
+    function delDetail(id, idTindakan, keterangan){
+        $('#del_' + id).remove();
+        var url = contextPath+'/pages/images/icons8-plus-25.png';
+        $('#btn_' + id).attr('src', url);
+        $('#btn_' + id).attr('onclick', 'detailTindakan(\'' + id + '\', \''+idTindakan+'\', \''+keterangan+'\')');
+    }
+
+    function cekDataNull(item){
+        var data = "";
+        if(item != null && item != ''){
+            data = item;
+        }
+        return data;
+    }
+
+    function carouselSwipe(id) {
+
+        var currentImg = document.getElementsByClassName('carousel-img-displayed')[0].id.substring(9);
+        var newImg = parseInt(currentImg);
+
+        if (id == 'carousel-arrow-next') {
+            newImg++;
+            if (newImg >= document.getElementsByClassName('carousel-img').length) {
+                newImg = 0;
+            }
+        } else if (id == 'carousel-arrow-prev') {
+            newImg--;
+            if (newImg<0) {
+                newImg = document.getElementsByClassName('carousel-img').length-1;
+            }
+        }
+
+        document.getElementById('carousel-'+currentImg).className = 'carousel-img carousel-img-hidden';
+        var displayedCarousel = document.getElementById('carousel-'+newImg);
+        displayedCarousel.className = 'carousel-img carousel-img-hidden';
+
+        setTimeout(function() {
+            displayedCarousel.className = 'carousel-img carousel-img-displayed';
+        },20);
+
+        setTimeout(function() {
+            document.getElementById('carousel-'+currentImg).className = 'carousel-img carousel-img-noDisplay';
+        },520);
+
+    }
 
 </script>
 

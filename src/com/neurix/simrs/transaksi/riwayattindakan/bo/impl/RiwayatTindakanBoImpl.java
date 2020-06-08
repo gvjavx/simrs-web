@@ -1,6 +1,9 @@
 package com.neurix.simrs.transaksi.riwayattindakan.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.transaksi.paketperiksa.dao.ItemPaketDao;
+import com.neurix.simrs.transaksi.paketperiksa.model.ItemPaket;
+import com.neurix.simrs.transaksi.paketperiksa.model.MtSimrsItemPaketEntity;
 import com.neurix.simrs.transaksi.permintaanresep.model.ImSimrsPermintaanResepEntity;
 import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
 import com.neurix.simrs.transaksi.riwayattindakan.dao.RiwayatTindakanDao;
@@ -14,6 +17,7 @@ import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +28,12 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
 
     private RiwayatTindakanDao riwayatTindakanDao;
     private TindakanTransitorisDao tindakanTransitorisDao;
+    private ItemPaketDao itemPaketDao;
+
+    public void setItemPaketDao(ItemPaketDao itemPaketDao) {
+        this.itemPaketDao = itemPaketDao;
+    }
+
     private static transient Logger logger = Logger.getLogger(RiwayatTindakanBoImpl.class);
 
     public void setRiwayatTindakanDao(RiwayatTindakanDao riwayatTindakanDao) {
@@ -89,6 +99,9 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
             entity.setLastUpdate(bean.getLastUpdate());
             entity.setLastUpdateWho(bean.getLastUpdateWho());
             entity.setTanggalTindakan(bean.getTanggalTindakan());
+            if(bean.getIsKamar() != null && !"".equalsIgnoreCase(bean.getIsKamar())){
+                entity.setIsKamar(bean.getIsKamar());
+            }
 
             try {
                 riwayatTindakanDao.addAndSave(entity);
@@ -308,5 +321,32 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
     @Override
     public List<String> getListKeteranganByIdDetailCheckup(String idDetailCheckup) throws GeneralBOException {
         return riwayatTindakanDao.listOfKeteranganExistByIdDetailCheckup(idDetailCheckup);
+    }
+
+    @Override
+    public MtSimrsItemPaketEntity getItemPaketEntity(String idPaket, String idItem) throws GeneralBOException{
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_paket", idPaket);
+        hsCriteria.put("id_item", idItem);
+
+        List<MtSimrsItemPaketEntity> itemPaketEntities = new ArrayList<>();
+        try {
+            itemPaketEntities = itemPaketDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[CheckupDetailAction.getItemPaketEntity] ERROR. ", e);
+            throw new GeneralBOException("[CheckupDetailAction.getItemPaketEntity] ERROR. "+ e.getMessage());
+        }
+
+        if (itemPaketEntities.size() > 0){
+            return itemPaketEntities.get(0);
+        }
+
+        return null;
+    }
+
+    @Override
+    public ItemPaket getTarifPaketLab(String idPaket, String idLab) throws GeneralBOException{
+        return itemPaketDao.getSumTarifPaketLab(idPaket, idLab);
     }
 }

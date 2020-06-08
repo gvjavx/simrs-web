@@ -361,6 +361,62 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-ttd">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-pencil"></i> Tanda Tangan
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_ttd">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_ttd"></p>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-7">
+                            <div class="form-group" style="padding-top: 10px; padding-bottom: 10px">
+                                <div class="col-md-1">
+                                    <input type="color" style="margin-left: -6px; margin-top: -8px" class="js-color-picker  color-picker pull-left">
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="range" style="margin-top: -8px" class="js-line-range" min="1" max="72" value="1">
+                                </div>
+                                <div class="col-md-2">
+                                    <div style="margin-top: -8px;" class="js-range-value">1 px</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 10px">
+                    <div class="col-md-12">
+                        <div class="col-md-6">
+                            <b style="margin-left: 8px">Tanda Tangan Penanggun Jawab</b>
+                            <canvas class="ttd-paint-canvas" id="ttd_penanggung_jawab" width="380" height="300" onmouseover="paintTtd(this.id)"></canvas>
+                            <button style="margin-left: 8px" type="button" class="btn btn-danger" onclick="removePaint('ttd_penanggung_jawab')"><i class="fa fa-trash"></i> Clear
+                            </button>
+                        </div>
+                        <div class="col-md-6">
+                            <b style="margin-left: 8px">Tanda Tangan Dokter</b>
+                            <canvas class="ttd-paint-canvas" id="ttd_dokter" width="380" height="300" onmouseover="paintTtd(this.id)"></canvas>
+                            <button style="margin-left: 8px" type="button" class="btn btn-danger" onclick="removePaint('ttd_dokter')"><i class="fa fa-trash"></i> Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button class="btn btn-success pull-right" onclick="uploadCanvas()"><i class="fa fa-check"></i> Save</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
@@ -398,6 +454,11 @@
         var ref = $('#close_pos').val();
         if(ref == 1){
             window.location.href = 'initForm_radiologi.action';
+        }
+        if(ref == 2){
+            $('html, body').animate({
+                scrollTop: $('#pos_lab').offset().top
+            }, 2000);
         }
     }
 
@@ -444,6 +505,8 @@
                         $('#save_ket').show();
                         $('#load_ket').hide();
                         $('#info_dialog').dialog('open');
+                        $('#close_pos').val(2);
+                        $('body').scrollTop(0);
                         getIdRadiologi();
                     } else {
                         $('#warning_par').show().fadeOut(5000);
@@ -521,6 +584,7 @@
                     $('#load_ket').hide();
                     $('#info_dialog').dialog('open');
                     $('#close_pos').val(1);
+                    $('body').scrollTop(0);
                 }else{
                     $('#warning_rad').show().fadeOut(5000);
                     $('#msg_rad').text(res.message);

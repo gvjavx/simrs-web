@@ -281,7 +281,7 @@ public class KodeRekeningAction extends BaseMasterAction {
         return listOfsearchKodeRekening;
     }
 
-    public String saveEdit(String id, String kodeRekeningName,String coa,String tipeEdit){
+    public String saveEdit(String id, String kodeRekeningName,String coa,String tipeEdit, String tipeRekening, String flagMaster, String flagDivisi){
         logger.info("[KodeRekeningAction.saveEdit] start process >>>");
         String status="";
         String userLogin = CommonUtil.userLogin();
@@ -290,6 +290,9 @@ public class KodeRekeningAction extends BaseMasterAction {
         edit.setRekeningId(id);
         edit.setKodeRekening(coa);
         edit.setNamaKodeRekening(kodeRekeningName);
+        edit.setTipeRekeningId(tipeRekening == null ? "" : tipeRekening);
+        edit.setFlagMaster(flagMaster == null ? "" : flagMaster);
+        edit.setFlagDivisi(flagDivisi == null ? "" : flagDivisi);
         edit.setLastUpdateWho(userLogin);
         edit.setLastUpdate(updateTime);
         edit.setAction("U");

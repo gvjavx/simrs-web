@@ -5,6 +5,8 @@ import com.neurix.akuntansi.master.master.dao.MasterDao;
 import com.neurix.akuntansi.master.master.model.ImMasterEntity;
 import com.neurix.akuntansi.master.master.model.Master;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.hris.master.biodata.dao.BiodataDao;
+import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.simrs.master.dokter.dao.DokterDao;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
@@ -31,6 +33,15 @@ public class MasterBoImpl implements MasterBo {
     private MasterDao masterDao;
     private DokterDao dokterDao;
     private PasienDao pasienDao;
+    private BiodataDao biodataDao;
+
+    public BiodataDao getBiodataDao() {
+        return biodataDao;
+    }
+
+    public void setBiodataDao(BiodataDao biodataDao) {
+        this.biodataDao = biodataDao;
+    }
 
     public PasienDao getPasienDao() {
         return pasienDao;
@@ -216,6 +227,7 @@ public class MasterBoImpl implements MasterBo {
         List<ImMasterEntity> imMasterEntityList = null;
         List<ImSimrsDokterEntity> imSimrsDokterEntityList= null;
         List<ImSimrsPasienEntity> imSimrsPasienEntityList= null;
+        List<ImBiodataEntity> imBiodataEntityList= null;
 
         if ("dokter".equalsIgnoreCase(tipeMaster)){
             try {
@@ -250,6 +262,24 @@ public class MasterBoImpl implements MasterBo {
                     returnMaster = new Master();
                     returnMaster.setNomorVendor(pasienEntity.getIdPasien());
                     returnMaster.setNama(pasienEntity.getNama());
+                    listOfResult.add(returnMaster);
+                }
+            }
+        }else if ("karyawan".equalsIgnoreCase(tipeMaster)){
+            try {
+                imBiodataEntityList = biodataDao.getBiodataListByLike(key);
+            } catch (HibernateException e) {
+                logger.error("[MasterBoImpl.typeaheadMasterPembayaran] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+            }
+
+            if(imBiodataEntityList != null){
+                Master returnMaster;
+                // Looping from dao to object and save in collection
+                for(ImBiodataEntity biodataEntity: imBiodataEntityList){
+                    returnMaster = new Master();
+                    returnMaster.setNomorVendor(biodataEntity.getNip());
+                    returnMaster.setNama(biodataEntity.getNamaPegawai());
                     listOfResult.add(returnMaster);
                 }
             }

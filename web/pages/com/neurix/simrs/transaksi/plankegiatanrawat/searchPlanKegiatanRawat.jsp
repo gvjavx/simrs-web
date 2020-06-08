@@ -1107,6 +1107,7 @@
     var listOfCairan = [];
     var listOfParenteral = [];
     var listOfNonParenteral = [];
+    var pathImages = '<%= request.getContextPath() %>';
 
     function formatDate(date) {
         var d = new Date(date),

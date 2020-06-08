@@ -4,6 +4,8 @@ import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
 import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.transaksi.budgeting.model.Budgeting;
 import com.neurix.akuntansi.transaksi.budgeting.model.ItAkunBudgetingEntity;
+import com.neurix.akuntansi.transaksi.saldoakhir.model.SaldoAkhir;
+import com.neurix.akuntansi.transaksi.tutupperiod.model.TutupPeriod;
 import com.neurix.common.dao.GenericDao;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -66,20 +68,25 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
         return criteria.list();
     }
 
-    public BigDecimal getSumNilaiByStatus(String rekeningId, String branchId, String tahun, String status){
+    public BigDecimal getSumNilaiByStatus(String rekeningId, String branchId, String tahun, String status, String approveFlag){
+
+        if (approveFlag != null && !"".equalsIgnoreCase(approveFlag)){
+            approveFlag = "AND approve_flag = '"+approveFlag+"' \n";
+        }
+
         String SQL = "SELECT rekening_id, SUM(nilai_total) \n" +
                 "FROM it_akun_budgeting\n" +
                 "WHERE rekening_id = :rekening \n" +
                 "AND branch_id = :unit \n" +
                 "AND tahun = :tahun \n" +
-                "AND status LIKE :status \n" +
+                "AND status LIKE :status \n" + approveFlag +
                 "GROUP BY rekening_id";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("rekening", rekeningId)
                 .setParameter("unit", branchId)
                 .setParameter("tahun", tahun)
-                .setParameter("status", "%"+status)
+                .setParameter("status", "%" + status)
                 .list();
 
         if (results.size()>0){
@@ -155,5 +162,61 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
         }
 
         return budgeting;
+    }
+
+    public String getNoSebelumnya(String tahun, String branchId, String rekeningId, String status){
+        String SQL = "SELECT no_budgeting, status, rekening_id\n" +
+                "FROM it_akun_budgeting\n" +
+                "WHERE tahun = :tahun\n" +
+                "AND branch_id = :unit\n" +
+                "AND rekening_id = :rekening\n" +
+                "AND status ILIKE :status";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("tahun", tahun)
+                .setParameter("unit", branchId)
+                .setParameter("rekening", rekeningId)
+                .setParameter("status", "%" + status)
+                .list();
+
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                return obj[0].toString();
+            }
+        }
+
+        return "";
+    }
+
+    public SaldoAkhir getSaldoAkhirLastPeriod(String tahun, String rekeningId, String branchId){
+
+        String SQL = "SELECT rekening_id, periode FROM it_akun_saldo_akhir WHERE periode LIKE :tahun\n" +
+                "AND rekening_id = :rekeningId  \n" +
+                "AND branch_id = :unit\n" +
+                "ORDER BY periode DESC LIMIT 1";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("rekeningId", rekeningId)
+                .setParameter("tahun", "%"+tahun)
+                .setParameter("unit", branchId)
+                .list();
+
+        if (results.size() > 0){
+            for (Object[] obj : results){
+
+                SaldoAkhir saldoAkhir = new SaldoAkhir();
+                saldoAkhir.setRekeningId(obj[0].toString());
+                saldoAkhir.setPeriode(obj[1].toString());
+
+                String[] arrSt = saldoAkhir.getPeriode().split("-",2);
+                if (arrSt.length > 0){
+                    saldoAkhir.setBulan(Integer.valueOf(arrSt[0].toString()));
+                }
+
+                return saldoAkhir;
+            }
+        }
+
+        return null;
     }
 }

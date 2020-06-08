@@ -42,6 +42,10 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_AREA_OPERASI = "/upload/penanda_area_operasi/";
     public final static String RESOURCE_PATH_TTD_RM = "/upload/ttd_rm/";
     public final static String RESOURCE_PATH_DOC_RM = "/upload/cetakan_rm/";
+    public final static String RESOURCE_PATH_VIDEO_RM = "/upload/video_rm/";
+    public final static String RESOURCE_PATH_PAYROLL = "/upload/payroll/";
+
+    public final static String RESOURCE_PATH_TTD_PETUGAS = "/upload/ttd_petugas/";
 
     public final static String RESOURCE_PATH_PHOTO_PROFILE = "/upload/profile/";
 
@@ -63,7 +67,8 @@ public class CommonConstant {
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "C:\\Users\\user\\Pictures";
 
     public final static String EXTERNAL_IMG_URI = ServletActionContext.getRequest().getContextPath()+"/images";
-    public final static String EXTERNAL_IMG_URI_PROFILE = ServletActionContext.getRequest().getContextPath()+"/images/profile";
+    public final static String EXTERNAL_IMG_URI_PROFILE = ServletActionContext.getRequest().getContextPath()+"/images/profile/";
+//    public final static String EXTERNAL_IMG_URI_PROFILE = ServletActionContext.getRequest().getContextPath()+"/profile/";
     public final static String RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY = CommonUtil.getUploadFolderValue();
 
     public final static String LOGOUT_URL = "/j_spring_security_logout";
@@ -82,7 +87,7 @@ public class CommonConstant {
     public final static String URL_IMAGE_LOGO_REPORT = CommonUtil.getPropertyParams("base.dir")+"pages/images/logo-nmu.png";
     public final static String URL_LOGO_REPORT = CommonUtil.getPropertyParams("base.dir")+"pages/images/";
     public final static String IMAGE_LOGO_KP = "KP.png";
-    public final static String RESOURCE_DOCUMENT_PAYROLL = CommonUtil.getPropertyParams("resource.dir")+"mnt/documents/";
+    public final static String RESOURCE_DOCUMENT_PAYROLL = CommonUtil.getPropertyParams("upload.folder")+CommonConstant.RESOURCE_PATH_PAYROLL;
 
     public final static String REPORT_PAYROLL = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayroll3.jrxml";
     public final static String REPORT_PAYROLL_THR = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollThrBranch3.jrxml";
@@ -137,12 +142,23 @@ public class CommonConstant {
     public final static String BRANCH_RS03 = "RS03";
 
     public static final String RESOURCE_IMAGE_TTD = CommonUtil.getPropertyParams("upload.folder");
-//    public static final String RESOURCE_IMAGE_TTD = "C:/Users/pc001/Pictures/";
+    //    public static final String RESOURCE_IMAGE_TTD = "C:/Users/pc001/Pictures/";
 //    public static final String RESOURCE_IMAGE_TTD = CommonUtil.getPropertyParams("resource.dir")+"mnt/images/";
     public final static String IMAGE_TYPE = ".png";
 
     public final static String URL_IMG = "/images/";
     public final static String URL_IMG_RM = "rekam_medic";
 
+    public static final String AGORA_LIB = "/opt/tomcat/webapps/simrs/WEB-INF/lib";
+
+    public final static String AGORA_DIR = "/upload/lib/agora/";
+    public static final String AOGRA_REC_DIR = "/home/gondok/workspace/record ";
+    public static final String APP_ID = "18016b16da294c7ab3255c5c792384b6";
+
+    //AKUNTANSI
+    public final static String COA_PAYROLL = CommonUtil.getPropertyParams("coa.bank.payroll");
+    public final static String COA_RK_GATOEL = CommonUtil.getPropertyParams("coa.rk.gatoel");
+    public final static String ID_KANPUS = "KP";
+    public final static String MASTER_PAJAK_OBAT = "03.00";
 
 }

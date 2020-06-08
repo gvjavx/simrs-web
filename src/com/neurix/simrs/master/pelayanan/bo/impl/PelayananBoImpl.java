@@ -100,11 +100,16 @@ public class PelayananBoImpl implements PelayananBo{
     }
 
     @Override
-    public List<Pelayanan> getListApotek(String branch) throws GeneralBOException {
+    public List<Pelayanan> getListApotek(String branch, String tipeApotek) throws GeneralBOException {
+
+        String tipe = "apotek%";
+        if (!"".equalsIgnoreCase(tipeApotek) && tipeApotek != null){
+            tipe = tipeApotek;
+        }
 
         List<Pelayanan> listApotek = new ArrayList<>();
         try {
-            listApotek =  pelayananDao.getListApotek(branch);
+            listApotek =  pelayananDao.getListApotek(branch, tipe);
         }catch (HibernateException e){
             logger.error("[pelayananBoImpl.getListAllPelayanan] Error get pelayanan data apotek "+e.getMessage());
         }
@@ -507,5 +512,10 @@ public class PelayananBoImpl implements PelayananBo{
             status="notExits";
         }
         return status;
+    }
+
+    @Override
+    public List<Pelayanan> getListPelayananFarmasi(String branchId) throws GeneralBOException {
+        return pelayananDao.getListPelayananFarmasi(branchId);
     }
 }

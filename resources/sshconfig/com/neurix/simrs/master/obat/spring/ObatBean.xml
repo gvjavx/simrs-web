@@ -9,10 +9,12 @@
           <!--p:jenisObatBoProxy-ref="jenisObatBoProxy"/>-->
 
     <bean id="permintaanObatController" class="com.neurix.simrs.mobileapi.PermintaanObatController"
-    p:obatBoProxy-ref="obatBo"/>
+          p:obatBoProxy-ref="obatBo"
+    />
 
     <bean id="transaksiApotekController" class="com.neurix.simrs.mobileapi.PermintaanObatController"
-          p:obatBoProxy-ref="obatBo"/>
+          p:obatBoProxy-ref="obatBo"
+    />
 
     <bean id="obatBo" class="com.neurix.simrs.master.obat.bo.impl.ObatBoImpl"
           p:obatDao-ref="obatDao"
@@ -25,6 +27,7 @@
           p:approvalTransaksiObatDao-ref="approvalTransaksiObatDao"
           p:permintaanVendorDao-ref="permintaanVendorDao"
           p:transaksiObatDetailDao-ref="transaksiObatDetailDao"
+          p:transaksiStokDao-ref="transaksiStokDao"
     />
 
     <bean id="obatBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

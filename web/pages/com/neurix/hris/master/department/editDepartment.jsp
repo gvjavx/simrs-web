@@ -22,7 +22,7 @@
             var nameDepartment    = document.getElementById("departmentName1").value;
 
 
-
+            console.log("Test");
             if (nameDepartment != '' ) {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;

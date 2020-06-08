@@ -7,6 +7,7 @@ import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.hargaobat.model.HargaObat;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
+import com.neurix.simrs.transaksi.riwayatbarang.model.TransaksiStok;
 
 import java.util.List;
 
@@ -39,4 +40,6 @@ public interface ObatBo{
     public List<Obat> detailReturObat(String idRetur) throws GeneralBOException;
     public List<Obat> searchObatByVendor(String idVendor, String branchId) throws GeneralBOException;
     public ImSimrsObatEntity getObatEntityByKodeBarang(String id) throws GeneralBOException;
+    public List<TransaksiStok> getListReporTransaksiObat(String idPelayanan, String tahun, String bulan, String idObat) throws GeneralBOException;
+    public void saveTransaksiStokOpname(Obat bean) throws GeneralBOException;
 }

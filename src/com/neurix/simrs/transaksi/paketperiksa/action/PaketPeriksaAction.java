@@ -127,18 +127,21 @@ public class PaketPeriksaAction extends BaseTransactionAction {
         JSONArray json = new JSONArray(jsonString);
         List<MtSimrsItemPaketEntity> itemPaketEntities = new ArrayList<>();
         MtSimrsItemPaketEntity itemPaketEntity;
+        BigInteger harga = new BigInteger(String.valueOf(0));
         for (int i = 0; i < json.length(); i++) {
             JSONObject obj = json.getJSONObject(i);
             itemPaketEntity = new MtSimrsItemPaketEntity();
             itemPaketEntity.setIdItem(obj.getString("id_item"));
             itemPaketEntity.setIdKategoriItem(obj.getString("kategori_item"));
             itemPaketEntity.setJenisItem(obj.getString("jenis_item"));
+            itemPaketEntity.setHarga(new BigInteger(obj.get("tarif").toString()));
+            harga = harga.add(itemPaketEntity.getHarga());
             itemPaketEntities.add(itemPaketEntity);
         }
 
         MtSimrsPaketEntity paketPeriksa = new MtSimrsPaketEntity();
         paketPeriksa.setNamaPaket(namaPaket);
-        paketPeriksa.setTarif(tarifPaket);
+        paketPeriksa.setTarif(new BigDecimal(harga));
         paketPeriksa.setFlag("Y");
         paketPeriksa.setAction("C");
         paketPeriksa.setBranchId(CommonUtil.userBranchLogin());

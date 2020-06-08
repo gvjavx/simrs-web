@@ -60,6 +60,15 @@
                 if (nilai == '') {
                     msg += 'Field <strong>Nilai</strong> is required.' + '<br/>';
                 }
+                if (sankhus == '') {
+                    msg += 'Field <strong>Santunan Khusus </strong> is required.' + '<br/>';
+                }
+                if (tunjFungsional == '') {
+                    msg += 'Field <strong>Tunj. Fungsional</strong> is required.' + '<br/>';
+                }
+                if (tunjTambahan == '') {
+                    msg += 'Field <strong>Tunj. Tambahan</strong> is required.' + '<br/>';
+                }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 

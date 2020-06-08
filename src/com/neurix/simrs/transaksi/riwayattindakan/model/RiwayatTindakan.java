@@ -39,8 +39,15 @@ public class RiwayatTindakan extends BaseModel {
     private String notResep;
 
     private BigDecimal ppnObat;
+    private String isKamar;
 
+    public String getIsKamar() {
+        return isKamar;
+    }
 
+    public void setIsKamar(String isKamar) {
+        this.isKamar = isKamar;
+    }
 
     public String getRekanan() {
         return rekanan;

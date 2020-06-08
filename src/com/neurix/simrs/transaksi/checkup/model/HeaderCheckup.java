@@ -120,6 +120,144 @@ public class HeaderCheckup {
     private Date tglCheckup;
     private String keterangan;
     private String isLaka;
+    private String flagCall;
+
+    private Timestamp tglKeluar;
+    private String tglTindakan;
+    private String idTindakan;
+    private String namaTindakan;
+    private String idRiwayatTindakan;
+
+    private String acuan;
+    private String kesimpulan;
+    private String satuan;
+    private String qty;
+    private String namaObat;
+    private String namaDetailLab;
+    private String idDetailTindakan;
+
+    public String getIdDetailTindakan() {
+        return idDetailTindakan;
+    }
+
+    public void setIdDetailTindakan(String idDetailTindakan) {
+        this.idDetailTindakan = idDetailTindakan;
+    }
+
+    public String getNamaDetailLab() {
+        return namaDetailLab;
+    }
+
+    public void setNamaDetailLab(String namaDetailLab) {
+        this.namaDetailLab = namaDetailLab;
+    }
+
+    public String getAcuan() {
+        return acuan;
+    }
+
+    public void setAcuan(String acuan) {
+        this.acuan = acuan;
+    }
+
+    public String getKesimpulan() {
+        return kesimpulan;
+    }
+
+    public void setKesimpulan(String kesimpulan) {
+        this.kesimpulan = kesimpulan;
+    }
+
+    public String getSatuan() {
+        return satuan;
+    }
+
+    public void setSatuan(String satuan) {
+        this.satuan = satuan;
+    }
+
+    public String getQty() {
+        return qty;
+    }
+
+    public void setQty(String qty) {
+        this.qty = qty;
+    }
+
+    public String getNamaObat() {
+        return namaObat;
+    }
+
+    public void setNamaObat(String namaObat) {
+        this.namaObat = namaObat;
+    }
+
+    public String getIdRiwayatTindakan() {
+        return idRiwayatTindakan;
+    }
+
+    public void setIdRiwayatTindakan(String idRiwayatTindakan) {
+        this.idRiwayatTindakan = idRiwayatTindakan;
+    }
+
+    public String getNamaTindakan() {
+        return namaTindakan;
+    }
+
+    public void setNamaTindakan(String namaTindakan) {
+        this.namaTindakan = namaTindakan;
+    }
+
+    public String getTglTindakan() {
+        return tglTindakan;
+    }
+
+    public void setTglTindakan(String tglTindakan) {
+        this.tglTindakan = tglTindakan;
+    }
+
+    public String getIdTindakan() {
+        return idTindakan;
+    }
+
+    public void setIdTindakan(String idTindakan) {
+        this.idTindakan = idTindakan;
+    }
+
+    public Timestamp getTglKeluar() {
+        return tglKeluar;
+    }
+
+    public void setTglKeluar(Timestamp tglKeluar) {
+        this.tglKeluar = tglKeluar;
+    }
+
+    public String getFlagCall() {
+        return flagCall;
+    }
+
+    public void setFlagCall(String flagCall) {
+        this.flagCall = flagCall;
+    }
+
+    private String belumBayarUangMuka;
+    private Integer noAntrian;
+
+    public Integer getNoAntrian() {
+        return noAntrian;
+    }
+
+    public void setNoAntrian(Integer noAntrian) {
+        this.noAntrian = noAntrian;
+    }
+
+    public String getBelumBayarUangMuka() {
+        return belumBayarUangMuka;
+    }
+
+    public void setBelumBayarUangMuka(String belumBayarUangMuka) {
+        this.belumBayarUangMuka = belumBayarUangMuka;
+    }
 
     public String getIsLaka() {
         return isLaka;
@@ -436,6 +574,16 @@ public class HeaderCheckup {
     private String noPpkRujukan;
     private String tglRujukan;
     private String klaimBpjsFlag;
+
+    private String videoRm;
+
+    public String getVideoRm() {
+        return videoRm;
+    }
+
+    public void setVideoRm(String videoRm) {
+        this.videoRm = videoRm;
+    }
 
     public String getKlaimBpjsFlag() {
         return klaimBpjsFlag;

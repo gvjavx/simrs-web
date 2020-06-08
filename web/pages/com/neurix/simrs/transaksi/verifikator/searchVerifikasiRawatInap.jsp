@@ -36,7 +36,6 @@
     <section class="content-header">
         <h1>
             Verifikasi Tindakan Rawat Inap
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -894,6 +893,7 @@
                     $('#save_verif').show();
                     $('#modal-detail-pasien').modal('hide');
                     $('#info_dialog').dialog('open');
+                    $('body').scrollTop(0);
                 }else{
                     $('#load_verif').hide();
                     $('#save_verif').show();
@@ -1098,6 +1098,7 @@
                 $('#save_fin').show();
                 $('#modal-final-claim').modal('hide');
                 $('#info_dialog').dialog('open');
+                $('body').scrollTop(0);
             }else{
                 $('#load_fin').hide();
                 $('#save_fin').show();

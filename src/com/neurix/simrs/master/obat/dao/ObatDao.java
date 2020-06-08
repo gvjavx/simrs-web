@@ -700,12 +700,46 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     obat.setIdObat(obj[0] == null ? "" : obj[0].toString());
                     obat.setNamaObat(obj[1] == null ? "" : obj[1].toString());
                     obat.setIdPabrik(obj[2] == null ? "" : obj[2].toString());
+                    Obat obt = getEntityObatById(obj[0].toString());
+                    obat.setLembarPerBox(obt.getLembarPerBox());
+                    obat.setBijiPerLembar(obt.getBijiPerLembar());
+                    obat.setFlagKronis(obt.getFlagKronis());
+                    obat.setFlagBpjs(obt.getFlagBpjs());
                     obatList.add(obat);
                 }
             }
         }
 
         return obatList;
+    }
+
+    public Obat getEntityObatById(String idObat){
+        Obat obat = new Obat();
+        String SQL = "SELECT \n" +
+                "id_obat,\n" +
+                "nama_obat,\n" +
+                "lembar_per_box,\n" +
+                "biji_per_lembar,\n" +
+                "flag_kronis,\n" +
+                "flag_bpjs\n" +
+                "FROM im_simrs_obat\n" +
+                "WHERE id_obat = :id\n" +
+                "ORDER BY created_date DESC\n" +
+                "LIMIT 1";
+        List<Object[]> result = new ArrayList<>();
+        result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", idObat)
+                .list();
+        if(result.size() > 0){
+            Object[] obj = result.get(0);
+            obat.setIdObat(obj[0] == null ? "" : obj[0].toString());
+            obat.setNamaObat(obj[1] == null ? "" : obj[1].toString());
+            obat.setLembarPerBox(obj[2] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(String.valueOf(obj[2])));
+            obat.setBijiPerLembar(obj[3] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(String.valueOf(obj[3])));
+            obat.setFlagKronis(obj[4] == null ? "" : obj[4].toString());
+            obat.setFlagBpjs(obj[5] == null ? "" : obj[5].toString());
+        }
+        return obat;
     }
 
     public Obat getObatByIdBarang(String idBarang, String branchId) {

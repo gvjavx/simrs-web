@@ -309,7 +309,7 @@ public class ObatPoliAction extends BaseMasterAction {
             obatPoli.setIdApprovalObat(idApproval);
             obatPoli.setIdPermintaanObatPoli(idPermintaan);
             obatPoli.setBranchId(branchId);
-            obatPoli.setIdPelayanan(idPelayanan);
+//            obatPoli.setIdPelayanan(idPelayanan);
             obatPoli.setLastUpdate(updateTime);
             obatPoli.setLastUpdateWho(userLogin);
             obatPoli.setAction("U");
@@ -318,6 +318,9 @@ public class ObatPoliAction extends BaseMasterAction {
             String pelayananTujuan = "";
             MtSimrsPermintaanObatPoliEntity permintaanObatPoliEntity = obatPoliBo.getEntityPermintaanObatPoliById(idPermintaan);
             if (permintaanObatPoliEntity != null){
+                obatPoli.setIdPelayanan(permintaanObatPoliEntity.getIdPelayanan());
+                obatPoli.setTujuanPelayanan(permintaanObatPoliEntity.getTujuanPelayanan());
+
                 ImSimrsPelayananEntity pelayananPengirim = pelayananBo.getPelayananById(permintaanObatPoliEntity.getTujuanPelayanan());
                 if (pelayananPengirim != null){
                     pelayananAsal = pelayananPengirim.getNamaPelayanan();

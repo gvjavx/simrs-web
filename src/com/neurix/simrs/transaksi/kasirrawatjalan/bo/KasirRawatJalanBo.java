@@ -36,4 +36,6 @@ public interface KasirRawatJalanBo {
     Map setMappingJurnalFpk(KlaimFpkDTO data,List<KlaimFpkDTO> listOfKlaim);
 
     void saveFpk(KlaimFpkDTO klaimFpkDTO, List<KlaimFpkDTO> listData) throws GeneralBOException;
+    public ItSimrsUangMukaPendaftaranEntity getUangMukaEntityById(String id) throws GeneralBOException;
+
 }

@@ -68,6 +68,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -106,6 +107,7 @@ public class CheckupController implements ModelDriven<Object> {
 
     private File fileUploadTtd;
     private String fileNameTtd;
+    private String base64Ttd;
 
     private String idPelayanan;
     private String idObat;
@@ -129,6 +131,33 @@ public class CheckupController implements ModelDriven<Object> {
     private String metodeBayar;
     private String uangMuka;
     private String jenisBayar;
+
+    private String flagCall;
+    private String jenisResep;
+
+    public String getJenisResep() {
+        return jenisResep;
+    }
+
+    public void setJenisResep(String jenisResep) {
+        this.jenisResep = jenisResep;
+    }
+
+    public String getFlagCall() {
+        return flagCall;
+    }
+
+    public void setFlagCall(String flagCall) {
+        this.flagCall = flagCall;
+    }
+
+    public String getBase64Ttd() {
+        return base64Ttd;
+    }
+
+    public void setBase64Ttd(String base64Ttd) {
+        this.base64Ttd = base64Ttd;
+    }
 
     public CrudResponse getCrudResponse() {
         return crudResponse;
@@ -566,6 +595,7 @@ public class CheckupController implements ModelDriven<Object> {
                headerDetailCheckupMobile.setUrlTtd(result.getUrlTtd());
                headerDetailCheckupMobile.setIdDokter(result.getIdDokter());
                headerDetailCheckupMobile.setIdPelayanan(result.getIdPelayanan());
+               headerDetailCheckupMobile.setFlagCall(result.getFlagCall());
 
                listOfHeaderCheckup.add(headerDetailCheckupMobile);
             }
@@ -684,18 +714,22 @@ public class CheckupController implements ModelDriven<Object> {
             bean.setCreatedWho(username);
             bean.setLastUpdateWho(username);
             bean.setLastUpdate(now);
+            bean.setJenisResep(jenisResep);
+//            bean.setTtdDokter(base64Ttd);
 
             List<TransaksiObatDetail> list = new ArrayList<>();
             JSONArray jsonArray;
 
+
             if (fileUploadTtd != null) {
                 if(fileUploadTtd.length() > 0 && fileUploadTtd.length() <= 15728640) {
-                    Random random = new Random( System.currentTimeMillis() );
-                    String fileNamePhoto = "TTD_DOKTER_" + random.nextInt(1000000) + "_" + CommonConstant.IMAGE_TYPE;
+                    String fileNamePhoto =  idDokter+"-"+idDetailCheckup+"-"+dateFormater("MM")+dateFormater("yy")+".png";
+
                     bean.setTtdDokter(fileNamePhoto);
-                    File fileCreate = new File(CommonConstant.RESOURCE_IMAGE_TTD, fileNamePhoto);
+                    File fileCreate = new File(CommonUtil.getPropertyParams("upload.folder")+CommonConstant.RESOURCE_PATH_TTD_DOKTER, fileNamePhoto);
                     try {
                         FileUtils.copyFile(fileUploadTtd, fileCreate);
+                        bean.setTtdDokter(fileNamePhoto);
                     }catch (IOException e){
                         e.printStackTrace();
                     }
@@ -859,10 +893,22 @@ public class CheckupController implements ModelDriven<Object> {
                     listOfDokter.add(dokterMobile);
                 }
             }
+        } else if (action.equalsIgnoreCase("editFlagCall")) {
+            try {
+                checkupDetailBoProxy.editFlagCall(idDetailCheckup, flagCall);
+            } catch (GeneralBOException e) {
+                logger.error("[DokterController.create] Error, " + e.getMessage());
+            }
         }
 
         logger.info("[CheckupController.create] end process POST / <<<");
         return new DefaultHttpHeaders("create").disableCaching();
+    }
+
+    private String dateFormater(String type) {
+        java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
+        DateFormat df = new SimpleDateFormat(type);
+        return df.format(date);
     }
 
     private void updateFlagPeriksaAntrianOnline(String idDetailCheckup) {

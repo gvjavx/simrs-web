@@ -439,7 +439,9 @@
                     $('#save_app').attr('onclick', 'confirmSaveApprove(\'' + idObat + '\',\'' + qtyReq + '\',\'' + idTransaksi + '\',\'' + lembarPerBox + '\',\'' + bijiPerLembar + '\',\'' + satuan + '\')');
                     $('#body_approve').html(table);
                 }else {
-                    $('#modal-warning').modal('show');
+                    $('#error_dialog').dialog('open');
+                    $('#errorMessage').text("ID obat tidak sesuai dengan list obat..!");
+                    $('body').scrollTop(0);
                     $('#status' + idObat).html('<img src="<s:url value="/pages/images/icon_failure.ico"/>" style="height: 20px; width: 20px;">');
                 }
             });
@@ -592,6 +594,7 @@
                     $('#info_dialog').dialog('open');
                     $('#qtyApp' + idObat).text(qtyApp);
                     $('#status' + idObat).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
+                    $('body').scrollTop(0);
                 } else {
                     $('#load_app').hide();
                     $('#save_app').show();
@@ -638,6 +641,7 @@
 
         if (qtyApp > 0) {
             $('#confirm_dialog').dialog('open');
+            $('body').scrollTop(0);
         } else {
             $('#warning_save').show().fadeOut(5000);
             $('#msg_save').text("Silahkan konfirmasi terlebih dahulu untuk qty Approvenya...!");
@@ -670,7 +674,10 @@
                     $('#info_dialog').dialog('open');
                     $('#confirm_dialog').dialog('close');
                     $('#waiting_dialog').dialog('close');
+                    $('body').scrollTop(0);
                 } else {
+                    $('#warning_save').show().fadeOut(5000);
+                    $('#msg_save').text("Error when save...!");
                 }
             }
         });

@@ -175,7 +175,7 @@
                                     <s:hidden id="surat_rujukan" name="rawatInap.suratRujukan"/>
                                     <s:hidden id="is_laka" name="rawatInap.isLaka"/>
 
-                                    <s:if test='rawatInap.idJenisPeriksa == "bpjs"'>
+                                    <s:if test='rawatInap.idJenisPeriksa == "bpjs" || rawatInap.idJenisPeriksa == "ptpn"'>
                                         <tr>
                                             <td width="45%"><b>No SEP</b></td>
                                             <td style="vertical-align: middle;">
@@ -444,8 +444,8 @@
                         <h3 class="box-title"><i class="fa fa-laptop"></i> Monitoring</h3>
                     </div>
                     <div class="box-body">
-                        <button class="btn btn-danger" onclick="showModalPlan('<s:property value="rawatInap.idDetailCheckup"/>','','suster')">
-                            <i class="fa fa-edit"></i> Schedule Rawat
+                        <button class="btn btn-primary" onclick="showModalPlan('<s:property value="rawatInap.idDetailCheckup"/>','','suster')">
+                            <i class="fa fa-calendar"></i> Schedule Rawat
                         </button>
                         <br>
                         <button class="btn btn-info" onclick="showModalCairan('<s:property value="rawatInap.idDetailCheckup"/>')">
@@ -1252,7 +1252,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Kategori Lab</label>
+                        <label class="col-md-3" style="margin-top: 7px">Kategori</label>
                         <div class="col-md-7">
                             <s:action id="comboLab" namespace="/kategorilab"
                                       name="getListKategoriLab_kategorilab"/>
@@ -1272,7 +1272,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Lab</label>
+                        <label class="col-md-3" style="margin-top: 7px">Unit</label>
                         <div class="col-md-7">
                             <select class="form-control select2" style="margin-top: 7px; width: 100%" id="lab_lab"
                                     onchange="var warn =$('#war_lab').is(':visible'); if (warn){$('#cor_lab').show().fadeOut(3000);$('#war_lab').hide()}; listSelectParameter(this);">
@@ -1570,7 +1570,7 @@
                         <label class="col-md-3" style="margin-top: 7px">Apotek</label>
                         <div class="col-md-7">
                             <s:action id="initApotek" namespace="/checkup"
-                                      name="getComboApotek_checkup"/>
+                                      name="getComboApotekRi_checkup"/>
                             <s:select cssStyle="margin-top: 7px; width: 100%"
                                       list="#initApotek.listOfApotek" id="resep_apotek"
                                       listKey="idPelayanan + '|' + namaPelayanan"
@@ -2042,7 +2042,7 @@
                         <i class="fa fa-pie-chart"></i> View Graf
                     </button>
                 </div>
-                <table class="table table-bordered">
+                <table class="table table-bordered" style="font-size: 12px">
                     <thead>
                     <td>Jam</td>
                     <td>Nafas</td>
@@ -2221,19 +2221,19 @@
                 </div>
                 <table class="table table-bordered" style="font-size:11px;">
                     <thead>
-                    <td width="10%">Tgl</td>
-                    <td>Macam Cairan</td>
-                    <td>Melalui</td>
-                    <td>Jumlah</td>
-                    <td>Jam Mulai</td>
-                    <td>Jam Selesai</td>
-                    <td>Cek Tambahan Obat</td>
-                    <td>Sisa</td>
-                    <td>Jam Ukur Buang</td>
-                    <td>Dari</td>
-                    <td>Balance Cairan</td>
-                    <td>Keterangan</td>
-                    <td>Created Who</td>
+                    <td align="center" width="10%" style="vertical-align: middle">Tgl</td>
+                    <td align="center" style="vertical-align: middle">Macam Cairan</td>
+                    <td align="center" style="vertical-align: middle">Melalui</td>
+                    <td align="center" style="vertical-align: middle"> Jumlah</td>
+                    <td align="center" style="vertical-align: middle">Jam Mulai</td>
+                    <td align="center" style="vertical-align: middle">Jam Selesai</td>
+                    <td align="center" style="vertical-align: middle">Cek Tambahan Obat</td>
+                    <td align="center" style="vertical-align: middle">Sisa</td>
+                    <td align="center" style="vertical-align: middle">Jam Ukur Buang</td>
+                    <td align="center" style="vertical-align: middle">Dari</td>
+                    <td align="center" style="vertical-align: middle">Balance Cairan</td>
+                    <td align="center" style="vertical-align: middle">Keterangan</td>
+                    <td align="center" style="vertical-align: middle">Created Who</td>
                     </thead>
                     <tbody id="body-list-cairan">
 
@@ -2417,7 +2417,7 @@
                         <i class="fa fa-plus"></i> Add
                     </button>
                 </div>
-                <table class="table table-bordered">
+                <table class="table table-bordered" style="font-size: 12px">
                     <thead id="thead_pemberian">
                     </thead>
                     <tbody id="body-list-pemberian">
@@ -2653,7 +2653,7 @@
                         <i class="fa fa-plus"></i> Add Parameter Edukasi
                     </button>
 
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" style="font-size: 12px">
                         <thead>
                         <td>Asesmen</td>
                         <td>Created Who</td>
@@ -3296,6 +3296,7 @@
     var today           = new Date();
     var month           = ""+(today.getMonth()+1);
     var day             = ""+today.getDate();
+    var pathImages = '<%= request.getContextPath() %>';
 
     if (month.length < 2) {
         month = "0"+month;
@@ -4376,7 +4377,7 @@
                     var lab = "-";
                     var tanggal = item.createdDate;
                     var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
-                    var btn = '<img border="0" class="hvr-grow" onclick="editLab(\'' + item.idPeriksaLab + '\',\'' + item.idLab + '\',\'' + item.idKategoriLab + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">';
+                    var btn = '<img border="0" class="hvr-grow" onclick="editLab(\'' + item.idPeriksaLab + '\',\'' + item.idLab + '\',\'' + item.idKategoriLab + '\',\''+item.kategoriLabName+'\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">';
 
                     var tipe = "";
 
@@ -4818,15 +4819,14 @@
         $('#modal-diagnosa').modal({show:true, backdrop:'static'});
     }
 
-    function editLab(id, idLab, idKategoriLab) {
+    function editLab(id, idLab, idKategoriLab, kategoriName) {
         $('#load_lab, #warning_lab, #war_kategori_lab, #war_lab, #war_parameter').hide();
         $('#save_lab').attr('onclick', 'saveLab(\'' + id + '\')').show();
         $('#lab_kategori').val(idKategoriLab).trigger('change');
         var idParameter = [];
-        PeriksaLabAction.listParameterPemeriksaan(id, function (response) {
-            data = response;
-            if (data != null) {
-                $.each(data, function (i, item) {
+        PeriksaLabAction.listParameterPemeriksaan(id, kategoriName, function (response) {
+            if (response.length > 0) {
+                $.each(response, function (i, item) {
                     idParameter.push(item.idLabDetail);
                 });
             }
@@ -5415,7 +5415,7 @@
         var idPel = poli.split('|')[0];
         var namePel = poli.split('|')[1];
         var option = "<option value=''>[Select One]</option>";
-        var jenisPasien = $('#jenis_pasien').val();
+        var jenisPasien = $('#id_jenis_pasien').val();
 
         if (poli != '') {
             ObatPoliAction.getSelectOptionObatByPoli(idPel, jenisPasien, function (response) {

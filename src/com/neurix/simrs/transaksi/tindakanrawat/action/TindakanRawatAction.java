@@ -168,7 +168,7 @@ public class TindakanRawatAction extends BaseMasterAction {
             tindakanRawat.setIdPerawat(userLogin);
             tindakanRawat.setQty(qty);
 
-            if ("bpjs".equalsIgnoreCase(jenisTransaksi)){
+            if ("bpjs".equalsIgnoreCase(jenisTransaksi) || "ptpn".equalsIgnoreCase(jenisTransaksi)){
                 tindakanRawat.setTarif(tindakanResult.getTarifBpjs());
             } else {
                 tindakanRawat.setTarif(tindakanResult.getTarif());
@@ -386,7 +386,7 @@ public class TindakanRawatAction extends BaseMasterAction {
             tindakanRawat.setIdPerawat(userLogin);
             tindakanRawat.setQty(qty);
 
-            if ("bpjs".equalsIgnoreCase(jenisTransaksi)){
+            if ("bpjs".equalsIgnoreCase(jenisTransaksi) || "ptpn".equalsIgnoreCase(jenisTransaksi)){
                 tindakanRawat.setTarif(tindakanResult.getTarifBpjs());
             } else {
                 tindakanRawat.setTarif(tindakanResult.getTarif());

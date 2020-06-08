@@ -68,4 +68,6 @@ public interface CheckupDetailBo {
 
     List<RiwayatTindakanDTO> getRiwayatTindakanDanDokter(String idDetailCheckup) throws GeneralBOException;
     public Boolean checkAdaTransitoris(String idDetailCheckup) throws GeneralBOException;
+    public boolean editVideoRm(String idDetailCheckup, String path) throws GeneralBOException;
+    public boolean editFlagCall(String idDetailCheckup, String flagCall) throws GeneralBOException;
 }

@@ -34,6 +34,8 @@
           p:obatDetailDao-ref="transaksiObatDetailDao"
           p:pelayananDao-ref="pelayananDao"
           p:batchDao-ref="transaksiObatDetailBatchDao"
+          p:branchDao-ref="branchDao"
+          p:transaksiStokDao-ref="transaksiStokDao"
     />
 
     <bean id="obatPoliBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

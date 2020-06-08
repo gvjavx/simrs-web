@@ -12,8 +12,9 @@ import java.util.List;
  */
 public interface PelayananBo extends BaseMasterBo<Pelayanan> {
     public List<Pelayanan> getListAllPelayanan() throws GeneralBOException;
-    public List<Pelayanan> getListApotek(String branch) throws GeneralBOException;
+    public List<Pelayanan> getListApotek(String branch, String tipeApotek) throws GeneralBOException;
     public List<Pelayanan> getByCriteria(Pelayanan bean) throws GeneralBOException;
     public List<Pelayanan> getListPelayananPaketPeriksa(String branch) throws GeneralBOException;
     public ImSimrsPelayananEntity getPelayananById(String id) throws GeneralBOException;
+    public List<Pelayanan> getListPelayananFarmasi(String branchId) throws GeneralBOException;
 }

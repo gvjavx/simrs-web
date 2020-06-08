@@ -100,7 +100,7 @@
                                 <br>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
-                                    <div class="col-sm-4" style="margin-top: 7px">
+                                    <div class="col-sm-6" style="margin-top: 7px">
                                         <sj:submit type="button" cssClass="btn btn-success" formIds="obatForm" id="search" name="search"
                                                    onClickTopics="showDialogLoading" onCompleteTopics="closeDialogLoading" >
                                             <i class="fa fa-search"></i>
@@ -109,6 +109,9 @@
                                         <button type="button" class="btn btn-primary" onclick="showModal()">
                                             <i class="fa fa-plus"></i> Tambah Obat
                                         </button>
+                                        <a type="button" class="btn btn-primary" href="initPrintReportRiwayat_obat.action">
+                                            <i class="fa fa-print"></i> Print Report
+                                        </a>
                                         <a type="button" class="btn btn-danger" href="initForm_obat.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>

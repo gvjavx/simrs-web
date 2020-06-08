@@ -23,6 +23,15 @@ public class PelayananAction extends BaseMasterAction {
     private PositionBo positionBoProxy;
 
     private List<Position> listOfComboPositions = new ArrayList<Position>();
+    private List<Pelayanan> listOfComboFarmasi = new ArrayList<Pelayanan>();
+
+    public List<Pelayanan> getListOfComboFarmasi() {
+        return listOfComboFarmasi;
+    }
+
+    public void setListOfComboFarmasi(List<Pelayanan> listOfComboFarmasi) {
+        this.listOfComboFarmasi = listOfComboFarmasi;
+    }
 
     public List<Position> getListOfComboPositions() {
         return listOfComboPositions;
@@ -396,5 +405,21 @@ public class PelayananAction extends BaseMasterAction {
         listOfComboPositions.addAll(listOfPosition);
 
         return "init_combo_position";
+    }
+
+    public String initComboPelayananFarmasi(){
+
+        String branchId = CommonUtil.userBranchLogin();
+
+        List<Pelayanan> pelayanans = new ArrayList<>();
+        try {
+            pelayanans = pelayananBoProxy.getListPelayananFarmasi(branchId);
+        } catch (GeneralBOException e){
+            logger.error("[PelayananAction.initComboPelayananFarmasi] ERROR. ", e);
+            throw new GeneralBOException("[PelayananAction.initComboPelayananFarmasi] ERROR. "+e.getMessage());
+        }
+
+        listOfComboFarmasi.addAll(pelayanans);
+        return "init_combo_farmasi";
     }
 }

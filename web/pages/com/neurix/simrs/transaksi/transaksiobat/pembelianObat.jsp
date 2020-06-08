@@ -137,7 +137,6 @@
     <section class="content-header">
         <h1>
             Pembelian Obat Apotek
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -899,6 +898,7 @@
                 $('#load_obat').hide();
                 $('#modal-obat').modal('hide');
                 $('#info_dialog').dialog('open');
+                $('body').scrollTop(0);
                 window.location.href = 'pembelianObat_transaksi.action?id='+response.message;
             }else{
                 $('#warning_obat').show().fadeOut(5000);
@@ -1527,6 +1527,7 @@
                 $('#save_app').show();
                 $('#modal-approve').modal('hide');
                 $('#info_dialog').dialog('open');
+                $('body').scrollTop(0);
                 $('#status'+idObat).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
             } else {
                 $('#load_app').hide();

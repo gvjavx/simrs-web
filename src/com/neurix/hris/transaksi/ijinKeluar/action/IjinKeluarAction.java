@@ -1392,12 +1392,21 @@ public class IjinKeluarAction extends BaseMasterAction {
                 reportParams.put("nama",ijinKeluar1.getNamaPegawai());
                 reportParams.put("nip",ijinKeluar1.getNip());
                 reportParams.put("jabatan",ijinKeluar1.getPositionName());
-                reportParams.put("divisi",ijinKeluar1.getDivisiName());
+                if (ijinKeluar1.getDivisiName() != null)
+                    reportParams.put("divisi",ijinKeluar1.getDivisiName());
+                else
+                    reportParams.put("divisi","-");
                 reportParams.put("unit",ijinKeluar1.getUnitName());
                 reportParams.put("ijin",ijinKeluar1.getIjinName());
-                reportParams.put("lama",ijinKeluar1.getLamaIjin());
-                reportParams.put("tanggalDari",ijinKeluar1.getStTanggalAwal());
-                reportParams.put("tanggalSelesai",ijinKeluar1.getStTanggalAkhir());
+                if ("IJ013".equalsIgnoreCase(ijinKeluar1.getIjinId())){
+                    reportParams.put("lama",ijinKeluar1.getLamaIjinBaru());
+                    reportParams.put("tanggalDari",ijinKeluar1.getStTanggalAwal());
+                    reportParams.put("tanggalSelesai",ijinKeluar1.getTanggalAkhirBaru());
+                }else {
+                    reportParams.put("lama",ijinKeluar1.getLamaIjin());
+                    reportParams.put("tanggalDari",ijinKeluar1.getStTanggalAwal());
+                    reportParams.put("tanggalSelesai",ijinKeluar1.getStTanggalAkhir());
+                }
                 reportParams.put("date", stDate);
             }
             try {

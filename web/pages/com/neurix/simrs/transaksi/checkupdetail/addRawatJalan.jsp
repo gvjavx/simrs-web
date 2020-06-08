@@ -20,6 +20,8 @@
         }
     </style>
 
+    <link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/radio_checkbox.css"/>">
+
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanRawatAction.js"/>'></script>
@@ -181,7 +183,7 @@
                                     <s:hidden id="surat_rujukan" name="headerDetailCheckup.suratRujukan"/>
                                     <s:hidden id="is_laka" name="headerDetailCheckup.isLaka"/>
 
-                                    <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs"'>
+                                    <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs" || headerDetailCheckup.idJenisPeriksaPasien == "ptpn"'>
                                         <tr>
                                             <td width="45%"><b>No SEP</b></td>
                                             <td style="vertical-align: middle;">
@@ -391,17 +393,84 @@
                             </div>
                             <!-- /.col -->
                         </div>
+                        <%--<div class="row">--%>
+                            <%--<div class="form-group">--%>
+                                <%--<div class="col-md-12">--%>
+                                    <%--<a href="<%= request.getContextPath() %>/rekammedik/initRekamMedik_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>&tipe=RJ" class="btn btn-primary pull-left"><i class="fa fa-user-plus"></i> E-Rekam Medik</a>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    </div>
+                    <div class="box-header with-border">
+                    </div>
+                    <div class="box-header with-border">
                         <div class="row">
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <a href="<%= request.getContextPath() %>/rekammedik/initRekamMedik_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>&tipe=RJ" class="btn btn-primary pull-left"><i class="fa fa-user-plus"></i> E-Rekam Medik</a>
+                            <div class="col-md-6">
+                                <h3 class="box-title"><i class="fa fa-stethoscope"></i> Anamnese</h3>
+                            </div>
+                            <div class="col-md-6">
+                                <h3 class="box-title"><i class="fa fa-medkit"></i> Rekam Medis</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <textarea class="form-control" rows="4"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Action
+                                    </button>
+                                    <button onclick="loadModalRM('ringkasan_rj')" type="button" class="btn btn-primary dropdown-toggle"
+                                            data-toggle="dropdown" style="height: 34px">
+                                        <span class="caret"></span>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a style="cursor: pointer" onclick="showModalRj('ringkasan_rj')"><i class="fa fa-circle-o"></i>Profil Rekam Medis Rawat Jalan</a></li>
+                                    </ul>
+                                </div>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-success"><i class="fa fa-edit"></i> Action
+                                    </button>
+                                    <button onclick="loadModalRM('hd')" type="button" class="btn btn-success dropdown-toggle"
+                                            data-toggle="dropdown" style="height: 34px">
+                                        <span class="caret"></span>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a style="cursor: pointer" onclick="showModalHD('monitoring_hd')"><i class="fa fa-circle-o"></i>Monitoring HD</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalHD('perencanaan_hemodialisa')"><i class="fa fa-circle-o"></i>Perencanaan HD</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalHD('asesmen_hd')"><i class="fa fa-circle-o"></i>Asesmen Awal HD</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalHD('tranfusi_hd')"><i class="fa fa-circle-o"></i>Tindakan Medis Transfusi Darah</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalHD('catatan_tranfusi_darah')"><i class="fa fa-circle-o"></i>Catatan Pemantauan Tranfusi Darah</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalHD('persetujuan_hd')"><i class="fa fa-circle-o"></i>Persetujuan HD</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalHD('travelling')"><i class="fa fa-circle-o"></i>Travelling Dialysis</a></li>
+                                    </ul>
+                                </div>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Action
+                                    </button>
+                                    <button onclick="loadModalRM('fisioterapi')" type="button" class="btn btn-primary dropdown-toggle"
+                                            data-toggle="dropdown" style="height: 34px">
+                                        <span class="caret"></span>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a style="cursor: pointer" onclick="pengkajianFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-circle-o"></i>Pengkajian Pasien Fisioterapi</a></li>
+                                        <li><a style="cursor: pointer" onclick="addMonitoringFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-circle-o"></i>Kunjungan Fisioterapi</a></li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="box-header with-border" id="pos_alergi">
                     </div>
-
                     <div class="box-header with-border">
                         <div class="row">
                             <div class="col-md-6">
@@ -929,6 +998,26 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div id="form-asuransi" style="display: none">
+                                    <div class="form-group">
+                                        <label class="col-md-4" style="margin-top: 10px">Nama Asuransi</label>
+                                        <div class="col-md-8">
+                                            <input style="margin-top: 7px" class="form-control" id="ri_nama_asuransi" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4" style="margin-top: 7px">Cover Biaya</label>
+                                        <div class="col-md-8">
+                                            <div class="input-group" style="margin-top: 7px">
+                                                <div class="input-group-addon">
+                                                    Rp.
+                                                </div>
+                                                <s:hidden id="rj_cover_biaya_val"></s:hidden>
+                                                <s:textfield type="text" id="rj_cover_biaya" cssClass="form-control"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div id="form-poli" style="display: none">
                                     <div class="form-group">
                                         <label class="col-md-4" style="margin-top: 10px">Poli</label>
@@ -1301,7 +1390,6 @@
     </div>
 </div>
 
-
 <div class="modal fade" id="modal-lab">
     <div class="modal-dialog modal-flat">
         <div class="modal-content">
@@ -1317,7 +1405,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Kategori Lab</label>
+                        <label class="col-md-3" style="margin-top: 7px">Kategori</label>
                         <div class="col-md-7">
                             <s:action id="comboLab" namespace="/kategorilab"
                                       name="getListKategoriLab_kategorilab"/>
@@ -1337,7 +1425,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Lab</label>
+                        <label class="col-md-3" style="margin-top: 7px">Unit</label>
                         <div class="col-md-7">
                             <select class="form-control select2" style="margin-top: 7px; width: 100%" id="lab_lab"
                                     onchange="var warn =$('#war_lab').is(':visible'); if (warn){$('#cor_lab').show().fadeOut(3000);$('#war_lab').hide()}; listSelectParameter(this);">
@@ -1961,8 +2049,20 @@
     </div>
 </div>
 
+<div id="modal-temp"></div>
+
 <div class="mask"></div>
 <!-- /.content-wrapper -->
+
+<script type='text/javascript' src='<s:url value="/dwr/interface/FisioterapiAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/HemodialisaAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/RekamMedisRawatJalanAction.js"/>'></script>
+
+
+<script type='text/javascript' src='<s:url value="/pages/dist/js/fisioterapi.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/hd.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/rj.js"/>'></script>
+
 <script type='text/javascript'>
 
     var idDetailCheckup = $('#no_detail_checkup').val();
@@ -1971,6 +2071,12 @@
     var noCheckup = $('#no_checkup').val();
     var jenisPeriksa = $('#jenis_periksa').text();
     var jenisPeriksaPasien = $('#jenis_pasien').val();
+
+    var isReadRM = false;
+    var contextPath = '<%= request.getContextPath() %>';
+    var tglLhr = '<s:property value="headerDetailCheckup.tglLahir"/>';
+    var tglLahir = tglLhr.split("-").reverse().join("-");
+    var namaPasien = '<s:property value="headerDetailCheckup.namaPasien"/>';
 
     $(document).ready(function () {
         $('#rawat_jalan').addClass('active');
@@ -2071,6 +2177,20 @@
             });
         }
 
+        var cover = document.getElementById('rj_cover_biaya');
+        if(cover != ''){
+            cover.addEventListener('keyup', function (e) {
+                cover.value = formatRupiah2(this.value);
+                var valCover = cover.value.replace(/[.]/g, '');
+
+                if(valCover != ''){
+                    $('#rj_cover_biaya_val').val(valCover);
+                }else{
+                    $('#rj_cover_biaya_val').val('');
+                }
+            });
+        }
+
         $(document).on('change', '.btn-file :file', function () {
             var input = $(this),
                 label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
@@ -2110,6 +2230,22 @@
 
         });
     });
+
+    function loadModalRM(jenis){
+        var context = "";
+        if(jenis == "fisioterapi"){
+            context = contextPath+'/pages/modal/modalFisioterapi.jsp';
+        }
+        if(jenis == "hd"){
+            context = contextPath+'/pages/modal/modalHD.jsp';
+        }
+        if(jenis == "ringkasan_rj"){
+            context = contextPath+'/pages/modal/modalRingkasanRawatJalan.jsp';
+        }
+        $('#modal-temp').load(context, function (res) {
+
+        });
+    }
 
     function getJenisResep(){
 
@@ -2359,10 +2495,16 @@
                 $("#form-selesai").hide();
                 $("#form-cekup").hide();
 
-                if(jenisPasien == 'bpjs'){
-                    $('#pembayaran').hide();
-                }else{
+                if(jenisPasien == 'umum'){
+                    $('#form-asuransi').hide();
                     $('#pembayaran').show();
+                }else if (jenisPasien == 'asuransi'){
+                    $('#ri_nama_asuransi').val($('#nama_asuransi').val());
+                    $('#pembayaran').hide();
+                    $('#form-asuransi').show();
+                }else {
+                    $('#form-asuransi').hide();
+                    $('#pembayaran').hide();
                 }
             }
             if (idKtg == "rujuk") {
@@ -2432,13 +2574,22 @@
         var ket_cekup = $('#cekup_ket').val();
         var jenisPasien = $('#jenis_pasien').val();
         var metodeBayar = $("#metode_bayar").val();
-        var uangMuka = $("#uang_muka_val").val();
+        var uangMuka = "";
+        var uangUmum = $("#uang_muka_val").val();
+        var uangAsuransi = $("#rj_cover_biaya_val").val();
         var idPasien = $('#id_pasien').val();
         var namaAsuransi = $('#nama_asuransi').val();
         var noRujukan = $('#no_rujukan').val();
         var tglRujukan = $('#tgl_rujukan').val();
         var suratRujukan = $('#surat_rujukan').val();
         var isLaka = $('#is_laka').val();
+
+        if(jenisPasien == 'umum'){
+            uangMuka = uangUmum;
+        }
+        if(jenisPasien == 'asuransi'){
+            uangMuka = uangAsuransi;
+        }
 
         if (idKtg != '') {
 
@@ -2907,6 +3058,7 @@
         var dokter = "";
         TeamDokterAction.listDokter(idDetailCheckup, function (response) {
             data = response;
+            console.log(data);
             if (data != null) {
                 $.each(data, function (i, item) {
                     table += "<tr>" +
@@ -3607,7 +3759,7 @@
         $('#lab_kategori').val(idKategoriLab).trigger('change');
         var idParameter = [];
         PeriksaLabAction.listParameterPemeriksaan(id, kategoriName, function (response) {
-            if (response != null) {
+            if (response.length > 0) {
                 $.each(response, function (i, item) {
                     idParameter.push(item.idLabDetail);
                 });

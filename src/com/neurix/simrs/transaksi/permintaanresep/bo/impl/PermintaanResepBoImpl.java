@@ -207,7 +207,7 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
         permintaanEntity.setTujuanPelayanan(bean.getTujuanPelayanan());
         permintaanEntity.setTtdPasien(bean.getTtdPasien());
         permintaanEntity.setTtdDokter(bean.getTtdDokter());
-        permintaanEntity.setStatus("3");
+        permintaanEntity.setStatus("0");
         permintaanEntity.setIsUmum("N");
         permintaanEntity.setTglAntrian(bean.getCreatedDate());
         permintaanEntity.setJenisResep(bean.getJenisResep());

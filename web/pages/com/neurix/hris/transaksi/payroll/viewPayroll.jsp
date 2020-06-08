@@ -577,6 +577,15 @@
                                 <div class="col-sm-6">
                                     <input style="text-align: right" type="text" class="form-control nip" id="tunjPeralihan" readonly name="nip">
                                 </div>
+                                <div class="col-sm-1 pull-right nopadding">
+                                    <button type="button" id="detailPeralihan" class="btn btn-primary">View</button>
+                                </div>
+                                <script>
+                                    $('#detailPeralihan').click(function(){
+                                        $('#modal-peralihan').find('.modal-title').text('Detail Peralihan');
+                                        $('#modal-peralihan').modal('show');
+                                    })
+                                </script>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-5" >Tunj. Lain</label>
@@ -2405,6 +2414,43 @@
         </div>
     </div>
 </div>
+<div id="modal-peralihan" class="modal fade" role="dialog">
+    <div class="modal-dialog " style="width:500px;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body" >
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-sm-5" >Peralihan Gapok</label>
+                        <div class="col-sm-6">
+                            <input style="text-align: right"  type="text" class="form-control" readonly id="nilaiModPeralihanGapok">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-5" >Peralihan Sankhus</label>
+                        <div class="col-sm-6">
+                            <input style="text-align: right"  type="text" class="form-control" readonly id="nilaiModPeralihanSankhus">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-5" >Peralihan Tunjangan</label>
+                        <div class="col-sm-6">
+                            <input style="text-align: right"  type="text" class="form-control" readonly id="nilaiModPeralihanTunjangan">
+                        </div>
+                    </div>
+                </form>
+                <br>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 
 </html>
@@ -2867,6 +2913,9 @@
                 $('#iuranProfesi').val(listdata.iuranProfesi);
                 $('#potonganLain').val(listdata.potonganLain);
 
+                $('#nilaiModPeralihanGapok').val(listdata.stPeralihanGapok);
+                $('#nilaiModPeralihanSankhus').val(listdata.stPeralihanSankhus);
+                $('#nilaiModPeralihanTunjangan').val(listdata.stPeralihanTunjangan);
 
                 //Total
                 $('#totalA').val(listdata.totalA);

@@ -810,7 +810,8 @@ public class CheckupAction extends BaseMasterAction {
 
                     if (pasienList.size() > 0) {
 
-                        Pasien getPasien = pasienList.get(0);
+                        Pasien getPasien
+                                = pasienList.get(0);
 
                         String kodeDpjs = "";
                         String namaDokter = "";
@@ -1475,10 +1476,36 @@ public class CheckupAction extends BaseMasterAction {
         return pelayananList;
     }
 
+    public String getComboApotekRi() {
+        List<Pelayanan> pelayananList = new ArrayList<>();
+        try {
+            pelayananList = pelayananBoProxy.getListApotek(CommonUtil.userBranchLogin(), "apotek_ri");
+        } catch (HibernateException e) {
+            logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
+            addActionError(" Error when get data for combo listOfPelayanan" + e.getMessage());
+        }
+
+        listOfApotek.addAll(pelayananList);
+        return "init_add";
+    }
+
     public String getComboApotek() {
         List<Pelayanan> pelayananList = new ArrayList<>();
         try {
-            pelayananList = pelayananBoProxy.getListApotek(CommonUtil.userBranchLogin());
+            pelayananList = pelayananBoProxy.getListApotek(CommonUtil.userBranchLogin(), "apotek");
+        } catch (HibernateException e) {
+            logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
+            addActionError(" Error when get data for combo listOfPelayanan" + e.getMessage());
+        }
+
+        listOfApotek.addAll(pelayananList);
+        return "init_add";
+    }
+
+    public String getComboAllApotek() {
+        List<Pelayanan> pelayananList = new ArrayList<>();
+        try {
+            pelayananList = pelayananBoProxy.getListApotek(CommonUtil.userBranchLogin(), "");
         } catch (HibernateException e) {
             logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
             addActionError(" Error when get data for combo listOfPelayanan" + e.getMessage());
@@ -1494,7 +1521,7 @@ public class CheckupAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
         try {
-            pelayananList = pelayananBo.getListApotek(branch);
+            pelayananList = pelayananBo.getListApotek(branch, "");
         } catch (HibernateException e) {
             logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
             addActionError(" Error when get data for combo listOfPelayanan" + e.getMessage());
@@ -3355,5 +3382,47 @@ public class CheckupAction extends BaseMasterAction {
         }
 
         return vendorList;
+    }
+
+    public List<HeaderCheckup> getListHistoryPasien(String idPasien){
+        List<HeaderCheckup> checkupList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        if(idPasien != null){
+            try {
+                checkupList = checkupBo.getHistoryPasien(idPasien);
+            }catch (HibernateException e){
+                logger.error("Found Error "+e.getMessage());
+            }
+        }
+        return checkupList;
+    }
+
+    public List<HeaderCheckup> getListDetailHistoryPasien(String id, String keterangan){
+        List<HeaderCheckup> checkupList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        if(id != null && keterangan != null){
+            try {
+                checkupList = checkupBo.getListDetailHistory(id, keterangan);
+            }catch (HibernateException e){
+                logger.error("Found Error "+e.getMessage());
+            }
+        }
+        return checkupList;
+    }
+
+    public List<HeaderCheckup> getListVideoRm(String id){
+        List<HeaderCheckup> checkupList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        if(id != null){
+            try {
+                checkupList = checkupBo.getListVedioRm(id);
+            }catch (HibernateException e){
+                logger.error("Found Error "+e.getMessage());
+            }
+        }
+        return checkupList;
     }
 }

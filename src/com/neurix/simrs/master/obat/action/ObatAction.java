@@ -1,9 +1,12 @@
 package com.neurix.simrs.master.obat.action;
 
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.authorization.company.model.Branch;
 import com.neurix.authorization.position.bo.PositionBo;
 import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.action.BaseMasterAction;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.obat.bo.ObatBo;
@@ -17,6 +20,7 @@ import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.hargaobat.model.HargaObat;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
+import com.neurix.simrs.transaksi.riwayatbarang.model.TransaksiStok;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
@@ -32,6 +36,7 @@ import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -39,9 +44,19 @@ public class ObatAction extends BaseMasterAction {
 
     protected static transient Logger logger = Logger.getLogger(ObatAction.class);
     private ObatBo obatBoProxy;
+    private PelayananBo pelayananBoProxy;
     private Obat obat;
     private List<Obat> listOfObat = new ArrayList<>();
     private String idPabrik;
+    List<TransaksiStok> report = new ArrayList<>();
+
+    public List<TransaksiStok> getReport() {
+        return report;
+    }
+
+    public void setReport(List<TransaksiStok> report) {
+        this.report = report;
+    }
 
     public String getIdPabrik() {
         return idPabrik;
@@ -81,6 +96,10 @@ public class ObatAction extends BaseMasterAction {
 
     public void setObat(Obat obat) {
         this.obat = obat;
+    }
+
+    public void setPelayananBoProxy(PelayananBo pelayananBoProxy) {
+        this.pelayananBoProxy = pelayananBoProxy;
     }
 
     @Override
@@ -269,6 +288,7 @@ public class ObatAction extends BaseMasterAction {
         obat.setFlag("Y");
         obat.setAction("C");
         obat.setMinStok(minStok);
+        obat.setHargaTerakhir(new BigDecimal(String.valueOf(0)));
 
         try {
             checkObatResponse = obatBo.checkFisikObatByIdPabrik(obat);
@@ -551,7 +571,7 @@ public class ObatAction extends BaseMasterAction {
                 Obat obat = new Obat();
                 obat.setIdObat(obj.getString("id_obat"));
                 obat.setIdBarang(obj.getString("id_barang"));
-                obat.setQty(new BigInteger(obj.getString("qty")));
+                //obat.setQty(new BigInteger(obj.getString("qty")));
                 obatList.add(obat);
             }
 
@@ -575,30 +595,8 @@ public class ObatAction extends BaseMasterAction {
                 bean.setLastUpdate(time);
             }
 
-            List<Map> listMapObat = new ArrayList<>();
-            BigDecimal totalHarga = new BigDecimal(0);
-            for (Obat obat : obatList){
-
-
-                ImSimrsObatEntity obatEntity = obatBo.getObatByIdBarang(obat.getIdBarang());
-                BigDecimal harga = new BigDecimal(0);
-                if (obatEntity != null){
-                    harga = obatEntity.getAverageHargaBox().multiply( new BigDecimal(obat.getQty()));
-                } else {
-                    logger.error("[ObatAction.saveReturObat] Tidak ditemukan data Obat.");
-                    response.setStatus("error");
-                    response.setMessage("[ObatAction.saveReturObat] Tidak ditemukan data Obat.");
-                    return response;
-                }
-                totalHarga = totalHarga.add(harga);
-
-                Map mapObat = new HashMap();
-                mapObat.put("kd_barang", obat.getIdBarang());
-                mapObat.put("nilai", harga);
-                listMapObat.add(mapObat);
-            }
-
             String divisiId = "";
+            String pelayananName = "";
             ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(CommonUtil.userPelayananIdLogin());
             if (pelayananEntity != null){
 
@@ -613,6 +611,52 @@ public class ObatAction extends BaseMasterAction {
                 response.setMessage("[ObatAction.saveReturObat] Tidak ditemukan divisi_id.");
                 return response;
             }
+
+            List<Map> listMapObat = new ArrayList<>();
+            BigDecimal totalHarga = new BigDecimal(0);
+            for (Obat obat : obatList){
+
+
+                ImSimrsObatEntity obatEntity = obatBo.getObatByIdBarang(obat.getIdBarang());
+                BigDecimal harga = new BigDecimal(0);
+                if (obatEntity != null){
+
+                    BigInteger cons = obatEntity.getLembarPerBox().multiply(obatEntity.getBijiPerLembar());
+                    BigInteger consLembar = obat.getBijiPerLembar();
+
+                    // get total qty (satuan terkecil)
+                    BigInteger ttlQtyBox = obatEntity.getQtyBox().multiply(cons);
+                    BigInteger ttlQtyLembar = obatEntity.getQtyLembar().multiply(consLembar);
+                    BigInteger ttlQtyTerkecil = ttlQtyBox.add(ttlQtyLembar).add(obatEntity.getQtyBiji());
+
+                    harga = obatEntity.getHargaTerakhir().multiply( new BigDecimal(ttlQtyTerkecil));
+
+                    // set qty
+                    obat.setQty(ttlQtyTerkecil);
+                    obat.setHargaTerakhir(obatEntity.getHargaTerakhir());
+                    obat.setIdVendor(bean.getIdVendor());
+                    obat.setNamaVendor(bean.getNamaVendor());
+                    obat.setLastUpdate(time);
+                    obat.setLastUpdateWho(userLogin);
+                    obat.setIdPelayanan(obat.getIdPelayanan());
+                    obat.setNamaPelayanan(obat.getNamaPelayanan());
+                    obatBo.saveTransaksiStokOpname(obat);
+
+                } else {
+                    logger.error("[ObatAction.saveReturObat] Tidak ditemukan data Obat.");
+                    response.setStatus("error");
+                    response.setMessage("[ObatAction.saveReturObat] Tidak ditemukan data Obat.");
+                    return response;
+                }
+                totalHarga = totalHarga.add(harga);
+
+                Map mapObat = new HashMap();
+                mapObat.put("kd_barang", obat.getIdBarang());
+                mapObat.put("nilai", harga);
+                listMapObat.add(mapObat);
+            }
+
+
 
             Map mapBiaya = new HashMap();
             mapBiaya.put("divisi_id", divisiId);
@@ -697,6 +741,99 @@ public class ObatAction extends BaseMasterAction {
         }
 
         return obatList;
+    }
+
+
+    public String initPrintReportRiwayat(){
+        logger.info("[ObatAction.initPrintReportRiwayat] START >>>");
+
+        String formatDate = new SimpleDateFormat("yyyy-MM-dd").format(new Timestamp(System.currentTimeMillis()));
+
+        Obat obat = new Obat();
+        obat.setStTglFrom(formatDate);
+        obat.setStTglTo(formatDate);
+        setObat(obat);
+
+        logger.info("[ObatAction.initPrintReportRiwayat] END <<<");
+        return "init_print";
+    }
+
+    public String printReportRiwayat(){
+        logger.info("[ObatAction.initPrintReportRiwayat] START >>>");
+
+        Obat obat = getObat();
+
+        String branch = CommonUtil.userBranchLogin();
+        String branchName = CommonUtil.userBranchNameLogin();
+        String logo = "";
+        Branch branches = new Branch();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+
+        try {
+            branches = branchBo.getBranchById(branch, "Y");
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when searhc branch logo");
+        }
+
+        String namaPelayanan = "";
+        ImSimrsPelayananEntity pelayananEntity = new ImSimrsPelayananEntity();
+        try {
+            pelayananEntity = pelayananBoProxy.getPelayananById(obat.getIdPelayanan());
+        } catch (GeneralBOException e){
+            logger.error("[ObatAction.printReportRiwayat] ERROR. ",e);
+            throw new GeneralBOException("[ObatAction.printReportRiwayat] ERROR. "+e.getMessage());
+        }
+
+        if (pelayananEntity != null){
+            namaPelayanan = pelayananEntity.getNamaPelayanan();
+        }
+
+        // report list
+        try {
+            report = obatBo.getListReporTransaksiObat(obat.getIdPelayanan(), obat.getTahun(), obat.getBulan(), obat.getIdObat());
+        } catch (GeneralBOException e){
+            logger.error("[ObatAction.initPrintReportRiwayat] ERROR. ", e);
+            throw new GeneralBOException("[ObatAction.initPrintReportRiwayat] ERROR. " + e);
+        }
+
+        String namaObat = "";
+        if (report.size() > 0){
+            TransaksiStok stok = report.get(0);
+            namaObat = stok.getNamaObat();
+        }
+
+        if (branches != null) {
+            logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + branches.getLogoName();
+        }
+
+        String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(new Timestamp(System.currentTimeMillis()));
+        reportParams.put("tglForm", obat.getStTglFrom());
+        reportParams.put("tglTo", obat.getStTglTo());
+        reportParams.put("area", CommonUtil.userAreaName());
+        reportParams.put("unit", branchName);
+        reportParams.put("logo", logo);
+        reportParams.put("printDate", formatDate);
+        reportParams.put("qtyLalu", new BigDecimal(0));
+        reportParams.put("totalLalu", new BigDecimal(0));
+        reportParams.put("subTotalLalu", new BigDecimal(0));
+        reportParams.put("namaObat", namaObat);
+        reportParams.put("idObat", obat.getIdObat());
+        reportParams.put("namaPelayanan", namaPelayanan);
+
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+            return "search";
+        }
+
+        logger.info("[ObatAction.initPrintReportRiwayat] END <<<");
+        return "print_riwayat";
+
     }
 
 }

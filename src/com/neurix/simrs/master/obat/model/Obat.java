@@ -56,6 +56,7 @@ public class Obat extends BaseModel {
     private String isMinStok;
 
     private String flagBpjs;
+    private String flagKronis;
 
     private String idPermintaanVendor;
     private String idApprovalObat;
@@ -68,8 +69,63 @@ public class Obat extends BaseModel {
     private String noJurnal;
     private BigDecimal bruto;
     private BigDecimal netto;
-
     private String keterangan;
+    private String idPelayanan;
+    private String tahun;
+    private String bulan;
+    private String periode;
+    private String namaPelayanan;
+
+    public String getNamaPelayanan() {
+        return namaPelayanan;
+    }
+
+    public void setNamaPelayanan(String namaPelayanan) {
+        this.namaPelayanan = namaPelayanan;
+    }
+
+    public String getPeriode() {
+        return periode;
+    }
+
+    public void setPeriode(String periode) {
+        this.periode = periode;
+    }
+
+    public String getTahun() {
+        return tahun;
+    }
+
+    public void setTahun(String tahun) {
+        this.tahun = tahun;
+    }
+
+    public String getBulan() {
+        return bulan;
+    }
+
+    public void setBulan(String bulan) {
+        this.bulan = bulan;
+    }
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
+
+    public String getFlagKronis() {
+        return flagKronis;
+    }
+
+    public void setFlagKronis(String flagKronis) {
+        this.flagKronis = flagKronis;
+    }
+
+    private String stTglFrom;
+    private String stTglTo;
 
     public String getKeterangan() {
         return keterangan;
@@ -77,6 +133,22 @@ public class Obat extends BaseModel {
 
     public void setKeterangan(String keterangan) {
         this.keterangan = keterangan;
+    }
+
+    public String getStTglFrom() {
+        return stTglFrom;
+    }
+
+    public void setStTglFrom(String stTglFrom) {
+        this.stTglFrom = stTglFrom;
+    }
+
+    public String getStTglTo() {
+        return stTglTo;
+    }
+
+    public void setStTglTo(String stTglTo) {
+        this.stTglTo = stTglTo;
     }
 
     public BigDecimal getBruto() {

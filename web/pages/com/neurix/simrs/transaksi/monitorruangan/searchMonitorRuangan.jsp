@@ -122,7 +122,6 @@
     <section class="content-header">
         <h1>
             Monitor Ruangan
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -250,7 +249,7 @@
                         <div class="row">
                             <div class="col-md-12" style="display:inline; padding-left: 5%">
                                 <s:iterator value="#session.listOfResult" var="row">
-                                <div class="btn-wrapper" onclick="detailTindakan('<s:property value="idDetailCheckup"/>')">
+                                <div class="btn-wrapper" onclick="detailTindakan('<s:property value="idDetailCheckup"/>', '<s:property value="tipeTransaksi"/>', '<s:property value="namaPasien"/>')">
                                     <s:if test='#row.namaPasien != null'>
                                         <s:if test='#row.nilaiPersen > 70'>
                                             <div id="id_box" class="blink_me btn-trans box-red">
@@ -274,7 +273,17 @@
                                                         <img style="background-color:transparent; height:70px; padding-bottom: 2px" src="<s:url value="/pages/images/room.png"/>">
                                                     </td>
                                                     <tr>
-                                                        <td align="left" colspan="2" style="color: white; font-size: 9px; padding-top: 3px; border-bottom: white solid 2px"><s:if test='#row.namaPasien != null'><i class="fa fa-user"></i> <s:property value="namaPasien"></s:property></s:if><s:else>&nbsp;</s:else></td>
+                                                        <td align="left" colspan="2" style="color: white; font-size: 9px; padding-top: 3px; border-bottom: white solid 2px"><s:if test='#row.namaPasien != null'><i class="fa fa-user"></i>  <script>
+                                                            var nama = '<s:property value="namaPasien"/>';
+                                                            var temp = "";
+                                                            var count = nama.split(' ');
+                                                            if(count.length > 2){
+                                                                temp = count[0]+' '+count[1];
+                                                            }else{
+                                                                temp = nama;
+                                                            }
+                                                            document.write(temp);
+                                                        </script></s:if><s:else>&nbsp;</s:else></td>
                                                     </tr>
                                                     <tr>
                                                         <td align="left" colspan="2" style="color: white; font-size: 9px; padding-top: 5px"><s:if test='#row.tarifBpjs'><script>var tar = '<s:property value="tarifBpjs"/>'; if(tar != null){document.write('<i class="fa fa-square" style="font-size:8px"></i> '+"Rp. "+formatRupiah(tar))}</script></s:if><s:else>&nbsp;</s:else></td>
@@ -333,7 +342,7 @@
                                     <td><span id="det_no_rm"></span></td>
                                 </tr>
                                 <tr>
-                                    <td><b>No Checkup</b></td>
+                                    <td><b>ID Detail Checkup</b></td>
                                     <td><span id="det_no_checkup"></span></td>
                                 </tr>
                                 <tr>
@@ -344,22 +353,38 @@
                                     <td><b>Nama</b></td>
                                     <td><span id="det_nama"></span></td>
                                 </tr>
+                                <tr>
+                                    <td><b>Tempat, Tanggal Lahir</b></td>
+                                    <td><span id="det_tgl"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Jenis Kelamin</b></td>
+                                    <td><span id="det_jenis_kelamin"></span></td>
+                                </tr>
                             </table>
                         </div>
                         <!-- /.col -->
                         <div class="col-md-6">
                             <table class="table table-striped">
                                 <tr>
-                                    <td><b>Jenis Kelamin</b></td>
-                                    <td><span id="det_jenis_kelamin"></span></td>
-                                </tr>
-                                <tr>
-                                    <td><b>Tempat, TGL Lahir</b></td>
-                                    <td><span id="det_tgl"></span></td>
-                                </tr>
-                                <tr>
                                     <td><b>Alamat</b></td>
                                     <td><span id="det_desa"></span>, <span id="det_kecamatan"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Ruangan</b></td>
+                                    <td><span id="det_ruangan"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Tanggal Masuk</b></td>
+                                    <td><span id="det_tgl_masuk"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Lama Dirawat</b></td>
+                                    <td><span id="det_lama"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Jenis Pasien</b></td>
+                                    <td><span id="det_jenis"></span></td>
                                 </tr>
                             </table>
                         </div>
@@ -454,8 +479,8 @@
     }
 
     function hitungStatusBiaya(idDetailCheckup) {
-        CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, function (response) {
-            if (response.idJenisPeriksaPasien == "bpjs") {
+        CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RI", function (response) {
+            // if (response.idJenisPeriksaPasien == "bpjs") {
                 if (response.tarifBpjs != null && response.tarifTindakan != null) {
 
                     var coverBiaya = response.tarifBpjs;
@@ -497,19 +522,19 @@
                         $('#fin_b_tindakan').html(formatRupiah(biayaTindakan) + " (" + persen + "%)");
                     }
                 }
-            } else {
-            }
         });
     }
 
-    function detailTindakan(idDetailCheckup) {
+    function detailTindakan(idDetailCheckup, jenis, nama) {
         setTimeout(function () {
-        if(idDetailCheckup != ''){
+        if(idDetailCheckup != '' && nama != ''){
             $('#sts_cover_biaya').html('');
             $('#b_bpjs').html('');
             $('#sts_biaya_tindakan').html('');
             $('#b_tindakan').html('');
-            hitungStatusBiaya(idDetailCheckup);
+            if(jenis == "bpjs" || jenis == "ptpn"){
+                hitungStatusBiaya(idDetailCheckup);
+            }
             var table = "";
             var dataTindakan = [];
             var dataPasien = [];
@@ -538,7 +563,7 @@
                 CheckupAction.listDataPasien(idDetailCheckup, function (response) {
                     if (response != null) {
                         var tanggal = response.tglLahir;
-                        var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
+                        var dateFormat = converterDate(new Date(tanggal));
                         noCheckup = response.noCheckup;
                         nik = response.noKtp;
                         namaPasien = response.nama;
@@ -559,8 +584,19 @@
                         desa = response.namaDesa;
                         noSep = response.noSep;
                         $('#det_no_rm').html(response.idPasien);
+                        $('#det_jenis').html(response.statusPeriksaName);
+                        $('#det_ruangan').html(response.namaRuangan);
+                        $('#det_tgl_masuk').html(converterDate(response.createdDate));
+                        var tes1 = new Date(response.createdDate);
+                        var tes2 = new Date();
+                        const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+                        const firstDate = new Date(tes2.getFullYear(), tes2.getMonth(), tes2.getDate());
+                        const secondDate = new Date(tes1.getFullYear(), tes1.getMonth(), tes1.getDate());
+                        const diffDays = Math.round(Math.abs((firstDate - secondDate) / oneDay));
+                        var lama = diffDays + 1;
+                        $('#det_lama').html(lama+ ' Hari');
 
-                        if(response.idJenisPeriksaPasien == "bpjs"){
+                        if(response.idJenisPeriksaPasien == "bpjs" || response.idJenisPeriksaPasien == "ptpn"){
                             $('#show_sep, #bar_bpjs').show();
                         }else{
                             $('#show_sep, #bar_bpjs').hide();
@@ -570,7 +606,7 @@
 
 
                 $('#det_no_sep').html(noSep);
-                $('#det_no_checkup').html(noCheckup);
+                $('#det_no_checkup').html(idDetailCheckup);
                 $('#det_nik').html(nik);
                 $('#det_nama').html(namaPasien);
                 $('#det_jenis_kelamin').html(jenisKelamin);

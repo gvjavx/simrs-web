@@ -28,5 +28,5 @@ public interface MutasiBo extends BaseMasterBo<Mutasi>{
     public MutasiDoc addMutasiDoc(MutasiDoc bean) throws GeneralBOException ;
     public String cekDataMutasiSys() throws GeneralBOException ;
     public String getDirektur() throws GeneralBOException;
-    public BigDecimal getGajiPokok(String golonganId);
+    public BigDecimal getGajiPokok(String golonganId,String tahun);
 }

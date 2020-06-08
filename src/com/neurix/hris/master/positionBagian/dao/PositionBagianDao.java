@@ -550,4 +550,40 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
         return "PBS"+sId;
     }
 
+    public List<ImPositionBagianEntity> getDataPosisiBagian(String divisiId){
+
+        String bagian = "";
+
+
+//        if(!divisiId.equalsIgnoreCase("")){
+//            bagian = " and department_id = '"+divisiId+"' ";
+//        }
+
+        List<ImPositionBagianEntity> listOfResult = new ArrayList<ImPositionBagianEntity>();
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "select\n" +
+                " \n" +
+                "                bagian_id, \n" +
+                "                nama_bagian \n" +
+                "                from \n" +
+                "                im_hris_position_bagian \n" +
+                "                where \n" +
+                "                bagian_id is not null and divisi_id = '"+divisiId+"'  \n" +
+                "                order by \n" +
+                "                \tnama_bagian";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results) {
+            ImPositionBagianEntity result  = new ImPositionBagianEntity();
+            result.setBagianId((String) row[0]);
+            result.setBagianName((String) row[1]);
+
+            listOfResult.add(result);
+        }
+        return listOfResult;
+    }
+
 }

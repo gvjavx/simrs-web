@@ -245,6 +245,38 @@ public class UserAction extends BaseMasterAction {
         return "init_combo_branch";
     }
 
+    public String initComboBranchSelainKp() {
+
+        Branch braches = new Branch();
+        braches.setFlag("Y");
+
+        List<Branch> listOfBranches = new ArrayList<Branch>();
+        List<Branch> listOfResult = new ArrayList<Branch>();
+        try {
+            listOfBranches = branchBoProxy.getByCriteria(braches);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = branchBoProxy.saveErrorMessage(e.getMessage(), "BranchBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[UserAction.initComboBranchSelainKp] Error when saving error,", e1);
+            }
+            logger.error("[UserAction.initComboBranchSelainKp] Error when searching data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
+            return "failure";
+        }
+
+        for (Branch branch : listOfBranches){
+            if (!"KP".equalsIgnoreCase(branch.getBranchId())){
+                listOfResult.add(branch);
+            }
+        }
+
+        listOfComboBranches.addAll(listOfResult);
+
+        return "init_combo_branch";
+    }
+
     public String initComboPosition() {
 
         Position position = new Position();
@@ -931,25 +963,26 @@ public class UserAction extends BaseMasterAction {
     public User getUserData(){
         logger.info("[UserAction.getUserData] start process >>>");
 
-        String branchId = CommonUtil.userBranchLogin();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
 
+        String branchId = CommonUtil.userBranchLogin();
         User user = new User();
         user.setUsername(CommonUtil.userLogin());
         user.setBranchName(CommonUtil.userBranchNameLogin());
         user.setAreaName(CommonUtil.userAreaName());
 
-        if("RS01".equalsIgnoreCase(branchId)){
-            user.setLogoBranch(ServletActionContext.getRequest().getContextPath() +CommonConstant.LOGO_RS01);
-        }else if("RS02".equalsIgnoreCase(branchId)){
-            user.setLogoBranch(ServletActionContext.getRequest().getContextPath() +CommonConstant.LOGO_RS02);
-        }else if("RS03".equalsIgnoreCase(branchId)){
-            user.setLogoBranch(ServletActionContext.getRequest().getContextPath() +CommonConstant.LOGO_RS03);
-        }else if("KP".equalsIgnoreCase(branchId)){
-            user.setLogoBranch(ServletActionContext.getRequest().getContextPath() +CommonConstant.LOGO_KP);
+        Branch branches = new Branch();
+
+        try {
+            branches = branchBo.getBranchById(branchId, "Y");
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when searhc branch logo");
         }
 
-        logger.info("[UserAction.getUserData] PATH LOGO : "+user.getLogoBranch());
-        logger.info("[UserAction.getUserData] GET CONTEXT : "+ServletActionContext.getRequest().getContextPath());
+        if (branches.getBranchId() != null) {
+            user.setLogoBranch(ServletActionContext.getRequest().getContextPath() +CommonConstant.RESOURCE_PATH_IMAGES+branches.getLogoName());
+        }
 
         logger.info("[UserAction.getUserData] end process <<<");
         return user;

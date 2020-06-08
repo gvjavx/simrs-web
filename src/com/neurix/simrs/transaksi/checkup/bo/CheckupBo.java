@@ -87,4 +87,10 @@ public interface CheckupBo {
 
     public List<MasterVendor> getComboListPtpn() throws GeneralBOException;
     public ItSimrsHeaderChekupEntity getEntityCheckupById(String id) throws GeneralBOException;
+
+    public HeaderCheckup getLastDataPasienByIdPasien(String idPasien) throws GeneralBOException;
+    public List<HeaderCheckup> getHistoryPasien(String idPasien) throws GeneralBOException;
+    public List<HeaderCheckup> getListDetailHistory(String id, String keterangan) throws GeneralBOException;
+    public List<HeaderCheckup> getListVedioRm(String id) throws GeneralBOException;
+
 }

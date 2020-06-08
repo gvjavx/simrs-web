@@ -383,4 +383,20 @@ public class PositionBagianBoImpl implements PositionBagianBo {
         }
         return status;
     }
+
+    public List<positionBagian> searchPositionBagian(String divisiId) throws GeneralBOException {
+        List<ImPositionBagianEntity> posisiList = null;
+        List<positionBagian> positions = new ArrayList<>();
+
+        posisiList = positionBagianDao.getDataPosisiBagian(divisiId);
+        if (posisiList != null) {
+            for (ImPositionBagianEntity imPositionBagianEntity : posisiList) {
+                positionBagian position1 = new positionBagian();
+                position1.setBagianId(imPositionBagianEntity.getBagianId());
+                position1.setBagianName(imPositionBagianEntity.getBagianName());
+                positions.add(position1);
+            }
+        }
+        return positions;
+    }
 }

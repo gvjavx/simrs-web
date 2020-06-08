@@ -5,6 +5,7 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/NotifAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/CutiPegawaiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/UserAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/TransaksiObatAction.js"/>'></script>
 <script type="text/javascript">
 
     function loadDataLogin() {
@@ -116,6 +117,18 @@
                             "<span class='label label-success'>Rekruitmen Pabrik</span> "+item.note+""+
                             "</a>"+
                             "</li>";
+                }else if (item.tipeNotifId == "TN01"){
+                    tmp_data_approve += "<li>"+
+                        "<a href='<s:property value="appname" />notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
+                        "<span class='label label-success'>Keuangan</span> "+item.note+""+
+                        "</a>"+
+                        "</li>";
+                }else if (item.tipeNotifId == "TN04"){
+                    tmp_data_approve += "<li>"+
+                        "<a href='<s:property value="appname" />notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
+                        "<span class='label label-success'>Pengajuan Biaya</span> "+item.note+""+
+                        "</a>"+
+                        "</li>";
                 }
                 else {
                     tmp_data_pemberitahuan += "<li class='pemberitahuan' data-id='"+item.notifId+"~"+item.note+"'>"+
@@ -209,11 +222,61 @@
         $("#inner7").html(tmp_data_panjang);
         $("#count7").html(tmp_jml_panjang);
     }
+
+    function pushNotifResep(){
+        cekNotifResep();
+        setInterval(function () {
+            cekNotifResep();
+        }, 5000);
+    }
+
+    function cekNotifResep(){
+        TransaksiObatAction.pushNotifResep(function (res) {
+            var listResep = "";
+            var cekCount = $('#count2').text();
+            if(cekCount == ''){
+                cekCount = 0;
+            }
+            if(res.length > 0){
+                $.each(res, function (i, item) {
+                    listResep += '<li>' +
+                        '<a href="<%= request.getContextPath() %>/reseppoli/searchResep_reseppoli.action?id='+item.idDetailCheckup+'&idPermintaan='+item.idPermintaanResep+'">' +
+                        '<i class="fa fa-info-circle text-green"></i> <small style="margin-left: -8px">'+' ['+item.idPermintaanResep +']'+' '+item.namaPasien+'</small><br>' +
+                        '</a>' +
+                        '</li>';
+                });
+                $('#inner2').html(listResep);
+                $('#count2').html(res.length);
+                $('#count3').html(res.length);
+                if(res.length > parseInt(cekCount)){
+                    $('#notif_sound').get(0).autoplay = true;
+                    $('#notif_sound').get(0).load();
+                    // $('#notif_sound').get(0).muted = false;
+                    // console.log($('#notif_sound').get(0).preload);
+                }
+            }else{
+                $('#inner2').html(listResep);
+                $('#count2').html('');
+                $('#count3').html('');
+            }
+        });
+    }
+
+    function cekRole(){
+        TransaksiObatAction.cekRole(function (res) {
+            if(res == "ADMIN APOTEK"){
+                pushNotifResep();
+            }
+        })
+    }
+
     $(document).ready(function() {
         loadDataLogin();
         loadUser();
         loadNotif();
         loadPegawaiCuti();
+        cekRole();
+
         $('.pemberitahuan').on('click', function() {
             var my = $(this).data('id');
             var theArray = my.split("~");
@@ -463,6 +526,7 @@
             </ul>
         </div>
     </nav>
+    <audio id="notif_sound" src='<s:url value="/pages/images/notif.mp3"/>'></audio>
 </header>
     <!-- Modal -->
     <div class="modal fade" id="modal-view-notif" role="dialog">

@@ -98,7 +98,6 @@
     <section class="content-header">
         <h1>
             Kasir Pembayaran Uang Muka
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -804,6 +803,7 @@
                 $('#msg_fin2').text(response.msg);
                 $('#modal-invoice').modal('hide');
                 $('#info_dialog').dialog('open');
+                $('body').scrollTop(0);
             }else{
                 $('#save_fin').show();
                 $('#load_fin').hide();
@@ -913,6 +913,7 @@
                 $('#modal-refund').modal('hide');
                 $('#save_refund').show();
                 $('#load_refund').hide();
+                $('body').scrollTop(0);
             }else{
                 $('#save_refund').show();
                 $('#load_refund').hide();

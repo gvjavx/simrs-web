@@ -367,6 +367,11 @@ apply the skin class to the body tag so the changes take effect.
     }
     .modal { overflow-y: auto}
 
+    .ttd-paint-canvas {
+        border: 1px black solid;
+        margin: 1rem;
+    }
+
 </style>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
 <script>
@@ -507,6 +512,7 @@ apply the skin class to the body tag so the changes take effect.
         }
         return today;
     }
+
 </script>
 
 

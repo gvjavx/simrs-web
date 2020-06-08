@@ -2149,6 +2149,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "SELECT a.id_pasien FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "WHERE b.status_periksa = '3' \n" +
+                    "AND a.tgl_keluar IS NOT NULL \n" +
                     "AND a.branch_id LIKE :branchId\n" +
                     "GROUP BY a.id_pasien\n" +
                     ") a \n" +

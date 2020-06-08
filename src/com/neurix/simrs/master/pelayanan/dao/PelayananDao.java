@@ -50,18 +50,19 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
         return result;
     }
 
-    public List<Pelayanan> getListApotek(String branch){
+    public List<Pelayanan> getListApotek(String branch, String tipeApotek){
 
         String SQL = "SELECT \n" +
                 "id_pelayanan, \n" +
                 "nama_pelayanan \n" +
                 "FROM im_simrs_pelayanan\n" +
-                "WHERE tipe_pelayanan = 'apotek'\n" +
+                "WHERE tipe_pelayanan ILIKE :tipe\n" +
                 "AND branch_id = :branchId\n" +
                 "AND flag = 'Y'";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("branchId", branch)
+                .setParameter("tipe", tipeApotek)
                 .list();
 
         List<Pelayanan> pelayananList = new ArrayList<>();
@@ -133,6 +134,33 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
                 .list();
 
         return results;
+    }
+
+    public List<Pelayanan> getListPelayananFarmasi(String branchId){
+
+        String SQL = "SELECT \n" +
+                "id_pelayanan, nama_pelayanan\n" +
+                "FROM im_simrs_pelayanan\n" +
+                "WHERE tipe_pelayanan IN ('gudang_obat', 'apotek', 'apotek_ri')\n" +
+                "AND flag = 'Y'\n" +
+                "AND branch_id = :unit";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("unit", branchId)
+                .list();
+
+        List<Pelayanan> pelayanans = new ArrayList<>();
+        if (results.size() > 0){
+
+            Pelayanan pelayanan;
+            for (Object[] obj : results){
+                pelayanan = new Pelayanan();
+                pelayanan.setIdPelayanan(obj[0].toString());
+                pelayanan.setNamaPelayanan(obj[1].toString());
+                pelayanans.add(pelayanan);
+            }
+        }
+        return pelayanans;
     }
 
     public String getNextPelayananId() throws HibernateException {

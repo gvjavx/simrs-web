@@ -7,6 +7,7 @@
 
     <bean id="butgetingAction" class="com.neurix.akuntansi.transaksi.budgeting.action.BudgetingAction"
           p:budgetingBoProxy-ref="budgetingBoProxy"
+          p:branchBoProxy-ref="branchBoProxy"
     />
 
     <bean id="budgetingBo" class="com.neurix.akuntansi.transaksi.budgeting.bo.impl.BudgetingBoImpl"
@@ -16,6 +17,10 @@
           p:budgetingDetailDao-ref="budgetingDetailDao"
           p:budgetingPengadaanDao-ref="budgetingPengadaanDao"
           p:kodeRekeningDao-ref="kodeRekeningDao"
+          p:masterDao-ref="masterDao"
+          p:laporanAkuntansiDao-ref="laporanAkuntansiDao"
+          p:saldoAkhirDao-ref="saldoAkhirDao"
+          p:saldoAkhirDetailDao-ref="saldoAkhirDetailDao"
     />
 
     <bean id="budgetingBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by reza on 29/04/20.
@@ -28,6 +30,61 @@ public class BudgetingDetail{
     private String rekeningId;
     private String idBudgeting;
     private String positionId;
+    private String masterId;
+    private String masterName;
+    private String flagEdit;
+    private BigDecimal saldoAkhir;
+    private BigDecimal selisihSaldoAkhir;
+
+    public BigDecimal getSaldoAkhir() {
+        return saldoAkhir;
+    }
+
+    public void setSaldoAkhir(BigDecimal saldoAkhir) {
+        this.saldoAkhir = saldoAkhir;
+    }
+
+    public BigDecimal getSelisihSaldoAkhir() {
+        return selisihSaldoAkhir;
+    }
+
+    public void setSelisihSaldoAkhir(BigDecimal selisihSaldoAkhir) {
+        this.selisihSaldoAkhir = selisihSaldoAkhir;
+    }
+
+    public String getFlagEdit() {
+        return flagEdit;
+    }
+
+    public void setFlagEdit(String flagEdit) {
+        this.flagEdit = flagEdit;
+    }
+
+    List<BudgetingPeriode> listPeriode = new ArrayList<>();
+
+    public List<BudgetingPeriode> getListPeriode() {
+        return listPeriode;
+    }
+
+    public void setListPeriode(List<BudgetingPeriode> listPeriode) {
+        this.listPeriode = listPeriode;
+    }
+
+    public String getMasterId() {
+        return masterId;
+    }
+
+    public void setMasterId(String masterId) {
+        this.masterId = masterId;
+    }
+
+    public String getMasterName() {
+        return masterName;
+    }
+
+    public void setMasterName(String masterName) {
+        this.masterName = masterName;
+    }
 
     public String getPositionId() {
         return positionId;

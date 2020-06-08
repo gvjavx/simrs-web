@@ -295,9 +295,11 @@ public class PermintaanVendorAction extends BaseMasterAction {
         }
 
         logger.info("[PermintaanVendorAction.edit] END <<<<<<<");
-        if (isNew) {
+        if (isNew && "reture".equalsIgnoreCase(tipe)) {
+            return "init_edit_reture";
+        } else if (isNew){
             return "init_edit";
-        } else {
+        }else {
             return initListBatch(idApproval, id);
         }
     }
@@ -713,6 +715,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
         permintaanVendor.setTanggalFaktur(Date.valueOf(tglFaktur));
         permintaanVendor.setNoInvoice(noInvoice);
         permintaanVendor.setNoDo(noDo);
+        permintaanVendor.setIdPelayanan(pelayananId);
 
         List<PermintaanVendor> permintaanVendorList = new ArrayList<>();
         try {
@@ -724,6 +727,9 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
         if (permintaanVendorList.size() > 0) {
             PermintaanVendor requestVendor = permintaanVendorList.get(0);
+
+            // set permintaanVendor OBJECT idVendor Object;
+            permintaanVendor.setIdVendor(requestVendor.getIdVendor());
 
             List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
             try {
@@ -757,10 +763,12 @@ public class PermintaanVendorAction extends BaseMasterAction {
                         checkObatResponse.setStatus("error");
                     }
 
+                    BigInteger cons = obatEntity.getLembarPerBox().multiply(obatEntity.getBijiPerLembar());
+
                     // jika harga bukan pengembalian reture pakai harga terakhir;
                     BigDecimal hargaRata = new BigDecimal(0);
                     if (!"reture".equalsIgnoreCase(jenis)){
-                        hargaRata = obatEntity.getHargaTerakhir();
+                        hargaRata = obatEntity.getHargaTerakhir().multiply(new BigDecimal(cons));
                     } else {
                         if ("box".equalsIgnoreCase(trans.getJenisSatuan())){
                             hargaRata = hargaRata.add(obatEntity.getAverageHargaBox());
@@ -822,7 +830,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
                 jurnalMap.put("persediaan_gudang", listMapPersediaan);
                 jurnalMap.put("biaya_persediaan_obat", mapBiaya);
 
-                catatan = "Pengganti Barang Retur Vendor ke Gudang dari Vendor " + requestVendor.getIdVendor() + " - " + namaVendor;
+                catatan = "Pengganti Barang No. Transaksi "+idPermintaanVendor+". Retur Vendor ke Gudang dari Vendor " + requestVendor.getIdVendor() + " - " + namaVendor;
                 transId = "36";
             } else {
 

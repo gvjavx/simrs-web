@@ -30,6 +30,25 @@ public class Dokter {
 
     private String kode;
 
+    private String flagCall;
+    private String flagTele;
+
+    public String getFlagTele() {
+        return flagTele;
+    }
+
+    public void setFlagTele(String flagTele) {
+        this.flagTele = flagTele;
+    }
+
+    public String getFlagCall() {
+        return flagCall;
+    }
+
+    public void setFlagCall(String flagCall) {
+        this.flagCall = flagCall;
+    }
+
     public String getKodeDpjp() {
         return kodeDpjp;
     }

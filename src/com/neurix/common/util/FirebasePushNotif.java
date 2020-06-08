@@ -12,7 +12,7 @@ import java.util.Properties;
 
 public class FirebasePushNotif {
 
-    public static Boolean sendNotificationFirebase(String tokenId, String title, String body, String CLICK_ACTION){
+    public static Boolean sendNotificationFirebase(String tokenId, String title, String body, String CLICK_ACTION, String os){
         Integer responseCode = 0;
         Properties properties = new Properties();
 
@@ -40,7 +40,12 @@ public class FirebasePushNotif {
             info.put("body", body);
             info.put("sound", "default");
             info.put("click_action", CLICK_ACTION);
+            info.put("show_in_foreground", true);
+            info.put("priority", "high");
             //info.put("click_action", "MAINACTIVITY");
+            if (os.equalsIgnoreCase("Android")) {
+                info.put("android_channel_id", "notif-channel");
+            }
 
 
             OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());

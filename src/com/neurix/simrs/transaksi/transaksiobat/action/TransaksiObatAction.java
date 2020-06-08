@@ -84,6 +84,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import javax.imageio.ImageIO;
+
 import sun.misc.BASE64Decoder;
 
 
@@ -588,13 +589,10 @@ public class TransaksiObatAction extends BaseMasterAction {
         permintaanResep.setBranchId(CommonUtil.userBranchLogin());
         permintaanResep.setTujuanPelayanan(CommonUtil.userPelayananIdLogin());
 
-//        if ("4".equalsIgnoreCase(permintaanResep.getStatus())) {
-//            permintaanResep.setFlag("N");
-//            permintaanResep.setStatus("");
-//        }
-
         try {
+
             listResep = transaksiObatBoProxy.getListResepPasien(permintaanResep);
+
         } catch (GeneralBOException e) {
             Long logId = null;
             logger.error("[CheckupAction.save] Error when searching pasien by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
@@ -825,7 +823,7 @@ public class TransaksiObatAction extends BaseMasterAction {
 
             try {
                 obatKronis = transaksiObatBo.cekObatKronis(idApproval);
-            }catch (GeneralBOException e){
+            } catch (GeneralBOException e) {
                 logger.error("found Error when search obat kronis ");
             }
 
@@ -833,13 +831,13 @@ public class TransaksiObatAction extends BaseMasterAction {
 
             try {
                 tarifResep = transaksiObatBo.getTarifApproveResep(idApproval);
-            }catch (GeneralBOException e){
+            } catch (GeneralBOException e) {
                 logger.error("found error when search tarif resep");
             }
 
-            if(tarifResep.getTotalHarga() != null){
+            if (tarifResep.getTotalHarga() != null) {
 
-                if(obatKronis){
+                if (obatKronis) {
 
                     RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
                     riwayatTindakan.setIdTindakan(tarifResep.getIdPermintaanResep());
@@ -861,7 +859,7 @@ public class TransaksiObatAction extends BaseMasterAction {
                         riwayatTindakanBo.saveAdd(riwayatTindakan);
 
                         String invoice = "";
-                        JurnalResponse jurnalClosingResponse = closingJurnalNonTunai(tarifResep.getIdDetailCheckup(),tarifResep.getIdPelayanan(), tarifResep.getIdPasien());
+                        JurnalResponse jurnalClosingResponse = closingJurnalNonTunai(tarifResep.getIdDetailCheckup(), tarifResep.getIdPelayanan(), tarifResep.getIdPasien());
                         if ("error".equalsIgnoreCase(jurnalClosingResponse.getStatus())) {
                             response.setMessage(jurnalClosingResponse.getMsg());
                             return response;
@@ -882,15 +880,15 @@ public class TransaksiObatAction extends BaseMasterAction {
 
                         try {
                             checkupDetailBo.saveEdit(detailCheckup);
-                        }catch (GeneralBOException e){
-                            logger.error("Found Error "+e);
+                        } catch (GeneralBOException e) {
+                            logger.error("Found Error " + e);
                         }
 
                     } catch (GeneralBOException e) {
                         logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when insert riwayat tindakan :" + e.getMessage());
                     }
 
-                }else{
+                } else {
 
                     RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
                     riwayatTindakan.setIdDetailCheckup(tarifResep.getIdDetailCheckup());
@@ -901,8 +899,8 @@ public class TransaksiObatAction extends BaseMasterAction {
 
                     try {
                         riwayatTindakanBo.saveEdit(riwayatTindakan);
-                    }catch (GeneralBOException e){
-                        logger.error("found error "+e);
+                    } catch (GeneralBOException e) {
+                        logger.error("found error " + e);
                     }
                 }
             }
@@ -941,16 +939,16 @@ public class TransaksiObatAction extends BaseMasterAction {
         PermintaanResep permintaanResep = new PermintaanResep();
         permintaanResep.setIdApprovalObat(idApprove);
         List<PermintaanResep> permintaanReseps = permintaanResepBo.getByCriteria(permintaanResep);
-        if (permintaanReseps.size() > 0){
-            for (PermintaanResep dataPermintaan : permintaanReseps){
+        if (permintaanReseps.size() > 0) {
+            for (PermintaanResep dataPermintaan : permintaanReseps) {
 
-                if (dataPermintaan.getIdDetailCheckup() != null){
+                if (dataPermintaan.getIdDetailCheckup() != null) {
 
                     ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getDetailCheckupById(dataPermintaan.getIdDetailCheckup());
-                    if (detailCheckupEntity != null){
+                    if (detailCheckupEntity != null) {
                         idDetailCheckup = detailCheckupEntity.getIdDetailCheckup();
                         ItSimrsHeaderChekupEntity chekupEntity = checkupBo.getEntityCheckupById(detailCheckupEntity.getNoCheckup());
-                        if (chekupEntity != null){
+                        if (chekupEntity != null) {
                             idPasien = chekupEntity.getIdPasien();
                         }
                     } else {
@@ -964,12 +962,12 @@ public class TransaksiObatAction extends BaseMasterAction {
                     return response;
                 }
 
-                if (dataPermintaan.getTujuanPelayanan() != null){
+                if (dataPermintaan.getTujuanPelayanan() != null) {
 
                     ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(dataPermintaan.getTujuanPelayanan());
-                    if (pelayananEntity != null){
+                    if (pelayananEntity != null) {
                         ImPosition position = positionBo.getPositionEntityById(pelayananEntity.getDivisiId());
-                        if (position != null){
+                        if (position != null) {
                             divisiId = position.getKodering();
                         }
                     }
@@ -979,14 +977,13 @@ public class TransaksiObatAction extends BaseMasterAction {
                 Pelayanan pelayanan = new Pelayanan();
                 pelayanan.setIdPelayanan(dataPermintaan.getTujuanPelayanan());
                 List<Pelayanan> pelayanans = pelayananBo.getByCriteria(pelayanan);
-                if (pelayanans.size() > 0 ){
-                    for (Pelayanan dataPelayanan : pelayanans){
+                if (pelayanans.size() > 0) {
+                    for (Pelayanan dataPelayanan : pelayanans) {
                         namaApotek = dataPelayanan.getNamaPelayanan();
                     }
                 }
             }
         }
-
 
 
         BigDecimal biayaPersediaan = new BigDecimal(0);
@@ -1032,7 +1029,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         String branchId = CommonUtil.userBranchLogin();
         String branchName = CommonUtil.userBranchNameLogin();
 
-        String catatan = "Pengeluaran Obat "+namaApotek+" "+branchName+" No. Detail Checkup : "+idDetailCheckup+" No. RM "+idPasien;
+        String catatan = "Pengeluaran Obat " + namaApotek + " " + branchName + " No. Detail Checkup : " + idDetailCheckup + " No. RM " + idPasien;
 
         String noJurnal = "";
 
@@ -1078,19 +1075,19 @@ public class TransaksiObatAction extends BaseMasterAction {
                     }
                 }
             }
-        } else if ("laboratorium".equalsIgnoreCase(keterangan) || "radiologi".equalsIgnoreCase(keterangan)){
+        } else if ("laboratorium".equalsIgnoreCase(keterangan) || "radiologi".equalsIgnoreCase(keterangan)) {
             divisiId = periksaLabBo.getDivisiIdKodering(idDetailCheckup, keterangan);
-        } else if ("gizi".equalsIgnoreCase(keterangan)){
+        } else if ("gizi".equalsIgnoreCase(keterangan)) {
 
             ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getEntityDetailCheckupByIdDetail(idDetailCheckup);
-            if (detailCheckupEntity != null){
+            if (detailCheckupEntity != null) {
 
                 Pelayanan pelayanan = new Pelayanan();
                 pelayanan.setBranchId(detailCheckupEntity.getBranchId());
                 pelayanan.setTipePelayanan("gizi");
 
                 List<Pelayanan> pelayananList = pelayananBo.getByCriteria(pelayanan);
-                if (pelayananList.size() > 0){
+                if (pelayananList.size() > 0) {
                     Pelayanan pelayananData = pelayananList.get(0);
 
                     ImPosition position = positionBo.getPositionEntityById(pelayananData.getDivisiId());
@@ -1142,14 +1139,14 @@ public class TransaksiObatAction extends BaseMasterAction {
         return divisiId;
     }
 
-    private BigDecimal getJumlahNilaiBiayaByKeterangan(String idDetailCheckup, String jenisPasien, String keterangan){
+    private BigDecimal getJumlahNilaiBiayaByKeterangan(String idDetailCheckup, String jenisPasien, String keterangan) {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
 
         BigDecimal nilai = new BigDecimal(0);
         try {
             nilai = checkupDetailBo.getSumJumlahTindakanByJenis(idDetailCheckup, jenisPasien, keterangan);
-        } catch (GeneralBOException e){
+        } catch (GeneralBOException e) {
             logger.error("[CheckupDetailAction.getJumlahNilaiBiayaByKeterangan] ERROR ", e);
             throw new GeneralBOException("[CheckupDetailAction.getJumlahNilaiBiayaByKeterangan] ERROR " + e);
 
@@ -1341,7 +1338,7 @@ public class TransaksiObatAction extends BaseMasterAction {
                         allTindakanTrans = checkupDetailBo.getSumJumlahTindakanTransitoris(idDetailCheckup, "");
                         Map mapTransitoris = new HashMap();
                         mapTransitoris.put("nilai", allTindakanTrans);
-                        mapTransitoris.put("bukti",  detailCheckupEntity.getInvoiceTrans());
+                        mapTransitoris.put("bukti", detailCheckupEntity.getInvoiceTrans());
                         hsCriteria.put("piutang_transistoris_pasien_rawat_inap", mapTransitoris);
                         isTransitoris = true;
                     }
@@ -1358,9 +1355,9 @@ public class TransaksiObatAction extends BaseMasterAction {
                     // MAP ALL TINDAKAN BY KETERANGAN
                     List<Map> listOfTindakan = new ArrayList<>();
                     List<String> listOfKeteranganRiwayat = riwayatTindakanBo.getListKeteranganByIdDetailCheckup(idDetailCheckup);
-                    if (listOfKeteranganRiwayat.size() > 0){
+                    if (listOfKeteranganRiwayat.size() > 0) {
 
-                        for (String keterangan : listOfKeteranganRiwayat){
+                        for (String keterangan : listOfKeteranganRiwayat) {
                             Map mapTindakan = new HashMap();
                             mapTindakan.put("master_id", masterId);
                             mapTindakan.put("divisi_id", getDivisiId(idDetailCheckup, detailCheckupEntity.getIdJenisPeriksaPasien(), keterangan));
@@ -1521,7 +1518,7 @@ public class TransaksiObatAction extends BaseMasterAction {
                         }
                     }
 
-                    String catatan = "Closing Pasien " + ketPoli + jenisPasien + ketResep + "No.Detail Checkup "+idDetailCheckup+" Piutang No Pasien " + " " + idPasien + noKartu;
+                    String catatan = "Closing Pasien " + ketPoli + jenisPasien + ketResep + "No.Detail Checkup " + idDetailCheckup + " Piutang No Pasien " + " " + idPasien + noKartu;
 
 
                     try {
@@ -1745,13 +1742,13 @@ public class TransaksiObatAction extends BaseMasterAction {
         String divisiId = "";
         String masterId = "";
         ImSimrsPelayananEntity pelayananEntity = pelayananBoProxy.getPelayananById(pelayananId);
-        if (pelayananEntity != null){
+        if (pelayananEntity != null) {
 
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
             ImPosition position = positionBo.getPositionEntityById(pelayananEntity.getDivisiId());
 
-            if (position != null){
+            if (position != null) {
                 divisiId = position.getKodering();
             }
 
@@ -1765,7 +1762,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         JenisPriksaPasienBo jenisPriksaPasienBo = (JenisPriksaPasienBo) ctx.getBean("jenisPriksaPasienBoProxy");
 
         ImJenisPeriksaPasienEntity jenisPeriksaPasienEntity = jenisPriksaPasienBo.getJenisPerikasEntityById("umum");
-        if (jenisPeriksaPasienEntity != null){
+        if (jenisPeriksaPasienEntity != null) {
             masterId = jenisPeriksaPasienEntity.getMasterId();
         }
 
@@ -1780,7 +1777,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         // create jurnal
         Map hsCriteria = new HashMap();
         hsCriteria.put("metode_bayar", "tunai");
-        hsCriteria.put("kas",  mapKas);
+        hsCriteria.put("kas", mapKas);
 
         Map mapPendapatan = new HashMap();
         mapPendapatan.put("nilai", new BigDecimal(trans.getTotalBayar()));
@@ -1902,8 +1899,8 @@ public class TransaksiObatAction extends BaseMasterAction {
 
                 try {
                     permintaanResep = checkupDetailBoProxy.getDataDokter(idResep);
-                }catch (HibernateException e){
-                    logger.error("Found Error "+e.getMessage());
+                } catch (HibernateException e) {
+                    logger.error("Found Error " + e.getMessage());
                 }
 
                 try {
@@ -1965,21 +1962,21 @@ public class TransaksiObatAction extends BaseMasterAction {
 
             try {
                 pelayananList = pelayananBoProxy.getByCriteria(pelayanan);
-            }catch (GeneralBOException e){
-                logger.error("Found Error "+e.getMessage());
+            } catch (GeneralBOException e) {
+                logger.error("Found Error " + e.getMessage());
             }
 
-            if(pelayananList.size() > 0){
+            if (pelayananList.size() > 0) {
                 Pelayanan plyn = pelayananList.get(0);
                 reportParams.put("tipePelayanan", plyn.getTipePelayanan());
             }
 
             reportParams.put("dokter", permintaanResep.getNamaDokter());
-            reportParams.put("ttdDokter", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_DOKTER+permintaanResep.getTtdDokter());
+            reportParams.put("ttdDokter", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + permintaanResep.getTtdDokter());
             reportParams.put("resepId", idResep);
             reportParams.put("petugas", permintaanResep.getNamaApoteker());
-            reportParams.put("ttdPasien", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_PASIEN+permintaanResep.getTtdPasien());
-            reportParams.put("ttdApoteker", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_APOTEKER+permintaanResep.getTtdApoteker());
+            reportParams.put("ttdPasien", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_PASIEN + permintaanResep.getTtdPasien());
+            reportParams.put("ttdApoteker", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_APOTEKER + permintaanResep.getTtdApoteker());
             reportParams.put("idPasien", checkup.getIdPasien());
             reportParams.put("nik", checkup.getNoKtp());
             reportParams.put("nama", checkup.getNama());
@@ -2014,7 +2011,7 @@ public class TransaksiObatAction extends BaseMasterAction {
     }
 
     public CheckResponse saveTtdPasien(String ttdPasien, String idResep, String ttdApoteker) throws IOException {
-        logger.info("base64 "+ttdPasien);
+        logger.info("base64 " + ttdPasien);
         CheckResponse response = new CheckResponse();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -2025,10 +2022,10 @@ public class TransaksiObatAction extends BaseMasterAction {
         byte[] decodedBytes2 = decoder.decodeBuffer(ttdApoteker);
 
         logger.info("Decoded upload data : " + decodedBytes1.length);
-        String fileName1 = "ttd_pasien-"+idResep+"-"+dateFormater("MM")+dateFormater("yy")+".png";
-        String fileName2 = "ttd_apoteker-"+idResep+"-"+dateFormater("MM")+dateFormater("yy")+".png";
-        String uploadFile1 = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_PASIEN+fileName1;
-        String uploadFile2 = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_APOTEKER+fileName2;
+        String fileName1 = "ttd_pasien-" + idResep + "-" + dateFormater("MM") + dateFormater("yy") + ".png";
+        String fileName2 = "ttd_apoteker-" + idResep + "-" + dateFormater("MM") + dateFormater("yy") + ".png";
+        String uploadFile1 = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_PASIEN+fileName1;
+        String uploadFile2 = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_APOTEKER+fileName2;
         logger.info("File save path : " + uploadFile1);
         BufferedImage image1 = ImageIO.read(new ByteArrayInputStream(decodedBytes1));
         BufferedImage image2 = ImageIO.read(new ByteArrayInputStream(decodedBytes2));
@@ -2037,17 +2034,34 @@ public class TransaksiObatAction extends BaseMasterAction {
             logger.error("Buffered Image is null");
             response.setStatus("error");
             return response;
-        }else{
+        } else {
             File f1 = new File(uploadFile1);
             File f2 = new File(uploadFile2);
             // write the image
             ImageIO.write(image1, "png", f1);
             ImageIO.write(image2, "png", f2);
+
             response.setStatus("success");
             response = transaksiObatBo.setTtdPasien(idResep, fileName1, fileName2);
         }
 
         return response;
+    }
+
+    public List<PermintaanResep> pushNotifResep() {
+        List<PermintaanResep> list = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TransaksiObatBo transaksiObatBo = (TransaksiObatBo) ctx.getBean("transaksiObatBoProxy");
+        try {
+            list = transaksiObatBo.getListNotifResep(CommonUtil.userPelayananIdLogin(), CommonUtil.userBranchLogin());
+        } catch (GeneralBOException e) {
+            logger.error("Found Error " + e.getMessage());
+        }
+        return list;
+    }
+
+    public String cekRole(){
+        return CommonUtil.roleAsLogin();
     }
 
     private String dateFormater(String type) {

@@ -11,7 +11,7 @@
         </id>
 
         <property name="noBudgetingDetail">
-            <column name="no_budgeting_detail" sql-type="varchar" length="30" not-null="true" />
+            <column name="no_budgeting_detail" sql-type="varchar" length="30" not-null="false" />
         </property>
 
         <property name="idBudgetingDetail">
@@ -19,7 +19,7 @@
         </property>
 
         <property name="namPengadaan">
-            <column name="nama_pengadaan" sql-type="varchar" length="100" not-null="true" />
+            <column name="nama_pengadaan" sql-type="varchar" length="100" not-null="false" />
         </property>
         <property name="nilai">
             <column name="nilai" sql-type="numeric" not-null="false" />
@@ -31,7 +31,7 @@
             <column name="sub_total" sql-type="numeric" not-null="false" />
         </property>
         <property name="tipe">
-            <column name="tipe" sql-type="varchar" length="5" not-null="true" />
+            <column name="tipe" sql-type="varchar" length="5" not-null="false" />
         </property>
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />

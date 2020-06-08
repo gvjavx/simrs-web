@@ -237,7 +237,7 @@ public class PayrollSkalaGajiPkwtBoImpl implements PayrollSkalaGajiPkwtBo {
         logger.info("[PayrollSkalaGajiPkwtBoImpl.saveAdd] start process >>>");
 
         if (bean!=null) {
-            String status = cekStatus(bean.getGolonganPkwtId());
+            String status = cekStatus(bean.getGolonganPkwtId(),bean.getTahun());
             if (!status.equalsIgnoreCase("Exist")){
                 String payrollSkalaGajiPkwtId;
                 try {
@@ -366,11 +366,11 @@ public class PayrollSkalaGajiPkwtBoImpl implements PayrollSkalaGajiPkwtBo {
     public List<payrollSkalaGajiPkwt> getComboPayrollSkalaGajiPkwtWithCriteria(String query) throws GeneralBOException {
         return null;
     }
-    public String cekStatus(String golonganId)throws GeneralBOException{
+    public String cekStatus(String golonganId,String tahun)throws GeneralBOException{
         String status ="";
         List<ImPayrollSkalaGajiPkwtEntity> skalaGajiEntity = new ArrayList<>();
         try {
-            skalaGajiEntity = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(golonganId);
+            skalaGajiEntity = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(golonganId,tahun);
         } catch (HibernateException e) {
             logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());

@@ -1615,6 +1615,7 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
         return suratDokterId;
     }
 
+
     @Override
     public String cekIfAbsensi(String nip, String tglDari, String tglSelesai) {
         String status ="";
@@ -1651,7 +1652,7 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
         return status;
     }
 
-    private String cekStatus(String nip, Date tglAwal, Date tglAkhir){
+    public String cekStatus(String nip, Date tglAwal, Date tglAkhir){
         String status = "";
         List<ItCutiPegawaiEntity> itCutiPegawaiEntities = new ArrayList<>();
 
@@ -1671,7 +1672,8 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
         return status;
     }
 
-    private String cekAgama(String nip, String ijinId, String agama){
+
+    public String cekAgama(String nip, String ijinId, String agama){
         String status = "";
 
         if ("islam".equalsIgnoreCase(agama) && "IJ010".equalsIgnoreCase(ijinId)){
@@ -1684,7 +1686,7 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
         return status;
     }
 
-    private String cekStatusIjin(String nip){
+    public String cekStatusIjin(String nip){
         String status = "";
         List<IjinKeluarEntity> ijinKeluarEntities = new ArrayList<>();
 

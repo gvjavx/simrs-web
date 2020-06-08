@@ -10,11 +10,26 @@
     <%@ include file="/pages/common/header.jsp" %>
     <style>
         .modal { overflow-y: auto}
+
+        .treegrid-collapsed {
+            background-color: #bfbfbf;
+        }
+        .treegrid-expanded {
+            background-color: #e6e6e6;
+        }
+
+        .treegrid-indent {width:16px; height: 16px; display: inline-block; position: relative;}
+
+        .treegrid-expander { width:16px; height: 16px; display: inline-block; position: relative; cursor: pointer;}
     </style>
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/BranchAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/BudgetingAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/KodeRekeningAction.js"/>'></script>
+    <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.bootstrap3.js"/>"></script>
+    <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.js"/>"></script>
+    <script src="<s:url value="/pages/plugins/tree/lodash.js"/>"></script>
+
     <script type='text/javascript'>
 
 
@@ -79,6 +94,7 @@
                                         <div class="col-sm-2">
                                             <select class="form-control" id="sel-tipe">
                                                 <option value="tahunan">Tahunan</option>
+                                                <option value="bulanan">Bulanan</option>
                                                 <option value="semester">Semester</option>
                                                 <option value="quartal">Quartal</option>
                                             </select>
@@ -90,7 +106,7 @@
 
                             <div class="row">
                                 <div class="col-md-6 col-md-offset-6" style="margin-top: 10px">
-                                    <button class="btn btn-success" onclick="add()"><i class="fa fa-plus"></i> Add</button>
+                                    <button class="btn btn-primary" onclick="add()"><i class="fa fa-plus"></i> Add</button>
                                 </div>
                             </div>
                         </div>
@@ -123,7 +139,7 @@
 
                         <div class="row">
                             <div class="col-md-8 col-md-offset-2">
-                                <table id="sortTable" class="table table-bordered table-striped">
+                                <table class="table table-bordered table-striped tree">
                                     <thead id="head-budgeting">
                                     <tr bgcolor="#90ee90">
                                         <td style="width: 20%">COA</td>
@@ -144,7 +160,7 @@
                         </div>
                         <div class="form-group" style="margin-top: 10px">
                             <div class="col-md-4 col-md-offset-5">
-                                <button class="btn btn-success" onclick="initForm()"><i class="fa fa-arrow-left"></i> Back</button>
+                                <button class="btn btn-warning" onclick="initForm()"><i class="fa fa-arrow-left"></i> Back</button>
                                 <button class="btn btn-success" id="btn-save" onclick="saveAdd()"><i class="fa fa-arrow-right"></i> Next </button>
                             </div>
                         </div>

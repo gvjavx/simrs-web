@@ -128,6 +128,26 @@ public class RawatInapController implements ModelDriven<Object> {
     private String idMonVitalSign;
     private String idPembObat;
 
+    private String isMobile;
+
+    private String idJenisPeriksaPasien;
+
+    public String getIdJenisPeriksaPasien() {
+        return idJenisPeriksaPasien;
+    }
+
+    public void setIdJenisPeriksaPasien(String idJenisPeriksaPasien) {
+        this.idJenisPeriksaPasien = idJenisPeriksaPasien;
+    }
+
+    public String getIsMobile() {
+        return isMobile;
+    }
+
+    public void setIsMobile(String isMobile) {
+        this.isMobile = isMobile;
+    }
+
     public Collection<PlanKegiatanRawatMobile> getListOfPlanKegiatanRawat() {
         return listOfPlanKegiatanRawat;
     }
@@ -869,10 +889,8 @@ public class RawatInapController implements ModelDriven<Object> {
         if (action.equalsIgnoreCase("getKategoriTindakan")){
             List<KategoriTindakan> result = new ArrayList<>();
 
-            KategoriTindakan kategoriTindakan = new KategoriTindakan();
-
             try {
-                result = kategoriTindakanBoProxy.getByCriteria(kategoriTindakan);
+                result = kategoriTindakanBoProxy.getListKategoriTindakan(idPelayanan);
             } catch (GeneralBOException e){
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
@@ -895,7 +913,7 @@ public class RawatInapController implements ModelDriven<Object> {
             tindakan.setIdKategoriTindakan(idKategoriTindakan);
 
             try {
-               result = tindakanBoProxy.getByCriteria(tindakan);
+               result = tindakanBoProxy.getComboBoxTindakan(tindakan);
             } catch (GeneralBOException e) {
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
@@ -905,8 +923,6 @@ public class RawatInapController implements ModelDriven<Object> {
                     TindakanMobile tindakanMobile = new TindakanMobile();
                     tindakanMobile.setIdKategoriTindakan(item.getIdKategoriTindakan());
                     tindakanMobile.setIdTindakan(item.getIdTindakan());
-                    tindakanMobile.setTarif(item.getTarif().toString());
-                    tindakanMobile.setTarifBpjs(item.getTarifBpjs().toString());
                     tindakanMobile.setTindakan(item.getTindakan());
                     tindakan.setTindakan(item.getTindakan());
 
@@ -1043,7 +1059,7 @@ public class RawatInapController implements ModelDriven<Object> {
             MonVitalSign monVitalSign = new MonVitalSign();
             monVitalSign.setIdDetailCheckup(idDetailCheckup);
             monVitalSign.setId(idMonVitalSign);
-            monVitalSign.setIsMobile("Y");
+            monVitalSign.setIsMobile(isMobile);
 
             try {
                 result = rawatInapBoProxy.getListMonVitalSign(monVitalSign);
@@ -1133,6 +1149,7 @@ public class RawatInapController implements ModelDriven<Object> {
             monPemberianObat.setIdDetailCheckup(idDetailCheckup);
             monPemberianObat.setKategori(kategori);
             monPemberianObat.setId(idPembObat);
+            monPemberianObat.setIsMobile(isMobile);
 
             try {
                 result = rawatInapBoProxy.getListPemberianObat(monPemberianObat);
@@ -1170,7 +1187,7 @@ public class RawatInapController implements ModelDriven<Object> {
             MonCairan monCairan = new MonCairan();
             monCairan.setIdDetailCheckup(idDetailCheckup);
             monCairan.setId(idMonCairan);
-            monCairan.setIsMobile("Y");
+            monCairan.setIsMobile(isMobile);
 
             try {
                 result = rawatInapBoProxy.getListMonCairan(monCairan);
@@ -1414,13 +1431,22 @@ public class RawatInapController implements ModelDriven<Object> {
         }
 
         if (action.equalsIgnoreCase("saveAddTindakanRawat")){
+            List<Tindakan> result = new ArrayList<>();
+            Tindakan bean = new Tindakan();
+            bean.setIdTindakan(idTindakan);
+
+            try {
+                result = tindakanBoProxy.getByCriteria(bean);
+            } catch (GeneralBOException e) {
+                logger.error("[RawatInapController.create] Error, " + e.getMessage());
+            }
+
             TindakanRawat tindakanRawat = new TindakanRawat();
             tindakanRawat.setIdDetailCheckup(idDetailCheckup);
             tindakanRawat.setIdTindakan(idTindakan);
             tindakanRawat.setNamaTindakan(namaTindakan);
             tindakanRawat.setIdDokter(idDokter);
             tindakanRawat.setIdPerawat(idPerawat);
-            tindakanRawat.setTarif(new BigInteger(tarif));
             tindakanRawat.setQty(new BigInteger(qty));
             tindakanRawat.setAction("C");
             tindakanRawat.setFlag("Y");
@@ -1428,6 +1454,10 @@ public class RawatInapController implements ModelDriven<Object> {
             tindakanRawat.setCreatedWho(username);
             tindakanRawat.setLastUpdate(now);
             tindakanRawat.setLastUpdateWho(username);
+
+            if (idJenisPeriksaPasien.equalsIgnoreCase("bpjs") || idJenisPeriksaPasien.equalsIgnoreCase("ptpn")){
+                tindakanRawat.setTarif(result.get(0).getTarifBpjs());
+            } else tindakanRawat.setTarif(result.get(0).getTarif());
 
             try {
                 tindakanRawatBoProxy.saveAdd(tindakanRawat);

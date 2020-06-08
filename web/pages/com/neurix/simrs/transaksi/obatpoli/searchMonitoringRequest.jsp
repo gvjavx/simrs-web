@@ -34,7 +34,6 @@
     <section class="content-header">
         <h1>
             Permintaan Obat Poli
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -289,6 +288,7 @@
                         $('#load_confirm').hide();
                         $('#modal-confirm').modal('hide');
                         $('#info_dialog').dialog('open');
+                        $('body').scrollTop(0);
                     } else {
 
                     }

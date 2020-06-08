@@ -19,12 +19,11 @@
             var idIjin = document.getElementById("ijinId").value;
             var nameIjin    = document.getElementById("ijinName1").value;
             var jumlahIjin  = document.getElementById("ijinJumlah1").value;
-
             var genderIjin    = document.getElementById("ijinGender1").value;
+            var ijinTipeHari    = document.getElementById("ijinTipeHari1").value;
 
 
-
-            if (nameIjin != '' && jumlahIjin != '') {
+            if (nameIjin != '' && jumlahIjin != '' && genderIjin != '' && ijinTipeHari != '') {
                 if(Number.isInteger(Number(jumlahIjin))){
                     if (confirm('Do you want to save this record?')) {
                         event.originalEvent.options.submit = true;
@@ -53,6 +52,12 @@
 
                 if (jumlahIjin == '') {
                     msg += 'Field <strong>Jumlah Ijin</strong> is required.' + '<br/>';
+                }
+                if (genderIjin == '') {
+                    msg += 'Field <strong>Ijin Gender</strong> is required.' + '<br/>';
+                }
+                if (ijinTipeHari == '') {
+                    msg += 'Field <strong>Tipe Hari</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;

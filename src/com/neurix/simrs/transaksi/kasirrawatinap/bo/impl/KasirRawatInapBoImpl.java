@@ -1,8 +1,9 @@
 package com.neurix.simrs.transaksi.kasirrawatinap.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.transaksi.checkupdetail.dao.UangMukaDao;
+import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsUangMukaPendaftaranEntity;
 import com.neurix.simrs.transaksi.kasirrawatinap.bo.KasirRawatInapBo;
-import com.neurix.simrs.transaksi.kasirrawatjalan.bo.impl.KasirRawatJalanBoImpl;
 import com.neurix.simrs.transaksi.rawatinap.dao.RawatInapDao;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.riwayattindakan.dao.RiwayatTindakanDao;

@@ -239,15 +239,14 @@ public class PositionBoImpl implements PositionBo {
         }
 
         logger.info("[PositionBoImpl.saveAdd] end process <<<");
-
-        return position;
+        return null;
     }
 
     public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {
 
-        Long result = GenerateBoLog.generateBoLog(positionDao, message, moduleMethod);
+//        Long result = GenerateBoLog.generateBoLog(positionDao, message, moduleMethod);
 
-        return result;
+        return null;
     }
 
     public void saveEdit(Position bean) throws GeneralBOException{

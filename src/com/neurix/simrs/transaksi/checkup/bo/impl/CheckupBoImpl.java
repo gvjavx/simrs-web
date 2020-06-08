@@ -738,6 +738,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                         tindakanRawatEntity.setCreatedWho(userLogin);
                         tindakanRawatEntity.setLastUpdate(time);
                         tindakanRawatEntity.setLastUpdateWho(userLogin);
+                        tindakanRawatEntity.setApproveFlag("Y");
                     }
 
                     try {
@@ -1300,6 +1301,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         logger.info("[CheckupBoImpl.completeBpjs] End <<<<<<<");
         return finalResult;
     }
+
 
     @Override
     public void updatePenunjang(HeaderCheckup bean) throws GeneralBOException {
@@ -2339,7 +2341,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             resepEntity.setLastUpdateWho(bean.getLastUpdateWho());
             resepEntity.setIsUmum("N");
             resepEntity.setTglAntrian(bean.getLastUpdate());
-            resepEntity.setStatus("3");
+            resepEntity.setStatus("0");
 
             try {
                 permintaanResepDao.addAndSave(resepEntity);
@@ -2393,6 +2395,50 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         logger.info("[CheckupBoImpl.getEntityCheckupById] START >>>");
         logger.info("[CheckupBoImpl.getEntityCheckupById] END <<<");
         return headerCheckupDao.getById("noCheckup", id);
+    }
+
+    @Override
+    public HeaderCheckup getLastDataPasienByIdPasien(String idPasien) throws GeneralBOException {
+        HeaderCheckup headerCheckup = new HeaderCheckup();
+        try{
+            headerCheckup = headerCheckupDao.getDataPasienByIdPasien(idPasien);
+        }catch (HibernateException e){
+            logger.error("Found error "+e.getMessage());
+        }
+        return headerCheckup;
+    }
+
+    @Override
+    public List<HeaderCheckup> getHistoryPasien(String idPasien) throws GeneralBOException {
+        List<HeaderCheckup> headerCheckupList = new ArrayList<>();
+        try{
+            headerCheckupList = headerCheckupDao.getListHistoryPasien(idPasien);
+        }catch (HibernateException e){
+            logger.error("Found error "+e.getMessage());
+        }
+        return headerCheckupList;
+    }
+
+    @Override
+    public List<HeaderCheckup> getListDetailHistory(String id, String keterangan) throws GeneralBOException {
+        List<HeaderCheckup> headerCheckupList = new ArrayList<>();
+        try{
+            headerCheckupList = headerCheckupDao.getListDetailHistoryPasien(id, keterangan);
+        }catch (HibernateException e){
+            logger.error("Found error "+e.getMessage());
+        }
+        return headerCheckupList;
+    }
+
+    @Override
+    public List<HeaderCheckup> getListVedioRm(String id) throws GeneralBOException {
+        List<HeaderCheckup> headerCheckupList = new ArrayList<>();
+        try{
+            headerCheckupList = headerCheckupDao.getListVideoRm(id);
+        }catch (HibernateException e){
+            logger.error("Found error "+e.getMessage());
+        }
+        return headerCheckupList;
     }
 
     @Override

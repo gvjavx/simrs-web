@@ -32,6 +32,16 @@ public class DokterController implements ModelDriven<Object> {
     private String kuota;
     private String lat;
     private String lon;
+    private String flagCall;
+    private String flagTele;
+
+    public String getFlagCall() {
+        return flagCall;
+    }
+
+    public void setFlagCall(String flagCall) {
+        this.flagCall = flagCall;
+    }
 
     public String getLat() {
         return lat;
@@ -121,6 +131,14 @@ public class DokterController implements ModelDriven<Object> {
         this.namaSpesialis = namaSpesialis;
     }
 
+    public String getFlagTele() {
+        return flagTele;
+    }
+
+    public void setFlagTele(String flagTele) {
+        this.flagTele = flagTele;
+    }
+
     @Override
     public Object getModel() {
         return (listOfDokter != null ? listOfDokter : model);
@@ -152,6 +170,7 @@ public class DokterController implements ModelDriven<Object> {
             model.setKuota(result.get(0).getKuota());
             model.setLat(result.get(0).getLat());
             model.setLon(result.get(0).getLon());
+            model.setFlagCall(result.get(0).getFlagCall());
         }
 
         if (action.equalsIgnoreCase("kuota")) {
@@ -166,6 +185,22 @@ public class DokterController implements ModelDriven<Object> {
         if (action.equalsIgnoreCase("saveEditLoc")){
             try {
                 dokterBoProxy.editLatLon(idDokter, lat, lon);
+            } catch (GeneralBOException e) {
+                logger.error("[DokterController.create] Error, " + e.getMessage());
+            }
+        }
+
+        if  (action.equalsIgnoreCase("editFlagCall")) {
+            try {
+                dokterBoProxy.editFlagCall(idDokter, flagCall);
+            } catch (GeneralBOException e) {
+                logger.error("[DokterController.create] Error, " + e.getMessage());
+            }
+        }
+
+        if  (action.equalsIgnoreCase("editFlagTele")) {
+            try {
+                dokterBoProxy.editFlagTele(idDokter, flagTele);
             } catch (GeneralBOException e) {
                 logger.error("[DokterController.create] Error, " + e.getMessage());
             }
