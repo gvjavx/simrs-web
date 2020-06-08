@@ -49,6 +49,16 @@ public class DispensasiController implements ModelDriven<Object> {
 
     private String action;
 
+    private String nip;
+
+    public String getNip() {
+        return nip;
+    }
+
+    public void setNip(String nip) {
+        this.nip = nip;
+    }
+
     public String getAction() {
         return action;
     }
@@ -173,7 +183,7 @@ public class DispensasiController implements ModelDriven<Object> {
                 search.setFlag("Y");
                 search.setGender("L");
 
-                modelIjin = ijinBoProxy.getByCriteria(search);
+                modelIjin = ijinBoProxy.getComboIjinIdWithKelamin(nip);
             } catch (GeneralBOException e) {
                 Long logId = null;
                 try {
