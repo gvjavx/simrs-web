@@ -2126,6 +2126,7 @@
 <script type='text/javascript' src='<s:url value="/pages/dist/js/addRawatJalan.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/spesialis.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/nyeri.js"/>'></script>
 
 <script type='text/javascript'>
 
@@ -2156,6 +2157,7 @@
     var alamatLengkap = '<s:property value="headerDetailCheckup.alamatLengkap"/>';
     var noBpjs = '<s:property value="headerDetailCheckup.noBpjs"/>';
     var jenisKelamin = '<s:property value="headerDetailCheckup.jenisKelamin"/>';
+    var urlPage = 'checkupdetail';
 
     $(document).ready(function () {
         $('#rawat_jalan').addClass('active');

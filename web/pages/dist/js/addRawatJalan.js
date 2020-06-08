@@ -1025,7 +1025,7 @@ function saveDiagnosa(id) {
             dwr.engine.setAsync(true);
             DiagnosaRawatAction.editDiagnosa(id, idDiag, jenisDiagnosa, ketDiagnosa, jenisPasien, idDetailCheckup, {
                 callback: function (response) {
-                    if (response == "success") {
+                    if (response.status == "success") {
                         dwr.engine.setAsync(false);
                         listDiagnosa();
                         hitungStatusBiaya();
@@ -1033,7 +1033,8 @@ function saveDiagnosa(id) {
                         $('#info_dialog').dialog('open');
                         $('#close_pos').val(3);
                     } else {
-
+                        $('#warning_diagnosa').show().fadeOut(5000);
+                        $('#msg_diagnosa').text(response.msg);
                     }
                 }
             })
@@ -1041,7 +1042,7 @@ function saveDiagnosa(id) {
             dwr.engine.setAsync(true);
             DiagnosaRawatAction.saveDiagnosa(idDetailCheckup, idDiag, jenisDiagnosa, ketDiagnosa, jenisPasien, {
                 callback: function (response) {
-                    if (response == "success") {
+                    if (response.status == "success") {
                         dwr.engine.setAsync(false);
                         listDiagnosa();
                         hitungStatusBiaya();
@@ -1049,14 +1050,16 @@ function saveDiagnosa(id) {
                         $('#info_dialog').dialog('open');
                         $('#close_pos').val(3);
                     } else {
-
+                        $('#warning_diagnosa').show().fadeOut(5000);
+                        $('#msg_diagnosa').text(response.msg);
                     }
                 }
             })
         }
     } else {
         $('#warning_diagnosa').show().fadeOut(5000);
-        if (idDiagnosa == '') {
+        $('#msg_diagnosa').text('Silahkan cek kembali data inputan...!');
+        if (idDiag == '') {
             $('#war_diagnosa').show();
         }
         if (jenisDiagnosa == '') {
@@ -1864,7 +1867,7 @@ function listResepPasien() {
 }
 
 function printResep(id) {
-    window.open('printResepPasien_checkupdetail.action?id=' + idDetailCheckup + '&idResep=' + id, '_blank');
+    window.open('printResepPasien_'+urlPage+'.action?id=' + idDetailCheckup + '&idResep=' + id, '_blank');
 }
 
 function detailResep(id) {

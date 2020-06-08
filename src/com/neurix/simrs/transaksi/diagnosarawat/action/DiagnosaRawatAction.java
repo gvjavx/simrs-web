@@ -124,8 +124,9 @@ public class DiagnosaRawatAction extends BaseMasterAction {
         return null;
     }
 
-    public String saveDiagnosa(String idDetailCheckup, String idDiagnosa, String jenisDiagnosa, String ketDiagnosa, String jenisPasien) {
+    public CrudResponse saveDiagnosa(String idDetailCheckup, String idDiagnosa, String jenisDiagnosa, String ketDiagnosa, String jenisPasien) {
         logger.info("[DiagnosaRawatAction.saveDiagnosa] start process >>>");
+        CrudResponse response = new CrudResponse();
         try {
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
@@ -147,25 +148,24 @@ public class DiagnosaRawatAction extends BaseMasterAction {
             diagnosaRawat.setFlag("Y");
 
             if ("bpjs".equalsIgnoreCase(jenisPasien) || "ptpn".equalsIgnoreCase(jenisPasien)) {
-                CrudResponse response = updateCoverBpjs(idDetailCheckup, idDiagnosa);
+                response = updateCoverBpjs(idDetailCheckup, idDiagnosa);
                 if ("success".equalsIgnoreCase(response.getStatus())) {
-                    diagnosaRawatBo.saveAdd(diagnosaRawat);
+                    response = diagnosaRawatBo.saveAdd(diagnosaRawat);
                 }else{
-                    return ERROR;
+                    response.setStatus("error");
+                    response.setMsg("Found Error When "+response.getMsg());
                 }
             } else {
                 diagnosaRawatBo.saveAdd(diagnosaRawat);
             }
 
         } catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[DiagnosaRawatAction.saveDiagnosa] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            response.setStatus("error");
+            response.setMsg("Found Error When "+e.getMessage());
         }
         logger.info("[DiagnosaRawatAction.saveDiagnosa] end process >>>");
 
-        return SUCCESS;
+        return response;
     }
 
     public List<DiagnosaRawat> listDiagnosa(String idDetailCheckup) {
@@ -211,7 +211,8 @@ public class DiagnosaRawatAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    public String editDiagnosa(String idRawatDiagnosa, String idDiagnosa, String jenisDiagnosa, String ketDiagnosa, String jenisPasien, String idDetailCheckup) {
+    public CrudResponse editDiagnosa(String idRawatDiagnosa, String idDiagnosa, String jenisDiagnosa, String ketDiagnosa, String jenisPasien, String idDetailCheckup) {
+        CrudResponse response = new CrudResponse();
         logger.info("[DiagnosaRawatAction.editDiagnosa] start process >>>");
         try {
             String userLogin = CommonUtil.userLogin();
@@ -230,25 +231,24 @@ public class DiagnosaRawatAction extends BaseMasterAction {
             diagnosaRawat.setAction("U");
 
             if ("bpjs".equalsIgnoreCase(jenisPasien) || "ptpn".equalsIgnoreCase(jenisPasien)) {
-                CrudResponse response = updateCoverBpjs(idDetailCheckup, idDiagnosa);
+                response = updateCoverBpjs(idDetailCheckup, idDiagnosa);
                 if ("success".equalsIgnoreCase(response.getStatus())) {
-                    diagnosaRawatBo.saveEdit(diagnosaRawat);
+                    response = diagnosaRawatBo.saveEdit(diagnosaRawat);
                 }else{
-                    return ERROR;
+                    response.setStatus("error");
+                    response.setMsg("Error when "+response.getMsg());
                 }
             } else {
                 diagnosaRawatBo.saveEdit(diagnosaRawat);
             }
 
         } catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[DiagnosaRawatAction.editDiagnosa] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            response.setStatus("error");
+            response.setMsg("Error when "+e.getMessage());
         }
         logger.info("[DiagnosaRawatAction.editDiagnosa] end process >>>");
 
-        return SUCCESS;
+        return response;
     }
 
     public CrudResponse updateCoverBpjs(String idDetailCheckup, String idDiagnosa) {
