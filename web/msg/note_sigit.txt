@@ -1,76 +1,122 @@
-// === 2020-05-22, Sigit === //
+// 2020-05-22 >>>
 
-ALTER TABLE it_simrs_transaksi_stok
-ADD COLUMN qty_lalu bigint,
-ADD COLUMN total_lalu numeric,
-ADD COLUMN sub_total_lalu numeric
+    ALTER TABLE it_simrs_transaksi_stok
+    ADD COLUMN qty_lalu bigint,
+    ADD COLUMN total_lalu numeric,
+    ADD COLUMN sub_total_lalu numeric
 
-// ===== //
+<<< //
 
-// === 2020-05-23, Sigit === //
+// 2020-05-23 >>>
 
-ALTER TABLE mt_simrs_item_paket_periksa
-ADD COLUMN harga bigint
+    ALTER TABLE mt_simrs_item_paket_periksa
+    ADD COLUMN harga bigint
 
-// ====== //
-
-
-// === 2020-05-28, Sigit === //
-ALTER TABLE it_simrs_periksa_lab_detail
-ADD COLUMN harga numeric;
-
-ALTER TABLE it_simrs_periksa_radiologi
-ADD COLUMN harga numeric;
-// ====== //
+<<< //
 
 
-// === 2020-05-30 ===//
+// 2020-05-28 >>>
 
-INSERT INTO im_akun_trans
-(trans_id, trans_name, flag, action, created_who, last_update_who, created_date, last_update, flag_sumber_baru)
-VALUES
-(
-	'61',
- 	'Closing Paket Periksa Tanpa Obat',
-	'Y',
-	'C',
-	'Admin',
-	'Admin',
-	now(),
-	now(),
-	'Y'
-);
+    ALTER TABLE it_simrs_periksa_lab_detail
+    ADD COLUMN harga numeric;
 
-INSERT INTO im_akun_trans
-(trans_id, trans_name, flag, action, created_who, last_update_who, created_date, last_update, flag_sumber_baru)
-VALUES
-(
-	'62',
- 	'Closing Paket Periksa Dengan Obat',
-	'Y',
-	'C',
-	'Admin',
-	'Admin',
-	now(),
-	now(),
-	'Y'
-);
+    ALTER TABLE it_simrs_periksa_radiologi
+    ADD COLUMN harga numeric;
 
-// ============= //
+<<< //
 
-// === 2020-05-31 ===//
-DELETE FROM im_akun_tipe_rekening WHERE tipe_rekening_id::integer > 4;
-DELETE FROM im_akun_tipe_rekening WHERE tipe_rekening_id = '00';
-UPDATE im_akun_tipe_rekening SET tipe_rekening_name = 'KAS' WHERE tipe_rekening_id = '01';
-UPDATE im_akun_tipe_rekening SET tipe_rekening_name = 'PENDAPATAN' WHERE tipe_rekening_id = '02';
-UPDATE im_akun_tipe_rekening SET tipe_rekening_name = 'BIAYA' WHERE tipe_rekening_id = '03';
-UPDATE im_akun_tipe_rekening SET tipe_rekening_name = 'INVESTASI' WHERE tipe_rekening_id = '04';
-SELECT * FROM im_akun_tipe_rekening
-// ============= //
 
-// === 2020-06-03 === //
-ALTER TABLE it_akun_budgeting_pengadaan
-  ADD COLUMN no_kontrak CHARACTER VARYING(100),
-  ADD COLUMN nilai_kontrak NUMERIC,
-  ADD COLUMN no_pengadaan CHARACTER VARYING(100);
-// === 2020-06-03 === //
+// 2020-05-30 >>>
+
+    INSERT INTO im_akun_trans
+    (trans_id, trans_name, flag, action, created_who, last_update_who, created_date, last_update, flag_sumber_baru)
+    VALUES
+    (
+        '61',
+        'Closing Paket Periksa Tanpa Obat',
+        'Y',
+        'C',
+        'Admin',
+        'Admin',
+        now(),
+        now(),
+        'Y'
+    );
+
+    INSERT INTO im_akun_trans
+    (trans_id, trans_name, flag, action, created_who, last_update_who, created_date, last_update, flag_sumber_baru)
+    VALUES
+    (
+        '62',
+        'Closing Paket Periksa Dengan Obat',
+        'Y',
+        'C',
+        'Admin',
+        'Admin',
+        now(),
+        now(),
+        'Y'
+    );
+
+<<< //
+
+// 2020-05-31 >>>
+
+    DELETE FROM im_akun_tipe_rekening WHERE tipe_rekening_id::integer > 4;
+    DELETE FROM im_akun_tipe_rekening WHERE tipe_rekening_id = '00';
+    UPDATE im_akun_tipe_rekening SET tipe_rekening_name = 'KAS' WHERE tipe_rekening_id = '01';
+    UPDATE im_akun_tipe_rekening SET tipe_rekening_name = 'PENDAPATAN' WHERE tipe_rekening_id = '02';
+    UPDATE im_akun_tipe_rekening SET tipe_rekening_name = 'BIAYA' WHERE tipe_rekening_id = '03';
+    UPDATE im_akun_tipe_rekening SET tipe_rekening_name = 'INVESTASI' WHERE tipe_rekening_id = '04';
+    SELECT * FROM im_akun_tipe_rekening
+
+<<< //
+
+// 2020-06-03 >>>
+
+    ALTER TABLE it_akun_budgeting_pengadaan
+      ADD COLUMN no_kontrak CHARACTER VARYING(100),
+      ADD COLUMN nilai_kontrak NUMERIC,
+      ADD COLUMN no_pengadaan CHARACTER VARYING(100);
+
+<<< //
+
+// 2020-06-08 >>>
+
+    CREATE SEQUENCE sq_antrian_telemedic;
+
+    -- Table: public.it_simrs_antrian_telemedic
+
+    -- DROP TABLE public.it_simrs_antrian_telemedic;
+
+    CREATE TABLE public.it_simrs_antrian_telemedic
+    (
+        id character varying(50) COLLATE pg_catalog."default" NOT NULL,
+        id_pasien character varying(50) COLLATE pg_catalog."default",
+        id_dokter character varying(50) COLLATE pg_catalog."default",
+        id_pelayanan character varying(50) COLLATE pg_catalog."default",
+        flag_resep character varying(1) COLLATE pg_catalog."default",
+        status character varying(1) COLLATE pg_catalog."default",
+        biaya_konsultasi numeric,
+        flag_bayar_konsultasi character varying(1) COLLATE pg_catalog."default",
+        flag_bayar_resep character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        no_kartu character varying(100) COLLATE pg_catalog."default",
+        id_jenis_periksa_pasien character varying(30) COLLATE pg_catalog."default",
+        id_asuransi character varying(30) COLLATE pg_catalog."default",
+        CONSTRAINT pk_antrian_telemedic PRIMARY KEY (id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.it_simrs_antrian_telemedic
+        OWNER to postgres;
+
+<<< //
