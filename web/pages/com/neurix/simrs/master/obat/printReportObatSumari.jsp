@@ -36,7 +36,7 @@
     <section class="content-header">
         <h1>
             Obat
-            <%--<small>e-HEALTH</small>--%>
+            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -47,11 +47,11 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Print Report Mutasi Obat</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Obat</h3>
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <s:form id="obatForm" method="post" namespace="/obat" action="printReportRiwayat_obat.action" theme="simple" cssClass="form-horizontal" target="_blank">
+                            <s:form id="obatForm" method="post" namespace="/obat" action="printReportRiwayat_obat.action" theme="simple" cssClass="form-horizontal">
 
                                     <div class="row">
                                         <div class="form-group">
