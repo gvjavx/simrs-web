@@ -64,6 +64,16 @@ public class ItPengajuanBiayaDetailEntity implements Serializable {
     private String createdWho;
     private String lastUpdateWho;
 
+    private String notApprovalNote;
+
+    public String getNotApprovalNote() {
+        return notApprovalNote;
+    }
+
+    public void setNotApprovalNote(String notApprovalNote) {
+        this.notApprovalNote = notApprovalNote;
+    }
+
     public String getNoJurnal() {
         return noJurnal;
     }

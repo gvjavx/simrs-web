@@ -30,6 +30,10 @@ public class ImPengajuanBiayaEntity implements Serializable {
     private String coaTarget;
     private String keterangan;
     private String noJurnal;
+    private String rkDikirim;
+
+    private BigDecimal totalPengajuan;
+    private String stTotalPengajuan;
 
     private String flag;
     private String action;
@@ -37,6 +41,30 @@ public class ImPengajuanBiayaEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getRkDikirim() {
+        return rkDikirim;
+    }
+
+    public void setRkDikirim(String rkDikirim) {
+        this.rkDikirim = rkDikirim;
+    }
+
+    public BigDecimal getTotalPengajuan() {
+        return totalPengajuan;
+    }
+
+    public void setTotalPengajuan(BigDecimal totalPengajuan) {
+        this.totalPengajuan = totalPengajuan;
+    }
+
+    public String getStTotalPengajuan() {
+        return stTotalPengajuan;
+    }
+
+    public void setStTotalPengajuan(String stTotalPengajuan) {
+        this.stTotalPengajuan = stTotalPengajuan;
+    }
 
     public BigDecimal getBudgetTerpakai() {
         return budgetTerpakai;

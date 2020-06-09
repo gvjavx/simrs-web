@@ -73,4 +73,23 @@ public class PengajuanBiayaDetailDao extends GenericDao<ItPengajuanBiayaDetailEn
         return results;
     }
 
+    public List<ItPengajuanBiayaDetailEntity> getByPengajuanBiayaId(String id) throws HibernateException {
+        List<ItPengajuanBiayaDetailEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPengajuanBiayaDetailEntity.class)
+                .add(Restrictions.eq("pengajuanBiayaId", id))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("pengajuanBiayaDetailId"))
+                .list();
+        return results;
+    }
+
+    public List<ItPengajuanBiayaDetailEntity> getDetailPengajuanForRk(String id) throws HibernateException {
+        List<ItPengajuanBiayaDetailEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPengajuanBiayaDetailEntity.class)
+                .add(Restrictions.eq("pengajuanBiayaId", id))
+                .add(Restrictions.eq("approvalKeuanganKpFlag", "Y"))
+                .add(Restrictions.eq("statusKeuangan", "KP"))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.desc("pengajuanBiayaDetailId"))
+                .list();
+        return results;
+    }
 }

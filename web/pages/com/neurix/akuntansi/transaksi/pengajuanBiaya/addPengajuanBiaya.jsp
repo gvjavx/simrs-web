@@ -25,10 +25,12 @@
         $.subscribe('beforeProcessSave', function (event, data) {
             var unit  = document.getElementById("branch_id").value;
             var divisi  = document.getElementById("divisi_id").value;
+            var tanggal  = document.getElementById("tanggalId").value;
+            var keterangan  = document.getElementById("keteranganId").value;
             var jumlahRow = document.getElementById('pengajuanBiayaTabel').rows.length;
             jumlahRow = jumlahRow-1;
 
-            if ( unit != ''&&divisi!=""&&jumlahRow>0) {
+            if ( unit != ''&&divisi!=""&&jumlahRow>0&&tanggal!=""&&keterangan!="") {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -44,6 +46,12 @@
                 }
                 if ( divisi == '') {
                     msg += 'Field <strong>Divisi</strong> is required.' + '<br/>';
+                }
+                if ( keterangan == '') {
+                    msg += 'Field <strong>Keterangan</strong> is required.' + '<br/>';
+                }
+                if ( tanggal == '') {
+                    msg += 'Field <strong>Tanggal</strong> is required.' + '<br/>';
                 }
                 if ( jumlahRow < 1) {
                     msg += 'Tabel <strong>Pengajuan Masih Kosong</strong> is required.' + '<br/>';
@@ -132,92 +140,52 @@
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
-                                                    <s:textfield id="tanggal" name="pengajuanBiaya.stTanggal"
-                                                                 cssClass="form-control datemask" onchange="$('#st_tgl').css('border','')"/>
+                                                    <s:textfield id="tanggalId" name="pengajuanBiaya.stTanggal" cssClass="form-control datemask" onchange="$('#st_tgl').css('border','')"/>
                                                     <script>
-                                                        $("#tanggal").datepicker({
+                                                        $("#tanggalId").datepicker({
                                                             setDate: new Date(),
                                                             autoclose: true,
                                                             changeMonth: true,
                                                             changeYear:true,
                                                             dateFormat:'yy-mm-dd'
                                                         });
-                                                        $("#tanggal").datepicker("setDate", new Date());
+                                                        $("#tanggalId").datepicker("setDate", new Date());
                                                     </script>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Transaksi</label>
-                                            <div class="col-md-8" style="margin-top: 7px">
-                                                <s:select list="#{'R':'Rutin','I':'Investasi'}" onchange="initNoBudget(this.value)"
-                                                          id="transaksi_view" name="pengajuanBiaya.transaksi"
-                                                          headerKey="" headerValue="[Select One]" cssClass="form-control" />
-                                                <s:hidden id="transaksi" />
-                                                <s:hidden name="pengajuanBiaya.tipeTransaksi" id="tipe_transaksi" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">No. Budget </label>
+                                            <label class="col-md-4" style="margin-top: 7px">Total </label>
                                             <div class="col-md-8">
-                                                <select class="form-control" id="no_budget" onchange="isiKeteterangan(),getSisaBudget(this.value)" style="margin-top: 7px" name="pengajuanBiaya.noBudget">
-                                                    <option value="" ></option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Keperluan</label>
-                                            <div class="col-md-8 keperluanText">
-                                                <s:textfield id="keperluanText" name="pengajuanBiaya.keperluan"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px" />
-                                            </div>
-                                            <div class="col-md-8 keperluanCombo" style="display: none">
-                                                <select class="form-control" id="keperluanCombo" onchange="getSisaBudgetInvestasi(this.value)" style="margin-top: 7px" name="pengajuanBiaya.keperluan">
-                                                    <option value="" ></option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Jumlah</label>
-                                            <div class="col-md-8">
-                                                <s:textfield id="bayar" name="pengajuanBiaya.stTotalBiaya"  onkeyup="formatRupiah2(this)"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Budgeting</label>
-                                            <div class="col-md-8">
-                                                <s:textfield id="sisa_budget" name="pengajuanBiaya.stBudgetSaatIni" readonly="true"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Budget Terpakai</label>
-                                            <div class="col-md-8">
-                                                <s:textfield id="budget_terpakai" name="pengajuanBiaya.stBudgetTerpakai" readonly="true"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Sisa Budget</label>
-                                            <div class="col-md-8">
-                                                <s:textfield id="sisa_budget_saat_ini" name="pengajuanBiaya.stSisaBudget" readonly="true"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px" />
+                                                <s:textfield id="total" readonly="true" cssStyle="margin-top: 7px" onkeypress="$(this).css('border','')" name="pengajuanBiaya.stTotalBiaya" cssClass="form-control"/>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Keterangan</label>
                                             <div class="col-md-8">
-                                                <s:textarea id="keterangan" rows="3" cssStyle="margin-top: 7px" onkeypress="$(this).css('border','')"
-                                                            name="pengajuanBiaya.keterangan" cssClass="form-control"/>
+                                                <s:textarea id="keteranganId" rows="3" cssStyle="margin-top: 7px" onkeypress="$(this).css('border','')" name="pengajuanBiaya.keterangan" cssClass="form-control"/>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="col-md-offset-4 col-md-8">
-                                                <button type="button" class="btn btn-primary" style="margin-top: 40px" id="btnTambahPengajuan">
-                                                    <i class="fa fa-plus"></i> Tambahkan
+                                                <button type="button" class="btn btn-primary" style="margin-top: 40px" id="btnTambah">
+                                                    <i class="fa fa-plus"></i> Tambah Data
                                                 </button>
                                             </div>
+                                            <script>
+                                                $('#btnTambah').click(function () {
+                                                    $('#transaksi_view').val("");
+                                                    $('#no_budget').val("");
+                                                    $('#bayar').val("");
+                                                    $('#sisa_budget').val("");
+                                                    $('#budget_terpakai').val("");
+                                                    $('#keperluanText').val("");
+                                                    $('#keperluanText').val("");
+                                                    $('#sisa_budget_saat_ini').val("");
+                                                    $('#keterangan').val("");
+                                                    $("#modal-tambah-data").modal('show');
+                                                })
+                                            </script>
                                         </div>
                                     </div>
                                 </div>
@@ -326,6 +294,110 @@
     </section>
     <!-- /.content -->
 </div>
+<div class="modal fade" id="modal-tambah-data">
+    <div class="modal-dialog modal-flat modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Tambah Pengajuan Biaya</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">Tanggal</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="tanggal" onkeypress="$(this).css('border','')" cssStyle="margin-top: 7px"
+                                                 cssClass="form-control" />
+                                    <script>
+                                        $("#tanggal").datepicker({
+                                            setDate: new Date(),
+                                            autoclose: true,
+                                            changeMonth: true,
+                                            changeYear:true,
+                                            dateFormat:'yy-mm-dd'
+                                        });
+                                        $("#tanggal").datepicker("setDate", new Date());
+                                    </script>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4"  style="margin-top: 7px">Transaksi</label>
+                                <div class="col-md-6">
+                                    <s:select list="#{'R':'Rutin','I':'Investasi'}" onchange="initNoBudget(this.value)" cssStyle="margin-top: 7px"
+                                              id="transaksi_view" headerKey="" headerValue="[Select One]" cssClass="form-control" />
+                                    <s:hidden id="transaksi" />
+                                    <s:hidden id="tipe_transaksi" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4">No. Budget</label>
+                                <div class="col-md-6">
+                                    <select class="form-control" id="no_budget" onchange="isiKeteterangan(),getSisaBudget(this.value)" style="margin-top: 7px">
+                                        <option value="" ></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4" >Keperluan</label>
+                                <div class="col-md-6">
+                                    <div class="keperluanText">
+                                        <s:textfield id="keperluanText" name="pengajuanBiaya.keperluan"
+                                                     cssClass="form-control" cssStyle="margin-top: 7px" />
+                                    </div>
+                                    <div class="keperluanCombo" style="display: none">
+                                        <select class="form-control" id="keperluanCombo" onchange="getSisaBudgetInvestasi(this.value)" style="margin-top: 7px">
+                                            <option value="" ></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4">Jumlah ( RP )</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="bayar" onkeyup="formatRupiah2(this)" cssClass="form-control" cssStyle="margin-top: 7px" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4">Budgeting ( RP )</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="sisa_budget" readonly="true" cssClass="form-control" cssStyle="margin-top: 7px" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4">Budget Terpakai ( RP )</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="budget_terpakai" readonly="true" cssClass="form-control" cssStyle="margin-top: 7px" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4">Sisa Budget ( RP )</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="sisa_budget_saat_ini" readonly="true" cssClass="form-control" cssStyle="margin-top: 7px" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4">Keterangan</label>
+                                <div class="col-md-6">
+                                    <s:textarea id="keterangan" rows="3" cssStyle="margin-top: 7px" onkeypress="$(this).css('border','')" cssClass="form-control"/>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-success" id="btnTambahPengajuan" data-dismiss="modal"><i class="fa fa-arrow-right"></i> Tambahkan</button>
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
     function isiKeteterangan() {
@@ -450,14 +522,16 @@
                 "<th style='text-align: center; background-color:  #90ee90'>Tanggal</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>Transaksi</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>No. Budget</th>"+
-                "<th style='text-align: center; background-color:  #90ee90'>Jumlah</th>"+
-                "<th style='text-align: center; background-color:  #90ee90'>Budget RKAP</th>"+
-                "<th style='text-align: center; background-color:  #90ee90'>Budget Terpakai</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Jumlah ( RP )</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Budget RKAP ( RP )</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Budget Terpakai ( RP )</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>Keperluan</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>Keterangan</th>"+
                 "</tr></thead>";
             var i = i ;
+            var total =0;
             $.each(listdata, function (i, item) {
+                total = total+item.jumlah;
                 var transaksi ="";
                 switch (item.transaksi) {
                     case "R":
@@ -480,10 +554,11 @@
                     '<td align="center">' + item.stJumlah+ '</td>' +
                     '<td align="center">' + item.stBudgetBiaya+ '</td>' +
                     '<td align="center">' + item.stBudgetTerpakai+ '</td>' +
-                    '<td align="center">' + item.keperluan+ '</td>' +
+                    '<td align="center">' + item.keperluanName+ '</td>' +
                     '<td align="center">' + item.keterangan+ '</td>' +
                     "</tr>";
             });
+            $('#total').val(formatRupiahAngka(total.toString()));
             $('.pengajuanBiayaTabel').append(tmp_table);
         });
     };
@@ -499,15 +574,18 @@
             var stBudgetBiaya=$('#sisa_budget').val();
             var stBudgetTerpakai=$('#budget_terpakai').val();
             var keperluan = "";
+            var keperluanName = "";
             if (transaksi=="R"){
                 keperluan=$('#keperluanText').val();
+                keperluanName=$('#keperluanText').val();
             } else if (transaksi=="I"){
-                keperluan=$('#keperluanCombo').val();
+                keperluan=$('#keperluanCombo option:selected').val();
+                keperluanName=$('#keperluanCombo option:selected').text();
             }
             var keterangan=$('#keterangan').val();
 
             if (branchId!=""&&divisiId!=""&&stTanggal!=""&&transaksi!=""&&noBudgeting!=""&&stJumlah!=""&&stBudgetBiaya!=""&&stBudgetTerpakai!=""&&keterangan!=""&&keperluan!=""){
-                PengajuanBiayaAction.saveSessionPengajuan(branchId,divisiId,stTanggal,transaksi,noBudgeting,stJumlah,stBudgetBiaya,stBudgetTerpakai,keperluan,keterangan,function(result){
+                PengajuanBiayaAction.saveSessionPengajuan(branchId,divisiId,stTanggal,transaksi,noBudgeting,stJumlah,stBudgetBiaya,stBudgetTerpakai,keperluan,keterangan,keperluanName,function(result){
                     if (result==""){
                         loadPengajuan();
                     } else{
@@ -565,6 +643,7 @@
                 alert(msg);
             }
         });
+        $('#total').val(0);
     })
 </script>
 <%@ include file="/pages/common/footer.jsp" %>

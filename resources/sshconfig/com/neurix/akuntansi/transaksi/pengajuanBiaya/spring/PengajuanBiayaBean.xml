@@ -17,6 +17,8 @@
           p:pengajuanBiayaDetailDao-ref="pengajuanBiayaDetailDao"
           p:positionDao-ref="positionDao"
           p:branchDao-ref="branchDao"
+          p:budgetingPengadaanDao-ref="budgetingPengadaanDao"
+          p:notifikasiDao-ref="notifikasiDao"
     />
 
     <bean id="pengajuanBiayaBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

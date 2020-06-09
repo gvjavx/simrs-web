@@ -55,6 +55,44 @@ public class PengajuanBiayaDetail extends BaseModel {
     private String statusUserApproval;
     private String statusKeuangan;
     private String noJurnal;
+    private String transaksiName;
+    private String keperluanName;
+
+    private String statusSaatIni;
+
+    private String notApprovalNote;
+
+    public String getStatusSaatIni() {
+        return statusSaatIni;
+    }
+
+    public void setStatusSaatIni(String statusSaatIni) {
+        this.statusSaatIni = statusSaatIni;
+    }
+
+    public String getNotApprovalNote() {
+        return notApprovalNote;
+    }
+
+    public void setNotApprovalNote(String notApprovalNote) {
+        this.notApprovalNote = notApprovalNote;
+    }
+
+    public String getKeperluanName() {
+        return keperluanName;
+    }
+
+    public void setKeperluanName(String keperluanName) {
+        this.keperluanName = keperluanName;
+    }
+
+    public String getTransaksiName() {
+        return transaksiName;
+    }
+
+    public void setTransaksiName(String transaksiName) {
+        this.transaksiName = transaksiName;
+    }
 
     public String getClosed() {
         return closed;

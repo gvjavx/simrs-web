@@ -118,6 +118,10 @@
             <column name="no_jurnal" sql-type="varchar" length="30" not-null="false" />
         </property>
 
+        <property name="notApprovalNote">
+            <column name="not_approval_note" sql-type="text" not-null="false" />
+        </property>
+
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
         </property>

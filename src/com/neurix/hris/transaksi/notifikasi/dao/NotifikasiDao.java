@@ -456,4 +456,15 @@ public class NotifikasiDao extends GenericDao<ImNotifikasiEntity, String> {
                 .list();
         return results;
     }
+
+    //digunakan untuk mencari notifikasi by nomor request
+    public List<ImNotifikasiEntity> getDataForCheck(String id,String nip) throws HibernateException {
+        List<ImNotifikasiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImNotifikasiEntity.class)
+                .add(Restrictions.eq("noRequest", id))
+                .add(Restrictions.eq("nip", nip))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("noRequest"))
+                .list();
+        return results;
+    }
 }

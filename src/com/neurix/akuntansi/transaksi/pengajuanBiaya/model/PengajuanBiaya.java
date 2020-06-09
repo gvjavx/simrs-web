@@ -37,8 +37,63 @@ public class PengajuanBiaya extends BaseModel {
     private String stTanggal;
     private BigDecimal budgetTerpakai;
     private String stBudgetTerpakai;
+    private String rkDikirim;
 
     private String branchName;
+    private String statusSaatIni;
+    private String stTanggalDari;
+    private String stTanggalSelesai;
+
+    private boolean showBuatRk=true;
+    private boolean showTerimaRk=false;
+
+    public String getRkDikirim() {
+        return rkDikirim;
+    }
+
+    public void setRkDikirim(String rkDikirim) {
+        this.rkDikirim = rkDikirim;
+    }
+
+    public boolean isShowTerimaRk() {
+        return showTerimaRk;
+    }
+
+    public void setShowTerimaRk(boolean showTerimaRk) {
+        this.showTerimaRk = showTerimaRk;
+    }
+
+    public boolean isShowBuatRk() {
+        return showBuatRk;
+    }
+
+    public void setShowBuatRk(boolean showBuatRk) {
+        this.showBuatRk = showBuatRk;
+    }
+
+    public String getStTanggalDari() {
+        return stTanggalDari;
+    }
+
+    public void setStTanggalDari(String stTanggalDari) {
+        this.stTanggalDari = stTanggalDari;
+    }
+
+    public String getStTanggalSelesai() {
+        return stTanggalSelesai;
+    }
+
+    public void setStTanggalSelesai(String stTanggalSelesai) {
+        this.stTanggalSelesai = stTanggalSelesai;
+    }
+
+    public String getStatusSaatIni() {
+        return statusSaatIni;
+    }
+
+    public void setStatusSaatIni(String statusSaatIni) {
+        this.statusSaatIni = statusSaatIni;
+    }
 
     public String getBranchName() {
         return branchName;

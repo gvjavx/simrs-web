@@ -2670,6 +2670,18 @@ public class NotifikasiBoImpl implements NotifikasiBo {
                 logger.error("[UserBoImpl.searchTrainingPerson] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
             }
+            for (PengajuanBiaya pengajuanBiaya : result){
+                pengajuanBiaya.setStTanggal(CommonUtil.convertDateToString(pengajuanBiaya.getTanggal()));
+                pengajuanBiaya.setStTotalBiaya(CommonUtil.numbericFormat(pengajuanBiaya.getTotalBiaya(),"###,###"));
+
+                List<ImBranches> branchesList = branchDao.getListBranchById(pengajuanBiaya.getBranchId());
+                for (ImBranches branches : branchesList){
+                    pengajuanBiaya.setBranchName(branches.getBranchName());
+                }
+
+                ImPosition position = positionDao.getById("positionId",pengajuanBiaya.getDivisiId());
+                pengajuanBiaya.setDivisiName(position.getPositionName());
+            }
         }
         return result;
     }
