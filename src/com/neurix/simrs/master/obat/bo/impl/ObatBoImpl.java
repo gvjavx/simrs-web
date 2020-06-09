@@ -1413,9 +1413,9 @@ public class ObatBoImpl implements ObatBo {
                         trans.setTotal(stok.getTotal());
                         trans.setSubTotal(stok.getSubTotal());
 
-                        trans.setQtyKredit(nolB);
-                        trans.setTotalKredit(nol);
-                        trans.setSubTotalKredit(nol);
+//                        trans.setQtyKredit(nolB);
+//                        trans.setTotalKredit(nol);
+//                        trans.setSubTotalKredit(nol);
 
                         // qty saldo = qty masuk + qty lalu;
                         trans.setQtySaldo(minStok.getQtyLalu().add(stok.getQty()));
@@ -1427,9 +1427,9 @@ public class ObatBoImpl implements ObatBo {
                         trans.setSubTotalSaldo(trans.getTotal().multiply(new BigDecimal(trans.getQtySaldo())));
                     } else {
 
-                        trans.setQty(nolB);
-                        trans.setTotal(nol);
-                        trans.setSubTotal(nol);
+//                        trans.setQty(nolB);
+//                        trans.setTotal(nol);
+//                        trans.setSubTotal(nol);
 
                         trans.setQtyKredit(stok.getQty());
                         trans.setTotalKredit(stok.getTotal());
@@ -1463,9 +1463,9 @@ public class ObatBoImpl implements ObatBo {
                         trans.setTotal(stok.getTotal());
                         trans.setSubTotal(stok.getSubTotal());
 
-                        trans.setQtyKredit(nolB);
-                        trans.setTotalKredit(nol);
-                        trans.setSubTotalKredit(nol);
+//                        trans.setQtyKredit(nolB);
+//                        trans.setTotalKredit(nol);
+//                        trans.setSubTotalKredit(nol);
 
                         // qty saldo = qty saldo lalu + qty
                         trans.setQtySaldo(minStok.getQtySaldo().add(stok.getQty()));
@@ -1477,9 +1477,9 @@ public class ObatBoImpl implements ObatBo {
                         trans.setSubTotalSaldo(trans.getTotalSaldo().multiply(new BigDecimal(trans.getQtySaldo())));
                     } else {
 
-                        trans.setQty(nolB);
-                        trans.setTotal(nol);
-                        trans.setSubTotal(nol);
+//                        trans.setQty(nolB);
+//                        trans.setTotal(nol);
+//                        trans.setSubTotal(nol);
 
                         trans.setQtyKredit(stok.getQty());
                         trans.setTotalKredit(stok.getTotal());
@@ -1871,5 +1871,43 @@ public class ObatBoImpl implements ObatBo {
     @Override
     public ImSimrsObatEntity getObatEntityByKodeBarang(String id) throws GeneralBOException {
         return obatDao.getById("idBarang", id);
+    }
+
+    @Override
+    public List<TransaksiStok> getListReportSumaryTransaksiObat(String idPelayanan, String tahun, String bulan) throws GeneralBOException {
+        logger.info("[ObatBoImpl.getListReportSumaryTransaksiObat] START >>>");
+
+        List<TransaksiStok> listObat = transaksiStokDao.getListOpnameByPeriode(idPelayanan, tahun, bulan);
+        if (listObat.size() > 0){
+
+            for (TransaksiStok obat : listObat){
+
+                obat.setKeterangan(obat.getNamaObat());
+
+                List<TransaksiStok> listTransaksi =  getListReporTransaksiObat(idPelayanan, tahun, bulan, obat.getIdObat());
+                if (listTransaksi.size() > 0){
+                    TransaksiStok saldoAkhir = listTransaksi.get(listTransaksi.size()-1);
+                    if (saldoAkhir != null && saldoAkhir.getSubTotalSaldo().compareTo(new BigDecimal(0)) == 1){
+                        obat.setQtySaldo(saldoAkhir.getQtySaldo());
+                        obat.setTotalSaldo(saldoAkhir.getTotalSaldo());
+                        obat.setSubTotalSaldo(saldoAkhir.getSubTotalSaldo());
+                    }
+                }
+
+//                TransaksiStok saldoLalu = transaksiStokDao.getSaldoBulanLaluByPeriode(idPelayanan, obat.getIdObat(), tahun, bulan);
+//                if (saldoLalu != null && saldoLalu.getSubTotalLalu().compareTo(new BigDecimal(0)) == 1){
+//
+//
+//                } else {
+//
+//                    List<TransaksiStok> listSaldo = transaksiStokDao.getSaldoOpnameByPeriode(idPelayanan, obat.getIdObat(), tahun, bulan);
+//                    if (listSaldo.size() > 0){
+//                    }
+//                }
+            }
+        }
+
+        logger.info("[ObatBoImpl.getListReportSumaryTransaksiObat] END <<<");
+        return listObat;
     }
 }

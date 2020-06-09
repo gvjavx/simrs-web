@@ -47,9 +47,18 @@ public class ObatAction extends BaseMasterAction {
     private ObatBo obatBoProxy;
     private PelayananBo pelayananBoProxy;
     private Obat obat;
-    private List<Obat> listOfObat = new ArrayList<>();
     private String idPabrik;
+    private String type;
+    private List<Obat> listOfObat = new ArrayList<>();
     List<TransaksiStok> report = new ArrayList<>();
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public List<TransaksiStok> getReport() {
         return report;
@@ -761,7 +770,11 @@ public class ObatAction extends BaseMasterAction {
         setObat(obat);
 
         logger.info("[ObatAction.initPrintReportRiwayat] END <<<");
-        return "init_print";
+        if ("sumary".equalsIgnoreCase(this.type)){
+            return "init_print_sumary";
+        } else {
+            return "init_print";
+        }
     }
 
     public String printReportRiwayat(){
@@ -798,12 +811,23 @@ public class ObatAction extends BaseMasterAction {
         }
 
         // report list
-        try {
-            report = obatBo.getListReporTransaksiObat(obat.getIdPelayanan(), obat.getTahun(), obat.getBulan(), obat.getIdObat());
-        } catch (GeneralBOException e){
-            logger.error("[ObatAction.initPrintReportRiwayat] ERROR. ", e);
-            throw new GeneralBOException("[ObatAction.initPrintReportRiwayat] ERROR. " + e);
+
+        if ("sumary".equalsIgnoreCase(obat.getType())){
+            try {
+                report = obatBo.getListReportSumaryTransaksiObat(obat.getIdPelayanan(), obat.getTahun(), obat.getBulan());
+            } catch (GeneralBOException e){
+                logger.error("[ObatAction.initPrintReportRiwayat] ERROR. ", e);
+                throw new GeneralBOException("[ObatAction.initPrintReportRiwayat] ERROR. " + e);
+            }
+        } else {
+            try {
+                report = obatBo.getListReporTransaksiObat(obat.getIdPelayanan(), obat.getTahun(), obat.getBulan(), obat.getIdObat());
+            } catch (GeneralBOException e){
+                logger.error("[ObatAction.initPrintReportRiwayat] ERROR. ", e);
+                throw new GeneralBOException("[ObatAction.initPrintReportRiwayat] ERROR. " + e);
+            }
         }
+
 
         String namaObat = "";
         if (report.size() > 0){
@@ -828,6 +852,9 @@ public class ObatAction extends BaseMasterAction {
         reportParams.put("namaObat", namaObat);
         reportParams.put("idObat", obat.getIdObat());
         reportParams.put("namaPelayanan", namaPelayanan);
+        reportParams.put("bulan", obat.getBulan());
+        reportParams.put("tahun", obat.getTahun());
+        reportParams.put("periode", obat.getBulan()+"-"+obat.getTahun());
 
         try {
             preDownload();
@@ -838,8 +865,11 @@ public class ObatAction extends BaseMasterAction {
         }
 
         logger.info("[ObatAction.initPrintReportRiwayat] END <<<");
-        return "print_riwayat";
-
+        if ("sumary".equalsIgnoreCase(obat.getType())){
+            return "print_sumary";
+        } else {
+            return "print_riwayat";
+        }
     }
 
 }
