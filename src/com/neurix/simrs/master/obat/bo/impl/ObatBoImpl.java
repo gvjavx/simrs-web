@@ -1424,7 +1424,7 @@ public class ObatBoImpl implements ObatBo {
                         trans.setTotalSaldo(minStok.getSubTotalLalu().add(stok.getSubTotal()).divide(new BigDecimal(trans.getQtySaldo()), 2, BigDecimal.ROUND_HALF_UP));
 
                         // sub total saldo = total saldo * qty saldo
-                        trans.setSubTotalSaldo(trans.getTotal().multiply(new BigDecimal(trans.getQtySaldo())));
+                        trans.setSubTotalSaldo(trans.getTotalSaldo().multiply(new BigDecimal(trans.getQtySaldo())));
                     } else {
 
 //                        trans.setQty(nolB);
@@ -1442,7 +1442,7 @@ public class ObatBoImpl implements ObatBo {
                         trans.setTotalSaldo(stok.getTotalLalu());
 
                         // sub total saldo = total saldo * qty saldo
-                        trans.setSubTotalSaldo(trans.getTotal().multiply(new BigDecimal(trans.getQtySaldo())));
+                        trans.setSubTotalSaldo(trans.getTotalSaldo().multiply(new BigDecimal(trans.getQtySaldo())));
                     }
                     listOfTransaksi.add(trans);
                     n++;
@@ -1734,7 +1734,6 @@ public class ObatBoImpl implements ObatBo {
         String tahun = CommonUtil.getDateParted(date, "YEAR");
         String bulan = CommonUtil.getDateParted(date, "MONTH");
 
-        TransaksiStok saldoBulanLalu = new TransaksiStok();
         boolean flagTutup = false;
         List<ItSimrsBatasTutupPeriodEntity> batasTutupPeriod = batasTutupPeriodDao.getBatasPeriodeDitutup(bean.getBranchId(), bulan, tahun);
         if (batasTutupPeriod.size() > 0){
@@ -1742,7 +1741,45 @@ public class ObatBoImpl implements ObatBo {
             flagTutup = true;
         }
 
+        TransaksiStok saldoBulanLalu = new TransaksiStok();
+
         // cari apakah data baru
+        if (flagTutup){
+
+            Integer tahunDepan = new Integer(0);
+            Integer bulanDepan = new Integer(0);
+
+            if ("12".equalsIgnoreCase(bulan)){
+                bulanDepan = Integer.valueOf(1);
+                tahunDepan = Integer.valueOf(tahun) + 1;
+            } else {
+                bulanDepan = Integer.valueOf(bulan) + 1;
+                tahunDepan = Integer.valueOf(tahun);
+            }
+
+            // cari apakah data baru
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("branch_id", bean.getBranchId());
+            hsCriteria.put("id_barang", bean.getIdObat());
+            hsCriteria.put("bulan", bulanDepan);
+            hsCriteria.put("tahun", tahunDepan);
+            hsCriteria.put("id_pelayanan", bean.getIdPelayanan());
+
+            List<ItSimrsTransaksiStokEntity> transaksiStokEntities = transaksiStokDao.getByCriteria(hsCriteria);
+            if (transaksiStokEntities.size() == 0){
+
+
+                // jika sudah ditutup bulan ini
+                // maka hitung saldo bulan ini sebagai saldo bulan lalu
+                if (flagTutup){
+                    List<TransaksiStok> saldoBulanLaluList = getListReporTransaksiObat(bean.getIdPelayanan(), tahun, bulan, bean.getIdObat());
+                    if (saldoBulanLaluList.size() > 0){
+                        saldoBulanLalu = saldoBulanLaluList.get(saldoBulanLaluList.size() -1);
+                    }
+                }
+            }
+        }
+
         Map hsCriteria = new HashMap();
         hsCriteria.put("branch_id", bean.getBranchId());
         hsCriteria.put("id_barang", bean.getIdObat());
@@ -1847,10 +1884,10 @@ public class ObatBoImpl implements ObatBo {
         }
 
         // jika ada saldo lalu
-        if (saldoBulanLalu.getQtyLalu() != null && saldoBulanLalu.getQtyLalu().compareTo(new BigInteger(String.valueOf(0))) == 1){
-            transaksiStokEntity.setQtyLalu(stokBulanLalu.getQtySaldo());
+        if (saldoBulanLalu.getQtySaldo() != null && saldoBulanLalu.getQtySaldo().compareTo(new BigInteger(String.valueOf(0))) == 1){
+            transaksiStokEntity.setQtyLalu(saldoBulanLalu.getQtySaldo());
             transaksiStokEntity.setTotalLalu(saldoBulanLalu.getTotalSaldo());
-            transaksiStokEntity.setSubTotalLalu(saldoBulanLalu.getSubTotal());
+            transaksiStokEntity.setSubTotalLalu(saldoBulanLalu.getSubTotalSaldo());
         } else {
             transaksiStokEntity.setQtyLalu(new BigInteger(String.valueOf(0)));
             transaksiStokEntity.setTotalLalu(new BigDecimal(0));
