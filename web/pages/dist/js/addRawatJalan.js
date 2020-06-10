@@ -1035,6 +1035,8 @@ function saveDiagnosa(id) {
                     } else {
                         $('#warning_diagnosa').show().fadeOut(5000);
                         $('#msg_diagnosa').text(response.msg);
+                        $('#save_diagnosa').show();
+                        $('#load_diagnosa').hide();
                     }
                 }
             })
@@ -1052,6 +1054,8 @@ function saveDiagnosa(id) {
                     } else {
                         $('#warning_diagnosa').show().fadeOut(5000);
                         $('#msg_diagnosa').text(response.msg);
+                        $('#save_diagnosa').show();
+                        $('#load_diagnosa').hide();
                     }
                 }
             })

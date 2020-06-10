@@ -1,17 +1,17 @@
-<div class="modal fade" id="modal-asesmen-ugd-dewasa">
+<div class="modal fade" id="modal-asesmen-ugd">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Asesmen Awal Gawat Darurat
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> <span id="title"></span>
                 </h4>
             </div>
             <div class="modal-body">
                 <div class="box-body btn-hide">
-                    <div class="alert alert-success alert-dismissible" style="display: none" id="warning_asesmen_ugd-dewasa">
+                    <div class="alert alert-success alert-dismissible" style="display: none" id="warning_asesmen-ugd">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
-                        <p id="msg_asesmen_ugd-dewasa"></p>
+                        <p id="msg_asesmen-ugd"></p>
                     </div>
                     <div class="btn-group">
                         <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
@@ -25,9 +25,9 @@
                             <li><a onclick="addAsesmenUgd('keluhan_utama')" style="cursor: pointer" ><i class="fa fa-plus"></i> Keluhan Utama</a></li>
                             <li><a onclick="addAsesmenUgd('pre_hospital')" style="cursor: pointer"><i class="fa fa-plus"></i> Data Pre Hospital</a></li>
                             <li><a onclick="addAsesmenUgd('keperawatan')" style="cursor: pointer"><i class="fa fa-plus"></i> Keperawatan</a></li>
-                            <li><a onclick="addAsesmenUgd('nyeri')" style="cursor: pointer"><i class="fa fa-plus"></i> Asesmen Nyeri</a></li>
-                            <li><a onclick="addAsesmenUgd('nutrisional')" style="cursor: pointer"><i class="fa fa-plus"></i> Skrining Risiko Nutrisional</a></li>
-                            <li><a onclick="addAsesmenUgd('jatuh')" style="cursor: pointer"><i class="fa fa-plus"></i> Asesmen Resiko Jatuh</a></li>
+                            <li><a onclick="addAsesmenUgd('nyeri_anak')" style="cursor: pointer"><i class="fa fa-plus"></i> Asesmen Nyeri</a></li>
+                            <li><a onclick="addAsesmenUgd('nutrisional_anak')" style="cursor: pointer"><i class="fa fa-plus"></i> Skrining Risiko Nutrisional</a></li>
+                            <li><a onclick="addAsesmenUgd('jatuh_anak')" style="cursor: pointer"><i class="fa fa-plus"></i> Asesmen Resiko Jatuh</a></li>
                             <li><a onclick="addAsesmenUgd('status')" style="cursor: pointer"><i class="fa fa-plus"></i> Status Fungsional</a></li>
                             <li><a onclick="addAsesmenUgd('kebutuhan')" style="cursor: pointer"><i class="fa fa-plus"></i> Kebutuhan Edukasi</a></li>
                             <li><a onclick="addAsesmenUgd('diagnosis')" style="cursor: pointer"><i class="fa fa-plus"></i> Diagnosis Keperawatan</a></li>
@@ -60,22 +60,22 @@
                                 <img id="btn_aud_keperawatan" class="hvr-grow" onclick="detailAud('keperawatan')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
-                        <tr id="row_aud_nyeri">
+                        <tr id="row_aud_nyeri_anak">
                             <td>Asesmen Nyeri</td>
                             <td width="20%" align="center">
-                                <img id="btn_aud_nyeri" class="hvr-grow" onclick="detailAud('nyeri')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="btn_aud_nyeri_anak" class="hvr-grow" onclick="detailAud('nyeri_anak')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
-                        <tr id="row_aud_nutrisional">
+                        <tr id="row_aud_nutrisional_anak">
                             <td>Skrining Risiko Nutrisional</td>
                             <td width="20%" align="center">
-                                <img id="btn_aud_nutrisional" class="hvr-grow" onclick="detailAud('nutrisional')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="btn_aud_nutrisional_anak" class="hvr-grow" onclick="detailAud('nutrisional_anak')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
-                        <tr id="row_aud_jatuh">
+                        <tr id="row_aud_jatuh_anak">
                             <td>Asesmen Resiko Jatuh</td>
                             <td width="20%" align="center">
-                                <img id="btn_aud_jatuh" class="hvr-grow" onclick="detailAud('jatuh')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="btn_aud_jatuh_anak" class="hvr-grow" onclick="detailAud('jatuh_anak')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         <tr id="row_aud_status">
@@ -985,8 +985,8 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-aud-nyeri">
-    <div class="modal-dialog modal-md">
+<div class="modal fade" id="modal-aud-nyeri_anak">
+    <div class="modal-dialog" style="width: 50%">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -996,93 +996,167 @@
             </div>
             <div class="modal-body">
                 <div class="box-body">
-                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_aud_nyeri">
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_aud_nyeri_anak">
                         <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                        <p id="msg_aud_nyeri"></p>
+                        <p id="msg_aud_nyeri_anak"></p>
                     </div>
                     <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="col-md-5" style="margin-top: 7px">Apakah terdapat keluhan nyeri</label>
-                                <div class="col-md-2">
-                                    <div class="custom02" style="margin-top: 7px">
-                                        <input onclick="cekNyeri(this.value, 'skala_nyeri')" type="radio" value="Ya" id="aud_nyeri1" name="radio_aud_nyeri" /><label for="aud_nyeri1">Ya</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="custom02" style="margin-top: 7px">
-                                        <input onclick="cekNyeri(this.value, 'skala_nyeri')" type="radio" value="Tidak" id="aud_nyeri2" name="radio_aud_nyeri" /><label for="aud_nyeri2">Tidak</label>
-                                    </div>
+                        <div class="form-group">
+                            <label class="col-md-5" style="margin-top: 7px">Apakah terdapat keluhan nyeri</label>
+                            <div class="col-md-2">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Ya" id="ya11" name="ya1" /><label for="ya11">Ya</label>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-md-5" style="margin-top: 7px">Lokasi</label>
-                                <div class="col-md-7">
-                                    <input class="form-control" id="yer_lokasi">
+                            <div class="col-md-5">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Tidak" id="ya12" name="ya1" /><label for="ya12">Tidak</label>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-md-5" style="margin-top: 7px">Jenis</label>
-                                <div class="col-md-2">
-                                    <div class="custom02" style="margin-top: 7px">
-                                        <input type="radio" value="Akut" id="aud_skala1" name="radio_aud_skala" /><label for="aud_skala1">Akut</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="custom02" style="margin-top: 7px">
-                                        <input type="radio" value="Kronis" id="aud_skala2" name="radio_aud_skala" /><label for="aud_skala2">Kronis</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-5" style="margin-top: 7px">Skala</label>
-                                <div class="col-md-7">
-                                    <input class="form-control" id="skala_nyeri" readonly>
-                                </div>
-                            </div>
-                            <%--<img src="<%= request.getContextPath() %>/pages/images/asesmen-nyeri.jpg" style="width: 100%; margin-top: 20px">--%>
                         </div>
                     </div>
                     <hr class="garis">
-                    <input id="temp_scala" type="hidden">
-                    <canvas id="choice_emoji" style="display: none"></canvas>
-                    <div class="row" style="margin-top: 10px">
+                    <div class="row jarak">
                         <div class="form-group">
-                            <div class="col-md-2">
-                                <img src="<%= request.getContextPath() %>/pages/images/scala-0.png" class="nyeri"
-                                     style="width: 100%; cursor: no-drop;" id="0">
-                                <p class="text-center" style="font-size: 12px; margin-top: 10px">0</p>
-                                <p class="text-center" style="font-size: 12px; margin-top: -10px">Tidak Nyeri</p>
+                            <label class="col-md-2">Face</label>
+                            <div class="col-md-10">
+                                <div class="custom02">
+                                    <input type="radio" value="Tidak ada ekpresi tertentu atau senyuman|0" id="ya21" name="ya2" /><label for="ya21">Tidak ada ekpresi tertentu atau senyuman</label>
+                                </div>
                             </div>
-                            <div class="col-md-2">
-                                <img src="<%= request.getContextPath() %>/pages/images/scala-2.png" class="nyeri"
-                                     style="width: 100%; cursor: no-drop" id="2" >
-                                <p class="text-center" style="font-size: 12px; margin-top: 10px">2</p>
-                                <p class="text-center" style="font-size: 12px; margin-top: -10px">Sedikit Nyeri</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <div class="custom02">
+                                    <input type="radio" value="Menyeringai sesekali atau mengerutkan dahi, muram ogah ogahan|1" id="ya22" name="ya2" /><label for="ya22">Menyeringai sesekali atau mengerutkan dahi, muram ogah ogahan</label>
+                                </div>
                             </div>
-                            <div class="col-md-2">
-                                <img src="<%= request.getContextPath() %>/pages/images/scala-4.png" class="nyeri"
-                                     style="width: 100%; cursor: no-drop" id="4" >
-                                <p class="text-center" style="font-size: 12px; margin-top: 10px">4</p>
-                                <p class="text-center" style="font-size: 12px; margin-top: -10px">Sedikit Lebih Nyeri</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <div class="custom02">
+                                    <input type="radio" value="Dagu gementar dan rahang diketap berulang|2" id="ya23" name="ya2" /><label for="ya23">Dagu gementar dan rahang diketap berulang</label>
+                                </div>
                             </div>
-                            <div class="col-md-2">
-                                <img src="<%= request.getContextPath() %>/pages/images/scala-6.png" class="nyeri"
-                                     style="width: 100%; cursor: no-drop" id="6" >
-                                <p class="text-center" style="font-size: 12px; margin-top: 10px">6</p>
-                                <p class="text-center" style="font-size: 12px; margin-top: -10px">Lebih Nyeri</p>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-2">Leg</label>
+                            <div class="col-md-10">
+                                <div class="custom02">
+                                    <input type="radio" value="Normal|0" id="ya31" name="ya3" /><label for="ya31">Normal</label>
+                                </div>
                             </div>
-                            <div class="col-md-2">
-                                <img src="<%= request.getContextPath() %>/pages/images/scala-8.png" class="nyeri"
-                                     style="width: 100%; cursor: no-drop" id="8" >
-                                <p class="text-center" style="font-size: 12px; margin-top: 10px">8</p>
-                                <p class="text-center" style="font-size: 12px; margin-top: -10px">Sangat Nyeri</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <div class="custom02">
+                                    <input type="radio" value="Gelisah, resah, tegang|1" id="ya32" name="ya3" /><label for="ya32">Gelisah, resah, tegang</label>
+                                </div>
                             </div>
-                            <div class="col-md-2">
-                                <img src="<%= request.getContextPath() %>/pages/images/scala-10.png" class="nyeri"
-                                     style="width: 100%; cursor: no-drop" id="10" >
-                                <p class="text-center" style="font-size: 12px; margin-top: 10px">10</p>
-                                <p class="text-center" style="font-size: 12px; margin-top: -10px">Nyeri Sangat Hebat</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <div class="custom02">
+                                    <input type="radio" value="Menendang atau menarik kaki|2" id="ya33" name="ya3" /><label for="ya33">Menendang atau menarik kaki</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-2">Activity</label>
+                            <div class="col-md-10">
+                                <div class="custom02">
+                                    <input type="radio" value="Rebahan dengan tenang, posisi normal, bergerak dengan mudah|0" id="ya41" name="ya4" /><label for="ya41">Rebahan dengan tenang, posisi normal, bergerak dengan mudah</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <div class="custom02">
+                                    <input type="radio" value="Menggeliat, maju mundur, tegang|1" id="ya42" name="ya4" /><label for="ya42">Menggeliat, maju mundur, tegang</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <div class="custom02">
+                                    <input type="radio" value="Menekuk atau posisi tubuh meringkuk, kaku atau menyentak|2" id="ya43" name="ya4" /><label for="ya43">Menekuk atau posisi tubuh meringkuk, kaku atau menyentak</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-2">Cry</label>
+                            <div class="col-md-10">
+                                <div class="custom02">
+                                    <input type="radio" value="Tidak ada tangisan (terjaga/tertidur)|0" id="ya51" name="ya5" /><label for="ya51">Tidak ada tangisan (terjaga/tertidur)</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <div class="custom02">
+                                    <input type="radio" value="Mengerang/merengek, gerutuan sesekali|1" id="ya52" name="ya5" /><label for="ya52">Mengerang/merengek, gerutuan sesekali</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <div class="custom02">
+                                    <input type="radio" value="Menangis tersedu-sedu, menjerit, terisak-isak, menggerutu berulang-ulang|2" id="ya53" name="ya5" /><label for="ya53">Menangis tersedu-sedu, menjerit, terisak-isak, menggerutu berulang-ulang</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-2">Consolability</label>
+                            <div class="col-md-10">
+                                <div class="custom02">
+                                    <input type="radio" value="Senang, santai|0" id="ya61" name="ya6" /><label for="ya61">Senang, santai</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <div class="custom02">
+                                    <input type="radio" value="Dapat ditenangkan dengan sentuhan, pelukan atau berbicara, dapat dialihkan|1" id="ya62" name="ya6" /><label for="ya62">Dapat ditenangkan dengan sentuhan, pelukan atau berbicara, dapat dialihkan</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <div class="custom02">
+                                    <input type="radio" value="Sulit atau dapat ditenangkan dengan pelukan, sentuhan atau distraksi|2" id="ya63" name="ya6" /><label for="ya63">Sulit atau dapat ditenangkan dengan pelukan, sentuhan atau distraksi</label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1091,9 +1165,9 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_aud_nyeri" class="btn btn-success pull-right" onclick="saveAsesmenUgd('nyeri')"><i class="fa fa-check"></i> Save
+                <button id="save_aud_nyeri_anak" class="btn btn-success pull-right" onclick="saveAsesmenUgd('nyeri_anak')"><i class="fa fa-check"></i> Save
                 </button>
-                <button id="load_aud_nyeri" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
+                <button id="load_aud_nyeri_anak" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>
@@ -1101,7 +1175,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-aud-nutrisional">
+<div class="modal fade" id="modal-aud-nutrisional_anak">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
@@ -1112,96 +1186,77 @@
             </div>
             <div class="modal-body">
                 <div class="box-body">
-                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_aud_nutrisional">
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_aud_nutrisional_anak">
                         <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                        <p id="msg_aud_nutrisional"></p>
+                        <p id="msg_aud_nutrisional_anak"></p>
                     </div>
-                    <div class="col-md-12">
                     <div class="row">
                         <div class="form-group">
-                            <label style="margin-top: 7px">1. Apakah pasien mengalami penurunan berat badan yang tidak direncanakan /tidak diinginkan dalam 6 bulan terakhir?</label>
+                            <label class="col-md-12"><li style="list-style-type: none">1. Apakah pasien tampak kurus?</li></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <div class="custom02" style="margin-top: 7px">
-                                <input onclick="showKetUgd(this.value, 'penurunan')" type="radio" value="Tidak|0" id="aud_nutrisional1" name="radio_aud_nutrisional" /><label for="aud_nutrisional1">Tidak</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <div class="custom02" style="margin-top: 7px">
-                                <input onclick="showKetUgd(this.value, 'penurunan')" type="radio" value="Tidak Yakin|2" id="aud_nutrisional2" name="radio_aud_nutrisional" /><label for="aud_nutrisional2">Tidak Yakin (ada tanda: baju menjadi longgar)</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <div class="custom02" style="margin-top: 7px">
-                                <input onclick="showKetUgd(this.value, 'penurunan')" type="radio" value="Ya" id="aud_nutrisional3" name="radio_aud_nutrisional" /><label for="aud_nutrisional3">Ya, ada penurunan BB sebanyak:</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row" style="display: none;" id="ugd-penurunan">
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <div class="custom02" style="margin-top: 7px">
-                                    <input type="radio" value="1 - 5 kg|1" id="aud_penurunan1" name="radio_aud_penurunan" /><label for="aud_penurunan1">1 - 5 kg</label>
+                            <div class="col-md-2">
+                                <div class="custom02">
+                                    <input type="radio" value="Ya" id="na11" name="na1" /><label for="na11">Ya</label>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="custom02" style="margin-top: 7px">
-                                    <input type="radio" value="6 - 10 kg|2" id="aud_penurunan2" name="radio_aud_penurunan" /><label for="aud_penurunan2">6 - 10 kg</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02" style="margin-top: 7px">
-                                    <input type="radio" value="11 - 15 kg|3" id="aud_penurunan3" name="radio_aud_penurunan" /><label for="aud_penurunan3">11 - 15 kg</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02" style="margin-top: 7px">
-                                    <input type="radio" value="> 15 kg|4" id="aud_penurunan4" name="radio_aud_penurunan" /><label for="aud_penurunan4">> 15 kg</label>
+                            <div class="col-md-2">
+                                <div class="custom02">
+                                    <input type="radio" value="Tidak" id="na12" name="na1" /><label for="na12">Tidak</label>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <hr class="garis">
                     <div class="row">
                         <div class="form-group">
-                            <div class="custom02" style="margin-top: 7px">
-                                <input onclick="showKetUgd(this.value, 'penurunan')" type="radio" value="Tidak tahu berapa kg penurunannya" id="aud_nutrisional4" name="radio_aud_nutrisional" /><label for="aud_nutrisional4">Tidak tahu berapa kg penurunannya</label>
+                            <label class="col-md-12"><li style="list-style-type: none">2. Apakah terdapat penurunan berat badan dalam 1 bulan terakhir? (berdasarkan penilaian objektif data berat badan bila ada atau penilaian subjektif orang tua pasien atau untuk bayi < 1 bulan berat badan tidak naik selama 3 bulan berturut-turut)</li></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                <div class="custom02">
+                                    <input type="radio" value="Ya" id="na21" name="na2" /><label for="na21">Ya</label>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="custom02">
+                                    <input type="radio" value="Tidak" id="na22" name="na2" /><label for="na22">Tidak</label>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <hr class="garis">
                     <div class="row">
                         <div class="form-group">
-                            <label style="margin-top: 7px">2. Apakah asupan makan pasien berkurang karena penurunan nafsu makan/kesulitan menerima makanan?</label>
+                            <label class="col-md-12"><li style="list-style-type: none">3. Apakah terdapat salag satu kondisi tersebut? (diare > 5x/hari dan muntah > 3x/hari dalam seminggu terakhir atau asupan makanan berkurang selama 1 minggu terakhir)</li></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <div class="custom02" style="margin-top: 7px">
-                                <input type="radio" value="Tidak|0" id="aud_nafsu1" name="radio_aud_nafsu1" /><label for="aud_nafsu1">Tidak</label>
+                            <div class="col-md-2">
+                                <div class="custom02">
+                                    <input type="radio" value="Ya" id="na31" name="na3" /><label for="na31">Ya</label>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="custom02">
+                                    <input type="radio" value="Tidak" id="na32" name="na3" /><label for="na32">Tidak</label>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <div class="custom02" style="margin-top: 7px">
-                                <input type="radio" value="Ya|1" id="aud_nafsu2" name="radio_aud_nafsu1" /><label for="aud_nafsu2">Ya</label>
-                            </div>
-                        </div>
-                    </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_aud_nutrisional" class="btn btn-success pull-right" onclick="saveAsesmenUgd('nutrisional')"><i class="fa fa-check"></i> Save
+                <button id="save_aud_nutrisional_anak" class="btn btn-success pull-right" onclick="saveAsesmenUgd('nutrisional_anak')"><i class="fa fa-check"></i> Save
                 </button>
-                <button id="load_aud_nutrisional" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
+                <button id="load_aud_nutrisional_anak" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>
@@ -1209,7 +1264,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-aud-jatuh">
+<div class="modal fade" id="modal-aud-jatuh_anak">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
@@ -1220,154 +1275,168 @@
             </div>
             <div class="modal-body">
                 <div class="box-body">
-                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_aud_jatuh">
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_aud_jatuh_anak">
                         <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                        <p id="msg_aud_jatuh"></p>
+                        <p id="msg_aud_jatuh_anak"></p>
                     </div>
-                    <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="row">
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">1. Riwayat Jatuh</label>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-md-3">Usia</label>
+                                <div class="col-md-9">
+                                   <input class="form-control umur-pasien" id="rja1" readonly>
                                 </div>
                             </div>
-                            <div class="row radio-margin">
-                                <div class="form-group">
+                        </div>
+                        <div class="row jarak">
+                            <div class="form-group">
+                                <label class="col-md-3">Jenis Kelamin</label>
+                                <div class="col-md-9">
+                                    <input class="form-control jenis-kelamin" id="rja2" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="garis">
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-md-3">Diagnosis</label>
+                                <div class="col-md-9">
                                     <div class="custom02">
-                                        <input type="radio" value="Ya|25" id="aud_jatuh11" name="radio_aud_jatuh1" /><label for="aud_jatuh11">Ya</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row radio-margin">
-                                <div class="form-group">
-                                    <div class="custom02">
-                                        <input type="radio" value="Tidak|0" id="aud_jatuh12" name="radio_aud_jatuh1" /><label for="aud_jatuh12">Tidak</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">2. Diagnosis Sekunder</label>
-                                </div>
-                            </div>
-                            <div class="row radio-margin">
-                                <div class="form-group">
-                                    <div class="custom02">
-                                        <input type="radio" value="Ya|15" id="aud_jatuh21" name="radio_aud_jatuh2" /><label for="aud_jatuh21">Ya</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row radio-margin">
-                                <div class="form-group">
-                                    <div class="custom02">
-                                        <input type="radio" value="Tidak|0" id="aud_jatuh22" name="radio_aud_jatuh2" /><label for="aud_jatuh22">Tidak</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">3. Alat Bantu</label>
-                                </div>
-                            </div>
-                            <div class="row radio-margin">
-                                <div class="form-group">
-                                    <div class="custom02">
-                                        <input type="radio" value="Kursi/perabot|30" id="aud_jatuh31" name="radio_aud_jatuh3" /><label for="aud_jatuh31">Kursi/perabot</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row radio-margin">
-                                <div class="form-group">
-                                    <div class="custom02">
-                                        <input type="radio" value="Kruk/tongkat|15" id="aud_jatuh32" name="radio_aud_jatuh3" /><label for="aud_jatuh32">Kruk/tongkat</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row radio-margin">
-                                <div class="form-group">
-                                    <div class="custom02">
-                                        <input type="radio" value="Tidak ada/bed rest/dibantu perawat|0" id="aud_jatuh33" name="radio_aud_jatuh3" /><label for="aud_jatuh33">Tidak ada/bed rest/dibantu perawat</label>
+                                        <input type="radio" value="Kelainan neurologi|4" id="rja31" name="rja3" /><label for="rja31">Kelainan neurologi</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="row">
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">4. Terapi Intravena</label>
-                                </div>
-                            </div>
-                            <div class="row radio-margin">
-                                <div class="form-group">
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-offset-3 col-md-9">
                                     <div class="custom02">
-                                        <input type="radio" value="Ya|20" id="aud_jatuh41" name="radio_aud_jatuh4" /><label for="aud_jatuh41">Ya</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row radio-margin">
-                                <div class="form-group">
-                                    <div class="custom02">
-                                        <input type="radio" value="Tidak|0" id="aud_jatuh42" name="radio_aud_jatuh4" /><label for="aud_jatuh42">Tidak</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">5. Gaya Berjalan</label>
-                                </div>
-                            </div>
-                            <div class="row radio-margin">
-                                <div class="form-group">
-                                    <div class="custom02">
-                                        <input type="radio" value="Terganggu|20" id="aud_jatuh51" name="radio_aud_jatuh5" /><label for="aud_jatuh51">Terganggu</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row radio-margin">
-                                <div class="form-group">
-                                    <div class="custom02">
-                                        <input type="radio" value="Lemah|10" id="aud_jatuh52" name="radio_aud_jatuh5" /><label for="aud_jatuh52">Lemah</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row radio-margin">
-                                <div class="form-group">
-                                    <div class="custom02">
-                                        <input type="radio" value="Normal|0" id="aud_jatuh53" name="radio_aud_jatuh5" /><label for="aud_jatuh53">Normal</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">6. Status Normal</label>
-                                </div>
-                            </div>
-                            <div class="row radio-margin">
-                                <div class="form-group">
-                                    <div class="custom02">
-                                        <input type="radio" value="Lupa akan keterbatasan/pelupa|15" id="aud_jatuh61" name="radio_aud_jatuh6" /><label for="aud_jatuh61">Lupa akan keterbatasan/pelupa</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row radio-margin">
-                                <div class="form-group">
-                                    <div class="custom02">
-                                        <input type="radio" value="Menyadari kemampuan|0" id="aud_jatuh62" name="radio_aud_jatuh6" /><label for="aud_jatuh62">Menyadari kemampuan</label>
+                                        <input type="radio" value="Ggn Oks (Dypsnoe, Anemia, Sinkop, Dehidrasi, Anoreksia, Sakit kepala)|3" id="rja32" name="rja3" /><label for="rja32">Ggn Oks (Dypsnoe, Anemia, Sinkop, Dehidrasi, Anoreksia, Sakit kepala)</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <div class="custom02">
+                                        <input type="radio" value="Kelemahan Fisik|2" id="rja33" name="rja3" /><label for="rja33">Kelemahan Fisik</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <div class="custom02">
+                                        <input type="radio" value="Diagnosis Lain|1" id="rja34" name="rja3" /><label for="rja34">Diagnosis Lain</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="garis">
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-md-3">Lingkungan</label>
+                                <div class="col-md-9">
+                                    <div class="custom02">
+                                        <input type="radio" value="Riwayat jatuh dari tempat tidur saat bayi atau anak|4" id="rja41" name="rja4" /><label for="rja41">Riwayat jatuh dari tempat tidur saat bayi atau anak</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <div class="custom02">
+                                        <input type="radio" value="Memakai alat bantu (Box/Mobel)|3" id="rja42" name="rja4" /><label for="rja42">Memakai alat bantu (Box/Mobel)</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <div class="custom02">
+                                        <input type="radio" value="Berada ditempat tidur|2" id="rja43" name="rja4" /><label for="rja43">Berada ditempat tidur</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <div class="custom02">
+                                        <input type="radio" value="Berada di luar ruang perawatan|1" id="rja44" name="rja4" /><label for="rja44">Berada di luar ruang perawatan</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="garis">
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-md-3">Respon</label>
+                                <div class="col-md-9">
+                                    <div class="custom02">
+                                        <input type="radio" value="< 24 jam|3" id="rja51" name="rja5" /><label for="rja51">< 24 jam</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <div class="custom02">
+                                        <input type="radio" value="< 48 jam|2" id="rja52" name="rja5" /><label for="rja52">< 48 jam</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <div class="custom02">
+                                        <input type="radio" value="> 48 jam|1" id="rja53" name="rja5" /><label for="rja53">> 48 jam</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="garis">
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-md-3">Penggunaan Obat</label>
+                                <div class="col-md-9">
+                                    <div class="custom02">
+                                        <input type="radio" value="Obat sedative (Kecuali pasien ICU yang tersedasi) dan paralyzed, Hipnotik, Phenotiazin, Barbiturat, anti depresan, diuretik, narkotik|3" id="rja61" name="rja6" /><label for="rja61">Obat sedative (Kecuali pasien ICU yang tersedasi) dan paralyzed, Hipnotik, Phenotiazin, Barbiturat, anti depresan, diuretik, narkotik</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <div class="custom02">
+                                        <input type="radio" value="Salah satu obat diatas|2" id="rja62" name="rja6" /><label for="rja62">Salah satu obat diatas</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <div class="custom02">
+                                        <input type="radio" value="Pengobatan lain|1" id="rja63" name="rja6" /><label for="rja63">Pengobatan lain</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_aud_jatuh" class="btn btn-success pull-right" onclick="saveAsesmenUgd('jatuh')"><i class="fa fa-check"></i> Save
+                <button id="save_aud_jatuh_anak" class="btn btn-success pull-right" onclick="saveAsesmenUgd('jatuh_anak')"><i class="fa fa-check"></i> Save
                 </button>
-                <button id="load_aud_jatuh" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
+                <button id="load_aud_jatuh_anak" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>
@@ -2034,7 +2103,19 @@
                     </div>
                     <div class="row jarak">
                         <div class="col-md-6">
-                            <img src="<%= request.getContextPath() %>/pages/images/male.jpg">
+                            <div class="form-group" style="padding-top: 10px; padding-bottom: 10px">
+                                <div class="col-md-1">
+                                    <input type="color" style="margin-left: -6px; margin-top: -8px" class="js-color-picker-op  color-picker pull-left">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="text-center">
+                                    <canvas class="paint-canvas" style="cursor: pointer" id="area_ugd" onmouseover="paintTtd('area_ugd', true)"></canvas>
+                                </div>
+                                <canvas style="display: none" id="area_cek"></canvas>
+                                <button type="button" class="btn btn-danger" onclick="removePaint('area_ugd')"><i class="fa fa-trash"></i> Clear
+                                </button>
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
@@ -2075,7 +2156,7 @@
                         <div class="form-group">
                             <label class="col-md-4">Penunjang Medis</label>
                             <div class="col-md-8">
-                                <textarea rows="2" class="form-control" id="an12"></textarea>
+                                <textarea rows="2" class="form-control penunjang-medis" id="an12"></textarea>
                             </div>
                         </div>
                     </div>
@@ -2083,7 +2164,7 @@
                         <div class="form-group">
                             <label class="col-md-4">Diagnosa Kerja</label>
                             <div class="col-md-8">
-                                <textarea rows="2" class="form-control" id="an13"></textarea>
+                                <textarea rows="2" class="form-control diagnosa-pasien" id="an13"></textarea>
                             </div>
                         </div>
                     </div>
@@ -2091,7 +2172,7 @@
                         <div class="form-group">
                             <label class="col-md-4">Diagnosa Banding</label>
                             <div class="col-md-8">
-                                <textarea rows="2" class="form-control" id="an14"></textarea>
+                                <textarea rows="2" class="form-control diagnosa-pasien" id="an14"></textarea>
                             </div>
                         </div>
                     </div>
@@ -2387,6 +2468,7 @@
                             <label class="col-md-3">Instruksi Tindak Lanjut</label>
                             <div class="col-md-9">
                                 <select class="form-control select2" id="ki9" style="width: 100%" onchange="showKetIntruksi(this.value)">
+                                    <option value="">[Select One]</option>
                                     <option value="Rawat Inap">Rawat Inap</option>
                                     <option value="Rawat Intensif">Rawat Intensif</option>
                                     <option value="Rawat Isolasi">Rawat Isolasi</option>
@@ -2414,6 +2496,16 @@
                         <div class="form-group">
                             <div class="col-md-offset-3 col-md-9">
                                 <input class="form-control" id="ket_ki92" placeholder="Keterangan">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak" style="display: none" id="int-ket3">
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-4">
+                                <input class="form-control select2" id="ket_ki93" placeholder="Kontrol Tgl">
+                            </div>
+                            <div class="col-md-4">
+                                <input class="form-control" id="ket_ki94" placeholder="Tempat">
                             </div>
                         </div>
                     </div>

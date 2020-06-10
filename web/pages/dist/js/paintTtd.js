@@ -121,7 +121,40 @@ function removePaint(id){
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(img, 0, 0);
         }
-    } else {
+    } else if ("area_ugd" == id) {
+        const context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        var url = "";
+        if ("Laki-Laki" == jenisKelamin) {
+            url = contextPath+'/pages/images/male.jpg';
+        } else {
+            url = contextPath+'/pages/images/female.jpg';
+        }
+
+        var ctx = canvas.getContext('2d');
+        var img = new Image();
+        img.src = url;
+        img.onload = function (ev) {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0);
+        }
+    }else if ("area_gigi1" == id || "area_gigi2" == id) {
+        const context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        var url = contextPath+'/pages/images/gigi.png';
+
+        var ctx = canvas.getContext('2d');
+        var img = new Image();
+        img.src = url;
+        img.onload = function (ev) {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0);
+        }
+    }else {
         const context = canvas.getContext('2d');
         context.clearRect(0, 0, canvas.width, canvas.height);
     }

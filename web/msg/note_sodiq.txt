@@ -145,6 +145,12 @@ ALTER TABLE public.seq_tindakan_rawat_icd9
   OWNER TO postgres;
 
 
+// 10 Juni 2020
+ALTER TABLE public.it_simrs_asesmen_ugd ADD tipe varchar(1000);
+
+
+
+
 
 
 

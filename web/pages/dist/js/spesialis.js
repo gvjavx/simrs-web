@@ -35,6 +35,15 @@ function showModalSPS(jenis) {
         var url = contextPath+'/pages/images/jantung.png';
         loadImgToCanvas(url, 'area_jantung');
     }
+    if("asesmen_gigi" == jenis){
+        var url = contextPath+'/pages/images/gigi.png';
+        loadImgToCanvas(url, 'area_gigi1');
+    }
+
+    if("rencana_gigi_pasien" == jenis){
+        var url = contextPath+'/pages/images/gigi.png';
+        loadImgToCanvas(url, 'area_gigi2');
+    }
 
     $('#modal-sps-' + jenis).modal({show: true, backdrop: 'static'});
 }
@@ -1943,6 +1952,270 @@ function saveSPS(jenis, ket) {
         }
     }
 
+    if ("asesmen_gigi" == jenis) {
+        var va1 = $('[name=ag1]:checked').val();
+        var va2 = $('[name=ag2]:checked').val();
+        var va3 = $('[name=ag3]:checked').val();
+        var va4 = $('#ag4').val();
+        var va5 = $('#ag5').val();
+        var va6 = $('#ag6').val();
+        var va7 = $('#ag7').val();
+        var va8 = $('#ag8').val();
+
+        var ttd = document.getElementById("ag9");
+        var gigiImg = document.getElementById("area_gigi1");
+        var canvasCek = document.getElementById('area_cek');
+
+        var gigi = "Y";
+        if(gigiImg.toDataURL() == canvasCek.toDataURL()){
+            gigi = "N";
+        }
+        var cekTtd = isBlank(ttd);
+
+        if (va1 && va2 && va3 != undefined &&
+            va4 && va5 && va6 && va7 && va8 && !cekTtd) {
+
+            var ttd1 = ttd.toDataURL("image/png"),
+                ttd1 = ttd1.replace(/^data:image\/(png|jpg);base64,/, "");
+
+            var img = gigiImg.toDataURL("image/png"),
+                img = img.replace(/^data:image\/(png|jpg);base64,/, "");
+
+            if(gigi == "Y"){
+                data.push({
+                    'parameter': 'Pemeriksaan Gigi',
+                    'jawaban': img,
+                    'tipe': 'gambar',
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'id_detail_checkup': idDetailCheckup
+                });
+            }
+            data.push({
+                'parameter': 'Occlusi',
+                'jawaban': va1,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Torus',
+                'jawaban': va2,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Palatum',
+                'jawaban': va3,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Diastema',
+                'jawaban': va4,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Lain-Lain',
+                'jawaban': va5,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Diagnosa',
+                'jawaban': va6,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Terapi',
+                'jawaban': va7,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Rencana Tindak Lanjut',
+                'jawaban': va8,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'TTD Pemeriksa',
+                'jawaban': ttd1,
+                'tipe': 'ttd',
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            cek = true;
+        }
+    }
+
+    if ("rencana_gigi_pasien" == jenis) {
+        var va1 = $('#gg1').val();
+        var va2 = $('#gg2').val();
+        var va3 = $('[name=gg3]:checked').val();
+        var va4 = $('[name=gg4]:checked').val();
+        var va5 = $('[name=gg5]:checked').val();
+        var va6 = $('[name=gg6]:checked').val();
+        var va7 = $('[name=gg7]:checked').val();
+        var va8 = $('[name=gg8]:checked').val();
+        var va9 = $('[name=gg9]:checked').val();
+
+        var temp1 = "";
+        var temp2 = "";
+        if (va8 != undefined) {
+            var ket = $('#ket_gg8').val();
+            if (va8 == "Ada") {
+                temp1 = va8 + ', ' + ket;
+            } else {
+                temp1 = va8;
+            }
+        }
+        if (va9 != undefined) {
+            var ket = $('#ket_gg9').val();
+            if (va9 == "Ada") {
+                temp2 = va9 + ', ' + ket;
+            } else {
+                temp2 = va9;
+            }
+        }
+        var va10 = $('#gg10').val();
+        var va11 = $('#gg011').val();
+        var va12 = $('#gg012').val();
+        var ttd = document.getElementById("gg013");
+        var gigiImg = document.getElementById("area_gigi2");
+        var canvasCek = document.getElementById('area_cek');
+
+        var gigi = "Y";
+        if(gigiImg.toDataURL() == canvasCek.toDataURL()){
+            gigi = "N";
+        }
+        var cekTtd = isBlank(ttd);
+
+        if (va1 && va2 && temp1 && temp2 && va10 && va11 && va12 != '' &&
+            va3 && va4 && va5 && va6 && va7 != undefined && !cekTtd) {
+
+            var ttd1 = ttd.toDataURL("image/png"),
+                ttd1 = ttd1.replace(/^data:image\/(png|jpg);base64,/, "");
+
+            var img = gigiImg.toDataURL("image/png"),
+                img = img.replace(/^data:image\/(png|jpg);base64,/, "");
+
+            if(gigi == "Y"){
+                data.push({
+                    'parameter': 'Pemeriksaan Gigi',
+                    'jawaban': img,
+                    'tipe': 'gambar',
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'id_detail_checkup': idDetailCheckup
+                });
+            }
+            data.push({
+                'parameter': 'Golongan Darah',
+                'jawaban': va1,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Tekanan Darah',
+                'jawaban': va2,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Penyakit Jantung',
+                'jawaban': va3,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Diabetes',
+                'jawaban': va4,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Haemopilia',
+                'jawaban': va5,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Hepatitis',
+                'jawaban': va6,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Gastritis',
+                'jawaban': va7,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Penyakit Lainnya',
+                'jawaban': temp1,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Alergi Obat',
+                'jawaban': temp2,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Alergi Makanan',
+                'jawaban': va10,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Obat yang sedang dikonsumsi',
+                'jawaban': va11,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Tanggal pencatatan data',
+                'jawaban': va12,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Tanda Tangan',
+                'jawaban': ttd1,
+                'tipe': 'ttd',
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            cek = true;
+        }
+    }
+
 
     if (cek) {
         var result = JSON.stringify(data);
@@ -2065,7 +2338,7 @@ function delRowSPS(id) {
 
 function showKetSPS(val, ket) {
     if (val == "Kelainan" || val == "Lainnya" || val == "Bentuk" || "Retraksi" == val ||
-        "Teraba" == val) {
+        "Teraba" == val || val == "Ada") {
         $('#sps-'+ket).show();
     } else {
         $('#sps-'+ket).hide();

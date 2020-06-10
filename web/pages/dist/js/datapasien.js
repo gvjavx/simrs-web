@@ -44,7 +44,7 @@ function setDataPasien(){
         $('.no-bpjs').val(noBpjs);
     }
     if (age > 0) {
-        $('.umur-pasien').val(umur);
+        $('.umur-pasien').val(umur+' Tahun');
     }
     if (jk > 0) {
         $('.jenis-kelamin').val(jenisKelamin);

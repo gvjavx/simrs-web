@@ -156,7 +156,7 @@ public class DiagnosaRawatAction extends BaseMasterAction {
                     response.setMsg("Found Error When "+response.getMsg());
                 }
             } else {
-                diagnosaRawatBo.saveAdd(diagnosaRawat);
+                response = diagnosaRawatBo.saveAdd(diagnosaRawat);
             }
 
         } catch (GeneralBOException e) {
@@ -239,7 +239,7 @@ public class DiagnosaRawatAction extends BaseMasterAction {
                     response.setMsg("Error when "+response.getMsg());
                 }
             } else {
-                diagnosaRawatBo.saveEdit(diagnosaRawat);
+                response = diagnosaRawatBo.saveEdit(diagnosaRawat);
             }
 
         } catch (GeneralBOException e) {

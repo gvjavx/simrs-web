@@ -243,6 +243,18 @@
                                             <table><s:label name="headerDetailCheckup.tempatTglLahir"></s:label></table>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td><b>Umur</b></td>
+                                        <td>
+                                            <table>
+                                                <script>
+                                                    var umur = '<s:property value="headerDetailCheckup.umur"/>';
+                                                    var umurLengkap = umur+' Tahun';
+                                                    document.write(umurLengkap);
+                                                </script>
+                                            </table>
+                                        </td>
+                                    </tr>
                                     <s:if test='headerDetailCheckup.metodePembayaran != null && headerDetailCheckup.metodePembayaran != ""'>
                                         <tr>
                                             <td><b>Metode Pembayaran</b></td>
@@ -440,7 +452,7 @@
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a style="cursor: pointer" onclick="showAsesmenUgd()"><i class="fa fa-circle-o"></i>Asesmen Awal Gawat Darurat</a></li>
+                                        <li><a style="cursor: pointer" onclick="showAsesmenUgd()"><i class="fa fa-circle-o"></i> <span id="li_title"></span></a></li>
                                         <li><a target="_blank"
                                                href="<%= request.getContextPath() %>/rekammedik/printSuratPernyataan_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>&tipe=SP03">
                                             <i class="fa fa-print"></i>Surat Penolakan Tindakan</a></li>
@@ -2104,9 +2116,10 @@
     var noBpjs = '<s:property value="headerDetailCheckup.noBpjs"/>';
     var jenisKelamin = '<s:property value="headerDetailCheckup.jenisKelamin"/>';
     var urlPage = 'igd';
+    var title = "";
 
     $(document).ready(function () {
-        $('#rawat_jalan').addClass('active');
+        $('#igd').addClass('active');
         listDokter();
         listTindakan();
         listDiagnosa();
@@ -2262,7 +2275,20 @@
     function loadModalRM(jenis){
         var context = "";
         if(jenis == "ugd"){
-            context = contextPath+'/pages/modal/modalAsesmenUGD.jsp';
+            var um = '<s:property value="headerDetailCheckup.umur"/>';
+            var umur = parseInt(um);
+
+            if(umur >= 0 && umur <= 17){
+                title = "Asesmen Awal Gawat Darurat Anak";
+                context = contextPath+'/pages/modal/modalAsesmenUGD-anak.jsp';
+            }else if(umur >= 18 && umur <= 55){
+                title = "Asesmen Awal Gawat Darurat Dewasa";
+                context = contextPath+'/pages/modal/modalAsesmenUGD-dewasa.jsp';
+            }else if(umur > 56){
+                title = "Asesmen Awal Gawat Darurat Geriatri";
+                context = contextPath+'/pages/modal/modalAsesmenUGD-dewasa.jsp';
+            }
+            $('#li_title').text(title);
         }
         $('#modal-temp').load(context, function (res) {
         });
