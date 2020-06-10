@@ -176,4 +176,6 @@
     ALTER SEQUENCE public.seq_pembayaran_online
         OWNER TO postgres;
 
+    ALTER TABLE public.it_simrs_pembayaran_online ALTER COLUMN kode_bank TYPE VARCHAR(10) USING kode_bank::VARCHAR(10);
+
 <<< //
