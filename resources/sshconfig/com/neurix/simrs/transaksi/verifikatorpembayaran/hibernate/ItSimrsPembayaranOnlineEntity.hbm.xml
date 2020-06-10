@@ -3,55 +3,55 @@
         version="2.0">
 
     <entity class="com.neurix.simrs.transaksi.verifikatorpembayaran.model.ItSimrsPembayaranOnlineEntity">
-        <table name="it_simrs_pembayaran_online" schema="public" catalog="simrs"/>
+        <table name="it_simrs_pembayaran_online" schema="public"/>
         <attributes>
             <id name="id">
                 <column name="id" length="100"/>
             </id>
             <basic name="idItem">
-                <column name="id_item" nullable="false" length="30"/>
+                <column name="id_item"  length="30"/>
             </basic>
             <basic name="keterangan">
-                <column name="keterangan" nullable="false" length="50"/>
+                <column name="keterangan"  length="50"/>
             </basic>
             <basic name="idAntrianTelemedic">
-                <column name="id_antrian_telemedic" nullable="false" length="100"/>
+                <column name="id_antrian_telemedic"  length="100"/>
             </basic>
             <basic name="urlFotoBukti">
-                <column name="url_foto_bukti" nullable="false" length="1000"/>
+                <column name="url_foto_bukti"  length="1000"/>
             </basic>
             <basic name="approvedFlag">
-                <column name="approved_flag" nullable="false"/>
+                <column name="approved_flag" />
             </basic>
             <basic name="approvedWho">
-                <column name="approved_who" nullable="false" length="100"/>
+                <column name="approved_who"  length="100"/>
             </basic>
             <basic name="flag">
-                <column name="flag" nullable="false"/>
+                <column name="flag" />
             </basic>
             <basic name="action">
-                <column name="action" nullable="false"/>
+                <column name="action" />
             </basic>
             <basic name="createdDate">
-                <column name="created_date" nullable="false" precision="-1"/>
+                <column name="created_date"  precision="-1"/>
             </basic>
             <basic name="createdWho">
-                <column name="created_who" nullable="false" length="100"/>
+                <column name="created_who"  length="100"/>
             </basic>
             <basic name="lastUpdate">
-                <column name="last_update" nullable="false" precision="-1"/>
+                <column name="last_update"  precision="-1"/>
             </basic>
             <basic name="lastUpdateWho">
-                <column name="last_update_who" nullable="false" length="100"/>
+                <column name="last_update_who"  length="100"/>
             </basic>
             <basic name="nominal">
-                <column name="nominal" nullable="false" precision="-1"/>
+                <column name="nominal"  precision="-1"/>
             </basic>
             <basic name="idRiwayatTindakan">
-                <column name="id_riwayat_tindakan" nullable="false" length="50"/>
+                <column name="id_riwayat_tindakan"  length="50"/>
             </basic>
             <basic name="kodeBank">
-                <column name="kode_bank" nullable="false" length="10"/>
+                <column name="kode_bank"  length="10"/>
             </basic>
 
 
