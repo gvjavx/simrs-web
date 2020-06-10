@@ -191,6 +191,9 @@
         <action name="kasir/*" class="com.neurix.simrs.mobileapi.KasirController">
             <interceptor-ref name="mobileStack"/>
         </action>
+        <action name="telemedicine/*" class="com.neurix.simrs.mobileapi.TelemedicineController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
     </package>
 
 </struts>

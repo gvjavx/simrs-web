@@ -175,6 +175,10 @@
             <filter-chain pattern="/mobileapi/kasir/*" filters="none" />
             <filter-chain pattern="/mobileapi/kasir/*/**" filters="none" />
 
+            <filter-chain pattern="/mobileapi/telemedicine" filters="none" />
+            <filter-chain pattern="/mobileapi/telemedicine/*" filters="none" />
+            <filter-chain pattern="/mobileapi/telemedicine/*/**" filters="none" />
+
 
 
             <filter-chain pattern="/**/*"

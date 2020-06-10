@@ -22,7 +22,6 @@ public class ItSimrsAntrianTelemedicEntity {
     private String lastUpdateWho;
     private String flag;
     private String action;
-    private Integer column16;
     private String noKartu;
     private String idJenisPeriksaPasien;
     private String idAsuransi;
@@ -191,14 +190,6 @@ public class ItSimrsAntrianTelemedicEntity {
 
     public void setAction(String action) {
         this.action = action;
-    }
-
-    public Integer getColumn16() {
-        return column16;
-    }
-
-    public void setColumn16(Integer column16) {
-        this.column16 = column16;
     }
 
     public String getNoKartu() {
