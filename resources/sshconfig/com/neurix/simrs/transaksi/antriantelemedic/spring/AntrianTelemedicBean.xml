@@ -10,6 +10,8 @@
           p:dokterDao-ref="dokterDao"
           p:pasienDao-ref="pasienDao"
           p:telemedicDao-ref="telemedicDao"
+          p:tindakanDao-ref="tindakanDao"
+          p:verifikatorPembayaranDao-ref="verifikatorPembayaranDao"
     />
 
     <bean id="telemedicineController" class="com.neurix.simrs.mobileapi.TelemedicineController"
@@ -39,5 +41,4 @@
 
     <bean id="telemedicDao" class="com.neurix.simrs.transaksi.antriantelemedic.dao.TelemedicDao"
           p:sessionFactory-ref="sessionFactory" />
-
 </beans>

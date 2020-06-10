@@ -31,6 +31,15 @@ public class AntrianTelemedic {
     private String noKartu;
     private String idJenisPeriksaPasien;
     private String idAsuransi;
+    private String kodeBank;
+
+    public String getKodeBank() {
+        return kodeBank;
+    }
+
+    public void setKodeBank(String kodeBank) {
+        this.kodeBank = kodeBank;
+    }
 
     public String getIdAsuransi() {
         return idAsuransi;
