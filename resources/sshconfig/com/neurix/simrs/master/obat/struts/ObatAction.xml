@@ -76,6 +76,7 @@
             <result name="search">/pages/com/neurix/simrs/master/obat/searchObat.jsp</result>
             <result name="init_add">/pages/com/neurix/simrs/master/obat/addObat.jsp</result>
             <result name="init_print">/pages/com/neurix/simrs/master/obat/printReportObat.jsp</result>
+            <result name="init_print_sumary">/pages/com/neurix/simrs/master/obat/printReportObatSumari.jsp</result>
 
             <result name="print_barcode_id_pabrik" type="jasper">
                 <param name="location">/pages/report/com/neurix/simrs/printBarcodeIDPabrik.jasper</param>
@@ -86,7 +87,13 @@
 
             <result name="print_riwayat" type="jasper">
                 <param name="location">/pages/report/com/neurix/simrs/printReportRiwayatObatMasuk.jasper</param>
-                <!--<param name="connection">connection</param>-->
+                <param name="dataSource">report</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
+            <result name="print_sumary" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printReportSaldoPersediaanObat.jasper</param>
                 <param name="dataSource">report</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>

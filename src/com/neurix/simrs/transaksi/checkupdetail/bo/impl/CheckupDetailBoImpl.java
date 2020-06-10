@@ -34,6 +34,8 @@ import com.neurix.simrs.transaksi.diagnosarawat.model.ItSimrsDiagnosaRawatEntity
 import com.neurix.simrs.transaksi.ordergizi.dao.OrderGiziDao;
 import com.neurix.simrs.transaksi.ordergizi.model.ItSimrsOrderGiziEntity;
 import com.neurix.simrs.transaksi.ordergizi.model.OrderGizi;
+import com.neurix.simrs.transaksi.paketperiksa.dao.PaketPasienDao;
+import com.neurix.simrs.transaksi.paketperiksa.model.ItSimrsPaketPasienEntity;
 import com.neurix.simrs.transaksi.periksalab.dao.PeriksaLabDao;
 import com.neurix.simrs.transaksi.periksalab.model.ItSimrsPeriksaLabEntity;
 import com.neurix.simrs.transaksi.periksalab.model.PeriksaLab;
@@ -81,6 +83,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     private UangMukaDao uangMukaDao;
     private DokterDao dokterDao;
     private DiagnosaRawatDao diagnosaRawatDao;
+    private PaketPasienDao paketPasienDao;
 
     @Override
     public List<HeaderDetailCheckup> getByCriteria(HeaderDetailCheckup bean) throws GeneralBOException {
@@ -406,6 +409,30 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                     headerChekupEntity.setLastUpdateWho(bean.getLastUpdateWho());
                     headerChekupEntity.setAction("U");
                     headerChekupEntity.setTglKeluar(bean.getLastUpdate());
+
+                    // section update flag selesai paket pasien perusahaan, 2020-06-05 Sigit
+                    if ("paket_perusahaan".equalsIgnoreCase(entity.getIdJenisPeriksaPasien())){
+                        Map hsCriteria = new HashMap();
+                        hsCriteria.put("id_paket", entity.getIdPaket());
+                        hsCriteria.put("id_pasien", headerChekupEntity.getIdPasien());
+                        hsCriteria.put("flag_selesai_null", "Y");
+
+                        List<ItSimrsPaketPasienEntity> paketPasienEntities = paketPasienDao.getByCriteria(hsCriteria);
+                        if (paketPasienEntities.size() > 0){
+                            ItSimrsPaketPasienEntity paketPasienEntity = paketPasienEntities.get(0);
+                            paketPasienEntity.setFlagSelesai("Y");
+
+                            try {
+                                paketPasienDao.updateAndSave(paketPasienEntity);
+                            } catch (HibernateException e){
+                                response.setStatus("error");
+                                response.setMsg("Error when update paket perusahaan status "+e.getMessage());
+                                logger.error("[CheckupDetailBoImpl.saveEdit] Error update paket perusahaan status ", e);
+                                throw new GeneralBOException("[CheckupDetailBoImpl.saveEdit] Error update paket perusahaan status " + e.getMessage());
+                            }
+                        }
+                    }
+                    // section END
 
                     try {
                         headerCheckupDao.updateAndSave(headerChekupEntity);
@@ -1505,5 +1532,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
     public void setDiagnosaRawatDao(DiagnosaRawatDao diagnosaRawatDao) {
         this.diagnosaRawatDao = diagnosaRawatDao;
+    }
+
+    public void setPaketPasienDao(PaketPasienDao paketPasienDao) {
+        this.paketPasienDao = paketPasienDao;
     }
 }

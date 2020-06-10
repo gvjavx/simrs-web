@@ -28,6 +28,8 @@
           p:permintaanVendorDao-ref="permintaanVendorDao"
           p:transaksiObatDetailDao-ref="transaksiObatDetailDao"
           p:transaksiStokDao-ref="transaksiStokDao"
+          p:batasTutupPeriodDao-ref="batasTutupPeriodDao"
+          p:pelayananDao-ref="pelayananDao"
     />
 
     <bean id="obatBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

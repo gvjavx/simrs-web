@@ -69,9 +69,19 @@ public class Budgeting {
     private String branchName;
     private String divisi;
     private String coa;
+    private String idPengadaan;
 
     private BigDecimal saldoAkhir;
     private BigDecimal selisihSaldoAkhir;
+    private String noTrans;
+
+    public String getNoTrans() {
+        return noTrans;
+    }
+
+    public void setNoTrans(String noTrans) {
+        this.noTrans = noTrans;
+    }
 
     private List<BudgetingPeriode> listPeriode = new ArrayList<>();
     private List<BudgetingDetail> budgetingDetailList = new ArrayList<>();
@@ -88,6 +98,14 @@ public class Budgeting {
             //descending order
 //            return kdRekening2.compareTo(kdRekening1);
         }};
+
+    public String getIdPengadaan() {
+        return idPengadaan;
+    }
+
+    public void setIdPengadaan(String idPengadaan) {
+        this.idPengadaan = idPengadaan;
+    }
 
     public String getDivisi() {
         return divisi;

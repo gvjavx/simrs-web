@@ -92,7 +92,7 @@ public class PengajuanBiayaDao extends GenericDao<ImPengajuanBiayaEntity, String
             String query = "SELECT pengajuan.* FROM  \n" +
                     "                    ( SELECT * FROM it_hris_notifikasi ) notifikasi LEFT JOIN  \n" +
                     "                    ( SELECT * FROM it_akun_pengajuan_biaya ) pengajuan ON notifikasi.no_request=pengajuan.pengajuan_biaya_id " +
-                    "WHERE notifikasi.tipe_notif_id='TN01' AND pengajuan.flag='Y' "+searchAtasan+searchNip+searchPengajuanBiayaId+" ORDER BY pengajuan.pengajuan_biaya_id DESC";
+                    "WHERE notifikasi.tipe_notif_id='TN04' AND pengajuan.flag='Y' "+searchAtasan+searchNip+searchPengajuanBiayaId+" ORDER BY pengajuan.pengajuan_biaya_id DESC";
 
             results = this.sessionFactory.getCurrentSession()
                     .createSQLQuery(query)
@@ -102,13 +102,7 @@ public class PengajuanBiayaDao extends GenericDao<ImPengajuanBiayaEntity, String
                 PengajuanBiaya pengajuanBiaya = new PengajuanBiaya();
                 pengajuanBiaya.setPengajuanBiayaId((String) row[0]);
                 pengajuanBiaya.setDivisiId((String) row[1]);
-                pengajuanBiaya.setCoaAjuan((String) row[2]);
-                pengajuanBiaya.setCoaTarget((String) row[3]);
-                pengajuanBiaya.setTotalBiaya(BigDecimal.valueOf(Double.parseDouble(row[4].toString())));
-                pengajuanBiaya.setStTotalBiaya(CommonUtil.numbericFormat(pengajuanBiaya.getTotalBiaya(),"###,###"));
-                pengajuanBiaya.setTanggal((Date) row[5]);
                 pengajuanBiaya.setAprovalId((String) row[6]);
-                pengajuanBiaya.setAprovalDate((Date) row[7]);
                 pengajuanBiaya.setAprovalFlag((String) row[8]);
                 pengajuanBiaya.setBranchId((String) row[10]);
                 pengajuanBiaya.setTransaksi((String) row[11]);

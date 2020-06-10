@@ -27,6 +27,7 @@
          p:riwayatBarangDao-ref="riwayatBarangDao"
          p:transaksiStokDao-ref="transaksiStokDao"
          p:branchDao-ref="branchDao"
+          p:batasTutupPeriodDao-ref="batasTutupPeriodDao"
     />
 
     <bean id="permintaanVendorBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

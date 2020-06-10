@@ -43,7 +43,12 @@ public class ItPengajuanBiayaDetailEntity implements Serializable {
     private String approvalKeuanganId;
     private Timestamp approvalKeuanganDate;
 
+    private String approvalKeuanganKpFlag;
+    private String approvalKeuanganKpId;
+    private Timestamp approvalKeuanganKpDate;
+
     private String statusApproval;
+    private String statusKeuangan;
 
     private String flag;
     private String action;
@@ -51,6 +56,38 @@ public class ItPengajuanBiayaDetailEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getStatusKeuangan() {
+        return statusKeuangan;
+    }
+
+    public void setStatusKeuangan(String statusKeuangan) {
+        this.statusKeuangan = statusKeuangan;
+    }
+
+    public String getApprovalKeuanganKpFlag() {
+        return approvalKeuanganKpFlag;
+    }
+
+    public void setApprovalKeuanganKpFlag(String approvalKeuanganKpFlag) {
+        this.approvalKeuanganKpFlag = approvalKeuanganKpFlag;
+    }
+
+    public String getApprovalKeuanganKpId() {
+        return approvalKeuanganKpId;
+    }
+
+    public void setApprovalKeuanganKpId(String approvalKeuanganKpId) {
+        this.approvalKeuanganKpId = approvalKeuanganKpId;
+    }
+
+    public Timestamp getApprovalKeuanganKpDate() {
+        return approvalKeuanganKpDate;
+    }
+
+    public void setApprovalKeuanganKpDate(Timestamp approvalKeuanganKpDate) {
+        this.approvalKeuanganKpDate = approvalKeuanganKpDate;
+    }
 
     public String getApprovalGmFlag() {
         return approvalGmFlag;
