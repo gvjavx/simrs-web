@@ -2666,7 +2666,12 @@ public class BiodataBoImpl implements BiodataBo {
 
             if(!"".equalsIgnoreCase(imBiodata.getGolongan())){
                 if(imBiodata.getImGolonganEntity() != null){
-                    biodata.setGolonganName(imBiodata.getImGolonganEntity().getGolonganName());
+                    if ("TP03".equalsIgnoreCase(imBiodata.getTipePegawai())) {
+                        ImGolonganPkwtEntity golonganPkwtEntity = golonganPkwtDao.getById("golonganPkwtId",imBiodata.getGolongan());
+                        biodata.setGolonganName(golonganPkwtEntity.getGolonganPkwtName());
+                    }else{
+                        biodata.setGolonganName(imBiodata.getImGolonganEntity().getGolonganName());
+                    }
                     biodata.setGolongan(imBiodata.getGolongan());
                 }else{
                     biodata.setGolongan(imBiodata.getGolongan());
@@ -2679,9 +2684,9 @@ public class BiodataBoImpl implements BiodataBo {
             biodata.setStatusPegawai(imBiodata.getStatusPegawai());
             if(imBiodata.getStatusPegawai() != null){
                 if(imBiodata.getStatusPegawai().equalsIgnoreCase("KS")){
-                    biodata.setStatusPegawaiName("Karyawan Staf");
+                    biodata.setStatusPegawaiName("Pimpinan");
                 }else{
-                    biodata.setStatusPegawaiName("Karyawan Non Staf");
+                    biodata.setStatusPegawaiName("Pelaksana");
                 }
             }
             biodata.setStatusKeluarga(imBiodata.getStatusKeluarga());

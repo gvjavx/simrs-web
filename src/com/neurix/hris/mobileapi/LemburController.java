@@ -51,6 +51,40 @@ public class    LemburController implements ModelDriven<Object> {
     private String tanggalAkhir;
     private String jamAwal;
     private String jamAkhir;
+    private String lamaJamLembur;
+    private String namaPegawai;
+
+    public String getNamaPegawai() {
+        return namaPegawai;
+    }
+
+    public void setNamaPegawai(String namaPegawai) {
+        this.namaPegawai = namaPegawai;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getWho() {
+        return who;
+    }
+
+    public String getStatusApprove() {
+        return statusApprove;
+    }
+
+    public String getConfirm() {
+        return confirm;
+    }
+
+    public String getLamaJamLembur() {
+        return lamaJamLembur;
+    }
+
+    public void setLamaJamLembur(String lamaJamLembur) {
+        this.lamaJamLembur = lamaJamLembur;
+    }
 
     public NotifikasiBo getNotifikasiBoProxy() {
         return notifikasiBoProxy;
@@ -121,6 +155,7 @@ public class    LemburController implements ModelDriven<Object> {
                 model.setJamLemburAkhir(obj[10].toString());
             }
         }
+        listOfLembur = null;
         logger.info("[LemburController.create] end process POST /lembur <<<");
         return new DefaultHttpHeaders("index").disableCaching();
     }
@@ -145,10 +180,10 @@ public class    LemburController implements ModelDriven<Object> {
                 editLembur.setNotApprovalNote(model.getKeterangan());
             }
             editLembur.setTmpApprove(who);
-            editLembur.setNip(model.getNip());
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            java.util.Date tanggalAwalst = simpleDateFormat.parse(model.getTanggalAwal());
-            java.util.Date tanggalAkhirst = simpleDateFormat.parse(model.getTanggalAkhir());
+            editLembur.setNip(nip);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            java.util.Date tanggalAwalst = simpleDateFormat.parse(tanggalAwal);
+            java.util.Date tanggalAkhirst = simpleDateFormat.parse(tanggalAkhir);
 
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             String tangAwl = sdf.format(tanggalAwalst);
@@ -156,13 +191,13 @@ public class    LemburController implements ModelDriven<Object> {
 
             editLembur.setTanggalAwalSetuju(CommonUtil.convertToDate(tangAwl));
             editLembur.setTanggalAkhirSetuju(CommonUtil.convertToDate(tangAkh));
-            editLembur.setLamaJam(Double.valueOf(model.getLamaJamLembur()));
-            editLembur.setLastUpdateWho(model.getNamaPegawai());
+            editLembur.setLamaJam(Double.valueOf(lamaJamLembur));
+            editLembur.setLastUpdateWho(namaPegawai);
             editLembur.setLastUpdate(new Timestamp(Calendar.getInstance().getTimeInMillis()));
             editLembur.setAction("U");
             editLembur.setFlag("Y");
             editLembur.setApprovalId(id);
-            editLembur.setApprovalName(model.getNamaPegawai());
+            editLembur.setApprovalName(namaPegawai);
 
             List<Notifikasi> notifikasiList = lemburBoProxy.saveApprove(editLembur);
 
@@ -299,6 +334,7 @@ public class    LemburController implements ModelDriven<Object> {
     // calculate time of lembur
     public String calculate() throws ParseException {
         logger.info("[LemburAction.calcJamLembur] start process >>>");
+        listOfLembur = null;
         String hariKerja ="hari_libur";
 
         Double hasil = (double) 0;
@@ -308,13 +344,21 @@ public class    LemburController implements ModelDriven<Object> {
         int iJamAkhirKerja=Integer.parseInt(jamAkhir.replace(":",""));
         int iJamAwalDb = 0,iJamAkhirDb=0;
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        java.util.Date tanggalAwalst = simpleDateFormat.parse(tanggalAwal);
-        java.util.Date tanggalAkhirst = simpleDateFormat.parse(tanggalAkhir);
+        String tangAwl = "";
+        String tangAkh = "";
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        String tangAwl = sdf.format(tanggalAwalst);
-        String tangAkh = sdf.format(tanggalAkhirst);
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            java.util.Date tanggalAwalst = simpleDateFormat.parse(tanggalAwal);
+            java.util.Date tanggalAkhirst = simpleDateFormat.parse(tanggalAkhir);
+
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            tangAwl = sdf.format(tanggalAwalst);
+            tangAkh = sdf.format(tanggalAkhirst);
+        } catch (ParseException e) {
+            logger.info(e.getMessage());
+            throw new GeneralBOException(e);
+        }
 
         Date startDate = CommonUtil.convertToDate(tangAwl);
         Date endDate = CommonUtil.convertToDate(tangAkh);

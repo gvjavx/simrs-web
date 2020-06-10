@@ -433,6 +433,7 @@ public class IjinBoImpl implements IjinBo {
                         Ijin itemComboIjin = new Ijin();
                         itemComboIjin.setIjinId(imIjinEntity.getIjinId());
                         itemComboIjin.setIjinName(imIjinEntity.getIjinName());
+                        itemComboIjin.setJumlahIjin(imIjinEntity.getJumlahIjin());
                         listComboIjin.add(itemComboIjin);
                     }
                 }
