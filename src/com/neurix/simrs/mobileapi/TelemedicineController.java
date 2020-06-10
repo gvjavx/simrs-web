@@ -31,6 +31,15 @@ public class TelemedicineController implements ModelDriven<Object> {
     private String idPelayanan;
     private String idDokter;
     private String status;
+    private String branchId;
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
 
     public String getIdPelayanan() {
         return idPelayanan;
@@ -88,7 +97,7 @@ public class TelemedicineController implements ModelDriven<Object> {
 
 
             try {
-                telemedicBoProxy.saveAdd(bean);
+                telemedicBoProxy.saveAdd(bean, branchId);
                 model.setMessage("Success");
             } catch (GeneralBOException e) {
                 logger.error("[TelemedicineController.create] Error, " + e.getMessage());
