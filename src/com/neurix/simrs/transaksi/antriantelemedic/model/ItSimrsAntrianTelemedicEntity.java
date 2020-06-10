@@ -27,6 +27,15 @@ public class ItSimrsAntrianTelemedicEntity {
     private String idJenisPeriksaPasien;
     private String idAsuransi;
     private String kodeBank;
+    private String branchId;
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
 
     public String getKodeBank() {
         return kodeBank;
@@ -191,14 +200,6 @@ public class ItSimrsAntrianTelemedicEntity {
 
     public void setAction(String action) {
         this.action = action;
-    }
-
-    public Integer getColumn16() {
-        return column16;
-    }
-
-    public void setColumn16(Integer column16) {
-        this.column16 = column16;
     }
 
     public String getNoKartu() {

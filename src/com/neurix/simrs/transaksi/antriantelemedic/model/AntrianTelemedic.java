@@ -32,6 +32,24 @@ public class AntrianTelemedic {
     private String idJenisPeriksaPasien;
     private String idAsuransi;
     private String kodeBank;
+    private String branchId;
+    private String namaBranch;
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getNamaBranch() {
+        return namaBranch;
+    }
+
+    public void setNamaBranch(String namaBranch) {
+        this.namaBranch = namaBranch;
+    }
 
     public String getKodeBank() {
         return kodeBank;
@@ -183,43 +201,6 @@ public class AntrianTelemedic {
 
     public void setFlagBayarResep(String flagBayarResep) {
         this.flagBayarResep = flagBayarResep;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        AntrianTelemedic that = (AntrianTelemedic) o;
-
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (idPasien != null ? !idPasien.equals(that.idPasien) : that.idPasien != null) return false;
-        if (idDokter != null ? !idDokter.equals(that.idDokter) : that.idDokter != null) return false;
-        if (idPelayanan != null ? !idPelayanan.equals(that.idPelayanan) : that.idPelayanan != null) return false;
-        if (flagResep != null ? !flagResep.equals(that.flagResep) : that.flagResep != null) return false;
-        if (status != null ? !status.equals(that.status) : that.status != null) return false;
-        if (biayaKonsultasi != null ? !biayaKonsultasi.equals(that.biayaKonsultasi) : that.biayaKonsultasi != null)
-            return false;
-        if (flagBayarKonsultasi != null ? !flagBayarKonsultasi.equals(that.flagBayarKonsultasi) : that.flagBayarKonsultasi != null)
-            return false;
-        if (flagBayarResep != null ? !flagBayarResep.equals(that.flagBayarResep) : that.flagBayarResep != null)
-            return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (idPasien != null ? idPasien.hashCode() : 0);
-        result = 31 * result + (idDokter != null ? idDokter.hashCode() : 0);
-        result = 31 * result + (idPelayanan != null ? idPelayanan.hashCode() : 0);
-        result = 31 * result + (flagResep != null ? flagResep.hashCode() : 0);
-        result = 31 * result + (status != null ? status.hashCode() : 0);
-        result = 31 * result + (biayaKonsultasi != null ? biayaKonsultasi.hashCode() : 0);
-        result = 31 * result + (flagBayarKonsultasi != null ? flagBayarKonsultasi.hashCode() : 0);
-        result = 31 * result + (flagBayarResep != null ? flagBayarResep.hashCode() : 0);
-        return result;
     }
 
     public Timestamp getCreatedDate() {

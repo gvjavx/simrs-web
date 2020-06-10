@@ -21,6 +21,7 @@ import com.neurix.simrs.transaksi.verifikatorpembayaran.model.ItSimrsPembayaranO
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -113,6 +114,7 @@ public class TelemedicBoImpl implements TelemedicBo {
                 antrianTelemedic.setKetStatus(ketStatus(telemedicEntity.getStatus()));
                 antrianTelemedic.setKetFlagResep(ketResep(telemedicEntity.getFlagResep()));
                 antrianTelemedic.setKodeBank(telemedicEntity.getKodeBank());
+                antrianTelemedic.setBranchId(telemedicEntity.getBranchId());
                 results.add(antrianTelemedic);
             }
         }
@@ -254,7 +256,7 @@ public class TelemedicBoImpl implements TelemedicBo {
         // apa saja properti yang dibutuhkan ? lihat ItSimrsAntrianTelemedicEntity.java
 
         bean.setId("TMC"+CommonUtil.stDateSeq()+getSeqTelemedic());
-
+        bean.setBranchId(branchId);
         Map hsCriteria = new HashMap();
         hsCriteria.put("id_dokter", bean.getIdDokter());
         hsCriteria.put("id_pelayanan", bean.getIdPelayanan());
@@ -343,7 +345,7 @@ public class TelemedicBoImpl implements TelemedicBo {
         if (tindakanEntity != null){
             if (!"bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
                 pembayaranOnlineEntity.setIdItem(tindakanEntity.getIdTindakan());
-                pembayaranOnlineEntity.setNominal(tindakanEntity.getTarif());
+                pembayaranOnlineEntity.setNominal(new BigDecimal(tindakanEntity.getTarif()));
             }
         }
 
