@@ -38,4 +38,13 @@ public class VerifikatorPembayaranAction {
         logger.info("[VerifikatorPembayaranAction.initForm] END <<<");
         return "search";
     }
+
+    public String search(){
+        logger.info("[VerifikatorPembayaranAction.search] START >>>");
+
+
+
+        logger.info("[VerifikatorPembayaranAction.search] END <<<");
+        return "search";
+    }
 }
