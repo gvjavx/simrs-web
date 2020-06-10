@@ -36,9 +36,9 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
             if (mapCriteria.get("branch_id") != null) {
                 criteria.add(Restrictions.eq("branchId", mapCriteria.get("branch_id").toString()));
             }
-            if (mapCriteria.get("branch_id") != null) {
-                criteria.add(Restrictions.eq("branchId", mapCriteria.get("branch_id").toString()));
-            }
+//            if (mapCriteria.get("branch_id") != null) {
+//                criteria.add(Restrictions.eq("branchId", mapCriteria.get("branch_id").toString()));
+//            }
             if (mapCriteria.get("is_ina") != null) {
                 criteria.add(Restrictions.eq("isIna", mapCriteria.get("is_ina").toString()));
             }

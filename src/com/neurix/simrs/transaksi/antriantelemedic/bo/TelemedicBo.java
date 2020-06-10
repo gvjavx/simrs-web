@@ -13,6 +13,6 @@ public interface TelemedicBo {
     public List<AntrianTelemedic> getSearchByCriteria(AntrianTelemedic bean) throws GeneralBOException;
     public List<AntrianTelemedic> getListAntrianByCriteria(AntrianTelemedic bean) throws GeneralBOException;
     public ItSimrsAntrianTelemedicEntity getAntrianTelemedicEntityById(String id) throws GeneralBOException;
-    public void saveAdd(ItSimrsAntrianTelemedicEntity bean) throws GeneralBOException;
-    public void saveEdit(AntrianTelemedic bean) throws GeneralBOException;
+    public void saveAdd(ItSimrsAntrianTelemedicEntity bean, String branchId) throws GeneralBOException;
+    public void saveEdit(AntrianTelemedic bean, String branchId) throws GeneralBOException;
 }

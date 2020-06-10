@@ -59,6 +59,9 @@
             <basic name="idAsuransi">
                 <column name="id_asuransi" nullable="false" length="30"/>
             </basic>
+            <basic name="kodeBank">
+                <column name="kode_bank" nullable="false" length="10"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>
