@@ -188,6 +188,9 @@
         <action name="absensi/*" class="com.neurix.hris.mobileapi.AbsensiOnlineController">
             <interceptor-ref name="mobileStack"/>
         </action>
+        <action name="kasir/*" class="com.neurix.simrs.mobileapi.KasirController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
     </package>
 
 </struts>

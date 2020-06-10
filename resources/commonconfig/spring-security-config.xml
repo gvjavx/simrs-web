@@ -171,6 +171,10 @@
             <filter-chain pattern="/mobileapi/absensi/*" filters="none" />
             <filter-chain pattern="/mobileapi/absensi/*/**" filters="none" />
 
+            <filter-chain pattern="/mobileapi/kasir" filters="none" />
+            <filter-chain pattern="/mobileapi/kasir/*" filters="none" />
+            <filter-chain pattern="/mobileapi/kasir/*/**" filters="none" />
+
 
 
             <filter-chain pattern="/**/*"

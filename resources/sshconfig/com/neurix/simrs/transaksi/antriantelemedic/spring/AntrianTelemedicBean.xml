@@ -12,8 +12,8 @@
           p:telemedicDao-ref="telemedicDao"
     />
 
-    <!--<bean id="antrianOnlineController" class="com.neurix.simrs.mobileapi.AntrianOnlineController"-->
-          <!--p:antrianOnlineBoProxy-ref="antrianOnlineBoProxy"/>-->
+    <bean id="telemedicineController" class="com.neurix.simrs.mobileapi.TelemedicineController"
+          p:telemedicBoProxy-ref="telemedicBoProxy"/>
 
     <bean id="telemedicBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="telemedicBo">
