@@ -246,7 +246,7 @@ public class TelemedicBoImpl implements TelemedicBo {
     }
 
     @Override
-    public void saveAdd(ItSimrsAntrianTelemedicEntity bean, String branchId) throws GeneralBOException {
+    public void saveAdd(ItSimrsAntrianTelemedicEntity bean, String branchId, String kodeBank) throws GeneralBOException {
         logger.info("[TelemedicBoImpl.saveAdd] START >>>");
 
         // semua property entiy yang dibutuhkan di set pada action / controller. kecuali status dan id;
@@ -278,13 +278,13 @@ public class TelemedicBoImpl implements TelemedicBo {
 
         // jika waiting list maka generate daftar pembayaran;
         if ("WL".equalsIgnoreCase(bean.getStatus())){
-            generateListPembayaran(bean, branchId);
+            generateListPembayaran(bean, branchId, "konsultasi", kodeBank);
         }
         logger.info("[TelemedicBoImpl.saveAdd] END <<<");
     }
 
     @Override
-    public void saveEdit(AntrianTelemedic bean, String branchId) throws GeneralBOException {
+    public void saveEdit(AntrianTelemedic bean, String branchId, String kodeBank) throws GeneralBOException {
 
         // save edit hanya untuk pergantian status / flag pembayaran;
         // properti yang wajib ada adalah id
@@ -315,13 +315,13 @@ public class TelemedicBoImpl implements TelemedicBo {
 
                 // jika waiting list maka generate daftar pembayaran jika perubahan dari LL ke WL;
                 if ("LL".equalsIgnoreCase(statusSebelum) && "WL".equalsIgnoreCase(telemedicEntity.getStatus())){
-                    generateListPembayaran(telemedicEntity, branchId);
+                    generateListPembayaran(telemedicEntity, branchId, "konsultasi", kodeBank);
                 }
             }
         }
     }
 
-    private void generateListPembayaran(ItSimrsAntrianTelemedicEntity bean, String branchId) throws GeneralBOException{
+    private void generateListPembayaran(ItSimrsAntrianTelemedicEntity bean, String branchId, String tipe, String kodeBank) throws GeneralBOException{
         logger.info("[TelemedicBoIml.generateListPembayaran] START >>>");
 
         // mencari tindakan konsultasi;
@@ -336,7 +336,7 @@ public class TelemedicBoImpl implements TelemedicBo {
         }
 
         ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = new ItSimrsPembayaranOnlineEntity();
-        pembayaranOnlineEntity.setId(bean.getId()+"KNS"+getSeqPembayaranOnline());
+        pembayaranOnlineEntity.setId(bean.getId()+"INV"+getSeqPembayaranOnline());
         pembayaranOnlineEntity.setIdAntrianTelemedic(bean.getId());
         pembayaranOnlineEntity.setLastUpdate(bean.getLastUpdate());
 
@@ -352,33 +352,14 @@ public class TelemedicBoImpl implements TelemedicBo {
         pembayaranOnlineEntity.setCreatedWho(bean.getCreatedWho());
         pembayaranOnlineEntity.setLastUpdate(bean.getLastUpdate());
         pembayaranOnlineEntity.setLastUpdateWho(bean.getLastUpdateWho());
+        pembayaranOnlineEntity.setKeterangan(tipe);
+        pembayaranOnlineEntity.setKodeBank(kodeBank);
 
         try {
             verifikatorPembayaranDao.addAndSave(pembayaranOnlineEntity);
         } catch (HibernateException e){
             logger.error("[TelemedicBoIml.generateListPembayaran] ERROR. ",e);
             throw new GeneralBOException("[TelemedicBoIml.generateListPembayaran] ERROR. ",e);
-        }
-
-        // jika dengan resep
-        if (bean.getFlagResep() != null && !"Y".equalsIgnoreCase(bean.getFlagResep())){
-
-            pembayaranOnlineEntity = new ItSimrsPembayaranOnlineEntity();
-            pembayaranOnlineEntity.setId(bean.getId()+"RSP"+getSeqPembayaranOnline());
-            pembayaranOnlineEntity.setIdAntrianTelemedic(bean.getId());
-            pembayaranOnlineEntity.setLastUpdate(bean.getLastUpdate());
-            pembayaranOnlineEntity.setFlag(bean.getFlag());
-            pembayaranOnlineEntity.setCreatedDate(bean.getCreatedDate());
-            pembayaranOnlineEntity.setCreatedWho(bean.getCreatedWho());
-            pembayaranOnlineEntity.setLastUpdate(bean.getLastUpdate());
-            pembayaranOnlineEntity.setLastUpdateWho(bean.getLastUpdateWho());
-
-            try {
-                verifikatorPembayaranDao.addAndSave(pembayaranOnlineEntity);
-            } catch (HibernateException e){
-                logger.error("[TelemedicBoIml.generateListPembayaran] ERROR. ",e);
-                throw new GeneralBOException("[TelemedicBoIml.generateListPembayaran] ERROR. ",e);
-            }
         }
 
         logger.info("[TelemedicBoIml.generateListPembayaran] END <<<");

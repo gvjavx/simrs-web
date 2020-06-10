@@ -22,6 +22,15 @@ public class PembayaranOnline {
     private String lastUpdateWho;
     private BigInteger nominal;
     private String idRiwayatTindakan;
+    private String kodeBank;
+
+    public String getKodeBank() {
+        return kodeBank;
+    }
+
+    public void setKodeBank(String kodeBank) {
+        this.kodeBank = kodeBank;
+    }
 
     public String getId() {
         return id;
