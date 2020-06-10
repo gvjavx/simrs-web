@@ -20,15 +20,28 @@
             var nameDepartment    = document.getElementById("departmentName1").value;
             var kodering          = document.getElementById("kodering1").value;
 
+            console.log("Test")
+            if (nameDepartment != '' && kodering != '') {
+                var karakterKodering = kodering.toString().length;
+                if (karakterKodering < 11){
+                    if (confirm('Do you want to save this record?')) {
+                        event.originalEvent.options.submit = true;
+                        $.publish('showDialog');
 
-            if (nameDepartment != '' && kodering != null) {
-                if (confirm('Do you want to save this record?')) {
-                    event.originalEvent.options.submit = true;
-                    $.publish('showDialog');
-
-                } else {
-                    // Cancel Submit comes with 1.8.0
+                    } else {
+                        // Cancel Submit comes with 1.8.0
+                        event.originalEvent.options.submit = false;
+                    }
+                }else {
                     event.originalEvent.options.submit = false;
+
+                    var msg = "";
+                    if (karakterKodering > 10){
+                        msg += 'Field <strong>Panjang Kodering maksimal 10 Karakter.</strong>' + '<br/>';
+                    }
+                    console.log("tes 3 "+msg);
+                    document.getElementById('errorValidationMessage').innerHTML = msg;
+                    $.publish('showErrorValidationDialog');
                 }
 
 

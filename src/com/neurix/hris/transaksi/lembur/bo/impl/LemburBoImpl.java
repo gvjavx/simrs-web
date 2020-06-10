@@ -694,19 +694,19 @@ public class LemburBoImpl implements LemburBo {
                 throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
             }
 
-            for (ItNotifikasiFcmEntity entity : notifikasiFcm){
-                if(entity.getUserId().equals(atasanNip)){
-                    ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), noteMobile,  bean.getOs());
-                    break;
-                }
-            }
-
 //            for (ItNotifikasiFcmEntity entity : notifikasiFcm){
 //                if(entity.getUserId().equals(atasanNip)){
-//                    FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), noteMobile, ACTION_CLICK);
+//                    ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), noteMobile,  bean.getOs());
 //                    break;
 //                }
 //            }
+
+            for (ItNotifikasiFcmEntity entity : notifikasiFcm){
+                if(entity.getUserId().equals(atasanNip)){
+                    FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), noteMobile, ACTION_CLICK, bean.getOs());
+                    break;
+                }
+            }
 
 //            for (ItNotifikasiFcmEntity entity : notifikasiFcm){
 //                if(entity.getUserId().equals(atasanNip)){
@@ -778,7 +778,10 @@ public class LemburBoImpl implements LemburBo {
             itLemburEntity.setTanggalAwalSetuju(bean.getTanggalAwal());
             itLemburEntity.setTanggalAkhirSetuju(bean.getTanggalAkhir());
             itLemburEntity.setPositionName(imPosition.getPositionName());
-            itLemburEntity.setDivisiName(imDepartmentEntity.getDepartmentName());
+            if (imDepartmentEntity != null)
+                itLemburEntity.setDivisiName(imDepartmentEntity.getDepartmentName());
+            else
+                itLemburEntity.setDivisiName("");
             if (imGolonganEntity!=null){
                 itLemburEntity.setGolonganName(imGolonganEntity.getGolonganName());
             }

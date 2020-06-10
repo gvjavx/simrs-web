@@ -120,6 +120,8 @@
             $('#maxBpjsTk').prop('readonly', false);
             $('#maxBpjsPensiun').prop('readonly', false);
             $('#maxBpjsKesehatan').prop('readonly', false);
+
+            $('periodeGaji').prop('readonly', false);
         }
 
         function onLoadPage() {
@@ -149,6 +151,7 @@
             $('#maxBpjsTk').prop('readonly', true);
             $('#maxBpjsPensiun').prop('readonly', true);
             $('#maxBpjsKesehatan').prop('readonly', true);
+            $('periodeGaji').prop('readonly', true);
 
             document.getElementById('firstButton').style.visibility='visible';
             document.getElementById('saveButton').style.visibility='hidden';
@@ -249,6 +252,16 @@
                                         <label class="control-label col-sm-3" for="company.passwordServer">Password Server :</label>
                                         <div class="col-sm-8">
                                             <s:password id="passwordServer" name="company.passwordServer" required="true" showPassword="true" cssClass="form-control"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3" for="company.passwordServer">Periode Gaji :</label>
+                                        <div class="col-sm-8">
+                                            <s:action id="comboPeriode" namespace="/rekruitmen" name="initComboPeriodeTahunSekarang10_rekruitmen"/>
+                                            <s:select cssClass="form-control" list="#comboPeriode.listOfComboPeriode" id="periodeGaji"
+                                                      name="company.periodeGaji" required="true" headerKey=""
+                                                      headerValue="[Select one]"/>
                                         </div>
                                     </div>
 

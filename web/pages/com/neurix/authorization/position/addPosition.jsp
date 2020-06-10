@@ -5,6 +5,7 @@
 <%@ taglib prefix="display" uri="/WEB-INF/tld/displaytag-el.tld" %>
 <html>
 <head>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PositionBagianAction.js"/>'></script>
     <script type="text/javascript">
 
         function callSearch2() {
@@ -21,19 +22,37 @@
             var kelompok = document.getElementById("kelompokId1").value;
             var kodering = document.getElementById("kodering1").value;
 
-            console.log(namePosition);
-            console.log(department);
-            console.log(bagian);
-            console.log(kelompok);
+            console.log("name "+namePosition);
+            console.log("devisi "+department);
+            console.log("bagian "+bagian);
+            console.log("kelompok "+kelompok);
+            console.log("kodering "+kodering)
 
             if (namePosition != '' && department!='' && bagian!='' && kelompok!='' && kodering != '') {
-                if (confirm('Do you want to save this record?')) {
-                    event.originalEvent.options.submit = true;
-                    $.publish('showDialog');
+                var karakterKodering = kodering.toString().length;
+                console.log("Tes "+karakterKodering);
+                if (karakterKodering < 11){
+                    console.log("tes 2")
+                    if (confirm('Do you want to save this record?')) {
+                        event.originalEvent.options.submit = true;
+                        $.publish('showDialog');
 
-                } else {
-                    // Cancel Submit comes with 1.8.0
+                    } else {
+                        // Cancel Submit comes with 1.8.0
+                        event.originalEvent.options.submit = false;
+                    }
+                }else {
+//                    alert("Panjang Kodering maksimal 10 Karakter.");
                     event.originalEvent.options.submit = false;
+
+                    var msg = "";
+                    if (karakterKodering > 10){
+                        msg += 'Field <strong>Panjang Kodering maksimal 10 Karakter.</strong>' + '<br/>';
+                    }
+                    console.log("tes 3 "+msg);
+                    document.getElementById('errorValidationMessage5').innerHTML = msg;
+                    $.publish('showErrorValidationDialog5');
+
                 }
 
 
@@ -59,24 +78,12 @@
                     msg += 'Field <strong>Kodering</strong> is required.' + '<br/>';
                 }
 
-                document.getElementById('errorValidationMessage').innerHTML = msg;
+                document.getElementById('errorValidationMessage5').innerHTML = msg;
 
-                $.publish('showErrorValidationDialog');
+                $.publish('showErrorValidationDialog5');
 
             }
         });
-
-        $.subscribe('beforeProcessDelete', function (event, data) {
-            if (confirm('Do you want to delete this record ?')) {
-                event.originalEvent.options.submit = true;
-                $.publish('showDialog');
-
-            } else {
-                // Cancel Submit comes with 1.8.0
-                event.originalEvent.options.submit = false;
-            }
-        });
-
 
         $.subscribe('successDialog', function (event, data) {
             if (event.originalEvent.request.status == 200) {
@@ -151,11 +158,17 @@
                         <td>
                             <table>
                                 <s:action id="comboMasaTanam1" namespace="/department" name="initDepartment_department"/>
-                                <s:select list="#session.listOfResultDepartment" id="departmentId1" name="position.departmentId"
+                                <s:select list="#session.listOfResultDepartment" id="departmentId1" name="position.departmentId" onchange="listPosisiHistory(); cekBidangLain()"
                                           listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
+                    <div id="namaBidangLain" class="form-group" style="display: none">
+                        <label class="control-label col-sm-4">Nama Bidang Lain:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="bidangLain">
+                        </div>
+                    </div>
                     <tr>
                         <td>
                             <label class="control-label"><small>Bagian :</small></label>
@@ -164,11 +177,17 @@
                             <table>
                                 <s:action id="comboBagian" namespace="/positionBagian" name="searchPositionBagian_positionBagian"/>
                                 <s:select list="#comboBagian.comboListOfPositionBagian" id="bagianId1" name="position.bagianId"
-                                          listKey="bagianId" listValue="bagianName" headerKey="" headerValue="[Select one]"
+                                          listKey="bagianId" listValue="bagianName" headerKey="" headerValue="[Select one]" onchange="cekPosisiLain()"
                                           cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
+                    <div id="namaJabatanLain" class="form-group" style="display: none">
+                        <label class="control-label col-sm-4">Nama Jabatan Lain: </label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="jabatanLain">
+                        </div>
+                    </div>
                     <tr>
                         <td>
                             <label class="control-label"><small>Kelompok Jabatan :</small></label>
@@ -251,7 +270,7 @@
                                             </div>
                                         </sj:dialog>
 
-                                        <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
+                                        <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog5" modal="true" resizable="false"
                                                    height="280" width="500" autoOpen="false" title="Warning"
                                                    buttons="{
                                                                         'OK':function() { $('#error_validation_dialog').dialog('close'); }
@@ -261,7 +280,7 @@
                                                 <label class="control-label" align="left">
                                                     <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
                                                     <br/>
-                                                    <center><div id="errorValidationMessage"></div></center>
+                                                    <center><div id="errorValidationMessage5"></div></center>
                                                 </label>
                                             </div>
                                         </sj:dialog>
@@ -277,3 +296,45 @@
 </table>
 </body>
 </html>
+<script>
+    window.listPosisiHistory = function (branch, divisi) {
+//        var branch = document.getElementById("branch1").value;
+        var divisi = document.getElementById("departmentId1").value;
+        console.log("Test divisi "+divisi);
+        $('#bagianId1').empty();
+        $('#bagianId1').append($("<option></option>")
+                .attr("value", '')
+                .text(''));
+        console.log("Test");
+        PositionBagianAction.searchPositionBagian(divisi, function (listdata) {
+            $.each(listdata, function (i, item) {
+                $('#bagianId1').append($("<option></option>")
+                        .attr("value", item.bagianId)
+                        .text(item.bagianName));
+            });
+        });
+    };
+    window.cekBidangLain = function(){
+        var divisi = document.getElementById("departmentId1").value;
+        console.log("Test2");
+        if (divisi=='0'){
+            $('#bidangLain').val("");
+            $('#namaBidangLain').show();
+        }
+        else{
+            $('#bidangLain').val("");
+            $('#namaBidangLain').hide();
+        }
+    };
+    window.cekPosisiLain = function(){
+        var position = document.getElementById("bagianId1").value;
+        if (position=='0'){
+            $('#jabatanLain').val("");
+            $('#namaJabatanLain').show();
+        }
+        else{
+            $('#jabatanLain').val("");
+            $('#namaJabatanLain').hide();
+        }
+    };
+</script>

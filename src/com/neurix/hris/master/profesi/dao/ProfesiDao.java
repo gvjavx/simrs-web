@@ -3,6 +3,7 @@ package com.neurix.hris.master.profesi.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.hris.master.profesi.model.ImProfesiEntity;
+import com.neurix.hris.master.profesi.model.ImProfesiHistoryEntity;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -63,6 +64,14 @@ public class ProfesiDao extends GenericDao<ImProfesiEntity, String> {
         return "PR"+sId;
     }
 
+    public String getNextProfesiHistoryId() throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_profesi_history')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%02d", iter.next());
+
+        return "PRS"+sId;
+    }
+
     public List<ImProfesiEntity> getListProfesi(String term) throws HibernateException {
 
         List<ImProfesiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImProfesiEntity.class)
@@ -84,5 +93,8 @@ public class ProfesiDao extends GenericDao<ImProfesiEntity, String> {
         return results;
     }
 
+    public void addAndSaveHistory(ImProfesiHistoryEntity entity) throws HibernateException {
+        this.sessionFactory.getCurrentSession().save(entity);
+    }
 
 }

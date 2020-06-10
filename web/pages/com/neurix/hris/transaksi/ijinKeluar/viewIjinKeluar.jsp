@@ -179,13 +179,13 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Golongan :</small></label>
+                            <label class="control-label"><small>Level :</small></label>
                         </td>
                         <td>
                             <table>
                                 <s:action id="comboGolongan" namespace="/golongan" name="initComboGolongan_golongan"/>
                                 <s:select list="#comboGolongan.listComboGolongan" id="golonganId12" name="ijinKeluar.golonganId" disabled="true"
-                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true" />
+                                          listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true" />
                             </table>
                         </td>
                     </tr>
@@ -228,7 +228,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <s:textfield id="tgl1" name="ijinKeluar.stTanggalAkhir" cssClass="form-control pull-right"
+                                    <s:textfield id="tgl11" name="ijinKeluar.stTanggalAkhir" cssClass="form-control pull-right"
                                                  required="false"  cssStyle="" readonly="true" disabled="true"/>
                                 </div>
                             </table>
@@ -242,7 +242,7 @@
                             <table>
                                 <tr>
                                     <td width="60px">
-                                        <s:textfield  id="lamaCuti" name="ijinKeluar.lamaIjin" required="false" readonly="true" cssClass="form-control"/>
+                                        <s:textfield  id="lamaCuti1" name="ijinKeluar.lamaIjin" required="false" readonly="true" cssClass="form-control"/>
                                     </td>
                                     <td>&nbsp;&nbsp;&nbsp;</td>
                                     <td>
@@ -266,6 +266,44 @@
                                         <s:textfield id="tglMelahirkan1" name="ijinKeluar.stTglMelahirkan" cssClass="form-control pull-right"
                                                      required="false"  disabled="true" cssStyle=""/>
                                     </div>
+                                </table>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <label class="control-label"><small>Tanggal Selesai (Baru) :</small></label>
+                            </td>
+                            <td>
+                                <table>
+                                    <div class="input-group date">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <s:textfield id="tgl1" name="ijinKeluar.tanggalAkhirBaru" readonly="true" disabled="true" cssClass="form-control pull-right"
+                                                     required="false"  cssStyle=""/>
+                                        <s:textfield id="tgl1" name="ijinKeluar.tanggalAkhirBaru" readonly="true" cssClass="form-control pull-right"
+                                                     required="false" cssStyle="display: none"/>
+                                    </div>
+                                </table>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <label class="control-label"><small>Lama Ijin (Baru) :</small></label>
+                            </td>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td width="60px">
+                                            <s:textfield  id="lamaCuti" name="ijinKeluar.lamaIjinBaru" required="false" readonly="true" cssClass="form-control"/>
+                                        </td>
+                                        <td>&nbsp;&nbsp;&nbsp;</td>
+                                        <td>
+                                            hari
+                                        </td>
+                                    </tr>
                                 </table>
                             </td>
                         </tr>

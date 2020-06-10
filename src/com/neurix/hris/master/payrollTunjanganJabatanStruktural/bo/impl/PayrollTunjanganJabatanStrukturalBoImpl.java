@@ -121,12 +121,12 @@ public class PayrollTunjanganJabatanStrukturalBoImpl implements PayrollTunjangan
                 historyEntity.setTunjJabStrukturId(imPayrollTunjanganJabatanStrukturalEntity.getTunjJabStrukturId());
                 historyEntity.setTunjJabatan(imPayrollTunjanganJabatanStrukturalEntity.getTunjJabatan());
                 historyEntity.setTunjStruktural(imPayrollTunjanganJabatanStrukturalEntity.getTunjStruktural());
-                historyEntity.setCreatedDate(bean.getLastUpdate());
-                historyEntity.setCreatedWho(bean.getLastUpdateWho());
-                historyEntity.setLastUpdate(bean.getLastUpdate());
-                historyEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                historyEntity.setCreatedDate(imPayrollTunjanganJabatanStrukturalEntity.getLastUpdate());
+                historyEntity.setCreatedWho(imPayrollTunjanganJabatanStrukturalEntity.getLastUpdateWho());
+                historyEntity.setLastUpdate(imPayrollTunjanganJabatanStrukturalEntity.getLastUpdate());
+                historyEntity.setLastUpdateWho(imPayrollTunjanganJabatanStrukturalEntity.getLastUpdateWho());
                 historyEntity.setFlag("Y");
-                historyEntity.setAction("C");
+                historyEntity.setAction(imPayrollTunjanganJabatanStrukturalEntity.getAction());
 
                 try {
                     // insert into database
@@ -193,12 +193,12 @@ public class PayrollTunjanganJabatanStrukturalBoImpl implements PayrollTunjangan
                 historyEntity.setTunjJabStrukturId(imPayrollTunjanganJabatanStrukturalEntity.getTunjJabStrukturId());
                 historyEntity.setTunjJabatan(imPayrollTunjanganJabatanStrukturalEntity.getTunjJabatan());
                 historyEntity.setTunjStruktural(imPayrollTunjanganJabatanStrukturalEntity.getTunjStruktural());
-                historyEntity.setCreatedDate(bean.getLastUpdate());
-                historyEntity.setCreatedWho(bean.getLastUpdateWho());
-                historyEntity.setLastUpdate(bean.getLastUpdate());
-                historyEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                historyEntity.setCreatedDate(imPayrollTunjanganJabatanStrukturalEntity.getLastUpdate());
+                historyEntity.setCreatedWho(imPayrollTunjanganJabatanStrukturalEntity.getLastUpdateWho());
+                historyEntity.setLastUpdate(imPayrollTunjanganJabatanStrukturalEntity.getLastUpdate());
+                historyEntity.setLastUpdateWho(imPayrollTunjanganJabatanStrukturalEntity.getLastUpdateWho());
                 historyEntity.setFlag("Y");
-                historyEntity.setAction("C");
+                historyEntity.setAction(imPayrollTunjanganJabatanStrukturalEntity.getAction());
 
                 try {
                     // insert into database

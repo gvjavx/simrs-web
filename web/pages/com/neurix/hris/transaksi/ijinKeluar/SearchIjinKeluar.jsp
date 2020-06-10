@@ -96,7 +96,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Dispensasi
+            Dispensasi/Cuti/Lainnya
         </h1>
     </section>
     <!-- Main content -->
@@ -304,7 +304,7 @@
                                                                    closeTopics="closeDialogLoading" modal="true"
                                                                    resizable="false"
                                                                    height="250" width="600" autoOpen="false"
-                                                                   title="Save Data ...">
+                                                                   title="Searching ...">
                                                             Please don't close this window, server is processing your request ...
                                                             <br>
                                                             <center>
@@ -386,13 +386,15 @@
                                                             <s:if test="#attr.row.cancel">
                                                             </s:if>
                                                             <s:elseif test="#attr.row.finish">
-                                                                <s:url var="urlViewDelete" namespace="/ijinKeluar" action="edit_ijinKeluar" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.ijinKeluarId" /></s:param>
-                                                                    <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                                </s:url>
-                                                                <sj:a onClickTopics="showDialogMenuView" href="%{urlViewDelete}">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_trash">
-                                                                </sj:a>
+                                                                <s:if test='#attr.row.ijinId == "IJ013"'>
+                                                                    <s:url var="urlViewDelete" namespace="/ijinKeluar" action="edit_ijinKeluar" escapeAmp="false">
+                                                                        <s:param name="id"><s:property value="#attr.row.ijinKeluarId" /></s:param>
+                                                                        <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                                    </s:url>
+                                                                    <sj:a onClickTopics="showDialogMenuView" href="%{urlViewDelete}">
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_trash">
+                                                                    </sj:a>
+                                                                </s:if>
                                                             </s:elseif>
                                                             </display:column>
 
@@ -419,8 +421,23 @@
                                                             <display:column property="positionName" sortable="true" title="Jabatan"  />
                                                             <display:column property="ijinName" sortable="true" title="Nama Ijin"  />
                                                             <display:column property="stTanggalAwal" sortable="true" title="Tanggal Awal"  />
-                                                            <display:column property="stTanggalAkhir" sortable="true" title="Tanggal Akhir"  />
-                                                            <display:column property="lamaIjin" sortable="true" title="Lama"  />
+
+                                                            <s:if test='#attr.row.ijinId == "IJ013"'>
+                                                                <display:column property="tanggalAkhirBaru" sortable="true" title="Tanggal Akhir"  />
+                                                            </s:if>
+                                                            <s:else>
+                                                                <display:column property="stTanggalAkhir" sortable="true" title="Tanggal Akhir"  />
+                                                            </s:else>
+                                                            <%--<display:column property="stTanggalAkhir" sortable="true" title="Tanggal Akhir"  />--%>
+
+                                                            <s:if test='#attr.row.ijinId == "IJ013"'>
+                                                                <display:column property="lamaIjinBaru" sortable="true" title="Lama"  />
+                                                            </s:if>
+                                                            <s:else>
+                                                                <display:column property="lamaIjin" sortable="true" title="Lama"  />
+                                                            </s:else>
+                                                            <%--<display:column property="lamaIjin" sortable="true" title="Lama"  />--%>
+
                                                             <s:if test="#attr.row.notApprove">
                                                                 <display:column media="html" title="Approve Atasan">
                                                                     <img border="0" src="<s:url value="/pages/images/icon_failure.ico"/>" name="icon_edit">

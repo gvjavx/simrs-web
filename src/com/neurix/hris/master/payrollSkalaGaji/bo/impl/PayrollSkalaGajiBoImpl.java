@@ -96,12 +96,12 @@ public class PayrollSkalaGajiBoImpl implements PayrollSkalaGajiBo {
                 historyEntity.setTotal(imPayrollSkalaGajiEntity.getTotal());
                 historyEntity.setNoSk(imPayrollSkalaGajiEntity.getNoSk());
                 historyEntity.setListrik(imPayrollSkalaGajiEntity.getListrik());
-                historyEntity.setCreatedDate(bean.getLastUpdate());
-                historyEntity.setCreatedWho(bean.getLastUpdateWho());
-                historyEntity.setLastUpdate(bean.getLastUpdate());
-                historyEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                historyEntity.setCreatedDate(imPayrollSkalaGajiEntity.getLastUpdate());
+                historyEntity.setCreatedWho(imPayrollSkalaGajiEntity.getLastUpdateWho());
+                historyEntity.setLastUpdate(imPayrollSkalaGajiEntity.getLastUpdate());
+                historyEntity.setLastUpdateWho(imPayrollSkalaGajiEntity.getLastUpdateWho());
                 historyEntity.setFlag("Y");
-                historyEntity.setAction("C");
+                historyEntity.setAction(imPayrollSkalaGajiEntity.getAction());
 
                 try {
                     // insert into database
@@ -177,12 +177,12 @@ public class PayrollSkalaGajiBoImpl implements PayrollSkalaGajiBo {
                 historyEntity.setTotal(imPayrollSkalaGajiEntity.getTotal());
                 historyEntity.setNoSk(imPayrollSkalaGajiEntity.getNoSk());
                 historyEntity.setListrik(imPayrollSkalaGajiEntity.getListrik());
-                historyEntity.setCreatedDate(bean.getLastUpdate());
-                historyEntity.setCreatedWho(bean.getLastUpdateWho());
-                historyEntity.setLastUpdate(bean.getLastUpdate());
-                historyEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                historyEntity.setCreatedDate(imPayrollSkalaGajiEntity.getLastUpdate());
+                historyEntity.setCreatedWho(imPayrollSkalaGajiEntity.getLastUpdateWho());
+                historyEntity.setLastUpdate(imPayrollSkalaGajiEntity.getLastUpdate());
+                historyEntity.setLastUpdateWho(imPayrollSkalaGajiEntity.getLastUpdateWho());
                 historyEntity.setFlag("Y");
-                historyEntity.setAction("C");
+                historyEntity.setAction(imPayrollSkalaGajiEntity.getAction());
 
                 try {
                     // insert into database
@@ -318,6 +318,12 @@ public class PayrollSkalaGajiBoImpl implements PayrollSkalaGajiBo {
             }
             if (searchBean.getGolonganId() != null && !"".equalsIgnoreCase(searchBean.getGolonganId())) {
                 hsCriteria.put("golongan_id", searchBean.getGolonganId());
+            }
+            if (searchBean.getTahun() != null && !"".equalsIgnoreCase(searchBean.getTahun())){
+                hsCriteria.put("tahun", searchBean.getTahun());
+            }
+            if (searchBean.getNoSk() != null && !"".equalsIgnoreCase(searchBean.getNoSk())){
+                hsCriteria.put("no_sk", searchBean.getNoSk());
             }
             if (searchBean.getFlag() != null && !"".equalsIgnoreCase(searchBean.getFlag())) {
                 if ("N".equalsIgnoreCase(searchBean.getFlag())) {

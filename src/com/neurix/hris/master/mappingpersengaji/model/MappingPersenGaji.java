@@ -9,7 +9,9 @@ public class MappingPersenGaji extends BaseModel implements Serializable {
 
     private String mappingPersenGajiId;
     private String namaMappingPersenGaji;
+    private String strNamaMappingPersenGaji;
     private String jenisGaji;
+    private String strJenisGaji;
     private Integer presentase;
     private Timestamp createdDate;
     private String createWho;
@@ -17,6 +19,9 @@ public class MappingPersenGaji extends BaseModel implements Serializable {
     private String lastUpdateWho;
     private String flag;
     private String action;
+
+    private String stCreatedDate;
+    private String stLastUpdate;
 
     @Override
     public String getAction() {
@@ -106,5 +111,39 @@ public class MappingPersenGaji extends BaseModel implements Serializable {
 
     public void setPresentase(Integer presentase) {
         this.presentase = presentase;
+    }
+
+    @Override
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
+
+    @Override
+    public String getStLastUpdate() {
+        return stLastUpdate;
+    }
+
+    public void setStLastUpdate(String stLastUpdate) {
+        this.stLastUpdate = stLastUpdate;
+    }
+
+    public String getStrJenisGaji() {
+        return strJenisGaji;
+    }
+
+    public void setStrJenisGaji(String strJenisGaji) {
+        this.strJenisGaji = strJenisGaji;
+    }
+
+    public String getStrNamaMappingPersenGaji() {
+        return strNamaMappingPersenGaji;
+    }
+
+    public void setStrNamaMappingPersenGaji(String strNamaMappingPersenGaji) {
+        this.strNamaMappingPersenGaji = strNamaMappingPersenGaji;
     }
 }

@@ -44,6 +44,9 @@ public class PayrollSkalaGajiDao extends GenericDao<ImPayrollSkalaGajiEntity, St
             if (mapCriteria.get("tahun")!=null) {
                 criteria.add(Restrictions.eq("tahun", (String) mapCriteria.get("tahun")));
             }
+            if (mapCriteria.get("no_sk")!=null) {
+                criteria.add(Restrictions.eq("noSk", (String) mapCriteria.get("no_sk")));
+            }
             if (mapCriteria.get("point")!=null) {
                 criteria.add(Restrictions.eq("point",mapCriteria.get("point")));
             }

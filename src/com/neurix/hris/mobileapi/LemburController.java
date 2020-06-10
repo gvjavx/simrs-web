@@ -401,7 +401,7 @@ public class    LemburController implements ModelDriven<Object> {
     }
     @Override
     public Object getModel() {
-        return listOfLembur.size() > 0 ? listOfLembur: model;
+        return listOfLembur != null ? listOfLembur: model;
     }
 
     public String getIdLembur() {

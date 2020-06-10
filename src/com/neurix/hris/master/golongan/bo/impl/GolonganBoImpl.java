@@ -50,18 +50,30 @@ public class GolonganBoImpl implements GolonganBo {
         if (bean!=null) {
 
             String golonganId = bean.getGolonganId();
-
+            String historyId = "";
             ImGolonganEntity imGolonganEntity = null;
+            ImGolonganHistoryEntity imGolonganHistoryEntity = new ImGolonganHistoryEntity();
 
             try {
                 // Get data from database by ID
                 imGolonganEntity = golonganDao.getById("golonganId", golonganId);
+                historyId = golonganDao.getNextGolonganHistoryId();
             } catch (HibernateException e) {
                 logger.error("[AlatBoImpl.saveDelete] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
             }
 
             if (imGolonganEntity != null) {
+                imGolonganHistoryEntity.setId(historyId);
+                imGolonganHistoryEntity.setGolonganId(imGolonganEntity.getGolonganId());
+                imGolonganHistoryEntity.setGolonganName(imGolonganEntity.getGolonganName());
+                imGolonganHistoryEntity.setGolonganName(imGolonganEntity.getGolonganName());
+                imGolonganHistoryEntity.setFlag(imGolonganEntity.getFlag());
+                imGolonganHistoryEntity.setAction(imGolonganEntity.getAction());
+                imGolonganHistoryEntity.setLastUpdateWho(imGolonganEntity.getLastUpdateWho());
+                imGolonganHistoryEntity.setLastUpdate(imGolonganEntity.getLastUpdate());
+                imGolonganHistoryEntity.setCreatedWho(imGolonganEntity.getLastUpdateWho());
+                imGolonganHistoryEntity.setCreatedDate(imGolonganEntity.getLastUpdate());
 
                 // Modify from bean to entity serializable
                 imGolonganEntity.setGolonganId(bean.getGolonganId());
@@ -74,6 +86,7 @@ public class GolonganBoImpl implements GolonganBo {
                 try {
                     // Delete (Edit) into database
                     golonganDao.updateAndSave(imGolonganEntity);
+                    golonganDao.addAndSaveHistory(imGolonganHistoryEntity);
                 } catch (HibernateException e) {
                     logger.error("[GolonganBoImpl.saveDelete] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when saving update data Golongan, please info to your admin..." + e.getMessage());

@@ -464,7 +464,13 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="sisaCuti" name="cutiPegawai.sisaCuti" required="false" readonly="true" cssClass="form-control"/>
+                                <td width="90px">
+                                    <s:textfield  id="sisaCuti" name="cutiPegawai.sisaCuti" required="false" readonly="true" cssClass="form-control"/>
+                                </td>
+                                <td>&nbsp;&nbsp;&nbsp;</td>
+                                <td>
+                                    hari
+                                </td>
                             </table>
                         </td>
                     </tr>
@@ -788,6 +794,7 @@
     $('#tgl2').datepicker({
         dateFormat: 'dd/mm/yy'
     });
+
     $('#tgl1').on('change',function(){
         var nip = document.getElementById("nipId").value;
         var tglawal = document.getElementById("tgl2").value;

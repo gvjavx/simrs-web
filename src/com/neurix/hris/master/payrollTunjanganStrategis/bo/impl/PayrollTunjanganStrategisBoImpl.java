@@ -133,12 +133,12 @@ public class PayrollTunjanganStrategisBoImpl implements PayrollTunjanganStrategi
                 historyEntity.setPositionId(imPayrollTunjanganStrategisEntity.getPositionId());
                 historyEntity.setNilai(imPayrollTunjanganStrategisEntity.getNilai());
                 historyEntity.setGolonganId(imPayrollTunjanganStrategisEntity.getGolonganId());
-                historyEntity.setCreatedDate(bean.getLastUpdate());
-                historyEntity.setCreatedWho(bean.getLastUpdateWho());
-                historyEntity.setLastUpdate(bean.getLastUpdate());
-                historyEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                historyEntity.setCreatedDate(imPayrollTunjanganStrategisEntity.getLastUpdate());
+                historyEntity.setCreatedWho(imPayrollTunjanganStrategisEntity.getLastUpdateWho());
+                historyEntity.setLastUpdate(imPayrollTunjanganStrategisEntity.getLastUpdate());
+                historyEntity.setLastUpdateWho(imPayrollTunjanganStrategisEntity.getLastUpdateWho());
                 historyEntity.setFlag("Y");
-                historyEntity.setAction("C");
+                historyEntity.setAction(imPayrollTunjanganStrategisEntity.getAction());
 
                 try {
                     // insert into database
@@ -206,12 +206,12 @@ public class PayrollTunjanganStrategisBoImpl implements PayrollTunjanganStrategi
                 historyEntity.setPositionId(imPayrollTunjanganStrategisEntity.getPositionId());
                 historyEntity.setNilai(imPayrollTunjanganStrategisEntity.getNilai());
                 historyEntity.setGolonganId(imPayrollTunjanganStrategisEntity.getGolonganId());
-                historyEntity.setCreatedDate(bean.getLastUpdate());
-                historyEntity.setCreatedWho(bean.getLastUpdateWho());
-                historyEntity.setLastUpdate(bean.getLastUpdate());
-                historyEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                historyEntity.setCreatedDate(imPayrollTunjanganStrategisEntity.getLastUpdate());
+                historyEntity.setCreatedWho(imPayrollTunjanganStrategisEntity.getLastUpdateWho());
+                historyEntity.setLastUpdate(imPayrollTunjanganStrategisEntity.getLastUpdate());
+                historyEntity.setLastUpdateWho(imPayrollTunjanganStrategisEntity.getLastUpdateWho());
                 historyEntity.setFlag("Y");
-                historyEntity.setAction("C");
+                historyEntity.setAction(imPayrollTunjanganStrategisEntity.getAction());
 
                 try {
                     // insert into database

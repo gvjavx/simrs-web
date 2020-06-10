@@ -22,13 +22,38 @@
         }
 
         $.subscribe('beforeProcessSaveCancelIjinKeluar', function (event, data) {
-            if (confirm('Do you want to save this record?')) {
-                event.originalEvent.options.submit = true;
-                $.publish('showDialogCancelIjinKeluar');
+            var keterangan = document.getElementById("cancelNote").value;
+            var nip = document.getElementById("nipId").value;
+            var tglDari = document.getElementById("tgl2").value;
+            var tglSelesai = document.getElementById("tgl1").value;
+            console.log(tglDari);
+            console.log(tglSelesai);
+            if (keterangan!=="") {
 
-            } else {
-                // Cancel Submit comes with 1.8.0
+                IjinKeluarAction.cekIfAbsensi(nip, tglDari, tglSelesai, function(listdata){
+                    if (listdata=="tidak"){
+                        if (confirm('Do you want to save this record?')) {
+                            event.originalEvent.options.submit = true;
+                            $.publish('showDialogCancelIjinKeluar');
+
+                        } else {
+                            // Cancel Submit comes with 1.8.0
+                            event.originalEvent.options.submit = false;
+                        }
+                    }else {
+                        alert("Data Tersebut Tidak Bisa Dibatalkan Karena Telah Masuk Absensi")
+                        event.originalEvent.options.submit = false;
+                    }
+                });
+
+            }else {
                 event.originalEvent.options.submit = false;
+                var msg = "";
+                if ( keterangan === '') {
+                    msg += 'Field <strong>Keterangan</strong> is required.' + '<br/>';
+                }
+                document.getElementById('errorMessage').innerHTML = msg;
+                $.publish('showErrorDialogCancelIjinKeluar');
             }
         });
         $.subscribe('successDialogCancelIjinKeluar', function (event, data) {
@@ -140,13 +165,13 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Golongan :</small></label>
+                            <label class="control-label"><small>Level :</small></label>
                         </td>
                         <td>
                             <table>
                                 <s:action id="comboGolongan" namespace="/golongan" name="initComboGolongan_golongan"/>
                                 <s:select list="#comboGolongan.listComboGolongan" id="golonganId12" name="ijinKeluar.golonganId" disabled="true"
-                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true" />
+                                          listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true" />
                                 <s:textfield  id="golonganIdTmp" name="ijinKeluar.golonganId" required="false" cssStyle="display: none" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>

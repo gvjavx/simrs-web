@@ -18,6 +18,7 @@ import com.neurix.hris.master.positionBagian.model.positionBagian;
 import com.neurix.hris.master.strukturJabatan.bo.StrukturJabatanBo;
 import com.neurix.hris.master.strukturJabatan.model.StrukturJabatan;
 import com.neurix.hris.transaksi.ijinKeluar.bo.IjinKeluarBo;
+import com.neurix.hris.transaksi.ijinKeluar.bo.impl.IjinKeluarBoImpl;
 import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluar;
 import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluarAnggota;
 import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
@@ -1391,12 +1392,21 @@ public class IjinKeluarAction extends BaseMasterAction {
                 reportParams.put("nama",ijinKeluar1.getNamaPegawai());
                 reportParams.put("nip",ijinKeluar1.getNip());
                 reportParams.put("jabatan",ijinKeluar1.getPositionName());
-                reportParams.put("divisi",ijinKeluar1.getDivisiName());
+                if (ijinKeluar1.getDivisiName() != null)
+                    reportParams.put("divisi",ijinKeluar1.getDivisiName());
+                else
+                    reportParams.put("divisi","-");
                 reportParams.put("unit",ijinKeluar1.getUnitName());
                 reportParams.put("ijin",ijinKeluar1.getIjinName());
-                reportParams.put("lama",ijinKeluar1.getLamaIjin());
-                reportParams.put("tanggalDari",ijinKeluar1.getStTanggalAwal());
-                reportParams.put("tanggalSelesai",ijinKeluar1.getStTanggalAkhir());
+                if ("IJ013".equalsIgnoreCase(ijinKeluar1.getIjinId())){
+                    reportParams.put("lama",ijinKeluar1.getLamaIjinBaru());
+                    reportParams.put("tanggalDari",ijinKeluar1.getStTanggalAwal());
+                    reportParams.put("tanggalSelesai",ijinKeluar1.getTanggalAkhirBaru());
+                }else {
+                    reportParams.put("lama",ijinKeluar1.getLamaIjin());
+                    reportParams.put("tanggalDari",ijinKeluar1.getStTanggalAwal());
+                    reportParams.put("tanggalSelesai",ijinKeluar1.getStTanggalAkhir());
+                }
                 reportParams.put("date", stDate);
             }
             try {
@@ -1786,5 +1796,18 @@ public class IjinKeluarAction extends BaseMasterAction {
 
             logger.info("[ijinKeluarAction.listDispensasiMasal] end process <<<");
         }
+    }
+
+    public String cekIfAbsensi(String nip, String tglDari, String tglSelesai){
+        String status ="";
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        IjinKeluarBo ijinKeluarBo = (IjinKeluarBo) ctx.getBean("ijinKeluarBoProxy");
+
+        try{
+            status = ijinKeluarBo.cekIfAbsensi(nip, tglDari,tglSelesai);
+        }catch (GeneralBOException e1) {
+            logger.error("[TrainingAction.printSuratJaminan] Error when downloading ,", e1);
+        }
+        return status;
     }
 }

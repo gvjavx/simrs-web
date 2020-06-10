@@ -40,6 +40,16 @@ public class PengajuanCuti implements Serializable {
 
     private String actionError;
 
+    private String message;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     public String getActionError() {
         return actionError;
     }

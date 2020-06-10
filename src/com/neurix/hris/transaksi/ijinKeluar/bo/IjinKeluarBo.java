@@ -6,6 +6,7 @@ import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluar;
 import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluarAnggota;
 import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -42,4 +43,9 @@ public interface IjinKeluarBo extends BaseMasterBo<IjinKeluar> {
     public void saveAddDispensasiMasal(IjinKeluar bean);
 
     public String getNextSuratDokterId()throws GeneralBOException;
+
+    public String cekStatusIjin(String nip) throws GeneralBOException;
+    public String cekAgama(String nip, String ijinId, String agama) throws GeneralBOException;
+    public String cekStatus(String nip, Date tglAwal, Date tglAkhir) throws GeneralBOException;
+    public String cekIfAbsensi(String nip, String tglDari, String tglSelesai);
 }

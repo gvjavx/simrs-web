@@ -100,12 +100,12 @@ public class PayrollSkalaGajiPkwtBoImpl implements PayrollSkalaGajiPkwtBo {
                 historyEntity.setSantunanKhusus(imPayrollSkalaGajiEntity.getSantunanKhusus());
                 historyEntity.setTunjFunsional(imPayrollSkalaGajiEntity.getTunjFunsional());
                 historyEntity.setTunjtambahan(imPayrollSkalaGajiEntity.getTunjtambahan());
-                historyEntity.setCreatedDate(bean.getLastUpdate());
-                historyEntity.setCreatedWho(bean.getLastUpdateWho());
-                historyEntity.setLastUpdate(bean.getLastUpdate());
-                historyEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                historyEntity.setCreatedDate(imPayrollSkalaGajiEntity.getLastUpdate());
+                historyEntity.setCreatedWho(imPayrollSkalaGajiEntity.getLastUpdateWho());
+                historyEntity.setLastUpdate(imPayrollSkalaGajiEntity.getLastUpdate());
+                historyEntity.setLastUpdateWho(imPayrollSkalaGajiEntity.getLastUpdateWho());
                 historyEntity.setFlag("Y");
-                historyEntity.setAction("C");
+                historyEntity.setAction(imPayrollSkalaGajiEntity.getAction());
 
                 try {
                     // insert into database
@@ -177,12 +177,12 @@ public class PayrollSkalaGajiPkwtBoImpl implements PayrollSkalaGajiPkwtBo {
                 historyEntity.setSantunanKhusus(imPayrollSkalaGajiPkwtEntity.getSantunanKhusus());
                 historyEntity.setTunjFunsional(imPayrollSkalaGajiPkwtEntity.getTunjFunsional());
                 historyEntity.setTunjtambahan(imPayrollSkalaGajiPkwtEntity.getTunjtambahan());
-                historyEntity.setCreatedDate(bean.getLastUpdate());
-                historyEntity.setCreatedWho(bean.getLastUpdateWho());
-                historyEntity.setLastUpdate(bean.getLastUpdate());
-                historyEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                historyEntity.setCreatedDate(imPayrollSkalaGajiPkwtEntity.getLastUpdate());
+                historyEntity.setCreatedWho(imPayrollSkalaGajiPkwtEntity.getLastUpdateWho());
+                historyEntity.setLastUpdate(imPayrollSkalaGajiPkwtEntity.getLastUpdate());
+                historyEntity.setLastUpdateWho(imPayrollSkalaGajiPkwtEntity.getLastUpdateWho());
                 historyEntity.setFlag("Y");
-                historyEntity.setAction("C");
+                historyEntity.setAction(imPayrollSkalaGajiPkwtEntity.getAction());
 
                 try {
                     // insert into database

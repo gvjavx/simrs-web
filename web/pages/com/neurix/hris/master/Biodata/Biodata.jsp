@@ -632,17 +632,24 @@
                                 </s:else>
 
                                 <s:if test="isDelete()">
-                                    <tr>
-                                        <td>
-                                            <label class="control-label"><small>PJS :</small></label>
-                                        </td>
-                                        <td>
-                                            <table>
-                                                <input type="checkbox" id="pjs" class="checkZakat" disabled onchange="cekPjs()" />
-                                                <s:textfield cssStyle="display: none" id="flagPjs" name="biodata.pjs"  />
-                                            </table>
-                                        </td>
-                                    </tr>
+                                    <%--<tr>--%>
+                                        <%--<td>--%>
+                                            <%--<label class="control-label"><small>PJS :</small></label>--%>
+                                        <%--</td>--%>
+                                        <%--<td>--%>
+                                            <%--<table>--%>
+                                                <%--<input type="checkbox" id="pjs" class="checkZakat" disabled onchange="cekPjs()" />--%>
+                                                <%--<s:textfield cssStyle="display: none" id="flagPjs" name="biodata.pjs"  />--%>
+                                            <%--</table>--%>
+                                        <%--</td>--%>
+                                    <%--</tr>--%>
+                                    <div style="display: none" class="form-group">
+                                        <label class="control-label"><small>PJS :</small></label>
+                                        <div class="col-sm-8">
+                                            <input type="checkbox" id="pjs" class="checkZakat" disabled onchange="cekPjs()" />
+                                            <s:textfield cssStyle="display: none" id="flagPjs" name="biodata.pjs"  />
+                                        </div>
+                                    </div>
                                 </s:if>
                                 <s:elseif test="isAdd()">
                                     <div style="display: none" class="form-group">
@@ -1054,9 +1061,14 @@
                                                 <s:select list="#initComboTipe.listComboGolongan" id="golongan1" name="biodata.golongan" disabled="true"
                                                           listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                             </s:if>
-                                            <s:else>
+                                            <s:elseif test="isAdd()">
                                                 <s:select list="#initComboTipe.listComboGolongan" id="golongan1" name="biodata.golongan"
                                                           listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                            </s:elseif>
+                                            <s:else>
+                                                <s:select list="#initComboTipe.listComboGolongan" id="golongan1" name="biodata.golongan" disabled="true"
+                                                          listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                <s:hidden id="golongan1" name="biodata.golongan" />
                                             </s:else>
 
                                         </table>
@@ -5774,13 +5786,13 @@
         }
     }
 
-    window.cekPjs = function () {
-        if ($('#pjs').is(":checked")) {
-            $("#flagPjs").val("Y");
-        } else {
-            $("#flagPjs").val("N");
-        }
-    }
+//    window.cekPjs = function () {
+//        if ($('#pjs').is(":checked")) {
+//            $("#flagPjs").val("Y");
+//        } else {
+//            $("#flagPjs").val("N");
+//        }
+//    }
 
     window.cekAktif = function () {
         if ($('#aktif').is(":checked")) {
