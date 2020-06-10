@@ -50,6 +50,11 @@
             <basic name="idRiwayatTindakan">
                 <column name="id_riwayat_tindakan" nullable="false" length="50"/>
             </basic>
+            <basic name="kodeBank">
+                <column name="kode_bank" nullable="false" length="10"/>
+            </basic>
+
+
         </attributes>
     </entity>
 </entity-mappings>
