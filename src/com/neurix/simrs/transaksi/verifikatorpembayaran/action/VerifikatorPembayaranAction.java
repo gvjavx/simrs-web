@@ -3,8 +3,10 @@ package com.neurix.simrs.transaksi.verifikatorpembayaran.action;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.mobileapi.antrian.model.Antrian;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
 import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
+import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.bo.VerifikatorPembayaranBo;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.model.PembayaranOnline;
 import org.apache.log4j.Logger;
@@ -109,5 +111,30 @@ public class VerifikatorPembayaranAction {
 
         logger.info("[VerifikatorPembayaranAction.listDetailPembayaran] END <<<");
         return pembayaranOnlines;
+    }
+
+    public CrudResponse approveTransaksi(String idTransaksi){
+        logger.info("[VerifikatorPembayaranAction.approveTransaksi] START >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
+        TelemedicBo telemedicBo = (TelemedicBo) ctx.getBean("telemedicBoProxy");
+
+        HeaderCheckup headerCheckup = new HeaderCheckup();
+
+        String idDetailCheckup = "";
+        try {
+            idDetailCheckup = verifikatorPembayaranBo.approveTransaksi(headerCheckup);
+        } catch (GeneralBOException e){
+            logger.error("[VerifikatorPembayaranAction.approveTransaksi] ERROR. ",e);
+            throw new GeneralBOException("[VerifikatorPembayaranAction.approveTransaksi] ERROR. ",e);
+        }
+
+        if (!"".equalsIgnoreCase(idDetailCheckup)){
+
+        }
+
+        logger.info("[VerifikatorPembayaranAction.approveTransaksi] END <<<");
+        return new CrudResponse();
     }
 }
