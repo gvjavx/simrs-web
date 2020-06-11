@@ -34,6 +34,24 @@ public class AntrianTelemedic {
     private String kodeBank;
     private String branchId;
     private String namaBranch;
+    private String approveKonsultasi;
+    private String approveResep;
+
+    public String getApproveKonsultasi() {
+        return approveKonsultasi;
+    }
+
+    public void setApproveKonsultasi(String approveKonsultasi) {
+        this.approveKonsultasi = approveKonsultasi;
+    }
+
+    public String getApproveResep() {
+        return approveResep;
+    }
+
+    public void setApproveResep(String approveResep) {
+        this.approveResep = approveResep;
+    }
 
     public String getBranchId() {
         return branchId;

@@ -188,6 +188,10 @@
         <action name="absensi/*" class="com.neurix.hris.mobileapi.AbsensiOnlineController">
             <interceptor-ref name="mobileStack"/>
         </action>
+        <action name="testelemedic/*" class="com.neurix.hris.mobileapi.TesTelemedicController">
+            <interceptor-ref name="mobileStack"/>
+            <param name="id">{1}</param>
+        </action>
     </package>
 
 </struts>

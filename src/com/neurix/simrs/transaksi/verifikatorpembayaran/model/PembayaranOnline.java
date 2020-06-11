@@ -24,6 +24,15 @@ public class PembayaranOnline {
     private BigDecimal nominal;
     private String idRiwayatTindakan;
     private String kodeBank;
+    private String flagBayar;
+
+    public String getFlagBayar() {
+        return flagBayar;
+    }
+
+    public void setFlagBayar(String flagBayar) {
+        this.flagBayar = flagBayar;
+    }
 
     public String getKodeBank() {
         return kodeBank;

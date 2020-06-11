@@ -694,6 +694,13 @@
       </create>
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.pengajuanBiaya.model.PengajuanBiaya"/>
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.pengajuanBiaya.model.PengajuanBiayaDetail"/>
+
+      <!--Telemedic-->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.verifikatorpembayaran.action.VerifikatorPembayaranAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.verifikatorpembayaran.model.PembayaranOnline"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic"/>
   </allow>
 
 </dwr>

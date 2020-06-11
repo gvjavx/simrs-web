@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.verifikatorpembayaran.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.antriantelemedic.dao.TelemedicDao;
+import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.action.VerifikatorPembayaranAction;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.bo.VerifikatorPembayaranBo;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.dao.VerifikatorPembayaranDao;
@@ -57,6 +58,23 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
                 pembayaranOnline.setLastUpdateWho(pembayaranOnlineEntity.getLastUpdateWho());
                 pembayaranOnline.setFlag(pembayaranOnlineEntity.getFlag());
                 pembayaranOnline.setAction(pembayaranOnlineEntity.getAction());
+                pembayaranOnline.setUrlFotoBukti(pembayaranOnlineEntity.getUrlFotoBukti());
+
+                // mencari apakah sudah di bayar melalui bank
+                ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = telemedicDao.getById("id", bean.getIdAntrianTelemedic());
+                if (antrianTelemedicEntity != null){
+                    if ("konsultasi".equalsIgnoreCase(pembayaranOnlineEntity.getKeterangan())){
+                        if ("Y".equalsIgnoreCase(antrianTelemedicEntity.getFlagBayarKonsultasi())){
+                            pembayaranOnline.setFlagBayar("Y");
+                        }
+                    } else if ("resep".equalsIgnoreCase(pembayaranOnlineEntity.getKeterangan())){
+                        if ("Y".equalsIgnoreCase(antrianTelemedicEntity.getFlagBayarResep())){
+                            pembayaranOnline.setFlagBayar("Y");
+                        }
+                    }
+                }
+
+
                 pembayaranOnlines.add(pembayaranOnline);
             }
         }

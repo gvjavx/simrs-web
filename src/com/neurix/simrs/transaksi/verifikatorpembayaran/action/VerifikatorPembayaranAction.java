@@ -9,6 +9,8 @@ import com.neurix.simrs.transaksi.verifikatorpembayaran.bo.VerifikatorPembayaran
 import com.neurix.simrs.transaksi.verifikatorpembayaran.model.PembayaranOnline;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -67,8 +69,8 @@ public class VerifikatorPembayaranAction {
         searchAntrian.setBranchId(branchId);
 
         if (antrianTelemedic != null){
-            antrianTelemedic.setStatus(antrianTelemedic.getStatus());
-            antrianTelemedic.setIdPelayanan(antrianTelemedic.getIdPelayanan());
+            searchAntrian.setStatus(antrianTelemedic.getStatus());
+            searchAntrian.setIdPelayanan(antrianTelemedic.getIdPelayanan());
         }
 
 
@@ -86,5 +88,26 @@ public class VerifikatorPembayaranAction {
 
         logger.info("[VerifikatorPembayaranAction.search] END <<<");
         return "search";
+    }
+
+    public List<PembayaranOnline> listDetailPembayaran(String idAntrianTelemedic){
+        logger.info("[VerifikatorPembayaranAction.listDetailPembayaran] START >>>");
+
+        List<PembayaranOnline> pembayaranOnlines = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
+
+        PembayaranOnline pembayaranOnline = new PembayaranOnline();
+        pembayaranOnline.setIdAntrianTelemedic(idAntrianTelemedic);
+
+        try {
+            pembayaranOnlines = verifikatorPembayaranBo.getSearchByCriteria(pembayaranOnline);
+        } catch (GeneralBOException e){
+            logger.error("[VerifikatorPembayaranAction.listDetailPembayaran] ERROR. ",e);
+            throw new GeneralBOException("[VerifikatorPembayaranAction.listDetailPembayaran] ERROR. ",e);
+        }
+
+        logger.info("[VerifikatorPembayaranAction.listDetailPembayaran] END <<<");
+        return pembayaranOnlines;
     }
 }

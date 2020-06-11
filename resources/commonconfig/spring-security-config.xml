@@ -170,7 +170,7 @@
             <filter-chain pattern="/mobileapi/absensi" filters="none" />
             <filter-chain pattern="/mobileapi/absensi/*" filters="none" />
             <filter-chain pattern="/mobileapi/absensi/*/**" filters="none" />
-
+            <filter-chain pattern="/mobileapi/testelemedic" filters="none" />
 
 
             <filter-chain pattern="/**/*"
