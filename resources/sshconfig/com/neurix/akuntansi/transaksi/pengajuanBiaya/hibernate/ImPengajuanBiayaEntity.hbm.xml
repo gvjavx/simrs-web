@@ -50,6 +50,16 @@
         <property name="rkDikirim">
             <column name="rk_dikirim" sql-type="varchar" length="1" not-null="false" />
         </property>
+        <property name="flagBatal">
+            <column name="flag_batal" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="keteranganBatal">
+            <column name="keterangan_batal" sql-type="varchar" not-null="false" />
+        </property>
+        <property name="tanggalRealisasi">
+            <column name="tanggal_realisasi" sql-type="date" not-null="false" />
+        </property>
+
         <property name="keterangan">
             <column name="keterangan" sql-type="text" not-null="false" />
         </property>

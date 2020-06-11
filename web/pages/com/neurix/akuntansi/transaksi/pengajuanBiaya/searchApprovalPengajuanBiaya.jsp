@@ -389,18 +389,10 @@
                     <div class="form-group">
                         <label class="control-label col-sm-3" >Metode Pembiayaan : </label>
                         <div class="col-sm-8">
-                            <s:select list="#{'A':'Kas','KP':'Kantor Pusat'}" onchange="changeKas(this.value)"
+                            <s:select list="#{'A':'Unit','KP':'Kantor Pusat'}" onchange="changeKas(this.value)"
                                       id="mod_status_keuangan" headerKey="" headerValue="[Select One]" cssClass="form-control" />
                         </div>
                     </div>
-                    <%--<div class="form-group" id="kas_keuangan">--%>
-                        <%--<label class="control-label col-sm-3" >Kas : </label>--%>
-                        <%--<div class="col-sm-8">--%>
-                            <%--<select class="form-control" id="mod_kas_keuangan">--%>
-                                <%--<option value="" ></option>--%>
-                            <%--</select>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
                 </form>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -648,7 +640,7 @@
                 "<th style='text-align: center; background-color:  #90ee90'>App. Keu.</th>"+
                 namaApproveKeuKp+
                 "<th style='text-align: center; background-color:  #90ee90'>Tanggal</th>"+
-                "<th style='text-align: center; background-color:  #90ee90'>Transaksi</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Tipe Budget</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>No. Budget</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>Jumlah ( RP )</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>Budget RKAP ( RP )</th>"+
@@ -794,7 +786,6 @@
             });
 
             PengajuanBiayaAction.cekApakahBolehRk(pengajuanId,function(data){
-                console.log(data);
                 if (data.showBuatRk){
                     $('#btnApproveRk').show();
                 }else if (data.showTerimaRk) {
@@ -822,14 +813,17 @@
     });
 
     $('#btnApproveAtasan').click(function() {
+        var id = $('#modPengajuanBiayaId').val();
         var pengajuanId = $('#modPengajuanBiayaDetailIdAtasan').val();
+        var branchId = $('#mod_branch_id_atasan').val();
         var status = $('#mod_status_approve_atasan').val();
         var jumlah = $('#mod_jumlah_atasan').val();
 
         if (confirm("Apakah anda ingin menyetujui pengajuan biaya ini ?")){
             PengajuanBiayaAction.saveApproveAtasanPengajuan(pengajuanId,status,jumlah,function() {
                 alert("Sukses Approve");
-                window.location.reload();
+                loadPengajuan(id,branchId);
+                $('#modal-approve-atasan').modal('hide');
             });
         }
     });
@@ -839,6 +833,7 @@
     });
 
     $('#btnApproveKeuangan').click(function() {
+        var id = $('#modPengajuanBiayaId').val();
         var pengajuanId = $('#modPengajuanBiayaDetailId').val();
         var status = $('#mod_status_approve').val();
         var approvalStatus = $('#mod_status_keuangan').val();
@@ -848,14 +843,27 @@
         var keterangan = $('#mod_keterangan_keuangan').val();
         var jumlah = $('#mod_jumlah_keuangan').val();
         var noBudgetting = $('#mod_no_budgetting_keuangan').val();
+        var tanggalRealisasi = $('#mod_tanggal_realisasi_keuangan').val();
 
-        if (approvalStatus==""){
-            alert("Belum memilih metode pembiayaan");
+        if (approvalStatus==""||tanggalRealisasi==""){
+            var msg="";
+            if (approvalStatus==""){
+                msg+="Belum memilih metode pembiayaan";
+            }
+            if (tanggalRealisasi==""){
+                msg+="Belum memilih tanggal Realisasi";
+            }
+            alert(msg);
         }else {
             if (confirm("Apakah anda ingin menyetujui pengajuan biaya ini ?")){
-                PengajuanBiayaAction.saveApproveKeuanganPengajuan(pengajuanId,status,approvalStatus,branchId,keterangan,jumlah,noBudgetting,divisiId,function() {
+                PengajuanBiayaAction.saveApproveKeuanganPengajuan(pengajuanId,status,approvalStatus,branchId,keterangan,jumlah,noBudgetting,divisiId,function(response) {
                     alert("Sukses Approve");
-                    window.location.reload();
+                    if (response=="Y"){
+                        window.location.reload();
+                    } else{
+                        loadPengajuan(id,branchId);
+                        $('#modal-approve-keuangan').modal('hide');
+                    }
                 });
             }
         }
@@ -949,6 +957,7 @@
         }
     }
     $('#btnApproveKeuanganKp').click(function() {
+        var id = $('#modPengajuanBiayaId').val();
         var pengajuanId = $('#modPengajuanBiayaDetailIdKp').val();
         var status = $('#mod_status_approve_kp').val();
         var approvalStatus = $('#mod_status_keuangan_kp').val();
@@ -959,9 +968,10 @@
         var jumlah = $('#mod_jumlah_keuangan_kp').val();
         var noBudgetting = $('#mod_no_budgetting_keuangan_kp').val();
         if (confirm("Apakah anda ingin menyetujui pengajuan biaya ini ?")){
-            PengajuanBiayaAction.saveApproveKeuanganKpPengajuan(pengajuanId,status,approvalStatus,branchId,keterangan,jumlah,noBudgetting,divisiId,function() {
+            PengajuanBiayaAction.saveApproveKeuanganKpPengajuan(pengajuanId,status,approvalStatus,branchId,keterangan,jumlah,noBudgetting,divisiId,function(response) {
                 alert("Sukses Approve");
-                window.location.reload();
+                loadPengajuan(id,branchId);
+                $('#modal-approve-keuangan-kp').modal('hide');
             });
         }
     });
@@ -970,6 +980,8 @@
         $('#modal-not-approve').modal('show');
     });
     $('#btnNotApprove').click(function() {
+        var id = $('#modPengajuanBiayaId').val();
+        var branchId = $('#mod_branch_id').val();
         var pengajuanId = $('#modPengajuanBiayaDetailIdNotApprove').val();
         var keterangan = $('#mod_keterangan_not_approve').val();
 
@@ -979,7 +991,7 @@
             if (confirm("Apakah anda tidak ingin menyetujui pengajuan ini ?")){
                 PengajuanBiayaAction.saveNotApprovePengajuanBiaya(pengajuanId,keterangan,function() {
                     alert("Not Approve");
-                    window.location.reload();
+                    loadPengajuan(id,branchId);
                 });
             }
         }
@@ -996,7 +1008,6 @@
             $('#mod_keterangan_rk').val(result);
         });
         $('#mod_status_rk').val("K");
-
 
         $('#modal-rk').find('.modal-title').text('Pengiriman RK ke unit');
         $('#modal-rk').modal('show');

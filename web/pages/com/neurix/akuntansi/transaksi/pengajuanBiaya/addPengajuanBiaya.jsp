@@ -324,7 +324,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4"  style="margin-top: 7px">Transaksi</label>
+                                <label class="col-md-4"  style="margin-top: 7px">Tipe Budget</label>
                                 <div class="col-md-6">
                                     <s:select list="#{'R':'Rutin','I':'Investasi'}" onchange="initNoBudget(this.value)" cssStyle="margin-top: 7px"
                                               id="transaksi_view" headerKey="" headerValue="[Select One]" cssClass="form-control" />
@@ -352,6 +352,11 @@
                                             <option value="" ></option>
                                         </select>
                                     </div>
+                                </div>
+                                <div class="col-md-2" style="margin-top: 7px">
+                                    <a href="javascript:;" id="btnViewStok">
+                                        <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" name="icon_view">
+                                    </a>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -520,7 +525,7 @@
                 "<th style='text-align: center; background-color:  #90ee90'>No</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>Delete</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>Tanggal</th>"+
-                "<th style='text-align: center; background-color:  #90ee90'>Transaksi</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Tipe Budget</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>No. Budget</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>Jumlah ( RP )</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>Budget RKAP ( RP )</th>"+

@@ -43,4 +43,8 @@ public interface PengajuanBiayaBo extends BaseMasterBo<PengajuanBiaya> {
     void setRkSudahDikirim(String pengajuanId) throws GeneralBOException;
 
     PengajuanBiaya cekApakahBolehRk(String pengajuanId) throws GeneralBOException;
+
+    void batalkanPengajuanBiaya(PengajuanBiaya bean) throws GeneralBOException;
+
+    String cekApakahSudahCloseSemua(String pengajuanDetailId) throws GeneralBOException;
 }

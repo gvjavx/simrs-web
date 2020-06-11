@@ -238,7 +238,8 @@ public class NotifikasiDao extends GenericDao<ImNotifikasiEntity, String> {
                 criteria.add(Restrictions.ilike("notifName", "%" + (String)mapCriteria.get("notif_name") + "%"));
             }
             if (mapCriteria.get("nip")!=null) {
-                criteria.add(Restrictions.ilike("nip", "%" + (String)mapCriteria.get("nip") + "%"));
+//                criteria.add(Restrictions.eq("nip", "%" + (String)mapCriteria.get("nip") + "%"));
+                criteria.add(Restrictions.eq("nip", (String) mapCriteria.get("nip")));
             }
             if (mapCriteria.get("read")!=null) {
                 criteria.add(Restrictions.ilike("read", "%" + (String)mapCriteria.get("read") + "%"));

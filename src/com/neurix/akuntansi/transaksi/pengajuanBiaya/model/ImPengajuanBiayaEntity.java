@@ -31,6 +31,9 @@ public class ImPengajuanBiayaEntity implements Serializable {
     private String keterangan;
     private String noJurnal;
     private String rkDikirim;
+    private String flagBatal;
+    private String keteranganBatal;
+    private Date tanggalRealisasi;
 
     private BigDecimal totalPengajuan;
     private String stTotalPengajuan;
@@ -41,6 +44,30 @@ public class ImPengajuanBiayaEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public Date getTanggalRealisasi() {
+        return tanggalRealisasi;
+    }
+
+    public void setTanggalRealisasi(Date tanggalRealisasi) {
+        this.tanggalRealisasi = tanggalRealisasi;
+    }
+
+    public String getKeteranganBatal() {
+        return keteranganBatal;
+    }
+
+    public void setKeteranganBatal(String keteranganBatal) {
+        this.keteranganBatal = keteranganBatal;
+    }
+
+    public String getFlagBatal() {
+        return flagBatal;
+    }
+
+    public void setFlagBatal(String flagBatal) {
+        this.flagBatal = flagBatal;
+    }
 
     public String getRkDikirim() {
         return rkDikirim;

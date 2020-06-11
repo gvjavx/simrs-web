@@ -543,7 +543,7 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         pengajuanBiaya.setLastUpdateWho(userLogin);
         pengajuanBiaya.setAction("C");
         pengajuanBiaya.setFlag("Y");
-
+        pengajuanBiaya.setFlagBatal("N");
         try {
             List<Notifikasi> notif = pengajuanBiayaBoProxy.saveAddPengajuan(pengajuanBiaya,detailList);
 
@@ -906,13 +906,11 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         }
     }
 
-    public void saveApproveKeuanganPengajuan(String pengajuanId,String status,String statusKeuangan,String branchId,String keterangan,String stJumlah,String noBudgetting,String divisiId){
+    public String saveApproveKeuanganPengajuan(String pengajuanId,String status,String statusKeuangan,String branchId,String keterangan,String stJumlah,String noBudgetting,String divisiId){
         logger.info("[PengajuanBiayaAction.saveApproveKeuanganPengajuan] start process >>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PengajuanBiayaBo pengajuanBiayaBo= (PengajuanBiayaBo) ctx.getBean("pengajuanBiayaBoProxy");
         NotifikasiBo notifikasiBo= (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
-        BillingSystemBo billingSystemBo= (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
-        PositionBo positionBo= (PositionBo) ctx.getBean("positionBoProxy");
 
         String userLogin = CommonUtil.userIdLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
@@ -946,9 +944,10 @@ public class PengajuanBiayaAction extends BaseMasterAction {
                 notifikasiBo.sendNotif(notifikasi);
             }
         }
+        return cekApakahSudahCloseSemua(pengajuanId);
     }
 
-    public void saveApproveKeuanganKpPengajuan(String pengajuanId,String status,String statusKeuangan,String branchId,String keterangan,String stJumlah,String noBudgetting,String divisiId){
+    public String saveApproveKeuanganKpPengajuan(String pengajuanId,String status,String statusKeuangan,String branchId,String keterangan,String stJumlah,String noBudgetting,String divisiId){
         logger.info("[PengajuanBiayaAction.saveApproveKeuanganKpPengajuan] start process >>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PengajuanBiayaBo pengajuanBiayaBo= (PengajuanBiayaBo) ctx.getBean("pengajuanBiayaBoProxy");
@@ -996,6 +995,8 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         for (Notifikasi notifikasi : notifikasiList ){
             notifikasiBo.sendNotif(notifikasi);
         }
+
+        return cekApakahSudahCloseSemua(pengajuanId);
     }
 
     public List<PengajuanBiayaDetail> detailPengajuanBiayaSession (){
@@ -1102,9 +1103,29 @@ public class PengajuanBiayaAction extends BaseMasterAction {
     public PengajuanBiaya cekApakahBolehRk (String pengajuanId){
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PengajuanBiayaBo pengajuanBiayaBo= (PengajuanBiayaBo) ctx.getBean("pengajuanBiayaBoProxy");
+        return pengajuanBiayaBo.cekApakahBolehRk(pengajuanId);    }
+
+    public void batalkanPengajuanBiaya(String pengajuanBiayaId,String keteranganBatal){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PengajuanBiayaBo pengajuanBiayaBo= (PengajuanBiayaBo) ctx.getBean("pengajuanBiayaBoProxy");
+        String userLogin = CommonUtil.userIdLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
         PengajuanBiaya data = new PengajuanBiaya();
-        data = pengajuanBiayaBo.cekApakahBolehRk(pengajuanId);
-        return data;
+        data.setFlagBatal("Y");
+        data.setPengajuanBiayaId(pengajuanBiayaId);
+        data.setKeteranganBatal(keteranganBatal);
+        data.setAction("U");
+        data.setLastUpdateWho(userLogin);
+        data.setLastUpdate(updateTime);
+
+        pengajuanBiayaBo.batalkanPengajuanBiaya(data);
+    }
+
+    public String cekApakahSudahCloseSemua (String pengajuanDetailId){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PengajuanBiayaBo pengajuanBiayaBo= (PengajuanBiayaBo) ctx.getBean("pengajuanBiayaBoProxy");
+        return pengajuanBiayaBo.cekApakahSudahCloseSemua(pengajuanDetailId);
     }
 
     public String paging(){

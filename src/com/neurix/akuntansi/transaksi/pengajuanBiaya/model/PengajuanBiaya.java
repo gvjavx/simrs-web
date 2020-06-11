@@ -38,6 +38,10 @@ public class PengajuanBiaya extends BaseModel {
     private BigDecimal budgetTerpakai;
     private String stBudgetTerpakai;
     private String rkDikirim;
+    private String flagBatal;
+    private String keteranganBatal;
+    private Date tanggalRealisasi;
+    private String stTanggalRealisasi;
 
     private String branchName;
     private String statusSaatIni;
@@ -46,6 +50,38 @@ public class PengajuanBiaya extends BaseModel {
 
     private boolean showBuatRk=true;
     private boolean showTerimaRk=false;
+
+    public String getStTanggalRealisasi() {
+        return stTanggalRealisasi;
+    }
+
+    public void setStTanggalRealisasi(String stTanggalRealisasi) {
+        this.stTanggalRealisasi = stTanggalRealisasi;
+    }
+
+    public Date getTanggalRealisasi() {
+        return tanggalRealisasi;
+    }
+
+    public void setTanggalRealisasi(Date tanggalRealisasi) {
+        this.tanggalRealisasi = tanggalRealisasi;
+    }
+
+    public String getKeteranganBatal() {
+        return keteranganBatal;
+    }
+
+    public void setKeteranganBatal(String keteranganBatal) {
+        this.keteranganBatal = keteranganBatal;
+    }
+
+    public String getFlagBatal() {
+        return flagBatal;
+    }
+
+    public void setFlagBatal(String flagBatal) {
+        this.flagBatal = flagBatal;
+    }
 
     public String getRkDikirim() {
         return rkDikirim;

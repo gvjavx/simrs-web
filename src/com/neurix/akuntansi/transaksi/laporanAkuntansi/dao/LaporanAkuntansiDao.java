@@ -2718,7 +2718,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
         for (Object[] row : results) {
             BudgetingPengadaan data= new BudgetingPengadaan();
             data.setIdPengadaan((String) row[0]);
-            data.setNamPengadaan((String) row[1]);
+            data.setNamPengadaan((String) row[0]+" | "+(String) row[1]);
             listOfResult.add(data);
         }
 

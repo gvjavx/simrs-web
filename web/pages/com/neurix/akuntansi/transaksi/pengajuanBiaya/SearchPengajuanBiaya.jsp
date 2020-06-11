@@ -205,36 +205,68 @@
 
                                         <br>
                                         <br>
-                                        <center>
-                                            <table id="showdata" width="80%">
-                                                <tr>
-                                                    <td align="center">
-                                                        <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                                   height="500" width="600" autoOpen="false"
-                                                                   title="Pengajuan Biaya ">
-                                                            <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
-                                                        </sj:dialog>
-
-                                                        <s:set name="listOfPengajuanBiaya" value="#session.listOfResult" scope="request" />
-                                                        <display:table name="listOfPengajuanBiaya" class="table table-condensed table-striped table-hover tablePengajuanBiaya"
-                                                                       requestURI="paging_displaytag_pengajuanBiaya.action" export="true" id="row" pagesize="20" style="font-size:10">
-                                                            <display:column media="html" title="View">
+                                        <div style="text-align: left !important;">
+                                            <div class="box-header with-border"></div>
+                                            <div class="box-header with-border">
+                                                <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Pengajuan Biaya</h3>
+                                            </div>
+                                            <div class="box-body">
+                                                <table id="myTable" class="tablePengajuanBiaya table table-bordered table-striped">
+                                                    <thead >
+                                                    <tr bgcolor="#90ee90">
+                                                        <td>ID Pengajuan Biaya</td>
+                                                        <td>Nama Unit</td>
+                                                        <td>Nama Divisi</td>
+                                                        <td>Tanggal Pengajuan</td>
+                                                        <td>Total Biaya (RP)</td>
+                                                        <td>Keterangan</td>
+                                                        <td>Status Saat Ini</td>
+                                                        <td align="center">Print</td>
+                                                        <td align="center">View</td>
+                                                        <td align="center">Batal</td>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <s:iterator value="#session.listOfResult" var="row">
+                                                        <tr>
+                                                            <td><s:property value="pengajuanBiayaId"/></td>
+                                                            <td><s:property value="branchName"/></td>
+                                                            <td><s:property value="divisiName"/></td>
+                                                            <td><s:property value="stTanggal"/></td>
+                                                            <td><s:property value="stTotalBiaya"/></td>
+                                                            <td><s:property value="keterangan"/></td>
+                                                            <td><s:property value="statusSaatIni"/></td>
+                                                            <td align="center">
+                                                                <s:if test='#row.aprovalFlag == "Y"'>
+                                                                    <s:url var="urlCetakSurat" namespace="/pengajuanBiaya" action="cetakSurat_pengajuanBiaya" escapeAmp="false">
+                                                                        <s:param name="id"><s:property value="#attr.row.pengajuanBiayaId" /></s:param>
+                                                                    </s:url>
+                                                                    <s:a href="%{urlCetakSurat}">
+                                                                        <img border="0" src="<s:url value="/pages/images/icons8-print-25.png"/>" name="icon_edit">
+                                                                    </s:a>
+                                                                </s:if>
+                                                            </td>
+                                                            <td align="center">
                                                                 <a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanBiayaId}"/>" class="item-view">
-                                                                    <img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_view">
+                                                                    <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" name="icon_view">
                                                                 </a>
-                                                            </display:column>
-                                                            <display:column property="pengajuanBiayaId" sortable="true" title="Pengajuan Biaya ID" />
-                                                            <display:column property="branchName" sortable="true" title="Nama Unit" />
-                                                            <display:column property="divisiName" sortable="true" title="Nama Divisi" />
-                                                            <display:column property="stTanggal" sortable="true" title="Tanggal Pengajuan" />
-                                                            <display:column property="stTotalBiaya" sortable="true" title="Total Biaya (RP)" />
-                                                            <display:column property="keterangan" sortable="true" title="Keterangan" />
-                                                            <display:column property="statusSaatIni" sortable="true" title="Status Saat Ini" />
-                                                        </display:table>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </center>
+                                                            </td>
+                                                            <td align="center">
+                                                                <s:if test='#row.aprovalFlag == null && #row.flagBatal == "N"'>
+                                                                    <a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanBiayaId}"/>" class="item-batal">
+                                                                        <img border="0" src="<s:url value="/pages/images/icons8-trash-can-25.png"/>" name="icon_batal">
+                                                                    </a>
+                                                                </s:if>
+                                                                <s:elseif test='#row.flagBatal == "Y"'>
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_batal">
+                                                                </s:elseif>
+                                                            </td>
+                                                        </tr>
+                                                    </s:iterator>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </s:form>
                                 </td>
                             </tr>
@@ -251,7 +283,6 @@
 <%@ include file="/pages/common/lastScript.jsp" %>
 </body>
 </html>
-
 <div class="modal fade" id="modal-view-pengajuan">
     <div class="modal-dialog modal-flat" style="width: 1200px">
         <div class="modal-content">
@@ -293,6 +324,13 @@
                                     <br>
                                 </div>
                             </div>
+                            <div class="form-group" id="mod_tanggal_realisasi_view">
+                                <label class="col-md-4">Tanggal Realisasi</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_tanggal_realisasi" onkeypress="$(this).css('border','')" readonly="true" cssClass="form-control" />
+                                    <br>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label class="col-md-4" >Keterangan</label>
                                 <div class="col-md-6">
@@ -314,6 +352,13 @@
                                     <br>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-md-4">Keterangan Batal</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_keterangan_batal_view" onkeypress="$(this).css('border','')" readonly="true" cssClass="form-control"/>
+                                    <br>
+                                </div>
+                            </div>
                             <br>
                             <div class="form-group">
                                 <table style="width: 100%;"
@@ -325,12 +370,122 @@
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
+                <a id="btnBatalPengajuan" type="button" class="btn btn-default btn-danger"><i class="fa fa-trash"></i> Batalkan</a>
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close </button>
             </div>
         </div>
     </div>
 </div>
 
+<div id="modal-batal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-flat modal-md">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Batalkan Pengajuan Biaya</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="formBatal">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >ID : </label>
+                        <div class="col-sm-8">
+                            <input type="text" readonly class="form-control" id="modPengajuanBiayaIdBatal">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Keterangan : </label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control" id="mod_keterangan_batal" rows="3"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <a id="btnBatal" type="button" class="btn btn-default btn-danger"><i class="fa fa-close"></i> Batalkan</a>
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal-detail" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-flat modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Detail Pengajuan Biaya</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="formDetail">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >ID : </label>
+                        <div class="col-sm-8">
+                            <input type="text" readonly class="form-control" id="modPengajuanBiayaDetailIdDetail">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Unit : </label>
+                        <div class="col-sm-8">
+                            <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
+                            <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="mod_branch_id_detail" required="true" disabled="true"
+                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Divisi : </label>
+                        <div class="col-sm-8">
+                            <s:action id="comboPosition" namespace="/admin/user" name="initComboPosition_user"/>
+                            <s:select cssClass="form-control" list="#comboPosition.listOfComboPositions" id="mod_divisi_id_detail" disabled="true" name="pengajuanBiaya.divisiId" required="false" readonly="true"
+                                      listKey="stPositionId" listValue="positionName" headerKey="" headerValue="[Select one]"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >No. Budgetting : </label>
+                        <div class="col-sm-8">
+                            <input type="text" readonly class="form-control" id="mod_no_budgetting_detail">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Jumlah ( RP ) : </label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="mod_jumlah_detail" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Budget RKAP ( RP ) : </label>
+                        <div class="col-sm-8">
+                            <input type="text" readonly class="form-control" id="mod_budget_detail">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Keterangan : </label>
+                        <div class="col-sm-8">
+                            <input type="text" readonly class="form-control" id="mod_keterangan_detail">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Status : </label>
+                        <div class="col-sm-8">
+                            <input type="text" readonly class="form-control" id="mod_status_detail">
+                        </div>
+                    </div>
+                    <div class="form-group" id="not_approval_note_detail">
+                        <label class="control-label col-sm-3" >Keterangan Not Approve : </label>
+                        <div class="col-sm-8">
+                            <input type="text" readonly class="form-control" id="mod_not_approval_note_detail">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close </button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     window.loadDetailPengajuan = function () {
         $('.pengajuanTable').find('tbody').remove();
@@ -343,15 +498,18 @@
                 "<th style='text-align: center; color: #fff; background-color:  #30d196''>ID</th>" +
                 "<th style='text-align: center; color: #fff; background-color:  #30d196''>No. Budgeting</th>" +
                 "<th style='text-align: center; color: #fff; background-color:  #30d196''>Tanggal</th>" +
-                "<th style='text-align: center; color: #fff; background-color:  #30d196''>Tipe Transaksi</th>" +
+                "<th style='text-align: center; color: #fff; background-color:  #30d196''>Tipe Budget</th>" +
                 "<th style='text-align: center; color: #fff; background-color:  #30d196''>Keperluan</th>" +
                 "<th style='text-align: center; color: #fff; background-color:  #30d196''>Jumlah ( RP )</th>" +
-                "<th style='text-align: center; color: #fff; background-color:  #30d196''>Budgeting ( RP )</th>" +
-                "<th style='text-align: center; color: #fff; background-color:  #30d196''>Keterangan</th>" +
                 "<th style='text-align: center; color: #fff; background-color:  #30d196''>Status</th>" +
+                "<th style='text-align: center; color: #fff; background-color:  #30d196''>Detail</th>" +
                 "</tr></thead>";
             var i = i;
             $.each(listdata, function (i, item) {
+                var view ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'"  status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'" budget="'+item.stBudgetBiaya+'" noBudgetting="'+item.noBudgeting+'" notApprovalNote="'+item.notApprovalNote+'" statusSaatIni="'+item.statusSaatIni+'" class="item-detail" >\n' +
+                    '<img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" name="icon_edit">\n' +
+                    '</a></td>';
+
                 tmp_table += '<tr style="font-size: 11px;" ">' +
                     '<td align="center">' + (i + 1) + '</td>' +
                     '<td align="center">' + item.pengajuanBiayaDetailId + '</td>' +
@@ -360,9 +518,8 @@
                     '<td align="center">' + item.transaksiName + '</td>' +
                     '<td align="center">' + item.keperluanName + '</td>' +
                     '<td align="center">' + item.stJumlah + '</td>' +
-                    '<td align="center">' + item.stBudgetBiaya + '</td>' +
-                    '<td align="center">' + item.keterangan + '</td>' +
                     '<td align="center">' + item.statusSaatIni + '</td>' +
+                    view+
                     "</tr>";
             });
             $('.pengajuanTable').append(tmp_table);
@@ -380,9 +537,75 @@
                 $('#mod_keterangan').val(data.keterangan);
                 $('#mod_status_saat_ini').val(data.statusSaatIni);
                 $('#mod_total').val(data.stTotalBiaya);
+                if (data.stTanggalRealisasi!=null){
+                    $('#mod_tanggal_realisasi').val(data.stTanggalRealisasi);
+                } else{
+                    $('#mod_tanggal_realisasi_view').view();
+                }
+                if (data.flagBatal=="Y"){
+                    $('#mod_keterangan_batal_view').val(data.keteranganBatal);
+                } else{
+                    $('#mod_keterangan_batal_view').hide();
+                }
             });
             loadDetailPengajuan();
+            $('#btnBatalPengajuan').hide();
             $("#modal-view-pengajuan").modal('show');
+        });
+        $('.tablePengajuanBiaya').on('click', '.item-batal', function() {
+            var pengajuanBiayaId = $(this).attr('data');
+            $('#mod_pengajuan_biaya').val(pengajuanBiayaId);
+            PengajuanBiayaAction.getForModalPopUp(pengajuanBiayaId,function (data) {
+                $('#mod_branch').val(data.branchName);
+                $('#mod_divisi').val(data.divisiName);
+                $('#mod_tanggal').val(data.stTanggal);
+                $('#mod_keterangan').val(data.keterangan);
+                $('#mod_status_saat_ini').val(data.statusSaatIni);
+                $('#mod_total').val(data.stTotalBiaya);
+            });
+            loadDetailPengajuan();
+            $('#btnBatalPengajuan').show();
+            $("#modal-view-pengajuan").modal('show');
+        });
+        $('#btnBatalPengajuan').click(function() {
+            $('#modPengajuanBiayaIdBatal').val($('#mod_pengajuan_biaya').val());
+            $('#modal-batal').modal('show');
+        });
+        $('#btnBatal').click(function() {
+            var pengajuanId = $('#modPengajuanBiayaIdBatal').val();
+            var keterangan = $('#mod_keterangan_batal').val();
+
+            if (keterangan==""){
+                alert("Keterangan masih kosong");
+            } else{
+                if (confirm("Apakah anda ingin membatalkan pengajuan ini ?")){
+                    PengajuanBiayaAction.batalkanPengajuanBiaya(pengajuanId,keterangan,function() {
+                        alert("Dibatalkan");
+                        window.location.reload();
+                    });
+                }
+            }
+        });
+        $('.pengajuanTable').on('click', '.item-detail', function() {
+            var jumlah = $(this).attr('jumlah');
+            jumlah = jumlah.replace(",",".");
+            $('#mod_jumlah_detail').val(jumlah);
+            $('#modPengajuanBiayaDetailIdDetail').val($(this).attr('data'));
+            $('#mod_status_approve_detail').val($(this).attr('status'));
+            $('#mod_branch_id_detail').val($(this).attr('unit'));
+            $('#mod_divisi_id_detail').val($(this).attr('divisi'));
+            $('#mod_keterangan_detail').val($(this).attr('keterangan'));
+            $('#mod_no_budgetting_detail').val($(this).attr('noBudgetting'));
+            $('#mod_budget_detail').val($(this).attr('budget'));
+            $('#mod_status_detail').val($(this).attr('statusSaatIni'));
+            if ($(this).attr('notApprovalNote')!="null"){
+                $('#mod_not_approval_note_detail').val($(this).attr('notApprovalNote'));
+            } else{
+                $('#not_approval_note_detail').hide();
+            }
+
+            $('#modal-detail').modal('show');
+
         });
     });
 </script>
