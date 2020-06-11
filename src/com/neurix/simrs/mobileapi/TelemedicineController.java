@@ -34,6 +34,16 @@ public class TelemedicineController implements ModelDriven<Object> {
     private String branchId;
     private String kodeBank;
 
+    private String idTele;
+
+    public String getIdTele() {
+        return idTele;
+    }
+
+    public void setIdTele(String idTele) {
+        this.idTele = idTele;
+    }
+
     public String getKodeBank() {
         return kodeBank;
     }
@@ -106,14 +116,15 @@ public class TelemedicineController implements ModelDriven<Object> {
 
 
             try {
-                telemedicBoProxy.saveAdd(bean, branchId, kodeBank);
-                model.setMessage("Success");
+                String msg = telemedicBoProxy.saveAdd(bean, branchId, kodeBank);
+                model.setMessage(msg);
             } catch (GeneralBOException e) {
                 logger.error("[TelemedicineController.create] Error, " + e.getMessage());
             }
         }
 
         if (action.equalsIgnoreCase("getListAntrianSL")) {
+            listOfTelemedic = new ArrayList<>();
             AntrianTelemedic bean = new AntrianTelemedic();
             bean.setIdDokter(idDokter);
             bean.setIdPelayanan(idPelayanan);
@@ -147,6 +158,7 @@ public class TelemedicineController implements ModelDriven<Object> {
         }
 
         if (action.equalsIgnoreCase("getListAntrianAll")) {
+            listOfTelemedic = new ArrayList<>();
             AntrianTelemedic bean = new AntrianTelemedic();
             bean.setIdDokter(idDokter);
             bean.setIdPelayanan(idPelayanan);
@@ -162,19 +174,84 @@ public class TelemedicineController implements ModelDriven<Object> {
 
             int i = 1;
             for(AntrianTelemedic item : result) {
-                TelemedicineMobile telemedicineMobile = new TelemedicineMobile();
-                telemedicineMobile.setNoAntrian(String.valueOf(i));
-                telemedicineMobile.setId(item.getId());
-                telemedicineMobile.setIdAsuransi(item.getIdAsuransi());
-                telemedicineMobile.setIdDokter(item.getIdDokter());
-                telemedicineMobile.setIdJenisPeriksaPasien(item.getIdJenisPeriksaPasien());
-                telemedicineMobile.setIdPasien(item.getIdPasien());
-                telemedicineMobile.setStatus(item.getStatus());
-                telemedicineMobile.setFlagResep(item.getFlagResep());
-                telemedicineMobile.setNoKartu(item.getNoKartu());
-                telemedicineMobile.setIdPelayanan(item.getIdPelayanan());
+                if (!item.getStatus().equalsIgnoreCase("SL")) {
+                    TelemedicineMobile telemedicineMobile = new TelemedicineMobile();
+                    telemedicineMobile.setNoAntrian(String.valueOf(i++));
+                    telemedicineMobile.setId(item.getId());
+                    telemedicineMobile.setIdAsuransi(item.getIdAsuransi());
+                    telemedicineMobile.setIdDokter(item.getIdDokter());
+                    telemedicineMobile.setIdJenisPeriksaPasien(item.getIdJenisPeriksaPasien());
+                    telemedicineMobile.setIdPasien(item.getIdPasien());
+                    telemedicineMobile.setStatus(item.getStatus());
+                    telemedicineMobile.setFlagResep(item.getFlagResep());
+                    telemedicineMobile.setNoKartu(item.getNoKartu());
+                    telemedicineMobile.setIdPelayanan(item.getIdPelayanan());
+                    telemedicineMobile.setNamaDokter(item.getNamaDokter());
+                    telemedicineMobile.setNamaPasien(item.getNamaPasien());
+                    telemedicineMobile.setNamaPelayanan(item.getNamaPelayanan());
+                    telemedicineMobile.setKetStatus(item.getKetStatus());
 
-                listOfTelemedic.add(telemedicineMobile);
+                    listOfTelemedic.add(telemedicineMobile);
+                }
+
+            }
+        }
+
+        if (action.equalsIgnoreCase("checkTele")) {
+
+            listOfTelemedic = new ArrayList<>();
+            List<AntrianTelemedic> result = new ArrayList<>();
+
+            AntrianTelemedic bean = new AntrianTelemedic();
+            bean.setId(idTele);
+
+            try {
+                result = telemedicBoProxy.getSearchByCriteria(bean);
+            } catch (GeneralBOException e) {
+                logger.error("[TelemedicineController.checkTele] Error, " + e.getMessage());
+            }
+
+            TelemedicineMobile telemedicineMobile = new TelemedicineMobile();
+            telemedicineMobile.setId(result.get(0).getId());
+            telemedicineMobile.setIdAsuransi(result.get(0).getIdAsuransi());
+            telemedicineMobile.setIdDokter(result.get(0).getIdDokter());
+            telemedicineMobile.setIdJenisPeriksaPasien(result.get(0).getIdJenisPeriksaPasien());
+            telemedicineMobile.setIdPasien(result.get(0).getIdPasien());
+            telemedicineMobile.setStatus(result.get(0).getStatus());
+            telemedicineMobile.setFlagResep(result.get(0).getFlagResep());
+            telemedicineMobile.setNoKartu(result.get(0).getNoKartu());
+            telemedicineMobile.setIdPelayanan(result.get(0).getIdPelayanan());
+            telemedicineMobile.setNamaDokter(result.get(0).getNamaDokter());
+            telemedicineMobile.setNamaPasien(result.get(0).getNamaPasien());
+            telemedicineMobile.setNamaPelayanan(result.get(0).getNamaPelayanan());
+            telemedicineMobile.setKetStatus(result.get(0).getKetStatus());
+
+            listOfTelemedic.add(telemedicineMobile);
+
+        }
+
+        if(action.equalsIgnoreCase("checkNoAntrian")){
+            AntrianTelemedic bean = new AntrianTelemedic();
+            bean.setIdDokter(idDokter);
+            bean.setIdPelayanan(idPelayanan);
+            bean.setFlag("Y");
+
+            List<AntrianTelemedic> result = new ArrayList<>();
+
+            try {
+                result = telemedicBoProxy.getListAntrianByCriteria(bean);
+            } catch (GeneralBOException e){
+                logger.error("[TelemedicineController.getListAntrianSL] Error, " + e.getMessage());
+            }
+
+            int i = 1;
+            for(AntrianTelemedic item : result) {
+                if(item.getId().equalsIgnoreCase(idTele)){
+                    model.setNoAntrian(String.valueOf(i));
+                    model.setJumlahAntrian(String.valueOf(result.size()));
+                    break;
+                }
+                i++;
             }
         }
 

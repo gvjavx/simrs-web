@@ -8,6 +8,10 @@
     <bean id="verifikatorPembayaranAction" class="com.neurix.simrs.transaksi.verifikatorpembayaran.action.VerifikatorPembayaranAction"
     />
 
+    <bean id="pembayaranController" class="com.neurix.simrs.mobileapi.PembayaranController"
+        p:verifikatorPembayaranBoProxy-ref="verifikatorPembayaranBo"
+    />
+
     <bean id="verifikatorPembayaranBo" class="com.neurix.simrs.transaksi.verifikatorpembayaran.bo.impl.VerifikatorPembayaranBoImpl"
           p:verifikatorPembayaranDao-ref="verifikatorPembayaranDao"
           p:telemedicDao-ref="telemedicDao"

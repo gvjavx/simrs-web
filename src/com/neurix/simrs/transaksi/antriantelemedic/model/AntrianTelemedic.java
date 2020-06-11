@@ -7,31 +7,31 @@ import java.sql.Timestamp;
  * Created by reza on 08/06/20.
  */
 public class AntrianTelemedic {
-    private String id;
-    private String idPasien;
-    private String idDokter;
-    private String idPelayanan;
-    private String flagResep;
-    private String status;
-    private BigInteger biayaKonsultasi;
-    private String flagBayarKonsultasi;
-    private String flagBayarResep;
-    private Timestamp createdDate;
-    private String createdWho;
-    private Timestamp lastUpdate;
-    private String lastUpdateWho;
-    private String flag;
-    private String action;
-    private String namaPasien;
-    private String namaDokter;
-    private String namaPelayanan;
-    private String ketFlagResep;
-    private String ketStatus;
-    private String asuransi;
-    private String noKartu;
-    private String idJenisPeriksaPasien;
-    private String idAsuransi;
-    private String kodeBank;
+        private String id;
+        private String idPasien;
+        private String idDokter;
+        private String idPelayanan;
+        private String flagResep;
+        private String status;
+        private BigInteger biayaKonsultasi;
+        private String flagBayarKonsultasi;
+        private String flagBayarResep;
+        private Timestamp createdDate;
+        private String createdWho;
+        private Timestamp lastUpdate;
+        private String lastUpdateWho;
+        private String flag;
+        private String action;
+        private String namaPasien;
+        private String namaDokter;
+        private String namaPelayanan;
+        private String ketFlagResep;
+        private String ketStatus;
+        private String asuransi;
+        private String noKartu;
+        private String idJenisPeriksaPasien;
+        private String idAsuransi;
+        private String kodeBank;
 
     public String getKodeBank() {
         return kodeBank;

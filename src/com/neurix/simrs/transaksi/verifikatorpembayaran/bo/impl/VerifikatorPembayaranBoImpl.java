@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.verifikatorpembayaran.bo.impl;
 
 import com.neurix.simrs.transaksi.antriantelemedic.dao.TelemedicDao;
+import com.neurix.simrs.transaksi.verifikatorpembayaran.action.VerifikatorPembayaranAction;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.bo.VerifikatorPembayaranBo;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.dao.VerifikatorPembayaranDao;
 import org.apache.log4j.Logger;
@@ -21,6 +22,5 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
     public void setVerifikatorPembayaranDao(VerifikatorPembayaranDao verifikatorPembayaranDao) {
         this.verifikatorPembayaranDao = verifikatorPembayaranDao;
     }
-
 
 }

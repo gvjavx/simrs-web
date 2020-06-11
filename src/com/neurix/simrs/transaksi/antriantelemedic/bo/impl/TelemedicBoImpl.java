@@ -91,22 +91,23 @@ public class TelemedicBoImpl implements TelemedicBo {
             for (ItSimrsAntrianTelemedicEntity telemedicEntity : antrianTelemedicEntities){
                 antrianTelemedic = new AntrianTelemedic();
                 antrianTelemedic.setId(telemedicEntity.getId());
-                antrianTelemedic.setIdPasien(antrianTelemedic.getIdPasien());
-                antrianTelemedic.setIdPelayanan(antrianTelemedic.getIdPelayanan());
-                antrianTelemedic.setIdDokter(antrianTelemedic.getIdDokter());
-                antrianTelemedic.setIdJenisPeriksaPasien(antrianTelemedic.getIdJenisPeriksaPasien());
-                antrianTelemedic.setAsuransi(antrianTelemedic.getAsuransi());
-                antrianTelemedic.setNoKartu(antrianTelemedic.getNoKartu());
-                antrianTelemedic.setStatus(antrianTelemedic.getStatus());
-                antrianTelemedic.setCreatedDate(antrianTelemedic.getCreatedDate());
-                antrianTelemedic.setCreatedWho(antrianTelemedic.getCreatedWho());
-                antrianTelemedic.setLastUpdate(antrianTelemedic.getLastUpdate());
-                antrianTelemedic.setLastUpdateWho(antrianTelemedic.getLastUpdateWho());
-                antrianTelemedic.setBiayaKonsultasi(antrianTelemedic.getBiayaKonsultasi());
-                antrianTelemedic.setFlagResep(antrianTelemedic.getFlagResep());
-                antrianTelemedic.setFlagBayarKonsultasi(antrianTelemedic.getFlagBayarKonsultasi());
-                antrianTelemedic.setFlag(antrianTelemedic.getFlag());
-                antrianTelemedic.setAction(antrianTelemedic.getAction());
+                antrianTelemedic.setIdPasien(telemedicEntity.getIdPasien());
+                antrianTelemedic.setIdPelayanan(telemedicEntity.getIdPelayanan());
+                antrianTelemedic.setIdDokter(telemedicEntity.getIdDokter());
+                antrianTelemedic.setIdJenisPeriksaPasien(telemedicEntity.getIdJenisPeriksaPasien());
+                antrianTelemedic.setAsuransi(telemedicEntity.getIdAsuransi());
+                antrianTelemedic.setIdAsuransi(telemedicEntity.getIdAsuransi());
+                antrianTelemedic.setNoKartu(telemedicEntity.getNoKartu());
+                antrianTelemedic.setStatus(telemedicEntity.getStatus());
+                antrianTelemedic.setCreatedDate(telemedicEntity.getCreatedDate());
+                antrianTelemedic.setCreatedWho(telemedicEntity.getCreatedWho());
+                antrianTelemedic.setLastUpdate(telemedicEntity.getLastUpdate());
+                antrianTelemedic.setLastUpdateWho(telemedicEntity.getLastUpdateWho());
+                antrianTelemedic.setBiayaKonsultasi(telemedicEntity.getBiayaKonsultasi());
+                antrianTelemedic.setFlagResep(telemedicEntity.getFlagResep());
+                antrianTelemedic.setFlagBayarKonsultasi(telemedicEntity.getFlagBayarKonsultasi());
+                antrianTelemedic.setFlag(telemedicEntity.getFlag());
+                antrianTelemedic.setAction(telemedicEntity.getAction());
                 antrianTelemedic.setNamaPelayanan(getPelayananById(telemedicEntity.getIdPelayanan()).getNamaPelayanan());
                 antrianTelemedic.setNamaDokter(getDokterById(telemedicEntity.getIdDokter()).getNamaDokter());
                 antrianTelemedic.setNamaPasien(getPasienById(telemedicEntity.getIdPasien()).getNama());
@@ -246,7 +247,7 @@ public class TelemedicBoImpl implements TelemedicBo {
     }
 
     @Override
-    public void saveAdd(ItSimrsAntrianTelemedicEntity bean, String branchId, String kodeBank) throws GeneralBOException {
+    public String saveAdd(ItSimrsAntrianTelemedicEntity bean, String branchId, String kodeBank) throws GeneralBOException {
         logger.info("[TelemedicBoImpl.saveAdd] START >>>");
 
         // semua property entiy yang dibutuhkan di set pada action / controller. kecuali status dan id;
@@ -281,6 +282,7 @@ public class TelemedicBoImpl implements TelemedicBo {
             generateListPembayaran(bean, branchId, "konsultasi", kodeBank);
         }
         logger.info("[TelemedicBoImpl.saveAdd] END <<<");
+        return bean.getId();
     }
 
     @Override
