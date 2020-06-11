@@ -36,6 +36,7 @@
           p:uangMukaDao-ref="uangMukaDao"
           p:dokterDao-ref="dokterDao"
           p:diagnosaRawatDao-ref="diagnosaRawatDao"
+          p:paketPasienDao-ref="paketPasienDao"
     />
 
     <bean id="checkupController" class="com.neurix.simrs.mobileapi.CheckupController"

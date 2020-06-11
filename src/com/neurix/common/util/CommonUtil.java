@@ -1058,8 +1058,8 @@ public class CommonUtil {
                 return "Biaya Pindah";
             case "bPis":
                 return "Biaya Pisah";
-                default:
-                    return "";
+            default:
+                return "";
         }
     }
 
@@ -1077,5 +1077,11 @@ public class CommonUtil {
                 return d.format(date);
             default: return "";
         }
+    }
+
+    public static String stDateSeq(){
+        Date date = new Date(System.currentTimeMillis());
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+        return df.format(date);
     }
 }

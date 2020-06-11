@@ -18,6 +18,15 @@ public class ItSimrsPaketPasienEntity implements Serializable {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String idPerusahaan;
+    private String flagSelesai;
+
+    public String getFlagSelesai() {
+        return flagSelesai;
+    }
+
+    public void setFlagSelesai(String flagSelesai) {
+        this.flagSelesai = flagSelesai;
+    }
 
     public String getId() {
         return id;

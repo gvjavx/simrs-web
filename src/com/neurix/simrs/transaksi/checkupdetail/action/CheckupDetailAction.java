@@ -1230,6 +1230,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         JenisPriksaPasienBo jenisPriksaPasienBo = (JenisPriksaPasienBo) ctx.getBean("jenisPriksaPasienBoProxy");
         RiwayatTindakanBo riwayatTindakanBo = (RiwayatTindakanBo) ctx.getBean("riwayatTindakanBoProxy");
         PaketPeriksaBo paketPeriksaBo = (PaketPeriksaBo) ctx.getBean("paketPeriksaBoProxy");
+        MasterBo masterBo = (MasterBo) ctx.getBean("masterBoProxy");
 
         String kode = "";
         String transId = "";
@@ -1276,7 +1277,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                 String masterPerusahaan = "";
                 if ("paket_perusahaan".equalsIgnoreCase(idJenisPeriksaPasien)){
-                    ItSimrsPaketPasienEntity paketPasienEntity = paketPeriksaBo.getPaketPasienEntityByIdPaket(detailCheckupEntity.getIdPaket());
+                    ItSimrsPaketPasienEntity paketPasienEntity = paketPeriksaBo.getPaketPasienEntityByIdPaket(detailCheckupEntity.getIdPaket(), idPasien);
                     if (paketPasienEntity != null){
                         masterPerusahaan = paketPasienEntity.getIdPerusahaan();
                     }
@@ -1501,7 +1502,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                                 return response;
                             }
 
-                            // kredit jumlah tindakan asuransi
+                            // kredit jumlah tindakan asuransis
                             hsCriteria.put("pendapatan_rawat_inap_asuransi", listOfTindakan);
 
                             // create map piutang asuransi
@@ -1554,7 +1555,20 @@ public class CheckupDetailAction extends BaseMasterAction {
                             namaPaket = paketEntity.getNamaPaket()+ " ";
                         }
 
-                        catatan = "Closing Pasien Paket " + namaPaket + ketResep + "No.Detail Checkup " + idDetailCheckup + " Piutang No Pasien " + " " + idPasien + noKartu;
+                        // if paket perusahaan
+                        if ("paket_perusahaan".equalsIgnoreCase(idJenisPeriksaPasien)){
+
+                            String namaPerusahaan = "";
+                            ImMasterEntity masterEntity = masterBo.getEntityMasterById(masterPerusahaan);
+                            if (masterEntity != null){
+                                namaPerusahaan = masterEntity.getNama();
+                            }
+
+                            catatan = "Closing Pasien Paket " + namaPaket + ketResep + " " + namaPerusahaan + " No.Detail Checkup " + idDetailCheckup + " Piutang No Pasien " + " " + idPasien + noKartu;
+                        } else {
+                            catatan = "Closing Pasien Paket " + namaPaket + ketResep + "No.Detail Checkup " + idDetailCheckup + " Piutang No Pasien " + " " + idPasien + noKartu;
+                        }
+
                     } else {
                         catatan = "Closing Pasien " + ketPoli + jenisPasien + ketResep + "No.Detail Checkup " + idDetailCheckup + " Piutang No Pasien " + " " + idPasien + noKartu;
                     }

@@ -298,12 +298,14 @@
                                     <td><s:property value="stTglRetur"/></td>
                                     <td align="center"><s:property value="qty"/></td>
                                     <td align="center" style="vertical-align: middle">
-                                        <s:if test='#row.keterangan == "Telah Dikonfirmasi"'>
-                                            <label class="label label-success"><s:property value="keterangan"/></label>
-                                        </s:if>
-                                        <s:else>
-                                            <label class="label label-warning"><s:property value="keterangan"/></label>
-                                        </s:else>
+                                        <label class="label label-success">Telah Direture</label>
+
+                                        <%--<s:if test='#row.keterangan == "Telah Dikonfirmasi"'>--%>
+                                            <%--<label class="label label-success"><s:property value="keterangan"/></label>--%>
+                                        <%--</s:if>--%>
+                                        <%--<s:else>--%>
+                                            <%--<label class="label label-warning"><s:property value="keterangan"/></label>--%>
+                                        <%--</s:else>--%>
                                     </td>
                                     <td align="center">
                                         <img onclick="detailRetur('<s:property value="idRetureObat"/>','<s:property value="namaVendor"/>','<s:property value="stTglRetur"/>','<s:property value="qty"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-search-25.png"/>" style="cursor: pointer">
