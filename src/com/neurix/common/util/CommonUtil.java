@@ -2,6 +2,8 @@ package com.neurix.common.util;
 
 import com.neurix.authorization.role.model.Roles;
 import com.neurix.authorization.user.model.UserDetailsLogin;
+import com.neurix.common.constant.CommonConstant;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang.time.FastDateFormat;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -13,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.*;
 import java.util.Calendar;
@@ -535,6 +538,16 @@ public class CommonUtil {
             return null;
         }
 
+    }
+
+    public static String addJamBayar(Timestamp date) {
+        String jam = "null";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        java.util.Date createdDate = date;
+        java.util.Date newJam = DateUtils.addMinutes(createdDate, CommonConstant.ADD_JAM_BAYAR);
+        jam = dateFormat.format(newJam);
+
+        return jam;
     }
 
     public static double round(double value, int places) {

@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.verifikatorpembayaran.model;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 
@@ -20,7 +21,7 @@ public class ItSimrsPembayaranOnlineEntity {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
-    private BigInteger nominal;
+    private BigDecimal nominal;
     private String idRiwayatTindakan;
     private String kodeBank;
 
@@ -136,11 +137,11 @@ public class ItSimrsPembayaranOnlineEntity {
         this.lastUpdateWho = lastUpdateWho;
     }
 
-    public BigInteger getNominal() {
+    public BigDecimal getNominal() {
         return nominal;
     }
 
-    public void setNominal(BigInteger nominal) {
+    public void setNominal(BigDecimal nominal) {
         this.nominal = nominal;
     }
 

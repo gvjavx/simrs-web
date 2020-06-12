@@ -162,4 +162,7 @@ public class CommonConstant {
     public final static String ID_KANPUS = "KP";
     public final static String MASTER_PAJAK_OBAT = "03.00";
 
+    //TELEMEDICINE
+    public static final int ADD_JAM_BAYAR = 30; //MENIT
+
 }

@@ -194,6 +194,13 @@
         <action name="telemedicine/*" class="com.neurix.simrs.mobileapi.TelemedicineController">
             <interceptor-ref name="mobileStack"/>
         </action>
+        <action name="pembayaran/*" class="com.neurix.simrs.mobileapi.PembayaranController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
+        <action name="testelemedic/*" class="com.neurix.hris.mobileapi.TesTelemedicController">
+            <interceptor-ref name="mobileStack"/>
+            <param name="id">{1}</param>
+        </action>
     </package>
 
 </struts>

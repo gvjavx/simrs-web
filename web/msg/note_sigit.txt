@@ -178,4 +178,7 @@
 
     ALTER TABLE public.it_simrs_pembayaran_online ALTER COLUMN kode_bank TYPE VARCHAR(10) USING kode_bank::VARCHAR(10);
 
+    ALTER TABLE public.it_simrs_antrian_telemedic ADD branch_id VARCHAR(10) NULL;
+
+
 <<< //

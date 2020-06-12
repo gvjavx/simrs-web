@@ -62,6 +62,9 @@
             <basic name="kodeBank">
                 <column name="kode_bank"  length="10"/>
             </basic>
+            <basic name="branchId">
+                <column name="branch_id"  length="10"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

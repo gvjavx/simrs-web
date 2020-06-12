@@ -179,6 +179,11 @@
             <filter-chain pattern="/mobileapi/telemedicine/*" filters="none" />
             <filter-chain pattern="/mobileapi/telemedicine/*/**" filters="none" />
 
+            <filter-chain pattern="/mobileapi/pembayaran" filters="none" />
+            <filter-chain pattern="/mobileapi/pembayaran/*" filters="none" />
+            <filter-chain pattern="/mobileapi/pembayaran/*/**" filters="none" />
+
+            <filter-chain pattern="/mobileapi/testelemedic" filters="none" />
 
 
             <filter-chain pattern="/**/*"

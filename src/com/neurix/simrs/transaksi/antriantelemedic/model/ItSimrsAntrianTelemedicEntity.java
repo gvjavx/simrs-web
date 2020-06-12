@@ -26,6 +26,15 @@ public class ItSimrsAntrianTelemedicEntity {
     private String idJenisPeriksaPasien;
     private String idAsuransi;
     private String kodeBank;
+    private String branchId;
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
 
     public String getKodeBank() {
         return kodeBank;

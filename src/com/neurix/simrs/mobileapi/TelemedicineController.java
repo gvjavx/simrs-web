@@ -225,6 +225,8 @@ public class TelemedicineController implements ModelDriven<Object> {
             telemedicineMobile.setNamaPasien(result.get(0).getNamaPasien());
             telemedicineMobile.setNamaPelayanan(result.get(0).getNamaPelayanan());
             telemedicineMobile.setKetStatus(result.get(0).getKetStatus());
+            telemedicineMobile.setFlagBayarResep(result.get(0).getFlagBayarResep());
+            telemedicineMobile.setFlagBayarKonsultasi(result.get(0).getFlagBayarKonsultasi());
 
             listOfTelemedic.add(telemedicineMobile);
 
