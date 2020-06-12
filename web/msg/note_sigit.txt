@@ -187,5 +187,6 @@
 
     ALTER TABLE public.it_simrs_header_checkup ADD id_antrian_online VARCHAR(100) NULL;
     ALTER TABLE public.it_simrs_header_detail_checkup ADD id_transaksi_online VARCHAR(100) NULL;
+    ALTER TABLE public.mt_simrs_permintaan_resep ADD id_transaksi_online VARCHAR(100) NULL;
 
 <<< //

@@ -321,11 +321,11 @@
 
                     <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin">
                         <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                        <p id="msg_fin"></p>
+                        <p id="msg_fin_error"></p>
                     </div>
                     <div class="alert alert-success alert-dismissible" style="display: none" id="success_fin">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
-                        <p id="msg_fin2"></p>
+                        <p id="msg_fin"></p>
                     </div>
                 </div>
                 <div class="box-header with-border"></div>
@@ -333,12 +333,12 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_fin" onclick="confirmSavePembayaranTagihan()"><i class="fa fa-arrow-right"></i> Save
-                </button>
-                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
-                        id="load_fin"><i
-                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                </button>
+                <%--<button type="button" class="btn btn-success" id="save_fin" onclick="confirmSavePembayaranTagihan()"><i class="fa fa-arrow-right"></i> Save--%>
+                <%--</button>--%>
+                <%--<button style="display: none; cursor: no-drop" type="button" class="btn btn-success"--%>
+                        <%--id="load_fin"><i--%>
+                        <%--class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...--%>
+                <%--</button>--%>
             </div>
         </div>
     </div>
@@ -413,7 +413,7 @@
 
                     if (item.flagBayar == "Y"){
                         str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
-                            "<td align='center'><button class='btn btn-sm btn-success'><i class='fa fa-check'></i> Approve</button></td>";
+                            "<td align='center'><button class='btn btn-sm btn-success' onclick=\"saveApprove(\'"+item.id+"\')\"><i class='fa fa-check'></i> Approve</button></td>";
                     } else {
                         str += "<td></td>" +
                             "<td></td>";
@@ -444,6 +444,24 @@
         var urlImg = firstpath()+"/images/upload/bukti_transfer/"+var1;
 
         $("#body-view-bukti").html("<img src='"+urlImg+"'></img>");
+    }
+
+    function saveApprove(var1) {
+
+        $("#msg_fin").text("Loading . . .");
+        $("#success_fin").show();
+
+        dwr.engine.setAsync(true);
+        VerifikatorPembayaranAction.approveTransaksi(var1, function (response) {
+            if (response.status == "error"){
+                $("#warning_fin").show();
+                $("#success_fin").hide();
+                $("#msg_fin_error").text(response.getMessage());
+            } else {
+                $("#success_fin").show().fadeOut(5000);
+                $("#msg_fin").text("Success Approve");
+            }
+        });
     }
 
 </script>
