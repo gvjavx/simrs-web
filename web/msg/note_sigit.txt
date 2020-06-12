@@ -182,3 +182,10 @@
 
 
 <<< //
+
+// 2020-06-12 >>>
+
+    ALTER TABLE public.it_simrs_header_checkup ADD id_antrian_online VARCHAR(100) NULL;
+    ALTER TABLE public.it_simrs_header_detail_checkup ADD id_transaksi_online VARCHAR(100) NULL;
+
+<<< //

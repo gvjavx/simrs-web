@@ -4,6 +4,7 @@ import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
@@ -39,7 +40,10 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
         if (mapCriteria.get("branch_id") != null)
             criteria.add(Restrictions.eq("branchId", mapCriteria.get("branch_id").toString()));
-
+        if (mapCriteria.get("asc_limit_1") != null){
+            criteria.addOrder(Order.asc("createdDate"));
+            criteria.setMaxResults(1);
+        }
         return criteria.list();
     }
 

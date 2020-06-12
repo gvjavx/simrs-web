@@ -472,6 +472,34 @@ public class TelemedicBoImpl implements TelemedicBo {
         return pembayaranOnlineEntities;
     }
 
+    @Override
+    public ItSimrsAntrianTelemedicEntity getAntrianTelemedicFirstOrder(String idPelayanan, String idDokter, String status) throws GeneralBOException {
+        logger.info("[VerifikatorPembayaranBoImpl.ItSimrsAntrianTelemedicEntity] START >>>");
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_pelayanan", idPelayanan);
+        hsCriteria.put("id_dokter", idDokter);
+        hsCriteria.put("status", status);
+        hsCriteria.put("flag", "Y");
+        hsCriteria.put("acs_limit_1", "Y");
+
+        List<ItSimrsAntrianTelemedicEntity> antrianTelemedicEntities = new ArrayList<>();
+        try {
+            antrianTelemedicEntities = telemedicDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[VerifikatorPembayaranBoImpl.ItSimrsAntrianTelemedicEntity] ERROR. ", e);
+            throw new GeneralBOException("[VerifikatorPembayaranBoImpl.getSearchEntityByCriteria] ERROR. ", e);
+        }
+
+        if (antrianTelemedicEntities.size() > 0){
+            logger.info("[VerifikatorPembayaranBoImpl.ItSimrsAntrianTelemedicEntity] END <<<");
+            return antrianTelemedicEntities.get(0);
+        }
+
+        logger.info("[VerifikatorPembayaranBoImpl.ItSimrsAntrianTelemedicEntity] END <<<");
+        return null;
+    }
+
     private String getSeqTelemedic(){
         return telemedicDao.getNextSeq();
     }

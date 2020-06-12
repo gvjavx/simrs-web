@@ -135,6 +135,24 @@ public class HeaderCheckup {
     private String namaObat;
     private String namaDetailLab;
     private String idDetailTindakan;
+    private String idAntrianOnline;
+    private String idTransaksiOnline;
+
+    public String getIdTransaksiOnline() {
+        return idTransaksiOnline;
+    }
+
+    public void setIdTransaksiOnline(String idTransaksiOnline) {
+        this.idTransaksiOnline = idTransaksiOnline;
+    }
+
+    public String getIdAntrianOnline() {
+        return idAntrianOnline;
+    }
+
+    public void setIdAntrianOnline(String idAntrianOnline) {
+        this.idAntrianOnline = idAntrianOnline;
+    }
 
     public String getIdDetailTindakan() {
         return idDetailTindakan;
