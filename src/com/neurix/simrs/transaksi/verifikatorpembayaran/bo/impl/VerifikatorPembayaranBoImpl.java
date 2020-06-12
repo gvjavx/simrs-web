@@ -334,42 +334,33 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
 
                                 tindakanRawatDao.addAndSave(tindakanRawatEntity);
 
-                                if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "ptpn".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
+                                String jenPasien = bean.getIdJenisPeriksaPasien();
+                                ItSimrsRiwayatTindakanEntity riwayatTindakan = new ItSimrsRiwayatTindakanEntity();
+                                riwayatTindakan.setIdRiwayatTindakan("RWT" + getNextIdRiwayatTindakan());
+                                riwayatTindakan.setIdTindakan(tindakanRawatEntity.getIdTindakanRawat());
+                                riwayatTindakan.setNamaTindakan(tindakanRawatEntity.getNamaTindakan());
+                                riwayatTindakan.setTotalTarif(new BigDecimal(String.valueOf(tindakanRawatEntity.getTarifTotal())));
+                                riwayatTindakan.setApproveBpjsFlag("Y");
+                                riwayatTindakan.setKategoriTindakanBpjs(tindakan.getKategoriInaBpjs());
+                                riwayatTindakan.setKeterangan("tindakan");
+                                riwayatTindakan.setJenisPasien(jenPasien);
+                                riwayatTindakan.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+                                riwayatTindakan.setFlagUpdateKlaim("Y");
+                                riwayatTindakan.setCreatedWho(bean.getCreatedWho());
+                                riwayatTindakan.setCreatedDate(bean.getCreatedDate());
+                                riwayatTindakan.setLastUpdate(bean.getLastUpdate());
+                                riwayatTindakan.setLastUpdateWho(bean.getLastUpdateWho());
+                                riwayatTindakan.setFlag("Y");
+                                riwayatTindakan.setAction("C");
+                                riwayatTindakan.setTanggalTindakan(bean.getCreatedDate());
 
-                                    String jenPasien = "";
-                                    if ("ptpn".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
-                                        jenPasien = "bpjs";
-                                    } else {
-                                        jenPasien = bean.getIdJenisPeriksaPasien();
-                                    }
-
-                                    ItSimrsRiwayatTindakanEntity riwayatTindakan = new ItSimrsRiwayatTindakanEntity();
-                                    riwayatTindakan.setIdRiwayatTindakan("RWT" + getNextIdRiwayatTindakan());
-                                    riwayatTindakan.setIdTindakan(tindakanRawatEntity.getIdTindakanRawat());
-                                    riwayatTindakan.setNamaTindakan(tindakanRawatEntity.getNamaTindakan());
-                                    riwayatTindakan.setTotalTarif(new BigDecimal(String.valueOf(tindakanRawatEntity.getTarifTotal())));
-                                    riwayatTindakan.setApproveBpjsFlag("Y");
-                                    riwayatTindakan.setKategoriTindakanBpjs(tindakan.getKategoriInaBpjs());
-                                    riwayatTindakan.setKeterangan("tindakan");
-                                    riwayatTindakan.setJenisPasien(jenPasien);
-                                    riwayatTindakan.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
-                                    riwayatTindakan.setFlagUpdateKlaim("Y");
-                                    riwayatTindakan.setCreatedWho(bean.getCreatedWho());
-                                    riwayatTindakan.setCreatedDate(bean.getCreatedDate());
-                                    riwayatTindakan.setLastUpdate(bean.getLastUpdate());
-                                    riwayatTindakan.setLastUpdateWho(bean.getLastUpdateWho());
-                                    riwayatTindakan.setFlag("Y");
-                                    riwayatTindakan.setAction("C");
-                                    riwayatTindakan.setTanggalTindakan(bean.getCreatedDate());
-
-                                    try {
-                                        riwayatTindakanDao.addAndSave(riwayatTindakan);
-                                    } catch (HibernateException e) {
-                                        logger.error("[VerifikatorPembayaranBoImpl.approveTransaksi] ERROR. " + e.getMessage());
-                                        throw new GeneralBOException("[VerifikatorPembayaranBoImpl.approveTransaksi] Error When Saving tindakan rawat" + e.getMessage());
-                                    }
-
+                                try {
+                                    riwayatTindakanDao.addAndSave(riwayatTindakan);
+                                } catch (HibernateException e) {
+                                    logger.error("[VerifikatorPembayaranBoImpl.approveTransaksi] ERROR. " + e.getMessage());
+                                    throw new GeneralBOException("[VerifikatorPembayaranBoImpl.approveTransaksi] Error When Saving tindakan rawat" + e.getMessage());
                                 }
+
 
                             } catch (HibernateException e) {
                                 logger.error("[VerifikatorPembayaranBoImpl.approveTransaksi] Error When Saving tindakan rawat" + e.getMessage());
@@ -385,6 +376,13 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
         }
         logger.info("[VerifikatorPembayaranBoImpl.approveTransaksi] End <<<<<<<");
         return idDetailCheckup;
+    }
+
+    @Override
+    public ItSimrsPembayaranOnlineEntity getPembayaranOnlineById(String id) throws GeneralBOException {
+        logger.info("[VerifikatorPembayaranBoImpl.getPembayaranOnlineById] START >>>>>>>");
+        logger.info("[VerifikatorPembayaranBoImpl.getPembayaranOnlineById] END <<<<<<<");
+        return verifikatorPembayaranDao.getById("id", id);
     }
 
     private List<ImSimrsTindakanEntity> getListEntityTindakan(Tindakan bean) throws GeneralBOException {

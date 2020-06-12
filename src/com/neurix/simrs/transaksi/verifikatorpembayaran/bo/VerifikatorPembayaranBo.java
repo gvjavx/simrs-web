@@ -17,5 +17,6 @@ public interface VerifikatorPembayaranBo {
     public List<PembayaranOnline> getSearchByCriteria(PembayaranOnline bean) throws GeneralBOException;
     public List<ItSimrsPembayaranOnlineEntity> getSearchEntityByCriteria(PembayaranOnline bean) throws GeneralBOException;
     public String approveTransaksi(HeaderCheckup bean) throws GeneralBOException;
+    public ItSimrsPembayaranOnlineEntity getPembayaranOnlineById(String id) throws GeneralBOException;
 
 }
