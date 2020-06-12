@@ -53,6 +53,15 @@ public class    LemburController implements ModelDriven<Object> {
     private String jamAkhir;
     private String lamaJamLembur;
     private String namaPegawai;
+    private String keterangan;
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
 
     public String getNamaPegawai() {
         return namaPegawai;
@@ -176,8 +185,8 @@ public class    LemburController implements ModelDriven<Object> {
                     editLembur.setApprovalFlag("N");
                 }
             }
-            if (!("").equalsIgnoreCase(model.getKeterangan())){
-                editLembur.setNotApprovalNote(model.getKeterangan());
+            if (!("").equalsIgnoreCase(keterangan)){
+                editLembur.setNotApprovalNote(keterangan);
             }
             editLembur.setTmpApprove(who);
             editLembur.setNip(nip);
