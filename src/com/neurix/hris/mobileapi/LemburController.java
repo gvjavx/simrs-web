@@ -190,7 +190,7 @@ public class    LemburController implements ModelDriven<Object> {
             }
             editLembur.setTmpApprove(who);
             editLembur.setNip(nip);
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             java.util.Date tanggalAwalst = simpleDateFormat.parse(tanggalAwal);
             java.util.Date tanggalAkhirst = simpleDateFormat.parse(tanggalAkhir);
 

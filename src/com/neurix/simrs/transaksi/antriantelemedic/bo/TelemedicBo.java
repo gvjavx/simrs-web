@@ -15,4 +15,5 @@ public interface TelemedicBo {
     public ItSimrsAntrianTelemedicEntity getAntrianTelemedicEntityById(String id) throws GeneralBOException;
     public String saveAdd(ItSimrsAntrianTelemedicEntity bean, String branchId, String kodeBank) throws GeneralBOException;
     public void saveEdit(AntrianTelemedic bean, String branchId, String kodeBank) throws GeneralBOException;
+    public ItSimrsAntrianTelemedicEntity getAntrianTelemedicFirstOrder(String idPelayanan, String idDokter, String status) throws GeneralBOException;
 }
