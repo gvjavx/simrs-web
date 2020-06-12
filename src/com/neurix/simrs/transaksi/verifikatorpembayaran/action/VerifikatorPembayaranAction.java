@@ -203,12 +203,15 @@ public class VerifikatorPembayaranAction {
                     return response;
                 } else {
                     // set data headerCheckup;
-                    headerCheckup.setIdDetailCheckup("CKP"+checkupBo.getNextHeaderId());
+                    headerCheckup.setNoCheckup("CKP"+checkupBo.getNextHeaderId());
                     headerCheckup.setIdPasien(antrianTelemedicEntity.getIdPasien());
+                    headerCheckup.setIdPelayanan(antrianTelemedicEntity.getIdPelayanan());
+                    headerCheckup.setIdDokter(antrianTelemedicEntity.getIdDokter());
 
                     // mendapatkan data pasien;
                     ImSimrsPasienEntity pasienEntity = pasienBo.getPasienById(antrianTelemedicEntity.getIdPasien());
                     if (pasienEntity != null){
+
                         headerCheckup.setNama(pasienEntity.getNama());
                         headerCheckup.setJenisKelamin(pasienEntity.getJenisKelamin());
                         headerCheckup.setNoKtp(pasienEntity.getNoKtp());
@@ -302,6 +305,11 @@ public class VerifikatorPembayaranAction {
                         response.setMessage("[VerifikatorPembayaranAction.approveTransaksi] ERROR. " + e);
                         return response;
                     }
+                } else {
+                    logger.error("[VerifikatorPembayaranAction.approveTransaksi] ERROR. " + jurnalResponse.getMsg());
+                    response.setStatus("error");
+                    response.setMessage("[VerifikatorPembayaranAction.approveTransaksi] ERROR. " + jurnalResponse.getMsg());
+                    return response;
                 }
 
 
@@ -861,6 +869,7 @@ public class VerifikatorPembayaranAction {
             mapPiutang.put("nilai", jumlah);
             mapPiutang.put("pasien_id", idPasien);
 
+            mapJurnal.put("piutang_pasien_umum", mapPiutang);
             transId = "61";
         }
 

@@ -453,10 +453,11 @@
 
         dwr.engine.setAsync(true);
         VerifikatorPembayaranAction.approveTransaksi(var1, function (response) {
+            dwr.engine.setAsync(false);
             if (response.status == "error"){
                 $("#warning_fin").show();
                 $("#success_fin").hide();
-                $("#msg_fin_error").text(response.getMessage());
+                $("#msg_fin_error").text(response.message);
             } else {
                 $("#success_fin").show().fadeOut(5000);
                 $("#msg_fin").text("Success Approve");
