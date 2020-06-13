@@ -18,17 +18,17 @@ http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
           <!--p:username="postgres"-->
           <!--p:password="123456"/>-->
 
-    <!--<bean id="dataSource"-->
-          <!--class="org.springframework.jdbc.datasource.DriverManagerDataSource"-->
-          <!--p:driverClassName="org.postgresql.Driver"-->
-          <!--p:url="jdbc:postgresql://localhost:5432/go_medsys10062020"-->
-          <!--p:username="postgres"-->
-          <!--p:password="123456"/>-->
-
     <bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource"
           p:driverClassName="org.postgresql.Driver"
-          p:url="jdbc:postgresql://localhost:5432/simrs_hcm"
+          p:url="jdbc:postgresql://localhost:5432/simrs_10062020"
           p:username="postgres"
-          p:password="postgres"/>
+          p:password="123456"/>
+
+    <!--<bean id="dataSource"-->
+          <!--class="org.springframework.jdbc.datasource.DriverManagerDataSource"-->
+          <!--p:driverClassName="org.postgresql.Driver"-->
+          <!--p:url="jdbc:postgresql://localhost:5432/simrs_hcm"-->
+          <!--p:username="postgres"-->
+          <!--p:password="postgres"/>-->
 </beans>
