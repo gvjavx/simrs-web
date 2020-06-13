@@ -9,6 +9,7 @@ import com.neurix.akuntansi.master.tipeJurnal.bo.TipeJurnalBo;
 import com.neurix.akuntansi.master.trans.model.ImTransEntity;
 import com.neurix.akuntansi.master.trans.model.Trans;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.akuntansi.transaksi.jurnal.model.ItJurnalEntity;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.LaporanAkuntansiBo;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.LaporanAkuntansi;
 import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.bo.PembayaranUtangPiutangBo;
@@ -460,6 +461,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
             //Jika pembayaran berhasil
             //Membuat Billing
             List<Map> dataMap = new ArrayList<>();
+            String pengajuanBiayaDetailId="";
             for (PembayaranUtangPiutangDetail pembayaranUtangPiutangDetail : pembayaranUtangPiutangDetailList){
                 String rekeningId = kodeRekeningBoProxy.getRekeningIdByKodeRekening(pembayaranUtangPiutangDetail.getRekeningId());
                 BigDecimal jumlahPembayaran = new BigDecimal(pembayaranUtangPiutangDetail.getStJumlahPembayaran().replace(".",""));
@@ -470,6 +472,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
                 hs.put("divisi_id", pembayaranUtangPiutangDetail.getDivisiId());
                 hs.put("rekening_id", rekeningId);
                 dataMap.add(hs);
+                pengajuanBiayaDetailId = pembayaranUtangPiutangDetail.getPengajuanBiayaDetailId();
             }
 
             Map kas = new HashMap();
@@ -479,6 +482,14 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
             Map data = new HashMap();
             data.put(parameter,dataMap);
             data.put("metode_bayar",kas);
+            if ("Y".equalsIgnoreCase(pembayaranUtangPiutang.getTipePengajuanBiaya())){
+                List<ItJurnalEntity> jurnalEntityList = billingSystemBoProxy.getJurnalByPengajuanId(pengajuanBiayaDetailId);
+                if (jurnalEntityList.size()!=0){
+                    throw new GeneralBOException("Pengajuan biaya dengan ID ini sudah di dilakukan pengeluaran kas");
+                }
+                data.put("pengajuan_id",pengajuanBiayaDetailId);
+            }
+
             noJurnal= billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N");
             pembayaranUtangPiutang.setNoJurnal(noJurnal);
             pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList);
@@ -745,7 +756,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         return "input_koreksi";
     }
 
-    public String saveDetailPembayaran(String kodeVendor,String namaVendor,String noNota,String jumlahPembayaran,String rekeningId,String divisiId,String divisiName) {
+    public String saveDetailPembayaran(String kodeVendor,String namaVendor,String noNota,String jumlahPembayaran,String rekeningId,String divisiId,String divisiName,String tipePengajuanBiaya,String pengajuanBiayaDetailId) {
         logger.info("[PembayaranUtangPiutangAction.saveDetailPembayaran] start process >>>");
         String status="";
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -761,6 +772,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
             newData.setRekeningId(rekeningId);
             newData.setDivisiId(divisiId);
             newData.setDivisiName(divisiName);
+            newData.setPengajuanBiayaDetailId(pengajuanBiayaDetailId);
 
             piutangDetailArrayList.add(newData);
             session.setAttribute("listOfResultPembayaranDetail",piutangDetailArrayList);
@@ -768,8 +780,12 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
             piutangDetailArrayList.addAll(piutangDetailList);
             for (PembayaranUtangPiutangDetail pembayaranUtangPiutangDetail:piutangDetailList){
                 if (pembayaranUtangPiutangDetail.getMasterId().equalsIgnoreCase(kodeVendor)&&pembayaranUtangPiutangDetail.getNoNota().equalsIgnoreCase(noNota)){
+                    if (tipePengajuanBiaya.equalsIgnoreCase("N")){
+                        status="Pembayaran vendor dengan nomor nota ini sudah ada";
+                    }else{
+                        status="Pengeluaran kas hanya boleh 1 transaksi pengajuan biaya";
+                    }
                     ada=true;
-                    status="Pembayaran vendor dengan nomor nota ini sudah ada";
                     break;
                 }
             }
@@ -782,6 +798,8 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
                 newData.setRekeningId(rekeningId);
                 newData.setDivisiId(divisiId);
                 newData.setDivisiName(divisiName);
+                newData.setPengajuanBiayaDetailId(pengajuanBiayaDetailId);
+
                 piutangDetailArrayList.add(newData);
                 session.setAttribute("listOfResultPembayaranDetail",piutangDetailArrayList);
             }
@@ -905,10 +923,10 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         }else if(pembayaranUtangPiutangDetailList==null||pembayaranUtangPiutangDetailList.size()==0){
             status+="Detail pembayaran belum ada <br>";
         }else{
-            BigDecimal totalBayar = BigDecimal.valueOf(Double.valueOf(bayar.replace(".","")));
+            BigDecimal totalBayar = BigDecimal.valueOf(Double.valueOf(bayar.replace(".","").replace(",","")));
             BigDecimal bayarDetail = BigDecimal.ZERO;
             for (PembayaranUtangPiutangDetail data : pembayaranUtangPiutangDetailList){
-                bayarDetail= bayarDetail.add( new BigDecimal(data.getStJumlahPembayaran().replace(".","")));
+                bayarDetail= bayarDetail.add( new BigDecimal(data.getStJumlahPembayaran().replace(".","").replace(",","")));
             }
             if (!totalBayar.equals(bayarDetail)){
                 if (totalBayar.compareTo(bayarDetail)>0){
@@ -1004,6 +1022,19 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
 
         logger.info("[PembayaranUtangPiutangAction.getTipeMaster] end process >>>");
         return masterId;
+    }
+
+    public String getTipePengajuan(String transaksiId) {
+        logger.info("[PembayaranUtangPiutangAction.getTipePengajuan] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PembayaranUtangPiutangBo pembayaranUtangPiutangBo = (PembayaranUtangPiutangBo) ctx.getBean("pembayaranUtangPiutangBoProxy");
+
+        String tipePengajuan="";
+        ImTransEntity transEntity = pembayaranUtangPiutangBo.getTipeMaster(transaksiId);
+        tipePengajuan=transEntity.getFlagPengajuanBiaya();
+
+        logger.info("[PembayaranUtangPiutangAction.getTipePengajuan] end process >>>");
+        return tipePengajuan;
     }
 
     public String postingJurnal(String pembayaranId){

@@ -463,6 +463,22 @@ public class PelayananBoImpl implements PelayananBo{
     }
 
     @Override
+    public ImSimrsPelayananEntity getPelayananByDivisiId(String id,String branchId) throws GeneralBOException {
+        ImSimrsPelayananEntity result = new ImSimrsPelayananEntity();
+        Map criteria = new HashMap();
+        criteria.put("branch_id",branchId);
+        criteria.put("divisi_id",id);
+        criteria.put("flag","Y");
+
+        List<ImSimrsPelayananEntity> pelayananEntityList = pelayananDao.getByCriteria(criteria);
+
+        for (ImSimrsPelayananEntity pelayananEntity : pelayananEntityList){
+            result = pelayananEntity;
+        }
+        return result;
+    }
+
+    @Override
     public List<Pelayanan> getListPelayananPaketPeriksa(String branch) throws GeneralBOException {
         List<Pelayanan> pelayananList = new ArrayList<>();
         if(branch != null){

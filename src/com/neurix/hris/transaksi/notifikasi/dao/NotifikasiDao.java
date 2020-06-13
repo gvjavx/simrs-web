@@ -238,7 +238,8 @@ public class NotifikasiDao extends GenericDao<ImNotifikasiEntity, String> {
                 criteria.add(Restrictions.ilike("notifName", "%" + (String)mapCriteria.get("notif_name") + "%"));
             }
             if (mapCriteria.get("nip")!=null) {
-                criteria.add(Restrictions.ilike("nip", "%" + (String)mapCriteria.get("nip") + "%"));
+//                criteria.add(Restrictions.eq("nip", "%" + (String)mapCriteria.get("nip") + "%"));
+                criteria.add(Restrictions.eq("nip", (String) mapCriteria.get("nip")));
             }
             if (mapCriteria.get("read")!=null) {
                 criteria.add(Restrictions.ilike("read", "%" + (String)mapCriteria.get("read") + "%"));
@@ -451,6 +452,17 @@ public class NotifikasiDao extends GenericDao<ImNotifikasiEntity, String> {
     public List<ImNotifikasiEntity> getDataByNoRequest(String id) throws HibernateException {
         List<ImNotifikasiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImNotifikasiEntity.class)
                 .add(Restrictions.eq("noRequest", id))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("noRequest"))
+                .list();
+        return results;
+    }
+
+    //digunakan untuk mencari notifikasi by nomor request
+    public List<ImNotifikasiEntity> getDataForCheck(String id,String nip) throws HibernateException {
+        List<ImNotifikasiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImNotifikasiEntity.class)
+                .add(Restrictions.eq("noRequest", id))
+                .add(Restrictions.eq("nip", nip))
                 .add(Restrictions.eq("flag", "Y"))
                 .addOrder(Order.asc("noRequest"))
                 .list();

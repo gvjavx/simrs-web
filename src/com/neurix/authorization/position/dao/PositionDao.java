@@ -433,6 +433,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
 
         return results;
     }
+
     public List<ImPosition> getDataKelompokId(String positionId){
 
         List<ImPosition> listOfResult = new ArrayList<ImPosition>();

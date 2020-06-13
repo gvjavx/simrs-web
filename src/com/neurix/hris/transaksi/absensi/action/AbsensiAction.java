@@ -3148,6 +3148,26 @@ public class AbsensiAction extends BaseMasterAction {
         }
         return status;
     }
+    public String getAllDataFromMesin() throws Exception {
+        logger.info("[AbsensiAction.getDataFromMesin] start process >>>");
+        String status="00";
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
+        try {
+            absensiBo.getAllDataFromMesin();
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            status="fail";
+            try {
+                logId = absensiBoProxy.saveErrorMessage(e.getMessage(), "AbsensiBO.inquiry");
+            } catch (GeneralBOException e1) {
+                logger.error("[AbsensiAction.search] Error when saving error,", e1);
+            }
+            logger.error("[AbsensiAction.search] Error when searching absensi by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
+        }
+        return status;
+    }
     public void inquiry() throws Exception {
         AbsensiPegawai absen = getAbsensiPegawai();
         String tanggalAwal = absen.getStTanggalDari();

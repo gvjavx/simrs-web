@@ -255,13 +255,18 @@
                                                                 <s:if test="#attr.row.terRealisasi">
                                                                 </s:if>
                                                                 <s:else>
-                                                                    <s:url var="urlEdit" namespace="/lembur" action="delete_lembur" escapeAmp="false">
-                                                                        <s:param name="id"><s:property value="#attr.row.lemburId"/></s:param>
-                                                                        <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
-                                                                    </s:url>
-                                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
-                                                                        <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_edit">
-                                                                    </sj:a>
+                                                                    <s:if test="#attr.row.lemburApprove">
+                                                                    </s:if>
+                                                                    <s:else>
+                                                                        <s:url var="urlEdit" namespace="/lembur" action="delete_lembur" escapeAmp="false">
+                                                                            <s:param name="id"><s:property value="#attr.row.lemburId"/></s:param>
+                                                                            <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
+                                                                        </s:url>
+                                                                        <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
+                                                                            <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_edit">
+                                                                        </sj:a>
+                                                                    </s:else>
+
                                                                 </s:else>
                                                             </display:column>
                                                             <display:column media="html" title="Edit">

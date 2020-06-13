@@ -525,6 +525,9 @@ public class BranchBoImpl implements BranchBo {
             resultBranch.setPercentTkPers(imBranches.getPercentTkPers());
             resultBranch.setUmr(imBranches.getUmr());
 
+            resultBranch.setCoaRk(imBranches.getCoaRk());
+            resultBranch.setMaxPengajuanBiaya(imBranches.getMaxPengajuanBiaya());
+
             /*resultBranch.setStatusPabrik(imBranches.getStatusPabrik());
             resultBranch.setMultifikator(imBranches.getMultifikator());
             resultBranch.setMaxJamIjinKeluar(imBranches.getMaxJamIjinKeluar());

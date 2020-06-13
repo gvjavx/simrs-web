@@ -1310,14 +1310,19 @@ public class BudgetingBoImpl implements BudgetingBo {
     }
 
     @Override
-    public String getBudgetBiayaDivisiSaatIni(Budgeting bean){
+    public Budgeting getBudgetBiayaDivisiSaatIni(Budgeting bean){
         logger.info("[BudgetingBoImpl.getBudgetBiayaDivisiSaatIni] START >>>");
+        Budgeting data = new Budgeting();
         List<BudgettingDTO> budgettingDTOList;
+        List<BudgettingDTO> budgettingDTOListSd;
         BigDecimal budget = BigDecimal.ZERO;
+        BigDecimal budgetSdBulanIni = BigDecimal.ZERO;
+
         try {
             ImPosition position = positionDao.getById("positionId",bean.getDivisi());
 
-            budgettingDTOList = laporanAkuntansiDao.getBudgettingPerDivisi(bean.getBranchId(),bean.getStatus(),bean.getTahun(),position.getKodering(),bean.getCoa());
+            budgettingDTOList = laporanAkuntansiDao.getBudgettingPerDivisi(bean.getBranchId(),bean.getStatus(),bean.getTahun(),position.getKodering(),bean.getCoa(),bean.getBulan(),"S");
+            budgettingDTOListSd = laporanAkuntansiDao.getBudgettingPerDivisi(bean.getBranchId(),bean.getStatus(),bean.getTahun(),position.getKodering(),bean.getCoa(),bulanUntukSdBudgetting(bean.getBulan()),"SD");
         } catch (HibernateException e){
             logger.error("[BudgetingBoImpl.getBudgetBiayaDivisiSaatIni] ERROR. ",e);
             throw new GeneralBOException("[BudgetingBoImpl.getBudgetBiayaDivisiSaatIni] ERROR. ",e);
@@ -1326,9 +1331,17 @@ public class BudgetingBoImpl implements BudgetingBo {
         for (BudgettingDTO budgettingDTO : budgettingDTOList){
             budget = budgettingDTO.getSubTotal();
         }
+        for (BudgettingDTO budgettingDTO : budgettingDTOListSd){
+            budgetSdBulanIni = budgettingDTO.getSubTotal();
+        }
+        data.setBudgetSaatIni(budget);
+        data.setStBudgetSaatIni(CommonUtil.numbericFormat(budget,"###,###"));
+
+        data.setBudgetSdSaatIni(budgetSdBulanIni);
+        data.setStBudgetSdSaatIni(CommonUtil.numbericFormat(budgetSdBulanIni,"###,###"));
 
         logger.info("[BudgetingBoImpl.getBudgetBiayaDivisiSaatIni] END <<<<");
-        return  CommonUtil.numbericFormat(budget,"###,###");
+        return data;
     }
 
 
@@ -1399,4 +1412,47 @@ public class BudgetingBoImpl implements BudgetingBo {
         return  CommonUtil.numbericFormat(budget,"###,###");
     }
 
+    public String bulanUntukSdBudgetting(String bulan){
+        String result="";
+        switch (bulan){
+            case "Januari":
+                result="'januari'";
+                break;
+            case "Februari":
+                result="'januari','februari'";
+                break;
+            case "Maret":
+                result="'januari','februari','maret'";
+                break;
+            case "April":
+                result="'januari','februari','maret','april'";
+                break;
+            case "Mei":
+                result="'januari','februari','maret','april','mei'";
+                break;
+            case "Juni":
+                result="'januari','februari','maret','april','mei','juni'";
+                break;
+            case "Juli":
+                result="'januari','februari','maret','april','mei','juni','juli'";
+                break;
+            case "Agustus":
+                result="'januari','februari','maret','april','mei','juni','juli','agustus'";
+                break;
+            case "September":
+                result="'januari','februari','maret','april','mei','juni','juli','agustus','september'";
+                break;
+            case "Oktober":
+                result="'januari','februari','maret','april','mei','juni','juli','agustus','september','oktober'";
+                break;
+            case "November":
+                result="'januari','februari','maret','april','mei','juni','juli','agustus','september','oktober','november'";
+                break;
+            case "Desember":
+                result="'januari','februari','maret','april','mei','juni','juli','agustus','september','oktober','november','desember'";
+                break;
+        }
+
+        return result;
+    }
 }
