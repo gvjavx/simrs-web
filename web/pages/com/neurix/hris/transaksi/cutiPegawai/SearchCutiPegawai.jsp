@@ -452,6 +452,27 @@
                                                         <s:set name="listOfCutiPegawai" value="#session.listOfResultCutiPegawai" scope="request" />
                                                         <display:table name="listOfCutiPegawai" class="tableCutiPegawai table table-condensed table-striped table-hover"
                                                                        requestURI="paging_displaytag_cutiPegawai.action" export="true" id="row" pagesize="14" style="font-size:10">
+
+                                                            <display:column media="html" title="Pengajuan Batal">
+                                                                <s:if test="#attr.row.pengajuanBatal">
+                                                                    <s:if test='#attr.row.flagPengajuanBatal == "Y"'>
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
+                                                                    </s:if>
+                                                                    <s:elseif test='#attr.row.flagPengajuanBatal == "N"'>
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_failure.ico"/>" name="icon_edit">
+                                                                    </s:elseif>
+                                                                    <s:else>
+                                                                        <s:url var="urlCancel" namespace="/cutiPegawai" action="batal_cutiPegawai" escapeAmp="false">
+                                                                            <s:param name="id"><s:property value="#attr.row.cutiPegawaiId" /></s:param>
+                                                                            <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                                        </s:url>
+                                                                        <sj:a onClickTopics="showDialogMenuView" href="%{urlCancel}">
+                                                                            <img border="0" src="<s:url value="/pages/images/delete_task.png"/>" name="icon_trash">
+                                                                        </sj:a>
+                                                                    </s:else>
+                                                                </s:if>
+                                                            </display:column>
+
                                                             <display:column media="html" title="Batal">
                                                                 <s:if test="#attr.row.cancel">
                                                                     <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">

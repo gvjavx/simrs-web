@@ -7,7 +7,7 @@
 <html>
 <head>
     <style type="text/css">
-        #tgl1,#tgl2{z-index: 2000!important}
+        #tgl1,#tgl20{z-index: 2000!important}
     </style>
     <script type='text/javascript' src='<s:url value="/dwr/interface/UserAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/IjinKeluarAction.js"/>'></script>
@@ -21,10 +21,10 @@
             window.location.reload(true);
         }
 
-        $.subscribe('beforeProcessSaveCancelIjinKeluar', function (event, data) {
-            var keterangan = document.getElementById("cancelNote").value;
-            var nip = document.getElementById("nipId").value;
-            var tglDari = document.getElementById("tgl2").value;
+        $.subscribe('beforeProcessSavePengajuanBatalIjinKeluar', function (event, data) {
+            var keterangan = document.getElementById("cancelNote0").value;
+            var nip = document.getElementById("nipId0").value;
+            var tglDari = document.getElementById("tgl20").value;
             var tglSelesai = document.getElementById("tgl1").value;
             console.log(tglDari);
             console.log(tglSelesai);
@@ -76,10 +76,10 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="modifyRolefuncForm" method="post" theme="simple" namespace="/ijinKeluar" action="saveCancel_ijinKeluar" cssClass="well form-horizontal">
+            <s:form id="pengajuanBatalForm" method="post" theme="simple" namespace="/ijinKeluar" action="savePengajuanBatal_ijinKeluar" cssClass="well form-horizontal">
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
-                <legend align="left">Cancel Ijin Tidak Masuk</legend>
+                <legend align="left">Pengajuan Batal Ijin Tidak Masuk</legend>
                 <table>
                     <tr>
                         <td width="10%" align="center">
@@ -97,7 +97,7 @@
                         <td>
                             <table>
                                 <div>
-                                    <s:textfield  id="ijinKeluarId5" name="ijinKeluar.ijinKeluarId" required="true" readonly="true" cssClass="form-control"/>
+                                    <s:textfield  id="ijinKeluarId" name="ijinKeluar.ijinKeluarId" required="true" readonly="true" cssClass="form-control"/>
                                 </div>
                             </table>
                         </td>
@@ -109,7 +109,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="nipId" name="ijinKeluar.nip" required="true" readonly="true" cssClass="form-control"/>
+                                <s:textfield  id="nipId0" name="ijinKeluar.nip" required="true" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -199,7 +199,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <s:textfield id="tgl2" name="ijinKeluar.stTanggalAwal" cssClass="form-control pull-right"
+                                    <s:textfield id="tgl20" name="ijinKeluar.stTanggalAwal" cssClass="form-control pull-right"
                                                  required="false"  cssStyle="" readonly="true" disabled="true"/>
                                 </div>
 
@@ -256,7 +256,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textarea rows="3" id="cancelNote" required="false" name="ijinKeluar.cancelNote"/>
+                                <s:textarea rows="3" id="cancelNote0" required="false" name="ijinKeluar.cancelNote"/>
                             </table>
                         </td>
                     </tr>
@@ -264,17 +264,12 @@
                 <br>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="modifyRolefuncForm" id="save" name="save"
-                                   onBeforeTopics="beforeProcessSaveCancelIjinKeluar" onCompleteTopics="closeDialogCancelIjinKeluar,successDialogCancelIjinKeluar"
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="pengajuanBatalForm" id="save" name="save"
+                                   onBeforeTopics="beforeProcessSavePengajuanBatalIjinKeluar" onCompleteTopics="closeDialogCancelIjinKeluar,successDialogCancelIjinKeluar"
                                    onSuccessTopics="successDialogCancelIjinKeluar" onErrorTopics="errorDialogCancelIjinKeluar" >
                             <i class="fa fa-check"></i>
                             Batalkan
                         </sj:submit>
-                        <s:if test='ijinKeluar.flagPengajuanBatal == "Y"'>
-                            <button type="button" id="btnTolak" class="btn btn-danger" style="font-family: Arial, Helvetica, sans-serif;font-size: 12px;font-weight: bold;" onclick="cancelBtn();">
-                                <i class="fa fa-close"/> Tolak Batal
-                            </button>
-                        </s:if>
                         <button type="button" id="cancel" class="btn btn-default" style="font-family: Arial, Helvetica, sans-serif;font-size: 12px;font-weight: bold;" onclick="cancelBtn();">
                             <i class="fa fa-close"/> Close
                         </button>
@@ -292,7 +287,7 @@
                                                        closeTopics="closeDialog" modal="true"
                                                        resizable="false"
                                                        height="250" width="600" autoOpen="false"
-                                                       title="Searching ...">
+                                                       title="Saving Data ...">
                                                 Please don't close this window, server is processing your request ...
                                                 <br>
                                                 <center>
@@ -382,13 +377,13 @@
         $('#tgl1').datepicker({
             dateFormat: 'dd/mm/yy',
         });
-        $('#tgl2').datepicker({
+        $('#tgl20').datepicker({
             dateFormat: 'dd/mm/yy',
         });
     });
 
     $('#tgl1').on('change',function(){
-        var startdate = $('#tgl2').datepicker('getDate');
+        var startdate = $('#tgl20').datepicker('getDate');
         var enddate = $('#tgl1').datepicker('getDate');
         if (startdate<enddate) {
             var days   = (enddate - startdate)/1000/60/60/24;
@@ -399,9 +394,9 @@
             $('#tgl1').val("");
         }
     });
-    $('#tgl2').on('change',function(){
+    $('#tgl20').on('change',function(){
         var hariini = new Date();
-        var startdate = $('#tgl2').datepicker('getDate');
+        var startdate = $('#tgl20').datepicker('getDate');
         var enddate = $('#tgl1').datepicker('getDate');
         if (startdate<hariini){
             alert ("tanggal mulai kurang dari tanggal sekarang , mohon ulangi ");
@@ -412,7 +407,7 @@
         }
         else {
             alert ("tanggal selesai kurang dari tanggal mulai , mohon ulangi ");
-            $('#tgl2').val("");
+            $('#tgl20').val("");
         }
     });
 
@@ -434,21 +429,6 @@
             $('#ijinName1').val(item.ijinName);
         })
     });*/
-
-    $('#btnTolak').on('click', function() {
-        var ijinKeluarId = document.getElementById("ijinKeluarId5").value;
-        console.log("Test "+ijinKeluarId);
-        if (confirm('Are you sure you want to save this Record?')) {
-            dwr.engine.setAsync(false);
-
-            IjinKeluarAction.saveTolakPengajuan(ijinKeluarId, function(listdata) {
-                alert('Data Successfully Updated');
-                $('#modal-edit').modal('hide');
-                $('#myForm')[0].reset();
-                location.reload();
-            });
-        }
-    });
 
 </script>
 

@@ -83,6 +83,9 @@
             <result name="report_cuti">/pages/com/neurix/hris/transaksi/cutiPegawai/searchReportCuti.jsp</result>
             <result name="success_report_cuti">/pages/com/neurix/hris/transaksi/cutiPegawai/searchReportCuti.jsp</result>
 
+            <result name="init_batal">/pages/com/neurix/hris/transaksi/cutiPegawai/pengajuanBatalCuti.jsp</result>
+            <result name="success_batal">/pages/com/neurix/hris/transaksi/cutiPegawai/pengajuanBatalCuti.jsp</result>
+
             <result name="print_surat_cuti" type="jasper">
                 <param name="location">/pages/report/com/neurix/hris/printSuratCuti.jasper</param>
                 <param name="connection">connection</param>

@@ -8,6 +8,8 @@ import com.neurix.hris.mobileapi.model.PengajuanCuti;
 import com.neurix.hris.mobileapi.model.PengajuanLembur;
 import com.neurix.hris.transaksi.cutiPegawai.bo.CutiPegawaiBo;
 import com.neurix.hris.transaksi.cutiPegawai.model.CutiPegawai;
+import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
+import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import com.opensymphony.xwork2.ModelDriven;
 import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
@@ -31,6 +33,8 @@ public class CutiFormPegawaiController implements ModelDriven<Object> {
     private CutiBo cutiBoProxy;
     private List<PengajuanCuti> listOfCutiPegawai;
     private PengajuanCuti model = new PengajuanCuti();
+    private NotifikasiBo notifikasiBoProxy;
+    private String roleId;
 
     private String id;
 
@@ -39,6 +43,23 @@ public class CutiFormPegawaiController implements ModelDriven<Object> {
     private String jenisCuti;
 
     private String action;
+
+
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
+    }
+
+    public NotifikasiBo getNotifikasiBoProxy() {
+        return notifikasiBoProxy;
+    }
+
+    public void setNotifikasiBoProxy(NotifikasiBo notifikasiBoProxy) {
+        this.notifikasiBoProxy = notifikasiBoProxy;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -217,7 +238,11 @@ public class CutiFormPegawaiController implements ModelDriven<Object> {
             cutiPegawai.setOs(model.getOs());
             cutiPegawai.setJenisCuti(model.getJenisCuti());
 
-            cutiPegawaiBoProxy.saveAddCuti(cutiPegawai);
+            List<Notifikasi> notifCuti = cutiPegawaiBoProxy.saveAddCuti(cutiPegawai);
+
+            for (Notifikasi notifikasi : notifCuti ){
+                notifikasiBoProxy.sendNotif(notifikasi);
+            }
         } catch (GeneralBOException e) {
             result.setActionError(e.getMessage());
             Long logId = null;
@@ -243,6 +268,7 @@ public class CutiFormPegawaiController implements ModelDriven<Object> {
         cutiPegawai.setNip(nip);
         cutiPegawai.setForMobile(true);
         cutiPegawai.setFlag("Y");
+        cutiPegawai.setRoleId(roleId);
 
         List<com.neurix.hris.transaksi.cutiPegawai.model.CutiPegawai> listOfCuti = null;
 

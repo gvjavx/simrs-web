@@ -708,7 +708,7 @@
                     "<th rowspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc''>Perhitungan Lembur</th>"+
                     "<th rowspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc''>Biaya Lembur</th>"+
                     "<th rowspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc''>Status</th>"+
-                    "<th rowspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc''>Indisipliner</th>"+
+//                    "<th rowspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc''>Indisipliner</th>"+
                     // "<th rowspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc''>Keterangan</th>"+
                     "</tr>" +
                     "<tr class='active'>"+
@@ -785,7 +785,7 @@
                         '<td align="center">' + item.jamLembur + '</td>' +
                         '<td align="center" class="ceknull">' + item.biayaLemburName + '</td>' +
                         '<td align="center">' + item.statusName + '</td>' +
-                        '<td align="center">' +indisipliner+'</td>' +
+//                        '<td align="center">' +indisipliner+'</td>' +
                         // '<td align="center">' +note+'</td>' +
                         "</tr>";
             });

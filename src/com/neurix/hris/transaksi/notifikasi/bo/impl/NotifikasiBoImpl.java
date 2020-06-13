@@ -14,6 +14,7 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.common.util.ExpoPushNotif;
 import com.neurix.common.util.FirebasePushNotif;
 import com.neurix.hris.master.biodata.dao.BiodataDao;
+import com.neurix.hris.master.biodata.model.Biodata;
 import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.hris.master.cuti.dao.CutiDao;
 import com.neurix.hris.master.cuti.model.ImCutiEntity;
@@ -2392,68 +2393,726 @@ public class NotifikasiBoImpl implements NotifikasiBo {
         for (ItPersonilPositionEntity personilPositionEntity:personilPositionEntityList){
             branchId=personilPositionEntity.getBranchId();
         }
-        try {
-            strukturJabatanList = strukturJabatanDao.searchStrukturRelation2(nip,branchId);
-        } catch (HibernateException e) {
+        //Coba Reza
+
+//        List<Biodata> biodataList2 = new ArrayList();
+//
+//        try{
+//            biodataList2 = biodataDao.searchBiodataByCriteria(nip);
+//        }catch (HibernateException e) {
+//            logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+//            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//        }
+//        if (biodataList2 != null){
+//            for (Biodata biodata2 : biodataList2){
+//                String positionId = biodata2.getPositionPltId();
+//
+//                Map hsCriteriaMap2 = new HashMap();
+//                hsCriteriaMap2.put("branch_id", branchId);
+//                hsCriteriaMap2.put("position_id", positionId);
+//                hsCriteriaMap2.put("flag", "Y");
+//                List<ItPersonilPositionEntity> itPersonilPositionEntities2 = null;
+//                try {
+//                    itPersonilPositionEntities2 = personilPositionDao.getByCriteria(hsCriteriaMap2);
+//                } catch (HibernateException e) {
+//                    logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+//                    throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//                }
+//
+//                if (itPersonilPositionEntities2 != null){
+//                    if (itPersonilPositionEntities2.size() != 0){
+//                        for (ItPersonilPositionEntity listPersonilPosition : itPersonilPositionEntities2) {
+//                            PersonilPosition personilPosition = new PersonilPosition();
+//                            personilPosition.setNip(listPersonilPosition.getNip());
+//                            listOfResult.add(personilPosition);
+//                        }
+//                    }else {
+//
+//                        try {
+//                            strukturJabatanList = strukturJabatanDao.searchStrukturRelation2(nip,branchId);
+//                        } catch (HibernateException e) {
+//                            logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+//                            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//                        }
+//
+//                        for (StrukturJabatan strukturJabatan:strukturJabatanList) {
+//                            // Search Leader
+//                            if (strukturJabatan != null) {
+//                                String[] parts = strukturJabatan.getParentId().split("-");
+//                                String parent = parts[0];
+//
+//                                if (parent != null) {
+//                                    // search data postion_id from struktur jabatan by parameter parent
+//                                    Map hsCriteria = new HashMap();
+//                                    hsCriteria.put("branch_id", branchId);
+//                                    hsCriteria.put("struktur_jabatan_id", parent);
+//                                    hsCriteria.put("flag", "Y");
+//                                    List<ImStrukturJabatanEntity> strukturJabatanEntities = null;
+//                                    try {
+//                                        strukturJabatanEntities = strukturJabatanDao.getByCriteria(hsCriteria);
+//                                    } catch (HibernateException e) {
+//                                        logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+//                                        throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//                                    }
+//
+//                                    if (strukturJabatanEntities != null) {
+//                                        for (ImStrukturJabatanEntity listStruktur : strukturJabatanEntities) {
+//
+//                                            // search data nip from personil by parameter position_id from struktur jabatan
+//                                            String stPosition = "";
+//                                            if (listStruktur.getPositionId() != null) {
+//                                                stPosition = String.valueOf(listStruktur.getPositionId());
+//                                            }
+//                                            hsCriteria = new HashMap();
+//                                            hsCriteria.put("branch_id", branchId);
+//                                            hsCriteria.put("position_id", stPosition);
+//                                            hsCriteria.put("flag", "Y");
+//                                            List<ItPersonilPositionEntity> itPersonilPositionEntities = null;
+//                                            try {
+//
+//                                                itPersonilPositionEntities = personilPositionDao.getByCriteria(hsCriteria);
+//                                            } catch (HibernateException e) {
+//                                                logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+//                                                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//                                            }
+//
+//                                            if (itPersonilPositionEntities.size() == 0){
+//                                                List<Biodata> biodataList1 = new ArrayList();
+//
+//                                                try{
+//                                                    biodataList1 = biodataDao.searchBiodataUser(stPosition);
+//                                                }catch (HibernateException e) {
+//                                                    logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+//                                                    throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//                                                }
+//
+//                                                if (biodataList1 != null){
+//                                                    for (Biodata biodata : biodataList1){
+//                                                        String nipUser = biodata.getNip();
+////                                                        String positionId = biodata.getPositionPltId();
+//
+//                                                        Map hsCriteriaMap1 = new HashMap();
+//                                                        hsCriteriaMap1 = new HashMap();
+//                                                        hsCriteriaMap1.put("nip", nipUser);
+//                                                        hsCriteriaMap1.put("branch_id", branchId);
+//                                                        hsCriteriaMap1.put("flag", "Y");
+//
+//                                                        try {
+//                                                            itPersonilPositionEntities = personilPositionDao.getByCriteria(hsCriteriaMap1);
+//                                                        } catch (HibernateException e) {
+//                                                            logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+//                                                            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//                                                        }
+//                                                    }
+//
+//                                                    //coba reza
+//                                                    while (itPersonilPositionEntities.size() == 0){
+//                                                        try {
+//                                                            strukturJabatanList = strukturJabatanDao.searchStrukturRelationUser(parent, branchId);
+//                                                        } catch (HibernateException e) {
+//                                                            logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+//                                                            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//                                                        }
+//
+//                                                        if (strukturJabatanList != null){
+//                                                            parent = strukturJabatanList.get(0).getParentId();
+//
+//                                                            Map hsCriteriaMap = new HashMap();
+//                                                            hsCriteriaMap.put("branch_id", branchId);
+//                                                            hsCriteriaMap.put("struktur_jabatan_id", parent);
+//                                                            hsCriteriaMap.put("flag", "Y");
+//                                                            List<ImStrukturJabatanEntity> strukturJabatanEntity = null;
+//                                                            try {
+//                                                                strukturJabatanEntity = strukturJabatanDao.getByCriteria(hsCriteriaMap);
+//                                                            } catch (HibernateException e) {
+//                                                                logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+//                                                                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//                                                            }
+//
+//                                                            if (strukturJabatanEntity != null){
+//                                                                for (ImStrukturJabatanEntity entity : strukturJabatanEntity){
+//                                                                    // search data nip from personil by parameter position_id from struktur jabatan
+//                                                                    String stPositionId = "";
+//                                                                    if (entity.getPositionId() != null) {
+//                                                                        stPositionId = String.valueOf(entity.getPositionId());
+//                                                                    }
+//                                                                    hsCriteriaMap = new HashMap();
+//                                                                    hsCriteriaMap.put("branch_id", branchId);
+//                                                                    hsCriteriaMap.put("position_id", stPositionId);
+//                                                                    hsCriteriaMap.put("flag", "Y");
+////                                            List<ItPersonilPositionEntity> itPersonilPositionEntities = null;
+//                                                                    try {
+//                                                                        itPersonilPositionEntities = personilPositionDao.getByCriteria(hsCriteriaMap);
+//                                                                    } catch (HibernateException e) {
+//                                                                        logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+//                                                                        throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//                                                                    }
+//
+//                                                                    if (itPersonilPositionEntities.size() == 0){
+//                                                                        List<Biodata> biodataList = new ArrayList();
+//
+//                                                                        try{
+//                                                                            biodataList = biodataDao.searchBiodataUser(stPositionId);
+//                                                                        }catch (HibernateException e) {
+//                                                                            logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+//                                                                            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//                                                                        }
+//
+//                                                                        if (biodataList != null){
+//                                                                            for (Biodata biodata : biodataList){
+//                                                                                String nipUser = biodata.getNip();
+////                                                                                String positionId = biodata.getPositionPltId();
+//
+//                                                                                hsCriteriaMap = new HashMap();
+//                                                                                hsCriteriaMap.put("nip", nipUser);
+//                                                                                hsCriteriaMap.put("branch_id", branchId);
+//                                                                                hsCriteriaMap.put("flag", "Y");
+//
+//                                                                                try {
+//                                                                                    itPersonilPositionEntities = personilPositionDao.getByCriteria(hsCriteriaMap);
+//                                                                                } catch (HibernateException e) {
+//                                                                                    logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+//                                                                                    throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//                                                                                }
+//                                                                            }
+//                                                                        }
+//                                                                    }
+//                                                                }
+//                                                            }
+//                                                        }
+//                                                    }
+//                                                }
+//                                            }
+//
+//                                            for (ItPersonilPositionEntity listPersonilPosition : itPersonilPositionEntities) {
+//                                                PersonilPosition personilPosition = new PersonilPosition();
+//                                                personilPosition.setNip(listPersonilPosition.getNip());
+//                                                listOfResult.add(personilPosition);
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        }
+//
+//                    }
+//                }
+//            }
+//        }else {
+//
+//            try {
+//                strukturJabatanList = strukturJabatanDao.searchStrukturRelation2(nip,branchId);
+//            } catch (HibernateException e) {
+//                logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+//                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//            }
+//
+//            for (StrukturJabatan strukturJabatan:strukturJabatanList) {
+//                // Search Leader
+//                if (strukturJabatan != null) {
+//                    String[] parts = strukturJabatan.getParentId().split("-");
+//                    String parent = parts[0];
+//
+//                    if (parent != null) {
+//                        // search data postion_id from struktur jabatan by parameter parent
+//                        Map hsCriteria = new HashMap();
+//                        hsCriteria.put("branch_id", branchId);
+//                        hsCriteria.put("struktur_jabatan_id", parent);
+//                        hsCriteria.put("flag", "Y");
+//                        List<ImStrukturJabatanEntity> strukturJabatanEntities = null;
+//                        try {
+//                            strukturJabatanEntities = strukturJabatanDao.getByCriteria(hsCriteria);
+//                        } catch (HibernateException e) {
+//                            logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+//                            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//                        }
+//
+//                        if (strukturJabatanEntities != null) {
+//                            for (ImStrukturJabatanEntity listStruktur : strukturJabatanEntities) {
+//
+//                                // search data nip from personil by parameter position_id from struktur jabatan
+//                                String stPosition = "";
+//                                if (listStruktur.getPositionId() != null) {
+//                                    stPosition = String.valueOf(listStruktur.getPositionId());
+//                                }
+//                                hsCriteria = new HashMap();
+//                                hsCriteria.put("branch_id", branchId);
+//                                hsCriteria.put("position_id", stPosition);
+//                                hsCriteria.put("flag", "Y");
+//                                List<ItPersonilPositionEntity> itPersonilPositionEntities = null;
+//                                try {
+//
+//                                    itPersonilPositionEntities = personilPositionDao.getByCriteria(hsCriteria);
+//                                } catch (HibernateException e) {
+//                                    logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+//                                    throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//                                }
+//
+//                                if (itPersonilPositionEntities.size() == 0){
+//                                    List<Biodata> biodataList1 = new ArrayList();
+//
+//                                    try{
+//                                        biodataList1 = biodataDao.searchBiodataUser(stPosition);
+//                                    }catch (HibernateException e) {
+//                                        logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+//                                        throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//                                    }
+//
+//                                    if (biodataList1 != null){
+//                                        for (Biodata biodata : biodataList1){
+//                                            String nipUser = biodata.getNip();
+//                                            String positionId = biodata.getPositionPltId();
+//
+//                                            Map hsCriteriaMap1 = new HashMap();
+//                                            hsCriteriaMap1 = new HashMap();
+//                                            hsCriteriaMap1.put("nip", nipUser);
+//                                            hsCriteriaMap1.put("branch_id", branchId);
+//                                            hsCriteriaMap1.put("flag", "Y");
+//
+//                                            try {
+//                                                itPersonilPositionEntities = personilPositionDao.getByCriteria(hsCriteriaMap1);
+//                                            } catch (HibernateException e) {
+//                                                logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+//                                                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//                                            }
+//                                        }
+//
+//                                        //coba reza
+//                                        while (itPersonilPositionEntities.size() == 0){
+//                                            try {
+//                                                strukturJabatanList = strukturJabatanDao.searchStrukturRelationUser(parent, branchId);
+//                                            } catch (HibernateException e) {
+//                                                logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+//                                                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//                                            }
+//
+//                                            if (strukturJabatanList != null){
+//                                                parent = strukturJabatanList.get(0).getParentId();
+//
+//                                                Map hsCriteriaMap = new HashMap();
+//                                                hsCriteriaMap.put("branch_id", branchId);
+//                                                hsCriteriaMap.put("struktur_jabatan_id", parent);
+//                                                hsCriteriaMap.put("flag", "Y");
+//                                                List<ImStrukturJabatanEntity> strukturJabatanEntity = null;
+//                                                try {
+//                                                    strukturJabatanEntity = strukturJabatanDao.getByCriteria(hsCriteriaMap);
+//                                                } catch (HibernateException e) {
+//                                                    logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+//                                                    throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//                                                }
+//
+//                                                if (strukturJabatanEntity != null){
+//                                                    for (ImStrukturJabatanEntity entity : strukturJabatanEntity){
+//                                                        // search data nip from personil by parameter position_id from struktur jabatan
+//                                                        String stPositionId = "";
+//                                                        if (entity.getPositionId() != null) {
+//                                                            stPositionId = String.valueOf(entity.getPositionId());
+//                                                        }
+//                                                        hsCriteriaMap = new HashMap();
+//                                                        hsCriteriaMap.put("branch_id", branchId);
+//                                                        hsCriteriaMap.put("position_id", stPositionId);
+//                                                        hsCriteriaMap.put("flag", "Y");
+////                                            List<ItPersonilPositionEntity> itPersonilPositionEntities = null;
+//                                                        try {
+//                                                            itPersonilPositionEntities = personilPositionDao.getByCriteria(hsCriteriaMap);
+//                                                        } catch (HibernateException e) {
+//                                                            logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+//                                                            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//                                                        }
+//
+//                                                        if (itPersonilPositionEntities.size() == 0){
+//                                                            List<Biodata> biodataList = new ArrayList();
+//
+//                                                            try{
+//                                                                biodataList = biodataDao.searchBiodataUser(stPositionId);
+//                                                            }catch (HibernateException e) {
+//                                                                logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+//                                                                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//                                                            }
+//
+//                                                            if (biodataList != null){
+//                                                                for (Biodata biodata : biodataList){
+//                                                                    String nipUser = biodata.getNip();
+//                                                                    String positionId = biodata.getPositionPltId();
+//
+//                                                                    hsCriteriaMap = new HashMap();
+//                                                                    hsCriteriaMap.put("nip", nipUser);
+//                                                                    hsCriteriaMap.put("branch_id", branchId);
+//                                                                    hsCriteriaMap.put("flag", "Y");
+//
+//                                                                    try {
+//                                                                        itPersonilPositionEntities = personilPositionDao.getByCriteria(hsCriteriaMap);
+//                                                                    } catch (HibernateException e) {
+//                                                                        logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+//                                                                        throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//                                                                    }
+//                                                                }
+//                                                            }
+//                                                        }
+//                                                    }
+//                                                }
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//
+//                                for (ItPersonilPositionEntity listPersonilPosition : itPersonilPositionEntities) {
+//                                    PersonilPosition personilPosition = new PersonilPosition();
+//                                    personilPosition.setNip(listPersonilPosition.getNip());
+//                                    listOfResult.add(personilPosition);
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//
+//        }
+        //Batas
+
+        List<Biodata> biodataList2 = new ArrayList();
+        try{
+            biodataList2 = biodataDao.searchBiodataByCriteria(nip);
+        }catch (HibernateException e) {
             logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
+        if (biodataList2 != null){
+            for (Biodata biodata2 : biodataList2){
+                String positionPlt = biodata2.getPositionPltId();
+                if (positionPlt != null && !"".equalsIgnoreCase(positionPlt)){
+                    strukturJabatanList = strukturJabatanDao.searchStruktur(positionPlt, branchId);
 
-        for (StrukturJabatan strukturJabatan:strukturJabatanList) {
-            // Search Leader
-            if (strukturJabatan != null) {
-                String[] parts = strukturJabatan.getParentId().split("-");
-                String parent = parts[0];
+                    for (StrukturJabatan strukturJabatan : strukturJabatanList){
 
-                if (parent != null) {
-                    // search data postion_id from struktur jabatan by parameter parent
-                    Map hsCriteria = new HashMap();
-                    hsCriteria.put("branch_id", branchId);
-                    hsCriteria.put("struktur_jabatan_id", parent);
-                    hsCriteria.put("flag", "Y");
-                    List<ImStrukturJabatanEntity> strukturJabatanEntities = null;
+                        // Search Leader
+                        if (strukturJabatan != null) {
+                            String[] parts = strukturJabatan.getParentId().split("-");
+                            String parent = parts[0];
+
+                            if (parent != null) {
+                                // search data postion_id from struktur jabatan by parameter parent
+                                Map hsCriteria = new HashMap();
+                                hsCriteria.put("branch_id", branchId);
+                                hsCriteria.put("struktur_jabatan_id", parent);
+                                hsCriteria.put("flag", "Y");
+                                List<ImStrukturJabatanEntity> strukturJabatanEntities = null;
+                                try {
+                                    strukturJabatanEntities = strukturJabatanDao.getByCriteria(hsCriteria);
+                                } catch (HibernateException e) {
+                                    logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+                                    throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                                }
+
+                                if (strukturJabatanEntities != null) {
+                                    for (ImStrukturJabatanEntity listStruktur : strukturJabatanEntities) {
+
+                                        // search data nip from personil by parameter position_id from struktur jabatan
+                                        String stPosition = "";
+                                        if (listStruktur.getPositionId() != null) {
+                                            stPosition = String.valueOf(listStruktur.getPositionId());
+                                        }
+                                        hsCriteria = new HashMap();
+                                        hsCriteria.put("branch_id", branchId);
+                                        hsCriteria.put("position_id", stPosition);
+                                        hsCriteria.put("flag", "Y");
+                                        List<ItPersonilPositionEntity> itPersonilPositionEntities = null;
+                                        try {
+
+                                            itPersonilPositionEntities = personilPositionDao.getByCriteria(hsCriteria);
+                                        } catch (HibernateException e) {
+                                            logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+                                            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                                        }
+
+                                        if (itPersonilPositionEntities.size() == 0){
+                                            List<Biodata> biodataList1 = new ArrayList();
+
+                                            try{
+                                                biodataList1 = biodataDao.searchBiodataUser(stPosition);
+                                            }catch (HibernateException e) {
+                                                logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+                                                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                                            }
+
+                                            if (biodataList1 != null){
+                                                for (Biodata biodata : biodataList1){
+                                                    String nipUser = biodata.getNip();
+                                                    String positionId = biodata.getPositionPltId();
+
+                                                    Map hsCriteriaMap1 = new HashMap();
+                                                    hsCriteriaMap1 = new HashMap();
+                                                    hsCriteriaMap1.put("nip", nipUser);
+                                                    hsCriteriaMap1.put("branch_id", branchId);
+                                                    hsCriteriaMap1.put("flag", "Y");
+
+                                                    try {
+                                                        itPersonilPositionEntities = personilPositionDao.getByCriteria(hsCriteriaMap1);
+                                                    } catch (HibernateException e) {
+                                                        logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+                                                        throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                                                    }
+                                                }
+
+                                                //coba reza
+                                                while (itPersonilPositionEntities.size() == 0){
+                                                    try {
+                                                        strukturJabatanList = strukturJabatanDao.searchStrukturRelationUser(parent, branchId);
+                                                    } catch (HibernateException e) {
+                                                        logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+                                                        throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                                                    }
+
+                                                    if (strukturJabatanList != null){
+                                                        parent = strukturJabatanList.get(0).getParentId();
+
+                                                        Map hsCriteriaMap = new HashMap();
+                                                        hsCriteriaMap.put("branch_id", branchId);
+                                                        hsCriteriaMap.put("struktur_jabatan_id", parent);
+                                                        hsCriteriaMap.put("flag", "Y");
+                                                        List<ImStrukturJabatanEntity> strukturJabatanEntity = null;
+                                                        try {
+                                                            strukturJabatanEntity = strukturJabatanDao.getByCriteria(hsCriteriaMap);
+                                                        } catch (HibernateException e) {
+                                                            logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+                                                            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                                                        }
+
+                                                        if (strukturJabatanEntity != null){
+                                                            for (ImStrukturJabatanEntity entity : strukturJabatanEntity){
+                                                                // search data nip from personil by parameter position_id from struktur jabatan
+                                                                String stPositionId = "";
+                                                                if (entity.getPositionId() != null) {
+                                                                    stPositionId = String.valueOf(entity.getPositionId());
+                                                                }
+                                                                hsCriteriaMap = new HashMap();
+                                                                hsCriteriaMap.put("branch_id", branchId);
+                                                                hsCriteriaMap.put("position_id", stPositionId);
+                                                                hsCriteriaMap.put("flag", "Y");
+//                                            List<ItPersonilPositionEntity> itPersonilPositionEntities = null;
+                                                                try {
+                                                                    itPersonilPositionEntities = personilPositionDao.getByCriteria(hsCriteriaMap);
+                                                                } catch (HibernateException e) {
+                                                                    logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+                                                                    throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                                                                }
+
+                                                                if (itPersonilPositionEntities.size() == 0){
+                                                                    List<Biodata> biodataList = new ArrayList();
+
+                                                                    try{
+                                                                        biodataList = biodataDao.searchBiodataUser(stPositionId);
+                                                                    }catch (HibernateException e) {
+                                                                        logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+                                                                        throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                                                                    }
+
+                                                                    if (biodataList != null){
+                                                                        for (Biodata biodata : biodataList){
+                                                                            String nipUser = biodata.getNip();
+                                                                            String positionId = biodata.getPositionPltId();
+
+                                                                            hsCriteriaMap = new HashMap();
+                                                                            hsCriteriaMap.put("nip", nipUser);
+                                                                            hsCriteriaMap.put("branch_id", branchId);
+                                                                            hsCriteriaMap.put("flag", "Y");
+
+                                                                            try {
+                                                                                itPersonilPositionEntities = personilPositionDao.getByCriteria(hsCriteriaMap);
+                                                                            } catch (HibernateException e) {
+                                                                                logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+                                                                                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                                                                            }
+                                                                        }
+                                                                    }
+
+                                                                }
+
+                                                            }
+                                                        }
+                                                    }
+                                                }
+
+
+                                            }
+                                        }
+
+                                        for (ItPersonilPositionEntity listPersonilPosition : itPersonilPositionEntities) {
+                                            PersonilPosition personilPosition = new PersonilPosition();
+                                            personilPosition.setNip(listPersonilPosition.getNip());
+                                            listOfResult.add(personilPosition);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                }else {
+
                     try {
-                        strukturJabatanEntities = strukturJabatanDao.getByCriteria(hsCriteria);
+                        strukturJabatanList = strukturJabatanDao.searchStrukturRelation2(nip,branchId);
                     } catch (HibernateException e) {
                         logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
                         throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
                     }
 
-                    if (strukturJabatanEntities != null) {
-                        for (ImStrukturJabatanEntity listStruktur : strukturJabatanEntities) {
+                    for (StrukturJabatan strukturJabatan:strukturJabatanList) {
+                        // Search Leader
+                        if (strukturJabatan != null) {
+                            String[] parts = strukturJabatan.getParentId().split("-");
+                            String parent = parts[0];
 
-                            // search data nip from personil by parameter position_id from struktur jabatan
-                            String stPosition = "";
-                            if (listStruktur.getPositionId() != null) {
-                                stPosition = String.valueOf(listStruktur.getPositionId());
-                            }
-                            hsCriteria = new HashMap();
-                            hsCriteria.put("branch_id", branchId);
-                            hsCriteria.put("position_id", stPosition);
-                            hsCriteria.put("flag", "Y");
-                            List<ItPersonilPositionEntity> itPersonilPositionEntities = null;
-                            try {
+                            if (parent != null) {
+                                // search data postion_id from struktur jabatan by parameter parent
+                                Map hsCriteria = new HashMap();
+                                hsCriteria.put("branch_id", branchId);
+                                hsCriteria.put("struktur_jabatan_id", parent);
+                                hsCriteria.put("flag", "Y");
+                                List<ImStrukturJabatanEntity> strukturJabatanEntities = null;
+                                try {
+                                    strukturJabatanEntities = strukturJabatanDao.getByCriteria(hsCriteria);
+                                } catch (HibernateException e) {
+                                    logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+                                    throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                                }
 
-                                itPersonilPositionEntities = personilPositionDao.getByCriteria(hsCriteria);
-                            } catch (HibernateException e) {
-                                logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
-                                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
-                            }
+                                if (strukturJabatanEntities != null) {
+                                    for (ImStrukturJabatanEntity listStruktur : strukturJabatanEntities) {
 
-                            if (itPersonilPositionEntities != null) {
-                                for (ItPersonilPositionEntity listPersonilPosition : itPersonilPositionEntities) {
-                                    PersonilPosition personilPosition = new PersonilPosition();
-                                    personilPosition.setNip(listPersonilPosition.getNip());
-                                    listOfResult.add(personilPosition);
+                                        // search data nip from personil by parameter position_id from struktur jabatan
+                                        String stPosition = "";
+                                        if (listStruktur.getPositionId() != null) {
+                                            stPosition = String.valueOf(listStruktur.getPositionId());
+                                        }
+                                        hsCriteria = new HashMap();
+                                        hsCriteria.put("branch_id", branchId);
+                                        hsCriteria.put("position_id", stPosition);
+                                        hsCriteria.put("flag", "Y");
+                                        List<ItPersonilPositionEntity> itPersonilPositionEntities = null;
+                                        try {
 
-                                    //search PLT
-                                    Date date = new Date();
-                                    java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-                                    List<ItCutiPegawaiEntity> cutiPegawaiPltList= cutiPegawaiDao.getpegawaiPlt(sqlDate,listPersonilPosition.getNip());
-                                    if (cutiPegawaiPltList.size()!=0){
-                                        for (ItCutiPegawaiEntity cutiPegawaiEntity : cutiPegawaiPltList) {
-                                            personilPosition=new PersonilPosition();
-                                            personilPosition.setNip(cutiPegawaiEntity.getPegawaiPenggantiSementara());
+                                            itPersonilPositionEntities = personilPositionDao.getByCriteria(hsCriteria);
+                                        } catch (HibernateException e) {
+                                            logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+                                            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                                        }
+
+                                        if (itPersonilPositionEntities.size() == 0){
+                                            List<Biodata> biodataList1 = new ArrayList();
+
+                                            try{
+                                                biodataList1 = biodataDao.searchBiodataUser(stPosition);
+                                            }catch (HibernateException e) {
+                                                logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+                                                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                                            }
+
+                                            if (biodataList1 != null){
+                                                for (Biodata biodata : biodataList1){
+                                                    String nipUser = biodata.getNip();
+                                                    String positionId = biodata.getPositionPltId();
+
+                                                    Map hsCriteriaMap1 = new HashMap();
+                                                    hsCriteriaMap1 = new HashMap();
+                                                    hsCriteriaMap1.put("nip", nipUser);
+                                                    hsCriteriaMap1.put("branch_id", branchId);
+                                                    hsCriteriaMap1.put("flag", "Y");
+
+                                                    try {
+                                                        itPersonilPositionEntities = personilPositionDao.getByCriteria(hsCriteriaMap1);
+                                                    } catch (HibernateException e) {
+                                                        logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+                                                        throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                                                    }
+                                                }
+
+                                                //coba reza
+                                                while (itPersonilPositionEntities.size() == 0){
+                                                    try {
+                                                        strukturJabatanList = strukturJabatanDao.searchStrukturRelationUser(parent, branchId);
+                                                    } catch (HibernateException e) {
+                                                        logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+                                                        throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                                                    }
+
+                                                    if (strukturJabatanList != null){
+                                                        parent = strukturJabatanList.get(0).getParentId();
+
+                                                        Map hsCriteriaMap = new HashMap();
+                                                        hsCriteriaMap.put("branch_id", branchId);
+                                                        hsCriteriaMap.put("struktur_jabatan_id", parent);
+                                                        hsCriteriaMap.put("flag", "Y");
+                                                        List<ImStrukturJabatanEntity> strukturJabatanEntity = null;
+                                                        try {
+                                                            strukturJabatanEntity = strukturJabatanDao.getByCriteria(hsCriteriaMap);
+                                                        } catch (HibernateException e) {
+                                                            logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+                                                            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                                                        }
+
+                                                        if (strukturJabatanEntity != null){
+                                                            for (ImStrukturJabatanEntity entity : strukturJabatanEntity){
+                                                                // search data nip from personil by parameter position_id from struktur jabatan
+                                                                String stPositionId = "";
+                                                                if (entity.getPositionId() != null) {
+                                                                    stPositionId = String.valueOf(entity.getPositionId());
+                                                                }
+                                                                hsCriteriaMap = new HashMap();
+                                                                hsCriteriaMap.put("branch_id", branchId);
+                                                                hsCriteriaMap.put("position_id", stPositionId);
+                                                                hsCriteriaMap.put("flag", "Y");
+//                                            List<ItPersonilPositionEntity> itPersonilPositionEntities = null;
+                                                                try {
+                                                                    itPersonilPositionEntities = personilPositionDao.getByCriteria(hsCriteriaMap);
+                                                                } catch (HibernateException e) {
+                                                                    logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+                                                                    throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                                                                }
+
+                                                                if (itPersonilPositionEntities.size() == 0){
+                                                                    List<Biodata> biodataList = new ArrayList();
+
+                                                                    try{
+                                                                        biodataList = biodataDao.searchBiodataUser(stPositionId);
+                                                                    }catch (HibernateException e) {
+                                                                        logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+                                                                        throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                                                                    }
+
+                                                                    if (biodataList != null){
+                                                                        for (Biodata biodata : biodataList){
+                                                                            String nipUser = biodata.getNip();
+                                                                            String positionId = biodata.getPositionPltId();
+
+                                                                            hsCriteriaMap = new HashMap();
+                                                                            hsCriteriaMap.put("nip", nipUser);
+                                                                            hsCriteriaMap.put("branch_id", branchId);
+                                                                            hsCriteriaMap.put("flag", "Y");
+
+                                                                            try {
+                                                                                itPersonilPositionEntities = personilPositionDao.getByCriteria(hsCriteriaMap);
+                                                                            } catch (HibernateException e) {
+                                                                                logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+                                                                                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                                                                            }
+                                                                        }
+                                                                    }
+
+                                                                }
+
+                                                            }
+                                                        }
+                                                    }
+                                                }
+
+
+                                            }
+                                        }
+
+                                        for (ItPersonilPositionEntity listPersonilPosition : itPersonilPositionEntities) {
+                                            PersonilPosition personilPosition = new PersonilPosition();
+                                            personilPosition.setNip(listPersonilPosition.getNip());
                                             listOfResult.add(personilPosition);
                                         }
                                     }
@@ -2461,9 +3120,182 @@ public class NotifikasiBoImpl implements NotifikasiBo {
                             }
                         }
                     }
+
                 }
             }
         }
+//Batas
+
+//        try {
+//            strukturJabatanList = strukturJabatanDao.searchStrukturRelation2(nip,branchId);
+//        } catch (HibernateException e) {
+//            logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+//            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//        }
+//
+//        for (StrukturJabatan strukturJabatan:strukturJabatanList) {
+//            // Search Leader
+//            if (strukturJabatan != null) {
+//                String[] parts = strukturJabatan.getParentId().split("-");
+//                String parent = parts[0];
+//
+//                if (parent != null) {
+//                    // search data postion_id from struktur jabatan by parameter parent
+//                    Map hsCriteria = new HashMap();
+//                    hsCriteria.put("branch_id", branchId);
+//                    hsCriteria.put("struktur_jabatan_id", parent);
+//                    hsCriteria.put("flag", "Y");
+//                    List<ImStrukturJabatanEntity> strukturJabatanEntities = null;
+//                    try {
+//                        strukturJabatanEntities = strukturJabatanDao.getByCriteria(hsCriteria);
+//                    } catch (HibernateException e) {
+//                        logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+//                        throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//                    }
+//
+//                    if (strukturJabatanEntities != null) {
+//                        for (ImStrukturJabatanEntity listStruktur : strukturJabatanEntities) {
+//
+//                            // search data nip from personil by parameter position_id from struktur jabatan
+//                            String stPosition = "";
+//                            if (listStruktur.getPositionId() != null) {
+//                                stPosition = String.valueOf(listStruktur.getPositionId());
+//                            }
+//                            hsCriteria = new HashMap();
+//                            hsCriteria.put("branch_id", branchId);
+//                            hsCriteria.put("position_id", stPosition);
+//                            hsCriteria.put("flag", "Y");
+//                            List<ItPersonilPositionEntity> itPersonilPositionEntities = null;
+//                            try {
+//
+//                                itPersonilPositionEntities = personilPositionDao.getByCriteria(hsCriteria);
+//                            } catch (HibernateException e) {
+//                                logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+//                                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//                            }
+//
+//                            if (itPersonilPositionEntities.size() == 0){
+//                                List<Biodata> biodataList1 = new ArrayList();
+//
+//                                try{
+//                                    biodataList1 = biodataDao.searchBiodataUser(stPosition);
+//                                }catch (HibernateException e) {
+//                                    logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+//                                    throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//                                }
+//
+//                                if (biodataList1 != null){
+//                                    for (Biodata biodata : biodataList1){
+//                                        String nipUser = biodata.getNip();
+//                                        String positionId = biodata.getPositionPltId();
+//
+//                                        Map hsCriteriaMap1 = new HashMap();
+//                                        hsCriteriaMap1 = new HashMap();
+//                                        hsCriteriaMap1.put("nip", nipUser);
+//                                        hsCriteriaMap1.put("branch_id", branchId);
+//                                        hsCriteriaMap1.put("flag", "Y");
+//
+//                                        try {
+//                                            itPersonilPositionEntities = personilPositionDao.getByCriteria(hsCriteriaMap1);
+//                                        } catch (HibernateException e) {
+//                                            logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+//                                            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//                                        }
+//                                    }
+//
+//                                    //coba reza
+//                                    while (itPersonilPositionEntities.size() == 0){
+//                                        try {
+//                                            strukturJabatanList = strukturJabatanDao.searchStrukturRelationUser(parent, branchId);
+//                                        } catch (HibernateException e) {
+//                                            logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+//                                            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//                                        }
+//
+//                                        if (strukturJabatanList != null){
+//                                            parent = strukturJabatanList.get(0).getParentId();
+//
+//                                            Map hsCriteriaMap = new HashMap();
+//                                            hsCriteriaMap.put("branch_id", branchId);
+//                                            hsCriteriaMap.put("struktur_jabatan_id", parent);
+//                                            hsCriteriaMap.put("flag", "Y");
+//                                            List<ImStrukturJabatanEntity> strukturJabatanEntity = null;
+//                                            try {
+//                                                strukturJabatanEntity = strukturJabatanDao.getByCriteria(hsCriteriaMap);
+//                                            } catch (HibernateException e) {
+//                                                logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+//                                                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//                                            }
+//
+//                                            if (strukturJabatanEntity != null){
+//                                                for (ImStrukturJabatanEntity entity : strukturJabatanEntity){
+//                                                    // search data nip from personil by parameter position_id from struktur jabatan
+//                                                    String stPositionId = "";
+//                                                    if (entity.getPositionId() != null) {
+//                                                        stPositionId = String.valueOf(entity.getPositionId());
+//                                                    }
+//                                                    hsCriteriaMap = new HashMap();
+//                                                    hsCriteriaMap.put("branch_id", branchId);
+//                                                    hsCriteriaMap.put("position_id", stPositionId);
+//                                                    hsCriteriaMap.put("flag", "Y");
+////                                            List<ItPersonilPositionEntity> itPersonilPositionEntities = null;
+//                                                    try {
+//                                                        itPersonilPositionEntities = personilPositionDao.getByCriteria(hsCriteriaMap);
+//                                                    } catch (HibernateException e) {
+//                                                        logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+//                                                        throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//                                                    }
+//
+//                                                    if (itPersonilPositionEntities.size() == 0){
+//                                                        List<Biodata> biodataList = new ArrayList();
+//
+//                                                        try{
+//                                                            biodataList = biodataDao.searchBiodataUser(stPositionId);
+//                                                        }catch (HibernateException e) {
+//                                                            logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+//                                                            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//                                                        }
+//
+//                                                        if (biodataList != null){
+//                                                            for (Biodata biodata : biodataList){
+//                                                                String nipUser = biodata.getNip();
+//                                                                String positionId = biodata.getPositionPltId();
+//
+//                                                                hsCriteriaMap = new HashMap();
+//                                                                hsCriteriaMap.put("nip", nipUser);
+//                                                                hsCriteriaMap.put("branch_id", branchId);
+//                                                                hsCriteriaMap.put("flag", "Y");
+//
+//                                                                try {
+//                                                                    itPersonilPositionEntities = personilPositionDao.getByCriteria(hsCriteriaMap);
+//                                                                } catch (HibernateException e) {
+//                                                                    logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+//                                                                    throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//                                                                }
+//                                                            }
+//                                                        }
+//
+//                                                    }
+//
+//                                                }
+//                                            }
+//                                        }
+//                                    }
+//
+//
+//                                }
+//                            }
+//
+//                            for (ItPersonilPositionEntity listPersonilPosition : itPersonilPositionEntities) {
+//                                PersonilPosition personilPosition = new PersonilPosition();
+//                                personilPosition.setNip(listPersonilPosition.getNip());
+//                                listOfResult.add(personilPosition);
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
         logger.info("[NotifikasiBoImpl.daftarAtasanLangsung] end process <<<");
         return listOfResult;
     }
