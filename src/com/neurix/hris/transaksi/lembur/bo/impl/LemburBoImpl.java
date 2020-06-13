@@ -725,93 +725,204 @@ public class LemburBoImpl implements LemburBo {
         List<Notifikasi> notifikasiList = new ArrayList<>();
 
         if (bean != null) {
-            String lemburId;
-            Map hsCriteria = new HashMap();
-            if (bean.getNip() != null && !"".equalsIgnoreCase(bean.getNip())) {
-                hsCriteria.put("nip", bean.getNip());
-            }
+            // search data kelompok_id from im_positions by parameter parent
+            List<ImPosition> imPositionList = null;
             try {
-                // Generating ID, get from postgre sequence
-                lemburId = lemburDao.getNextLemburId();
+                imPositionList = positionDao.getDataKelompokId(bean.getPositionId());
             } catch (HibernateException e) {
-                logger.error("[LemburBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when getting sequence lembur id, please info to your admin..." + e.getMessage());
-            }
-            // creating object entity serializable
-            LemburEntity itLemburEntity = new LemburEntity();
-            ImDepartmentEntity imDepartmentEntity = null;
-            ImBiodataEntity imBiodataEntity = null ;
-            ImPosition imPosition = null;
-            ImGolonganEntity imGolonganEntity=null;
-
-            if (!bean.getNip().equals("")||bean.getNip()!=null){
-                imBiodataEntity = biodataDao.getById("nip", bean.getNip(), "Y");
-            }
-            if (!bean.getPositionId().equals("")||bean.getPositionId()!=null){
-                imPosition = positionDao.getById("positionId", bean.getPositionId(), "Y");
-            }
-            if (!bean.getDivisiId().equals("")||bean.getDivisiId()!=null){
-                imDepartmentEntity= departmentDao.getById("departmentId", bean.getDivisiId(), "Y");
-            }
-            if (!bean.getGolonganId().equals("")||bean.getGolonganId()!=null){
-                imGolonganEntity= golonganDao.getById("golonganId", bean.getGolonganId(), "Y");
-            }
-            List<ItPersonilPositionEntity> personilPositionEntityList = personilPositionDao.getListPersonilPosition(bean.getNip());
-            for (ItPersonilPositionEntity personilPositionEntity : personilPositionEntityList){
-                bean.setBranchId(personilPositionEntity.getBranchId());
-            }
-            itLemburEntity.setLemburId(lemburId);
-            itLemburEntity.setNip(bean.getNip());
-            itLemburEntity.setPegawaiName(bean.getPegawaiName());
-            itLemburEntity.setDivisiId(bean.getDivisiId());
-            itLemburEntity.setPositionId(bean.getPositionId());
-            itLemburEntity.setGolonganId(bean.getGolonganId());
-            itLemburEntity.setTipePegawaiId(bean.getTipePegawaiId());
-            itLemburEntity.setStatusGiling(bean.getStatusGiling());
-            itLemburEntity.setJamAwal(bean.getJamAwal());
-            itLemburEntity.setJamAkhir(bean.getJamAkhir());
-            itLemburEntity.setLamaJam(bean.getLamaJam());
-            itLemburEntity.setKeterangan(bean.getKeterangan());
-            itLemburEntity.setTipeLembur(bean.getTipeLembur());
-            itLemburEntity.setTanggalAwal(bean.getTanggalAwal());
-            itLemburEntity.setTanggalAkhir(bean.getTanggalAkhir());
-            itLemburEntity.setTanggalAwalSetuju(bean.getTanggalAwal());
-            itLemburEntity.setTanggalAkhirSetuju(bean.getTanggalAkhir());
-            itLemburEntity.setPositionName(imPosition.getPositionName());
-            if (imDepartmentEntity != null)
-                itLemburEntity.setDivisiName(imDepartmentEntity.getDepartmentName());
-            else
-                itLemburEntity.setDivisiName("");
-            if (imGolonganEntity!=null){
-                itLemburEntity.setGolonganName(imGolonganEntity.getGolonganName());
-            }
-            itLemburEntity.setFlag(bean.getFlag());
-            itLemburEntity.setAction(bean.getAction());
-            itLemburEntity.setCreatedWho(bean.getCreatedWho());
-            itLemburEntity.setLastUpdateWho(bean.getLastUpdateWho());
-            itLemburEntity.setCreatedDate(bean.getCreatedDate());
-            itLemburEntity.setLastUpdate(bean.getLastUpdate());
-
-            try {
-                // insert into database
-                lemburDao.addAndSave(itLemburEntity);
-            } catch (HibernateException e) {
-                logger.error("[IjinKeluarBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
+                logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
             }
 
-            //Send notif ke kabag
-            Notifikasi notifAtasan= new Notifikasi();
-            notifAtasan.setNip(bean.getNip());
-            notifAtasan.setNoRequest(lemburId);
-            notifAtasan.setTipeNotifId("TN77");
-            notifAtasan.setTipeNotifName(("Lembur"));
-            notifAtasan.setNote("Data Dari User : " + imBiodataEntity.getNamaPegawai() + " Menunggu di Approve");
-            notifAtasan.setCreatedWho(bean.getNip());
-            notifAtasan.setTo("atasan");
-            notifAtasan.setOs(bean.getOs());
+            if ("KL44".equalsIgnoreCase(imPositionList.get(0).getKelompokId())){
 
-            notifikasiList.add(notifAtasan);
+
+                String lemburId;
+                Map hsCriteria = new HashMap();
+                if (bean.getNip() != null && !"".equalsIgnoreCase(bean.getNip())) {
+                    hsCriteria.put("nip", bean.getNip());
+                }
+                try {
+                    // Generating ID, get from postgre sequence
+                    lemburId = lemburDao.getNextLemburId();
+                } catch (HibernateException e) {
+                    logger.error("[LemburBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence lembur id, please info to your admin..." + e.getMessage());
+                }
+                // creating object entity serializable
+                LemburEntity itLemburEntity = new LemburEntity();
+                ImDepartmentEntity imDepartmentEntity = null;
+                ImBiodataEntity imBiodataEntity = null ;
+                ImPosition imPosition = null;
+                ImGolonganEntity imGolonganEntity=null;
+
+                if (!bean.getNip().equals("")||bean.getNip()!=null){
+                    imBiodataEntity = biodataDao.getById("nip", bean.getNip(), "Y");
+                }
+                if (!bean.getPositionId().equals("")||bean.getPositionId()!=null){
+                    imPosition = positionDao.getById("positionId", bean.getPositionId(), "Y");
+                }
+                if (!bean.getDivisiId().equals("")||bean.getDivisiId()!=null){
+                    imDepartmentEntity= departmentDao.getById("departmentId", bean.getDivisiId(), "Y");
+                }
+                if (!bean.getGolonganId().equals("")||bean.getGolonganId()!=null){
+                    imGolonganEntity= golonganDao.getById("golonganId", bean.getGolonganId(), "Y");
+                }
+                List<ItPersonilPositionEntity> personilPositionEntityList = personilPositionDao.getListPersonilPosition(bean.getNip());
+                for (ItPersonilPositionEntity personilPositionEntity : personilPositionEntityList){
+                    bean.setBranchId(personilPositionEntity.getBranchId());
+                }
+                itLemburEntity.setLemburId(lemburId);
+                itLemburEntity.setNip(bean.getNip());
+                itLemburEntity.setPegawaiName(bean.getPegawaiName());
+                itLemburEntity.setDivisiId(bean.getDivisiId());
+                itLemburEntity.setPositionId(bean.getPositionId());
+                itLemburEntity.setGolonganId(bean.getGolonganId());
+                itLemburEntity.setTipePegawaiId(bean.getTipePegawaiId());
+                itLemburEntity.setStatusGiling(bean.getStatusGiling());
+                itLemburEntity.setJamAwal(bean.getJamAwal());
+                itLemburEntity.setJamAkhir(bean.getJamAkhir());
+                itLemburEntity.setLamaJam(bean.getLamaJam());
+                itLemburEntity.setKeterangan(bean.getKeterangan());
+                itLemburEntity.setTipeLembur(bean.getTipeLembur());
+                itLemburEntity.setTanggalAwal(bean.getTanggalAwal());
+                itLemburEntity.setTanggalAkhir(bean.getTanggalAkhir());
+                itLemburEntity.setTanggalAwalSetuju(bean.getTanggalAwal());
+                itLemburEntity.setTanggalAkhirSetuju(bean.getTanggalAkhir());
+                itLemburEntity.setPositionName(imPosition.getPositionName());
+                if (imDepartmentEntity != null)
+                    itLemburEntity.setDivisiName(imDepartmentEntity.getDepartmentName());
+                else
+                    itLemburEntity.setDivisiName("");
+                if (imGolonganEntity!=null){
+                    itLemburEntity.setGolonganName(imGolonganEntity.getGolonganName());
+                }
+
+                itLemburEntity.setApprovalId(bean.getNip());
+                itLemburEntity.setApprovalName(bean.getCreatedWho());
+                itLemburEntity.setApprovalDate(bean.getCreatedDate());
+                itLemburEntity.setApprovalFlag("Y");
+
+                itLemburEntity.setFlag(bean.getFlag());
+                itLemburEntity.setAction(bean.getAction());
+                itLemburEntity.setCreatedWho(bean.getCreatedWho());
+                itLemburEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                itLemburEntity.setCreatedDate(bean.getCreatedDate());
+                itLemburEntity.setLastUpdate(bean.getLastUpdate());
+
+                try {
+                    // insert into database
+                    lemburDao.addAndSave(itLemburEntity);
+                } catch (HibernateException e) {
+                    logger.error("[IjinKeluarBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
+                }
+
+                //Send notif ke kabag
+//                Notifikasi notifAtasan= new Notifikasi();
+//                notifAtasan.setNip(bean.getNip());
+//                notifAtasan.setNoRequest(lemburId);
+//                notifAtasan.setTipeNotifId("TN77");
+//                notifAtasan.setTipeNotifName(("Lembur"));
+//                notifAtasan.setNote("Data Dari User : " + imBiodataEntity.getNamaPegawai() + " Menunggu di Approve");
+//                notifAtasan.setCreatedWho(bean.getNip());
+//                notifAtasan.setTo("atasan");
+//                notifAtasan.setOs(bean.getOs());
+//
+//                notifikasiList.add(notifAtasan);
+
+
+            }else {
+
+                String lemburId;
+                Map hsCriteria = new HashMap();
+                if (bean.getNip() != null && !"".equalsIgnoreCase(bean.getNip())) {
+                    hsCriteria.put("nip", bean.getNip());
+                }
+                try {
+                    // Generating ID, get from postgre sequence
+                    lemburId = lemburDao.getNextLemburId();
+                } catch (HibernateException e) {
+                    logger.error("[LemburBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence lembur id, please info to your admin..." + e.getMessage());
+                }
+                // creating object entity serializable
+                LemburEntity itLemburEntity = new LemburEntity();
+                ImDepartmentEntity imDepartmentEntity = null;
+                ImBiodataEntity imBiodataEntity = null ;
+                ImPosition imPosition = null;
+                ImGolonganEntity imGolonganEntity=null;
+
+                if (!bean.getNip().equals("")||bean.getNip()!=null){
+                    imBiodataEntity = biodataDao.getById("nip", bean.getNip(), "Y");
+                }
+                if (!bean.getPositionId().equals("")||bean.getPositionId()!=null){
+                    imPosition = positionDao.getById("positionId", bean.getPositionId(), "Y");
+                }
+                if (!bean.getDivisiId().equals("")||bean.getDivisiId()!=null){
+                    imDepartmentEntity= departmentDao.getById("departmentId", bean.getDivisiId(), "Y");
+                }
+                if (!bean.getGolonganId().equals("")||bean.getGolonganId()!=null){
+                    imGolonganEntity= golonganDao.getById("golonganId", bean.getGolonganId(), "Y");
+                }
+                List<ItPersonilPositionEntity> personilPositionEntityList = personilPositionDao.getListPersonilPosition(bean.getNip());
+                for (ItPersonilPositionEntity personilPositionEntity : personilPositionEntityList){
+                    bean.setBranchId(personilPositionEntity.getBranchId());
+                }
+                itLemburEntity.setLemburId(lemburId);
+                itLemburEntity.setNip(bean.getNip());
+                itLemburEntity.setPegawaiName(bean.getPegawaiName());
+                itLemburEntity.setDivisiId(bean.getDivisiId());
+                itLemburEntity.setPositionId(bean.getPositionId());
+                itLemburEntity.setGolonganId(bean.getGolonganId());
+                itLemburEntity.setTipePegawaiId(bean.getTipePegawaiId());
+                itLemburEntity.setStatusGiling(bean.getStatusGiling());
+                itLemburEntity.setJamAwal(bean.getJamAwal());
+                itLemburEntity.setJamAkhir(bean.getJamAkhir());
+                itLemburEntity.setLamaJam(bean.getLamaJam());
+                itLemburEntity.setKeterangan(bean.getKeterangan());
+                itLemburEntity.setTipeLembur(bean.getTipeLembur());
+                itLemburEntity.setTanggalAwal(bean.getTanggalAwal());
+                itLemburEntity.setTanggalAkhir(bean.getTanggalAkhir());
+                itLemburEntity.setTanggalAwalSetuju(bean.getTanggalAwal());
+                itLemburEntity.setTanggalAkhirSetuju(bean.getTanggalAkhir());
+                itLemburEntity.setPositionName(imPosition.getPositionName());
+                if (imDepartmentEntity != null)
+                    itLemburEntity.setDivisiName(imDepartmentEntity.getDepartmentName());
+                else
+                    itLemburEntity.setDivisiName("");
+                if (imGolonganEntity!=null){
+                    itLemburEntity.setGolonganName(imGolonganEntity.getGolonganName());
+                }
+                itLemburEntity.setFlag(bean.getFlag());
+                itLemburEntity.setAction(bean.getAction());
+                itLemburEntity.setCreatedWho(bean.getCreatedWho());
+                itLemburEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                itLemburEntity.setCreatedDate(bean.getCreatedDate());
+                itLemburEntity.setLastUpdate(bean.getLastUpdate());
+
+                try {
+                    // insert into database
+                    lemburDao.addAndSave(itLemburEntity);
+                } catch (HibernateException e) {
+                    logger.error("[IjinKeluarBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
+                }
+
+                //Send notif ke kabag
+                Notifikasi notifAtasan= new Notifikasi();
+                notifAtasan.setNip(bean.getNip());
+                notifAtasan.setNoRequest(lemburId);
+                notifAtasan.setTipeNotifId("TN77");
+                notifAtasan.setTipeNotifName(("Lembur"));
+                notifAtasan.setNote("Data Dari User : " + imBiodataEntity.getNamaPegawai() + " Menunggu di Approve");
+                notifAtasan.setCreatedWho(bean.getNip());
+                notifAtasan.setTo("atasan");
+                notifAtasan.setOs(bean.getOs());
+
+                notifikasiList.add(notifAtasan);
+
+            }
         }
         logger.info("[IjinKeluarBoImpl.saveAdd] end process <<<");
         return notifikasiList;
@@ -885,6 +996,27 @@ public class LemburBoImpl implements LemburBo {
                     notifSelf.setTo("self");
 
                     notifikasiList.add(notifSelf);
+
+                    Notifikasi notifAtasan = new Notifikasi();
+
+                    if (bean.getMobile())
+                        notifAtasan.setNip(bean.getNip());
+                    else
+                        notifAtasan.setNip(CommonUtil.userIdLogin());
+
+                    notifAtasan.setNoRequest(bean.getLemburId());
+                    notifAtasan.setTipeNotifId("umum");
+                    notifAtasan.setTipeNotifName(("Lembur Pegawai"));
+                    notifAtasan.setNote(imBiodataEntity.getNamaPegawai() + " mengajukan lembur pada tanggal " +CommonUtil.convertDateToString(itLemburEntity.getTanggalAwal()) + " sampai dengan tanggal " + CommonUtil.convertDateToString(itLemburEntity.getTanggalAkhir()));
+
+                    if (bean.getMobile())
+                        notifAtasan.setNip(bean.getNip());
+                    else
+                        notifAtasan.setNip(CommonUtil.userIdLogin());
+
+                    notifAtasan.setTo("atasan");
+
+                    notifikasiList.add(notifAtasan);
                 }else{
                     String msg="";
                     if (!("").equalsIgnoreCase(itLemburEntity.getNotApprovalNote())){
@@ -988,6 +1120,60 @@ public class LemburBoImpl implements LemburBo {
 
         logger.info("[LemburBoImpl.findAllConfirmByIdAtasan] end process <<<");
         return listConfirmStatus;
+    }
+
+    @Override
+    public void saveCancel(Lembur bean) throws GeneralBOException {
+        logger.info("[LemburBoImpl.saveEdit] start process >>>");
+        if (bean!=null) {
+            String lemburId = bean.getLemburId();
+            LemburEntity imLemburEntity = null;
+            try {
+                // Get data from database by ID
+                imLemburEntity = lemburDao.getById("lemburId", lemburId);
+            } catch (HibernateException e) {
+                logger.error("[lemburBoImpl.saveEdit] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data alat by Kode lembur, please inform to your admin...," + e.getMessage());
+            }
+            if (imLemburEntity != null) {
+                imLemburEntity.setLemburId(bean.getLemburId());
+
+                imLemburEntity.setFlag(bean.getFlag());
+                imLemburEntity.setAction(bean.getAction());
+                imLemburEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                imLemburEntity.setLastUpdate(bean.getLastUpdate());
+                try {
+                    // Update into database
+                    lemburDao.updateAndSave(imLemburEntity);
+                } catch (HibernateException e) {
+                    logger.error("[LemburBoImpl.saveEdit] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving update data lembur, please info to your admin..." + e.getMessage());
+                }
+
+                //delete from notif
+                if (("N").equalsIgnoreCase(imLemburEntity.getFlag())){
+                    List<ImNotifikasiEntity> notifikasiEntityList = notifikasiDao.getDataByNoRequest(imLemburEntity.getLemburId(),imLemburEntity.getNip());
+
+                    if (notifikasiEntityList!=null){
+                        for (ImNotifikasiEntity notifikasiEntity : notifikasiEntityList){
+                            notifikasiEntity.setFlag("N");
+
+                            try {
+                                // Update into database
+                                notifikasiDao.updateAndSave(notifikasiEntity);
+                            } catch (HibernateException e) {
+                                logger.error("[LemburBoImpl.saveEdit] Error, " + e.getMessage());
+                                throw new GeneralBOException("Found problem when saving update data alat, please info to your admin..." + e.getMessage());
+                            }
+
+                        }
+                    }
+                }
+            } else {
+                logger.error("[LemburBoImpl.saveEdit] Error, not found data lembur with request id, please check again your data ...");
+                throw new GeneralBOException("Error, not found data alat with request id, please check again your data ...");
+            }
+        }logger.info("[LemburBoImpl.saveEdit] end process <<<");
     }
 
     @Override

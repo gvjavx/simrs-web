@@ -32,6 +32,7 @@ http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
           <!--p:username="postgres"-->
           <!--p:password="123456"/>-->
 
+
     <!--<bean id="dataSource"-->
           <!--class="org.springframework.jdbc.datasource.DriverManagerDataSource"-->
           <!--p:driverClassName="org.postgresql.Driver"-->
@@ -39,10 +40,10 @@ http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
           <!--p:username="root"-->
           <!--p:password="123456"/>-->
 
-        <!--<bean id="dataSource"-->
-              <!--class="org.springframework.jdbc.datasource.DriverManagerDataSource"-->
-              <!--p:driverClassName="org.postgresql.Driver"-->
-              <!--p:url="jdbc:postgresql://10.88.70.233:5432/gomedsys_nmu"-->
-              <!--p:username="root"-->
-              <!--p:password="123456"/>-->
+    <!--<bean id="dataSource"-->
+          <!--class="org.springframework.jdbc.datasource.DriverManagerDataSource"-->
+          <!--p:driverClassName="org.postgresql.Driver"-->
+          <!--p:url="jdbc:postgresql://10.88.70.233:5432/gomedsys_nmu"-->
+          <!--p:username="root"-->
+          <!--p:password="123456"/>-->
 </beans>

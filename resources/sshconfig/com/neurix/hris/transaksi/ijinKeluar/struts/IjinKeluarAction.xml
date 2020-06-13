@@ -77,6 +77,10 @@
             <result name="error">/pages/com/neurix/hris/transaksi/ijinKeluar/addIjinKeluar.jsp</result>
             <result name="init_add">/pages/com/neurix/hris/transaksi/ijinKeluar/addIjinKeluar.jsp</result>
             <result name="init_cancel">/pages/com/neurix/hris/transaksi/ijinKeluar/cancelIjinKeluar.jsp</result>
+
+            <result name="init_pengajuan">/pages/com/neurix/hris/transaksi/ijinKeluar/pengajuanBatalIjinKeluar.jsp</result>
+            <result name="success_save_pengajuan_batal">/pages/com/neurix/hris/transaksi/ijinKeluar/pengajuanBatalIjinKeluar.jsp</result>
+
             <result name="success_save_add">/pages/com/neurix/hris/transaksi/ijinKeluar/addIjinKeluar.jsp</result>
             <result name="success_save_delete">/pageurix/hris/transaksi/ijinKeluar/viewIjinKeluar.jsp</result>
             <result name="success_save_cancel">/pages/com/neurix/hris/transaksi/ijinKeluar/cancelIjinKeluar.jsp</result>

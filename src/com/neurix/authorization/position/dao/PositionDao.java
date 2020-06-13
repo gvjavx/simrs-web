@@ -425,12 +425,31 @@ public class PositionDao extends GenericDao<ImPosition,String> {
     public List<ImPosition> getListPositionKoderingNKelompokPosition(String term,String kelompok) throws HibernateException {
 
         List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
-                .add(Restrictions.ilike("kodering",term))
+                .add(Restrictions.ilike("kodering", term))
                 .add(Restrictions.eq("kelompokId", kelompok))
                 .add(Restrictions.eq("flag", "Y"))
                 .addOrder(Order.asc("positionId"))
                 .list();
 
         return results;
+    }
+    public List<ImPosition> getDataKelompokId(String positionId){
+
+        List<ImPosition> listOfResult = new ArrayList<ImPosition>();
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "SELECT kelompok_id, position_id FROM im_position WHERE position_id = '"+positionId+"' AND flag = 'Y'";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results) {
+            ImPosition result  = new ImPosition();
+            result.setKelompokId((String) row[0]);
+            result.setPositionId((String) row[1]);
+
+            listOfResult.add(result);
+        }
+        return listOfResult;
     }
 }

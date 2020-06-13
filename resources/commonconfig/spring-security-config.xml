@@ -185,6 +185,10 @@
 
             <filter-chain pattern="/mobileapi/testelemedic" filters="none" />
 
+            <filter-chain pattern="/mobileapi/testnotif" filters="none" />
+            <filter-chain pattern="/mobileapi/testnotif/*" filters="none" />
+            <filter-chain pattern="/mobileapi/testnotif/*/**" filters="none" />
+
 
             <filter-chain pattern="/**/*"
                           filters="

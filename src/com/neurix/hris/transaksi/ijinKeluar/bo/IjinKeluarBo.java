@@ -20,6 +20,9 @@ public interface IjinKeluarBo extends BaseMasterBo<IjinKeluar> {
     public void saveDelete(IjinKeluar bean) throws GeneralBOException;
     public void saveEdit(IjinKeluar bean) throws GeneralBOException;
 
+    public void savePengajuanBatal(IjinKeluar bean) throws GeneralBOException;
+    public void saveTolakPengajuanBatal(IjinKeluar bean) throws GeneralBOException;
+
     void saveEditIjinKeluarKantor(IjinKeluar bean) throws GeneralBOException;
 
     List<Notifikasi> saveAddIjinKeluar(IjinKeluar bean) throws GeneralBOException;

@@ -49,7 +49,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Unit Kerja User
+            Posisi
         </h1>
         <%--<ol class="breadcrumb">--%>
         <%--<li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>--%>
@@ -91,7 +91,7 @@
 
                             <tr>
                                 <td>
-                                    <label class="control-label"><small>Nama Posisi :</small></label>
+                                    <label class="control-label"><small>Posisi :</small></label>
                                 </td>
                                 <td>
                                     <table>
@@ -222,7 +222,7 @@
                                                 </s:if>
                                             </display:column>
                                             <display:column property="positionId" sortable="true" title="Id"/>
-                                            <display:column property="positionName" sortable="true" title="Nama Posisi"/>
+                                            <display:column property="positionName" sortable="true" title="Posisi"/>
                                             <display:column property="departmentName" sortable="true" title="Bidang/Divisi"/>
                                             <display:column property="bagianName" sortable="true" title="Bagian"/>
                                             <display:column property="kelompokName" sortable="true" title="Kelompok Jabatan"/>

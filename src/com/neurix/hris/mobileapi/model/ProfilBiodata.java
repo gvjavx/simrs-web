@@ -29,6 +29,15 @@ public class ProfilBiodata implements Serializable {
     private String statusGiling;
     private String zakatProfesi;
     private String flag;
+    private String nipLama;
+
+    public String getNipLama() {
+        return nipLama;
+    }
+
+    public void setNipLama(String nipLama) {
+        this.nipLama = nipLama;
+    }
 
     public String getNip() {
         return nip;

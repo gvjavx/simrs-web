@@ -86,6 +86,10 @@ public class IjinKeluar extends BaseModel {
     private String tanggalAkhirBaru;
     private BigInteger lamaIjinBaru;
 
+    private Boolean pengajuanBatal;
+    private String flagPengajuanBatal;
+    private String roleId;
+
     public String getOs() {
         return os;
     }
@@ -627,5 +631,29 @@ public class IjinKeluar extends BaseModel {
 
     public void setTglAkhirBaru(Date tglAkhirBaru) {
         this.tglAkhirBaru = tglAkhirBaru;
+    }
+
+    public String getFlagPengajuanBatal() {
+        return flagPengajuanBatal;
+    }
+
+    public void setFlagPengajuanBatal(String flagPengajuanBatal) {
+        this.flagPengajuanBatal = flagPengajuanBatal;
+    }
+
+    public Boolean getPengajuanBatal() {
+        return pengajuanBatal;
+    }
+
+    public void setPengajuanBatal(Boolean pengajuanBatal) {
+        this.pengajuanBatal = pengajuanBatal;
+    }
+
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
     }
 }
