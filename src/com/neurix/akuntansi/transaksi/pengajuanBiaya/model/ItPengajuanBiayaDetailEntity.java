@@ -26,6 +26,11 @@ public class ItPengajuanBiayaDetailEntity implements Serializable {
     private BigDecimal jumlah;
     private BigDecimal budgetBiaya;
     private BigDecimal budgetTerpakai;
+    private BigDecimal sisaBudget;
+
+    private BigDecimal budgetBiayaSdBulanIni;
+    private BigDecimal budgetTerpakaiSdBulanIni;
+    private BigDecimal sisaBudgetSdBulanIni;
 
     private String approvalKasubdivFlag;
     private String approvalKasubdivId;
@@ -47,6 +52,8 @@ public class ItPengajuanBiayaDetailEntity implements Serializable {
     private String approvalKeuanganKpId;
     private Timestamp approvalKeuanganKpDate;
 
+    private Date tanggalRealisasi;
+
     private String diterimaFlag;
     private String diterimaId;
     private Timestamp diterimaDate;
@@ -65,6 +72,46 @@ public class ItPengajuanBiayaDetailEntity implements Serializable {
     private String lastUpdateWho;
 
     private String notApprovalNote;
+
+    public BigDecimal getSisaBudget() {
+        return sisaBudget;
+    }
+
+    public void setSisaBudget(BigDecimal sisaBudget) {
+        this.sisaBudget = sisaBudget;
+    }
+
+    public BigDecimal getBudgetBiayaSdBulanIni() {
+        return budgetBiayaSdBulanIni;
+    }
+
+    public void setBudgetBiayaSdBulanIni(BigDecimal budgetBiayaSdBulanIni) {
+        this.budgetBiayaSdBulanIni = budgetBiayaSdBulanIni;
+    }
+
+    public BigDecimal getBudgetTerpakaiSdBulanIni() {
+        return budgetTerpakaiSdBulanIni;
+    }
+
+    public void setBudgetTerpakaiSdBulanIni(BigDecimal budgetTerpakaiSdBulanIni) {
+        this.budgetTerpakaiSdBulanIni = budgetTerpakaiSdBulanIni;
+    }
+
+    public BigDecimal getSisaBudgetSdBulanIni() {
+        return sisaBudgetSdBulanIni;
+    }
+
+    public void setSisaBudgetSdBulanIni(BigDecimal sisaBudgetSdBulanIni) {
+        this.sisaBudgetSdBulanIni = sisaBudgetSdBulanIni;
+    }
+
+    public Date getTanggalRealisasi() {
+        return tanggalRealisasi;
+    }
+
+    public void setTanggalRealisasi(Date tanggalRealisasi) {
+        this.tanggalRealisasi = tanggalRealisasi;
+    }
 
     public String getNotApprovalNote() {
         return notApprovalNote;

@@ -1,7 +1,9 @@
 package com.neurix.hris.transaksi.notifikasi.bo.impl;
 
 import com.neurix.akuntansi.transaksi.pengajuanBiaya.dao.PengajuanBiayaDao;
+import com.neurix.akuntansi.transaksi.pengajuanBiaya.dao.PengajuanBiayaDetailDao;
 import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.ImPengajuanBiayaEntity;
+import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.ItPengajuanBiayaDetailEntity;
 import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.PengajuanBiaya;
 import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.company.model.ImBranches;
@@ -90,6 +92,15 @@ public class NotifikasiBoImpl implements NotifikasiBo {
     private CutiDao cutiDao;
     private TipeNotifDao tipeNotifDao;
     private PengajuanBiayaDao pengajuanBiayaDao;
+    private PengajuanBiayaDetailDao pengajuanBiayaDetailDao;
+
+    public PengajuanBiayaDetailDao getPengajuanBiayaDetailDao() {
+        return pengajuanBiayaDetailDao;
+    }
+
+    public void setPengajuanBiayaDetailDao(PengajuanBiayaDetailDao pengajuanBiayaDetailDao) {
+        this.pengajuanBiayaDetailDao = pengajuanBiayaDetailDao;
+    }
 
     public PengajuanBiayaDao getPengajuanBiayaDao() {
         return pengajuanBiayaDao;
@@ -2325,6 +2336,28 @@ public class NotifikasiBoImpl implements NotifikasiBo {
         }
         return notifikasiList;
     }
+
+    @Override
+    public List<Notifikasi> getPengajuanBiayaMenggantung(){
+        List<ItPengajuanBiayaDetailEntity> pengajuanBiayaDetailEntityList= new ArrayList<>();
+        List<Notifikasi> notifikasiList = new ArrayList<>();
+
+        pengajuanBiayaDetailEntityList = pengajuanBiayaDetailDao.getPengajuanBiayaMenggantung(CommonUtil.userBranchLogin());
+
+        if(pengajuanBiayaDetailEntityList.size() > 0){
+            for(ItPengajuanBiayaDetailEntity pengajuanBiayaDetailEntity : pengajuanBiayaDetailEntityList){
+                Notifikasi notifikasi = new Notifikasi();
+                notifikasi.setPengajuanBiayaDetailId(pengajuanBiayaDetailEntity.getPengajuanBiayaDetailId());
+                notifikasi.setStTanggalRealisasi(CommonUtil.convertDateToString(pengajuanBiayaDetailEntity.getTanggalRealisasi()));
+                notifikasi.setKeperluan(pengajuanBiayaDetailEntity.getKeperluan());
+                notifikasi.setDivisiName(pengajuanBiayaDetailEntity.getDivisiId());
+                notifikasi.setJmlApproval(String.valueOf(pengajuanBiayaDetailEntityList.size()));
+                notifikasiList.add(notifikasi);
+            }
+        }
+        return notifikasiList;
+    }
+
     @Override
     public List<Notifikasi> getCutiPanjang() {
         List<ImBiodataEntity> biodataEntityList = new ArrayList<>();

@@ -35,6 +35,9 @@
         <property name="tanggal">
             <column name="tanggal" sql-type="date" not-null="false" />
         </property>
+        <property name="tanggalRealisasi">
+            <column name="tanggal_realisasi" sql-type="date" not-null="false" />
+        </property>
 
         <property name="jumlah">
             <column name="jumlah" sql-type="numeric" not-null="false" />
@@ -44,6 +47,19 @@
         </property>
         <property name="budgetTerpakai">
             <column name="budget_terpakai" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="sisaBudget">
+            <column name="sisa_budget" sql-type="numeric" not-null="false" />
+        </property>
+
+        <property name="budgetBiayaSdBulanIni">
+            <column name="budget_biaya_sd_bulan_ini" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="budgetTerpakaiSdBulanIni">
+            <column name="budget_terpakai_sd_bulan_ini" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="sisaBudgetSdBulanIni">
+            <column name="sisa_budget_sd_bulan_ini" sql-type="numeric" not-null="false" />
         </property>
 
         <property name="approvalKasubdivFlag">

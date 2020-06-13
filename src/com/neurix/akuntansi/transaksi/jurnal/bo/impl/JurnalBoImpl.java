@@ -114,10 +114,11 @@ public class JurnalBoImpl implements JurnalBo {
     }
 
     @Override
-    public JurnalDetail getBudgetTerpakai(String branchId, String divisiId, String tahun, String bulan, String coa,String budget){
+    public JurnalDetail getBudgetTerpakai(String branchId, String divisiId, String tahun, String bulan, String coa,String budgetSaatIni,String budgetSdSaatIni){
         JurnalDetail result = new JurnalDetail();
         ImPosition position = positionDao.getById("positionId",divisiId);
-        BigDecimal nilaiBudget = BigDecimal.valueOf(Double.valueOf(budget.replace(".","").replace(",","")));
+        BigDecimal nilaiBudget = BigDecimal.valueOf(Double.valueOf(budgetSaatIni.replace(".","").replace(",","")));
+        BigDecimal nilaiBudgetSdSaatIni = BigDecimal.valueOf(Double.valueOf(budgetSdSaatIni.replace(".","").replace(",","")));
 
         List<ImKodeRekeningEntity> kodeRekeningEntity = kodeRekeningDao.getIdByCoa(coa);
         String rekeningId = "";
@@ -126,10 +127,15 @@ public class JurnalBoImpl implements JurnalBo {
         }
         String koderingPosisi = position.getKodering();
         BigDecimal budgetTerpakai = jurnalDao.getBudgetTerpakai(branchId,koderingPosisi,bulan,tahun,rekeningId);
+        BigDecimal budgetTerpakaiSdBulanIni = jurnalDao.getBudgetTerpakaiSdBulanIni(branchId,koderingPosisi,bulan,tahun,rekeningId);
+
         BigDecimal sisaBudget = nilaiBudget.subtract(budgetTerpakai);
+        BigDecimal sisaBudgetSdBulanIni = nilaiBudgetSdSaatIni.subtract(budgetTerpakaiSdBulanIni);
 
         result.setStBudgetTerpakai(CommonUtil.numbericFormat(budgetTerpakai,"###,###"));
+        result.setStBudgetTerpakaiSdBulanIni(CommonUtil.numbericFormat(budgetTerpakaiSdBulanIni,"###,###"));
         result.setStSisaBudget(CommonUtil.numbericFormat(sisaBudget,"###,###"));
+        result.setStSisaBudgetSdBulanIni(CommonUtil.numbericFormat(sisaBudgetSdBulanIni,"###,###"));
 
         return result;
     }

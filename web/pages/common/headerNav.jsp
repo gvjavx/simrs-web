@@ -149,10 +149,16 @@
     function loadUser () {
         var data="";
         NotifikasiAction.searchUser(function(data){
-            if (data=="ADMIN"){
+            if (data=="1"){
                 $(".orangPensiun").show();
             }else{
                 $(".orangPensiun").hide();
+            }
+
+            if (data=="39"){
+                $(".pengajuanBiaya").show();
+            }else{
+                $(".pengajuanBiaya").show();
             }
         });
     }
@@ -223,6 +229,34 @@
         $("#count7").html(tmp_jml_panjang);
     }
 
+    /*function loadPengajuanBiaya(){
+        var tmp_data_pengajuan= "";
+        var tmp_jml_pengajuan="";
+        var data = [];
+        dwr.engine.setAsync(false);
+        NotifikasiAction.searchPengajuanBiayaMenggantung(function(listData){
+            data = listData;
+            console.log(data);
+            $.each(data, function(i, item){
+                if(tmp_jml_pengajuan == ""){
+                    tmp_jml_pengajuan = item.jmlApproval;
+                }
+                tmp_data_pengajuan += "<li class='pengajuanBiaya' data-id='"+item.pengajuanBiayaDetailId+"'>"+
+                    "<a>"+
+                    "<span class='label label-info'>"+item.stTanggalRealisasi+"</span> "+item.pengajuanBiayaDetailId+
+                    "</a>"+
+                    "</li>";
+            })
+        });
+        if (tmp_jml_pengajuan==""){
+            tmp_jml_pengajuan=0;
+        }
+        var total = parseInt(tmp_jml_pengajuan);
+        $("#count8").html(total);
+        $("#inner8").html(tmp_data_pengajuan);
+        $("#count9").html(tmp_jml_pengajuan);
+    }*/
+
     function pushNotifResep(){
         cekNotifResep();
         setInterval(function () {
@@ -275,6 +309,7 @@
         loadUser();
         loadNotif();
         loadPegawaiCuti();
+        // loadPengajuanBiaya();
         cekRole();
 
         $('.pemberitahuan').on('click', function() {
@@ -423,6 +458,23 @@
                         <i class="fa fa-refresh"></i>
                         <span class="label label-warning "></span>
                     </a>
+                </li>--%>
+                <%--<li class="dropdown notifications-menu pengajuanBiaya">
+                    <!-- Menu toggle button -->
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-money"></i>
+                        <span class="label label-success" id="count8"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="header">Ada <span id="count9"></span> pengajuan biaya</li>
+                        <li>
+                            <!-- Inner Menu: contains the notifications -->
+                            <ul class="menu" id="inner8">
+                                <!-- end notification -->
+                            </ul>
+                        </li>
+                        &lt;%&ndash;<li class="footer"><a href="#">View all</a></li>&ndash;%&gt;
+                    </ul>
                 </li>--%>
                 <li class="dropdown notifications-menu orangPensiun">
                     <!-- Menu toggle button -->

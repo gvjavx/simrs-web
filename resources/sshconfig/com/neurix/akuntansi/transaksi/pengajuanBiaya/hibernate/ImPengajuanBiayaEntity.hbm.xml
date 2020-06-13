@@ -56,10 +56,6 @@
         <property name="keteranganBatal">
             <column name="keterangan_batal" sql-type="varchar" not-null="false" />
         </property>
-        <property name="tanggalRealisasi">
-            <column name="tanggal_realisasi" sql-type="date" not-null="false" />
-        </property>
-
         <property name="keterangan">
             <column name="keterangan" sql-type="text" not-null="false" />
         </property>

@@ -178,10 +178,13 @@
                                                     $('#no_budget').val("");
                                                     $('#bayar').val("");
                                                     $('#sisa_budget').val("");
+                                                    $('#sisa_budget_sd_bulan_ini').val("");
                                                     $('#budget_terpakai').val("");
+                                                    $('#budget_terpakai_sd_bulan_ini').val("");
                                                     $('#keperluanText').val("");
                                                     $('#keperluanText').val("");
                                                     $('#sisa_budget_saat_ini').val("");
+                                                    $('#sisa_budget_saat_ini_sd').val("");
                                                     $('#keterangan').val("");
                                                     $("#modal-tambah-data").modal('show');
                                                 })
@@ -333,7 +336,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4">No. Budget</label>
+                                <label class="col-md-4" style="margin-top: 7px">No. Budget</label>
                                 <div class="col-md-6">
                                     <select class="form-control" id="no_budget" onchange="isiKeteterangan(),getSisaBudget(this.value)" style="margin-top: 7px">
                                         <option value="" ></option>
@@ -341,7 +344,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4" >Keperluan</label>
+                                <label class="col-md-4"  style="margin-top: 7px">Keperluan</label>
                                 <div class="col-md-6">
                                     <div class="keperluanText">
                                         <s:textfield id="keperluanText" name="pengajuanBiaya.keperluan"
@@ -360,31 +363,49 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4">Jumlah ( RP )</label>
+                                <label class="col-md-4" style="margin-top: 7px">Jumlah ( RP )</label>
                                 <div class="col-md-6">
-                                    <s:textfield id="bayar" onkeyup="formatRupiah2(this)" cssClass="form-control" cssStyle="margin-top: 7px" />
+                                    <s:textfield id="bayar" onkeyup="formatRupiah2(this)" cssClass="form-control" cssStyle="margin-top: 7px;text-align: right" />
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4">Budgeting ( RP )</label>
+                                <label class="col-md-4" style="margin-top: 7px">Budgeting Bulan Ini ( RP )</label>
                                 <div class="col-md-6">
-                                    <s:textfield id="sisa_budget" readonly="true" cssClass="form-control" cssStyle="margin-top: 7px" />
+                                    <s:textfield id="sisa_budget" readonly="true" cssClass="form-control" cssStyle="margin-top: 7px;text-align: right" />
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4">Budget Terpakai ( RP )</label>
+                                <label class="col-md-4" style="margin-top: 7px">Budgeting s/d Bulan Ini ( RP )</label>
                                 <div class="col-md-6">
-                                    <s:textfield id="budget_terpakai" readonly="true" cssClass="form-control" cssStyle="margin-top: 7px" />
+                                    <s:textfield id="sisa_budget_sd_bulan_ini" readonly="true" cssClass="form-control" cssStyle="margin-top: 7px;text-align: right" />
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4">Sisa Budget ( RP )</label>
+                                <label class="col-md-4" style="margin-top: 7px">Budget Terpakai Bulan Ini ( RP )</label>
                                 <div class="col-md-6">
-                                    <s:textfield id="sisa_budget_saat_ini" readonly="true" cssClass="form-control" cssStyle="margin-top: 7px" />
+                                    <s:textfield id="budget_terpakai" readonly="true" cssClass="form-control" cssStyle="margin-top: 7px;text-align: right" />
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4">Keterangan</label>
+                                <label class="col-md-4" style="margin-top: 7px">Budget Terpakai s/d Bulan Ini ( RP )</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="budget_terpakai_sd_bulan_ini" readonly="true" cssClass="form-control" cssStyle="margin-top: 7px;text-align: right" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">Sisa Budget Bulan Ini ( RP )</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="sisa_budget_saat_ini" readonly="true" cssClass="form-control" cssStyle="margin-top: 7px;text-align: right" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">Sisa Budget s/d Bulan Ini ( RP )</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="sisa_budget_saat_ini_sd" readonly="true" cssClass="form-control" cssStyle="margin-top: 7px;text-align: right" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">Keterangan</label>
                                 <div class="col-md-6">
                                     <s:textarea id="keterangan" rows="3" cssStyle="margin-top: 7px" onkeypress="$(this).css('border','')" cssClass="form-control"/>
                                 </div>
@@ -401,7 +422,31 @@
         </div>
     </div>
 </div>
-
+<div class="modal fade" id="modal-daftar-stok">
+    <div class="modal-dialog modal-flat modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Daftar Stok Divisi</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table style="width: 100%;" class="tabelDaftarStok table table-bordered">
+                            </table>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
@@ -425,12 +470,15 @@
         var branch_id=$('#branch_id').val();
         var tanggal=$('#tanggal').val();
         if (transaksi=="R"){
-            BudgetingAction.getBudgetSaatIni(branch_id,divisi_Id,tanggal,value,function (sisaBudget) {
-                JurnalAction.getBudgetTerpakai(branch_id,divisi_Id,tanggal,value,sisaBudget,function (item) {
+            BudgetingAction.getBudgetSaatIni(branch_id,divisi_Id,tanggal,value,function (data) {
+                JurnalAction.getBudgetTerpakai(branch_id,divisi_Id,tanggal,value,data.stBudgetSaatIni,data.stBudgetSdSaatIni,function (item) {
                     $('#budget_terpakai').val(item.stBudgetTerpakai);
+                    $('#budget_terpakai_sd_bulan_ini').val(item.stBudgetTerpakaiSdBulanIni);
                     $('#sisa_budget_saat_ini').val(item.stSisaBudget);
-                })
-                $('#sisa_budget').val(sisaBudget);
+                    $('#sisa_budget_saat_ini_sd').val(item.stSisaBudgetSdBulanIni);
+                });
+                $('#sisa_budget').val(data.stBudgetSaatIni);
+                $('#sisa_budget_sd_bulan_ini').val(data.stBudgetSdSaatIni);
             });
         }else if (transaksi=="I"){
             var option = '<option value=""></option>';
@@ -459,22 +507,6 @@
                 $('#sisa_budget_saat_ini').val(0);
             });
         }
-    }
-
-    function formatRupiahAngka(angka) {
-        var number_string = angka.replace(/[^,\d]/g, '').toString(),
-            split = number_string.split(','),
-            sisa = split[0].length % 3,
-            rupiah = split[0].substr(0, sisa),
-            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-
-        if (ribuan) {
-            separator = sisa ? '.' : '';
-            rupiah += separator + ribuan.join('.');
-        }
-
-        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-        return rupiah;
     }
 
     function initNoBudget(value){
@@ -524,12 +556,12 @@
             tmp_table = "<thead style='font-size: 10px;' ><tr class='active'>"+
                 "<th style='text-align: center; background-color:  #90ee90'>No</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>Delete</th>"+
-                "<th style='text-align: center; background-color:  #90ee90'>Tanggal</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>Tipe Budget</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>No. Budget</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>Jumlah ( RP )</th>"+
-                "<th style='text-align: center; background-color:  #90ee90'>Budget RKAP ( RP )</th>"+
-                "<th style='text-align: center; background-color:  #90ee90'>Budget Terpakai ( RP )</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Budgeting s/d Bln Ini (RP)</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Budget Terpakai s/d Bln Ini (RP)</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Sisa Budget s/d Bln Ini (RP)</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>Keperluan</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>Keterangan</th>"+
                 "</tr></thead>";
@@ -553,12 +585,12 @@
                     "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>"+
                     '</a>' +
                     '</td>' +
-                    '<td align="center">' + item.stTanggal+ '</td>' +
                     '<td align="center">' + transaksi + '</td>' +
                     '<td align="center">' + item.noBudgeting+ '</td>' +
                     '<td align="center">' + item.stJumlah+ '</td>' +
-                    '<td align="center">' + item.stBudgetBiaya+ '</td>' +
-                    '<td align="center">' + item.stBudgetTerpakai+ '</td>' +
+                    '<td align="center">' + item.stBudgetBiayaSdBulanIni+ '</td>' +
+                    '<td align="center">' + item.stBudgetTerpakaiSdBulanIni+ '</td>' +
+                    '<td align="center">' + item.stSisaBudgetSdBulanIni+ '</td>' +
                     '<td align="center">' + item.keperluanName+ '</td>' +
                     '<td align="center">' + item.keterangan+ '</td>' +
                     "</tr>";
@@ -577,7 +609,11 @@
             var noBudgeting=$('#no_budget').val();
             var stJumlah=$('#bayar').val();
             var stBudgetBiaya=$('#sisa_budget').val();
+            var stBudgetBiayaSdBulanIni=$('#sisa_budget_sd_bulan_ini').val();
             var stBudgetTerpakai=$('#budget_terpakai').val();
+            var stBudgetTerpakaiSdBulanIni=$('#budget_terpakai_sd_bulan_ini').val();
+            var stSisaBudget=$('#sisa_budget_saat_ini').val();
+            var stSisaBudgetSdBulanIni=$('#sisa_budget_saat_ini_sd').val();
             var keperluan = "";
             var keperluanName = "";
             if (transaksi=="R"){
@@ -590,7 +626,7 @@
             var keterangan=$('#keterangan').val();
 
             if (branchId!=""&&divisiId!=""&&stTanggal!=""&&transaksi!=""&&noBudgeting!=""&&stJumlah!=""&&stBudgetBiaya!=""&&stBudgetTerpakai!=""&&keterangan!=""&&keperluan!=""){
-                PengajuanBiayaAction.saveSessionPengajuan(branchId,divisiId,stTanggal,transaksi,noBudgeting,stJumlah,stBudgetBiaya,stBudgetTerpakai,keperluan,keterangan,keperluanName,function(result){
+                PengajuanBiayaAction.saveSessionPengajuan(branchId,divisiId,stTanggal,transaksi,noBudgeting,stJumlah,stBudgetBiaya,stBudgetTerpakai,keperluan,keterangan,keperluanName,stBudgetBiayaSdBulanIni,stBudgetTerpakaiSdBulanIni,stSisaBudget,stSisaBudgetSdBulanIni,function(result){
                     if (result==""){
                         loadPengajuan();
                     } else{
@@ -649,7 +685,66 @@
             }
         });
         $('#total').val(0);
-    })
+        
+        $('#btnViewStok').click(function () {
+            var tanggal = $('#tanggal').val();
+            var branchId = $('#branch_id_view').val();
+            var divisiId = $('#divisi_id_view').val();
+            $('.tabelDaftarStok').find('tbody').remove();
+            $('.tabelDaftarStok').find('thead').remove();
+            dwr.engine.setAsync(false);
+            var tmp_table = "";
+            if (tanggal!=""&&branchId!=""&&divisiId!=""){
+                PengajuanBiayaAction.getStockPerDivisi(branchId,divisiId,tanggal,function (result) {
+                    tmp_table = "<thead style='font-size: 12px;' ><tr class='active'>"+
+                        "<th style='text-align: center; background-color:  #90ee90'>No</th>"+
+                        "<th style='text-align: center; background-color:  #90ee90'>Nama Barang</th>"+
+                        "<th style='text-align: center; background-color:  #90ee90'>Qty</th>"+
+                        "<th style='text-align: center; background-color:  #90ee90'>Nilai ( RP )</th>"+
+                        "<th style='text-align: center; background-color:  #90ee90'>Saldo ( RP )</th>"+
+                        "</tr></thead>";
+                    var i = i ;
+                    var totalBayar = 0;
+                    $.each(result, function (i, item) {
+                        var saldo = item.subTotalSaldo.replace(/[,]/g,"");
+                        totalBayar=totalBayar+parseInt(saldo);
+                        tmp_table += '<tr style="font-size: 11px;" ">' +
+                            '<td align="center">' + (i + 1) + '</td>' +
+                            '<td align="center">' + item.namaBarang+ '</td>' +
+                            '<td align="center">' + item.qty+ '</td>' +
+                            '<td align="right">' + item.totalSaldo+ '</td>' +
+                            '<td align="right">' + item.subTotalSaldo+ '</td>' +
+                            "</tr>";
+                    });
+                    tmp_table += '<tr style="font-size: 11px;" ">' +
+                        '<td align="center" colspan="4">' + "Total Saldo ( RP )" + '</td>' +
+                        '<td align="right">' + formatRupiahAngka(String(totalBayar))+ '</td>' +
+                        "</tr>";
+                    $('.tabelDaftarStok').append(tmp_table);
+                    if (totalBayar>0){
+                        $("#modal-daftar-stok").modal('show');
+                    } else{
+                        alert("Data stok kosong");
+                    }
+                })
+            }
+        })
+    });
+    function formatRupiahAngka(angka) {
+        var number_string = angka.replace(/[^,\d]/g, '').toString(),
+            split = number_string.split(','),
+            sisa = split[0].length % 3,
+            rupiah = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        if (ribuan) {
+            separator = sisa ? ',' : '';
+            rupiah += separator + ribuan.join(',');
+        }
+
+        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+        return rupiah;
+    }
 </script>
 <%@ include file="/pages/common/footer.jsp" %>
 <%@ include file="/pages/common/lastScript.jsp" %>

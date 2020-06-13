@@ -344,6 +344,11 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                 detailEntity.setJumlah(pengajuanBiayaDetail.getJumlah());
                 detailEntity.setBudgetBiaya(pengajuanBiayaDetail.getBudgetBiaya());
                 detailEntity.setBudgetTerpakai(pengajuanBiayaDetail.getBudgetTerpakai());
+                detailEntity.setSisaBudget(pengajuanBiayaDetail.getSisaBudget());
+                detailEntity.setBudgetBiayaSdBulanIni(pengajuanBiayaDetail.getBudgetBiayaSdBulanIni());
+                detailEntity.setBudgetTerpakaiSdBulanIni(pengajuanBiayaDetail.getBudgetTerpakaiSdBulanIni());
+                detailEntity.setSisaBudgetSdBulanIni(pengajuanBiayaDetail.getSisaBudgetSdBulanIni());
+
                 detailEntity.setKeperluan(pengajuanBiayaDetail.getKeperluan());
                 detailEntity.setKeterangan(pengajuanBiayaDetail.getKeterangan());
 
@@ -748,6 +753,37 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
         return listOfResult;
     }
 
+    @Override
+    public List<PengajuanBiayaDetail> cariPengajuanBiayaDetail(String pengajuanDetailId, String divisiId) throws GeneralBOException {
+        logger.info("[PengajuanBiayaBoImpl.searchPengajuanDetail] start process >>>");
+
+        // Mapping with collection and put
+        List<PengajuanBiayaDetail> listOfResult = new ArrayList();
+
+        String divisi="";
+        List<ImPosition> positionList = positionDao.getListPositionKodering(divisiId);
+        for (ImPosition position : positionList ){
+            divisi = position.getPositionId();
+        }
+
+        List<ItPengajuanBiayaDetailEntity> itPengajuanBiayaDetailEntityList = null;
+        try {
+            itPengajuanBiayaDetailEntityList = pengajuanBiayaDetailDao.getListPengajuanBiayaDetailForKasKeluar(pengajuanDetailId,divisi);
+        } catch (HibernateException e) {
+            logger.error("[PengajuanBiayaBoImpl.getSearchPengajuanBiayaByCriteria] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        if(itPengajuanBiayaDetailEntityList != null){
+            // Looping from dao to object and save in collection
+            for(ItPengajuanBiayaDetailEntity pengajuanBiayaDetailEntity : itPengajuanBiayaDetailEntityList){
+                listOfResult.add(convertPengajuanBiayaDetail(pengajuanBiayaDetailEntity));
+            }
+        }
+        logger.info("[PengajuanBiayaBoImpl.searchPengajuanDetail] end process <<<");
+
+        return listOfResult;
+    }
 
     @Override
     public List<Notifikasi> saveApproveAtasanPengajuan(PengajuanBiayaDetail bean) throws GeneralBOException {
@@ -813,6 +849,7 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                         pengajuanBiayaDetailEntity.setApprovalKeuanganId(bean.getApprovalKeuanganId());
                         pengajuanBiayaDetailEntity.setApprovalKeuanganDate(bean.getApprovalKeuanganDate());
                         pengajuanBiayaDetailEntity.setStatusKeuangan(bean.getStatusKeuangan());
+                        pengajuanBiayaDetailEntity.setTanggalRealisasi(bean.getTanggalRealisasi());
                         userList=userDao.getUserByBranchAndRole(CommonConstant.ID_KANPUS,"39");
                         break;
                 }
@@ -900,6 +937,7 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                     pengajuanBiayaDetailEntity.setApprovalKeuanganId(bean.getApprovalKeuanganId());
                     pengajuanBiayaDetailEntity.setApprovalKeuanganDate(bean.getApprovalKeuanganDate());
                     pengajuanBiayaDetailEntity.setStatusKeuangan(bean.getStatusKeuangan());
+                    pengajuanBiayaDetailEntity.setTanggalRealisasi(bean.getTanggalRealisasi());
                     pengajuanBiayaDetailEntity.setClosed("Y");
                     pengajuanBiayaDetailEntity.setNoJurnal(bean.getNoJurnal());
                     break;
@@ -1024,6 +1062,14 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
         returnData.setKeperluan(data.getKeperluan());
         returnData.setKeterangan(data.getKeterangan());
 
+        ImPosition position = positionDao.getById("positionId",data.getDivisiId());
+        returnData.setDivisiName(position.getPositionName());
+
+        List<ImBranches> branchesList = branchDao.getListBranchById(data.getBranchId());
+        for (ImBranches branches : branchesList){
+            returnData.setBranchName(branches.getBranchName());
+        }
+
         switch (data.getTransaksi()){
             case "I":
                 returnData.setTransaksiName("Investasi");
@@ -1038,15 +1084,28 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
         }
 
         returnData.setNoBudgeting(data.getNoBudgeting());
-
+        returnData.setTanggal(data.getTanggal());
         returnData.setStTanggal(CommonUtil.convertDateToString(data.getTanggal()));
+        returnData.setTanggalRealisasi(data.getTanggalRealisasi());
+        returnData.setStTanggalRealisasi(CommonUtil.convertDateToString(data.getTanggalRealisasi()));
+
         returnData.setJumlah(data.getJumlah());
         returnData.setBudgetBiaya(data.getBudgetBiaya());
         returnData.setBudgetTerpakai(data.getBudgetTerpakai());
+        returnData.setSisaBudget(data.getSisaBudget());
+
+        returnData.setBudgetBiayaSdBulanIni(data.getBudgetBiayaSdBulanIni());
+        returnData.setBudgetTerpakaiSdBulanIni(data.getBudgetTerpakaiSdBulanIni());
+        returnData.setSisaBudgetSdBulanIni(data.getSisaBudgetSdBulanIni());
 
         returnData.setStJumlah(CommonUtil.numbericFormat(data.getJumlah(),"###,###"));
         returnData.setStBudgetBiaya(CommonUtil.numbericFormat(data.getBudgetBiaya(),"###,###"));
         returnData.setStBudgetTerpakai(CommonUtil.numbericFormat(data.getBudgetTerpakai(),"###,###"));
+        returnData.setStSisaBudget(CommonUtil.numbericFormat(data.getSisaBudget(),"###,###"));
+
+        returnData.setStBudgetBiayaSdBulanIni(CommonUtil.numbericFormat(data.getBudgetBiayaSdBulanIni(),"###,###"));
+        returnData.setStBudgetTerpakaiSdBulanIni(CommonUtil.numbericFormat(data.getBudgetTerpakaiSdBulanIni(),"###,###"));
+        returnData.setStSisaBudgetSdBulanIni(CommonUtil.numbericFormat(data.getSisaBudgetSdBulanIni(),"###,###"));
 
         returnData.setApprovalKasubdivFlag(data.getApprovalKasubdivFlag());
         returnData.setApprovalKasubdivDate(data.getApprovalKasubdivDate());
@@ -1112,32 +1171,34 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                 returnData.setStatusSaatIni("Tidak diapprove oleh Kepala Sub Bidang");
             }
         }else {
-            if (data.getClosed()==null){
-                if (data.getApprovalKasubdivFlag()==null){
-                    if (!CommonConstant.ID_KANPUS.equalsIgnoreCase(data.getBranchId())){
-                        returnData.setStatusSaatIni("Menunggu approval Kepala Sub Divisi");
-                    }else {
-                        returnData.setStatusSaatIni("Menunggu approval Kepala Sub Bidang");
-                    }
-                }else if (data.getApprovalKadivFlag()==null){
-                    if (!CommonConstant.ID_KANPUS.equalsIgnoreCase(data.getBranchId())){
-                        returnData.setStatusSaatIni("Menunggu approval Kepala Divisi");
-                    }else {
-                        returnData.setStatusSaatIni("Menunggu approval Kepala Bidang");
-                    }
-                }else if (data.getApprovalGmFlag()==null){
-                    if (!CommonConstant.ID_KANPUS.equalsIgnoreCase(data.getBranchId())){
-                        returnData.setStatusSaatIni("Menunggu approval Kepala Rumah Sakit");
-                    }else {
-                        returnData.setStatusSaatIni("Menunggu approval Direktur Keuangan");
-                    }
-                }else if (data.getApprovalKeuanganFlag()==null){
-                    returnData.setStatusSaatIni("Menunggu approval Admin Keuangan");
-                }else if (data.getApprovalKeuanganKpFlag()==null){
-                    returnData.setStatusSaatIni("Menunggu approval Admin Keuangan Kantor Pusat");
+            if (data.getApprovalKasubdivFlag()==null){
+                if (!CommonConstant.ID_KANPUS.equalsIgnoreCase(data.getBranchId())){
+                    returnData.setStatusSaatIni("Menunggu approval Kepala Sub Divisi");
+                }else {
+                    returnData.setStatusSaatIni("Menunggu approval Kepala Sub Bidang");
                 }
-            }else {
-                returnData.setStatusSaatIni("Sudah Close");
+            }else if (data.getApprovalKadivFlag()==null){
+                if (!CommonConstant.ID_KANPUS.equalsIgnoreCase(data.getBranchId())){
+                    returnData.setStatusSaatIni("Menunggu approval Kepala Divisi");
+                }else {
+                    returnData.setStatusSaatIni("Menunggu approval Kepala Bidang");
+                }
+            }else if (data.getApprovalGmFlag()==null){
+                if (!CommonConstant.ID_KANPUS.equalsIgnoreCase(data.getBranchId())){
+                    returnData.setStatusSaatIni("Menunggu approval Kepala Rumah Sakit");
+                }else {
+                    returnData.setStatusSaatIni("Menunggu approval Direktur Keuangan");
+                }
+            }else if (data.getStatusKeuangan()==null){
+                returnData.setStatusSaatIni("Menunggu approval Admin Keuangan");
+            }else if ("A".equalsIgnoreCase(data.getStatusKeuangan())){
+                returnData.setStatusSaatIni("Sudah diapprove admin keuangan");
+            }else if ("KP".equalsIgnoreCase(data.getStatusKeuangan())){
+                if (data.getApprovalKeuanganKpFlag()==null){
+                    returnData.setStatusSaatIni("Menunggu approval keuangan kantor pusat");
+                }else if ("Y".equalsIgnoreCase(data.getApprovalKeuanganKpFlag())){
+                    returnData.setStatusSaatIni("Sudah diapprove admin keuangan kantor pusat");
+                }
             }
         }
         return returnData;
@@ -1425,9 +1486,18 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
     }
 
     @Override
-    public void batalkanPengajuanBiaya(PengajuanBiaya bean) throws GeneralBOException {
+    public String batalkanPengajuanBiaya(PengajuanBiaya bean) throws GeneralBOException {
         logger.info("[PengajuanBiayaBoImpl.batalkanPengajuanBiaya] start process >>>");
-        if (bean!=null) {
+        String response ="";
+        List<ItPengajuanBiayaDetailEntity> pengajuanBiayaDetailEntityList = pengajuanBiayaDetailDao.getByPengajuanBiayaId(bean.getPengajuanBiayaId());
+
+        //cek dulu apakah ada yang sudah di approve
+        for (ItPengajuanBiayaDetailEntity pengajuanBiayaDetailEntity : pengajuanBiayaDetailEntityList){
+            if (pengajuanBiayaDetailEntity.getApprovalKasubdivFlag()!=null){
+                response="Tidak bisa dibatalkan karena sudah ada data yang diapprove oleh atasan";
+            }
+        }
+        if (!"".equalsIgnoreCase(response)){
             String PengajuanBiayaId = bean.getPengajuanBiayaId();
             ImPengajuanBiayaEntity itPengajuanBiayaEntity = null;
             try {
@@ -1455,7 +1525,6 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                     throw new GeneralBOException("Found problem when saving update data PengajuanBiaya, please info to your admin..." + e.getMessage());
                 }
 
-                List<ItPengajuanBiayaDetailEntity> pengajuanBiayaDetailEntityList = pengajuanBiayaDetailDao.getByPengajuanBiayaId(bean.getPengajuanBiayaId());
                 for (ItPengajuanBiayaDetailEntity pengajuanBiayaDetailEntity : pengajuanBiayaDetailEntityList){
                     pengajuanBiayaDetailEntity.setClosed("Y");
                     pengajuanBiayaDetailDao.updateAndSave(pengajuanBiayaDetailEntity);
@@ -1479,7 +1548,9 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                 }
             }
         }
+
         logger.info("[PengajuanBiayaBoImpl.batalkanPengajuanBiaya] end process <<<");
+        return response;
     }
 
     @Override
@@ -1498,5 +1569,20 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
 
         logger.info("[PengajuanBiayaBoImpl.setRkSudahDikirim] end process <<<");
         return status;
+    }
+
+    @Override
+    public PengajuanBiayaDetail getDetailPembayaranForReport(String pengajuanBiayaDetailId) throws GeneralBOException {
+        logger.info("[PengajuanBiayaBoImpl.getDetailPembayaranForReport] start process >>>");
+        ItPengajuanBiayaDetailEntity pengajuanBiayaDetailEntity ;
+        try {
+            pengajuanBiayaDetailEntity = pengajuanBiayaDetailDao.getById("pengajuanBiayaDetailId",pengajuanBiayaDetailId);
+        } catch (HibernateException e) {
+            logger.error("[PengajuanBiayaBoImpl.getDetailPembayaranForReport] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        logger.info("[PengajuanBiayaBoImpl.getDetailPembayaran] end process <<<");
+
+        return convertPengajuanBiayaDetail(pengajuanBiayaDetailEntity);
     }
 }

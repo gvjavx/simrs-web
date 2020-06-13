@@ -25,8 +25,27 @@ public class JurnalDetail extends BaseModel {
     private String nomorRekening;
     private String divisiId;
 
+    //pengajuan Biaya
     private String stBudgetTerpakai;
+    private String stBudgetTerpakaiSdBulanIni;
     private String stSisaBudget;
+    private String stSisaBudgetSdBulanIni;
+
+    public String getStBudgetTerpakaiSdBulanIni() {
+        return stBudgetTerpakaiSdBulanIni;
+    }
+
+    public void setStBudgetTerpakaiSdBulanIni(String stBudgetTerpakaiSdBulanIni) {
+        this.stBudgetTerpakaiSdBulanIni = stBudgetTerpakaiSdBulanIni;
+    }
+
+    public String getStSisaBudgetSdBulanIni() {
+        return stSisaBudgetSdBulanIni;
+    }
+
+    public void setStSisaBudgetSdBulanIni(String stSisaBudgetSdBulanIni) {
+        this.stSisaBudgetSdBulanIni = stSisaBudgetSdBulanIni;
+    }
 
     public String getStBudgetTerpakai() {
         return stBudgetTerpakai;

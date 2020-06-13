@@ -2549,39 +2549,73 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
         }
         return listOfResult;
     }
-    public List<BudgettingDTO> getBudgettingPerDivisi(String unit, String status,String tahun,String divisiId,String noBudgetting,String bulan){
+    public List<BudgettingDTO> getBudgettingPerDivisi(String unit, String status,String tahun,String divisiId,String noBudgetting,String bulan,String tipe){
 
         List<BudgettingDTO> listOfResult = new ArrayList<>();
 
         List<Object[]> results = new ArrayList<Object[]>();
-        String query = "SELECT \n" +
-                "  sum(bgtd.qty) as qty, \n" +
-                "  avg(bgtd.nilai) as nilai, \n" +
-                "  sum(bgtd.sub_total) as sub_total \n" +
-                "FROM \n" +
-                "  it_akun_budgeting bgt \n" +
-                "  LEFT JOIN (\n" +
-                "    SELECT \n" +
-                "      no_budgeting, \n" +
-                "      avg(nilai) as nilai, \n" +
-                "      sum(qty) as qty, \n" +
-                "      sum(sub_total) as sub_total, \n" +
-                "      divisi_id \n" +
-                "    FROM \n" +
-                "      it_akun_budgeting_detail \n" +
-                "    WHERE \n" +
-                "      flag = 'Y' AND \n" +
-                "      tipe ilike '"+bulan+"' \n" +
-                "    group by \n" +
-                "      no_budgeting, \n" +
-                "      divisi_id\n" +
-                "  ) bgtd ON bgt.no_budgeting = bgtd.no_budgeting \n" +
-                "WHERE \n" +
-                "  branch_id = '"+unit+"' \n" +
-                "  AND tahun = '"+tahun+"' \n" +
-                "  AND status = '"+status+"' \n" +
-                "  AND bgtd.no_budgeting = '"+noBudgetting+"' \n" +
-                "  AND bgtd.divisi_id = '"+divisiId+"'\n";
+        String query = "";
+
+        if (tipe.equalsIgnoreCase("S")){
+            query = "SELECT \n" +
+                    "  sum(bgtd.qty) as qty, \n" +
+                    "  avg(bgtd.nilai) as nilai, \n" +
+                    "  sum(bgtd.sub_total) as sub_total \n" +
+                    "FROM \n" +
+                    "  it_akun_budgeting bgt \n" +
+                    "  LEFT JOIN (\n" +
+                    "    SELECT \n" +
+                    "      no_budgeting, \n" +
+                    "      avg(nilai) as nilai, \n" +
+                    "      sum(qty) as qty, \n" +
+                    "      sum(sub_total) as sub_total, \n" +
+                    "      divisi_id \n" +
+                    "    FROM \n" +
+                    "      it_akun_budgeting_detail \n" +
+                    "    WHERE \n" +
+                    "      flag = 'Y' AND \n" +
+                    "      tipe ilike '"+bulan+"' \n" +
+                    "    group by \n" +
+                    "      no_budgeting, \n" +
+                    "      divisi_id\n" +
+                    "  ) bgtd ON bgt.no_budgeting = bgtd.no_budgeting \n" +
+                    "WHERE \n" +
+                    "  branch_id = '"+unit+"' \n" +
+                    "  AND tahun = '"+tahun+"' \n" +
+                    "  AND status = '"+status+"' \n" +
+                    "  AND bgtd.no_budgeting = '"+noBudgetting+"' \n" +
+                    "  AND bgtd.divisi_id = '"+divisiId+"'\n";
+        }else{
+            query = "SELECT \n" +
+                    "  sum(bgtd.qty) as qty, \n" +
+                    "  avg(bgtd.nilai) as nilai, \n" +
+                    "  sum(bgtd.sub_total) as sub_total \n" +
+                    "FROM \n" +
+                    "  it_akun_budgeting bgt \n" +
+                    "  LEFT JOIN (\n" +
+                    "    SELECT \n" +
+                    "      no_budgeting, \n" +
+                    "      avg(nilai) as nilai, \n" +
+                    "      sum(qty) as qty, \n" +
+                    "      sum(sub_total) as sub_total, \n" +
+                    "      divisi_id \n" +
+                    "    FROM \n" +
+                    "      it_akun_budgeting_detail \n" +
+                    "    WHERE \n" +
+                    "      flag = 'Y' AND \n" +
+                    "      tipe in ("+bulan+") \n" +
+                    "    group by \n" +
+                    "      no_budgeting, \n" +
+                    "      divisi_id\n" +
+                    "  ) bgtd ON bgt.no_budgeting = bgtd.no_budgeting \n" +
+                    "WHERE \n" +
+                    "  branch_id = '"+unit+"' \n" +
+                    "  AND tahun = '"+tahun+"' \n" +
+                    "  AND status = '"+status+"' \n" +
+                    "  AND bgtd.no_budgeting = '"+noBudgetting+"' \n" +
+                    "  AND bgtd.divisi_id = '"+divisiId+"'\n";
+        }
+
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
                 .list();

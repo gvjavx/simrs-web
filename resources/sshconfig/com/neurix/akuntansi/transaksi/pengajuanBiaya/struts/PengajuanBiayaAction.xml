@@ -81,6 +81,13 @@
             <result name="error_pengajuan">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/addPengajuanBiaya.jsp</result>
             <result name="init_add_pengajuan">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/addPengajuanBiaya.jsp</result>
             <result name="success_save_add_pengajuan">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/addPengajuanBiaya.jsp</result>
+
+            <result name="cetak_surat_pengajuan_biaya" type="jasper">
+                <param name="location">/pages/report/com/neurix/akuntansi/FormPengajuanBiaya.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
         </action>
 
         <action name="paging_displaytag_pengajuanBiaya"

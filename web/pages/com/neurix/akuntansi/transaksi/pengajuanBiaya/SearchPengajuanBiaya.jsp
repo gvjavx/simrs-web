@@ -221,7 +221,6 @@
                                                         <td>Total Biaya (RP)</td>
                                                         <td>Keterangan</td>
                                                         <td>Status Saat Ini</td>
-                                                        <td align="center">Print</td>
                                                         <td align="center">View</td>
                                                         <td align="center">Batal</td>
                                                     </tr>
@@ -233,19 +232,9 @@
                                                             <td><s:property value="branchName"/></td>
                                                             <td><s:property value="divisiName"/></td>
                                                             <td><s:property value="stTanggal"/></td>
-                                                            <td><s:property value="stTotalBiaya"/></td>
+                                                            <td style="text-align: right"><s:property value="stTotalBiaya"/></td>
                                                             <td><s:property value="keterangan"/></td>
                                                             <td><s:property value="statusSaatIni"/></td>
-                                                            <td align="center">
-                                                                <s:if test='#row.aprovalFlag == "Y"'>
-                                                                    <s:url var="urlCetakSurat" namespace="/pengajuanBiaya" action="cetakSurat_pengajuanBiaya" escapeAmp="false">
-                                                                        <s:param name="id"><s:property value="#attr.row.pengajuanBiayaId" /></s:param>
-                                                                    </s:url>
-                                                                    <s:a href="%{urlCetakSurat}">
-                                                                        <img border="0" src="<s:url value="/pages/images/icons8-print-25.png"/>" name="icon_edit">
-                                                                    </s:a>
-                                                                </s:if>
-                                                            </td>
                                                             <td align="center">
                                                                 <a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanBiayaId}"/>" class="item-view">
                                                                     <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" name="icon_view">
@@ -352,7 +341,7 @@
                                     <br>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="mod_keterangan_batal_view_grp">
                                 <label class="col-md-4">Keterangan Batal</label>
                                 <div class="col-md-6">
                                     <s:textfield id="mod_keterangan_batal_view" onkeypress="$(this).css('border','')" readonly="true" cssClass="form-control"/>
@@ -422,13 +411,13 @@
                 <form class="form-horizontal" id="formDetail">
                     <div class="form-group">
                         <label class="control-label col-sm-3" >ID : </label>
-                        <div class="col-sm-8">
+                        <div class="col-sm-7">
                             <input type="text" readonly class="form-control" id="modPengajuanBiayaDetailIdDetail">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-3" >Unit : </label>
-                        <div class="col-sm-8">
+                        <div class="col-sm-7">
                             <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
                             <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="mod_branch_id_detail" required="true" disabled="true"
                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="" />
@@ -436,45 +425,62 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-3" >Divisi : </label>
-                        <div class="col-sm-8">
+                        <div class="col-sm-7">
                             <s:action id="comboPosition" namespace="/admin/user" name="initComboPosition_user"/>
                             <s:select cssClass="form-control" list="#comboPosition.listOfComboPositions" id="mod_divisi_id_detail" disabled="true" name="pengajuanBiaya.divisiId" required="false" readonly="true"
                                       listKey="stPositionId" listValue="positionName" headerKey="" headerValue="[Select one]"/>
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="control-label col-sm-3" >Tanggal Pengajuan: </label>
+                        <div class="col-sm-7">
+                            <input type="text" readonly class="form-control" id="mod_tanggal_detail">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Tanggal Realisasi: </label>
+                        <div class="col-sm-7">
+                            <input type="text" readonly class="form-control" id="mod_tanggal_realisasi_detail">
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="control-label col-sm-3" >No. Budgetting : </label>
-                        <div class="col-sm-8">
+                        <div class="col-sm-7">
                             <input type="text" readonly class="form-control" id="mod_no_budgetting_detail">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-3" >Jumlah ( RP ) : </label>
-                        <div class="col-sm-8">
+                        <div class="col-sm-7">
                             <input type="text" class="form-control" id="mod_jumlah_detail" readonly>
+                        </div>
+                        <div class="col-md-1" style="margin-top: 7px">
+                            <a href="javascript:;" id="btnViewStok">
+                                <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" name="icon_view">
+                            </a>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-3" >Budget RKAP ( RP ) : </label>
-                        <div class="col-sm-8">
+                        <div class="col-sm-7">
                             <input type="text" readonly class="form-control" id="mod_budget_detail">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-3" >Keterangan : </label>
-                        <div class="col-sm-8">
+                        <div class="col-sm-7">
                             <input type="text" readonly class="form-control" id="mod_keterangan_detail">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-3" >Status : </label>
-                        <div class="col-sm-8">
+                        <div class="col-sm-7">
                             <input type="text" readonly class="form-control" id="mod_status_detail">
                         </div>
                     </div>
                     <div class="form-group" id="not_approval_note_detail">
                         <label class="control-label col-sm-3" >Keterangan Not Approve : </label>
-                        <div class="col-sm-8">
+                        <div class="col-sm-7">
                             <input type="text" readonly class="form-control" id="mod_not_approval_note_detail">
                         </div>
                     </div>
@@ -486,6 +492,32 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modal-daftar-stok">
+    <div class="modal-dialog modal-flat modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Daftar Stok Divisi</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table style="width: 100%;" class="tabelDaftarStok table table-bordered">
+                            </table>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     window.loadDetailPengajuan = function () {
         $('.pengajuanTable').find('tbody').remove();
@@ -503,13 +535,16 @@
                 "<th style='text-align: center; color: #fff; background-color:  #30d196''>Jumlah ( RP )</th>" +
                 "<th style='text-align: center; color: #fff; background-color:  #30d196''>Status</th>" +
                 "<th style='text-align: center; color: #fff; background-color:  #30d196''>Detail</th>" +
+                "<th style='text-align: center; color: #fff; background-color:  #30d196''>Print</th>" +
                 "</tr></thead>";
             var i = i;
             $.each(listdata, function (i, item) {
-                var view ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'"  status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'" budget="'+item.stBudgetBiaya+'" noBudgetting="'+item.noBudgeting+'" notApprovalNote="'+item.notApprovalNote+'" statusSaatIni="'+item.statusSaatIni+'" class="item-detail" >\n' +
+                var view ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'"  status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'" budget="'+item.stBudgetBiaya+'" noBudgetting="'+item.noBudgeting+'" notApprovalNote="'+item.notApprovalNote+'" statusSaatIni="'+item.statusSaatIni+'" tanggal="'+item.stTanggal+'" tanggalRealisasi="'+item.stTanggalRealisasi+'" class="item-detail" >\n' +
                     '<img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" name="icon_edit">\n' +
                     '</a></td>';
-
+                var print ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'" class="item-print" >\n' +
+                    '<img border="0" src="<s:url value="/pages/images/icons8-print-25.png"/>" name="icon_edit">\n' +
+                    '</a></td>';
                 tmp_table += '<tr style="font-size: 11px;" ">' +
                     '<td align="center">' + (i + 1) + '</td>' +
                     '<td align="center">' + item.pengajuanBiayaDetailId + '</td>' +
@@ -519,7 +554,8 @@
                     '<td align="center">' + item.keperluanName + '</td>' +
                     '<td align="center">' + item.stJumlah + '</td>' +
                     '<td align="center">' + item.statusSaatIni + '</td>' +
-                    view+
+                        view+
+                        print+
                     "</tr>";
             });
             $('.pengajuanTable').append(tmp_table);
@@ -540,12 +576,12 @@
                 if (data.stTanggalRealisasi!=null){
                     $('#mod_tanggal_realisasi').val(data.stTanggalRealisasi);
                 } else{
-                    $('#mod_tanggal_realisasi_view').view();
+                    $('#mod_tanggal_realisasi_view').hide();
                 }
                 if (data.flagBatal=="Y"){
                     $('#mod_keterangan_batal_view').val(data.keteranganBatal);
                 } else{
-                    $('#mod_keterangan_batal_view').hide();
+                    $('#mod_keterangan_batal_view_grp').hide();
                 }
             });
             loadDetailPengajuan();
@@ -579,9 +615,13 @@
                 alert("Keterangan masih kosong");
             } else{
                 if (confirm("Apakah anda ingin membatalkan pengajuan ini ?")){
-                    PengajuanBiayaAction.batalkanPengajuanBiaya(pengajuanId,keterangan,function() {
-                        alert("Dibatalkan");
-                        window.location.reload();
+                    PengajuanBiayaAction.batalkanPengajuanBiaya(pengajuanId,keterangan,function(result) {
+                        if (result==""){
+                            alert("Dibatalkan");
+                            window.location.reload();
+                        } else{
+                            alert(result)
+                        }
                     });
                 }
             }
@@ -596,6 +636,8 @@
             $('#mod_divisi_id_detail').val($(this).attr('divisi'));
             $('#mod_keterangan_detail').val($(this).attr('keterangan'));
             $('#mod_no_budgetting_detail').val($(this).attr('noBudgetting'));
+            $('#mod_tanggal_detail').val($(this).attr('tanggal'));
+            $('#mod_tanggal_realisasi_detail').val($(this).attr('tanggalRealisasi'));
             $('#mod_budget_detail').val($(this).attr('budget'));
             $('#mod_status_detail').val($(this).attr('statusSaatIni'));
             if ($(this).attr('notApprovalNote')!="null"){
@@ -606,6 +648,71 @@
 
             $('#modal-detail').modal('show');
 
+        });
+        $('#btnViewStok').click(function () {
+            var tanggal = $('#mod_tanggal_detail').val();
+            var branchId = $('#mod_branch_id_detail').val();
+            var divisiId = $('#mod_divisi_id_detail').val();
+            $('.tabelDaftarStok').find('tbody').remove();
+            $('.tabelDaftarStok').find('thead').remove();
+            dwr.engine.setAsync(false);
+            var array = tanggal.split('-');
+            var tanggalBaru = array[2]+"-"+array[1]+"-"+array[0];
+            var tmp_table = "";
+            if (tanggal!=""&&branchId!=""&&divisiId!=""){
+                PengajuanBiayaAction.getStockPerDivisi(branchId,divisiId,tanggalBaru,function (result) {
+                    tmp_table = "<thead style='font-size: 12px;' ><tr class='active'>"+
+                        "<th style='text-align: center; background-color:  #90ee90'>No</th>"+
+                        "<th style='text-align: center; background-color:  #90ee90'>Nama Barang</th>"+
+                        "<th style='text-align: center; background-color:  #90ee90'>Qty</th>"+
+                        "<th style='text-align: center; background-color:  #90ee90'>Nilai ( RP )</th>"+
+                        "<th style='text-align: center; background-color:  #90ee90'>Saldo ( RP )</th>"+
+                        "</tr></thead>";
+                    var i = i ;
+                    var totalBayar = 0;
+                    $.each(result, function (i, item) {
+                        var saldo = item.subTotalSaldo.replace(/[,]/g,"");
+                        totalBayar=totalBayar+parseInt(saldo);
+                        tmp_table += '<tr style="font-size: 11px;" ">' +
+                            '<td align="center">' + (i + 1) + '</td>' +
+                            '<td align="center">' + item.namaBarang+ '</td>' +
+                            '<td align="center">' + item.qty+ '</td>' +
+                            '<td align="right">' + item.totalSaldo+ '</td>' +
+                            '<td align="right">' + item.subTotalSaldo+ '</td>' +
+                            "</tr>";
+                    });
+                    tmp_table += '<tr style="font-size: 11px;" ">' +
+                        '<td align="center" colspan="4">' + "Total Saldo ( RP )" + '</td>' +
+                        '<td align="right">' + formatRupiahAngka(String(totalBayar))+ '</td>' +
+                        "</tr>";
+                    $('.tabelDaftarStok').append(tmp_table);
+                    if (totalBayar>0){
+                        $("#modal-daftar-stok").modal('show');
+                    } else{
+                        alert("Data stok kosong");
+                    }
+                })
+            }
+        });
+        function formatRupiahAngka(angka) {
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            if (ribuan) {
+                separator = sisa ? ',' : '';
+                rupiah += separator + ribuan.join(',');
+            }
+
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return rupiah;
+        }
+        $('.pengajuanTable').on('click', '.item-print', function() {
+            var id = $(this).attr('data');
+            var url = "cetakSurat_pengajuanBiaya.action?id="+id;
+            window.open(url,'_blank');
         });
     });
 </script>

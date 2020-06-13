@@ -3,20 +3,28 @@ package com.neurix.akuntansi.transaksi.pengajuanBiaya.model;
 import com.neurix.common.model.BaseModel;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 public class PengajuanBiayaDetail extends BaseModel {
     private String pengajuanBiayaDetailId;
     private String pengajuanBiayaId;
     private String branchId;
+    private String branchName;
     private String divisiId;
+    private String divisiName;
     private String stTanggal;
     private String transaksi;
     private String noBudgeting;
     private String stJumlah;
+
     private String stBudgetBiaya;
     private String stBudgetTerpakai;
     private String stSisaBudget;
+    private String stBudgetBiayaSdBulanIni;
+    private String stBudgetTerpakaiSdBulanIni;
+    private String stSisaBudgetSdBulanIni;
+
     private String keperluan;
     private String keterangan;
 
@@ -24,6 +32,9 @@ public class PengajuanBiayaDetail extends BaseModel {
     private BigDecimal budgetBiaya;
     private BigDecimal budgetTerpakai;
     private BigDecimal sisaBudget;
+    private BigDecimal budgetBiayaSdBulanIni;
+    private BigDecimal budgetTerpakaiSdBulanIni;
+    private BigDecimal sisaBudgetSdBulanIni;
 
     private String approvalKasubdivFlag;
     private String approvalKasubdivId;
@@ -51,6 +62,9 @@ public class PengajuanBiayaDetail extends BaseModel {
 
     private String closed;
 
+    private Date tanggalRealisasi;
+    private String stTanggalRealisasi;
+    private Date tanggal;
     private String statusApproval;
     private String statusUserApproval;
     private String statusKeuangan;
@@ -61,6 +75,94 @@ public class PengajuanBiayaDetail extends BaseModel {
     private String statusSaatIni;
 
     private String notApprovalNote;
+
+    public String getDivisiName() {
+        return divisiName;
+    }
+
+    public void setDivisiName(String divisiName) {
+        this.divisiName = divisiName;
+    }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
+    public String getStBudgetBiayaSdBulanIni() {
+        return stBudgetBiayaSdBulanIni;
+    }
+
+    public void setStBudgetBiayaSdBulanIni(String stBudgetBiayaSdBulanIni) {
+        this.stBudgetBiayaSdBulanIni = stBudgetBiayaSdBulanIni;
+    }
+
+    public String getStBudgetTerpakaiSdBulanIni() {
+        return stBudgetTerpakaiSdBulanIni;
+    }
+
+    public void setStBudgetTerpakaiSdBulanIni(String stBudgetTerpakaiSdBulanIni) {
+        this.stBudgetTerpakaiSdBulanIni = stBudgetTerpakaiSdBulanIni;
+    }
+
+    public String getStSisaBudgetSdBulanIni() {
+        return stSisaBudgetSdBulanIni;
+    }
+
+    public void setStSisaBudgetSdBulanIni(String stSisaBudgetSdBulanIni) {
+        this.stSisaBudgetSdBulanIni = stSisaBudgetSdBulanIni;
+    }
+
+    public BigDecimal getBudgetBiayaSdBulanIni() {
+        return budgetBiayaSdBulanIni;
+    }
+
+    public void setBudgetBiayaSdBulanIni(BigDecimal budgetBiayaSdBulanIni) {
+        this.budgetBiayaSdBulanIni = budgetBiayaSdBulanIni;
+    }
+
+    public BigDecimal getBudgetTerpakaiSdBulanIni() {
+        return budgetTerpakaiSdBulanIni;
+    }
+
+    public void setBudgetTerpakaiSdBulanIni(BigDecimal budgetTerpakaiSdBulanIni) {
+        this.budgetTerpakaiSdBulanIni = budgetTerpakaiSdBulanIni;
+    }
+
+    public BigDecimal getSisaBudgetSdBulanIni() {
+        return sisaBudgetSdBulanIni;
+    }
+
+    public void setSisaBudgetSdBulanIni(BigDecimal sisaBudgetSdBulanIni) {
+        this.sisaBudgetSdBulanIni = sisaBudgetSdBulanIni;
+    }
+
+    public String getStTanggalRealisasi() {
+        return stTanggalRealisasi;
+    }
+
+    public void setStTanggalRealisasi(String stTanggalRealisasi) {
+        this.stTanggalRealisasi = stTanggalRealisasi;
+    }
+
+    public Date getTanggalRealisasi() {
+        return tanggalRealisasi;
+    }
+
+    public void setTanggalRealisasi(Date tanggalRealisasi) {
+        this.tanggalRealisasi = tanggalRealisasi;
+    }
+
+    public Date getTanggal() {
+        return tanggal;
+    }
+
+    public void setTanggal(Date tanggal) {
+        this.tanggal = tanggal;
+    }
 
     public String getStatusSaatIni() {
         return statusSaatIni;

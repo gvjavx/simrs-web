@@ -1657,8 +1657,9 @@ public class BudgetingAction {
     }
 
 
-    public String getBudgetSaatIni(String branchId,String divisiId,String tanggal,String noBudgetting){
-        String budgetSaatIni ;
+    public Budgeting getBudgetSaatIni(String branchId,String divisiId,String tanggal,String noBudgetting){
+        Budgeting data = new Budgeting();
+
         String[] arrTanggal = tanggal.split("-");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -1671,9 +1672,9 @@ public class BudgetingAction {
         budgetingStatus.setBulan(CommonUtil.convertNumberToStringBulan(arrTanggal[1]));
 
 
-        budgetSaatIni = budgetingBo.getBudgetBiayaDivisiSaatIni(budgetingStatus);
+        data = budgetingBo.getBudgetBiayaDivisiSaatIni(budgetingStatus);
 
-        return budgetSaatIni;
+        return data;
     }
 
     public String getBudgetInvestasiSaatIni(String branchId,String divisiId,String tanggal,String idPengadaan){

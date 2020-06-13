@@ -37,6 +37,16 @@ public class PembayaranUtangPiutang extends BaseModel {
     private String metodePembayaran;
     private String bank;
 
+    private String tipePengajuanBiaya;
+
+    public String getTipePengajuanBiaya() {
+        return tipePengajuanBiaya;
+    }
+
+    public void setTipePengajuanBiaya(String tipePengajuanBiaya) {
+        this.tipePengajuanBiaya = tipePengajuanBiaya;
+    }
+
     public String getMetodePembayaranName() {
         return metodePembayaranName;
     }

@@ -76,6 +76,44 @@ public class Budgeting {
     private BigDecimal selisihSaldoAkhir;
     private String noTrans;
 
+    //for pengajuan biaya
+    private BigDecimal budgetSaatIni;
+    private BigDecimal budgetSdSaatIni;
+    private String stBudgetSaatIni;
+    private String stBudgetSdSaatIni;
+
+    public BigDecimal getBudgetSaatIni() {
+        return budgetSaatIni;
+    }
+
+    public void setBudgetSaatIni(BigDecimal budgetSaatIni) {
+        this.budgetSaatIni = budgetSaatIni;
+    }
+
+    public BigDecimal getBudgetSdSaatIni() {
+        return budgetSdSaatIni;
+    }
+
+    public void setBudgetSdSaatIni(BigDecimal budgetSdSaatIni) {
+        this.budgetSdSaatIni = budgetSdSaatIni;
+    }
+
+    public String getStBudgetSaatIni() {
+        return stBudgetSaatIni;
+    }
+
+    public void setStBudgetSaatIni(String stBudgetSaatIni) {
+        this.stBudgetSaatIni = stBudgetSaatIni;
+    }
+
+    public String getStBudgetSdSaatIni() {
+        return stBudgetSdSaatIni;
+    }
+
+    public void setStBudgetSdSaatIni(String stBudgetSdSaatIni) {
+        this.stBudgetSdSaatIni = stBudgetSdSaatIni;
+    }
+
     public String getNoTrans() {
         return noTrans;
     }
