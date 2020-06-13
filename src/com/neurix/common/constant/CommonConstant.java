@@ -3,6 +3,8 @@ package com.neurix.common.constant;
 import com.neurix.common.util.CommonUtil;
 import org.apache.struts2.ServletActionContext;
 
+import java.math.BigDecimal;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Thunderbird
@@ -158,7 +160,7 @@ public class CommonConstant {
     //AKUNTANSI
     public final static String COA_PAYROLL = CommonUtil.getPropertyParams("coa.bank.payroll");
     public final static String COA_RK_GATOEL = CommonUtil.getPropertyParams("coa.rk.gatoel");
+    public final static String COA_KAS_MANDIRI = "1.1.02.01.06";
     public final static String ID_KANPUS = "KP";
     public final static String MASTER_PAJAK_OBAT = "03.00";
-
 }

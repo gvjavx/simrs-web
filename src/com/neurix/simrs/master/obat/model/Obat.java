@@ -75,6 +75,15 @@ public class Obat extends BaseModel {
     private String bulan;
     private String periode;
     private String namaPelayanan;
+    private String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getNamaPelayanan() {
         return namaPelayanan;

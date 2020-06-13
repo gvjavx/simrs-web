@@ -907,6 +907,30 @@ public class NotifikasiAction extends BaseMasterAction{
         }
         return listOfResult;
     }
+
+    public List<Notifikasi> searchPengajuanBiayaMenggantung(){
+        List<Notifikasi> listOfResult = new ArrayList<Notifikasi>();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
+
+        try {
+            listOfResult = notifikasiBo.getPengajuanBiayaMenggantung();
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = notifikasiBo.saveErrorMessage(e.getMessage(), "NotifikasiBo.searchPengajuanBiayaMenggantung");
+            } catch (GeneralBOException e1) {
+                logger.error("[NotifikasiBo.searchPengajuanBiayaMenggantung] Error when saving error,", e1);
+//                return ERROR;
+            }
+            logger.error("[NotifikasiBo.searchPengajuanBiayaMenggantung] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+//            return ERROR;
+        }
+        return listOfResult;
+    }
+
     public String viewNotifikasi(){
 
         String function = "";
@@ -960,7 +984,7 @@ public class NotifikasiAction extends BaseMasterAction{
             pengajuanBiayaRk = new PengajuanBiaya();
             pengajuanBiayaRk.setPengajuanBiayaId(pengajuanBiayaId);
         }
-        if ("TN02".equalsIgnoreCase(tipe)){
+        if ("TN04".equalsIgnoreCase(tipe)){
             String pengajuanBiayaId = getRequest();
 
             pengajuanBiaya = new PengajuanBiaya();

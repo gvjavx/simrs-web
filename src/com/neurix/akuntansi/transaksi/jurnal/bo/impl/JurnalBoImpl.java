@@ -1,6 +1,7 @@
 package com.neurix.akuntansi.transaksi.jurnal.bo.impl;
 
 import com.neurix.akuntansi.master.kodeRekening.dao.KodeRekeningDao;
+import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
 import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.transaksi.jurnal.bo.JurnalBo;
 import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDao;
@@ -9,7 +10,10 @@ import com.neurix.akuntansi.transaksi.jurnal.model.ItJurnalDetailEntity;
 import com.neurix.akuntansi.transaksi.jurnal.model.ItJurnalEntity;
 import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.akuntansi.transaksi.jurnal.model.JurnalDetail;
+import com.neurix.authorization.position.dao.PositionDao;
+import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.dao.BiodataDao;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -35,6 +39,15 @@ public class JurnalBoImpl implements JurnalBo {
     private JurnalDao jurnalDao;
     private JurnalDetailDao jurnalDetailDao;
     private KodeRekeningDao kodeRekeningDao;
+    private PositionDao positionDao;
+
+    public PositionDao getPositionDao() {
+        return positionDao;
+    }
+
+    public void setPositionDao(PositionDao positionDao) {
+        this.positionDao = positionDao;
+    }
 
     public KodeRekeningDao getKodeRekeningDao() {
         return kodeRekeningDao;
@@ -98,5 +111,32 @@ public class JurnalBoImpl implements JurnalBo {
     @Override
     public List<Jurnal> getByCriteria(Jurnal searchBean) throws GeneralBOException {
         return null;
+    }
+
+    @Override
+    public JurnalDetail getBudgetTerpakai(String branchId, String divisiId, String tahun, String bulan, String coa,String budgetSaatIni,String budgetSdSaatIni){
+        JurnalDetail result = new JurnalDetail();
+        ImPosition position = positionDao.getById("positionId",divisiId);
+        BigDecimal nilaiBudget = BigDecimal.valueOf(Double.valueOf(budgetSaatIni.replace(".","").replace(",","")));
+        BigDecimal nilaiBudgetSdSaatIni = BigDecimal.valueOf(Double.valueOf(budgetSdSaatIni.replace(".","").replace(",","")));
+
+        List<ImKodeRekeningEntity> kodeRekeningEntity = kodeRekeningDao.getIdByCoa(coa);
+        String rekeningId = "";
+        for (ImKodeRekeningEntity rekeningEntity : kodeRekeningEntity){
+            rekeningId = rekeningEntity.getRekeningId();
+        }
+        String koderingPosisi = position.getKodering();
+        BigDecimal budgetTerpakai = jurnalDao.getBudgetTerpakai(branchId,koderingPosisi,bulan,tahun,rekeningId);
+        BigDecimal budgetTerpakaiSdBulanIni = jurnalDao.getBudgetTerpakaiSdBulanIni(branchId,koderingPosisi,bulan,tahun,rekeningId);
+
+        BigDecimal sisaBudget = nilaiBudget.subtract(budgetTerpakai);
+        BigDecimal sisaBudgetSdBulanIni = nilaiBudgetSdSaatIni.subtract(budgetTerpakaiSdBulanIni);
+
+        result.setStBudgetTerpakai(CommonUtil.numbericFormat(budgetTerpakai,"###,###"));
+        result.setStBudgetTerpakaiSdBulanIni(CommonUtil.numbericFormat(budgetTerpakaiSdBulanIni,"###,###"));
+        result.setStSisaBudget(CommonUtil.numbericFormat(sisaBudget,"###,###"));
+        result.setStSisaBudgetSdBulanIni(CommonUtil.numbericFormat(sisaBudgetSdBulanIni,"###,###"));
+
+        return result;
     }
 }

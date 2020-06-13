@@ -435,27 +435,9 @@
                                                         </sj:submit>
                                                     </td>
                                                     <td>
-                                                        <div class="btn-group">
-                                                            <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-                                                                <i class="fa fa-plus"></i>
-                                                                Add Absensi
-                                                                <span class="caret"></span>
-                                                            </button>
-                                                            <ul class="dropdown-menu">
-                                                                <li id="btnSync">
-                                                                    <s:a href="#"><i class="fa fa-refresh"></i> Sync Data</s:a>
-                                                                </li>
-                                                                <li>
-                                                                    <s:a href="add_absensi.action"><i class="fa fa-plus"></i> Add Absensi</s:a>
-                                                                </li>
-                                                                <%--<li>
-                                                                    <s:a href="addTambahan_absensi.action"><i class="fa fa-plus"></i> Add Absensi Tambahan</s:a>
-                                                                </li>--%>
-                                                                    <%--<li id="btnRefreshAll">
-                                                                        <s:a href="#"><i class="fa fa-refresh"></i> Refresh Data Absensi</s:a>
-                                                                    </li>--%>
-                                                            </ul>
-                                                        </div>
+                                                        <button type="button" class="btn btn-success" onclick="window.location.href='<s:url action="add_absensi.action"/>'">
+                                                            <i class="fa fa-plus"></i> Add Absensi
+                                                        </button>
                                                     </td>
                                                     <td>
                                                         <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_absensi"/>'">
@@ -471,18 +453,6 @@
                                             <table id="showdata" width="80%">
                                                 <tr>
                                                     <td align="center">
-                                                        <%--<sj:dialog id="waiting_dialog_loading" openTopics="showDialogLoading" closeTopics="closeDialogLoading" modal="true"--%>
-                                                                   <%--resizable="false"--%>
-                                                                   <%--height="350" width="600" autoOpen="false" title="Loading ...">--%>
-                                                            <%--Please don't close this window, server is processing your request ...--%>
-                                                            <%--</br>--%>
-                                                            <%--</br>--%>
-                                                            <%--</br>--%>
-                                                            <%--<center>--%>
-                                                                <%--<img border="0" src="<s:url value="/pages/images/indicator-read.gif"/>" name="image_indicator_read">--%>
-                                                            <%--</center>--%>
-                                                        <%--</sj:dialog>--%>
-
                                                         <sj:dialog id="waiting_dialog_loading" openTopics="showDialogLoading"
                                                                    closeTopics="closeDialogLoading" modal="true"
                                                                    resizable="false"
@@ -626,39 +596,6 @@
 
 </body>
 </html>
-<!-- Modal -->
-<div class="modal fade" id="onLoading" tabindex="-1" role="dialog" aria-labelledby="loadMeLabel">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-            <div class="modal-body text-center">
-                <div class="loader"></div>
-                <div class="loader-txt">
-                    <p>Please wait <br><br><small>Server is processing your request ...</small></p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Modal -->
-<div id="success_tic" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <a class="close" href="#" data-dismiss="modal">&times;</a>
-            <div class="page-body">
-                <div class="head">
-                    <h3 style="margin-top:5px;">SUCCESS</h3>
-                    <h4>Sync dengan mesin sukses</h4>
-                </div>
-                <h1 style="text-align:center;"><div class="checkmark-circle">
-                    <div class="background"></div>
-                    <div class="checkmark draw"></div>
-                </div></h1>
-            </div>
-        </div>
-    </div>
-
-</div>
 <script>
     $(document).ready(function() {
         $('#tgl1').datepicker({
@@ -667,103 +604,6 @@
         $('#tgl2').datepicker({
             dateFormat: 'dd-mm-yy'
         });
-        $('#btnPrintAbsensi').click(function(){
-            if($('#branchid').val()==""){
-                alert("Unit belum diisi");
-            } else if($('#tgl1').val()!=""&&$('#tgl2').val()!="") {
-                var nip = $('#nip').val();
-                var tgl1 = $('#tgl1').val();
-                var tgl2 = $('#tgl2').val();
-                var branch = $('#branchid').val();
-                var bidang = $('#divisiId').val();
-                var bagian = $('#bagian').val();
-                window.location.href = "printReportAbsensi_absensi.action?tglFrom="+tgl1+"&tglTo="+tgl2+"&branchId="+branch+"&divisiId="+bidang+"&bagian="+bagian+"&nip="+nip;
-            } else {
-                alert("Tanggal ada yang kosong ");
-            }
-        });
-        $('#btnPrintUangMakan').click(function(){
-            if($('#branchid').val()==""){
-                alert("Unit belum diisi");
-            } else if($('#tgl1').val()!=""&&$('#tgl2').val()!="") {
-                var nip = $('#nip').val();
-                var tgl1 = $('#tgl1').val();
-                var tgl2 = $('#tgl2').val();
-                var branch = $('#branchid').val();
-                var bidang = $('#divisiId').val();
-                var bagian = $('#bagian').val();
-                // window.location.href = "downloadXls_absensi.action?tglFrom="+tgl1+"&tglTo="+tgl2+"&branchId="+branch+"&divisiId="+bidang;
-                window.location.href = "printReportUangMakan_absensi.action?tglFrom="+tgl1+"&tglTo="+tgl2+"&branchId="+branch+"&divisiId="+bidang+"&bagian="+bagian+"&nip="+nip;
-            } else {
-                alert("Tanggal ada yang kosong ");
-            }
-        });
-        $('#btnPrintLembur').click(function(){
-            if($('#branchid').val()==""){
-                alert("Unit belum diisi");
-            } else if($('#tgl1').val()!=""&&$('#tgl2').val()!="") {
-                var nip = $('#nip').val();
-                var tgl1 = $('#tgl1').val();
-                var tgl2 = $('#tgl2').val();
-                var branch = $('#branchid').val();
-                window.location.href = "printReportLembur_absensi.action?tglFrom="+tgl1+"&tglTo="+tgl2+"&branchId="+branch+"&nip="+nip;
-            } else {
-                alert("Tanggal ada yang kosong ");
-            }
-        });
-        $('#btnPrintRekapLembur').click(function(){
-            if($('#branchid').val()==""){
-                alert("Unit belum diisi");
-            } else if($('#tgl1').val()!=""&&$('#tgl2').val()!="") {
-                var tgl1 = $('#tgl1').val();
-                var tgl2 = $('#tgl2').val();
-                var branch = $('#branchid').val();
-                window.location.href = "printReportRekapitulasiLembur_absensi.action?tglFrom="+tgl1+"&tglTo="+tgl2+"&branchId="+branch;
-            } else {
-                alert("Tanggal ada yang kosong ");
-            }
-        });
-        $('#btnPrintTriwulan').click(function(){
-            if($('#branchid').val()==""){
-                alert("Unit belum diisi");
-            } else if($('#tgl1').val()!=""&&$('#tgl2').val()!="") {
-                var tgl1 = $('#tgl1').val();
-                var tgl2 = $('#tgl2').val();
-                var branch = $('#branchid').val();
-                var bagian = "";
-                window.location.href = "printReportAbsensiTriwulan_absensi.action?tglFrom="+tgl1+"&tglTo="+tgl2+"&branchId="+branch+"&bagian="+bagian;
-            } else {
-                alert("Tanggal ada yang kosong ");
-            }
-        });
-        $('#btnSync').click(function(){
-            if(confirm("apakah anda ingin melakukan sinkronisasi data dengan mesin absensi ?")){
-                $("#onLoading").modal({
-                    backdrop: "static", //remove ability to close modal with click
-                    keyboard: false, //remove option to close with keyboard
-                    show: true //Display loader!
-                });
-                dwr.engine.setAsync(true);
-                AbsensiAction.getDataFromMesin({
-                    callback : function(response){
-                        $("#onLoading").modal("hide");
-                        $("#success_tic").modal("show");
-                    }
-                });
-            }
-        });
-
-        $('#btnRefreshAll').click(function(){
-            if(confirm("apakah anda ingin melakukan refresh data dengan mesin absensi ?")){
-                dwr.engine.setAsync(false);
-                AbsensiAction.getDataFromMesin(tgl1,tgl2,function(status) {
-                    if (status=="00"){
-                        alert("Sync Success");
-                    }
-                });
-            }
-        });
-
         $('.tableAbsensi').on('click', '.item-refresh', function() {
             var tanggal = $(this).attr('tanggal');
             var nip = $(this).attr('nip');

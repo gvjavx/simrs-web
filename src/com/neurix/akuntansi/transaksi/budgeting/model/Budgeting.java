@@ -69,9 +69,58 @@ public class Budgeting {
     private String branchName;
     private String divisi;
     private String coa;
+    private String idPengadaan;
+    private String bulan;
 
     private BigDecimal saldoAkhir;
     private BigDecimal selisihSaldoAkhir;
+    private String noTrans;
+
+    //for pengajuan biaya
+    private BigDecimal budgetSaatIni;
+    private BigDecimal budgetSdSaatIni;
+    private String stBudgetSaatIni;
+    private String stBudgetSdSaatIni;
+
+    public BigDecimal getBudgetSaatIni() {
+        return budgetSaatIni;
+    }
+
+    public void setBudgetSaatIni(BigDecimal budgetSaatIni) {
+        this.budgetSaatIni = budgetSaatIni;
+    }
+
+    public BigDecimal getBudgetSdSaatIni() {
+        return budgetSdSaatIni;
+    }
+
+    public void setBudgetSdSaatIni(BigDecimal budgetSdSaatIni) {
+        this.budgetSdSaatIni = budgetSdSaatIni;
+    }
+
+    public String getStBudgetSaatIni() {
+        return stBudgetSaatIni;
+    }
+
+    public void setStBudgetSaatIni(String stBudgetSaatIni) {
+        this.stBudgetSaatIni = stBudgetSaatIni;
+    }
+
+    public String getStBudgetSdSaatIni() {
+        return stBudgetSdSaatIni;
+    }
+
+    public void setStBudgetSdSaatIni(String stBudgetSdSaatIni) {
+        this.stBudgetSdSaatIni = stBudgetSdSaatIni;
+    }
+
+    public String getNoTrans() {
+        return noTrans;
+    }
+
+    public void setNoTrans(String noTrans) {
+        this.noTrans = noTrans;
+    }
 
     private List<BudgetingPeriode> listPeriode = new ArrayList<>();
     private List<BudgetingDetail> budgetingDetailList = new ArrayList<>();
@@ -88,6 +137,22 @@ public class Budgeting {
             //descending order
 //            return kdRekening2.compareTo(kdRekening1);
         }};
+
+    public String getBulan() {
+        return bulan;
+    }
+
+    public void setBulan(String bulan) {
+        this.bulan = bulan;
+    }
+
+    public String getIdPengadaan() {
+        return idPengadaan;
+    }
+
+    public void setIdPengadaan(String idPengadaan) {
+        this.idPengadaan = idPengadaan;
+    }
 
     public String getDivisi() {
         return divisi;

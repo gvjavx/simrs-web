@@ -62,6 +62,7 @@ import com.neurix.simrs.transaksi.ordergizi.bo.OrderGiziBo;
 import com.neurix.simrs.transaksi.ordergizi.model.OrderGizi;
 import com.neurix.simrs.transaksi.paketperiksa.bo.PaketPeriksaBo;
 import com.neurix.simrs.transaksi.paketperiksa.dao.ItemPaketDao;
+import com.neurix.simrs.transaksi.paketperiksa.model.ItSimrsPaketPasienEntity;
 import com.neurix.simrs.transaksi.paketperiksa.model.ItemPaket;
 import com.neurix.simrs.transaksi.paketperiksa.model.MtSimrsItemPaketEntity;
 import com.neurix.simrs.transaksi.paketperiksa.model.MtSimrsPaketEntity;
@@ -1229,6 +1230,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         JenisPriksaPasienBo jenisPriksaPasienBo = (JenisPriksaPasienBo) ctx.getBean("jenisPriksaPasienBoProxy");
         RiwayatTindakanBo riwayatTindakanBo = (RiwayatTindakanBo) ctx.getBean("riwayatTindakanBoProxy");
         PaketPeriksaBo paketPeriksaBo = (PaketPeriksaBo) ctx.getBean("paketPeriksaBoProxy");
+        MasterBo masterBo = (MasterBo) ctx.getBean("masterBoProxy");
 
         String kode = "";
         String transId = "";
@@ -1271,6 +1273,14 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                 } else {
                     masterId = jenisPriksaPasienBo.getJenisPerikasEntityById(detailCheckupEntity.getIdJenisPeriksaPasien()).getMasterId();
+                }
+
+                String masterPerusahaan = "";
+                if ("paket_perusahaan".equalsIgnoreCase(idJenisPeriksaPasien)){
+                    ItSimrsPaketPasienEntity paketPasienEntity = paketPeriksaBo.getPaketPasienEntityByIdPaket(detailCheckupEntity.getIdPaket(), idPasien);
+                    if (paketPasienEntity != null){
+                        masterPerusahaan = paketPasienEntity.getIdPerusahaan();
+                    }
                 }
 
                 ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(detailCheckupEntity.getIdPelayanan());
@@ -1443,7 +1453,11 @@ public class CheckupDetailAction extends BaseMasterAction {
                                 Map mapPiutang = new HashMap();
                                 mapPiutang.put("bukti", invoice);
                                 mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
-                                mapPiutang.put("pasien_id", idPasien);
+                                if (!"paket_perusahaan".equalsIgnoreCase(idJenisPeriksaPasien)){
+                                    mapPiutang.put("pasien_id", idPasien);
+                                } else {
+                                    mapPiutang.put("master_id", masterPerusahaan);
+                                }
 
                                 // debit piutang pasien
                                 hsCriteria.put("piutang_pasien_umum", mapPiutang);
@@ -1459,7 +1473,11 @@ public class CheckupDetailAction extends BaseMasterAction {
                                 Map mapPiutang = new HashMap();
                                 mapPiutang.put("bukti", invoice);
                                 mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
-                                mapPiutang.put("pasien_id", idPasien);
+                                if (!"paket_perusahaan".equalsIgnoreCase(idJenisPeriksaPasien)){
+                                    mapPiutang.put("pasien_id", idPasien);
+                                } else {
+                                    mapPiutang.put("master_id", masterPerusahaan);
+                                }
 
                                 // debit piutang pasien
                                 hsCriteria.put("piutang_pasien_umum", mapPiutang);
@@ -1484,7 +1502,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                                 return response;
                             }
 
-                            // kredit jumlah tindakan asuransi
+                            // kredit jumlah tindakan asuransis
                             hsCriteria.put("pendapatan_rawat_inap_asuransi", listOfTindakan);
 
                             // create map piutang asuransi
@@ -1534,10 +1552,23 @@ public class CheckupDetailAction extends BaseMasterAction {
                         MtSimrsPaketEntity paketEntity = paketPeriksaBo.getPaketEntityById(detailCheckupEntity.getIdPaket());
                         String namaPaket = "";
                         if (paketEntity != null){
-                            namaPaket = paketEntity.getNamaPaket();
+                            namaPaket = paketEntity.getNamaPaket()+ " ";
                         }
 
-                        catatan = "Closing Pasien " + namaPaket + ketResep + "No.Detail Checkup " + idDetailCheckup + " Piutang No Pasien " + " " + idPasien + noKartu;
+                        // if paket perusahaan
+                        if ("paket_perusahaan".equalsIgnoreCase(idJenisPeriksaPasien)){
+
+                            String namaPerusahaan = "";
+                            ImMasterEntity masterEntity = masterBo.getEntityMasterById(masterPerusahaan);
+                            if (masterEntity != null){
+                                namaPerusahaan = masterEntity.getNama();
+                            }
+
+                            catatan = "Closing Pasien Paket " + namaPaket + ketResep + " " + namaPerusahaan + " No.Detail Checkup " + idDetailCheckup + " Piutang No Pasien " + " " + idPasien + noKartu;
+                        } else {
+                            catatan = "Closing Pasien Paket " + namaPaket + ketResep + "No.Detail Checkup " + idDetailCheckup + " Piutang No Pasien " + " " + idPasien + noKartu;
+                        }
+
                     } else {
                         catatan = "Closing Pasien " + ketPoli + jenisPasien + ketResep + "No.Detail Checkup " + idDetailCheckup + " Piutang No Pasien " + " " + idPasien + noKartu;
                     }

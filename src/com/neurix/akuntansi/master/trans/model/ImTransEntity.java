@@ -17,6 +17,8 @@ public class ImTransEntity implements Serializable {
     private String tipePembayaran;
     private String flagSumberBaru;
 
+    private String flagPengajuanBiaya;
+
     private String master;
 
     private String flag;
@@ -25,6 +27,14 @@ public class ImTransEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getFlagPengajuanBiaya() {
+        return flagPengajuanBiaya;
+    }
+
+    public void setFlagPengajuanBiaya(String flagPengajuanBiaya) {
+        this.flagPengajuanBiaya = flagPengajuanBiaya;
+    }
 
     public String getMaster() {
         return master;

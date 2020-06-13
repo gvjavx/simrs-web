@@ -26,6 +26,11 @@ public class ItPengajuanBiayaDetailEntity implements Serializable {
     private BigDecimal jumlah;
     private BigDecimal budgetBiaya;
     private BigDecimal budgetTerpakai;
+    private BigDecimal sisaBudget;
+
+    private BigDecimal budgetBiayaSdBulanIni;
+    private BigDecimal budgetTerpakaiSdBulanIni;
+    private BigDecimal sisaBudgetSdBulanIni;
 
     private String approvalKasubdivFlag;
     private String approvalKasubdivId;
@@ -43,7 +48,21 @@ public class ItPengajuanBiayaDetailEntity implements Serializable {
     private String approvalKeuanganId;
     private Timestamp approvalKeuanganDate;
 
+    private String approvalKeuanganKpFlag;
+    private String approvalKeuanganKpId;
+    private Timestamp approvalKeuanganKpDate;
+
+    private Date tanggalRealisasi;
+
+    private String diterimaFlag;
+    private String diterimaId;
+    private Timestamp diterimaDate;
+
+    private String closed;
+    private String noJurnal;
+
     private String statusApproval;
+    private String statusKeuangan;
 
     private String flag;
     private String action;
@@ -51,6 +70,128 @@ public class ItPengajuanBiayaDetailEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    private String notApprovalNote;
+
+    public BigDecimal getSisaBudget() {
+        return sisaBudget;
+    }
+
+    public void setSisaBudget(BigDecimal sisaBudget) {
+        this.sisaBudget = sisaBudget;
+    }
+
+    public BigDecimal getBudgetBiayaSdBulanIni() {
+        return budgetBiayaSdBulanIni;
+    }
+
+    public void setBudgetBiayaSdBulanIni(BigDecimal budgetBiayaSdBulanIni) {
+        this.budgetBiayaSdBulanIni = budgetBiayaSdBulanIni;
+    }
+
+    public BigDecimal getBudgetTerpakaiSdBulanIni() {
+        return budgetTerpakaiSdBulanIni;
+    }
+
+    public void setBudgetTerpakaiSdBulanIni(BigDecimal budgetTerpakaiSdBulanIni) {
+        this.budgetTerpakaiSdBulanIni = budgetTerpakaiSdBulanIni;
+    }
+
+    public BigDecimal getSisaBudgetSdBulanIni() {
+        return sisaBudgetSdBulanIni;
+    }
+
+    public void setSisaBudgetSdBulanIni(BigDecimal sisaBudgetSdBulanIni) {
+        this.sisaBudgetSdBulanIni = sisaBudgetSdBulanIni;
+    }
+
+    public Date getTanggalRealisasi() {
+        return tanggalRealisasi;
+    }
+
+    public void setTanggalRealisasi(Date tanggalRealisasi) {
+        this.tanggalRealisasi = tanggalRealisasi;
+    }
+
+    public String getNotApprovalNote() {
+        return notApprovalNote;
+    }
+
+    public void setNotApprovalNote(String notApprovalNote) {
+        this.notApprovalNote = notApprovalNote;
+    }
+
+    public String getNoJurnal() {
+        return noJurnal;
+    }
+
+    public void setNoJurnal(String noJurnal) {
+        this.noJurnal = noJurnal;
+    }
+
+    public String getClosed() {
+        return closed;
+    }
+
+    public void setClosed(String closed) {
+        this.closed = closed;
+    }
+
+    public String getDiterimaFlag() {
+        return diterimaFlag;
+    }
+
+    public void setDiterimaFlag(String diterimaFlag) {
+        this.diterimaFlag = diterimaFlag;
+    }
+
+    public String getDiterimaId() {
+        return diterimaId;
+    }
+
+    public void setDiterimaId(String diterimaId) {
+        this.diterimaId = diterimaId;
+    }
+
+    public Timestamp getDiterimaDate() {
+        return diterimaDate;
+    }
+
+    public void setDiterimaDate(Timestamp diterimaDate) {
+        this.diterimaDate = diterimaDate;
+    }
+
+    public String getStatusKeuangan() {
+        return statusKeuangan;
+    }
+
+    public void setStatusKeuangan(String statusKeuangan) {
+        this.statusKeuangan = statusKeuangan;
+    }
+
+    public String getApprovalKeuanganKpFlag() {
+        return approvalKeuanganKpFlag;
+    }
+
+    public void setApprovalKeuanganKpFlag(String approvalKeuanganKpFlag) {
+        this.approvalKeuanganKpFlag = approvalKeuanganKpFlag;
+    }
+
+    public String getApprovalKeuanganKpId() {
+        return approvalKeuanganKpId;
+    }
+
+    public void setApprovalKeuanganKpId(String approvalKeuanganKpId) {
+        this.approvalKeuanganKpId = approvalKeuanganKpId;
+    }
+
+    public Timestamp getApprovalKeuanganKpDate() {
+        return approvalKeuanganKpDate;
+    }
+
+    public void setApprovalKeuanganKpDate(Timestamp approvalKeuanganKpDate) {
+        this.approvalKeuanganKpDate = approvalKeuanganKpDate;
+    }
 
     public String getApprovalGmFlag() {
         return approvalGmFlag;

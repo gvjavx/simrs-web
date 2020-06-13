@@ -19,6 +19,8 @@ public interface AbsensiBo extends BaseMasterBo<AbsensiPegawai> {
 
     void saveAddKeterangan(AbsensiPegawai bean) throws GeneralBOException;
 
+    List getAllDataFromMesin() throws Exception;
+
     void getDataInquiryForCronJob() throws Exception;
 
     PegawaiTambahanAbsensi saveTambahan(PegawaiTambahanAbsensi bean) throws GeneralBOException;

@@ -60,4 +60,71 @@ public class PengajuanBiayaDetailDao extends GenericDao<ItPengajuanBiayaDetailEn
 
         return "PBD"+sId;
     }
+
+
+    public List<ItPengajuanBiayaDetailEntity> getListMasihMengajukan(String branchId,String divisiId) throws HibernateException {
+        List<ItPengajuanBiayaDetailEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPengajuanBiayaDetailEntity.class)
+                .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.eq("branchId", branchId))
+                .add(Restrictions.eq("divisiId", divisiId))
+                .add(Restrictions.isNull("closed"))
+                .addOrder(Order.desc("createdDate"))
+                .list();
+        return results;
+    }
+
+    public List<ItPengajuanBiayaDetailEntity> getByPengajuanBiayaId(String id) throws HibernateException {
+        List<ItPengajuanBiayaDetailEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPengajuanBiayaDetailEntity.class)
+                .add(Restrictions.eq("pengajuanBiayaId", id))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("pengajuanBiayaDetailId"))
+                .list();
+        return results;
+    }
+
+    public List<ItPengajuanBiayaDetailEntity> getDetailPengajuanForRk(String id) throws HibernateException {
+        List<ItPengajuanBiayaDetailEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPengajuanBiayaDetailEntity.class)
+                .add(Restrictions.eq("pengajuanBiayaId", id))
+                .add(Restrictions.eq("approvalKeuanganKpFlag", "Y"))
+                .add(Restrictions.eq("statusKeuangan", "KP"))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.desc("pengajuanBiayaDetailId"))
+                .list();
+        return results;
+    }
+    public List<ItPengajuanBiayaDetailEntity> getListPengajuanBiayaDetailForKasKeluar(String id,String divisiId) throws HibernateException {
+        List<ItPengajuanBiayaDetailEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPengajuanBiayaDetailEntity.class)
+                .add(Restrictions.ilike("pengajuanBiayaId", "%"+id+"%"))
+                .add(Restrictions.eq("divisiId", divisiId))
+                .add(Restrictions.eq("approvalKeuanganFlag", "Y"))
+                .add(Restrictions.eq("closed", "Y"))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.desc("pengajuanBiayaDetailId"))
+                .list();
+        return results;
+    }
+
+    public List<ItPengajuanBiayaDetailEntity> getPengajuanBiayaMenggantung(String branchId) {
+        List<ItPengajuanBiayaDetailEntity> listOfResult = new ArrayList<ItPengajuanBiayaDetailEntity>();
+        List<Object[]> results = new ArrayList<Object[]>();
+
+            String query = "select\n" +
+                    "\t*\n" +
+                    "from\n" +
+                    "\tit_akun_pengajuan_biaya_detail";
+
+            results = this.sessionFactory.getCurrentSession()
+                    .createSQLQuery(query)
+                    .list();
+
+            for (Object[] row : results) {
+                ItPengajuanBiayaDetailEntity pengajuanBiayaDetailEntity = new ItPengajuanBiayaDetailEntity();
+                pengajuanBiayaDetailEntity.setPengajuanBiayaDetailId((String) row[0]);
+                pengajuanBiayaDetailEntity.setKeperluan((String) row[6]);
+                pengajuanBiayaDetailEntity.setTanggalRealisasi((Date) row[40]);
+                pengajuanBiayaDetailEntity.setDivisiId((String) row[3]);
+                listOfResult.add(pengajuanBiayaDetailEntity);
+            }
+        return listOfResult;
+    }
 }

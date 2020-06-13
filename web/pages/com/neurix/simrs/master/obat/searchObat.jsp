@@ -109,9 +109,26 @@
                                         <button type="button" class="btn btn-primary" onclick="showModal()">
                                             <i class="fa fa-plus"></i> Tambah Obat
                                         </button>
-                                        <a type="button" class="btn btn-primary" href="initPrintReportRiwayat_obat.action">
-                                            <i class="fa fa-print"></i> Print Report
-                                        </a>
+
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-primary"><i class="fa fa-print"></i> Print Report</button>
+                                            <button type="button" class="btn btn-primary dropdown-toggle"
+                                                    data-toggle="dropdown" style="height: 34px">
+                                                <span class="caret"></span>
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li> <a href="initPrintReportRiwayat_obat.action?type=mutasi">
+                                                    <i class="fa fa-print"></i> Print Mutasi Obat
+                                                </a>
+                                                </li>
+                                                <li><a href="initPrintReportRiwayat_obat.action?type=sumary">
+                                                    <i class="fa fa-print"></i> Print Saldo Obat Opname
+                                                </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+
                                         <a type="button" class="btn btn-danger" href="initForm_obat.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>

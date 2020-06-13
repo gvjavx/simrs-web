@@ -1,7 +1,9 @@
 package com.neurix.hris.transaksi.notifikasi.bo.impl;
 
 import com.neurix.akuntansi.transaksi.pengajuanBiaya.dao.PengajuanBiayaDao;
+import com.neurix.akuntansi.transaksi.pengajuanBiaya.dao.PengajuanBiayaDetailDao;
 import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.ImPengajuanBiayaEntity;
+import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.ItPengajuanBiayaDetailEntity;
 import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.PengajuanBiaya;
 import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.company.model.ImBranches;
@@ -91,6 +93,15 @@ public class NotifikasiBoImpl implements NotifikasiBo {
     private CutiDao cutiDao;
     private TipeNotifDao tipeNotifDao;
     private PengajuanBiayaDao pengajuanBiayaDao;
+    private PengajuanBiayaDetailDao pengajuanBiayaDetailDao;
+
+    public PengajuanBiayaDetailDao getPengajuanBiayaDetailDao() {
+        return pengajuanBiayaDetailDao;
+    }
+
+    public void setPengajuanBiayaDetailDao(PengajuanBiayaDetailDao pengajuanBiayaDetailDao) {
+        this.pengajuanBiayaDetailDao = pengajuanBiayaDetailDao;
+    }
 
     public PengajuanBiayaDao getPengajuanBiayaDao() {
         return pengajuanBiayaDao;
@@ -815,7 +826,10 @@ public class NotifikasiBoImpl implements NotifikasiBo {
         List<PersonilPosition> personilPositionList;
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
-        personilPositionList = daftarAtasanLangsung(nip);
+        Notifikasi dataUntukAtasan = new Notifikasi();
+        dataUntukAtasan.setNip(nip);
+        dataUntukAtasan.setTipeNotifId(tipeNotifId);
+        personilPositionList = daftarAtasanLangsung(dataUntukAtasan);
 
         if (tipeNotifId.equals("TN66"))
             action = "TASK_CUTI";
@@ -2326,6 +2340,28 @@ public class NotifikasiBoImpl implements NotifikasiBo {
         }
         return notifikasiList;
     }
+
+    @Override
+    public List<Notifikasi> getPengajuanBiayaMenggantung(){
+        List<ItPengajuanBiayaDetailEntity> pengajuanBiayaDetailEntityList= new ArrayList<>();
+        List<Notifikasi> notifikasiList = new ArrayList<>();
+
+        pengajuanBiayaDetailEntityList = pengajuanBiayaDetailDao.getPengajuanBiayaMenggantung(CommonUtil.userBranchLogin());
+
+        if(pengajuanBiayaDetailEntityList.size() > 0){
+            for(ItPengajuanBiayaDetailEntity pengajuanBiayaDetailEntity : pengajuanBiayaDetailEntityList){
+                Notifikasi notifikasi = new Notifikasi();
+                notifikasi.setPengajuanBiayaDetailId(pengajuanBiayaDetailEntity.getPengajuanBiayaDetailId());
+                notifikasi.setStTanggalRealisasi(CommonUtil.convertDateToString(pengajuanBiayaDetailEntity.getTanggalRealisasi()));
+                notifikasi.setKeperluan(pengajuanBiayaDetailEntity.getKeperluan());
+                notifikasi.setDivisiName(pengajuanBiayaDetailEntity.getDivisiId());
+                notifikasi.setJmlApproval(String.valueOf(pengajuanBiayaDetailEntityList.size()));
+                notifikasiList.add(notifikasi);
+            }
+        }
+        return notifikasiList;
+    }
+
     @Override
     public List<Notifikasi> getCutiPanjang() {
         List<ImBiodataEntity> biodataEntityList = new ArrayList<>();
@@ -2348,8 +2384,9 @@ public class NotifikasiBoImpl implements NotifikasiBo {
     }
 
     @Override
-    public List<PersonilPosition> daftarAtasanLangsung(String nip){
+    public List<PersonilPosition> daftarAtasanLangsung(Notifikasi bean){
         logger.info("[NotifikasiBoImpl.daftarAtasanLangsung] start process >>>");
+        String nip = bean.getNip();
         List<PersonilPosition> listOfResult = new ArrayList<>();
         String branchId=null;
 
@@ -2747,11 +2784,9 @@ public class NotifikasiBoImpl implements NotifikasiBo {
         if (biodataList2 != null){
             for (Biodata biodata2 : biodataList2){
                 String positionPlt = biodata2.getPositionPltId();
-                if (positionPlt != null && !"".equalsIgnoreCase(positionPlt)){
+                if (positionPlt != null && !"".equalsIgnoreCase(positionPlt)&& "umum".equalsIgnoreCase(bean.getTipeNotifId())){
                     strukturJabatanList = strukturJabatanDao.searchStruktur(positionPlt, branchId);
-
                     for (StrukturJabatan strukturJabatan : strukturJabatanList){
-
                         // Search Leader
                         if (strukturJabatan != null) {
                             String[] parts = strukturJabatan.getParentId().split("-");
@@ -2916,7 +2951,6 @@ public class NotifikasiBoImpl implements NotifikasiBo {
 
                     }
                 }else {
-
                     try {
                         strukturJabatanList = strukturJabatanDao.searchStrukturRelation2(nip,branchId);
                     } catch (HibernateException e) {
@@ -3501,6 +3535,18 @@ public class NotifikasiBoImpl implements NotifikasiBo {
             } catch (HibernateException e) {
                 logger.error("[UserBoImpl.searchTrainingPerson] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
+            }
+            for (PengajuanBiaya pengajuanBiaya : result){
+                pengajuanBiaya.setStTanggal(CommonUtil.convertDateToString(pengajuanBiaya.getTanggal()));
+                pengajuanBiaya.setStTotalBiaya(CommonUtil.numbericFormat(pengajuanBiaya.getTotalBiaya(),"###,###"));
+
+                List<ImBranches> branchesList = branchDao.getListBranchById(pengajuanBiaya.getBranchId());
+                for (ImBranches branches : branchesList){
+                    pengajuanBiaya.setBranchName(branches.getBranchName());
+                }
+
+                ImPosition position = positionDao.getById("positionId",pengajuanBiaya.getDivisiId());
+                pengajuanBiaya.setDivisiName(position.getPositionName());
             }
         }
         return result;
