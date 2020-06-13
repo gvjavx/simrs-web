@@ -230,6 +230,9 @@
             <column name="tanggal_pra_pensiun" sql-type="timestamp" not-null="false" />
         </property>
 
+        <property name="positionPltId">
+            <column name="position_plt_id" sql-type="varchar" length="5" />
+        </property>
         <property name="flagPlt">
             <column name="flag_plt" sql-type="varchar" length="1" />
         </property>
@@ -261,6 +264,9 @@
             <column name="flag_percobaan" sql-type="varchar" length="1" />
         </property>
 
+        <property name="nipLama">
+            <column name="nip_lama" sql-type="varchar" length="15" />
+        </property>
 
         <many-to-one name="imProvinsiEntity" class="com.neurix.hris.master.provinsi.model.ImProvinsiEntity"
                      insert="false" update="false" fetch="select" cascade="all">

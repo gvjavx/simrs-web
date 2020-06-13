@@ -657,6 +657,7 @@ public class LemburAction extends BaseMasterAction {
 
         return "success_save_edit";
     }
+
     public String saveDelete(){
         logger.info("[LemburAction.saveDelete] start process >>>");
         Lembur deleteLembur = getLembur();
@@ -667,7 +668,8 @@ public class LemburAction extends BaseMasterAction {
         deleteLembur.setAction("U");
         deleteLembur.setFlag("N");
         try {
-            lemburBoProxy.saveEdit(deleteLembur);
+//            lemburBoProxy.saveEdit(deleteLembur);
+            lemburBoProxy.saveCancel(deleteLembur);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {

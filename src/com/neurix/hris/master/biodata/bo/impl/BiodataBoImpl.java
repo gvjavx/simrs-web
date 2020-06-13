@@ -581,7 +581,14 @@ public class BiodataBoImpl implements BiodataBo {
                                 imBiodataEntity.setLastUpdate(bean.getLastUpdate());
 
                                 imBiodataEntity.setFlagMess(bean.getFlagMess());
-                                imBiodataEntity.setFlagPlt(bean.getFlagPLT());
+//                                imBiodataEntity.setFlagPlt(bean.getFlagPLT());
+                                if ("".equalsIgnoreCase(bean.getPositionPltId())){
+                                    imBiodataEntity.setFlagPlt("N");
+                                    imBiodataEntity.setPositionPltId("");
+                                }else {
+                                    imBiodataEntity.setFlagPlt("Y");
+                                    imBiodataEntity.setPositionPltId(bean.getPositionPltId());
+                                }
                                 imBiodataEntity.setFlagPjs(bean.getFlagPJS());
                                 imBiodataEntity.setFlagFingerMobile(bean.getFlagFingerMobile());
                                 imBiodataEntity.setFlagTunjRumah(bean.getFlagTunjRumah());
@@ -591,6 +598,7 @@ public class BiodataBoImpl implements BiodataBo {
                                 imBiodataEntity.setFlagBpjsKs(bean.getFlagBpjsKs());
                                 imBiodataEntity.setFlagBpjsTk(bean.getFlagBpjsTk());
                                 imBiodataEntity.setFlagPercobaan(bean.getFlagPercobaan());
+                                imBiodataEntity.setNipLama(bean.getNipLama());
 
 //                            if(itPersonilPositionEntity != null){
 //                                for(ItPersonilPositionEntity itPerson : itPersonilPositionEntity){
@@ -813,6 +821,7 @@ public class BiodataBoImpl implements BiodataBo {
                             imBiodataEntity.setFlagBpjsKs(bean.getFlagBpjsKs());
                             imBiodataEntity.setFlagBpjsTk(bean.getFlagBpjsTk());
                             imBiodataEntity.setFlagPercobaan(bean.getFlagPercobaan());
+                            imBiodataEntity.setNipLama(bean.getNipLama());
 
 //                        if(itPersonilPositionEntity != null){
 //                            for(ItPersonilPositionEntity itPerson : itPersonilPositionEntity){
@@ -1051,7 +1060,13 @@ public class BiodataBoImpl implements BiodataBo {
                 imBiodataEntity.setZakatProfesi(bean.getFlagZakat());
 
                 imBiodataEntity.setFlagMess(bean.getFlagMess());
-                imBiodataEntity.setFlagPlt(bean.getFlagPLT());
+//                imBiodataEntity.setFlagPlt(bean.getFlagPLT());
+                if ("".equalsIgnoreCase(bean.getPositionPltId())){
+                    imBiodataEntity.setFlagPlt("N");
+                }else {
+                    imBiodataEntity.setFlagPlt("Y");
+                    imBiodataEntity.setPositionPltId(bean.getPositionPltId());
+                }
                 imBiodataEntity.setFlagPjs(bean.getFlagPJS());
                 imBiodataEntity.setFlagFingerMobile(bean.getFlagFingerMobile());
                 imBiodataEntity.setFlagTunjRumah(bean.getFlagTunjRumah());
@@ -1061,6 +1076,7 @@ public class BiodataBoImpl implements BiodataBo {
                 imBiodataEntity.setFlagBpjsKs(bean.getFlagBpjsKs());
                 imBiodataEntity.setFlagBpjsTk(bean.getFlagBpjsTk());
                 imBiodataEntity.setFlagPercobaan(bean.getFlagPercobaan());
+                imBiodataEntity.setNipLama(bean.getNipLama());
 
                 imBiodataEntity.setFlag(bean.getFlag());
                 imBiodataEntity.setAction(bean.getAction());
@@ -1836,6 +1852,8 @@ public class BiodataBoImpl implements BiodataBo {
                     returnBiodata.setNoBpjsKesehatan(personalEntity.getNoBpjsKesehatan());
                     returnBiodata.setAgama(personalEntity.getAgama());
 
+                    returnBiodata.setNipLama(personalEntity.getNipLama());
+
                     returnBiodata.setFlagZakat(personalEntity.getZakatProfesi());
                     returnBiodata.setNamaBank(personalEntity.getNamaBank());
                     returnBiodata.setNoRekBank(personalEntity.getNoRekBank());
@@ -1851,6 +1869,7 @@ public class BiodataBoImpl implements BiodataBo {
                         }
                     }
 
+                    returnBiodata.setPositionPltId(personalEntity.getPositionPltId());
                     returnBiodata.setFlagMess(personalEntity.getFlagMess());
                     returnBiodata.setFlagPLT(personalEntity.getFlagPlt());
                     returnBiodata.setFlagPJS(personalEntity.getFlagPjs());

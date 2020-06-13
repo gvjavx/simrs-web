@@ -700,10 +700,12 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setFlagBpjsKs((String) row[86]);
             result.setFlagBpjsTk((String) row[87]);
             result.setFlagPercobaan((String) row[88]);
+            result.setPositionPltId((String) row[89]);
+            result.setNipLama((String) row[90]);
 
-            result.setBagianId((String) row[89]);
-            result.setBagianName((String) row[90]);
-            result.setProfesiId((String)row[91]);
+            result.setBagianId((String) row[91]);
+            result.setBagianName((String) row[92]);
+            result.setProfesiId((String)row[93]);
 
             listOfResult.add(result);
         }
@@ -1592,7 +1594,10 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setGolongan((String) row[34]);
             result.setStatusPegawai((String) row[35]);
             result.setStatusKeluarga((String) row[36]);
-            result.setJumlahAnak(BigInteger.valueOf(Integer.valueOf(row[37].toString())));
+            if (row[37] != null)
+                result.setJumlahAnak(BigInteger.valueOf(Integer.valueOf(row[37].toString())));
+            else
+                result.setJumlahAnak(BigInteger.valueOf(0));
             result.setGender((String) row[38]);
             result.setStatusGiling((String) row[39]);
             result.setNoSkAktif((String) row[40]);
@@ -1654,5 +1659,52 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
 
         List<ImBiodataEntity> results = criteria.list();
         return results;
+    }
+
+    //tambahan reza
+    public List<Biodata> searchBiodataUser(String positionId) throws HibernateException{
+        List<Biodata> biodataList = new ArrayList<>();
+
+        String query = "SELECT nip, position_plt_id FROM im_hris_pegawai WHERE position_plt_id = :positionPltId AND flag = 'Y'";
+
+        List<Object[]> results = new ArrayList<Object[]>();
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .setParameter("positionPltId", positionId)
+                .list();
+
+
+        for (Object[] row : results) {
+            Biodata result  = new Biodata();
+            result.setNip((String) row[0]);
+            result.setPositionPltId((String) row[1]);
+
+            biodataList.add(result);
+        }
+        return biodataList;
+    }
+
+
+    //tambahan reza
+    public List<Biodata> searchBiodataByCriteria(String nip) throws HibernateException{
+        List<Biodata> biodataList = new ArrayList<>();
+
+        String query = "SELECT nip, position_plt_id FROM im_hris_pegawai WHERE nip = :nip AND flag = 'Y'";
+
+        List<Object[]> results = new ArrayList<Object[]>();
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .setParameter("nip", nip)
+                .list();
+
+
+        for (Object[] row : results) {
+            Biodata result  = new Biodata();
+            result.setNip((String) row[0]);
+            result.setPositionPltId((String) row[1]);
+
+            biodataList.add(result);
+        }
+        return biodataList;
     }
 }

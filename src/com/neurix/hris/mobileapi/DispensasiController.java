@@ -41,6 +41,7 @@ public class DispensasiController implements ModelDriven<Object> {
     private NotifikasiBo notifikasiBoProxy;
     private List<Dispensasi> listOfDispensasi = null;
     private Dispensasi model = new Dispensasi();
+    private String roleId;
 
     private String id;
     private String statusApprove;
@@ -69,6 +70,15 @@ public class DispensasiController implements ModelDriven<Object> {
 
     private File fileSurat;
     private String fileNameSurat;
+
+
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
+    }
 
     public File getFileSurat() {
         return fileSurat;
@@ -305,6 +315,7 @@ public class DispensasiController implements ModelDriven<Object> {
         search.setFlag("Y");
         search.setFrom("ijinKeluar");
         search.setMobile(true);
+        search.setRoleId(roleId);
 
         List<IjinKeluar> listOfIjinKeluar = null;
 

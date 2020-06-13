@@ -28,4 +28,6 @@ public interface LemburBo extends BaseMasterBo<Lembur> {
     List<Lembur> getCekLembur(String nip, Date tanggal);
     List<Object[]> findInfoLembur(String idLembur, String nip) throws GeneralBOException;
     List<Object[]> findAllConfirmByAtasan(String id, String flag) throws GeneralBOException;
+
+    public void saveCancel(Lembur bean) throws GeneralBOException;
 }

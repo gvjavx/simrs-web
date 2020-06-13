@@ -6,14 +6,13 @@
 
 <html>
 <head>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/CutiPegawaiAction.js"/>'></script>
     <script type="text/javascript">
-        $.subscribe('beforeProcessSaveCancelCutiPegawai', function (event, data) {
+        $.subscribe('beforeProcessSavePengajuanBatalCuti', function (event, data) {
             var keterangan;
-            keterangan = document.getElementById("keteranganBatal").value;
-            var nip = document.getElementById("nipId").value;
-            var tglDari = document.getElementById("tgl21").value;
-            var tglSelesai = document.getElementById("tgl11").value;
+            keterangan = document.getElementById("keteranganBatal0").value;
+            var nip = document.getElementById("nipId0").value;
+            var tglDari = document.getElementById("tgl210").value;
+            var tglSelesai = document.getElementById("tgl110").value;
             console.log(tglDari);
             console.log(tglSelesai);
             if (keterangan!=="") {
@@ -84,14 +83,14 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="modifyRolefuncForm" method="post" theme="simple" namespace="/cutiPegawai" action="saveCancel_cutiPegawai" cssClass="well form-horizontal">
+            <s:form id="pengajuanBatalForm" method="post" theme="simple" namespace="/cutiPegawai" action="pengajuanBatal_cutiPegawai" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrCancel"/>
                 <s:hidden name="delete"/>
 
 
 
-                <legend align="left">Batal Cuti Pegawai</legend>
+                <legend align="left">Pengajuan Batal Cuti Pegawai</legend>
 
 
                 <table>
@@ -113,7 +112,7 @@
                         <td>
                             <table>
                                 <div style="display: none">
-                                    <s:textfield  id="cutiPegawaiId5" name="cutiPegawai.cutiPegawaiId" required="true" readonly="true" cssClass="form-control"/>
+                                    <s:textfield  id="cutiPegawaiId0" name="cutiPegawai.cutiPegawaiId" required="true" readonly="true" cssClass="form-control"/>
                                 </div>
                             </table>
                         </td>
@@ -125,7 +124,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="nipId" name="cutiPegawai.nip" required="true" readonly="true" cssClass="form-control"/>
+                                <s:textfield  id="nipId0" name="cutiPegawai.nip" required="true" readonly="true" cssClass="form-control"/>
                                 <s:textfield  id="golonganId12" name="" required="true" readonly="true" cssStyle="display:none;" cssClass="form-control"/>
                             </table>
                         </td>
@@ -136,7 +135,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="namaId1" name="cutiPegawai.namaPegawai" required="false" readonly="true" cssClass="form-control"/>
+                                <s:textfield  id="namaId0" name="cutiPegawai.namaPegawai" required="false" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -147,7 +146,7 @@
                         <td>
                             <table>
                                 <s:action id="comboPosition" namespace="/admin/user" name="initComboPosition_user"/>
-                                <s:select cssClass="form-control" list="#comboPosition.listOfComboPositions" id="positionid12" name="cutiPegawai.posisiId" required="false" readonly="true"
+                                <s:select cssClass="form-control" list="#comboPosition.listOfComboPositions" id="positionid10" name="cutiPegawai.posisiId" required="false" readonly="true"
                                           listKey="stPositionId" listValue="positionName" headerKey="" headerValue="[Select one]"/>                                    <%--<s:hidden name="cutiPegawai.cutiPegawaiId"/>--%>
 
                             </table>
@@ -160,7 +159,7 @@
                         <td>
                             <table>
                                 <s:action id="comboDivisi" namespace="/department" name="searchDepartment_department"/>
-                                <s:select list="#comboDivisi.listComboDepartment" id="divisiId12" name="cutiPegawai.divisiId"
+                                <s:select list="#comboDivisi.listComboDepartment" id="divisiId10" name="cutiPegawai.divisiId"
                                           listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true" />
                             </table>
                         </td>
@@ -172,7 +171,7 @@
                         <td>
                             <table>
                                 <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
-                                <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branchid" name="cutiPegawai.unitId" required="true" readonly="true"
+                                <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branchid0" name="cutiPegawai.unitId" required="true" readonly="true"
                                           listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" />
                             </table>
                         </td>
@@ -184,7 +183,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:select list="#{'diluar_tanggungan':'Diluar Tanggungan'}" id="jenisCuti1" name="cutiPegawai.jenisCuti"
+                                <s:select list="#{'diluar_tanggungan':'Diluar Tanggungan'}" id="jenisCuti0" name="cutiPegawai.jenisCuti"
                                           headerKey="normal" headerValue="Normal" cssClass="form-control" disabled="true"/>
                                 <s:textfield  id="jenisCuti33" name="cutiPegawai.jenisCuti" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
                             </table>
@@ -210,7 +209,7 @@
                         <td>
                             <table>
                                 <s:action id="comboCuti" namespace="/cuti" name="initComboCuti_cuti"/>
-                                <s:select list="#comboCuti.listComboCuti" id="cuti124" name="cutiPegawai.cutiId"
+                                <s:select list="#comboCuti.listComboCuti" id="cuti0" name="cutiPegawai.cutiId"
                                           listKey="cutiId" listValue="cutiName" headerKey="" headerValue="[Select one]" required="true" cssClass="form-control" disabled="true" />
                                 <s:textfield  id="cutiId15" name="cutiPegawai.cutiId" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
                                 <s:textfield  id="jenisCuti" name="cutiPegawai.cutiName" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
@@ -238,7 +237,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="sisaCuti" name="cutiPegawai.sisaCutiHari" required="false" readonly="true" cssClass="form-control"/>
+                                <s:textfield  id="sisaCuti0" name="cutiPegawai.sisaCutiHari" required="false" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -283,7 +282,7 @@
                         <td>
                             <table>
                                 <s:textfield  id="tgl2" name="cutiPegawai.strTanggalDari2" required="false" readonly="true" cssClass="form-control" style="display: none"/>
-                                <s:textfield  id="tgl21" name="cutiPegawai.strTanggalDari" required="false" readonly="true" cssClass="form-control"/>
+                                <s:textfield  id="tgl210" name="cutiPegawai.strTanggalDari" required="false" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -296,7 +295,7 @@
                             <table>
                                 <s:textfield id="tgl1" name="cutiPegawai.strTanggalSelesai1" cssClass="form-control pull-right" readonly="true"
                                              required="true"  style="display: none"/>
-                                <s:textfield id="tgl11" name="cutiPegawai.strTanggalSelesai" cssClass="form-control pull-right" readonly="true"
+                                <s:textfield id="tgl110" name="cutiPegawai.strTanggalSelesai" cssClass="form-control pull-right" readonly="true"
                                              required="true"  cssStyle=""/>
                             </table>
                         </td>
@@ -336,7 +335,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textarea rows="3" id="keteranganBatal" required="false" name="cutiPegawai.cancelNote"/>
+                                <s:textarea rows="3" id="keteranganBatal0" required="false" name="cutiPegawai.cancelNote"/>
                             </table>
                         </td>
                     </tr>
@@ -345,17 +344,12 @@
                 <br>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="modifyRolefuncForm" id="save" name="save"
-                                   onBeforeTopics="beforeProcessSaveCancelCutiPegawai" onCompleteTopics="closeDialogCancelCutiPegawai,successDialogCancelCutiPegawai"
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="pengajuanBatalForm" id="save" name="save"
+                                   onBeforeTopics="beforeProcessSavePengajuanBatalCuti" onCompleteTopics="closeDialogCancelCutiPegawai,successDialogCancelCutiPegawai"
                                    onSuccessTopics="successDialogCancelCutiPegawai" onErrorTopics="errorDialogCancelCutiPegawai" >
                             <i class="fa fa-check"></i>
                             Batalkan
                         </sj:submit>
-                        <s:if test='cutiPegawai.flagPengajuanBatal == "Y"'>
-                            <button type="button" id="btnTolak" class="btn btn-danger" style="font-family: Arial, Helvetica, sans-serif;font-size: 12px;font-weight: bold;" onclick="cancelBtn();">
-                                <i class="fa fa-close"/> Tolak Batal
-                            </button>
-                        </s:if>
                         <button type="button" id="cancel" class="btn btn-default" style="font-family: Arial, Helvetica, sans-serif;font-size: 12px;font-weight: bold;" onclick="cancelBtn();">
                             <i class="fa fa-refresh"/> Cancel
                         </button>
@@ -450,7 +444,7 @@
         var nip=$('#nipId').val();
         var golonganid=document.getElementById("golonganId12").value;
 
-        var tgldari = $('#tgl11').val();
+        var tgldari = $('#tgl110').val();
         console.log(tgldari);
         var jenisCuti = $('#jenisCuti1').val();
         if (jenisCuti == "diluar_tanggungan"){
@@ -466,16 +460,4 @@
         }
     });
 
-    $('#btnTolak').on('click', function() {
-        var cutiPegawaiId = document.getElementById("cutiPegawaiId5").value;
-        console.log("Test "+cutiPegawaiId);
-        if (confirm('Are you sure you want to save this Record?')) {
-            dwr.engine.setAsync(false);
-
-            CutiPegawaiAction.saveTolakPengajuan(cutiPegawaiId, function(listdata) {
-                alert('Data Successfully Updated');
-                location.reload();
-            });
-        }
-    });
 </script>

@@ -133,7 +133,7 @@
 
                     <tr>
                         <td>
-                            <label class="control-label"><small>Nama Posisi :</small></label>
+                            <label class="control-label"><small>Posisi :</small></label>
                         </td>
                         <td>
                             <table>

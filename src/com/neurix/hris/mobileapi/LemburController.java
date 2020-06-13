@@ -31,7 +31,7 @@ import java.util.List;
 
 public class    LemburController implements ModelDriven<Object> {
     private static final transient Logger logger = Logger.getLogger(LemburController.class);
-    private List<Lembur> listOfLembur = new ArrayList<>();
+    private List<Lembur> listOfLembur;
     private Lembur model = new Lembur();
     private LemburBo lemburBoProxy;
     private LiburBo liburBoProxy;
@@ -54,13 +54,6 @@ public class    LemburController implements ModelDriven<Object> {
     private String lamaJamLembur;
     private String namaPegawai;
 
-    public String getNamaPegawai() {
-        return namaPegawai;
-    }
-
-    public void setNamaPegawai(String namaPegawai) {
-        this.namaPegawai = namaPegawai;
-    }
 
     public String getId() {
         return id;
@@ -78,12 +71,31 @@ public class    LemburController implements ModelDriven<Object> {
         return confirm;
     }
 
+    private String keterangan;
+
+
+    public String getNamaPegawai() {
+        return namaPegawai;
+    }
+
+    public void setNamaPegawai(String namaPegawai) {
+        this.namaPegawai = namaPegawai;
+    }
+
     public String getLamaJamLembur() {
         return lamaJamLembur;
     }
 
     public void setLamaJamLembur(String lamaJamLembur) {
         this.lamaJamLembur = lamaJamLembur;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
     }
 
     public NotifikasiBo getNotifikasiBoProxy() {
@@ -176,12 +188,13 @@ public class    LemburController implements ModelDriven<Object> {
                     editLembur.setApprovalFlag("N");
                 }
             }
-            if (!("").equalsIgnoreCase(model.getKeterangan())){
-                editLembur.setNotApprovalNote(model.getKeterangan());
+            if (!("").equalsIgnoreCase(keterangan)){
+                editLembur.setNotApprovalNote(keterangan);
             }
             editLembur.setTmpApprove(who);
             editLembur.setNip(nip);
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             java.util.Date tanggalAwalst = simpleDateFormat.parse(tanggalAwal);
             java.util.Date tanggalAkhirst = simpleDateFormat.parse(tanggalAkhir);
 
@@ -193,11 +206,14 @@ public class    LemburController implements ModelDriven<Object> {
             editLembur.setTanggalAkhirSetuju(CommonUtil.convertToDate(tangAkh));
             editLembur.setLamaJam(Double.valueOf(lamaJamLembur));
             editLembur.setLastUpdateWho(namaPegawai);
+
             editLembur.setLastUpdate(new Timestamp(Calendar.getInstance().getTimeInMillis()));
             editLembur.setAction("U");
             editLembur.setFlag("Y");
             editLembur.setApprovalId(id);
             editLembur.setApprovalName(namaPegawai);
+
+            editLembur.setMobile(true);
 
             List<Notifikasi> notifikasiList = lemburBoProxy.saveApprove(editLembur);
 
@@ -226,7 +242,7 @@ public class    LemburController implements ModelDriven<Object> {
 
     public String confirm(){
         logger.info("[LemburController.confirm] start proccess GET /lembur/{id}/confirm");
-
+        listOfLembur = new ArrayList<>();
         List<Object[]> lemburs = null;
         try {
             lemburs = lemburBoProxy.findAllConfirmByAtasan(id, confirm);
@@ -265,6 +281,7 @@ public class    LemburController implements ModelDriven<Object> {
     public String tanggal() {
         logger.info("[LemburController.confirm] start proccess GET /lembur/{id}/tanggal");
         String lemburs = null;
+        listOfLembur = new ArrayList<>();
 
         Date dateTanggalAwal = CommonUtil.convertToDate(tanggalAwal);
         Date dateTanggalAkhir = CommonUtil.convertToDate(tanggalAkhir);
@@ -297,7 +314,7 @@ public class    LemburController implements ModelDriven<Object> {
     // check off work by parameter start date and last date
     public String offwork() throws ParseException {
         logger.info("[LemburController.offwork] start proccess GET /lembur/{id}/offwork");
-
+        listOfLembur = new ArrayList<>();
         int jumlahHari = 0;
 
         Libur libur = new Libur();
