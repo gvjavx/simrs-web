@@ -174,7 +174,6 @@ public class TelemedicineController implements ModelDriven<Object> {
 
             int i = 1;
             for(AntrianTelemedic item : result) {
-                if (!item.getStatus().equalsIgnoreCase("SL")) {
                     TelemedicineMobile telemedicineMobile = new TelemedicineMobile();
                     telemedicineMobile.setNoAntrian(String.valueOf(i++));
                     telemedicineMobile.setId(item.getId());
@@ -190,8 +189,48 @@ public class TelemedicineController implements ModelDriven<Object> {
                     telemedicineMobile.setNamaPasien(item.getNamaPasien());
                     telemedicineMobile.setNamaPelayanan(item.getNamaPelayanan());
                     telemedicineMobile.setKetStatus(item.getKetStatus());
+                    telemedicineMobile.setCreatedDate(item.getCreatedDate().toLocaleString());
 
                     listOfTelemedic.add(telemedicineMobile);
+
+            }
+        }
+
+        if(action.equalsIgnoreCase("getListAntrianNonSL")) {
+            listOfTelemedic = new ArrayList<>();
+            AntrianTelemedic bean = new AntrianTelemedic();
+            bean.setIdDokter(idDokter);
+            bean.setIdPelayanan(idPelayanan);
+            bean.setFlag("Y");
+
+            List<AntrianTelemedic> result = new ArrayList<>();
+
+            try {
+                result = telemedicBoProxy.getListAntrianByCriteria(bean);
+            } catch (GeneralBOException e){
+                logger.error("[TelemedicineController.getListAntrianSL] Error, " + e.getMessage());
+            }
+
+            int i = 1;
+            for(AntrianTelemedic item : result) {
+                if (!item.getStatus().equalsIgnoreCase("SL")) {
+                TelemedicineMobile telemedicineMobile = new TelemedicineMobile();
+                telemedicineMobile.setNoAntrian(String.valueOf(i++));
+                telemedicineMobile.setId(item.getId());
+                telemedicineMobile.setIdAsuransi(item.getIdAsuransi());
+                telemedicineMobile.setIdDokter(item.getIdDokter());
+                telemedicineMobile.setIdJenisPeriksaPasien(item.getIdJenisPeriksaPasien());
+                telemedicineMobile.setIdPasien(item.getIdPasien());
+                telemedicineMobile.setStatus(item.getStatus());
+                telemedicineMobile.setFlagResep(item.getFlagResep());
+                telemedicineMobile.setNoKartu(item.getNoKartu());
+                telemedicineMobile.setIdPelayanan(item.getIdPelayanan());
+                telemedicineMobile.setNamaDokter(item.getNamaDokter());
+                telemedicineMobile.setNamaPasien(item.getNamaPasien());
+                telemedicineMobile.setNamaPelayanan(item.getNamaPelayanan());
+                telemedicineMobile.setKetStatus(item.getKetStatus());
+
+                listOfTelemedic.add(telemedicineMobile);
                 }
 
             }
