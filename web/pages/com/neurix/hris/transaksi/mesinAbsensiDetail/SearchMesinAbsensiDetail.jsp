@@ -485,7 +485,7 @@
                         $("#success_tic").modal("show");
                     },
                     errorHandler:function(message) {
-                        alert("Oops: " + message);
+                        alert("Mesin tidak terkoneksi dengan server , harap mengecek koneksi antara mesin absensi dan server");
                         $("#onLoading").modal("hide");
                     }
                 });
@@ -505,7 +505,7 @@
                         $("#success_tic").modal("show");
                     },
                     errorHandler:function(message) {
-                        alert("Oops: " + message);
+                        alert("Mesin tidak terkoneksi dengan server , harap mengecek koneksi antara mesin absensi dan server");
                         $("#onLoading").modal("hide");
                     }
                 });

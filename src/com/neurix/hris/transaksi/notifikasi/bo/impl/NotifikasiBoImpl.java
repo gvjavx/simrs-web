@@ -826,7 +826,10 @@ public class NotifikasiBoImpl implements NotifikasiBo {
         List<PersonilPosition> personilPositionList;
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
-        personilPositionList = daftarAtasanLangsung(nip);
+        Notifikasi dataUntukAtasan = new Notifikasi();
+        dataUntukAtasan.setNip(nip);
+        dataUntukAtasan.setTipeNotifId(tipeNotifId);
+        personilPositionList = daftarAtasanLangsung(dataUntukAtasan);
 
         if (tipeNotifId.equals("TN66"))
             action = "TASK_CUTI";
@@ -2381,8 +2384,9 @@ public class NotifikasiBoImpl implements NotifikasiBo {
     }
 
     @Override
-    public List<PersonilPosition> daftarAtasanLangsung(String nip){
+    public List<PersonilPosition> daftarAtasanLangsung(Notifikasi bean){
         logger.info("[NotifikasiBoImpl.daftarAtasanLangsung] start process >>>");
+        String nip = bean.getNip();
         List<PersonilPosition> listOfResult = new ArrayList<>();
         String branchId=null;
 
@@ -2780,11 +2784,9 @@ public class NotifikasiBoImpl implements NotifikasiBo {
         if (biodataList2 != null){
             for (Biodata biodata2 : biodataList2){
                 String positionPlt = biodata2.getPositionPltId();
-                if (positionPlt != null && !"".equalsIgnoreCase(positionPlt)){
+                if (positionPlt != null && !"".equalsIgnoreCase(positionPlt)&& "umum".equalsIgnoreCase(bean.getTipeNotifId())){
                     strukturJabatanList = strukturJabatanDao.searchStruktur(positionPlt, branchId);
-
                     for (StrukturJabatan strukturJabatan : strukturJabatanList){
-
                         // Search Leader
                         if (strukturJabatan != null) {
                             String[] parts = strukturJabatan.getParentId().split("-");
@@ -2949,7 +2951,6 @@ public class NotifikasiBoImpl implements NotifikasiBo {
 
                     }
                 }else {
-
                     try {
                         strukturJabatanList = strukturJabatanDao.searchStrukturRelation2(nip,branchId);
                     } catch (HibernateException e) {
