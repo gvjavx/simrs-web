@@ -861,7 +861,7 @@
                     });
                     $.each(data, function (i, item) {
                         var labelItem = item.nip+" "+item.namaPegawai;
-                        mapped[labelItem] = { id: item.nip,nama:item.namaPegawai, label: labelItem,divisi: item.divisi,branch:item.branch,positionId:item.positionId,golonganId:item.golonganId , tanggalaktif:item.stTanggalAktif, profesiId:item.profesiId};
+                        mapped[labelItem] = { id: item.nip,nama:item.namaPegawai, label: labelItem,divisi: item.divisi,branch:item.branch,positionId:item.positionId,golonganId:item.golonganId , tanggalaktif:item.tanggalAktif, profesiId:item.profesiId};
                         functions.push(labelItem);
                     });
                     process(functions);
@@ -879,9 +879,10 @@
                 $('#divisiId33').val(selectedObj.divisi).change();
                 $('#profesiid12').val(selectedObj.profesiId).change();
                 $('#profesiid33').val(selectedObj.profesiId).change();
+                var jenisCuti = $('#jenisCuti1').val();
                 document.getElementById("golonganId12").value=selectedObj.golonganId;
                 dwr.engine.setAsync(false);
-                CutiPegawaiAction.initComboSetCuti(selectedObj.id, function (listdata) {
+                CutiPegawaiAction.initComboSetCuti(selectedObj.id,jenisCuti, function (listdata) {
                     data2 = listdata;
                 });
                 $.each(data2, function (i, item) {

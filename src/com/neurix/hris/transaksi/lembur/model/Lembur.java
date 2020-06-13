@@ -65,6 +65,8 @@ public class Lembur extends BaseModel {
     private String os;
     private String channelId;
 
+    private boolean isMobile = false;
+
     public String getOs() {
         return os;
     }
@@ -447,5 +449,13 @@ public class Lembur extends BaseModel {
 
     public void setTipeLembur(String tipeLembur) {
         this.tipeLembur = tipeLembur;
+    }
+
+    public Boolean getMobile() {
+        return isMobile;
+    }
+
+    public void setMobile(Boolean mobile) {
+        isMobile = mobile;
     }
 }

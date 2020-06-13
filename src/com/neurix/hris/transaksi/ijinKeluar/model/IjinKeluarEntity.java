@@ -61,6 +61,8 @@ public class IjinKeluarEntity implements Serializable {
     private Date tglMelahirkan;
     private BigInteger lamaIjinOld;
 
+    private String flagPengajuanBatal;
+
     public String getBagianId() {
         return bagianId;
     }
@@ -420,4 +422,13 @@ public class IjinKeluarEntity implements Serializable {
     public void setTglMelahirkan(Date tglMelahirkan) {
         this.tglMelahirkan = tglMelahirkan;
     }
+
+    public String getFlagPengajuanBatal() {
+        return flagPengajuanBatal;
+    }
+
+    public void setFlagPengajuanBatal(String flagPengajuanBatal) {
+        this.flagPengajuanBatal = flagPengajuanBatal;
+    }
+
 }

@@ -131,4 +131,5 @@ public class Lembur {
     public void setJamLemburAkhir(String jamLemburAkhir) {
         this.jamLemburAkhir = jamLemburAkhir;
     }
+
 }

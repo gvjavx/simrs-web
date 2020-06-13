@@ -119,6 +119,7 @@ public class Biodata extends BaseModel {
     private String flagTunjSiaga;
     private String flagTunjProfesional;
 
+    private String positionPltId;
     private String flagPLT;
     private String flagPJS;
     private String flagFingerMobile;
@@ -132,6 +133,7 @@ public class Biodata extends BaseModel {
 
     private Date tanggalPraPensiun;
     private String stTanggalPraPensiun;
+    private String nipLama;
 
     public String getProfesiName() {
         return profesiName;
@@ -1031,5 +1033,21 @@ public class Biodata extends BaseModel {
 
     public void setFlagTunjRumah(String flagTunjRumah) {
         this.flagTunjRumah = flagTunjRumah;
+    }
+
+    public String getPositionPltId() {
+        return positionPltId;
+    }
+
+    public void setPositionPltId(String positionPltId) {
+        this.positionPltId = positionPltId;
+    }
+
+    public String getNipLama() {
+        return nipLama;
+    }
+
+    public void setNipLama(String nipLama) {
+        this.nipLama = nipLama;
     }
 }

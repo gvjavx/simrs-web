@@ -421,4 +421,24 @@ public class PositionDao extends GenericDao<ImPosition,String> {
 
         return kode;
     }
+
+    public List<ImPosition> getDataKelompokId(String positionId){
+
+        List<ImPosition> listOfResult = new ArrayList<ImPosition>();
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "SELECT kelompok_id, position_id FROM im_position WHERE position_id = '"+positionId+"' AND flag = 'Y'";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results) {
+            ImPosition result  = new ImPosition();
+            result.setKelompokId((String) row[0]);
+            result.setPositionId((String) row[1]);
+
+            listOfResult.add(result);
+        }
+        return listOfResult;
+    }
 }

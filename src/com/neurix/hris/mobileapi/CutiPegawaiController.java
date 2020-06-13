@@ -140,6 +140,7 @@ public class CutiPegawaiController implements ModelDriven<Object> {
             editCutiPegawai.setAction("U");
             editCutiPegawai.setFlag("Y");
             editCutiPegawai.setPegawaiPenggantiSementara(nipPengganti);
+            editCutiPegawai.setForMobile(true);
 
            List<Notifikasi> notifikasiList = cutiPegawaiBoProxy.saveApprove(editCutiPegawai);
 

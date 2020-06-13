@@ -606,6 +606,7 @@ public class IjinKeluarAction extends BaseMasterAction {
         ijinKeluar.setAction("C");
         ijinKeluar.setFlag("Y");
         ijinKeluar.setApprovalFlag("N");
+        ijinKeluar.setRoleId(CommonUtil.roleIdAsLogin());
 
         String path = null;
         if (this.fileUpload != null){
@@ -721,6 +722,7 @@ public class IjinKeluarAction extends BaseMasterAction {
         IjinKeluar searchAlat = getIjinKeluar();
         List<IjinKeluar> listOfSearchIjinKeluar = new ArrayList();
         String role = CommonUtil.roleAsLogin();
+        searchAlat.setRoleId(CommonUtil.roleIdAsLogin());
         searchAlat.setFrom("ijinKeluar");
 
         if ("ADMIN".equalsIgnoreCase(role)){
@@ -1538,6 +1540,50 @@ public class IjinKeluarAction extends BaseMasterAction {
         logger.info("[AlatAction.delete] end process <<<");
         return "init_cancel";
     }
+
+    public String pengajuanBatal() {
+        logger.info("[IjinKeluarAction.delete] start process >>>");
+
+        String itemId = getId();
+        String itemFlag = getFlag();
+        IjinKeluar cancelIjinKeluar = new IjinKeluar();
+
+        if (itemFlag != null ) {
+            try {
+                cancelIjinKeluar = init(itemId, itemFlag);
+            } catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = ijinKeluarBoProxy.saveErrorMessage(e.getMessage(), "IjinKeluarAction.getAlatById");
+                } catch (GeneralBOException e1) {
+                    logger.error("[IjinKeluarAction.delete] Error when retrieving delete data,", e1);
+                }
+                logger.error("[IjinKeluarAction.delete] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for delete, please inform to your admin.");
+                return "failure";
+            }
+
+            if (cancelIjinKeluar != null) {
+                setIjinKeluar(cancelIjinKeluar);
+
+            } else {
+                cancelIjinKeluar.setIjinKeluarId(itemId);
+                cancelIjinKeluar.setFlag(itemFlag);
+                setIjinKeluar(cancelIjinKeluar);
+                addActionError("Error, Unable to find data with id = " + itemId);
+                return "failure";
+            }
+        } else {
+            cancelIjinKeluar.setIjinKeluarId(itemId);
+            cancelIjinKeluar.setFlag(itemFlag);
+            setIjinKeluar(cancelIjinKeluar);
+            addActionError("Error, Unable to delete again with flag = N.");
+            return "failure";
+        }
+        logger.info("[AlatAction.delete] end process <<<");
+        return "init_pengajuan";
+    }
+
     public String cancelIjinKeluarKantor() {
         logger.info("[IjinKeluarKantorAction.cancelIjinKeluarKantor] start process >>>");
 
@@ -1613,6 +1659,75 @@ public class IjinKeluarAction extends BaseMasterAction {
 
         return "success_save_cancel";
     }
+
+    public String savePengajuanBatal(){
+        logger.info("[AlatAction.saveEdit] start process >>>");
+        try {
+            IjinKeluar cancelIjinKeluar = getIjinKeluar();
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            cancelIjinKeluar.setFlagPengajuanBatal("Y");
+            cancelIjinKeluar.setLastUpdateWho(userLogin);
+            cancelIjinKeluar.setLastUpdate(updateTime);
+            cancelIjinKeluar.setAction("U");
+            cancelIjinKeluar.setFlag("Y");
+
+            ijinKeluarBoProxy.savePengajuanBatal(cancelIjinKeluar);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = ijinKeluarBoProxy.saveErrorMessage(e.getMessage(), "AlatBO.saveEdit");
+            } catch (GeneralBOException e1) {
+                logger.error("[CutiPegawaiAction.saveEdit] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[CutiPegawaiAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        logger.info("[CutiPegawaiAction.saveEdit] end process <<<");
+
+        return "success_save_pengajuan_batal";
+    }
+
+    public String saveTolakPengajuan(String ijinId){
+        logger.info("[AlatAction.saveEdit] start process >>>");
+        try {
+            IjinKeluar cancelIjinKeluar = new IjinKeluar();
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            cancelIjinKeluar.setIjinKeluarId(ijinId);
+            cancelIjinKeluar.setFlagPengajuanBatal("N");
+            cancelIjinKeluar.setLastUpdateWho(userLogin);
+            cancelIjinKeluar.setLastUpdate(updateTime);
+            cancelIjinKeluar.setAction("U");
+            cancelIjinKeluar.setFlag("Y");
+
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            IjinKeluarBo ijinKeluarBo = (IjinKeluarBo) ctx.getBean("ijinKeluarBoProxy");
+
+            ijinKeluarBo.saveTolakPengajuanBatal(cancelIjinKeluar);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = ijinKeluarBoProxy.saveErrorMessage(e.getMessage(), "AlatBO.saveEdit");
+            } catch (GeneralBOException e1) {
+                logger.error("[CutiPegawaiAction.saveEdit] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[CutiPegawaiAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        logger.info("[CutiPegawaiAction.saveEdit] end process <<<");
+
+        return "success_save_cancel";
+    }
+
     public String saveCancelIjinKeluarKantor(){
         logger.info("[AlatAction.saveEdit] start process >>>");
         try {

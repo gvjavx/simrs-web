@@ -6,6 +6,7 @@ import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.authorization.company.model.ImCompany;
 import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.authorization.position.model.ImPosition;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.dao.BiodataDao;
@@ -3220,7 +3221,7 @@ public class AbsensiBoImpl implements AbsensiBo {
         java.sql.Timestamp tsTanggalAwal = new java.sql.Timestamp(tanggalAwal.getTime());
         java.sql.Timestamp tsTanggalBesok = new java.sql.Timestamp(tanggalBesok.getTime());
         cal = Calendar.getInstance();
-        String branch = "KD01";
+        String branch = CommonConstant.ID_KANPUS;
         cal.setTime(tanggalAwal);
         int day = cal.get(Calendar.DAY_OF_WEEK);
         Map hsCriteria2 = new HashMap();

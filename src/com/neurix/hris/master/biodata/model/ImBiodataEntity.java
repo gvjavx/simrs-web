@@ -72,6 +72,7 @@ public class ImBiodataEntity implements Serializable {
     private String flagTunjanganSiaga;
     private String flagTunjanganProfesional;
 
+    private String positionPltId;
     private String flagPlt;
     private String flagPjs;
     private String flagFingerMobile;
@@ -82,6 +83,7 @@ public class ImBiodataEntity implements Serializable {
     private String flagBpjsKs;
     private String flagBpjsTk;
     private String flagPercobaan;
+    private String nipLama;
 
     public String getFlagTunjanganSupervisi() {
         return flagTunjanganSupervisi;
@@ -1038,5 +1040,21 @@ public class ImBiodataEntity implements Serializable {
 
     public void setFlagTunjRumah(String flagTunjRumah) {
         this.flagTunjRumah = flagTunjRumah;
+    }
+
+    public String getPositionPltId() {
+        return positionPltId;
+    }
+
+    public void setPositionPltId(String positionPltId) {
+        this.positionPltId = positionPltId;
+    }
+
+    public String getNipLama() {
+        return nipLama;
+    }
+
+    public void setNipLama(String nipLama) {
+        this.nipLama = nipLama;
     }
 }
