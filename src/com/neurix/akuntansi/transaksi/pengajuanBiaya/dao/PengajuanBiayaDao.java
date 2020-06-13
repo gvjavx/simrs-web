@@ -41,8 +41,31 @@ public class PengajuanBiayaDao extends GenericDao<ImPengajuanBiayaEntity, String
             if (mapCriteria.get("pengajuan_biaya_id")!=null) {
                 criteria.add(Restrictions.eq("pengajuanBiayaId", (String) mapCriteria.get("pengajuan_biaya_id")));
             }
+            if (mapCriteria.get("transaksi")!=null) {
+                criteria.add(Restrictions.eq("transaksi", (String) mapCriteria.get("transaksi")));
+            }
+            if (mapCriteria.get("branch_id")!=null) {
+                criteria.add(Restrictions.eq("branchId", (String) mapCriteria.get("branch_id")));
+            }
+            if (mapCriteria.get("divisi_id")!=null) {
+                criteria.add(Restrictions.eq("divisiId", (String) mapCriteria.get("divisi_id")));
+            }
             if (mapCriteria.get("no_jurnal")!=null) {
                 criteria.add(Restrictions.eq("noJurnal", (String) mapCriteria.get("no_jurnal")));
+            }
+            if (mapCriteria.get("keterangan")!=null) {
+                criteria.add(Restrictions.ilike("keterangan", "%"+(String) mapCriteria.get("keterangan")+"%"));
+            }
+            if (mapCriteria.get("tanggal_dari")!=null && mapCriteria.get("tanggal_selesai")!=null) {
+                criteria.add(Restrictions.between("tanggal",mapCriteria.get("tanggal_dari"),mapCriteria.get("tanggal_selesai")));
+            }
+            else {
+                if (mapCriteria.get("tanggal_dari")!=null) {
+                    criteria.add(Restrictions.ge("tanggal",mapCriteria.get("tanggal_dari")));
+                }
+                if (mapCriteria.get("tanggal_selesai")!=null) {
+                    criteria.add(Restrictions.le("tanggal",mapCriteria.get("tanggal_selesai")));
+                }
             }
         }
 
@@ -111,10 +134,40 @@ public class PengajuanBiayaDao extends GenericDao<ImPengajuanBiayaEntity, String
                 pengajuanBiaya.setAprovalName((String) row[18]);
                 pengajuanBiaya.setKeterangan((String) row[19]);
                 pengajuanBiaya.setNoJurnal((String) row[20]);
+                pengajuanBiaya.setTanggal((Date) row[5]);
+                pengajuanBiaya.setTotalBiaya(BigDecimal.valueOf(Double.parseDouble(row[4].toString())));
 
                 listOfResult.add(pengajuanBiaya);
             }
         }
         return listOfResult;
+    }
+
+    public String getIdPengajuanByIdPengajuanDetail(String pengajuanDetailId){
+        String query="select\n" +
+                "\tpengajuan_biaya_id\n" +
+                "from\n" +
+                "\tit_akun_pengajuan_biaya_detail\n" +
+                "where\n" +
+                "\tpengajuan_biaya_detail_id = '"+pengajuanDetailId+"'\n" +
+                "LIMIT 1";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+
+        return results.toString();
+    }
+
+    public String getKeperluanNameBudgetting(String keperluanId){
+        String query="select\n" +
+                "\tnama_pengadaan\n" +
+                "From\n" +
+                "\tit_akun_budgeting_pengadaan\n" +
+                "where\n" +
+                "\tid_pengadaan='"+keperluanId+"'\n" +
+                "LIMIT 1";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+
+        return results.toString();
     }
 }

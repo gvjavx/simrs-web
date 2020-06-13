@@ -3,6 +3,8 @@ package com.neurix.common.constant;
 import com.neurix.common.util.CommonUtil;
 import org.apache.struts2.ServletActionContext;
 
+import java.math.BigDecimal;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Thunderbird
@@ -164,5 +166,6 @@ public class CommonConstant {
 
     //TELEMEDICINE
     public static final int ADD_JAM_BAYAR = 30; //MENIT
+
 
 }

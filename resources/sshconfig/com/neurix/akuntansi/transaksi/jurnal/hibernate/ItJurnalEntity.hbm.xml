@@ -79,6 +79,9 @@
         <property name="noSeriPajakDitanggung">
             <column name="no_seri_pajak_ditanggung" sql-type="varchar" length="20" not-null="false" />
         </property>
+        <property name="pengajuanBiayaId">
+            <column name="pengajuan_biaya_id" sql-type="varchar" length="30" not-null="false" />
+        </property>
         <property name="personal">
             <column name="personal" sql-type="varchar" length="50" not-null="false" />
         </property>

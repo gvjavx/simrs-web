@@ -264,6 +264,12 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
             periodSudahTutup=null;
         }
 
+        String pengajuanId=null;
+        //mengambil pengajuan Id
+        if (data.get("pengajuan_id")!=null){
+            pengajuanId = (String) data.get("pengajuan_id");
+        }
+
         if (tipeJurnalId!=null){
             try {
                 // Generating ID, get from postgre sequence
@@ -280,6 +286,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                 //MEMBUAT JURNAL HEADER
                 ItJurnalEntity jurnalEntity = new ItJurnalEntity();
                 jurnalEntity.setNoJurnal(noJurnal);
+                jurnalEntity.setPengajuanBiayaId(pengajuanId);
                 jurnalEntity.setTipeJurnalId(tipeJurnalId);
                 jurnalEntity.setTanggalJurnal(new java.sql.Date(tanggalSekarang.getTime()));
                 jurnalEntity.setMataUangId("032");
@@ -1670,5 +1677,12 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
         }
 
         logger.info("[BillingSystemBoImpl.saveTutupPeriod] END <<<");
+    }
+
+    @Override
+    public List<ItJurnalEntity> getJurnalByPengajuanId(String pengajuanId) throws GeneralBOException{
+        logger.info("[BillingSystemBoImpl.getJurnalByPengajuanId] START >>>");
+        logger.info("[BillingSystemBoImpl.getJurnalByPengajuanId] END <<<");
+        return jurnalDao.getListJurnalByPengajuanId(pengajuanId);
     }
 }

@@ -28,7 +28,27 @@ public interface PengajuanBiayaBo extends BaseMasterBo<PengajuanBiaya> {
 
     List<PengajuanBiayaDetail> searchPengajuanDetail(String pengajuanId) throws GeneralBOException;
 
+    List<PengajuanBiayaDetail> cariPengajuanBiayaDetail(String pengajuanDetailId, String divisiId) throws GeneralBOException;
+
     List<Notifikasi> saveApproveAtasanPengajuan(PengajuanBiayaDetail bean) throws GeneralBOException;
 
-    void saveApproveKeuanganPengajuan(PengajuanBiayaDetail bean) throws GeneralBOException;
+    List<Notifikasi> saveApproveKeuanganPengajuan(PengajuanBiayaDetail bean) throws GeneralBOException;
+
+    List<PengajuanBiayaDetail> getDetailPembayaran(String pengajuanBiayaId) throws GeneralBOException;
+
+    List<Notifikasi> saveNotApprovePengajuanBiaya(PengajuanBiayaDetail bean) throws GeneralBOException;
+
+    PengajuanBiaya getPengajuanBiayaForRk(String pengajuanId,String status) throws GeneralBOException;
+
+    void cekApakahBisaDiClose(String pengajuanId) throws GeneralBOException;
+
+    void setRkSudahDikirim(String pengajuanId) throws GeneralBOException;
+
+    PengajuanBiaya cekApakahBolehRk(String pengajuanId) throws GeneralBOException;
+
+    String batalkanPengajuanBiaya(PengajuanBiaya bean) throws GeneralBOException;
+
+    String cekApakahSudahCloseSemua(String pengajuanDetailId) throws GeneralBOException;
+
+    PengajuanBiayaDetail getDetailPembayaranForReport(String pengajuanBiayaDetailId) throws GeneralBOException;
 }

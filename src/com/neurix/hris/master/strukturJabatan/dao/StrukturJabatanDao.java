@@ -260,7 +260,6 @@ public class StrukturJabatanDao extends GenericDao<ImStrukturJabatanEntity, Stri
         return strukturJabatanList;
     }
 
-
     //tambahan reza
     public List<StrukturJabatan> searchStrukturRelationUser(String strukturJabatanid,String branchId) throws HibernateException{
         List<StrukturJabatan> strukturJabatanList = new ArrayList<>();
@@ -296,6 +295,29 @@ public class StrukturJabatanDao extends GenericDao<ImStrukturJabatanEntity, Stri
         return strukturJabatanList;
     }
 
+
+    public List<StrukturJabatan> searchStruktur(String positionId,String branchId) throws HibernateException{
+        List<StrukturJabatan> strukturJabatanList = new ArrayList<>();
+
+        String query = "SELECT * FROM im_hris_struktur_jabatan WHERE position_Id = :positionId AND branch_id = :branchId AND flag = 'Y'";
+
+        List<Object[]> results = new ArrayList<Object[]>();
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .setParameter("positionId", positionId)
+                .setParameter("branchId",branchId)
+                .list();
+
+
+        for (Object[] row : results) {
+            StrukturJabatan result  = new StrukturJabatan();
+            result.setParentId((String) row[2]);
+            result.setPositionId((String) row[8]);
+
+            strukturJabatanList.add(result);
+        }
+        return strukturJabatanList;
+    }
 
 
     public List<ImStrukturJabatanEntity> getListStruktur(String Branch, String Posisi) throws HibernateException {

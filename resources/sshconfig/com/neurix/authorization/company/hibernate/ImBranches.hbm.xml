@@ -117,6 +117,12 @@
         <property name="percentTkPers">
             <column name="percent_tk_pers" sql-type="numeric" length="10"/>
         </property>
+        <property name="maxPengajuanBiaya">
+            <column name="max_pengajuan_biaya" sql-type="numeric" />
+        </property>
+        <property name="coaRk">
+            <column name="coa_rk" sql-type="varchar" length="20"/>
+        </property>
 
         <property name="logoName">
             <column name="logo_name" sql-type="varchar" length="100"/>

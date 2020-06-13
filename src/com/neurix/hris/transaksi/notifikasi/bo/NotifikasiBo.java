@@ -40,7 +40,7 @@ public interface NotifikasiBo extends BaseMasterBo<Notifikasi>{
 
     void SendNotifKeAtasanLangsung(String nip, String id, String tipeNotifId, String tipeNotifName, String note, String createdWho,String os);
 
-    List<PersonilPosition> daftarAtasanLangsung(String nip);
+    List<PersonilPosition> daftarAtasanLangsung(Notifikasi bean);
 
     void SendNotifSelf(String nip, String id, String tipeNotifName, String note, String createdWho, String os);
 
@@ -71,6 +71,8 @@ public interface NotifikasiBo extends BaseMasterBo<Notifikasi>{
     List<Notifikasi> getCutiPensiun();
 
     List<Notifikasi> getCutiTahunan();
+
+    List<Notifikasi> getPengajuanBiayaMenggantung();
 
     List<Notifikasi> getCutiPanjang();
 

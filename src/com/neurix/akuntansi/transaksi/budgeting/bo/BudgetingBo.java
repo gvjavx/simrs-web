@@ -29,7 +29,7 @@ public interface BudgetingBo {
     public Budgeting checkBudgeting(String branchId, String tahun) throws GeneralBOException;
     public ItAkunBudgetingEntity getBudgetingEntityById(String id) throws GeneralBOException;
 
-    String getBudgetBiayaDivisiSaatIni(Budgeting bean);
+    public Budgeting getBudgetBiayaDivisiSaatIni(Budgeting bean);
 
     List<Budgeting> getNoBudgetByDivisi(Budgeting bean);
 

@@ -705,6 +705,13 @@
       </create>
       <convert converter="bean" match="com.neurix.simrs.transaksi.verifikatorpembayaran.model.PembayaranOnline"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic"/>
+      <convert converter="bean" match="com.neurix.akuntansi.transaksi.pengajuanBiaya.model.StokDTO"/>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.akuntansi.transaksi.jurnal.action.JurnalAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.akuntansi.transaksi.jurnal.model.Jurnal"/>
+      <convert converter="bean" match="com.neurix.akuntansi.transaksi.jurnal.model.JurnalDetail"/>
   </allow>
 
 </dwr>
