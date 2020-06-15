@@ -57,79 +57,27 @@
                                     <label class="control-label col-sm-4">ID Pasien</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="id_pasien" cssStyle="margin-top: 7px"
-                                                     name="headerDetailCheckup.idPasien" required="false"
+                                                     name="antrianTelemedic.idPasien" required="false"
                                                      readonly="false" cssClass="form-control"/>
                                     </div>
                                 </div>
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="control-label col-sm-4">Nama</label>--%>
-                                    <%--<div class="col-sm-4">--%>
-                                        <%--<s:textfield id="nama_pasien" name="headerDetailCheckup.nama"--%>
-                                                     <%--required="false" readonly="false"--%>
-                                                     <%--cssClass="form-control" cssStyle="margin-top: 7px"/>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                                    <%--<div class="form-group">--%>
-                                        <%--<label class="control-label col-sm-4">Poli</label>--%>
-                                        <%--<div class="col-sm-4">--%>
-                                            <%--<s:action id="initComboPoli" namespace="/checkup"--%>
-                                                      <%--name="getComboPelayanan_checkup"/>--%>
-                                            <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-                                                      <%--list="#initComboPoli.listOfPelayanan"--%>
-                                                      <%--name="headerDetailCheckup.idPelayanan" listKey="idPelayanan"--%>
-                                                      <%--listValue="namaPelayanan"--%>
-                                                      <%--headerKey="" headerValue="[Select one]"--%>
-                                                      <%--cssClass="form-control select2" theme="simple"/>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="control-label col-sm-4">Status</label>--%>
-                                    <%--<div class="col-sm-4">--%>
-                                        <%--<s:select list="#{'':'Rujuk','':'Selesai'}" cssStyle="margin-top: 7px"--%>
-                                                  <%--id="status"--%>
-                                                  <%--headerKey="3" headerValue="Selesai"--%>
-                                                  <%--cssClass="form-control select2" disabled="true"/>--%>
-                                        <%--<s:hidden name="headerDetailCheckup.statusPeriksa" value="3"></s:hidden>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="control-label col-sm-4">Status Bayar</label>--%>
-                                    <%--<div class="col-sm-4">--%>
-                                        <%--<s:select list="#{'Y':'Sudah Dibayar'}" cssStyle="margin-top: 7px"--%>
-                                                  <%--id="statusBayar"--%>
-                                                  <%--headerKey="" headerValue="Belum Dibayar" name="headerDetailCheckup.statusBayar"--%>
-                                                  <%--cssClass="form-control"/>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Jenis Pasien</label>
                                     <div class="col-sm-4">
                                         <s:select list="#{'asuransi':'ASURANSI', 'bpjs':'BPJS'}" cssStyle="margin-top: 7px"
-                                                  headerKey="umum" headerValue="UMUM" name="headerDetailCheckup.idJenisPeriksaPasien"
+                                                  headerKey="umum" headerValue="UMUM" name="antrianTelemedic.idJenisPeriksaPasien"
                                                   cssClass="form-control"/>
                                     </div>
                                 </div>
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="control-label col-sm-4">Tanggal Masuk</label>--%>
-                                    <%--<div class="col-sm-2">--%>
-                                        <%--<div class="input-group date" style="margin-top: 7px">--%>
-                                            <%--<div class="input-group-addon">--%>
-                                                <%--<i class="fa fa-calendar"></i>--%>
-                                            <%--</div>--%>
-                                            <%--<s:textfield id="tgl_from" name="headerDetailCheckup.stDateFrom" cssClass="form-control"--%>
-                                                         <%--required="false"/>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                    <%--<div class="col-sm-2">--%>
-                                        <%--<div class="input-group date" style="margin-top: 7px">--%>
-                                            <%--<div class="input-group-addon">--%>
-                                                <%--<i class="fa fa-calendar"></i>--%>
-                                            <%--</div>--%>
-                                            <%--<s:textfield id="tgl_to" name="headerDetailCheckup.stDateTo" cssClass="form-control"--%>
-                                                         <%--required="false"/>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Status Transaksi</label>
+                                    <div class="col-sm-4">
+                                        <s:select list="#{'finish':'FINISH'}" cssStyle="margin-top: 7px"
+                                                  headerKey="exist" headerValue="EXISTING" name="antrianTelemedic.statusTransaksi"
+                                                  cssClass="form-control"/>
+                                    </div>
+                                </div>
                                 <br>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
@@ -198,17 +146,17 @@
                     <div class="box-body">
                         <table id="sortTable" class="table table-bordered table-striped" style="font-size: 13px">
                             <thead >
-                            <tr bgcolor="#90ee90">
-                                <td>Id</td>
-                                <td>Id Pasien</td>
-                                <td>Nama</td>
-                                <td>Status</td>
-                                <td>Status Bayar konsultasi</td>
-                                <td>Approve Bayar konsultasi</td>
-                                <td>Status Bayar Resep</td>
-                                <td>Approve Bayar Resep</td>
-                                <td align="center">Action</td>
-                            </tr>
+                                <tr bgcolor="#90ee90">
+                                    <td>Id</td>
+                                    <td>Id Pasien</td>
+                                    <td>Nama</td>
+                                    <td>Status</td>
+                                    <td>Status Bayar konsultasi</td>
+                                    <td>Approve Bayar konsultasi</td>
+                                    <td>Status Bayar Resep</td>
+                                    <td>Approve Bayar Resep</td>
+                                    <td align="center">Action</td>
+                                </tr>
                             </thead>
                             <tbody>
                             <s:iterator value="#session.listOfResults" var="row">
@@ -239,7 +187,6 @@
                                                 <label class="label label-warning"> belum bayar</label>
                                             </s:else>
                                         </s:if>
-
                                     </td>
                                     <td style="vertical-align: middle" align="center">
                                         <s:if test='#row.approveResep == "Y"'>
@@ -247,28 +194,12 @@
                                         </s:if>
                                     </td>
                                     <td align="center">
-                                        <button class="btn btn-sm btn-primary" onclick="showDetail('<s:property value="id"/>')"><i class="fa fa-edit"></i></button>
-                                        <%--<s:if test='#row.statusBayar == "Y"'>--%>
-                                            <%--<s:url var="print_invo" namespace="/kasirjalan" action="printInvoice_kasirjalan" escapeAmp="false">--%>
-                                                <%--<s:param name="id"><s:property value="idDetailCheckup"/></s:param>--%>
-                                                <%--<s:param name="jenis"><s:property value="idJenisPeriksaPasien"/></s:param>--%>
-                                            <%--</s:url>--%>
-                                            <%--<s:a href="%{print_invo}" target="_blank">--%>
-                                            <%--<img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>">--%>
-                                            <%--</s:a>--%>
-                                        <%--</s:if>--%>
-                                        <%--<s:else>--%>
-                                            <%--<img id="t_<s:property value="idDetailCheckup"/>" onclick="showInvoice('<s:property value="noCheckup"/>','<s:property value="idDetailCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icon_payment.ico"/>" style="cursor: pointer;">--%>
-                                        <%--</s:else>--%>
-                                        <%--<s:if test='#row.idJenisPeriksaPasien == "bpjs"'>--%>
-                                            <%--<s:url var="print_invo" namespace="/kasirjalan" action="printInvoice_kasirjalan" escapeAmp="false">--%>
-                                                <%--<s:param name="id"><s:property value="idDetailCheckup"/></s:param>--%>
-                                                <%--<s:param name="jenis"><s:property value="idJenisPeriksaPasien"/></s:param>--%>
-                                            <%--</s:url>--%>
-                                            <%--<s:a href="%{print_invo}" target="_blank">--%>
-                                                <%--<img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>">--%>
-                                            <%--</s:a>--%>
-                                        <%--</s:if>--%>
+                                        <s:if test='#row.statusTransaksi == "finish"'>
+                                            <button class="btn btn-sm btn-primary" onclick="showDetail('<s:property value="id"/>')"><i class="fa fa-search"></i></button>
+                                        </s:if>
+                                        <s:else>
+                                            <button class="btn btn-sm btn-primary" onclick="showDetail('<s:property value="id"/>')"><i class="fa fa-edit"></i></button>
+                                        </s:else>
                                     </td>
                                 </tr>
                             </s:iterator>

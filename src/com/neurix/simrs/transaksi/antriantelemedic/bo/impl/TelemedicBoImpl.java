@@ -143,11 +143,23 @@ public class TelemedicBoImpl implements TelemedicBo {
                 }
                 // end;
 
+                if (antrianTelemedic.getFlagResep() == null && antrianTelemedic.getApproveKonsultasi() != null) {
+                    antrianTelemedic.setStatusTransaksi("finish");
+                } else if ("Y".equalsIgnoreCase(antrianTelemedic.getFlagResep()) && antrianTelemedic.getApproveKonsultasi() != null && antrianTelemedic.getApproveResep() != null){
+                    antrianTelemedic.setStatusTransaksi("finish");
+                } else {
+                    antrianTelemedic.setStatusTransaksi("exist");
+                }
                 results.add(antrianTelemedic);
             }
         }
 
         logger.info("[TelemedicBoImpl.getSearchByCriteria] END <<<");
+        final String statusTransaksi = bean.getStatusTransaksi();
+        if ("finish".equalsIgnoreCase(statusTransaksi) || "exist".equalsIgnoreCase(statusTransaksi)){
+            return results.stream().filter(p->p.getStatusTransaksi().equalsIgnoreCase(statusTransaksi)).collect(Collectors.toList());
+        }
+
         return results;
     }
 
@@ -248,22 +260,22 @@ public class TelemedicBoImpl implements TelemedicBo {
         logger.info("[TelemedicBoImpl.getListEntityByCriteria] START >>>");
 
         Map hsCriteria = new HashMap();
-        if (bean.getId() != null){
+        if (bean.getId() != null && !"".equalsIgnoreCase(bean.getId())){
             hsCriteria.put("id", bean.getId());
         }
-        if (bean.getIdPasien() != null){
+        if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())){
             hsCriteria.put("id_pasien", bean.getIdPasien());
         }
-        if (bean.getIdDokter() != null){
+        if (bean.getIdDokter() != null && !"".equalsIgnoreCase(bean.getIdDokter())){
             hsCriteria.put("id_dokter", bean.getIdDokter());
         }
-        if (bean.getIdPelayanan() != null){
+        if (bean.getIdPelayanan() != null  && !"".equalsIgnoreCase(bean.getIdPelayanan()) ){
             hsCriteria.put("id_pelayanan", bean.getIdPelayanan());
         }
-        if (bean.getStatus() != null){
+        if (bean.getStatus() != null && !"".equalsIgnoreCase(bean.getStatus())){
             hsCriteria.put("status", bean.getStatus());
         }
-        if (bean.getFlag() != null){
+        if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())){
             hsCriteria.put("flag", bean.getFlag());
         }
 

@@ -49,10 +49,13 @@ public class TesTelemedicController implements ModelDriven<Object> {
         logger.info(data);
         switch (data){
             case "insert-tele-non-resep":
-                insertDataTelemedic("");
+                insertDataTelemedic("umum", "");
                 break;
             case "insert-tele-resep":
-                insertDataTelemedic("resep");
+                insertDataTelemedic("umum","resep");
+                break;
+            case "insert-asuransi-non-resep":
+                insertDataTelemedic("asuransi", "");
                 break;
             default:
                 logger.info("==========NO ONE CARE============");
@@ -60,7 +63,7 @@ public class TesTelemedicController implements ModelDriven<Object> {
         return result;
     }
 
-    private void insertDataTelemedic(String tipe){
+    private void insertDataTelemedic(String tipe, String jenis){
 
         logger.info("[TesTelemedicController.insertDataTelemedic] START >>>");
 
@@ -71,10 +74,14 @@ public class TesTelemedicController implements ModelDriven<Object> {
         antrianTelemedicEntity.setIdPasien("RS0104200035");
         antrianTelemedicEntity.setIdPelayanan("PYN00000002");
         antrianTelemedicEntity.setIdDokter("DKR00000012");
-        antrianTelemedicEntity.setIdJenisPeriksaPasien("umum");
         antrianTelemedicEntity.setKodeBank("1.1.01.02.01");
-        if ("resep".equalsIgnoreCase(tipe)){
+        antrianTelemedicEntity.setIdJenisPeriksaPasien(tipe);
+        if ("resep".equalsIgnoreCase(jenis)){
             antrianTelemedicEntity.setFlagResep("Y");
+        }
+        if ("ansuransi".equalsIgnoreCase(tipe)){
+            antrianTelemedicEntity.setNoKartu("080780808");
+            antrianTelemedicEntity.setIdAsuransi("ASN00000002");
         }
         antrianTelemedicEntity.setCreatedDate(time);
         antrianTelemedicEntity.setCreatedWho("admin");
@@ -90,4 +97,6 @@ public class TesTelemedicController implements ModelDriven<Object> {
 
         logger.info("[TesTelemedicController.insertDataTelemedic] END <<<");
     }
+
+
 }
