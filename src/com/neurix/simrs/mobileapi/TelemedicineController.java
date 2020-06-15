@@ -6,6 +6,10 @@ import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
 import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
 import com.neurix.simrs.transaksi.antriantelemedic.model.StatusAntrianTelemedic;
+import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
+import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
+import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
+import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.opensymphony.xwork2.ModelDriven;
 import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
@@ -25,6 +29,8 @@ public class TelemedicineController implements ModelDriven<Object> {
     private TelemedicineMobile model = new TelemedicineMobile();
     private Collection<TelemedicineMobile> listOfTelemedic;
     private TelemedicBo telemedicBoProxy;
+    private CheckupBo checkupBoProxy;
+    private CheckupDetailBo checkupDetailBoProxy;
 
     private String action;
 
@@ -33,8 +39,34 @@ public class TelemedicineController implements ModelDriven<Object> {
     private String status;
     private String branchId;
     private String kodeBank;
+    private String keluhan;
 
     private String idTele;
+
+    public CheckupBo getCheckupBoProxy() {
+        return checkupBoProxy;
+    }
+
+    public void setCheckupBoProxy(CheckupBo checkupBoProxy) {
+        this.checkupBoProxy = checkupBoProxy;
+    }
+
+    public CheckupDetailBo getCheckupDetailBoProxy() {
+        return checkupDetailBoProxy;
+    }
+
+    public void setCheckupDetailBoProxy(CheckupDetailBo checkupDetailBoProxy) {
+        this.checkupDetailBoProxy = checkupDetailBoProxy;
+    }
+
+    public String getKeluhan() {
+        return keluhan;
+    }
+
+    public void setKeluhan(String keluhan) {
+        this.keluhan = keluhan;
+    }
+
 
     public String getIdTele() {
         return idTele;
@@ -111,6 +143,7 @@ public class TelemedicineController implements ModelDriven<Object> {
             bean.setLastUpdate(now);
             bean.setCreatedWho(model.getIdPasien());
             bean.setLastUpdateWho(model.getIdPasien());
+            bean.setKeluhan(model.getKeluhan());
             bean.setAction("C");
             bean.setFlag("Y");
 
@@ -190,6 +223,7 @@ public class TelemedicineController implements ModelDriven<Object> {
                     telemedicineMobile.setNamaPelayanan(item.getNamaPelayanan());
                     telemedicineMobile.setKetStatus(item.getKetStatus());
                     telemedicineMobile.setCreatedDate(item.getCreatedDate().toLocaleString());
+                    telemedicineMobile.setKeluhan(item.getKeluhan());
 
                     listOfTelemedic.add(telemedicineMobile);
 
@@ -294,6 +328,34 @@ public class TelemedicineController implements ModelDriven<Object> {
                 }
                 i++;
             }
+        }
+
+        if (action.equalsIgnoreCase("getDetailCheckup")) {
+            HeaderCheckup beanHeader = new HeaderCheckup();
+            beanHeader.setIdAntrianOnline(idTele);
+
+
+            List<HeaderCheckup> resultCheckup = new ArrayList<>();
+            List<HeaderDetailCheckup> resultDetailCheckup = new ArrayList<>();
+
+            try {
+               resultCheckup = checkupBoProxy.getByCriteria(beanHeader);
+            } catch (GeneralBOException e) {
+                logger.error("[TelemedicineController.getDetailCheckup] Error, " + e.getMessage());
+            }
+
+            HeaderDetailCheckup beanDetail = new HeaderDetailCheckup();
+            beanDetail.setNoCheckup(resultCheckup.get(0).getNoCheckup());
+
+            try {
+                resultDetailCheckup = checkupDetailBoProxy.getByCriteria(beanDetail);
+            } catch (GeneralBOException e){
+                logger.error("[TelemedicineController.getDetailCheckup] Error, " + e.getMessage());
+            }
+
+            model.setNoCheckup(resultDetailCheckup.get(0).getNoCheckup());
+            model.setIdDetailCheckup(resultDetailCheckup.get(0).getIdDetailCheckup());
+
         }
 
         logger.info("[TelemedicineController.create] end process POST / <<<");

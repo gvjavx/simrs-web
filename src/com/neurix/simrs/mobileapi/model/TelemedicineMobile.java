@@ -34,9 +34,37 @@ public class TelemedicineMobile {
     private String idJenisPeriksaPasien;
     private String idAsuransi;
     private String kodeBank;
+    private String keluhan;
+
+    private String idDetailCheckup;
+    private String noCheckup;
 
     private String message;
     private String jumlahAntrian;
+
+    public String getIdDetailCheckup() {
+        return idDetailCheckup;
+    }
+
+    public void setIdDetailCheckup(String idDetailCheckup) {
+        this.idDetailCheckup = idDetailCheckup;
+    }
+
+    public String getNoCheckup() {
+        return noCheckup;
+    }
+
+    public void setNoCheckup(String noCheckup) {
+        this.noCheckup = noCheckup;
+    }
+
+    public String getKeluhan() {
+        return keluhan;
+    }
+
+    public void setKeluhan(String keluhan) {
+        this.keluhan = keluhan;
+    }
 
     public String getJumlahAntrian() {
         return jumlahAntrian;

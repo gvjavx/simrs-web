@@ -195,6 +195,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             if (bean.getGetStTglTo() != null && !"".equalsIgnoreCase(bean.getGetStTglTo())) {
                 hsCriteria.put("date_to", bean.getGetStTglTo());
             }
+            if (bean.getIdAntrianOnline() != null && !"".equalsIgnoreCase(bean.getIdAntrianOnline())) {
+                hsCriteria.put("id_antrian_online", bean.getIdAntrianOnline());
+            }
 
             hsCriteria.put("flag", "Y");
             List<String> listOfNoCheckup = new ArrayList<>();

@@ -10,6 +10,7 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.common.util.FirebasePushNotif;
 import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiFcmBo;
+import com.neurix.hris.transaksi.notifikasi.model.ItNotifikasiFcmEntity;
 import com.neurix.hris.transaksi.notifikasi.model.NotifikasiFcm;
 import com.neurix.simrs.master.jenisperiksapasien.bo.AsuransiBo;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
@@ -194,6 +195,7 @@ public class VerifikatorPembayaranAction {
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
         PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
         RiwayatTindakanBo riwayatTindakanBo = (RiwayatTindakanBo) ctx.getBean("riwayatTindakanBoProxy");
+        NotifikasiFcmBo notifikasiFcmBo = (NotifikasiFcmBo) ctx.getBean("notifikasiFcmBoProxy");
         CheckResponse response = new CheckResponse();
 
         ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = verifikatorPembayaranBo.getPembayaranOnlineById(idTransaksi);
@@ -205,7 +207,7 @@ public class VerifikatorPembayaranAction {
             ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = telemedicBo.getAntrianTelemedicEntityById(pembayaranOnlineEntity.getIdAntrianTelemedic());
             if (antrianTelemedicEntity != null){
 
-                List<NotifikasiFcm> result = new ArrayList<>();
+                List<NotifikasiFcm> notifikasiFcm = null;
                 NotifikasiFcm bean = new NotifikasiFcm();
 
                 idJenisPeriksaPasien = antrianTelemedicEntity.getIdJenisPeriksaPasien();
@@ -315,8 +317,8 @@ public class VerifikatorPembayaranAction {
 
                             //Push Notif ke Pasien terkait perubahan status menjadi WL
                             bean.setUserId(firstOrderAntrian.getIdPasien());
-                            result = notifikasiFcmBoProxy.getByCriteria(bean);
-                            FirebasePushNotif.sendNotificationFirebase(result.get(0).getTokenFcm(),"Telemedic", "Anda telah memasuki Antrian Waiting List. Silahkan lakukan pembayaran", "WL", bean.getOs());
+                            notifikasiFcm = notifikasiFcmBo.getByCriteria(bean);
+                            FirebasePushNotif.sendNotificationFirebase(notifikasiFcm.get(0).getTokenFcm(),"Telemedic", "Anda telah memasuki Antrian Waiting List. Silahkan lakukan pembayaran", "WL", notifikasiFcm.get(0).getOs());
 
                         } catch (GeneralBOException e){
                             logger.error("[VerifikatorPembayaranAction.approveTransaksi] ERROR. ",e);
@@ -346,8 +348,8 @@ public class VerifikatorPembayaranAction {
 
                         //Push Notif ke Pasien terkait perubahan status menjadi SL
                         bean.setUserId(antrianTelemedicEntity.getIdPasien());
-                        result = notifikasiFcmBoProxy.getByCriteria(bean);
-                        FirebasePushNotif.sendNotificationFirebase(result.get(0).getTokenFcm(),"Telemedic", "Anda telah memasuki Antrian Short List. Buka aplikasi untuk menunggu panggilan dokter", "SL", bean.getOs());
+                        notifikasiFcm = notifikasiFcmBo.getByCriteria(bean);
+                        FirebasePushNotif.sendNotificationFirebase(notifikasiFcm.get(0).getTokenFcm(),"Telemedic", "Anda telah memasuki Antrian Short List. Buka aplikasi untuk menunggu panggilan dokter", "SL", notifikasiFcm.get(0).getOs());
                     } catch (GeneralBOException e){
                         logger.error("[VerifikatorPembayaranAction.approveTransaksi] ERROR. ",e);
                         response.setStatus("error");
