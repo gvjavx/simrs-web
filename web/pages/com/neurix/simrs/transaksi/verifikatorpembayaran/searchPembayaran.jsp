@@ -408,13 +408,20 @@
             $.each(response, function (i, item) {
                 str += "<tr>" +
                     "<td>"+item.keterangan+"</td>"+
-                    "<td>"+ nullEscape(item.approvedFlag) +"</td>"+
+                    "<td align='center'>"+ iconFlag(item.approvedFlag) +"</td>"+
                     "<td>"+ nullEscape(item.approvedWho) +"</td>"+
                     "<td>"+ formatRupiah( item.nominal  )+"</td>";
 
                     if (item.flagBayar == "Y"){
-                        str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
-                            "<td align='center'><button class='btn btn-sm btn-success' onclick=\"saveApprove(\'"+item.id+"\')\"><i class='fa fa-check'></i> Approve</button></td>";
+
+                        if (item.approvedFlag == "Y"){
+                            str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
+                                "<td align='center'></td>";
+                        } else {
+                            str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
+                                "<td align='center'><button class='btn btn-sm btn-success' onclick=\"saveApprove(\'"+item.id+"\')\"><i class='fa fa-check'></i> Approve</button></td>";
+                        }
+
                     } else {
                         str += "<td></td>" +
                             "<td></td>";
@@ -424,6 +431,15 @@
 
             $("#body_tindakan_fin").html(str);
         })
+    }
+
+    function iconFlag(var1) {
+        if (var1 == "Y")
+            return "<label class=\"label label-success\"> <i class=\"fa fa-check\"></i></label>";
+        else if (var1 == "N")
+            return "<label class=\"label label-danger\"> <i class=\"fa fa-cross\"></i></label>";
+        else
+            return "";
     }
 
     function nullEscape(var1) {

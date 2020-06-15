@@ -36,6 +36,15 @@ public class AntrianTelemedic {
     private String namaBranch;
     private String approveKonsultasi;
     private String approveResep;
+    private String flagForVerifikatorPembayaran;
+
+    public String getFlagForVerifikatorPembayaran() {
+        return flagForVerifikatorPembayaran;
+    }
+
+    public void setFlagForVerifikatorPembayaran(String flagForVerifikatorPembayaran) {
+        this.flagForVerifikatorPembayaran = flagForVerifikatorPembayaran;
+    }
 
     public String getApproveKonsultasi() {
         return approveKonsultasi;
