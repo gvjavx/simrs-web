@@ -92,5 +92,6 @@ public interface CheckupBo {
     public List<HeaderCheckup> getHistoryPasien(String idPasien) throws GeneralBOException;
     public List<HeaderCheckup> getListDetailHistory(String id, String keterangan) throws GeneralBOException;
     public List<HeaderCheckup> getListVedioRm(String id) throws GeneralBOException;
+    public ItSimrsHeaderChekupEntity getById(String columnName, String id) throws GeneralBOException;
 
 }

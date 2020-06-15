@@ -39,6 +39,15 @@ public class AntrianTelemedic {
     private String approveResep;
     private String keterangan;
     private String keluhan;
+    private String flagForVerifikatorPembayaran;
+
+    public String getFlagForVerifikatorPembayaran() {
+        return flagForVerifikatorPembayaran;
+    }
+
+    public void setFlagForVerifikatorPembayaran(String flagForVerifikatorPembayaran) {
+        this.flagForVerifikatorPembayaran = flagForVerifikatorPembayaran;
+    }
 
     public String getKeluhan() {
         return keluhan;

@@ -220,8 +220,17 @@ public class VerifikatorPembayaranAction {
                     response.setStatus("success");
                     return response;
                 } else {
+
+                    String noCheckup = "";
+                    ItSimrsHeaderChekupEntity checkAntrianOnline = checkupBo.getById("idAntrianOnline", antrianTelemedicEntity.getId());
+                    if (checkAntrianOnline != null){
+                        noCheckup = checkAntrianOnline.getNoCheckup();
+                    } else {
+                        noCheckup = "CKP"+checkupBo.getNextHeaderId();
+                    }
+
                     // set data headerCheckup;
-                    headerCheckup.setNoCheckup("CKP"+checkupBo.getNextHeaderId());
+                    headerCheckup.setNoCheckup(noCheckup);
                     headerCheckup.setIdPasien(antrianTelemedicEntity.getIdPasien());
                     headerCheckup.setIdPelayanan(antrianTelemedicEntity.getIdPelayanan());
                     headerCheckup.setIdDokter(antrianTelemedicEntity.getIdDokter());
@@ -255,6 +264,7 @@ public class VerifikatorPembayaranAction {
                         headerCheckup.setMetodePembayaran("non_tunai");
                         headerCheckup.setIdAntrianOnline(antrianTelemedicEntity.getId());
                         headerCheckup.setIdTransaksiOnline(idTransaksi);
+                        headerCheckup.setNoCheckup(noCheckup);
 
                         Tindakan tindakan = new Tindakan();
                         List<Tindakan> tindakans = new ArrayList<>();
@@ -863,7 +873,6 @@ public class VerifikatorPembayaranAction {
 
         String kode = "";
         String transId = "";
-        String masterId = "";
         String jenisPasien = "Umum ";
         String kodeBank = "";
         String idJenisPeriksaPasien = "";
@@ -886,29 +895,7 @@ public class VerifikatorPembayaranAction {
             }
         }
 
-        // mencari no master;
-        if ("asuransi".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())) {
-
-            biayaCover = detailCheckupEntity.getCoverBiaya();
-
-            ImSimrsAsuransiEntity asuransiEntity = asuransiBo.getEntityAsuransiById(detailCheckupEntity.getIdAsuransi());
-            if (asuransiEntity != null) {
-                masterId = asuransiEntity.getNoMaster();
-                jenisPasien = "Asuransi " + asuransiEntity.getNamaAsuransi() + " ";
-            } else {
-                logger.error("[CheckupDetailAction.closingJurnalNonTunai] Error Asuransi tidak ditemukan");
-                response.setStatus("error");
-                response.setMsg("[CheckupDetailAction.closingJurnalNonTunai] Error Asuransi tidak ditemukan");
-                return response;
-            }
-
-            noKartu = " No. Kartu Asuransi " + detailCheckupEntity.getNoKartuAsuransi();
-
-        } else if ("bpjs".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
-
-        } else {
-            masterId = jenisPriksaPasienBo.getJenisPerikasEntityById(detailCheckupEntity.getIdJenisPeriksaPasien()).getMasterId();
-        }
+        String masterId = jenisPriksaPasienBo.getJenisPerikasEntityById(detailCheckupEntity.getIdJenisPeriksaPasien()).getMasterId();
 
         // MAP ALL TINDAKAN BY KETERANGAN
         List<Map> listOfTindakan = new ArrayList<>();
