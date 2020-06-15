@@ -79,5 +79,9 @@
         <property name="isRead">
             <column name="is_read" sql-type="varchar" length="1" not-null="false" />
         </property>
+
+        <property name="idTransaksiOnline">
+            <column name="id_transaksi_online" sql-type="varchar" />
+        </property>
     </class>
 </hibernate-mapping>

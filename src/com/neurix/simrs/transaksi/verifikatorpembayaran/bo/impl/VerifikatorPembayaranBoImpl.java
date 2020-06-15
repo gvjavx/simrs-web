@@ -427,7 +427,7 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
     }
 
     private List<ImSimrsTindakanEntity> getListEntityTindakan(Tindakan bean) throws GeneralBOException {
-        logger.info("[CheckupBoImpl.getListEntityTindakan] Start >>>>>>>");
+        logger.info("[VerifikatorPembayaranBoImpl.getListEntityTindakan] Start >>>>>>>");
 
         List<ImSimrsTindakanEntity> tindakanEntities = new ArrayList<>();
         if (bean != null) {
@@ -444,17 +444,17 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
             try {
                 tindakanEntities = tindakanDao.getByCriteria(hsCriteria);
             } catch (HibernateException e) {
-                logger.error("[CheckupBoImpl.getListEntityTindakan] ERROR " + e.getMessage());
-                throw new GeneralBOException("[CheckupBoImpl.getListEntityTindakan] ERROR " + e.getMessage());
+                logger.error("[VerifikatorPembayaranBoImpl.getListEntityTindakan] ERROR " + e.getMessage());
+                throw new GeneralBOException("[VerifikatorPembayaranBoImpl.getListEntityTindakan] ERROR " + e.getMessage());
             }
 
         }
-        logger.info("[CheckupBoImpl.getListEntityTindakan] End <<<<<<<");
+        logger.info("[VerifikatorPembayaranBoImpl.getListEntityTindakan] End <<<<<<<");
         return tindakanEntities;
     }
 
     private void saveTeamDokter(DokterTeam bean) {
-        logger.info("[TeamDokterBoImpl.savaAdd] Start >>>>>>>>");
+        logger.info("[VerifikatorPembayaranBoImpl.savaAdd] Start >>>>>>>>");
 
         ItSimrsDokterTeamEntity entity = new ItSimrsDokterTeamEntity();
         String id = getNextTeamDokterId();
@@ -472,30 +472,51 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
         try {
             dokterTeamDao.addAndSave(entity);
         } catch (HibernateException e) {
-            logger.error("[CheckupBoImpl.saveTeamDokter] Error when save add dokter team ", e);
-            throw new GeneralBOException("[CheckupBoImpl.saveTeamDokter] Error when save add dokter team " + e.getMessage());
+            logger.error("[VerifikatorPembayaranBoImpl.saveTeamDokter] Error when save add dokter team ", e);
+            throw new GeneralBOException("[VerifikatorPembayaranBoImpl.saveTeamDokter] Error when save add dokter team " + e.getMessage());
         }
 
-        logger.info("[CheckupBoImpl.savaAdd] End <<<<<<<<");
+        logger.info("[VerifikatorPembayaranBoImpl.savaAdd] End <<<<<<<<");
+    }
+
+    @Override
+    public ItSimrsHeaderChekupEntity getHeaderCheckupByIdAntrinTelemedic(String idAntrianOnline) throws GeneralBOException {
+        logger.info("[VerifikatorPembayaranBoImpl.getHeaderCheckupByIdAntrinTelemedic] End <<<<<<<<");
+        return headerCheckupDao.getById("idAntrianOnline", idAntrianOnline);
+    }
+
+    @Override
+    public void saveEdit(ItSimrsPembayaranOnlineEntity bean) throws GeneralBOException {
+        logger.info("[VerifikatorPembayaranBoImpl.saveEdit] Start >>>>>>>>");
+
+        try {
+            verifikatorPembayaranDao.updateAndSave(bean);
+        } catch (GeneralBOException e){
+            logger.error("[VerifikatorPembayaranBoImpl.saveEdit] Error when update ", e);
+            throw new GeneralBOException("[VerifikatorPembayaranBoImpl.saveEdit] Error when update " + e.getMessage());
+        }
+
+        logger.info("[VerifikatorPembayaranBoImpl.saveEdit] End <<<<<<<<");
+
     }
 
     private String getNextDetailCheckupId(){
-        logger.info("[CheckupBoImpl.getNextDetailCheckupId] START >>>");
+        logger.info("[VerifikatorPembayaranBoImpl.getNextDetailCheckupId] START >>>");
         return checkupDetailDao.getNextId();
     }
 
     private String getNextIdRiwayatTindakan(){
-        logger.info("[CheckupBoImpl.getNextIdRiwayatTindakan] START >>>");
+        logger.info("[VerifikatorPembayaranBoImpl.getNextIdRiwayatTindakan] START >>>");
         return riwayatTindakanDao.getNextSeq();
     }
 
     private String getNextTindakanRawatId(){
-        logger.info("[CheckupBoImpl.getNextTindakanRawatId] START >>>");
+        logger.info("[VerifikatorPembayaranBoImpl.getNextTindakanRawatId] START >>>");
         return tindakanRawatDao.getNextTindakanRawatId();
     }
 
     private String getNextTeamDokterId(){
-        logger.info("[CheckupBoImpl.getNextTeamDokterId] START >>>");
+        logger.info("[VerifikatorPembayaranBoImpl.getNextTeamDokterId] START >>>");
         return dokterTeamDao.getNextSeq();
     }
 
