@@ -332,10 +332,10 @@ public class TelemedicBoImpl implements TelemedicBo {
 
                 statusSebelum = telemedicEntity.getStatus();
 
-                telemedicEntity.setFlag(bean.getFlag());
-                telemedicEntity.setFlagResep(bean.getFlagResep());
-                telemedicEntity.setFlagBayarResep(bean.getFlagBayarResep());
-                telemedicEntity.setFlagBayarKonsultasi(bean.getFlagBayarKonsultasi());
+                telemedicEntity.setFlag(bean.getFlag() == null ? telemedicEntity.getFlag() : bean.getFlag());
+                telemedicEntity.setFlagResep(bean.getFlagResep() == null ? telemedicEntity.getFlagResep() : bean.getFlagResep());
+                telemedicEntity.setFlagBayarResep(bean.getFlagBayarResep() == null ? telemedicEntity.getFlagBayarResep() : bean.getFlagBayarResep());
+                telemedicEntity.setFlagBayarKonsultasi(bean.getFlagBayarKonsultasi() == null  ? telemedicEntity.getFlagBayarKonsultasi() : bean.getFlagBayarKonsultasi());
                 telemedicEntity.setStatus(bean.getStatus());
                 telemedicEntity.setAction("U");
                 telemedicEntity.setLastUpdate(bean.getLastUpdate());
@@ -452,6 +452,9 @@ public class TelemedicBoImpl implements TelemedicBo {
         Map hsCriteria = new HashMap();
         if (bean.getIdAntrianTelemedic() != null){
             hsCriteria.put("id_antrian_telemedic", bean.getIdAntrianTelemedic());
+        }
+        if (bean.getKeterangan() != null){
+            hsCriteria.put("keterangan", bean.getKeterangan());
         }
         if (bean.getApprovedFlag() != null){
             hsCriteria.put("approve_flag", bean.getApprovedFlag());
