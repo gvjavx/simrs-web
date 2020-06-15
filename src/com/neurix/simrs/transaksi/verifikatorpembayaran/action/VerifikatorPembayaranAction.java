@@ -193,6 +193,7 @@ public class VerifikatorPembayaranAction {
         TelemedicBo telemedicBo = (TelemedicBo) ctx.getBean("telemedicBoProxy");
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
         PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
+        RiwayatTindakanBo riwayatTindakanBo = (RiwayatTindakanBo) ctx.getBean("riwayatTindakanBoProxy");
         CheckResponse response = new CheckResponse();
 
         ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = verifikatorPembayaranBo.getPembayaranOnlineById(idTransaksi);
@@ -272,8 +273,26 @@ public class VerifikatorPembayaranAction {
                 }
 
                 // approve All tindakan and save
+                String idRiwayatTindakan = "";
                 if (!"".equalsIgnoreCase(idDetailCheckup) && !"".equalsIgnoreCase(idJenisPeriksaPasien)){
                     response = saveApproveAllTindakanRawatJalan(idDetailCheckup, idJenisPeriksaPasien);
+                    if ("success".equalsIgnoreCase(response.getStatus())){
+
+                        RiwayatTindakan tindakan = new RiwayatTindakan();
+                        tindakan.setIdDetailCheckup(idDetailCheckup);
+                        if ("konsultasi".equalsIgnoreCase(pembayaranOnlineEntity.getKeterangan())){
+                            tindakan.setKeterangan("tindakan");
+                        } else {
+                            tindakan.setKeterangan("resep");
+                        }
+                        List<ItSimrsRiwayatTindakanEntity> riwayatTindakanEntities = riwayatTindakanBo.getListEntityRiwayatTindakan(tindakan);
+                        if (riwayatTindakanEntities.size() > 0){
+                            ItSimrsRiwayatTindakanEntity tindakanEntity = riwayatTindakanEntities.get(0);
+                            if (tindakanEntity != null){
+                                idRiwayatTindakan = tindakanEntity.getIdRiwayatTindakan();
+                            }
+                        }
+                    }
                 }
 
                 // jika selesai approve all tindakan berarti antrian WL berkurang 1;
@@ -308,11 +327,13 @@ public class VerifikatorPembayaranAction {
                     }
                 }
 
-                // create jurnal;
+                // --- create jurnal;
                 JurnalResponse jurnalResponse = closingJurnalNonTunai(idDetailCheckup, idTransaksi, antrianTelemedicEntity.getIdPelayanan(), antrianTelemedicEntity.getIdPasien(), flagResep);
 
-                // update flag; jika success membuat jurnal
+                // --- update flag; jika success pada prosess membuat jurnal;
                 if ("success".equalsIgnoreCase(jurnalResponse.getStatus())){
+
+                    pembayaranOnlineEntity.setIdRiwayatTindakan(idRiwayatTindakan);
                     pembayaranOnlineEntity.setApprovedFlag("Y");
                     pembayaranOnlineEntity.setApprovedWho(userLogin);
                     pembayaranOnlineEntity.setLastUpdate(time);
@@ -333,13 +354,34 @@ public class VerifikatorPembayaranAction {
                         response.setMessage("[VerifikatorPembayaranAction.approveTransaksi] ERROR. " + e);
                         return response;
                     }
+
+                    // --- Update WL to SL
+                    if (antrianTelemedicEntity != null && "WL".equalsIgnoreCase(antrianTelemedicEntity.getStatus())){
+
+                        AntrianTelemedic antrianTelemedic = new AntrianTelemedic();
+                        antrianTelemedic.setId(antrianTelemedicEntity.getId());
+                        antrianTelemedic.setStatus("SL");
+                        antrianTelemedic.setLastUpdate(time);
+                        antrianTelemedic.setLastUpdateWho(userLogin);
+
+                        try {
+                            telemedicBo.saveEdit(antrianTelemedic, "", "");
+                            response.setStatus("success");
+                        } catch (GeneralBOException e){
+                            logger.error("[VerifikatorPembayaranAction.approveTransaksi] ERROR. ",e);
+                            response.setStatus("error");
+                            response.setMessage("[VerifikatorPembayaranAction.approveTransaksi] ERROR. " + e);
+                            return response;
+                        }
+                    }
+                    // --- END
+
                 } else {
                     logger.error("[VerifikatorPembayaranAction.approveTransaksi] ERROR. " + jurnalResponse.getMsg());
                     response.setStatus("error");
                     response.setMessage("[VerifikatorPembayaranAction.approveTransaksi] ERROR. " + jurnalResponse.getMsg());
                     return response;
                 }
-
 
             } else {
                 logger.error("[VerifikatorPembayaranAction.approveTransaksi] ERROR. tidak ditemukan data transaksi.");

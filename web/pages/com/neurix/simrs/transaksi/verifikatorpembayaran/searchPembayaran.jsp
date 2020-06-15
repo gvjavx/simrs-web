@@ -304,6 +304,16 @@
                     <%--<h3 class="box-title"><i class="fa fa-medkit"></i> Daftar Tindakan Rawat</h3>--%>
                 <%--</div>--%>
                 <div class="box-body">
+
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin">
+                        <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                        <p id="msg_fin_error"></p>
+                    </div>
+                    <div class="alert alert-success alert-dismissible" style="display: none" id="success_fin">
+                        <h4><i class="icon fa fa-info"></i> Info!</h4>
+                        <p id="msg_fin"></p>
+                    </div>
+
                     <table class="table table-bordered table-striped" id="tabel_tindakan_fin">
                         <thead>
                         <tr bgcolor="#90ee90">
@@ -318,15 +328,6 @@
                         <tbody id="body_tindakan_fin">
                         </tbody>
                     </table>
-
-                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin">
-                        <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                        <p id="msg_fin_error"></p>
-                    </div>
-                    <div class="alert alert-success alert-dismissible" style="display: none" id="success_fin">
-                        <h4><i class="icon fa fa-info"></i> Info!</h4>
-                        <p id="msg_fin"></p>
-                    </div>
                 </div>
                 <div class="box-header with-border"></div>
             </div>
