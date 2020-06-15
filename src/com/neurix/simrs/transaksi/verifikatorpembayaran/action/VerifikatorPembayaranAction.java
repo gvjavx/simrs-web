@@ -128,6 +128,7 @@ public class VerifikatorPembayaranAction {
         searchAntrian.setBranchId(branchId);
         searchAntrian.setStatusTransaksi(antrianTelemedic.getStatusTransaksi());
         searchAntrian.setIdPasien(antrianTelemedic.getIdPasien());
+        searchAntrian.setIdJenisPeriksaPasien(antrianTelemedic.getIdJenisPeriksaPasien());
 
         if (antrianTelemedic != null){
             searchAntrian.setStatus(antrianTelemedic.getStatus());

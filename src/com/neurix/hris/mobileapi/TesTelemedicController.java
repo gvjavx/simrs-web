@@ -48,10 +48,10 @@ public class TesTelemedicController implements ModelDriven<Object> {
     public String index(){
         logger.info(data);
         switch (data){
-            case "insert-tele-non-resep":
+            case "insert-umum-non-resep":
                 insertDataTelemedic("umum", "");
                 break;
-            case "insert-tele-resep":
+            case "insert-umum-resep":
                 insertDataTelemedic("umum","resep");
                 break;
             case "insert-asuransi-non-resep":

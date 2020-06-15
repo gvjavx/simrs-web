@@ -38,6 +38,8 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
             criteria.add(Restrictions.eq("status", mapCriteria.get("status").toString()));
         if (mapCriteria.get("flag") != null)
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
+        if (mapCriteria.get("jenis_pasien") != null)
+            criteria.add(Restrictions.eq("idJenisPeriksaPasien", mapCriteria.get("jenis_pasien").toString()));
         if (mapCriteria.get("branch_id") != null)
             criteria.add(Restrictions.eq("branchId", mapCriteria.get("branch_id").toString()));
         if (mapCriteria.get("asc_limit_1") != null){

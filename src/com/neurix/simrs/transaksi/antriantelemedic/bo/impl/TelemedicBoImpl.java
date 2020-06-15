@@ -278,6 +278,9 @@ public class TelemedicBoImpl implements TelemedicBo {
         if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())){
             hsCriteria.put("flag", bean.getFlag());
         }
+        if (bean.getIdJenisPeriksaPasien() != null && !"".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+            hsCriteria.put("jenis_pasien", bean.getIdJenisPeriksaPasien());
+        }
 
         List<ItSimrsAntrianTelemedicEntity> antrianTelemedicEntities = new ArrayList<>();
 
