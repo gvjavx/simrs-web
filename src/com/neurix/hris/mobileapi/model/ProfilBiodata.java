@@ -30,6 +30,24 @@ public class ProfilBiodata implements Serializable {
     private String zakatProfesi;
     private String flag;
     private String nipLama;
+    private String fotoUpload;
+    private String pathFoto;
+
+    public String getFotoUpload() {
+        return fotoUpload;
+    }
+
+    public void setFotoUpload(String fotoUpload) {
+        this.fotoUpload = fotoUpload;
+    }
+
+    public String getPathFoto() {
+        return pathFoto;
+    }
+
+    public void setPathFoto(String pathFoto) {
+        this.pathFoto = pathFoto;
+    }
 
     public String getNipLama() {
         return nipLama;
