@@ -8,6 +8,9 @@ import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.common.util.FirebasePushNotif;
+import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiFcmBo;
+import com.neurix.hris.transaksi.notifikasi.model.NotifikasiFcm;
 import com.neurix.simrs.master.jenisperiksapasien.bo.AsuransiBo;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.ImJenisPeriksaPasienEntity;
@@ -83,8 +86,17 @@ public class VerifikatorPembayaranAction {
 
     private VerifikatorPembayaranBo verifikatorPembayaranBoProxy;
     private TelemedicBo telemedicBoProxy;
+    private NotifikasiFcmBo notifikasiFcmBoProxy;
     private PembayaranOnline pembayaranOnline;
     public AntrianTelemedic antrianTelemedic;
+
+    public NotifikasiFcmBo getNotifikasiFcmBoProxy() {
+        return notifikasiFcmBoProxy;
+    }
+
+    public void setNotifikasiFcmBoProxy(NotifikasiFcmBo notifikasiFcmBoProxy) {
+        this.notifikasiFcmBoProxy = notifikasiFcmBoProxy;
+    }
 
     public AntrianTelemedic getAntrianTelemedic() {
         return antrianTelemedic;
@@ -192,6 +204,9 @@ public class VerifikatorPembayaranAction {
             ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = telemedicBo.getAntrianTelemedicEntityById(pembayaranOnlineEntity.getIdAntrianTelemedic());
             if (antrianTelemedicEntity != null){
 
+                List<NotifikasiFcm> result = new ArrayList<>();
+                NotifikasiFcm bean = new NotifikasiFcm();
+
                 idJenisPeriksaPasien = antrianTelemedicEntity.getIdJenisPeriksaPasien();
                 HeaderCheckup headerCheckup = new HeaderCheckup();
                 String flagResep = "N";
@@ -264,8 +279,10 @@ public class VerifikatorPembayaranAction {
                 // jika selesai approve all tindakan berarti antrian WL berkurang 1;
                 // cari antrian status LL order by createdDate ASCENDING
                 // dimasukan ke antrian WL
+
                 if ("WL".equalsIgnoreCase(antrianTelemedicEntity.getStatus())){
                     ItSimrsAntrianTelemedicEntity firstOrderAntrian = telemedicBo.getAntrianTelemedicFirstOrder(antrianTelemedicEntity.getIdPelayanan(), antrianTelemedicEntity.getIdDokter(), "LL");
+
                     if (firstOrderAntrian != null){
 
                         AntrianTelemedic antrianTelemedic = new AntrianTelemedic();
@@ -276,6 +293,12 @@ public class VerifikatorPembayaranAction {
 
                         try {
                             telemedicBo.saveEdit(antrianTelemedic, firstOrderAntrian.getBranchId(), firstOrderAntrian.getKodeBank());
+
+                            //Push Notif ke Pasien terkait perubahan status menjadi WL
+                            bean.setUserId(firstOrderAntrian.getIdPasien());
+                            result = notifikasiFcmBoProxy.getByCriteria(bean);
+                            FirebasePushNotif.sendNotificationFirebase(result.get(0).getTokenFcm(),"Telemedic", "Anda telah memasuki Antrian Waiting List. Silahkan lakukan pembayaran", "WL", bean.getOs());
+
                         } catch (GeneralBOException e){
                             logger.error("[VerifikatorPembayaranAction.approveTransaksi] ERROR. ",e);
                             response.setStatus("error");
@@ -299,6 +322,11 @@ public class VerifikatorPembayaranAction {
                     try {
                         verifikatorPembayaranBo.saveEdit(pembayaranOnlineEntity);
                         response.setStatus("success");
+
+                        //Push Notif ke Pasien terkait perubahan status menjadi SL
+                        bean.setUserId(antrianTelemedicEntity.getIdPasien());
+                        result = notifikasiFcmBoProxy.getByCriteria(bean);
+                        FirebasePushNotif.sendNotificationFirebase(result.get(0).getTokenFcm(),"Telemedic", "Anda telah memasuki Antrian Short List. Buka aplikasi untuk menunggu panggilan dokter", "SL", bean.getOs());
                     } catch (GeneralBOException e){
                         logger.error("[VerifikatorPembayaranAction.approveTransaksi] ERROR. ",e);
                         response.setStatus("error");
@@ -325,6 +353,8 @@ public class VerifikatorPembayaranAction {
             response.setMessage("[VerifikatorPembayaranAction.approveTransaksi] ERROR. tidak ditemukan data transaksi.");
             return response;
         }
+
+
 
 
         logger.info("[VerifikatorPembayaranAction.approveTransaksi] END <<<");

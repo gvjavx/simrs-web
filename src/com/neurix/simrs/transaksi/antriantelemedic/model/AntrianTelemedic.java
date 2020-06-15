@@ -37,6 +37,15 @@ public class AntrianTelemedic {
     private String namaBranch;
     private String approveKonsultasi;
     private String approveResep;
+    private String keterangan;
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
 
     public String getId() {
         return id;

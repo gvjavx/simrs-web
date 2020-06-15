@@ -1,0 +1,6 @@
+// 2020-06-15 >>>
+
+    ALTER TABLE public.im_simrs_dokter ADD flag_tele VARCHAR(1) NULL;
+    ALTER TABLE public.it_simrs_antrian_telemedic ADD keluhan text NULL;
+
+<<< //

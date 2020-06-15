@@ -8,6 +8,7 @@
     <bean id="verifikatorPembayaranAction" class="com.neurix.simrs.transaksi.verifikatorpembayaran.action.VerifikatorPembayaranAction"
           p:verifikatorPembayaranBoProxy-ref="verifikatorPembayaranBoProxy"
           p:telemedicBoProxy-ref="telemedicBoProxy"
+          p:notifikasiFcmBoProxy-ref="notifikasiFcmBoProxy"
     />
 
     <bean id="pembayaranController" class="com.neurix.simrs.mobileapi.PembayaranController"

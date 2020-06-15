@@ -65,6 +65,9 @@
             <basic name="branchId">
                 <column name="branch_id"  length="10"/>
             </basic>
+            <basic name="keluhan">
+                <column name="keluhan"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>
