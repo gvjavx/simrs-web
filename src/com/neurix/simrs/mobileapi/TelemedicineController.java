@@ -1,6 +1,9 @@
 package com.neurix.simrs.mobileapi;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.FirebasePushNotif;
+import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiFcmBo;
+import com.neurix.hris.transaksi.notifikasi.model.NotifikasiFcm;
 import com.neurix.simrs.mobileapi.model.TelemedicineMobile;
 import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
 import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
@@ -31,6 +34,7 @@ public class TelemedicineController implements ModelDriven<Object> {
     private TelemedicBo telemedicBoProxy;
     private CheckupBo checkupBoProxy;
     private CheckupDetailBo checkupDetailBoProxy;
+    private NotifikasiFcmBo notifikasiFcmBoProxy;
 
     private String action;
 
@@ -42,6 +46,23 @@ public class TelemedicineController implements ModelDriven<Object> {
     private String keluhan;
 
     private String idTele;
+    private String idPasien;
+
+    public String getIdPasien() {
+        return idPasien;
+    }
+
+    public void setIdPasien(String idPasien) {
+        this.idPasien = idPasien;
+    }
+
+    public NotifikasiFcmBo getNotifikasiFcmBoProxy() {
+        return notifikasiFcmBoProxy;
+    }
+
+    public void setNotifikasiFcmBoProxy(NotifikasiFcmBo notifikasiFcmBoProxy) {
+        this.notifikasiFcmBoProxy = notifikasiFcmBoProxy;
+    }
 
     public CheckupBo getCheckupBoProxy() {
         return checkupBoProxy;
@@ -156,6 +177,29 @@ public class TelemedicineController implements ModelDriven<Object> {
             }
         }
 
+        if (action.equalsIgnoreCase("editStatus")) {
+
+            AntrianTelemedic bean = new AntrianTelemedic();
+            bean.setId(idTele);
+            bean.setStatus(this.status);
+
+            try {
+                telemedicBoProxy.saveEdit(bean, branchId, "");
+                if (this.status.equalsIgnoreCase("PD")) {
+
+                    //KIRIM PUSH NOTIF JIKA STATUS MENJADI PD
+                    List<NotifikasiFcm> result = new ArrayList<>();
+                    NotifikasiFcm beanNotif = new NotifikasiFcm();
+                    beanNotif.setUserId(idPasien);
+
+                    result = notifikasiFcmBoProxy.getByCriteria(beanNotif);
+                    FirebasePushNotif.sendNotificationFirebase(result.get(0).getTokenFcm(), "Telemedic", "Dokter Memanggil ...", "PD", result.get(0).getOs());
+                }
+            } catch (GeneralBOException e) {
+                logger.error("[TelemedicineController.create] Error, " + e.getMessage());
+            }
+        }
+
         if (action.equalsIgnoreCase("getListAntrianSL")) {
             listOfTelemedic = new ArrayList<>();
             AntrianTelemedic bean = new AntrianTelemedic();
@@ -224,6 +268,7 @@ public class TelemedicineController implements ModelDriven<Object> {
                     telemedicineMobile.setKetStatus(item.getKetStatus());
                     telemedicineMobile.setCreatedDate(item.getCreatedDate().toLocaleString());
                     telemedicineMobile.setKeluhan(item.getKeluhan());
+                    telemedicineMobile.setBranchId(item.getBranchId());
 
                     listOfTelemedic.add(telemedicineMobile);
 

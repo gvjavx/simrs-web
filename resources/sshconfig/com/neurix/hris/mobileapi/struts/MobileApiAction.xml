@@ -205,6 +205,9 @@
             <interceptor-ref name="mobileStack"/>
             <param name="id">{1}</param>
         </action>
+        <action name="kurir/*" class="com.neurix.simrs.mobileapi.KurirContoller">
+            <interceptor-ref name="mobileStack"/>
+        </action>
     </package>
 
 </struts>

@@ -189,6 +189,10 @@
             <filter-chain pattern="/mobileapi/testnotif/*" filters="none" />
             <filter-chain pattern="/mobileapi/testnotif/*/**" filters="none" />
 
+            <filter-chain pattern="/mobileapi/kurir" filters="none" />
+            <filter-chain pattern="/mobileapi/kurir/*" filters="none" />
+            <filter-chain pattern="/mobileapi/kurir/*/**" filters="none" />
+
 
             <filter-chain pattern="/**/*"
                           filters="

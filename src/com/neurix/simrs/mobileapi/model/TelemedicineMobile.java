@@ -35,12 +35,21 @@ public class TelemedicineMobile {
     private String idAsuransi;
     private String kodeBank;
     private String keluhan;
+    private String branchId;
 
     private String idDetailCheckup;
     private String noCheckup;
 
     private String message;
     private String jumlahAntrian;
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
 
     public String getIdDetailCheckup() {
         return idDetailCheckup;

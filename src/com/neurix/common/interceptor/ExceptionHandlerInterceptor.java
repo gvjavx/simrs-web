@@ -152,6 +152,8 @@ public class ExceptionHandlerInterceptor extends MethodFilterInterceptor {
                 logger.info("[ExceptionHandlerInterceptor.testelemedic] skiping token");
             } else if ("/mobileapi/testnotif".equalsIgnoreCase(namespace)) {
                 logger.info("[ExceptionHandlerInterceptor.testnotif] skiping token");
+            } else if ("/mobileapi/kurir".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.testnotif] skiping token");
             }
             else {
 
