@@ -12,6 +12,8 @@
           p:telemedicDao-ref="telemedicDao"
           p:tindakanDao-ref="tindakanDao"
           p:verifikatorPembayaranDao-ref="verifikatorPembayaranDao"
+          p:resepOnlineDao-ref="resepOnlineDao"
+          p:hargaObatDao-ref="hargaObatDao"
     />
 
     <bean id="telemedicineController" class="com.neurix.simrs.mobileapi.TelemedicineController"
@@ -40,5 +42,7 @@
     </bean>
 
     <bean id="telemedicDao" class="com.neurix.simrs.transaksi.antriantelemedic.dao.TelemedicDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="resepOnlineDao" class="com.neurix.simrs.transaksi.reseponline.dao.ResepOnlineDao"
           p:sessionFactory-ref="sessionFactory" />
 </beans>

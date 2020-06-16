@@ -40,6 +40,15 @@ public class AntrianTelemedic {
     private String keterangan;
     private String keluhan;
     private String flagForVerifikatorPembayaran;
+    private String statusTransaksi;
+
+    public String getStatusTransaksi() {
+        return statusTransaksi;
+    }
+
+    public void setStatusTransaksi(String statusTransaksi) {
+        this.statusTransaksi = statusTransaksi;
+    }
 
     public String getFlagForVerifikatorPembayaran() {
         return flagForVerifikatorPembayaran;

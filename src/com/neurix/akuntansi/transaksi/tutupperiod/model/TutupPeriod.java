@@ -35,6 +35,15 @@ public class TutupPeriod {
     private String saldoAkhirId;
     private String periode;
     private String pasienId;
+    private String kdBarang;
+
+    public String getKdBarang() {
+        return kdBarang;
+    }
+
+    public void setKdBarang(String kdBarang) {
+        this.kdBarang = kdBarang;
+    }
 
     public String getPasienId() {
         return pasienId;

@@ -5,6 +5,8 @@
 
 <<< //
 // 2020-06-16 >>>
+    CREATE SEQUENCE seq_kurir;
+
 
     -- Table: public.im_simrs_kurir
 

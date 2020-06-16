@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="com.neurix.simrs.transaksi.reseponline.model.ItSimrsResepOnlineEntity">
+        <table name="it_simrs_resep_online" schema="public"/>
+        <attributes>
+            <id name="id">
+                <column name="id" length="50"/>
+            </id>
+            <basic name="idTransaksiOnline">
+                <column name="id_transaksi_online" length="50"/>
+            </basic>
+            <basic name="idObat">
+                <column name="id_obat" length="30"/>
+            </basic>
+            <basic name="idPelayanan">
+                <column name="id_pelayanan" length="30"/>
+            </basic>
+            <basic name="qty">
+                <column name="qty"/>
+            </basic>
+            <basic name="harga">
+                <column name="harga"/>
+            </basic>
+            <basic name="subTotal">
+                <column name="sub_total"/>
+            </basic>
+            <basic name="flag">
+                <column name="flag"/>
+            </basic>
+            <basic name="action">
+                <column name="action"/>
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date"/>
+            </basic>
+            <basic name="createdWho">
+                <column name="created_who" length="100"/>
+            </basic>
+            <basic name="lastUpdate">
+                <column name="last_update"/>
+            </basic>
+            <basic name="lastUpdateWho">
+                <column name="last_update_who" length="100"/>
+            </basic>
+            <basic name="idDokter">
+                <column name="id_dokter" length="30"/>
+            </basic>
+            <basic name="ttdDokter">
+                <column name="ttd_dokter"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

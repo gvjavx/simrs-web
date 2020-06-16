@@ -114,32 +114,34 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
         }
 
         String SQL = "SELECT\n" +
-                "dt.rekening_id,\n" +
-                "kd.parent_id,\n" +
-                "kd.kode_rekening,\n" +
-                "kd.nama_kode_rekening,\n" +
-                "SUM(dt.jumlah_debit) as jumlah_debit,\n" +
-                "SUM(dt.jumlah_kredit) as jumlah_kredit,\n" +
-                "dt.master_id,\n" +
-                "dt.divisi_id,\n" +
-                "dt.pasien_id \n" +
+                "  dt.rekening_id,\n" +
+                "  kd.parent_id,\n" +
+                "  kd.kode_rekening,\n" +
+                "  kd.nama_kode_rekening,\n" +
+                "  SUM(dt.jumlah_debit) as jumlah_debit,\n" +
+                "  SUM(dt.jumlah_kredit) as jumlah_kredit,\n" +
+                "  dt.master_id,\n" +
+                "  dt.divisi_id,\n" +
+                "  dt.pasien_id,\n" +
+                "  dt.kd_barang\n" +
                 "FROM it_akun_jurnal h\n" +
-                "INNER JOIN it_akun_jurnal_detail dt ON dt.no_jurnal = h.no_jurnal\n" +
-                "INNER JOIN im_akun_kode_rekening kd ON kd.rekening_id = dt.rekening_id\n" +
+                "  INNER JOIN it_akun_jurnal_detail dt ON dt.no_jurnal = h.no_jurnal\n" +
+                "  INNER JOIN im_akun_kode_rekening kd ON kd.rekening_id = dt.rekening_id\n" +
                 "WHERE registered_flag = 'Y'\n" +
-                "AND EXTRACT(MONTH FROM h.tanggal_jurnal) = :bulan \n" +
-                "AND EXTRACT(YEAR FROM h.tanggal_jurnal) = :tahun \n" +
-                "AND h.branch_id = :unit \n" +
-                "AND dt.rekening_id LIKE :rekening\n" +
+                "      AND EXTRACT(MONTH FROM h.tanggal_jurnal) = :bulan \n" +
+                "      AND EXTRACT(YEAR FROM h.tanggal_jurnal) = :tahun \n" +
+                "      AND h.branch_id = :unit \n" +
+                "      AND dt.rekening_id LIKE :rekening \n" +
                 "GROUP\n" +
-                "BY \n" +
-                "dt.rekening_id,\n" +
-                "kd.parent_id,\n" +
-                "kd.kode_rekening,\n" +
-                "kd.nama_kode_rekening,\n" +
-                "dt.master_id,\n" +
-                "dt.divisi_id,\n" +
-                "dt.pasien_id\n" +
+                "BY\n" +
+                "  dt.rekening_id,\n" +
+                "  kd.parent_id,\n" +
+                "  kd.kode_rekening,\n" +
+                "  kd.nama_kode_rekening,\n" +
+                "  dt.master_id,\n" +
+                "  dt.divisi_id,\n" +
+                "  dt.pasien_id,\n" +
+                "  dt.kd_barang\n" +
                 "ORDER BY kd.parent_id, kd.kode_rekening";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -163,6 +165,7 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
                 tutupPeriod.setMasterId(obj[6] == null ? "" : obj[6].toString());
                 tutupPeriod.setDivisiId(obj[7] == null ? "" : obj[7].toString());
                 tutupPeriod.setPasienId(obj[8] == null ? "" : obj[8].toString());
+                tutupPeriod.setKdBarang(obj[9] == null ? "" : obj[9].toString());
                 tutupPeriods.add(tutupPeriod);
             }
         }
