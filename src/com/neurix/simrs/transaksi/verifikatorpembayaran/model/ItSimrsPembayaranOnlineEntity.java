@@ -24,6 +24,15 @@ public class ItSimrsPembayaranOnlineEntity {
     private BigDecimal nominal;
     private String idRiwayatTindakan;
     private String kodeBank;
+    private String jenisPengambilan;
+
+    public String getJenisPengambilan() {
+        return jenisPengambilan;
+    }
+
+    public void setJenisPengambilan(String jenisPengambilan) {
+        this.jenisPengambilan = jenisPengambilan;
+    }
 
     public String getKodeBank() {
         return kodeBank;
