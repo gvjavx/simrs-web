@@ -126,12 +126,14 @@ public class VerifikatorPembayaranAction {
         AntrianTelemedic antrianTelemedic = getAntrianTelemedic();
         AntrianTelemedic searchAntrian = new AntrianTelemedic();
         searchAntrian.setBranchId(branchId);
+        searchAntrian.setStatusTransaksi(antrianTelemedic.getStatusTransaksi());
+        searchAntrian.setIdPasien(antrianTelemedic.getIdPasien());
+        searchAntrian.setIdJenisPeriksaPasien(antrianTelemedic.getIdJenisPeriksaPasien());
 
         if (antrianTelemedic != null){
             searchAntrian.setStatus(antrianTelemedic.getStatus());
             searchAntrian.setIdPelayanan(antrianTelemedic.getIdPelayanan());
         }
-
 
         List<AntrianTelemedic> listResults = new ArrayList<>();
         try {

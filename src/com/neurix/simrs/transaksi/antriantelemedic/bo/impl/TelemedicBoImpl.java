@@ -16,6 +16,11 @@ import com.neurix.simrs.transaksi.antriantelemedic.dao.TelemedicDao;
 import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
 import com.neurix.simrs.transaksi.antriantelemedic.model.StatusAntrianTelemedic;
+import com.neurix.simrs.transaksi.hargaobat.dao.HargaObatDao;
+import com.neurix.simrs.transaksi.hargaobat.model.MtSimrsHargaObatEntity;
+import com.neurix.simrs.transaksi.reseponline.dao.ResepOnlineDao;
+import com.neurix.simrs.transaksi.reseponline.model.ItSimrsResepOnlineEntity;
+import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.dao.VerifikatorPembayaranDao;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.model.ItSimrsPembayaranOnlineEntity;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.model.PembayaranOnline;
@@ -23,10 +28,8 @@ import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -40,6 +43,16 @@ public class TelemedicBoImpl implements TelemedicBo {
     private TelemedicDao telemedicDao;
     private VerifikatorPembayaranDao verifikatorPembayaranDao;
     private TindakanDao tindakanDao;
+    private ResepOnlineDao resepOnlineDao;
+    private HargaObatDao hargaObatDao;
+
+    public void setHargaObatDao(HargaObatDao hargaObatDao) {
+        this.hargaObatDao = hargaObatDao;
+    }
+
+    public void setResepOnlineDao(ResepOnlineDao resepOnlineDao) {
+        this.resepOnlineDao = resepOnlineDao;
+    }
 
     public void setTindakanDao(TindakanDao tindakanDao) {
         this.tindakanDao = tindakanDao;
@@ -143,11 +156,23 @@ public class TelemedicBoImpl implements TelemedicBo {
                 }
                 // end;
 
+                if (antrianTelemedic.getFlagResep() == null && antrianTelemedic.getApproveKonsultasi() != null) {
+                    antrianTelemedic.setStatusTransaksi("finish");
+                } else if ("Y".equalsIgnoreCase(antrianTelemedic.getFlagResep()) && antrianTelemedic.getApproveKonsultasi() != null && antrianTelemedic.getApproveResep() != null){
+                    antrianTelemedic.setStatusTransaksi("finish");
+                } else {
+                    antrianTelemedic.setStatusTransaksi("exist");
+                }
                 results.add(antrianTelemedic);
             }
         }
 
         logger.info("[TelemedicBoImpl.getSearchByCriteria] END <<<");
+        final String statusTransaksi = bean.getStatusTransaksi();
+        if ("finish".equalsIgnoreCase(statusTransaksi) || "exist".equalsIgnoreCase(statusTransaksi)){
+            return results.stream().filter(p->p.getStatusTransaksi().equalsIgnoreCase(statusTransaksi)).collect(Collectors.toList());
+        }
+
         return results;
     }
 
@@ -248,23 +273,26 @@ public class TelemedicBoImpl implements TelemedicBo {
         logger.info("[TelemedicBoImpl.getListEntityByCriteria] START >>>");
 
         Map hsCriteria = new HashMap();
-        if (bean.getId() != null){
+        if (bean.getId() != null && !"".equalsIgnoreCase(bean.getId())){
             hsCriteria.put("id", bean.getId());
         }
-        if (bean.getIdPasien() != null){
+        if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())){
             hsCriteria.put("id_pasien", bean.getIdPasien());
         }
-        if (bean.getIdDokter() != null){
+        if (bean.getIdDokter() != null && !"".equalsIgnoreCase(bean.getIdDokter())){
             hsCriteria.put("id_dokter", bean.getIdDokter());
         }
-        if (bean.getIdPelayanan() != null){
+        if (bean.getIdPelayanan() != null  && !"".equalsIgnoreCase(bean.getIdPelayanan()) ){
             hsCriteria.put("id_pelayanan", bean.getIdPelayanan());
         }
-        if (bean.getStatus() != null){
+        if (bean.getStatus() != null && !"".equalsIgnoreCase(bean.getStatus())){
             hsCriteria.put("status", bean.getStatus());
         }
-        if (bean.getFlag() != null){
+        if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())){
             hsCriteria.put("flag", bean.getFlag());
+        }
+        if (bean.getIdJenisPeriksaPasien() != null && !"".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+            hsCriteria.put("jenis_pasien", bean.getIdJenisPeriksaPasien());
         }
 
         List<ItSimrsAntrianTelemedicEntity> antrianTelemedicEntities = new ArrayList<>();
@@ -397,6 +425,26 @@ public class TelemedicBoImpl implements TelemedicBo {
             throw new GeneralBOException("[TelemedicBoIml.generateListPembayaran] ERROR. ",e);
         }
 
+        if ("Y".equalsIgnoreCase(bean.getFlagResep())){
+            pembayaranOnlineEntity = new ItSimrsPembayaranOnlineEntity();
+            pembayaranOnlineEntity.setId(bean.getId()+"INV"+getSeqPembayaranOnline());
+            pembayaranOnlineEntity.setIdAntrianTelemedic(bean.getId());
+            pembayaranOnlineEntity.setLastUpdate(bean.getLastUpdate());
+            pembayaranOnlineEntity.setFlag(bean.getFlag());
+            pembayaranOnlineEntity.setCreatedDate(bean.getCreatedDate());
+            pembayaranOnlineEntity.setCreatedWho(bean.getCreatedWho());
+            pembayaranOnlineEntity.setLastUpdate(bean.getLastUpdate());
+            pembayaranOnlineEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            pembayaranOnlineEntity.setKeterangan("resep");
+
+            try {
+                verifikatorPembayaranDao.addAndSave(pembayaranOnlineEntity);
+            } catch (HibernateException e){
+                logger.error("[TelemedicBoIml.generateListPembayaran] ERROR. ",e);
+                throw new GeneralBOException("[TelemedicBoIml.generateListPembayaran] ERROR. ",e);
+            }
+        }
+
         logger.info("[TelemedicBoIml.generateListPembayaran] END <<<");
     }
 
@@ -503,6 +551,56 @@ public class TelemedicBoImpl implements TelemedicBo {
         return null;
     }
 
+    @Override
+    public void insertResepOnline(String idTransaksiOnline, List<TransaksiObatDetail> listObat) throws GeneralBOException {
+        logger.info("[VerifikatorPembayaranBoImpl.insertResepOnline] START >>>");
+
+        for (TransaksiObatDetail obatDetail : listObat){
+
+            BigDecimal harga = new BigDecimal(0);
+
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("id_obat", obatDetail.getIdObat());
+            List<MtSimrsHargaObatEntity> hargaObatEntities = hargaObatDao.getByCriteria(hsCriteria);
+            if (hargaObatEntities.size() > 0){
+
+                MtSimrsHargaObatEntity hargaObatEntity = hargaObatEntities.get(0);
+                if (hargaObatEntity != null){
+                    harga = hargaObatEntity.getHargaJual();
+                }
+
+                ItSimrsResepOnlineEntity resepOnlineEntity = new ItSimrsResepOnlineEntity();
+                resepOnlineEntity.setId(getSeqResepOnline());
+                resepOnlineEntity.setIdObat(obatDetail.getIdObat());
+                resepOnlineEntity.setIdTransaksiOnline(idTransaksiOnline);
+                resepOnlineEntity.setQty(obatDetail.getQty());
+                resepOnlineEntity.setHarga(harga);
+                resepOnlineEntity.setSubTotal(harga.multiply(new BigDecimal(resepOnlineEntity.getQty())));
+                resepOnlineEntity.setIdPelayanan(obatDetail.getIdPelayanan());
+                resepOnlineEntity.setFlag("Y");
+                resepOnlineEntity.setAction("C");
+                resepOnlineEntity.setCreatedDate(obatDetail.getCreatedDate());
+                resepOnlineEntity.setCreatedWho(obatDetail.getCreatedWho());
+                resepOnlineEntity.setLastUpdate(obatDetail.getLastUpdate());
+                resepOnlineEntity.setLastUpdateWho(obatDetail.getLastUpdateWho());
+
+                try {
+                    resepOnlineDao.addAndSave(resepOnlineEntity);
+                } catch (HibernateException e){
+                    logger.error("[VerifikatorPembayaranBoImpl.insertResepOnline] ERROR. ", e);
+                    throw new GeneralBOException("[VerifikatorPembayaranBoImpl.insertResepOnline] ERROR. ", e);
+                }
+            }
+        }
+
+        logger.info("[VerifikatorPembayaranBoImpl.insertResepOnline] END <<<");
+    }
+
+    private String getSeqResepOnline(){
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+        return "RO" + df.format(new Date()) + resepOnlineDao.getNextId();
+
+    }
     private String getSeqTelemedic(){
         return telemedicDao.getNextSeq();
     }

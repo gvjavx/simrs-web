@@ -3,11 +3,16 @@ package com.neurix.hris.mobileapi;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
+import com.neurix.simrs.transaksi.reseponline.model.ItSimrsResepOnlineEntity;
+import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.model.ItSimrsPembayaranOnlineEntity;
 import com.opensymphony.xwork2.ModelDriven;
 import org.apache.log4j.Logger;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by reza on 11/06/20.
@@ -18,6 +23,7 @@ public class TesTelemedicController implements ModelDriven<Object> {
 
     private String data;
     private String result;
+    private String id;
     private TelemedicBo telemedicBoProxy;
 
     public void setTelemedicBoProxy(TelemedicBo telemedicBoProxy) {
@@ -40,6 +46,14 @@ public class TesTelemedicController implements ModelDriven<Object> {
         this.data = data;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     @Override
     public Object getModel() {
         return null;
@@ -48,11 +62,17 @@ public class TesTelemedicController implements ModelDriven<Object> {
     public String index(){
         logger.info(data);
         switch (data){
-            case "insert-tele-non-resep":
-                insertDataTelemedic("");
+            case "insert-umum-non-resep":
+                insertDataTelemedic("umum", "");
                 break;
-            case "insert-tele-resep":
-                insertDataTelemedic("resep");
+            case "insert-umum-resep":
+                insertDataTelemedic("umum","resep");
+                break;
+            case "insert-asuransi-non-resep":
+                insertDataTelemedic("asuransi", "");
+                break;
+            case "insert-resep":
+                insertObat(this.id);
                 break;
             default:
                 logger.info("==========NO ONE CARE============");
@@ -60,7 +80,7 @@ public class TesTelemedicController implements ModelDriven<Object> {
         return result;
     }
 
-    private void insertDataTelemedic(String tipe){
+    private void insertDataTelemedic(String tipe, String jenis){
 
         logger.info("[TesTelemedicController.insertDataTelemedic] START >>>");
 
@@ -71,10 +91,14 @@ public class TesTelemedicController implements ModelDriven<Object> {
         antrianTelemedicEntity.setIdPasien("RS0104200035");
         antrianTelemedicEntity.setIdPelayanan("PYN00000002");
         antrianTelemedicEntity.setIdDokter("DKR00000012");
-        antrianTelemedicEntity.setIdJenisPeriksaPasien("umum");
         antrianTelemedicEntity.setKodeBank("1.1.01.02.01");
-        if ("resep".equalsIgnoreCase(tipe)){
+        antrianTelemedicEntity.setIdJenisPeriksaPasien(tipe);
+        if ("resep".equalsIgnoreCase(jenis)){
             antrianTelemedicEntity.setFlagResep("Y");
+        }
+        if ("ansuransi".equalsIgnoreCase(tipe)){
+            antrianTelemedicEntity.setNoKartu("080780808");
+            antrianTelemedicEntity.setIdAsuransi("ASN00000002");
         }
         antrianTelemedicEntity.setCreatedDate(time);
         antrianTelemedicEntity.setCreatedWho("admin");
@@ -90,4 +114,31 @@ public class TesTelemedicController implements ModelDriven<Object> {
 
         logger.info("[TesTelemedicController.insertDataTelemedic] END <<<");
     }
+
+    private void insertObat(String idTransksiObat){
+        logger.info("[TesTelemedicController.insertObat] START >>>");
+
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+
+        TransaksiObatDetail transaksiObatDetail = new TransaksiObatDetail();
+        transaksiObatDetail.setIdObat("OBT00000030");
+        transaksiObatDetail.setIdPelayanan("PYN00000024");
+        transaksiObatDetail.setQty(new BigInteger("5"));
+        transaksiObatDetail.setFlag("Y");
+        transaksiObatDetail.setAction("C");
+        transaksiObatDetail.setCreatedDate(time);
+        transaksiObatDetail.setCreatedWho("admin");
+
+        List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
+        transaksiObatDetails.add(transaksiObatDetail);
+        try {
+            telemedicBoProxy.insertResepOnline(idTransksiObat, transaksiObatDetails);
+        } catch (GeneralBOException e){
+            logger.error("[TesTelemedicController.insertObat] ERROR. ",e);
+            throw new GeneralBOException("[TesTelemedicController.insertObat] ERROR. ", e);
+        }
+
+        logger.info("[TesTelemedicController.insertObat] END <<<");
+    }
+
 }
