@@ -248,6 +248,7 @@
                     <table class="table table-bordered table-striped" id="tabel_tindakan_fin">
                         <thead>
                         <tr bgcolor="#90ee90">
+                            <td>Id</td>
                             <td width="20%">Keterangan</td>
                             <td>Approve Flag</td>
                             <td>Approve Who</td>
@@ -338,6 +339,7 @@
             var str = "";
             $.each(response, function (i, item) {
                 str += "<tr>" +
+                    "<td>"+item.id+"</td>"+
                     "<td>"+item.keterangan+"</td>"+
                     "<td align='center'>"+ iconFlag(item.approvedFlag) +"</td>"+
                     "<td>"+ nullEscape(item.approvedWho) +"</td>"+

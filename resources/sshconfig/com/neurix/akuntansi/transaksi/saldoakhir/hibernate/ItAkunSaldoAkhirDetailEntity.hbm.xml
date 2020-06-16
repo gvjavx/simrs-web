@@ -63,6 +63,9 @@
         <property name="divisiId">
             <column name="divisi_id" sql-type="varchar" length="30" not-null="false" />
         </property>
+        <property name="kdBarang">
+            <column name="kd_barang" sql-type="varchar" length="100" not-null="false" />
+        </property>
 
     </class>
 </hibernate-mapping>

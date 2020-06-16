@@ -190,3 +190,43 @@
     ALTER TABLE public.mt_simrs_permintaan_resep ADD id_transaksi_online VARCHAR(100) NULL;
 
 <<< //
+
+// 2020-06-16 >>>
+
+    CREATE SEQUENCE seq_resep_online;
+
+    -- Table: public.it_simrs_resep_online
+
+    -- DROP TABLE public.it_simrs_resep_online;
+
+    CREATE TABLE public.it_simrs_resep_online
+    (
+        id character varying(50) COLLATE pg_catalog."default" NOT NULL,
+        id_transaksi_online character varying(50) COLLATE pg_catalog."default",
+        id_obat character varying(30) COLLATE pg_catalog."default",
+        id_pelayanan character varying(30) COLLATE pg_catalog."default",
+        qty bigint,
+        harga numeric,
+        sub_total numeric,
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        id_dokter character varying(30) COLLATE pg_catalog."default",
+        ttd_dokter text COLLATE pg_catalog."default",
+        CONSTRAINT it_simrs_resep_online_pkey PRIMARY KEY (id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.it_simrs_resep_online
+        OWNER to postgres;
+
+    ALTER TABLE it_akun_saldo_akhir_detail
+        ADD COLUMN kd_barang VARCHAR(100);
+
+<<< //
