@@ -558,31 +558,38 @@ public class TelemedicBoImpl implements TelemedicBo {
         for (TransaksiObatDetail obatDetail : listObat){
 
             BigDecimal harga = new BigDecimal(0);
-            MtSimrsHargaObatEntity hargaObatEntity = hargaObatDao.getById("idObat", obatDetail.getIdObat());
-            if (hargaObatEntity != null){
-                harga = hargaObatEntity.getHargaJual();
-            }
 
-            ItSimrsResepOnlineEntity resepOnlineEntity = new ItSimrsResepOnlineEntity();
-            resepOnlineEntity.setId(getSeqResepOnline());
-            resepOnlineEntity.setIdObat(obatDetail.getIdObat());
-            resepOnlineEntity.setIdTransaksiOnline(idTransaksiOnline);
-            resepOnlineEntity.setQty(obatDetail.getQty());
-            resepOnlineEntity.setHarga(harga);
-            resepOnlineEntity.setSubTotal(harga.multiply(new BigDecimal(resepOnlineEntity.getQty())));
-            resepOnlineEntity.setIdPelayanan(obatDetail.getIdPelayananTujuan());
-            resepOnlineEntity.setFlag("Y");
-            resepOnlineEntity.setAction("C");
-            resepOnlineEntity.setCreatedDate(obatDetail.getCreatedDate());
-            resepOnlineEntity.setCreatedWho(obatDetail.getCreatedWho());
-            resepOnlineEntity.setLastUpdate(obatDetail.getLastUpdate());
-            resepOnlineEntity.setLastUpdateWho(obatDetail.getLastUpdateWho());
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("id_obat", obatDetail.getIdObat());
+            List<MtSimrsHargaObatEntity> hargaObatEntities = hargaObatDao.getByCriteria(hsCriteria);
+            if (hargaObatEntities.size() > 0){
 
-            try {
-                resepOnlineDao.addAndSave(resepOnlineEntity);
-            } catch (HibernateException e){
-                logger.error("[VerifikatorPembayaranBoImpl.insertResepOnline] ERROR. ", e);
-                throw new GeneralBOException("[VerifikatorPembayaranBoImpl.insertResepOnline] ERROR. ", e);
+                MtSimrsHargaObatEntity hargaObatEntity = hargaObatEntities.get(0);
+                if (hargaObatEntity != null){
+                    harga = hargaObatEntity.getHargaJual();
+                }
+
+                ItSimrsResepOnlineEntity resepOnlineEntity = new ItSimrsResepOnlineEntity();
+                resepOnlineEntity.setId(getSeqResepOnline());
+                resepOnlineEntity.setIdObat(obatDetail.getIdObat());
+                resepOnlineEntity.setIdTransaksiOnline(idTransaksiOnline);
+                resepOnlineEntity.setQty(obatDetail.getQty());
+                resepOnlineEntity.setHarga(harga);
+                resepOnlineEntity.setSubTotal(harga.multiply(new BigDecimal(resepOnlineEntity.getQty())));
+                resepOnlineEntity.setIdPelayanan(obatDetail.getIdPelayanan());
+                resepOnlineEntity.setFlag("Y");
+                resepOnlineEntity.setAction("C");
+                resepOnlineEntity.setCreatedDate(obatDetail.getCreatedDate());
+                resepOnlineEntity.setCreatedWho(obatDetail.getCreatedWho());
+                resepOnlineEntity.setLastUpdate(obatDetail.getLastUpdate());
+                resepOnlineEntity.setLastUpdateWho(obatDetail.getLastUpdateWho());
+
+                try {
+                    resepOnlineDao.addAndSave(resepOnlineEntity);
+                } catch (HibernateException e){
+                    logger.error("[VerifikatorPembayaranBoImpl.insertResepOnline] ERROR. ", e);
+                    throw new GeneralBOException("[VerifikatorPembayaranBoImpl.insertResepOnline] ERROR. ", e);
+                }
             }
         }
 
