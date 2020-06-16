@@ -53,6 +53,10 @@
             <basic name="kodeBank">
                 <column name="kode_bank"  length="10"/>
             </basic>
+            <basic name="jenisPengambilan">
+                <column name="jenis_pengambilan"  length="30"/>
+            </basic>
+
 
 
         </attributes>
