@@ -25,6 +25,15 @@ public class PembayaranUtangPiutangDetail extends BaseModel {
     private String rekeningId;
     private String kodeRekening;
     private String posisiCoa;
+    private String noBugetting;
+
+    public String getNoBugetting() {
+        return noBugetting;
+    }
+
+    public void setNoBugetting(String noBugetting) {
+        this.noBugetting = noBugetting;
+    }
 
     public String getPengajuanBiayaDetailId() {
         return pengajuanBiayaDetailId;

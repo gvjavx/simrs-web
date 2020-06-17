@@ -185,7 +185,28 @@
                                                     $('#keperluanText').val("");
                                                     $('#sisa_budget_saat_ini').val("");
                                                     $('#sisa_budget_saat_ini_sd').val("");
+                                                    $('#budget_terpakai_transaksi_ini').val("");
                                                     $('#keterangan').val("");
+
+                                                    PengajuanBiayaAction.getTipeBudgetInSession(function (data) {
+                                                        if (data!=""){
+                                                            if (data=="R"){
+                                                                var option = '<option value="R">Rutin</option>';
+                                                                initNoBudget(data);
+                                                                $('#transaksi_view').html(option);
+                                                            }else{
+                                                                if (data=="I"){
+                                                                    var option = '<option value="I">Investasi</option>';
+                                                                    $('#transaksi_view').html(option);
+                                                                    initNoBudget(data);
+                                                                }
+                                                            }
+                                                        }else{
+                                                            var option = '<option value="R">Rutin</option>';
+                                                            option += '<option value="I">Investasi</option>';
+                                                            $('#transaksi_view').html(option);
+                                                        }
+                                                    });
                                                     $("#modal-tambah-data").modal('show');
                                                 })
                                             </script>
@@ -338,7 +359,7 @@
                             <div class="form-group">
                                 <label class="col-md-4" style="margin-top: 7px">No. Budget</label>
                                 <div class="col-md-6">
-                                    <select class="form-control" id="no_budget" onchange="isiKeteterangan(),getSisaBudget(this.value)" style="margin-top: 7px">
+                                    <select class="form-control" id="no_budget" onchange="isiKeteterangan(),getSisaBudget(this.value),getBudgetTerpakaiTransaksi(this.value)" style="margin-top: 7px">
                                         <option value="" ></option>
                                     </select>
                                 </div>
@@ -402,6 +423,12 @@
                                 <label class="col-md-4" style="margin-top: 7px">Sisa Budget s/d Bulan Ini ( RP )</label>
                                 <div class="col-md-6">
                                     <s:textfield id="sisa_budget_saat_ini_sd" readonly="true" cssClass="form-control" cssStyle="margin-top: 7px;text-align: right" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">Transaksi Yang Masih On Proses ( RP )</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="budget_terpakai_transaksi_ini" readonly="true" cssClass="form-control" cssStyle="margin-top: 7px;text-align: right" />
                                 </div>
                             </div>
                             <div class="form-group">
@@ -493,6 +520,16 @@
                 }
             });
         }
+    }
+
+    function getBudgetTerpakaiTransaksi(value) {
+        var divisi_Id=$('#divisi_id').val();
+        var branch_id=$('#branch_id').val();
+        var tanggal=$('#tanggal').val();
+
+        PengajuanBiayaAction.getBudgetTerpakaiTransaksiSession(branch_id,divisi_Id,tanggal,value,function (data) {
+            $('#budget_terpakai_transaksi_ini').val(data.stBudgetTerpakaiTransaksi);
+        });
     }
 
     function getSisaBudgetInvestasi(value) {
@@ -614,6 +651,7 @@
             var stBudgetTerpakaiSdBulanIni=$('#budget_terpakai_sd_bulan_ini').val();
             var stSisaBudget=$('#sisa_budget_saat_ini').val();
             var stSisaBudgetSdBulanIni=$('#sisa_budget_saat_ini_sd').val();
+            var stBudgetTerpakaiAplikasi=$('#budget_terpakai_transaksi_ini').val();
             var keperluan = "";
             var keperluanName = "";
             if (transaksi=="R"){
@@ -626,7 +664,7 @@
             var keterangan=$('#keterangan').val();
 
             if (branchId!=""&&divisiId!=""&&stTanggal!=""&&transaksi!=""&&noBudgeting!=""&&stJumlah!=""&&stBudgetBiaya!=""&&stBudgetTerpakai!=""&&keterangan!=""&&keperluan!=""){
-                PengajuanBiayaAction.saveSessionPengajuan(branchId,divisiId,stTanggal,transaksi,noBudgeting,stJumlah,stBudgetBiaya,stBudgetTerpakai,keperluan,keterangan,keperluanName,stBudgetBiayaSdBulanIni,stBudgetTerpakaiSdBulanIni,stSisaBudget,stSisaBudgetSdBulanIni,function(result){
+                PengajuanBiayaAction.saveSessionPengajuan(branchId,divisiId,stTanggal,transaksi,noBudgeting,stJumlah,stBudgetBiaya,stBudgetTerpakai,keperluan,keterangan,keperluanName,stBudgetBiayaSdBulanIni,stBudgetTerpakaiSdBulanIni,stSisaBudget,stSisaBudgetSdBulanIni,stBudgetTerpakaiAplikasi,function(result){
                     if (result==""){
                         loadPengajuan();
                     } else{
@@ -700,32 +738,19 @@
                         "<th style='text-align: center; background-color:  #90ee90'>No</th>"+
                         "<th style='text-align: center; background-color:  #90ee90'>Nama Barang</th>"+
                         "<th style='text-align: center; background-color:  #90ee90'>Qty</th>"+
-                        "<th style='text-align: center; background-color:  #90ee90'>Nilai ( RP )</th>"+
-                        "<th style='text-align: center; background-color:  #90ee90'>Saldo ( RP )</th>"+
                         "</tr></thead>";
                     var i = i ;
-                    var totalBayar = 0;
                     $.each(result, function (i, item) {
                         var saldo = item.subTotalSaldo.replace(/[,]/g,"");
-                        totalBayar=totalBayar+parseInt(saldo);
                         tmp_table += '<tr style="font-size: 11px;" ">' +
                             '<td align="center">' + (i + 1) + '</td>' +
                             '<td align="center">' + item.namaBarang+ '</td>' +
                             '<td align="center">' + item.qty+ '</td>' +
-                            '<td align="right">' + item.totalSaldo+ '</td>' +
-                            '<td align="right">' + item.subTotalSaldo+ '</td>' +
                             "</tr>";
                     });
-                    tmp_table += '<tr style="font-size: 11px;" ">' +
-                        '<td align="center" colspan="4">' + "Total Saldo ( RP )" + '</td>' +
-                        '<td align="right">' + formatRupiahAngka(String(totalBayar))+ '</td>' +
-                        "</tr>";
                     $('.tabelDaftarStok').append(tmp_table);
-                    if (totalBayar>0){
-                        $("#modal-daftar-stok").modal('show');
-                    } else{
-                        alert("Data stok kosong");
-                    }
+                    // $('.tabelDaftarStok').dataTable();
+                    $("#modal-daftar-stok").modal('show');
                 })
             }
         })

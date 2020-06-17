@@ -1089,6 +1089,10 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
                 titleReport="IKHTISAR PIUTANG PASIEN";
                 report="print_report_akuntansi_ikhitisar_sub_buku_besar_pasien";
                 break;
+            case ("persediaan"):
+                titleReport="IKHTISAR PERSEDIAAN";
+                report="print_report_akuntansi_ikhitisar_sub_buku_besar_persediaan";
+                break;
                 default:
                     titleReport="";
         }
@@ -1847,6 +1851,11 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         laporanAkuntansi = new LaporanAkuntansi();
         laporanAkuntansi.setTipeLaporan("uang_muka_p");
         laporanAkuntansi.setTipeLaporanName("Uang Muka Pasien");
+        laporanAkuntansiList.add(laporanAkuntansi);
+
+        laporanAkuntansi = new LaporanAkuntansi();
+        laporanAkuntansi.setTipeLaporan("persediaan");
+        laporanAkuntansi.setTipeLaporanName("Persediaan");
         laporanAkuntansiList.add(laporanAkuntansi);
 
         return laporanAkuntansiList;

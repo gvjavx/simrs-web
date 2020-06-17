@@ -1947,4 +1947,32 @@ public class ObatBoImpl implements ObatBo {
         logger.info("[ObatBoImpl.getListReportSumaryTransaksiObat] END <<<");
         return listObat;
     }
+
+    @Override
+    public List<TransaksiStok> getListSummaryStok(String branchId,String idPelayanan, String tahun, String bulan) throws GeneralBOException {
+        logger.info("[ObatBoImpl.getListSummaryStok] START >>>");
+
+        List<TransaksiStok> listObat = transaksiStokDao.getListObatForPengajuan(branchId);
+        if (listObat.size() > 0){
+
+            for (TransaksiStok obat : listObat){
+                //initial
+                obat.setQtySaldo(BigInteger.ZERO);
+                obat.setTotalSaldo(BigDecimal.ZERO);
+                obat.setSubTotalSaldo(BigDecimal.ZERO);
+
+                obat.setKeterangan(obat.getNamaObat());
+
+                List<TransaksiStok> listTransaksi =  transaksiStokDao.getSaldoObatLalu(branchId,idPelayanan, tahun, bulan, obat.getIdObat());
+                for (TransaksiStok transaksiStok : listTransaksi){
+                    obat.setQtySaldo(transaksiStok.getQtySaldo());
+                    obat.setTotalSaldo(transaksiStok.getTotalSaldo());
+                    obat.setSubTotalSaldo(transaksiStok.getSubTotalSaldo());
+                }
+            }
+        }
+
+        logger.info("[ObatBoImpl.getListSummaryStok] END <<<");
+        return listObat;
+    }
 }

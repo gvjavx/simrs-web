@@ -109,9 +109,16 @@ public class PengajuanBiayaDetailDao extends GenericDao<ItPengajuanBiayaDetailEn
         List<Object[]> results = new ArrayList<Object[]>();
 
             String query = "select\n" +
-                    "\t*\n" +
+                    "\tbd.*\n" +
                     "from\n" +
-                    "\tit_akun_pengajuan_biaya_detail";
+                    "\tit_akun_pengajuan_biaya_detail bd\n" +
+                    "\tLEFT JOIN it_akun_jurnal j ON bd.pengajuan_biaya_detail_id = j.pengajuan_biaya_id\n" +
+                    "WHERE \n" +
+                    "\tbd.branch_id = '"+branchId+"'\n" +
+                    "\tAND bd.approval_keuangan_flag='Y'\n" +
+                    "\tAND j.pengajuan_biaya_id IS NULL\n" +
+                    "\tAND bd.tanggal_realisasi <= now()\n" +
+                    "\tAND closed='Y'";
 
             results = this.sessionFactory.getCurrentSession()
                     .createSQLQuery(query)
@@ -126,5 +133,57 @@ public class PengajuanBiayaDetailDao extends GenericDao<ItPengajuanBiayaDetailEn
                 listOfResult.add(pengajuanBiayaDetailEntity);
             }
         return listOfResult;
+    }
+
+    public BigDecimal getBudgetTerpakaiPadaPengajuan (String branchId,String divisiId,String bulan , String tahun , String noBudgeting){
+        BigDecimal total = new BigDecimal(0);
+        String periode = bulan+"-"+tahun;
+        String query="SELECT \n" +
+                "\tsum(jumlah)\n" +
+                "FROM\n" +
+                "\tit_akun_pengajuan_biaya_detail\n" +
+                "WHERE\n" +
+                "\tflag='Y'\n" +
+                "\tAND branch_id='"+branchId+"'\n" +
+                "\tAND divisi_id='"+divisiId+"'\n" +
+                "\tAND no_budgeting ilike '%"+noBudgeting+"'\n" +
+                "\tAND cast(date_trunc('month', tanggal_realisasi) as date) = to_date('"+periode+"','MM-YYYY') \n" +
+                "\tAND closed='Y'\n" +
+                "\tAND approval_keuangan_flag='Y'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
+        }else{
+            total = BigDecimal.valueOf(0);
+        }
+        return total;
+    }
+    public BigDecimal getBudgetTerpakaiPadaPengajuanSdBulanIni (String branchId,String divisiId,String bulan , String tahun , String noBudgeting){
+        BigDecimal total = new BigDecimal(0);
+        Integer tahunSekarang = Integer.valueOf(tahun);
+        String periode = bulan+"-"+tahun;
+        String periodeSebelumnya = "12-"+String.valueOf(tahunSekarang-1);
+        String query="SELECT \n" +
+                "\tsum(jumlah)\n" +
+                "FROM\n" +
+                "\tit_akun_pengajuan_biaya_detail\n" +
+                "WHERE\n" +
+                "\tflag='Y'\n" +
+                "\tAND branch_id='"+branchId+"'\n" +
+                "\tAND divisi_id='"+divisiId+"'\n" +
+                "\tAND no_budgeting ilike '%"+noBudgeting+"'\n" +
+                "\tAND closed='Y'\n" +
+                "\tAND approval_keuangan_flag='Y'\n" +
+                "\tAND cast(date_trunc('month', tanggal_realisasi) as date) <= to_date('"+periode+"','MM-YYYY')\n" +
+                "\tAND cast(date_trunc('month', tanggal_realisasi) as date) > to_date('"+periodeSebelumnya+"','MM-YYYY')";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
+        }else{
+            total = BigDecimal.valueOf(0);
+        }
+        return total;
     }
 }

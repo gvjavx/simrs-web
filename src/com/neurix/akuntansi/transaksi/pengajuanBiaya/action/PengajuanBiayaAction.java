@@ -8,6 +8,8 @@ import com.neurix.akuntansi.master.tipeJurnal.bo.TipeJurnalBo;
 import com.neurix.akuntansi.master.trans.model.ImTransEntity;
 import com.neurix.akuntansi.master.trans.model.Trans;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.LaporanAkuntansiBo;
+import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.LaporanAkuntansi;
 import com.neurix.akuntansi.transaksi.pengajuanBiaya.bo.PengajuanBiayaBo;
 import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.PengajuanBiaya;
 import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.PengajuanBiayaDetail;
@@ -790,7 +792,7 @@ public class PengajuanBiayaAction extends BaseMasterAction {
     public String saveSessionPengajuan(String branchId , String divisiId,String stTanggal,String transaksi,
                                        String noBudgeting,String stJumlah,String stBudgetBiaya,String stBudgetTerpakai,
                                        String keperluan,String keterangan,String keperluanName,
-                                       String stBudgetBiayaSdBulanIni,String stBudgetTerpakaiSdBulanIni,String stSisaBudget,String stSisaBudgetSdBulanIni ) {
+                                       String stBudgetBiayaSdBulanIni,String stBudgetTerpakaiSdBulanIni,String stSisaBudget,String stSisaBudgetSdBulanIni, String stBudgetTerpakaiAplikasi ) {
         logger.info("[PengajuanBiayaAction.saveSessionPengajuan] start process >>>");
         String error ="";
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -838,11 +840,14 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         result.setStBudgetBiayaSdBulanIni(stBudgetBiayaSdBulanIni);
         result.setStBudgetTerpakaiSdBulanIni(stBudgetTerpakaiSdBulanIni);
         result.setStSisaBudgetSdBulanIni(stSisaBudgetSdBulanIni);
+
+        result.setBudgetTerpakaiTransaksi(BigDecimal.valueOf(Double.valueOf(stBudgetTerpakaiAplikasi.replace(".","").replace(",",""))));
+        result.setStBudgetTerpakaiTransaksi(stBudgetTerpakaiAplikasi);
         //
 
-        if (result.getJumlah().compareTo(result.getBudgetBiaya())>0){
+        if (result.getJumlah().compareTo(result.getSisaBudgetSdBulanIni().subtract(result.getBudgetTerpakaiTransaksi()))>0){
             save=false;
-            error = "Jumlah yang dimasukkan melebihi budget";
+            error = "Jumlah yang dimasukkan melebihi sisa budget s/d bulan ini";
         }
         if (save){
             listOfResult.add(result);
@@ -1079,12 +1084,12 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         }
     }
 
-    public String getKeteranganPembuatanRk(String pengajuanId,String status){
+    public PengajuanBiaya getKeteranganPembuatanRk(String pengajuanId,String status){
         logger.info("[PengajuanBiayaAction.getKeteranganPembuatanRk] start process >>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PengajuanBiayaBo pengajuanBiayaBo= (PengajuanBiayaBo) ctx.getBean("pengajuanBiayaBoProxy");
         PengajuanBiaya data = pengajuanBiayaBo.getPengajuanBiayaForRk(pengajuanId,status);
-        return data.getKeterangan();
+        return data;
     }
 
     public String rkPengajuanBiaya(String id,String coaKas,String stJumlah,String keterangan,String branchId,String status){
@@ -1117,7 +1122,7 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         if ("K".equalsIgnoreCase(status)){
             //membuat jurnal RK dari kantor pusat
             billingSystemBo.createJurnal("59",dataRk,CommonConstant.ID_KANPUS,keterangan,"Y");
-            pengajuanBiayaBo.setRkSudahDikirim(id);
+            pengajuanBiayaBo.setRkSudahDikirim(id,coaKas);
         }else if ("T".equalsIgnoreCase(status)){
             // membuat jurnal rk dan jurnal biaya jika data sudah diterima unit
             billingSystemBo.createJurnal("60",dataRk,branchId,keterangan,"Y");
@@ -1165,7 +1170,7 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         ImSimrsPelayananEntity pelayanan = pelayananBo.getPelayananByDivisiId(divisiId,branchId);
         String idPelayanan = pelayanan.getIdPelayanan();
 
-        List<TransaksiStok> transaksiStokList = obatBo.getListReportSumaryTransaksiObat(idPelayanan,arrTanggal[0],arrTanggal[1]);
+        List<TransaksiStok> transaksiStokList = obatBo.getListSummaryStok(branchId,idPelayanan,arrTanggal[0],arrTanggal[1]);
 
         for (TransaksiStok transaksiStok : transaksiStokList){
             StokDTO data = new StokDTO();
@@ -1191,8 +1196,11 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PengajuanBiayaBo pengajuanBiayaBo = (PengajuanBiayaBo) ctx.getBean("pengajuanBiayaBoProxy");
         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        LaporanAkuntansiBo laporanAkuntansiBo = (LaporanAkuntansiBo) ctx.getBean("laporanAkuntansiBoProxy");
+
         PengajuanBiayaDetail data =  pengajuanBiayaBo.getDetailPembayaranForReport(getId());
         Branch branch = branchBo.getBranchById(data.getBranchId(),"Y");
+        LaporanAkuntansi dataAtasan = laporanAkuntansiBo.getNipDanNamaManagerKeuanganDanGeneralManager(data.getBranchId());
 
         String[] arrTanggal = data.getStTanggal().split("-");
 
@@ -1216,8 +1224,8 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         reportParams.put("noBudgetting", data.getNoBudgeting());
         reportParams.put("statusSaatIni", data.getStatusSaatIni());
         reportParams.put("keterangan", data.getKeterangan());
-        reportParams.put("nama", data.getApprovalKasubdivId());
-        reportParams.put("jabatan", data.getApprovalKasubdivId());
+        reportParams.put("nama", dataAtasan.getNamaManagerKeuangan());
+        reportParams.put("jabatan", "Keuangan");
         reportParams.put("tanggalApprove", CommonUtil.convertDateToString(data.getApprovalKasubdivDate()));
         try {
             preDownload();
@@ -1233,6 +1241,49 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         }
         logger.info("[PengajuanBiayaAction.cetakSurat] end process <<<");
         return "cetak_surat_pengajuan_biaya";
+    }
+
+    public PengajuanBiayaDetail getBudgetTerpakaiTransaksiSession(String branchId,String divisiId,String stTanggal,String noBudgetting) {
+        logger.info("[PengajuanBiayaAction.searchSessionPengajuan] start process >>>");
+        PengajuanBiayaDetail data = new PengajuanBiayaDetail();
+        data.setBudgetTerpakaiTransaksi(BigDecimal.ZERO);
+        data.setStBudgetTerpakaiTransaksi(CommonUtil.numbericFormat(BigDecimal.ZERO,"###,###"));
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<PengajuanBiayaDetail> listOfsearch= (List<PengajuanBiayaDetail>) session.getAttribute("listOfResultPengajuanBiayaDetail");
+        if (listOfsearch!=null){
+            for (PengajuanBiayaDetail pengajuanBiayaDetail : listOfsearch){
+                if (pengajuanBiayaDetail.getNoBudgeting().equalsIgnoreCase(noBudgetting)){
+                    data.setBudgetTerpakaiTransaksi(data.getBudgetTerpakaiTransaksi().add(pengajuanBiayaDetail.getJumlah()));
+                    data.setStBudgetTerpakaiTransaksi(CommonUtil.numbericFormat(data.getBudgetTerpakaiTransaksi(),"###,###"));
+                }
+            }
+        }
+
+        return data;
+    }
+
+    public boolean cekApakahPengajuanBisaDiubah(String id,String stJumlah){
+        boolean result ;
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PengajuanBiayaBo pengajuanBiayaBo = (PengajuanBiayaBo) ctx.getBean("pengajuanBiayaBoProxy");
+        BigDecimal jumlah = BigDecimal.valueOf(Double.valueOf(stJumlah.replace(".","").replace(",","")));
+        result = pengajuanBiayaBo.cekApakahPengajuanBisaDiubah(id,jumlah);
+
+        return result;
+    }
+
+    public String getTipeBudgetInSession() {
+        logger.info("[PengajuanBiayaAction.searchSessionPengajuan] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<PengajuanBiayaDetail> listOfsearch= (List<PengajuanBiayaDetail>) session.getAttribute("listOfResultPengajuanBiayaDetail");
+        String result = "";
+        if (listOfsearch!=null){
+            for (PengajuanBiayaDetail pengajuanBiayaDetail : listOfsearch){
+                result = pengajuanBiayaDetail.getTransaksi();
+            }
+        }
+
+        return result;
     }
 
     public String paging(){

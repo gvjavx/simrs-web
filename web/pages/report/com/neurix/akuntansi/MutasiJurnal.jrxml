@@ -26,7 +26,7 @@
   a.tanggal_jurnal,
   a.sumber,
   a.pengajuan_biaya_id,
-  e.nama_sumber_dana,
+  a.sumber_dana_id,
   f.kode_mata_uang,
   g.nilai_kurs,
   a.keterangan,
@@ -47,7 +47,6 @@ FROM
   INNER JOIN im_akun_tipe_jurnal h ON (a.tipe_jurnal_id = h.tipe_jurnal_id)
   LEFT OUTER JOIN im_akun_kode_rekening c ON (b.rekening_id = c.rekening_id)
   LEFT OUTER JOIN im_akun_master d ON (b.master_id = d.nomor_master)
-  LEFT OUTER JOIN im_akun_sumber_dana e ON (a.sumber_dana_id = e.sumber_dana_id)
   LEFT OUTER JOIN im_akun_mata_uang f ON (a.mata_uang_id = f.mata_uang_id)
   LEFT OUTER JOIN mt_akun_kurs g
   	ON ((f.mata_uang_id = g.mata_uang_id)
@@ -63,7 +62,7 @@ and a.branch_id IN ($P!{reportParams.branchId})
 	<field name="tanggal_jurnal" class="java.sql.Date"/>
 	<field name="sumber" class="java.lang.String"/>
 	<field name="pengajuan_biaya_id" class="java.lang.String"/>
-	<field name="nama_sumber_dana" class="java.lang.String"/>
+	<field name="sumber_dana_id" class="java.lang.String"/>
 	<field name="kode_mata_uang" class="java.lang.String">
 		<fieldDescription><![CDATA[Kode Mata Uang]]></fieldDescription>
 	</field>
@@ -180,7 +179,7 @@ and a.branch_id IN ($P!{reportParams.branchId})
 					<textElement verticalAlignment="Top">
 						<font fontName="Arial" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{nama_sumber_dana}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{sumber_dana_id}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 					<reportElement key="textField" stretchType="RelativeToTallestObject" x="359" y="0" width="208" height="26" uuid="bc91cb70-2ced-43f8-bbb0-07aafebb070b"/>

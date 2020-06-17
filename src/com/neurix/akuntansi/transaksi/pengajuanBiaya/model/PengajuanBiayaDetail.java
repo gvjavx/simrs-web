@@ -76,6 +76,25 @@ public class PengajuanBiayaDetail extends BaseModel {
 
     private String notApprovalNote;
 
+    private BigDecimal budgetTerpakaiTransaksi;
+    private String stBudgetTerpakaiTransaksi;
+
+    public BigDecimal getBudgetTerpakaiTransaksi() {
+        return budgetTerpakaiTransaksi;
+    }
+
+    public void setBudgetTerpakaiTransaksi(BigDecimal budgetTerpakaiTransaksi) {
+        this.budgetTerpakaiTransaksi = budgetTerpakaiTransaksi;
+    }
+
+    public String getStBudgetTerpakaiTransaksi() {
+        return stBudgetTerpakaiTransaksi;
+    }
+
+    public void setStBudgetTerpakaiTransaksi(String stBudgetTerpakaiTransaksi) {
+        this.stBudgetTerpakaiTransaksi = stBudgetTerpakaiTransaksi;
+    }
+
     public String getDivisiName() {
         return divisiName;
     }

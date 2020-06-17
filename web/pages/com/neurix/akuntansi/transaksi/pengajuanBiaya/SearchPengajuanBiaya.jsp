@@ -454,11 +454,6 @@
                         <div class="col-sm-7">
                             <input type="text" class="form-control" id="mod_jumlah_detail" readonly>
                         </div>
-                        <div class="col-md-1" style="margin-top: 7px">
-                            <a href="javascript:;" id="btnViewStok">
-                                <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" name="icon_view">
-                            </a>
-                        </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-3" >Budget RKAP ( RP ) : </label>
@@ -648,51 +643,6 @@
 
             $('#modal-detail').modal('show');
 
-        });
-        $('#btnViewStok').click(function () {
-            var tanggal = $('#mod_tanggal_detail').val();
-            var branchId = $('#mod_branch_id_detail').val();
-            var divisiId = $('#mod_divisi_id_detail').val();
-            $('.tabelDaftarStok').find('tbody').remove();
-            $('.tabelDaftarStok').find('thead').remove();
-            dwr.engine.setAsync(false);
-            var array = tanggal.split('-');
-            var tanggalBaru = array[2]+"-"+array[1]+"-"+array[0];
-            var tmp_table = "";
-            if (tanggal!=""&&branchId!=""&&divisiId!=""){
-                PengajuanBiayaAction.getStockPerDivisi(branchId,divisiId,tanggalBaru,function (result) {
-                    tmp_table = "<thead style='font-size: 12px;' ><tr class='active'>"+
-                        "<th style='text-align: center; background-color:  #90ee90'>No</th>"+
-                        "<th style='text-align: center; background-color:  #90ee90'>Nama Barang</th>"+
-                        "<th style='text-align: center; background-color:  #90ee90'>Qty</th>"+
-                        "<th style='text-align: center; background-color:  #90ee90'>Nilai ( RP )</th>"+
-                        "<th style='text-align: center; background-color:  #90ee90'>Saldo ( RP )</th>"+
-                        "</tr></thead>";
-                    var i = i ;
-                    var totalBayar = 0;
-                    $.each(result, function (i, item) {
-                        var saldo = item.subTotalSaldo.replace(/[,]/g,"");
-                        totalBayar=totalBayar+parseInt(saldo);
-                        tmp_table += '<tr style="font-size: 11px;" ">' +
-                            '<td align="center">' + (i + 1) + '</td>' +
-                            '<td align="center">' + item.namaBarang+ '</td>' +
-                            '<td align="center">' + item.qty+ '</td>' +
-                            '<td align="right">' + item.totalSaldo+ '</td>' +
-                            '<td align="right">' + item.subTotalSaldo+ '</td>' +
-                            "</tr>";
-                    });
-                    tmp_table += '<tr style="font-size: 11px;" ">' +
-                        '<td align="center" colspan="4">' + "Total Saldo ( RP )" + '</td>' +
-                        '<td align="right">' + formatRupiahAngka(String(totalBayar))+ '</td>' +
-                        "</tr>";
-                    $('.tabelDaftarStok').append(tmp_table);
-                    if (totalBayar>0){
-                        $("#modal-daftar-stok").modal('show');
-                    } else{
-                        alert("Data stok kosong");
-                    }
-                })
-            }
         });
         function formatRupiahAngka(angka) {
             var number_string = angka.replace(/[^,\d]/g, '').toString(),

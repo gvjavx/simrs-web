@@ -264,43 +264,43 @@
             <div class="modal-body">
                 <form class="form-horizontal" id="formApprovalAtasan">
                     <div class="form-group">
-                        <label class="control-label col-sm-3" >ID : </label>
-                        <div class="col-sm-7">
+                        <label class="control-label col-sm-4" >ID : </label>
+                        <div class="col-sm-6">
                             <input type="text" readonly class="form-control" id="modPengajuanBiayaDetailIdAtasan">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-3" >Unit : </label>
-                        <div class="col-sm-7">
+                        <label class="control-label col-sm-4" >Unit : </label>
+                        <div class="col-sm-6">
                             <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
                             <s:select cssClass="form-control mod_branch_id_class" list="#comboBranch.listOfComboBranches" id="mod_branch_id_atasan" required="true" disabled="true"
                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-3" >Divisi : </label>
-                        <div class="col-sm-7">
+                        <label class="control-label col-sm-4" >Divisi : </label>
+                        <div class="col-sm-6">
                             <s:action id="comboPosition" namespace="/admin/user" name="initComboPosition_user"/>
                             <s:select cssClass="form-control mod_divisi_id_class" list="#comboPosition.listOfComboPositions" id="mod_divisi_id_atasan" disabled="true" name="pengajuanBiaya.divisiId" required="false" readonly="true"
                                       listKey="stPositionId" listValue="positionName" headerKey="" headerValue="[Select one]"/>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-3" >No. Budgetting : </label>
-                        <div class="col-sm-7">
+                        <label class="control-label col-sm-4" >No. Budgetting : </label>
+                        <div class="col-sm-6">
                             <input type="text" readonly class="form-control" id="mod_no_budgetting_atasan">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-3" >Tanggal : </label>
-                        <div class="col-sm-7">
+                        <label class="control-label col-sm-4" >Tanggal : </label>
+                        <div class="col-sm-6">
                             <input type="text" readonly class="form-control mod_tanggal_class" id="mod_tanggal_atasan">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-3" >Jumlah ( RP ) : </label>
-                        <div class="col-sm-7">
-                            <input type="text" class="form-control" id="mod_jumlah_atasan" onkeyup="formatRupiah2(this)">
+                        <label class="control-label col-sm-4" >Jumlah (RP) : </label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="mod_jumlah_atasan" onkeyup="formatRupiah2(this)" style="text-align: right">
                         </div>
                         <div class="col-md-1" style="margin-top: 7px">
                             <a href="javascript:;" class="btnViewStok">
@@ -309,14 +309,44 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-3" >Budget RKAP ( RP ) : </label>
-                        <div class="col-sm-7">
-                            <input type="text" readonly class="form-control" id="mod_budget_atasan">
+                        <label class="control-label col-sm-4" >Budgeting Bulan Ini (RP) : </label>
+                        <div class="col-md-6">
+                            <input type="text" readonly class="form-control" id="mod_budget_atasan" style="text-align: right">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-3" >Keterangan : </label>
-                        <div class="col-sm-7">
+                        <label class="control-label col-sm-4" >Budgeting s/d Bulan Ini (RP) : </label>
+                        <div class="col-md-6">
+                            <input type="text" readonly class="form-control" id="mod_budget_sd_atasan" style="text-align: right">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Budgeting terpakai Bulan Ini (RP) : </label>
+                        <div class="col-md-6">
+                            <input type="text" readonly class="form-control" id="mod_budget_terpakai_atasan" style="text-align: right">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Budgeting terpakai s/d Bulan Ini (RP) : </label>
+                        <div class="col-md-6">
+                            <input type="text" readonly class="form-control" id="mod_budget_terpakai_sd_atasan" style="text-align: right">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Sisa Budget Bulan Ini (RP) : </label>
+                        <div class="col-md-6">
+                            <input type="text" readonly class="form-control" id="mod_sisa_budget_atasan" style="text-align: right">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Sisa Budget s/d Bulan Ini (RP) : </label>
+                        <div class="col-md-6">
+                            <input type="text" readonly class="form-control" id="mod_sisa_budget_sd_atasan" style="text-align: right">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Keterangan : </label>
+                        <div class="col-sm-6">
                             <input type="text" readonly class="form-control" id="mod_keterangan_atasan">
                         </div>
                     </div>
@@ -344,22 +374,22 @@
             <div class="modal-body">
                 <form class="form-horizontal" id="formApprovalKeuangan">
                     <div class="form-group">
-                        <label class="control-label col-sm-3" >ID : </label>
-                        <div class="col-sm-7">
+                        <label class="control-label col-sm-4" >ID : </label>
+                        <div class="col-sm-6">
                             <input type="text" readonly class="form-control" id="modPengajuanBiayaDetailId">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-3" >Unit : </label>
-                        <div class="col-sm-7">
+                        <label class="control-label col-sm-4" >Unit : </label>
+                        <div class="col-sm-6">
                             <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
                             <s:select cssClass="form-control mod_branch_id_class" list="#comboBranch.listOfComboBranches" id="mod_branch_id_keuangan" required="true" disabled="true"
                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-3" >Divisi : </label>
-                        <div class="col-sm-7">
+                        <label class="control-label col-sm-4" >Divisi : </label>
+                        <div class="col-sm-6">
                             <s:action id="comboPosition" namespace="/admin/user" name="initComboPosition_user"/>
                             <s:select cssClass="form-control mod_divisi_id_class" list="#comboPosition.listOfComboPositions" id="mod_divisi_id_keuangan" disabled="true" name="pengajuanBiaya.divisiId" required="false" readonly="true"
                                       listKey="stPositionId" listValue="positionName" headerKey="" headerValue="[Select one]"/>
@@ -372,20 +402,20 @@
                         <%--</div>--%>
                     <%--</div>--%>
                     <div class="form-group">
-                        <label class="control-label col-sm-3" >No. Budgetting : </label>
-                        <div class="col-sm-7">
+                        <label class="control-label col-sm-4" >No. Budgetting : </label>
+                        <div class="col-sm-6">
                             <input type="text" readonly class="form-control" id="mod_no_budgetting_keuangan">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-3" >Tanggal : </label>
-                        <div class="col-sm-7">
+                        <label class="control-label col-sm-4" >Tanggal : </label>
+                        <div class="col-sm-6">
                             <input type="text" readonly class="form-control mod_tanggal_class" id="mod_tanggal_keuangan">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-3" >Tanggal Realisasi: </label>
-                        <div class="col-sm-7">
+                        <label class="control-label col-sm-4" >Tanggal Realisasi: </label>
+                        <div class="col-sm-6">
                             <input type="text" class="form-control" id="mod_tanggal_realisasi_keuangan">
                         </div>
                     </div>
@@ -398,9 +428,9 @@
                         });
                     </script>
                     <div class="form-group">
-                        <label class="control-label col-sm-3" >Jumlah ( RP ) : </label>
-                        <div class="col-sm-7">
-                            <input type="text" class="form-control" id="mod_jumlah_keuangan" onkeyup="formatRupiah2(this)">
+                        <label class="control-label col-sm-4" >Jumlah ( RP ) : </label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="mod_jumlah_keuangan" onkeyup="formatRupiah2(this)" style="text-align: right">
                         </div>
                         <div class="col-md-1" style="margin-top: 7px">
                             <a href="javascript:;" class="btnViewStok">
@@ -409,22 +439,52 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-3" >Budget RKAP ( RP ) : </label>
-                        <div class="col-sm-7">
-                            <input type="text" readonly class="form-control" id="mod_budget_keuangan">
+                        <label class="control-label col-sm-4" >Budgeting Bulan Ini (RP) : </label>
+                        <div class="col-md-6">
+                            <input type="text" readonly class="form-control" id="mod_budget_keuangan" style="text-align: right">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-3" >Keterangan : </label>
-                        <div class="col-sm-7">
+                        <label class="control-label col-sm-4" >Budgeting s/d Bulan Ini (RP) : </label>
+                        <div class="col-md-6">
+                            <input type="text" readonly class="form-control" id="mod_budget_sd_keuangan" style="text-align: right">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Budgeting terpakai Bulan Ini (RP) : </label>
+                        <div class="col-md-6">
+                            <input type="text" readonly class="form-control" id="mod_budget_terpakai_keuangan" style="text-align: right">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Budgeting terpakai s/d Bulan Ini (RP) : </label>
+                        <div class="col-md-6">
+                            <input type="text" readonly class="form-control" id="mod_budget_terpakai_sd_keuangan" style="text-align: right">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Sisa Budget Bulan Ini (RP) : </label>
+                        <div class="col-md-6">
+                            <input type="text" readonly class="form-control" id="mod_sisa_budget_keuangan" style="text-align: right">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Sisa Budget s/d Bulan Ini (RP) : </label>
+                        <div class="col-md-6">
+                            <input type="text" readonly class="form-control" id="mod_sisa_budget_sd_keuangan" style="text-align: right">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Keterangan : </label>
+                        <div class="col-sm-6">
                             <input type="text" readonly class="form-control" id="mod_keterangan_keuangan">
                         </div>
                     </div>
 
                     <input type="hidden" class="form-control" id="mod_status_approve">
                     <div class="form-group">
-                        <label class="control-label col-sm-3" >Metode Pembiayaan : </label>
-                        <div class="col-sm-7">
+                        <label class="control-label col-sm-4" >Metode Pembiayaan : </label>
+                        <div class="col-sm-6">
                             <s:select list="#{'A':'Unit','KP':'Kantor Pusat'}" onchange="changeKas(this.value)"
                                       id="mod_status_keuangan" headerKey="" headerValue="[Select One]" cssClass="form-control" />
                         </div>
@@ -452,22 +512,22 @@
             <div class="modal-body">
                 <form class="form-horizontal" id="formApprovalKeuanganKp">
                     <div class="form-group">
-                        <label class="control-label col-sm-3" >ID : </label>
-                        <div class="col-sm-7">
+                        <label class="control-label col-sm-4" >ID : </label>
+                        <div class="col-sm-6">
                             <input type="text" readonly class="form-control" id="modPengajuanBiayaDetailIdKp">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-3" >Unit : </label>
-                        <div class="col-sm-7">
+                        <label class="control-label col-sm-4" >Unit : </label>
+                        <div class="col-sm-6">
                             <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
                             <s:select cssClass="form-control mod_branch_id_class" list="#comboBranch.listOfComboBranches" id="mod_branch_id_keuangan_kp" required="true" disabled="true"
                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-3" >Divisi : </label>
-                        <div class="col-sm-7">
+                        <label class="control-label col-sm-4" >Divisi : </label>
+                        <div class="col-sm-6">
                             <s:action id="comboPosition" namespace="/admin/user" name="initComboPosition_user"/>
                             <s:select cssClass="form-control mod_divisi_id_class" list="#comboPosition.listOfComboPositions" id="mod_divisi_id_keuangan_kp" disabled="true" name="pengajuanBiaya.divisiId" required="false" readonly="true"
                                       listKey="stPositionId" listValue="positionName" headerKey="" headerValue="[Select one]"/>
@@ -480,21 +540,21 @@
                     <%--</div>--%>
                     <%--</div>--%>
                     <div class="form-group">
-                        <label class="control-label col-sm-3" >No. Budgetting : </label>
-                        <div class="col-sm-7">
+                        <label class="control-label col-sm-4" >No. Budgetting : </label>
+                        <div class="col-sm-6">
                             <input type="text" readonly class="form-control" id="mod_no_budgetting_keuangan_kp">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-3" >Tanggal : </label>
-                        <div class="col-sm-7">
+                        <label class="control-label col-sm-4" >Tanggal : </label>
+                        <div class="col-sm-6">
                             <input type="text" readonly class="form-control mod_tanggal_class" id="mod_tanggal_keuangan_kp">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-3" >Jumlah ( RP ) : </label>
-                        <div class="col-sm-7">
-                            <input type="text" class="form-control" id="mod_jumlah_keuangan_kp" onkeyup="formatRupiah2(this)">
+                        <label class="control-label col-sm-4" >Jumlah ( RP ) : </label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="mod_jumlah_keuangan_kp" onkeyup="formatRupiah2(this)" style="text-align: right">
                         </div>
                         <div class="col-md-1" style="margin-top: 7px">
                             <a href="javascript:;" class="btnViewStok">
@@ -503,14 +563,44 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-3" >Budget RKAP ( RP ) : </label>
-                        <div class="col-sm-7">
-                            <input type="text" readonly class="form-control" id="mod_budget_keuangan_kp">
+                        <label class="control-label col-sm-4" >Budgeting Bulan Ini (RP) : </label>
+                        <div class="col-md-6">
+                            <input type="text" readonly class="form-control" id="mod_budget_keuangan_kp" style="text-align: right">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-3" >Keterangan : </label>
-                        <div class="col-sm-7">
+                        <label class="control-label col-sm-4" >Budgeting s/d Bulan Ini (RP) : </label>
+                        <div class="col-md-6">
+                            <input type="text" readonly class="form-control" id="mod_budget_sd_keuangan_kp" style="text-align: right">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Budgeting terpakai Bulan Ini (RP) : </label>
+                        <div class="col-md-6">
+                            <input type="text" readonly class="form-control" id="mod_budget_terpakai_keuangan_kp" style="text-align: right">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Budgeting terpakai s/d Bulan Ini (RP) : </label>
+                        <div class="col-md-6">
+                            <input type="text" readonly class="form-control" id="mod_budget_terpakai_sd_keuangan_kp" style="text-align: right">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Sisa Budget Bulan Ini (RP) : </label>
+                        <div class="col-md-6">
+                            <input type="text" readonly class="form-control" id="mod_sisa_budget_keuangan_kp" style="text-align: right">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Sisa Budget s/d Bulan Ini (RP) : </label>
+                        <div class="col-md-6">
+                            <input type="text" readonly class="form-control" id="mod_sisa_budget_sd_keuangan_kp" style="text-align: right">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Keterangan : </label>
+                        <div class="col-sm-6">
                             <input type="text" readonly class="form-control" id="mod_keterangan_keuangan_kp">
                         </div>
                     </div>
@@ -757,16 +847,16 @@
                         transaksi="Investasi";
                         break;
                 }
-                var approval ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'" tanggal="'+item.stTanggal+'" status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'" budget="'+item.stBudgetBiaya+'" noBudgetting="'+item.noBudgeting+'" class="item-approve-atasan" >\n' +
+                var approval ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'" tanggal="'+item.stTanggal+'" status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'" budget="'+item.stBudgetBiaya+'" budgetsd="'+item.stBudgetBiayaSdBulanIni+'" budgetterpakai="'+item.stBudgetTerpakai+'" budgetterpakaisd="'+item.stBudgetTerpakaiSdBulanIni+'" sisabudget="'+item.stSisaBudget+'" sisabudgetsd="'+item.stSisaBudgetSdBulanIni+'" noBudgetting="'+item.noBudgeting+'" class="item-approve-atasan" >\n' +
                     '<img border="0" src="<s:url value="/pages/images/icon_approval.ico"/>" name="icon_edit">\n' +
                     '</a></td>';
-                var approvalKeuangan ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'" tanggal="'+item.stTanggal+'" status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'"  budget="'+item.stBudgetBiaya+'" noBudgetting="'+item.noBudgeting+'" class="item-approve-keuangan" >\n' +
+                var approvalKeuangan ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'" tanggal="'+item.stTanggal+'" status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'" budget="'+item.stBudgetBiaya+'" budgetsd="'+item.stBudgetBiayaSdBulanIni+'" budgetterpakai="'+item.stBudgetTerpakai+'" budgetterpakaisd="'+item.stBudgetTerpakaiSdBulanIni+'" sisabudget="'+item.stSisaBudget+'" sisabudgetsd="'+item.stSisaBudgetSdBulanIni+'" noBudgetting="'+item.noBudgeting+'" class="item-approve-keuangan" >\n' +
                     '<img border="0" src="<s:url value="/pages/images/icon_approval.ico"/>" name="icon_edit">\n' +
                     '</a></td>';
-                var approvalKeuanganKp ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'" tanggal="'+item.stTanggal+'" status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'"  budget="'+item.stBudgetBiaya+'" noBudgetting="'+item.noBudgeting+'" class="item-approve-keuangan-kp" >\n' +
+                var approvalKeuanganKp ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'" tanggal="'+item.stTanggal+'" status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'" budget="'+item.stBudgetBiaya+'" budgetsd="'+item.stBudgetBiayaSdBulanIni+'" budgetterpakai="'+item.stBudgetTerpakai+'" budgetterpakaisd="'+item.stBudgetTerpakaiSdBulanIni+'" sisabudget="'+item.stSisaBudget+'" sisabudgetsd="'+item.stSisaBudgetSdBulanIni+'" noBudgetting="'+item.noBudgeting+'" class="item-approve-keuangan-kp" >\n' +
                     '<img border="0" src="<s:url value="/pages/images/icon_approval.ico"/>" name="icon_edit">\n' +
                     '</a></td>';
-                var terimaKeuangan ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'"  status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'"  budget="'+item.stBudgetBiaya+'" noBudgetting="'+item.noBudgeting+'" class="item-terima-keuangan-kp" >\n' +
+                var terimaKeuangan ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'"  status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'" budget="'+item.stBudgetBiaya+'" budgetsd="'+item.stBudgetBiayaSdBulanIni+'" budgetterpakai="'+item.stBudgetTerpakai+'" budgetterpakaisd="'+item.stBudgetTerpakaiSdBulanIni+'" sisabudget="'+item.stSisaBudget+'" sisabudgetsd="'+item.stSisaBudgetSdBulanIni+'" noBudgetting="'+item.noBudgeting+'" class="item-terima-keuangan-kp" >\n' +
                     '<img border="0" src="<s:url value="/pages/images/icon_approval.ico"/>" name="icon_edit">\n' +
                     '</a></td>';
                 var success ='<td align="center"><a href="javascript:;">\n' +
@@ -905,6 +995,11 @@
         $('#mod_tanggal_atasan').val($(this).attr('tanggal'));
         $('#mod_no_budgetting_atasan').val($(this).attr('noBudgetting'));
         $('#mod_budget_atasan').val($(this).attr('budget'));
+        $('#mod_budget_sd_atasan').val($(this).attr('budgetsd'));
+        $('#mod_budget_terpakai_atasan').val($(this).attr('budgetterpakai'));
+        $('#mod_budget_terpakai_sd_atasan').val($(this).attr('budgetterpakaisd'));
+        $('#mod_sisa_budget_atasan').val($(this).attr('sisabudget'));
+        $('#mod_sisa_budget_sd_atasan').val($(this).attr('sisabudgetsd'));
 
         $('#modal-approve-atasan').modal('show');
 
@@ -917,13 +1012,22 @@
         var status = $('#mod_status_approve_atasan').val();
         var jumlah = $('#mod_jumlah_atasan').val();
 
-        if (confirm("Apakah anda ingin menyetujui pengajuan biaya ini ?")){
-            PengajuanBiayaAction.saveApproveAtasanPengajuan(pengajuanId,status,jumlah,function() {
-                alert("Sukses Approve");
-                loadPengajuan(id,branchId);
-                $('#modal-approve-atasan').modal('hide');
-            });
+        var bolehDiubah = false;
+        PengajuanBiayaAction.cekApakahPengajuanBisaDiubah(pengajuanId,jumlah,function(response) {
+            bolehDiubah=response;
+        });
+        if (bolehDiubah){
+            if (confirm("Apakah anda ingin menyetujui pengajuan biaya ini ?")){
+                PengajuanBiayaAction.saveApproveAtasanPengajuan(pengajuanId,status,jumlah,function() {
+                    alert("Sukses Approve");
+                    loadPengajuan(id,branchId);
+                    $('#modal-approve-atasan').modal('hide');
+                });
+            }
+        } else{
+            alert("Tidak bisa diapprove karena jumlah yang di approve melebihi jumlah yang diajukan");
         }
+
     });
     $('#btnNotApproveAtasan').click(function() {
         $('#modPengajuanBiayaDetailIdNotApprove').val($('#modPengajuanBiayaDetailIdAtasan').val());
@@ -986,6 +1090,11 @@
         $('#mod_tanggal_keuangan').val($(this).attr('tanggal'));
         $('#mod_tanggal_realisasi_keuangan').val($(this).attr('tanggal'));
         $('#mod_budget_keuangan').val($(this).attr('budget'));
+        $('#mod_budget_sd_keuangan').val($(this).attr('budgetsd'));
+        $('#mod_budget_terpakai_keuangan').val($(this).attr('budgetterpakai'));
+        $('#mod_budget_terpakai_sd_keuangan').val($(this).attr('budgetterpakaisd'));
+        $('#mod_sisa_budget_keuangan').val($(this).attr('sisabudget'));
+        $('#mod_sisa_budget_sd_keuangan').val($(this).attr('sisabudgetsd'));
 
         $('#modal-approve-keuangan').find('.modal-title').text('Approve Pengajuan Biaya Keuangan');
         $('#modal-approve-keuangan').modal('show');
@@ -1004,6 +1113,11 @@
         $('#mod_no_budgetting_keuangan_kp').val($(this).attr('noBudgetting'));
         $('#mod_tanggal_keuangan_kp').val($(this).attr('tanggal'));
         $('#mod_budget_keuangan_kp').val($(this).attr('budget'));
+        $('#mod_budget_sd_keuangan_kp').val($(this).attr('budgetsd'));
+        $('#mod_budget_terpakai_keuangan_kp').val($(this).attr('budgetterpakai'));
+        $('#mod_budget_terpakai_sd_keuangan_kp').val($(this).attr('budgetterpakaisd'));
+        $('#mod_sisa_budget_keuangan_kp').val($(this).attr('sisabudget'));
+        $('#mod_sisa_budget_sd_keuangan_kp').val($(this).attr('sisabudgetsd'));
 
         $('#modal-approve-keuangan-kp').find('.modal-title').text('Approve Pengajuan Biaya Keuangan Kantor Pusat');
         $('#modal-approve-keuangan-kp').modal('show');
@@ -1093,6 +1207,10 @@
                 PengajuanBiayaAction.saveNotApprovePengajuanBiaya(pengajuanId,keterangan,function() {
                     alert("Not Approve");
                     loadPengajuan(id,branchId);
+                    $('#modal-not-approve').modal('hide');
+                    $('#modal-approve-keuangan').modal('hide');
+                    $('#modal-approve-atasan').modal('hide');
+                    $('#modal-approve-keuangan-kp').modal('hide');
                 });
             }
         }
@@ -1115,14 +1233,17 @@
     });
 
     $('#btnTerimaRk').click(function() {
-        selectPembayaran();
         var pengajuanId = $('#modPengajuanBiayaId').val();
         $('#modPengajuanBiayaIdRk').val(pengajuanId);
         $('#mod_branch_id_rk').val($('#mod_branch_id').val());
         $('#mod_divisi_id_rk').val($('#mod_divisi_id').val());
         $('#mod_jumlah_rk').val($('#mod_total_biaya').val());
-        PengajuanBiayaAction.getKeteranganPembuatanRk(pengajuanId,"T",function(result) {
-            $('#mod_keterangan_rk').val(result);
+        PengajuanBiayaAction.getKeteranganPembuatanRk(pengajuanId,"T",function(data) {
+            $('#mod_keterangan_rk').val(data.keterangan);
+
+            var option = '<option value="'+item.coaTarget+'">'+item.namaCoa+'</option>';
+            $('#mod_kas_rk').html(option);
+
         });
         $('#mod_status_rk').val("T");
 
@@ -1162,9 +1283,6 @@
 
         var branchId = $('#mod_branch_id').val();
         var divisiId = $('#mod_divisi_id').val();
-        console.log(tanggal);
-        console.log(branchId);
-        console.log(divisiId);
         $('.tabelDaftarStok').find('tbody').remove();
         $('.tabelDaftarStok').find('thead').remove();
         dwr.engine.setAsync(false);
@@ -1177,26 +1295,16 @@
                     "<th style='text-align: center; background-color:  #90ee90'>No</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Nama Barang</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Qty</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>Nilai ( RP )</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>Saldo ( RP )</th>"+
                     "</tr></thead>";
                 var i = i ;
-                var totalBayar = 0;
                 $.each(result, function (i, item) {
                     var saldo = item.subTotalSaldo.replace(/[,]/g,"");
-                    totalBayar=totalBayar+parseInt(saldo);
                     tmp_table += '<tr style="font-size: 11px;" ">' +
                         '<td align="center">' + (i + 1) + '</td>' +
                         '<td align="center">' + item.namaBarang+ '</td>' +
                         '<td align="center">' + item.qty+ '</td>' +
-                        '<td align="right">' + item.totalSaldo+ '</td>' +
-                        '<td align="right">' + item.subTotalSaldo+ '</td>' +
                         "</tr>";
                 });
-                tmp_table += '<tr style="font-size: 11px;" ">' +
-                    '<td align="center" colspan="4">' + "Total Saldo ( RP )" + '</td>' +
-                    '<td align="right">' + formatRupiahAngka(String(totalBayar))+ '</td>' +
-                    "</tr>";
                 $('.tabelDaftarStok').append(tmp_table);
                 if (totalBayar>0){
                     $("#modal-daftar-stok").modal('show');

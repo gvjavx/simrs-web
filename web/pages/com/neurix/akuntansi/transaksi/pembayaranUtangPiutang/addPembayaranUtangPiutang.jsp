@@ -329,6 +329,7 @@
                                                                     id: item.pengajuanBiayaDetailId,
                                                                     keperluan: item.keperluan,
                                                                     tanggalRealisasi: item.stTanggalRealisasi,
+                                                                    noBudgeting: item.noBudgeting,
                                                                     jumlah: item.stJumlah
                                                                 };
                                                                 functions.push(labelItem);
@@ -337,19 +338,31 @@
                                                         },
                                                         updater: function (item) {
                                                             var selectedObj = mapped[item];
+                                                            console.log(selectedObj.noBudgeting);
                                                             $('#tanggal_realisasi').val(selectedObj.tanggalRealisasi);
                                                             $('#jumlah_pengajuan').val(selectedObj.jumlah);
+                                                            $('#no_budgetting').val(selectedObj.noBudgeting);
+                                                            $('#keperluan').val(selectedObj.keperluan);
                                                             $('#jumlah_pembayaran').val(selectedObj.jumlah.replace(/[,]/g,"."));
+                                                            isiKeteterangan();
                                                             return selectedObj.id;
                                                         }
                                                     });
                                                 });
                                             </script>
                                         </div>
+                                        <s:hidden id="keperluan" />
                                         <div class="form-group" id="tanggal_realisasi_view">
                                             <label class="col-md-4" style="margin-top: 7px">Tanggal Realisasi</label>
                                             <div class="col-md-8">
                                                 <s:textfield id="tanggal_realisasi" onkeypress="$(this).css('border','')" readonly="true"
+                                                             cssClass="form-control" cssStyle="margin-top: 7px" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group" id="no_budgetting_view">
+                                            <label class="col-md-4" style="margin-top: 7px">No. Budgeting</label>
+                                            <div class="col-md-8">
+                                                <s:textfield id="no_budgetting" onkeypress="$(this).css('border','')" readonly="true"
                                                              cssClass="form-control" cssStyle="margin-top: 7px" />
                                             </div>
                                         </div>
@@ -679,6 +692,7 @@
             var noNota=$('#no_nota').val();
             var rekeningId=$('#rekening_id').val();
             var pengajuanBiayaDetailId=$('#pengajuan_detail_id').val();
+            var noBudgeting = $('#no_budgetting').val();
             if (rekeningId==""){
                 rekeningId=$('#coa_lawan').val();
             }
@@ -700,7 +714,7 @@
                 var tipePengajuanBiaya =$('#tipePengajuan').val();
                 //jika pengajuan biasa
                 if (tipePengajuanBiaya=="N"){
-                    PembayaranUtangPiutangAction.saveDetailPembayaran(kodeVendor,namaVendor,noNota,jumlahPembayaran,rekeningId,divisiId,divisiName,tipePengajuanBiaya,pengajuanBiayaDetailId,function (result) {
+                    PembayaranUtangPiutangAction.saveDetailPembayaran(kodeVendor,namaVendor,noNota,jumlahPembayaran,rekeningId,divisiId,divisiName,tipePengajuanBiaya,pengajuanBiayaDetailId,noBudgeting,function (result) {
                         if (result==""){
                             loadDetailPembayaran();
                             //dihitung totalbayarnya
@@ -732,7 +746,7 @@
                         var nilaiPengajuan = parseInt(jumlahPengajuan);
                         var nilaiPembayaran = parseInt(nilaijumlahPembayaran);
                         if (nilaiPengajuan>=nilaiPembayaran&&tglRealisasi<=currentTime){
-                            PembayaranUtangPiutangAction.saveDetailPembayaran(kodeVendor,namaVendor,noNota,jumlahPembayaran,rekeningId,divisiId,divisiName,tipePengajuanBiaya,pengajuanBiayaDetailId,function (result) {
+                            PembayaranUtangPiutangAction.saveDetailPembayaran(kodeVendor,namaVendor,noNota,jumlahPembayaran,rekeningId,divisiId,divisiName,tipePengajuanBiaya,pengajuanBiayaDetailId,noBudgeting,function (result) {
                                 if (result==""){
                                     loadDetailPembayaran();
                                     //dihitung totalbayarnya
@@ -847,7 +861,12 @@
         var metodeBayar = $('#coa_asal option:selected').text();
         var branchName = $('#branch_id option:selected').text();
         var noSlipBank = $('#no_slip_bank').val();
+        var keperluan = $('#keperluan').val();
         var keterangan ="";
+
+        if (keperluan!=""){
+            keperluan = " untuk keperluan "+keperluan;
+        }
         if (metodeBayar!=""){
             metodeBayar = "dengan metode bayar "+metodeBayar;
         }
@@ -855,7 +874,7 @@
             noSlipBank="dengan no referensi bank "+noSlipBank;
         }
 
-        keterangan= tipeTransaksi +" "+branchName+" "+metodeBayar+" "+noSlipBank;
+        keterangan= tipeTransaksi +" "+branchName+" "+metodeBayar+" "+noSlipBank+" "+keperluan+" "+noBudgeting;
 
         $('#keterangan').val(keterangan);
     }
@@ -878,6 +897,7 @@
                 $('#pengajuan_detail_id_view').hide();
                 $('#tanggal_realisasi_view').hide();
                 $('#jumlah_pengajuan_view').hide();
+                $('#no_budgetting_view').hide();
             }
         })
     }

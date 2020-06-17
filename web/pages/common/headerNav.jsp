@@ -147,17 +147,11 @@
         $("#count3").html(tmp_jml_pemberitahuan);
     }
     function loadUser () {
-        var data="";
         NotifikasiAction.searchUser(function(data){
             if (data=="1"){
                 $(".orangPensiun").show();
-            }else{
-                $(".orangPensiun").hide();
             }
-
             if (data=="39"){
-                $(".pengajuanBiaya").show();
-            }else{
                 $(".pengajuanBiaya").show();
             }
         });
@@ -229,21 +223,20 @@
         $("#count7").html(tmp_jml_panjang);
     }
 
-    /*function loadPengajuanBiaya(){
+    function loadPengajuanBiaya(){
         var tmp_data_pengajuan= "";
         var tmp_jml_pengajuan="";
         var data = [];
         dwr.engine.setAsync(false);
         NotifikasiAction.searchPengajuanBiayaMenggantung(function(listData){
             data = listData;
-            console.log(data);
             $.each(data, function(i, item){
                 if(tmp_jml_pengajuan == ""){
                     tmp_jml_pengajuan = item.jmlApproval;
                 }
                 tmp_data_pengajuan += "<li class='pengajuanBiaya' data-id='"+item.pengajuanBiayaDetailId+"'>"+
                     "<a>"+
-                    "<span class='label label-info'>"+item.stTanggalRealisasi+"</span> "+item.pengajuanBiayaDetailId+
+                    "<span class='label label-info'>"+item.stTanggalRealisasi+"</span> "+item.keperluan+
                     "</a>"+
                     "</li>";
             })
@@ -255,7 +248,7 @@
         $("#count8").html(total);
         $("#inner8").html(tmp_data_pengajuan);
         $("#count9").html(tmp_jml_pengajuan);
-    }*/
+    }
 
     function pushNotifResep(){
         cekNotifResep();
@@ -305,11 +298,13 @@
     }
 
     $(document).ready(function() {
+        $(".orangPensiun").hide();
+        $(".pengajuanBiaya").hide();
         loadDataLogin();
         loadUser();
         loadNotif();
         loadPegawaiCuti();
-        // loadPengajuanBiaya();
+        loadPengajuanBiaya();
         cekRole();
 
         $('.pemberitahuan').on('click', function() {
@@ -459,7 +454,7 @@
                         <span class="label label-warning "></span>
                     </a>
                 </li>--%>
-                <%--<li class="dropdown notifications-menu pengajuanBiaya">
+                <li class="dropdown notifications-menu pengajuanBiaya">
                     <!-- Menu toggle button -->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-money"></i>
@@ -473,9 +468,9 @@
                                 <!-- end notification -->
                             </ul>
                         </li>
-                        &lt;%&ndash;<li class="footer"><a href="#">View all</a></li>&ndash;%&gt;
+                        <%--<li class="footer"><a href="#">View all</a></li>--%>
                     </ul>
-                </li>--%>
+                </li>
                 <li class="dropdown notifications-menu orangPensiun">
                     <!-- Menu toggle button -->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">

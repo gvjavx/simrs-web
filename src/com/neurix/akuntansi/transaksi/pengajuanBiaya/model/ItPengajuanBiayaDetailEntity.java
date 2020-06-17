@@ -72,6 +72,15 @@ public class ItPengajuanBiayaDetailEntity implements Serializable {
     private String lastUpdateWho;
 
     private String notApprovalNote;
+    private BigDecimal budgetTerpakaiTransaksi;
+
+    public BigDecimal getBudgetTerpakaiTransaksi() {
+        return budgetTerpakaiTransaksi;
+    }
+
+    public void setBudgetTerpakaiTransaksi(BigDecimal budgetTerpakaiTransaksi) {
+        this.budgetTerpakaiTransaksi = budgetTerpakaiTransaksi;
+    }
 
     public BigDecimal getSisaBudget() {
         return sisaBudget;

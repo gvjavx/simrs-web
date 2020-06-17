@@ -462,6 +462,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
             //Membuat Billing
             List<Map> dataMap = new ArrayList<>();
             String pengajuanBiayaDetailId="";
+            String sumberDana ="";
             for (PembayaranUtangPiutangDetail pembayaranUtangPiutangDetail : pembayaranUtangPiutangDetailList){
                 String rekeningId = kodeRekeningBoProxy.getRekeningIdByKodeRekening(pembayaranUtangPiutangDetail.getRekeningId());
                 BigDecimal jumlahPembayaran = new BigDecimal(pembayaranUtangPiutangDetail.getStJumlahPembayaran().replace(".",""));
@@ -473,6 +474,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
                 hs.put("rekening_id", rekeningId);
                 dataMap.add(hs);
                 pengajuanBiayaDetailId = pembayaranUtangPiutangDetail.getPengajuanBiayaDetailId();
+                sumberDana = pembayaranUtangPiutangDetail.getNoBugetting();
             }
 
             Map kas = new HashMap();
@@ -488,6 +490,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
                     throw new GeneralBOException("Pengajuan biaya dengan ID ini sudah di dilakukan pengeluaran kas");
                 }
                 data.put("pengajuan_id",pengajuanBiayaDetailId);
+                data.put("sumber_dana",sumberDana);
             }
 
             noJurnal= billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N");
@@ -756,7 +759,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         return "input_koreksi";
     }
 
-    public String saveDetailPembayaran(String kodeVendor,String namaVendor,String noNota,String jumlahPembayaran,String rekeningId,String divisiId,String divisiName,String tipePengajuanBiaya,String pengajuanBiayaDetailId) {
+    public String saveDetailPembayaran(String kodeVendor,String namaVendor,String noNota,String jumlahPembayaran,String rekeningId,String divisiId,String divisiName,String tipePengajuanBiaya,String pengajuanBiayaDetailId,String noBudgetting) {
         logger.info("[PembayaranUtangPiutangAction.saveDetailPembayaran] start process >>>");
         String status="";
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -773,6 +776,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
             newData.setDivisiId(divisiId);
             newData.setDivisiName(divisiName);
             newData.setPengajuanBiayaDetailId(pengajuanBiayaDetailId);
+            newData.setNoBugetting(noBudgetting);
 
             piutangDetailArrayList.add(newData);
             session.setAttribute("listOfResultPembayaranDetail",piutangDetailArrayList);
@@ -799,6 +803,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
                 newData.setDivisiId(divisiId);
                 newData.setDivisiName(divisiName);
                 newData.setPengajuanBiayaDetailId(pengajuanBiayaDetailId);
+                newData.setNoBugetting(noBudgetting);
 
                 piutangDetailArrayList.add(newData);
                 session.setAttribute("listOfResultPembayaranDetail",piutangDetailArrayList);
