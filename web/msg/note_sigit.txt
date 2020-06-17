@@ -230,3 +230,26 @@
         ADD COLUMN kd_barang VARCHAR(100);
 
 <<< //
+
+// 2020-06-17 >>>
+
+    ALTER TABLE public.it_simrs_resep_online ADD keterangan TEXT NULL;
+
+    ALTER TABLE im_hris_pegawai
+        ADD COLUMN position_plt_id VARCHAR(30);
+
+    ALTER TABLE im_hris_pegawai
+        ADD COLUMN nip_lama VARCHAR(50);
+
+    ALTER TABLE im_branches
+        ADD COLUMN max_pengajuan_biaya NUMERIC;
+
+    ALTER TABLE im_branches
+        ADD COLUMN coa_rk NUMERIC;
+
+    ALTER TABLE im_akun_trans
+        ADD COLUMN flag_pengajuan_biaya VARCHAR(50);
+
+    ALTER TABLE it_akun_jurnal
+        ADD COLUMN pengajuan_biaya_id VARCHAR(50);
+<<< //

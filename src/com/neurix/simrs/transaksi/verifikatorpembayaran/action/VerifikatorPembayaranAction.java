@@ -67,6 +67,7 @@ import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.bo.VerifikatorPembayaranBo;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.model.ItSimrsPembayaranOnlineEntity;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.model.PembayaranOnline;
+import io.agora.recording.common.Common;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
@@ -190,6 +191,7 @@ public class VerifikatorPembayaranAction {
 
         String userLogin = CommonUtil.userIdLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
+        String branchId = CommonUtil.userBranchLogin();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
@@ -216,20 +218,84 @@ public class VerifikatorPembayaranAction {
                 HeaderCheckup headerCheckup = new HeaderCheckup();
                 String flagResep = "N";
 
+                String noCheckup = "";
+                ItSimrsHeaderChekupEntity checkAntrianOnline = checkupBo.getById("idAntrianOnline", antrianTelemedicEntity.getId());
+                if (checkAntrianOnline != null){
+                    noCheckup = checkAntrianOnline.getNoCheckup();
+                } else {
+                    noCheckup = "CKP"+checkupBo.getNextHeaderId();
+                }
+
                 // jika resep
                 if ("resep".equalsIgnoreCase(pembayaranOnlineEntity.getKeterangan())){
                     flagResep = "Y";
-                    response.setStatus("success");
-                    return response;
+
+                    // mendapatkan data pasien;
+                    ImSimrsPasienEntity pasienEntity = pasienBo.getPasienById(antrianTelemedicEntity.getIdPasien());
+                    if (pasienEntity != null){
+
+                        headerCheckup.setNama(pasienEntity.getNama());
+                        headerCheckup.setJenisKelamin(pasienEntity.getJenisKelamin());
+                        headerCheckup.setNoKtp(pasienEntity.getNoKtp());
+                        headerCheckup.setTempatLahir(pasienEntity.getTempatLahir());
+                        headerCheckup.setTglLahir(new Date(pasienEntity.getTglLahir().getTime()));
+                        headerCheckup.setDesaId(pasienEntity.getDesaId());
+                        headerCheckup.setJalan(pasienEntity.getJalan());
+                        headerCheckup.setSuku(pasienEntity.getSuku());
+                        headerCheckup.setAgama(pasienEntity.getAgama());
+                        headerCheckup.setProfesi(pasienEntity.getProfesi());
+                        headerCheckup.setNoTelp(pasienEntity.getNoTelp());
+                        headerCheckup.setIdJenisPeriksaPasien(idJenisPeriksaPasien);
+                        headerCheckup.setFlag("Y");
+                        headerCheckup.setAction("C");
+                        headerCheckup.setCreatedDate(time);
+                        headerCheckup.setCreatedWho(userLogin);
+                        headerCheckup.setLastUpdate(time);
+                        headerCheckup.setLastUpdateWho(userLogin);
+                        headerCheckup.setJenisKunjungan("Lama");
+                        headerCheckup.setIdPelayanan(antrianTelemedicEntity.getIdPelayanan());
+                        headerCheckup.setStatusPeriksa("1");
+                        headerCheckup.setStTglLahir(pasienEntity.getTglLahir().toString());
+                        headerCheckup.setMetodePembayaran("non_tunai");
+                        headerCheckup.setIdAntrianOnline(antrianTelemedicEntity.getId());
+                        headerCheckup.setIdTransaksiOnline(idTransaksi);
+                        headerCheckup.setNoCheckup(noCheckup);
+                        headerCheckup.setBranchId(branchId);
+                    }
+
+                    String idPermintaanResep;
+                    try {
+                        idPermintaanResep = verifikatorPembayaranBo.approveTransaksiResep(headerCheckup, idTransaksi);
+                        response.setStatus("success");
+                    } catch (GeneralBOException e){
+                        logger.error("[VerifikatorPembayaranAction.approveTransaksi] ERROR. ",e);
+                        response.setStatus("error");
+                        response.setMessage("[VerifikatorPembayaranAction.approveTransaksi] ERROR. " + e);
+                        return response;
+                    }
+
+                    if (!"".equalsIgnoreCase(idPermintaanResep)){
+                        pembayaranOnlineEntity.setIdItem(idPermintaanResep);
+                        pembayaranOnlineEntity.setApprovedFlag("Y");
+                        pembayaranOnlineEntity.setAction("U");
+                        pembayaranOnlineEntity.setApprovedWho(userLogin);
+                        pembayaranOnlineEntity.setLastUpdate(time);
+                        pembayaranOnlineEntity.setLastUpdateWho(userLogin);
+
+                        try {
+                            verifikatorPembayaranBo.saveEdit(pembayaranOnlineEntity);
+                            response.setStatus("success");
+                            return response;
+                        } catch (GeneralBOException e){
+                            logger.error("[VerifikatorPembayaranAction.approveTransaksi] ERROR. ",e);
+                            response.setStatus("error");
+                            response.setMessage("[VerifikatorPembayaranAction.approveTransaksi] ERROR. " + e);
+                            return response;
+                        }
+                    }
+
                 } else {
 
-                    String noCheckup = "";
-                    ItSimrsHeaderChekupEntity checkAntrianOnline = checkupBo.getById("idAntrianOnline", antrianTelemedicEntity.getId());
-                    if (checkAntrianOnline != null){
-                        noCheckup = checkAntrianOnline.getNoCheckup();
-                    } else {
-                        noCheckup = "CKP"+checkupBo.getNextHeaderId();
-                    }
 
                     // set data headerCheckup;
                     headerCheckup.setNoCheckup(noCheckup);
@@ -277,13 +343,24 @@ public class VerifikatorPembayaranAction {
                     }
                 }
 
-                try {
-                    idDetailCheckup = verifikatorPembayaranBo.approveTransaksi(headerCheckup);
-                } catch (GeneralBOException e){
-                    logger.error("[VerifikatorPembayaranAction.approveTransaksi] ERROR. ",e);
-                    response.setStatus("error");
-                    response.setMessage("[VerifikatorPembayaranAction.approveTransaksi] ERROR. " + e);
-                    return response;
+                if ("Y".equalsIgnoreCase(flagResep)){
+                    try {
+                        idDetailCheckup = verifikatorPembayaranBo.approveTransaksiResep(headerCheckup, idTransaksi);
+                    } catch (GeneralBOException e){
+                        logger.error("[VerifikatorPembayaranAction.approveTransaksi] ERROR. ",e);
+                        response.setStatus("error");
+                        response.setMessage("[VerifikatorPembayaranAction.approveTransaksi] ERROR. " + e);
+                        return response;
+                    }
+                } else {
+                    try {
+                        idDetailCheckup = verifikatorPembayaranBo.approveTransaksi(headerCheckup);
+                    } catch (GeneralBOException e){
+                        logger.error("[VerifikatorPembayaranAction.approveTransaksi] ERROR. ",e);
+                        response.setStatus("error");
+                        response.setMessage("[VerifikatorPembayaranAction.approveTransaksi] ERROR. " + e);
+                        return response;
+                    }
                 }
 
                 // approve All tindakan and save

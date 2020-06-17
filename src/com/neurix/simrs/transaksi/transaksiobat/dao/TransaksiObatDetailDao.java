@@ -187,11 +187,14 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         if (bean.getStatus() != null && !"".equalsIgnoreCase(bean.getStatus())){
             status = bean.getStatus();
         }
-//        if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())){
-//            flag = bean.getFlag();
-//        }
+        String telemdic = "";
+        if (bean.getIsTelemedic() != null && "Y".equalsIgnoreCase(bean.getIsTelemedic())){
+            telemdic = " AND b.id_transaksi_online is NOT NULL \n";
+        } else if (bean.getIsTelemedic() != null && "N".equalsIgnoreCase(bean.getIsTelemedic())){
+            telemdic = " AND b.id_transaksi_online is NULL \n";
+        }
 
-        String SQL = "SELECT a.id_permintaan_resep, a.id_detail_checkup, c.nama, d.keterangan, a.id_approval_obat, b.id_jenis_periksa_pasien, a.flag FROM mt_simrs_permintaan_resep a\n" +
+        String SQL = "SELECT a.id_permintaan_resep, a.id_detail_checkup, c.nama, d.keterangan, a.id_approval_obat, b.id_jenis_periksa_pasien, a.flag, b.id_transaksi_online  FROM mt_simrs_permintaan_resep a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
                 "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup\n" +
                 "INNER JOIN im_simrs_status_pasien d ON a.status = d.id_status_pasien\n" +
@@ -202,7 +205,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 "AND a.id_detail_checkup LIKE :idDetail\n" +
                 "AND c.nama LIKE :nama\n" +
                 "AND a.status LIKE :status\n" +
-                "AND a.tujuan_pelayanan LIKE :idTujuan\n" +
+                "AND a.tujuan_pelayanan LIKE :idTujuan\n" + telemdic +
                 "ORDER BY a.tgl_antrian DESC";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -241,6 +244,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 permintaanResep.setIdApprovalObat(obj[4].toString());
                 permintaanResep.setIdJenisPeriksa(obj[5].toString());
                 permintaanResep.setFlag(obj[6].toString());
+                permintaanResep.setKetJenisAntrian(obj[7] == null ? "Resep RS" : "Telemedic");
                 permintaanResepList.add(permintaanResep);
             }
         }
