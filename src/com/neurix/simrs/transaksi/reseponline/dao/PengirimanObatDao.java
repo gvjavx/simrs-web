@@ -1,12 +1,14 @@
 package com.neurix.simrs.transaksi.reseponline.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.reseponline.model.ItSimrsPengirimanObatEntity;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -47,4 +49,50 @@ public class PengirimanObatDao extends GenericDao<ItSimrsPengirimanObatEntity, S
         String sId = String.format("%08d", iter.next());
         return sId;
     }
+
+    public List<PermintaanResep> getListObatTelemedicApproved(String branchId){
+
+        String SQL = "SELECT\n" +
+                "    mspr.id_permintaan_resep,\n" +
+                "    ishdc.id_detail_checkup,\n" +
+                "    isp.nama,\n" +
+                "    msato.id_approval_obat,\n" +
+                "    ishdc.id_jenis_periksa_pasien,\n" +
+                "    mspr.flag,\n" +
+                "    mspr.id_transaksi_online\n" +
+                "FROM mt_simrs_approval_transaksi_obat msato\n" +
+                "INNER JOIN (SELECT * FROM mt_simrs_permintaan_resep WHERE id_transaksi_online is NOT NULL ) mspr ON mspr.id_approval_obat = msato.id_approval_obat\n" +
+                "INNER JOIN it_simrs_header_detail_checkup ishdc ON ishdc.id_detail_checkup = mspr.id_detail_checkup\n" +
+                "INNER JOIN it_simrs_header_checkup ishc ON ishc.no_checkup = ishdc.no_checkup\n" +
+                "INNER JOIN im_simrs_pasien isp ON isp.id_pasien = ishc.id_pasien\n" +
+                "LEFT JOIN it_simrs_pengiriman_obat ispo ON ispo.id_resep = mspr.id_permintaan_resep\n" +
+                "WHERE msato.approval_flag = 'Y'\n" +
+                "AND mspr.branch_id = :branchId \n" +
+                "AND ispo.id_resep is NULL";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("branchId", branchId)
+                .list();
+
+        List<PermintaanResep> permintaanResepList = new ArrayList<>();
+        if (results.size() > 0)
+        {
+            PermintaanResep permintaanResep;
+            for (Object[] obj : results)
+            {
+                permintaanResep = new PermintaanResep();
+                permintaanResep.setIdPermintaanResep(obj[0].toString());
+                permintaanResep.setIdDetailCheckup(obj[1].toString());
+                permintaanResep.setNamaPasien(obj[2].toString());
+                permintaanResep.setIdApprovalObat(obj[4].toString());;
+                permintaanResep.setIdJenisPeriksa(obj[5].toString());
+                permintaanResep.setFlag(obj[6].toString());
+                permintaanResep.setKetJenisAntrian(obj[7] == null ? "Resep RS" : "Telemedic");
+                permintaanResepList.add(permintaanResep);
+            }
+        }
+        return permintaanResepList;
+    }
+
+
 }

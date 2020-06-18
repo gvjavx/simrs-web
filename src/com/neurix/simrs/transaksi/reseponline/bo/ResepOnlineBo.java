@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.reseponline.bo;
 
 import com.neurix.common.bo.GeneralBo;
+import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.reseponline.model.PengirimanObat;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.reseponline.model.ResepOnline;
@@ -13,4 +14,6 @@ import java.util.List;
  */
 public interface ResepOnlineBo extends GeneralBo {
     public List<ResepOnline> getByCriteria(ResepOnline bean) throws GeneralBOException;
+    public List<PengirimanObat> getListPengirimanObat(PengirimanObat bean) throws GeneralBOException;
+    public List<PermintaanResep> getListResepTelemedic(String branchId) throws GeneralBOException;
 }

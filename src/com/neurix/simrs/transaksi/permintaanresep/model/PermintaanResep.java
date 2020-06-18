@@ -62,6 +62,15 @@ public class PermintaanResep{
     private String isRead;
     private String isTelemedic;
     private String ketJenisAntrian;
+    private String idTransaksiOnline;
+
+    public String getIdTransaksiOnline() {
+        return idTransaksiOnline;
+    }
+
+    public void setIdTransaksiOnline(String idTransaksiOnline) {
+        this.idTransaksiOnline = idTransaksiOnline;
+    }
 
     public String getKetJenisAntrian() {
         return ketJenisAntrian;

@@ -718,6 +718,7 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
                     permintaanResep.setFlag("Y");
                     permintaanResep.setBranchId(bean.getBranchId());
                     permintaanResep.setJenisResep(bean.getIdJenisPeriksaPasien());
+                    permintaanResep.setIdTransaksiOnline(bean.getIdTransaksiOnline());
 
                     // set idPermintaanResep;
                     idPermintaanResep = saveAddResep(permintaanResep, detailList);
@@ -782,6 +783,7 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
         permintaanEntity.setIsUmum("N");
         permintaanEntity.setTglAntrian(bean.getCreatedDate());
         permintaanEntity.setJenisResep(bean.getJenisResep());
+        permintaanEntity.setIdTransaksiOnline(bean.getIdTransaksiOnline());
 
         try {
             permintaanResepDao.addAndSave(permintaanEntity);
