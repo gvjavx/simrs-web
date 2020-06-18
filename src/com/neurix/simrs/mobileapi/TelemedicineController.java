@@ -1,9 +1,12 @@
 package com.neurix.simrs.mobileapi;
 
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.common.util.FirebasePushNotif;
 import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiFcmBo;
 import com.neurix.hris.transaksi.notifikasi.model.NotifikasiFcm;
+import com.neurix.simrs.mobileapi.model.ResepOnlineMobile;
 import com.neurix.simrs.mobileapi.model.TelemedicineMobile;
 import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
 import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
@@ -13,11 +16,21 @@ import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
+import com.neurix.simrs.transaksi.reseponline.bo.ResepOnlineBo;
+import com.neurix.simrs.transaksi.reseponline.model.ResepOnline;
+import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import com.opensymphony.xwork2.ModelDriven;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
+import net.sf.json.JSONSerializer;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
 
+import java.io.File;
+import java.io.IOException;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,6 +48,7 @@ public class TelemedicineController implements ModelDriven<Object> {
     private CheckupBo checkupBoProxy;
     private CheckupDetailBo checkupDetailBoProxy;
     private NotifikasiFcmBo notifikasiFcmBoProxy;
+    private ResepOnlineBo resepOnlineBoProxy;
 
     private String action;
 
@@ -46,7 +60,43 @@ public class TelemedicineController implements ModelDriven<Object> {
     private String keluhan;
 
     private String idTele;
+    private String idPembayaranOnline;
     private String idPasien;
+
+    private String jsonObat;
+    private File fileUploadTtd;
+
+    public File getFileUploadTtd() {
+        return fileUploadTtd;
+    }
+
+    public void setFileUploadTtd(File fileUploadTtd) {
+        this.fileUploadTtd = fileUploadTtd;
+    }
+
+    public ResepOnlineBo getResepOnlineBoProxy() {
+        return resepOnlineBoProxy;
+    }
+
+    public void setResepOnlineBoProxy(ResepOnlineBo resepOnlineBoProxy) {
+        this.resepOnlineBoProxy = resepOnlineBoProxy;
+    }
+
+    public String getIdPembayaranOnline() {
+        return idPembayaranOnline;
+    }
+
+    public void setIdPembayaranOnline(String idPembayaranOnline) {
+        this.idPembayaranOnline = idPembayaranOnline;
+    }
+
+    public String getJsonObat() {
+        return jsonObat;
+    }
+
+    public void setJsonObat(String jsonObat) {
+        this.jsonObat = jsonObat;
+    }
 
     public String getIdPasien() {
         return idPasien;
@@ -401,6 +451,62 @@ public class TelemedicineController implements ModelDriven<Object> {
             model.setNoCheckup(resultDetailCheckup.get(0).getNoCheckup());
             model.setIdDetailCheckup(resultDetailCheckup.get(0).getIdDetailCheckup());
 
+        }
+
+        if (action.equalsIgnoreCase("insertResep")) {
+
+            String fileName = "";
+            if (fileUploadTtd != null) {
+                fileName = idTele+".jpeg";
+                File fileCreate = new File(CommonUtil.getPropertyParams("upload.folder")+ CommonConstant.RESOURCE_PATH_TTD_DOKTER, fileName);
+                try {
+                    FileUtils.copyFile(fileUploadTtd, fileCreate);
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+
+            List<TransaksiObatDetail> list = new ArrayList<>();
+            JSONArray jsonArray;
+            if (jsonObat != null && !jsonObat.equalsIgnoreCase("")){
+                try{
+                    jsonArray = (net.sf.json.JSONArray) JSONSerializer.toJSON(jsonObat);
+                    for (int i = 0; i < jsonArray.size(); i++){
+                        TransaksiObatDetail transaksiObatDetail = new TransaksiObatDetail();
+                        transaksiObatDetail.setIdObat(jsonArray.getJSONObject(i).getString("idObat"));
+                        transaksiObatDetail.setQty(BigInteger.valueOf(Long.valueOf(jsonArray.getJSONObject(i).getString("qty"))));
+                        transaksiObatDetail.setQtyApprove(BigInteger.valueOf(Long.valueOf(jsonArray.getJSONObject(i).getString("qty"))));
+                        transaksiObatDetail.setJenisSatuan(jsonArray.getJSONObject(i).getString("jenisSatuan"));
+                        transaksiObatDetail.setKeterangan(jsonArray.getJSONObject(i).getString("keterangan"));
+                        transaksiObatDetail.setFlagRacik(jsonArray.getJSONObject(i).getString("flagRacik"));
+                        transaksiObatDetail.setHariKronis(!jsonArray.getJSONObject(i).getString("hariKronis").equalsIgnoreCase("") ? Integer.valueOf(jsonArray.getJSONObject(i).getString("hariKronis")) : null);
+                        transaksiObatDetail.setCreatedDate(now);
+                        transaksiObatDetail.setLastUpdate(now);
+                        transaksiObatDetail.setCreatedWho(idDokter);
+                        transaksiObatDetail.setLastUpdateWho(idDokter);
+                        transaksiObatDetail.setIdPelayanan(idPelayanan);
+                        transaksiObatDetail.setTtdDokter(fileName);
+
+                        list.add(transaksiObatDetail);
+                    }
+
+                } catch (JSONException e) {
+                    logger.error("[CheckupController.create] Error, get json resep " + e.getMessage());
+                }
+            }
+
+            try {
+                telemedicBoProxy.insertResepOnline(idPembayaranOnline, list);
+
+                NotifikasiFcm notif = new NotifikasiFcm();
+                notif.setUserId(idPasien);
+                List<NotifikasiFcm> fcm = notifikasiFcmBoProxy.getByCriteria(notif);
+                FirebasePushNotif.sendNotificationFirebase(fcm.get(0).getTokenFcm(),"Resep Online", "Silahkan buka aplikasi untuk melakukan pembayaran resep", "BAYAR_RESEP", fcm.get(0).getOs());
+
+                model.setMessage("Success");
+            } catch (GeneralBOException e) {
+                logger.error("[TelemedicineController.insertResep] Error, " + e.getMessage());
+            }
         }
 
         logger.info("[TelemedicineController.create] end process POST / <<<");

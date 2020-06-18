@@ -193,6 +193,10 @@
             <filter-chain pattern="/mobileapi/kurir/*" filters="none" />
             <filter-chain pattern="/mobileapi/kurir/*/**" filters="none" />
 
+            <filter-chain pattern="/mobileapi/reseponline" filters="none" />
+            <filter-chain pattern="/mobileapi/reseponline/*" filters="none" />
+            <filter-chain pattern="/mobileapi/reseponline/*/**" filters="none" />
+
 
             <filter-chain pattern="/**/*"
                           filters="

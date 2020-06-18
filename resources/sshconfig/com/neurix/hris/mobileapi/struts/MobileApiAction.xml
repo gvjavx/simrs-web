@@ -208,6 +208,9 @@
         <action name="kurir/*" class="com.neurix.simrs.mobileapi.KurirContoller">
             <interceptor-ref name="mobileStack"/>
         </action>
+        <action name="reseponline/*" class="com.neurix.simrs.mobileapi.ResepOnlineController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
     </package>
 
 </struts>

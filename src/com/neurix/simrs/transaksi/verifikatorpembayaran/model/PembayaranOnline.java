@@ -25,6 +25,34 @@ public class PembayaranOnline {
     private String idRiwayatTindakan;
     private String kodeBank;
     private String flagBayar;
+    private String jenisPengambilan;
+    private String alamat;
+
+    private String message;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getAlamat() {
+        return alamat;
+    }
+
+    public void setAlamat(String alamat) {
+        this.alamat = alamat;
+    }
+
+    public String getJenisPengambilan() {
+        return jenisPengambilan;
+    }
+
+    public void setJenisPengambilan(String jenisPengambilan) {
+        this.jenisPengambilan = jenisPengambilan;
+    }
 
     public String getFlagBayar() {
         return flagBayar;

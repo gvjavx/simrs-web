@@ -56,6 +56,9 @@
             <basic name="jenisPengambilan">
                 <column name="jenis_pengambilan"  length="30"/>
             </basic>
+            <basic name="alamat">
+                <column name="alamat"/>
+            </basic>
 
 
 

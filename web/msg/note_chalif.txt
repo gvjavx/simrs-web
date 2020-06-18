@@ -38,3 +38,8 @@
 
 
 <<< //
+// 2020-06-18 >>>
+
+    ALTER TABLE public.it_pembayaran_online ADD alamat text NULL;
+
+<<< //

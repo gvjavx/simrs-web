@@ -21,6 +21,15 @@ public class PembayaranMobile {
     private String nominal;
     private String idRiwayatTindakan;
     private String kodeBank;
+    private String jenisPengambilan;
+
+    public String getJenisPengambilan() {
+        return jenisPengambilan;
+    }
+
+    public void setJenisPengambilan(String jenisPengambilan) {
+        this.jenisPengambilan = jenisPengambilan;
+    }
 
     private String message;
 

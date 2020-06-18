@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="telemedicineController" class="com.neurix.simrs.mobileapi.TelemedicineController"
+            p:resepOnlineBoProxy-ref="resepOnlineBo"
+    />
+
+    <bean id="resepOnlineController" class="com.neurix.simrs.mobileapi.ResepOnlineController"
+          p:resepOnlineBoProxy-ref="resepOnlineBo"
+    />
+
+    <bean id="resepOnlineBo" class="com.neurix.simrs.transaksi.reseponline.bo.impl.ResepOnlineBoImpl"
+          p:resepOnlineDao-ref="resepOnlineDao"
+    />
+
+    <bean id="resepOnlineBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="resepOnlineBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionObatPoliInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionResepOnlineInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="resepOnlineDao" class="com.neurix.simrs.transaksi.reseponline.dao.ResepOnlineDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+</beans>
