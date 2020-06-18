@@ -60,6 +60,24 @@ public class PermintaanResep{
     private String jenisResep;
 
     private String isRead;
+    private String isTelemedic;
+    private String ketJenisAntrian;
+
+    public String getKetJenisAntrian() {
+        return ketJenisAntrian;
+    }
+
+    public void setKetJenisAntrian(String ketJenisAntrian) {
+        this.ketJenisAntrian = ketJenisAntrian;
+    }
+
+    public String getIsTelemedic() {
+        return isTelemedic;
+    }
+
+    public void setIsTelemedic(String isTelemedic) {
+        this.isTelemedic = isTelemedic;
+    }
 
     public String getIsRead() {
         return isRead;

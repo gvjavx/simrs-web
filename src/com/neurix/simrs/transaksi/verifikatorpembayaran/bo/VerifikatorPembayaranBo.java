@@ -22,5 +22,5 @@ public interface VerifikatorPembayaranBo {
     public ItSimrsPembayaranOnlineEntity getPembayaranOnlineById(String id) throws GeneralBOException;
     public ItSimrsHeaderChekupEntity getHeaderCheckupByIdAntrinTelemedic(String idAntrianOnline) throws GeneralBOException;
     public void saveEdit(ItSimrsPembayaranOnlineEntity bean) throws GeneralBOException;
-
+    public String approveTransaksiResep(HeaderCheckup bean, String idTransaksi) throws GeneralBOException;
 }

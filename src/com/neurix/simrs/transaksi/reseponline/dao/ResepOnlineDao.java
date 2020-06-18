@@ -31,7 +31,6 @@ public class ResepOnlineDao extends GenericDao<ItSimrsResepOnlineEntity, String>
         return criteria.list();
     }
 
-
     public String getNextId() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_resep_online')");
         Iterator<BigInteger> iter = query.list().iterator();

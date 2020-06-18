@@ -50,6 +50,9 @@
             <basic name="ttdDokter">
                 <column name="ttd_dokter"/>
             </basic>
+            <basic name="keterangan">
+                <column name="keterangan"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

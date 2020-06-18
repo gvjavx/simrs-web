@@ -23,6 +23,15 @@ public class ItSimrsResepOnlineEntity {
     private String lastUpdateWho;
     private String idDokter;
     private String ttdDokter;
+    private String keterangan;
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
 
     public String getId() {
         return id;

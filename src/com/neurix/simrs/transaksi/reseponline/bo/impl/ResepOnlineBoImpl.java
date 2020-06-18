@@ -1,14 +1,14 @@
 package com.neurix.simrs.transaksi.reseponline.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
-import com.neurix.simrs.master.kurir.bo.impl.KurirBoImpl;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.reseponline.bo.ResepOnlineBo;
+import com.neurix.simrs.transaksi.reseponline.dao.PengirimanObatDao;
+import org.apache.log4j.Logger;
 import com.neurix.simrs.transaksi.reseponline.dao.ResepOnlineDao;
 import com.neurix.simrs.transaksi.reseponline.model.ItSimrsResepOnlineEntity;
 import com.neurix.simrs.transaksi.reseponline.model.ResepOnline;
-import org.apache.log4j.Logger;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,9 +19,14 @@ import java.util.Map;
  * Wednesday, 17/06/20 9:55
  */
 public class ResepOnlineBoImpl implements ResepOnlineBo {
-    protected static transient Logger logger = org.apache.log4j.Logger.getLogger(ResepOnlineBoImpl.class);
+    protected static transient Logger logger = Logger.getLogger(ResepOnlineBoImpl.class);
 
     private ResepOnlineDao resepOnlineDao;
+    private PengirimanObatDao pengirimanObatDao;
+
+    public void setPengirimanObatDao(PengirimanObatDao pengirimanObatDao) {
+        this.pengirimanObatDao = pengirimanObatDao;
+    }
 
     public ResepOnlineDao getResepOnlineDao() {
         return resepOnlineDao;
@@ -109,5 +114,10 @@ public class ResepOnlineBoImpl implements ResepOnlineBo {
     @Override
     public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {
         return null;
+    }
+
+    private String getNextIdPengiriman(String branchId){
+        logger.info("[ResepOnlineBoImpl.getNextIdPengiriman] END <<<");
+        return branchId + CommonUtil.stDateSeq() + pengirimanObatDao.getNextSeq();
     }
 }

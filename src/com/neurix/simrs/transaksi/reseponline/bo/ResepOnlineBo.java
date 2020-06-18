@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.reseponline.bo;
 
 import com.neurix.common.bo.GeneralBo;
+import com.neurix.simrs.transaksi.reseponline.model.PengirimanObat;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.reseponline.model.ResepOnline;
 

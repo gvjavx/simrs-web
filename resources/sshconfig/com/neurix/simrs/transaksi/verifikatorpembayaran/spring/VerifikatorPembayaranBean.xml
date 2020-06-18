@@ -24,6 +24,11 @@
           p:checkupDetailDao-ref="checkupDetailDao"
           p:riwayatTindakanDao-ref="riwayatTindakanDao"
           p:tindakanRawatDao-ref="tindakanRawatDao"
+          p:resepOnlineDao-ref="resepOnlineDao"
+          p:permintaanResepDao-ref="permintaanResepDao"
+          p:approvalTransaksiObatDao-ref="approvalTransaksiObatDao"
+          p:transaksiObatDetailDao-ref="transaksiObatDetailDao"
+          p:detailDao-ref="checkupDetailDao"
     />
 
     <bean id="verifikatorPembayaranBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
