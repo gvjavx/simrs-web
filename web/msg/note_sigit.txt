@@ -253,3 +253,33 @@
     ALTER TABLE it_akun_jurnal
         ADD COLUMN pengajuan_biaya_id VARCHAR(50);
 <<< //
+
+// 2020-06-18 >>>
+
+    CREATE TABLE public.it_simrs_pengiriman_obat
+    (
+        id VARCHAR(50),
+        id_kurir VARCHAR(50),
+        id_resep VARCHAR(50),
+        flag_pickup VARCHAR(1),
+        flag_diterima_pasien VARCHAR(1),
+        id_pasien VARCHAR(30),
+        flag VARCHAR(1),
+        action VARCHAR(1),
+        id_pelayanan VARCHAR(30),
+        branch_id VARCHAR(10),
+        created_date TIMESTAMP WITHOUT TIME ZONE,
+        created_who VARCHAR(100),
+        last_update TIMESTAMP WITHOUT TIME ZONE,
+        last_update_who VARCHAR(100)
+    );
+
+    ALTER TABLE public.it_simrs_pengiriman_obat ADD CONSTRAINT it_simrs_pengiriman_obat_id_pk PRIMARY KEY (id);
+
+    CREATE SEQUENCE seq_pengiriman_obat;
+
+    ALTER TABLE it_simrs_pengiriman_obat
+        ADD COLUMN desa_id VARCHAR(30),
+        ADD alamat text,
+        ADD no_telp VARCHAR(30);
+<<< //
