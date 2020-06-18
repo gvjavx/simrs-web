@@ -6,6 +6,7 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.mobileapi.model.PembayaranMobile;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.bo.VerifikatorPembayaranBo;
+import com.neurix.simrs.transaksi.verifikatorpembayaran.model.ItSimrsPembayaranOnlineEntity;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.model.PembayaranOnline;
 import com.opensymphony.xwork2.ModelDriven;
 import org.apache.commons.io.FileUtils;
@@ -16,6 +17,7 @@ import org.apache.struts2.rest.HttpHeaders;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,6 +40,25 @@ public class PembayaranController implements ModelDriven<Object> {
     private String keterangan;
     private File fileUploadBukti;
     private String fileName;
+
+    private String alamat;
+    private String bankCoa;
+
+    public String getAlamat() {
+        return alamat;
+    }
+
+    public void setAlamat(String alamat) {
+        this.alamat = alamat;
+    }
+
+    public String getBankCoa() {
+        return bankCoa;
+    }
+
+    public void setBankCoa(String bankCoa) {
+        this.bankCoa = bankCoa;
+    }
 
     public String getKeterangan() {
         return keterangan;
@@ -111,12 +132,15 @@ public class PembayaranController implements ModelDriven<Object> {
     public HttpHeaders create() {
         logger.info("[PembayaranController.create] start process POST / <<<");
 
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+
         if (action.equalsIgnoreCase("getPembayaranOnline")) {
 
             listOfPembayaran = new ArrayList<>();
 
             PembayaranOnline bean = new PembayaranOnline();
             bean.setIdAntrianTelemedic(idTele);
+            bean.setKeterangan(keterangan);
 
             List<PembayaranOnline> result = new ArrayList<>();
 
@@ -135,8 +159,9 @@ public class PembayaranController implements ModelDriven<Object> {
                 pembayaranMobile.setKodeBank(item.getKodeBank());
                 pembayaranMobile.setNominal(CommonUtil.numbericFormat(item.getNominal(),"###,###"));
                 pembayaranMobile.setApprovedFlag(item.getApprovedFlag());
+                pembayaranMobile.setJenisPengambilan(item.getJenisPengambilan());
 
-                pembayaranMobile.setCreatedDate(CommonUtil.addJamBayar(item.getCreatedDate()));
+                pembayaranMobile.setCreatedDate(CommonUtil.addJamBayar(item.getLastUpdate()));
 
                 listOfPembayaran.add(pembayaranMobile);
             }
@@ -156,6 +181,34 @@ public class PembayaranController implements ModelDriven<Object> {
 
             try {
                 verifikatorPembayaranBoProxy.updateBuktiTransfer(idTele, fileName, keterangan);
+                model.setMessage("Success");
+            } catch (GeneralBOException e) {
+                logger.error("[PembayaranController.create] Error, " + e.getMessage());
+            }
+        }
+
+        if (action.equalsIgnoreCase("saveEditPengiriman")) {
+
+            PembayaranOnline bean = new PembayaranOnline();
+            bean.setIdAntrianTelemedic(idTele);
+            bean.setKeterangan(keterangan);
+
+            List<ItSimrsPembayaranOnlineEntity> listEntity = new ArrayList<>();
+
+            try {
+               listEntity = verifikatorPembayaranBoProxy.getSearchEntityByCriteria(bean);
+            } catch (GeneralBOException e) {
+                logger.error("[PembayaranController.create] Error, " + e.getMessage());
+            }
+
+            ItSimrsPembayaranOnlineEntity newPembayaran = listEntity.get(0);
+
+            newPembayaran.setAlamat(alamat);
+            newPembayaran.setKodeBank(bankCoa);
+            newPembayaran.setLastUpdate(now);
+
+            try {
+                verifikatorPembayaranBoProxy.saveEdit(newPembayaran);
                 model.setMessage("Success");
             } catch (GeneralBOException e) {
                 logger.error("[PembayaranController.create] Error, " + e.getMessage());

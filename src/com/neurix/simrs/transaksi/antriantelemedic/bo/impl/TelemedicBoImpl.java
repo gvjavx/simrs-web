@@ -588,6 +588,8 @@ public class TelemedicBoImpl implements TelemedicBo {
                 resepOnlineEntity.setCreatedWho(obatDetail.getCreatedWho());
                 resepOnlineEntity.setLastUpdate(obatDetail.getLastUpdate());
                 resepOnlineEntity.setLastUpdateWho(obatDetail.getLastUpdateWho());
+                resepOnlineEntity.setTtdDokter(obatDetail.getTtdDokter());
+                resepOnlineEntity.setIdDokter(obatDetail.getCreatedWho());
 
                 try {
                     resepOnlineDao.addAndSave(resepOnlineEntity);

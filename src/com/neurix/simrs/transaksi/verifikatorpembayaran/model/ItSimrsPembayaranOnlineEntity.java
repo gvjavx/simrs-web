@@ -25,6 +25,15 @@ public class ItSimrsPembayaranOnlineEntity {
     private String idRiwayatTindakan;
     private String kodeBank;
     private String jenisPengambilan;
+    private String alamat;
+
+    public String getAlamat() {
+        return alamat;
+    }
+
+    public void setAlamat(String alamat) {
+        this.alamat = alamat;
+    }
 
     public String getJenisPengambilan() {
         return jenisPengambilan;

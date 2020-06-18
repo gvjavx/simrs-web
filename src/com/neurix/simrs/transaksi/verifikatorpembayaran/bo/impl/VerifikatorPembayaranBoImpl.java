@@ -156,6 +156,9 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
         if (bean.getFlag() != null){
             hsCriteria.put("flag", bean.getFlag());
         }
+        if (bean.getKeterangan() != null) {
+            hsCriteria.put("keterangan", bean.getKeterangan());
+        }
 
         List<ItSimrsPembayaranOnlineEntity> pembayaranOnlineEntities = new ArrayList<>();
         try {
@@ -174,6 +177,7 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
         logger.info("[VerifikatorPembayaranBoImpl.updateBuktiTransfer] START >>>");
         Map hsCriteria = new HashMap();
         hsCriteria.put("id_antrian_telemedic", idTele);
+        hsCriteria.put("keterangan", keterangan);
 
         List<ItSimrsPembayaranOnlineEntity> resultPembayaran = new ArrayList<>();
 
@@ -208,6 +212,13 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
         if(keterangan.equalsIgnoreCase("konsultasi")) {
             resultTelemedic.get(0).setFlagBayarKonsultasi("Y");
         } else resultTelemedic.get(0).setFlagBayarResep("Y");
+
+        try {
+            telemedicDao.updateAndSave(resultTelemedic.get(0));
+        } catch (HibernateException e) {
+            logger.error("[VerifikatorPembayaranBoImpl.updateBuktiTransfer] ERROR. ", e);
+            throw new GeneralBOException("[VerifikatorPembayaranBoImpl.updateBuktiTransfer] ERROR. ", e);
+        }
 
         logger.info("[VerifikatorPembayaranBoImpl.updateBuktiTransfer] END <<<");
     }
