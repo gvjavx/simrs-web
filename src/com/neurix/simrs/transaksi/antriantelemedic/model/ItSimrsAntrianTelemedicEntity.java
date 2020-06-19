@@ -22,12 +22,20 @@ public class ItSimrsAntrianTelemedicEntity {
     private String lastUpdateWho;
     private String flag;
     private String action;
-    private Integer column16;
     private String noKartu;
     private String idJenisPeriksaPasien;
     private String idAsuransi;
     private String kodeBank;
     private String branchId;
+    private String keluhan;
+
+    public void setKeluhan(String keluhan) {
+        this.keluhan = keluhan;
+    }
+
+    public String getKeluhan() {
+        return keluhan;
+    }
 
     public String getBranchId() {
         return branchId;

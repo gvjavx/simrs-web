@@ -34,6 +34,7 @@ public class ImSimrsPermintaanResepEntity implements Serializable {
     private String idApoteker;
 
     private String isRead;
+    private String idTransaksiOnline;
 
     public String getIsRead() {
         return isRead;
@@ -217,5 +218,13 @@ public class ImSimrsPermintaanResepEntity implements Serializable {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getIdTransaksiOnline() {
+        return idTransaksiOnline;
+    }
+
+    public void setIdTransaksiOnline(String idTransaksiOnline) {
+        this.idTransaksiOnline = idTransaksiOnline;
     }
 }

@@ -18,6 +18,15 @@ public class DokterMobile {
     private String lon;
 
     private String flagCall;
+    private String flagTele;
+
+    public String getFlagTele() {
+        return flagTele;
+    }
+
+    public void setFlagTele(String flagTele) {
+        this.flagTele = flagTele;
+    }
 
     public String getFlagCall() {
         return flagCall;

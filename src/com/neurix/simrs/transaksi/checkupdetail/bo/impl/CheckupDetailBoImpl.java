@@ -1290,8 +1290,12 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                         detailCheckupEntity.setTransDate(bean.getTransDate());
                         detailCheckupEntity.setInvoiceTrans(bean.getInvoice());
                     } else {
-                        detailCheckupEntity.setInvoice(bean.getInvoice());
-                        detailCheckupEntity.setNoJurnal(bean.getNoJurnal());
+
+                        String invoice = bean.getInvoice() == null ? detailCheckupEntity.getInvoice() : bean.getInvoice();
+                        String noJurnal = bean.getNoJurnal() == null ? detailCheckupEntity.getNoJurnal() : bean.getNoJurnal();
+
+                        detailCheckupEntity.setInvoice(invoice);
+                        detailCheckupEntity.setNoJurnal(noJurnal);
                     }
 
                     try {

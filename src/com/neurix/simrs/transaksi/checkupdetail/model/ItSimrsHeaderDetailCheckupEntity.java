@@ -70,6 +70,16 @@ public class ItSimrsHeaderDetailCheckupEntity implements Serializable{
 
     private String videoRm;
 
+    private String idTransaksiOnline;
+
+    public String getIdTransaksiOnline() {
+        return idTransaksiOnline;
+    }
+
+    public void setIdTransaksiOnline(String idTransaksiOnline) {
+        this.idTransaksiOnline = idTransaksiOnline;
+    }
+
     public String getVideoRm() {
         return videoRm;
     }

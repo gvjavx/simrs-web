@@ -92,6 +92,9 @@
         <property name="tglKeluar">
             <column name="tgl_keluar" sql-type="timestamp" not-null="false" />
         </property>
+        <property name="idAntrianOnline">
+            <column name="id_antrian_online" sql-type="varchar" />
+        </property>
 
     </class>
 </hibernate-mapping>

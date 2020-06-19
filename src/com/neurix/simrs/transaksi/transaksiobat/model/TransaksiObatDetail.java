@@ -86,6 +86,16 @@ public class TransaksiObatDetail extends BaseModel {
     private String idVendor;
     private String idPelayananTujuan;
 
+    private String ttdDokter;
+
+    public String getTtdDokter() {
+        return ttdDokter;
+    }
+
+    public void setTtdDokter(String ttdDokter) {
+        this.ttdDokter = ttdDokter;
+    }
+
     public String getIdPelayananTujuan() {
         return idPelayananTujuan;
     }

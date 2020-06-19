@@ -27,6 +27,15 @@ public class ItAkunSaldoAkhirDetailEntity implements Serializable {
     private String masterId;
     private String pasienId;
     private String divisiId;
+    private String kdBarang;
+
+    public String getKdBarang() {
+        return kdBarang;
+    }
+
+    public void setKdBarang(String kdBarang) {
+        this.kdBarang = kdBarang;
+    }
 
     public String getId() {
         return id;

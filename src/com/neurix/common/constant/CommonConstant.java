@@ -46,7 +46,7 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_DOC_RM = "/upload/cetakan_rm/";
     public final static String RESOURCE_PATH_VIDEO_RM = "/upload/video_rm/";
     public final static String RESOURCE_PATH_PAYROLL = "/upload/payroll/";
-
+    public final static String RESOURCE_PATH_BUKTI_TRANSFER = "/upload/bukti_transfer";
     public final static String RESOURCE_PATH_TTD_PETUGAS = "/upload/ttd_petugas/";
 
     public final static String RESOURCE_PATH_PHOTO_PROFILE = "/upload/profile/";
@@ -163,4 +163,9 @@ public class CommonConstant {
     public final static String COA_KAS_MANDIRI = "1.1.02.01.06";
     public final static String ID_KANPUS = "KP";
     public final static String MASTER_PAJAK_OBAT = "03.00";
+
+    //TELEMEDICINE
+    public static final int ADD_JAM_BAYAR = 30; //MENIT
+
+
 }

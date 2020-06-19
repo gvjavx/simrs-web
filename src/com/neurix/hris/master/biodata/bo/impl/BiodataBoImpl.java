@@ -2626,6 +2626,7 @@ public class BiodataBoImpl implements BiodataBo {
             }
 
             biodata.setNip(imBiodata.getNip());
+            biodata.setNipLama(imBiodata.getNipLama());
             biodata.setMasaKerja(masaKerja);
             biodata.setNamaPegawai(imBiodata.getNamaPegawai());
             biodata.setGelarDepan(imBiodata.getGelarDepan());
@@ -2684,20 +2685,33 @@ public class BiodataBoImpl implements BiodataBo {
             }
 
             if(!"".equalsIgnoreCase(imBiodata.getGolongan())){
-                if ("TP03".equalsIgnoreCase(imBiodata.getTipePegawai())){
-                    if (imBiodata.getImGolonganPkwtEntity() != null){
-                        biodata.setGolonganName(imBiodata.getImGolonganPkwtEntity().getGolonganPkwtName());
-                        biodata.setGolongan(imBiodata.getGolongan());
-                    }else {
-                        biodata.setGolongan(imBiodata.getGolongan());
-                    }
-                }else {
-                    if(imBiodata.getImGolonganEntity() != null){
-                        biodata.setGolonganName(imBiodata.getImGolonganEntity().getGolonganName());
-                        biodata.setGolongan(imBiodata.getGolongan());
+//
+//                if ("TP03".equalsIgnoreCase(imBiodata.getTipePegawai())){
+//                    if (imBiodata.getImGolonganPkwtEntity() != null){
+//                        biodata.setGolonganName(imBiodata.getImGolonganPkwtEntity().getGolonganPkwtName());
+//                        biodata.setGolongan(imBiodata.getGolongan());
+//                    }else {
+//                        biodata.setGolongan(imBiodata.getGolongan());
+//                    }
+//                }else {
+//                    if(imBiodata.getImGolonganEntity() != null){
+//                        biodata.setGolonganName(imBiodata.getImGolonganEntity().getGolonganName());
+//                        biodata.setGolongan(imBiodata.getGolongan());
+//                    }else{
+//                        biodata.setGolongan(imBiodata.getGolongan());
+//                    }
+//
+                if(imBiodata.getImGolonganEntity() != null){
+                    if ("TP03".equalsIgnoreCase(imBiodata.getTipePegawai())) {
+                        ImGolonganPkwtEntity golonganPkwtEntity = golonganPkwtDao.getById("golonganPkwtId",imBiodata.getGolongan());
+                        biodata.setGolonganName(golonganPkwtEntity.getGolonganPkwtName());
                     }else{
-                        biodata.setGolongan(imBiodata.getGolongan());
+                        biodata.setGolonganName(imBiodata.getImGolonganEntity().getGolonganName());
                     }
+                    biodata.setGolongan(imBiodata.getGolongan());
+                }else{
+                    biodata.setGolongan(imBiodata.getGolongan());
+//
                 }
             } else{
                 biodata.setGolongan(imBiodata.getGolongan());
@@ -2707,9 +2721,9 @@ public class BiodataBoImpl implements BiodataBo {
             biodata.setStatusPegawai(imBiodata.getStatusPegawai());
             if(imBiodata.getStatusPegawai() != null){
                 if(imBiodata.getStatusPegawai().equalsIgnoreCase("KS")){
-                    biodata.setStatusPegawaiName("Karyawan Staf");
+                    biodata.setStatusPegawaiName("Pimpinan");
                 }else{
-                    biodata.setStatusPegawaiName("Karyawan Non Staf");
+                    biodata.setStatusPegawaiName("Pelaksana");
                 }
             }
             biodata.setStatusKeluarga(imBiodata.getStatusKeluarga());

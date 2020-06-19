@@ -7,6 +7,7 @@ import java.sql.Timestamp;
  * Created by reza on 08/06/20.
  */
 public class AntrianTelemedic {
+
     private String id;
     private String idPasien;
     private String idDokter;
@@ -34,101 +35,43 @@ public class AntrianTelemedic {
     private String kodeBank;
     private String branchId;
     private String namaBranch;
+    private String approveKonsultasi;
+    private String approveResep;
+    private String keterangan;
+    private String keluhan;
+    private String flagForVerifikatorPembayaran;
+    private String statusTransaksi;
 
-    public String getBranchId() {
-        return branchId;
+    public String getStatusTransaksi() {
+        return statusTransaksi;
     }
 
-    public void setBranchId(String branchId) {
-        this.branchId = branchId;
+    public void setStatusTransaksi(String statusTransaksi) {
+        this.statusTransaksi = statusTransaksi;
     }
 
-    public String getNamaBranch() {
-        return namaBranch;
+    public String getFlagForVerifikatorPembayaran() {
+        return flagForVerifikatorPembayaran;
     }
 
-    public void setNamaBranch(String namaBranch) {
-        this.namaBranch = namaBranch;
+    public void setFlagForVerifikatorPembayaran(String flagForVerifikatorPembayaran) {
+        this.flagForVerifikatorPembayaran = flagForVerifikatorPembayaran;
     }
 
-    public String getKodeBank() {
-        return kodeBank;
+    public String getKeluhan() {
+        return keluhan;
     }
 
-    public void setKodeBank(String kodeBank) {
-        this.kodeBank = kodeBank;
+    public void setKeluhan(String keluhan) {
+        this.keluhan = keluhan;
     }
 
-    public String getIdAsuransi() {
-        return idAsuransi;
+    public String getKeterangan() {
+        return keterangan;
     }
 
-    public void setIdAsuransi(String idAsuransi) {
-        this.idAsuransi = idAsuransi;
-    }
-
-    public String getNamaPasien() {
-        return namaPasien;
-    }
-
-    public void setNamaPasien(String namaPasien) {
-        this.namaPasien = namaPasien;
-    }
-
-    public String getNamaDokter() {
-        return namaDokter;
-    }
-
-    public void setNamaDokter(String namaDokter) {
-        this.namaDokter = namaDokter;
-    }
-
-    public String getNamaPelayanan() {
-        return namaPelayanan;
-    }
-
-    public void setNamaPelayanan(String namaPelayanan) {
-        this.namaPelayanan = namaPelayanan;
-    }
-
-    public String getKetFlagResep() {
-        return ketFlagResep;
-    }
-
-    public void setKetFlagResep(String ketFlagResep) {
-        this.ketFlagResep = ketFlagResep;
-    }
-
-    public String getKetStatus() {
-        return ketStatus;
-    }
-
-    public void setKetStatus(String ketStatus) {
-        this.ketStatus = ketStatus;
-    }
-
-    public String getAsuransi() {
-        return asuransi;
-    }
-
-    public void setAsuransi(String asuransi) {
-        this.asuransi = asuransi;
-    }
-
-    public String getNoKartu() {
-        return noKartu;
-    }
-
-    public void setNoKartu(String noKartu) {
-        this.noKartu = noKartu;
-    }
-
-    public String getIdJenisPeriksaPasien() {
-        return idJenisPeriksaPasien;
-    }
-
-    public void setIdJenisPeriksaPasien(String idJenisPeriksaPasien) {
-        this.idJenisPeriksaPasien = idJenisPeriksaPasien;
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
     }
 
     public String getId() {
@@ -251,4 +194,115 @@ public class AntrianTelemedic {
         this.action = action;
     }
 
+    public String getNamaPasien() {
+        return namaPasien;
+    }
+
+    public void setNamaPasien(String namaPasien) {
+        this.namaPasien = namaPasien;
+    }
+
+    public String getNamaDokter() {
+        return namaDokter;
+    }
+
+    public void setNamaDokter(String namaDokter) {
+        this.namaDokter = namaDokter;
+    }
+
+    public String getNamaPelayanan() {
+        return namaPelayanan;
+    }
+
+    public void setNamaPelayanan(String namaPelayanan) {
+        this.namaPelayanan = namaPelayanan;
+    }
+
+    public String getKetFlagResep() {
+        return ketFlagResep;
+    }
+
+    public void setKetFlagResep(String ketFlagResep) {
+        this.ketFlagResep = ketFlagResep;
+    }
+
+    public String getKetStatus() {
+        return ketStatus;
+    }
+
+    public void setKetStatus(String ketStatus) {
+        this.ketStatus = ketStatus;
+    }
+
+    public String getAsuransi() {
+        return asuransi;
+    }
+
+    public void setAsuransi(String asuransi) {
+        this.asuransi = asuransi;
+    }
+
+    public String getNoKartu() {
+        return noKartu;
+    }
+
+    public void setNoKartu(String noKartu) {
+        this.noKartu = noKartu;
+    }
+
+    public String getIdJenisPeriksaPasien() {
+        return idJenisPeriksaPasien;
+    }
+
+    public void setIdJenisPeriksaPasien(String idJenisPeriksaPasien) {
+        this.idJenisPeriksaPasien = idJenisPeriksaPasien;
+    }
+
+    public String getIdAsuransi() {
+        return idAsuransi;
+    }
+
+    public void setIdAsuransi(String idAsuransi) {
+        this.idAsuransi = idAsuransi;
+    }
+
+    public String getKodeBank() {
+        return kodeBank;
+    }
+
+    public void setKodeBank(String kodeBank) {
+        this.kodeBank = kodeBank;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getNamaBranch() {
+        return namaBranch;
+    }
+
+    public void setNamaBranch(String namaBranch) {
+        this.namaBranch = namaBranch;
+    }
+
+    public String getApproveKonsultasi() {
+        return approveKonsultasi;
+    }
+
+    public void setApproveKonsultasi(String approveKonsultasi) {
+        this.approveKonsultasi = approveKonsultasi;
+    }
+
+    public String getApproveResep() {
+        return approveResep;
+    }
+
+    public void setApproveResep(String approveResep) {
+        this.approveResep = approveResep;
+    }
 }
