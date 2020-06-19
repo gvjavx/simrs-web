@@ -1456,6 +1456,16 @@ public class RekruitmenAction extends BaseMasterAction{
         listOfComboPeriode.addAll(listOfPeriode);
     }
 
+    public void initComboPeriodeTahunKeatas5() {
+
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        int batas=5;
+        List listOfPeriode = new ArrayList();
+        for (int i=0;i<batas;i++){
+            listOfPeriode.add(year+i);
+        }
+        listOfComboPeriode.addAll(listOfPeriode);
+    }
 
     @Override
     public String search() {

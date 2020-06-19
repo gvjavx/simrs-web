@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="439178ee-4584-4e86-b765-559a2351e7e6">
 	<property name="ireport.zoom" value="1.461537825000002"/>
-	<property name="ireport.x" value="344"/>
-	<property name="ireport.y" value="64"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="17"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -149,20 +149,6 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.unit}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="3" y="89" width="65" height="20" uuid="68f05da6-6948-4a0a-a455-781b16a61b17"/>
-				<textElement verticalAlignment="Middle">
-					<font size="10"/>
-				</textElement>
-				<text><![CDATA[Bagian 	:]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="68" y="89" width="288" height="20" uuid="6e23259d-42df-4be7-970f-6dd3b403a16b"/>
-				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.bagian}]]></textFieldExpression>
-			</textField>
 			<textField>
 				<reportElement x="712" y="69" width="88" height="20" uuid="8d5d0360-4743-4a51-92b4-39dcd96a1734"/>
 				<textElement verticalAlignment="Middle"/>
@@ -219,10 +205,10 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="115" uuid="75366ce3-7823-4d7d-a222-104c5fb32d61">
+					<jr:column width="147" uuid="75366ce3-7823-4d7d-a222-104c5fb32d61">
 						<jr:columnHeader height="24" rowSpan="2">
 							<staticText>
-								<reportElement mode="Opaque" x="0" y="0" width="115" height="23" backcolor="#E1E1E1" uuid="8ee22972-5b37-4fdc-8b70-d8e5ddd8a6ea"/>
+								<reportElement mode="Opaque" x="0" y="0" width="147" height="23" backcolor="#E1E1E1" uuid="8ee22972-5b37-4fdc-8b70-d8e5ddd8a6ea"/>
 								<box>
 									<pen lineWidth="1.0"/>
 									<topPen lineWidth="1.0"/>
@@ -238,7 +224,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 						</jr:columnHeader>
 						<jr:columnFooter height="43" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="115" height="43" uuid="cd1383b5-af3b-4250-af20-531d65520385"/>
+								<reportElement x="0" y="0" width="147" height="43" uuid="cd1383b5-af3b-4250-af20-531d65520385"/>
 								<box>
 									<topPen lineWidth="1.0"/>
 								</box>
@@ -247,7 +233,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 						</jr:columnFooter>
 						<jr:detailCell height="14" rowSpan="1">
 							<textField>
-								<reportElement style="Style1" x="0" y="0" width="115" height="14" uuid="e1cf9379-2bda-4e93-a9a6-8865db152244"/>
+								<reportElement style="Style1" x="0" y="0" width="147" height="14" uuid="e1cf9379-2bda-4e93-a9a6-8865db152244"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="7"/>
 								</textElement>
@@ -255,10 +241,10 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="61" uuid="d38a8b19-6c0a-4c65-8a08-ee62824cd2e2">
+					<jr:column width="142" uuid="d38a8b19-6c0a-4c65-8a08-ee62824cd2e2">
 						<jr:columnHeader height="24" rowSpan="2">
 							<staticText>
-								<reportElement mode="Opaque" x="0" y="0" width="61" height="23" backcolor="#E1E1E1" uuid="10d07f24-9c13-443c-9d7c-c647abd1cc79"/>
+								<reportElement mode="Opaque" x="0" y="0" width="142" height="23" backcolor="#E1E1E1" uuid="10d07f24-9c13-443c-9d7c-c647abd1cc79"/>
 								<box>
 									<pen lineWidth="1.0"/>
 									<topPen lineWidth="1.0"/>
@@ -274,7 +260,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 						</jr:columnHeader>
 						<jr:columnFooter height="43" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="61" height="43" uuid="b3c37262-c3c6-4b85-8c4d-64de50593991"/>
+								<reportElement x="0" y="0" width="142" height="43" uuid="b3c37262-c3c6-4b85-8c4d-64de50593991"/>
 								<box>
 									<topPen lineWidth="1.0"/>
 								</box>
@@ -283,7 +269,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 						</jr:columnFooter>
 						<jr:detailCell height="14" rowSpan="1">
 							<textField>
-								<reportElement style="Style1" x="0" y="0" width="61" height="14" uuid="1c9fdba2-99d1-4a8d-b3d0-3c7a9f400e57"/>
+								<reportElement style="Style1" x="0" y="0" width="142" height="14" uuid="1c9fdba2-99d1-4a8d-b3d0-3c7a9f400e57"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="7"/>
 								</textElement>
@@ -552,42 +538,6 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="77" uuid="fabcf157-7c4d-4e9a-aeea-71eb15008a4a">
-						<jr:columnHeader height="24" rowSpan="2">
-							<staticText>
-								<reportElement mode="Opaque" x="0" y="0" width="77" height="23" backcolor="#E1E1E1" uuid="f5124141-ec10-4225-abdc-f5caf33001fc"/>
-								<box>
-									<pen lineWidth="1.0"/>
-									<topPen lineWidth="1.0"/>
-									<leftPen lineWidth="1.0"/>
-									<bottomPen lineWidth="1.0"/>
-									<rightPen lineWidth="1.0"/>
-								</box>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font size="7"/>
-								</textElement>
-								<text><![CDATA[Ket. Terlambat]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:columnFooter height="43" rowSpan="1">
-							<staticText>
-								<reportElement x="0" y="0" width="77" height="43" uuid="4d6c719d-85c3-4544-b284-1c89efe81570"/>
-								<box>
-									<topPen lineWidth="1.0"/>
-								</box>
-								<text><![CDATA[]]></text>
-							</staticText>
-						</jr:columnFooter>
-						<jr:detailCell height="14" rowSpan="1">
-							<textField>
-								<reportElement x="0" y="0" width="77" height="14" uuid="4771667a-d2e4-4801-b722-77d41144be8e"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font size="8"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$F{keteranganTerlambat}]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
 					<jr:column width="45" uuid="a74fb18a-3c0b-4e27-81b8-0a21f1bbd933">
 						<jr:columnHeader height="24" rowSpan="2">
 							<staticText>
@@ -660,10 +610,10 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:columnGroup width="213" uuid="b11d199d-7ee9-42b3-a8df-ba82cb38a483">
+					<jr:columnGroup width="190" uuid="b11d199d-7ee9-42b3-a8df-ba82cb38a483">
 						<jr:columnHeader height="12" rowSpan="1">
 							<staticText>
-								<reportElement mode="Opaque" x="0" y="0" width="213" height="12" backcolor="#E1E1E1" uuid="0133994f-e012-45a1-a1c1-8ca514383624"/>
+								<reportElement mode="Opaque" x="0" y="0" width="190" height="12" backcolor="#E1E1E1" uuid="0133994f-e012-45a1-a1c1-8ca514383624"/>
 								<box>
 									<pen lineWidth="1.0"/>
 									<topPen lineWidth="1.0"/>
@@ -679,7 +629,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 						</jr:columnHeader>
 						<jr:columnFooter height="43" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="213" height="43" uuid="c8e4d824-c14c-423f-be3c-52164a66aab9"/>
+								<reportElement x="0" y="0" width="190" height="43" uuid="c8e4d824-c14c-423f-be3c-52164a66aab9"/>
 								<box>
 									<topPen lineWidth="1.0"/>
 								</box>
@@ -737,33 +687,6 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 										<font size="8"/>
 									</textElement>
 									<textFieldExpression><![CDATA[$F{jmlCuti}]]></textFieldExpression>
-								</textField>
-							</jr:detailCell>
-						</jr:column>
-						<jr:column width="23" uuid="66660286-b770-43e4-bd0f-095e44a5655d">
-							<jr:columnHeader height="12" rowSpan="1">
-								<staticText>
-									<reportElement mode="Opaque" x="0" y="0" width="23" height="11" backcolor="#E1E1E1" uuid="abe38f43-2660-4350-b5f1-8b4c29a23b5f"/>
-									<box>
-										<pen lineWidth="1.0"/>
-										<topPen lineWidth="1.0"/>
-										<leftPen lineWidth="1.0"/>
-										<bottomPen lineWidth="1.0"/>
-										<rightPen lineWidth="1.0"/>
-									</box>
-									<textElement textAlignment="Center" verticalAlignment="Middle">
-										<font size="7"/>
-									</textElement>
-									<text><![CDATA[Dinas]]></text>
-								</staticText>
-							</jr:columnHeader>
-							<jr:detailCell height="14" rowSpan="1">
-								<textField>
-									<reportElement x="0" y="0" width="23" height="14" uuid="06f86e8c-0768-4314-b428-d1d6886a1c34"/>
-									<textElement textAlignment="Center" verticalAlignment="Middle">
-										<font size="8"/>
-									</textElement>
-									<textFieldExpression><![CDATA[$F{jmlDinas}]]></textFieldExpression>
 								</textField>
 							</jr:detailCell>
 						</jr:column>

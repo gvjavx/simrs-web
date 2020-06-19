@@ -46,7 +46,7 @@ public interface AbsensiBo extends BaseMasterBo<AbsensiPegawai> {
 
     List getDataFromMesin() throws Exception;
 
-    List<MesinAbsensi> inquiry(String tanggal,Boolean awalTanggal, String statusPegawai) throws Exception;
+    List<MesinAbsensi> inquiry(String tanggal,Boolean awalTanggal, String statusPegawai, String branchId) throws Exception;
 
     List<PegawaiTambahanAbsensi> inquiryTambahan(String tanggal, Boolean awalTanggal) throws Exception;
 

@@ -214,7 +214,7 @@ public class AbsensiAction extends BaseMasterAction {
             try {
                 DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                 String tanggal = df.format(date);
-                mesinAbsensiList = absensiBo.inquiry(tanggal,awalTanggal,"");
+                mesinAbsensiList = absensiBo.inquiry(tanggal,awalTanggal,"", "");
             } catch (GeneralBOException e) {
                 Long logId = null;
                 try {
@@ -255,7 +255,18 @@ public class AbsensiAction extends BaseMasterAction {
     public String add() {
         logger.info("[absensiAction.add] start process >>>");
         AbsensiPegawai addAbsensiPegawai = new AbsensiPegawai();
-        setAbsensiPegawai(addAbsensiPegawai);
+        String branchId = CommonUtil.userBranchLogin();
+//        Biodata data = new Biodata();
+        if (branchId != null){
+            addAbsensiPegawai.setBranchId(branchId);
+        }else {
+            addAbsensiPegawai.setBranchId("");
+        }
+
+        absensiPegawai = addAbsensiPegawai;
+
+//        setAbsensiPegawai(addAbsensiPegawai);
+        setAbsensiPegawai(absensiPegawai);
         setAddOrEdit(true);
         setAdd(true);
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -835,6 +846,17 @@ public class AbsensiAction extends BaseMasterAction {
         return mesinAbsensiListFinal;
     }
     public String goToInquiry(){
+        AbsensiPegawai addAbsensiPegawai = new AbsensiPegawai();
+        String unitId = CommonUtil.userBranchLogin();
+//        Biodata data = new Biodata();
+        if (unitId != null){
+            addAbsensiPegawai.setBranchId(unitId);
+        }else {
+            addAbsensiPegawai.setBranchId("");
+        }
+
+        absensiPegawai = addAbsensiPegawai;
+        setAbsensiPegawai(absensiPegawai);
         return "go_to_inquiry";
     }
 
@@ -2468,6 +2490,15 @@ public class AbsensiAction extends BaseMasterAction {
         data.setStHariLibur40(df.format(hasilhariLibur40));
         data.setsJumlahHariLibur(df.format(hasilJumlahHariLibur));
         data.setStJamLembur(df.format(hasilJamLembur));
+//        data.setStLamaLembur(hasilLamaLembur.toString());
+//        data.setStHariKerja15(hasilhariKerja15.toString());
+//        data.setStHariKerja20(hasilhariKerja20.toString());
+//        data.setsJumlahHariKerja(hasilJumlahhariKerja.toString());
+//        data.setStHariLibur20(hasilhariLibur20.toString());
+//        data.setStHariLibur30(hasilhariLibur30.toString());
+//        data.setStHariLibur40(hasilhariLibur40.toString());
+//        data.setsJumlahHariLibur(hasilJumlahHariLibur.toString());
+//        data.setStJamLembur(hasilJamLembur.toString());
         data.setStBiayaLemburPerjam(CommonUtil.numbericFormat(BigDecimal.valueOf(hasilBiayaLemburPerJam),"###,###"));
         data.setStBiayaLembur(CommonUtil.numbericFormat(BigDecimal.valueOf(hasilBiayaLembur),"###,###"));
         listDataFinal.add(data);
@@ -2475,8 +2506,8 @@ public class AbsensiAction extends BaseMasterAction {
         List<AbsensiPegawai> forReport = new ArrayList<>();
         String bagianPegawai = "";
         int a = 0;
-        Double jJumlahJamSeluruhnya=(double)0,jJamKerja15=(double)0,jJamKerja20=(double)0,jJumlahJamKerja=(double)0,jJamlibur20=(double)0,jJamlibur30=(double)0,jJamlibur40=(double)0,jJumlahLibur=(double)0,jJumlahJamLemburPerhitungan=(double)0,jJumlahUpahLembur=(double)0;
-        Double jJumlahJamSeluruhnyaAll=(double)0,jJamKerja15All=(double)0,jJamKerja20All=(double)0,jJumlahJamKerjaAll=(double)0,jJamlibur20All=(double)0,jJamlibur30All=(double)0,jJamlibur40All=(double)0,jJumlahLiburAll=(double)0,jJumlahJamLemburPerhitunganAll=(double)0,jJumlahUpahLemburAll=(double)0;
+        Double jJumlahJamSeluruhnya=(double)0, jJamKerja15=(double)0, jJamKerja20=(double)0, jJumlahJamKerja=(double)0, jJamlibur20=(double)0, jJamlibur30=(double)0, jJamlibur40=(double)0, jJumlahLibur=(double)0, jJumlahJamLemburPerhitungan=(double)0, jJumlahUpahLembur=(double)0;
+        Double jJumlahJamSeluruhnyaAll=(double)0, jJamKerja15All=(double)0, jJamKerja20All=(double)0, jJumlahJamKerjaAll=(double)0, jJamlibur20All=(double)0, jJamlibur30All=(double)0, jJamlibur40All=(double)0, jJumlahLiburAll=(double)0, jJumlahJamLemburPerhitunganAll=(double)0, jJumlahUpahLemburAll=(double)0;
 
         for(AbsensiPegawai absensiPegawai: listDataFinal) {
             if (!bagianPegawai.equalsIgnoreCase(absensiPegawai.getBagian())){
@@ -2522,7 +2553,9 @@ public class AbsensiAction extends BaseMasterAction {
                 bagianPegawai = absensiPegawai.getBagian();
             }
             forReport.add(absensiPegawai);
-            NumberFormat nf = NumberFormat.getInstance(Locale.US);
+            NumberFormat nf = NumberFormat.getInstance(Locale.GERMANY);
+            NumberFormat nf1 = NumberFormat.getInstance(Locale.US);
+//            DecimalFormat df1 =  new DecimalFormat("#.00",DecimalFormatSymbols.getInstance(Locale.US));
             jJumlahJamSeluruhnya+=nf.parse(absensiPegawai.getStLamaLembur()).doubleValue();
             jJamKerja15+=nf.parse(absensiPegawai.getStHariKerja15()).doubleValue();
             jJamKerja20+=nf.parse(absensiPegawai.getStHariKerja20()).doubleValue();
@@ -2532,7 +2565,8 @@ public class AbsensiAction extends BaseMasterAction {
             jJamlibur40+=nf.parse(absensiPegawai.getStHariLibur40()).doubleValue();
             jJumlahLibur+=nf.parse(absensiPegawai.getsJumlahHariLibur()).doubleValue();
             jJumlahJamLemburPerhitungan+=nf.parse(absensiPegawai.getStJamLembur()).doubleValue();
-            jJumlahUpahLembur+=nf.parse(absensiPegawai.getStBiayaLembur()).doubleValue();
+            jJumlahUpahLembur+=nf1.parse(absensiPegawai.getStBiayaLembur()).doubleValue();
+
             a++;
         }
         jJumlahJamSeluruhnyaAll=jJumlahJamSeluruhnyaAll+jJumlahJamSeluruhnya;jJamKerja15All=jJamKerja15All+jJamKerja15;jJamKerja20All=jJamKerja20All+jJamKerja20;jJumlahJamKerjaAll=jJumlahJamKerjaAll+jJumlahJamKerja;jJamlibur20All=jJamlibur20All+jJamlibur20;jJamlibur30All=jJamlibur30All+jJamlibur30;jJamlibur40All=jJamlibur40All+jJamlibur40;jJumlahLiburAll=jJumlahLiburAll+jJumlahLibur;jJumlahJamLemburPerhitunganAll=jJumlahJamLemburPerhitunganAll+jJumlahJamLemburPerhitungan;
@@ -2541,15 +2575,15 @@ public class AbsensiAction extends BaseMasterAction {
         tmp.setNo("");
         tmp.setNip("JUMLAH");
         tmp.setNama("");
-        tmp.setStLamaLembur(String.valueOf(jJumlahJamSeluruhnya));
-        tmp.setStHariKerja15(String.valueOf(jJamKerja15));
-        tmp.setStHariKerja20(String.valueOf(jJamKerja20));
-        tmp.setsJumlahHariKerja(String.valueOf(jJumlahJamKerja));
-        tmp.setStHariLibur20(String.valueOf(jJamlibur20));
-        tmp.setStHariLibur30(String.valueOf(jJamlibur30));
-        tmp.setStHariLibur40(String.valueOf(jJamlibur40));
-        tmp.setsJumlahHariLibur(String.valueOf(jJumlahLibur));
-        tmp.setStJamLembur(String.valueOf(jJumlahJamLemburPerhitungan));
+        tmp.setStLamaLembur(df.format(jJumlahJamSeluruhnya));
+        tmp.setStHariKerja15(df.format(jJamKerja15));
+        tmp.setStHariKerja20(df.format(jJamKerja20));
+        tmp.setsJumlahHariKerja(df.format(jJumlahJamKerja));
+        tmp.setStHariLibur20(df.format(jJamlibur20));
+        tmp.setStHariLibur30(df.format(jJamlibur30));
+        tmp.setStHariLibur40(df.format(jJamlibur40));
+        tmp.setsJumlahHariLibur(df.format(jJumlahLibur));
+        tmp.setStJamLembur(df.format(jJumlahJamLemburPerhitungan));
         tmp.setStBiayaLemburPerjam("");
         tmp.setStBiayaLembur(CommonUtil.numbericFormat(BigDecimal.valueOf(jJumlahUpahLembur),"###,###"));
         forReport.add(tmp);
@@ -2575,15 +2609,15 @@ public class AbsensiAction extends BaseMasterAction {
         tmp.setNo("");
         tmp.setNip("TOTAL SELURUHNYA");
         tmp.setNama("");
-        tmp.setStLamaLembur(String.valueOf(jJumlahJamSeluruhnyaAll));
-        tmp.setStHariKerja15(String.valueOf(jJamKerja15All));
-        tmp.setStHariKerja20(String.valueOf(jJamKerja20All));
-        tmp.setsJumlahHariKerja(String.valueOf(jJumlahJamKerjaAll));
-        tmp.setStHariLibur20(String.valueOf(jJamlibur20All));
-        tmp.setStHariLibur30(String.valueOf(jJamlibur30All));
-        tmp.setStHariLibur40(String.valueOf(jJamlibur40All));
-        tmp.setsJumlahHariLibur(String.valueOf(jJumlahLiburAll));
-        tmp.setStJamLembur(String.valueOf(jJumlahJamLemburPerhitunganAll));
+        tmp.setStLamaLembur(df.format(jJumlahJamSeluruhnyaAll));
+        tmp.setStHariKerja15(df.format(jJamKerja15All));
+        tmp.setStHariKerja20(df.format(jJamKerja20All));
+        tmp.setsJumlahHariKerja(df.format(jJumlahJamKerjaAll));
+        tmp.setStHariLibur20(df.format(jJamlibur20All));
+        tmp.setStHariLibur30(df.format(jJamlibur30All));
+        tmp.setStHariLibur40(df.format(jJamlibur40All));
+        tmp.setsJumlahHariLibur(df.format(jJumlahLiburAll));
+        tmp.setStJamLembur(df.format(jJumlahJamLemburPerhitunganAll));
         tmp.setStBiayaLemburPerjam("");
         tmp.setStBiayaLembur(CommonUtil.numbericFormat(BigDecimal.valueOf(jJumlahUpahLemburAll),"###,###"));
         finalRekapLembur.add(tmp);
@@ -3172,6 +3206,7 @@ public class AbsensiAction extends BaseMasterAction {
         AbsensiPegawai absen = getAbsensiPegawai();
         String tanggalAwal = absen.getStTanggalDari();
         String tanggalAkhir = absen.getStTanggalAkhir();
+        String branchId = absen.getBranchId();
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultMesinAbsensi");
         session.removeAttribute("listOfResultAbsensiFinal");
@@ -3197,7 +3232,7 @@ public class AbsensiAction extends BaseMasterAction {
             try {
                 DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                 String tanggal = df.format(date);
-                mesinAbsensiList = absensiBo.inquiry(tanggal,awalTanggal, absen.getCekPegawaiStatus());
+                mesinAbsensiList = absensiBo.inquiry(tanggal,awalTanggal, absen.getCekPegawaiStatus(), branchId);
             } catch (GeneralBOException e) {
                 Long logId = null;
                 try {
@@ -3210,6 +3245,7 @@ public class AbsensiAction extends BaseMasterAction {
             }
             mesinAbsensiFinalList.addAll(mesinAbsensiList);
         }
+
         session.setAttribute("listOfResultMesinAbsensi", mesinAbsensiFinalList);
         session.removeAttribute("listOfResultAbsensiFinal");
     }

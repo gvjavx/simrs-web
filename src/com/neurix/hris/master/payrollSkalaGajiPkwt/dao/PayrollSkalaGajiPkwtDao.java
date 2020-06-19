@@ -60,7 +60,7 @@ public class PayrollSkalaGajiPkwtDao extends GenericDao<ImPayrollSkalaGajiPkwtEn
     public List<ImPayrollSkalaGajiPkwtEntity> getSkalaGajiPkwt(String golonganPkwtId,String tahun) throws HibernateException {
         List<ImPayrollSkalaGajiPkwtEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImPayrollSkalaGajiPkwtEntity.class)
                 .add(Restrictions.eq("golonganPkwtId", golonganPkwtId))
-                .add(Restrictions.eq("golonganPkwtId", golonganPkwtId))
+                .add(Restrictions.eq("tahun", tahun))
                 .add(Restrictions.eq("flag", "Y"))
                 .list();
 

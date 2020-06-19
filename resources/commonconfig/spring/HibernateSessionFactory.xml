@@ -88,12 +88,15 @@
                 <value>sshconfig/com/neurix/authorization/user/hibernate/ItUserSessionLog.hbm.xml</value>
                 <value>sshconfig/com/neurix/authorization/user/hibernate/ItBusinessObjectLog.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/libur/hibernate/ImLiburEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/libur/hibernate/ImLiburHistoryEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/biodata/hibernate/ItTunjLainPegEntity.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/hris/master/tipelibur/hibernate/ImHrisTipeLiburEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/tipelibur/hibernate/ImHrisTipeLiburHistoryEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/golongan/hibernate/ImGolonganEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/golonganDapen/hibernate/ImGolonganDapenEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/golonganPkwt/hibernate/ImGolonganPkwtEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/jamkerja/hibernate/ImHrisJamKerjaHistorycal.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/hris/master/golongan/hibernate/ImGolonganHistoryEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/updateGolongan/hibernate/ImtUpdateGolonganEntity.hbm.xml</value>
@@ -280,6 +283,7 @@
                 <value>sshconfig/com/neurix/hris/transaksi/absensi/hibernate/ItAbsensiPegawaiEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/transaksi/absensi/hibernate/ImPegawaiTambahanEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/transaksi/absensi/hibernate/ImPegawaiTambahanAbsensiEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/transaksi/absensi/hibernate/ImMesinAbsensiHistoryEntity.hbm.xml</value>
                 <!-- For Lembur -->
                 <value>sshconfig/com/neurix/hris/transaksi/Lembur/hibernate/ItLemburEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/transaksi/Lembur/hibernate/ImHrisJamLemburEntity.hbm.xml</value>
@@ -309,6 +313,7 @@
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollRapelDetailEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/payrollMasterInsentif/hibernate/ImPayrollMasterInsentifEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/payrollSkalaGajiBod/hibernate/ImPayrollSkalaGajiBodEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/payrollSkalaGajiBod/hibernate/ImPayrollSkalaGajiBodHistoryEntity.hbm.xml</value>
 
                 <!--Hibernate Config For SIMRS is HERE-->
                 <value>sshconfig/com/neurix/simrs/master/jenisobat/hibernate/ImSimrsJenisObatEntity.hbm.xml</value>

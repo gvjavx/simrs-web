@@ -1615,6 +1615,23 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
                                     }
                                 }
 
+                                if (ijinKeluarEntity.getApprovalFlag() != null){
+                                    if(ijinKeluarEntity.getApprovalFlag().equals("Y") && !searchBean.getRoleId().equalsIgnoreCase("1")){
+                                        returnIjinKeluar.setCanCancel(false);
+                                        returnIjinKeluar.setPengajuanBatal(true);
+                                    }else {
+                                        if (ijinKeluarEntity.getFlagPengajuanBatal() != null) {
+                                            if (searchBean.getRoleId().equalsIgnoreCase("1") && ijinKeluarEntity.getFlagPengajuanBatal().equalsIgnoreCase("Y")) {
+                                                returnIjinKeluar.setCanCancel(true);
+                                                returnIjinKeluar.setPengajuanBatal(false);
+                                            } else {
+                                                returnIjinKeluar.setCanCancel(false);
+                                                returnIjinKeluar.setPengajuanBatal(false);
+                                            }
+                                        }
+                                    }
+                                }
+
                                 if (ijinKeluarEntity.getFlagPengajuanBatal() != null)
                                     returnIjinKeluar.setFlagPengajuanBatal(ijinKeluarEntity.getFlagPengajuanBatal());
 

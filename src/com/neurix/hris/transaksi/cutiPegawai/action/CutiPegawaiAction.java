@@ -1900,7 +1900,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
         String bagianPegawai="";
         int a = 1;
         List<CutiPegawai> forReport = new ArrayList<>();
-        List<StrukturJabatan> strukturBagian= strukturJabatanBo.getPerBagian();
+//        List<StrukturJabatan> strukturBagian= strukturJabatanBo.getPerBagian();
         for(CutiPegawai cutiPegawai: result) {
             if (!bagianPegawai.equalsIgnoreCase(cutiPegawai.getBagian())){
                 CutiPegawai tmp = new CutiPegawai();

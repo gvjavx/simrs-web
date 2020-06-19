@@ -2684,11 +2684,20 @@ public class BiodataBoImpl implements BiodataBo {
             }
 
             if(!"".equalsIgnoreCase(imBiodata.getGolongan())){
-                if(imBiodata.getImGolonganEntity() != null){
-                    biodata.setGolonganName(imBiodata.getImGolonganEntity().getGolonganName());
-                    biodata.setGolongan(imBiodata.getGolongan());
-                }else{
-                    biodata.setGolongan(imBiodata.getGolongan());
+                if ("TP03".equalsIgnoreCase(imBiodata.getTipePegawai())){
+                    if (imBiodata.getImGolonganPkwtEntity() != null){
+                        biodata.setGolonganName(imBiodata.getImGolonganPkwtEntity().getGolonganPkwtName());
+                        biodata.setGolongan(imBiodata.getGolongan());
+                    }else {
+                        biodata.setGolongan(imBiodata.getGolongan());
+                    }
+                }else {
+                    if(imBiodata.getImGolonganEntity() != null){
+                        biodata.setGolonganName(imBiodata.getImGolonganEntity().getGolonganName());
+                        biodata.setGolongan(imBiodata.getGolongan());
+                    }else{
+                        biodata.setGolongan(imBiodata.getGolongan());
+                    }
                 }
             } else{
                 biodata.setGolongan(imBiodata.getGolongan());

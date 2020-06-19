@@ -3270,7 +3270,7 @@ public class AbsensiBoImpl implements AbsensiBo {
     }
 
     @Override
-    public List<MesinAbsensi> inquiry(String tanggal, Boolean awalTanggal, String statusPegawai) throws Exception {
+    public List<MesinAbsensi> inquiry(String tanggal, Boolean awalTanggal, String statusPegawai, String branchId) throws Exception {
         List<ImBiodataEntity> pegawaiList = new ArrayList<>();
         List<MesinAbsensi> absensiFinal = new ArrayList<>();
         List<ImHrisJamKerja> jamKerjaList = new ArrayList<>();
@@ -3278,16 +3278,7 @@ public class AbsensiBoImpl implements AbsensiBo {
         int iJamMasukDB= 0,iJamPulangDB = 0,iJamIstirahatAwalDB= 0,iJamIstirahatAkhirDB= 0;
 
         try {
-            if (statusPegawai!=null){
-                if (!statusPegawai.equalsIgnoreCase("")){
-                    pegawaiList = biodataDao.getAbsensiPersonShift(statusPegawai);
-                }
-                else {
-                    pegawaiList = biodataDao.getAbsensiPerson();
-                }
-            }else {
-                pegawaiList = biodataDao.getAbsensiPerson();
-            }
+            pegawaiList = biodataDao.getDataBiodata("","",branchId,"","","Y");
         } catch (HibernateException e) {
             logger.error("[biodataDao.getAbsensiPerson] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data, please info to your admin..." + e.getMessage());
@@ -3315,7 +3306,7 @@ public class AbsensiBoImpl implements AbsensiBo {
         java.sql.Timestamp tsTanggalAwal = new java.sql.Timestamp(tanggalAwal.getTime());
         java.sql.Timestamp tsTanggalBesok = new java.sql.Timestamp(tanggalBesok.getTime());
         cal = Calendar.getInstance();
-        String branch = CommonConstant.ID_KANPUS;
+        String branch = branchId;
         cal.setTime(tanggalAwal);
         int day = cal.get(Calendar.DAY_OF_WEEK);
         Map hsCriteria2 = new HashMap();

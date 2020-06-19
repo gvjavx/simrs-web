@@ -113,7 +113,7 @@
                     <table>
                         <tr>
                             <td>
-                                <label class="control-label"><small>Golongan Id :</small></label>
+                                <label class="control-label"><small>Tipe Libur Id :</small></label>
                             </td>
                             <td>
                                 <table>
@@ -126,23 +126,11 @@
 
                         <tr>
                             <td>
-                                <label class="control-label"><small>Tip Libur Name:</small></label>
+                                <label class="control-label"><small>Nama Tipe Libur:</small></label>
                             </td>
                             <td>
                                 <table>
                                     <s:textfield id="tipeLiburName" cssClass="form-control" name="tipeLibur.tipeLiburName" required="false" disabled="false"/>
-                                </table>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <label class="control-label"><small>Flag :</small></label>
-                            </td>
-                            <td>
-                                <table>
-                                    <s:select cssClass="form-control" list="#{'Y':'Active', 'N':'NonActive'}" id="flag" name="tipeLibur.flag"
-                                              headerKey="" headerValue="[Select one]"/>
                                 </table>
                             </td>
                         </tr>
@@ -173,18 +161,34 @@
                                 <div id="crud">
                                     <td>
                                         <table>
-                                            <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
-                                                       resizable="false"
-                                                       height="350" width="600" autoOpen="false" title="Saving ...">
-                                                Please don't close this window, server is processing your request ...
-                                                </br>
-                                                </br>
-                                                </br>
-                                                <center>
-                                                    <img border="0" src="<s:url value="/pages/images/loading4.gif"/>" name="image_indicator_write">
-                                                </center>
-                                            </sj:dialog>
-
+                                            <%--<sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"--%>
+                                                       <%--resizable="false"--%>
+                                                       <%--height="350" width="600" autoOpen="false" title="Saving ...">--%>
+                                                <%--Please don't close this window, server is processing your request ...--%>
+                                                <%--</br>--%>
+                                                <%--</br>--%>
+                                                <%--</br>--%>
+                                                <%--<center>--%>
+                                                    <%--<img border="0" src="<s:url value="/pages/images/loading4.gif"/>" name="image_indicator_write">--%>
+                                                <%--</center>--%>
+                                            <%--</sj:dialog>--%>
+                                                <sj:dialog id="waiting_dialog" openTopics="showDialog"
+                                                           closeTopics="closeDialog" modal="true"
+                                                           resizable="false"
+                                                           height="250" width="600" autoOpen="false"
+                                                           title="Save Data ...">
+                                                    Please don't close this window, server is processing your request ...
+                                                    <br>
+                                                    <center>
+                                                        <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                             src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                             name="image_indicator_write">
+                                                        <br>
+                                                        <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                             src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                             name="image_indicator_write">
+                                                    </center>
+                                                </sj:dialog>
                                             <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
                                                        height="200" width="400" autoOpen="false" title="Infomation Dialog"
                                                        buttons="{

@@ -70,7 +70,7 @@ public class PayrollSkalaGajiBodAction extends BaseMasterAction{
     public PayrollSkalaGajiBod init(String kode, String flag){
         logger.info("[PayrollSkalaGajiBodAction.init] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
-        List<PayrollSkalaGajiBod> listOfResult = (List<PayrollSkalaGajiBod>) session.getAttribute("listOfResult");
+        List<PayrollSkalaGajiBod> listOfResult = (List<PayrollSkalaGajiBod>) session.getAttribute("listOfResultBod");
 
         if(kode != null && !"".equalsIgnoreCase(kode)){
             if(listOfResult != null){
@@ -311,8 +311,8 @@ public class PayrollSkalaGajiBodAction extends BaseMasterAction{
 
         HttpSession session = ServletActionContext.getRequest().getSession();
 
-        session.removeAttribute("listOfResult");
-        session.setAttribute("listOfResult", listOfsearchPayrollSkalaGajiBod);
+        session.removeAttribute("listOfResultBod");
+        session.setAttribute("listOfResultBod", listOfsearchPayrollSkalaGajiBod);
 
         logger.info("[PayrollSkalaGajiBodAction.search] end process <<<");
 

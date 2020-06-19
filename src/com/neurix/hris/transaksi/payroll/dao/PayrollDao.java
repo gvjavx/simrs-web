@@ -3877,6 +3877,9 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
                 .add(Restrictions.eq("tahun", tahun))
                 .add(Restrictions.eq("flag", "Y"))
                 .add(Restrictions.eq("approvalFlag", "Y"))
+                .add(Restrictions.eq("flagPayroll", "Y"))
+                .addOrder(Order.desc("bulan"))
+                .setMaxResults(1)
                 .list();
 
         return results;

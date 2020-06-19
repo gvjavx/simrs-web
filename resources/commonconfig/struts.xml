@@ -144,6 +144,7 @@
     <!-- For Absensi -->
     <include file="sshconfig/com/neurix/hris/transaksi/absensi/struts/MesinAbsensiDetailAction.xml"/>
     <include file="sshconfig/com/neurix/hris/transaksi/absensi/struts/AbsensiAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/transaksi/absensi/struts/MesinAbsensiAction.xml"/>
 
     <include file="sshconfig/com/neurix/hris/master/payrollMasaKerjaPensiun/struts/MasaKerjaPensiunAction.xml"/>
 
