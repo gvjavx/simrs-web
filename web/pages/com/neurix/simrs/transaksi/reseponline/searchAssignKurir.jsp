@@ -14,6 +14,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatPoliAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/TransaksiObatAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/ResepOnlineAction.js"/>'></script>
     <script type='text/javascript'>
 
         $(document).ready(function () {
@@ -284,7 +285,7 @@
                });
            }
 
-           $("#sel-kurir").val(str);
+           $("#sel-kurir").html(str);
        })
    }
 
