@@ -225,7 +225,7 @@
 </div>
 
 <div class="modal fade" id="modal-kurir">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -236,8 +236,8 @@
                 <div class="box-body">
 
                     <div class="row">
-                        <div class="col-md-2">
-                            <label></label>
+                        <div class="col-md-2 col-md-offset-2">
+                            <label>Kurir</label>
                         </div>
                         <div class="col-md-4">
                             <select class="form-control" id="sel-kurir">
@@ -260,8 +260,8 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <%--<button type="button" class="btn btn-success" id="save_fin" onclick="confirmSavePembayaranTagihan()"><i class="fa fa-arrow-right"></i> Save--%>
-                <%--</button>--%>
+                <button type="button" class="btn btn-success" id="save_fin" onclick="saveKonfirm()"><i class="fa fa-arrow-right"></i> Save
+                </button>
                 <%--<button style="display: none; cursor: no-drop" type="button" class="btn btn-success"--%>
                 <%--id="load_fin"><i--%>
                 <%--class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...--%>
@@ -274,7 +274,7 @@
 <script type='text/javascript'>
 
    function viewAssign(var1) {
-       
+       $("#modal-kurir").modal('show');
    }
 
 </script>
