@@ -164,4 +164,24 @@ public class JurnalBoImpl implements JurnalBo {
 
         return result;
     }
+
+    @Override
+    public JurnalDetail getBudgetInvestasiTerpakai(String branchId, String divisiId, String tahun, String bulan, String idInvestasi,String budgetSaatIni,String budgetSdSaatIni){
+        JurnalDetail result = new JurnalDetail();
+        BigDecimal nilaiBudget = BigDecimal.valueOf(Double.valueOf(budgetSaatIni.replace(".","").replace(",","")));
+        BigDecimal nilaiBudgetSdSaatIni = BigDecimal.valueOf(Double.valueOf(budgetSdSaatIni.replace(".","").replace(",","")));
+
+        BigDecimal budgetTerpakai = pengajuanBiayaDetailDao.getPengadaanTerpakaiPadaPengajuan(branchId,divisiId,bulan,tahun,idInvestasi);
+        BigDecimal budgetTerpakaiSdBulanIni = pengajuanBiayaDetailDao.getPengadaanTerpakaiPadaPengajuanSdBulanIni(branchId,divisiId,bulan,tahun,idInvestasi);
+
+        BigDecimal sisaBudget = nilaiBudget.subtract(budgetTerpakai);
+        BigDecimal sisaBudgetSdBulanIni = nilaiBudgetSdSaatIni.subtract(budgetTerpakaiSdBulanIni);
+
+        result.setStBudgetTerpakai(CommonUtil.numbericFormat(budgetTerpakai,"###,###"));
+        result.setStBudgetTerpakaiSdBulanIni(CommonUtil.numbericFormat(budgetTerpakaiSdBulanIni,"###,###"));
+        result.setStSisaBudget(CommonUtil.numbericFormat(sisaBudget,"###,###"));
+        result.setStSisaBudgetSdBulanIni(CommonUtil.numbericFormat(sisaBudgetSdBulanIni,"###,###"));
+
+        return result;
+    }
 }

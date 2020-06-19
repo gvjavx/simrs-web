@@ -37,16 +37,45 @@ public class PengajuanBiayaDetailDao extends GenericDao<ItPengajuanBiayaDetailEn
         Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ItPengajuanBiayaDetailEntity.class);
 
         // Get Collection and sorting
-        if (mapCriteria!=null) {
-            if (mapCriteria.get("pengajuan_biaya_id")!=null) {
-                criteria.add(Restrictions.eq("pengajuanBiayaId", (String) mapCriteria.get("pengajuan_biaya_id")));
+        if (mapCriteria.get("pengajuan_biaya_id")!=null) {
+            criteria.add(Restrictions.eq("pengajuanBiayaId", (String) mapCriteria.get("pengajuan_biaya_id")));
+        }
+        if (mapCriteria.get("pengajuan_biaya_detail_id")!=null) {
+            criteria.add(Restrictions.eq("pengajuanBiayaDetailId", (String) mapCriteria.get("pengajuan_biaya_detail_id")));
+        }
+        if (mapCriteria.get("branch_id")!=null) {
+            criteria.add(Restrictions.eq("branchId", (String) mapCriteria.get("branch_id")));
+        }
+        if (mapCriteria.get("divisi_id")!=null) {
+            criteria.add(Restrictions.eq("divisiId", (String) mapCriteria.get("divisi_id")));
+        }
+        if (mapCriteria.get("tanggal_dari")!=null && mapCriteria.get("tanggal_selesai")!=null) {
+            criteria.add(Restrictions.between("tanggal",mapCriteria.get("tanggal_dari"),mapCriteria.get("tanggal_selesai")));
+        }
+        else {
+            if (mapCriteria.get("tanggal_dari")!=null) {
+                criteria.add(Restrictions.ge("tanggal",mapCriteria.get("tanggal_dari")));
+            }
+            if (mapCriteria.get("tanggal_selesai")!=null) {
+                criteria.add(Restrictions.le("tanggal",mapCriteria.get("tanggal_selesai")));
             }
         }
 
+        if (mapCriteria.get("tanggal_dari_realisasi")!=null && mapCriteria.get("tanggal_selesai_realisasi")!=null) {
+            criteria.add(Restrictions.between("tanggalRealisasi",mapCriteria.get("tanggal_dari_realisasi"),mapCriteria.get("tanggal_selesai_realisasi")));
+        }
+        else {
+            if (mapCriteria.get("tanggal_dari_realisasi")!=null) {
+                criteria.add(Restrictions.ge("tanggalRealisasi",mapCriteria.get("tanggal_dari_realisasi")));
+            }
+            if (mapCriteria.get("tanggal_selesai_realisasi")!=null) {
+                criteria.add(Restrictions.le("tanggalRealisasi",mapCriteria.get("tanggal_selesai_realisasi")));
+            }
+        }
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
 
         // Order by
-        criteria.addOrder(Order.desc("pengajuanBiayaId"));
+        criteria.addOrder(Order.desc("pengajuanBiayaDetailId"));
         List<ItPengajuanBiayaDetailEntity> results = criteria.list();
 
         return results;
@@ -92,12 +121,11 @@ public class PengajuanBiayaDetailDao extends GenericDao<ItPengajuanBiayaDetailEn
                 .list();
         return results;
     }
-    public List<ItPengajuanBiayaDetailEntity> getListPengajuanBiayaDetailForKasKeluar(String id,String divisiId) throws HibernateException {
+    public List<ItPengajuanBiayaDetailEntity> getListPengajuanBiayaDetailForKasKeluar(String id) throws HibernateException {
         List<ItPengajuanBiayaDetailEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPengajuanBiayaDetailEntity.class)
-                .add(Restrictions.ilike("pengajuanBiayaId", "%"+id+"%"))
-                .add(Restrictions.eq("divisiId", divisiId))
+                .add(Restrictions.ilike("pengajuanBiayaDetailId", "%"+id+"%"))
                 .add(Restrictions.eq("approvalKeuanganFlag", "Y"))
-                .add(Restrictions.eq("closed", "Y"))
+                .add(Restrictions.eq("diterimaFlag", "Y"))
                 .add(Restrictions.eq("flag", "Y"))
                 .addOrder(Order.desc("pengajuanBiayaDetailId"))
                 .list();
@@ -115,7 +143,7 @@ public class PengajuanBiayaDetailDao extends GenericDao<ItPengajuanBiayaDetailEn
                     "\tLEFT JOIN it_akun_jurnal j ON bd.pengajuan_biaya_detail_id = j.pengajuan_biaya_id\n" +
                     "WHERE \n" +
                     "\tbd.branch_id = '"+branchId+"'\n" +
-                    "\tAND bd.approval_keuangan_flag='Y'\n" +
+                    "\tAND bd.diterima_flag='Y'\n" +
                     "\tAND j.pengajuan_biaya_id IS NULL\n" +
                     "\tAND bd.tanggal_realisasi <= now()\n" +
                     "\tAND closed='Y'";
@@ -173,6 +201,59 @@ public class PengajuanBiayaDetailDao extends GenericDao<ItPengajuanBiayaDetailEn
                 "\tAND branch_id='"+branchId+"'\n" +
                 "\tAND divisi_id='"+divisiId+"'\n" +
                 "\tAND no_budgeting ilike '%"+noBudgeting+"'\n" +
+                "\tAND closed='Y'\n" +
+                "\tAND approval_keuangan_flag='Y'\n" +
+                "\tAND cast(date_trunc('month', tanggal_realisasi) as date) <= to_date('"+periode+"','MM-YYYY')\n" +
+                "\tAND cast(date_trunc('month', tanggal_realisasi) as date) > to_date('"+periodeSebelumnya+"','MM-YYYY')";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
+        }else{
+            total = BigDecimal.valueOf(0);
+        }
+        return total;
+    }
+
+    public BigDecimal getPengadaanTerpakaiPadaPengajuan (String branchId,String divisiId,String bulan , String tahun , String idPengadaan){
+        BigDecimal total = new BigDecimal(0);
+        String periode = bulan+"-"+tahun;
+        String query="SELECT \n" +
+                "\tsum(jumlah)\n" +
+                "FROM\n" +
+                "\tit_akun_pengajuan_biaya_detail\n" +
+                "WHERE\n" +
+                "\tflag='Y'\n" +
+                "\tAND branch_id='"+branchId+"'\n" +
+                "\tAND divisi_id='"+divisiId+"'\n" +
+                "\tAND keperluan_id = '"+idPengadaan+"'\n" +
+                "\tAND cast(date_trunc('month', tanggal_realisasi) as date) = to_date('"+periode+"','MM-YYYY') \n" +
+                "\tAND closed='Y'\n" +
+                "\tAND approval_keuangan_flag='Y'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
+        }else{
+            total = BigDecimal.valueOf(0);
+        }
+        return total;
+    }
+
+    public BigDecimal getPengadaanTerpakaiPadaPengajuanSdBulanIni (String branchId,String divisiId,String bulan , String tahun , String idPengadaan){
+        BigDecimal total = new BigDecimal(0);
+        Integer tahunSekarang = Integer.valueOf(tahun);
+        String periode = bulan+"-"+tahun;
+        String periodeSebelumnya = "12-"+String.valueOf(tahunSekarang-1);
+        String query="SELECT \n" +
+                "\tsum(jumlah)\n" +
+                "FROM\n" +
+                "\tit_akun_pengajuan_biaya_detail\n" +
+                "WHERE\n" +
+                "\tflag='Y'\n" +
+                "\tAND branch_id='"+branchId+"'\n" +
+                "\tAND divisi_id='"+divisiId+"'\n" +
+                "\tAND keperluan_id = '"+idPengadaan+"'\n" +
                 "\tAND closed='Y'\n" +
                 "\tAND approval_keuangan_flag='Y'\n" +
                 "\tAND cast(date_trunc('month', tanggal_realisasi) as date) <= to_date('"+periode+"','MM-YYYY')\n" +

@@ -37,5 +37,7 @@ public interface BudgetingBo {
 
     List<BudgetingPengadaan> getInvestasiByNoBudgeting(String noBudgeting);
 
-    String getBudgetBiayaInvestasiSaatIni(Budgeting bean);
+    Budgeting getBudgetBiayaInvestasiSaatIni(Budgeting bean);
+
+    List<BudgetingPengadaan> getTerminPembayaran(String pengadaanId);
 }

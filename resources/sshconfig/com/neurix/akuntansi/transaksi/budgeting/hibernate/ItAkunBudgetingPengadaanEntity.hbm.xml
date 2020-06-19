@@ -21,6 +21,11 @@
         <property name="namPengadaan">
             <column name="nama_pengadaan" sql-type="varchar" length="100" not-null="false" />
         </property>
+
+        <property name="pembayaran">
+            <column name="pembayaran" sql-type="varchar" length="10" not-null="false" />
+        </property>
+
         <property name="nilai">
             <column name="nilai" sql-type="numeric" not-null="false" />
         </property>

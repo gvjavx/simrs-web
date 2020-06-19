@@ -1677,8 +1677,8 @@ public class BudgetingAction {
         return data;
     }
 
-    public String getBudgetInvestasiSaatIni(String branchId,String divisiId,String tanggal,String idPengadaan){
-        String budgetSaatIni ;
+    public Budgeting getBudgetInvestasiSaatIni(String branchId,String divisiId,String tanggal,String idPengadaan){
+        Budgeting data = new Budgeting();
         String[] arrTanggal = tanggal.split("-");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -1689,9 +1689,9 @@ public class BudgetingAction {
         budgetingStatus.setBranchId(branchId);
         budgetingStatus.setTahun(arrTanggal[0]);
 
-        budgetSaatIni = budgetingBo.getBudgetBiayaInvestasiSaatIni(budgetingStatus);
+        data = budgetingBo.getBudgetBiayaInvestasiSaatIni(budgetingStatus);
 
-        return budgetSaatIni;
+        return data;
     }
 
     public List<Budgeting> getNoBudgetByDivisi(String branchId,String divisiId,String tanggal){
@@ -1772,7 +1772,15 @@ public class BudgetingAction {
         return budgetingList;
     }
 
+    public List<BudgetingPengadaan> getTerminPembayaran(String pengadaanId) {
+        List<BudgetingPengadaan> budgetingList = new ArrayList<>();
 
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
+
+        budgetingList = budgetingBo.getTerminPembayaran(pengadaanId);
+        return budgetingList;
+    }
 
     public void setBudgetingBoProxy(BudgetingBo budgetingBoProxy) {
         this.budgetingBoProxy = budgetingBoProxy;

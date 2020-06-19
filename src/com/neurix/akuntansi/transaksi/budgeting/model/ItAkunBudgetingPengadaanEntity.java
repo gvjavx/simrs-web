@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 /**
  * Created by reza on 29/04/20.
  */
+
 public class ItAkunBudgetingPengadaanEntity implements Serializable {
 
     private String idPengadaan;
@@ -27,6 +28,15 @@ public class ItAkunBudgetingPengadaanEntity implements Serializable {
     private String noKontrak;
     private BigDecimal nilaiKontrak;
     private String noPengadaan;
+    private String pembayaran;
+
+    public String getPembayaran() {
+        return pembayaran;
+    }
+
+    public void setPembayaran(String pembayaran) {
+        this.pembayaran = pembayaran;
+    }
 
     public String getIdBudgetingDetail() {
         return idBudgetingDetail;

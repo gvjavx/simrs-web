@@ -181,19 +181,20 @@ public class TransaksiStokDao extends GenericDao<ItSimrsTransaksiStokEntity, Str
         return transaksiStok;
     }
 
-    public List<TransaksiStok> getListObatForPengajuan(String branchId){
-
+    public List<TransaksiStok> getListObatForPengajuan(String branchId,String namaObat){
+        String namaObatQ = "%"+namaObat+"%";
         String SQL = "SELECT\n" +
                 "  id_obat,\n" +
                 "  nama_obat\n" +
                 "  FROM im_simrs_obat \n" +
-                "WHERE flag= 'Y' AND branch_id=:branchId \n" +
+                "WHERE flag= 'Y' AND branch_id=:branchId  AND nama_obat ilike :namaObat \n" +
                 "GROUP BY id_obat, nama_obat\n" +
                 "ORDER BY nama_obat;";
 
         List<TransaksiStok> list = new ArrayList<>();
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("branchId", branchId)
+                .setParameter("namaObat", namaObatQ)
                 .list();
 
         if (results.size() > 0){

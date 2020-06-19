@@ -487,31 +487,6 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="modal-daftar-stok">
-    <div class="modal-dialog modal-flat modal-lg">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Daftar Stok Divisi</h4>
-            </div>
-            <div class="modal-body">
-                <div class="box">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <table style="width: 100%;" class="tabelDaftarStok table table-bordered">
-                            </table>
-                            <br>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close </button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script>
     window.loadDetailPengajuan = function () {
@@ -537,9 +512,12 @@
                 var view ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'"  status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'" budget="'+item.stBudgetBiaya+'" noBudgetting="'+item.noBudgeting+'" notApprovalNote="'+item.notApprovalNote+'" statusSaatIni="'+item.statusSaatIni+'" tanggal="'+item.stTanggal+'" tanggalRealisasi="'+item.stTanggalRealisasi+'" class="item-detail" >\n' +
                     '<img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" name="icon_edit">\n' +
                     '</a></td>';
-                var print ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'" class="item-print" >\n' +
-                    '<img border="0" src="<s:url value="/pages/images/icons8-print-25.png"/>" name="icon_edit">\n' +
-                    '</a></td>';
+                var print ='<td></td>';
+                if (item.canPrint){
+                    print ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'" class="item-print" >\n' +
+                        '<img border="0" src="<s:url value="/pages/images/icons8-print-25.png"/>" name="icon_edit">\n' +
+                        '</a></td>';
+                }
                 tmp_table += '<tr style="font-size: 11px;" ">' +
                     '<td align="center">' + (i + 1) + '</td>' +
                     '<td align="center">' + item.pengajuanBiayaDetailId + '</td>' +

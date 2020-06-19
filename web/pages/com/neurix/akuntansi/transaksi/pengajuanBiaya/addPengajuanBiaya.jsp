@@ -182,7 +182,7 @@
                                                     $('#budget_terpakai').val("");
                                                     $('#budget_terpakai_sd_bulan_ini').val("");
                                                     $('#keperluanText').val("");
-                                                    $('#keperluanText').val("");
+                                                    $('#keperluanCombo').val("");
                                                     $('#sisa_budget_saat_ini').val("");
                                                     $('#sisa_budget_saat_ini_sd').val("");
                                                     $('#budget_terpakai_transaksi_ini').val("");
@@ -202,7 +202,8 @@
                                                                 }
                                                             }
                                                         }else{
-                                                            var option = '<option value="R">Rutin</option>';
+                                                            var option = '<option value=""></option>';
+                                                            option += '<option value="R">Rutin</option>';
                                                             option += '<option value="I">Investasi</option>';
                                                             $('#transaksi_view').html(option);
                                                         }
@@ -372,7 +373,7 @@
                                                      cssClass="form-control" cssStyle="margin-top: 7px" />
                                     </div>
                                     <div class="keperluanCombo" style="display: none">
-                                        <select class="form-control" id="keperluanCombo" onchange="getSisaBudgetInvestasi(this.value)" style="margin-top: 7px">
+                                        <select class="form-control" id="keperluanCombo" onchange="getSisaBudgetInvestasi(this.value),getInvestasiTerpakaiTransaksi(this.value),getTerminPembayaran(this.value)" style="margin-top: 7px">
                                             <option value="" ></option>
                                         </select>
                                     </div>
@@ -381,6 +382,14 @@
                                     <a href="javascript:;" id="btnViewStok">
                                         <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" name="icon_view">
                                     </a>
+                                </div>
+                            </div>
+                            <div class="form-group" id="view_termin" style="display: none">
+                                <label class="col-md-4"  style="margin-top: 7px">Pembayaran </label>
+                                <div class="col-md-6">
+                                    <select class="form-control" id="termin" style="margin-top: 7px">
+                                        <option value="" ></option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -459,6 +468,22 @@
             </div>
             <div class="modal-body">
                 <div class="box">
+                    <br>
+                    <br>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-2" style="margin-top: 7px">Nama : </label>
+                            <div class="col-md-4">
+                                <s:textfield id="nama_obat"  cssClass="form-control" />
+                            </div>
+                            <div class="col-md-3">
+                                <button type="button" class="btn btn-primary" id="btnSearchStok">
+                                    <i class="fa fa-search"></i> Cari data
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
                     <div class="row">
                         <div class="col-md-12">
                             <table style="width: 100%;" class="tabelDaftarStok table table-bordered">
@@ -526,8 +551,20 @@
         var divisi_Id=$('#divisi_id').val();
         var branch_id=$('#branch_id').val();
         var tanggal=$('#tanggal').val();
+        var tipeBudget = $('#transaksi_view').val();
+        if (tipeBudget=="R"){
+            PengajuanBiayaAction.getBudgetTerpakaiTransaksiSession(branch_id,divisi_Id,tanggal,value,function (data) {
+                $('#budget_terpakai_transaksi_ini').val(data.stBudgetTerpakaiTransaksi);
+            });
+        }
+    }
 
-        PengajuanBiayaAction.getBudgetTerpakaiTransaksiSession(branch_id,divisi_Id,tanggal,value,function (data) {
+    function getInvestasiTerpakaiTransaksi(value) {
+        var divisi_Id=$('#divisi_id').val();
+        var branch_id=$('#branch_id').val();
+        var tanggal=$('#tanggal').val();
+
+        PengajuanBiayaAction.getInvestasiTerpakaiTransaksiSession(branch_id,divisi_Id,tanggal,value,function (data) {
             $('#budget_terpakai_transaksi_ini').val(data.stBudgetTerpakaiTransaksi);
         });
     }
@@ -538,16 +575,22 @@
         var branch_id=$('#branch_id').val();
         var tanggal=$('#tanggal').val();
         if (transaksi=="I"){
-            BudgetingAction.getBudgetInvestasiSaatIni(branch_id,divisi_Id,tanggal,value,function (res) {
-                $('#sisa_budget').val(res);
-                $('#budget_terpakai').val(0);
-                $('#sisa_budget_saat_ini').val(0);
+            BudgetingAction.getBudgetInvestasiSaatIni(branch_id,divisi_Id,tanggal,value,function (data) {
+                JurnalAction.getBudgetInvestasiTerpakai(branch_id,divisi_Id,tanggal,value,data.stBudgetSaatIni,data.stBudgetSdSaatIni,function (item) {
+                    $('#budget_terpakai').val(item.stBudgetTerpakai);
+                    $('#budget_terpakai_sd_bulan_ini').val(item.stBudgetTerpakaiSdBulanIni);
+                    $('#sisa_budget_saat_ini').val(item.stSisaBudget);
+                    $('#sisa_budget_saat_ini_sd').val(item.stSisaBudgetSdBulanIni);
+                });
+                $('#sisa_budget').val(data.stBudgetSaatIni);
+                $('#sisa_budget_sd_bulan_ini').val(data.stBudgetSdSaatIni);
             });
         }
     }
 
     function initNoBudget(value){
         if (value=="R"){
+            $('#view_termin').hide();
             var option = '<option value=""></option>';
             var divisi_Id=$('#divisi_id').val();
             var branch_id=$('#branch_id').val();
@@ -565,6 +608,7 @@
             $('.keperluanText').show();
             $('.keperluanCombo').hide();
         } else if (value=="I"){
+            $('#view_termin').show();
             var option = '<option value=""></option>';
             var divisi_Id=$('#divisi_id').val();
             var branch_id=$('#branch_id').val();
@@ -654,17 +698,19 @@
             var stBudgetTerpakaiAplikasi=$('#budget_terpakai_transaksi_ini').val();
             var keperluan = "";
             var keperluanName = "";
+            var termin = "";
             if (transaksi=="R"){
                 keperluan=$('#keperluanText').val();
                 keperluanName=$('#keperluanText').val();
             } else if (transaksi=="I"){
                 keperluan=$('#keperluanCombo option:selected').val();
                 keperluanName=$('#keperluanCombo option:selected').text();
+                termin = $('#termin').val();
             }
             var keterangan=$('#keterangan').val();
 
             if (branchId!=""&&divisiId!=""&&stTanggal!=""&&transaksi!=""&&noBudgeting!=""&&stJumlah!=""&&stBudgetBiaya!=""&&stBudgetTerpakai!=""&&keterangan!=""&&keperluan!=""){
-                PengajuanBiayaAction.saveSessionPengajuan(branchId,divisiId,stTanggal,transaksi,noBudgeting,stJumlah,stBudgetBiaya,stBudgetTerpakai,keperluan,keterangan,keperluanName,stBudgetBiayaSdBulanIni,stBudgetTerpakaiSdBulanIni,stSisaBudget,stSisaBudgetSdBulanIni,stBudgetTerpakaiAplikasi,function(result){
+                PengajuanBiayaAction.saveSessionPengajuan(branchId,divisiId,stTanggal,transaksi,noBudgeting,stJumlah,stBudgetBiaya,stBudgetTerpakai,keperluan,keterangan,keperluanName,stBudgetBiayaSdBulanIni,stBudgetTerpakaiSdBulanIni,stSisaBudget,stSisaBudgetSdBulanIni,stBudgetTerpakaiAplikasi,termin,function(result){
                     if (result==""){
                         loadPengajuan();
                     } else{
@@ -723,8 +769,8 @@
             }
         });
         $('#total').val(0);
-        
-        $('#btnViewStok').click(function () {
+
+        window.loadStok =  function(namaObat){
             var tanggal = $('#tanggal').val();
             var branchId = $('#branch_id_view').val();
             var divisiId = $('#divisi_id_view').val();
@@ -732,8 +778,8 @@
             $('.tabelDaftarStok').find('thead').remove();
             dwr.engine.setAsync(false);
             var tmp_table = "";
-            if (tanggal!=""&&branchId!=""&&divisiId!=""){
-                PengajuanBiayaAction.getStockPerDivisi(branchId,divisiId,tanggal,function (result) {
+            if (tanggal!=""&&branchId!=""&&divisiId!=""&&namaObat!=""){
+                PengajuanBiayaAction.getStockPerDivisi(branchId,divisiId,tanggal,namaObat,function (result) {
                     tmp_table = "<thead style='font-size: 12px;' ><tr class='active'>"+
                         "<th style='text-align: center; background-color:  #90ee90'>No</th>"+
                         "<th style='text-align: center; background-color:  #90ee90'>Nama Barang</th>"+
@@ -750,10 +796,23 @@
                     });
                     $('.tabelDaftarStok').append(tmp_table);
                     // $('.tabelDaftarStok').dataTable();
-                    $("#modal-daftar-stok").modal('show');
                 })
+            }else{
+                var msg="";
+                if (namaObat==""){
+                    msg+="Input kan nama obat minimal 1 huruf";
+                }
+                alert(msg);
             }
-        })
+        };
+
+        $('#btnViewStok').click(function () {
+            $("#modal-daftar-stok").modal('show');
+        });
+        $('#btnSearchStok').click(function () {
+            var namaObat = $('#nama_obat').val();
+            loadStok(namaObat);
+        });
     });
     function formatRupiahAngka(angka) {
         var number_string = angka.replace(/[^,\d]/g, '').toString(),
@@ -769,6 +828,19 @@
 
         rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
         return rupiah;
+    }
+    function getTerminPembayaran(value){
+        var option = '<option value="Lunas">Lunas</option>';
+        BudgetingAction.getTerminPembayaran(value,function (res) {
+            if(res.length > 0){
+                $.each(res, function (i, item) {
+                    option += '<option value="'+item.pembayaran+'">'+item.pembayaran+'</option>';
+                });
+                $('#termin').html(option);
+            }else{
+                $('#termin').html(option);
+            }
+        });
     }
 </script>
 <%@ include file="/pages/common/footer.jsp" %>

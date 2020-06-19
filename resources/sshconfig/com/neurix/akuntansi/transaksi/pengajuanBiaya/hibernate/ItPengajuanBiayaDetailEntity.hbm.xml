@@ -28,6 +28,12 @@
         <property name="keperluan">
             <column name="keperluan" sql-type="varchar" length="150" not-null="false" />
         </property>
+        <property name="keperluanId">
+            <column name="keperluan_id" sql-type="varchar" length="150" not-null="false" />
+        </property>
+        <property name="tipePembayaran">
+            <column name="tipe_pembayaran" sql-type="varchar" length="10" not-null="false" />
+        </property>
         <property name="keterangan">
             <column name="keterangan" sql-type="varchar" length="200" not-null="false" />
         </property>

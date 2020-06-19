@@ -2739,12 +2739,14 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "SELECT\n" +
                 "\tid_pengadaan,\n" +
-                "\tnama_pengadaan\n" +
+                "\tnama_pengadaan," +
+                "\tno_kontrak," +
+                "\tnilai_kontrak\n" +
                 "FROM\n" +
                 "\tit_akun_budgeting_detail bd LEFT JOIN\n" +
                 "\tit_akun_budgeting_pengadaan bp ON bp.no_budgeting_detail = bd.no_budgeting_detail\n" +
                 "WHERE\n" +
-                "\tno_budgeting='"+noBudgetting+"'";
+                "\tno_budgeting='"+noBudgetting+"' AND no_kontrak IS NOT NULL AND bp.pembayaran NOT ILIKE '%Lunas%'";
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
                 .list();
@@ -2752,7 +2754,14 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
         for (Object[] row : results) {
             BudgetingPengadaan data= new BudgetingPengadaan();
             data.setIdPengadaan((String) row[0]);
-            data.setNamPengadaan((String) row[0]+" | "+(String) row[1]);
+            data.setNamPengadaan((String) row[1]);
+//            data.setNamPengadaan((String) row[0]+" | "+(String) row[1]);
+            data.setNoKontrak((String) row[2]);
+            if (row[3]!=null){
+                data.setNilaiKontrak(BigDecimal.valueOf(Double.parseDouble(row[3].toString())));
+            }else{
+                data.setNilaiKontrak(BigDecimal.ZERO);
+            }
             listOfResult.add(data);
         }
 
@@ -2764,9 +2773,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
 
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "select\n" +
-                "\tqty,\n" +
-                "\tnilai,\n" +
-                "\tsub_total\n" +
+                "\tno_kontrak,nilai_kontrak\n" +
                 "from\n" +
                 "\tit_akun_budgeting_pengadaan\n" +
                 "where\n" +
@@ -2777,20 +2784,10 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
 
         for (Object[] row : results) {
             BudgettingDTO data= new BudgettingDTO();
-            if (row[0]!=null){
-                data.setQty(BigDecimal.valueOf(Double.parseDouble(row[0].toString())));
-            }else{
-                data.setQty(BigDecimal.ZERO);
-            }
             if (row[1]!=null){
                 data.setNilai(BigDecimal.valueOf(Double.parseDouble(row[1].toString())));
             }else{
                 data.setNilai(BigDecimal.ZERO);
-            }
-            if (row[2]!=null){
-                data.setSubTotal(BigDecimal.valueOf(Double.parseDouble(row[2].toString())));
-            }else{
-                data.setSubTotal(BigDecimal.ZERO);
             }
             listOfResult.add(data);
         }

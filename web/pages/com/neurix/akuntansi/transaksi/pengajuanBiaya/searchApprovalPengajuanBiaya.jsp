@@ -755,6 +755,22 @@
             </div>
             <div class="modal-body">
                 <div class="box">
+                    <br>
+                    <br>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-2" style="margin-top: 7px">Nama : </label>
+                            <div class="col-md-4">
+                                <s:textfield id="nama_obat"  cssClass="form-control" />
+                            </div>
+                            <div class="col-md-3">
+                                <button type="button" class="btn btn-primary" id="btnSearchStok">
+                                    <i class="fa fa-search"></i> Cari data
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
                     <div class="row">
                         <div class="col-md-12">
                             <table style="width: 100%;" class="tabelDaftarStok table table-bordered">
@@ -837,7 +853,9 @@
                 // namaApproveKeu+
                 "</tr></thead>";
             var i = i ;
+            var jumlah = 0;
             $.each(listdata, function (i, item) {
+                jumlah = jumlah+item.jumlah;
                 var transaksi ="";
                 switch (item.transaksi) {
                     case "R":
@@ -979,7 +997,7 @@
                     $('#btnTerimaRk').show();
                 }
             });
-
+            $('#mod_total_biaya').val(formatRupiahAngka(jumlah.toString()));
             $('.pengajuanBiayaTabel').append(tmp_table);
         });
     };
@@ -1224,7 +1242,7 @@
         $('#mod_divisi_id_rk').val($('#mod_divisi_id').val());
         $('#mod_jumlah_rk').val($('#mod_total_biaya').val());
         PengajuanBiayaAction.getKeteranganPembuatanRk(pengajuanId,"K",function(result) {
-            $('#mod_keterangan_rk').val(result);
+            $('#mod_keterangan_rk').val(result.keterangan);
         });
         $('#mod_status_rk').val("K");
 
@@ -1241,7 +1259,7 @@
         PengajuanBiayaAction.getKeteranganPembuatanRk(pengajuanId,"T",function(data) {
             $('#mod_keterangan_rk').val(data.keterangan);
 
-            var option = '<option value="'+item.coaTarget+'">'+item.namaCoa+'</option>';
+            var option = '<option value="'+data.coaTarget+'">'+data.namaCoa+'</option>';
             $('#mod_kas_rk').html(option);
 
         });
@@ -1271,26 +1289,16 @@
         }
     });
 
-    $('.btnViewStok').click(function () {
-        var tanggal="";
-        if ($('#mod_tanggal_keuangan_kp').val()!=""){
-            tanggal = $('#mod_tanggal_keuangan_kp').val();
-        } else if ($('#mod_tanggal_keuangan').val()!=""){
-            tanggal = $('#mod_tanggal_keuangan').val();
-        } else if ($('#mod_tanggal_atasan').val()!=""){
-            tanggal = $('#mod_tanggal_atasan').val();
-        }
-
-        var branchId = $('#mod_branch_id').val();
-        var divisiId = $('#mod_divisi_id').val();
+    window.loadStok =  function(namaObat){
+        var tanggal = $('#tanggal').val();
+        var branchId = $('#branch_id_view').val();
+        var divisiId = $('#divisi_id_view').val();
         $('.tabelDaftarStok').find('tbody').remove();
         $('.tabelDaftarStok').find('thead').remove();
         dwr.engine.setAsync(false);
-        var array = tanggal.split('-');
-        var tanggalBaru = array[2]+"-"+array[1]+"-"+array[0];
         var tmp_table = "";
-        if (tanggal!=""&&branchId!=""&&divisiId!=""){
-            PengajuanBiayaAction.getStockPerDivisi(branchId,divisiId,tanggalBaru,function (result) {
+        if (tanggal!=""&&branchId!=""&&divisiId!=""&&namaObat!=""){
+            PengajuanBiayaAction.getStockPerDivisi(branchId,divisiId,tanggal,namaObat,function (result) {
                 tmp_table = "<thead style='font-size: 12px;' ><tr class='active'>"+
                     "<th style='text-align: center; background-color:  #90ee90'>No</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Nama Barang</th>"+
@@ -1306,14 +1314,26 @@
                         "</tr>";
                 });
                 $('.tabelDaftarStok').append(tmp_table);
-                if (totalBayar>0){
-                    $("#modal-daftar-stok").modal('show');
-                } else{
-                    alert("Data stok kosong");
-                }
+                // $('.tabelDaftarStok').dataTable();
             })
+        }else{
+            var msg="";
+            if (namaObat==""){
+                msg+="Input kan nama obat minimal 1 huruf";
+            }
+            alert(msg);
         }
+    };
+
+    $('#btnViewStok').click(function () {
+        $("#modal-daftar-stok").modal('show');
     });
+    $('#btnSearchStok').click(function () {
+        var namaObat = $('#nama_obat').val();
+        loadStok(namaObat);
+    });
+
+
     function formatRupiahAngka(angka) {
         var number_string = angka.replace(/[^,\d]/g, '').toString(),
             split = number_string.split(','),

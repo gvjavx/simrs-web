@@ -20,6 +20,7 @@
           p:budgetingPengadaanDao-ref="budgetingPengadaanDao"
           p:notifikasiDao-ref="notifikasiDao"
           p:jurnalDao-ref="jurnalDao"
+          p:kodeRekeningDao-ref="kodeRekeningDao"
     />
 
     <bean id="pengajuanBiayaBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

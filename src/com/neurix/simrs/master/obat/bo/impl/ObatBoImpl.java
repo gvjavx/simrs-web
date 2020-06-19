@@ -1949,10 +1949,10 @@ public class ObatBoImpl implements ObatBo {
     }
 
     @Override
-    public List<TransaksiStok> getListSummaryStok(String branchId,String idPelayanan, String tahun, String bulan) throws GeneralBOException {
+    public List<TransaksiStok> getListSummaryStok(String branchId,String idPelayanan, String tahun, String bulan,String namaObat) throws GeneralBOException {
         logger.info("[ObatBoImpl.getListSummaryStok] START >>>");
 
-        List<TransaksiStok> listObat = transaksiStokDao.getListObatForPengajuan(branchId);
+        List<TransaksiStok> listObat = transaksiStokDao.getListObatForPengajuan(branchId,namaObat);
         if (listObat.size() > 0){
 
             for (TransaksiStok obat : listObat){

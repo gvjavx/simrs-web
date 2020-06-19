@@ -45,5 +45,5 @@ public interface ObatBo{
     public void saveTransaksiStokOpname(Obat bean) throws GeneralBOException;
     public List<TransaksiStok> getListReportSumaryTransaksiObat(String idPelayanan, String tahun, String bulan) throws GeneralBOException;
 
-    List<TransaksiStok> getListSummaryStok(String branchId,String idPelayanan, String tahun, String bulan) throws GeneralBOException;
+    List<TransaksiStok> getListSummaryStok(String branchId,String idPelayanan, String tahun, String bulan,String namaObat) throws GeneralBOException;
 }

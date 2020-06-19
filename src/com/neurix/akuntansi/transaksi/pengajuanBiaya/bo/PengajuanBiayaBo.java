@@ -29,7 +29,7 @@ public interface PengajuanBiayaBo extends BaseMasterBo<PengajuanBiaya> {
 
     List<PengajuanBiayaDetail> searchPengajuanDetail(String pengajuanId) throws GeneralBOException;
 
-    List<PengajuanBiayaDetail> cariPengajuanBiayaDetail(String pengajuanDetailId, String divisiId) throws GeneralBOException;
+    List<PengajuanBiayaDetail> cariPengajuanBiayaDetail(String pengajuanDetailId) throws GeneralBOException;
 
     List<Notifikasi> saveApproveAtasanPengajuan(PengajuanBiayaDetail bean) throws GeneralBOException;
 
@@ -54,4 +54,10 @@ public interface PengajuanBiayaBo extends BaseMasterBo<PengajuanBiaya> {
     PengajuanBiayaDetail getDetailPembayaranForReport(String pengajuanBiayaDetailId) throws GeneralBOException;
 
     boolean cekApakahPengajuanBisaDiubah(String id, BigDecimal jumlah);
+
+    List<PengajuanBiayaDetail> getByCriteriaDetail(PengajuanBiayaDetail searchBean) throws GeneralBOException;
+
+    PengajuanBiayaDetail modalPopUpDetail(String id);
+
+    void setRkDiterima(String pengajuanId) throws GeneralBOException;
 }

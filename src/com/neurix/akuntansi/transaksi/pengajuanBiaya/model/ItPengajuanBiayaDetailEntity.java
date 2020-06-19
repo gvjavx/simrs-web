@@ -20,6 +20,7 @@ public class ItPengajuanBiayaDetailEntity implements Serializable {
     private String transaksi;
     private String noBudgeting;
     private String keperluan;
+    private String keperluanId;
     private String keterangan;
 
     private Date tanggal;
@@ -73,6 +74,23 @@ public class ItPengajuanBiayaDetailEntity implements Serializable {
 
     private String notApprovalNote;
     private BigDecimal budgetTerpakaiTransaksi;
+    private String tipePembayaran;
+
+    public String getTipePembayaran() {
+        return tipePembayaran;
+    }
+
+    public void setTipePembayaran(String tipePembayaran) {
+        this.tipePembayaran = tipePembayaran;
+    }
+
+    public String getKeperluanId() {
+        return keperluanId;
+    }
+
+    public void setKeperluanId(String keperluanId) {
+        this.keperluanId = keperluanId;
+    }
 
     public BigDecimal getBudgetTerpakaiTransaksi() {
         return budgetTerpakaiTransaksi;

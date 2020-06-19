@@ -192,10 +192,66 @@
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-md-8">
+                                        <div class="form-group" id="pengajuan_detail_id_view">
+                                            <label class="col-md-4" style="margin-top: 7px">Pengajuan ID</label>
+                                            <div class="col-md-8">
+                                                <s:textfield id="pengajuan_detail_id" onkeypress="$(this).css('border','')"
+                                                             cssClass="form-control" cssStyle="margin-top: 7px" />
+                                            </div>
+                                            <script>
+                                                $(document).ready(function() {
+                                                    var functions, mapped;
+                                                    $('#pengajuan_detail_id').typeahead({
+                                                        minLength: 1,
+                                                        source: function (query, process) {
+                                                            functions = [];
+                                                            mapped = {};
+                                                            var data = [];
+                                                            dwr.engine.setAsync(false);
+                                                            PengajuanBiayaAction.cariPengajuanBiayaDetail(query,function (listdata) {
+                                                                data = listdata;
+                                                            });
+                                                            $.each(data, function (i, item) {
+                                                                var labelItem = item.pengajuanBiayaDetailId + " | " + item.keperluan;
+                                                                mapped[labelItem] = {
+                                                                    id: item.pengajuanBiayaDetailId,
+                                                                    keperluan: item.keperluan,
+                                                                    tanggalRealisasi: item.stTanggalRealisasi,
+                                                                    noBudgeting: item.noBudgeting,
+                                                                    divisiId: item.divisiId,
+                                                                    divisiName: item.divisiName,
+                                                                    coaDivisi: item.coaDivisi,
+                                                                    coaLawan: item.coa,
+                                                                    coaLawanName: item.coaName,
+                                                                    jumlah: item.stJumlah
+                                                                };
+                                                                functions.push(labelItem);
+                                                            });
+                                                            process(functions);
+                                                        },
+                                                        updater: function (item) {
+                                                            var selectedObj = mapped[item];
+                                                            $('#tanggal_realisasi').val(selectedObj.tanggalRealisasi);
+                                                            $('#jumlah_pengajuan').val(selectedObj.jumlah);
+                                                            $('#no_budgetting').val(selectedObj.noBudgeting);
+                                                            $('#keperluan').val(selectedObj.keperluan);
+                                                            $('#divisi_id').val(selectedObj.coaDivisi);
+                                                            $('#nama_divisi').val(selectedObj.divisiName);
+                                                            var option = '<option value="'+selectedObj.coaLawan+'">'+selectedObj.coaLawanName+'</option>';
+                                                            $('#coa_lawan').html(option);
+                                                            $('#jumlah_pembayaran').val(selectedObj.jumlah.replace(/[,]/g,"."));
+                                                            isiKeteterangan();
+                                                            return selectedObj.id;
+                                                        }
+                                                    });
+                                                });
+                                            </script>
+                                        </div>
+                                        <s:hidden id="keperluan" />
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">COA Lawan</label>
                                             <div class="col-md-8">
-                                                <select class="form-control" id="coa_lawan" onchange="getDisableTrans()">
+                                                <select class="form-control" id="coa_lawan" onchange="getDisableTrans()" style="margin-top: 7px">
                                                     <option value="" ></option>
                                                 </select>
                                             </div>
@@ -303,55 +359,6 @@
                                                 </a>
                                             </div>
                                         </div>
-                                        <div class="form-group" id="pengajuan_detail_id_view">
-                                            <label class="col-md-4" style="margin-top: 7px">Pengajuan ID</label>
-                                            <div class="col-md-8">
-                                                <s:textfield id="pengajuan_detail_id" onkeypress="$(this).css('border','')"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px" />
-                                            </div>
-                                            <script>
-                                                $(document).ready(function() {
-                                                    var functions, mapped;
-                                                    $('#pengajuan_detail_id').typeahead({
-                                                        minLength: 1,
-                                                        source: function (query, process) {
-                                                            functions = [];
-                                                            mapped = {};
-                                                            var data = [];
-                                                            var divisi = $('#divisi_id').val();
-                                                            dwr.engine.setAsync(false);
-                                                            PengajuanBiayaAction.cariPengajuanBiayaDetail(query,divisi,function (listdata) {
-                                                                data = listdata;
-                                                            });
-                                                            $.each(data, function (i, item) {
-                                                                var labelItem = item.pengajuanBiayaDetailId + " | " + item.keperluan;
-                                                                mapped[labelItem] = {
-                                                                    id: item.pengajuanBiayaDetailId,
-                                                                    keperluan: item.keperluan,
-                                                                    tanggalRealisasi: item.stTanggalRealisasi,
-                                                                    noBudgeting: item.noBudgeting,
-                                                                    jumlah: item.stJumlah
-                                                                };
-                                                                functions.push(labelItem);
-                                                            });
-                                                            process(functions);
-                                                        },
-                                                        updater: function (item) {
-                                                            var selectedObj = mapped[item];
-                                                            console.log(selectedObj.noBudgeting);
-                                                            $('#tanggal_realisasi').val(selectedObj.tanggalRealisasi);
-                                                            $('#jumlah_pengajuan').val(selectedObj.jumlah);
-                                                            $('#no_budgetting').val(selectedObj.noBudgeting);
-                                                            $('#keperluan').val(selectedObj.keperluan);
-                                                            $('#jumlah_pembayaran').val(selectedObj.jumlah.replace(/[,]/g,"."));
-                                                            isiKeteterangan();
-                                                            return selectedObj.id;
-                                                        }
-                                                    });
-                                                });
-                                            </script>
-                                        </div>
-                                        <s:hidden id="keperluan" />
                                         <div class="form-group" id="tanggal_realisasi_view">
                                             <label class="col-md-4" style="margin-top: 7px">Tanggal Realisasi</label>
                                             <div class="col-md-8">
@@ -874,7 +881,7 @@
             noSlipBank="dengan no referensi bank "+noSlipBank;
         }
 
-        keterangan= tipeTransaksi +" "+branchName+" "+metodeBayar+" "+noSlipBank+" "+keperluan+" "+noBudgeting;
+        keterangan= tipeTransaksi +" "+branchName+" "+metodeBayar+" "+noSlipBank+" "+keperluan;
 
         $('#keterangan').val(keterangan);
     }
