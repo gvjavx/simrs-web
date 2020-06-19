@@ -84,15 +84,13 @@ public class PengirimanObatDao extends GenericDao<ItSimrsPengirimanObatEntity, S
                 permintaanResep.setIdPermintaanResep(obj[0].toString());
                 permintaanResep.setIdDetailCheckup(obj[1].toString());
                 permintaanResep.setNamaPasien(obj[2].toString());
-                permintaanResep.setIdApprovalObat(obj[4].toString());;
-                permintaanResep.setIdJenisPeriksa(obj[5].toString());
-                permintaanResep.setFlag(obj[6].toString());
-                permintaanResep.setKetJenisAntrian(obj[7] == null ? "Resep RS" : "Telemedic");
+                permintaanResep.setIdApprovalObat(obj[3].toString());;
+                permintaanResep.setIdJenisPeriksa(obj[4].toString());
+                permintaanResep.setFlag(obj[5].toString());
+                permintaanResep.setKetJenisAntrian(obj[6] == null ? "Resep RS" : "Telemedic");
                 permintaanResepList.add(permintaanResep);
             }
         }
         return permintaanResepList;
     }
-
-
 }
