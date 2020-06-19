@@ -1226,7 +1226,7 @@ public class AbsensiAction extends BaseMasterAction {
                 nama=absensiPegawai.getNama();
             }else if (!nama.equalsIgnoreCase(absensiPegawai.getNama())){
                 AbsensiPegawai newAbsen= new AbsensiPegawai();
-                newAbsen.setStTanggal("JUMLAH");
+                newAbsen.setStTanggal("");
                 newAbsen.setNip("");
                 newAbsen.setNama("");
                 newAbsen.setBagian("");
@@ -1238,27 +1238,11 @@ public class AbsensiAction extends BaseMasterAction {
                 newAbsen.setSelesaiLembur("");
                 newAbsen.setStRealisasiJamLembur("");
                 newAbsen.setStatusName("");
-                  if (jumlahTerlambatKurang60>0){
-                      newAbsen.setTerlambatKurang60(String.valueOf(jumlahTerlambatKurang60));
-                  }else{
-                      newAbsen.setTerlambatKurang60("");
-                  }
-                  if (jumlahTerlambatLebih60>0){
-                      newAbsen.setTerlambatLebih60(String.valueOf(jumlahTerlambatLebih60));
-                  }else{
-                      newAbsen.setTerlambatLebih60("");
-                  }
-                  if (tidakAbsenMasuk>0){
-                      newAbsen.setTidakAbsenMasuk(String.valueOf(tidakAbsenMasuk));
-                  }else{
-                      newAbsen.setTidakAbsenMasuk("");
-                  }
-                  if (tidakAbsenPulang>0){
-                      newAbsen.setTidakAbsenPulang(String.valueOf(tidakAbsenPulang));
-                  }else{
-                      newAbsen.setTidakAbsenPulang("");
-                  }
-                  jumlahTerlambatKurang60=0;jumlahTerlambatLebih60=0;tidakAbsenMasuk=0;tidakAbsenPulang=0;
+                newAbsen.setTerlambatKurang60("");
+                newAbsen.setTerlambatLebih60("");
+                newAbsen.setTidakAbsenMasuk("");
+                newAbsen.setTidakAbsenPulang("");
+//                  jumlahTerlambatKurang60=0;jumlahTerlambatLebih60=0;tidakAbsenMasuk=0;tidakAbsenPulang=0;
                   listDataFinal.add(newAbsen);
                   nama=absensiPegawai.getNama();
             }
@@ -1325,7 +1309,7 @@ public class AbsensiAction extends BaseMasterAction {
             x++;
         }
         AbsensiPegawai newAbsen= new AbsensiPegawai();
-        newAbsen.setStTanggal("JUMLAH");
+        newAbsen.setStTanggal("");
         newAbsen.setNip("");
         newAbsen.setNama("");
         newAbsen.setBagian("");
@@ -1337,26 +1321,11 @@ public class AbsensiAction extends BaseMasterAction {
         newAbsen.setSelesaiLembur("");
         newAbsen.setStRealisasiJamLembur("");
         newAbsen.setStatusName("");
-        if (jumlahTerlambatKurang60>0){
-            newAbsen.setTerlambatKurang60(String.valueOf(jumlahTerlambatKurang60));
-        }else{
-            newAbsen.setTerlambatKurang60("");
-        }
-        if (jumlahTerlambatLebih60>0){
-            newAbsen.setTerlambatLebih60(String.valueOf(jumlahTerlambatLebih60));
-        }else{
-            newAbsen.setTerlambatLebih60("");
-        }
-        if (tidakAbsenMasuk>0){
-            newAbsen.setTidakAbsenMasuk(String.valueOf(tidakAbsenMasuk));
-        }else{
-            newAbsen.setTidakAbsenMasuk("");
-        }
-        if (tidakAbsenPulang>0){
-            newAbsen.setTidakAbsenPulang(String.valueOf(tidakAbsenPulang));
-        }else{
-            newAbsen.setTidakAbsenPulang("");
-        }
+        newAbsen.setTerlambatKurang60("");
+        newAbsen.setTerlambatLebih60("");
+        newAbsen.setTidakAbsenMasuk("");
+        newAbsen.setTidakAbsenPulang("");
+
         jumlahTerlambatKurang60=0;jumlahTerlambatLebih60=0;tidakAbsenMasuk=0;tidakAbsenPulang=0;
         listDataFinal.add(newAbsen);
 

@@ -31,6 +31,16 @@ public class BudgetingPengadaan{
     private BigDecimal realisasi;
     private String noPengadaan;
 
+    private String pembayaran;
+
+    public String getPembayaran() {
+        return pembayaran;
+    }
+
+    public void setPembayaran(String pembayaran) {
+        this.pembayaran = pembayaran;
+    }
+
     public String getNoPengadaan() {
         return noPengadaan;
     }

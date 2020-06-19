@@ -782,8 +782,7 @@ public class NotifikasiAction extends BaseMasterAction{
         return "";
     }
     public String searchUser() {
-
-        return CommonUtil.roleAsLogin();
+        return CommonUtil.roleIdAsLogin();
     }
     public List<Notifikasi> searchNotif(){
         String userLoginId = CommonUtil.userIdLogin();

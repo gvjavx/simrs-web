@@ -5462,7 +5462,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                         Double selisih = null;
                         Calendar cal = Calendar.getInstance();
                         cal.setTime(hasilAbsensi.getTanggal());
-                        String branch = "KD01";
+                        String branch = CommonConstant.ID_KANPUS;
                         int day = cal.get(Calendar.DAY_OF_WEEK);
                         Map hsCriteria2 = new HashMap();
                         hsCriteria2.put("branch_id",branch);

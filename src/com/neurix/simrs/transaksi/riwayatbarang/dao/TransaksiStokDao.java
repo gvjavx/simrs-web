@@ -180,4 +180,75 @@ public class TransaksiStokDao extends GenericDao<ItSimrsTransaksiStokEntity, Str
 
         return transaksiStok;
     }
+
+    public List<TransaksiStok> getListObatForPengajuan(String branchId,String namaObat){
+        String namaObatQ = "%"+namaObat+"%";
+        String SQL = "SELECT\n" +
+                "  id_obat,\n" +
+                "  nama_obat\n" +
+                "  FROM im_simrs_obat \n" +
+                "WHERE flag= 'Y' AND branch_id=:branchId  AND nama_obat ilike :namaObat \n" +
+                "GROUP BY id_obat, nama_obat\n" +
+                "ORDER BY nama_obat;";
+
+        List<TransaksiStok> list = new ArrayList<>();
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("branchId", branchId)
+                .setParameter("namaObat", namaObatQ)
+                .list();
+
+        if (results.size() > 0){
+            TransaksiStok transaksiStok;
+            for (Object[] obj : results){
+                transaksiStok = new TransaksiStok();
+                transaksiStok.setIdObat(obj[0].toString());
+                transaksiStok.setNamaObat(obj[1].toString());
+                list.add(transaksiStok);
+            }
+        }
+
+        return list;
+    }
+
+    public List<TransaksiStok> getSaldoObatLalu(String branchId,String idPelayanan,String tahun,String bulan,String idObat){
+        String periode = tahun+"-"+bulan;
+        String SQL = "SELECT\n" +
+                "\tid_obat,\n" +
+                "\tqty_lalu,\n" +
+                "\ttotal_lalu,\n" +
+                "\tsub_total_lalu \n" +
+                "\tFROM\n" +
+                "\t\tit_simrs_transaksi_stok\n" +
+                "\tWHERE\n" +
+                "\t\tbranch_id=:branchId \n" +
+                "\t\tAND id_pelayanan =:idPelayanan \n" +
+                "\t\tAND id_obat = :idObat \n" +
+                "\t\tAND sub_total_lalu IS NOT NULL\n" +
+                "\t\tAND sub_total_lalu <>0\n" +
+                "\t\tAND to_date( cast(registered_date as TEXT), 'yyyy-MM' ) <= ( to_date(:periode, 'yyyy-MM'))\n" +
+                "\tORDER BY\n" +
+                "\t\tregistered_date DESC;";
+
+        List<TransaksiStok> list = new ArrayList<>();
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("branchId", branchId)
+                .setParameter("idPelayanan", idPelayanan)
+                .setParameter("idObat", idObat)
+                .setParameter("periode", periode)
+                .list();
+
+        if (results.size() > 0){
+            TransaksiStok transaksiStok;
+            for (Object[] obj : results){
+                transaksiStok = new TransaksiStok();
+                transaksiStok.setIdObat(obj[0].toString());
+                transaksiStok.setQtySaldo((BigInteger)(obj[1]));
+                transaksiStok.setTotalSaldo((BigDecimal) obj[2]);
+                transaksiStok.setSubTotalSaldo((BigDecimal) obj[3]);
+                list.add(transaksiStok);
+            }
+        }
+
+        return list;
+    }
 }

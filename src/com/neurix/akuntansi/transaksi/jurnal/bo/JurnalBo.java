@@ -18,4 +18,5 @@ public interface JurnalBo extends BaseMasterBo<Jurnal> {
     public void saveDelete(Jurnal bean) throws GeneralBOException;
 
     JurnalDetail getBudgetTerpakai(String branchId, String divisiId, String tahun, String bulan, String coa,String budget,String budgetSdBulanIni);
+    JurnalDetail getBudgetInvestasiTerpakai(String branchId, String divisiId, String tahun, String bulan, String coa,String idPengadaan,String budgetSdBulanIni);
 }

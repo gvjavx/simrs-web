@@ -262,7 +262,7 @@
 </body>
 </html>
 <script>
-    $('#tgl1').datepicker({
+    $('#tgl2').datepicker({
         dateFormat: 'dd-mm-yy'
     });
 </script>

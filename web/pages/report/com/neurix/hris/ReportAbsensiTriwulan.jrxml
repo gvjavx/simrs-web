@@ -363,7 +363,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="7"/>
 								</textElement>
-								<text><![CDATA[Masuk <07:30]]></text>
+								<text><![CDATA[Masuk <07:00]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:columnFooter height="43" rowSpan="1">

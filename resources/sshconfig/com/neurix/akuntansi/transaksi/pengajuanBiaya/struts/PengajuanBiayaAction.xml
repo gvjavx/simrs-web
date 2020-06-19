@@ -77,6 +77,8 @@
 
             <result name="input_pengajuan">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/SearchPengajuanBiaya.jsp</result>
             <result name="success_pengajuan">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/SearchPengajuanBiaya.jsp</result>
+            <result name="input_pengajuan_admin">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/SearchPengajuanBiayaAdmin.jsp</result>
+            <result name="success_pengajuan_admin">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/SearchPengajuanBiayaAdmin.jsp</result>
 
             <result name="error_pengajuan">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/addPengajuanBiaya.jsp</result>
             <result name="init_add_pengajuan">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/addPengajuanBiaya.jsp</result>

@@ -270,6 +270,12 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
             pengajuanId = (String) data.get("pengajuan_id");
         }
 
+        String sumberDana=null;
+        //mengambil Sumber Dana
+        if (data.get("sumber_dana")!=null){
+            sumberDana = (String) data.get("sumber_dana");
+        }
+
         if (tipeJurnalId!=null){
             try {
                 // Generating ID, get from postgre sequence
@@ -293,6 +299,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                 jurnalEntity.setKurs(BigDecimal.valueOf(1));
                 jurnalEntity.setKeterangan(catatanPembuatanJurnal);
                 jurnalEntity.setSumber(sumber);
+                jurnalEntity.setSumberDanaId(sumberDana);
                 jurnalEntity.setPrintRegisterCount(BigDecimal.ZERO);
                 jurnalEntity.setPrintCount(BigDecimal.ZERO);
                 if (("Y").equalsIgnoreCase(flagRegister)){

@@ -8,6 +8,7 @@ import com.neurix.common.bo.BaseMasterBo;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -28,7 +29,7 @@ public interface PengajuanBiayaBo extends BaseMasterBo<PengajuanBiaya> {
 
     List<PengajuanBiayaDetail> searchPengajuanDetail(String pengajuanId) throws GeneralBOException;
 
-    List<PengajuanBiayaDetail> cariPengajuanBiayaDetail(String pengajuanDetailId, String divisiId) throws GeneralBOException;
+    List<PengajuanBiayaDetail> cariPengajuanBiayaDetail(String pengajuanDetailId) throws GeneralBOException;
 
     List<Notifikasi> saveApproveAtasanPengajuan(PengajuanBiayaDetail bean) throws GeneralBOException;
 
@@ -42,7 +43,7 @@ public interface PengajuanBiayaBo extends BaseMasterBo<PengajuanBiaya> {
 
     void cekApakahBisaDiClose(String pengajuanId) throws GeneralBOException;
 
-    void setRkSudahDikirim(String pengajuanId) throws GeneralBOException;
+    void setRkSudahDikirim(String pengajuanId,String coa) throws GeneralBOException;
 
     PengajuanBiaya cekApakahBolehRk(String pengajuanId) throws GeneralBOException;
 
@@ -51,4 +52,12 @@ public interface PengajuanBiayaBo extends BaseMasterBo<PengajuanBiaya> {
     String cekApakahSudahCloseSemua(String pengajuanDetailId) throws GeneralBOException;
 
     PengajuanBiayaDetail getDetailPembayaranForReport(String pengajuanBiayaDetailId) throws GeneralBOException;
+
+    boolean cekApakahPengajuanBisaDiubah(String id, BigDecimal jumlah);
+
+    List<PengajuanBiayaDetail> getByCriteriaDetail(PengajuanBiayaDetail searchBean) throws GeneralBOException;
+
+    PengajuanBiayaDetail modalPopUpDetail(String id);
+
+    void setRkDiterima(String pengajuanId) throws GeneralBOException;
 }
