@@ -208,7 +208,7 @@
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="status"/></td>
                                     <td align="center">
-                                        <img border="0" class="hvr-grow" onclick="viewAssign('<s:property value="idPermintaanResep"/>')"
+                                        <img border="0" class="hvr-grow" onclick="viewAssign()"
                                              src="<s:url value="/pages/images/icons8-create-25.png"/>"
                                              style="cursor: pointer;">
                                     </td>
@@ -273,8 +273,19 @@
 
 <script type='text/javascript'>
 
-   function viewAssign(var1) {
+   function viewAssign() {
        $("#modal-kurir").modal('show');
+       ResepOnlineAction.listKurirByBranchLogin(function (listKurir) {
+           if (listKurir.length > 0){
+
+               var str = "";
+               $.each(listKurir, function (i, item) {
+                   str += "<option value='"+item.idKuli+"'>"+item.nama+"</option>";
+               });
+           }
+
+           $("#sel-kurir").val(str);
+       })
    }
 
 </script>

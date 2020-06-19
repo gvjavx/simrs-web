@@ -1,6 +1,8 @@
 package com.neurix.hris.mobileapi;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.kurir.bo.KurirBo;
+import com.neurix.simrs.master.kurir.model.Kurir;
 import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
 import com.neurix.simrs.transaksi.reseponline.model.ItSimrsResepOnlineEntity;
@@ -25,6 +27,11 @@ public class TesTelemedicController implements ModelDriven<Object> {
     private String result;
     private String id;
     private TelemedicBo telemedicBoProxy;
+    private KurirBo kurirBoProxy;
+
+    public void setKurirBoProxy(KurirBo kurirBoProxy) {
+        this.kurirBoProxy = kurirBoProxy;
+    }
 
     public void setTelemedicBoProxy(TelemedicBo telemedicBoProxy) {
         this.telemedicBoProxy = telemedicBoProxy;
@@ -73,6 +80,9 @@ public class TesTelemedicController implements ModelDriven<Object> {
                 break;
             case "insert-resep":
                 insertObat(this.id);
+                break;
+            case "insert-kurir":
+                insertKurir(this.id);
                 break;
             default:
                 logger.info("==========NO ONE CARE============");
@@ -139,6 +149,36 @@ public class TesTelemedicController implements ModelDriven<Object> {
         }
 
         logger.info("[TesTelemedicController.insertObat] END <<<");
+    }
+
+    private void insertKurir(String nama){
+        logger.info("[TesTelemedicController.insertKurir] START >>>");
+
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+
+        Kurir kurir = new Kurir();
+        kurir.setNama(nama);
+        kurir.setBranchId("RS01");
+        kurir.setFlagReady("Y");
+        kurir.setNoKtp("1212120012");
+        kurir.setNoTelp("0089808008080");
+        kurir.setFlag("Y");
+        kurir.setAction("C");
+        kurir.setCreatedDate(time);
+        kurir.setCreatedWho("Admin");
+        kurir.setLastUpdate(time);
+        kurir.setLastUpdateWho("Admin");
+        kurir.setPassword("123");
+        kurir.setNoPolisi("S8908WD");
+
+        try {
+            kurirBoProxy.saveAdd(kurir);
+        } catch (GeneralBOException e){
+            logger.error("[TesTelemedicController.insertKurir] ERROR. ",e);
+            throw new GeneralBOException("[TesTelemedicController.insertKurir] ERROR. ", e);
+        }
+
+        logger.info("[TesTelemedicController.insertKurir] END <<<");
     }
 
 }

@@ -112,6 +112,7 @@ public class ResepOnlineAction {
 
         Kurir kurir = new Kurir();
         kurir.setBranchId(branchId);
+        kurir.setFlagReady("Y");
 
         try {
             kurirList = kurirBo.getByCriteria(kurir);
