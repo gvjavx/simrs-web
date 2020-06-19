@@ -5,6 +5,8 @@ import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.mobileapi.model.PembayaranMobile;
+import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
+import com.neurix.simrs.transaksi.reseponline.model.PengirimanObat;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.bo.VerifikatorPembayaranBo;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.model.ItSimrsPembayaranOnlineEntity;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.model.PembayaranOnline;
@@ -33,6 +35,7 @@ public class PembayaranController implements ModelDriven<Object> {
     private PembayaranMobile model = new PembayaranMobile();
     private Collection<PembayaranMobile> listOfPembayaran;
     private VerifikatorPembayaranBo verifikatorPembayaranBoProxy;
+    private TelemedicBo telemedicBoProxy;
 
     private String action;
 
@@ -41,8 +44,53 @@ public class PembayaranController implements ModelDriven<Object> {
     private File fileUploadBukti;
     private String fileName;
 
+    private String jenisPengambilan;
+    private String noTelp;
     private String alamat;
     private String bankCoa;
+    private String desaId;
+
+    private String idPasien;
+
+    public String getIdPasien() {
+        return idPasien;
+    }
+
+    public void setIdPasien(String idPasien) {
+        this.idPasien = idPasien;
+    }
+
+    public String getDesaId() {
+        return desaId;
+    }
+
+    public void setDesaId(String desaId) {
+        this.desaId = desaId;
+    }
+
+    public String getJenisPengambilan() {
+        return jenisPengambilan;
+    }
+
+    public void setJenisPengambilan(String jenisPengambilan) {
+        this.jenisPengambilan = jenisPengambilan;
+    }
+
+    public String getNoTelp() {
+        return noTelp;
+    }
+
+    public void setNoTelp(String noTelp) {
+        this.noTelp = noTelp;
+    }
+
+    public TelemedicBo getTelemedicBoProxy() {
+        return telemedicBoProxy;
+    }
+
+    public void setTelemedicBoProxy(TelemedicBo telemedicBoProxy) {
+        this.telemedicBoProxy = telemedicBoProxy;
+    }
 
     public String getAlamat() {
         return alamat;
@@ -203,12 +251,35 @@ public class PembayaranController implements ModelDriven<Object> {
 
             ItSimrsPembayaranOnlineEntity newPembayaran = listEntity.get(0);
 
-            newPembayaran.setAlamat(alamat);
             newPembayaran.setKodeBank(bankCoa);
             newPembayaran.setLastUpdate(now);
+            newPembayaran.setLastUpdateWho(idPasien);
 
             try {
                 verifikatorPembayaranBoProxy.saveEdit(newPembayaran);
+            } catch (GeneralBOException e) {
+                logger.error("[PembayaranController.create] Error, " + e.getMessage());
+            }
+
+            List<PengirimanObat> listPengiriman = new ArrayList<>();
+
+            try {
+                listPengiriman = telemedicBoProxy.getListPengirimanById("", idPasien);
+            }catch (GeneralBOException e) {
+                logger.error("[PembayaranController.create] Error, " + e.getMessage());
+
+            }
+
+            PengirimanObat newPengirimanObat = listPengiriman.get(0);
+
+            newPengirimanObat.setAlamat(alamat);
+            newPengirimanObat.setNoTelp(noTelp);
+            newPengirimanObat.setDesaId(desaId);
+            newPengirimanObat.setLastUpdate(now);
+            newPengirimanObat.setLastUpdateWho(idPasien);
+
+            try {
+                telemedicBoProxy.saveEditPengirimanObat(newPengirimanObat);
                 model.setMessage("Success");
             } catch (GeneralBOException e) {
                 logger.error("[PembayaranController.create] Error, " + e.getMessage());

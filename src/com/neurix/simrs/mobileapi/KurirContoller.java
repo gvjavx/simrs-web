@@ -285,7 +285,6 @@ public class KurirContoller extends ValidationAwareSupport implements ModelDrive
                 logger.error("[KurirController.saveAdd] Error when saving error,", e);
             }
         }
-
         logger.info("[KurirController.create] end process POST /kurir >>>");
         return new DefaultHttpHeaders("success")
                 .disableCaching();

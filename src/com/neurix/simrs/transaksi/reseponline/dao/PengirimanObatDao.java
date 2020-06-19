@@ -2,11 +2,13 @@ package com.neurix.simrs.transaksi.reseponline.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.reseponline.model.ItSimrsPengirimanObatEntity;
+import com.neurix.simrs.transaksi.reseponline.model.PengirimanObat;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -46,5 +48,58 @@ public class PengirimanObatDao extends GenericDao<ItSimrsPengirimanObatEntity, S
         Iterator<BigInteger> iter = query.list().iterator();
         String sId = String.format("%08d", iter.next());
         return sId;
+    }
+
+    public List<PengirimanObat> getPengirimanById(String idKurir, String idPasien) {
+
+       String query = "";
+
+       String searchIdPasien = "";
+       String searchIdKurir = "";
+
+       if (idPasien != null && !idPasien.equalsIgnoreCase("")) {
+           searchIdPasien = " and a.id_pasien = '" + idPasien + "' ";
+       }
+       if (idKurir != null && !idKurir.equalsIgnoreCase("")) {
+           searchIdKurir = " and a.id_kurir = '" + idKurir + "' ";
+       }
+
+       List<PengirimanObat> listOfResult = new ArrayList<>();
+        List<Object[]> results = new ArrayList<Object[]>();
+        query = "SELECT a.id, a.id_kurir, a.id_pasien, a.id_pelayanan, a.branch_id, a.alamat, a.no_telp, a.flag_pickup, a.flag_diterima_pasien, b.nama, b.no_polisi, b.no_telp as no_telp_kurir, c.nama as nama_pasien, d.branch_name, e.nama_pelayanan\n" +
+                "FROM it_simrs_pengiriman_obat a\n" +
+                "INNER JOIN im_simrs_kurir b ON a.id_kurir = b.id_kurir\n" +
+                "INNER JOIN im_simrs_pasien c ON a.id_pasien = c.id_pasien\n" +
+                "INNER JOIN im_branches d ON a.branch_id = d.branch_id\n" +
+                "INNER JOIN im_simrs_pelayanan e ON a.id_pelayanan = e.id_pelayanan\n" +
+                "WHERE a.flag = 'Y'\n" + searchIdKurir + searchIdPasien +
+                "ORDER BY a.last_update ";
+
+       results = this.sessionFactory.getCurrentSession()
+               .createSQLQuery(query)
+               .list();
+
+       for (Object[] row : results) {
+           PengirimanObat result = new PengirimanObat();
+           result.setId((String) row[0]);
+           result.setIdKurir((String) row[1]);
+           result.setIdPasien((String) row[2]);
+           result.setIdPelayanan((String) row[3]);
+           result.setBranchId((String) row[4]);
+           result.setAlamat((String) row[5]);
+           result.setNoTelp((String) row[6]);
+           result.setFlagPickup((String) row[7]);
+           result.setFlagDiterimaPasien((String) row[8]);
+           result.setKurirName((String) row[9]);
+           result.setNoPolisi((String) row[10]);
+           result.setNoTelpKurir((String) row[11]);
+           result.setPasienName((String) row[12]);
+           result.setBranchName((String) row[13]);
+           result.setPelayananName((String) row[14]);
+
+           listOfResult.add(result);
+       }
+
+       return listOfResult;
     }
 }
