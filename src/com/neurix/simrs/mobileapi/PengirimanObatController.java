@@ -3,6 +3,7 @@ package com.neurix.simrs.mobileapi;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.mobileapi.model.PengirimanObatMobile;
 import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
+import com.neurix.simrs.transaksi.reseponline.model.ItSimrsPengirimanObatEntity;
 import com.neurix.simrs.transaksi.reseponline.model.PengirimanObat;
 import com.opensymphony.xwork2.ModelDriven;
 import org.apache.log4j.Logger;
@@ -138,7 +139,7 @@ public class PengirimanObatController implements ModelDriven<Object> {
             bean.setIdPasien(idPasien);
 
             try{
-               result = telemedicBoProxy.getListPengirimanById("", idPasien);
+               result = telemedicBoProxy.getPengirimanByCriteria(bean);
             } catch (GeneralBOException e) {
                 logger.error("[PengirimanObatController.create] ERROR. ", e);
                 throw new GeneralBOException("[PengirimanObatController.create] ERROR. ", e);
@@ -148,6 +149,7 @@ public class PengirimanObatController implements ModelDriven<Object> {
             newPengirimanObat.setFlagDiterimaPasien("Y");
             newPengirimanObat.setLastUpdate(now);
             newPengirimanObat.setLastUpdateWho(idPasien);
+            newPengirimanObat.setAction("U");
 
             try {
                 telemedicBoProxy.saveEditPengirimanObat(newPengirimanObat);

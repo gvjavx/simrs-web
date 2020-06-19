@@ -626,6 +626,68 @@ public class TelemedicBoImpl implements TelemedicBo {
     }
 
     @Override
+    public List<PengirimanObat> getPengirimanByCriteria(PengirimanObat bean) throws GeneralBOException{
+        logger.info("[TelemedicBoImpl.getPembayaranByCriteria] START <<<");
+
+        List<ItSimrsPengirimanObatEntity> result = new ArrayList<>();
+        List<PengirimanObat> resultReturn = new ArrayList<>();
+
+        Map hsCriteria = new HashMap();
+        if (bean.getId() != null) {
+            hsCriteria.put("id", bean.getId());
+        }
+        if (bean.getIdKurir() != null) {
+            hsCriteria.put("id_kurir", bean.getIdKurir());
+        }
+        if (bean.getIdPasien() != null) {
+            hsCriteria.put("id_pasien", bean.getIdPasien());
+        }
+        if (bean.getIdPelayanan() != null) {
+            hsCriteria.put("id_pelayanan", bean.getIdPelayanan());
+        }
+        if (bean.getIdResep() != null) {
+            hsCriteria.put("id_resep", bean.getIdResep());
+        }
+
+        try {
+            result = pengirimanObatDao.getByCriteria(hsCriteria);
+
+        } catch (GeneralBOException e) {
+            logger.error("[VerifikatorPembayaranBoImpl.insertResepOnline] ERROR. ", e);
+            throw new GeneralBOException("[VerifikatorPembayaranBoImpl.insertResepOnline] ERROR. ", e);
+        }
+
+
+        for (ItSimrsPengirimanObatEntity item : result) {
+            PengirimanObat pengirimanObat = new PengirimanObat();
+            pengirimanObat.setId(item.getId());
+            pengirimanObat.setIdPasien(item.getIdPasien());
+            pengirimanObat.setIdPelayanan(item.getIdPelayanan());
+            pengirimanObat.setIdResep(item.getIdResep());
+            pengirimanObat.setIdKurir(item.getIdKurir());
+            pengirimanObat.setBranchId(item.getBranchId());
+            pengirimanObat.setDesaId(item.getDesaId());
+            pengirimanObat.setNoTelp(item.getNoTelp());
+            pengirimanObat.setFlagDiterimaPasien(item.getFlagDiterimaPasien());
+            pengirimanObat.setFlagPickup(item.getFlagPickup());
+            pengirimanObat.setFlag(item.getFlag());
+            pengirimanObat.setAction(item.getAction());
+            pengirimanObat.setCreatedWho(item.getCreatedWho());
+            pengirimanObat.setCreatedDate(item.getCreatedDate());
+            pengirimanObat.setLastUpdate(item.getLastUpdate());
+            pengirimanObat.setLastUpdateWho(item.getLastUpdateWho());
+            pengirimanObat.setAlamat(item.getAlamat());
+
+            resultReturn.add(pengirimanObat);
+        }
+
+
+        logger.info("[TelemedicBoImpl.getPembayaranByCriteria] END <<<");
+        return  resultReturn;
+
+    }
+
+    @Override
     public List<PengirimanObat> getListPengirimanById(String idKurir, String idPasien) throws GeneralBOException {
         logger.info("[TelemedicBoImpl.getListPengirimanById] START <<<");
 
