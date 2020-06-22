@@ -11,17 +11,43 @@ function showModalICU(jenis) {
     if("respirasi" == jenis){
         listRespirasi(jenis);
     }
+
+    if("respirasi_icu" == jenis){
+        setHeadRespirasi();
+    }
+
     if( "keseimbangan_icu" == jenis ||
         "injeksi_icu" == jenis ||
         "oral_icu" == jenis ||
         "lain_icu" == jenis ||
-        "intakea_icu" == jenis){
+        "intakea_icu" == jenis ||
+        "output_icu" == jenis){
+
         setInputan(jenis);
     }
     if("keseimbangan" == jenis){
         listInputan(jenis);
     }
+
+    if("checklist_kriteria" == jenis){
+        setInputan(jenis);
+    }
     $('#modal-icu-' + jenis).modal({show: true, backdrop: 'static'});
+}
+
+function setHeadRespirasi(){
+    RespirasiAction.getListDetail(idDetailCheckup, "respirasi", function (res) {
+        if (res.length > 0) {
+            var valueRes = res[0];
+            $('#id13').val(valueRes.jenisNkRmNrm).trigger('change').attr('disabled','disabled');
+            $('#id14').val(valueRes.jenisTPieceJRise).trigger('change').attr('disabled','disabled');
+            $('#id17').val(valueRes.jenisPeepCpapEt).trigger('change').attr('disabled','disabled');
+            $('#id22').val(valueRes.jenisPSupportPAsb).trigger('change').attr('disabled','disabled');
+            $('#id24').val(valueRes.jenisPInsPCon).trigger('change').attr('disabled','disabled');
+            $('#id29').val(valueRes.jenisFioKon).trigger('change').attr('disabled','disabled');
+            $('#id31').val(valueRes.jenisUkuranKedalamaanEtt).trigger('change').attr('disabled','disabled');
+        }
+    });
 }
 
 function saveICU(jenis, ket) {
@@ -782,6 +808,15 @@ function listRespirasi(jenis) {
     RespirasiAction.getListDetail(idDetailCheckup, jenis, function (res) {
         if (res.length > 0) {
             var body = "";
+            var valueRes = res[0];
+            $('#head1').text(valueRes.jenisNkRmNrm);
+            $('#head2').text(valueRes.jenisTPieceJRise.substring(0,2));
+            $('#head3').text(valueRes.jenisPeepCpapEt.substring(0,2));
+            $('#head4').text(valueRes.jenisPSupportPAsb.substring(0,2));
+            $('#head5').text(valueRes.jenisPInsPCon.substring(0,2));
+            $('#head6').text(valueRes.jenisFioKon.substring(0,2).toUpperCase());
+            $('#head7').text(valueRes.jenisUkuranKedalamaanEtt.substring(0,2).toUpperCase());
+
             $.each(res, function (i, item) {
                 var tanggal = converterDate(new Date(item.createdDate));
                 var tempTgl = "";
@@ -847,145 +882,130 @@ function setInputan(jenis){
     var infus = "";
     var obat = "";
     var inputan = "";
+    var parameter = [];
 
-    IcuAction.getListDetailParameter(idDetailCheckup, jenis, function (res) {
-        if(res.length > 0 ){
+    if("checklist_kriteria" == jenis){
 
-            $.each(res, function (i, item) {
-                inputan += '<div class="row">' +
+    }else{
+        IcuAction.getListDetailParameter(idDetailCheckup, jenis, function (res) {
+            if(res.length > 0 ){
+
+                $.each(res, function (i, item) {
+                    inputan += '<div class="row">' +
+                        '<div class="form-group">\n' +
+                        '    <label class="col-md-3 jarak">'+item.jenis+'</label>\n' +
+                        '<input value="'+item.idHeaderIcu+'" type="hidden" class="data-label'+jenis+'">'+
+                        '    <div class="col-md-9">\n' +
+                        '       <input class="form-control jarak nilai'+jenis+'" type="number">\n' +
+                        '    </div>\n' +
+                        '</div>\n' +
+                        '</div>';
+                });
+
+                $('#inpt_'+jenis).html(inputan);
+                $('#resus').html('');
+                $('#darah').html('');
+                $('#infus').html('');
+                $('#'+jenis).html('');
+                $('#select_isi').html('');
+                $('#is_new').val(false);
+
+            }else{
+
+                if("keseimbangan_icu"){
+                    var isi = '<div class="row">\n' +
+                        '<div class="form-group">\n' +
+                        '    <label class="col-md-3" style="margin-top: 7px">Pengisian</label>\n' +
+                        '    <div class="col-md-9">\n' +
+                        '        <select class="form-control select2 " id="jensis_pengisian" style="width: 100%" onchange="pilIsi(\''+jenis+'\', this.value)">\n' +
+                        '            <option value="">[Select One]</option>\n' +
+                        '            <option value="rc">Resusitasi Cairan</option>\n' +
+                        '            <option value="in">Infus</option>\n' +
+                        '        </select>\n' +
+                        '    </div>\n' +
+                        '</div>\n' +
+                        '</div>';
+                    $('#select_isi').html(isi);
+                }
+
+                var label = "";
+                if("injeksi_icu" == jenis){
+                    label = "Injeksi";
+                }
+                if("oral_icu" == jenis){
+                    label = "Oral";
+                }
+                if("lain_icu" == jenis){
+                    label = "Lain-Lain";
+                }
+
+                if("intakea_icu" == jenis){
+                    parameter.push({'params': 'NGT/ Oral'});
+                    parameter.push({'params': 'Minum'});
+                }
+                if("output_icu" == jenis){
+                    parameter.push({'params': 'Drain 1'});
+                    parameter.push({'params': 'Drain 2'});
+                    parameter.push({'params': 'Urin'});
+                    parameter.push({'params': 'Muntah'});
+                    parameter.push({'params': 'BAB'});
+                    parameter.push({'params': 'IWL'});
+                    parameter.push({'params': 'Stoma'});
+                }
+
+                obat = '<hr class="garis">' +
+                    '<div class="row">\n' +
                     '<div class="form-group">\n' +
-                    '    <label class="col-md-3 jarak">'+item.jenis+'</label>\n' +
-                    '<input value="'+item.idHeaderIcu+'" type="hidden" class="data-label'+jenis+'">'+
-                    '    <div class="col-md-9">\n' +
-                    '       <input class="form-control jarak nilai'+jenis+'" type="number">\n' +
+                    '    <div class="col-md-offset-3 col-md-1">\n' +
+                    '        <button class="btn btn-success" onclick="addInputan(\''+jenis+'\', \'obat\')"><i class="fa fa-plus"></i> Tambah</button>\n' +
                     '    </div>\n' +
                     '</div>\n' +
-                    '</div>';
-            });
+                    '</div>\n';
 
-            $('#inpt_'+jenis).html(inputan);
-            $('#resus').html('');
-            $('#darah').html('');
-            $('#infus').html('');
-            $('#'+jenis).html('');
-            $('#is_new').val(false);
+                if(parameter.length > 0){
 
-        }else{
-            resus = '<div class="row">\n' +
-                '<div class="form-group">\n' +
-                '    <div class="col-md-offset-3 col-md-1">\n' +
-                '        <button class="btn btn-success" onclick="addInputan(\'resus\')"><i class="fa fa-plus"></i> Tambah</button>\n' +
-                '    </div>\n' +
-                '</div>\n' +
-                '</div>\n' +
-                '<div class="row jarak" id="res1">\n' +
-                '<div class="form-group">\n' +
-                '    <label class="col-md-3 jarak">Resusitasi Cairan</label>\n' +
-                '    <div class="col-md-4">\n' +
-                '        <select class="form-control select2 data-label'+jenis+' resus" style="width: 100%">\n' +
-                '            <option value="">[Select One]</option>\n' +
-                '            <option value="Cairan 1">Cairan 1</option>\n' +
-                '            <option value="Cairan 2">Cairan 2</option>\n' +
-                '        </select>\n' +
-                '    </div>\n' +
-                '    <label class="col-md-1 jarak">Nilai</label>\n' +
-                '    <div class="col-md-3">\n' +
-                '       <input class="form-control jarak nilai'+jenis+'" type="number">\n' +
-                '    </div>\n' +
-                '</div>\n' +
-                '</div>';
+                    $.each(parameter, function (i, item) {
+                        obat +=
+                            '<div class="row jarak" id="res'+i+'">\n' +
+                            '<div class="form-group">\n' +
+                            '    <label class="col-md-3 jarak">'+item.params+'</label>\n' +
+                            '<input type="hidden" value="'+item.params+'" class="data-label'+jenis+' obat'+jenis+'">\n' +
+                            '    <div class="col-md-9">\n' +
+                            '       <input class="form-control jarak nilai'+jenis+'" type="number">\n' +
+                            '    </div>\n' +
+                            '</div>\n' +
+                            '</div>'
+                    });
 
-            darah = '<div class="row">\n' +
-                '<div class="form-group">\n' +
-                '    <div class="col-md-offset-3 col-md-1">\n' +
-                '        <button class="btn btn-success" onclick="addInputan(\'darah\')"><i class="fa fa-plus"></i> Tambah</button>\n' +
-                '    </div>\n' +
-                '</div>\n' +
-                '</div>\n' +
-                '<div class="row jarak" id="res1">\n' +
-                '<div class="form-group">\n' +
-                '    <label class="col-md-3 jarak">Darah</label>\n' +
-                '    <div class="col-md-4">\n' +
-                '        <select class="form-control select2 data-label'+jenis+' darah" style="width: 100%">\n' +
-                '            <option value="">[Select One]</option>\n' +
-                '            <option value="Darah 1">Darah 1</option>\n' +
-                '            <option value="Darah 2">Darah 2</option>\n' +
-                '        </select>\n' +
-                '    </div>\n' +
-                '    <label class="col-md-1 jarak">Nilai</label>\n' +
-                '    <div class="col-md-3">\n' +
-                '       <input class="form-control jarak nilai'+jenis+'" type="number">\n' +
-                '    </div>\n' +
-                '</div>\n' +
-                '</div>';
+                }else{
+                    obat = obat +
+                        '<div class="row jarak" id="res1">\n' +
+                        '<div class="form-group">\n' +
+                        '    <label class="col-md-3 jarak">'+label+'</label>\n' +
+                        '    <div class="col-md-4">\n' +
+                        '<input class="form-control jarak data-label'+jenis+' obat'+jenis+'" placeholder="Keterangan">\n' +
+                        '    </div>\n' +
+                        '    <label class="col-md-1 jarak">Nilai</label>\n' +
+                        '    <div class="col-md-3">\n' +
+                        '       <input class="form-control jarak nilai'+jenis+'" type="number">\n' +
+                        '    </div>\n' +
+                        '</div>\n' +
+                        '</div>';
+                }
 
-            infus = '<div class="row">\n' +
-                '<div class="form-group">\n' +
-                '    <div class="col-md-offset-3 col-md-1">\n' +
-                '        <button class="btn btn-success" onclick="addInputan(\'infus\')"><i class="fa fa-plus"></i> Tambah</button>\n' +
-                '    </div>\n' +
-                '</div>\n' +
-                '</div>\n' +
-                '<div class="row jarak" id="res1">\n' +
-                '<div class="form-group">\n' +
-                '    <label class="col-md-3 jarak">Infus/ TY Drip</label>\n' +
-                '    <div class="col-md-4">\n' +
-                '        <select class="form-control select2 data-label'+jenis+' infus" style="width: 100%">\n' +
-                '            <option value="">[Select One]</option>\n' +
-                '            <option value="Infus 1">Infus 1</option>\n' +
-                '            <option value="Infus 2">Infus 2</option>\n' +
-                '        </select>\n' +
-                '    </div>\n' +
-                '    <label class="col-md-1 jarak">Nilai</label>\n' +
-                '    <div class="col-md-3">\n' +
-                '       <input class="form-control jarak nilai'+jenis+'" type="number">\n' +
-                '    </div>\n' +
-                '</div>\n' +
-                '</div>';
+                if("keseimbangan_icu" == jenis){
+                    $('#resus').html(resus);
+                    $('#darah').html(darah);
+                    $('#infus').html(infus);
+                }else{
+                    $('#'+jenis).html(obat);
+                }
 
-            var label = "";
-            if("injeksi_icu" == jenis){
-                label = "Injeksi";
+                $('#inpt_'+jenis).html('');
+                $('#is_new').val(true);
             }
-            if("oral_icu" == jenis){
-                label = "Oral";
-            }
-            if("lain_icu" == jenis){
-                label = "Lain-Lain";
-            }
-
-            obat = '<div class="row">\n' +
-                '<div class="form-group">\n' +
-                '    <div class="col-md-offset-3 col-md-1">\n' +
-                '        <button class="btn btn-success" onclick="addInputan(\''+jenis+'\')"><i class="fa fa-plus"></i> Tambah</button>\n' +
-                '    </div>\n' +
-                '</div>\n' +
-                '</div>\n' +
-                '<div class="row jarak" id="res1">\n' +
-                '<div class="form-group">\n' +
-                '    <label class="col-md-3 jarak">'+label+'</label>\n' +
-                '    <div class="col-md-4">\n' +
-                '<input class="form-control jarak data-label'+jenis+' obat'+jenis+'" placeholder="Keterangan Jenis">\n' +
-                '    </div>\n' +
-                '    <label class="col-md-1 jarak">Nilai</label>\n' +
-                '    <div class="col-md-3">\n' +
-                '       <input class="form-control jarak nilai'+jenis+'" type="number">\n' +
-                '    </div>\n' +
-                '</div>\n' +
-                '</div>';
-
-            if("keseimbangan_icu" == jenis){
-                $('#resus').html(resus);
-                $('#darah').html(darah);
-                $('#infus').html(infus);
-            }else{
-                $('#'+jenis).html(obat);
-            }
-
-            $('#inpt_'+jenis).html('');
-            $('#is_new').val(true);
-        }
-    });
+        });
+    }
 
     var sel = $('.select2').length;
     if(sel > 0){
@@ -993,69 +1013,119 @@ function setInputan(jenis){
     }
 }
 
-function addInputan(jenis){
+function pilIsi(jenis, val){
 
-    var id = $('.'+jenis).length;
-    var count = id + 1;
-
-    var label = "";
-    var option = "";
-
-    if("resus" == jenis){
-        label = "Resusitasi Cairan";
-        option = '<option value="Cairan 1">Cairan 1</option>\n' +
-                 '<option value="Cairan 2">Cairan 2</option>\n';
-    }
-    if("darah" == jenis){
-        label = "Darah";
-        option = '<option value="Darah 1">Darah 1</option>\n' +
-            '<option value="Darah 2">Darah 2</option>\n';
-    }
-    if("infus" == jenis){
-        label = "Infus/ TY Drip";
-        option = '<option value="Infus 1">Infus 1</option>\n' +
-            '<option value="Infus 2">Infus 2</option>\n';
-    }
-
-    var inp = "" ;
-
-    if("injeksi_icu" == jenis || "oral_icu" == jenis || "lain_icu" == jenis || "intakea_icu" == jenis){
-        inp ='<div class="row jarak" id="'+jenis+count+'">\n' +
+    if("rc" == val){
+        var resus = '<hr class="garis"><div class="row">\n' +
             '<div class="form-group">\n' +
-            '    <label class="col-md-3 jarak">'+label+'</label>\n' +
+            '    <div class="col-md-offset-3 col-md-1">\n' +
+            '        <button class="btn btn-success" onclick="addInputan(\''+jenis+'\',\'resus\')"><i class="fa fa-plus"></i> Tambah</button>\n' +
+            '    </div>\n' +
+            '</div>\n' +
+            '</div>\n' +
+            '<div class="row jarak" id="res1">\n' +
+            '<div class="form-group">\n' +
+            '    <label class="col-md-3 jarak">Resusitasi Cairan</label>\n' +
             '    <div class="col-md-4">\n' +
-            '       <input class="form-control jarak data-label'+jenis+' '+jenis+'" placeholder="Keterangan Jenis">\n' +
+            '       <input class="form-control jarak data-label'+jenis+'">\n' +
             '    </div>\n' +
             '    <label class="col-md-1 jarak">Nilai</label>\n' +
             '    <div class="col-md-3">\n' +
             '       <input class="form-control jarak nilai'+jenis+'" type="number">\n' +
             '    </div>\n' +
-            '    <div class="col-md-1">\n' +
-            '        <button class="btn btn-danger" style="margin-left: -20px; margin-top: 10px" onclick="delInputan(\''+jenis+count+'\')"><i class="fa fa-trash"></i></button>\n' +
-            '    </div>\n' +
             '</div>\n' +
             '</div>';
-    }else{
-        inp ='<div class="row jarak" id="'+jenis+count+'">\n' +
+
+        var darah = '<hr class="garis"><div class="row">\n' +
             '<div class="form-group">\n' +
-            '    <label class="col-md-3 jarak">'+label+'</label>\n' +
+            '    <div class="col-md-offset-3 col-md-1">\n' +
+            '        <button class="btn btn-success" onclick="addInputan(\''+jenis+'\', \'darah\')"><i class="fa fa-plus"></i> Tambah</button>\n' +
+            '    </div>\n' +
+            '</div>\n' +
+            '</div>\n' +
+            '<div class="row jarak" id="res1">\n' +
+            '<div class="form-group">\n' +
+            '    <label class="col-md-3 jarak">Darah</label>\n' +
             '    <div class="col-md-4">\n' +
-            '        <select class="form-control select2 data-labelkeseimbangan_icu" style="width: 100%">\n' +
-            '            <option value="">[Select One]</option>\n' + option +
-            '        </select>\n' +
+            '       <input class="form-control jarak data-label'+jenis+'">\n' +
             '    </div>\n' +
             '    <label class="col-md-1 jarak">Nilai</label>\n' +
             '    <div class="col-md-3">\n' +
-            '       <input class="form-control jarak nilaikeseimbangan_icu" type="number">\n' +
-            '    </div>\n' +
-            '    <div class="col-md-1">\n' +
-            '        <button class="btn btn-danger" style="margin-left: -20px; margin-top: 10px" onclick="delInputan(\''+jenis+count+'\')"><i class="fa fa-trash"></i></button>\n' +
+            '       <input class="form-control jarak nilai'+jenis+'" type="number">\n' +
             '    </div>\n' +
             '</div>\n' +
             '</div>';
+
+        $('#resus').html(resus);
+        $('#darah').html(darah);
+        $('#infus').html('');
+
+    }else if("in" == val){
+        var infus = '<hr class="garis"><div class="row">\n' +
+            '<div class="form-group">\n' +
+            '    <div class="col-md-offset-3 col-md-1">\n' +
+            '        <button class="btn btn-success" onclick="addInputan(\''+jenis+'\', \'infus\')"><i class="fa fa-plus"></i> Tambah</button>\n' +
+            '    </div>\n' +
+            '</div>\n' +
+            '</div>\n' +
+            '<div class="row jarak" id="res1">\n' +
+            '<div class="form-group">\n' +
+            '    <label class="col-md-3 jarak">Infus/ TY Drip</label>\n' +
+            '    <div class="col-md-4">\n' +
+            '       <input class="form-control jarak data-label'+jenis+'">\n' +
+            '    </div>\n' +
+            '    <label class="col-md-1 jarak">Nilai</label>\n' +
+            '    <div class="col-md-3">\n' +
+            '       <input class="form-control jarak nilai'+jenis+'" type="number">\n' +
+            '    </div>\n' +
+            '</div>\n' +
+            '</div>';
+
+        $('#infus').html(infus);
+        $('#resus').html('');
+        $('#darah').html('');
+    }
+}
+
+function addInputan(jenis, tipe){
+
+    var id = $('.'+tipe).length;
+    var count = id + 1;
+
+    var label = "";
+    var option = "";
+
+    if("resus" == tipe){
+        label = "Resusitasi Cairan";
+    }
+    if("darah" == tipe){
+        label = "Darah";
+    }
+    if("infus" == tipe){
+        label = "Infus/ TY Drip";
     }
 
-    $('#'+jenis).append(inp);
+    var inp ='<div class="row jarak" id="'+jenis+count+'">\n' +
+        '<div class="form-group">\n' +
+        '    <label class="col-md-3 jarak">'+label+'</label>\n' +
+        '    <div class="col-md-4">\n' +
+        '       <input class="form-control jarak data-label'+jenis+' '+jenis+'" placeholder="Keterangan Jenis">\n' +
+        '    </div>\n' +
+        '    <label class="col-md-1 jarak">Nilai</label>\n' +
+        '    <div class="col-md-3">\n' +
+        '       <input class="form-control jarak nilai'+jenis+'" type="number">\n' +
+        '    </div>\n' +
+        '    <div class="col-md-1">\n' +
+        '        <button class="btn btn-danger" style="margin-left: -20px; margin-top: 10px" onclick="delInputan(\''+jenis+count+'\')"><i class="fa fa-trash"></i></button>\n' +
+        '    </div>\n' +
+        '</div>\n' +
+        '</div>';
+
+    if("keseimbangan_icu" == jenis){
+        $('#'+tipe).append(inp);
+    }else{
+        $('#'+jenis).append(inp);
+    }
 
     var sel = $('.select2').length;
     if(sel > 0){
@@ -1133,7 +1203,6 @@ function saveInputan(jenis, ket){
 }
 
 function listInputan(jenis) {
-
     IcuAction.getListDetail(idDetailCheckup, jenis+'_icu', function (res) {
         if (res.length > 0) {
 
@@ -1161,11 +1230,11 @@ function listInputan(jenis) {
                 }
 
                 if(tempJam == ""){
-                    tempJam = item.waktu;
+                    tempJam = item.waktu+tanggal;
                     tempHead.push({'jenis':item.jenis})
                 }else{
-                    if(tempJam == item.waktu){
-                        tempHead.push({'jenis':item.jenis})
+                    if(tempJam == item.waktu+tanggal){
+                        tempHead.push({'jenis':item.jenis});
                     }
                 }
 
@@ -1244,6 +1313,18 @@ function listInputan(jenis) {
                 $('#btn_icu_' + jenis).attr('src', url);
                 $('#btn_icu_' + jenis).attr('onclick', 'delRowICCU(\'' + jenis + '\')');
             }
+        }else{
+            if("keseimbangan" != jenis){
+                var table = '<table style="font-size: 12px" class="table table-bordered">' +
+                    '<tbody>' + '<tr><td>Data belum ada</td></tr>' + '</tbody>' +
+                    '</table>';
+
+                var newRow = $('<tr id="del_icu_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
+                newRow.insertAfter($('table').find('#row_icu_' + jenis));
+                var url = contextPath + '/pages/images/minus-allnew.png';
+                $('#btn_icu_' + jenis).attr('src', url);
+                $('#btn_icu_' + jenis).attr('onclick', 'delRowICCU(\'' + jenis + '\')');
+            }
         }
     });
 }
@@ -1254,5 +1335,7 @@ function delRowICCU(id) {
     $('#btn_icu_' + id).attr('src', url);
     $('#btn_icu_' + id).attr('onclick', 'listInputan(\'' + id + '\')');
 }
+
+
 
 

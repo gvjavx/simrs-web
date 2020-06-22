@@ -64,7 +64,8 @@ public class HeaderIcuDao extends GenericDao<ItSimrsHeaderIcuEntity, String> {
                     "INNER JOIN it_simrs_detail_icu b\n" +
                     "ON a.id_header_icu = b.id_header_icu\n" +
                     "WHERE a.id_detail_checkup = :id\n" +
-                    "AND a.kategori = :kategori";
+                    "AND a.kategori = :kategori \n"+
+                    "ORDER BY CAST(b.created_date AS date), b.waktu ASC";
 
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -86,6 +87,32 @@ public class HeaderIcuDao extends GenericDao<ItSimrsHeaderIcuEntity, String> {
             }
         }
         return list;
+    }
+
+    public Boolean cekData(String id, String waktu, String kategori){
+        Boolean response = false;
+        if(!"".equalsIgnoreCase(id) && !"".equalsIgnoreCase(waktu) && !"".equalsIgnoreCase(kategori)){
+            String SQL = "SELECT \n" +
+                    "a.id_header_icu\n" +
+                    "FROM it_simrs_header_icu a\n" +
+                    "INNER JOIN it_simrs_detail_icu b\n" +
+                    "ON a.id_header_icu = b.id_header_icu\n" +
+                    "WHERE a.id_detail_checkup = :id\n" +
+                    "AND b.waktu = :waktu\n" +
+                    "AND a.kategori = :kategori\n" +
+                    "AND CAST(b.created_date AS DATE) = CURRENT_DATE";
+
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", id)
+                    .setParameter("waktu", waktu)
+                    .setParameter("kategori", kategori)
+                    .list();
+            if(result.size() > 0){
+                response = true;
+            }
+        }
+        return response;
     }
 
     public String getNextSeq(){

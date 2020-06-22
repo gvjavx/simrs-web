@@ -58,12 +58,22 @@ public class IcuAction {
             headerIcuList.add(headerIcu);
         }
 
-        try {
-            response = headerIcuBo.saveAdd(headerIcuList, isNew);
-        } catch (GeneralBOException e) {
-            response.setStatus("Error");
-            response.setMsg("Found Error " + e.getMessage());
-            return response;
+        if(headerIcuList.size() > 0){
+            HeaderIcu headIcu = headerIcuList.get(0);
+            Boolean cekData = headerIcuBo.cekData(headIcu.getIdDetailCheckup(), headIcu.getWaktu(), headIcu.getKategori());
+
+            if(cekData){
+                response.setStatus("error");
+                response.setMsg("[Found Error], Data pada jam "+headIcu.getWaktu()+" Sudah ada dalam database...!");
+            }else {
+                try {
+                    response = headerIcuBo.saveAdd(headerIcuList, isNew);
+                } catch (GeneralBOException e) {
+                    response.setStatus("error");
+                    response.setMsg("Found Error " + e.getMessage());
+                    return response;
+                }
+            }
         }
         return response;
     }

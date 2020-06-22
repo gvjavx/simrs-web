@@ -10,4 +10,5 @@ public interface HeaderIcuBo {
     public List<HeaderIcu> getByCriteria(HeaderIcu bean) throws GeneralBOException;
     public CrudResponse saveAdd(List<HeaderIcu> list, Boolean isNew) throws GeneralBOException;
     public List<HeaderIcu> getListDetail(String id, String kategori) throws GeneralBOException;
+    public Boolean cekData(String id, String waktu, String kategori) throws GeneralBOException;
 }

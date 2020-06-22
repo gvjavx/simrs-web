@@ -28,6 +28,7 @@
                             <li><a onclick="showModalICU('decobitus')" style="cursor: pointer"><i class="fa fa-plus"></i> Derajat Decobitus</a></li>
                             <li><a onclick="showModalICU('nyeri')" style="cursor: pointer"><i class="fa fa-plus"></i> Skala Nyeri</a></li>
                             <li><a onclick="showModalICU('gcs')" style="cursor: pointer"><i class="fa fa-plus"></i> Glasgow Coma Scale</a></li>
+                            <li><a onclick="showModalICU('checklist_kriteria')" style="cursor: pointer"><i class="fa fa-plus"></i> Check List Kriteria Pasien</a></li>
                         </ul>
                     </div>
                 </div>
@@ -68,6 +69,12 @@
                             <td>GCS <small>(Glasgow Coma Scale)</small></td>
                             <td width="20%" align="center">
                                 <img id="btn_icu_gcs" class="hvr-grow" onclick="detailICU('gcs')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                            </td>
+                        </tr>
+                        <tr id="row_icu_checklist_kriteria">
+                            <td>Check List Kriteria Pasien</td>
+                            <td width="20%" align="center">
+                                <img id="btn_icu_checklist_kriteria" class="hvr-grow" onclick="detailICU('checklist_kriteria')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         </tbody>
@@ -687,6 +694,41 @@
                 <button id="save_icu_gcs" class="btn btn-success pull-right" onclick="saveICU('gcs', 'asesmen_icu')"><i class="fa fa-check"></i> Save
                 </button>
                 <button id="load_icu_gcs" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-icu-checklist_kriteria">
+    <div class="modal-dialog" style="width: 55%">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> GCS
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_icu_checklist_kriteria">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_icu_checklist_kriteria"></p>
+                    </div>
+                    <div class="row">
+                        <table>
+                            <thead id="th_checklist_kriteria"></thead>
+                            <tbody id="td_checklist_kriteria"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                <button id="save_icu_checklist_kriteria" class="btn btn-success pull-right" onclick="saveICU('checklist_kriteria', 'asesmen_icu')"><i class="fa fa-check"></i> Save
+                </button>
+                <button id="load_icu_checklist_kriteria" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>

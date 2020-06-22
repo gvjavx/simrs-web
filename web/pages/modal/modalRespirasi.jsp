@@ -25,20 +25,20 @@
                             <td colspan="2" style="vertical-align: middle" align="center">DP</td>
                             <td colspan="2" style="vertical-align: middle" align="center">RC</td>
                             <td colspan="4" style="vertical-align: middle" align="center">EXTR</td>
-                            <td rowspan="2" style="vertical-align: middle" align="center">NM</td>
-                            <td rowspan="2" style="vertical-align: middle" align="center">TP</td>
+                            <td rowspan="2" style="vertical-align: middle" align="center" id="head1">NM</td>
+                            <td rowspan="2" style="vertical-align: middle" align="center" id="head2">TP</td>
                             <td rowspan="2" style="vertical-align: middle" align="center">TI</td>
-                            <td rowspan="2" style="vertical-align: middle" align="center">PE</td>
+                            <td rowspan="2" style="vertical-align: middle" align="center" id="head3">PE</td>
                             <td rowspan="2" style="vertical-align: middle" align="center">FR</td>
                             <td rowspan="2" style="vertical-align: middle" align="center">TV</td>
                             <td rowspan="2" style="vertical-align: middle" align="center">MV</td>
-                            <td rowspan="2" style="vertical-align: middle" align="center">PS</td>
-                            <td rowspan="2" style="vertical-align: middle" align="center">PI</td>
+                            <td rowspan="2" style="vertical-align: middle" align="center" id="head4">PS</td>
+                            <td rowspan="2" style="vertical-align: middle" align="center" id="head5">PI</td>
                             <td rowspan="2" style="vertical-align: middle" align="center">TR</td>
                             <td rowspan="2" style="vertical-align: middle" align="center">IN</td>
                             <td rowspan="2" style="vertical-align: middle" align="center">FL</td>
-                            <td rowspan="2" style="vertical-align: middle" align="center">FI</td>
-                            <td rowspan="2" style="vertical-align: middle" align="center">UK</td>
+                            <td rowspan="2" style="vertical-align: middle" align="center" id="head6">FI</td>
+                            <td rowspan="2" style="vertical-align: middle" align="center" id="head7">UK</td>
                             <td rowspan="2" style="vertical-align: middle" align="center">SP</td>
                             <td rowspan="2" style="vertical-align: middle" align="center">SE</td>
                         </tr>
@@ -60,6 +60,38 @@
 
                         </tbody>
                     </table>
+                    <hr class="garis"></hr>
+                    <div class="row" style="font-size: 12px">
+                        <label class="col-md-3"> DP = Diameter Pupil</label>
+                        <label class="col-md-3"> RC = Reflek Cahaya</label>
+                        <label class="col-md-3"> EXTR = Extremitas</label>
+                        <label class="col-md-3"> TP = T-Piece</label>
+                        <label class="col-md-3"> JR = J-Rise</label>
+                        <label class="col-md-3"> TI = Tipe Ventilasi</label>
+                        <label class="col-md-3"> PE = Peep</label>
+                        <label class="col-md-3"> CP = CPAP</label>
+                        <label class="col-md-3"> ET = ET CO2</label>
+                        <label class="col-md-3"> FR = Frekwensi/ Frekwensi Total</label>
+                        <label class="col-md-3"> TV = TV (1) TV (E)</label>
+                        <label class="col-md-3"> MV = MV (1) MV (E)</label>
+                        <label class="col-md-3"> PS = P-Support</label>
+                        <label class="col-md-3"> PA = P-ASB</label>
+                        <label class="col-md-3"> TR = Triger</label>
+                        <label class="col-md-3"> IN = Inspirasi Time</label>
+                        <label class="col-md-3"> FL = Flow</label>
+                        <label class="col-md-3"> FI = Diameter Pupil</label>
+                        <label class="col-md-3"> KO = Konsentrasi O2</label>
+                        <label class="col-md-3"> UK = Ukuran ETT</label>
+                        <label class="col-md-3"> KE = Kedalaman ETT</label>
+                        <label class="col-md-3"> SP = SPO2</label>
+                        <label class="col-md-3"> SE = Secret/ Sputum</label>
+                        <label class="col-md-3"> R = Kanan</label>
+                        <label class="col-md-3"> L = Kiri</label>
+                        <label class="col-md-3"> TR = TKA</label>
+                        <label class="col-md-3"> TL = TKI</label>
+                        <label class="col-md-3"> KR = KKA</label>
+                        <label class="col-md-3"> KL = KKI</label>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -253,8 +285,8 @@
                             <div class="col-md-3">
                                 <select class="form-control select2" id="id14" style="width: 100%">
                                     <option value="">[Select]</option>
-                                    <option value="T-Piece">T-Piece</option>
-                                    <option value="J-Rise">J-Rise</option>
+                                    <option value="TPiece">TPiece</option>
+                                    <option value="JRise">JRise</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
@@ -302,8 +334,8 @@
                             <div class="col-md-3">
                                 <select class="form-control select2" id="id22" style="width: 100%">
                                     <option value="">[Select]</option>
-                                    <option value="P-Support">P-Support</option>
-                                    <option value="P-Asb">P-Asb</option>
+                                    <option value="PSupport">PSupport</option>
+                                    <option value="PASB">PASB</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
@@ -316,8 +348,8 @@
                             <div class="col-md-3">
                                 <select class="form-control select2" id="id24" style="width: 100%">
                                     <option value="">[Select]</option>
-                                    <option value="P-Inspirasi">P-Inspirasi</option>
-                                    <option value="P-Control">P-Control</option>
+                                    <option value="PInspirasi">PInspirasi</option>
+                                    <option value="PControl">PControl</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
@@ -346,7 +378,7 @@
                             <div class="col-md-3">
                                 <select class="form-control select2" id="id29" style="width: 100%">
                                     <option value="">[Select]</option>
-                                    <option value="Fio 2">Fio 2</option>
+                                    <option value="FIO 2">FIO 2</option>
                                     <option value="Konsentrasi O2">Konsentrasi O2</option>
                                 </select>
                             </div>

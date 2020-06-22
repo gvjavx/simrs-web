@@ -61,7 +61,7 @@
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Waktu</label>
                             <div class="col-md-9">
-                                <select class="form-control select2 waktu" id="id1" style="width: 100%">
+                                <select class="form-control select2 " id="waktu_keseimbangan_icu" style="width: 100%">
                                     <option value="">[Select One]</option>
                                     <option value="07:00">07:00</option>
                                     <option value="08:00">08:00</option>
@@ -91,6 +91,7 @@
                             </div>
                         </div>
                     </div>
+                    <div id="select_isi"></div>
                     <div id="resus"></div>
                     <div id="darah"></div>
                     <div id="infus"></div>

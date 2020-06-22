@@ -134,6 +134,11 @@ public class HeaderIcuBoImpl implements HeaderIcuBo {
         return headerIcuDao.getListDetail(id, kategori);
     }
 
+    @Override
+    public Boolean cekData(String id, String waktu, String kategori) throws GeneralBOException {
+        return headerIcuDao.cekData(id, waktu, kategori);
+    }
+
     public static Logger getLogger() {
         return logger;
     }

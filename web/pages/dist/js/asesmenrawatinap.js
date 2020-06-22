@@ -24,6 +24,15 @@ function showModalAsesmenRawatInap(jenis) {
     if ("ringkasan_rj" == jenis) {
         listRekamMedisRJ();
     }
+
+    if("asuhan_keperawatan" == jenis){
+        $('#diagnosa_askep').val('');
+        $('#dia').html('');
+        $('#has').html('');
+        $('#pla').html('');
+        $('#imp').html('');
+        $('#eva').html('');
+    }
     setDataPasien();
     radioEdukasiPasien(jenis);
     $('#modal-ina-' + jenis).modal({show: true, backdrop: 'static'});

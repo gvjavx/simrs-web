@@ -586,9 +586,7 @@
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('hemodinamika')"  onclick="showModalICU('hemodinamika')"><i class="fa fa-circle-o"></i>Hemodinamika</a></li>
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('respirasi')"  onclick="showModalICU('respirasi')"><i class="fa fa-circle-o"></i>Respirasi</a></li>
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('keseimbangan')"  onclick="showModalICU('keseimbangan')"><i class="fa fa-circle-o"></i>Keseimbangan</a></li>
-                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('obat-obatan')"  onclick="showModalICU('obat-obatan')"><i class="fa fa-circle-o"></i>Obat Obatan</a></li>
-                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('intakea')"  onclick="showModalICU('intakea')"><i class="fa fa-circle-o"></i>Intakea</a></li>
-                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('output')"  onclick="showModalICU('output')"><i class="fa fa-circle-o"></i>Output</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('obat-obatan')"  onclick="showModalICU('obat-obatan')"><i class="fa fa-circle-o"></i>Obat Obatan/ Intakea/ Output</a></li>
                                     </ul>
                                 </div>
                             </div>
