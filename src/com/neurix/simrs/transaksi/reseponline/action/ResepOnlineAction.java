@@ -130,12 +130,12 @@ public class ResepOnlineAction {
     public CrudResponse saveAssignKurir(String idKurir, String idResep, String idPasien, String idPelayanan){
         logger.info("ResepOnlineAction.saveAssignKurir >>> ");
 
-        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        ResepOnlineBo resepOnlineBo = (ResepOnlineBo) ctx.getBean("resepOnlineBoProxy");
-
         String userLogin = CommonUtil.userLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
         String branchId = CommonUtil.userBranchLogin();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ResepOnlineBo resepOnlineBo = (ResepOnlineBo) ctx.getBean("resepOnlineBoProxy");
 
         CrudResponse response = new CrudResponse();
 

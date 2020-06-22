@@ -33,7 +33,7 @@ import java.util.Map;
  * Wednesday, 17/06/20 9:55
  */
 public class ResepOnlineBoImpl implements ResepOnlineBo {
-    protected final static transient Logger logger = Logger.getLogger(ResepOnlineBoImpl.class);
+    protected static transient Logger logger = Logger.getLogger(ResepOnlineBoImpl.class);
 
     private ResepOnlineDao resepOnlineDao;
     private PengirimanObatDao pengirimanObatDao;
