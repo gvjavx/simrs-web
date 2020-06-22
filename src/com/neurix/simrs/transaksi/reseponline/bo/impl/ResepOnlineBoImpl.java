@@ -1,13 +1,26 @@
 package com.neurix.simrs.transaksi.reseponline.bo.impl;
 
+import com.neurix.authorization.company.dao.BranchDao;
+import com.neurix.authorization.company.model.ImBranches;
+import com.neurix.authorization.company.model.ImBranchesPK;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.kurir.dao.KurirDao;
+import com.neurix.simrs.master.kurir.model.ImSimrsKurirEntity;
+import com.neurix.simrs.master.pasien.dao.PasienDao;
+import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
+import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
+import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
+import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.reseponline.bo.ResepOnlineBo;
 import com.neurix.simrs.transaksi.reseponline.dao.PengirimanObatDao;
+import com.neurix.simrs.transaksi.reseponline.model.ItSimrsPengirimanObatEntity;
+import com.neurix.simrs.transaksi.reseponline.model.PengirimanObat;
 import org.apache.log4j.Logger;
 import com.neurix.simrs.transaksi.reseponline.dao.ResepOnlineDao;
 import com.neurix.simrs.transaksi.reseponline.model.ItSimrsResepOnlineEntity;
 import com.neurix.simrs.transaksi.reseponline.model.ResepOnline;
+import org.hibernate.HibernateException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +36,26 @@ public class ResepOnlineBoImpl implements ResepOnlineBo {
 
     private ResepOnlineDao resepOnlineDao;
     private PengirimanObatDao pengirimanObatDao;
+    private PelayananDao pelayananDao;
+    private PasienDao pasienDao;
+    private BranchDao branchDao;
+    private KurirDao kurirDao;
+
+    public void setKurirDao(KurirDao kurirDao) {
+        this.kurirDao = kurirDao;
+    }
+
+    public void setPelayananDao(PelayananDao pelayananDao) {
+        this.pelayananDao = pelayananDao;
+    }
+
+    public void setPasienDao(PasienDao pasienDao) {
+        this.pasienDao = pasienDao;
+    }
+
+    public void setBranchDao(BranchDao branchDao) {
+        this.branchDao = branchDao;
+    }
 
     public void setPengirimanObatDao(PengirimanObatDao pengirimanObatDao) {
         this.pengirimanObatDao = pengirimanObatDao;
@@ -51,6 +84,101 @@ public class ResepOnlineBoImpl implements ResepOnlineBo {
 
         logger.info("[ResepOnlineBoImpl.getByCriteria] End >>>>>>>");
         return resepOnlines;
+    }
+
+    @Override
+    public List<PengirimanObat> getListPengirimanObat(PengirimanObat bean) throws GeneralBOException {
+        logger.info("[ResepOnlineBoImpl.getListPengirimanObat] Start >>>>>>>");
+
+        List<ItSimrsPengirimanObatEntity> pengirimanObatEntities = new ArrayList<>();
+        try {
+            pengirimanObatEntities = getEntityPengirimanObat(bean);
+        } catch (HibernateException e){
+            logger.error("[ResepOnlineBoImpl.getListPengirimanObat] ERROR. ", e);
+            throw new GeneralBOException("[ResepOnlineBoImpl.getListPengirimanObat] ERROR. ", e);
+        }
+
+        List<PengirimanObat> results = new ArrayList<>();
+        if (pengirimanObatEntities.size() > 0){
+
+            PengirimanObat pengirimanObat;
+            for (ItSimrsPengirimanObatEntity obatEntity : pengirimanObatEntities){
+                pengirimanObat = new PengirimanObat();
+                pengirimanObat.setId(obatEntity.getId());
+                pengirimanObat.setIdKurir(obatEntity.getIdKurir());
+                pengirimanObat.setIdResep(obatEntity.getIdResep());
+                pengirimanObat.setFlagPickup(obatEntity.getFlagPickup());
+                pengirimanObat.setFlagDiterimaPasien(obatEntity.getFlagDiterimaPasien());
+                pengirimanObat.setIdPasien(obatEntity.getIdPasien());
+                pengirimanObat.setFlag(obatEntity.getFlag());
+                pengirimanObat.setAction(obatEntity.getAction());
+                pengirimanObat.setIdPelayanan(obatEntity.getIdPelayanan());
+                pengirimanObat.setBranchId(obatEntity.getBranchId());
+                pengirimanObat.setCreatedDate(obatEntity.getCreatedDate());
+                pengirimanObat.setCreatedWho(obatEntity.getCreatedWho());
+                pengirimanObat.setLastUpdate(obatEntity.getLastUpdate());
+                pengirimanObat.setLastUpdateWho(obatEntity.getLastUpdateWho());
+                pengirimanObat.setDesaId(obatEntity.getDesaId());
+                pengirimanObat.setAlamat(obatEntity.getAlamat());
+                pengirimanObat.setNoTelp(obatEntity.getNoTelp());
+
+                //pengirimanObat.setDescOfLocation();
+
+                if (obatEntity.getIdPelayanan() != null){
+                    ImSimrsPelayananEntity pelayananEntity = pelayananDao.getById("idPelayan", obatEntity.getIdPelayanan());
+                    pengirimanObat.setPelayananName(pelayananEntity.getNamaPelayanan() == null ? "" : pelayananEntity.getNamaPelayanan());
+                }
+                if (obatEntity.getIdPasien() != null){
+                    ImSimrsPasienEntity pasienEntity = pasienDao.getById("idPasien", obatEntity.getIdPasien());
+                    pengirimanObat.setPasienName(pasienEntity.getNama() == null ? "" : pasienEntity.getNama());
+                }
+                if (obatEntity.getIdKurir() != null){
+                    ImSimrsKurirEntity kurirEntity = kurirDao.getById("idKurir", obatEntity.getIdKurir());
+                    pengirimanObat.setKurirName(kurirEntity.getNama() == null ? "" : kurirEntity.getNama());
+                }
+                if (obatEntity.getBranchId() != null){
+                    ImBranchesPK branchesPK = new ImBranchesPK();
+                    branchesPK.setId(obatEntity.getBranchId());
+                    ImBranches imBranches = branchDao.getById("primaryKey", branchesPK);
+                    pengirimanObat.setBranchName(imBranches == null ? "" : imBranches.getBranchName());
+                }
+            }
+        }
+
+        logger.info("[ResepOnlineBoImpl.getListPengirimanObat] End <<<<<<<");
+        return results;
+    }
+
+    @Override
+    public List<PermintaanResep> getListResepTelemedic(String branchId) throws GeneralBOException {
+        logger.info("[ResepOnlineBoImpl.getListResepTelemedic] Start >>>>>>>");
+        logger.info("[ResepOnlineBoImpl.getListResepTelemedic] End <<<<<<<");
+        return pengirimanObatDao.getListObatTelemedicApproved(branchId);
+    }
+
+    private List<ItSimrsPengirimanObatEntity> getEntityPengirimanObat(PengirimanObat bean) throws GeneralBOException{
+        logger.info("[ResepOnlineBoImpl.getListPengirimanObat] Start >>>>>>>");
+
+        Map hsCriteria = new HashMap();
+        if (bean.getFlagPickup() != null)
+            hsCriteria.put("flag_pickup", bean.getFlagPickup());
+        if (bean.getFlagDiterimaPasien() != null)
+            hsCriteria.put("flag_diterima", bean.getFlagDiterimaPasien());
+        if (bean.getIdKurir() != null)
+            hsCriteria.put("id_kurir", bean.getIdKurir());
+        if (bean.getFlag() != null)
+            hsCriteria.put("flag", bean.getFlag());
+
+        List<ItSimrsPengirimanObatEntity> pengirimanObatEntities = new ArrayList<>();
+        try {
+            pengirimanObatEntities = pengirimanObatDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[ResepOnlineBoImpl.getEntityPengirimanObat] ERROR. ", e);
+            throw new GeneralBOException("[ResepOnlineBoImpl.getEntityPengirimanObat] ERROR. ", e);
+        }
+
+        logger.info("[ResepOnlineBoImpl.getListPengirimanObat] End <<<<<<<");
+        return pengirimanObatEntities;
     }
 
     public List<ItSimrsResepOnlineEntity> getEntityByCriteria(ResepOnline bean) throws GeneralBOException {

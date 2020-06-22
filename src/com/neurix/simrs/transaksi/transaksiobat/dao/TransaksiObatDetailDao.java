@@ -194,7 +194,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
             telemdic = " AND b.id_transaksi_online is NULL \n";
         }
 
-        String SQL = "SELECT a.id_permintaan_resep, a.id_detail_checkup, c.nama, d.keterangan, a.id_approval_obat, b.id_jenis_periksa_pasien, a.flag, b.id_transaksi_online  FROM mt_simrs_permintaan_resep a\n" +
+        String SQL = "SELECT a.id_permintaan_resep, a.id_detail_checkup, c.nama, d.keterangan, a.id_approval_obat, b.id_jenis_periksa_pasien, a.flag, a.id_transaksi_online  FROM mt_simrs_permintaan_resep a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
                 "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup\n" +
                 "INNER JOIN im_simrs_status_pasien d ON a.status = d.id_status_pasien\n" +
@@ -241,7 +241,6 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 permintaanResep.setNamaPasien(obj[2].toString());
                 permintaanResep.setIdApprovalObat(obj[4].toString());
                 permintaanResep.setStatus(statusName);
-                permintaanResep.setIdApprovalObat(obj[4].toString());
                 permintaanResep.setIdJenisPeriksa(obj[5].toString());
                 permintaanResep.setFlag(obj[6].toString());
                 permintaanResep.setKetJenisAntrian(obj[7] == null ? "Resep RS" : "Telemedic");
