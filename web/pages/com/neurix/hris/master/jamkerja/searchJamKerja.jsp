@@ -86,7 +86,6 @@
     <section class="content-header">
         <h1>
             Jam Kerja
-            <small>e-HEALTH</small>
         </h1>
         <%--<ol class="breadcrumb">--%>
         <%--<li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>--%>
@@ -123,17 +122,6 @@
                                                 <td>
                                                     <table>
                                                         <s:textfield id="jamKerjaId" name="jamKerja.jamKerjaId" cssClass="form-control" />
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <label>Status Giling : </label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:select cssClass="form-control" list="#{'DMG':'DMG', 'LMG':'LMG'}" id="statusGiling" name="jamKerja.statusGiling"
-                                                                  headerKey="" headerValue="[Select one]" />
                                                     </table>
                                                 </td>
                                             </tr>
@@ -217,7 +205,6 @@
 
                                                 </display:column>
                                                 <display:column property="jamKerjaId" sortable="true" title="Jam Kerja Id" />
-                                                <display:column property="statusGiling" sortable="true" title="Status Giling" />
                                                 <display:column property="branchId" sortable="true" title="Unit" />
                                                 <display:column property="tipePegawaiId" sortable="true" title="Tipe Pegawai" />
                                                 <display:column property="hariName" sortable="true" title="Hari" />

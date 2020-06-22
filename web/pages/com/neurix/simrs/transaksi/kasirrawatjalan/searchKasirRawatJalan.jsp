@@ -103,7 +103,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Jenis Pasien</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'asuransi':'ASURANSI'}" cssStyle="margin-top: 7px"
+                                        <s:select list="#{'asuransi':'ASURANSI', 'paket_individu':'PAKET INDIVIDU'}" cssStyle="margin-top: 7px"
                                                   headerKey="umum" headerValue="UMUM" name="headerDetailCheckup.idJenisPeriksaPasien"
                                                   cssClass="form-control"/>
                                     </div>
@@ -552,7 +552,11 @@
                         }else if(response.metodePembayaran == "non_tunai"){
                             metode = "non_tunai";
                         }else{
-                            metode = "bpjs";
+                            if ("bpjs" != jenisPasien){
+                                metode = jenisPasien;
+                            } else {
+                                metode = "bpjs";
+                            }
                         }
 
                         $('#fin_no_rm').html(response.idPasien);
@@ -728,6 +732,7 @@
                         //non_tunai umum
                         mapBiaya.push({"type": "kas", "nilai": ((total - uangMuka) + ppnObat)  });
                         mapBiaya.push({"type": "piutang_pasien_non_bpjs", "nilai": ((total - uangMuka) + ppnObat) });
+                        mapBiaya.push({"type": "ppn_keluaran", "nilai": ppnObat});
                     }
                 }
             });

@@ -8,6 +8,8 @@ import com.neurix.hris.mobileapi.model.PengajuanCuti;
 import com.neurix.hris.mobileapi.model.PengajuanLembur;
 import com.neurix.hris.transaksi.cutiPegawai.bo.CutiPegawaiBo;
 import com.neurix.hris.transaksi.cutiPegawai.model.CutiPegawai;
+import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
+import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import com.opensymphony.xwork2.ModelDriven;
 import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
@@ -31,11 +33,73 @@ public class CutiFormPegawaiController implements ModelDriven<Object> {
     private CutiBo cutiBoProxy;
     private List<PengajuanCuti> listOfCutiPegawai;
     private PengajuanCuti model = new PengajuanCuti();
+    private NotifikasiBo notifikasiBoProxy;
+    private String roleId;
 
     private String id;
 
     private String nip;
     private String statusApprove;
+    private String jenisCuti;
+
+    private String action;
+
+
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
+    }
+
+    public NotifikasiBo getNotifikasiBoProxy() {
+        return notifikasiBoProxy;
+    }
+
+    public void setNotifikasiBoProxy(NotifikasiBo notifikasiBoProxy) {
+        this.notifikasiBoProxy = notifikasiBoProxy;
+    }
+
+    public static Logger getLogger() {
+        return logger;
+    }
+
+    public CutiPegawaiBo getCutiPegawaiBoProxy() {
+        return cutiPegawaiBoProxy;
+    }
+
+    public BiodataBo getBiodataBoProxy() {
+        return biodataBoProxy;
+    }
+
+    public CutiBo getCutiBoProxy() {
+        return cutiBoProxy;
+    }
+
+    public List<PengajuanCuti> getListOfCutiPegawai() {
+        return listOfCutiPegawai;
+    }
+
+    public void setListOfCutiPegawai(List<PengajuanCuti> listOfCutiPegawai) {
+        this.listOfCutiPegawai = listOfCutiPegawai;
+    }
+
+    public String getJenisCuti() {
+        return jenisCuti;
+    }
+
+    public void setJenisCuti(String jenisCuti) {
+        this.jenisCuti = jenisCuti;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
 
     public void setCutiBoProxy(CutiBo cutiBoProxy) {
         this.cutiBoProxy = cutiBoProxy;
@@ -50,74 +114,88 @@ public class CutiFormPegawaiController implements ModelDriven<Object> {
     }
 
     public HttpHeaders create() {
-
         logger.info("[CutiFormPegawaiController.create] end process POST /pengajuancuti <<<");
 
-        com.neurix.hris.master.biodata.model.Biodata modelBiodata = null;
-        try {
-            modelBiodata = biodataBoProxy.detailBiodataSys(nip);
-        } catch (GeneralBOException e) {
-            Long logId = null;
+
+        if (action.equalsIgnoreCase("cekStatus")) {
+            String result = "";
             try {
-                logId = biodataBoProxy.saveErrorMessage(e.getMessage(), "BiodataBoImpl.isFoundOtherSessionActiveUserSessionLog");
-            } catch (GeneralBOException e1) {
-                logger.error("[BiodataBoImpl.isFoundOtherSessionActiveUserSessionLog] Error when saving error,", e1);
+                result = cutiPegawaiBoProxy.cekStatusCuti(nip, "CT007", "diluar_tanggungan");
+            } catch (GeneralBOException e) {
+                logger.error("[BiodataBoImpl.isFoundOtherSessionActiveUserSessionLog] Error when saving error,", e);
             }
-            logger.error("[BiodataBoImpl.isFoundOtherSessionActiveUserSessionLog] Error when searching / inquiring data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            throw new GeneralBOException(e);
-        }
 
-        List<com.neurix.hris.transaksi.cutiPegawai.model.CutiPegawai> modelCutiPegawai = null;
-        try {
-            modelCutiPegawai = cutiPegawaiBoProxy.getListSetCuti(nip);
-        } catch (GeneralBOException e) {
-            Long logId = null;
+            model.setMessage(result);
+        } else {
+            com.neurix.hris.master.biodata.model.Biodata modelBiodata = null;
             try {
-                logId = cutiPegawaiBoProxy.saveErrorMessage(e.getMessage(), "CutiFormPegawaiController.isFoundOtherSessionActiveUserSessionLog");
-            } catch (GeneralBOException e1) {
-                logger.error("[CutiFormPegawaiController.isFoundOtherSessionActiveUserSessionLog] Error when saving error,", e1);
+                modelBiodata = biodataBoProxy.detailBiodataSys(nip);
+            } catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = biodataBoProxy.saveErrorMessage(e.getMessage(), "BiodataBoImpl.isFoundOtherSessionActiveUserSessionLog");
+                } catch (GeneralBOException e1) {
+                    logger.error("[BiodataBoImpl.isFoundOtherSessionActiveUserSessionLog] Error when saving error,", e1);
+                }
+                logger.error("[BiodataBoImpl.isFoundOtherSessionActiveUserSessionLog] Error when searching / inquiring data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+                throw new GeneralBOException(e);
             }
-            logger.error("[CutiFormPegawaiController.isFoundOtherSessionActiveUserSessionLog] Error when searching / inquiring data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            throw new GeneralBOException(e);
-        }
 
-        com.neurix.hris.transaksi.cutiPegawai.model.CutiPegawai tempModelCutiPegawai = null;
-        for (com.neurix.hris.transaksi.cutiPegawai.model.CutiPegawai cutiPegawai : modelCutiPegawai){
-            tempModelCutiPegawai = new com.neurix.hris.transaksi.cutiPegawai.model.CutiPegawai();
-            tempModelCutiPegawai.setCutiId(cutiPegawai.getCutiId());
-            tempModelCutiPegawai.setSisaHariCuti(cutiPegawai.getSisaCutiHari());
-        }
-
-        com.neurix.hris.master.cuti.model.Cuti masterCuti = null;
-        try {
-            masterCuti = cutiBoProxy.findCutiByIdcuti(tempModelCutiPegawai.getCutiId());
-        } catch (GeneralBOException e) {
-            Long logId = null;
+            List<com.neurix.hris.transaksi.cutiPegawai.model.CutiPegawai> modelCutiPegawai = null;
             try {
-                logId = cutiPegawaiBoProxy.saveErrorMessage(e.getMessage(), "CutiFormPegawaiController.isFoundOtherSessionActiveUserSessionLog");
-            } catch (GeneralBOException e1) {
-                logger.error("[CutiFormPegawaiController.isFoundOtherSessionActiveUserSessionLog] Error when saving error,", e1);
+                modelCutiPegawai = cutiPegawaiBoProxy.getListSetCuti(nip);
+            } catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = cutiPegawaiBoProxy.saveErrorMessage(e.getMessage(), "CutiFormPegawaiController.isFoundOtherSessionActiveUserSessionLog");
+                } catch (GeneralBOException e1) {
+                    logger.error("[CutiFormPegawaiController.isFoundOtherSessionActiveUserSessionLog] Error when saving error,", e1);
+                }
+                logger.error("[CutiFormPegawaiController.isFoundOtherSessionActiveUserSessionLog] Error when searching / inquiring data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+                throw new GeneralBOException(e);
             }
-            logger.error("[CutiFormPegawaiController.isFoundOtherSessionActiveUserSessionLog] Error when searching / inquiring data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            throw new GeneralBOException(e);
+
+            com.neurix.hris.transaksi.cutiPegawai.model.CutiPegawai tempModelCutiPegawai = null;
+            for (com.neurix.hris.transaksi.cutiPegawai.model.CutiPegawai cutiPegawai : modelCutiPegawai){
+                tempModelCutiPegawai = new com.neurix.hris.transaksi.cutiPegawai.model.CutiPegawai();
+                tempModelCutiPegawai.setCutiId(cutiPegawai.getCutiId());
+                tempModelCutiPegawai.setSisaHariCuti(cutiPegawai.getSisaCutiHari());
+            }
+
+            com.neurix.hris.master.cuti.model.Cuti masterCuti = null;
+            try {
+                masterCuti = cutiBoProxy.findCutiByIdcuti(tempModelCutiPegawai.getCutiId());
+            } catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = cutiPegawaiBoProxy.saveErrorMessage(e.getMessage(), "CutiFormPegawaiController.isFoundOtherSessionActiveUserSessionLog");
+                } catch (GeneralBOException e1) {
+                    logger.error("[CutiFormPegawaiController.isFoundOtherSessionActiveUserSessionLog] Error when saving error,", e1);
+                }
+                logger.error("[CutiFormPegawaiController.isFoundOtherSessionActiveUserSessionLog] Error when searching / inquiring data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+                throw new GeneralBOException(e);
+            }
+
+
+            if(modelBiodata != null && modelCutiPegawai != null && masterCuti != null){
+                model = new PengajuanCuti();
+                model.setNip(modelBiodata.getNip());
+                model.setNamaPegawai(modelBiodata.getNamaPegawai());
+                model.setUnitId(modelBiodata.getBranch());
+                model.setUnit(modelBiodata.getBranchName());
+                model.setJabatanId(modelBiodata.getPositionId());
+                model.setJabatan(modelBiodata.getPositionName());
+                model.setBidangId(modelBiodata.getDivisi());
+                model.setBidang(modelBiodata.getDivisiName());
+                model.setCutiId(tempModelCutiPegawai.getCutiId());
+                model.setJenisCuti(masterCuti.getCutiName());
+                model.setSisaCuti(tempModelCutiPegawai.getSisaHariCuti());
+                model.setTypeHariCuti(masterCuti.getTipeHari());
+            }
         }
 
 
-        if(modelBiodata != null && modelCutiPegawai != null && masterCuti != null){
-            model = new PengajuanCuti();
-            model.setNip(modelBiodata.getNip());
-            model.setNamaPegawai(modelBiodata.getNamaPegawai());
-            model.setUnitId(modelBiodata.getBranch());
-            model.setUnit(modelBiodata.getBranchName());
-            model.setJabatanId(modelBiodata.getPositionId());
-            model.setJabatan(modelBiodata.getPositionName());
-            model.setBidangId(modelBiodata.getDivisi());
-            model.setBidang(modelBiodata.getDivisiName());
-            model.setCutiId(tempModelCutiPegawai.getCutiId());
-            model.setJenisCuti(masterCuti.getCutiName());
-            model.setSisaCuti(tempModelCutiPegawai.getSisaHariCuti());
-            model.setTypeHariCuti(masterCuti.getTipeHari());
-        }
+
 
 
         logger.info("[CutiFormPegawaiController.create] end process POST /pengajuancuti <<<");
@@ -158,8 +236,13 @@ public class CutiFormPegawaiController implements ModelDriven<Object> {
             cutiPegawai.setLastUpdate(new Timestamp(Calendar.getInstance().getTimeInMillis()));
             cutiPegawai.setCreatedDate(new Timestamp(Calendar.getInstance().getTimeInMillis()));
             cutiPegawai.setOs(model.getOs());
+            cutiPegawai.setJenisCuti(model.getJenisCuti());
 
-            cutiPegawaiBoProxy.saveAdd(cutiPegawai);
+            List<Notifikasi> notifCuti = cutiPegawaiBoProxy.saveAddCuti(cutiPegawai);
+
+            for (Notifikasi notifikasi : notifCuti ){
+                notifikasiBoProxy.sendNotif(notifikasi);
+            }
         } catch (GeneralBOException e) {
             result.setActionError(e.getMessage());
             Long logId = null;
@@ -185,6 +268,7 @@ public class CutiFormPegawaiController implements ModelDriven<Object> {
         cutiPegawai.setNip(nip);
         cutiPegawai.setForMobile(true);
         cutiPegawai.setFlag("Y");
+        cutiPegawai.setRoleId(roleId);
 
         List<com.neurix.hris.transaksi.cutiPegawai.model.CutiPegawai> listOfCuti = null;
 

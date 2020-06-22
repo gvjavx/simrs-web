@@ -35,6 +35,7 @@ public class ImPayrollSkalaGajiEntity implements Serializable {
     private BigDecimal air;
     private BigDecimal bbm;
     private BigDecimal total;
+    private String noSk;
 
     public BigDecimal getAir() {
         return air;
@@ -180,5 +181,13 @@ public class ImPayrollSkalaGajiEntity implements Serializable {
 
     public void setSkalaGajiId(String skalaGajiId) {
         this.skalaGajiId = skalaGajiId;
+    }
+
+    public String getNoSk() {
+        return noSk;
+    }
+
+    public void setNoSk(String noSk) {
+        this.noSk = noSk;
     }
 }

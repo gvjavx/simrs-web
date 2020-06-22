@@ -2,6 +2,8 @@ package com.neurix.common.util;
 
 import com.neurix.authorization.role.model.Roles;
 import com.neurix.authorization.user.model.UserDetailsLogin;
+import com.neurix.common.constant.CommonConstant;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang.time.FastDateFormat;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -13,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.*;
 import java.util.Calendar;
@@ -105,7 +108,25 @@ public class CommonUtil {
             throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
         }
     }
+    public static String roleIdAsLogin() throws UsernameNotFoundException {
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        if (session.getAttribute("SPRING_SECURITY_CONTEXT") != null) {
+            SecurityContextImpl securityContextImpl = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
+            if (securityContextImpl.getAuthentication() != null) {
+                UserDetailsLogin userDetailsLogin=(UserDetailsLogin)securityContextImpl.getAuthentication().getPrincipal();
+//                String username=userDetailsLogin.getUsername();
 
+                String roleId=String.valueOf(((Roles)userDetailsLogin.getRoles().get(0)).getRoleId());
+
+                return roleId;
+            } else {
+                throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
+            }
+
+        } else {
+            throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
+        }
+    }
     public static String userAreaId() throws UsernameNotFoundException {
         HttpSession session = ServletActionContext.getRequest().getSession();
         if (session.getAttribute("SPRING_SECURITY_CONTEXT") != null) {
@@ -333,8 +354,8 @@ public class CommonUtil {
     }
 
     public static String numbericFormat(BigDecimal number,String pattern) {
-        NumberFormat nf = NumberFormat.getNumberInstance(Locale.GERMANY); //for indo money format
-//        NumberFormat nf = NumberFormat.getNumberInstance(Locale.US); //for international money format
+//        NumberFormat nf = NumberFormat.getNumberInstance(Locale.GERMANY); //for indo money format
+        NumberFormat nf = NumberFormat.getNumberInstance(Locale.US); //for international money format
         DecimalFormat df = (DecimalFormat)nf;
         df.applyPattern(pattern);
         return df.format(number);
@@ -517,6 +538,16 @@ public class CommonUtil {
             return null;
         }
 
+    }
+
+    public static String addJamBayar(Timestamp date) {
+        String jam = "null";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        java.util.Date createdDate = date;
+        java.util.Date newJam = DateUtils.addMinutes(createdDate, CommonConstant.ADD_JAM_BAYAR);
+        jam = dateFormat.format(newJam);
+
+        return jam;
     }
 
     public static double round(double value, int places) {
@@ -1040,24 +1071,30 @@ public class CommonUtil {
                 return "Biaya Pindah";
             case "bPis":
                 return "Biaya Pisah";
-                default:
-                    return "";
+            default:
+                return "";
         }
     }
 
     public static String getDateParted(Date date, String tipe){
         //create calander instance and get required params
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-
         switch (tipe){
             case "YEAR":
-                int year = cal.get(Calendar.YEAR); return String.valueOf(year);
+                SimpleDateFormat y = new SimpleDateFormat("yyyy");
+                return y.format(date);
             case "MONTH":
-                int month = cal.get(Calendar.MONTH); return String.valueOf(month);
+                SimpleDateFormat m = new SimpleDateFormat("M");
+                return m.format(date);
             case "DAY":
-                int day = cal.get(Calendar.DAY_OF_MONTH); return String.valueOf(day);
+                SimpleDateFormat d = new SimpleDateFormat("d");
+                return d.format(date);
             default: return "";
         }
+    }
+
+    public static String stDateSeq(){
+        Date date = new Date(System.currentTimeMillis());
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+        return df.format(date);
     }
 }

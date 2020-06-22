@@ -5,7 +5,7 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
-    <package name="pengajuanBiaya" namespace="/pengajuanBiaya" extends="struts-default, jasperreports-default, json-default">
+    <package name="onlinepaymentverif" namespace="/onlinepaymentverif" extends="struts-default, jasperreports-default, json-default">
 
         <result-types>
             <result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult" default="false" />
@@ -40,6 +40,10 @@
             <interceptor-stack name="defaultStack">
                 <interceptor-ref name="sessionCheckInterceptor"/>
                 <interceptor-ref name="params">
+                    <!--
+                       Excludes the jQuery no-cache _ parameter and
+                       the Displaytag d-#-X parameter(s)
+                    -->
                     <param name="excludeParams">
                         _,d-\d+?-[sop],6578706f7274
                     </param>
@@ -65,21 +69,20 @@
             <exception-mapping exception="java.lang.RuntimeException" result="global_error" />
         </global-exception-mappings>
 
-        <action name="*_pengajuanBiaya"
-                class="com.neurix.akuntansi.transaksi.pengajuanBiaya.action.PengajuanBiayaAction" method="{1}">
+        <action name="*_onlinepaymentverif"
+                class="com.neurix.simrs.transaksi.verifikatorpembayaran.action.VerifikatorPembayaranAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
-            <result name="input">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/SearchPengajuanBiaya.jsp</result>
-            <result name="success">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/SearchPengajuanBiaya.jsp</result>
 
-            <result name="error">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/addPengajuanBiaya.jsp</result>
-            <result name="init_add">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/addPengajuanBiaya.jsp</result>
-            <result name="success_save_add">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/addPengajuanBiaya.jsp</result>
+            <result name="search">/pages/com/neurix/simrs/transaksi/verifikatorpembayaran/searchPembayaran.jsp</result>
+
+            <result name="print_final_claim" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printFinalClaim.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
         </action>
 
-        <action name="paging_displaytag_pengajuanBiaya"
-                class="com.neurix.akuntansi.transaksi.pengajuanBiaya.action.PengajuanBiayaAction" method="paging">
-            <interceptor-ref name="defaultStack"/>
-            <result name="success">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/SearchPengajuanBiaya.jsp</result>
-        </action>
     </package>
 </struts>

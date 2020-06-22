@@ -219,19 +219,63 @@
                             </table>
                         </td>
                     </tr>
+
                     <tr>
+                        <td>
+                            <label class="control-label"><small>Jenis Cuti :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:select list="#{'diluar_tanggungan':'Diluar Tanggungan'}" id="jenisCuti1" name="cutiPegawai.jenisCuti"
+                                          headerKey="normal" headerValue="Normal" cssClass="form-control" disabled="true"/>
+                                <s:textfield  id="jenisCuti33" name="cutiPegawai.jenisCuti" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <%--<tr>--%>
+                        <%--<td>--%>
+                            <%--<label class="control-label"><small>Cuti :</small></label>--%>
+                        <%--</td>--%>
+                        <%--<td>--%>
+                            <%--<table>--%>
+                                <%--<s:action id="comboCuti" namespace="/cuti" name="initComboCuti_cuti"/>--%>
+                                <%--<s:select list="#comboCuti.listComboCuti" id="cuti124" name="cutiPegawai.cutiId" readonly="true"--%>
+                                          <%--listKey="cutiId" listValue="cutiName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
+                                <%--<s:textfield  id="jenisCuti" name="cutiPegawai.cutiName" required="false" readonly="true" cssClass="form-control"/>--%>
+                            <%--</table>--%>
+                        <%--</td>--%>
+                    <%--</tr>--%>
+                    <tr id="cuti1">
                         <td>
                             <label class="control-label"><small>Cuti :</small></label>
                         </td>
                         <td>
                             <table>
                                 <s:action id="comboCuti" namespace="/cuti" name="initComboCuti_cuti"/>
-                                <s:select list="#comboCuti.listComboCuti" id="cuti124" name="cutiPegawai.cutiId" readonly="true"
-                                          listKey="cutiId" listValue="cutiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
-                                <s:textfield  id="jenisCuti" name="cutiPegawai.cutiName" required="false" readonly="true" cssClass="form-control"/>
+                                <s:select list="#comboCuti.listComboCuti" id="cuti124" name="cutiPegawai.cutiId"
+                                          listKey="cutiId" listValue="cutiName" headerKey="" headerValue="[Select one]" required="true" cssClass="form-control" disabled="true" />
+                                <s:textfield  id="cutiId15" name="cutiPegawai.cutiId" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
+                                <s:textfield  id="jenisCuti" name="cutiPegawai.cutiName" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
+                    <tr id="cuti2" style="display: none">
+                        <td>
+                            <label class="control-label"><small>Cuti :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:action id="comboCuti" namespace="/cuti" name="initComboCuti2_cuti"/>
+                                <s:select list="#comboCuti.listComboCuti2" id="cutiIdTanggungan11" name="cutiPegawai.cutiTanggunganId"
+                                          listKey="cutiId" listValue="cutiName" headerKey="" headerValue="[Select one]" required="true" cssClass="form-control" disabled="true" />
+                                <s:textfield  id="cutiId15Tanggungan" name="cutiPegawai.cutiTanggunganId" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
+                                <s:textfield  id="jenisCutiTanggungan" name="cutiPegawai.cutiTanggunganName" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+
+
                     <tr>
                         <td>
                             <label class="control-label"><small>Sisa Cuti :</small></label>
@@ -419,6 +463,21 @@
         var branchid =$('#branchid').val();
         var nip=$('#nipId').val();
         var golonganid=document.getElementById("golonganId12").value;
+
+        var jenisCuti = $('#jenisCuti1').val();
+        if (jenisCuti == "diluar_tanggungan"){
+            $('#cuti2').show();
+            $('#cuti1').hide();
+
+            $('#cutiIdTanggungan11').val("CT007").change();
+            $('#cutiId15Tanggungan').val("CT007");
+            $('#sisaCuti').val('1095');
+        }else {
+            $('#cuti1').show();
+            $('#cuti2').hide();
+        }
+
+
         if (namacuti=="CT006"){
             dwr.engine.setAsync(false);
             CutiPegawaiAction.initComboCutiPanjangFull(golonganid,branchid, function (listdata) {
@@ -466,7 +525,8 @@
             jmllibur = listdata;
         });
         if (startdate<=enddate) {
-            var kalender=document.getElementById("jenisCuti").value;
+//            var kalender=document.getElementById("jenisCuti").value;
+            var kalender="kerja";
             if (kalender=="kalender"){
                  days = (enddate - startdate)/1000/60/60/24;
                 days = days+1;

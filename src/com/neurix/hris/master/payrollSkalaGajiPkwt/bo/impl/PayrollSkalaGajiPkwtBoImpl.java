@@ -7,7 +7,9 @@ import com.neurix.hris.master.golonganPkwt.model.GolonganPkwt;
 import com.neurix.hris.master.golonganPkwt.model.ImGolonganPkwtEntity;
 import com.neurix.hris.master.payrollSkalaGajiPkwt.bo.PayrollSkalaGajiPkwtBo;
 import com.neurix.hris.master.payrollSkalaGajiPkwt.dao.PayrollSkalaGajiPkwtDao;
+import com.neurix.hris.master.payrollSkalaGajiPkwt.dao.PayrollSkalaGajiPkwtHistoryDao;
 import com.neurix.hris.master.payrollSkalaGajiPkwt.model.ImPayrollSkalaGajiPkwtEntity;
+import com.neurix.hris.master.payrollSkalaGajiPkwt.model.ImPayrollSkalaGajiPkwtHistoryEntity;
 import com.neurix.hris.master.payrollSkalaGajiPkwt.model.payrollSkalaGajiPkwt;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -29,6 +31,15 @@ public class PayrollSkalaGajiPkwtBoImpl implements PayrollSkalaGajiPkwtBo {
     protected static transient Logger logger = Logger.getLogger(PayrollSkalaGajiPkwtBoImpl.class);
     private PayrollSkalaGajiPkwtDao payrollSkalaGajiPkwtDao;
     private GolonganPkwtDao golonganPkwtDao;
+    private PayrollSkalaGajiPkwtHistoryDao payrollSkalaGajiPkwtHistoryDao;
+
+    public PayrollSkalaGajiPkwtHistoryDao getPayrollSkalaGajiPkwtHistoryDao() {
+        return payrollSkalaGajiPkwtHistoryDao;
+    }
+
+    public void setPayrollSkalaGajiPkwtHistoryDao(PayrollSkalaGajiPkwtHistoryDao payrollSkalaGajiPkwtHistoryDao) {
+        this.payrollSkalaGajiPkwtHistoryDao = payrollSkalaGajiPkwtHistoryDao;
+    }
 
     public GolonganPkwtDao getGolonganPkwtDao() {
         return golonganPkwtDao;
@@ -63,7 +74,7 @@ public class PayrollSkalaGajiPkwtBoImpl implements PayrollSkalaGajiPkwtBo {
             String payrollSkalaGajiId = bean.getSkalaGajiPkwtId();
 
             ImPayrollSkalaGajiPkwtEntity imPayrollSkalaGajiEntity = null;
-
+            ImPayrollSkalaGajiPkwtHistoryEntity historyEntity = new ImPayrollSkalaGajiPkwtHistoryEntity();
             try {
                 // Get data from database by ID
                 imPayrollSkalaGajiEntity = payrollSkalaGajiPkwtDao.getById("skalaGajiPkwtId", payrollSkalaGajiId);
@@ -73,6 +84,36 @@ public class PayrollSkalaGajiPkwtBoImpl implements PayrollSkalaGajiPkwtBo {
             }
 
             if (imPayrollSkalaGajiEntity != null) {
+                //entity history
+                String payrollSkalaGajiPkwtIdHistory;
+                try {
+                    // Generating ID, get from postgre sequence
+                    payrollSkalaGajiPkwtIdHistory = payrollSkalaGajiPkwtHistoryDao.getNextSkalaGajiPkwtHistory();
+                } catch (HibernateException e) {
+                    logger.error("[PayrollTunjanganJabatanStrukturalBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence payrollTunjanganJabatanStruktural id, please info to your admin..." + e.getMessage());
+                }
+                historyEntity.setSkalaGajiPkwtIdHistory(payrollSkalaGajiPkwtIdHistory);
+                historyEntity.setSkalaGajiPkwtId(imPayrollSkalaGajiEntity.getSkalaGajiPkwtId());
+                historyEntity.setGolonganPkwtId(imPayrollSkalaGajiEntity.getGolonganPkwtId());
+                historyEntity.setGajiPokok(imPayrollSkalaGajiEntity.getGajiPokok());
+                historyEntity.setSantunanKhusus(imPayrollSkalaGajiEntity.getSantunanKhusus());
+                historyEntity.setTunjFunsional(imPayrollSkalaGajiEntity.getTunjFunsional());
+                historyEntity.setTunjtambahan(imPayrollSkalaGajiEntity.getTunjtambahan());
+                historyEntity.setCreatedDate(imPayrollSkalaGajiEntity.getLastUpdate());
+                historyEntity.setCreatedWho(imPayrollSkalaGajiEntity.getLastUpdateWho());
+                historyEntity.setLastUpdate(imPayrollSkalaGajiEntity.getLastUpdate());
+                historyEntity.setLastUpdateWho(imPayrollSkalaGajiEntity.getLastUpdateWho());
+                historyEntity.setFlag("Y");
+                historyEntity.setAction(imPayrollSkalaGajiEntity.getAction());
+
+                try {
+                    // insert into database
+                    payrollSkalaGajiPkwtHistoryDao.addAndSave(historyEntity);
+                } catch (HibernateException e) {
+                    logger.error("[PayrollTunjanganJabatanStrukturalBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data PayrollTunjanganJabatanStruktural, please info to your admin..." + e.getMessage());
+                }
 
                 // Modify from bean to entity serializable
                 imPayrollSkalaGajiEntity.setSkalaGajiPkwtId(bean.getSkalaGajiPkwtId());
@@ -108,6 +149,7 @@ public class PayrollSkalaGajiPkwtBoImpl implements PayrollSkalaGajiPkwtBo {
             String payrollSkalaGajiPkwtId = bean.getSkalaGajiPkwtId();
 
             ImPayrollSkalaGajiPkwtEntity imPayrollSkalaGajiPkwtEntity = null;
+            ImPayrollSkalaGajiPkwtHistoryEntity historyEntity = new ImPayrollSkalaGajiPkwtHistoryEntity();
             //ImPayrollSkalaGajiPkwtHistoryEntity imPayrollSkalaGajiPkwtHistoryEntity = new ImPayrollSkalaGajiPkwtHistoryEntity();
             try {
                 // Get data from database by ID
@@ -119,6 +161,37 @@ public class PayrollSkalaGajiPkwtBoImpl implements PayrollSkalaGajiPkwtBo {
             }
 
             if (imPayrollSkalaGajiPkwtEntity != null) {
+                //entity history
+                String payrollSkalaGajiPkwtIdHistory;
+                try {
+                    // Generating ID, get from postgre sequence
+                    payrollSkalaGajiPkwtIdHistory = payrollSkalaGajiPkwtHistoryDao.getNextSkalaGajiPkwtHistory();
+                } catch (HibernateException e) {
+                    logger.error("[PayrollTunjanganJabatanStrukturalBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence payrollTunjanganJabatanStruktural id, please info to your admin..." + e.getMessage());
+                }
+                historyEntity.setSkalaGajiPkwtIdHistory(payrollSkalaGajiPkwtIdHistory);
+                historyEntity.setSkalaGajiPkwtId(imPayrollSkalaGajiPkwtEntity.getSkalaGajiPkwtId());
+                historyEntity.setGolonganPkwtId(imPayrollSkalaGajiPkwtEntity.getGolonganPkwtId());
+                historyEntity.setGajiPokok(imPayrollSkalaGajiPkwtEntity.getGajiPokok());
+                historyEntity.setSantunanKhusus(imPayrollSkalaGajiPkwtEntity.getSantunanKhusus());
+                historyEntity.setTunjFunsional(imPayrollSkalaGajiPkwtEntity.getTunjFunsional());
+                historyEntity.setTunjtambahan(imPayrollSkalaGajiPkwtEntity.getTunjtambahan());
+                historyEntity.setCreatedDate(imPayrollSkalaGajiPkwtEntity.getLastUpdate());
+                historyEntity.setCreatedWho(imPayrollSkalaGajiPkwtEntity.getLastUpdateWho());
+                historyEntity.setLastUpdate(imPayrollSkalaGajiPkwtEntity.getLastUpdate());
+                historyEntity.setLastUpdateWho(imPayrollSkalaGajiPkwtEntity.getLastUpdateWho());
+                historyEntity.setFlag("Y");
+                historyEntity.setAction(imPayrollSkalaGajiPkwtEntity.getAction());
+
+                try {
+                    // insert into database
+                    payrollSkalaGajiPkwtHistoryDao.addAndSave(historyEntity);
+                } catch (HibernateException e) {
+                    logger.error("[PayrollTunjanganJabatanStrukturalBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data PayrollTunjanganJabatanStruktural, please info to your admin..." + e.getMessage());
+                }
+
                 /*imPayrollSkalaGajiPkwtHistoryEntity.setId(historyId);
                 imPayrollSkalaGajiPkwtHistoryEntity.setPayrollSkalaGajiPkwtId(imPayrollSkalaGajiPkwtEntity.getPayrollSkalaGajiPkwtId());
                 imPayrollSkalaGajiPkwtHistoryEntity.setPayrollSkalaGajiPkwtName(imPayrollSkalaGajiPkwtEntity.getPayrollSkalaGajiPkwtName());
@@ -164,7 +237,7 @@ public class PayrollSkalaGajiPkwtBoImpl implements PayrollSkalaGajiPkwtBo {
         logger.info("[PayrollSkalaGajiPkwtBoImpl.saveAdd] start process >>>");
 
         if (bean!=null) {
-            String status = cekStatus(bean.getGolonganPkwtId());
+            String status = cekStatus(bean.getGolonganPkwtId(),bean.getTahun());
             if (!status.equalsIgnoreCase("Exist")){
                 String payrollSkalaGajiPkwtId;
                 try {
@@ -293,11 +366,11 @@ public class PayrollSkalaGajiPkwtBoImpl implements PayrollSkalaGajiPkwtBo {
     public List<payrollSkalaGajiPkwt> getComboPayrollSkalaGajiPkwtWithCriteria(String query) throws GeneralBOException {
         return null;
     }
-    public String cekStatus(String golonganId)throws GeneralBOException{
+    public String cekStatus(String golonganId,String tahun)throws GeneralBOException{
         String status ="";
         List<ImPayrollSkalaGajiPkwtEntity> skalaGajiEntity = new ArrayList<>();
         try {
-            skalaGajiEntity = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(golonganId);
+            skalaGajiEntity = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(golonganId,tahun);
         } catch (HibernateException e) {
             logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());

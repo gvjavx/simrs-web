@@ -67,6 +67,15 @@ public class SaldoAkhirDetailDao extends GenericDao<ItAkunSaldoAkhirDetailEntity
             }
         }
 
+        if (mapCriteria.get("kd_barang") != null){
+
+            if ("null".equalsIgnoreCase(mapCriteria.get("kd_barang").toString())){
+                criteria.add(Restrictions.isNull("kdBarang"));
+            } else {
+                criteria.add(Restrictions.eq("kdBarang", mapCriteria.get("kd_barang").toString()));
+            }
+        }
+
 
         return criteria.list();
     }

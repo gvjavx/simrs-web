@@ -6,13 +6,16 @@
 
 <html>
 <head>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/CutiPegawaiAction.js"/>'></script>
     <script type="text/javascript">
         $.subscribe('beforeProcessSaveCancelCutiPegawai', function (event, data) {
             var keterangan;
             keterangan = document.getElementById("keteranganBatal").value;
             var nip = document.getElementById("nipId").value;
-            var tglDari = document.getElementById("tgl2").value;
-            var tglSelesai = document.getElementById("tgl1").value;
+            var tglDari = document.getElementById("tgl21").value;
+            var tglSelesai = document.getElementById("tgl11").value;
+            console.log(tglDari);
+            console.log(tglSelesai);
             if (keterangan!=="") {
                 CutiPegawaiAction.cekIfAbsensi(nip, tglDari, tglSelesai, function(listdata){
                     if (listdata=="tidak"){
@@ -110,7 +113,7 @@
                         <td>
                             <table>
                                 <div style="display: none">
-                                    <s:textfield  id="cutiPegawaiId" name="cutiPegawai.cutiPegawaiId" required="true" readonly="true" cssClass="form-control"/>
+                                    <s:textfield  id="cutiPegawaiId5" name="cutiPegawai.cutiPegawaiId" required="true" readonly="true" cssClass="form-control"/>
                                 </div>
                             </table>
                         </td>
@@ -174,19 +177,61 @@
                             </table>
                         </td>
                     </tr>
+
                     <tr>
+                        <td>
+                            <label class="control-label"><small>Jenis Cuti :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:select list="#{'diluar_tanggungan':'Diluar Tanggungan'}" id="jenisCuti1" name="cutiPegawai.jenisCuti"
+                                          headerKey="normal" headerValue="Normal" cssClass="form-control" disabled="true"/>
+                                <s:textfield  id="jenisCuti33" name="cutiPegawai.jenisCuti" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <%--<tr>--%>
+                        <%--<td>--%>
+                            <%--<label class="control-label"><small>Cuti :</small></label>--%>
+                        <%--</td>--%>
+                        <%--<td>--%>
+                            <%--<table>--%>
+                                <%--<s:action id="comboCuti" namespace="/cuti" name="initComboCuti_cuti"/>--%>
+                                <%--<s:select list="#comboCuti.listComboCuti" id="cuti124" name="cutiPegawai.cutiId" readonly="true"--%>
+                                          <%--listKey="cutiId" listValue="cutiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />--%>
+                                <%--<s:textfield  id="jenisCuti" name="cutiPegawai.cutiName" required="false" readonly="true" cssClass="form-control" cssStyle="display: none"/>--%>
+                            <%--</table>--%>
+                        <%--</td>--%>
+                    <%--</tr>--%>
+                    <tr id="cuti1">
                         <td>
                             <label class="control-label"><small>Cuti :</small></label>
                         </td>
                         <td>
                             <table>
                                 <s:action id="comboCuti" namespace="/cuti" name="initComboCuti_cuti"/>
-                                <s:select list="#comboCuti.listComboCuti" id="cuti124" name="cutiPegawai.cutiId" readonly="true"
-                                          listKey="cutiId" listValue="cutiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
-                                <s:textfield  id="jenisCuti" name="cutiPegawai.cutiName" required="false" readonly="true" cssClass="form-control" cssStyle="display: none"/>
+                                <s:select list="#comboCuti.listComboCuti" id="cuti124" name="cutiPegawai.cutiId"
+                                          listKey="cutiId" listValue="cutiName" headerKey="" headerValue="[Select one]" required="true" cssClass="form-control" disabled="true" />
+                                <s:textfield  id="cutiId15" name="cutiPegawai.cutiId" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
+                                <s:textfield  id="jenisCuti" name="cutiPegawai.cutiName" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
+                    <tr id="cuti2" style="display: none">
+                        <td>
+                            <label class="control-label"><small>Cuti :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:action id="comboCuti" namespace="/cuti" name="initComboCuti2_cuti"/>
+                                <s:select list="#comboCuti.listComboCuti2" id="cutiIdTanggungan11" name="cutiPegawai.cutiTanggunganId"
+                                          listKey="cutiId" listValue="cutiName" headerKey="" headerValue="[Select one]" required="true" cssClass="form-control" disabled="true" />
+                                <s:textfield  id="cutiId15Tanggungan" name="cutiPegawai.cutiTanggunganId" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
+                                <s:textfield  id="jenisCutiTanggungan" name="cutiPegawai.cutiTanggunganName" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+
                     <tr>
                         <td>
                             <label class="control-label"><small>Sisa Cuti :</small></label>
@@ -197,37 +242,66 @@
                             </table>
                         </td>
                     </tr>
+                    <%--<tr>--%>
+                        <%--<td>--%>
+                            <%--<label class="control-label"><small>Tanggal Awal Cuti :</small></label>--%>
+                        <%--</td>--%>
+                        <%--<td>--%>
+                            <%--<table>--%>
+                                <%--<div class="input-group date">--%>
+                                    <%--<div class="input-group-addon">--%>
+                                        <%--<i class="fa fa-calendar"></i>--%>
+                                    <%--</div>--%>
+                                    <%----%>
+                                <%--</div>--%>
+                                <%--<s:textfield id="tgl2" name="cutiPegawai.stTanggalDari" cssClass="form-control pull-right" readonly="true"--%>
+                                                 <%--required="true"  cssStyle=""/>--%>
+                            <%--</table>--%>
+                        <%--</td>--%>
+                    <%--</tr>--%>
+
+                    <%--<tr>--%>
+                        <%--<td>--%>
+                            <%--<label class="control-label"><small>Tanggal Selesai Cuti :</small></label>--%>
+                        <%--</td>--%>
+                        <%--<td>--%>
+                            <%--<table>--%>
+                                <%--<div class="input-group date">--%>
+                                    <%--<div class="input-group-addon">--%>
+                                        <%--<i class="fa fa-calendar"></i>--%>
+                                    <%--</div>--%>
+                                    <%--<s:textfield id="tgl1" name="cutiPegawai.strTanggalSelesai" cssClass="form-control pull-right" readonly="true"--%>
+                                                 <%--required="true"  cssStyle=""/></div>--%>
+                            <%--</table>--%>
+                        <%--</td>--%>
+                    <%--</tr>--%>
+
                     <tr>
                         <td>
                             <label class="control-label"><small>Tanggal Awal Cuti :</small></label>
                         </td>
                         <td>
                             <table>
-                                <div class="input-group date">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-calendar"></i>
-                                    </div>
-                                    <s:textfield id="tgl2" name="cutiPegawai.stTanggalDari" cssClass="form-control pull-right" readonly="true"
-                                                 required="true"  cssStyle=""/>
-                                </div>
+                                <s:textfield  id="tgl2" name="cutiPegawai.strTanggalDari2" required="false" readonly="true" cssClass="form-control" style="display: none"/>
+                                <s:textfield  id="tgl21" name="cutiPegawai.strTanggalDari" required="false" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
+
                     <tr>
                         <td>
                             <label class="control-label"><small>Tanggal Selesai Cuti :</small></label>
                         </td>
                         <td>
                             <table>
-                                <div class="input-group date">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-calendar"></i>
-                                    </div>
-                                    <s:textfield id="tgl1" name="cutiPegawai.stTanggalSelesai" cssClass="form-control pull-right" readonly="true"
-                                                 required="true"  cssStyle=""/></div>
+                                <s:textfield id="tgl1" name="cutiPegawai.strTanggalSelesai1" cssClass="form-control pull-right" readonly="true"
+                                             required="true"  style="display: none"/>
+                                <s:textfield id="tgl11" name="cutiPegawai.strTanggalSelesai" cssClass="form-control pull-right" readonly="true"
+                                             required="true"  cssStyle=""/>
                             </table>
                         </td>
                     </tr>
+
                     <tr>
                         <td>
                             <label class="control-label"><small>Lama Cuti :</small></label>
@@ -277,6 +351,11 @@
                             <i class="fa fa-check"></i>
                             Batalkan
                         </sj:submit>
+                        <s:if test='cutiPegawai.flagPengajuanBatal == "Y"'>
+                            <button type="button" id="btnTolak" class="btn btn-danger" style="font-family: Arial, Helvetica, sans-serif;font-size: 12px;font-weight: bold;" onclick="cancelBtn();">
+                                <i class="fa fa-close"/> Tolak Batal
+                            </button>
+                        </s:if>
                         <button type="button" id="cancel" class="btn btn-default" style="font-family: Arial, Helvetica, sans-serif;font-size: 12px;font-weight: bold;" onclick="cancelBtn();">
                             <i class="fa fa-refresh"/> Cancel
                         </button>
@@ -361,3 +440,42 @@
 </table>
 </body>
 </html>
+
+<script>
+    $(document).ready(function() {
+        $('#tgl1').val("");
+        $('#tgl2').val("");
+        var namacuti= $('#cuti124').val();
+        var branchid =$('#branchid').val();
+        var nip=$('#nipId').val();
+        var golonganid=document.getElementById("golonganId12").value;
+
+        var tgldari = $('#tgl11').val();
+        console.log(tgldari);
+        var jenisCuti = $('#jenisCuti1').val();
+        if (jenisCuti == "diluar_tanggungan"){
+            $('#cuti2').show();
+            $('#cuti1').hide();
+
+            $('#cutiIdTanggungan11').val("CT007").change();
+            $('#cutiId15Tanggungan').val("CT007");
+            $('#sisaCuti').val('1095');
+        }else {
+            $('#cuti1').show();
+            $('#cuti2').hide();
+        }
+    });
+
+    $('#btnTolak').on('click', function() {
+        var cutiPegawaiId = document.getElementById("cutiPegawaiId5").value;
+        console.log("Test "+cutiPegawaiId);
+        if (confirm('Are you sure you want to save this Record?')) {
+            dwr.engine.setAsync(false);
+
+            CutiPegawaiAction.saveTolakPengajuan(cutiPegawaiId, function(listdata) {
+                alert('Data Successfully Updated');
+                location.reload();
+            });
+        }
+    });
+</script>

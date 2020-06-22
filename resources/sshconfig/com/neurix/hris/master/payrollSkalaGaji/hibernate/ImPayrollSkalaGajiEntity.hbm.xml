@@ -18,7 +18,6 @@
             <column name="point" sql-type="int"  not-null="true" />
         </property>
 
-
         <property name="nilai">
             <column name="nilai" sql-type="numeric" length="10" precision="2" not-null="true" />
         </property>
@@ -48,6 +47,10 @@
         <property name="tahun">
             <column name="tahun" sql-type="varchar" length="4" not-null="false" />
         </property>
+        <property name="noSk">
+            <column name="no_sk" sql-type="varchar" length="15" not-null="false" />
+        </property>
+
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
         </property>

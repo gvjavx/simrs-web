@@ -1,5 +1,6 @@
 package com.neurix.hris.transaksi.notifikasi.bo;
 
+import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.PengajuanBiaya;
 import com.neurix.common.bo.BaseMasterBo;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.master.ijin.model.Ijin;
@@ -39,7 +40,7 @@ public interface NotifikasiBo extends BaseMasterBo<Notifikasi>{
 
     void SendNotifKeAtasanLangsung(String nip, String id, String tipeNotifId, String tipeNotifName, String note, String createdWho,String os);
 
-    List<PersonilPosition> daftarAtasanLangsung(String nip);
+    List<PersonilPosition> daftarAtasanLangsung(Notifikasi bean);
 
     void SendNotifSelf(String nip, String id, String tipeNotifName, String note, String createdWho, String os);
 
@@ -71,6 +72,8 @@ public interface NotifikasiBo extends BaseMasterBo<Notifikasi>{
 
     List<Notifikasi> getCutiTahunan();
 
+    List<Notifikasi> getPengajuanBiayaMenggantung();
+
     List<Notifikasi> getCutiPanjang();
 
     List<PersonilPosition> daftarKabag(String nip);
@@ -78,4 +81,10 @@ public interface NotifikasiBo extends BaseMasterBo<Notifikasi>{
     List<PersonilPosition> daftarKabid(String nip);
     public List<String> getKabid(String nip);
     public List<Notifikasi> getJubilium();
+
+    void sendNotifDitentukan(String nip, String id, String tipeNotifId, String tipeNotifName, String note, String createdWho);
+
+    List<PengajuanBiaya> searchPengajuanBiaya(PengajuanBiaya bean) throws GeneralBOException;
+
+    List<PengajuanBiaya> searchPengajuanBiayaRk(PengajuanBiaya bean) throws GeneralBOException;
 }

@@ -94,24 +94,51 @@ public class LabDetailBoImpl implements LabDetailBo {
             }
 
             if (entity != null) {
-                entity.setIdLabDetail(bean.getIdLabDetail());
-                entity.setIdLab(bean.getIdLab());
-                entity.setNamaDetailPeriksa(bean.getNamaDetailPeriksa());
-                entity.setSatuan(bean.getSatuan());
-                entity.setKetentuanAcuan(bean.getKetentuanAcuan());
-                entity.setTarif(bean.getTarif());
-                entity.setFlag(bean.getFlag());
-                entity.setAction(bean.getAction());
-                entity.setLastUpdateWho(bean.getLastUpdateWho());
-                entity.setLastUpdate(bean.getLastUpdate());
+                if (bean.getNamaDetailPeriksa().equalsIgnoreCase(entity.getNamaDetailPeriksa())){
+                    entity.setIdLabDetail(bean.getIdLabDetail());
+                    entity.setIdLab(bean.getIdLab());
+                    entity.setNamaDetailPeriksa(bean.getNamaDetailPeriksa());
+                    entity.setSatuan(bean.getSatuan());
+                    entity.setKetentuanAcuan(bean.getKetentuanAcuan());
+                    entity.setTarif(bean.getTarif());
+                    entity.setFlag(bean.getFlag());
+                    entity.setAction(bean.getAction());
+                    entity.setLastUpdateWho(bean.getLastUpdateWho());
+                    entity.setLastUpdate(bean.getLastUpdate());
 
-                try {
-                    // Update into database
-                    labDetailDao.updateAndSave(entity);
-                    //payrollSkalaGajiDao.addAndSaveHistory(imPayrollSkalaGajiHistoryEntity);
-                } catch (HibernateException e) {
-                    logger.error("[LabDetailBoImpl.saveEdit] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update data Lab Detail, please info to your admin..." + e.getMessage());
+                    try {
+                        // Update into database
+                        labDetailDao.updateAndSave(entity);
+                        //payrollSkalaGajiDao.addAndSaveHistory(imPayrollSkalaGajiHistoryEntity);
+                    } catch (HibernateException e) {
+                        logger.error("[LabDetailBoImpl.saveEdit] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data Lab Detail, please info to your admin..." + e.getMessage());
+                    }
+                }else {
+                    String status = cekStatus(bean.getNamaDetailPeriksa());
+                    if (!status.equalsIgnoreCase("exist")){
+                        entity.setIdLabDetail(bean.getIdLabDetail());
+                        entity.setIdLab(bean.getIdLab());
+                        entity.setNamaDetailPeriksa(bean.getNamaDetailPeriksa());
+                        entity.setSatuan(bean.getSatuan());
+                        entity.setKetentuanAcuan(bean.getKetentuanAcuan());
+                        entity.setTarif(bean.getTarif());
+                        entity.setFlag(bean.getFlag());
+                        entity.setAction(bean.getAction());
+                        entity.setLastUpdateWho(bean.getLastUpdateWho());
+                        entity.setLastUpdate(bean.getLastUpdate());
+
+                        try {
+                            // Update into database
+                            labDetailDao.updateAndSave(entity);
+                            //payrollSkalaGajiDao.addAndSaveHistory(imPayrollSkalaGajiHistoryEntity);
+                        } catch (HibernateException e) {
+                            logger.error("[LabDetailBoImpl.saveEdit] Error, " + e.getMessage());
+                            throw new GeneralBOException("Found problem when saving update data Lab Detail, please info to your admin..." + e.getMessage());
+                        }
+                    }else {
+                        throw new GeneralBOException("Maaf Data dengan Nama Detail Periksa Tersebut Sudah Ada");
+                    }
                 }
             } else {
                 logger.error("[LabDetailBoImpl.saveEdit] Error, not found data Lab Detail with request id, please check again your data ...");
@@ -125,7 +152,7 @@ public class LabDetailBoImpl implements LabDetailBo {
     public LabDetail saveAdd(LabDetail bean) throws GeneralBOException {
         logger.info("[PayrollSkalaGajiBoImpl.saveAdd] start process >>>");
         if (bean!=null) {
-            String status = cekStatus(bean.getNamaLab());
+            String status = cekStatus(bean.getNamaDetailPeriksa());
             String labDetailId;
             if (!status.equalsIgnoreCase("exist")){
                 try {

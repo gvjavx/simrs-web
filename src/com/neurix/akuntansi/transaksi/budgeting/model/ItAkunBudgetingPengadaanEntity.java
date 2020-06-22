@@ -24,6 +24,9 @@ public class ItAkunBudgetingPengadaanEntity implements Serializable {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String idBudgetingDetail;
+    private String noKontrak;
+    private BigDecimal nilaiKontrak;
+    private String noPengadaan;
 
     public String getIdBudgetingDetail() {
         return idBudgetingDetail;
@@ -136,4 +139,29 @@ public class ItAkunBudgetingPengadaanEntity implements Serializable {
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
     }
+
+    public String getNoKontrak() {
+        return noKontrak;
+    }
+
+    public void setNoKontrak(String noKontrak) {
+        this.noKontrak = noKontrak;
+    }
+
+    public BigDecimal getNilaiKontrak() {
+        return nilaiKontrak;
+    }
+
+    public void setNilaiKontrak(BigDecimal nilaiKontrak) {
+        this.nilaiKontrak = nilaiKontrak;
+    }
+
+    public String getNoPengadaan() {
+        return noPengadaan;
+    }
+
+    public void setNoPengadaan(String noPengadaan) {
+        this.noPengadaan = noPengadaan;
+    }
+
 }

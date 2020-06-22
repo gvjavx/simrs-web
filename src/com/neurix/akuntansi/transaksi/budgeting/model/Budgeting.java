@@ -67,8 +67,63 @@ public class Budgeting {
     private String masterId;
     private String masterName;
     private String branchName;
+    private String divisi;
+    private String coa;
+    private String idPengadaan;
+    private String bulan;
+
+    private BigDecimal saldoAkhir;
+    private BigDecimal selisihSaldoAkhir;
+    private String noTrans;
+
+    //for pengajuan biaya
+    private BigDecimal budgetSaatIni;
+    private BigDecimal budgetSdSaatIni;
+    private String stBudgetSaatIni;
+    private String stBudgetSdSaatIni;
+
+    public BigDecimal getBudgetSaatIni() {
+        return budgetSaatIni;
+    }
+
+    public void setBudgetSaatIni(BigDecimal budgetSaatIni) {
+        this.budgetSaatIni = budgetSaatIni;
+    }
+
+    public BigDecimal getBudgetSdSaatIni() {
+        return budgetSdSaatIni;
+    }
+
+    public void setBudgetSdSaatIni(BigDecimal budgetSdSaatIni) {
+        this.budgetSdSaatIni = budgetSdSaatIni;
+    }
+
+    public String getStBudgetSaatIni() {
+        return stBudgetSaatIni;
+    }
+
+    public void setStBudgetSaatIni(String stBudgetSaatIni) {
+        this.stBudgetSaatIni = stBudgetSaatIni;
+    }
+
+    public String getStBudgetSdSaatIni() {
+        return stBudgetSdSaatIni;
+    }
+
+    public void setStBudgetSdSaatIni(String stBudgetSdSaatIni) {
+        this.stBudgetSdSaatIni = stBudgetSdSaatIni;
+    }
+
+    public String getNoTrans() {
+        return noTrans;
+    }
+
+    public void setNoTrans(String noTrans) {
+        this.noTrans = noTrans;
+    }
 
     private List<BudgetingPeriode> listPeriode = new ArrayList<>();
+    private List<BudgetingDetail> budgetingDetailList = new ArrayList<>();
 
     public static Comparator<Budgeting> kodeRekeningSorting = new Comparator<Budgeting>() {
 
@@ -83,12 +138,44 @@ public class Budgeting {
 //            return kdRekening2.compareTo(kdRekening1);
         }};
 
+    public String getBulan() {
+        return bulan;
+    }
+
+    public void setBulan(String bulan) {
+        this.bulan = bulan;
+    }
+
+    public String getIdPengadaan() {
+        return idPengadaan;
+    }
+
+    public void setIdPengadaan(String idPengadaan) {
+        this.idPengadaan = idPengadaan;
+    }
+
+    public String getDivisi() {
+        return divisi;
+    }
+
+    public void setDivisi(String divisi) {
+        this.divisi = divisi;
+    }
+
     public static Comparator<Budgeting> getKodeRekeningSorting() {
         return kodeRekeningSorting;
     }
 
     public static void setKodeRekeningSorting(Comparator<Budgeting> kodeRekeningSorting) {
         Budgeting.kodeRekeningSorting = kodeRekeningSorting;
+    }
+
+    public String getCoa() {
+        return coa;
+    }
+
+    public void setCoa(String coa) {
+        this.coa = coa;
     }
 
     public String getFlagDisable() {
@@ -529,5 +616,29 @@ public class Budgeting {
 
     public void setListPeriode(List<BudgetingPeriode> listPeriode) {
         this.listPeriode = listPeriode;
+    }
+
+    public List<BudgetingDetail> getBudgetingDetailList() {
+        return budgetingDetailList;
+    }
+
+    public void setBudgetingDetailList(List<BudgetingDetail> budgetingDetailList) {
+        this.budgetingDetailList = budgetingDetailList;
+    }
+
+    public BigDecimal getSaldoAkhir() {
+        return saldoAkhir;
+    }
+
+    public void setSaldoAkhir(BigDecimal saldoAkhir) {
+        this.saldoAkhir = saldoAkhir;
+    }
+
+    public BigDecimal getSelisihSaldoAkhir() {
+        return selisihSaldoAkhir;
+    }
+
+    public void setSelisihSaldoAkhir(BigDecimal selisihSaldoAkhir) {
+        this.selisihSaldoAkhir = selisihSaldoAkhir;
     }
 }

@@ -142,6 +142,20 @@ public class ExceptionHandlerInterceptor extends MethodFilterInterceptor {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
             } else if ("/mobileapi/dokter".equalsIgnoreCase(namespace)) {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
+            }else if ("/mobileapi/kasir".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
+            } else if ("/mobileapi/telemedicine".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
+            } else if ("/mobileapi/testelemedic".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.testelemedic] skiping token");
+            } else if ("/mobileapi/pembayaran".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.testelemedic] skiping token");
+            } else if ("/mobileapi/testnotif".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.testnotif] skiping token");
+            } else if ("/mobileapi/kurir".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.testnotif] skiping token");
+            } else if ("/mobileapi/reseponline".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.reseponline] skiping token");
             }
             else {
 

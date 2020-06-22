@@ -267,147 +267,23 @@ public class PositionAction extends BaseMasterAction {
             entryPosition.setLastUpdateWho(userLogin);
             entryPosition.setAction("C");
             positionBoProxy.saveAdd(entryPosition);
-
-        } catch (UsernameNotFoundException e) {
-            logger.error("[PositionAction.save] Error when adding item position,", e);
-            addActionError("Error, " + e.getMessage());
-
-            return ERROR;
-        } catch (GeneralBOException e) {
+        }  catch (GeneralBOException e) {
             Long logId = null;
             try {
-                logId = positionBoProxy.saveErrorMessage(e.getMessage(), "PositionBO.saveAdd");
+                logId = positionBoProxy.saveErrorMessage(e.getMessage(), "payrollSkalaGajiBO.saveAdd");
             } catch (GeneralBOException e1) {
+                logger.error("[pelayananAction.saveAdd] Error when saving error,", e1);
                 throw new GeneralBOException(e1.getMessage());
             }
-            logger.error("[PositionAction.save] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            logger.error("[pelayananAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-
             throw new GeneralBOException(e.getMessage());
         }
-//        if (isAddOrEdit()) {
-//
-//            if (!isAdd()) {
-//                String itemId = getPosition().getStPositionId();
-//                if (itemId != null && !"".equalsIgnoreCase(itemId)) {
-//
-//                    //edit
-//                    try {
-//
-//                        String userLogin = CommonUtil.userLogin();
-//                        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-//
-//                        Position editPosition = getPosition();
-//                        Long lItemId = Long.parseLong(itemId);
-//                        editPosition.setPositionId(itemId);
-//                        editPosition.setCreatedDate(updateTime);
-//                        editPosition.setCreatedWho(userLogin);
-//                        editPosition.setLastUpdate(updateTime);
-//                        editPosition.setLastUpdateWho(userLogin);
-//                        editPosition.setAction("U");
-//
-//                        positionBoProxy.saveEdit(editPosition);
-//
-//
-//                    } catch (NumberFormatException e) {
-//                        logger.error("[PositionAction.save] Error when editing item position,", e);
-//                        addActionError("Error, " + "Position Id must number.");
-//
-//                        return ERROR;
-//                    } catch (UsernameNotFoundException e) {
-//                        logger.error("[PositionAction.save] Error when editing item position,", e);
-//                        addActionError("Error, " + e.getMessage());
-//
-//                        return ERROR;
-//                    } catch (GeneralBOException e) {
-//                        Long logId = null;
-//                        try {
-//                            logId = positionBoProxy.saveErrorMessage(e.getMessage(), "PositionBO.save");
-//                        } catch (GeneralBOException e1) {
-//                            logger.error("[PositionAction.save] Error when saving error,", e1);
-//                        }
-//                        logger.error("[PositionAction.save] Error when editing item position," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
-//                        addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-//
-//                        return ERROR;
-//                    }
-//                }
-//            } else {
-//                //add
-//                try {
-//                    String userLogin = CommonUtil.userLogin();
-//                    Timestamp createTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-//
-//                    Position entryPosition = getPosition();
-//
-//                    entryPosition.setCreatedDate(createTime);
-//                    entryPosition.setCreatedWho(userLogin);
-//                    entryPosition.setLastUpdate(createTime);
-//                    entryPosition.setLastUpdateWho(userLogin);
-//                    entryPosition.setAction("C");
-//                    positionBoProxy.saveAdd(entryPosition);
-//
-//                } catch (UsernameNotFoundException e) {
-//                    logger.error("[PositionAction.save] Error when adding item position,", e);
-//                    addActionError("Error, " + e.getMessage());
-//
-//                    return ERROR;
-//                } catch (GeneralBOException e) {
-//                    Long logId = null;
-//                    try {
-//                        logId = positionBoProxy.saveErrorMessage(e.getMessage(), "PositionBO.saveAdd");
-//                    } catch (GeneralBOException e1) {
-//                        throw new GeneralBOException(e1.getMessage());
-//                    }
-//                    logger.error("[PositionAction.save] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-//                    addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-//
-//                    throw new GeneralBOException(e.getMessage());
-//                }
-//
-//            }
-//
-//        } else if (isDelete()) {
-//
-//            try {
-//                String userLogin = CommonUtil.userLogin();
-//                Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-//
-//                Position deletePosition = getPosition();
-//
-//                if (deletePosition.getStPositionId() != null && !"".equalsIgnoreCase(deletePosition.getStPositionId()))
-//                    //deletePosition.setPositionId(Long.parseLong());
-//                    deletePosition.setPositionId(deletePosition.getStPositionId());
-//
-//                deletePosition.setLastUpdate(updateTime);
-//                deletePosition.setLastUpdateWho(userLogin);
-//                deletePosition.setAction("D");
-//
-//                positionBoProxy.saveDelete(deletePosition);
-//
-//            } catch (UsernameNotFoundException e) {
-//                logger.error("[PositionAction.save] Error when deleting item position,", e);
-//                addActionError("Error, " + e.getMessage());
-//                return ERROR;
-//            } catch (GeneralBOException e) {
-//                Long logId = null;
-//                try {
-//                    logId = positionBoProxy.saveErrorMessage(e.getMessage(), "PositionBO.saveDelete");
-//                } catch (GeneralBOException e1) {
-//                    logger.error("[PositionAction.save] Error when saving error,", e1);
-//                }
-//                logger.error("[PositionAction.save] Error when deleting item ," + "[" + logId + "] Found problem when saving delete data, please inform to your admin.", e);
-//                addActionError("Error, " + "[code=" + logId + "] Found problem when saving delete data, please inform to your admin.\n" + e.getMessage());
-//                return ERROR;
-//            }
-//
-//        }
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
 
         logger.info("[PositionAction.save] end process <<<");
-
         return "success_save";
     }
 
@@ -426,6 +302,7 @@ public class PositionAction extends BaseMasterAction {
                 deletePosition.setLastUpdate(updateTime);
                 deletePosition.setLastUpdateWho(userLogin);
                 deletePosition.setAction("U");
+                deletePosition.setFlag("N");
 
                 positionBoProxy.saveDelete(deletePosition);
 

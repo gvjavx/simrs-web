@@ -35,9 +35,13 @@
     </bean>
 
     <bean id="positionBo" class="com.neurix.authorization.position.bo.impl.PositionBoImpl"
-          p:positionDao-ref="positionDao" />
+          p:positionDao-ref="positionDao"
+          p:positionHistoryDao-ref="positionHistoryDao"
+    />
 
     <bean id="positionDao" class="com.neurix.authorization.position.dao.PositionDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="positionHistoryDao" class="com.neurix.authorization.position.dao.PositionHistoryDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

@@ -28,8 +28,26 @@ public class Dispensasi {
     private String golonganId;
     private String golonganName;
     private String gender;
+    private String tanggalKelahiran;
 
     private String actionError;
+    private String message;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getTanggalKelahiran() {
+        return tanggalKelahiran;
+    }
+
+    public void setTanggalKelahiran(String tanggalKelahiran) {
+        this.tanggalKelahiran = tanggalKelahiran;
+    }
 
     public String getActionError() {
         return actionError;

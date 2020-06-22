@@ -4,7 +4,7 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
     <class name="com.neurix.akuntansi.transaksi.pengajuanBiaya.model.ImPengajuanBiayaEntity" dynamic-update="true"
-           table="it_akun_pembayaran_utang_piutang" select-before-update="true" schema="public">
+           table="it_akun_pengajuan_biaya" select-before-update="true" schema="public">
 
         <id name="pengajuanBiayaId">
             <column name="pengajuan_biaya_id" sql-type="varchar" length="20" not-null="true" />
@@ -16,11 +16,17 @@
         <property name="coaAjuan">
             <column name="coa_ajuan" sql-type="varchar" length="30" not-null="false" />
         </property>
+        <property name="coaTarget">
+            <column name="coa_target" sql-type="varchar" length="30" not-null="false" />
+        </property>
         <property name="totalBiaya">
             <column name="total_biaya" sql-type="numeric" not-null="false" />
         </property>
-        <property name="tahun">
-            <column name="tahun" sql-type="varchar" length="4" not-null="false" />
+        <property name="tanggal">
+            <column name="tanggal" sql-type="date" not-null="false" />
+        </property>
+        <property name="transaksi">
+            <column name="transaksi" sql-type="varchar" length="5" not-null="false" />
         </property>
 
         <property name="aprovalId">
@@ -41,7 +47,21 @@
         <property name="branchId">
             <column name="branch_id" sql-type="varchar" length="5" not-null="false" />
         </property>
-
+        <property name="rkDikirim">
+            <column name="rk_dikirim" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="flagBatal">
+            <column name="flag_batal" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="keteranganBatal">
+            <column name="keterangan_batal" sql-type="varchar" not-null="false" />
+        </property>
+        <property name="keterangan">
+            <column name="keterangan" sql-type="text" not-null="false" />
+        </property>
+        <property name="noJurnal">
+            <column name="no_jurnal" sql-type="varchar" length="30" not-null="false" />
+        </property>
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
         </property>

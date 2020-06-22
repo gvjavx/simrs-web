@@ -321,9 +321,9 @@ public class MesinAbsensiDetailBoImpl implements MesinAbsensiDetailBo {
             if (searchBean.getStatus() != null && !"".equalsIgnoreCase(searchBean.getStatus())) {
                 hsCriteria.put("status", searchBean.getStatus());
             }
-//            if (searchBean.getTanggalDari() != null) {
-//                hsCriteria.put("tanggal_dari", searchBean.getTanggalDari());
-//            }
+            if (searchBean.getTanggalDari() != null) {
+                hsCriteria.put("tanggal_dari", searchBean.getTanggalDari());
+            }
 //            if (searchBean.getTanggalSelesai() != null) {
 //                hsCriteria.put("tanggal_selesai", searchBean.getTanggalSelesai());
 //            }

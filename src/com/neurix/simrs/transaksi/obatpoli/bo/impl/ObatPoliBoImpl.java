@@ -1,5 +1,7 @@
 package com.neurix.simrs.transaksi.obatpoli.bo.impl;
 
+import com.neurix.akuntansi.transaksi.tutupperiod.dao.BatasTutupPeriodDao;
+import com.neurix.akuntansi.transaksi.tutupperiod.model.ItSimrsBatasTutupPeriodEntity;
 import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.authorization.company.model.ImBranchesPK;
@@ -18,6 +20,7 @@ import com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 import com.neurix.simrs.transaksi.riwayatbarang.dao.TransaksiStokDao;
 import com.neurix.simrs.transaksi.riwayatbarang.model.ItSimrsTransaksiStokEntity;
+import com.neurix.simrs.transaksi.riwayatbarang.model.TransaksiStok;
 import com.neurix.simrs.transaksi.transaksiobat.dao.ApprovalTransaksiObatDao;
 import com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailBatchDao;
 import com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailDao;
@@ -50,6 +53,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
     private TransaksiObatDetailBatchDao batchDao;
     private TransaksiStokDao transaksiStokDao;
     private BranchDao branchDao;
+    private BatasTutupPeriodDao batasTutupPeriodDao;
 
     @Override
     public List<ObatPoli> getObatPoliByCriteria(ObatPoli bean) throws GeneralBOException {
@@ -1368,9 +1372,17 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                                             obatDetail.setBranchId(bean.getBranchId());
                                             obatDetail.setLastUpdate(bean.getLastUpdate());
                                             obatDetail.setLastUpdateWho(bean.getLastUpdateWho());
+                                            obatDetail.setCreatedWho(bean.getCreatedWho());
+                                            obatDetail.setCreatedDate(bean.getCreatedDate());
+                                            obatDetail.setIdPelayanan(permintaanObatPoliEntity.getIdPelayanan());
+                                            obatDetail.setIdPelayananTujuan(permintaanObatPoliEntity.getTujuanPelayanan());
+                                            obatDetail.setBranchId(permintaanObatPoliEntity.getBranchId());
 
                                             // update add stock gudang
                                             updateAddStockGudang(obatDetail);
+
+                                            // save to transaksi stok
+                                            saveTransaksiStokRetureObatPoli(obatDetail);
                                         }
 
                                         batchEntity.setApproveFlag("Y");
@@ -1396,7 +1408,722 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         logger.info("[ObatPoliBoImpl.saveApproveReture] END <<<<<<<<<<");
     }
 
-    @Override
+    private void saveTransaksiStokRetureObatPoli(TransaksiObatDetail bean){
+
+        logger.info("[ObatPoliBoImpl.saveTransaksiStokRetureObatPoli] START >>>");
+        // SAVE TO STOCK TRANSAKSI
+
+        java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
+        String tahun = CommonUtil.getDateParted(date, "YEAR");
+        String bulan = CommonUtil.getDateParted(date, "MONTH");
+
+
+        boolean flagTutup = false;
+        List<ItSimrsBatasTutupPeriodEntity> batasTutupPeriod = batasTutupPeriodDao.getBatasPeriodeDitutup(bean.getBranchId(), bulan, tahun);
+        if (batasTutupPeriod.size() > 0){
+            // jika sudah ditutup bulan ini
+            flagTutup = true;
+        }
+
+        TransaksiStok saldoBulanLalu = new TransaksiStok();
+        TransaksiStok saldoBulanLaluTujuan = new TransaksiStok();
+        if (flagTutup){
+
+            Integer tahunDepan = new Integer(0);
+            Integer bulanDepan = new Integer(0);
+
+            if ("12".equalsIgnoreCase(bulan)){
+                bulanDepan = Integer.valueOf(1);
+                tahunDepan = Integer.valueOf(tahun) + 1;
+            } else {
+                bulanDepan = Integer.valueOf(bulan) + 1;
+                tahunDepan = Integer.valueOf(tahun);
+            }
+
+            // cari apakah data baru
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("branch_id", bean.getBranchId());
+            hsCriteria.put("id_barang", bean.getIdObat());
+            hsCriteria.put("bulan", bulanDepan);
+            hsCriteria.put("tahun", tahunDepan);
+            hsCriteria.put("id_pelayanan", bean.getIdPelayanan());
+
+            List<ItSimrsTransaksiStokEntity> transaksiStokEntities = transaksiStokDao.getByCriteria(hsCriteria);
+            if (transaksiStokEntities.size() == 0){
+
+
+                // jika sudah ditutup bulan ini
+                // maka hitung saldo bulan ini sebagai saldo bulan lalu
+                if (flagTutup){
+                    List<TransaksiStok> saldoBulanLaluList = getListTransaksiObat(bean.getIdPelayanan(), Integer.valueOf(tahun), Integer.valueOf(bulan), bean.getIdObat());
+                    if (saldoBulanLaluList.size() > 0){
+                        saldoBulanLalu = saldoBulanLaluList.get(saldoBulanLaluList.size() -1);
+                    }
+                }
+            }
+
+            // cari apakah data baru pelayanan tujuan
+            hsCriteria = new HashMap();
+            hsCriteria.put("branch_id", bean.getBranchId());
+            hsCriteria.put("id_barang", bean.getIdObat());
+            hsCriteria.put("bulan", bulanDepan);
+            hsCriteria.put("tahun", tahunDepan);
+            hsCriteria.put("id_pelayanan", bean.getIdPelayananTujuan());
+
+            transaksiStokEntities = new ArrayList<>();
+            transaksiStokEntities = transaksiStokDao.getByCriteria(hsCriteria);
+            if (transaksiStokEntities.size() == 0){
+
+                // jika sudah ditutup bulan ini
+                // maka hitung saldo bulan ini sebagai saldo bulan lalu
+                // jika sudah ditutup bulan ini
+                // maka hitung saldo bulan ini sebagai saldo bulan lalu
+                if (flagTutup){
+                    List<TransaksiStok> saldoBulanLaluList = getListTransaksiObat(bean.getIdPelayananTujuan(), Integer.valueOf(tahun), Integer.valueOf(bulan), bean.getIdObat());
+                    if (saldoBulanLaluList.size() > 0){
+                        saldoBulanLaluTujuan = saldoBulanLaluList.get(saldoBulanLaluList.size() -1);
+                    }
+                }
+            }
+        }
+
+
+        String pelayananAsal = "";
+        String pelayananTujuan = "";
+        ImSimrsPelayananEntity pelayananEntity = pelayananDao.getById("idPelayanan", bean.getIdPelayanan());
+        if (pelayananEntity != null){
+            pelayananAsal = pelayananEntity.getNamaPelayanan();
+
+            // pelayanan tujuan
+            pelayananEntity = pelayananDao.getById("idPelayanan", bean.getIdPelayananTujuan());
+            if (pelayananEntity != null){
+                pelayananTujuan = pelayananEntity.getNamaPelayanan();
+            }
+        }
+
+        String namaObat = "";
+        String idObat = "";
+        BigInteger consBox = new BigInteger(String.valueOf(0));
+        BigInteger consLembar = new BigInteger(String.valueOf(0));
+        BigDecimal hargaBijian = new BigDecimal(String.valueOf(0));
+        ImSimrsObatEntity obatEntity = obatDao.getById("idBarang", bean.getIdBarang());
+        if (obatEntity != null){
+            namaObat = obatEntity.getNamaObat();
+            consLembar = obatEntity.getBijiPerLembar();
+            consBox = obatEntity.getLembarPerBox().multiply(consLembar);
+            idObat = obatEntity.getIdObat();
+            hargaBijian = obatEntity.getAverageHargaBiji();
+        }
+
+        //BigDecimal hargaObat = new BigDecimal(0);
+        BigInteger qty = new BigInteger(String.valueOf(0));
+
+        if ("box".equalsIgnoreCase(bean.getJenisSatuan())){
+            qty = bean.getQtyApprove().multiply(consBox);
+        } else if ("lembar".equalsIgnoreCase(bean.getJenisSatuan())){
+            qty = bean.getQtyApprove().multiply(consLembar);
+        } else {
+            qty = bean.getQtyApprove();
+        }
+
+
+        java.util.Date now = new java.util.Date();
+        SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
+        String seq = transaksiStokDao.getNextSeq();
+        String idBarangMasuk = "RB"+ bean.getBranchId() + f.format(now) + seq;
+
+        // pelayanan Asal
+        ItSimrsTransaksiStokEntity transaksiStokEntity = new ItSimrsTransaksiStokEntity();
+        transaksiStokEntity.setIdTransaksi(idBarangMasuk);
+        transaksiStokEntity.setIdObat(idObat);
+        transaksiStokEntity.setKeterangan("Reture Barang Ke " + pelayananTujuan);
+        transaksiStokEntity.setTipe("K");
+        transaksiStokEntity.setBranchId(bean.getBranchId());
+        transaksiStokEntity.setQty(qty);
+        transaksiStokEntity.setTotal(hargaBijian);
+        transaksiStokEntity.setSubTotal(hargaBijian.multiply(new BigDecimal(qty)));
+        transaksiStokEntity.setCreatedDate(bean.getCreatedDate());
+        transaksiStokEntity.setCreatedWho(bean.getCreatedWho());
+        transaksiStokEntity.setLastUpdate(bean.getCreatedDate());
+        transaksiStokEntity.setLastUpdateWho(bean.getCreatedWho());
+        transaksiStokEntity.setIdBarang(bean.getIdBarang());
+        transaksiStokEntity.setIdPelayanan(bean.getIdPelayanan());
+        if (flagTutup){
+            // jika ditutup maka buat registered date bulan depan
+            Integer tahunDepan = new Integer(0);
+            Integer bulanDepan = new Integer(0);
+
+            if ("12".equalsIgnoreCase(bulan)){
+                tahunDepan = Integer.valueOf(tahun) + 1;
+                bulanDepan = 1;
+            } else {
+                tahunDepan = Integer.valueOf(tahun);
+                bulanDepan = Integer.valueOf(bulan) + 1;
+            }
+
+            String stDate = tahunDepan+"-"+bulanDepan+"-"+"1";
+            transaksiStokEntity.setRegisteredDate(java.sql.Date.valueOf(stDate));
+        } else {
+            transaksiStokEntity.setRegisteredDate(new java.sql.Date(obatEntity.getLastUpdate().getTime()));
+        }
+
+        // jika ada saldo lalu
+        if (saldoBulanLalu.getQtyLalu() != null && saldoBulanLalu.getQtyLalu().compareTo(new BigInteger(String.valueOf(0))) == 1){
+            transaksiStokEntity.setQtyLalu(saldoBulanLalu.getQtySaldo());
+            transaksiStokEntity.setTotalLalu(saldoBulanLalu.getTotalSaldo());
+            transaksiStokEntity.setSubTotalLalu(saldoBulanLalu.getSubTotalSaldo());
+        } else {
+            transaksiStokEntity.setQtyLalu(new BigInteger(String.valueOf(0)));
+            transaksiStokEntity.setTotalLalu(new BigDecimal(0));
+            transaksiStokEntity.setSubTotalLalu(new BigDecimal(0));
+        }
+
+
+        try {
+            transaksiStokDao.addAndSave(transaksiStokEntity);
+        } catch (HibernateException e){
+            logger.error("[ObatPoliBoImpl.saveTransaksiStokRetureObatPoli] ERROR.", e);
+            throw new GeneralBOException("[ObatPoliBoImpl.saveTransaksiStokRetureObatPoli] ERROR." + e.getMessage());
+        }
+
+
+        // pelayanan tujuan
+        seq = transaksiStokDao.getNextSeq();
+        String idBarangKeluar = "RB"+ bean.getBranchId() + f.format(now) + seq;
+        transaksiStokEntity = new ItSimrsTransaksiStokEntity();
+        transaksiStokEntity.setIdTransaksi(idBarangKeluar);
+        transaksiStokEntity.setIdObat(idObat);
+        transaksiStokEntity.setKeterangan("Penerimaan Reture dari " + pelayananAsal);
+        transaksiStokEntity.setTipe("D");
+        transaksiStokEntity.setBranchId(bean.getBranchId());
+        transaksiStokEntity.setQty(qty);
+        transaksiStokEntity.setTotal(hargaBijian);
+        transaksiStokEntity.setSubTotal(hargaBijian.multiply(new BigDecimal(qty)));
+        transaksiStokEntity.setCreatedDate(bean.getCreatedDate());
+        transaksiStokEntity.setCreatedWho(bean.getCreatedWho());
+        transaksiStokEntity.setLastUpdate(bean.getCreatedDate());
+        transaksiStokEntity.setLastUpdateWho(bean.getCreatedWho());
+        transaksiStokEntity.setIdBarang(bean.getIdBarang());
+        transaksiStokEntity.setIdPelayanan(bean.getIdPelayananTujuan());
+        if (flagTutup){
+            // jika ditutup maka buat registered date bulan depan
+            Integer tahunDepan = new Integer(0);
+            Integer bulanDepan = new Integer(0);
+
+            if ("12".equalsIgnoreCase(bulan)){
+                tahunDepan = Integer.valueOf(tahun) + 1;
+                bulanDepan = 1;
+            } else {
+                tahunDepan = Integer.valueOf(tahun);
+                bulanDepan = Integer.valueOf(bulan) + 1;
+            }
+
+            String stDate = tahunDepan+"-"+bulanDepan+"-"+"1";
+            transaksiStokEntity.setRegisteredDate(java.sql.Date.valueOf(stDate));
+        } else {
+            transaksiStokEntity.setRegisteredDate(new java.sql.Date(obatEntity.getLastUpdate().getTime()));
+        }
+
+        // jika ada saldo lalu
+        if (saldoBulanLaluTujuan.getQtyLalu() != null && saldoBulanLaluTujuan.getQtyLalu().compareTo(new BigInteger(String.valueOf(0))) == 1){
+            transaksiStokEntity.setQtyLalu(saldoBulanLaluTujuan.getQtySaldo());
+            transaksiStokEntity.setTotalLalu(saldoBulanLaluTujuan.getTotalSaldo());
+            transaksiStokEntity.setSubTotalLalu(saldoBulanLaluTujuan.getSubTotalSaldo());
+        } else {
+            transaksiStokEntity.setQtyLalu(new BigInteger(String.valueOf(0)));
+            transaksiStokEntity.setTotalLalu(new BigDecimal(0));
+            transaksiStokEntity.setSubTotalLalu(new BigDecimal(0));
+        }
+        try {
+            transaksiStokDao.addAndSave(transaksiStokEntity);
+        } catch (HibernateException e){
+            logger.error("[ObatPoliBoImpl.saveTransaksiStokRetureObatPoli] ERROR.", e);
+            throw new GeneralBOException("[ObatPoliBoImpl.saveTransaksiStokRetureObatPoli] ERROR." + e.getMessage());
+        }
+
+        logger.info("[ObatPoliBoImpl.saveTransaksiStokRetureObatPoli] END <<<<");
+    }
+
+    private void saveTransaksiStokRequestObatPoli(TransaksiObatDetail bean){
+
+        logger.info("[ObatPoliBoImpl.saveTransaksiStokRequestObatPoli] START >>>");
+        // SAVE TO STOCK TRANSAKSI
+
+        java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
+        String tahun = CommonUtil.getDateParted(date, "YEAR");
+        String bulan = CommonUtil.getDateParted(date, "MONTH");
+
+        boolean flagTutup = false;
+        List<ItSimrsBatasTutupPeriodEntity> batasTutupPeriod = batasTutupPeriodDao.getBatasPeriodeDitutup(bean.getBranchId(), bulan, tahun);
+        if (batasTutupPeriod.size() > 0){
+            // jika sudah ditutup bulan ini
+            flagTutup = true;
+        }
+
+        TransaksiStok saldoBulanLalu = new TransaksiStok();
+        TransaksiStok saldoBulanLaluTujuan = new TransaksiStok();
+
+        if (flagTutup){
+
+            Integer tahunDepan = new Integer(0);
+            Integer bulanDepan = new Integer(0);
+
+            if ("12".equalsIgnoreCase(bulan)){
+                bulanDepan = Integer.valueOf(1);
+                tahunDepan = Integer.valueOf(tahun) + 1;
+            } else {
+                bulanDepan = Integer.valueOf(bulan) + 1;
+                tahunDepan = Integer.valueOf(tahun);
+            }
+
+            // cari apakah data baru
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("branch_id", bean.getBranchId());
+            hsCriteria.put("id_barang", bean.getIdObat());
+            hsCriteria.put("bulan", bulanDepan);
+            hsCriteria.put("tahun", tahunDepan);
+            hsCriteria.put("id_pelayanan", bean.getIdPelayanan());
+
+            List<ItSimrsTransaksiStokEntity> transaksiStokEntities = transaksiStokDao.getByCriteria(hsCriteria);
+            if (transaksiStokEntities.size() == 0){
+
+
+                // jika sudah ditutup bulan ini
+                // maka hitung saldo bulan ini sebagai saldo bulan lalu
+                if (flagTutup){
+                    List<TransaksiStok> saldoBulanLaluList = getListTransaksiObat(bean.getIdPelayanan(), Integer.valueOf(tahun), Integer.valueOf(bulan), bean.getIdObat());
+                    if (saldoBulanLaluList.size() > 0){
+                        saldoBulanLalu = saldoBulanLaluList.get(saldoBulanLaluList.size() -1);
+                    }
+                }
+            }
+
+            // cari apakah data baru pelayanan tujuan
+            hsCriteria = new HashMap();
+            hsCriteria.put("branch_id", bean.getBranchId());
+            hsCriteria.put("id_barang", bean.getIdObat());
+            hsCriteria.put("bulan", bulanDepan);
+            hsCriteria.put("tahun", tahunDepan);
+            hsCriteria.put("id_pelayanan", bean.getIdPelayananTujuan());
+
+            transaksiStokEntities = new ArrayList<>();
+            transaksiStokEntities = transaksiStokDao.getByCriteria(hsCriteria);
+            if (transaksiStokEntities.size() == 0){
+
+                // jika sudah ditutup bulan ini
+                // maka hitung saldo bulan ini sebagai saldo bulan lalu
+                // jika sudah ditutup bulan ini
+                // maka hitung saldo bulan ini sebagai saldo bulan lalu
+                if (flagTutup){
+                    List<TransaksiStok> saldoBulanLaluList = getListTransaksiObat(bean.getIdPelayananTujuan(), Integer.valueOf(tahun), Integer.valueOf(bulan), bean.getIdObat());
+                    if (saldoBulanLaluList.size() > 0){
+                        saldoBulanLaluTujuan = saldoBulanLaluList.get(saldoBulanLaluList.size() -1);
+                    }
+                }
+            }
+        }
+
+
+
+        String pelayananAsal = "";
+        String pelayananTujuan = "";
+        ImSimrsPelayananEntity pelayananEntity = pelayananDao.getById("idPelayanan", bean.getIdPelayanan());
+        if (pelayananEntity != null){
+            pelayananAsal = pelayananEntity.getNamaPelayanan();
+
+            // pelayanan tujuan
+            pelayananEntity = pelayananDao.getById("idPelayanan", bean.getIdPelayananTujuan());
+            if (pelayananEntity != null){
+                pelayananTujuan = pelayananEntity.getNamaPelayanan();
+            }
+        }
+
+        String namaObat = "";
+        String idObat = "";
+        BigInteger consBox = new BigInteger(String.valueOf(0));
+        BigInteger consLembar = new BigInteger(String.valueOf(0));
+        BigDecimal hargaBijian = new BigDecimal(String.valueOf(0));
+        ImSimrsObatEntity obatEntity = obatDao.getById("idBarang", bean.getIdBarang());
+        if (obatEntity != null){
+            namaObat = obatEntity.getNamaObat();
+            consLembar = obatEntity.getBijiPerLembar();
+            consBox = obatEntity.getLembarPerBox().multiply(consLembar);
+            idObat = obatEntity.getIdObat();
+            hargaBijian = obatEntity.getAverageHargaBiji();
+        }
+
+        //BigDecimal hargaObat = new BigDecimal(0);
+        BigInteger qty = new BigInteger(String.valueOf(0));
+
+        if ("box".equalsIgnoreCase(bean.getJenisSatuan())){
+            qty = bean.getQtyApprove().multiply(consBox);
+        } else if ("lembar".equalsIgnoreCase(bean.getJenisSatuan())){
+            qty = bean.getQtyApprove().multiply(consLembar);
+        } else {
+            qty = bean.getQtyApprove();
+        }
+
+
+        java.util.Date now = new java.util.Date();
+        SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
+        String seq = transaksiStokDao.getNextSeq();
+        String idBarangMasuk = "RB"+ bean.getBranchId() + f.format(now) + seq;
+
+        // pelayanan Asal
+        ItSimrsTransaksiStokEntity transaksiStokEntity = new ItSimrsTransaksiStokEntity();
+        transaksiStokEntity.setIdTransaksi(idBarangMasuk);
+        transaksiStokEntity.setIdObat(idObat);
+        transaksiStokEntity.setKeterangan("Penerimaan Barang dari Permintaan ke " + pelayananTujuan);
+        transaksiStokEntity.setTipe("D");
+        transaksiStokEntity.setBranchId(bean.getBranchId());
+        transaksiStokEntity.setQty(qty);
+        transaksiStokEntity.setTotal(hargaBijian);
+        transaksiStokEntity.setSubTotal(hargaBijian.multiply(new BigDecimal(qty)));
+        transaksiStokEntity.setCreatedDate(bean.getCreatedDate());
+        transaksiStokEntity.setCreatedWho(bean.getCreatedWho());
+        transaksiStokEntity.setLastUpdate(bean.getCreatedDate());
+        transaksiStokEntity.setLastUpdateWho(bean.getCreatedWho());
+        transaksiStokEntity.setIdBarang(bean.getIdBarang());
+        transaksiStokEntity.setIdPelayanan(bean.getIdPelayanan());
+        if (flagTutup){
+            // jika ditutup maka buat registered date bulan depan
+            Integer tahunDepan = new Integer(0);
+            Integer bulanDepan = new Integer(0);
+
+            if ("12".equalsIgnoreCase(bulan)){
+                tahunDepan = Integer.valueOf(tahun) + 1;
+                bulanDepan = 1;
+            } else {
+                tahunDepan = Integer.valueOf(tahun);
+                bulanDepan = Integer.valueOf(bulan) + 1;
+            }
+
+            String stDate = tahunDepan+"-"+bulanDepan+"-"+"1";
+            transaksiStokEntity.setRegisteredDate(java.sql.Date.valueOf(stDate));
+        } else {
+            transaksiStokEntity.setRegisteredDate(new java.sql.Date(obatEntity.getLastUpdate().getTime()));
+        }
+
+        // jika ada saldo lalu
+        if (saldoBulanLalu.getQtySaldo() != null && saldoBulanLalu.getQtySaldo().compareTo(new BigInteger(String.valueOf(0))) == 1){
+            transaksiStokEntity.setQtyLalu(saldoBulanLalu.getQtySaldo());
+            transaksiStokEntity.setTotalLalu(saldoBulanLalu.getTotalSaldo());
+            transaksiStokEntity.setSubTotalLalu(saldoBulanLalu.getSubTotalSaldo());
+        } else {
+            transaksiStokEntity.setQtyLalu(new BigInteger(String.valueOf(0)));
+            transaksiStokEntity.setTotalLalu(new BigDecimal(0));
+            transaksiStokEntity.setSubTotalLalu(new BigDecimal(0));
+        }
+
+
+        try {
+            transaksiStokDao.addAndSave(transaksiStokEntity);
+        } catch (HibernateException e){
+            logger.error("[ObatPoliBoImpl.saveTransaksiStokRequestObatPoli] ERROR.", e);
+            throw new GeneralBOException("[ObatPoliBoImpl.saveTransaksiStokRequestObatPoli] ERROR." + e.getMessage());
+        }
+
+
+        // pelayanan tujuan
+        seq = transaksiStokDao.getNextSeq();
+        String idBarangKeluar = "RB"+ bean.getBranchId() + f.format(now) + seq;
+        transaksiStokEntity = new ItSimrsTransaksiStokEntity();
+        transaksiStokEntity.setIdTransaksi(idBarangKeluar);
+        transaksiStokEntity.setIdObat(idObat);
+        transaksiStokEntity.setKeterangan("Pengiriman Barang Atas Permintaan Ke " + pelayananAsal);
+        transaksiStokEntity.setTipe("K");
+        transaksiStokEntity.setBranchId(bean.getBranchId());
+        transaksiStokEntity.setQty(qty);
+        transaksiStokEntity.setTotal(hargaBijian);
+        transaksiStokEntity.setSubTotal(hargaBijian.multiply(new BigDecimal(qty)));
+        transaksiStokEntity.setCreatedDate(bean.getCreatedDate());
+        transaksiStokEntity.setCreatedWho(bean.getCreatedWho());
+        transaksiStokEntity.setLastUpdate(bean.getCreatedDate());
+        transaksiStokEntity.setLastUpdateWho(bean.getCreatedWho());
+        transaksiStokEntity.setIdBarang(bean.getIdBarang());
+        transaksiStokEntity.setIdPelayanan(bean.getIdPelayananTujuan());
+        if (flagTutup){
+            // jika ditutup maka buat registered date bulan depan
+            Integer tahunDepan = new Integer(0);
+            Integer bulanDepan = new Integer(0);
+
+            if ("12".equalsIgnoreCase(bulan)){
+                tahunDepan = Integer.valueOf(tahun) + 1;
+                bulanDepan = 1;
+            } else {
+                tahunDepan = Integer.valueOf(tahun);
+                bulanDepan = Integer.valueOf(bulan) + 1;
+            }
+
+            String stDate = tahunDepan+"-"+bulanDepan+"-"+"1";
+            transaksiStokEntity.setRegisteredDate(java.sql.Date.valueOf(stDate));
+        } else {
+            transaksiStokEntity.setRegisteredDate(new java.sql.Date(obatEntity.getLastUpdate().getTime()));
+        }
+
+        // jika ada saldo lalu
+        if (saldoBulanLaluTujuan.getQtySaldo() != null && saldoBulanLaluTujuan.getQtySaldo().compareTo(new BigInteger(String.valueOf(0))) == 1){
+            transaksiStokEntity.setQtyLalu(saldoBulanLaluTujuan.getQtySaldo());
+            transaksiStokEntity.setTotalLalu(saldoBulanLaluTujuan.getTotalSaldo());
+            transaksiStokEntity.setSubTotalLalu(saldoBulanLaluTujuan.getSubTotalSaldo());
+        } else {
+            transaksiStokEntity.setQtyLalu(new BigInteger(String.valueOf(0)));
+            transaksiStokEntity.setTotalLalu(new BigDecimal(0));
+            transaksiStokEntity.setSubTotalLalu(new BigDecimal(0));
+        }
+        try {
+            transaksiStokDao.addAndSave(transaksiStokEntity);
+        } catch (HibernateException e){
+            logger.error("[ObatPoliBoImpl.saveTransaksiStokRequestObatPoli] ERROR.", e);
+            throw new GeneralBOException("[ObatPoliBoImpl.saveTransaksiStokRetureObatPoli] ERROR." + e.getMessage());
+        }
+
+        logger.info("[ObatPoliBoImpl.saveTransaksiStokRequestObatPoli] END <<<<");
+    }
+
+
+    private TransaksiStok getSumSaldoBulanLaluStok(List<ItSimrsTransaksiStokEntity> transaksiStokEntities) {
+
+        TransaksiStok transaksiStok = new TransaksiStok();
+        BigInteger qtySaldo = new BigInteger(String.valueOf(0));
+        BigDecimal totalSaldo = new BigDecimal(0);
+        BigDecimal subTotalSaldo = new BigDecimal(0);
+        int n = 0;
+        for (ItSimrsTransaksiStokEntity stokEntity : transaksiStokEntities) {
+            if (n == 0) {
+
+                stokEntity.setQtyLalu(stokEntity.getQtyLalu() == null ? new BigInteger(String.valueOf(0)) : stokEntity.getQtyLalu());
+                stokEntity.setTotalLalu(stokEntity.getTotalLalu() == null ? new BigDecimal(0) : stokEntity.getTotalLalu());
+                stokEntity.setSubTotalLalu(stokEntity.getSubTotalLalu() == null ? new BigDecimal(0) : stokEntity.getSubTotalLalu());
+
+                if ("D".equalsIgnoreCase(stokEntity.getTipe())) {
+                    // qty saldo qty masuk + qty bulan lalu
+                    qtySaldo = stokEntity.getQty().add(stokEntity.getQtyLalu());
+                    // total saldo = sub total + sub total lalu / qty saldo
+                    totalSaldo = stokEntity.getSubTotal().add(stokEntity.getSubTotalLalu()).divide(new BigDecimal(qtySaldo), 2, BigDecimal.ROUND_HALF_UP);
+                    // sub total = total saldo * qty saldo
+                    subTotalSaldo = totalSaldo.multiply(new BigDecimal(qtySaldo));
+
+                } else {
+                    // jika saldo keluar;
+                    // qty saldo = qty lalu - qty keluar
+                    qtySaldo = stokEntity.getQtyLalu().subtract(stokEntity.getQty());
+                    // total saldo = total lalu
+                    totalSaldo = stokEntity.getTotalLalu();
+                    // sub total = total saldo * qty saldo
+                    subTotalSaldo = totalSaldo.multiply(new BigDecimal(qtySaldo));
+                }
+
+                n++;
+            } else {
+
+                if ("D".equalsIgnoreCase(stokEntity.getTipe())) {
+
+                    // qty saldo = qty saldo + qty masuk
+                    qtySaldo = qtySaldo.add(stokEntity.getQty());
+
+                    // total saldo = sub total saldo + sub total masuk / qty saldo
+                    totalSaldo = subTotalSaldo.add(stokEntity.getSubTotal()).divide(new BigDecimal(qtySaldo), 2, BigDecimal.ROUND_HALF_UP);
+
+                    // sub total saldo = total saldo * qty saldo
+                    subTotalSaldo = totalSaldo.multiply(new BigDecimal(qtySaldo));
+                } else {
+
+                    // qty saldo = qty saldo + qty masuk
+                    qtySaldo = qtySaldo.subtract(stokEntity.getQty());
+
+                    // total saldo = total saldo;
+                    totalSaldo = totalSaldo;
+
+                    // sub total saldo = total saldo * qty saldo
+                    subTotalSaldo = totalSaldo.multiply(new BigDecimal(qtySaldo));
+                }
+
+                n++;
+            }
+        }
+
+        transaksiStok.setQtySaldo(qtySaldo);
+        transaksiStok.setTotalSaldo(totalSaldo);
+        transaksiStok.setSubTotalSaldo(subTotalSaldo);
+
+        return transaksiStok;
+    }
+
+    private List<TransaksiStok> getListTransaksiObat(String idPelayanan, Integer tahun, Integer bulan, String idObat) throws GeneralBOException{
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_barang", idObat);
+        hsCriteria.put("id_pelayanan", idPelayanan);
+        hsCriteria.put("tahun", tahun);
+        hsCriteria.put("bulan", bulan);
+
+        List<ItSimrsTransaksiStokEntity> stokEntities = new ArrayList<>();
+        try {
+            stokEntities = transaksiStokDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[ObatPoliBoImpl.getListReporTransaksiObat] ERROR .", e);
+            throw new GeneralBOException("[ObatPoliBoImpl.getListReporTransaksiObat] ERROR .", e);
+        }
+
+        BigDecimal nol = new BigDecimal(0);
+        BigInteger nolB = new BigInteger(String.valueOf(0));
+        List<TransaksiStok> listOfTransaksi = new ArrayList<>();
+        if (stokEntities.size() > 0){
+
+            int n = 0;
+            TransaksiStok trans;
+            String namaObat = "";
+            for (ItSimrsTransaksiStokEntity stok : stokEntities){
+
+                // get nama obat
+                if ("".equalsIgnoreCase(namaObat)){
+                    ImSimrsObatEntity obatEntity = new ImSimrsObatEntity();
+                    try {
+                        obatEntity = obatDao.getById("idBarang", stok.getIdBarang());
+                    } catch (HibernateException e){
+                        logger.error("[ObatPoliBoImpl.getListReporTransaksiObat] ERROR .", e);
+                        throw new GeneralBOException("[ObatPoliBoImpl.getListReporTransaksiObat] ERROR .", e);
+                    }
+
+                    if (obatEntity != null){
+                        namaObat = obatEntity.getNamaObat();
+                    }
+                }
+
+
+                if (listOfTransaksi.size() == 0){
+
+                    // saldo bulan lalu tanpa data pendukung
+                    if (stok.getQtyLalu() != null && stok.getQtyLalu().compareTo(new BigInteger(String.valueOf(0))) == 1){
+
+                        trans = new TransaksiStok();
+                        trans.setNamaObat(namaObat);
+                        trans.setQtyLalu(nolB);
+                        trans.setTotalLalu(nol);
+                        trans.setSubTotalLalu(nol);
+
+                        trans.setQtyLalu(stok.getQtyLalu());
+                        trans.setTotalLalu(stok.getTotalLalu());
+                        trans.setSubTotalLalu(stok.getSubTotalLalu());
+                        listOfTransaksi.add(trans);
+                        n++;
+                    } else {
+                        trans = new TransaksiStok();
+                        trans.setNamaObat(namaObat);
+                        trans.setQtyLalu(nolB);
+                        trans.setTotalLalu(nol);
+                        trans.setSubTotalLalu(nol);
+                        listOfTransaksi.add(trans);
+                        n++;
+                    }
+
+                    // data seletelah saldo bulan lalu dengan data pendukung
+                    trans = new TransaksiStok();
+                    trans.setNamaObat(namaObat);
+                    trans.setRegisteredDate(stok.getRegisteredDate());
+                    trans.setCreatedDate(stok.getCreatedDate());
+                    trans.setKeterangan(stok.getKeterangan());
+                    trans.setTipe(stok.getTipe());
+
+                    TransaksiStok minStok = listOfTransaksi.get(n-1);
+                    if ("D".equalsIgnoreCase(stok.getTipe())){
+                        trans.setQty(stok.getQty());
+                        trans.setTotal(stok.getTotal());
+                        trans.setSubTotal(stok.getSubTotal());
+
+//                        trans.setQtyKredit(nolB);
+//                        trans.setTotalKredit(nol);
+//                        trans.setSubTotalKredit(nol);
+
+                        // qty saldo = qty masuk + qty lalu;
+                        trans.setQtySaldo(minStok.getQtyLalu().add(stok.getQty()));
+
+                        // total saldo = sub total lalu + sub total / qty saldo
+                        trans.setTotalSaldo(minStok.getSubTotalLalu().add(stok.getSubTotal()).divide(new BigDecimal(trans.getQtySaldo()), 2, BigDecimal.ROUND_HALF_UP));
+
+                        // sub total saldo = total saldo * qty saldo
+                        trans.setSubTotalSaldo(trans.getTotal().multiply(new BigDecimal(trans.getQtySaldo())));
+                    } else {
+
+//                        trans.setQty(nolB);
+//                        trans.setTotal(nol);
+//                        trans.setSubTotal(nol);
+
+                        trans.setQtyKredit(stok.getQty());
+                        trans.setTotalKredit(stok.getTotal());
+                        trans.setSubTotalKredit(stok.getSubTotal());
+
+                        // qty saldo = qty bulan lalu - qty masuk
+                        trans.setQtySaldo(minStok.getQtyLalu().subtract(stok.getQty()));
+
+                        // total saldo = total lalu
+                        trans.setTotalSaldo(stok.getTotalLalu());
+
+                        // sub total saldo = total saldo * qty saldo
+                        trans.setSubTotalSaldo(trans.getTotal().multiply(new BigDecimal(trans.getQtySaldo())));
+                    }
+                    listOfTransaksi.add(trans);
+                    n++;
+                } else {
+
+                    // data pendukung
+                    trans = new TransaksiStok();
+                    trans.setNamaObat(namaObat);
+                    trans.setRegisteredDate(stok.getRegisteredDate());
+                    trans.setCreatedDate(stok.getCreatedDate());
+                    trans.setKeterangan(stok.getKeterangan());
+                    trans.setTipe(stok.getTipe());
+
+                    TransaksiStok minStok = listOfTransaksi.get(n-1);
+
+                    if ("D".equalsIgnoreCase(stok.getTipe())){
+                        trans.setQty(stok.getQty());
+                        trans.setTotal(stok.getTotal());
+                        trans.setSubTotal(stok.getSubTotal());
+
+//                        trans.setQtyKredit(nolB);
+//                        trans.setTotalKredit(nol);
+//                        trans.setSubTotalKredit(nol);
+
+                        // qty saldo = qty saldo lalu + qty
+                        trans.setQtySaldo(minStok.getQtySaldo().add(stok.getQty()));
+
+                        // total saldo = sub total saldo lalu + sub total / qty saldo
+                        trans.setTotalSaldo(minStok.getSubTotalSaldo().add(stok.getSubTotal()).divide(new BigDecimal(trans.getQtySaldo()), 2, BigDecimal.ROUND_HALF_UP));
+
+                        // sub total saldo = sub total saldo
+                        trans.setSubTotalSaldo(trans.getTotalSaldo().multiply(new BigDecimal(trans.getQtySaldo())));
+                    } else {
+
+//                        trans.setQty(nolB);
+//                        trans.setTotal(nol);
+//                        trans.setSubTotal(nol);
+
+                        trans.setQtyKredit(stok.getQty());
+                        trans.setTotalKredit(stok.getTotal());
+                        trans.setSubTotalKredit(stok.getSubTotal());
+
+                        // qty saldo = qty saldo - qty
+                        trans.setQtySaldo(minStok.getQtySaldo().subtract(stok.getQty()));
+
+                        // total saldo = total saldo lalu
+                        trans.setTotalSaldo(minStok.getTotalSaldo());
+
+                        // sub total saldo = sub total saldo
+                        trans.setSubTotalSaldo(trans.getTotalSaldo().multiply(new BigDecimal(trans.getQtySaldo())));
+                    }
+                    listOfTransaksi.add(trans);
+                    n++;
+                }
+            }
+        }
+
+        return listOfTransaksi;
+    }
+
+
+        @Override
     public void saveApproveDiterima(PermintaanObatPoli bean, List<TransaksiObatDetail> listObatDetail) throws GeneralBOException {
         logger.info("[ObatPoliBoImpl.saveApproveDiterima] START >>>>>>>>>>");
 
@@ -1472,104 +2199,15 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                                 detail.setCreatedDate(bean.getLastUpdate());
                                 detail.setLastUpdate(bean.getLastUpdate());
                                 detail.setLastUpdateWho(bean.getLastUpdateWho());
+                                detail.setIdPelayanan(permintaanObatEntity.getIdPelayanan());
+                                detail.setIdPelayananTujuan(permintaanObatEntity.getTujuanPelayanan());
+                                detail.setBranchId(permintaanObatEntity.getBranchId());
 
+                                // update stok obat poli
                                 updateAddStockPoli(detail, bean.getIdPelayanan(), bean.getBranchId());
 
                                 // SAVE TO STOCK TRANSAKSI
-
-                                String pelayananAsal = "";
-                                String pelayananTujuan = "";
-                                ImSimrsPelayananEntity pelayananEntity = pelayananDao.getById("idPelayanan", bean.getIdPelayanan());
-                                if (pelayananEntity != null){
-
-                                    pelayananAsal = pelayananEntity.getNamaPelayanan();
-
-                                    pelayananEntity = new ImSimrsPelayananEntity();
-                                    pelayananEntity = pelayananDao.getById("idPelayanan", bean.getTujuanPelayanan());
-                                    if (pelayananEntity != null){
-                                        pelayananTujuan = pelayananEntity.getNamaPelayanan();
-                                    }
-                                }
-
-                                String namaObat = "";
-                                String idObat = "";
-                                BigInteger consBox = new BigInteger(String.valueOf(0));
-                                BigInteger consLembar = new BigInteger(String.valueOf(0));
-                                BigDecimal hargaBijian = new BigDecimal(String.valueOf(0));
-                                ImSimrsObatEntity obatEntity = obatDao.getById("idBarang", detail.getIdBarang());
-                                if (obatEntity != null){
-                                    namaObat = obatEntity.getNamaObat();
-                                    consLembar = obatEntity.getBijiPerLembar();
-                                    consBox = obatEntity.getLembarPerBox().multiply(consLembar);
-                                    idObat = obatEntity.getIdObat();
-                                    hargaBijian = obatEntity.getAverageHargaBiji();
-                                }
-
-                                //BigDecimal hargaObat = new BigDecimal(0);
-                                BigInteger qty = new BigInteger(String.valueOf(0));
-
-                                if ("box".equalsIgnoreCase(detail.getJenisSatuan())){
-                                    qty = detail.getQtyApprove().multiply(consBox);
-                                } else if ("lembar".equalsIgnoreCase(detail.getJenisSatuan())){
-                                    qty = detail.getQtyApprove().multiply(consLembar);
-                                } else {
-                                    qty = detail.getQtyApprove();
-                                }
-
-
-                                java.util.Date now = new java.util.Date();
-                                SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
-                                String seq = transaksiStokDao.getNextSeq();
-                                String idBarangMasuk = "RB"+ bean.getBranchId() + f.format(now) + seq;
-
-                                ItSimrsTransaksiStokEntity transaksiStokEntity = new ItSimrsTransaksiStokEntity();
-                                transaksiStokEntity.setIdTransaksi(idBarangMasuk);
-                                transaksiStokEntity.setIdObat(idObat);
-                                transaksiStokEntity.setKeterangan("Penerimaan Obat. "+namaObat+" Dari "+ pelayananTujuan + ". Ke "+pelayananAsal);
-                                transaksiStokEntity.setTipe("D");
-                                transaksiStokEntity.setBranchId(bean.getBranchId());
-                                transaksiStokEntity.setQty(qty);
-                                transaksiStokEntity.setTotal(hargaBijian);
-                                transaksiStokEntity.setSubTotal(hargaBijian.multiply(new BigDecimal(qty)));
-                                transaksiStokEntity.setRegisteredDate(new Date(obatEntity.getLastUpdate().getTime()));
-                                transaksiStokEntity.setCreatedDate(obatEntity.getLastUpdate());
-                                transaksiStokEntity.setCreatedWho(obatEntity.getLastUpdateWho());
-                                transaksiStokEntity.setLastUpdate(obatEntity.getLastUpdate());
-                                transaksiStokEntity.setLastUpdateWho(obatEntity.getLastUpdateWho());
-                                transaksiStokEntity.setIdBarang(batchEntity.getIdBarang());
-                                transaksiStokEntity.setIdPelayanan(bean.getIdPelayanan());
-                                try {
-                                    transaksiStokDao.addAndSave(transaksiStokEntity);
-                                } catch (HibernateException e){
-                                    logger.error("[PermintaanVendorBoImpl.saveToRiwayatBarangMasuk] ERROR.", e);
-                                    throw new GeneralBOException("[PermintaanVendorBoImpl.saveToRiwayatBarangMasuk] ERROR." + e.getMessage());
-                                }
-
-                                // SAVE TO STOCK TRANSAKSI
-                                transaksiStokEntity = new ItSimrsTransaksiStokEntity();
-                                seq = transaksiStokDao.getNextSeq();
-                                idBarangMasuk = "RB"+ bean.getBranchId() + f.format(now) + seq;
-                                transaksiStokEntity.setIdTransaksi(idBarangMasuk);
-                                transaksiStokEntity.setIdObat(idObat);
-                                transaksiStokEntity.setKeterangan("Pengiriman Obat. "+namaObat+" Dari "+ pelayananTujuan + ". Ke "+pelayananAsal);
-                                transaksiStokEntity.setTipe("K");
-                                transaksiStokEntity.setBranchId(bean.getBranchId());
-                                transaksiStokEntity.setQty(qty);
-                                transaksiStokEntity.setTotal(hargaBijian);
-                                transaksiStokEntity.setSubTotal(hargaBijian.multiply(new BigDecimal(qty)));
-                                transaksiStokEntity.setRegisteredDate(new Date(obatEntity.getLastUpdate().getTime()));
-                                transaksiStokEntity.setCreatedDate(obatEntity.getLastUpdate());
-                                transaksiStokEntity.setCreatedWho(obatEntity.getLastUpdateWho());
-                                transaksiStokEntity.setLastUpdate(obatEntity.getLastUpdate());
-                                transaksiStokEntity.setLastUpdateWho(obatEntity.getLastUpdateWho());
-                                transaksiStokEntity.setIdBarang(batchEntity.getIdBarang());
-                                transaksiStokEntity.setIdPelayanan(bean.getTujuanPelayanan());
-                                try {
-                                    transaksiStokDao.addAndSave(transaksiStokEntity);
-                                } catch (HibernateException e){
-                                    logger.error("[PermintaanVendorBoImpl.saveToRiwayatBarangMasuk] ERROR.", e);
-                                    throw new GeneralBOException("[PermintaanVendorBoImpl.saveToRiwayatBarangMasuk] ERROR." + e.getMessage());
-                                }
+                                saveTransaksiStokRequestObatPoli(detail);
 
                             } else {
                                 batchEntity.setApproveFlag("N");
@@ -2245,5 +2883,9 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
     public void setBranchDao(BranchDao branchDao) {
         this.branchDao = branchDao;
+    }
+
+    public void setBatasTutupPeriodDao(BatasTutupPeriodDao batasTutupPeriodDao) {
+        this.batasTutupPeriodDao = batasTutupPeriodDao;
     }
 }

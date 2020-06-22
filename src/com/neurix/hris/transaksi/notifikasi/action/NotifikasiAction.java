@@ -1,6 +1,7 @@
 package com.neurix.hris.transaksi.notifikasi.action;
 
 //import com.neurix.authorization.company.bo.AreaBo;
+import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.PengajuanBiaya;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
@@ -49,11 +50,20 @@ public class NotifikasiAction extends BaseMasterAction{
     private RekruitmenPabrikDetail rekruitmenPabrikDetail;
     private Indisipliner indisipliner;
     private AbsensiPegawai absensiPegawai;
+    private PengajuanBiaya pengajuanBiaya;
 
     private String id;
     private String request;
     private String tipeNotif;
     private String notif;
+
+    public PengajuanBiaya getPengajuanBiaya() {
+        return pengajuanBiaya;
+    }
+
+    public void setPengajuanBiaya(PengajuanBiaya pengajuanBiaya) {
+        this.pengajuanBiaya = pengajuanBiaya;
+    }
 
     public AbsensiPegawai getAbsensiPegawai() {
         return absensiPegawai;
@@ -897,6 +907,30 @@ public class NotifikasiAction extends BaseMasterAction{
         }
         return listOfResult;
     }
+
+    public List<Notifikasi> searchPengajuanBiayaMenggantung(){
+        List<Notifikasi> listOfResult = new ArrayList<Notifikasi>();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
+
+        try {
+            listOfResult = notifikasiBo.getPengajuanBiayaMenggantung();
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = notifikasiBo.saveErrorMessage(e.getMessage(), "NotifikasiBo.searchPengajuanBiayaMenggantung");
+            } catch (GeneralBOException e1) {
+                logger.error("[NotifikasiBo.searchPengajuanBiayaMenggantung] Error when saving error,", e1);
+//                return ERROR;
+            }
+            logger.error("[NotifikasiBo.searchPengajuanBiayaMenggantung] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+//            return ERROR;
+        }
+        return listOfResult;
+    }
+
     public String viewNotifikasi(){
 
         String function = "";
@@ -914,6 +948,8 @@ public class NotifikasiAction extends BaseMasterAction{
         RekruitmenPabrikDetail rekruitmenPabrikDetail = getRekruitmenPabrikDetail();
         Lembur lembur = getLembur();
         Indisipliner indisipliner = getIndisipliner();
+        PengajuanBiaya pengajuanBiayaRk = getPengajuanBiaya();
+        PengajuanBiaya pengajuanBiaya = getPengajuanBiaya();
         List<TrainingPerson> listOfResult = new ArrayList<TrainingPerson>();
         List<IjinKeluar> listOfResultIK = new ArrayList<IjinKeluar>();
         List<IjinKeluar> listOfResultIKK = new ArrayList<IjinKeluar>();
@@ -922,6 +958,8 @@ public class NotifikasiAction extends BaseMasterAction{
         List<CutiPegawai> listOfResultCP = new ArrayList<CutiPegawai>();
         List<Indisipliner> listOfResultID = new ArrayList<Indisipliner>();
         List<RekruitmenPabrikDetail> listOfResultRPD = new ArrayList<RekruitmenPabrikDetail>();
+        List<PengajuanBiaya> listOfResultPB = new ArrayList<PengajuanBiaya>();
+        List<PengajuanBiaya> listOfResultPBRK = new ArrayList<PengajuanBiaya>();
         List<Notifikasi> listOfResultAll = new ArrayList<Notifikasi>();
         SppdPerson sppdPerson ;
 
@@ -939,6 +977,18 @@ public class NotifikasiAction extends BaseMasterAction{
             indisipliner = new Indisipliner();
             indisipliner.setNip(personId);
             indisipliner.setIndisiplinerId(indisiplinerId);
+        }
+        if ("TN01".equalsIgnoreCase(tipe)){
+            String pengajuanBiayaId = getRequest();
+
+            pengajuanBiayaRk = new PengajuanBiaya();
+            pengajuanBiayaRk.setPengajuanBiayaId(pengajuanBiayaId);
+        }
+        if ("TN04".equalsIgnoreCase(tipe)){
+            String pengajuanBiayaId = getRequest();
+
+            pengajuanBiaya = new PengajuanBiaya();
+            pengajuanBiaya.setPengajuanBiayaId(pengajuanBiayaId);
         }
         if ("TN55".equalsIgnoreCase(tipe)){
             String personId = getId();
@@ -1154,6 +1204,44 @@ public class NotifikasiAction extends BaseMasterAction{
                 logger.error("[NotifikasiAction.save] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
                 addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
                 return ERROR;
+            }
+        }
+
+        if (pengajuanBiayaRk != null){
+            try {
+                setPengajuanBiaya(pengajuanBiayaRk);
+                listOfResultPBRK = notifikasiBoProxy.searchPengajuanBiayaRk(pengajuanBiaya);
+                function = "pengajuanBiayaRk";
+            } catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = notifikasiBoProxy.saveErrorMessage(e.getMessage(), "PersonalBO.getByCriteria");
+                } catch (GeneralBOException e1) {
+                    logger.error("[NotifikasiAction.search] Error when saving error,", e1);
+                    return ERROR;
+                }
+                logger.error("[NotifikasiAction.save] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
+                return ERROR;
+            }
+        }
+
+        if (pengajuanBiaya != null){
+            try {
+                setPengajuanBiaya(pengajuanBiaya);
+                listOfResultPB = notifikasiBoProxy.searchPengajuanBiaya(pengajuanBiaya);
+                function = "pengajuanBiaya";
+            } catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = notifikasiBoProxy.saveErrorMessage(e.getMessage(), "PersonalBO.getByCriteria");
+                } catch (GeneralBOException e1) {
+                    logger.error("[NotifikasiAction.search] Error when saving error,", e1);
+                    return ERROR;
+                }
+                logger.error("[NotifikasiAction.save] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
+                return ERROR;
 
             }
         }
@@ -1221,6 +1309,20 @@ public class NotifikasiAction extends BaseMasterAction{
                         listCutiPegawai.setCutiPegawaiApprove(true);
                         listCutiPegawai.setCutiPegawaiApproveStatus(true);
                     }
+            }
+        }
+        if (listOfResultPBRK != null){
+            for (PengajuanBiaya listPengajuanBiaya : listOfResultPBRK){
+                if ("Y".equalsIgnoreCase(listPengajuanBiaya.getAprovalFlag())){
+                    listPengajuanBiaya.setApprovePengajuanBiaya(true);
+                }
+            }
+        }
+        if (listOfResultPB != null){
+            for (PengajuanBiaya listPengajuanBiaya : listOfResultPB){
+                if ("Y".equalsIgnoreCase(listPengajuanBiaya.getAprovalFlag())){
+                    listPengajuanBiaya.setApprovePengajuanBiaya(true);
+                }
             }
         }
         if (listOfResultABS != null){
@@ -1318,6 +1420,18 @@ public class NotifikasiAction extends BaseMasterAction{
             session.removeAttribute("listOfResultIndisipliner");
             session.setAttribute("listOfResultIndisipliner", listOfResultID);
             return "approval_atasan_indisipliner";
+        }
+        else if ("pengajuanBiayaRk".equalsIgnoreCase(function)){
+            HttpSession session = ServletActionContext.getRequest().getSession();
+            session.removeAttribute("listOfResultPengajuanBiayaRk");
+            session.setAttribute("listOfResultPengajuanBiayaRk", listOfResultPBRK);
+            return "approval_pengajuan_biaya_rk";
+        }
+        else if ("pengajuanBiaya".equalsIgnoreCase(function)){
+            HttpSession session = ServletActionContext.getRequest().getSession();
+            session.removeAttribute("listOfResultPengajuanBiaya");
+            session.setAttribute("listOfResultPengajuanBiaya", listOfResultPB);
+            return "approval_pengajuan_biaya";
         }
         else if ("rekruitmenPabrikDetail".equalsIgnoreCase(function)){
             HttpSession session = ServletActionContext.getRequest().getSession();

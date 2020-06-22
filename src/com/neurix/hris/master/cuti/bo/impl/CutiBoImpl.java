@@ -192,7 +192,6 @@ public class CutiBoImpl implements CutiBo {
         logger.info("[CutiBoImpl.saveAdd] start process >>>");
 
         if (bean!=null) {
-
             String cutiId;
             try {
                 // Generating ID, get from postgre sequence
@@ -258,6 +257,10 @@ public class CutiBoImpl implements CutiBo {
 
             if (searchBean.getBranchId() != null && !"".equalsIgnoreCase(searchBean.getBranchId())) {
                 hsCriteria.put("branch_id", searchBean.getBranchId());
+            }
+
+            if (searchBean.getJenisCuti() != null && !"".equalsIgnoreCase(searchBean.getJenisCuti())){
+                hsCriteria.put("jenis_cuti", searchBean.getJenisCuti());
             }
 
             if (searchBean.getFlag() != null && !"".equalsIgnoreCase(searchBean.getFlag())) {

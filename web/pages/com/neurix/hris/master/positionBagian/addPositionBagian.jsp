@@ -21,14 +21,30 @@
 
 
             if (bagianName != '' && kodering != '') {
-                if (confirm('Do you want to save this record?')) {
-                    event.originalEvent.options.submit = true;
-                    $.publish('showDialog');
+                var karakterKodering = kodering.toString().length;
+                if (karakterKodering < 11){
 
-                } else {
-                    // Cancel Submit comes with 1.8.0
+                    if (confirm('Do you want to save this record?')) {
+                        event.originalEvent.options.submit = true;
+                        $.publish('showDialog');
+
+                    } else {
+                        // Cancel Submit comes with 1.8.0
+                        event.originalEvent.options.submit = false;
+                    }
+
+                }else {
                     event.originalEvent.options.submit = false;
+
+                    var msg = "";
+                    if (karakterKodering > 10){
+                        msg += 'Field <strong>Panjang Kodering maksimal 10 Karakter.</strong>' + '<br/>';
+                    }
+                    console.log("tes 3 "+msg);
+                    document.getElementById('errorValidationMessage').innerHTML = msg;
+                    $.publish('showErrorValidationDialog');
                 }
+
 
 
             } else {

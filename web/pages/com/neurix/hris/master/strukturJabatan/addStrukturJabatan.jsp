@@ -44,8 +44,6 @@
             var positionId    = document.getElementById("positionIdAdd").value;
             var branchId    = document.getElementById("branchIdAdd").value;
 
-
-
             if (positionId != '' && branchId != '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;

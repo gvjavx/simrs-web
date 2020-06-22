@@ -84,6 +84,8 @@
             <result name="approval_atasan_sppd">/pages/com/neurix/hris/transaksi/training/searchApprovalSppd.jsp</result>
             <result name="approval_atasan_rekruitmen_pabrik">/pages/com/neurix/hris/transaksi/rekruitmenPabrik/searchApproval.jsp</result>
             <result name="approval_atasan_indisipliner">/pages/com/neurix/hris/transaksi/indisipliner/searchApproval.jsp</result>
+            <result name="approval_pengajuan_biaya">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/searchApprovalPengajuanBiaya.jsp</result>
+            <result name="approval_pengajuan_biaya_rk">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/searchApprovalTransaksiRk.jsp</result>
 
             <!--<result name="error">/pages/com/neurix/hris/transaksi/Notifikasi/addNotifikasi.jsp</result>-->
             <!--<result name="init_add">/pages/com/neurix/hris/transaksi/Notifikasi/addNotifikasi.jsp</result>-->

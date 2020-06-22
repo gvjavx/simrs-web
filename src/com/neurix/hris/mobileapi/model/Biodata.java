@@ -9,6 +9,7 @@ import java.io.Serializable;
 public class Biodata implements Serializable {
 
     private String nip;
+    private String nipLama;
     private String namaPegawai;
     private String unitId;
     private String unit;
@@ -20,6 +21,14 @@ public class Biodata implements Serializable {
     private String golongan;
     private String tipePegawaiId;
     private String tipePegawai;
+
+    public String getNipLama() {
+        return nipLama;
+    }
+
+    public void setNipLama(String nipLama) {
+        this.nipLama = nipLama;
+    }
 
     public String getTipePegawaiId() {
         return tipePegawaiId;

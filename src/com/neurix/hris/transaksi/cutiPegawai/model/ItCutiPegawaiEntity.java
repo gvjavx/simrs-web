@@ -65,6 +65,8 @@ public class ItCutiPegawaiEntity implements Serializable {
     private String profesiId;
 
     private String flagPerbaikan;
+    private String jenisCuti;
+    private String flagPengajuanBatal;
 
     public String getProfesiId() {
         return profesiId;
@@ -400,5 +402,21 @@ public class ItCutiPegawaiEntity implements Serializable {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getJenisCuti() {
+        return jenisCuti;
+    }
+
+    public void setJenisCuti(String jenisCuti) {
+        this.jenisCuti = jenisCuti;
+    }
+
+    public String getFlagPengajuanBatal() {
+        return flagPengajuanBatal;
+    }
+
+    public void setFlagPengajuanBatal(String flagPengajuanBatal) {
+        this.flagPengajuanBatal = flagPengajuanBatal;
     }
 }

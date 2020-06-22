@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -33,6 +34,56 @@ public class BudgetingDetail{
     private String masterId;
     private String masterName;
     private String flagEdit;
+    private BigDecimal saldoAkhir;
+    private BigDecimal selisihSaldoAkhir;
+    private Integer bulan;
+
+
+    public static Comparator<BudgetingDetail> tipePeriodeSorting = new Comparator<BudgetingDetail>() {
+
+        public int compare(BudgetingDetail s1, BudgetingDetail s2) {
+            Integer bulan1 = s1.getBulan();
+            Integer bulan2 = s2.getBulan();
+
+//            //ascending order
+            return bulan1.compareTo(bulan2);
+
+            //descending order
+//            return kdRekening2.compareTo(kdRekening1);
+        }
+    };
+
+    public static Comparator<BudgetingDetail> getTipePeriodeSorting() {
+        return tipePeriodeSorting;
+    }
+
+    public static void setTipePeriodeSorting(Comparator<BudgetingDetail> tipePeriodeSorting) {
+        BudgetingDetail.tipePeriodeSorting = tipePeriodeSorting;
+    }
+
+    public Integer getBulan() {
+        return bulan;
+    }
+
+    public void setBulan(Integer bulan) {
+        this.bulan = bulan;
+    }
+
+    public BigDecimal getSaldoAkhir() {
+        return saldoAkhir;
+    }
+
+    public void setSaldoAkhir(BigDecimal saldoAkhir) {
+        this.saldoAkhir = saldoAkhir;
+    }
+
+    public BigDecimal getSelisihSaldoAkhir() {
+        return selisihSaldoAkhir;
+    }
+
+    public void setSelisihSaldoAkhir(BigDecimal selisihSaldoAkhir) {
+        this.selisihSaldoAkhir = selisihSaldoAkhir;
+    }
 
     public String getFlagEdit() {
         return flagEdit;

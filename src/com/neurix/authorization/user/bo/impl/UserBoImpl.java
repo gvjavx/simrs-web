@@ -165,7 +165,12 @@ public class UserBoImpl implements UserBo {
             String statusCaption = "";
             String positionId = loginUser.getImPosition().getPositionId();
             String positionName = loginUser.getImPosition().getPositionName();
-
+            String divisiId="";
+            String divisiName="";
+            if (loginUser.getImDepartmentEntity()!=null){
+                divisiId = loginUser.getImDepartmentEntity().getDepartmentId();
+                divisiName = loginUser.getImDepartmentEntity().getDepartmentName();
+            }
 
             try{
                 if(loginUser.getImBiodataEntity().getStatusCaption() != null){
@@ -182,7 +187,7 @@ public class UserBoImpl implements UserBo {
             ImCompany imCompany=companyDao.getCompanyInfo("Y");
             String companyId = imCompany.getCompanyId();
             String companyName = imCompany.getCompanyName();
-            ImBiodataEntity imBiodataEntity = null;
+//            ImBiodataEntity imBiodataEntity = null;
             ImAreasBranchesUsers imAreasBranchesUsers = areasBranchesUsersDao.getAreasBranchesUsersByUserId(userId, "Y");
 
             String areaId = imAreasBranchesUsers.getImArea().getPrimaryKey().getId();
@@ -190,7 +195,6 @@ public class UserBoImpl implements UserBo {
 
             String branchId = imAreasBranchesUsers.getImBranch().getPrimaryKey().getId();
             String branchName = imAreasBranchesUsers.getImBranch().getBranchName();
-
 
             userDetailsLogin = new UserDetailsLogin();
             userDetailsLogin.setUserId(userId);
@@ -206,7 +210,7 @@ public class UserBoImpl implements UserBo {
             //userDetailsLogin.setPositionName(positionName);
             userDetailsLogin.setIdPleyanan(loginUser.getIdPelayanan());
 
-            ItPersonilPositionEntity itPersonilPositionEntity = null ;
+            /*ItPersonilPositionEntity itPersonilPositionEntity = null ;
             itPersonilPositionEntity = personilPositionDao.getById("nip", userId, "Y");
             if(itPersonilPositionEntity != null){
                 userDetailsLogin.setBranchId(itPersonilPositionEntity.getBranchId());
@@ -235,12 +239,18 @@ public class UserBoImpl implements UserBo {
                 userDetailsLogin.setDivisiName("");
                 userDetailsLogin.setPositionId("");
                 userDetailsLogin.setPositionName("");
-            }
+            }*/
 
             userDetailsLogin.setCompanyId(companyId);
             userDetailsLogin.setCompanyName(companyName);
             userDetailsLogin.setAreaId(areaId);
             userDetailsLogin.setAreaName(areaName);
+            userDetailsLogin.setBranchId(branchId);
+            userDetailsLogin.setBranchName(branchName);
+            userDetailsLogin.setDivisiId(divisiId);
+            userDetailsLogin.setDivisiName(divisiName);
+            userDetailsLogin.setPositionId(positionId);
+            userDetailsLogin.setPositionName(positionName);
 
             userDetailsLogin.setStatusCaption(statusCaption);
             userDetailsLogin.setPhotoUpload(photoUrl);
@@ -1533,7 +1543,8 @@ public class UserBoImpl implements UserBo {
             }
             userDetailsLogin.setIdDevice(loginUser.getIdDevice());
 
-//            userDetailsLogin.setJenisKelamin(biodata.getGender());
+            userDetailsLogin.setJenisKelamin(biodata.getGender());
+            userDetailsLogin.setFlagFingerMoblie(biodata.getFlagFingerMobile());
 
         }
 

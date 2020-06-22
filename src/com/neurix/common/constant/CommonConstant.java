@@ -3,6 +3,8 @@ package com.neurix.common.constant;
 import com.neurix.common.util.CommonUtil;
 import org.apache.struts2.ServletActionContext;
 
+import java.math.BigDecimal;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Thunderbird
@@ -43,12 +45,17 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_TTD_RM = "/upload/ttd_rm/";
     public final static String RESOURCE_PATH_DOC_RM = "/upload/cetakan_rm/";
     public final static String RESOURCE_PATH_VIDEO_RM = "/upload/video_rm/";
+    public final static String RESOURCE_PATH_PAYROLL = "/upload/payroll/";
+    public final static String RESOURCE_PATH_BUKTI_TRANSFER = "/upload/bukti_transfer";
     public final static String RESOURCE_PATH_TTD_PETUGAS = "/upload/ttd_petugas/";
     public final static String RESOURCE_PATH_IMG_RM = "/upload/img_rm/";
 
+    public final static String RESOURCE_PATH_PHOTO_PROFILE = "/upload/profile/";
 
+//    public final static String RESOURCE_PATH_USER_UPLOAD = CommonUtil.getPropertyParams("resource.dir")+"/profile/";
     public final static String RESOURCE_PATH_USER_UPLOAD = "/pages/upload/image/profile/";
     public final static String RESOURCE_PATH_USER_UPLOAD_IJAZAH = CommonUtil.getPropertyParams("resource.dir")+"mnt/ijazah/";
+    public final static String RESOURCE_PATH_USER_UPLOAD_SURAT_DOKTER = CommonUtil.getPropertyParams("resource.dir")+"mnt/surat/";
 
     //sodiq, 18 Nov 2019, Upload KTP pasien
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = CommonUtil.getPropertyParams("upload.external.dir");
@@ -63,6 +70,8 @@ public class CommonConstant {
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "C:\\Users\\user\\Pictures";
 
     public final static String EXTERNAL_IMG_URI = ServletActionContext.getRequest().getContextPath()+"/images";
+    public final static String EXTERNAL_IMG_URI_PROFILE = ServletActionContext.getRequest().getContextPath()+"/images/profile/";
+//    public final static String EXTERNAL_IMG_URI_PROFILE = ServletActionContext.getRequest().getContextPath()+"/profile/";
     public final static String RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY = CommonUtil.getUploadFolderValue();
 
     public final static String LOGOUT_URL = "/j_spring_security_logout";
@@ -81,7 +90,7 @@ public class CommonConstant {
     public final static String URL_IMAGE_LOGO_REPORT = CommonUtil.getPropertyParams("base.dir")+"pages/images/logo-nmu.png";
     public final static String URL_LOGO_REPORT = CommonUtil.getPropertyParams("base.dir")+"pages/images/";
     public final static String IMAGE_LOGO_KP = "KP.png";
-    public final static String RESOURCE_DOCUMENT_PAYROLL = CommonUtil.getPropertyParams("resource.dir")+"mnt/documents/";
+    public final static String RESOURCE_DOCUMENT_PAYROLL = CommonUtil.getPropertyParams("upload.folder")+CommonConstant.RESOURCE_PATH_PAYROLL;
 
     public final static String REPORT_PAYROLL = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayroll3.jrxml";
     public final static String REPORT_PAYROLL_THR = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollThrBranch3.jrxml";
@@ -147,7 +156,17 @@ public class CommonConstant {
 
     public final static String AGORA_DIR = "/upload/lib/agora/";
     public static final String AOGRA_REC_DIR = "/home/gondok/workspace/record ";
-    public static final String APP_ID = "5d338ec051e042828420e2da2c90247e";
+    public static final String APP_ID = "18016b16da294c7ab3255c5c792384b6";
+
+    //AKUNTANSI
+    public final static String COA_PAYROLL = CommonUtil.getPropertyParams("coa.bank.payroll");
+    public final static String COA_RK_GATOEL = CommonUtil.getPropertyParams("coa.rk.gatoel");
+    public final static String COA_KAS_MANDIRI = "1.1.02.01.06";
+    public final static String ID_KANPUS = "KP";
+    public final static String MASTER_PAJAK_OBAT = "03.00";
+
+    //TELEMEDICINE
+    public static final int ADD_JAM_BAYAR = 30; //MENIT
+
 
 }
-

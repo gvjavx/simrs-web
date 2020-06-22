@@ -195,6 +195,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             if (bean.getGetStTglTo() != null && !"".equalsIgnoreCase(bean.getGetStTglTo())) {
                 hsCriteria.put("date_to", bean.getGetStTglTo());
             }
+            if (bean.getIdAntrianOnline() != null && !"".equalsIgnoreCase(bean.getIdAntrianOnline())) {
+                hsCriteria.put("id_antrian_online", bean.getIdAntrianOnline());
+            }
 
             hsCriteria.put("flag", "Y");
             List<String> listOfNoCheckup = new ArrayList<>();
@@ -2490,6 +2493,10 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     @Override
     public String getAlergi(String noCheckup) throws GeneralBOException {
         return headerCheckupDao.getAlergiPasien(noCheckup);
+    }
+
+    public ItSimrsHeaderChekupEntity getById(String columnName, String id) throws GeneralBOException {
+        return headerCheckupDao.getById(columnName, id);
     }
 
     @Override

@@ -139,7 +139,7 @@
         });
 
         function cancelBtn() {
-            $('#dialog_menu_ijin_keluar').dialog('close');
+            $('#dialog_menu_ijin_keluar').dialog('close'); window.location.reload(true);
         };
 
 
@@ -291,13 +291,13 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Golongan :</small></label>
+                            <label class="control-label"><small>Level :</small></label>
                         </td>
                         <td>
                             <table>
                                 <s:action id="comboGolongan" namespace="/golongan" name="initComboGolongan_golongan"/>
                                 <s:select list="#comboGolongan.listComboGolongan" id="golonganId124" name="ijinKeluar.golonganId"
-                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true" disabled="true" />
+                                          listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true" disabled="true" />
                                 <s:textfield  id="golonganId33" cssStyle="display: none" name="ijinKeluar.golonganId" required="false" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
@@ -322,9 +322,19 @@
                                             data = listdata;
                                         });
                                         $.each(data, function (i, item) {
-                                           $('#maxIjin').val(item.jumlahIjin).change();
+                                            if (namaijin == "IJ030"){
+                                                $('#maxIjin').val("-").change();
+                                            }else {
+                                                $('#maxIjin').val(item.jumlahIjin).change();
+                                            }
                                             $('#ijinName1').val(item.ijinName).change();
                                         });
+
+                                        if (namaijin == "IJ013") {
+                                            $('#uploadSurat').show();
+                                        } else {
+                                            $('#uploadSurat').hide();
+                                        }
                                     })
                                 });
                             </script>
@@ -351,7 +361,7 @@
                                     <i class="fa fa-calendar"></i>
                                 </div>
                                 <s:textfield id="tgl3" name="ijinKeluar.stTanggalAwal" cssClass="form-control pull-right"
-                                             required="false"  cssStyle=""/>
+                                             required="false" onchange="getTanggalAkhir(this.value)" cssStyle=""/>
                                     <%--<input type="text" class="form-control pull-right" id="loginTimestampFrom" name="userSessionLog.stLoginTimestampFrom">--%>
                             </div>
                         </td>
@@ -400,6 +410,22 @@
                             </table>
                         </td>
                     </tr>
+                    <tr id="uploadSurat" style="display: none">
+                        <td>
+                            <label class="control-label" style="text-align: left !important;"><small>Surat Dokter :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <input type="file" id="file" class="form-control" name="fileUpload"/>
+                                        <input type="text" id="cpiddoc" class="form-control" accept="application/pdf,image/jpeg"
+                                               name="ijinKeluar.uploadFile" readonly style="display: none;" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
 
                 </table>
 
@@ -432,7 +458,7 @@
                                                    closeTopics="closeDialog" modal="true"
                                                    resizable="false"
                                                    height="250" width="600" autoOpen="false"
-                                                   title="Searching ...">
+                                                   title="Save Data ...">
                                             Please don't close this window, server is processing your request ...
                                             <br>
                                             <center>
@@ -463,7 +489,7 @@
                                         <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
                                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                        'OK':function() { $('#error_dialog').dialog('close'); window.location.reload(true)}
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">
@@ -476,7 +502,7 @@
                                         <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
                                                    height="280" width="500" autoOpen="false" title="Warning"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_validation_dialog').dialog('close'); }
+                                                                        'OK':function() { $('#error_validation_dialog').dialog('close'); window.location.reload(true)}
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">
@@ -586,10 +612,48 @@
             alert ('Tanggal yang dipilih salah');
                     $('#tgl2').val("");
         }
-        if (days>max){
-            alert ("maaf anda melebihi ijin maksimal");
-            $('#lamaId').val("");
-            $('#tgl2').val("");
+        if (max != "-"){
+            console.log("test opname");
+            if (days>max){
+                alert ("maaf anda melebihi ijin maksimal");
+                $('#lamaId').val("");
+                $('#tgl2').val("");
+            }
         }
     });
+
+    window.getTanggalAkhir = function (tanggal) {
+        var ijinId = $('#ijinId1').val();
+        if (ijinId == 'IJ013'){
+            var date = $('#tgl3').datepicker('getDate');
+            console.log(date);
+            date.setDate(date.getDate()+45);
+            var d = new Date(date),
+                    month = '' + (d.getMonth() + 1),
+                    day = '' + (d.getDate()),
+                    year = '' + (d.getFullYear());
+            if (month.length < 2)
+                month = '0' + month;
+            if (day.length < 2)
+                day = '0' + day;
+
+            var dateFinal = [day,month,year].join('/');
+            $('#tgl2').val(dateFinal);
+
+            console.log(dateFinal);
+
+            var startdate = $('#tgl3').datepicker('getDate');
+            var enddate = date;
+            console.log(startdate);
+            console.log(enddate);
+            if(startdate<enddate) {
+                var days   = (enddate - startdate)/1000/60/60/24;
+                $('#lamaId').val(days);
+            }
+            else {
+                alert ("tanggal selesai kurang dari tanggal mulai , mohon ulangi ");
+                $('#tgl2').val("");
+            }
+        }
+    };
 </script>

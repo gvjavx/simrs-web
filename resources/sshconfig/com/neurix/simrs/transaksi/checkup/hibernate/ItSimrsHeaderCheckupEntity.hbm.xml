@@ -95,5 +95,9 @@
         <property name="anamnese">
             <column name="anamnese" sql-type="text" not-null="false" />
         </property>
+        <property name="idAntrianOnline">
+            <column name="id_antrian_online" sql-type="varchar" />
+        </property>
+
     </class>
 </hibernate-mapping>

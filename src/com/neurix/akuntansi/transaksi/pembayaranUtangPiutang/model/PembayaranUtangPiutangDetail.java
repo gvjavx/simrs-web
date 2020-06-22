@@ -19,11 +19,20 @@ public class PembayaranUtangPiutangDetail extends BaseModel {
     private String divisiId;
     private String divisiName;
 
+    private String pengajuanBiayaDetailId;
     private String stJumlahPembayaran;
     private String masterName;
     private String rekeningId;
     private String kodeRekening;
     private String posisiCoa;
+
+    public String getPengajuanBiayaDetailId() {
+        return pengajuanBiayaDetailId;
+    }
+
+    public void setPengajuanBiayaDetailId(String pengajuanBiayaDetailId) {
+        this.pengajuanBiayaDetailId = pengajuanBiayaDetailId;
+    }
 
     public String getPosisiCoa() {
         return posisiCoa;

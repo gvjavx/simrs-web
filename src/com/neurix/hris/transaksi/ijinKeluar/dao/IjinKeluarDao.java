@@ -2,6 +2,7 @@ package com.neurix.hris.transaksi.ijinKeluar.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.hris.master.biodata.model.ImBiodataEntity;
+import com.neurix.hris.transaksi.cutiPegawai.model.ItCutiPegawaiEntity;
 import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluarEntity;
 import com.neurix.hris.transaksi.personilPosition.model.ItPersonilPositionEntity;
 import org.hibernate.Criteria;
@@ -268,7 +269,7 @@ public class IjinKeluarDao extends GenericDao<IjinKeluarEntity, String> {
         List<IjinKeluarEntity> results = this.sessionFactory.getCurrentSession().createCriteria(IjinKeluarEntity.class)
                 .add(Restrictions.eq("nip", nip))
                 .add(Restrictions.eq("approvalFlag", "Y"))
-                .add(Restrictions.eq("approvalSdmFlag", "Y"))
+//                .add(Restrictions.eq("approvalSdmFlag", "Y"))
                 .add(Restrictions.ne("cancelFlag","Y"))
                 .add(Restrictions.ne("ijinId","IJ001"))
                 .add(Restrictions.le("tanggalAwal",tanggal))
@@ -388,6 +389,56 @@ public class IjinKeluarDao extends GenericDao<IjinKeluarEntity, String> {
             result = results.toString();
         }else {
             result="";
+        }
+        return result;
+    }
+
+    public List<ItCutiPegawaiEntity> cekData(String nip, Date tglAwal, Date tglAkhir) throws HibernateException{
+        List<ItCutiPegawaiEntity> results = new ArrayList<>();
+
+        String query = "SELECT * FROM it_hris_cuti_pegawai \n" +
+                "\tWHERE \n" +
+                "\t(nip = '"+nip+"' AND approval_flag = 'Y' AND action = 'U') AND \n" +
+                "\t(tanggal_selesai >= '"+tglAwal+"' AND tanggal_selesai <= '"+tglAkhir+"')";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        return results;
+    }
+
+    public String getNextSuratDokteId() throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_surat_dokter')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%03d", iter.next());
+
+        return "SD"+sId;
+    }
+
+    public List<IjinKeluarEntity> cekHajiZiarah(String nip){
+        List<IjinKeluarEntity> results = new ArrayList<>();
+
+        String query = "SELECT * FROM it_hris_ijin_keluar \n" +
+                "\tWHERE nip = '"+nip+"' AND approval_flag = 'Y' AND\n" +
+                "\tcancel_flag = 'N' AND (ijin_id = 'IJ010' OR ijin_id = 'IJ032')";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        return results;
+    }
+
+    public String cekIfAbsensi(String nip, Date tgl){
+        String result="";
+        String query ="select absensi_pegawai_id from it_hris_absensi_pegawai where nip = '"+nip+"' and tanggal = '"+tgl+"'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            result = "ya";
+        }else {
+            result="tidak";
         }
         return result;
     }

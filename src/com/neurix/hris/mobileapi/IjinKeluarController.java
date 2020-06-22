@@ -117,6 +117,7 @@ public class IjinKeluarController implements ModelDriven<Object> {
             ijinKeluar.setLastUpdate(updateTime);
             ijinKeluar.setAction("U");
             ijinKeluar.setFlag("Y");
+            ijinKeluar.setMobile(true);
 
            List<Notifikasi> notifikasiList = ijinKeluarBoProxy.saveApprove(ijinKeluar);
 

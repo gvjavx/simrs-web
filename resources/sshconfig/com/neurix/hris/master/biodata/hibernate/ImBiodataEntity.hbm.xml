@@ -230,6 +230,43 @@
             <column name="tanggal_pra_pensiun" sql-type="timestamp" not-null="false" />
         </property>
 
+        <property name="positionPltId">
+            <column name="position_plt_id" sql-type="varchar" length="5" />
+        </property>
+        <property name="flagPlt">
+            <column name="flag_plt" sql-type="varchar" length="1" />
+        </property>
+        <property name="flagPjs">
+            <column name="flag_pjs" sql-type="varchar" length="1" />
+        </property>
+        <property name="flagFingerMobile">
+            <column name="flag_finger_mobile" sql-type="varchar" length="1" />
+        </property>
+        <property name="flagTunjRumah">
+            <column name="flag_tunj_rumah" sql-type="varchar" length="1" />
+        </property>
+        <property name="flagTunjAir">
+            <column name="flag_tunj_air" sql-type="varchar" length="1" />
+        </property>
+        <property name="flagTunjListrik">
+            <column name="flag_tunj_listrik" sql-type="varchar" length="1" />
+        </property>
+        <property name="flagTunjBbm">
+            <column name="flag_tunj_bbm" sql-type="varchar" length="1" />
+        </property>
+        <property name="flagBpjsKs">
+            <column name="flag_bpjs_ks" sql-type="varchar" length="1" />
+        </property>
+        <property name="flagBpjsTk">
+            <column name="flag_bpjs_tk" sql-type="varchar" length="1" />
+        </property>
+        <property name="flagPercobaan">
+            <column name="flag_percobaan" sql-type="varchar" length="1" />
+        </property>
+
+        <property name="nipLama">
+            <column name="nip_lama" sql-type="varchar" length="15" />
+        </property>
 
         <many-to-one name="imProvinsiEntity" class="com.neurix.hris.master.provinsi.model.ImProvinsiEntity"
                      insert="false" update="false" fetch="select" cascade="all">

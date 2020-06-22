@@ -190,7 +190,7 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
 
     public SaldoAkhir getSaldoAkhirLastPeriod(String tahun, String rekeningId, String branchId){
 
-        String SQL = "SELECT rekening_id, periode FROM it_akun_saldo_akhir WHERE periode LIKE :tahun\n" +
+        String SQL = "SELECT rekening_id, periode, saldo_akhir_id FROM it_akun_saldo_akhir WHERE periode LIKE :tahun\n" +
                 "AND rekening_id = :rekeningId  \n" +
                 "AND branch_id = :unit\n" +
                 "ORDER BY periode DESC LIMIT 1";
@@ -207,6 +207,7 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
                 SaldoAkhir saldoAkhir = new SaldoAkhir();
                 saldoAkhir.setRekeningId(obj[0].toString());
                 saldoAkhir.setPeriode(obj[1].toString());
+                saldoAkhir.setSaldoAkhirId(obj[2].toString());
 
                 String[] arrSt = saldoAkhir.getPeriode().split("-",2);
                 if (arrSt.length > 0){

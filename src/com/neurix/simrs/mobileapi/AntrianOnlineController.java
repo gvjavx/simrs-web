@@ -51,21 +51,21 @@ class CreatChannelRunnable implements Runnable {
     RecordingSDK recordingSDK;
     String channelId;
     String uid;
-    RecordingConfig recordingConfig;
+    RecordingConfig config;
     RecordingEventHandler recordingEventHandler;
 
 
-    public CreatChannelRunnable(RecordingSDK recordingSDK, String channelId, String uid, RecordingConfig recordingConfig, RecordingEventHandler recordingEventHandler) {
+    public CreatChannelRunnable(RecordingSDK recordingSDK, String channelId, String uid, RecordingConfig config, RecordingEventHandler recordingEventHandler) {
         this.recordingSDK = recordingSDK;
         this.channelId = channelId;
         this.uid = uid;
-        this.recordingConfig = recordingConfig;
+        this.config = config;
         this.recordingEventHandler = recordingEventHandler;
     }
 
     @Override
     public void run() {
-        recordingSDK.createChannel(CommonConstant.APP_ID, "", channelId, Integer.valueOf(uid), recordingConfig, 5);
+        recordingSDK.createChannel(CommonConstant.APP_ID, "", channelId, new Integer(uid), config, 5);
         recordingSDK.startService();
     }
 
@@ -140,7 +140,7 @@ public class AntrianOnlineController implements ModelDriven<Object> {
     HashMap<String, UserInfo> audioChannels = new HashMap<String, UserInfo>();
     HashMap<String, UserInfo> videoChannels = new HashMap<String, UserInfo>();
     Timer cleanTimer = null;
-    private int layoutMode = 0;
+    private int layoutMode = BESTFIT_LAYOUT;
     private long maxResolutionUid = -1;
     private String maxResolutionUserAccount = "";
     private int keepLastFrame = 0;
@@ -326,47 +326,47 @@ public class AntrianOnlineController implements ModelDriven<Object> {
 
         RecordingSDK recordingSDK = new RecordingSDK();
         RecordingSDKInstance = recordingSDK;
-        RecordingConfig recordingConfig = new RecordingConfig();
-        recordingConfig.channelProfile = Common.CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_COMMUNICATION;
-        recordingConfig.appliteDir =  CommonUtil.getPropertyParams("upload.folder") + CommonConstant.AGORA_DIR;
-        recordingConfig.triggerMode = 0;
-        recordingConfig.recordFileRootDir = CommonUtil.getPropertyParams("upload.folder") + CommonConstant.RESOURCE_PATH_VIDEO_RM;
-        recordingConfig.idleLimitSec = 5 * 60;
-        recordingConfig.isVideoOnly = false;
-        recordingConfig.isAudioOnly = false;
-        recordingConfig.isMixingEnabled = false;
-        recordingConfig.mixResolution = "360,640,15,500";
-        recordingConfig.mixedVideoAudio = Common.MIXED_AV_CODEC_TYPE.values() [Common.MIXED_AV_CODEC_TYPE.MIXED_AV_DEFAULT.ordinal()];
-        recordingConfig.cfgFilePath = "/uid/";
-        recordingConfig.secret = "";
-        recordingConfig.decryptionMode = "";
-        recordingConfig.lowUdpPort = 40000;
-        recordingConfig.highUdpPort = 41000;
-        recordingConfig.captureInterval = 5;
-        recordingConfig.audioIndicationInterval = 0;
-        recordingConfig.decodeAudio = Common.AUDIO_FORMAT_TYPE.values()[Common.AUDIO_FORMAT_TYPE.AUDIO_FORMAT_DEFAULT_TYPE.ordinal()];
-        recordingConfig.decodeVideo = Common.VIDEO_FORMAT_TYPE.values()[Common.VIDEO_FORMAT_TYPE.VIDEO_FORMAT_DEFAULT_TYPE.ordinal()];
-        recordingConfig.streamType = Common.REMOTE_VIDEO_STREAM_TYPE.values() [Common.REMOTE_VIDEO_STREAM_TYPE.REMOTE_VIDEO_STREAM_HIGH.ordinal()];
-        recordingConfig.proxyType = 1;
-        recordingConfig.proxyServer = "";
-        recordingConfig.audioProfile = 0;
-        recordingConfig.defaultVideoBgPath = "";
-        recordingConfig.defaultUserBgPath = "";
-        recordingConfig.autoSubscribe = true;
-        recordingConfig.enableCloudProxy = false;
-        recordingConfig.enableIntraRequest = true;
-        recordingConfig.subscribeVideoUids = "";
-        recordingConfig.subscribeAudioUids = "";
-        recordingConfig.enableH265Support = false;
+        config = new RecordingConfig();
+        config.channelProfile = Common.CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_COMMUNICATION;
+        config.appliteDir =  CommonUtil.getPropertyParams("upload.folder") + CommonConstant.AGORA_DIR;
+        config.triggerMode = 0;
+        config.recordFileRootDir = CommonUtil.getPropertyParams("upload.folder") + CommonConstant.RESOURCE_PATH_VIDEO_RM;
+        config.idleLimitSec = 5 * 60;
+        config.isVideoOnly = false;
+        config.isAudioOnly = false;
+        config.isMixingEnabled = true;
+        config.mixResolution = "640,360,15,500";
+        config.mixedVideoAudio = Common.MIXED_AV_CODEC_TYPE.values() [Common.MIXED_AV_CODEC_TYPE.MIXED_AV_CODEC_V2.ordinal()];
+        config.cfgFilePath = "/uid/";
+        config.secret = "";
+        config.decryptionMode = "";
+        config.lowUdpPort = 40000;
+        config.highUdpPort = 41000;
+        config.captureInterval = 5;
+        config.audioIndicationInterval = 0;
+        config.decodeAudio = Common.AUDIO_FORMAT_TYPE.values()[Common.AUDIO_FORMAT_TYPE.AUDIO_FORMAT_DEFAULT_TYPE.ordinal()];
+        config.decodeVideo = Common.VIDEO_FORMAT_TYPE.values()[Common.VIDEO_FORMAT_TYPE.VIDEO_FORMAT_DEFAULT_TYPE.ordinal()];
+        config.streamType = Common.REMOTE_VIDEO_STREAM_TYPE.values() [Common.REMOTE_VIDEO_STREAM_TYPE.REMOTE_VIDEO_STREAM_HIGH.ordinal()];
+        config.proxyType = 1;
+        config.proxyServer = "";
+        config.audioProfile = 2;
+        config.defaultVideoBgPath = "";
+        config.defaultUserBgPath = "";
+        config.autoSubscribe = true;
+        config.enableCloudProxy = false;
+        config.enableIntraRequest = true;
+        config.subscribeVideoUids = "";
+        config.subscribeAudioUids = "";
+        config.enableH265Support = false;
 
-        if (recordingConfig.decodeVideo == Common.VIDEO_FORMAT_TYPE.VIDEO_FORMAT_ENCODED_FRAME_TYPE) {
-            recordingConfig.decodeVideo = Common.VIDEO_FORMAT_TYPE.VIDEO_FORMAT_H264_FRAME_TYPE;
+        if (config.decodeVideo == Common.VIDEO_FORMAT_TYPE.VIDEO_FORMAT_ENCODED_FRAME_TYPE) {
+            config.decodeVideo = Common.VIDEO_FORMAT_TYPE.VIDEO_FORMAT_H264_FRAME_TYPE;
         }
 
-        if (!recordingConfig.autoSubscribe) {
-            if (recordingConfig.subscribeVideoUids != null) {
-                recordingConfig.subscribeVideoUids = String.valueOf(recordingConfig.subscribeVideoUids);
-                String[] struids = recordingConfig.subscribeVideoUids.split(",");
+        if (!config.autoSubscribe) {
+            if (config.subscribeVideoUids != null) {
+                config.subscribeVideoUids = String.valueOf(config.subscribeVideoUids);
+                String[] struids = config.subscribeVideoUids.split(",");
                 for (int i = 0; i < struids.length; i++) {
                     if (userAccount.length() > 0) {
                         subscribedVideoUserAccount.add(struids[i]);
@@ -379,19 +379,19 @@ public class AntrianOnlineController implements ModelDriven<Object> {
                     }
                 }
             }
-            if (recordingConfig.subscribeVideoUids != null)
-                recordingConfig.subscribeAudioUids = String.valueOf(recordingConfig.subscribeAudioUids);
+            if (config.subscribeVideoUids != null)
+                config.subscribeAudioUids = String.valueOf(config.subscribeAudioUids);
         }
 
-        if(recordingConfig.audioProfile > 2) recordingConfig.audioProfile = 2;
-        if(recordingConfig.audioProfile < 0) recordingConfig.audioProfile = 0;
+        if(config.audioProfile > 2) config.audioProfile = 2;
+        if(config.audioProfile < 0) config.audioProfile = 0;
 
-        this.isMixMode = recordingConfig.isMixingEnabled;
-        this.profile_type = Common.CHANNEL_PROFILE_TYPE.values()[recordingConfig.channelProfile.getValue()];
-        if (recordingConfig.isMixingEnabled && !recordingConfig.isAudioOnly) {
-            String[] sourceStrArray = recordingConfig.mixResolution.split(",");
+        this.isMixMode = config.isMixingEnabled;
+        this.profile_type = Common.CHANNEL_PROFILE_TYPE.values()[config.channelProfile.getValue()];
+        if (config.isMixingEnabled && !config.isAudioOnly) {
+            String[] sourceStrArray = config.mixResolution.split(",");
             if (sourceStrArray.length != 4) {
-                logger.info("Illegal resolution:" + recordingConfig.mixResolution);
+                logger.info("Illegal resolution:" + config.mixResolution);
             }
             this.width = Integer.valueOf(sourceStrArray[0]).intValue();
             this.height = Integer.valueOf(sourceStrArray[1]).intValue();
@@ -434,7 +434,7 @@ public class AntrianOnlineController implements ModelDriven<Object> {
 
             @Override
             public void onJoinChannelSuccess(String channelId, long uid) {
-                if(recordingConfig.decodeAudio != Common.AUDIO_FORMAT_TYPE.AUDIO_FORMAT_DEFAULT_TYPE) {
+                if(config.decodeAudio != Common.AUDIO_FORMAT_TYPE.AUDIO_FORMAT_DEFAULT_TYPE) {
                     cleanTimer.schedule(new RecordingCleanTimer(AntrianOnlineController.this), 10000);
                 }
                 logger.info("RecordingSDK joinChannel success, channelId:" + channelId +", uid:" + uid);
@@ -731,7 +731,7 @@ public class AntrianOnlineController implements ModelDriven<Object> {
                 logger.info("No system env:KEEPMEDIATIME");
             }
 
-           recordThread = new Thread(new CreatChannelRunnable(RecordingSDKInstance, channelId, uid, recordingConfig, recordingEventHandler));
+           recordThread = new Thread(new CreatChannelRunnable(RecordingSDKInstance, channelId, uid, config, recordingEventHandler));
             recordThread.start();
             if (recordThread.isAlive()) {
                 model.setMessage("Success");

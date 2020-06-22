@@ -109,6 +109,29 @@
                                     </table>
                                 </td>
                             </tr>--%>
+                            <tr>
+                                <td>
+                                    <label class="control-label"><small>Tahun :</small></label>
+                                </td>
+                                <td>
+                                    <table>
+                                        <s:action id="comboPeriode" namespace="/rekruitmen" name="initComboPeriodeTahunSekarang10_rekruitmen"/>
+                                        <s:select cssClass="form-control" list="#comboPeriode.listOfComboPeriode" id="tahunPayroll14"
+                                                  name="payrollSkalaGaji.tahun" required="true" headerKey=""
+                                                  headerValue="[Select one]"/>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="control-label"><small>No. SK :</small></label>
+                                </td>
+                                <td>
+                                    <table>
+                                        <s:textfield id="noSk4" name="payrollSkalaGaji.noSk" required="true" cssClass="form-control"/>
+                                    </table>
+                                </td>
+                            </tr>
 
 
                             <tr>
@@ -203,6 +226,8 @@
                                             <display:column property="stListrik" sortable="true" title="Tunj. Listrik"  />
                                             <display:column property="stAir" sortable="true" title="Tunj. Air"  />
                                             <display:column property="stBbm" sortable="true" title="Tunj. Bbm"  />
+                                            <display:column property="tahun" sortable="true" title="Tahun"  />
+                                            <display:column property="noSk" sortable="true" title="No.SK"  />
                                             <display:column property="flag" sortable="true" title="flag"  />
                                             <display:column property="action" sortable="true" title="action"  />
                                             <display:column property="stCreatedDate" sortable="true" title="Created date"  />

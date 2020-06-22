@@ -33,6 +33,26 @@ public class DokterController implements ModelDriven<Object> {
     private String lat;
     private String lon;
     private String flagCall;
+    private String flagTele;
+
+    private String idPelayanan;
+    private String branchId;
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
 
     public String getFlagCall() {
         return flagCall;
@@ -130,6 +150,14 @@ public class DokterController implements ModelDriven<Object> {
         this.namaSpesialis = namaSpesialis;
     }
 
+    public String getFlagTele() {
+        return flagTele;
+    }
+
+    public void setFlagTele(String flagTele) {
+        this.flagTele = flagTele;
+    }
+
     @Override
     public Object getModel() {
         return (listOfDokter != null ? listOfDokter : model);
@@ -184,6 +212,33 @@ public class DokterController implements ModelDriven<Object> {
         if  (action.equalsIgnoreCase("editFlagCall")) {
             try {
                 dokterBoProxy.editFlagCall(idDokter, flagCall);
+            } catch (GeneralBOException e) {
+                logger.error("[DokterController.create] Error, " + e.getMessage());
+            }
+        }
+
+        if  (action.equalsIgnoreCase("editFlagTele")) {
+            try {
+                dokterBoProxy.editFlagTele(idDokter, flagTele);
+            } catch (GeneralBOException e) {
+                logger.error("[DokterController.create] Error, " + e.getMessage());
+            }
+        }
+
+        if (action.equalsIgnoreCase("getDokterByPelayanan")) {
+            listOfDokter = new ArrayList<>();
+            try {
+               result = dokterBoProxy.getDokterByPelayanan(idPelayanan);
+
+               for (Dokter item : result ){
+                   DokterMobile dokterMobile = new DokterMobile();
+                   dokterMobile.setIdDokter(item.getIdDokter());
+                   dokterMobile.setNamaDokter(item.getNamaDokter());
+                   dokterMobile.setKuota(item.getKuota());
+                   dokterMobile.setFlagTele(item.getFlagTele());
+
+                   listOfDokter.add(dokterMobile);
+               }
             } catch (GeneralBOException e) {
                 logger.error("[DokterController.create] Error, " + e.getMessage());
             }

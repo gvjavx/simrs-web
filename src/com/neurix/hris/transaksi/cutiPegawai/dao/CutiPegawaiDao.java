@@ -2,6 +2,7 @@ package com.neurix.hris.transaksi.cutiPegawai.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.model.Biodata;
 import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.hris.transaksi.cutiPegawai.model.CutiPegawai;
@@ -703,4 +704,27 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
         return result;
     }
 
+    public List<ItCutiPegawaiEntity> getDataCuti(String nip) throws HibernateException {
+        List<ItCutiPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItCutiPegawaiEntity.class)
+                .add(Restrictions.eq("nip", nip))
+                .add(Restrictions.eq("cutiId", "CT007"))
+                .list();
+        return results;
+
+    }
+
+    public List<ItCutiPegawaiEntity> getListCekCutiLuarTanggungan(String nip, String bulan,String tahun) throws HibernateException {
+        Date tanggal = CommonUtil.convertStringToDate2(tahun+"-"+bulan+"-"+"01");
+
+        List<ItCutiPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItCutiPegawaiEntity.class)
+                .add(Restrictions.eq("nip",nip))
+                .add(Restrictions.eq("cutiId","CT007"))
+                .add(Restrictions.le("tanggalDari",tanggal))
+                .add(Restrictions.ge("tanggalSelesai",tanggal))
+                .add(Restrictions.eq("approvalFlag","Y"))
+                .add(Restrictions.ne("cancelFlag","Y"))
+                .addOrder(Order.asc("nip"))
+                .list();
+        return results;
+    }
 }

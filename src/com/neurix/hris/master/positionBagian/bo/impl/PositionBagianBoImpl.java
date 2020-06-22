@@ -50,18 +50,31 @@ public class PositionBagianBoImpl implements PositionBagianBo {
         if (bean!=null) {
 
             String kelompokPositionId = bean.getBagianId();
-
+            String idHistory = "";
             ImPositionBagianEntity imPositionBagianEntity = null;
-
+            ImPositionBagianHistoryEntity imPositionBagianHistoryEntity = new ImPositionBagianHistoryEntity();
             try {
                 // Get data from database by ID
                 imPositionBagianEntity = positionBagianDao.getById("bagianId", kelompokPositionId);
+                idHistory = positionBagianDao.getNextPositionBagianHistoryId();
             } catch (HibernateException e) {
                 logger.error("[PositionBagianBoImpl.saveDelete] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
             }
 
             if (imPositionBagianEntity != null) {
+                imPositionBagianHistoryEntity.setIdHistory(idHistory);
+                imPositionBagianHistoryEntity.setBagianId(imPositionBagianEntity.getBagianId());
+                imPositionBagianHistoryEntity.setBagianName(imPositionBagianEntity.getBagianName());
+                imPositionBagianHistoryEntity.setBranchId(imPositionBagianEntity.getBranchId());
+//                    imPositionBagianHistoryEntity.setDivisiId(imPositionBagianEntity.getDivisiId());
+                imPositionBagianHistoryEntity.setKodering(imPositionBagianEntity.getKodering());
+                imPositionBagianHistoryEntity.setFlag(imPositionBagianEntity.getFlag());
+                imPositionBagianHistoryEntity.setAction(imPositionBagianEntity.getAction());
+                imPositionBagianHistoryEntity.setLastUpdateWho(imPositionBagianEntity.getLastUpdateWho());
+                imPositionBagianHistoryEntity.setLastUpdate(imPositionBagianEntity.getLastUpdate());
+                imPositionBagianHistoryEntity.setCreatedWho(imPositionBagianEntity.getCreatedWho());
+                imPositionBagianHistoryEntity.setCreatedDate(imPositionBagianEntity.getCreatedDate());
 
                 // Modify from bean to entity serializable
                 imPositionBagianEntity.setBagianId(bean.getBagianId());
@@ -74,6 +87,7 @@ public class PositionBagianBoImpl implements PositionBagianBo {
                 try {
                     // Delete (Edit) into database
                     positionBagianDao.updateAndSave(imPositionBagianEntity);
+                    positionBagianDao.addAndSaveHistory(imPositionBagianHistoryEntity);
                 } catch (HibernateException e) {
                     logger.error("[PositionBagianBoImpl.saveDelete] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when saving update data PositionBagian, please info to your admin..." + e.getMessage());
@@ -106,20 +120,23 @@ public class PositionBagianBoImpl implements PositionBagianBo {
                 try {
                     // Get data from database by ID
                     imPositionBagianEntity = positionBagianDao.getById("bagianId", kelompokPositionId);
-                    //idHistory = kelompokPositionDao.getNextPositionBagianHistoryId();
+                    idHistory = positionBagianDao.getNextPositionBagianHistoryId();
                 } catch (HibernateException e) {
                     logger.error("[PositionBagianBoImpl.saveEdit] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when searching data PositionBagian by Kode PositionBagian, please inform to your admin...," + e.getMessage());
                 }
 
                 if (imPositionBagianEntity != null) {
-                    imPositionBagianHistoryEntity.setId(idHistory);
+                    imPositionBagianHistoryEntity.setIdHistory(idHistory);
                     imPositionBagianHistoryEntity.setBagianId(imPositionBagianEntity.getBagianId());
                     imPositionBagianHistoryEntity.setBagianName(imPositionBagianEntity.getBagianName());
+                    imPositionBagianHistoryEntity.setBranchId(imPositionBagianEntity.getBranchId());
+//                    imPositionBagianHistoryEntity.setDivisiId(imPositionBagianEntity.getDivisiId());
+                    imPositionBagianHistoryEntity.setKodering(imPositionBagianEntity.getKodering());
                     imPositionBagianHistoryEntity.setFlag(imPositionBagianEntity.getFlag());
                     imPositionBagianHistoryEntity.setAction(imPositionBagianEntity.getAction());
-                    imPositionBagianHistoryEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                    imPositionBagianHistoryEntity.setLastUpdate(bean.getLastUpdate());
+                    imPositionBagianHistoryEntity.setLastUpdateWho(imPositionBagianEntity.getLastUpdateWho());
+                    imPositionBagianHistoryEntity.setLastUpdate(imPositionBagianEntity.getLastUpdate());
                     imPositionBagianHistoryEntity.setCreatedWho(imPositionBagianEntity.getCreatedWho());
                     imPositionBagianHistoryEntity.setCreatedDate(imPositionBagianEntity.getCreatedDate());
 
@@ -135,6 +152,7 @@ public class PositionBagianBoImpl implements PositionBagianBo {
                     try {
                         // Update into database
                         positionBagianDao.updateAndSave(imPositionBagianEntity);
+                        positionBagianDao.addAndSaveHistory(imPositionBagianHistoryEntity);
                     } catch (HibernateException e) {
                         logger.error("[PositionBagianBoImpl.saveEdit] Error, " + e.getMessage());
                         throw new GeneralBOException("Found problem when saving update data PositionBagian, please info to your admin..." + e.getMessage());
@@ -364,5 +382,21 @@ public class PositionBagianBoImpl implements PositionBagianBo {
             status="notExits";
         }
         return status;
+    }
+
+    public List<positionBagian> searchPositionBagian(String divisiId) throws GeneralBOException {
+        List<ImPositionBagianEntity> posisiList = null;
+        List<positionBagian> positions = new ArrayList<>();
+
+        posisiList = positionBagianDao.getDataPosisiBagian(divisiId);
+        if (posisiList != null) {
+            for (ImPositionBagianEntity imPositionBagianEntity : posisiList) {
+                positionBagian position1 = new positionBagian();
+                position1.setBagianId(imPositionBagianEntity.getBagianId());
+                position1.setBagianName(imPositionBagianEntity.getBagianName());
+                positions.add(position1);
+            }
+        }
+        return positions;
     }
 }

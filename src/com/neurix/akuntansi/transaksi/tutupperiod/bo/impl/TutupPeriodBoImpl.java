@@ -440,6 +440,10 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                     saldoAkhir.setPasienId(jurnal.getPasienId());
                 }
 
+                if (jurnal.getKdBarang() != null && !"".equalsIgnoreCase(jurnal.getKdBarang())){
+                    saldoAkhir.setKdBarang(jurnal.getKdBarang());
+                }
+
                 // MENDAPATKAN SALDO AKHIR DETAIL PERIODE LALU
                 ItAkunSaldoAkhirDetailEntity saldoAkhirDetaillalu = new ItAkunSaldoAkhirDetailEntity();
                 List<ItAkunSaldoAkhirDetailEntity> saldoAkhirDetailEntities = getListEntitySaldoAkhirDetail(saldoAkhir);
@@ -821,6 +825,12 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                 hsCriteria.put("pasien_id", bean.getMasterId());
             } else {
                 hsCriteria.put("pasien_id", "null");
+            }
+
+            if (bean.getKdBarang() != null){
+                hsCriteria.put("kd_barang", bean.getKdBarang());
+            } else {
+                hsCriteria.put("kd_barang", "null");
             }
 
             try {

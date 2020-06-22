@@ -248,7 +248,6 @@
     <section class="content-header">
         <h1>
             Biodata Form
-            <small>GO-MEDSYS</small>
         </h1>
     </section>
 
@@ -633,17 +632,24 @@
                                 </s:else>
 
                                 <s:if test="isDelete()">
-                                    <tr>
-                                        <td>
-                                            <label class="control-label"><small>PJS :</small></label>
-                                        </td>
-                                        <td>
-                                            <table>
-                                                <input type="checkbox" id="pjs" class="checkZakat" disabled onchange="cekPjs()" />
-                                                <s:textfield cssStyle="display: none" id="flagPjs" name="biodata.pjs"  />
-                                            </table>
-                                        </td>
-                                    </tr>
+                                    <%--<tr>--%>
+                                        <%--<td>--%>
+                                            <%--<label class="control-label"><small>PJS :</small></label>--%>
+                                        <%--</td>--%>
+                                        <%--<td>--%>
+                                            <%--<table>--%>
+                                                <%--<input type="checkbox" id="pjs" class="checkZakat" disabled onchange="cekPjs()" />--%>
+                                                <%--<s:textfield cssStyle="display: none" id="flagPjs" name="biodata.pjs"  />--%>
+                                            <%--</table>--%>
+                                        <%--</td>--%>
+                                    <%--</tr>--%>
+                                    <div style="display: none" class="form-group">
+                                        <label class="control-label"><small>PJS :</small></label>
+                                        <div class="col-sm-8">
+                                            <input type="checkbox" id="pjs" class="checkZakat" disabled onchange="cekPjs()" />
+                                            <s:textfield cssStyle="display: none" id="flagPjs" name="biodata.pjs"  />
+                                        </div>
+                                    </div>
                                 </s:if>
                                 <s:elseif test="isAdd()">
                                     <div style="display: none" class="form-group">
@@ -1010,7 +1016,7 @@
                                         <table>
                                             <s:action id="initComboTipe" namespace="/tipepegawai" name="searchTipePegawai_tipepegawai"/>
                                             <s:if test="isDelete()">
-                                                <s:select list="#initComboTipe.listComboTipePegawai" id="tipePegawai1" name="biodata.tipePegawai" disabled="true"
+                                                <s:select list="#initComboTipe.listComboTipePegawai" id="tipePegawai1" name="biodata.tipePegawai" onchange="changePegawai(this.value)" disabled="true"
                                                           listKey="tipePegawaiId" listValue="tipePegawaiName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                             </s:if>
                                             <s:else>
@@ -1055,9 +1061,14 @@
                                                 <s:select list="#initComboTipe.listComboGolongan" id="golongan1" name="biodata.golongan" disabled="true"
                                                           listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                             </s:if>
-                                            <s:else>
+                                            <s:elseif test="isAdd()">
                                                 <s:select list="#initComboTipe.listComboGolongan" id="golongan1" name="biodata.golongan"
                                                           listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                            </s:elseif>
+                                            <s:else>
+                                                <s:select list="#initComboTipe.listComboGolongan" id="golongan1" name="biodata.golongan" disabled="true"
+                                                          listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                <s:hidden id="golongan1" name="biodata.golongan" />
                                             </s:else>
 
                                         </table>
@@ -1067,7 +1078,7 @@
                                             <s:action id="initComboTipe" namespace="/golongan" name="initComboGolonganPkwt_golongan"/>
                                             <s:if test="isDelete()">
                                                 <%--Untuk list Golongan PKWT--%>
-                                                <s:select list="#initComboTipe.listComboGolongan" id="golongan3" name="biodata.golongan" disabled="true"
+                                                <s:select list="#initComboTipe.listComboGolonganPkwt" id="golongan3" name="biodata.golongan" disabled="true"
                                                           listKey="golonganPkwtId" listValue="golonganPkwtName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                             </s:if>
                                             <s:else>
@@ -1129,7 +1140,7 @@
                                             <s:if test="isDelete()">
                                                 <s:select list="#listComboDanaPensiun.listComboPayrollDanaPensiun"
                                                           id="danaPensiun" name="biodata.danaPensiun" disabled="true"
-                                                          listKey="danaPensiunId" listValue="danaPensiun" headerValue="[Select one]" cssClass="form-control" readonly="true" />
+                                                          listKey="danaPensiunId" listValue="danaPensiun" headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true" />
                                             </s:if>
                                             <s:else>
                                                 <s:select list="#listComboDanaPensiun.listComboPayrollDanaPensiun"
@@ -1220,6 +1231,24 @@
                                     </td>
                                 </tr>
 
+
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>NIP Lama :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <s:textfield  id="nipLama" name="biodata.nipLama" required="true" readonly="true" cssClass="form-control"/>
+                                            </s:if>
+                                            <s:else>
+                                                <s:textfield  id="nipLama" name="biodata.nipLama" required="true" cssClass="form-control"/>
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+
+
                                 <tr>
                                     <td>
                                         <label class="control-label"><small>Pin :</small></label>
@@ -1277,21 +1306,41 @@
 
                                 <tr>
                                     <td>
-                                        <label class="control-label"><small>Zakat Profesi :</small></label>
+                                        <label class="control-label"><small>Jabatan PLT :</small></label>
                                     </td>
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <input type="checkbox" id="zakatProfesi" class="checkZakat" disabled onchange="cekZakat()" />
-                                                <s:textfield cssStyle="display: none" id="flagZakat" name="biodata.flagZakat"  />
+                                                <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
+                                                <s:select list="#comboPosition.listOfComboPosition" id="positionPltId" name="biodata.positionPltId" disabled="true"
+                                                          listKey="positionId" listValue="positionName" headerKey="" headerValue="" cssClass="form-control"/>
                                             </s:if>
                                             <s:else>
-                                                <input type="checkbox" id="zakatProfesi" class="checkZakat" onchange="cekZakat()" />
-                                                <s:textfield cssStyle="display: none" id="flagZakat" name="biodata.flagZakat"  />
+                                                <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
+                                                <s:select list="#comboPosition.listOfComboPosition" id="positionPltId" name="biodata.positionPltId"
+                                                          listKey="positionId" listValue="positionName" headerKey="" headerValue="" cssClass="form-control"/>
                                             </s:else>
                                         </table>
                                     </td>
                                 </tr>
+
+                                <%--<tr>--%>
+                                    <%--<td>--%>
+                                        <%--<label class="control-label"><small>Zakat Profesi :</small></label>--%>
+                                    <%--</td>--%>
+                                    <%--<td>--%>
+                                        <%--<table>--%>
+                                            <%--<s:if test="isDelete()">--%>
+                                                <%--<input type="checkbox" id="zakatProfesi" class="checkZakat" disabled onchange="cekZakat()" />--%>
+                                                <%--<s:textfield cssStyle="display: none" id="flagZakat" name="biodata.flagZakat"  />--%>
+                                            <%--</s:if>--%>
+                                            <%--<s:else>--%>
+                                                <%--<input type="checkbox" id="zakatProfesi" class="checkZakat" onchange="cekZakat()" />--%>
+                                                <%--<s:textfield cssStyle="display: none" id="flagZakat" name="biodata.flagZakat"  />--%>
+                                            <%--</s:else>--%>
+                                        <%--</table>--%>
+                                    <%--</td>--%>
+                                <%--</tr>--%>
 
                                 <tr>
                                     <td>
@@ -1373,6 +1422,25 @@
                                         </table>
                                     </td>
                                 </tr>
+
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Finger Mobile :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <input type="checkbox" id="fingerMobile" class="checkZakat" disabled onchange="cekFingerMobile()" />
+                                                <s:textfield cssStyle="display: none" id="flagFingerMobile" name="biodata.flagFingerMobile"  />
+                                            </s:if>
+                                            <s:else>
+                                                <input type="checkbox" id="fingerMobile" class="checkZakat" onchange="cekFingerMobile()" />
+                                                <s:hidden id="flagFingerMobile" name="biodata.flagFingerMobile"  />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+
                                 <tr>
                                     <td>
                                         <label class="control-label"><small>Tunjangan Supervisi :</small></label>
@@ -1390,6 +1458,7 @@
                                         </table>
                                     </td>
                                 </tr>
+
                                 <tr>
                                     <td>
                                         <label class="control-label"><small>Tunjangan Lokasi :</small></label>
@@ -1442,6 +1511,184 @@
                                     </td>
                                 </tr>
 
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Tunj.Rumah :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <input type="checkbox" id="tunjRumah" class="checkZakat" disabled onchange="cekTunjRumah()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjRumah" name="biodata.flagTunjRumah"  />
+                                            </s:if>
+                                            <s:elseif test="isAdd()">
+                                                <input type="checkbox" id="tunjRumah" class="checkZakat" onchange="cekTunjRumah()" />
+                                                <s:hidden id="flagTunjRumah" name="biodata.flagTunjRumah"/>
+                                            </s:elseif>
+                                            <s:else>
+                                                <input type="checkbox" id="tunjRumah" class="checkZakat" onchange="cekTunjRumah()" />
+                                                <s:hidden id="flagTunjRumah" name="biodata.flagTunjRumah"  />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Tunj.Air :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <input type="checkbox" id="tunjAir" class="checkZakat" disabled onchange="cekTunjAir()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjAir" name="biodata.flagTunjAir"  />
+                                            </s:if>
+                                            <s:else>
+                                                <input type="checkbox" id="tunjAir" class="checkZakat" onchange="cekTunjAir()" />
+                                                <s:hidden id="flagTunjAir" name="biodata.flagTunjAir"  />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Tunj.Listrik :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <input type="checkbox" id="tunjListrik" class="checkZakat" disabled onchange="cekTunjListrik()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjListrik" name="biodata.flagTunjListrik"  />
+                                            </s:if>
+                                            <s:else>
+                                                <input type="checkbox" id="tunjListrik" class="checkZakat" onchange="cekTunjListrik()" />
+                                                <s:hidden id="flagTunjListrik" name="biodata.flagTunjListrik"  />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Tunj.Bbm :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <input type="checkbox" id="tunjBbm" class="checkZakat" disabled onchange="cekTunjBbm()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjBbm" name="biodata.flagTunjBbm"  />
+                                            </s:if>
+                                            <s:else>
+                                                <input type="checkbox" id="tunjBbm" class="checkZakat" onchange="cekTunjBbm()" />
+                                                <s:hidden id="flagTunjBbm" name="biodata.flagTunjBbm"  />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>BPJS KS :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <input type="checkbox" id="bpjsKs" class="checkZakat" disabled onchange="cekBpjsKs()" />
+                                                <s:textfield cssStyle="display: none" id="flagBpjsKs" name="biodata.flagBpjsKs"  />
+                                            </s:if>
+                                            <s:else>
+                                                <input type="checkbox" id="bpjsKs" class="checkZakat" onchange="cekBpjsKs()" />
+                                                <s:hidden id="flagBpjsKs" name="biodata.flagBpjsKs"  />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>BPJS TK :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <input type="checkbox" id="bpjsTk" class="checkZakat" disabled onchange="cekBpjsTk()" />
+                                                <s:textfield cssStyle="display: none" id="flagBpjsTk" name="biodata.flagBpjsTk"  />
+                                            </s:if>
+                                            <s:else>
+                                                <input type="checkbox" id="bpjsTk" class="checkZakat" onchange="cekBpjsTk()" />
+                                                <s:hidden id="flagBpjsTk" name="biodata.flagBpjsTk"  />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Mess :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <input type="checkbox" id="mess" class="checkZakat" disabled onchange="cekMess()" />
+                                                <s:textfield cssStyle="display: none" id="flagMess" name="biodata.flagMess"  />
+                                            </s:if>
+                                            <s:else>
+                                                <input type="checkbox" id="mess" class="checkZakat" onchange="cekMess()" />
+                                                <s:hidden id="flagMess" name="biodata.flagMess"  />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <%--<tr>--%>
+                                    <%--<td>--%>
+                                        <%--<label class="control-label"><small>PLT :</small></label>--%>
+                                    <%--</td>--%>
+                                    <%--<td>--%>
+                                        <%--<table>--%>
+                                            <%--<s:if test="isDelete()">--%>
+                                                <%--<input type="checkbox" id="plt" class="checkZakat" disabled onchange="cekPLT()" />--%>
+                                                <%--<s:textfield cssStyle="display: none" id="flagPLT" name="biodata.flagPLT"  />--%>
+                                            <%--</s:if>--%>
+                                            <%--<s:else>--%>
+                                                <%--<input type="checkbox" id="plt" class="checkZakat" onchange="cekPLT()" />--%>
+                                                <%--<s:hidden id="flagPLT" name="biodata.flagPLT"  />--%>
+                                            <%--</s:else>--%>
+                                        <%--</table>--%>
+                                    <%--</td>--%>
+                                <%--</tr>--%>
+
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>PJS :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <input type="checkbox" id="pjs11" class="checkZakat" disabled onchange="cekPJS()" />
+                                                <s:textfield cssStyle="display: none" id="flagPJS" name="biodata.flagPJS"  />
+                                            </s:if>
+                                            <s:else>
+                                                <input type="checkbox" id="pjs11" class="checkZakat" onchange="cekPJS()" />
+                                                <s:hidden id="flagPJS" name="biodata.flagPJS"  />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Percobaan :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <input type="checkbox" id="percobaan" class="checkZakat" disabled onchange="cekPercobaan()" />
+                                                <s:textfield cssStyle="display: none" id="flagPercobaan" name="biodata.flagPercobaan"  />
+                                            </s:if>
+                                            <s:else>
+                                                <input type="checkbox" id="percobaan" class="checkZakat" onchange="cekPercobaan()" />
+                                                <s:hidden id="flagPercobaan" name="biodata.flagPercobaan"  />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
                                 <%--<s:if test="isDelete()">--%>
                                     <%--<tr>--%>
                                         <%--<td>--%>
@@ -2964,14 +3211,15 @@
             $('#detailImg').attr('src', '/go-medsys/pages/upload/image/profile/man_employee.png');
             $('#detailImg').attr('alt', nama);
         }
-        var zakat = document.getElementById("flagZakat").value;
-        if (zakat == "Y") {
-            document.getElementById("zakatProfesi").checked = true;
-        } else {
-            document.getElementById("zakatProfesi").checked = false;
-        }
+//        var zakat = document.getElementById("flagZakat").value;
+//        if (zakat == "Y") {
+//            document.getElementById("zakatProfesi").checked = true;
+//        } else {
+//            document.getElementById("zakatProfesi").checked = false;
+//        }
 
         var pjs = document.getElementById("flagPjs").value;
+        console.log("Test "+pjs)
         if (pjs == "Y") {
             document.getElementById("pjs").checked = true;
         } else {
@@ -3013,6 +3261,75 @@
             document.getElementById("profesional").checked = true;
         } else {
             document.getElementById("profesional").checked = false;
+        }
+
+        var flagMess = document.getElementById("flagMess").value;
+        if (flagMess == "Y") {
+            document.getElementById("mess").checked = true;
+        } else {
+            document.getElementById("mess").checked = false;
+        }
+//        var flagPLT = document.getElementById("flagPLT").value;
+//        if (flagPLT == "Y") {
+//            document.getElementById("plt").checked = true;
+//        } else {
+//            document.getElementById("plt").checked = false;
+//        }
+        var flagPJS = document.getElementById("flagPJS").value;
+        console.log(flagPJS);
+        if (flagPJS == "Y") {
+            document.getElementById("pjs11").checked = true;
+        } else {
+            document.getElementById("pjs11").checked = false;
+        }
+        var flagFingerMobile = document.getElementById("flagFingerMobile").value;
+        if (flagFingerMobile == "Y") {
+            document.getElementById("fingerMobile").checked = true;
+        } else {
+            document.getElementById("fingerMobile").checked = false;
+        }
+        var flagTunjRumah = document.getElementById("flagTunjRumah").value;
+        if (flagTunjRumah == "Y") {
+            document.getElementById("tunjRumah").checked = true;
+        } else {
+            document.getElementById("tunjRumah").checked = false;
+        }
+        var flagTunjAir = document.getElementById("flagTunjAir").value;
+        if (flagTunjAir == "Y") {
+            document.getElementById("tunjAir").checked = true;
+        } else {
+            document.getElementById("tunjAir").checked = false;
+        }
+        var flagTunjListrik = document.getElementById("flagTunjListrik").value;
+        if (flagTunjListrik == "Y") {
+            document.getElementById("tunjListrik").checked = true;
+        } else {
+            document.getElementById("tunjListrik").checked = false;
+        }
+        var flagTunjBbm = document.getElementById("flagTunjBbm").value;
+        if (flagTunjBbm == "Y") {
+            document.getElementById("tunjBbm").checked = true;
+        } else {
+            document.getElementById("tunjBbm").checked = false;
+        }
+
+        var flagBpjsKs = document.getElementById("flagBpjsKs").value;
+        if (flagBpjsKs == "Y") {
+            document.getElementById("bpjsKs").checked = true;
+        } else {
+            document.getElementById("bpjsKs").checked = false;
+        }
+        var flagBpjsTk = document.getElementById("flagBpjsTk").value;
+        if (flagBpjsTk == "Y") {
+            document.getElementById("bpjsTk").checked = true;
+        } else {
+            document.getElementById("bpjsTk").checked = false;
+        }
+        var flagPercobaan = document.getElementById("flagPercobaan").value;
+        if (flagPercobaan == "Y") {
+            document.getElementById("percobaan").checked = true;
+        } else {
+            document.getElementById("percobaan").checked = false;
         }
 
         window.loadStudy= function(nip){
@@ -4418,7 +4735,7 @@
                                 dwr.engine.setAsync(false);
                                 dwr.engine.beginBatch();
                                 BiodataAction.saveEditPengalamanKerja(id, nip, branchId, divisiId, posisiId, tanggal,tanggalKeluar, tipePegawaiId,
-                                        golonganId, perusahaanLain, bidangLain, jabatanLain, aktifFlag, function (listdata) {
+                                        golonganId, perusahaanLain, bidangLain, jabatanLain, aktifFlag, profesiId, pjsFlag, function (listdata) {
                                             alert('Data Successfully Updated');
                                             $('#modal-pengalamanKerja').modal('hide');
                                             $('#myFormPengalaman')[0].reset();
@@ -4939,6 +5256,7 @@
 //                }else{
 //                    $('#flagAktif1').val("Y").change();
 //                }
+                $('#pjsFlag1').val(listdata.pjsFlag);
                 $('#flagAktif1').val(listdata.flagJabatanAktif);
                 $('#pengalamanId').val(listdata.pengalamanId);
                 $('#pengalamanGolonganName').val(listdata.golonganName);
@@ -5506,21 +5824,21 @@
 
     });
 
-    window.cekZakat = function () {
-        if ($('#zakatProfesi').is(":checked")) {
-            $("#flagZakat").val("Y");
-        } else {
-            $("#flagZakat").val("N");
-        }
-    }
+//    window.cekZakat = function () {
+//        if ($('#zakatProfesi').is(":checked")) {
+//            $("#flagZakat").val("Y");
+//        } else {
+//            $("#flagZakat").val("N");
+//        }
+//    }
 
-    window.cekPjs = function () {
-        if ($('#pjs').is(":checked")) {
-            $("#flagPjs").val("Y");
-        } else {
-            $("#flagPjs").val("N");
-        }
-    }
+//    window.cekPjs = function () {
+//        if ($('#pjs').is(":checked")) {
+//            $("#flagPjs").val("Y");
+//        } else {
+//            $("#flagPjs").val("N");
+//        }
+//    }
 
     window.cekAktif = function () {
         if ($('#aktif').is(":checked")) {
@@ -5559,6 +5877,87 @@
             $("#flagTunjProfesional").val("Y");
         } else {
             $("#flagTunjProfesional").val("N");
+        }
+    }
+
+    window.cekMess = function () {
+        if (document.getElementById("mess").checked == true) {
+            $("#flagMess").val("Y");
+        } else {
+            $("#flagMess").val("N");
+        }
+    }
+//    window.cekPLT = function () {
+//        if (document.getElementById("plt").checked == true) {
+//            $("#flagPLT").val("Y");
+//        } else {
+//            $("#flagPLT").val("N");
+//        }
+//    }
+
+    window.cekPJS = function () {
+        if (document.getElementById("pjs11").checked == true) {
+            $("#flagPJS").val("Y");
+        } else {
+            $("#flagPJS").val("N");
+        }
+    }
+
+    window.cekFingerMobile = function () {
+        if (document.getElementById("fingerMobile").checked == true) {
+            $("#flagFingerMobile").val("Y");
+        } else {
+            $("#flagFingerMobile").val("N");
+        }
+    }
+    window.cekTunjRumah = function () {
+        if (document.getElementById("tunjRumah").checked == true) {
+            $("#flagTunjRumah").val("Y");
+        } else {
+            $("#flagTunjRumah").val("N");
+        }
+    }
+    window.cekTunjAir = function () {
+        if (document.getElementById("tunjAir").checked == true) {
+            $("#flagTunjAir").val("Y");
+        } else {
+            $("#flagTunjAir").val("N");
+        }
+    }
+    window.cekTunjListrik = function () {
+        if (document.getElementById("tunjListrik").checked == true) {
+            $("#flagTunjListrik").val("Y");
+        } else {
+            $("#flagTunjListrik").val("N");
+        }
+    }
+    window.cekTunjBbm = function () {
+        if (document.getElementById("tunjBbm").checked == true) {
+            $("#flagTunjBbm").val("Y");
+        } else {
+            $("#flagTunjBbm").val("N");
+        }
+    }
+    window.cekBpjsKs = function () {
+        if (document.getElementById("bpjsKs").checked == true) {
+            $("#flagBpjsKs").val("Y");
+        } else {
+            $("#flagBpjsKs").val("N");
+        }
+    }
+
+    window.cekBpjsTk = function () {
+        if (document.getElementById("bpjsTk").checked == true) {
+            $("#flagBpjsTk").val("Y");
+        } else {
+            $("#flagBpjsTk").val("N");
+        }
+    }
+    window.cekPercobaan = function () {
+        if (document.getElementById("percobaan").checked == true) {
+            $("#flagPercobaan").val("Y");
+        } else {
+            $("#flagPercobaan").val("N");
         }
     }
 

@@ -1,5 +1,6 @@
 package com.neurix.simrs.master.obat.bo;
 
+import com.neurix.akuntansi.master.reportDetail.model.ReportDetail;
 import com.neurix.common.bo.BaseMasterBo;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
@@ -42,4 +43,5 @@ public interface ObatBo{
     public ImSimrsObatEntity getObatEntityByKodeBarang(String id) throws GeneralBOException;
     public List<TransaksiStok> getListReporTransaksiObat(String idPelayanan, String tahun, String bulan, String idObat) throws GeneralBOException;
     public void saveTransaksiStokOpname(Obat bean) throws GeneralBOException;
+    public List<TransaksiStok> getListReportSumaryTransaksiObat(String idPelayanan, String tahun, String bulan) throws GeneralBOException;
 }

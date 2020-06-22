@@ -7,7 +7,9 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.payrollBpjs.bo.PayrollBpjsBo;
 import com.neurix.hris.transaksi.payroll.dao.PayrollBpjsDao;
+import com.neurix.hris.transaksi.payroll.dao.PayrollBpjsHistoryDao;
 import com.neurix.hris.transaksi.payroll.model.ImPayrollBpjsEntity;
+import com.neurix.hris.transaksi.payroll.model.ImPayrollBpjsHistoryEntity;
 import com.neurix.hris.transaksi.payroll.model.PayrollBpjs;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -28,7 +30,16 @@ public class PayrollBpjsBoImpl implements PayrollBpjsBo {
 
     protected static transient Logger logger = Logger.getLogger(PayrollBpjsBoImpl.class);
     private PayrollBpjsDao payrollBpjsDao;
+    private PayrollBpjsHistoryDao payrollBpjsHistoryDao;
     private BranchDao branchDao;
+
+    public PayrollBpjsHistoryDao getPayrollBpjsHistoryDao() {
+        return payrollBpjsHistoryDao;
+    }
+
+    public void setPayrollBpjsHistoryDao(PayrollBpjsHistoryDao payrollBpjsHistoryDao) {
+        this.payrollBpjsHistoryDao = payrollBpjsHistoryDao;
+    }
 
     public BranchDao getBranchDao() {
         return branchDao;
@@ -63,7 +74,7 @@ public class PayrollBpjsBoImpl implements PayrollBpjsBo {
             String payrollSkalaGajiId = bean.getBpjsId();
 
             ImPayrollBpjsEntity imPayrollSkalaGajiEntity = null;
-
+            ImPayrollBpjsHistoryEntity historyEntity = new ImPayrollBpjsHistoryEntity();
             try {
                 // Get data from database by ID
                 imPayrollSkalaGajiEntity = payrollBpjsDao.getById("bpjsId", payrollSkalaGajiId);
@@ -73,6 +84,48 @@ public class PayrollBpjsBoImpl implements PayrollBpjsBo {
             }
 
             if (imPayrollSkalaGajiEntity != null) {
+                //entity history
+                String payrollBpjsHistoryId;
+                try {
+                    // Generating ID, get from postgre sequence
+                    payrollBpjsHistoryId = payrollBpjsHistoryDao.getNextBpjsHistory();
+                } catch (HibernateException e) {
+                    logger.error("[PayrollTunjanganJabatanStrukturalBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence payrollTunjanganJabatanStruktural id, please info to your admin..." + e.getMessage());
+                }
+                historyEntity.setBpjsIdHistory(payrollBpjsHistoryId);
+                historyEntity.setBpjsId(imPayrollSkalaGajiEntity.getBpjsId());
+                historyEntity.setMinBpjsKs(imPayrollSkalaGajiEntity.getMinBpjsKs());
+                historyEntity.setMaxBpjsKs(imPayrollSkalaGajiEntity.getMaxBpjsKs());
+                historyEntity.setMinBpjsTk(imPayrollSkalaGajiEntity.getMinBpjsTk());
+                historyEntity.setMaxBpjsTk(imPayrollSkalaGajiEntity.getMaxBpjsTk());
+                historyEntity.setBranchId(imPayrollSkalaGajiEntity.getBranchId());
+                historyEntity.setBranchName(imPayrollSkalaGajiEntity.getBranchName());
+                historyEntity.setIuranBpjsKsKaryPersen(imPayrollSkalaGajiEntity.getIuranBpjsKsKaryPersen());
+                historyEntity.setIuranBpjsKsPersPersen(imPayrollSkalaGajiEntity.getIuranBpjsKsPersPersen());
+                historyEntity.setIuranBpjsTkKaryPersen(imPayrollSkalaGajiEntity.getIuranBpjsTkKaryPersen());
+                historyEntity.setIuranBpjsTkPersPersen(imPayrollSkalaGajiEntity.getIuranBpjsTkPersPersen());
+                historyEntity.setIuranKary(imPayrollSkalaGajiEntity.getIuranKary());
+                historyEntity.setJpkKary(imPayrollSkalaGajiEntity.getJpkKary());
+                historyEntity.setJkkPers(imPayrollSkalaGajiEntity.getJkkPers());
+                historyEntity.setJhtPers(imPayrollSkalaGajiEntity.getJhtPers());
+                historyEntity.setJkmPers(imPayrollSkalaGajiEntity.getJkmPers());
+                historyEntity.setJpkPers(imPayrollSkalaGajiEntity.getJpkPers());
+                historyEntity.setIuranPers(imPayrollSkalaGajiEntity.getIuranPers());
+                historyEntity.setCreatedDate(imPayrollSkalaGajiEntity.getLastUpdate());
+                historyEntity.setCreatedWho(imPayrollSkalaGajiEntity.getLastUpdateWho());
+                historyEntity.setLastUpdate(imPayrollSkalaGajiEntity.getLastUpdate());
+                historyEntity.setLastUpdateWho(imPayrollSkalaGajiEntity.getLastUpdateWho());
+                historyEntity.setFlag("Y");
+                historyEntity.setAction(imPayrollSkalaGajiEntity.getAction());
+
+                try {
+                    // insert into database
+                    payrollBpjsHistoryDao.addAndSave(historyEntity);
+                } catch (HibernateException e) {
+                    logger.error("[PayrollTunjanganJabatanStrukturalBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data PayrollTunjanganJabatanStruktural, please info to your admin..." + e.getMessage());
+                }
 
                 // Modify from bean to entity serializable
                 imPayrollSkalaGajiEntity.setBpjsId(bean.getBpjsId());
@@ -108,6 +161,7 @@ public class PayrollBpjsBoImpl implements PayrollBpjsBo {
             String payrollBpjsId = bean.getBpjsId();
 
             ImPayrollBpjsEntity imPayrollBpjsEntity = null;
+            ImPayrollBpjsHistoryEntity historyEntity = new ImPayrollBpjsHistoryEntity();
             //ImPayrollBpjsHistoryEntity imPayrollBpjsHistoryEntity = new ImPayrollBpjsHistoryEntity();
             try {
                 // Get data from database by ID
@@ -119,6 +173,49 @@ public class PayrollBpjsBoImpl implements PayrollBpjsBo {
             }
 
             if (imPayrollBpjsEntity != null) {
+                //entity history
+                String payrollBpjsHistoryId;
+                try {
+                    // Generating ID, get from postgre sequence
+                    payrollBpjsHistoryId = payrollBpjsHistoryDao.getNextBpjsHistory();
+                } catch (HibernateException e) {
+                    logger.error("[PayrollTunjanganJabatanStrukturalBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence payrollTunjanganJabatanStruktural id, please info to your admin..." + e.getMessage());
+                }
+                historyEntity.setBpjsIdHistory(payrollBpjsHistoryId);
+                historyEntity.setBpjsId(imPayrollBpjsEntity.getBpjsId());
+                historyEntity.setMinBpjsKs(imPayrollBpjsEntity.getMinBpjsKs());
+                historyEntity.setMaxBpjsKs(imPayrollBpjsEntity.getMaxBpjsKs());
+                historyEntity.setMinBpjsTk(imPayrollBpjsEntity.getMinBpjsTk());
+                historyEntity.setMaxBpjsTk(imPayrollBpjsEntity.getMaxBpjsTk());
+                historyEntity.setBranchId(imPayrollBpjsEntity.getBranchId());
+                historyEntity.setBranchName(imPayrollBpjsEntity.getBranchName());
+                historyEntity.setIuranBpjsKsKaryPersen(imPayrollBpjsEntity.getIuranBpjsKsKaryPersen());
+                historyEntity.setIuranBpjsKsPersPersen(imPayrollBpjsEntity.getIuranBpjsKsPersPersen());
+                historyEntity.setIuranBpjsTkKaryPersen(imPayrollBpjsEntity.getIuranBpjsTkKaryPersen());
+                historyEntity.setIuranBpjsTkPersPersen(imPayrollBpjsEntity.getIuranBpjsTkPersPersen());
+                historyEntity.setIuranKary(imPayrollBpjsEntity.getIuranKary());
+                historyEntity.setJpkKary(imPayrollBpjsEntity.getJpkKary());
+                historyEntity.setJkkPers(imPayrollBpjsEntity.getJkkPers());
+                historyEntity.setJhtPers(imPayrollBpjsEntity.getJhtPers());
+                historyEntity.setJkmPers(imPayrollBpjsEntity.getJkmPers());
+                historyEntity.setJpkPers(imPayrollBpjsEntity.getJpkPers());
+                historyEntity.setIuranPers(imPayrollBpjsEntity.getIuranPers());
+                historyEntity.setCreatedDate(imPayrollBpjsEntity.getLastUpdate());
+                historyEntity.setCreatedWho(imPayrollBpjsEntity.getLastUpdateWho());
+                historyEntity.setLastUpdate(imPayrollBpjsEntity.getLastUpdate());
+                historyEntity.setLastUpdateWho(imPayrollBpjsEntity.getLastUpdateWho());
+                historyEntity.setFlag("Y");
+                historyEntity.setAction(imPayrollBpjsEntity.getAction());
+
+                try {
+                    // insert into database
+                    payrollBpjsHistoryDao.addAndSave(historyEntity);
+                } catch (HibernateException e) {
+                    logger.error("[PayrollTunjanganJabatanStrukturalBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data PayrollTunjanganJabatanStruktural, please info to your admin..." + e.getMessage());
+                }
+
                 /*imPayrollBpjsHistoryEntity.setId(historyId);
                 imPayrollBpjsHistoryEntity.setPayrollBpjsId(imPayrollBpjsEntity.getPayrollBpjsId());
                 imPayrollBpjsHistoryEntity.setPayrollBpjsName(imPayrollBpjsEntity.getPayrollBpjsName());

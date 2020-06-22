@@ -757,7 +757,7 @@
                                                 </a>
                                             </display:column>--%>
 
-                                            <display:column style="text-align:center;" media="html" title="Cuti">
+                                            <display:column style="text-align:center;" media="html" title="Cutitem-cutii">
                                                 <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-cuti">
                                                     <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">
                                                 </a>

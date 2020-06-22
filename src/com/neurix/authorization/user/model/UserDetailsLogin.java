@@ -45,7 +45,15 @@ public class UserDetailsLogin implements UserDetails, Serializable {
     private boolean isNonBlocked = false;
     private boolean isUserCredentialsNonExpired = false;
     private boolean isEnabled = false;
+    private String flagFingerMoblie;
 
+    public String getFlagFingerMoblie() {
+        return flagFingerMoblie;
+    }
+
+    public void setFlagFingerMoblie(String flagFingerMoblie) {
+        this.flagFingerMoblie = flagFingerMoblie;
+    }
 
     //set customer id, customer name, npwp, and address -> for user payment gateway
     private String customerId;

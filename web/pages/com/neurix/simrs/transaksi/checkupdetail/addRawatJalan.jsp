@@ -849,6 +849,9 @@
                             </table>
                         </s:if>
                         <s:else>
+                            <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
+                                    onclick="showModal(2)"><i class="fa fa-plus"></i> Tambah Tindakan
+                            </button>
                             <table class="table table-bordered table-striped">
                                 <thead>
                                 <tr bgcolor="#90ee90">
@@ -868,11 +871,11 @@
                         <h3 class="box-title"><i class="fa fa-hospital-o"></i> Penunjang Medis</h3>
                     </div>
                     <div class="box-body">
-                        <s:if test='headerDetailCheckup.idJenisPeriksaPasien != "paket_individu" && headerDetailCheckup.idJenisPeriksaPasien != "paket_perusahaan"'>
+                        <%--<s:if test='headerDetailCheckup.idJenisPeriksaPasien != "paket_individu" && headerDetailCheckup.idJenisPeriksaPasien != "paket_perusahaan"'>--%>
                         <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
                                 onclick="showModal(4)"><i class="fa fa-plus"></i> Penunjang Medis
                         </button>
-                        </s:if>
+                        <%--</s:if>--%>
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">

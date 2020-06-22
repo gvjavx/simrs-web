@@ -163,6 +163,9 @@
         <property name="flagCall">
             <column name="flag_call" sql-type="varchar" length="1"/>
         </property>
+        <property name="idTransaksiOnline">
+            <column name="id_transaksi_online" sql-type="varchar"/>
+        </property>
 
     </class>
 </hibernate-mapping>

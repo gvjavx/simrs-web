@@ -119,8 +119,21 @@ public class Biodata extends BaseModel {
     private String flagTunjSiaga;
     private String flagTunjProfesional;
 
+    private String positionPltId;
+    private String flagPLT;
+    private String flagPJS;
+    private String flagFingerMobile;
+    private String flagTunjRumah;
+    private String flagTunjAir;
+    private String flagTunjListrik;
+    private String flagTunjBbm;
+    private String flagBpjsKs;
+    private String flagBpjsTk;
+    private String flagPercobaan;
+
     private Date tanggalPraPensiun;
     private String stTanggalPraPensiun;
+    private String nipLama;
 
     public String getProfesiName() {
         return profesiName;
@@ -940,5 +953,101 @@ public class Biodata extends BaseModel {
 
     public void setTanggalPraPensiun(Date tanggalPraPensiun) {
         this.tanggalPraPensiun = tanggalPraPensiun;
+    }
+
+    public String getFlagBpjsKs() {
+        return flagBpjsKs;
+    }
+
+    public void setFlagBpjsKs(String flagBpjsKs) {
+        this.flagBpjsKs = flagBpjsKs;
+    }
+
+    public String getFlagBpjsTk() {
+        return flagBpjsTk;
+    }
+
+    public void setFlagBpjsTk(String flagBpjsTk) {
+        this.flagBpjsTk = flagBpjsTk;
+    }
+
+    public String getFlagFingerMobile() {
+        return flagFingerMobile;
+    }
+
+    public void setFlagFingerMobile(String flagFingerMobile) {
+        this.flagFingerMobile = flagFingerMobile;
+    }
+
+    public String getFlagPercobaan() {
+        return flagPercobaan;
+    }
+
+    public void setFlagPercobaan(String flagPercobaan) {
+        this.flagPercobaan = flagPercobaan;
+    }
+
+    public String getFlagPJS() {
+        return flagPJS;
+    }
+
+    public void setFlagPJS(String flagPJS) {
+        this.flagPJS = flagPJS;
+    }
+
+    public String getFlagPLT() {
+        return flagPLT;
+    }
+
+    public void setFlagPLT(String flagPLT) {
+        this.flagPLT = flagPLT;
+    }
+
+    public String getFlagTunjAir() {
+        return flagTunjAir;
+    }
+
+    public void setFlagTunjAir(String flagTunjAir) {
+        this.flagTunjAir = flagTunjAir;
+    }
+
+    public String getFlagTunjBbm() {
+        return flagTunjBbm;
+    }
+
+    public void setFlagTunjBbm(String flagTunjBbm) {
+        this.flagTunjBbm = flagTunjBbm;
+    }
+
+    public String getFlagTunjListrik() {
+        return flagTunjListrik;
+    }
+
+    public void setFlagTunjListrik(String flagTunjListrik) {
+        this.flagTunjListrik = flagTunjListrik;
+    }
+
+    public String getFlagTunjRumah() {
+        return flagTunjRumah;
+    }
+
+    public void setFlagTunjRumah(String flagTunjRumah) {
+        this.flagTunjRumah = flagTunjRumah;
+    }
+
+    public String getPositionPltId() {
+        return positionPltId;
+    }
+
+    public void setPositionPltId(String positionPltId) {
+        this.positionPltId = positionPltId;
+    }
+
+    public String getNipLama() {
+        return nipLama;
+    }
+
+    public void setNipLama(String nipLama) {
+        this.nipLama = nipLama;
     }
 }

@@ -212,9 +212,10 @@ public class PayrollSkalaGajiAction extends BaseMasterAction{
 
     public String cekIfExistDwr(String golonganId){
         String status = "";
+        String tahun= "";
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PayrollSkalaGajiBo skalaGajiBo = (PayrollSkalaGajiBo) ctx.getBean("payrollSkalaGajiBo");
-        status = skalaGajiBo.cekStatus(golonganId);
+        status = skalaGajiBo.cekStatus(golonganId,tahun);
         return status;
 
     }

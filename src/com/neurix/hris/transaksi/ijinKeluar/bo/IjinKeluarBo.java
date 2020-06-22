@@ -6,6 +6,7 @@ import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluar;
 import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluarAnggota;
 import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -18,6 +19,9 @@ import java.util.List;
 public interface IjinKeluarBo extends BaseMasterBo<IjinKeluar> {
     public void saveDelete(IjinKeluar bean) throws GeneralBOException;
     public void saveEdit(IjinKeluar bean) throws GeneralBOException;
+
+    public void savePengajuanBatal(IjinKeluar bean) throws GeneralBOException;
+    public void saveTolakPengajuanBatal(IjinKeluar bean) throws GeneralBOException;
 
     void saveEditIjinKeluarKantor(IjinKeluar bean) throws GeneralBOException;
 
@@ -40,4 +44,11 @@ public interface IjinKeluarBo extends BaseMasterBo<IjinKeluar> {
     public List getListDispensasiMasal(String unit);
 
     public void saveAddDispensasiMasal(IjinKeluar bean);
+
+    public String getNextSuratDokterId()throws GeneralBOException;
+
+    public String cekStatusIjin(String nip) throws GeneralBOException;
+    public String cekAgama(String nip, String ijinId, String agama) throws GeneralBOException;
+    public String cekStatus(String nip, Date tglAwal, Date tglAkhir) throws GeneralBOException;
+    public String cekIfAbsensi(String nip, String tglDari, String tglSelesai);
 }

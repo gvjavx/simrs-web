@@ -12,9 +12,11 @@ import java.sql.Timestamp;
  */
 public class ImPositionBagianHistoryEntity implements Serializable {
 
-    private String id;
+    private String idHistory;
     private String bagianId;
     private String bagianName;
+    private String branchId;
+    private String kodering;
     private String flag;
     private String action;
     private Timestamp createdDate;
@@ -22,12 +24,12 @@ public class ImPositionBagianHistoryEntity implements Serializable {
     private String createdWho;
     private String lastUpdateWho;
 
-    public String getId() {
-        return id;
+    public String getIdHistory() {
+        return idHistory;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setIdHistory(String idHistory) {
+        this.idHistory = idHistory;
     }
 
     public String getBagianId() {
@@ -92,5 +94,21 @@ public class ImPositionBagianHistoryEntity implements Serializable {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getKodering() {
+        return kodering;
+    }
+
+    public void setKodering(String kodering) {
+        this.kodering = kodering;
     }
 }

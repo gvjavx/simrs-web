@@ -89,6 +89,7 @@
 
     <!-- for Payroll -->
     <import resource="sshconfig/com/neurix/hris/master/payrollTunjanganStrategis/spring/PayrollTunjanganStrategisBean.xml"/>
+    <import resource="sshconfig/com/neurix/hris/master/mappingpersengaji/spring/MappingPersenGajiBean.xml"/>
 
     <import resource="sshconfig/com/neurix/hris/master/payrollTunjanganJabatanStruktural/spring/PayrollTunjanganJabatanStrukturalBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/transaksi/payroll/spring/PayrollBean.xml"/>
@@ -197,6 +198,11 @@
     <import resource="sshconfig/com/neurix/simrs/master/jenisperiksapasien/spring/AsuransiBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/daftarulang/spring/DaftarUlangBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/plankegiatanrawat/spring/PlanKegiatanRawatBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/antriantelemedic/spring/AntrianTelemedicBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/verifikatorpembayaran/spring/VerifikatorPembayaranBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/kurir/spring/KurirBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/reseponline/spring/ResepOnlineBean.xml"/>
+
 
     <!--BEAN AKUNTANSI HERE-->
     <import resource="sshconfig/com/neurix/akuntansi/master/kodeRekening/spring/KodeRekeningBean.xml"/>
@@ -255,4 +261,5 @@
     <import resource="sshconfig/com/neurix/simrs/transaksi/respirasi/spring/RespirasiBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/icu/spring/HeaderIcuBean.xml"/>
 
+    <import resource="sshconfig/com/neurix/hris/master/mappingpersengaji/spring/MappingPersenGajiBean.xml"/>
 </beans>

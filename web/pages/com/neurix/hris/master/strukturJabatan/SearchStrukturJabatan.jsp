@@ -83,7 +83,11 @@
                     result = '';
                 }else{
                     if (confirm('Are you sure you want to save this Record?')) {
-                        StrukturJabatanAction.saveEdit(id, branch, position, parent,function(listdata) {
+                        console.log("Test1 "+id);
+                        console.log("Test2 "+branch);
+                        console.log("Test3 "+position);
+                        console.log("Test4 "+parent);
+                        StrukturJabatanAction.saveEditStruktur(id, branch, position, parent,function(listdata) {
                             alert('Record has been saved successfully.');
                             location.reload();
                         });

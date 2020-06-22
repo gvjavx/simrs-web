@@ -77,7 +77,18 @@ public class IjinKeluar extends BaseModel {
 
     private String os;
     private String checkedValue;
+    private String stTglMelahirkan;
+    private boolean dispenLahir = false;
+    private String uploadFile;
+    private String fileType;
+    private String filePath;
+    private Date tglAkhirBaru;
+    private String tanggalAkhirBaru;
+    private BigInteger lamaIjinBaru;
 
+    private Boolean pengajuanBatal;
+    private String flagPengajuanBatal;
+    private String roleId;
 
     public String getOs() {
         return os;
@@ -556,5 +567,93 @@ public class IjinKeluar extends BaseModel {
 
     public void setUserNameActive(String userNameActive) {
         this.userNameActive = userNameActive;
+    }
+
+    public String getStTglMelahirkan() {
+        return stTglMelahirkan;
+    }
+
+    public void setStTglMelahirkan(String stTglMelahirkan) {
+        this.stTglMelahirkan = stTglMelahirkan;
+    }
+
+    public boolean isDispenLahir() {
+        return dispenLahir;
+    }
+
+    public void setDispenLahir(boolean dispenLahir) {
+        this.dispenLahir = dispenLahir;
+    }
+
+    public String getUploadFile() {
+        return uploadFile;
+    }
+
+    public void setUploadFile(String uploadFile) {
+        this.uploadFile = uploadFile;
+    }
+
+    public String getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public BigInteger getLamaIjinBaru() {
+        return lamaIjinBaru;
+    }
+
+    public void setLamaIjinBaru(BigInteger lamaIjinBaru) {
+        this.lamaIjinBaru = lamaIjinBaru;
+    }
+
+    public String getTanggalAkhirBaru() {
+        return tanggalAkhirBaru;
+    }
+
+    public void setTanggalAkhirBaru(String tanggalAkhirBaru) {
+        this.tanggalAkhirBaru = tanggalAkhirBaru;
+    }
+
+    public Date getTglAkhirBaru() {
+        return tglAkhirBaru;
+    }
+
+    public void setTglAkhirBaru(Date tglAkhirBaru) {
+        this.tglAkhirBaru = tglAkhirBaru;
+    }
+
+    public String getFlagPengajuanBatal() {
+        return flagPengajuanBatal;
+    }
+
+    public void setFlagPengajuanBatal(String flagPengajuanBatal) {
+        this.flagPengajuanBatal = flagPengajuanBatal;
+    }
+
+    public Boolean getPengajuanBatal() {
+        return pengajuanBatal;
+    }
+
+    public void setPengajuanBatal(Boolean pengajuanBatal) {
+        this.pengajuanBatal = pengajuanBatal;
+    }
+
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
     }
 }

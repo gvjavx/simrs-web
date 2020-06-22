@@ -56,6 +56,12 @@ public class IjinKeluarEntity implements Serializable {
 
     private String divisiId;
     private String bagianId;
+    private Date tanggalAkhirOld;
+    private String suratDokter;
+    private Date tglMelahirkan;
+    private BigInteger lamaIjinOld;
+
+    private String flagPengajuanBatal;
 
     public String getBagianId() {
         return bagianId;
@@ -384,4 +390,45 @@ public class IjinKeluarEntity implements Serializable {
     public void setJumlahCuti(BigInteger jumlahCuti) {
         this.jumlahCuti = jumlahCuti;
     }
+
+    public BigInteger getLamaIjinOld() {
+        return lamaIjinOld;
+    }
+
+    public void setLamaIjinOld(BigInteger lamaIjinOld) {
+        this.lamaIjinOld = lamaIjinOld;
+    }
+
+    public Date getTanggalAkhirOld() {
+        return tanggalAkhirOld;
+    }
+
+    public void setTanggalAkhirOld(Date tanggalAkhirOld) {
+        this.tanggalAkhirOld = tanggalAkhirOld;
+    }
+
+    public String getSuratDokter() {
+        return suratDokter;
+    }
+
+    public void setSuratDokter(String suratDokter) {
+        this.suratDokter = suratDokter;
+    }
+
+    public Date getTglMelahirkan() {
+        return tglMelahirkan;
+    }
+
+    public void setTglMelahirkan(Date tglMelahirkan) {
+        this.tglMelahirkan = tglMelahirkan;
+    }
+
+    public String getFlagPengajuanBatal() {
+        return flagPengajuanBatal;
+    }
+
+    public void setFlagPengajuanBatal(String flagPengajuanBatal) {
+        this.flagPengajuanBatal = flagPengajuanBatal;
+    }
+
 }
