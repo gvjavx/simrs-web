@@ -12,10 +12,11 @@ function setDataPasien(){
     var alr = $('.alergi-pasien').length;
     var bb = $('.berat-pasien').length;
     var tb = $('.tinggi-pasien').length;
+    var sel = $('.select2').length;
 
     if (jam > 0) {
         $('.jam').timepicker();
-        $('.jam').val(converterDateTime(new Date()));
+        $('.jam').val(converterTime(new Date()));
     }
     if (tgl > 0) {
         $('.tgl').datepicker({
@@ -60,5 +61,8 @@ function setDataPasien(){
     }
     if (tb > 0) {
         $('.tinggi-pasien').val(tinggiBadan);
+    }
+    if(sel > 0){
+        $('.select2').select2();
     }
 }

@@ -148,6 +148,256 @@ ALTER TABLE public.seq_tindakan_rawat_icd9
 // 10 Juni 2020
 ALTER TABLE public.it_simrs_asesmen_ugd ADD tipe varchar(1000);
 
+//11 Juni 2020
+
+CREATE TABLE public.it_simrs_edukasi_pasien_teritegrasi
+(
+  id_edukasi_pasien_teritegrasi character varying(30) NOT NULL,
+  id_detail_checkup character varying(30),
+  durasi character varying(100),
+  edukator character varying(100),
+  edukasi text,
+  pemahaman_awal text,
+  metode_edukasi character varying(100),
+  media_edukasi character varying(100),
+  evaluasi character varying(100),
+  ttd_pasien character varying(100),
+  ttd_staf character varying(100),
+  keterangan character varying(1000),
+  tipe character varying(100),
+  flag character varying(1),
+  action character varying(1),
+  created_who character varying(100),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  CONSTRAINT pk_id_edukasi_pasien_teritegrasi PRIMARY KEY (id_edukasi_pasien_teritegrasi)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_edukasi_pasien_teritegrasi
+  OWNER TO postgres;
+
+//SEQ
+CREATE SEQUENCE public.seq_edukasi_pasien
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE public.seq_edukasi_pasien
+  OWNER TO postgres;
+
+//16 Juni 2020
+ALTER TABLE public.it_simrs_rencana_asuhan_keperawatan
+ADD implementasi text,
+ADD evaluasi text;
+
+ALTER TABLE public.it_simrs_rencana_asuhan_keperawatan
+ALTER COLUMN waktu TYPE varchar(100) USING waktu::varchar(100);
+
+ALTER TABLE public.it_simrs_rencana_asuhan_keperawatan RENAME COLUMN tujuan TO hasil;
+
+// icu
+CREATE TABLE public.it_simrs_asesmen_icu
+(
+  id_asesmen_icu character varying(30) NOT NULL,
+  id_detail_checkup character varying(30),
+  parameter text,
+  jawaban text,
+  jenis text,
+  keterangan text,
+  tipe text,
+  score Integer,
+  flag character varying(1),
+  action character varying(1),
+  created_who character varying(100),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  CONSTRAINT pk_id_asesmen_icu PRIMARY KEY (id_asesmen_icu)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_asesmen_icu
+  OWNER TO postgres;
+
+  //SEQ
+ CREATE SEQUENCE public.seq_asesmen_icu
+   INCREMENT 1
+   MINVALUE 1
+   MAXVALUE 9223372036854775807
+   START 1
+   CACHE 1;
+ ALTER TABLE public.seq_asesmen_icu
+   OWNER TO postgres;
+
+//17 Juni 2020
+
+CREATE TABLE public.it_simrs_hemodinamika
+(
+  id_hemodinamika character varying(30) NOT NULL,
+  id_detail_checkup character varying(30),
+  waktu character varying(100),
+  tanggal date,
+  tensi Integer,
+  bp Integer,
+  hi Integer,
+  rr Integer,
+  ekg Integer,
+  icp Integer,
+  ibp Integer,
+  cvp Integer,
+  map Integer,
+  keterangan text,
+  flag character varying(1),
+  action character varying(1),
+  created_who character varying(100),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  CONSTRAINT pk_id_hemodinamika PRIMARY KEY (id_hemodinamika)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_hemodinamika
+  OWNER TO postgres;
+
+  //SEQ
+ CREATE SEQUENCE public.seq_hemodinamika
+   INCREMENT 1
+   MINVALUE 1
+   MAXVALUE 9223372036854775807
+   START 1
+   CACHE 1;
+ ALTER TABLE public.seq_hemodinamika
+   OWNER TO postgres;
+
+ //18 Juni 2020
+
+ CREATE TABLE public.it_simrs_respirasi
+ (
+   id_respirasi character varying(30) NOT NULL,
+   id_detail_checkup character varying(30),
+   waktu character varying(100),
+   tanggal date,
+   gcs character varying(100),
+   diameter_pupil character varying(100),
+   reflek_cahaya character varying(100),
+   tk character varying(100),
+   kk character varying(100),
+   jenis_nk_rm_nrm character varying(100),
+   nk_rm_nrm character varying(100),
+   jenis_t_piece_j_rise character varying(100),
+   t_piece_j_rise character varying(100),
+   tipe_ventilasi character varying(100),
+   jenis_peep_cpap_et character varying(100),
+   peep_cpap_et character varying(100),
+   frekwensi character varying(100),
+   tv character varying(100),
+   mv character varying(100),
+   jenis_p_support_p_asb character varying(100),
+   p_support_p_asb character varying(100),
+   jenis_p_ins_p_con character varying(100),
+   p_ins_p_con character varying(100),
+   triger character varying(100),
+   ins_time character varying(100),
+   flow character varying(100),
+   jenis_fio_kon character varying(100),
+   fio_kon character varying(100),
+   jenis_ukuran_kedalamaan_ett character varying(100),
+   ukuran_kedalamaan_ett character varying(100),
+   spo character varying(100),
+   secret character varying(100),
+   keterangan character varying(100),
+   flag character varying(1),
+   action character varying(1),
+   created_who character varying(100),
+   created_date timestamp without time zone,
+   last_update timestamp without time zone,
+   last_update_who character varying(100),
+   CONSTRAINT pk_id_respirasi PRIMARY KEY (id_respirasi)
+ )
+ WITH (
+   OIDS=FALSE
+ );
+ ALTER TABLE public.it_simrs_respirasi
+   OWNER TO postgres;
+
+   //SEQ
+    CREATE SEQUENCE public.seq_respirasi
+      INCREMENT 1
+      MINVALUE 1
+      MAXVALUE 9223372036854775807
+      START 1
+      CACHE 1;
+    ALTER TABLE public.seq_respirasi
+      OWNER TO postgres;
+
+// 19 Juni 2020
+CREATE TABLE public.it_simrs_header_icu
+(
+  id_header_icu character varying(30) NOT NULL,
+  id_detail_checkup character varying(30),
+  jenis character varying(1000),
+  kategori character varying(1000),
+  flag character varying(1),
+  action character varying(1),
+  created_who character varying(100),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  CONSTRAINT pk_id_header_icu PRIMARY KEY (id_header_icu)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_header_icu
+  OWNER TO postgres;
+
+
+CREATE TABLE public.it_simrs_detail_icu
+(
+  id_detail_icu character varying(30) NOT NULL,
+  id_header_icu character varying(30),
+  nilai character varying(1000),
+  waktu character varying(100),
+  flag character varying(1),
+  action character varying(1),
+  created_who character varying(100),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  CONSTRAINT pk_id_detail_icu PRIMARY KEY (id_detail_icu)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_detail_icu
+  OWNER TO postgres;
+
+//SEQ
+    CREATE SEQUENCE public.seq_header_icu
+      INCREMENT 1
+      MINVALUE 1
+      MAXVALUE 9223372036854775807
+      START 1
+      CACHE 1;
+    ALTER TABLE public.seq_header_icu
+      OWNER TO postgres;
+
+//SEQ
+    CREATE SEQUENCE public.seq_detail_icu
+      INCREMENT 1
+      MINVALUE 1
+      MAXVALUE 9223372036854775807
+      START 1
+      CACHE 1;
+    ALTER TABLE public.seq_detail_icu
+      OWNER TO postgres;
 
 
 

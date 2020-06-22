@@ -24,8 +24,6 @@
 
     <link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/radio_checkbox.css"/>">
 
-    <link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/radio_checkbox.css"/>">
-
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanRawatAction.js"/>'></script>
@@ -279,8 +277,6 @@
                                     <img border="2" id="img_ktp" src="<s:property value="headerDetailCheckup.urlKtp"/>"
                                          style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">
                                 </div>
-                                <%--<img border="2" class="card card-4 pull-right" src="<s:url value="/pages/images/ktp-tes.jpg"/>"--%>
-                                <%--style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px;">--%>
                                 <table class="table table-striped">
                                     <tr>
                                         <td><b>Jenis Pasien</b></td>
@@ -2082,7 +2078,7 @@
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/datapasien.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenUgd.js"/>'></script>
-<script type='text/javascript' src='<s:url value="/pages/dist/js/addRawatJalan.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/addrawatjalan.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/nyeri.js"/>'></script>
 

@@ -454,6 +454,15 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/asesmenuspesialis/hibernate/ItSimrsAsesmenSpesialisEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/tindakanrawaticd9/hibernate/ItSimrsTindakanRawatICD9Entity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/tindakanicd9/hibernate/ImSimrsTindakanICD9Entity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/edukasipasien/hibernate/ItSimrsEdukasiPasienEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/askep/hibernate/ImSimrsDetailAsuhanKeperawatanEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/askep/hibernate/ImSimrsDiagnosaAsuhanKeperawatanEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/asesmenicu/hibernate/ItSimrsAsesmenIcuEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/hemodinamika/hibernate/ItSimrsHemodinamikaEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/respirasi/hibernate/ItSimrsRespirasiEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/icu/hibernate/ItSimrsHeaderIcuEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/icu/hibernate/ItSimrsDetailIcuEntity.hbm.xml</value>
+
             </list>
         </property>
     </bean>

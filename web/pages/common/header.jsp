@@ -16,6 +16,7 @@
 <%--<link type="text/css" href="<s:url value="/pages/css/style_2.css"/>" rel="stylesheet"/>--%>
 <link type="text/css" href="<s:url value="/pages/bootstraplte/css/bootstrap.min.css"/>" rel="stylesheet"/>
 <link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/select2.css"/>">
+<link rel="stylesheet" href="<s:url value="/pages/plugins/morris/morris.css"/>">
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
 <%--<link type="text/css" href="<s:url value="/pages/bootstraplte/css/font-awesome.min.css"/>" rel="stylesheet"/>--%>
@@ -94,7 +95,8 @@ apply the skin class to the body tag so the changes take effect.
 <script src="<s:url value="/pages/plugins/pace/pace.min.js"/>"></script>
 <script src="<s:url value="/pages/plugins/iCheck/icheck.min.js"/>"></script>
 <script type="text/javascript" src="<s:url value="/pages/bootstraplte/js/jquery-ui.js"/>"></script>
-
+<script src="<s:url value="/pages/plugins/morris/morris.min.js"/>"></script>
+<script src="<s:url value="/pages/plugins/morris/raphael.min.js"/>"></script>
 <%--<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>--%>
 <%--<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>--%>
 <%--<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>--%>
@@ -524,6 +526,22 @@ apply the skin class to the body tag so the changes take effect.
         return fa;
     }
 
+    function converterDateYmd(dateTime) {
+
+        var today = "";
+        if (dateTime != '' && dateTime != null) {
+
+            today = new Date(dateTime);
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+            var hh = ((today.getHours() < 10 ? '0' : '') + today.getHours());
+            var min = ((today.getMinutes() < 10 ? '0' : '') + today.getMinutes());
+            var sec = today.getSeconds();
+            today = yyyy + '-' + mm + '-' + dd;
+        }
+        return today;
+    }
 </script>
 
 

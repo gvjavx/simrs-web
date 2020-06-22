@@ -1498,7 +1498,6 @@ function detailMonHD(jenis) {
 
         HemodialisaAction.getListHemodialisa(idDetailCheckup, jenis, function (res) {
             if (res.length > 0) {
-                console.log(res);
                 $.each(res, function (i, item) {
                     var jwb = "";
                     var jwb2 = "";

@@ -1270,6 +1270,214 @@ function saveAsesmenUgd(jenis) {
             }
         }
 
+        if("nyeri_anak" == jenis){
+            var va1 = $('[name=ya1]:checked').val();
+            var va2 = $('[name=ya2]:checked').val();
+            var va3 = $('[name=ya3]:checked').val();
+            var va4 = $('[name=ya4]:checked').val();
+            var va5 = $('[name=ya5]:checked').val();
+            var va6 = $('[name=ya6]:checked').val();
+
+            if (va1 && va2 && va3 && va4 && va5 && va6 != undefined) {
+
+                var isi2 = va2.split("|")[0];
+                var isi3 = va3.split("|")[0];
+                var isi4 = va4.split("|")[0];
+                var isi5 = va5.split("|")[0];
+                var isi6 = va6.split("|")[0];
+
+                var skor2 = va2.split("|")[1];
+                var skor3 = va3.split("|")[1];
+                var skor4 = va4.split("|")[1];
+                var skor5 = va5.split("|")[1];
+                var skor6 = va6.split("|")[1];
+
+                data.push({
+                    'parameter': 'Apakah terdapat keluhan nyeri',
+                    'jawaban': va1,
+                    'keterangan': jenis,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Face',
+                    'jawaban': isi2,
+                    'keterangan': jenis,
+                    'skor': skor2,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Leg',
+                    'jawaban': isi3,
+                    'keterangan': jenis,
+                    'skor': skor3,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Activity',
+                    'jawaban': isi4,
+                    'keterangan': jenis,
+                    'skor': skor4,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Cry',
+                    'jawaban': isi5,
+                    'keterangan': jenis,
+                    'skor': skor5,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Consolability',
+                    'jawaban': isi6,
+                    'keterangan': jenis,
+                    'skor': skor6,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                cek = true;
+            }
+        }
+
+        if("jatuh_anak" == jenis){
+            var skor1 = "";
+            var skor2 = "";
+            var parUmur = parseInt(umur);
+
+            if(parUmur < 3){
+                skor1 = "4";
+            }else if(parUmur >= 3 && parUmur <= 7){
+                skor1 = "3";
+            }else if (parUmur >= 8 && parUmur <= 13){
+                skor1 = "2";
+            }else if (parUmur >= 14 && parUmur <= 18) {
+                skor1 = "1";
+            }
+
+            console.log(umur);
+            console.log(parseInt(umur));
+            console.log(skor1);
+
+            if(jenisKelamin == "Laki-Laki"){
+                skor2 = "2";
+            }else{
+                skor2 = "1";
+            }
+
+            var va3 = $('[name=rja3]:checked').val();
+            var va4 = $('[name=rja4]:checked').val();
+            var va5 = $('[name=rja5]:checked').val();
+            var va6 = $('[name=rja6]:checked').val();
+
+            if (va3 && va4 && va5 && va6 != undefined) {
+
+                var isi3 = va3.split("|")[0];
+                var isi4 = va4.split("|")[0];
+                var isi5 = va5.split("|")[0];
+                var isi6 = va6.split("|")[0];
+
+                var skor3 = va3.split("|")[1];
+                var skor4 = va4.split("|")[1];
+                var skor5 = va5.split("|")[1];
+                var skor6 = va6.split("|")[1];
+
+                data.push({
+                    'parameter': 'Umur',
+                    'jawaban': umur,
+                    'keterangan': jenis,
+                    'skor': skor1,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Jenis Kelamin',
+                    'jawaban': jenisKelamin,
+                    'keterangan': jenis,
+                    'skor': skor2,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Diagnosis',
+                    'jawaban': isi3,
+                    'keterangan': jenis,
+                    'skor': skor3,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Lingkungan',
+                    'jawaban': isi4,
+                    'keterangan': jenis,
+                    'skor': skor4,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Respon',
+                    'jawaban': isi5,
+                    'keterangan': jenis,
+                    'skor': skor5,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Penggunaan Obat',
+                    'jawaban': isi6,
+                    'keterangan': jenis,
+                    'skor': skor6,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                cek = true;
+            }
+        }
+
+        if("nutrisional_anak" == jenis){
+
+            var va1 = $('[name=na1]:checked').val();
+            var va2 = $('[name=na2]:checked').val();
+            var va3 = $('[name=na3]:checked').val();
+            var va4 = $('[name=na4]:checked').val();
+            var va5 = $('[name=na5]:checked').val();
+            var va6 = $('[name=na6]:checked').val();
+
+            if (va1 && va2 && va3 && va4 != undefined) {
+
+                var isi1 = va1.split("|")[0];
+                var isi2 = va2.split("|")[0];
+                var isi3 = va3.split("|")[0];
+                var isi4 = va4.split("|")[0];
+
+                var skor1 = va1.split("|")[1];
+                var skor2 = va2.split("|")[1];
+                var skor3 = va3.split("|")[1];
+                var skor4 = va4.split("|")[1];
+
+                data.push({
+                    'parameter': '1. Apakah pasien tampak kurus?',
+                    'jawaban': isi1,
+                    'keterangan': jenis,
+                    'skor': skor1,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': '2. Apakah terdapat penurunan berat badan dalam 1 bulan terakhir? (berdasarkan penilaian objektif data berat badan bila ada atau penilaian subjektif orang tua pasien atau untuk bayi < 1 bulan berat badan tidak naik selama 3 bulan berturut-turut)',
+                    'jawaban': isi2,
+                    'keterangan': jenis,
+                    'skor': skor2,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': '3. Apakah terdapat salag satu kondisi tersebut? (diare > 5x/hari dan muntah > 3x/hari dalam seminggu terakhir atau asupan makanan berkurang selama 1 minggu terakhir)',
+                    'jawaban': isi3,
+                    'keterangan': jenis,
+                    'skor': skor3,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': '4. Apakah terdapat penyakit atau keadaan yang mengakibatkan pasien berisiko mengalami malnutrisi? (lihat tabel)',
+                    'jawaban': isi4,
+                    'keterangan': jenis,
+                    'skor': skor4,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                cek = true;
+            }
+        }
+
         var result = JSON.stringify(data);
         if (cek) {
             $('#save_aud_'+jenis).hide();
@@ -1310,6 +1518,7 @@ function detailAud(jenis) {
         var kesimpulan = "";
         var isKesimpulan = false;
         var list = "";
+        var first = "";
         AsesmenUgdAction.getListAsesmenUgd(idDetailCheckup, jenis, function (res) {
             if (res.length > 0) {
                 $.each(res, function (i, item) {
@@ -1338,7 +1547,7 @@ function detailAud(jenis) {
                             body += '<tr>' +
                                 '<td>' + item.parameter + '</td>' +
                                 '<td>' + item.jawaban + '</td>' +
-                                '<td>' + item.skor + '</td>' +
+                                '<td width="10%" align="center">' + item.skor + '</td>' +
                                 '</tr>';
                             totalSkor = parseInt(totalSkor) + parseInt(item.skor);
                             cekSkor = true;
@@ -1359,7 +1568,8 @@ function detailAud(jenis) {
             }
 
             if(cekSkor){
-                rowTotal = '<tr><td colspan="2">Total</td><td>'+totalSkor+'</td></tr>'
+                first = '<tr style="font-weight: bold"><td>Parameter</td><td>Jawaban</td><td align="center">Skor</td></tr>';
+                rowTotal = '<tr style="font-weight: bold"><td colspan="2">Total</td><td align="center">'+totalSkor+'</td></tr>'
             }
 
             if("nutrisional" == jenis){
@@ -1371,7 +1581,7 @@ function detailAud(jenis) {
                 }
 
                 if(isKesimpulan){
-                    kesimpulan = '<tr style="font-weight: bold" bgcolor="#ffebcd"><td>Resiko Nutrisi</td><td colspan="2">'+jwb+'</td></tr>';
+                    kesimpulan = '<tr style="font-weight: bold" bgcolor="#ffebcd"><td colspan="2">Resiko Nutrisi</td><td align="center">'+jwb+'</td></tr>';
                 }
             }
 
@@ -1386,12 +1596,25 @@ function detailAud(jenis) {
                 }
 
                 if(isKesimpulan){
-                    kesimpulan = '<tr style="font-weight: bold" bgcolor="#ffebcd"><td>Resiko Jatuh</td><td colspan="2">'+jwb+'</td></tr>';
+                    kesimpulan = '<tr style="font-weight: bold" bgcolor="#ffebcd"><td colspan="2">Resiko Jatuh</td><td align="center">'+jwb+'</td></tr>';
+                }
+            }
+
+            if("jatuh_anak" == jenis){
+                var jwb = "";
+                if(totalSkor >= 7 && totalSkor <= 11){
+                    jwb = "Rendah";
+                }else if (totalSkor >= 12 && totalSkor <= 44) {
+                    jwb = "Tinggi";
+                }
+
+                if(isKesimpulan){
+                    kesimpulan = '<tr style="font-weight: bold" bgcolor="#ffebcd"><td colspan="2">Resiko Jatuh</td><td align="center">'+jwb+'</td></tr>';
                 }
             }
 
             var table = '<table style="font-size: 12px" class="table table-bordered"><tr bgcolor="#ffebcd">' +
-                '<tbody>' + body + rowTotal + kesimpulan + '</tbody>' +
+                '<tbody>' + first + body + rowTotal + kesimpulan + '</tbody>' +
                 '</table>';
 
             var newRow = $('<tr id="del_aud_' + jenis + '"><td colspan="2">' + table + '</td></tr>');

@@ -241,6 +241,18 @@
                                             <table><s:label name="headerDetailCheckup.tempatTglLahir"></s:label></table>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td><b>Umur</b></td>
+                                        <td>
+                                            <table>
+                                                <script>
+                                                    var umur = '<s:property value="headerDetailCheckup.umur"/>';
+                                                    var umurLengkap = umur+' Tahun';
+                                                    document.write(umurLengkap);
+                                                </script>
+                                            </table>
+                                        </td>
+                                    </tr>
                                     <s:if test='headerDetailCheckup.metodePembayaran != null && headerDetailCheckup.metodePembayaran != ""'>
                                         <tr>
                                             <td><b>Metode Pembayaran</b></td>
@@ -2136,7 +2148,7 @@
 <script type='text/javascript' src='<s:url value="/pages/dist/js/fisioterapi.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/hd.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/rj.js"/>'></script>
-<script type='text/javascript' src='<s:url value="/pages/dist/js/addRawatJalan.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/addrawatjalan.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/spesialis.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/nyeri.js"/>'></script>

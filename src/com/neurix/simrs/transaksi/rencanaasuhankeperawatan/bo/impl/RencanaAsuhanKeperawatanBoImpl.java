@@ -47,8 +47,10 @@ public class RencanaAsuhanKeperawatanBoImpl implements RencanaAsuhanKeperawatanB
                     asuhan.setIdDetailCheckup(entity.getIdDetailCheckup());
                     asuhan.setWaktu(entity.getWaktu());
                     asuhan.setDiagnosa(entity.getDiagnosa());
-                    asuhan.setTujuan(entity.getTujuan());
+                    asuhan.setHasil(entity.getHasil());
                     asuhan.setIntervensi(entity.getIntervensi());
+                    asuhan.setImplementasi(entity.getImplementasi());
+                    asuhan.setEvaluasi(entity.getEvaluasi());
                     asuhan.setTtdPerawat(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_RM+entity.getTtdPerawat());
                     asuhan.setKeterangan(entity.getKeterangan());
                     asuhan.setAction(entity.getAction());
@@ -75,8 +77,10 @@ public class RencanaAsuhanKeperawatanBoImpl implements RencanaAsuhanKeperawatanB
             asuhanKeperawatanEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
             asuhanKeperawatanEntity.setWaktu(bean.getWaktu());
             asuhanKeperawatanEntity.setDiagnosa(bean.getDiagnosa());
-            asuhanKeperawatanEntity.setTujuan(bean.getTujuan());
+            asuhanKeperawatanEntity.setHasil(bean.getHasil());
             asuhanKeperawatanEntity.setIntervensi(bean.getIntervensi());
+            asuhanKeperawatanEntity.setImplementasi(bean.getImplementasi());
+            asuhanKeperawatanEntity.setEvaluasi(bean.getEvaluasi());
             asuhanKeperawatanEntity.setTtdPerawat(bean.getTtdPerawat());
             asuhanKeperawatanEntity.setKeterangan(bean.getKeterangan());
             asuhanKeperawatanEntity.setAction(bean.getAction());

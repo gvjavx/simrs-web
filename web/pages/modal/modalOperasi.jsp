@@ -22,8 +22,8 @@
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a onclick="showModalOperasi('pre_operasi')" style="cursor: pointer;"><i class="fa fa-plus"></i> Keluhan Utama</a></li>
-                            <li><a onclick="showModalOperasi('kondisi_pasien')" style="cursor: pointer;"><i class="fa fa-plus"></i> Data Pre Hospital</a></li>
+                            <li><a onclick="showModalOperasi('pre_operasi')" style="cursor: pointer;"><i class="fa fa-plus"></i> Pre Operasi</a></li>
+                            <li><a onclick="showModalOperasi('kondisi_pasien')" style="cursor: pointer;"><i class="fa fa-plus"></i> Kondisi Pasien</a></li>
                         </ul>
                     </div>
                 </div>
@@ -612,7 +612,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-danger" onclick="clearConvas('area_canvas')"><i class="fa fa-trash"></i> Clear
+                <button type="button" class="btn btn-danger" onclick="removePaint('area_canvas')"><i class="fa fa-trash"></i> Clear
                 </button>
                 <button class="btn btn-success pull-right" onclick="confirmSavePenanda()"><i class="fa fa-check"></i> Save</button>
             </div>

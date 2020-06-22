@@ -1199,12 +1199,12 @@
                         <div class="form-group">
                             <div class="col-md-2">
                                 <div class="custom02">
-                                    <input type="radio" value="Ya" id="na11" name="na1" /><label for="na11">Ya</label>
+                                    <input type="radio" value="Ya|1" id="na11" name="na1" /><label for="na11">Ya</label>
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="custom02">
-                                    <input type="radio" value="Tidak" id="na12" name="na1" /><label for="na12">Tidak</label>
+                                    <input type="radio" value="Tidak|0" id="na12" name="na1" /><label for="na12">Tidak</label>
                                 </div>
                             </div>
                         </div>
@@ -1219,12 +1219,12 @@
                         <div class="form-group">
                             <div class="col-md-2">
                                 <div class="custom02">
-                                    <input type="radio" value="Ya" id="na21" name="na2" /><label for="na21">Ya</label>
+                                    <input type="radio" value="Ya|1" id="na21" name="na2" /><label for="na21">Ya</label>
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="custom02">
-                                    <input type="radio" value="Tidak" id="na22" name="na2" /><label for="na22">Tidak</label>
+                                    <input type="radio" value="Tidak|0" id="na22" name="na2" /><label for="na22">Tidak</label>
                                 </div>
                             </div>
                         </div>
@@ -1239,12 +1239,32 @@
                         <div class="form-group">
                             <div class="col-md-2">
                                 <div class="custom02">
-                                    <input type="radio" value="Ya" id="na31" name="na3" /><label for="na31">Ya</label>
+                                    <input type="radio" value="Ya|1" id="na31" name="na3" /><label for="na31">Ya</label>
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="custom02">
-                                    <input type="radio" value="Tidak" id="na32" name="na3" /><label for="na32">Tidak</label>
+                                    <input type="radio" value="Tidak|0" id="na32" name="na3" /><label for="na32">Tidak</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-12"><li style="list-style-type: none">4. Apakah terdapat penyakit atau keadaan yang mengakibatkan pasien berisiko mengalami malnutrisi? (lihat tabel)</li></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                <div class="custom02">
+                                    <input type="radio" value="Ya|2" id="na41" name="na4" /><label for="na41">Ya</label>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="custom02">
+                                    <input type="radio" value="Tidak|0" id="na42" name="na4" /><label for="na42">Tidak</label>
                                 </div>
                             </div>
                         </div>

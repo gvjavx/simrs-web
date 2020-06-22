@@ -159,3 +159,11 @@ function removePaint(id){
         context.clearRect(0, 0, canvas.width, canvas.height);
     }
 }
+
+function cekItemIsNull(item) {
+    var res = "";
+    if(item != null){
+        res = item;
+    }
+    return res;
+}
