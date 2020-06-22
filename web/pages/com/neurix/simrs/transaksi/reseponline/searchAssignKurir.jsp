@@ -209,7 +209,7 @@
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="status"/></td>
                                     <td align="center">
-                                        <img border="0" class="hvr-grow" onclick="viewAssign()"
+                                        <img border="0" class="hvr-grow" onclick="viewAssign('<s:property value="idPasien"/>','<s:property value="idPelayanan"/>','<s:property value="idPermintaanResep"/>')"
                                              src="<s:url value="/pages/images/icons8-create-25.png"/>"
                                              style="cursor: pointer;">
                                     </td>
@@ -236,6 +236,9 @@
             <div class="modal-body">
                 <div class="box-body">
 
+                    <input type="hidden" id="v-id-pasien"/>
+                    <input type="hidden" id="v-id-resep"/>
+                    <input type="hidden" id="v-id-pelayanan"/>
                     <div class="row">
                         <div class="col-md-2 col-md-offset-2">
                             <label>Kurir</label>
@@ -253,7 +256,7 @@
                     </div>
                     <div class="alert alert-success alert-dismissible" style="display: none" id="success_fin">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
-                        <p id="msg_fin"></p>
+                        <p id="msg_fin">Success Assign</p>
                     </div>
                 </div>
                 <div class="box-header with-border"></div>
@@ -261,7 +264,9 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_fin" onclick="saveKonfirm()"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_fin" onclick="saveAssignKurir()"><i class="fa fa-arrow-right"></i> Save
+                </button>
+                <button type="button" class="btn btn-success" id="ok_fin" onclick="searchAgain()"><i class="fa fa-arrow-right"></i> Ok
                 </button>
                 <%--<button style="display: none; cursor: no-drop" type="button" class="btn btn-success"--%>
                 <%--id="load_fin"><i--%>
@@ -273,21 +278,50 @@
 </div>
 
 <script type='text/javascript'>
-
-   function viewAssign() {
+    
+   function viewAssign(idPasien, idPelayanan, idResep) {
        $("#modal-kurir").modal('show');
+       $("#ok_fin").hide();
+       $("#save_fin").show();
        ResepOnlineAction.listKurirByBranchLogin(function (listKurir) {
            if (listKurir.length > 0){
 
                var str = "";
                $.each(listKurir, function (i, item) {
-                   str += "<option value='"+item.idKuli+"'>"+item.nama+"</option>";
+                   str += "<option value='"+item.idKurir+"'>"+item.nama+"</option>";
                });
            }
 
+           $("#v-id-pasien").val(idPasien);
+           $("#v-id-resep").val(idResep);
+           $("#v-id-pelayanan").val(idPelayanan);
            $("#sel-kurir").html(str);
        })
    }
+   
+   function saveAssignKurir() {
+       var idPasien = $("#v-id-pasien").val();
+       var idResep = $("#v-id-resep").val();
+       var idPelayanan = $("#v-id-pelayanan").val();
+       var idKurir = $("#sel-kurir").val();
+
+       ResepOnlineAction.saveAssignKurir(idKurir, idResep, idPasien, idPelayanan, function (reseponse) {
+
+           if (reseponse.status == "success"){
+               $("#success_fin").show().fadeOut(5000);
+               $("#ok_fin").show();
+               $("#save_fin").hide();
+           } else {
+               $("#warning_fin").show().fadeOut(5000);
+               $("#msg_fin_error").text(reseponse.msg);
+           };
+       })
+   }
+   
+   function searchAgain() {
+       $("#transaksiForm").submit();
+   }
+   
 
 </script>
 

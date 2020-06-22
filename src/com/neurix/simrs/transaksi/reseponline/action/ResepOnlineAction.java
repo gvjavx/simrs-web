@@ -4,6 +4,7 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.kurir.bo.KurirBo;
 import com.neurix.simrs.master.kurir.model.Kurir;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.reseponline.bo.ResepOnlineBo;
 import com.neurix.simrs.transaksi.reseponline.model.PengirimanObat;
@@ -13,6 +14,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -123,5 +125,42 @@ public class ResepOnlineAction {
 
         logger.info("ResepOnlineAction.listKurir <<< ");
         return kurirList;
+    }
+
+    public CrudResponse saveAssignKurir(String idKurir, String idResep, String idPasien, String idPelayanan){
+        logger.info("ResepOnlineAction.saveAssignKurir >>> ");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ResepOnlineBo resepOnlineBo = (ResepOnlineBo) ctx.getBean("resepOnlineBoProxy");
+
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        String branchId = CommonUtil.userBranchLogin();
+
+        CrudResponse response = new CrudResponse();
+
+        PengirimanObat pengirimanObat = new PengirimanObat();
+        pengirimanObat.setIdResep(idResep);
+        pengirimanObat.setIdKurir(idKurir);
+        pengirimanObat.setIdPasien(idPasien);
+        pengirimanObat.setIdPelayanan(idPelayanan);
+        pengirimanObat.setCreatedDate(time);
+        pengirimanObat.setLastUpdate(time);
+        pengirimanObat.setCreatedWho(userLogin);
+        pengirimanObat.setLastUpdateWho(userLogin);
+        pengirimanObat.setBranchId(branchId);
+
+        try {
+            response = resepOnlineBo.saveAddPengirimanObat(pengirimanObat);
+            response.setStatus("success");
+        } catch (GeneralBOException e){
+            response.setStatus("error");
+            response.setMsg("[ResepOnlineAction.saveAssignKurir] ERROR. "+ e);
+            logger.error("[ResepOnlineAction.saveAssignKurir] ERROR. ", e);
+            throw new GeneralBOException("[ResepOnlineAction.saveAssignKurir] ERROR. ", e);
+        }
+
+        logger.info("ResepOnlineAction.saveAssignKurir <<< ");
+        return response;
     }
 }

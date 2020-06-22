@@ -11,6 +11,7 @@ import com.neurix.simrs.master.pasien.dao.PasienDao;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.reseponline.bo.ResepOnlineBo;
 import com.neurix.simrs.transaksi.reseponline.dao.PengirimanObatDao;
@@ -32,7 +33,7 @@ import java.util.Map;
  * Wednesday, 17/06/20 9:55
  */
 public class ResepOnlineBoImpl implements ResepOnlineBo {
-    protected static transient Logger logger = Logger.getLogger(ResepOnlineBoImpl.class);
+    protected final static transient Logger logger = Logger.getLogger(ResepOnlineBoImpl.class);
 
     private ResepOnlineDao resepOnlineDao;
     private PengirimanObatDao pengirimanObatDao;
@@ -156,6 +157,45 @@ public class ResepOnlineBoImpl implements ResepOnlineBo {
         return pengirimanObatDao.getListObatTelemedicApproved(branchId);
     }
 
+    @Override
+    public CrudResponse saveAddPengirimanObat(PengirimanObat bean) throws GeneralBOException {
+        logger.info("[ResepOnlineBoImpl.saveAddPengirimanObat] Start >>>>>>>");
+
+        ItSimrsPengirimanObatEntity pengirimanObatEntity = new ItSimrsPengirimanObatEntity();
+        pengirimanObatEntity.setId(getNextIdPengiriman(bean.getBranchId()));
+        pengirimanObatEntity.setIdKurir(bean.getIdKurir());
+        pengirimanObatEntity.setIdResep(bean.getIdResep());
+        pengirimanObatEntity.setIdPelayanan(bean.getIdPelayanan());
+        pengirimanObatEntity.setBranchId(bean.getBranchId());
+        pengirimanObatEntity.setFlag("Y");
+        pengirimanObatEntity.setAction("C");
+        pengirimanObatEntity.setCreatedDate(bean.getCreatedDate());
+        pengirimanObatEntity.setCreatedWho(bean.getCreatedWho());
+        pengirimanObatEntity.setLastUpdate(bean.getLastUpdate());
+        pengirimanObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+        ImSimrsPasienEntity pasienEntity = pasienDao.getById("idPasien", bean.getIdPasien());
+        if (pasienEntity != null){
+            pengirimanObatEntity.setDesaId(pasienEntity.getDesaId() == null ? "" : pasienEntity.getDesaId().toString());
+            pengirimanObatEntity.setAlamat(pasienEntity.getJalan());
+            pengirimanObatEntity.setNoTelp(pasienEntity.getNoTelp());
+        }
+
+        CrudResponse response = new CrudResponse();
+
+        try {
+            pengirimanObatDao.addAndSave(pengirimanObatEntity);
+            response.setStatus("success");
+        } catch (HibernateException e){
+            response.setStatus("error");
+            response.setMsg("[ResepOnlineBoImpl.saveAddPengirimanObat] ERROR. "+ e);
+            logger.error("[ResepOnlineBoImpl.saveAddPengirimanObat] ERROR. ", e);
+            throw new GeneralBOException("[ResepOnlineBoImpl.saveAddPengirimanObat] ERROR. ", e);
+        }
+        logger.info("[ResepOnlineBoImpl.saveAddPengirimanObat] End <<<<<<<");
+        return response;
+    }
+
     private List<ItSimrsPengirimanObatEntity> getEntityPengirimanObat(PengirimanObat bean) throws GeneralBOException{
         logger.info("[ResepOnlineBoImpl.getListPengirimanObat] Start >>>>>>>");
 
@@ -237,11 +277,6 @@ public class ResepOnlineBoImpl implements ResepOnlineBo {
 
         logger.info("[ResepOnlineBoImpl.setTemplateKurir] End >>>>>>>");
         return list;
-    }
-
-    @Override
-    public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {
-        return null;
     }
 
     private String getNextIdPengiriman(String branchId){
