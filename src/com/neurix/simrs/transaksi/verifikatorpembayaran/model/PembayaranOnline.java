@@ -27,8 +27,16 @@ public class PembayaranOnline {
     private String flagBayar;
     private String jenisPengambilan;
     private String alamat;
-
     private String message;
+    private String flagEresep;
+
+    public String getFlagEresep() {
+        return flagEresep;
+    }
+
+    public void setFlagEresep(String flagEresep) {
+        this.flagEresep = flagEresep;
+    }
 
     public String getMessage() {
         return message;

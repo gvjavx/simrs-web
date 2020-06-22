@@ -69,7 +69,7 @@
                 <column name="keluhan"/>
             </basic>
             <basic name="flagEresep">
-                <column name="flag_resep"/>
+                <column name="flag_eresep"/>
             </basic>
             <basic name="urlFotoResep">
                 <column name="url_foto_resep"/>

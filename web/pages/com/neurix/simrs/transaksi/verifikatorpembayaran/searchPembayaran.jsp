@@ -351,8 +351,16 @@
                             str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
                                 "<td align='center'></td>";
                         } else {
-                            str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
-                                "<td align='center'><button class='btn btn-sm btn-success' onclick=\"saveApprove(\'"+item.id+"\')\"><i class='fa fa-check'></i> Approve</button></td>";
+
+                            if (item.flagEresep == "Y"){
+                                str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
+                                    "<td align='center'><button class='btn btn-sm btn-success' onclick=\"saveApproveEresep(\'"+item.id+"\')\"><i class='fa fa-check'></i> Approve E-Resep</button></td>";
+                            } else {
+                                str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
+                                    "<td align='center'><button class='btn btn-sm btn-success' onclick=\"saveApprove(\'"+item.id+"\')\"><i class='fa fa-check'></i> Approve</button></td>";
+                            }
+
+
                         }
 
                     } else {

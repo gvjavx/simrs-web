@@ -153,6 +153,7 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
                 // mencari apakah sudah di bayar melalui bank
                 ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = telemedicDao.getById("id", bean.getIdAntrianTelemedic());
                 if (antrianTelemedicEntity != null){
+                    pembayaranOnline.setFlagEresep(antrianTelemedicEntity.getFlagEresep());
                     if ("konsultasi".equalsIgnoreCase(pembayaranOnlineEntity.getKeterangan())){
                         if ("Y".equalsIgnoreCase(antrianTelemedicEntity.getFlagBayarKonsultasi())){
                             pembayaranOnline.setFlagBayar("Y");
@@ -163,7 +164,6 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
                         }
                     }
                 }
-
 
                 pembayaranOnlines.add(pembayaranOnline);
             }

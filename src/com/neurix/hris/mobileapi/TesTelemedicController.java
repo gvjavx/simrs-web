@@ -85,8 +85,8 @@ public class TesTelemedicController implements ModelDriven<Object> {
             case "insert-kurir":
                 insertKurir(this.id);
                 break;
-            case "insert-e-obat":
-                insertObat(this.id);
+            case "insert-e-resep":
+                insertPemesananResep("umum");
                 break;
             default:
                 logger.info("==========NO ONE CARE============");
@@ -121,6 +121,40 @@ public class TesTelemedicController implements ModelDriven<Object> {
 
         try {
             telemedicBoProxy.saveAdd(antrianTelemedicEntity, "RS01", "1.1.01.02.01");
+        } catch (GeneralBOException e){
+            logger.error("[TesTelemedicController.insertDataTelemedic] ERROR. ",e);
+            throw new GeneralBOException("[TesTelemedicController.insertDataTelemedic] ERROR. ", e);
+        }
+
+        logger.info("[TesTelemedicController.insertDataTelemedic] END <<<");
+    }
+
+    private void insertPemesananResep(String tipe){
+
+        logger.info("[TesTelemedicController.insertDataTelemedic] START >>>");
+
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+
+        ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = new ItSimrsAntrianTelemedicEntity();
+        antrianTelemedicEntity.setBranchId("RS01");
+        antrianTelemedicEntity.setIdPasien("RS0104200035");
+        antrianTelemedicEntity.setIdPelayanan("PYN00000024");
+//        antrianTelemedicEntity.setIdDokter("DKR00000012");
+//        antrianTelemedicEntity.setKodeBank("1.1.01.02.01");
+        antrianTelemedicEntity.setIdJenisPeriksaPasien(tipe);
+        antrianTelemedicEntity.setFlagResep("Y");
+        antrianTelemedicEntity.setFlagEresep("Y");
+        if ("ansuransi".equalsIgnoreCase(tipe)){
+            antrianTelemedicEntity.setNoKartu("080780808");
+            antrianTelemedicEntity.setIdAsuransi("ASN00000002");
+        }
+        antrianTelemedicEntity.setCreatedDate(time);
+        antrianTelemedicEntity.setCreatedWho("admin");
+        antrianTelemedicEntity.setLastUpdate(time);
+        antrianTelemedicEntity.setLastUpdateWho("admin");
+
+        try {
+            telemedicBoProxy.saveAdd(antrianTelemedicEntity, "RS01", "");
         } catch (GeneralBOException e){
             logger.error("[TesTelemedicController.insertDataTelemedic] ERROR. ",e);
             throw new GeneralBOException("[TesTelemedicController.insertDataTelemedic] ERROR. ", e);

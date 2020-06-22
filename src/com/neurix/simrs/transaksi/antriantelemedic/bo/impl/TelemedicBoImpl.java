@@ -134,6 +134,7 @@ public class TelemedicBoImpl implements TelemedicBo {
                 antrianTelemedic.setKodeBank(telemedicEntity.getKodeBank());
                 antrianTelemedic.setBranchId(telemedicEntity.getBranchId());
                 antrianTelemedic.setKeluhan(telemedicEntity.getKeluhan());
+                antrianTelemedic.setFlagEresep(telemedicEntity.getFlagEresep());
 
                 // cari pembayaran online konsultasi;
                 PembayaranOnline pembayaranOnline = new PembayaranOnline();
