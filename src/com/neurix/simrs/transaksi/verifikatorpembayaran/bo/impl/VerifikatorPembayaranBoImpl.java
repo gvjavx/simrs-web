@@ -719,6 +719,7 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
                     permintaanResep.setBranchId(bean.getBranchId());
                     permintaanResep.setJenisResep(bean.getIdJenisPeriksaPasien());
                     permintaanResep.setIdTransaksiOnline(bean.getIdTransaksiOnline());
+                    permintaanResep.setIdPasien(bean.getIdPasien());
 
                     // set idPermintaanResep;
                     idPermintaanResep = saveAddResep(permintaanResep, detailList);

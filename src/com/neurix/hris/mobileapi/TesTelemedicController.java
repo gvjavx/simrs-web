@@ -5,6 +5,7 @@ import com.neurix.simrs.master.kurir.bo.KurirBo;
 import com.neurix.simrs.master.kurir.model.Kurir;
 import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
+import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.reseponline.model.ItSimrsResepOnlineEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.model.ItSimrsPembayaranOnlineEntity;
@@ -83,6 +84,9 @@ public class TesTelemedicController implements ModelDriven<Object> {
                 break;
             case "insert-kurir":
                 insertKurir(this.id);
+                break;
+            case "insert-e-obat":
+                insertObat(this.id);
                 break;
             default:
                 logger.info("==========NO ONE CARE============");
@@ -179,6 +183,15 @@ public class TesTelemedicController implements ModelDriven<Object> {
         }
 
         logger.info("[TesTelemedicController.insertKurir] END <<<");
+    }
+
+    private void insertEObat(String idObat){
+        logger.info("[TesTelemedicController.insertEObat] START >>>");
+
+        PermintaanResep permintaanResep = new PermintaanResep();
+
+
+        logger.info("[TesTelemedicController.insertEObat] END <<<");
     }
 
 }

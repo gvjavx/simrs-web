@@ -261,6 +261,7 @@ public class VerifikatorPembayaranAction {
                         headerCheckup.setIdTransaksiOnline(idTransaksi);
                         headerCheckup.setNoCheckup(noCheckup);
                         headerCheckup.setBranchId(branchId);
+                        headerCheckup.setIdPasien(antrianTelemedicEntity.getIdPasien());
                     }
 
                     String idPermintaanResep;
