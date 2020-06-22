@@ -283,3 +283,13 @@
         ADD alamat text,
         ADD no_telp VARCHAR(30);
 <<< //
+
+// 2020-06-22 >>>
+
+    "Search Pengiriman Obat"        "/reseponline/searchApprovedResep_reseponline.action"
+    "init form Pengiriman Obat"     "/reseponline/initForm_reseponline.action"
+    "Pengiriman Obat"               "/reseponline/initForm_reseponline.action" (Menu) parent -> menu utama
+
+    role : admin apotek
+
+<<< //
