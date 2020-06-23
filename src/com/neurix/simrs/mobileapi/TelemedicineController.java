@@ -19,6 +19,9 @@ import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.reseponline.bo.ResepOnlineBo;
 import com.neurix.simrs.transaksi.reseponline.model.ResepOnline;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
+import com.neurix.simrs.transaksi.verifikatorpembayaran.bo.VerifikatorPembayaranBo;
+import com.neurix.simrs.transaksi.verifikatorpembayaran.model.ItSimrsPembayaranOnlineEntity;
+import com.neurix.simrs.transaksi.verifikatorpembayaran.model.PembayaranOnline;
 import com.opensymphony.xwork2.ModelDriven;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
@@ -32,9 +35,7 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author gondok
@@ -49,6 +50,7 @@ public class TelemedicineController implements ModelDriven<Object> {
     private CheckupDetailBo checkupDetailBoProxy;
     private NotifikasiFcmBo notifikasiFcmBoProxy;
     private ResepOnlineBo resepOnlineBoProxy;
+    private VerifikatorPembayaranBo verifikatorPembayaranBoProxy;
 
     private String action;
 
@@ -62,9 +64,36 @@ public class TelemedicineController implements ModelDriven<Object> {
     private String idTele;
     private String idPembayaranOnline;
     private String idPasien;
+    private String flagResep;
 
     private String jsonObat;
     private File fileUploadTtd;
+
+    private boolean isResep;
+
+    public VerifikatorPembayaranBo getVerifikatorPembayaranBoProxy() {
+        return verifikatorPembayaranBoProxy;
+    }
+
+    public void setVerifikatorPembayaranBoProxy(VerifikatorPembayaranBo verifikatorPembayaranBoProxy) {
+        this.verifikatorPembayaranBoProxy = verifikatorPembayaranBoProxy;
+    }
+
+    public boolean isResep() {
+        return isResep;
+    }
+
+    public void setResep(boolean resep) {
+        isResep = resep;
+    }
+
+    public String getFlagResep() {
+        return flagResep;
+    }
+
+    public void setFlagResep(String flagResep) {
+        this.flagResep = flagResep;
+    }
 
     public File getFileUploadTtd() {
         return fileUploadTtd;
@@ -372,6 +401,10 @@ public class TelemedicineController implements ModelDriven<Object> {
 
             AntrianTelemedic bean = new AntrianTelemedic();
             bean.setId(idTele);
+            bean.setIdDokter(idDokter);
+            bean.setFlagResep(flagResep);
+            bean.setStatus(this.status);
+            bean.setFlag("Y");
 
             try {
                 result = telemedicBoProxy.getSearchByCriteria(bean);
@@ -379,24 +412,60 @@ public class TelemedicineController implements ModelDriven<Object> {
                 logger.error("[TelemedicineController.checkTele] Error, " + e.getMessage());
             }
 
-            TelemedicineMobile telemedicineMobile = new TelemedicineMobile();
-            telemedicineMobile.setId(result.get(0).getId());
-            telemedicineMobile.setIdAsuransi(result.get(0).getIdAsuransi());
-            telemedicineMobile.setIdDokter(result.get(0).getIdDokter());
-            telemedicineMobile.setIdJenisPeriksaPasien(result.get(0).getIdJenisPeriksaPasien());
-            telemedicineMobile.setIdPasien(result.get(0).getIdPasien());
-            telemedicineMobile.setStatus(result.get(0).getStatus());
-            telemedicineMobile.setFlagResep(result.get(0).getFlagResep());
-            telemedicineMobile.setNoKartu(result.get(0).getNoKartu());
-            telemedicineMobile.setIdPelayanan(result.get(0).getIdPelayanan());
-            telemedicineMobile.setNamaDokter(result.get(0).getNamaDokter());
-            telemedicineMobile.setNamaPasien(result.get(0).getNamaPasien());
-            telemedicineMobile.setNamaPelayanan(result.get(0).getNamaPelayanan());
-            telemedicineMobile.setKetStatus(result.get(0).getKetStatus());
-            telemedicineMobile.setFlagBayarResep(result.get(0).getFlagBayarResep());
-            telemedicineMobile.setFlagBayarKonsultasi(result.get(0).getFlagBayarKonsultasi());
+            for (AntrianTelemedic item : result) {
+                TelemedicineMobile telemedicineMobile = new TelemedicineMobile();
+                telemedicineMobile.setId(item.getId());
+                telemedicineMobile.setIdAsuransi(item.getIdAsuransi());
+                telemedicineMobile.setIdDokter(item.getIdDokter());
+                telemedicineMobile.setIdJenisPeriksaPasien(item.getIdJenisPeriksaPasien());
+                telemedicineMobile.setIdPasien(item.getIdPasien());
+                telemedicineMobile.setStatus(item.getStatus());
+                telemedicineMobile.setFlagResep(item.getFlagResep());
+                telemedicineMobile.setNoKartu(item.getNoKartu());
+                telemedicineMobile.setIdPelayanan(item.getIdPelayanan());
+                telemedicineMobile.setNamaDokter(item.getNamaDokter());
+                telemedicineMobile.setNamaPasien(item.getNamaPasien());
+                telemedicineMobile.setNamaPelayanan(item.getNamaPelayanan());
+                telemedicineMobile.setKetStatus(item.getKetStatus());
+                telemedicineMobile.setFlagBayarResep(item.getFlagBayarResep());
+                telemedicineMobile.setFlagBayarKonsultasi(item.getFlagBayarKonsultasi());
+                telemedicineMobile.setKeluhan(item.getKeluhan());
 
-            listOfTelemedic.add(telemedicineMobile);
+                if (flagResep != null && flagResep.equalsIgnoreCase("Y")) {
+
+                    List<ItSimrsPembayaranOnlineEntity> list = new ArrayList<>();
+
+                    PembayaranOnline beanPembayaran = new PembayaranOnline();
+                    beanPembayaran.setIdAntrianTelemedic(item.getId());
+                    beanPembayaran.setKeterangan("resep");
+
+                    try {
+                      list = verifikatorPembayaranBoProxy.getSearchEntityByCriteria(beanPembayaran);
+                    } catch (GeneralBOException e) {
+                        logger.error("[TelemedicineController.checkTele] Error, " + e.getMessage());
+                    }
+
+                    if (list.size() > 0) {
+                        List<ResepOnline> listResep = new ArrayList<>();
+
+                        ResepOnline resepOnlineBean = new ResepOnline();
+                        resepOnlineBean.setIdTransaksiOnline(list.get(0).getId());
+
+                        try {
+                          listResep = resepOnlineBoProxy.getByCriteria(resepOnlineBean);
+                        } catch (GeneralBOException e) {
+                            logger.error("[TelemedicineController.checkTele] Error, " + e.getMessage());
+                        }
+
+                        if (listResep.size() > 0) {
+                            listOfTelemedic.add(telemedicineMobile);
+                        }
+                    }
+
+                } else listOfTelemedic.add(telemedicineMobile);
+            }
+
+
 
         }
 
