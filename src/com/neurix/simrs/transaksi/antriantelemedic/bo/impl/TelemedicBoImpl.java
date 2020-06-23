@@ -149,9 +149,17 @@ public class TelemedicBoImpl implements TelemedicBo {
                 antrianTelemedic.setFlagBayarResep(telemedicEntity.getFlagBayarResep());
                 antrianTelemedic.setFlag(telemedicEntity.getFlag());
                 antrianTelemedic.setAction(telemedicEntity.getAction());
-                antrianTelemedic.setNamaPelayanan(getPelayananById(telemedicEntity.getIdPelayanan()).getNamaPelayanan());
-                antrianTelemedic.setNamaDokter(getDokterById(telemedicEntity.getIdDokter()).getNamaDokter());
-                antrianTelemedic.setNamaPasien(getPasienById(telemedicEntity.getIdPasien()).getNama());
+
+                if (telemedicEntity.getIdPelayanan() != null && !"".equalsIgnoreCase(telemedicEntity.getIdPelayanan())){
+                    antrianTelemedic.setNamaPelayanan(getPelayananById(telemedicEntity.getIdPelayanan()).getNamaPelayanan());
+                }
+                if (telemedicEntity.getIdPasien() != null && !"".equalsIgnoreCase(telemedicEntity.getIdPasien())){
+                    antrianTelemedic.setNamaPasien(getPasienById(telemedicEntity.getIdPasien()).getNama());
+                }
+                if (telemedicEntity.getIdDokter() != null && !"".equalsIgnoreCase(telemedicEntity.getIdDokter())){
+                    antrianTelemedic.setNamaDokter(getDokterById(telemedicEntity.getIdDokter()).getNamaDokter());
+                }
+
                 antrianTelemedic.setKetStatus(ketStatus(telemedicEntity.getStatus()));
                 antrianTelemedic.setKetFlagResep(ketResep(telemedicEntity.getFlagResep()));
                 antrianTelemedic.setKodeBank(telemedicEntity.getKodeBank());
@@ -441,7 +449,7 @@ public class TelemedicBoImpl implements TelemedicBo {
         }
 
         ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = new ItSimrsPembayaranOnlineEntity();
-        pembayaranOnlineEntity.setId(bean.getId()+"INV"+getSeqPembayaranOnline());
+        pembayaranOnlineEntity.setId(getSeqPembayaranOnline(bean.getId()));
         pembayaranOnlineEntity.setIdAntrianTelemedic(bean.getId());
         pembayaranOnlineEntity.setLastUpdate(bean.getLastUpdate());
 
@@ -469,7 +477,7 @@ public class TelemedicBoImpl implements TelemedicBo {
 
         if ("Y".equalsIgnoreCase(bean.getFlagResep())){
             pembayaranOnlineEntity = new ItSimrsPembayaranOnlineEntity();
-            pembayaranOnlineEntity.setId(bean.getId()+"INV"+getSeqPembayaranOnline());
+            pembayaranOnlineEntity.setId(getSeqPembayaranOnline(bean.getId()));
             pembayaranOnlineEntity.setIdAntrianTelemedic(bean.getId());
             pembayaranOnlineEntity.setLastUpdate(bean.getLastUpdate());
             pembayaranOnlineEntity.setFlag(bean.getFlag());
@@ -594,11 +602,12 @@ public class TelemedicBoImpl implements TelemedicBo {
     }
 
     @Override
-    public void insertResepOnline(String idTransaksiOnline, List<TransaksiObatDetail> listObat) throws GeneralBOException {
+    public BigDecimal insertResepOnline(String idTransaksiOnline, List<TransaksiObatDetail> listObat) throws GeneralBOException {
         logger.info("[VerifikatorPembayaranBoImpl.insertResepOnline] START >>>");
         BigDecimal hargaTotal = new BigDecimal(0);
         Timestamp now = new Timestamp(System.currentTimeMillis());
 
+        BigDecimal hargaTotal = new BigDecimal(0);
         for (TransaksiObatDetail obatDetail : listObat){
 
 
@@ -640,6 +649,8 @@ public class TelemedicBoImpl implements TelemedicBo {
                     logger.error("[VerifikatorPembayaranBoImpl.insertResepOnline] ERROR. ", e);
                     throw new GeneralBOException("[VerifikatorPembayaranBoImpl.insertResepOnline] ERROR. ", e);
                 }
+
+                hargaTotal = hargaTotal.add(resepOnlineEntity.getSubTotal());
             }
         }
 
@@ -667,6 +678,39 @@ public class TelemedicBoImpl implements TelemedicBo {
         }
 
         logger.info("[VerifikatorPembayaranBoImpl.insertResepOnline] END <<<");
+        return hargaTotal;
+    }
+
+    @Override
+    public void createPembayaranResep(AntrianTelemedic bean, List<TransaksiObatDetail> listObat) throws GeneralBOException {
+        logger.info("[VerifikatorPembayaranBoImpl.createPembayaranResep] START >>>");
+
+        ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = new ItSimrsPembayaranOnlineEntity();
+        pembayaranOnlineEntity = new ItSimrsPembayaranOnlineEntity();
+        pembayaranOnlineEntity.setId(getSeqPembayaranOnline(bean.getId()));
+        pembayaranOnlineEntity.setIdAntrianTelemedic(bean.getId());
+        pembayaranOnlineEntity.setLastUpdate(bean.getLastUpdate());
+        pembayaranOnlineEntity.setFlag(bean.getFlag());
+        pembayaranOnlineEntity.setCreatedDate(bean.getCreatedDate());
+        pembayaranOnlineEntity.setCreatedWho(bean.getCreatedWho());
+        pembayaranOnlineEntity.setLastUpdate(bean.getLastUpdate());
+        pembayaranOnlineEntity.setLastUpdateWho(bean.getLastUpdateWho());
+        pembayaranOnlineEntity.setKeterangan("resep");
+        pembayaranOnlineEntity.setNominal(new BigDecimal(0));
+
+        if (listObat.size() > 0){
+            BigDecimal harga = insertResepOnline(pembayaranOnlineEntity.getId(), listObat);
+            pembayaranOnlineEntity.setNominal(harga);
+        }
+
+        try {
+            verifikatorPembayaranDao.addAndSave(pembayaranOnlineEntity);
+        } catch (HibernateException e){
+            logger.error("[TelemedicBoIml.createPembayaranResep] ERROR. ",e);
+            throw new GeneralBOException("[TelemedicBoIml.createPembayaranResep] ERROR. ",e);
+        }
+
+        logger.info("[VerifikatorPembayaranBoImpl.createPembayaranResep] START >>>");
     }
 
     @Override
@@ -828,7 +872,7 @@ public class TelemedicBoImpl implements TelemedicBo {
     private String getSeqTelemedic(){
         return telemedicDao.getNextSeq();
     }
-    private String getSeqPembayaranOnline(){
-        return verifikatorPembayaranDao.getNextSeq();
+    private String getSeqPembayaranOnline(String id){
+        return id + "INV" + verifikatorPembayaranDao.getNextSeq();
     }
 }

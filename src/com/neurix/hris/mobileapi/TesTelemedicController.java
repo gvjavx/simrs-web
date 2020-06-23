@@ -4,10 +4,12 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.kurir.bo.KurirBo;
 import com.neurix.simrs.master.kurir.model.Kurir;
 import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
+import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.reseponline.model.ItSimrsResepOnlineEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
+import com.neurix.simrs.transaksi.verifikatorpembayaran.bo.VerifikatorPembayaranBo;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.model.ItSimrsPembayaranOnlineEntity;
 import com.opensymphony.xwork2.ModelDriven;
 import org.apache.log4j.Logger;
@@ -29,6 +31,11 @@ public class TesTelemedicController implements ModelDriven<Object> {
     private String id;
     private TelemedicBo telemedicBoProxy;
     private KurirBo kurirBoProxy;
+    private VerifikatorPembayaranBo verifikatorPembayaranBoProxy;
+
+    public void setVerifikatorPembayaranBoProxy(VerifikatorPembayaranBo verifikatorPembayaranBoProxy) {
+        this.verifikatorPembayaranBoProxy = verifikatorPembayaranBoProxy;
+    }
 
     public void setKurirBoProxy(KurirBo kurirBoProxy) {
         this.kurirBoProxy = kurirBoProxy;
@@ -88,6 +95,8 @@ public class TesTelemedicController implements ModelDriven<Object> {
             case "insert-e-resep":
                 insertPemesananResep("umum");
                 break;
+            case "create-invoice-e-resep":
+                createPembayaranResep(this.id);
             default:
                 logger.info("==========NO ONE CARE============");
         }
@@ -219,11 +228,65 @@ public class TesTelemedicController implements ModelDriven<Object> {
         logger.info("[TesTelemedicController.insertKurir] END <<<");
     }
 
-    private void insertEObat(String idObat){
+    private void createPembayaranResep(String idAntrianOnline){
+        logger.info("[TesTelemedicController.insertObat] START >>>");
+
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+
+        AntrianTelemedic antrianTelemedic = new AntrianTelemedic();
+        ItSimrsAntrianTelemedicEntity telemedicEntity = telemedicBoProxy.getAntrianTelemedicEntityById(idAntrianOnline);
+        if (telemedicEntity != null){
+
+            antrianTelemedic.setId(telemedicEntity.getId());
+            antrianTelemedic.setCreatedDate(time);
+            antrianTelemedic.setLastUpdate(time);
+            antrianTelemedic.setCreatedWho("admin");
+            antrianTelemedic.setLastUpdateWho("admin");
+
+            List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
+            TransaksiObatDetail transaksiObatDetail = new TransaksiObatDetail();
+            transaksiObatDetail.setIdObat("OBT00000020");
+            transaksiObatDetail.setIdPelayanan(telemedicEntity.getId());
+            transaksiObatDetail.setQty(new BigInteger("5"));
+            transaksiObatDetail.setFlag("Y");
+            transaksiObatDetail.setAction("C");
+            transaksiObatDetail.setCreatedDate(time);
+            transaksiObatDetail.setCreatedWho("admin");
+
+            transaksiObatDetails.add(transaksiObatDetail);
+
+            try {
+                telemedicBoProxy.createPembayaranResep(antrianTelemedic, transaksiObatDetails);
+            } catch (GeneralBOException e){
+                logger.error("[TesTelemedicController.insertObat] ERROR. ",e);
+                throw new GeneralBOException("[TesTelemedicController.insertObat] ERROR. ", e);
+            }
+        }
+        logger.info("[TesTelemedicController.insertObat] END <<<");
+    }
+
+    private void insertEObat(String idAntrianOnline){
         logger.info("[TesTelemedicController.insertEObat] START >>>");
 
+        Timestamp time = new Timestamp(System.currentTimeMillis());
         PermintaanResep permintaanResep = new PermintaanResep();
 
+        ItSimrsAntrianTelemedicEntity telemedicEntity = telemedicBoProxy.getAntrianTelemedicEntityById(idAntrianOnline);
+        if (telemedicEntity != null){
+            permintaanResep.setIdPelayanan(telemedicEntity.getIdPelayanan());
+            permintaanResep.setTujuanPelayanan(telemedicEntity.getIdPelayanan());
+            permintaanResep.setIdPasien("RS0104200035");
+            permintaanResep.setCreatedWho("admin");
+            permintaanResep.setLastUpdate(time);
+            permintaanResep.setCreatedDate(time);
+            permintaanResep.setLastUpdateWho("admin");
+            permintaanResep.setAction("C");
+            permintaanResep.setFlag("Y");
+            permintaanResep.setBranchId("RS01");
+            permintaanResep.setJenisResep("umum");
+            permintaanResep.setIdTransaksiOnline("");
+            permintaanResep.setIdPasien(telemedicEntity.getIdPasien());
+        }
 
         logger.info("[TesTelemedicController.insertEObat] END <<<");
     }
