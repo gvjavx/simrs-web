@@ -271,6 +271,7 @@ public class ResepOnlineBoImpl implements ResepOnlineBo {
             resepOnline.setCreatedWho(data.getCreatedWho());
             resepOnline.setLastUpdate(data.getLastUpdate());
             resepOnline.setLastUpdateWho(data.getLastUpdateWho());
+            resepOnline.setKeterangan(data.getKeterangan());
 
             list.add(resepOnline);
         }

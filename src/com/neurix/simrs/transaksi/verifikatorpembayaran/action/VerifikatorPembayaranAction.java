@@ -53,6 +53,8 @@ import com.neurix.simrs.transaksi.permintaanresep.model.ImSimrsPermintaanResepEn
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
+import com.neurix.simrs.transaksi.reseponline.bo.ResepOnlineBo;
+import com.neurix.simrs.transaksi.reseponline.model.ResepOnline;
 import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
 import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity;
 import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsTindakanTransitorisEntity;
@@ -147,6 +149,8 @@ public class VerifikatorPembayaranAction {
         if (antrianTelemedic != null){
             searchAntrian.setStatus(antrianTelemedic.getStatus());
             searchAntrian.setIdPelayanan(antrianTelemedic.getIdPelayanan());
+            searchAntrian.setId(antrianTelemedic.getId());
+            searchAntrian.setIdTransaksi(antrianTelemedic.getIdTransaksi());
         }
 
         List<AntrianTelemedic> listResults = new ArrayList<>();
@@ -189,9 +193,109 @@ public class VerifikatorPembayaranAction {
     public CheckResponse approveEresep(String idTransaksi){
         logger.info("[VerifikatorPembayaranAction.approveTransaksi] START >>>");
 
+        Timestamp time = CommonUtil.getCurrentDateTimes();
+        String userLogin = CommonUtil.userLogin();
+
         CheckResponse response = new CheckResponse();
 
-        logger.info("[VerifikatorPembayaranAction.search] END <<<");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
+        TelemedicBo telemedicBo = (TelemedicBo) ctx.getBean("telemedicBoProxy");
+        ResepOnlineBo resepOnlineBo = (ResepOnlineBo) ctx.getBean("resepOnlineBoProxy");
+
+        ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = verifikatorPembayaranBo.getPembayaranOnlineById(idTransaksi);
+        if (pembayaranOnlineEntity != null){
+
+            ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = telemedicBo.getAntrianTelemedicEntityById(pembayaranOnlineEntity.getIdAntrianTelemedic());
+            if (antrianTelemedicEntity != null){
+
+                PermintaanResep permintaanResep = new PermintaanResep();
+                permintaanResep.setIdPelayanan(antrianTelemedicEntity.getId());
+                permintaanResep.setTujuanPelayanan(antrianTelemedicEntity.getIdPelayanan());
+                permintaanResep.setIdPasien(antrianTelemedicEntity.getIdPasien());
+                permintaanResep.setCreatedWho(userLogin);
+                permintaanResep.setLastUpdate(time);
+                permintaanResep.setCreatedDate(time);
+                permintaanResep.setLastUpdateWho(userLogin);
+                permintaanResep.setAction("C");
+                permintaanResep.setFlag("Y");
+                permintaanResep.setBranchId(antrianTelemedicEntity.getBranchId());
+                permintaanResep.setJenisResep(antrianTelemedicEntity.getIdJenisPeriksaPasien());
+                permintaanResep.setIdTransaksiOnline(idTransaksi);
+
+                List<TransaksiObatDetail> obatDetails = new ArrayList<>();
+                ResepOnline resepOnline = new ResepOnline();
+                resepOnline.setIdTransaksiOnline(idTransaksi);
+                List<ResepOnline> resepOnlines = resepOnlineBo.getByCriteria(resepOnline);
+                if (resepOnlines.size() > 0){
+                    // set to obat details
+                    for (ResepOnline resep : resepOnlines){
+
+                        TransaksiObatDetail detail = new TransaksiObatDetail();
+                        detail.setIdObat(resep.getIdObat());
+                        detail.setKeterangan(resep.getKeterangan());
+                        detail.setQty(resep.getQty());
+                        detail.setJenisSatuan("biji");
+                        obatDetails.add(detail);
+                    }
+                } else {
+                    String errorMsg = "[VerifikatorPembayaranAction.approveEresep] Tidak Ditemukan Resep";
+                    logger.error(errorMsg);
+                    response.setStatus("error");
+                    response.setMessage(errorMsg);
+                    return response;
+                }
+
+                try {
+
+                    String idPermintaanResep = verifikatorPembayaranBo.saveAddResep(permintaanResep, obatDetails);
+                    if (!"".equalsIgnoreCase(idPermintaanResep)){
+
+                        // Update Apporve Flag
+                        pembayaranOnlineEntity.setIdItem(idPermintaanResep);
+                        pembayaranOnlineEntity.setApprovedFlag("Y");
+                        pembayaranOnlineEntity.setAction("U");
+                        pembayaranOnlineEntity.setApprovedWho(userLogin);
+                        pembayaranOnlineEntity.setLastUpdate(time);
+                        pembayaranOnlineEntity.setLastUpdateWho(userLogin);
+                        try {
+                            verifikatorPembayaranBo.saveEdit(pembayaranOnlineEntity);
+                        } catch (GeneralBOException e){
+                            logger.error("[VerifikatorPembayaranAction.approveEresep] ERROR. ",e);
+                            response.setStatus("error");
+                            response.setMessage("[VerifikatorPembayaranAction.approveEresep] ERROR. " + e);
+                            return response;
+                        }
+
+                        // Update Status FN / Finish to Antrian
+                        AntrianTelemedic antrianTelemedic = new AntrianTelemedic();
+                        antrianTelemedic.setId(antrianTelemedicEntity.getId());
+                        antrianTelemedic.setStatus("FN");
+                        antrianTelemedic.setAction("U");
+                        antrianTelemedic.setLastUpdate(time);
+                        antrianTelemedic.setLastUpdateWho(userLogin);
+                        try {
+                            telemedicBo.saveEdit(antrianTelemedic, "", "");
+                        } catch (GeneralBOException e){
+                            logger.error("[VerifikatorPembayaranAction.approveEresep] ERROR. ",e);
+                            response.setStatus("error");
+                            response.setMessage("[VerifikatorPembayaranAction.approveEresep] ERROR. " + e);
+                            return response;
+                        }
+                    }
+
+                    response.setStatus("success");
+                } catch (GeneralBOException e){
+                    String errorMsg = "[VerifikatorPembayaranAction.approveEresep] ERROR. ";
+                    logger.error(errorMsg,e);
+                    response.setStatus("error");
+                    response.setMessage(errorMsg+ e);
+                    return response;
+                }
+            }
+        }
+
+        logger.info("[VerifikatorPembayaranAction.approveEresep] END <<<");
         return response;
     }
 
@@ -263,7 +367,7 @@ public class VerifikatorPembayaranAction {
                         headerCheckup.setLastUpdateWho(userLogin);
                         headerCheckup.setJenisKunjungan("Lama");
                         headerCheckup.setIdPelayanan(antrianTelemedicEntity.getIdPelayanan());
-                        headerCheckup.setStatusPeriksa("1");
+                        headerCheckup.setStatusPeriksa("3");
                         headerCheckup.setStTglLahir(pasienEntity.getTglLahir().toString());
                         headerCheckup.setMetodePembayaran("non_tunai");
                         headerCheckup.setIdAntrianOnline(antrianTelemedicEntity.getId());
@@ -273,7 +377,7 @@ public class VerifikatorPembayaranAction {
                         headerCheckup.setIdPasien(antrianTelemedicEntity.getIdPasien());
                     }
 
-                    String idPermintaanResep;
+                    String idPermintaanResep = "";
                     try {
                         idPermintaanResep = verifikatorPembayaranBo.approveTransaksiResep(headerCheckup, idTransaksi);
                         response.setStatus("success");
@@ -462,6 +566,24 @@ public class VerifikatorPembayaranAction {
                         AntrianTelemedic antrianTelemedic = new AntrianTelemedic();
                         antrianTelemedic.setId(antrianTelemedicEntity.getId());
                         antrianTelemedic.setStatus("SL");
+                        antrianTelemedic.setLastUpdate(time);
+                        antrianTelemedic.setLastUpdateWho(userLogin);
+
+                        try {
+                            telemedicBo.saveEdit(antrianTelemedic, "", "");
+                            response.setStatus("success");
+                        } catch (GeneralBOException e){
+                            logger.error("[VerifikatorPembayaranAction.approveTransaksi] ERROR. ",e);
+                            response.setStatus("error");
+                            response.setMessage("[VerifikatorPembayaranAction.approveTransaksi] ERROR. " + e);
+                            return response;
+                        }
+                        // jika resep dan status SELESAI Konsutasi Maka Update Status FN / Finish
+                    } else if ("Y".equalsIgnoreCase(flagResep) && "SK".equalsIgnoreCase(antrianTelemedicEntity.getStatus())){
+
+                        AntrianTelemedic antrianTelemedic = new AntrianTelemedic();
+                        antrianTelemedic.setId(antrianTelemedicEntity.getId());
+                        antrianTelemedic.setStatus("FN");
                         antrianTelemedic.setLastUpdate(time);
                         antrianTelemedic.setLastUpdateWho(userLogin);
 

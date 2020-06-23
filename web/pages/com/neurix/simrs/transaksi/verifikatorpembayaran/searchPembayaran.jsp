@@ -62,6 +62,22 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="control-label col-sm-4">ID Antrian</label>
+                                    <div class="col-sm-4">
+                                        <s:textfield id="id_antrian" cssStyle="margin-top: 7px"
+                                                     name="antrianTelemedic.id" required="false"
+                                                     readonly="false" cssClass="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">ID Transaksi</label>
+                                    <div class="col-sm-4">
+                                        <s:textfield id="id_transaksi" cssStyle="margin-top: 7px"
+                                                     name="antrianTelemedic.idTransaksi" required="false"
+                                                     readonly="false" cssClass="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="control-label col-sm-4">Jenis Pasien</label>
                                     <div class="col-sm-4">
                                         <s:select list="#{'asuransi':'ASURANSI', 'bpjs':'BPJS'}" cssStyle="margin-top: 7px"
@@ -166,12 +182,14 @@
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="ketStatus"/></td>
                                     <td style="vertical-align: middle" align="center">
+                                        <s:if test='#row.approveResep != "Y"'>
                                         <s:if test='#row.flagBayarKonsultasi == "Y"'>
                                             <label class="label label-success"> sudah bayar</label>
                                         </s:if>
                                         <s:else>
                                             <label class="label label-warning"> belum bayar</label>
                                         </s:else>
+                                        </s:if>
                                     </td>
                                     <td style="vertical-align: middle" align="center">
                                         <s:if test='#row.approveKonsultasi == "Y"'>
@@ -242,7 +260,7 @@
                     </div>
                     <div class="alert alert-success alert-dismissible" style="display: none" id="success_fin">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
-                        <p id="msg_fin"></p>
+                        <p id="msg_fin">Approve Berhasil</p>
                     </div>
 
                     <table class="table table-bordered table-striped" id="tabel_tindakan_fin">
@@ -259,6 +277,7 @@
                         </thead>
                         <tbody id="body_tindakan_fin">
                         </tbody>
+                        <input type="hidden" id="fin_id_antrian"/>
                     </table>
                 </div>
                 <div class="box-header with-border"></div>
@@ -369,7 +388,7 @@
                     }
                     str += "</tr>";
             });
-
+            $("#fin_id_antrian").val(var1);
             $("#body_tindakan_fin").html(str);
         })
     }
@@ -418,9 +437,29 @@
                 $("#msg_fin_error").text(response.message);
             } else {
                 $("#success_fin").show().fadeOut(5000);
-                $("#msg_fin").text("Success Approve");
+                $("#id_antrian").val(idAntrian);
+                $("#searchForm").submit();
             }
         });
+    }
+
+    function saveApproveEresep(var1){
+        $("#success_fin").show().fadeOut(5000);
+        var idAntrian = $("#fin_id_antrian").val();
+
+        VerifikatorPembayaranAction.approveEresep(var1, function (response) {
+            dwr.engine.setAsync(false);
+            if (response.status == "error"){
+                $("#warning_fin").show();
+                $("#success_fin").hide();
+                $("#msg_fin_error").text(response.message);
+            } else {
+                $("#success_fin").show().fadeOut(5000);
+                $("#id_antrian").val(idAntrian);
+                $("#searchForm").submit();
+            }
+        });
+
     }
 
 </script>
