@@ -738,6 +738,7 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
         return idPermintaanResep;
     }
 
+    @Override
     public String saveAddResep(PermintaanResep bean, List<TransaksiObatDetail> detailList) throws GeneralBOException {
         logger.info("[VerifikatorPembayaranBoImpl.saveAddResep] START >>>>>>>");
 
