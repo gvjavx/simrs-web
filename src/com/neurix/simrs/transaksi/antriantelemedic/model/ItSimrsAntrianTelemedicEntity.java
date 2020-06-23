@@ -28,6 +28,24 @@ public class ItSimrsAntrianTelemedicEntity {
     private String kodeBank;
     private String branchId;
     private String keluhan;
+    private String flagEresep;
+    private String urlFotoResep;
+
+    public String getFlagEresep() {
+        return flagEresep;
+    }
+
+    public void setFlagEresep(String flagEresep) {
+        this.flagEresep = flagEresep;
+    }
+
+    public String getUrlFotoResep() {
+        return urlFotoResep;
+    }
+
+    public void setUrlFotoResep(String urlFotoResep) {
+        this.urlFotoResep = urlFotoResep;
+    }
 
     public void setKeluhan(String keluhan) {
         this.keluhan = keluhan;

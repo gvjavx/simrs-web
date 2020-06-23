@@ -429,6 +429,13 @@
           <param name="class" value="com.neurix.simrs.master.vendor.action.VendorAction"/>
       </create>
 
+      <!--Resep Online-->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.reseponline.action.ResepOnlineAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.reseponline.model.ResepOnline"/>
+      <convert converter="bean" match="com.neurix.simrs.master.kurir.model.Kurir"/>
+
       <!--Plan Kegiatan Rawat-->
       <create creator="new">
           <param name="class" value="com.neurix.simrs.transaksi.plankegiatanrawat.action.PlanKegiatanRawatAction"/>

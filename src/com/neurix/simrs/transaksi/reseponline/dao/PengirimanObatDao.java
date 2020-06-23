@@ -112,7 +112,9 @@ public class PengirimanObatDao extends GenericDao<ItSimrsPengirimanObatEntity, S
                 "    msato.id_approval_obat,\n" +
                 "    ishdc.id_jenis_periksa_pasien,\n" +
                 "    mspr.flag,\n" +
-                "    mspr.id_transaksi_online\n" +
+                "    mspr.id_transaksi_online,\n" +
+                "    ishc.id_pasien,\n" +
+                "    mspr.tujuan_pelayanan\n" +
                 "FROM mt_simrs_approval_transaksi_obat msato\n" +
                 "INNER JOIN (SELECT * FROM mt_simrs_permintaan_resep WHERE id_transaksi_online is NOT NULL ) mspr ON mspr.id_approval_obat = msato.id_approval_obat\n" +
                 "INNER JOIN it_simrs_header_detail_checkup ishdc ON ishdc.id_detail_checkup = mspr.id_detail_checkup\n" +
@@ -137,15 +139,15 @@ public class PengirimanObatDao extends GenericDao<ItSimrsPengirimanObatEntity, S
                 permintaanResep.setIdPermintaanResep(obj[0].toString());
                 permintaanResep.setIdDetailCheckup(obj[1].toString());
                 permintaanResep.setNamaPasien(obj[2].toString());
-                permintaanResep.setIdApprovalObat(obj[4].toString());;
-                permintaanResep.setIdJenisPeriksa(obj[5].toString());
-                permintaanResep.setFlag(obj[6].toString());
-                permintaanResep.setKetJenisAntrian(obj[7] == null ? "Resep RS" : "Telemedic");
+                permintaanResep.setIdApprovalObat(obj[3].toString());;
+                permintaanResep.setIdJenisPeriksa(obj[4].toString());
+                permintaanResep.setFlag(obj[5].toString());
+                permintaanResep.setKetJenisAntrian(obj[6] == null ? "Resep RS" : "Telemedic");
+                permintaanResep.setIdPasien(obj[7].toString());
+                permintaanResep.setIdPelayanan(obj[8].toString());
                 permintaanResepList.add(permintaanResep);
             }
         }
         return permintaanResepList;
     }
-
-
 }

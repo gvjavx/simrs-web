@@ -13,7 +13,7 @@
           p:resepOnlineBoProxy-ref="resepOnlineBo"
     />
 
-    <bean id="pengirimanObatAction" class="com.neurix.simrs.transaksi.reseponline.action.PengirimanObatAction"
+    <bean id="pengirimanObatAction" class="com.neurix.simrs.transaksi.reseponline.action.ResepOnlineAction"
           p:resepOnlineBoProxy-ref="resepOnlineBo"
     />
 

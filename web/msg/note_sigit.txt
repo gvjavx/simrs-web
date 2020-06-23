@@ -283,3 +283,50 @@
         ADD alamat text,
         ADD no_telp VARCHAR(30);
 <<< //
+
+// 2020-06-22 >>>
+
+    // function Pengiriman Obat ==========
+
+    "Search Pengiriman Obat"        "/reseponline/searchApprovedResep_reseponline.action"
+    "init form Pengiriman Obat"     "/reseponline/initForm_reseponline.action"
+    "Pengiriman Obat"               "/reseponline/initForm_reseponline.action" (Menu) parent -> menu utama
+
+    role : admin apotek
+
+    // ===================================
+
+    -- Table: public.it_simrs_pemesanan_resep_online
+
+    -- DROP TABLE public.it_simrs_pemesanan_resep_online;
+
+    CREATE TABLE public.it_simrs_pemesanan_resep_online
+    (
+        id character varying(50) COLLATE pg_catalog."default" NOT NULL,
+        id_pasien character varying(50) COLLATE pg_catalog."default",
+        url_foto_resep text COLLATE pg_catalog."default",
+        id_resep character varying(30) COLLATE pg_catalog."default",
+        id_apoteker character varying(30) COLLATE pg_catalog."default",
+        flag character varying(1) COLLATE pg_catalog."default",
+        action integer,
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        id_transaksi_online character varying(50) COLLATE pg_catalog."default",
+        CONSTRAINT pk_pemesanan_resep_online PRIMARY KEY (id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.it_simrs_pemesanan_resep_online
+        OWNER to postgres;
+
+
+    ALTER TABLE it_simrs_antrian_telemedic
+    ADD COLUMN flag_eresep VARCHAR(1),
+    ADD COLUMN url_foto_resep text;
+
+<<< //

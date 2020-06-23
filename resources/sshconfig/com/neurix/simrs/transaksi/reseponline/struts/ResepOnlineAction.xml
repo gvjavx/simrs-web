@@ -70,10 +70,10 @@
         </global-exception-mappings>
 
         <action name="*_reseponline"
-                class="com.neurix.simrs.transaksi.reseponline.action.PengirimanObatAction" method="{1}">
+                class="com.neurix.simrs.transaksi.reseponline.action.ResepOnlineAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
 
-            <result name="search">/pages/com/neurix/simrs/transaksi/verifikatorpembayaran/searchPembayaran.jsp</result>
+            <result name="search">/pages/com/neurix/simrs/transaksi/reseponline/searchAssignKurir.jsp</result>
 
             <result name="print_final_claim" type="jasper">
                 <param name="location">/pages/report/com/neurix/simrs/printFinalClaim.jasper</param>

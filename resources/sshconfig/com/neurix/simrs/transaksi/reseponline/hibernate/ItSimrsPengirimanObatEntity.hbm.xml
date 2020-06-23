@@ -48,13 +48,13 @@
                 <column name="last_update_who"/>
             </basic>
             <basic name="desaId">
-                <column name="desa_id"/>
+                <column name="desaid"/>
             </basic>
             <basic name="alamat">
                 <column name="alamat"/>
             </basic>
             <basic name="noTelp">
-                <column name="no_telp"/>
+                <column name="notelp"/>
             </basic>
         </attributes>
     </entity>

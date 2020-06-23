@@ -68,6 +68,12 @@
             <basic name="keluhan">
                 <column name="keluhan"/>
             </basic>
+            <basic name="flagEresep">
+                <column name="flag_eresep"/>
+            </basic>
+            <basic name="urlFotoResep">
+                <column name="url_foto_resep"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

@@ -186,6 +186,15 @@ public class VerifikatorPembayaranAction {
         return pembayaranOnlines;
     }
 
+    public CheckResponse approveEresep(String idTransaksi){
+        logger.info("[VerifikatorPembayaranAction.approveTransaksi] START >>>");
+
+        CheckResponse response = new CheckResponse();
+
+        logger.info("[VerifikatorPembayaranAction.search] END <<<");
+        return response;
+    }
+
     public CheckResponse approveTransaksi(String idTransaksi){
         logger.info("[VerifikatorPembayaranAction.approveTransaksi] START >>>");
 
@@ -261,6 +270,7 @@ public class VerifikatorPembayaranAction {
                         headerCheckup.setIdTransaksiOnline(idTransaksi);
                         headerCheckup.setNoCheckup(noCheckup);
                         headerCheckup.setBranchId(branchId);
+                        headerCheckup.setIdPasien(antrianTelemedicEntity.getIdPasien());
                     }
 
                     String idPermintaanResep;
@@ -486,10 +496,6 @@ public class VerifikatorPembayaranAction {
             response.setMessage("[VerifikatorPembayaranAction.approveTransaksi] ERROR. tidak ditemukan data transaksi.");
             return response;
         }
-
-
-
-
         logger.info("[VerifikatorPembayaranAction.approveTransaksi] END <<<");
         return response;
     }
@@ -614,8 +620,6 @@ public class VerifikatorPembayaranAction {
                                     }
                                 }
                             }
-
-//                            throw new GeneralBOException("[Loop Selesai]");
                         }
                     }
                 }

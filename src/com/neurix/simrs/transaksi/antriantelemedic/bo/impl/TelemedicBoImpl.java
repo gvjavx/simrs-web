@@ -157,6 +157,7 @@ public class TelemedicBoImpl implements TelemedicBo {
                 antrianTelemedic.setKodeBank(telemedicEntity.getKodeBank());
                 antrianTelemedic.setBranchId(telemedicEntity.getBranchId());
                 antrianTelemedic.setKeluhan(telemedicEntity.getKeluhan());
+                antrianTelemedic.setFlagEresep(telemedicEntity.getFlagEresep());
 
                 // cari pembayaran online konsultasi;
                 PembayaranOnline pembayaranOnline = new PembayaranOnline();
@@ -261,6 +262,8 @@ public class TelemedicBoImpl implements TelemedicBo {
                     return "Waiting List . . .";
                 case "SL":
                     return "Antrian Short List . . .";
+                case "ER":
+                    return "Pembayaran E Resep . . .";
                 default:
                     return "";
             }
@@ -363,6 +366,11 @@ public class TelemedicBoImpl implements TelemedicBo {
             bean.setStatus("LL");
         } else {
             bean.setStatus("WL");
+        }
+
+        // jika ERESEP
+        if ("Y".equalsIgnoreCase(bean.getFlagEresep())){
+            bean.setStatus("ER");
         }
 
         try {
