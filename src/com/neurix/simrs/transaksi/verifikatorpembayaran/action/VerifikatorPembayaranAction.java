@@ -294,6 +294,13 @@ public class VerifikatorPembayaranAction {
 
                         try {
                             verifikatorPembayaranBo.saveEdit(pembayaranOnlineEntity);
+
+                            //Push Notif ke Pasien terkait perubahan status menjadi WL
+                            bean.setUserId(antrianTelemedicEntity.getIdPasien());
+                            notifikasiFcm = notifikasiFcmBo.getByCriteria(bean);
+                            FirebasePushNotif.sendNotificationFirebase(notifikasiFcm.get(0).getTokenFcm(),"Resep", "Pembayaran resep telah dikonfirmasi", "WL", notifikasiFcm.get(0).getOs());
+
+
                             response.setStatus("success");
                             return response;
                         } catch (GeneralBOException e){

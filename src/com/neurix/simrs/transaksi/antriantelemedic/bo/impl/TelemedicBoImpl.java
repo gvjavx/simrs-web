@@ -771,9 +771,47 @@ public class TelemedicBoImpl implements TelemedicBo {
         entity.setCreatedWho(bean.getCreatedWho());
         entity.setLastUpdate(bean.getLastUpdate());
         entity.setLastUpdateWho(bean.getLastUpdateWho());
+        entity.setLat(bean.getLat());
+        entity.setLon(bean.getLon());
 
         try {
             pengirimanObatDao.updateAndSave(entity);
+        } catch (GeneralBOException e){
+            logger.error("[TelemedicBoImpl.saveEditPengirimanObat] ERROR. ", e);
+            throw new GeneralBOException("[TelemedicBoImpl.saveEditPengirimanObat] ERROR. ", e);
+        }
+
+        logger.info("[TelemedicBoImpl.saveEditPengirimanObat] END <<<");
+    }
+
+    @Override
+    public void saveAddPengirimanObat(PengirimanObat bean) throws GeneralBOException{
+        logger.info("[TelemedicBoImpl.saveEditPengirimanObat] END <<<");
+
+        ItSimrsPengirimanObatEntity entity = new ItSimrsPengirimanObatEntity();
+
+        entity.setId("PIO" + pengirimanObatDao.getNextSeq());
+        entity.setIdKurir(bean.getIdKurir());
+        entity.setIdPasien(bean.getIdPasien());
+        entity.setIdPelayanan(bean.getIdPelayanan());
+        entity.setIdResep(bean.getIdResep());
+        entity.setBranchId(bean.getBranchId());
+        entity.setDesaId(bean.getDesaId());
+        entity.setAlamat(bean.getAlamat());
+        entity.setFlagDiterimaPasien(bean.getFlagDiterimaPasien());
+        entity.setFlagPickup(bean.getFlagPickup());
+        entity.setFlag(bean.getFlag());
+        entity.setAction(bean.getAction());
+        entity.setNoTelp(bean.getNoTelp());
+        entity.setCreatedDate(bean.getCreatedDate());
+        entity.setCreatedWho(bean.getCreatedWho());
+        entity.setLastUpdate(bean.getLastUpdate());
+        entity.setLastUpdateWho(bean.getLastUpdateWho());
+        entity.setLat(bean.getLat());
+        entity.setLon(bean.getLon());
+
+        try {
+            pengirimanObatDao.addAndSave(entity);
         } catch (GeneralBOException e){
             logger.error("[TelemedicBoImpl.saveEditPengirimanObat] ERROR. ", e);
             throw new GeneralBOException("[TelemedicBoImpl.saveEditPengirimanObat] ERROR. ", e);
