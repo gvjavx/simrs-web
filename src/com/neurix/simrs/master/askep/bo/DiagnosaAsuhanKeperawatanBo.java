@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface DiagnosaAsuhanKeperawatanBo {
     public List<DiagnosaAsuhanKeperawatan> getByCriteria(DiagnosaAsuhanKeperawatan bean) throws GeneralBOException;
-    public List<DiagnosaAsuhanKeperawatan> getListDiagnosa(String key) throws GeneralBOException;
+    public List<DiagnosaAsuhanKeperawatan> getListDiagnosa(String key, String tipe) throws GeneralBOException;
 }

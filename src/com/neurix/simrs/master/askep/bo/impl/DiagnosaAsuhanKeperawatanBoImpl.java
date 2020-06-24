@@ -31,6 +31,9 @@ public class DiagnosaAsuhanKeperawatanBoImpl implements DiagnosaAsuhanKeperawata
             if(bean.getDiagnosa() != null && !"".equalsIgnoreCase(bean.getDiagnosa())){
                 hsCriteria.put("diagnosa", bean.getDiagnosa());
             }
+            if(bean.getTipe() != null && !"".equalsIgnoreCase(bean.getTipe())){
+                hsCriteria.put("tipe", bean.getTipe());
+            }
 
             List<ImSimrsDiagnosaAsuhanKeperawatanEntity> entityList = new ArrayList<>();
 
@@ -51,6 +54,7 @@ public class DiagnosaAsuhanKeperawatanBoImpl implements DiagnosaAsuhanKeperawata
                     diagnosaAsuhanKeperawatan.setCreatedWho(entity.getCreatedWho());
                     diagnosaAsuhanKeperawatan.setLastUpdate(entity.getLastUpdate());
                     diagnosaAsuhanKeperawatan.setLastUpdateWho(entity.getLastUpdateWho());
+                    diagnosaAsuhanKeperawatan.setTipe(entity.getTipe());
                     list.add(diagnosaAsuhanKeperawatan);
                 }
             }
@@ -59,8 +63,8 @@ public class DiagnosaAsuhanKeperawatanBoImpl implements DiagnosaAsuhanKeperawata
     }
 
     @Override
-    public List<DiagnosaAsuhanKeperawatan> getListDiagnosa(String key) throws GeneralBOException {
-        return diagnosaAsuhanKeperawatanDao.getListDiagnosa(key);
+    public List<DiagnosaAsuhanKeperawatan> getListDiagnosa(String key, String tipe) throws GeneralBOException {
+        return diagnosaAsuhanKeperawatanDao.getListDiagnosa(key, tipe);
     }
 
     public static Logger getLogger() {

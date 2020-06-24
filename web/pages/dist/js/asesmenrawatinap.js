@@ -14,7 +14,7 @@ function showModalAsesmenRawatInap(jenis) {
     }
 
     if ("asuhan" == jenis) {
-        listAsuhanKeperawatan();
+        listAsuhanKeperawatan(jenis);
     }
 
     if ("rekonsiliasi" == jenis) {
@@ -25,7 +25,7 @@ function showModalAsesmenRawatInap(jenis) {
         listRekamMedisRJ();
     }
 
-    if("asuhan_keperawatan" == jenis){
+    if ("asuhan_keperawatan" == jenis) {
         $('#diagnosa_askep').val('');
         $('#dia').html('');
         $('#has').html('');
@@ -2057,14 +2057,14 @@ function saveCatatanTerintegrasi(jenis, ket) {
     var va1 = $('#cp1').val();
     var va2 = $('#cp2').val();
     var va3 = $('#cp3').val();
-    var va4 = $('#cp4').val();
+    // var va4 = $('#cp4').val();
     var va5 = $('#cp5').val();
     var v6 = document.getElementById("cp6");
     var v7 = document.getElementById("cp7");
     var va6 = isBlank(v6);
     var va7 = isBlank(v7);
 
-    if (va1 && va2 && va3 && va4 && va5 != '' && !va6 && !va7) {
+    if (va1 && va2 && va3 && va5 != '' && !va6 && !va7) {
 
         var ttd1 = v6.toDataURL("image/png"),
             ttd1 = ttd1.replace(/^data:image\/(png|jpg);base64,/, "");
@@ -2075,7 +2075,7 @@ function saveCatatanTerintegrasi(jenis, ket) {
             'id_detail_checkup': idDetailCheckup,
             'waktu': va1.split("-").reverse().join("-") + ' ' + va2 + ':00',
             'ppa': va3,
-            'jenis': va4,
+            'jenis': '',
             'instruksi': va5,
             'keterangan': jenis,
             'ttd_petugas': ttd1,
@@ -2119,12 +2119,10 @@ function listCatatanTerintegrasi() {
     var table = "";
     CatatanTerintegrasiAction.getListCatatanTerintegrasi(idDetailCheckup, function (res) {
         if (res.length > 0) {
-            console.log(res);
             $.each(res, function (i, item) {
                 table += '<tr>' +
                     '<td>' + converterDateTime(item.waktu) + '</td>' +
                     '<td>' + cekNull(item.ppa) + '</td>' +
-                    '<td>' + cekNull(item.jenis) + '</td>' +
                     '<td>' + cekNull(item.intruksi) + '</td>' +
                     '<td>' + '<img style="width: 100%; height: 20px" src="' + item.ttdPetugas + '">' + '</td>' +
                     '<td>' + '<img style="width: 100%; height: 20px" src="' + item.ttdDpjp + '">' + '</td>' +
@@ -2228,7 +2226,7 @@ function listCatatanPemberianObat() {
 
 function saveAsuhanKeperawatan(jenis, ket) {
 
-    var data =[];
+    var data = [];
 
     var diagnosis = $('[name=diag]');
     var hasil = $('[name=hasil]');
@@ -2239,28 +2237,28 @@ function saveAsuhanKeperawatan(jenis, ket) {
     var tgl = $('.tgl').val();
     var jam = $('.jam').val();
 
-    var tempDiag    = "";
-    var tempHasil   = "";
-    var tempInter   = "";
-    var tempImple   = "";
-    var tempEva     = "";
+    var tempDiag = "";
+    var tempHasil = "";
+    var tempInter = "";
+    var tempImple = "";
+    var tempEva = "";
 
     $.each(diagnosis, function (i, item) {
         var val = "";
-        if(item.type == 'checkbox'){
-            if(item.checked){
+        if (item.type == 'checkbox') {
+            if (item.checked) {
                 val = item.value;
             }
-        }else{
-            if(item.value != ''){
+        } else {
+            if (item.value != '') {
                 val = item.value;
             }
         }
 
-        if(val != ''){
-            if(tempDiag != ''){
-                tempDiag = tempDiag +'|'+val;
-            }else{
+        if (val != '') {
+            if (tempDiag != '') {
+                tempDiag = tempDiag + '|' + val;
+            } else {
                 tempDiag = val;
             }
         }
@@ -2268,20 +2266,20 @@ function saveAsuhanKeperawatan(jenis, ket) {
 
     $.each(hasil, function (i, item) {
         var val = "";
-        if(item.type == 'checkbox'){
-            if(item.checked){
+        if (item.type == 'checkbox') {
+            if (item.checked) {
                 val = item.value;
             }
-        }else{
-            if(item.value != ''){
+        } else {
+            if (item.value != '') {
                 val = item.value;
             }
         }
 
-        if(val != ''){
-            if(tempHasil != ''){
-                tempHasil = tempHasil +'|'+val;
-            }else{
+        if (val != '') {
+            if (tempHasil != '') {
+                tempHasil = tempHasil + '|' + val;
+            } else {
                 tempHasil = val;
             }
         }
@@ -2289,20 +2287,20 @@ function saveAsuhanKeperawatan(jenis, ket) {
 
     $.each(inter, function (i, item) {
         var val = "";
-        if(item.type == 'checkbox'){
-            if(item.checked){
+        if (item.type == 'checkbox') {
+            if (item.checked) {
                 val = item.value;
             }
-        }else{
-            if(item.value != ''){
+        } else {
+            if (item.value != '') {
                 val = item.value;
             }
         }
 
-        if(val != ''){
-            if(tempInter != ''){
-                tempInter = tempInter +'|'+val;
-            }else{
+        if (val != '') {
+            if (tempInter != '') {
+                tempInter = tempInter + '|' + val;
+            } else {
                 tempInter = val;
             }
         }
@@ -2310,20 +2308,20 @@ function saveAsuhanKeperawatan(jenis, ket) {
 
     $.each(imple, function (i, item) {
         var val = "";
-        if(item.type == 'checkbox'){
-            if(item.checked){
+        if (item.type == 'checkbox') {
+            if (item.checked) {
                 val = item.value;
             }
-        }else{
-            if(item.value != ''){
+        } else {
+            if (item.value != '') {
                 val = item.value;
             }
         }
 
-        if(val != ''){
-            if(tempImple != ''){
-                tempImple = tempImple +'|'+val;
-            }else{
+        if (val != '') {
+            if (tempImple != '') {
+                tempImple = tempImple + '|' + val;
+            } else {
                 tempImple = val;
             }
         }
@@ -2331,20 +2329,20 @@ function saveAsuhanKeperawatan(jenis, ket) {
 
     $.each(eva, function (i, item) {
         var val = "";
-        if(item.type == 'checkbox'){
-            if(item.checked){
+        if (item.type == 'checkbox') {
+            if (item.checked) {
                 val = item.value;
             }
-        }else{
-            if(item.value != ''){
+        } else {
+            if (item.value != '') {
                 val = item.value;
             }
         }
 
-        if(val != ''){
-            if(tempEva != ''){
-                tempEva = tempEva +'|'+val;
-            }else{
+        if (val != '') {
+            if (tempEva != '') {
+                tempEva = tempEva + '|' + val;
+            } else {
                 tempEva = val;
             }
         }
@@ -2359,7 +2357,7 @@ function saveAsuhanKeperawatan(jenis, ket) {
 
         data = {
             'id_detail_checkup': idDetailCheckup,
-            'waktu': tgl+' '+jam,
+            'waktu': tgl + ' ' + jam,
             'diagnosa': tempDiag,
             'hasil': tempHasil,
             'intervensi': tempInter,
@@ -2383,7 +2381,7 @@ function saveAsuhanKeperawatan(jenis, ket) {
                     $('#warning_ina_' + ket).show().fadeOut(5000);
                     $('#msg_ina_' + ket).text("Berhasil menambahkan data ....");
                     $('#modal-ina-' + jenis).scrollTop(0);
-                    listAsuhanKeperawatan();
+                    listAsuhanKeperawatan(ket);
                 } else {
                     $('#save_ina_' + jenis).show();
                     $('#load_ina_' + jenis).hide();
@@ -2402,9 +2400,9 @@ function saveAsuhanKeperawatan(jenis, ket) {
     }
 }
 
-function listAsuhanKeperawatan() {
+function listAsuhanKeperawatan(jenis) {
     var table = "";
-    RencanaAsuhanKeperawatanAction.getListDetail(idDetailCheckup, function (res) {
+    RencanaAsuhanKeperawatanAction.getListDetail(idDetailCheckup, jenis+'_keperawatan',  function (res) {
         if (res.length > 0) {
             $.each(res, function (i, item) {
 
@@ -2455,7 +2453,7 @@ function listAsuhanKeperawatan() {
                     });
                 }
 
-                if(item.ttdPerawat != null){
+                if (item.ttdPerawat != null) {
                     evaluasi += '<li style="list-style-type: none; margin-top: 10px">' + '<label>Perawat</label><img style="width: 50px; height: 20px" src="' + item.ttdPerawat + '">' + '</li>';
                 }
 
@@ -2596,8 +2594,8 @@ function saveEdukasiPasien(jenis, ket) {
     var cek = false;
     var tgl = $('.tgl').val();
     var jam = $('.jam').val();
-    var ttd1 = document.getElementById("ttd_pasien_"+jenis);
-    var ttd2 = document.getElementById("ttd_staf_"+jenis);
+    var ttd1 = document.getElementById("ttd_pasien_" + jenis);
+    var ttd2 = document.getElementById("ttd_staf_" + jenis);
     var cek1 = isCanvasBlank(ttd1);
     var cek2 = isCanvasBlank(ttd2);
 
@@ -2607,30 +2605,30 @@ function saveEdukasiPasien(jenis, ket) {
     var canv2 = ttd2.toDataURL("image/png"),
         canv2 = canv2.replace(/^data:image\/(png|jpg);base64,/, "");
 
-    var pertanyaan = $('#p_'+jenis).val();
-    var jawaban = $('#j_'+jenis).val();
+    var pertanyaan = $('#p_' + jenis).val();
+    var jawaban = $('#j_' + jenis).val();
 
-    var table = $('#table_'+jenis).tableToJSON();
+    var table = $('#table_' + jenis).tableToJSON();
 
     $.each(table, function (i, item) {
 
-        var dw  = $('[name=dw_'+jenis+i+']:checked').val();
-        var pa  = $('[name=pa_'+jenis+i+']:checked').val();
-        var me  = $('[name=me_'+jenis+i+']:checked').val();
-        var med = $('[name=med_'+jenis+i+']:checked').val();
-        var ev  = $('[name=ev_'+jenis+i+']:checked').val();
-        var edu = $('#edu'+jenis+i).val();
+        var dw = $('[name=dw_' + jenis + i + ']:checked').val();
+        var pa = $('[name=pa_' + jenis + i + ']:checked').val();
+        var me = $('[name=me_' + jenis + i + ']:checked').val();
+        var med = $('[name=med_' + jenis + i + ']:checked').val();
+        var ev = $('[name=ev_' + jenis + i + ']:checked').val();
+        var edu = $('#edu' + jenis + i).val();
         var edukator = "";
 
-        if(tgl && jam != ''){
-            edukator = tgl+' '+jam;
+        if (tgl && jam != '') {
+            edukator = tgl + ' ' + jam;
         }
 
-        if(i == 0){
-            if(dw && pa && me && med && ev && edu != undefined && edu && tgl && jam != '' ){
+        if (i == 0) {
+            if (dw && pa && me && med && ev && edu != undefined && edu && tgl && jam != '') {
                 data.push({
                     'edukator': edukator,
-                    'durasi': dw+' menit',
+                    'durasi': dw + ' menit',
                     'edukasi': edu,
                     'pemahaman_awal': pa,
                     'metode_edukasi': me,
@@ -2641,13 +2639,13 @@ function saveEdukasiPasien(jenis, ket) {
                     'keterangan': jenis,
                     'id_detail_checkup': idDetailCheckup
                 });
-            }else{
+            } else {
                 cek = false;
             }
-        }else{
-            if(dw && pa && me && med && ev && edu != undefined && edu != ''){
+        } else {
+            if (dw && pa && me && med && ev && edu != undefined && edu != '') {
                 data.push({
-                    'durasi': dw+' menit',
+                    'durasi': dw + ' menit',
                     'edukasi': edu,
                     'pemahaman_awal': pa,
                     'metode_edukasi': me,
@@ -2663,7 +2661,7 @@ function saveEdukasiPasien(jenis, ket) {
 
     if (cek) {
 
-        if(pertanyaan && jawaban != ''){
+        if (pertanyaan && jawaban != '') {
             data.push({
                 'edukasi': pertanyaan,
                 'pemahaman_awal': jawaban,
@@ -2710,24 +2708,24 @@ function listEdukasiPasien(jenis) {
     var first = "";
     var body = "";
     var last = "";
-    EdukasiPasienAction.getListDetail(idDetailCheckup, jenis,  function (res) {
+    EdukasiPasienAction.getListDetail(idDetailCheckup, jenis, function (res) {
         if (res.length > 0) {
             var rowSpan = res.length;
             $.each(res, function (i, item) {
                 var edu = "";
                 var ttdPasien = "";
                 var ttdStaf = "";
-                if(item.ttdPasien != null && item.ttdPasien != ''){
-                    ttdPasien = '<img src="'+item.ttdPasien+'" style="width: 50px">';
+                if (item.ttdPasien != null && item.ttdPasien != '') {
+                    ttdPasien = '<img src="' + item.ttdPasien + '" style="width: 50px">';
                 }
-                if(item.ttdStaf != null && item.ttdStaf != ''){
-                    ttdStaf = '<img src="'+item.ttdStaf+'" style="width: 50px">';
+                if (item.ttdStaf != null && item.ttdStaf != '') {
+                    ttdStaf = '<img src="' + item.ttdStaf + '" style="width: 50px">';
                 }
 
-                if("Q" == item.tipe){
-                    body += '<tr>' + '<td colspan="9">' + '<p>'+cekNull(item.edukasi)+'</p><p>'+cekNull(item.pemahamanAwal)+'</p>' + '</td>' +
+                if ("Q" == item.tipe) {
+                    body += '<tr>' + '<td colspan="9">' + '<p>' + cekNull(item.edukasi) + '</p><p>' + cekNull(item.pemahamanAwal) + '</p>' + '</td>' +
                         '</tr>';
-                }else{
+                } else {
                     body += '<tr>' + '<td width="14%">' + cekNull(item.edukator) + '</td>' +
                         '<td width="8%" >' + cekNull(item.durasi) + '</td>' +
                         '<td width="20%">' + cekNull(item.edukasi) + '</td>' +
@@ -2742,17 +2740,17 @@ function listEdukasiPasien(jenis) {
             });
             first =
                 '<tr style="font-weight: bold">' +
-                '<td align="center" style="vertical-align: middle">Tanggal/Jam</td>'+
-                '<td align="center" style="vertical-align: middle">Durasi</td>'+
-                '<td align="center" style="vertical-align: middle" >Pelaksana Edukasi</td>'+
-                '<td align="center" style="vertical-align: middle">Pemahaman Awal</td>'+
-                '<td align="center" style="vertical-align: middle">Metode Edukasi</td>'+
-                '<td align="center" style="vertical-align: middle">Media Edukasi</td>'+
-                '<td align="center" style="vertical-align: middle">Evaluasi/ Verifikasi</td>'+
-                '<td align="center" style="vertical-align: middle">TTD Pasien</td>'+
-                '<td align="center" style="vertical-align: middle">TTD Staf</td>'+
+                '<td align="center" style="vertical-align: middle">Tanggal/Jam</td>' +
+                '<td align="center" style="vertical-align: middle">Durasi</td>' +
+                '<td align="center" style="vertical-align: middle" >Pelaksana Edukasi</td>' +
+                '<td align="center" style="vertical-align: middle">Pemahaman Awal</td>' +
+                '<td align="center" style="vertical-align: middle">Metode Edukasi</td>' +
+                '<td align="center" style="vertical-align: middle">Media Edukasi</td>' +
+                '<td align="center" style="vertical-align: middle">Evaluasi/ Verifikasi</td>' +
+                '<td align="center" style="vertical-align: middle">TTD Pasien</td>' +
+                '<td align="center" style="vertical-align: middle">TTD Staf</td>' +
                 '</tr>';
-        }else{
+        } else {
             body = '<tr><td>Data belum ada</td></tr>';
         }
 
@@ -2839,7 +2837,7 @@ function tambahTindakan() {
     $('#temp_tindakan').append(kolom);
 }
 
-function radioEdukasiPasien(jenis){
+function radioEdukasiPasien(jenis) {
     var data = [];
     var edukasi = [];
     var body = "";
@@ -2896,13 +2894,13 @@ function radioEdukasiPasien(jenis){
         '<div class="row jarak">\n' +
         '<div class="form-group">\n' +
         '    <label class="col-md-2">Pertanyaan</label>\n' +
-        '    <div class="col-md-10"><input class="form-control" id="p_'+jenis+'"></div>\n' +
+        '    <div class="col-md-10"><input class="form-control" id="p_' + jenis + '"></div>\n' +
         '</div>\n' +
         '</div>\n' +
         '<div class="row jarak">\n' +
         '<div class="form-group">\n' +
         '    <label class="col-md-2">Pasien/Keluarga</label>\n' +
-        '    <div class="col-md-10"><input class="form-control" id="j_'+jenis+'"></div>\n' +
+        '    <div class="col-md-10"><input class="form-control" id="j_' + jenis + '"></div>\n' +
         '</div>\n' +
         '</div>';
 
@@ -2910,10 +2908,10 @@ function radioEdukasiPasien(jenis){
         '    <div class="col-md-3">\n' +
         '        <div class="form-group">\n' +
         '            <label style="margin-left: 8px">TTD Pasien</label>\n' +
-        '            <canvas class="paint-canvas-ttd" id="ttd_pasien_'+jenis+'" width="190"\n' +
-        '               onmouseover="paintTtd(\'ttd_pasien_'+jenis+'\')"></canvas>\n' +
+        '            <canvas class="paint-canvas-ttd" id="ttd_pasien_' + jenis + '" width="190"\n' +
+        '               onmouseover="paintTtd(\'ttd_pasien_' + jenis + '\')"></canvas>\n' +
         '            <button style="margin-left: 8px" type="button" class="btn btn-danger"\n' +
-        '                   onclick="removePaint(\'ttd_pasien_'+jenis+'\')"><i class="fa fa-trash"></i>\n' +
+        '                   onclick="removePaint(\'ttd_pasien_' + jenis + '\')"><i class="fa fa-trash"></i>\n' +
         '                Clear\n' +
         '            </button>\n' +
         '        </div>\n' +
@@ -2921,10 +2919,10 @@ function radioEdukasiPasien(jenis){
         '    <div class="col-md-3">\n' +
         '        <div class="form-group">\n' +
         '            <label style="margin-left: 8px">TTD Staf</label>\n' +
-        '            <canvas class="paint-canvas-ttd" id="ttd_staf_'+jenis+'" width="190"\n' +
-        '               onmouseover="paintTtd(\'ttd_staf_'+jenis+'\')"></canvas>\n' +
+        '            <canvas class="paint-canvas-ttd" id="ttd_staf_' + jenis + '" width="190"\n' +
+        '               onmouseover="paintTtd(\'ttd_staf_' + jenis + '\')"></canvas>\n' +
         '            <button style="margin-left: 8px" type="button" class="btn btn-danger"\n' +
-        '                   onclick="removePaint(\'ttd_staf_'+jenis+'\')"><i class="fa fa-trash"></i>\n' +
+        '                   onclick="removePaint(\'ttd_staf_' + jenis + '\')"><i class="fa fa-trash"></i>\n' +
         '                Clear\n' +
         '            </button>\n' +
         '        </div>\n' +
@@ -2956,19 +2954,19 @@ function radioEdukasiPasien(jenis){
         '    </div>\n' +
         '</div>';
 
-    if("ept_tppri" == jenis){
+    if ("ept_tppri" == jenis) {
         edukasi.push({'edukasi': 'Hak dan Kewajiban Pasien dan Keluarga'});
         edukasi.push({'edukasi': 'Peraturan dan Tataterbit RS'});
         edukasi.push({'edukasi': 'Fasilitas kamar, jam kunjungan dan visite Pasien'});
     }
-    if("ept_perawat" == jenis){
+    if ("ept_perawat" == jenis) {
         edukasi.push({'edukasi': 'Manajemen Nyeri, Hand Hygiene, Informasi Fungsi Identitas Pasien'});
         edukasi.push({'edukasi': 'Pemberi informasi pasang (infus, cateter, NGT), pencegahan resiko jatuh'});
         edukasi.push({'edukasi': 'Fasilitas kamar, Jam kunjung dan visite Pasien'});
         edukasi.push({'edukasi': ''});
         edukasi.push({'edukasi': ''});
     }
-    if("ept_dpjp" == jenis){
+    if ("ept_dpjp" == jenis) {
         edukasi.push({'edukasi': 'plc|Nama Dpjp'});
         edukasi.push({'edukasi': 'plc|Diagnosa Penyakit'});
         edukasi.push({'edukasi': 'plc|Dasar Diagnosa'});
@@ -2987,20 +2985,20 @@ function radioEdukasiPasien(jenis){
         edukasi.push({'edukasi': ''});
 
     }
-    if("ept_nutrisionis" == jenis){
+    if ("ept_nutrisionis" == jenis) {
         edukasi.push({'edukasi': 'plc|Program diet dan nutrisi'});
         edukasi.push({'edukasi': 'Pengelolaan makanan dari luar RS'});
         edukasi.push({'edukasi': ''});
         edukasi.push({'edukasi': ''});
     }
-    if("ept_farmasi" == jenis){
+    if ("ept_farmasi" == jenis) {
         edukasi.push({'edukasi': 'Aturan, tata cara pemakain obat yang efektif dan aman'});
         edukasi.push({'edukasi': 'Potensi efek samping obat yang diberikan'});
         edukasi.push({'edukasi': 'Potensi interaksi obat dengan obat lain dan atau dengan makanan'});
         edukasi.push({'edukasi': ''});
         edukasi.push({'edukasi': ''});
     }
-    if("ept_rehabilitasi_medis" == jenis){
+    if ("ept_rehabilitasi_medis" == jenis) {
         edukasi.push({'edukasi': 'Program dan teknik fisioterapi'});
         edukasi.push({'edukasi': 'Penerapan dan keamanan alat terapi'});
         edukasi.push({'edukasi': 'Terapi akupasi'});
@@ -3008,7 +3006,7 @@ function radioEdukasiPasien(jenis){
         edukasi.push({'edukasi': 'Latihan menelan'});
         edukasi.push({'edukasi': 'Pemeliharaan, pemakaian dan kecemasan orthose protesa'});
     }
-    if("ept_dokter" == jenis){
+    if ("ept_dokter" == jenis) {
         edukasi.push({'edukasi': 'plc|Rujukan Pasien'});
         edukasi.push({'edukasi': 'Pasien tidak bisa dirujuk'});
         edukasi.push({'edukasi': 'Pasien tidak transportable'});
@@ -3019,14 +3017,14 @@ function radioEdukasiPasien(jenis){
         edukasi.push({'edukasi': 'Pasien Dirawat diruang rawat inap'});
         edukasi.push({'edukasi': 'Pasien di bawa pulang'});
     }
-    if("ept_radiografer" == jenis){
+    if ("ept_radiografer" == jenis) {
         edukasi.push({'edukasi': 'Pemeriksaan Radiologi'});
         edukasi.push({'edukasi': ''});
         edukasi.push({'edukasi': 'Penerimaan dosis radiasi'});
         edukasi.push({'edukasi': ''});
         edukasi.push({'edukasi': 'Manfaat dan resiko'});
     }
-    if("ept_ppa" == jenis){
+    if ("ept_ppa" == jenis) {
         edukasi.push({'edukasi': ''});
         edukasi.push({'edukasi': ''});
         edukasi.push({'edukasi': ''});
@@ -3034,20 +3032,20 @@ function radioEdukasiPasien(jenis){
         edukasi.push({'edukasi': ''});
     }
 
-    if(edukasi.length > 0){
+    if (edukasi.length > 0) {
         $.each(edukasi, function (i, item) {
             data.push({
                 'durasi': '3|5|10',
                 'edukasi': item.edukasi,
-                'pemahaman':'Baik|Cukup|Kurang',
-                'metode':'Wawancara|Diskusi|Ceramah|Demonstrasi',
-                'media':'Lisan|Leaflet|Brosur|Lembar Balik',
-                'evaluasi':'Mengerti|Re Edukasi|Re Demontrasi'
+                'pemahaman': 'Baik|Cukup|Kurang',
+                'metode': 'Wawancara|Diskusi|Ceramah|Demonstrasi',
+                'media': 'Lisan|Leaflet|Brosur|Lembar Balik',
+                'evaluasi': 'Mengerti|Re Edukasi|Re Demontrasi'
             });
         });
     }
 
-    if(data.length > 0){
+    if (data.length > 0) {
         $.each(data, function (i, item) {
             var durasi = item.durasi.split("|");
             var pemahaman = item.pemahaman.split("|");
@@ -3063,42 +3061,42 @@ function radioEdukasiPasien(jenis){
             var tdMedia = "";
             var tdEvaluasi = "";
 
-            var idEdu = 'edu'+jenis+i;
+            var idEdu = 'edu' + jenis + i;
 
-            if(edukas.length > 1){
+            if (edukas.length > 1) {
                 var edu1 = edukas[1];
-                tdEdukasi += '<td><input style="font-size: 12px" class="form-control" id="edu'+jenis+i+'" placeholder="'+edu1+'" onchange="$(\'#'+idEdu+'\').val(\''+edu1+ '\'+\''+" "+'\'+this.value)"></td>';
-            }else{
-                if(item.edukasi != ''){
-                    tdEdukasi += '<td><input type="hidden" id="edu'+jenis+i+'" value="'+item.edukasi+'">'+item.edukasi+'</td>';
-                }else{
-                    tdEdukasi += '<td><input style="font-size: 12px" class="form-control" id="edu'+jenis+i+'"></td>';
+                tdEdukasi += '<td><input style="font-size: 12px" class="form-control" id="edu' + jenis + i + '" placeholder="' + edu1 + '" onchange="$(\'#' + idEdu + '\').val(\'' + edu1 + '\'+\'' + " " + '\'+this.value)"></td>';
+            } else {
+                if (item.edukasi != '') {
+                    tdEdukasi += '<td><input type="hidden" id="edu' + jenis + i + '" value="' + item.edukasi + '">' + item.edukasi + '</td>';
+                } else {
+                    tdEdukasi += '<td><input style="font-size: 12px" class="form-control" id="edu' + jenis + i + '"></td>';
                 }
             }
 
             $.each(durasi, function (idx, item) {
-                tdDurasi += '<td align="center" style="vertical-align: middle"><div class="custom03">'+
-                            '<input type="radio" value="'+item+'" id="dw_'+jenis+i+idx+'" name="dw_'+jenis+i+'" /><label for="dw_'+jenis+i+idx+'"></label>'+
-                            '</div></td>';
+                tdDurasi += '<td align="center" style="vertical-align: middle"><div class="custom03">' +
+                    '<input type="radio" value="' + item + '" id="dw_' + jenis + i + idx + '" name="dw_' + jenis + i + '" /><label for="dw_' + jenis + i + idx + '"></label>' +
+                    '</div></td>';
             });
             $.each(pemahaman, function (idx, item) {
-                tdPemahaman += '<td align="center" style="vertical-align: middle"><div class="custom03">'+
-                    '<input type="radio" value="'+item+'" id="pa_'+jenis+i+idx+'" name="pa_'+jenis+i+'" /><label for="pa_'+jenis+i+idx+'"></label>'+
+                tdPemahaman += '<td align="center" style="vertical-align: middle"><div class="custom03">' +
+                    '<input type="radio" value="' + item + '" id="pa_' + jenis + i + idx + '" name="pa_' + jenis + i + '" /><label for="pa_' + jenis + i + idx + '"></label>' +
                     '</div></td>';
             });
             $.each(metode, function (idx, item) {
-                tdMetode += '<td align="center" style="vertical-align: middle"><div class="custom03">'+
-                    '<input type="radio" value="'+item+'" id="me_'+jenis+i+idx+'" name="me_'+jenis+i+'" /><label for="me_'+jenis+i+idx+'"></label>'+
+                tdMetode += '<td align="center" style="vertical-align: middle"><div class="custom03">' +
+                    '<input type="radio" value="' + item + '" id="me_' + jenis + i + idx + '" name="me_' + jenis + i + '" /><label for="me_' + jenis + i + idx + '"></label>' +
                     '</div></td>';
             });
             $.each(media, function (idx, item) {
-                tdMedia += '<td align="center" style="vertical-align: middle"><div class="custom03">'+
-                    '<input type="radio" value="'+item+'" id="med_'+jenis+i+idx+'" name="med_'+jenis+i+'" /><label for="med_'+jenis+i+idx+'"></label>'+
+                tdMedia += '<td align="center" style="vertical-align: middle"><div class="custom03">' +
+                    '<input type="radio" value="' + item + '" id="med_' + jenis + i + idx + '" name="med_' + jenis + i + '" /><label for="med_' + jenis + i + idx + '"></label>' +
                     '</div></td>';
             });
             $.each(evaluasi, function (idx, item) {
-                tdEvaluasi += '<td align="center" style="vertical-align: middle"><div class="custom03">'+
-                    '<input type="radio" value="'+item+'" id="ev_'+jenis+i+idx+'" name="ev_'+jenis+i+'" /><label for="ev_'+jenis+i+idx+'"></label>'+
+                tdEvaluasi += '<td align="center" style="vertical-align: middle"><div class="custom03">' +
+                    '<input type="radio" value="' + item + '" id="ev_' + jenis + i + idx + '" name="ev_' + jenis + i + '" /><label for="ev_' + jenis + i + idx + '"></label>' +
                     '</div></td>';
             });
 
@@ -3112,10 +3110,10 @@ function radioEdukasiPasien(jenis){
                 '</tr>';
         });
 
-        $('#q_'+jenis).html(question);
-        $('#temp_'+jenis).html(ttd);
-        $('#head_'+jenis).html(head);
-        $('#body_'+jenis).html(body);
+        $('#q_' + jenis).html(question);
+        $('#temp_' + jenis).html(ttd);
+        $('#head_' + jenis).html(head);
+        $('#body_' + jenis).html(body);
 
         $('.jam').timepicker();
         $('.jam').val(converterTime(new Date()));
@@ -3127,9 +3125,9 @@ function radioEdukasiPasien(jenis){
     }
 }
 
-function searchDiagnosaAskep(id){
+function searchDiagnosaAskep(id, tipe) {
     var menus, mapped;
-    $('#'+id).typeahead({
+    $('#' + id).typeahead({
         minLength: 3,
         source: function (query, process) {
             menus = [];
@@ -3137,7 +3135,7 @@ function searchDiagnosaAskep(id){
 
             var data = [];
             dwr.engine.setAsync(false);
-            RencanaAsuhanKeperawatanAction.getDiagnosaAskep(query, function (listdata) {
+            RencanaAsuhanKeperawatanAction.getDiagnosaAskep(query, tipe, function (listdata) {
                 data = listdata;
             });
 
@@ -3155,7 +3153,7 @@ function searchDiagnosaAskep(id){
         updater: function (item) {
             var selectedObj = mapped[item];
             RencanaAsuhanKeperawatanAction.getListDetailDiagnosaAskep(selectedObj.id, function (res) {
-                if(res.length > 0){
+                if (res.length > 0) {
 
                     var diagnosis = "";
                     var hasil = "";
@@ -3164,81 +3162,102 @@ function searchDiagnosaAskep(id){
                     var evaluasi = "";
 
                     $.each(res, function (i, item) {
-                        if(item.diagnosis != null && item.diagnosis != ''){
-                            if(item.keteranganDiagnosis == "P"){
-                                diagnosis += '<p class="jarak">'+item.diagnosis+'</p><input type="hidden" value="'+item.diagnosis+'" name="diag">';
-                            }else if(item.keteranganDiagnosis == "I") {
-                                diagnosis += '<input style="font-size: 12px" class="form-control jarak" name="diag" id="diag'+i+'" placeholder="'+item.diagnosis+'" onchange="$(\'#diag'+i+'\').val(\''+item.diagnosis+ '\'+\''+" "+'\'+this.value)">';
-                            }else{
-                                diagnosis +=
-                                    '<div class="row">' +
-                                    '<div class="form-check02">\n' +
-                                    '<input type="checkbox" name="diag" id="diag'+i+'" value="'+item.diagnosis+'">\n' +
-                                    '<label for="diag'+i+'"></label> '+item.diagnosis+'\n' +
-                                    '</div>' +
+                        if (item.diagnosis != null && item.diagnosis != '') {
+                            if (item.keteranganDiagnosis == "P") {
+                                diagnosis += '<p class="jarak">' + item.diagnosis + '</p><input type="hidden" value="' + item.diagnosis + '" name="diag">';
+                            } else if (item.keteranganDiagnosis == "I") {
+                                diagnosis += '<input style="font-size: 12px" class="form-control jarak" name="diag" id="diag' + i + '" placeholder="' + item.diagnosis + '" onchange="$(\'#diag' + i + '\').val(\'' + item.diagnosis + '\'+\'' + " " + '\'+this.value)">';
+                            } else if(item.keteranganDiagnosis == "R") {
+                                diagnosis += '<div class="row">' +
+                                    '<div class="col-md-1">' +
+                                    '<div class="custom02">\n' +
+                                    '<input type="radio" value="(P) '+item.diagnosis+'" id="diag'+i+'1" name="diag"/><label for="diag'+i+'1">P</label>\n' +
+                                    '</div>'+
+                                    '</div>'+
+                                    '<div class="col-md-1">' +
+                                    '<div class="custom02">\n' +
+                                    '<input type="radio" value="(S) '+item.diagnosis+'" id="diag'+i+'2" name="diag"/><label for="diag'+i+'2">S</label>\n' +
+                                    '</div>'+
+                                    '</div>'+
+                                    '<div class="col-md-1">' +
+                                    '<div class="custom02">\n' +
+                                    '<input type="radio" value="(M) '+item.diagnosis+'" id="diag'+i+'3" name="diag"/><label for="diag'+i+'3">M</label>\n' +
+                                    '</div>'+
+                                    '</div>'+
+                                    '<div class="col-md-9">' +
+                                    '<label>'+item.diagnosis+'</label>'+
+                                    '</div>'+
                                     '</div>';
-                            }
+                            }else{
+                                    diagnosis +=
+                                        '<div class="row">' +
+                                        '<div class="form-check02">\n' +
+                                        '<input type="checkbox" name="diag" id="diag' + i + '" value="' + item.diagnosis + '">\n' +
+                                        '<label for="diag' + i + '"></label> ' + item.diagnosis + '\n' +
+                                        '</div>' +
+                                        '</div>';
+                                }
                         }
 
-                        if(item.hasil != null && item.hasil != ''){
-                            if(item.keteranganHasil == "P"){
-                                hasil += '<p class="jarak">'+item.hasil+'</p><input type="hidden" value="'+item.hasil+'" name="hasil">';
-                            }else if(item.keteranganHasil == "I") {
-                                hasil += '<input style="font-size: 12px" class="form-control jarak" name="hasil" id="hasil'+i+'" placeholder="'+item.hasil+'" onchange="$(\'#hasil'+i+'\').val(\''+item.hasil+ '\'+\''+" "+'\'+this.value)">';
-                            }else{
+                        if (item.hasil != null && item.hasil != '') {
+                            if (item.keteranganHasil == "P") {
+                                hasil += '<p class="jarak">' + item.hasil + '</p><input type="hidden" value="' + item.hasil + '" name="hasil">';
+                            } else if (item.keteranganHasil == "I") {
+                                hasil += '<input style="font-size: 12px" class="form-control jarak" name="hasil" id="hasil' + i + '" placeholder="' + item.hasil + '" onchange="$(\'#hasil' + i + '\').val(\'' + item.hasil + '\'+\'' + " " + '\'+this.value)">';
+                            } else {
                                 hasil +=
                                     '<div class="row">' +
                                     '<div class="form-check02">\n' +
-                                    '<input type="checkbox" name="hasil" id="hasil'+i+'" value="'+item.hasil+'">\n' +
-                                    '<label for="hasil'+i+'"></label> '+item.hasil+'\n' +
+                                    '<input type="checkbox" name="hasil" id="hasil' + i + '" value="' + item.hasil + '">\n' +
+                                    '<label for="hasil' + i + '"></label> ' + item.hasil + '\n' +
                                     '</div>' +
                                     '</div>';
                             }
                         }
 
-                        if(item.intervensi != null && item.intervensi != ''){
-                            if(item.keteranganIntervensi == "P"){
-                                intervensi += '<p class="jarak">'+item.intervensi+'</p><input type="hidden" value="'+item.intervensi+'" name="inter">';
-                            }else if(item.keteranganIntervensi == "I") {
-                                intervensi += '<input style="font-size: 12px" class="form-control jarak" name="inter" id="inter'+i+'" placeholder="'+item.intervensi+'" onchange="$(\'#inter'+i+'\').val(\''+item.intervensi+ '\'+\''+" "+'\'+this.value)">';
-                            }else{
+                        if (item.intervensi != null && item.intervensi != '') {
+                            if (item.keteranganIntervensi == "P") {
+                                intervensi += '<p class="jarak">' + item.intervensi + '</p><input type="hidden" value="' + item.intervensi + '" name="inter">';
+                            } else if (item.keteranganIntervensi == "I") {
+                                intervensi += '<input style="font-size: 12px" class="form-control jarak" name="inter" id="inter' + i + '" placeholder="' + item.intervensi + '" onchange="$(\'#inter' + i + '\').val(\'' + item.intervensi + '\'+\'' + " " + '\'+this.value)">';
+                            } else {
                                 intervensi +=
                                     '<div class="row">' +
                                     '<div class="form-check02">\n' +
-                                    '<input type="checkbox" name="inter" id="inter'+i+'" value="'+item.intervensi+'">\n' +
-                                    '<label for="inter'+i+'"></label> '+item.intervensi+'\n' +
+                                    '<input type="checkbox" name="inter" id="inter' + i + '" value="' + item.intervensi + '">\n' +
+                                    '<label for="inter' + i + '"></label> ' + item.intervensi + '\n' +
                                     '</div>' +
                                     '</div>';
                             }
                         }
 
-                        if(item.implementasi != null && item.implementasi != ''){
-                            if(item.keteranganImplementasi == "P"){
-                                implementasi += '<p class="jarak">'+item.implementasi+'</p><input type="hidden" value="'+item.implementasi+'" name="imple">';
-                            }else if(item.keteranganImplementasi == "I") {
-                                implementasi += '<input style="font-size: 12px" class="form-control jarak" name="imple" id="imple'+i+'" placeholder="'+item.implementasi+'" onchange="$(\'#imple'+i+'\').val(\''+item.implementasi+ '\'+\''+" "+'\'+this.value)">';
-                            }else{
+                        if (item.implementasi != null && item.implementasi != '') {
+                            if (item.keteranganImplementasi == "P") {
+                                implementasi += '<p class="jarak">' + item.implementasi + '</p><input type="hidden" value="' + item.implementasi + '" name="imple">';
+                            } else if (item.keteranganImplementasi == "I") {
+                                implementasi += '<input style="font-size: 12px" class="form-control jarak" name="imple" id="imple' + i + '" placeholder="' + item.implementasi + '" onchange="$(\'#imple' + i + '\').val(\'' + item.implementasi + '\'+\'' + " " + '\'+this.value)">';
+                            } else {
                                 implementasi +=
                                     '<div class="row">' +
                                     '<div class="form-check02">\n' +
-                                    '<input type="checkbox" name="imple" id="imple'+i+'" value="'+item.implementasi+'">\n' +
-                                    '<label for="imple'+i+'"></label> '+item.implementasi+'\n' +
+                                    '<input type="checkbox" name="imple" id="imple' + i + '" value="' + item.implementasi + '">\n' +
+                                    '<label for="imple' + i + '"></label> ' + item.implementasi + '\n' +
                                     '</div>' +
                                     '</div>';
                             }
                         }
 
-                        if(item.evaluasi != null && item.evaluasi != ''){
-                            if(item.keteranganEvaluasi == "P"){
-                                evaluasi += '<p class="jarak">'+item.evaluasi+'</p><input type="hidden" value="'+item.evaluasi+'" name="eva">';
-                            }else if(item.keteranganEvaluasi == "I") {
-                                evaluasi += '<input style="font-size: 12px" class="form-control jarak" name="eva" id="eva'+i+'" placeholder="'+item.evaluasi+'" onchange="$(\'#eva'+i+'\').val(\''+item.evaluasi+ '\'+\''+" "+'\'+this.value)">';
-                            }else{
+                        if (item.evaluasi != null && item.evaluasi != '') {
+                            if (item.keteranganEvaluasi == "P") {
+                                evaluasi += '<p class="jarak">' + item.evaluasi + '</p><input type="hidden" value="' + item.evaluasi + '" name="eva">';
+                            } else if (item.keteranganEvaluasi == "I") {
+                                evaluasi += '<input style="font-size: 12px" class="form-control jarak" name="eva" id="eva' + i + '" placeholder="' + item.evaluasi + '" onchange="$(\'#eva' + i + '\').val(\'' + item.evaluasi + '\'+\'' + " " + '\'+this.value)">';
+                            } else {
                                 evaluasi +=
                                     '<div class="row">' +
                                     '<div class="form-check02">\n' +
-                                    '<input type="checkbox" name="eva" id="eva'+i+'" value="'+item.evaluasi+'">\n' +
-                                    '<label for="eva'+i+'"></label> '+item.evaluasi+'\n' +
+                                    '<input type="checkbox" name="eva" id="eva' + i + '" value="' + item.evaluasi + '">\n' +
+                                    '<label for="eva' + i + '"></label> ' + item.evaluasi + '\n' +
                                     '</div>' +
                                     '</div>';
                             }
@@ -3256,13 +3275,34 @@ function searchDiagnosaAskep(id){
                         '    </div>\n' +
                         '</div>';
 
-                    $('#dia').html(diagnosis);
-                    $('#has').html(hasil);
-                    $('#pla').html(intervensi);
-                    $('#imp').html(implementasi);
-                    $('#eva').html(evaluasi);
+                    if ("all" == tipe) {
+                        $('#dia').html(diagnosis);
+                        $('#has').html(hasil);
+                        $('#pla').html(intervensi);
+                        $('#imp').html(implementasi);
+                        $('#eva').html(evaluasi);
+                    }
 
-                }else{
+                    if ("icu" == tipe) {
+
+                        var option1 = "";
+                        var option2 = "<option value=''>[Select One]</option>";
+
+                        $.each(dataTindakan(), function (i, item) {
+                            option1 += '<option value="' + item.tindakan + '">' + item.tindakan + '</option>';
+                        });
+
+                        $.each(dataHeadSubjektif(), function (i, item) {
+                            option2 += '<option value="' + item.id + '">' + item.isi + '</option>';
+                        });
+
+                        $('#dia').html(diagnosis);
+                        $('#askep_subjek').html(option2);
+                        $('#rec').html(intervensi);
+                        $('#tin').html(option1);
+                    }
+
+                } else {
                     $('#dia').html('');
                     $('#has').html('');
                     $('#pla').html('');
@@ -3273,4 +3313,179 @@ function searchDiagnosaAskep(id){
             return selectedObj.diagnosa;
         }
     });
+
+    var sel = $('.select2').length;
+    if (sel > 0) {
+        $('.select2').select2();
+    }
+}
+
+function setSubjektif(val){
+    var temp = "";
+    $.each(dataSubjektif(val), function (i, item) {
+
+        var con =
+            '<div class="col-md-3">\n' +
+            '<label>' + item.subjektif + '</label><input type="hidden" value="'+item.subjektif+'" name="params">'+
+            '</div>';
+
+        var con2 = "";
+        var content = item.content;
+        var ctn = content.split("|");
+
+        $.each(ctn, function (idx, it) {
+
+            if(item.keterangan == "c"){
+
+                if(idx <= 3){
+                    con2 += '<div class="col-md-2">\n' +
+                        '<div class="form-check02">\n' +
+                        '<input type="checkbox" name="subjek'+i+'" id="subjek' +idx+i+ '" value="' + it + '">\n' +
+                        '<label for="subjek' + idx+i+ '"></label> ' + it + '\n' +
+                        '</div>' +
+                        '</div>';
+                }else if(idx > 3){
+                    con2 += '<div class="col-md-offset-3 col-md-3">\n' +
+                        '<div class="form-check02">\n' +
+                        '<input type="checkbox" name="subjek'+i+'" id="subjek' +idx+i+ '" value="' + it + '">\n' +
+                        '<label for="subjek' + idx+i+ '"></label> ' + it + '\n' +
+                        '</div>' +
+                        '</div>';
+                }else if(idx > 4){
+                    con2 += '<div class="col-md-offset-3 col-md-3">\n' +
+                        '<div class="form-check02">\n' +
+                        '<input type="checkbox" name="subjek'+i+'" id="subjek' +idx+i+ '" value="' + it + '">\n' +
+                        '<label for="subjek' + idx+i+ '"></label> ' + it + '\n' +
+                        '</div>' +
+                        '</div>';
+                }
+            }
+
+            if(item.keterangan == "i"){
+
+                if(idx <= 3){
+                    con2 += '<div class="col-md-2">\n' +
+                        '<input style="margin-left: 15px" name="subjek'+i+'" class="form-control" id="subjek' +idx+i+ '" placeholder="'+it+'" onchange="$(\'#subjek'+idx+i+'\').val(\''+it+' '+'\'+this.value)">\n' +
+                        '</div>';
+                }else if(idx > 3){
+                    con2 += '<div class="col-md-offset-3 col-md-3">\n' +
+                        '<input style="margin-left: 15px" name="subjek'+i+'" class="form-control" id="subjek' +idx+i+ '" placeholder="'+it+'" onchange="$(\'#subjek'+idx+i+'\').val(\''+it+' '+'\'+this.value)">\n' +
+                        '</div>';
+                }else if(idx > 4){
+                    con2 += '<div class="col-md-offset-3 col-md-3">\n' +
+                        '<input style="margin-left: 15px" name="subjek'+i+'" class="form-control" id="subjek' +idx+i+ '" placeholder="'+it+'" onchange="$(\'#subjek'+idx+i+'\').val(\''+it+' '+'\'+this.value)">\n' +
+                        '</div>';
+                }
+            }
+        });
+         temp +=
+            '<div class="row">' +
+            '<div class="form-group">' +
+            con + con2 +
+            '</div>' +
+            '</div>';
+    });
+    $('#temp_subjektif').html(temp);
+}
+
+function dataTindakan() {
+    var data = [];
+
+    data.push({'tindakan': 'Memberikan askep'});
+    data.push({'tindakan': 'Asintesi CVC'});
+    data.push({'tindakan': 'Seting Ventilator'});
+    data.push({'tindakan': 'Sucsen/Washing'});
+    data.push({'tindakan': 'Monitoring EKG/TD/SpO2'});
+    data.push({'tindakan': 'Monitoring CVP/IBP'});
+    data.push({'tindakan': 'Injeksi M/IV/SC'});
+    data.push({'tindakan': 'Obat per NGT/Oral/Teles/Supp'});
+    data.push({'tindakan': 'Perawatan ETT/Gudel'});
+    data.push({'tindakan': 'Perawatan Trakeostomi'});
+    data.push({'tindakan': 'Pemasangan IV/Cateter'});
+    data.push({'tindakan': 'Pasang dower cateter'});
+    data.push({'tindakan': 'Lepas dower cateter'});
+    data.push({'tindakan': 'Masang NGT'});
+    data.push({'tindakan': 'Pelepasan NGT'});
+    data.push({'tindakan': 'Personal/Oral Higinis'});
+    data.push({'tindakan': 'Titrasi Obat'});
+    data.push({'tindakan': 'Mengambil BGA'});
+    data.push({'tindakan': 'Balanca cairan'});
+    data.push({'tindakan': 'Membantu BAB/BAC'});
+    data.push({'tindakan': 'Fisioterapi dada'});
+    data.push({'tindakan': 'Membantu ROM'});
+    data.push({'tindakan': 'Pemberian O2'});
+    data.push({'tindakan': 'Rawat luka'});
+    data.push({'tindakan': 'Ganti Kolestomi Bag'});
+    data.push({'tindakan': 'Memberikan diet NGT'});
+    data.push({'tindakan': 'Bantu makan/minum eskterma'});
+    data.push({'tindakan': 'Menyeka PX'});
+    data.push({'tindakan': 'Head up'});
+    data.push({'tindakan': 'Evaluasi GCS'});
+    data.push({'tindakan': 'Evaluasi nyeri'});
+    data.push({'tindakan': 'Alfdrain'});
+    data.push({'tindakan': 'GDA/jam'});
+    data.push({'tindakan': 'Memasang fiksasi'});
+    data.push({'tindakan': 'Resusitasi jantung paru'});
+    data.push({'tindakan': 'Skin tes'});
+    data.push({'tindakan': 'EKG manual'});
+    data.push({'tindakan': 'Perawatan jenasah'});
+    data.push({'tindakan': 'DC shoc'});
+    data.push({'tindakan': 'Kumbah lambung'});
+    data.push({'tindakan': 'Trasfusi darah'});
+    data.push({'tindakan': 'Buka jahit dan drain'});
+    data.push({'tindakan': 'Perawatan WSD'});
+
+    return data;
+}
+
+function dataHeadSubjektif() {
+    var data = [];
+    data.push({'id': '1', 'isi': 'Breathing'});
+    data.push({'id': '2', 'isi': 'Blood'});
+    data.push({'id': '3', 'isi': 'Brain'});
+    data.push({'id': '4', 'isi': 'Bladder'});
+    data.push({'id': '5', 'isi': 'Bowel'});
+    data.push({'id': '6', 'isi': 'Bone'});
+    return data;
+}
+
+function dataSubjektif(id) {
+    var data = [];
+    var dataCari = [];
+
+    data.push({
+        'id': '1',
+        'subjektif': 'Jalan nafas',
+        'content': 'bersih|sumbatan/benda|benda asing|darah|lidah',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '1',
+        'subjektif': 'Pernafasan',
+        'content': 'sesak|aktivitas|tanpa acktivitas|tidak',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '1',
+        'subjektif': 'Penggunaan otot bantu pernafasan',
+        'content': 'ya|tidak',
+        'keterangan': 'c'});
+    data.push({
+        'id': '1',
+        'subjektif': 'ETT/Tracheocanule',
+        'content': '|cuf',
+        'keterangan': 'i'});
+
+    $.each(data, function (i, item) {
+        if (item.id == id) {
+            dataCari.push({
+                'id': item.id,
+                'subjektif': item.subjektif,
+                'content': item.content,
+                'keterangan': item.keterangan
+            });
+        }
+    });
+
+    return dataCari;
 }

@@ -587,6 +587,7 @@
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('respirasi')"  onclick="showModalICU('respirasi')"><i class="fa fa-circle-o"></i>Respirasi</a></li>
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('keseimbangan')"  onclick="showModalICU('keseimbangan')"><i class="fa fa-circle-o"></i>Keseimbangan</a></li>
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('obat-obatan')"  onclick="showModalICU('obat-obatan')"><i class="fa fa-circle-o"></i>Obat Obatan/ Intakea/ Output</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('asuhan_keperawatan')"  onclick="showModalICU('asuhan_keperawatan')"><i class="fa fa-circle-o"></i>Asuhan Keperawatan</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -3580,6 +3581,9 @@
         }
         if(jenis == "output"){
             context = contextPath + '/pages/modal/modalOutput.jsp';
+        }
+        if(jenis == "asuhan_keperawatan"){
+            context = contextPath + '/pages/modal/modalAsuhanKeperawatanICU.jsp';
         }
         $('#modal-temp').load(context, function (res) {
 

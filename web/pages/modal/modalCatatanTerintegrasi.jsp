@@ -22,12 +22,11 @@
                         <tr>
                             <td rowspan="2" style="vertical-align: middle">Tanggal dan Jam</td>
                             <td rowspan="2" style="vertical-align: middle">PPA</td>
-                            <td colspan="2" style="vertical-align: middle" align="center">Hasil Pemeriksaan, Analisa, Rencana Penatalaksaan Pasien</td>
+                            <td colspan="1" style="vertical-align: middle" align="center">Hasil Pemeriksaan, Analisa, Rencana Penatalaksaan Pasien</td>
                             <td colspan="2" style="vertical-align: middle" align="center">Paraf/Nama</td>
                         </tr>
                         <tr>
-                            <td>Jenis</td>
-                            <td>Instruksi</td>
+                            <td align="center">Instruksi</td>
                             <td width="10%">Petugas</td>
                             <td width="10%">DPJP</td>
                         </tr>
@@ -101,24 +100,31 @@
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">PPA</label>
                             <div class="col-md-8">
-                                <input class="form-control" style="margin-top: 7px" id="cp3">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Jenis</label>
-                            <div class="col-md-8">
-                                <select class="form-control" id="cp4" style="margin-top: 7px">
-                                    <option value="">[Select One]</option>
-                                    <option value="Subyektif">Subyektif</option>
-                                    <option value="Obyektif">Obyektif</option>
-                                    <option value="Asesmen">Asesmen</option>
-                                    <option value="Planning">Planning</option>
+                                <select class="form-control" id="cp3" style="margin-top: 7px">
+                                <option value="">[Select One]</option>
+                                <option value="Dokter">Dokter</option>
+                                <option value="Perawat">Perawat</option>
+                                <option value="Apoteker">Apoteker</option>
+                                <option value="Gizi">Gizi</option>
+                                <option value="Bidan">Bidan</option>
                                 </select>
                             </div>
                         </div>
                     </div>
+                    <%--<div class="row">--%>
+                        <%--<div class="form-group">--%>
+                            <%--<label class="col-md-3" style="margin-top: 7px">Jenis</label>--%>
+                            <%--<div class="col-md-8">--%>
+                                <%--<select class="form-control" id="cp4" style="margin-top: 7px">--%>
+                                    <%--<option value="">[Select One]</option>--%>
+                                    <%--<option value="Subyektif">Subyektif</option>--%>
+                                    <%--<option value="Obyektif">Obyektif</option>--%>
+                                    <%--<option value="Asesmen">Asesmen</option>--%>
+                                    <%--<option value="Planning">Planning</option>--%>
+                                <%--</select>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Instruksi</label>

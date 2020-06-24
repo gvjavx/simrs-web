@@ -93,14 +93,15 @@ public class RencanaAsuhanKeperawatanAction {
         return response;
     }
 
-    public List<RencanaAsuhanKeperawatan> getListDetail(String idDetailCheckup) {
+    public List<RencanaAsuhanKeperawatan> getListDetail(String idDetailCheckup, String keterangan) {
         List<RencanaAsuhanKeperawatan> list = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RencanaAsuhanKeperawatanBo rencanaAsuhanKeperawatanBo = (RencanaAsuhanKeperawatanBo) ctx.getBean("rencanaAsuhanKeperawatanBoProxy");
-        if (!"".equalsIgnoreCase(idDetailCheckup)) {
+        if (!"".equalsIgnoreCase(idDetailCheckup) && !"".equalsIgnoreCase(keterangan)) {
             try {
                 RencanaAsuhanKeperawatan catatan = new RencanaAsuhanKeperawatan();
                 catatan.setIdDetailCheckup(idDetailCheckup);
+                catatan.setKeterangan(keterangan);
                 list = rencanaAsuhanKeperawatanBo.getByCriteria(catatan);
             } catch (GeneralBOException e) {
                 logger.error("Found Error" + e.getMessage());
@@ -109,13 +110,13 @@ public class RencanaAsuhanKeperawatanAction {
         return list;
     }
 
-    public List<DiagnosaAsuhanKeperawatan> getDiagnosaAskep(String key) {
+    public List<DiagnosaAsuhanKeperawatan> getDiagnosaAskep(String key, String tipe) {
         List<DiagnosaAsuhanKeperawatan> list = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         DiagnosaAsuhanKeperawatanBo diagnosaAsuhanKeperawatanBo = (DiagnosaAsuhanKeperawatanBo) ctx.getBean("diagnosaAsuhanKeperawatanBoProxy");
-        if(!"".equalsIgnoreCase(key) && key != null){
+        if(!"".equalsIgnoreCase(key) && key != null && !"".equalsIgnoreCase(tipe)){
             try {
-                list = diagnosaAsuhanKeperawatanBo.getListDiagnosa(key);
+                list = diagnosaAsuhanKeperawatanBo.getListDiagnosa(key, tipe);
             } catch (GeneralBOException e) {
                 logger.error("Found Error" + e.getMessage());
             }

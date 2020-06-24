@@ -41,18 +41,19 @@ public class DiagnosaAsuhanKeperawatanDao extends GenericDao<ImSimrsDiagnosaAsuh
         return results;
     }
 
-    public List<DiagnosaAsuhanKeperawatan> getListDiagnosa(String key){
+    public List<DiagnosaAsuhanKeperawatan> getListDiagnosa(String key, String tipe){
         List<DiagnosaAsuhanKeperawatan> list = new ArrayList<>();
-        if(!"".equalsIgnoreCase(key) && key != null){
+        if(!"".equalsIgnoreCase(key) && key != null && !"".equalsIgnoreCase(tipe)){
             String id = "%"+key+"%";
             String SQL = "SELECT\n" +
                     "id_diagnosa_asuhan_keperawatan,\n" +
                     "diagnosa\n" +
                     "FROM im_simrs_diagnosa_asuhan_keperawatan\n" +
-                    "WHERE diagnosa ILIKE :id";
+                    "WHERE diagnosa ILIKE :id AND tipe = :tipe";
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("id", id)
+                    .setParameter("tipe", tipe)
                     .list();
             if(result.size() >0){
                 for (Object[] obj: result){

@@ -29,6 +29,9 @@
             <basic name="lastUpdateWho">
                 <column name="last_update_who"/>
             </basic>
+            <basic name="tipe">
+                <column name="tipe"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

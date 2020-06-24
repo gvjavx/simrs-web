@@ -30,6 +30,9 @@ public class RencanaAsuhanKeperawatanDao extends GenericDao<ItSimrsRencanaAsuhan
             if (mapCriteria.get("id_detail_checkup")!=null) {
                 criteria.add(Restrictions.eq("idDetailCheckup", (String) mapCriteria.get("id_detail_checkup")));
             }
+            if (mapCriteria.get("keterangan")!=null) {
+                criteria.add(Restrictions.eq("keterangan", (String) mapCriteria.get("keterangan")));
+            }
         }
 
         criteria.add(Restrictions.eq("flag", "Y"));

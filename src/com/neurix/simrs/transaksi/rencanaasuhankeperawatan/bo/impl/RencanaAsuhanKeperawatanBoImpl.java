@@ -32,6 +32,9 @@ public class RencanaAsuhanKeperawatanBoImpl implements RencanaAsuhanKeperawatanB
             if(bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
                 hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
             }
+            if(bean.getKeterangan() != null && !"".equalsIgnoreCase(bean.getKeterangan())){
+                hsCriteria.put("keterangan", bean.getKeterangan());
+            }
 
             List<ItSimrsRencanaAsuhanKeperawatanEntity> entityList = new ArrayList<>();
             try {
