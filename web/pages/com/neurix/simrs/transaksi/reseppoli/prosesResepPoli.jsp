@@ -356,7 +356,7 @@
                                     </tr>
                                     <s:if test='permintaanResep.flagEresep == "Y"'>
                                         <tr>
-                                            <td><b>Poli</b></td>
+                                            <td></td>
                                             <td>
                                                 <table>
                                                     <label class="label label-success">E-Obat Telemedic</label>
