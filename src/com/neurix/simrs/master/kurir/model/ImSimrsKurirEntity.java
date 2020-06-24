@@ -21,6 +21,24 @@ public class ImSimrsKurirEntity {
     private String lastUpdateWho;
     private String password;
     private String branchId;
+    private String lat;
+    private String lon;
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLon() {
+        return lon;
+    }
+
+    public void setLon(String lon) {
+        this.lon = lon;
+    }
 
     public String getBranchId() {
         return branchId;

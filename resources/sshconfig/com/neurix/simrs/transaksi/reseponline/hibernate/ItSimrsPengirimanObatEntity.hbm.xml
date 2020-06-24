@@ -48,13 +48,19 @@
                 <column name="last_update_who"/>
             </basic>
             <basic name="desaId">
-                <column name="desaid"/>
+                <column name="desa_id"/>
             </basic>
             <basic name="alamat">
                 <column name="alamat"/>
             </basic>
             <basic name="noTelp">
-                <column name="notelp"/>
+                <column name="no_telp"/>
+            </basic>
+            <basic name="lat">
+                <column name="lat"/>
+            </basic>
+            <basic name="lon">
+                <column name="lon"/>
             </basic>
         </attributes>
     </entity>

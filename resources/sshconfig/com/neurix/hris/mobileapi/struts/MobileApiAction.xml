@@ -211,6 +211,9 @@
         <action name="reseponline/*" class="com.neurix.simrs.mobileapi.ResepOnlineController">
             <interceptor-ref name="mobileStack"/>
         </action>
+        <action name="pengiriman/*" class="com.neurix.simrs.mobileapi.PengirimanObatController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
     </package>
 
 </struts>

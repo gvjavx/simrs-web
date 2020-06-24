@@ -74,6 +74,21 @@
             <basic name="urlFotoResep">
                 <column name="url_foto_resep"/>
             </basic>
+            <basic name="alamat">
+                <column name="alamat"/>
+            </basic>
+            <basic name="jenisPengambilan">
+                <column name="jenis_pengambilan"/>
+            </basic>
+            <basic name="lat">
+                <column name="lat"/>
+            </basic>
+            <basic name="lon">
+                <column name="lon"/>
+            </basic>
+            <basic name="noTelp">
+                <column name="no_telp"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

@@ -14,9 +14,15 @@
           p:verifikatorPembayaranDao-ref="verifikatorPembayaranDao"
           p:resepOnlineDao-ref="resepOnlineDao"
           p:hargaObatDao-ref="hargaObatDao"
+          p:pengirimanObatDao-ref="pengirimanObatDao"
+          p:kurirDao-ref="kurirDao"
+          p:branchDao-ref="branchDao"
     />
 
     <bean id="telemedicineController" class="com.neurix.simrs.mobileapi.TelemedicineController"
+          p:telemedicBoProxy-ref="telemedicBoProxy"/>
+
+    <bean id="pengirimanObatController" class="com.neurix.simrs.mobileapi.PengirimanObatController"
           p:telemedicBoProxy-ref="telemedicBoProxy"/>
 
     <bean id="telemedicBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -44,5 +50,11 @@
     <bean id="telemedicDao" class="com.neurix.simrs.transaksi.antriantelemedic.dao.TelemedicDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="resepOnlineDao" class="com.neurix.simrs.transaksi.reseponline.dao.ResepOnlineDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="pengirimanObatDao" class="com.neurix.simrs.transaksi.reseponline.dao.PengirimanObatDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="kurirDao" class="com.neurix.simrs.master.kurir.dao.KurirDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="branchDao" class="com.neurix.authorization.company.dao.BranchDao"
           p:sessionFactory-ref="sessionFactory" />
 </beans>

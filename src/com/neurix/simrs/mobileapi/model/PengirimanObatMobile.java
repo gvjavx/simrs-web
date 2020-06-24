@@ -1,12 +1,12 @@
-package com.neurix.simrs.transaksi.reseponline.model;
+package com.neurix.simrs.mobileapi.model;
 
 import java.sql.Timestamp;
 
 /**
- * Created by reza on 18/06/20.
+ * @author gondok
+ * Thursday, 18/06/20 11:32
  */
-public class PengirimanObat {
-
+public class PengirimanObatMobile {
     private String id;
     private String idKurir;
     private String idResep;
@@ -17,9 +17,9 @@ public class PengirimanObat {
     private String action;
     private String idPelayanan;
     private String branchId;
-    private Timestamp createdDate;
+    private String createdDate;
     private String createdWho;
-    private Timestamp lastUpdate;
+    private String lastUpdate;
     private String lastUpdateWho;
     private String kurirName;
     private String branchName;
@@ -33,23 +33,22 @@ public class PengirimanObat {
     private String noPolisi;
     private String noTelpKurir;
 
-    private String lat;
-    private String lon;
+    private String message;
 
-    public String getLat() {
-        return lat;
+    public String getMessage() {
+        return message;
     }
 
-    public void setLat(String lat) {
-        this.lat = lat;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public String getLon() {
-        return lon;
+    public String getCreatedDate() {
+        return createdDate;
     }
 
-    public void setLon(String lon) {
-        this.lon = lon;
+    public String getLastUpdate() {
+        return lastUpdate;
     }
 
     public String getNoPolisi() {
@@ -66,48 +65,6 @@ public class PengirimanObat {
 
     public void setNoTelpKurir(String noTelpKurir) {
         this.noTelpKurir = noTelpKurir;
-    }
-
-    private boolean isPasien;
-
-    public boolean isPasien() {
-        return isPasien;
-    }
-
-    public void setPasien(boolean pasien) {
-        isPasien = pasien;
-    }
-
-    public String getDesaId() {
-        return desaId;
-    }
-
-    public void setDesaId(String desaId) {
-        this.desaId = desaId;
-    }
-
-    public String getDescOfLocation() {
-        return descOfLocation;
-    }
-
-    public void setDescOfLocation(String descOfLocation) {
-        this.descOfLocation = descOfLocation;
-    }
-
-    public String getAlamat() {
-        return alamat;
-    }
-
-    public void setAlamat(String alamat) {
-        this.alamat = alamat;
-    }
-
-    public String getNoTelp() {
-        return noTelp;
-    }
-
-    public void setNoTelp(String noTelp) {
-        this.noTelp = noTelp;
     }
 
     public String getId() {
@@ -190,13 +147,6 @@ public class PengirimanObat {
         this.branchId = branchId;
     }
 
-    public Timestamp getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Timestamp createdDate) {
-        this.createdDate = createdDate;
-    }
 
     public String getCreatedWho() {
         return createdWho;
@@ -204,14 +154,6 @@ public class PengirimanObat {
 
     public void setCreatedWho(String createdWho) {
         this.createdWho = createdWho;
-    }
-
-    public Timestamp getLastUpdate() {
-        return lastUpdate;
-    }
-
-    public void setLastUpdate(Timestamp lastUpdate) {
-        this.lastUpdate = lastUpdate;
     }
 
     public String getLastUpdateWho() {
@@ -252,5 +194,45 @@ public class PengirimanObat {
 
     public void setPelayananName(String pelayananName) {
         this.pelayananName = pelayananName;
+    }
+
+    public String getDesaId() {
+        return desaId;
+    }
+
+    public void setDesaId(String desaId) {
+        this.desaId = desaId;
+    }
+
+    public String getDescOfLocation() {
+        return descOfLocation;
+    }
+
+    public void setDescOfLocation(String descOfLocation) {
+        this.descOfLocation = descOfLocation;
+    }
+
+    public String getAlamat() {
+        return alamat;
+    }
+
+    public void setAlamat(String alamat) {
+        this.alamat = alamat;
+    }
+
+    public String getNoTelp() {
+        return noTelp;
+    }
+
+    public void setNoTelp(String noTelp) {
+        this.noTelp = noTelp;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public void setLastUpdate(String lastUpdate) {
+        this.lastUpdate = lastUpdate;
     }
 }

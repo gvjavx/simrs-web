@@ -15,6 +15,10 @@
         p:verifikatorPembayaranBoProxy-ref="verifikatorPembayaranBo"
     />
 
+    <bean id="telemedicineController" class="com.neurix.simrs.mobileapi.TelemedicineController"
+          p:verifikatorPembayaranBoProxy-ref="verifikatorPembayaranBo"
+    />
+
     <bean id="verifikatorPembayaranBo" class="com.neurix.simrs.transaksi.verifikatorpembayaran.bo.impl.VerifikatorPembayaranBoImpl"
           p:verifikatorPembayaranDao-ref="verifikatorPembayaranDao"
           p:telemedicDao-ref="telemedicDao"

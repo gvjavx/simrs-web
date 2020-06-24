@@ -61,6 +61,12 @@
         <property name="branchId">
             <column name="branch_id" sql-type="varchar" length="5" not-null="false" />
         </property>
+        <property name="lat">
+            <column name="lat" sql-type="varchar" length="200" not-null="false" />
+        </property>
+        <property name="lon">
+            <column name="lon" sql-type="varchar" length="200" not-null="false" />
+        </property>
 
     </class>
 </hibernate-mapping>

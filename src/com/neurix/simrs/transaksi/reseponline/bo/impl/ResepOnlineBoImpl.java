@@ -233,6 +233,9 @@ public class ResepOnlineBoImpl implements ResepOnlineBo {
         if (bean.getIdTransaksiOnline() != null && !"".equalsIgnoreCase(bean.getIdTransaksiOnline())) {
             hsCriteria.put("id_transaksi_online", bean.getIdTransaksiOnline());
         }
+        if (bean.getIdDokter() != null && !"".equalsIgnoreCase(bean.getIdDokter())) {
+            hsCriteria.put("id_dokter", bean.getIdDokter());
+        }
 
         List<ItSimrsResepOnlineEntity> itSimrsResepOnlineEntities = null;
         try {
