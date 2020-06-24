@@ -321,7 +321,7 @@ public class TransaksiObatAction extends BaseMasterAction {
                     resep.setDesa(pasenData.getDesa());
                     resep.setKecamatan(pasenData.getKecamatan());
                     resep.setKota(pasenData.getKota());
-                    resep.setProvinsi(pasenData.getIdPelayanan());
+                    resep.setProvinsi(pasenData.getProvinsi());
                     resep.setIdPelayanan(antrianTelemedicEntity.getIdPelayanan());
 //                    resep.setNamaPelayanan(pasenData.getNamaPelayanan());
                     if (pasenData.getJenisKelamin() != null) {
@@ -342,6 +342,7 @@ public class TransaksiObatAction extends BaseMasterAction {
                     resep.setJenisPeriksaPasien(antrianTelemedicEntity.getIdJenisPeriksaPasien());
                     resep.setUrlKtp(pasenData.getUrlKtp());
                     resep.setIdPermintaanResep(idPermintaan);
+                    resep.setFlagEresep(antrianTelemedicEntity.getFlagEresep());
                     setPermintaanResep(resep);
                 }
             } else {

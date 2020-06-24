@@ -255,20 +255,24 @@
                                                 <s:label name="permintaanResep.idPermintaanResep"></s:label></table>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td width="45%"><b>No Checkup</b></td>
-                                        <td>
-                                            <table>
-                                                <s:label name="permintaanResep.noCheckup"></s:label></table>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>No Checkup Detail</b></td>
-                                        <td>
-                                            <table><s:label
-                                                    name="permintaanResep.idDetailCheckup"></s:label></table>
-                                        </td>
-                                    </tr>
+
+                                    <s:if test='permintaanResep.flagEresep != "Y"'>
+                                        <tr>
+                                            <td width="45%"><b>No Checkup</b></td>
+                                            <td>
+                                                <table>
+                                                    <s:label name="permintaanResep.noCheckup"></s:label></table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>No Checkup Detail</b></td>
+                                            <td>
+                                                <table><s:label
+                                                        name="permintaanResep.idDetailCheckup"></s:label></table>
+                                            </td>
+                                        </tr>
+                                    </s:if>
+
                                     <tr>
                                         <td><b>NIK</b></td>
                                         <td>
@@ -311,13 +315,15 @@
                                          style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">
                                 </div>
                                 <table class="table table-striped">
-                                    <tr>
-                                        <td><b>Poli</b></td>
-                                        <td>
-                                            <table>
-                                                <s:label name="permintaanResep.namaPelayanan"></s:label></table>
-                                        </td>
-                                    </tr>
+                                    <s:if test='permintaanResep.flagEresep != "Y"'>
+                                        <tr>
+                                            <td><b>Poli</b></td>
+                                            <td>
+                                                <table>
+                                                    <s:label name="permintaanResep.namaPelayanan"></s:label></table>
+                                            </td>
+                                        </tr>
+                                    </s:if>
                                     <tr>
                                         <td><b>Alamat</b></td>
                                         <td>
@@ -348,6 +354,16 @@
                                             <table><s:label name="permintaanResep.provinsi"></s:label></table>
                                         </td>
                                     </tr>
+                                    <s:if test='permintaanResep.flagEresep == "Y"'>
+                                        <tr>
+                                            <td><b>Poli</b></td>
+                                            <td>
+                                                <table>
+                                                    <label class="label label-success">E-Obat Telemedic</label>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </s:if>
                                 </table>
                             </div>
                         </div>

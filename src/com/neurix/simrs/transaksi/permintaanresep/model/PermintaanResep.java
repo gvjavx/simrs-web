@@ -67,6 +67,15 @@ public class PermintaanResep{
     private String lat;
     private String lon;
     private String jenisPengambilan;
+    private String flagEresep;
+
+    public String getFlagEresep() {
+        return flagEresep;
+    }
+
+    public void setFlagEresep(String flagEresep) {
+        this.flagEresep = flagEresep;
+    }
 
     public String getNoTelp() {
         return noTelp;
