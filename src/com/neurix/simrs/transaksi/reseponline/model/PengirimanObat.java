@@ -36,6 +36,16 @@ public class PengirimanObat {
     private String lat;
     private String lon;
 
+    private String flagTerkirim;
+
+    public String getFlagTerkirim() {
+        return flagTerkirim;
+    }
+
+    public void setFlagTerkirim(String flagTerkirim) {
+        this.flagTerkirim = flagTerkirim;
+    }
+
     public String getLat() {
         return lat;
     }

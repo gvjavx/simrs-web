@@ -62,6 +62,9 @@
             <basic name="lon">
                 <column name="lon"/>
             </basic>
+            <basic name="flagTerkirim">
+                <column name="flag_terkirim"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>
