@@ -272,7 +272,7 @@ public class PembayaranController implements ModelDriven<Object> {
             }
         }
 
-        if (action.equalsIgnoreCase("saveAddPengiriman")) {
+        if (action.equalsIgnoreCase("saveEditPembayaranResep")) {
 
             PembayaranOnline bean = new PembayaranOnline();
             bean.setIdAntrianTelemedic(idTele);
@@ -291,38 +291,14 @@ public class PembayaranController implements ModelDriven<Object> {
             newPembayaran.setKodeBank(bankCoa);
             newPembayaran.setLastUpdate(now);
             newPembayaran.setLastUpdateWho(idPasien);
-            newPembayaran.setJenisPengambilan(jenisPengambilan);
-            newPembayaran.setAlamat(alamat);
 
             try {
                 verifikatorPembayaranBoProxy.saveEdit(newPembayaran);
-            } catch (GeneralBOException e) {
-                logger.error("[PembayaranController.create] Error, " + e.getMessage());
-            }
-
-            PengirimanObat newPengirimanObat = new PengirimanObat();
-
-            newPengirimanObat.setIdPelayanan(idPelayanan);
-            newPengirimanObat.setIdPasien(idPasien);
-            newPengirimanObat.setBranchId(branchId);
-            newPengirimanObat.setAction("C");
-            newPengirimanObat.setFlag("Y");
-            newPengirimanObat.setAlamat(alamat);
-            newPengirimanObat.setNoTelp(noTelp);
-            newPengirimanObat.setDesaId(desaId);
-            newPengirimanObat.setLastUpdate(now);
-            newPengirimanObat.setCreatedDate(now);
-            newPengirimanObat.setCreatedWho(idPasien);
-            newPengirimanObat.setLastUpdateWho(idPasien);
-            newPengirimanObat.setLat(lat);
-            newPengirimanObat.setLon(lon);
-
-            try {
-                telemedicBoProxy.saveAddPengirimanObat(newPengirimanObat);
                 model.setMessage("Success");
             } catch (GeneralBOException e) {
                 logger.error("[PembayaranController.create] Error, " + e.getMessage());
             }
+
         }
 
         logger.info("[PembayaranController.create] end process POST / <<<");

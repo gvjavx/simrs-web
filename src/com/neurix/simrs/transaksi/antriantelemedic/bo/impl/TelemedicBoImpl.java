@@ -149,6 +149,7 @@ public class TelemedicBoImpl implements TelemedicBo {
                 antrianTelemedic.setFlagBayarResep(telemedicEntity.getFlagBayarResep());
                 antrianTelemedic.setFlag(telemedicEntity.getFlag());
                 antrianTelemedic.setAction(telemedicEntity.getAction());
+                antrianTelemedic.setJenisPengambilan(telemedicEntity.getJenisPengambilan());
 
                 if (telemedicEntity.getIdPelayanan() != null && !"".equalsIgnoreCase(telemedicEntity.getIdPelayanan())){
                     antrianTelemedic.setNamaPelayanan(getPelayananById(telemedicEntity.getIdPelayanan()).getNamaPelayanan());
@@ -607,7 +608,6 @@ public class TelemedicBoImpl implements TelemedicBo {
         BigDecimal hargaTotal = new BigDecimal(0);
         Timestamp now = new Timestamp(System.currentTimeMillis());
 
-        BigDecimal hargaTotal = new BigDecimal(0);
         for (TransaksiObatDetail obatDetail : listObat){
 
 

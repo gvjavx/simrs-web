@@ -42,6 +42,51 @@ public class AntrianTelemedic {
     private String flagForVerifikatorPembayaran;
     private String statusTransaksi;
     private String flagEresep;
+    private String alamat;
+    private String lat;
+    private String lon;
+    private String jenisPengambilan;
+    private String noTelp;
+
+    public String getNoTelp() {
+        return noTelp;
+    }
+
+    public void setNoTelp(String noTelp) {
+        this.noTelp = noTelp;
+    }
+
+    public String getAlamat() {
+        return alamat;
+    }
+
+    public void setAlamat(String alamat) {
+        this.alamat = alamat;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLon() {
+        return lon;
+    }
+
+    public void setLon(String lon) {
+        this.lon = lon;
+    }
+
+    public String getJenisPengambilan() {
+        return jenisPengambilan;
+    }
+
+    public void setJenisPengambilan(String jenisPengambilan) {
+        this.jenisPengambilan = jenisPengambilan;
+    }
 
     public String getFlagEresep() {
         return flagEresep;

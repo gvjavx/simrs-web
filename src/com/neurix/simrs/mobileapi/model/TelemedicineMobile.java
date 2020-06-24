@@ -43,6 +43,52 @@ public class TelemedicineMobile {
     private String message;
     private String jumlahAntrian;
 
+    private String lat;
+    private String lon;
+    private String alamat;
+    private String jenisPengambilan;
+    private String noTelp;
+
+    public String getNoTelp() {
+        return noTelp;
+    }
+
+    public void setNoTelp(String noTelp) {
+        this.noTelp = noTelp;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLon() {
+        return lon;
+    }
+
+    public void setLon(String lon) {
+        this.lon = lon;
+    }
+
+    public String getAlamat() {
+        return alamat;
+    }
+
+    public void setAlamat(String alamat) {
+        this.alamat = alamat;
+    }
+
+    public String getJenisPengambilan() {
+        return jenisPengambilan;
+    }
+
+    public void setJenisPengambilan(String jenisPengambilan) {
+        this.jenisPengambilan = jenisPengambilan;
+    }
+
     public String getBranchId() {
         return branchId;
     }

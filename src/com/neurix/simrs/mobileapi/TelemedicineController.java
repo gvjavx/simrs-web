@@ -33,6 +33,7 @@ import org.apache.struts2.rest.HttpHeaders;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.*;
@@ -55,6 +56,7 @@ public class TelemedicineController implements ModelDriven<Object> {
     private String action;
 
     private String idPelayanan;
+    private String tujuanPelayanan;
     private String idDokter;
     private String status;
     private String branchId;
@@ -70,6 +72,14 @@ public class TelemedicineController implements ModelDriven<Object> {
     private File fileUploadTtd;
 
     private boolean isResep;
+
+    public String getTujuanPelayanan() {
+        return tujuanPelayanan;
+    }
+
+    public void setTujuanPelayanan(String tujuanPelayanan) {
+        this.tujuanPelayanan = tujuanPelayanan;
+    }
 
     public VerifikatorPembayaranBo getVerifikatorPembayaranBoProxy() {
         return verifikatorPembayaranBoProxy;
@@ -244,6 +254,12 @@ public class TelemedicineController implements ModelDriven<Object> {
             bean.setCreatedWho(model.getIdPasien());
             bean.setLastUpdateWho(model.getIdPasien());
             bean.setKeluhan(model.getKeluhan());
+            bean.setAlamat(model.getAlamat());
+            bean.setLat(model.getLat());
+            bean.setLon(model.getLon());
+            bean.setJenisPengambilan(model.getJenisPengambilan());
+            bean.setNoTelp(model.getNoTelp());
+
             bean.setAction("C");
             bean.setFlag("Y");
 
@@ -430,6 +446,7 @@ public class TelemedicineController implements ModelDriven<Object> {
                 telemedicineMobile.setFlagBayarResep(item.getFlagBayarResep());
                 telemedicineMobile.setFlagBayarKonsultasi(item.getFlagBayarKonsultasi());
                 telemedicineMobile.setKeluhan(item.getKeluhan());
+                telemedicineMobile.setJenisPengambilan(item.getJenisPengambilan());
 
                 if (flagResep != null && flagResep.equalsIgnoreCase("Y")) {
 
@@ -553,7 +570,7 @@ public class TelemedicineController implements ModelDriven<Object> {
                         transaksiObatDetail.setLastUpdate(now);
                         transaksiObatDetail.setCreatedWho(idDokter);
                         transaksiObatDetail.setLastUpdateWho(idDokter);
-                        transaksiObatDetail.setIdPelayanan(idPelayanan);
+                        transaksiObatDetail.setIdPelayanan(tujuanPelayanan);
                         transaksiObatDetail.setTtdDokter(fileName);
 
                         list.add(transaksiObatDetail);
@@ -565,14 +582,14 @@ public class TelemedicineController implements ModelDriven<Object> {
             }
 
             try {
-                telemedicBoProxy.insertResepOnline(idPembayaranOnline, list);
+               BigDecimal totalHarga = telemedicBoProxy.insertResepOnline(idPembayaranOnline, list);
 
                 NotifikasiFcm notif = new NotifikasiFcm();
                 notif.setUserId(idPasien);
                 List<NotifikasiFcm> fcm = notifikasiFcmBoProxy.getByCriteria(notif);
                 FirebasePushNotif.sendNotificationFirebase(fcm.get(0).getTokenFcm(),"Resep Online", "Silahkan buka aplikasi untuk melakukan pembayaran resep", "BAYAR_RESEP", fcm.get(0).getOs());
 
-                model.setMessage("Success");
+                model.setMessage(totalHarga.toString());
             } catch (GeneralBOException e) {
                 logger.error("[TelemedicineController.insertResep] Error, " + e.getMessage());
             }
