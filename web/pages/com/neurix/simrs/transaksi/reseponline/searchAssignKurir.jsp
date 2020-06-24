@@ -195,7 +195,7 @@
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>ID Resep</td>
-                                <td>No Checkup Detail</td>
+                                <td>ID Transaksi Online</td>
                                 <td>Nama</td>
                                 <td>Alamat</td>
                                 <td align="center">Action</td>
@@ -205,7 +205,7 @@
                             <s:iterator value="#session.listOfResults" id="listOfResultObat" var="row">
                                 <tr>
                                     <td><s:property value="idPermintaanResep"/></td>
-                                    <td><s:property value="idDetailCheckup"/></td>
+                                    <td><s:property value="idTransaksiOnline"/></td>
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="alamat"/></td>
                                     <td align="center">

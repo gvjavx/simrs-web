@@ -205,7 +205,7 @@ public class TelemedicBoImpl implements TelemedicBo {
                     antrianTelemedic.setStatusTransaksi("finish");
                 } else if ("Y".equalsIgnoreCase(antrianTelemedic.getFlagResep()) && antrianTelemedic.getApproveKonsultasi() != null && antrianTelemedic.getApproveResep() != null) {
                     antrianTelemedic.setStatusTransaksi("finish");
-                } else if ("Y".equalsIgnoreCase(antrianTelemedic.getFlagEresep()) && "Y".equalsIgnoreCase(telemedicEntity.getFlagBayarResep())){
+                } else if ("Y".equalsIgnoreCase(antrianTelemedic.getApproveResep()) && "Y".equalsIgnoreCase(telemedicEntity.getFlagBayarResep())){
                     antrianTelemedic.setStatusTransaksi("finish");
                 } else {
                     antrianTelemedic.setStatusTransaksi("exist");
@@ -677,16 +677,18 @@ public class TelemedicBoImpl implements TelemedicBo {
             throw new GeneralBOException("[VerifikatorPembayaranBoImpl.insertResepOnline] ERROR. ", e);
         }
 
-        ItSimrsPembayaranOnlineEntity newPembayaran = listPembayaran.get(0);
-        newPembayaran.setNominal(hargaTotal);
-        newPembayaran.setLastUpdate(now);
-        newPembayaran.setLastUpdateWho("admin");
+        if (listPembayaran.size() > 0){
+            ItSimrsPembayaranOnlineEntity newPembayaran = listPembayaran.get(0);
+            newPembayaran.setNominal(hargaTotal);
+            newPembayaran.setLastUpdate(now);
+            newPembayaran.setLastUpdateWho("admin");
 
-        try {
-            verifikatorPembayaranDao.updateAndSave(newPembayaran);
-        } catch (GeneralBOException e) {
-            logger.error("[VerifikatorPembayaranBoImpl.insertResepOnline] ERROR. ", e);
-            throw new GeneralBOException("[VerifikatorPembayaranBoImpl.insertResepOnline] ERROR. ", e);
+            try {
+                verifikatorPembayaranDao.updateAndSave(newPembayaran);
+            } catch (GeneralBOException e) {
+                logger.error("[VerifikatorPembayaranBoImpl.insertResepOnline] ERROR. ", e);
+                throw new GeneralBOException("[VerifikatorPembayaranBoImpl.insertResepOnline] ERROR. ", e);
+            }
         }
 
         logger.info("[VerifikatorPembayaranBoImpl.insertResepOnline] END <<<");

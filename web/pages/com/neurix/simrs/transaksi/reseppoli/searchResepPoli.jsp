@@ -125,17 +125,17 @@
                                         <s:select list="#{'1':'Proses', '3':'Selesai'}" cssStyle="margin-top: 7px"
                                                   id="status" name="permintaanResep.status"
                                                   headerKey="0" headerValue="Antrian"
-                                                  cssClass="form-control select2"/>
+                                                  cssClass="form-control"/>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Jenis Antrian</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'N':'Resep RS', 'Y':'Telemedic'}" cssStyle="margin-top: 7px"
+                                        <s:select list="#{'Y':'Telemedic'}" cssStyle="margin-top: 7px"
                                                   id="isTelemedic" name="permintaanResep.isTelemedic"
-                                                  headerKey="" headerValue="[Select One]"
-                                                  cssClass="form-control select2"/>
+                                                  headerKey="N" headerValue="Resep RS"
+                                                  cssClass="form-control"/>
                                     </div>
                                 </div>
 
