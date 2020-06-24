@@ -182,13 +182,13 @@
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="ketStatus"/></td>
                                     <td style="vertical-align: middle" align="center">
-                                        <s:if test='#row.approveResep != "Y"'>
-                                        <s:if test='#row.flagBayarKonsultasi == "Y"'>
-                                            <label class="label label-success"> sudah bayar</label>
-                                        </s:if>
-                                        <s:else>
-                                            <label class="label label-warning"> belum bayar</label>
-                                        </s:else>
+                                        <s:if test='#row.flagEresep != "Y"'>
+                                            <s:if test='#row.flagBayarKonsultasi == "Y"'>
+                                                <label class="label label-success"> sudah bayar</label>
+                                            </s:if>
+                                            <s:else>
+                                                <label class="label label-warning"> belum bayar</label>
+                                            </s:else>
                                         </s:if>
                                     </td>
                                     <td style="vertical-align: middle" align="center">
@@ -425,6 +425,7 @@
 
     function saveApprove(var1) {
 
+        var idAntrian = $("#fin_id_antrian").val();
         $("#msg_fin").text("Loading . . .");
         $("#success_fin").show();
 

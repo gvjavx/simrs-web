@@ -173,12 +173,15 @@ public class ResepOnlineBoImpl implements ResepOnlineBo {
         pengirimanObatEntity.setCreatedWho(bean.getCreatedWho());
         pengirimanObatEntity.setLastUpdate(bean.getLastUpdate());
         pengirimanObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+        pengirimanObatEntity.setIdPasien(bean.getIdPasien());
+        pengirimanObatEntity.setLat(bean.getLat());
+        pengirimanObatEntity.setLon(bean.getLon());
+        pengirimanObatEntity.setAlamat(bean.getAlamat());
+        pengirimanObatEntity.setNoTelp(bean.getNoTelp());
 
         ImSimrsPasienEntity pasienEntity = pasienDao.getById("idPasien", bean.getIdPasien());
         if (pasienEntity != null){
             pengirimanObatEntity.setDesaId(pasienEntity.getDesaId() == null ? "" : pasienEntity.getDesaId().toString());
-            pengirimanObatEntity.setAlamat(pasienEntity.getJalan());
-            pengirimanObatEntity.setNoTelp(pasienEntity.getNoTelp());
         }
 
         CrudResponse response = new CrudResponse();

@@ -1,6 +1,7 @@
 package com.neurix.hris.mobileapi;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.kurir.bo.KurirBo;
 import com.neurix.simrs.master.kurir.model.Kurir;
 import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
@@ -97,6 +98,10 @@ public class TesTelemedicController implements ModelDriven<Object> {
                 break;
             case "create-invoice-e-resep":
                 createPembayaranResep(this.id);
+            case "bayar-resep-telemedic":
+                bayar(this.id, "resep");
+            case "bayar-konsultasi-telemedic":
+                bayar(this.id, "konsultasi");
             default:
                 logger.info("==========NO ONE CARE============");
         }
@@ -170,6 +175,32 @@ public class TesTelemedicController implements ModelDriven<Object> {
         }
 
         logger.info("[TesTelemedicController.insertDataTelemedic] END <<<");
+    }
+
+    private void bayar(String idAntrianTelemedic, String jenis){
+        logger.info("[TesTelemedicController.bayarResep] START >>>");
+
+        Timestamp time = CommonUtil.getCurrentDateTimes();
+
+        AntrianTelemedic antrianTelemedic = new AntrianTelemedic();
+        antrianTelemedic.setId(idAntrianTelemedic);
+        if ("resep".equalsIgnoreCase(jenis)){
+            antrianTelemedic.setFlagBayarResep("Y");
+        } else {
+            antrianTelemedic.setFlagBayarKonsultasi("Y");
+        }
+        antrianTelemedic.setAction("U");
+        antrianTelemedic.setLastUpdate(time);
+        antrianTelemedic.setLastUpdateWho("admin");
+
+        try {
+            telemedicBoProxy.saveEdit(antrianTelemedic, "", "");
+        } catch (GeneralBOException e){
+            logger.error("[TesTelemedicController.bayarResep] ERROR. ",e);
+            throw new GeneralBOException("[TesTelemedicController.bayarResep] ERROR. ", e);
+        }
+
+        logger.info("[TesTelemedicController.bayarResep] END <<<");
     }
 
     private void insertObat(String idTransksiObat){

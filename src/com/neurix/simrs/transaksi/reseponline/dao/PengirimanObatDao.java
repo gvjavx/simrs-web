@@ -114,12 +114,20 @@ public class PengirimanObatDao extends GenericDao<ItSimrsPengirimanObatEntity, S
                 "    mspr.flag,\n" +
                 "    mspr.id_transaksi_online,\n" +
                 "    ishc.id_pasien,\n" +
-                "    mspr.tujuan_pelayanan\n" +
+                "    mspr.tujuan_pelayanan,\n" +
+                "    mspr.id_transaksi_online,\n" +
+                "    isat.alamat,\n" +
+                "   isat.no_telp,\n" +
+                "   isat.lat,\n" +
+                "   isat.lon,\n" +
+                "   isat.jenis_pengambilan\n" +
                 "FROM mt_simrs_approval_transaksi_obat msato\n" +
                 "INNER JOIN (SELECT * FROM mt_simrs_permintaan_resep WHERE id_transaksi_online is NOT NULL ) mspr ON mspr.id_approval_obat = msato.id_approval_obat\n" +
                 "INNER JOIN it_simrs_header_detail_checkup ishdc ON ishdc.id_detail_checkup = mspr.id_detail_checkup\n" +
                 "INNER JOIN it_simrs_header_checkup ishc ON ishc.no_checkup = ishdc.no_checkup\n" +
                 "INNER JOIN im_simrs_pasien isp ON isp.id_pasien = ishc.id_pasien\n" +
+                "INNER JOIN it_simrs_pembayaran_online ispo2 ON ispo2.id = mspr.id_transaksi_online\n" +
+                "INNER JOIN it_simrs_antrian_telemedic isat ON isat.id = ispo2.id_antrian_telemedic\n" +
                 "LEFT JOIN it_simrs_pengiriman_obat ispo ON ispo.id_resep = mspr.id_permintaan_resep\n" +
                 "WHERE msato.approval_flag = 'Y'\n" +
                 "AND mspr.branch_id = :branchId \n" +
@@ -145,6 +153,12 @@ public class PengirimanObatDao extends GenericDao<ItSimrsPengirimanObatEntity, S
                 permintaanResep.setKetJenisAntrian(obj[6] == null ? "Resep RS" : "Telemedic");
                 permintaanResep.setIdPasien(obj[7].toString());
                 permintaanResep.setIdPelayanan(obj[8].toString());
+                permintaanResep.setIdTransaksiOnline(obj[9].toString());
+                permintaanResep.setAlamat(obj[10] == null ? "" : obj[10].toString());
+                permintaanResep.setNoTelp(obj[11] == null ? "" : obj[11].toString());
+                permintaanResep.setLat(obj[12] == null ? "" : obj[12].toString());
+                permintaanResep.setLon(obj[13] == null ? "" : obj[13].toString());
+                permintaanResep.setJenisPengambilan(obj[14] == null ? "" : obj[14].toString());
                 permintaanResepList.add(permintaanResep);
             }
         }
