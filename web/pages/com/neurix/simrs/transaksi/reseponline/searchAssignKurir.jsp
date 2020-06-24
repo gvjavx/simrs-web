@@ -144,10 +144,10 @@
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-                                        <a type="button" class="btn btn-primary" href="pembelianObat_transaksi.action">
-                                            <i class="fa fa-plus"></i> Beli Obat
-                                        </a>
-                                        <a type="button" class="btn btn-danger" href="initForm_transaksi.action">
+                                        <%--<a type="button" class="btn btn-primary" href="pembelianObat_transaksi.action">--%>
+                                            <%--<i class="fa fa-plus"></i> Beli Obat--%>
+                                        <%--</a>--%>
+                                        <a type="button" class="btn btn-danger" href="initForm_reseponline.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
                                     </div>
@@ -195,7 +195,7 @@
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>ID Resep</td>
-                                <td>No Checkup Detail</td>
+                                <td>ID Transaksi Online</td>
                                 <td>Nama</td>
                                 <td>Alamat</td>
                                 <td align="center">Action</td>
@@ -205,13 +205,15 @@
                             <s:iterator value="#session.listOfResults" id="listOfResultObat" var="row">
                                 <tr>
                                     <td><s:property value="idPermintaanResep"/></td>
-                                    <td><s:property value="idDetailCheckup"/></td>
+                                    <td><s:property value="idTransaksiOnline"/></td>
                                     <td><s:property value="namaPasien"/></td>
-                                    <td><s:property value="status"/></td>
+                                    <td><s:property value="alamat"/></td>
                                     <td align="center">
-                                        <img border="0" class="hvr-grow" onclick="viewAssign('<s:property value="idPasien"/>','<s:property value="idPelayanan"/>','<s:property value="idPermintaanResep"/>')"
-                                             src="<s:url value="/pages/images/icons8-create-25.png"/>"
-                                             style="cursor: pointer;">
+                                        <s:if test='#row.jenisPengambilan == "kirim"'>
+                                            <img border="0" class="hvr-grow" onclick="viewAssign('<s:property value="idPasien"/>','<s:property value="idPelayanan"/>','<s:property value="idPermintaanResep"/>')"
+                                                 src="<s:url value="/pages/images/icons8-create-25.png"/>"
+                                                 style="cursor: pointer;">
+                                        </s:if>
                                     </td>
                                 </tr>
                             </s:iterator>

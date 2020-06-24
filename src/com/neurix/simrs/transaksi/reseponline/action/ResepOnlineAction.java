@@ -5,9 +5,15 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.kurir.bo.KurirBo;
 import com.neurix.simrs.master.kurir.model.Kurir;
 import com.neurix.simrs.transaksi.CrudResponse;
+import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
+import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
+import com.neurix.simrs.transaksi.permintaanresep.bo.PermintaanResepBo;
+import com.neurix.simrs.transaksi.permintaanresep.model.ImSimrsPermintaanResepEntity;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.reseponline.bo.ResepOnlineBo;
 import com.neurix.simrs.transaksi.reseponline.model.PengirimanObat;
+import com.neurix.simrs.transaksi.verifikatorpembayaran.bo.VerifikatorPembayaranBo;
+import com.neurix.simrs.transaksi.verifikatorpembayaran.model.ItSimrsPembayaranOnlineEntity;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
@@ -136,6 +142,22 @@ public class ResepOnlineAction {
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         ResepOnlineBo resepOnlineBo = (ResepOnlineBo) ctx.getBean("resepOnlineBoProxy");
+        TelemedicBo telemedicBo = (TelemedicBo) ctx.getBean("telemedicBoProxy");
+        PermintaanResepBo permintaanResepBo = (PermintaanResepBo) ctx.getBean("permintaanResepBoProxy");
+        VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
+
+        ItSimrsAntrianTelemedicEntity dataTelemedic = null;
+        ImSimrsPermintaanResepEntity permintaanResepEntity = permintaanResepBo.getEntityPermintaanResepById(idResep);
+        if (permintaanResepEntity != null){
+            ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = verifikatorPembayaranBo.getPembayaranOnlineById(permintaanResepEntity.getIdTransaksiOnline());
+            if (pembayaranOnlineEntity != null){
+                ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = telemedicBo.getAntrianTelemedicEntityById(pembayaranOnlineEntity.getIdAntrianTelemedic());
+                if (antrianTelemedicEntity != null){
+                    dataTelemedic = new ItSimrsAntrianTelemedicEntity();
+                    dataTelemedic = antrianTelemedicEntity;
+                }
+            }
+        }
 
         CrudResponse response = new CrudResponse();
 
@@ -149,6 +171,12 @@ public class ResepOnlineAction {
         pengirimanObat.setCreatedWho(userLogin);
         pengirimanObat.setLastUpdateWho(userLogin);
         pengirimanObat.setBranchId(branchId);
+        if (dataTelemedic != null){
+            pengirimanObat.setAlamat(dataTelemedic.getAlamat());
+            pengirimanObat.setLat(dataTelemedic.getLat());
+            pengirimanObat.setLon(dataTelemedic.getLon());
+            pengirimanObat.setNoTelp(dataTelemedic.getNoTelp());
+        }
 
         try {
             response = resepOnlineBo.saveAddPengirimanObat(pengirimanObat);

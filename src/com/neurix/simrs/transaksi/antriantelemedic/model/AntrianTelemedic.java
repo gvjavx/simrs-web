@@ -42,91 +42,12 @@ public class AntrianTelemedic {
     private String flagForVerifikatorPembayaran;
     private String statusTransaksi;
     private String flagEresep;
+    private String idTransaksi;
     private String alamat;
     private String lat;
     private String lon;
     private String jenisPengambilan;
     private String noTelp;
-
-    public String getNoTelp() {
-        return noTelp;
-    }
-
-    public void setNoTelp(String noTelp) {
-        this.noTelp = noTelp;
-    }
-
-    public String getAlamat() {
-        return alamat;
-    }
-
-    public void setAlamat(String alamat) {
-        this.alamat = alamat;
-    }
-
-    public String getLat() {
-        return lat;
-    }
-
-    public void setLat(String lat) {
-        this.lat = lat;
-    }
-
-    public String getLon() {
-        return lon;
-    }
-
-    public void setLon(String lon) {
-        this.lon = lon;
-    }
-
-    public String getJenisPengambilan() {
-        return jenisPengambilan;
-    }
-
-    public void setJenisPengambilan(String jenisPengambilan) {
-        this.jenisPengambilan = jenisPengambilan;
-    }
-
-    public String getFlagEresep() {
-        return flagEresep;
-    }
-
-    public void setFlagEresep(String flagEresep) {
-        this.flagEresep = flagEresep;
-    }
-
-    public String getStatusTransaksi() {
-        return statusTransaksi;
-    }
-
-    public void setStatusTransaksi(String statusTransaksi) {
-        this.statusTransaksi = statusTransaksi;
-    }
-
-    public String getFlagForVerifikatorPembayaran() {
-        return flagForVerifikatorPembayaran;
-    }
-
-    public void setFlagForVerifikatorPembayaran(String flagForVerifikatorPembayaran) {
-        this.flagForVerifikatorPembayaran = flagForVerifikatorPembayaran;
-    }
-
-    public String getKeluhan() {
-        return keluhan;
-    }
-
-    public void setKeluhan(String keluhan) {
-        this.keluhan = keluhan;
-    }
-
-    public String getKeterangan() {
-        return keterangan;
-    }
-
-    public void setKeterangan(String keterangan) {
-        this.keterangan = keterangan;
-    }
 
     public String getId() {
         return id;
@@ -358,5 +279,93 @@ public class AntrianTelemedic {
 
     public void setApproveResep(String approveResep) {
         this.approveResep = approveResep;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getKeluhan() {
+        return keluhan;
+    }
+
+    public void setKeluhan(String keluhan) {
+        this.keluhan = keluhan;
+    }
+
+    public String getFlagForVerifikatorPembayaran() {
+        return flagForVerifikatorPembayaran;
+    }
+
+    public void setFlagForVerifikatorPembayaran(String flagForVerifikatorPembayaran) {
+        this.flagForVerifikatorPembayaran = flagForVerifikatorPembayaran;
+    }
+
+    public String getStatusTransaksi() {
+        return statusTransaksi;
+    }
+
+    public void setStatusTransaksi(String statusTransaksi) {
+        this.statusTransaksi = statusTransaksi;
+    }
+
+    public String getFlagEresep() {
+        return flagEresep;
+    }
+
+    public void setFlagEresep(String flagEresep) {
+        this.flagEresep = flagEresep;
+    }
+
+    public String getIdTransaksi() {
+        return idTransaksi;
+    }
+
+    public void setIdTransaksi(String idTransaksi) {
+        this.idTransaksi = idTransaksi;
+    }
+
+    public String getAlamat() {
+        return alamat;
+    }
+
+    public void setAlamat(String alamat) {
+        this.alamat = alamat;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLon() {
+        return lon;
+    }
+
+    public void setLon(String lon) {
+        this.lon = lon;
+    }
+
+    public String getJenisPengambilan() {
+        return jenisPengambilan;
+    }
+
+    public void setJenisPengambilan(String jenisPengambilan) {
+        this.jenisPengambilan = jenisPengambilan;
+    }
+
+    public String getNoTelp() {
+        return noTelp;
+    }
+
+    public void setNoTelp(String noTelp) {
+        this.noTelp = noTelp;
     }
 }

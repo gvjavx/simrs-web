@@ -19,6 +19,9 @@ import com.neurix.simrs.master.kelasruangan.model.ImSimrsKelasRuanganEntity;
 import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.master.pasien.bo.PasienBo;
+import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
+import com.neurix.simrs.master.pasien.model.Pasien;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
@@ -26,6 +29,8 @@ import com.neurix.simrs.master.ruangan.bo.RuanganBo;
 import com.neurix.simrs.master.ruangan.model.MtSimrsRuanganEntity;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.JurnalResponse;
+import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
+import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
@@ -55,6 +60,8 @@ import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
 import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
 import com.neurix.simrs.transaksi.transaksiobat.model.*;
+import com.neurix.simrs.transaksi.verifikatorpembayaran.bo.VerifikatorPembayaranBo;
+import com.neurix.simrs.transaksi.verifikatorpembayaran.model.ItSimrsPembayaranOnlineEntity;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -235,12 +242,26 @@ public class TransaksiObatAction extends BaseMasterAction {
 
         HttpSession session = ServletActionContext.getRequest().getSession();
 //        List<PermintaanResep> listOfResult = (List) session.getAttribute("listOfResult");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TelemedicBo telemedicBo = (TelemedicBo) ctx.getBean("telemedicBoProxy");
+        VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
+        PermintaanResepBo permintaanResepBo = (PermintaanResepBo) ctx.getBean("permintaanResepBoProxy");
+        PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
 
         String id = getId();
         String idPermintaan = getIdPermintaan();
-
         HeaderCheckup checkup = new HeaderCheckup();
-        HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
+
+        // mencari data telemedic
+        ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = null;
+        ImSimrsPermintaanResepEntity permintaanResepEntity = permintaanResepBo.getEntityPermintaanResepById(idPermintaan);
+        if (permintaanResepEntity != null){
+            ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = verifikatorPembayaranBo.getPembayaranOnlineById(permintaanResepEntity.getIdTransaksiOnline());
+            if (pembayaranOnlineEntity != null){
+                antrianTelemedicEntity = telemedicBo.getAntrianTelemedicEntityById(pembayaranOnlineEntity.getIdAntrianTelemedic());
+            }
+        }
+
 
         String jk = "";
 
@@ -250,7 +271,7 @@ public class TransaksiObatAction extends BaseMasterAction {
             logger.error("Found error when detail pasien " + e.getMessage());
         }
 
-        if (checkup != null) {
+        if (checkup != null && checkup.getNoCheckup() != null && !"".equalsIgnoreCase(checkup.getNoCheckup())) {
 
             PermintaanResep resep = new PermintaanResep();
             resep.setNoCheckup(checkup.getNoCheckup());
@@ -279,12 +300,54 @@ public class TransaksiObatAction extends BaseMasterAction {
             resep.setNik(checkup.getNoKtp());
             resep.setJenisPeriksaPasien(checkup.getIdJenisPeriksaPasien());
             resep.setUrlKtp(checkup.getUrlKtp());
-            resep.setJenisPeriksaPasien(checkup.getStatusPeriksaName());
+//            resep.setJenisPeriksaPasien(checkup.getStatusPeriksaName());
             resep.setIdPermintaanResep(idPermintaan);
             setPermintaanResep(resep);
 
         } else {
-            setPermintaanResep(new PermintaanResep());
+
+            if (antrianTelemedicEntity != null && antrianTelemedicEntity.getIdPasien() != null){
+
+                Pasien pasien = new Pasien();
+                pasien.setIdPasien(antrianTelemedicEntity.getIdPasien());
+
+                List<Pasien> pasienList = pasienBo.getByCriteria(pasien);
+                if (pasienList.size() > 0){
+                    Pasien pasenData = pasienList.get(0);
+                    PermintaanResep resep = new PermintaanResep();
+                    resep.setIdPasien(pasenData.getIdPasien());
+                    resep.setNamaPasien(pasenData.getNama());
+                    resep.setAlamat(pasenData.getJalan());
+                    resep.setDesa(pasenData.getDesa());
+                    resep.setKecamatan(pasenData.getKecamatan());
+                    resep.setKota(pasenData.getKota());
+                    resep.setProvinsi(pasenData.getProvinsi());
+                    resep.setIdPelayanan(antrianTelemedicEntity.getIdPelayanan());
+//                    resep.setNamaPelayanan(pasenData.getNamaPelayanan());
+                    if (pasenData.getJenisKelamin() != null) {
+                        if ("P".equalsIgnoreCase(pasenData.getJenisKelamin())) {
+                            jk = "Perempuan";
+                        } else {
+                            jk = "laki-Laki";
+                        }
+                    }
+                    resep.setJenisKelamin(jk);
+                    resep.setTempatLahir(pasenData.getTempatLahir());
+                    resep.setTglLahir(pasenData.getTglLahir() == null ? null : pasenData.getTglLahir());
+                    if (!"".equalsIgnoreCase(resep.getTglLahir())){
+                        String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(Date.valueOf(resep.getTglLahir()));
+                        resep.setTempatTglLahir(pasenData.getTempatLahir() + ", " + formatDate);
+                    }
+                    resep.setNik(pasenData.getNoKtp());
+                    resep.setJenisPeriksaPasien(antrianTelemedicEntity.getIdJenisPeriksaPasien());
+                    resep.setUrlKtp(pasenData.getUrlKtp());
+                    resep.setIdPermintaanResep(idPermintaan);
+                    resep.setFlagEresep(antrianTelemedicEntity.getFlagEresep());
+                    setPermintaanResep(resep);
+                }
+            } else {
+                setPermintaanResep(new PermintaanResep());
+            }
         }
 
         String userLogin = CommonUtil.userLogin();
@@ -956,11 +1019,12 @@ public class TransaksiObatAction extends BaseMasterAction {
                         response.setMsg("[TransaksiObatAction.createJurnalPengeluaranObatApotik] tidak ditemukan idDetailCheckup");
                         return response;
                     }
-                } else {
-                    response.setStatus("error");
-                    response.setMsg("[TransaksiObatAction.createJurnalPengeluaranObatApotik] tidak ditemukan idDetailCheckup");
-                    return response;
                 }
+//                else {
+//                    response.setStatus("error");
+//                    response.setMsg("[TransaksiObatAction.createJurnalPengeluaranObatApotik] tidak ditemukan idDetailCheckup");
+//                    return response;
+//                }
 
                 if (dataPermintaan.getTujuanPelayanan() != null) {
 
