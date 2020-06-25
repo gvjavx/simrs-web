@@ -1,6 +1,9 @@
 package com.neurix.simrs.mobileapi;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.FirebasePushNotif;
+import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiFcmBo;
+import com.neurix.hris.transaksi.notifikasi.model.NotifikasiFcm;
 import com.neurix.simrs.mobileapi.model.PengirimanObatMobile;
 import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
 import com.neurix.simrs.transaksi.reseponline.model.ItSimrsPengirimanObatEntity;
@@ -25,12 +28,21 @@ public class PengirimanObatController implements ModelDriven<Object> {
     private PengirimanObatMobile model = new PengirimanObatMobile();
     private Collection<PengirimanObatMobile> listOfPengirimanObat;
     private TelemedicBo telemedicBoProxy;
+    private NotifikasiFcmBo notifikasiFcmBoProxy;
 
     private String action;
     private String idKurir;
     private String idPasien;
     private String idTele;
     private String idPengirimanObat;
+
+    public NotifikasiFcmBo getNotifikasiFcmBoProxy() {
+        return notifikasiFcmBoProxy;
+    }
+
+    public void setNotifikasiFcmBoProxy(NotifikasiFcmBo notifikasiFcmBoProxy) {
+        this.notifikasiFcmBoProxy = notifikasiFcmBoProxy;
+    }
 
     public String getIdPengirimanObat() {
         return idPengirimanObat;
@@ -160,6 +172,7 @@ public class PengirimanObatController implements ModelDriven<Object> {
 
             PengirimanObat newPengirimanObat = result.get(0);
             newPengirimanObat.setFlagDiterimaPasien("Y");
+            newPengirimanObat.setFlag("N");
             newPengirimanObat.setLastUpdate(now);
             newPengirimanObat.setLastUpdateWho(idPasien);
             newPengirimanObat.setAction("U");
@@ -196,6 +209,13 @@ public class PengirimanObatController implements ModelDriven<Object> {
 
             try {
                 telemedicBoProxy.saveEditPengirimanObat(newPengirimanObat);
+
+                List<NotifikasiFcm> resultNotif = new ArrayList<>();
+                NotifikasiFcm beanNotif = new NotifikasiFcm();
+                beanNotif.setUserId(idPasien);
+
+                resultNotif = notifikasiFcmBoProxy.getByCriteria(beanNotif);
+                FirebasePushNotif.sendNotificationFirebase(resultNotif.get(0).getTokenFcm(), "Pengiriman Obat", "Kurir telah mengambil obat di apotik", "PD", resultNotif.get(0).getOs());
                 model.setMessage("Success");
             } catch (GeneralBOException e) {
                 logger.error("[PengirimanObatController.create] ERROR. ", e);
@@ -220,12 +240,20 @@ public class PengirimanObatController implements ModelDriven<Object> {
 
             PengirimanObat newPengirimanObat = result.get(0);
             newPengirimanObat.setFlagTerkirim("Y");
+            newPengirimanObat.setFlag("N");
             newPengirimanObat.setLastUpdate(now);
             newPengirimanObat.setLastUpdateWho(idPasien);
             newPengirimanObat.setAction("U");
 
             try {
                 telemedicBoProxy.saveEditPengirimanObat(newPengirimanObat);
+
+                List<NotifikasiFcm> resultNotif = new ArrayList<>();
+                NotifikasiFcm beanNotif = new NotifikasiFcm();
+                beanNotif.setUserId(idPasien);
+
+                resultNotif = notifikasiFcmBoProxy.getByCriteria(beanNotif);
+                FirebasePushNotif.sendNotificationFirebase(resultNotif.get(0).getTokenFcm(), "Pengiriman Obat", "Kurir telah mengirimkan obat", "PD", resultNotif.get(0).getOs());
                 model.setMessage("Success");
             } catch (GeneralBOException e) {
                 logger.error("[PengirimanObatController.create] ERROR. ", e);

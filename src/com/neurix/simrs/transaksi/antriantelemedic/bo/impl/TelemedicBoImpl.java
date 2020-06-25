@@ -750,6 +750,7 @@ public class TelemedicBoImpl implements TelemedicBo {
         if (bean.getIdResep() != null) {
             hsCriteria.put("id_resep", bean.getIdResep());
         }
+        hsCriteria.put("flag", "Y");
 
         try {
             result = pengirimanObatDao.getByCriteria(hsCriteria);

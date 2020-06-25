@@ -48,6 +48,15 @@ public class AntrianTelemedic {
     private String lon;
     private String jenisPengambilan;
     private String noTelp;
+    private String urlResep;
+
+    public String getUrlResep() {
+        return urlResep;
+    }
+
+    public void setUrlResep(String urlResep) {
+        this.urlResep = urlResep;
+    }
 
     public String getId() {
         return id;

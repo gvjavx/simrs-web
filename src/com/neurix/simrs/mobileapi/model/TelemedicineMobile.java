@@ -49,6 +49,25 @@ public class TelemedicineMobile {
     private String jenisPengambilan;
     private String noTelp;
 
+    private String flagEresep;
+    private String urlResep;
+
+    public String getUrlResep() {
+        return urlResep;
+    }
+
+    public void setUrlResep(String urlResep) {
+        this.urlResep = urlResep;
+    }
+
+    public String getFlagEresep() {
+        return flagEresep;
+    }
+
+    public void setFlagEresep(String flagEresep) {
+        this.flagEresep = flagEresep;
+    }
+
     public String getNoTelp() {
         return noTelp;
     }
