@@ -35,6 +35,24 @@ public class PengirimanObat {
 
     private String lat;
     private String lon;
+    private String status;
+    private String tipe;
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     private String flagTerkirim;
 

@@ -122,11 +122,13 @@ public class ResepOnlineBoImpl implements ResepOnlineBo {
                 pengirimanObat.setDesaId(obatEntity.getDesaId());
                 pengirimanObat.setAlamat(obatEntity.getAlamat());
                 pengirimanObat.setNoTelp(obatEntity.getNoTelp());
+                pengirimanObat.setLat(obatEntity.getLat());
+                pengirimanObat.setLon(obatEntity.getLon());
 
                 //pengirimanObat.setDescOfLocation();
 
                 if (obatEntity.getIdPelayanan() != null){
-                    ImSimrsPelayananEntity pelayananEntity = pelayananDao.getById("idPelayan", obatEntity.getIdPelayanan());
+                    ImSimrsPelayananEntity pelayananEntity = pelayananDao.getById("idPelayanan", obatEntity.getIdPelayanan());
                     pengirimanObat.setPelayananName(pelayananEntity.getNamaPelayanan() == null ? "" : pelayananEntity.getNamaPelayanan());
                 }
                 if (obatEntity.getIdPasien() != null){
@@ -143,6 +145,7 @@ public class ResepOnlineBoImpl implements ResepOnlineBo {
                     ImBranches imBranches = branchDao.getById("primaryKey", branchesPK);
                     pengirimanObat.setBranchName(imBranches == null ? "" : imBranches.getBranchName());
                 }
+                results.add(pengirimanObat);
             }
         }
 
@@ -203,14 +206,22 @@ public class ResepOnlineBoImpl implements ResepOnlineBo {
         logger.info("[ResepOnlineBoImpl.getListPengirimanObat] Start >>>>>>>");
 
         Map hsCriteria = new HashMap();
-        if (bean.getFlagPickup() != null)
+        if (bean.getFlagPickup() != null && !"".equalsIgnoreCase(bean.getFlagPickup()))
             hsCriteria.put("flag_pickup", bean.getFlagPickup());
-        if (bean.getFlagDiterimaPasien() != null)
+        if (bean.getFlagDiterimaPasien() != null && !"".equalsIgnoreCase(bean.getFlagDiterimaPasien()))
             hsCriteria.put("flag_diterima", bean.getFlagDiterimaPasien());
-        if (bean.getIdKurir() != null)
+        if (bean.getIdKurir() != null && !"".equalsIgnoreCase(bean.getIdKurir()))
             hsCriteria.put("id_kurir", bean.getIdKurir());
-        if (bean.getFlag() != null)
+        if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag()))
             hsCriteria.put("flag", bean.getFlag());
+        if (bean.getId() != null && !"".equalsIgnoreCase(bean.getId()))
+            hsCriteria.put("id", bean.getId());
+        if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien()))
+            hsCriteria.put("id_pasien", bean.getIdPasien());
+        if (bean.getAlamat() != null && !"".equalsIgnoreCase(bean.getAlamat()))
+            hsCriteria.put("alamat", bean.getAlamat());
+        if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId()))
+            hsCriteria.put("branch_id", bean.getBranchId());
 
         List<ItSimrsPengirimanObatEntity> pengirimanObatEntities = new ArrayList<>();
         try {

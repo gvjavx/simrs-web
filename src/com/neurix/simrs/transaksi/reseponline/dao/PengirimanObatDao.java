@@ -41,6 +41,17 @@ public class PengirimanObatDao extends GenericDao<ItSimrsPengirimanObatEntity, S
             criteria.add(Restrictions.eq("idResep", mapCriteria.get("id_resep").toString()));
         if (mapCriteria.get("flag") != null)
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
+        if (mapCriteria.get("alamat") != null)
+            criteria.add(Restrictions.ilike("alamat", "%" + mapCriteria.get("alamat").toString() + "%"));
+        if (mapCriteria.get("flag_pickup") != null){
+            criteria.add(Restrictions.eq("flagPickup", mapCriteria.get("flag_pickup").toString()));
+            criteria.add(Restrictions.isNull("flagDiterimaPasien"));
+        }
+        if (mapCriteria.get("flag_diterima") != null)
+            criteria.add(Restrictions.eq("flagDiterimaPasien", mapCriteria.get("flag_diterima").toString()));
+        if (mapCriteria.get("branch_id") != null)
+            criteria.add(Restrictions.eq("branchId", mapCriteria.get("branch_id").toString()));
+
         return criteria.list();
     }
 

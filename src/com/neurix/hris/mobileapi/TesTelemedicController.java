@@ -96,6 +96,9 @@ public class TesTelemedicController implements ModelDriven<Object> {
             case "insert-asuransi-non-resep":
                 insertDataTelemedic("asuransi", "");
                 break;
+            case "insert-asuransi-resep":
+                insertDataTelemedic("asuransi","resep");
+                break;
             case "insert-resep":
                 insertObat(this.id);
                 break;
@@ -133,9 +136,15 @@ public class TesTelemedicController implements ModelDriven<Object> {
         if ("resep".equalsIgnoreCase(jenis)){
             antrianTelemedicEntity.setFlagResep("Y");
         }
-        if ("ansuransi".equalsIgnoreCase(tipe)){
+        if ("asuransi".equalsIgnoreCase(tipe)){
             antrianTelemedicEntity.setNoKartu("080780808");
             antrianTelemedicEntity.setIdAsuransi("ASN00000002");
+//            if ("resep".equalsIgnoreCase(jenis)){
+//                antrianTelemedicEntity.setFlagBayarResep("Y");
+//                antrianTelemedicEntity.setFlagBayarKonsultasi("Y");
+//            } else {
+//                antrianTelemedicEntity.setFlagBayarKonsultasi("Y");
+//            }
         }
         antrianTelemedicEntity.setCreatedDate(time);
         antrianTelemedicEntity.setCreatedWho("admin");

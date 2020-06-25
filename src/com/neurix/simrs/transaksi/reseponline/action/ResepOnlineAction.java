@@ -31,6 +31,15 @@ public class ResepOnlineAction {
     private static transient Logger logger = Logger.getLogger(ResepOnlineAction.class);
     private ResepOnlineBo resepOnlineBoProxy;
     private PengirimanObat pengirimanObat;
+    private String tipe;
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
 
     public PengirimanObat getPengirimanObat() {
         return pengirimanObat;
@@ -47,28 +56,66 @@ public class ResepOnlineAction {
     public String initForm(){
         logger.info("ResepOnlineAction.initForm >>> ");
         setPengirimanObat(new PengirimanObat());
+
         logger.info("ResepOnlineAction.initForm <<< ");
-        return "search";
+        if ("monitoring".equalsIgnoreCase(this.tipe)){
+            return "search_monitoring";
+        } else {
+            return "search";
+        }
     }
 
     public String searchApprovedResep(){
         logger.info("ResepOnlineAction.searchApprovedResep >>> ");
 
         String branchId = CommonUtil.userBranchLogin();
-        List<PermintaanResep> listResults = new ArrayList<>();
-        try {
-            listResults = resepOnlineBoProxy.getListResepTelemedic(branchId);
-        } catch (GeneralBOException e){
-            logger.error("[ResepOnlineAction.searchPengiriman] ERROR. ", e);
-            throw new GeneralBOException("[ResepOnlineAction.searchPengiriman] ERROR. ", e);
+
+        PengirimanObat pengirimanObat = getPengirimanObat();
+
+        if ("monitoring".equalsIgnoreCase(pengirimanObat.getTipe())){
+
+            List<PengirimanObat> listResults = new ArrayList<>();
+            if (pengirimanObat != null){
+                if (pengirimanObat.getStatus() != null){
+                    if ("pickup".equalsIgnoreCase(pengirimanObat.getStatus())){
+                        pengirimanObat.setFlagPickup("Y");
+                    } else if ("diterima".equalsIgnoreCase(pengirimanObat.getStatus())){
+                        pengirimanObat.setFlagDiterimaPasien("Y");
+                    }
+                }
+            }
+
+            pengirimanObat.setBranchId(branchId);
+            try {
+                listResults = resepOnlineBoProxy.getListPengirimanObat(pengirimanObat);
+            } catch (GeneralBOException e){
+                logger.error("[ResepOnlineAction.searchPengiriman] ERROR. ", e);
+                throw new GeneralBOException("[ResepOnlineAction.searchPengiriman] ERROR. ", e);
+            }
+            HttpSession session = ServletActionContext.getRequest().getSession();
+            session.removeAttribute("listOfResults");
+            session.setAttribute("listOfResults", listResults);
+
+            logger.info("ResepOnlineAction.searchPengiriman <<< ");
+            return "search_monitoring";
+
+        } else {
+
+            List<PermintaanResep> listResults = new ArrayList<>();
+
+            try {
+                listResults = resepOnlineBoProxy.getListResepTelemedic(branchId);
+            } catch (GeneralBOException e){
+                logger.error("[ResepOnlineAction.searchPengiriman] ERROR. ", e);
+                throw new GeneralBOException("[ResepOnlineAction.searchPengiriman] ERROR. ", e);
+            }
+            HttpSession session = ServletActionContext.getRequest().getSession();
+            session.removeAttribute("listOfResults");
+            session.setAttribute("listOfResults", listResults);
+
+            logger.info("ResepOnlineAction.searchPengiriman <<< ");
+            return "search";
         }
-
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        session.removeAttribute("listOfResults");
-        session.setAttribute("listOfResults", listResults);
-
-        logger.info("ResepOnlineAction.searchPengiriman <<< ");
-        return "search";
     }
 
     public List<PengirimanObat> listPengiriman(){
