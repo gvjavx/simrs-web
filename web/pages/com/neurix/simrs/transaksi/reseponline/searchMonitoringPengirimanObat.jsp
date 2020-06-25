@@ -44,6 +44,14 @@
             $.publish('showErrorDialog');
         });
 
+        function formatFlag(var1) {
+            if (var1 == "Y"){
+                return "<label class=\"label label-success\"><i class=\"fa fa-check\"></i></label>";
+            } else {
+                return "<label class=\"label label-danger\"><i class=\"fa fa-times\"></i></label>";
+            }
+        }
+
     </script>
 </head>
 
@@ -73,23 +81,8 @@
                         <%--<h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Transaksi Obat Apotek</h3>--%>
                         <div class="row">
                             <div class="col-md-4">
-                                <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Assign Pengiriman Obat</h3>
+                                <h3 class="box-title"><i class="fa fa-filter"></i> Monitoring Pengiriman Obat</h3>
                             </div>
-                            <%--<div class="col-md-3 pull-right">--%>
-                                <%--<div class="input-group date">--%>
-                                    <%--<input class="form-control" id="add_resep" placeholder="Antrian"--%>
-                                           <%--onchange="saveAntrian()">--%>
-                                    <%--<div class="input-group-addon btn btn-success" onclick="saveAntrian()"--%>
-                                         <%--id="save_resep">--%>
-                                        <%--<i class="fa fa-arrow-right" style="cursor: pointer"></i> Save--%>
-                                    <%--</div>--%>
-                                    <%--<div class="input-group-addon btn btn-success" id="load_resep"--%>
-                                         <%--style="display: none">--%>
-                                        <%--<i class="fa fa-spinner fa-spin" style="cursor: no-drop"></i> Sedang--%>
-                                        <%--menyimpan...--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
                         </div>
                     </div>
                     <div class="box-body">
@@ -99,39 +92,48 @@
                                     theme="simple" cssClass="form-horizontal">
 
                                 <div class="form-group">
+                                    <label class="control-label col-sm-4">No. Pengriman</label>
+                                    <div class="col-sm-4">
+                                        <s:textfield id="no_pengiriman" cssStyle="margin-top: 7px"
+                                                     name="pengirimanObat.id" required="false"
+                                                     readonly="false" cssClass="form-control"/>
+                                    </div>
+                                    <input type="hidden" name="pengirimanObat.tipe" value="monitoring"/>
+                                </div>
+                                <div class="form-group">
                                     <label class="control-label col-sm-4">ID Resep</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="no_resep" cssStyle="margin-top: 7px"
-                                                     name="permintaanResep.idPermintaanResep" required="false"
+                                                     name="pengirimanObat.idResep" required="false"
                                                      readonly="false" cssClass="form-control"/>
                                     </div>
                                 </div>
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="control-label col-sm-4">No Checkup Detail</label>--%>
-                                    <%--<div class="col-sm-4">--%>
-                                        <%--<s:textfield id="id_detail_checkup" cssStyle="margin-top: 7px"--%>
-                                                     <%--name="permintaanResep.idDetailCheckup" required="false"--%>
-                                                     <%--readonly="false" cssClass="form-control"/>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">Nama</label>
+                                    <label class="control-label col-sm-4">ID Kurir</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="nama" cssStyle="margin-top: 7px"
-                                                     name="permintaanResep.namaPasien" required="false"
+                                        <s:textfield id="id_kurir" cssStyle="margin-top: 7px"
+                                                     name="pengirimanObat.idKurir" required="false"
                                                      readonly="false" cssClass="form-control"/>
                                     </div>
                                 </div>
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="control-label col-sm-4">Status</label>--%>
-                                    <%--<div class="col-sm-4">--%>
-                                        <%--<s:select list="#{'3':'Proses','4':'Selesai'}"--%>
-                                                  <%--cssStyle="margin-top: 7px"--%>
-                                                  <%--id="status" name="permintaanResep.status"--%>
-                                                  <%--headerKey="0" headerValue="Antrian"--%>
-                                                  <%--cssClass="form-control select2"/>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Alamat</label>
+                                    <div class="col-sm-4">
+                                        <s:textfield id="alamat" cssStyle="margin-top: 7px"
+                                                     name="pengirimanObat.alamat" required="false"
+                                                     readonly="false" cssClass="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Status</label>
+                                    <div class="col-sm-4">
+                                        <s:select list="#{'pickup':'Pickup','diterima':'Diterima Pasien'}"
+                                                  cssStyle="margin-top: 7px"
+                                                  id="status" name="permintaanResep.status"
+                                                  headerKey="assign" headerValue="Assign"
+                                                  cssClass="form-control select2"/>
+                                    </div>
+                                </div>
                                 <s:hidden name="permintaanResep.isUmum" value="Y"></s:hidden>
                                 <br>
                                 <div class="form-group">
@@ -144,11 +146,11 @@
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-                                        <a type="button" class="btn btn-primary" href="initForm_reseponline.action?tipe=monitoring">
-                                            <i class="fa fa-list"></i> Monitoring Pengiriman
-                                        </a>
-                                        <a type="button" class="btn btn-danger" href="initForm_reseponline.action">
+                                        <a type="button" class="btn btn-danger" href="initForm_reseponline.action?tipe=monitoring">
                                             <i class="fa fa-refresh"></i> Reset
+                                        </a>
+                                        <a type="button" class="btn btn-warning" href="initForm_reseponline.action">
+                                            <i class="fa fa-arrow-left"></i> Back
                                         </a>
                                     </div>
                                 </div>
@@ -188,32 +190,39 @@
                     </div>
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Transaski Obat</h3>
+                        <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Pengiriman Obat</h3>
                     </div>
                     <div class="box-body">
-                        <table class="table table-bordered table-striped" id="myTable">
+                        <table class="table table-bordered table-striped" id="myTable" style="font-size: 12px;">
                             <thead>
                             <tr bgcolor="#90ee90">
+                                <td>ID Pengiriman</td>
                                 <td>ID Resep</td>
-                                <td>ID Transaksi Online</td>
+                                <td>ID Pasien</td>
                                 <td>Nama</td>
+                                <td>Kurir</td>
                                 <td>Alamat</td>
-                                <td align="center">Action</td>
+                                <td>Flag Pickup</td>
+                                <td>Flag Diterima</td>
+                                <td align="center">View Detail</td>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="list-body-pengiriman">
                             <s:iterator value="#session.listOfResults" id="listOfResultObat" var="row">
                                 <tr>
-                                    <td><s:property value="idPermintaanResep"/></td>
-                                    <td><s:property value="idTransaksiOnline"/></td>
-                                    <td><s:property value="namaPasien"/></td>
+                                    <td><s:property value="id"/></td>
+                                    <td><s:property value="idResep"/></td>
+                                    <td><s:property value="idPasien"/></td>
+                                    <td><s:property value="pasienName"/></td>
+                                    <td><s:property value="idKurir"/> - <s:property value="kurirName"/></td>
                                     <td><s:property value="alamat"/></td>
+                                    <td align="center"><script>document.write(formatFlag('<s:property value="flagPickup"/>'))</script></td>
+                                    <td align="center"><script>document.write(formatFlag('<s:property value="flagDiterimaPasien"/>'))</script></td>
                                     <td align="center">
-                                        <s:if test='#row.jenisPengambilan == "kirim"'>
-                                            <img border="0" class="hvr-grow" onclick="viewAssign('<s:property value="idPasien"/>','<s:property value="idPelayanan"/>','<s:property value="idPermintaanResep"/>')"
-                                                 src="<s:url value="/pages/images/icons8-create-25.png"/>"
-                                                 style="cursor: pointer;">
-                                        </s:if>
+                                        <button class="btn btn-sm btn-success" onclick="viewDetail()"><i class="fa fa-search"></i></button>
+                                        <%--<img border="0" class="hvr-grow" onclick="viewAssign('<s:property value="idPasien"/>','<s:property value="idPelayanan"/>','<s:property value="idPermintaanResep"/>')"--%>
+                                             <%--src="<s:url value="/pages/images/icons8-create-25.png"/>"--%>
+                                             <%--style="cursor: pointer;">--%>
                                     </td>
                                 </tr>
                             </s:iterator>
