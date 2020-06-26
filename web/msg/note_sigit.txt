@@ -331,3 +331,8 @@
 
 <<< //
 
+// 2020-06-26 >>>
+
+    ALTER TABLE it_simrs_antrian_telemedic ADD COLUMN jumlah_cover NUMERIC;
+
+<<< //

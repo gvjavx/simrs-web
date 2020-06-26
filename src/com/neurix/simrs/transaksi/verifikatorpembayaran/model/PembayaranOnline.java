@@ -29,6 +29,33 @@ public class PembayaranOnline {
     private String alamat;
     private String message;
     private String flagEresep;
+    private String noKartu;
+    private BigDecimal jumlahCover;
+    private String namaAsuransi;
+
+    public String getNamaAsuransi() {
+        return namaAsuransi;
+    }
+
+    public void setNamaAsuransi(String namaAsuransi) {
+        this.namaAsuransi = namaAsuransi;
+    }
+
+    public String getNoKartu() {
+        return noKartu;
+    }
+
+    public void setNoKartu(String noKartu) {
+        this.noKartu = noKartu;
+    }
+
+    public BigDecimal getJumlahCover() {
+        return jumlahCover;
+    }
+
+    public void setJumlahCover(BigDecimal jumlahCover) {
+        this.jumlahCover = jumlahCover;
+    }
 
     public String getFlagEresep() {
         return flagEresep;

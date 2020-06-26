@@ -6,6 +6,9 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.dokter.dao.DokterDao;
 import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
+import com.neurix.simrs.master.jenisperiksapasien.bo.AsuransiBo;
+import com.neurix.simrs.master.jenisperiksapasien.dao.AsuransiDao;
+import com.neurix.simrs.master.jenisperiksapasien.model.ImSimrsAsuransiEntity;
 import com.neurix.simrs.master.kurir.dao.KurirDao;
 import com.neurix.simrs.master.kurir.model.ImSimrsKurirEntity;
 import com.neurix.simrs.master.pasien.dao.PasienDao;
@@ -56,6 +59,11 @@ public class TelemedicBoImpl implements TelemedicBo {
     private PengirimanObatDao pengirimanObatDao;
     private KurirDao kurirDao;
     private BranchDao branchDao;
+    private AsuransiDao asuransiDao;
+
+    public void setAsuransiDao(AsuransiDao asuransiDao) {
+        this.asuransiDao = asuransiDao;
+    }
 
     public void setBranchDao(BranchDao branchDao) {
         this.branchDao = branchDao;
@@ -158,6 +166,7 @@ public class TelemedicBoImpl implements TelemedicBo {
                 antrianTelemedic.setFlag(telemedicEntity.getFlag());
                 antrianTelemedic.setAction(telemedicEntity.getAction());
                 antrianTelemedic.setJenisPengambilan(telemedicEntity.getJenisPengambilan());
+                antrianTelemedic.setJumlahCover(telemedicEntity.getJumlahCover());
 
                 if (telemedicEntity.getIdPelayanan() != null && !"".equalsIgnoreCase(telemedicEntity.getIdPelayanan())) {
                     antrianTelemedic.setNamaPelayanan(getPelayananById(telemedicEntity.getIdPelayanan()).getNamaPelayanan());
@@ -167,6 +176,9 @@ public class TelemedicBoImpl implements TelemedicBo {
                 }
                 if (telemedicEntity.getIdDokter() != null && !"".equalsIgnoreCase(telemedicEntity.getIdDokter())) {
                     antrianTelemedic.setNamaDokter(getDokterById(telemedicEntity.getIdDokter()).getNamaDokter());
+                }
+                if (telemedicEntity.getIdAsuransi() != null && !"".equalsIgnoreCase(telemedicEntity.getIdAsuransi())) {
+                    antrianTelemedic.setNamaAsuransi(getAsuransiById(telemedicEntity.getIdAsuransi()).getNamaAsuransi());
                 }
 
                 antrianTelemedic.setKetStatus(ketStatus(telemedicEntity.getStatus()));
@@ -315,6 +327,10 @@ public class TelemedicBoImpl implements TelemedicBo {
         return pasienDao.getById("idPasien", idPasien);
     }
 
+    private ImSimrsAsuransiEntity getAsuransiById(String idAsuransi) throws GeneralBOException{
+        return asuransiDao.getById("idAsuransi", idAsuransi);
+    }
+
     @Override
     public ItSimrsAntrianTelemedicEntity getAntrianTelemedicEntityById(String id) throws GeneralBOException {
         return telemedicDao.getById("id", id);
@@ -431,6 +447,7 @@ public class TelemedicBoImpl implements TelemedicBo {
                 telemedicEntity.setFlagBayarResep(bean.getFlagBayarResep() == null ? telemedicEntity.getFlagBayarResep() : bean.getFlagBayarResep());
                 telemedicEntity.setFlagBayarKonsultasi(bean.getFlagBayarKonsultasi() == null  ? telemedicEntity.getFlagBayarKonsultasi() : bean.getFlagBayarKonsultasi());
                 telemedicEntity.setStatus(bean.getStatus() == null ? statusSebelum : bean.getStatus());
+                telemedicEntity.setJumlahCover(bean.getJumlahCover() == null ? telemedicEntity.getJumlahCover() : bean.getJumlahCover());
                 telemedicEntity.setAction("U");
                 telemedicEntity.setLastUpdate(bean.getLastUpdate());
                 telemedicEntity.setLastUpdateWho(bean.getLastUpdateWho());

@@ -89,6 +89,9 @@
             <basic name="noTelp">
                 <column name="no_telp"/>
             </basic>
+            <basic name="jumlahCover">
+                <column name="jumlah_cover"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

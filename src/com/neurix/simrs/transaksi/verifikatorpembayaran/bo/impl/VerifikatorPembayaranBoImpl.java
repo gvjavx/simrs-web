@@ -2,6 +2,8 @@ package com.neurix.simrs.transaksi.verifikatorpembayaran.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.jenisperiksapasien.dao.AsuransiDao;
+import com.neurix.simrs.master.jenisperiksapasien.model.ImSimrsAsuransiEntity;
 import com.neurix.simrs.master.tindakan.dao.TindakanDao;
 import com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
@@ -71,6 +73,11 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
     private PermintaanResepDao permintaanResepDao;
     private TransaksiObatDetailDao transaksiObatDetailDao;
     private ResepOnlineDao resepOnlineDao;
+    private AsuransiDao asuransiDao;
+
+    public void setAsuransiDao(AsuransiDao asuransiDao) {
+        this.asuransiDao = asuransiDao;
+    }
 
     public void setResepOnlineDao(ResepOnlineDao resepOnlineDao) {
         this.resepOnlineDao = resepOnlineDao;
@@ -163,8 +170,15 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
                             pembayaranOnline.setFlagBayar("Y");
                         }
                     }
+                    pembayaranOnline.setNoKartu(antrianTelemedicEntity.getNoKartu());
+                    pembayaranOnline.setJumlahCover(antrianTelemedicEntity.getJumlahCover());
+                    if (antrianTelemedicEntity.getIdAsuransi() != null && !"".equalsIgnoreCase(antrianTelemedicEntity.getIdAsuransi())){
+                        ImSimrsAsuransiEntity asuransiEntity = asuransiDao.getById("idAsuransi", antrianTelemedicEntity.getIdAsuransi());
+                        if (asuransiEntity != null){
+                            pembayaranOnline.setNamaAsuransi(asuransiEntity.getNamaAsuransi());
+                        }
+                    }
                 }
-
                 pembayaranOnlines.add(pembayaranOnline);
             }
         }
