@@ -72,7 +72,7 @@ public class ResepOnlineAction {
 
         PengirimanObat pengirimanObat = getPengirimanObat();
 
-        if ("monitoring".equalsIgnoreCase(pengirimanObat.getTipe())){
+        if (pengirimanObat != null && "monitoring".equalsIgnoreCase(pengirimanObat.getTipe())){
 
             List<PengirimanObat> listResults = new ArrayList<>();
             if (pengirimanObat != null){
