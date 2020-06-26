@@ -1473,7 +1473,7 @@ public class VerifikatorPembayaranAction {
         return null;
     }
 
-    public CrudResponse saveCoverAsuransi(String idAntrianTelemedic, String jumlahCover){
+    public CrudResponse saveCoverAsuransi(String idAntrianTelemedic, String jumlahCover, String idTransksi){
         logger.info("[CheckupDetailAction.saveTransaksi] START >>>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TelemedicBo telemedicBo = (TelemedicBo) ctx.getBean("telemedicBoProxy");
@@ -1491,10 +1491,23 @@ public class VerifikatorPembayaranAction {
 
             ItSimrsAntrianTelemedicEntity telemedicEntity = telemedicBo.getAntrianTelemedicEntityById(idAntrianTelemedic);
             if (telemedicEntity != null){
-                if (telemedicEntity.getJumlahCover() == null || telemedicEntity.getJumlahCover().compareTo(new BigDecimal(0)) == 0){
+
+                ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = verifikatorPembayaranBo.getPembayaranOnlineById(idTransksi);
+                if (pembayaranOnlineEntity != null){
+
                     AntrianTelemedic antrianTelemedic = new AntrianTelemedic();
                     antrianTelemedic.setId(idAntrianTelemedic);
-                    antrianTelemedic.setJumlahCover(coverAsuransi);
+                    if (telemedicEntity.getJumlahCover() == null || telemedicEntity.getJumlahCover().compareTo(new BigDecimal(0)) == 0){
+                        antrianTelemedic.setJumlahCover(coverAsuransi);
+                    }
+                    if ("resep".equalsIgnoreCase(pembayaranOnlineEntity.getKeterangan())){
+                        antrianTelemedic.setFlagBayarResep("Y");
+                    }
+                    if ("konsultasi".equalsIgnoreCase(pembayaranOnlineEntity.getKeterangan())){
+                        antrianTelemedic.setFlagBayarKonsultasi("Y");
+                    }
+                    antrianTelemedic.setLastUpdate(time);
+                    antrianTelemedic.setLastUpdateWho(userLogin);
                     try {
                         telemedicBo.saveEdit(antrianTelemedic,branchId,  "");
                         response.setStatus("success");
@@ -1504,7 +1517,11 @@ public class VerifikatorPembayaranAction {
                         response.setMsg("[CheckupDetailAction.getJumlahNilaiBiayaByKeterangan] ERROR " + e);
                         return response;
                     }
+
+
                 }
+
+
             }
         }
 

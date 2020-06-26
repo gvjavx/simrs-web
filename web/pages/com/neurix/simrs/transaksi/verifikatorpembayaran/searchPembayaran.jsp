@@ -24,6 +24,11 @@
 
 
     </script>
+    <style>
+        .top-7{
+            margin-top: 7px;
+        }
+    </style>
 </head>
 
 <body class="hold-transition skin-blue fixed sidebar-mini">
@@ -192,12 +197,23 @@
                                     <td><s:property value="ketStatus"/></td>
                                     <td style="vertical-align: middle" align="center">
                                         <s:if test='#row.flagEresep != "Y"'>
-                                            <s:if test='#row.flagBayarKonsultasi == "Y"'>
-                                                <label class="label label-success"> sudah bayar</label>
+                                            <s:if test='#row.idJenisPeriksaPasien == "umum"'>
+                                                <s:if test='#row.flagBayarKonsultasi == "Y"'>
+                                                    <label class="label label-success"> Sudah Bayar</label>
+                                                </s:if>
+                                                <s:else>
+                                                    <label class="label label-warning"> Belum Bayar</label>
+                                                </s:else>
                                             </s:if>
                                             <s:else>
-                                                <label class="label label-warning"> belum bayar</label>
+                                                <s:if test='#row.flagBayarKonsultasi == "Y"'>
+                                                    <label class="label label-success"> Terverifikasi </label>
+                                                </s:if>
+                                                <s:else>
+                                                    <label class="label label-warning"> Belum Diverifikasi </label>
+                                                </s:else>
                                             </s:else>
+
                                         </s:if>
                                     </td>
                                     <td style="vertical-align: middle" align="center">
@@ -207,11 +223,21 @@
                                     </td>
                                     <td style="vertical-align: middle" align="center">
                                         <s:if test='#row.flagResep == "Y"'>
-                                            <s:if test='#row.flagBayarResep == "Y"'>
-                                                <label class="label label-success"> sudah bayar</label>
+                                            <s:if test='#row.idJenisPeriksaPasien == "umum"'>
+                                                <s:if test='#row.flagBayarResep == "Y"'>
+                                                    <label class="label label-success"> Sudah Bayar</label>
+                                                </s:if>
+                                                <s:else>
+                                                    <label class="label label-warning"> Belum Bayar</label>
+                                                </s:else>
                                             </s:if>
                                             <s:else>
-                                                <label class="label label-warning"> belum bayar</label>
+                                                <s:if test='#row.flagBayarResep == "Y"'>
+                                                    <label class="label label-success"> Terverifikasi </label>
+                                                </s:if>
+                                                <s:else>
+                                                    <label class="label label-warning"> Belum Diverifikasi </label>
+                                                </s:else>
                                             </s:else>
                                         </s:if>
                                     </td>
@@ -362,11 +388,15 @@
                     <div class="row">
                         <div class="col-md-6"><h3 id="dt-nama-asuransi"></h3></div>
                     </div>
-                    <div class="row">
+                    <div class="row top-7">
                         <div class="col-md-3" align="right">No. Kartu :</div>
                         <div class="col-md-6"><span id="dt-no-kartu-asuransi"></span></div>
                     </div>
-                    <div class="row">
+                    <div class="row top-7">
+                        <div class="col-md-3" align="right">a.n. :</div>
+                        <div class="col-md-6"><span id="dt-nama-pasien-asuransi"></span></div>
+                    </div>
+                    <div class="row top-7">
                         <div class="col-md-3" align="right">Input Cover :</div>
                         <div class="col-md-6"><input type="number" class="form-control" id="dt-cover-asuransi"></div>
                     </div>
@@ -471,7 +501,8 @@
                         }
 
                     } else {
-                        if (var2 == "asuransi" || var2 == "bpjs" && item.idItem != null) {
+//                        console.log("Id Item : "+item.idItem);
+                        if ((var2 == "asuransi" || var2 == "bpjs") && item.nominal != null) {
                             str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
                                 "<td align='center'><button class='btn btn-sm btn-success' onclick=\"actionApprove(\'"+item.id+"\')\"><i class='fa fa-edit'></i> VerifiKasi</button></td>";
                         } else {
@@ -560,6 +591,7 @@
             VerifikatorPembayaranAction.getSessionAntrianTelemedic(idAntrian, function (telemedicEntity) {
                 if (telemedicEntity != null){
                     var item = telemedicEntity;
+                    $("#dt-nama-pasien-asuransi").text(item.namaPasien);
                     $("#dt-nama-asuransi").html(item.namaAsuransi);
                     $("#dt-no-kartu-asuransi").text(item.noKartu);
                     $("#dt-cover-asuransi").val(item.jumlahCover);
@@ -580,7 +612,7 @@
 
     function approveAsuransi(idAntrian, idTransaksi) {
         var cover = $("#dt-cover-asuransi").val();
-        VerifikatorPembayaranAction.saveCoverAsuransi(idAntrian, cover, function (response) {
+        VerifikatorPembayaranAction.saveCoverAsuransi(idAntrian, cover, idTransaksi, function (response) {
             if (response.status == "error"){
                 $("#warning_fin").show();
                 $("#success_fin").hide();
