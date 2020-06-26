@@ -150,6 +150,11 @@ public class TesTelemedicController implements ModelDriven<Object> {
         antrianTelemedicEntity.setCreatedWho("admin");
         antrianTelemedicEntity.setLastUpdate(time);
         antrianTelemedicEntity.setLastUpdateWho("admin");
+        antrianTelemedicEntity.setAlamat("Kartika Mas Regenci No 60");
+        antrianTelemedicEntity.setLat("-7.345948");
+        antrianTelemedicEntity.setLon("112.746283");
+        antrianTelemedicEntity.setNoTelp("089090909909");
+        antrianTelemedicEntity.setJenisPengambilan("kirim");
 
         try {
             telemedicBoProxy.saveAdd(antrianTelemedicEntity, "RS01", "1.1.01.02.01");

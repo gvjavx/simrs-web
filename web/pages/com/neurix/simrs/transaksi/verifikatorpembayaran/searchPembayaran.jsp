@@ -24,6 +24,11 @@
 
 
     </script>
+    <style>
+        .top-7{
+            margin-top: 7px;
+        }
+    </style>
 </head>
 
 <body class="hold-transition skin-blue fixed sidebar-mini">
@@ -166,11 +171,12 @@
                                     <td>Id</td>
                                     <td>Id Pasien</td>
                                     <td>Nama</td>
+                                    <td>Jenis</td>
                                     <td>Status</td>
-                                    <td>Status Bayar konsultasi</td>
-                                    <td>Approve Bayar konsultasi</td>
-                                    <td>Status Bayar Resep</td>
-                                    <td>Approve Bayar Resep</td>
+                                    <td>Status konsultasi</td>
+                                    <td>Approve konsultasi</td>
+                                    <td>Status Resep</td>
+                                    <td>Approve Resep</td>
                                     <td align="center">Action</td>
                                 </tr>
                             </thead>
@@ -180,15 +186,34 @@
                                     <td><s:property value="id"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
+                                    <td>
+                                        <s:if test='#row.idJenisPeriksaPasien == "asuransi"'>
+                                            <s:property value="idJenisPeriksaPasien"/>  <s:property value="namaAsuransi"/>
+                                        </s:if>
+                                        <s:else>
+                                            <s:property value="idJenisPeriksaPasien"/>
+                                        </s:else>
+                                    </td>
                                     <td><s:property value="ketStatus"/></td>
                                     <td style="vertical-align: middle" align="center">
                                         <s:if test='#row.flagEresep != "Y"'>
-                                            <s:if test='#row.flagBayarKonsultasi == "Y"'>
-                                                <label class="label label-success"> sudah bayar</label>
+                                            <s:if test='#row.idJenisPeriksaPasien == "umum"'>
+                                                <s:if test='#row.flagBayarKonsultasi == "Y"'>
+                                                    <label class="label label-success"> Sudah Bayar</label>
+                                                </s:if>
+                                                <s:else>
+                                                    <label class="label label-warning"> Belum Bayar</label>
+                                                </s:else>
                                             </s:if>
                                             <s:else>
-                                                <label class="label label-warning"> belum bayar</label>
+                                                <s:if test='#row.flagBayarKonsultasi == "Y"'>
+                                                    <label class="label label-success"> Terverifikasi </label>
+                                                </s:if>
+                                                <s:else>
+                                                    <label class="label label-warning"> Belum Diverifikasi </label>
+                                                </s:else>
                                             </s:else>
+
                                         </s:if>
                                     </td>
                                     <td style="vertical-align: middle" align="center">
@@ -198,11 +223,21 @@
                                     </td>
                                     <td style="vertical-align: middle" align="center">
                                         <s:if test='#row.flagResep == "Y"'>
-                                            <s:if test='#row.flagBayarResep == "Y"'>
-                                                <label class="label label-success"> sudah bayar</label>
+                                            <s:if test='#row.idJenisPeriksaPasien == "umum"'>
+                                                <s:if test='#row.flagBayarResep == "Y"'>
+                                                    <label class="label label-success"> Sudah Bayar</label>
+                                                </s:if>
+                                                <s:else>
+                                                    <label class="label label-warning"> Belum Bayar</label>
+                                                </s:else>
                                             </s:if>
                                             <s:else>
-                                                <label class="label label-warning"> belum bayar</label>
+                                                <s:if test='#row.flagBayarResep == "Y"'>
+                                                    <label class="label label-success"> Terverifikasi </label>
+                                                </s:if>
+                                                <s:else>
+                                                    <label class="label label-warning"> Belum Diverifikasi </label>
+                                                </s:else>
                                             </s:else>
                                         </s:if>
                                     </td>
@@ -213,10 +248,10 @@
                                     </td>
                                     <td align="center">
                                         <s:if test='#row.statusTransaksi == "finish"'>
-                                            <button class="btn btn-sm btn-primary" onclick="showDetail('<s:property value="id"/>')"><i class="fa fa-search"></i></button>
+                                            <button class="btn btn-sm btn-primary" onclick="viewDetail('<s:property value="id"/>','<s:property value="idJenisPeriksaPasien"/>')"><i class="fa fa-search"></i></button>
                                         </s:if>
                                         <s:else>
-                                            <button class="btn btn-sm btn-primary" onclick="showDetail('<s:property value="id"/>')"><i class="fa fa-edit"></i></button>
+                                            <button class="btn btn-sm btn-primary" onclick="viewDetail('<s:property value="id"/>','<s:property value="idJenisPeriksaPasien"/>')"><i class="fa fa-edit"></i></button>
                                         </s:else>
                                     </td>
                                 </tr>
@@ -263,28 +298,29 @@
                         <p id="msg_fin">Approve Berhasil</p>
                     </div>
 
-                    <table class="table table-bordered table-striped" id="tabel_tindakan_fin">
+                    <table class="table table-bordered table-striped" id="tabel_tindakan_fin" style="font-size: 12px">
                         <thead>
-                        <tr bgcolor="#90ee90">
-                            <td>Id</td>
-                            <td width="20%">Keterangan</td>
-                            <td>Approve Flag</td>
-                            <td>Approve Who</td>
-                            <td align="center" width="20%">Total Tarif (Rp.)</td>
-                            <td align="center" width="20%">View Bukti</td>
-                            <td width="10%" align="center">Action</td>
+                        <tr bgcolor="#90ee90" id="head_tindakan_fin">
+                            <%--<td>Id</td>--%>
+                            <%--<td width="20%">Keterangan</td>--%>
+                            <%--<td>Approve Flag</td>--%>
+                            <%--<td>Approve Who</td>--%>
+                            <%--<td align="center" width="20%">Total Tarif (Rp.)</td>--%>
+                            <%--<td align="center" width="20%">View Bukti</td>--%>
+                            <%--<td width="10%" align="center">Action</td>--%>
                         </tr>
                         </thead>
                         <tbody id="body_tindakan_fin">
                         </tbody>
                         <input type="hidden" id="fin_id_antrian"/>
+                        <input type="hidden" id="fin_id_jenis_periksa_pasien"/>
                     </table>
                 </div>
                 <div class="box-header with-border"></div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                </button>
+                <%--<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close--%>
+                <%--</button>--%>
                 <%--<button type="button" class="btn btn-success" id="save_fin" onclick="confirmSavePembayaranTagihan()"><i class="fa fa-arrow-right"></i> Save--%>
                 <%--</button>--%>
                 <%--<button style="display: none; cursor: no-drop" type="button" class="btn btn-success"--%>
@@ -338,6 +374,43 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-detail-asuransi">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-document"></i> Approve Asuransi</span>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-offset-3">
+                    <div class="row">
+                        <div class="col-md-6"><h3 id="dt-nama-asuransi"></h3></div>
+                    </div>
+                    <div class="row top-7">
+                        <div class="col-md-3" align="right">No. Kartu :</div>
+                        <div class="col-md-6"><span id="dt-no-kartu-asuransi"></span></div>
+                    </div>
+                    <div class="row top-7">
+                        <div class="col-md-3" align="right">a.n. :</div>
+                        <div class="col-md-6"><span id="dt-nama-pasien-asuransi"></span></div>
+                    </div>
+                    <div class="row top-7">
+                        <div class="col-md-3" align="right">Input Cover :</div>
+                        <div class="col-md-6"><input type="number" class="form-control" id="dt-cover-asuransi"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <%--<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close--%>
+                <%--</button>--%>
+                <div id="btn-save-asuransi"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type='text/javascript'>
 
     function formatRupiah(angka) {
@@ -351,8 +424,49 @@
         }
     }
 
-    function showDetail(var1){
+    function searchPage(idAntrian) {
+        $("#id_antrian").val(idAntrian);
+        $("#searchForm").submit();
+    }
+
+    function viewDetail(idAntrian, idJenisPeriksaPasien) {
         $("#modal-invoice").modal('show');
+        showDetail(idAntrian, idJenisPeriksaPasien)
+    }
+    function showDetail(var1, var2){
+
+        $("#fin_id_jenis_periksa_pasien").val(var2);
+
+        var head = "";
+        if (var2 == "asuransi"){
+            head = "<td>Id</td>" +
+                "<td width=\"20%\">Keterangan</td>" +
+                "<td>Approve Flag</td>" +
+                "<td>Approve Who</td>" +
+                "<td>No. Kartu</td>" +
+                "<td>Cover</td>" +
+                "<td align=\"center\" width=\"20%\">Total Tarif (Rp.)</td>" +
+                "<td align=\"center\" width=\"20%\">View Bukti</td>" +
+                "<td>Action</td>";
+        } else if (var2 == "bpjs") {
+            head = "<td>Id</td>" +
+                "<td width=\"20%\">Keterangan</td>" +
+                "<td>Approve Flag</td>" +
+                "<td>Approve Who</td>" +
+                "<td>No. Kartu</td>" +
+                "<td>SEP</td>" +
+                "<td align=\"center\" width=\"20%\">Total Tarif (Rp.)</td>" +
+                "<td align=\"center\" width=\"20%\">View Bukti</td>" +
+                "<td>Action</td>";
+        } else {
+            head = "<td>Id</td>" +
+                "<td width=\"20%\">Keterangan</td>" +
+                "<td>Approve Flag</td>" +
+                "<td>Approve Who</td>" +
+                "<td align=\"center\" width=\"20%\">Total Tarif (Rp.)</td>" +
+                "<td align=\"center\" width=\"20%\">View Bukti</td>" +
+                "<td>Action</td>";
+        }
 
         VerifikatorPembayaranAction.listDetailPembayaran(var1, function (response) {
 
@@ -362,8 +476,13 @@
                     "<td>"+item.id+"</td>"+
                     "<td>"+item.keterangan+"</td>"+
                     "<td align='center'>"+ iconFlag(item.approvedFlag) +"</td>"+
-                    "<td>"+ nullEscape(item.approvedWho) +"</td>"+
-                    "<td>"+ formatRupiah( item.nominal  )+"</td>";
+                    "<td>"+ nullEscape(item.approvedWho) +"</td>";
+
+                if (var2 == "asuransi" || var2 == "bpjs"){
+                    str += "<td>"+item.noKartu+"</td>"+
+                        "<td>"+ formatRupiah ( item.jumlahCover )+"</td>";
+                }
+                 str += "<td>"+ formatRupiah( item.nominal )+"</td>";
 
                     if (item.flagBayar == "Y"){
 
@@ -382,11 +501,18 @@
                         }
 
                     } else {
-                        str += "<td></td>" +
-                            "<td></td>";
+//                        console.log("Id Item : "+item.idItem);
+                        if ((var2 == "asuransi" || var2 == "bpjs") && item.nominal != null) {
+                            str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
+                                "<td align='center'><button class='btn btn-sm btn-success' onclick=\"actionApprove(\'"+item.id+"\')\"><i class='fa fa-edit'></i> VerifiKasi</button></td>";
+                        } else {
+                            str += "<td></td>" +
+                                "<td></td>";
+                        }
                     }
                     str += "</tr>";
             });
+            $("#head_tindakan_fin").html(head);
             $("#fin_id_antrian").val(var1);
             $("#body_tindakan_fin").html(str);
         })
@@ -416,20 +542,17 @@
 
     function viewBukti(var1){
         $("#modal-view-bukti").modal('show');
-
         var urlImg = firstpath()+"/images/upload/bukti_transfer/"+var1;
-
         $("#body-view-bukti").html("<img src='"+urlImg+"'></img>");
     }
 
-    function saveApprove(var1) {
-
+    function saveApprove(idTransaksi) {
         var idAntrian = $("#fin_id_antrian").val();
         $("#msg_fin").text("Loading . . .");
         $("#success_fin").show();
 
         dwr.engine.setAsync(true);
-        VerifikatorPembayaranAction.approveTransaksi(var1, function (response) {
+        VerifikatorPembayaranAction.approveTransaksi(idTransaksi, function (response) {
             dwr.engine.setAsync(false);
             if (response.status == "error"){
                 $("#warning_fin").show();
@@ -437,17 +560,16 @@
                 $("#msg_fin_error").text(response.message);
             } else {
                 $("#success_fin").show().fadeOut(5000);
-                $("#id_antrian").val(idAntrian);
-                $("#searchForm").submit();
+                searchPage(idAntrian)
             }
         });
     }
 
-    function saveApproveEresep(var1){
+    function saveApproveEresep(idTransaksi){
         $("#success_fin").show().fadeOut(5000);
         var idAntrian = $("#fin_id_antrian").val();
 
-        VerifikatorPembayaranAction.approveEresep(var1, function (response) {
+        VerifikatorPembayaranAction.approveEresep(idTransaksi, function (response) {
             dwr.engine.setAsync(false);
             if (response.status == "error"){
                 $("#warning_fin").show();
@@ -455,11 +577,51 @@
                 $("#msg_fin_error").text(response.message);
             } else {
                 $("#success_fin").show().fadeOut(5000);
-                $("#id_antrian").val(idAntrian);
-                $("#searchForm").submit();
+                searchPage(idAntrian)
             }
         });
+    }
 
+    function actionApprove(id) {
+        var jenisPasien = $("#fin_id_jenis_periksa_pasien").val();
+        $("#dt-id-transaksi-asuransi").val(id);
+        if (jenisPasien == "asuransi" || jenisPasien == "bpjs"){
+            $("#modal-detail-asuransi").modal('show');
+            var idAntrian = $("#fin_id_antrian").val();
+            VerifikatorPembayaranAction.getSessionAntrianTelemedic(idAntrian, function (telemedicEntity) {
+                if (telemedicEntity != null){
+                    var item = telemedicEntity;
+                    $("#dt-nama-pasien-asuransi").text(item.namaPasien);
+                    $("#dt-nama-asuransi").html(item.namaAsuransi);
+                    $("#dt-no-kartu-asuransi").text(item.noKartu);
+                    $("#dt-cover-asuransi").val(item.jumlahCover);
+                    if (item.jumlahCover != null){
+                        $("#dt-cover-asuransi").prop('readonly', true);
+                    } else {
+                        $("#dt-cover-asuransi").prop('readonly', false);
+                    }
+                    //console.log("Jumlah Cover : " + item.jumlahCover)
+                }
+            });
+
+            $("#btn-save-asuransi").html("<button type=\"button\" class=\"btn btn-success\" id=\"save-detail-save\" onclick=\"approveAsuransi(\'"+idAntrian+"\', \'"+id+"\')\"><i class=\"fa fa-arrow-right\"></i> Save</button>");
+        } else {
+            saveApprove(id)
+        }
+    }
+
+    function approveAsuransi(idAntrian, idTransaksi) {
+        var cover = $("#dt-cover-asuransi").val();
+        VerifikatorPembayaranAction.saveCoverAsuransi(idAntrian, cover, idTransaksi, function (response) {
+            if (response.status == "error"){
+                $("#warning_fin").show();
+                $("#success_fin").hide();
+                $("#msg_fin_error").text(response.message);
+            } else {
+                $("#modal-detail-asuransi").modal('hide');
+                searchPage(idAntrian);
+            }
+        });
     }
 
 </script>

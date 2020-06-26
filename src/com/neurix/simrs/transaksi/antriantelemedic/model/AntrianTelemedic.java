@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.antriantelemedic.model;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 
@@ -49,6 +50,8 @@ public class AntrianTelemedic {
     private String jenisPengambilan;
     private String noTelp;
     private String urlResep;
+    private String namaAsuransi;
+    private BigDecimal jumlahCover;
 
     public String getUrlResep() {
         return urlResep;
@@ -56,6 +59,23 @@ public class AntrianTelemedic {
 
     public void setUrlResep(String urlResep) {
         this.urlResep = urlResep;
+    }
+
+
+    public BigDecimal getJumlahCover() {
+        return jumlahCover;
+    }
+
+    public void setJumlahCover(BigDecimal jumlahCover) {
+        this.jumlahCover = jumlahCover;
+    }
+
+    public String getNamaAsuransi() {
+        return namaAsuransi;
+    }
+
+    public void setNamaAsuransi(String namaAsuransi) {
+        this.namaAsuransi = namaAsuransi;
     }
 
     public String getId() {

@@ -143,6 +143,7 @@ public class PengirimanObatDao extends GenericDao<ItSimrsPengirimanObatEntity, S
                 "LEFT JOIN it_simrs_pengiriman_obat ispo ON ispo.id_resep = mspr.id_permintaan_resep\n" +
                 "WHERE msato.approval_flag = 'Y'\n" +
                 "AND mspr.branch_id = :branchId \n" +
+                "AND isat.jenis_pengambilan = 'kirim' \n" +
                 "AND ispo.id_resep is NULL";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
