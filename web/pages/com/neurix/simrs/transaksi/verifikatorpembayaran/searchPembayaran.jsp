@@ -222,10 +222,10 @@
                                     </td>
                                     <td align="center">
                                         <s:if test='#row.statusTransaksi == "finish"'>
-                                            <button class="btn btn-sm btn-primary" onclick="showDetail('<s:property value="id"/>','<s:property value="idJenisPeriksaPasien"/>')"><i class="fa fa-search"></i></button>
+                                            <button class="btn btn-sm btn-primary" onclick="viewDetail('<s:property value="id"/>','<s:property value="idJenisPeriksaPasien"/>')"><i class="fa fa-search"></i></button>
                                         </s:if>
                                         <s:else>
-                                            <button class="btn btn-sm btn-primary" onclick="showDetail('<s:property value="id"/>','<s:property value="idJenisPeriksaPasien"/>')"><i class="fa fa-edit"></i></button>
+                                            <button class="btn btn-sm btn-primary" onclick="viewDetail('<s:property value="id"/>','<s:property value="idJenisPeriksaPasien"/>')"><i class="fa fa-edit"></i></button>
                                         </s:else>
                                     </td>
                                 </tr>
@@ -394,9 +394,17 @@
         }
     }
 
+    function searchPage(idAntrian) {
+        $("#id_antrian").val(idAntrian);
+        $("#searchForm").submit();
+    }
+
+    function viewDetail(idAntrian, idJenisPeriksaPasien) {
+        $("#modal-invoice").modal('show');
+        showDetail(idAntrian, idJenisPeriksaPasien)
+    }
     function showDetail(var1, var2){
 
-        $("#modal-invoice").modal('show');
         $("#fin_id_jenis_periksa_pasien").val(var2);
 
         var head = "";
@@ -458,13 +466,18 @@
                                     "<td align='center'><button class='btn btn-sm btn-success' onclick=\"saveApproveEresep(\'"+item.id+"\')\"><i class='fa fa-check'></i> Approve E-Resep</button></td>";
                             } else {
                                 str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
-                                    "<td align='center'><button class='btn btn-sm btn-success' onclick=\"actionApprove(\'"+item.id+"\')\"><i class='fa fa-check'></i> Approve</button></td>";
+                                    "<td align='center'><button class='btn btn-sm btn-success' onclick=\"saveApprove(\'"+item.id+"\')\"><i class='fa fa-check'></i> Approve</button></td>";
                             }
                         }
 
                     } else {
-                        str += "<td></td>" +
-                            "<td></td>";
+                        if (var2 == "asuransi" || var2 == "bpjs" && item.idItem != null) {
+                            str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
+                                "<td align='center'><button class='btn btn-sm btn-success' onclick=\"actionApprove(\'"+item.id+"\')\"><i class='fa fa-edit'></i> VerifiKasi</button></td>";
+                        } else {
+                            str += "<td></td>" +
+                                "<td></td>";
+                        }
                     }
                     str += "</tr>";
             });
@@ -516,17 +529,16 @@
                 $("#msg_fin_error").text(response.message);
             } else {
                 $("#success_fin").show().fadeOut(5000);
-                $("#id_antrian").val(idAntrian);
-                $("#searchForm").submit();
+                searchPage(idAntrian)
             }
         });
     }
 
-    function saveApproveEresep(var1){
+    function saveApproveEresep(idTransaksi){
         $("#success_fin").show().fadeOut(5000);
         var idAntrian = $("#fin_id_antrian").val();
 
-        VerifikatorPembayaranAction.approveEresep(var1, function (response) {
+        VerifikatorPembayaranAction.approveEresep(idTransaksi, function (response) {
             dwr.engine.setAsync(false);
             if (response.status == "error"){
                 $("#warning_fin").show();
@@ -534,8 +546,7 @@
                 $("#msg_fin_error").text(response.message);
             } else {
                 $("#success_fin").show().fadeOut(5000);
-                $("#id_antrian").val(idAntrian);
-                $("#searchForm").submit();
+                searchPage(idAntrian)
             }
         });
     }
@@ -552,7 +563,12 @@
                     $("#dt-nama-asuransi").html(item.namaAsuransi);
                     $("#dt-no-kartu-asuransi").text(item.noKartu);
                     $("#dt-cover-asuransi").val(item.jumlahCover);
-                    $("#dt-cover-asuransi").prop('readonly', true);
+                    if (item.jumlahCover != null){
+                        $("#dt-cover-asuransi").prop('readonly', true);
+                    } else {
+                        $("#dt-cover-asuransi").prop('readonly', false);
+                    }
+                    //console.log("Jumlah Cover : " + item.jumlahCover)
                 }
             });
 
@@ -571,7 +587,7 @@
                 $("#msg_fin_error").text(response.message);
             } else {
                 $("#modal-detail-asuransi").modal('hide');
-                actionApprove(idTransaksi);
+                searchPage(idAntrian);
             }
         });
     }

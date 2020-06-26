@@ -1491,7 +1491,7 @@ public class VerifikatorPembayaranAction {
 
             ItSimrsAntrianTelemedicEntity telemedicEntity = telemedicBo.getAntrianTelemedicEntityById(idAntrianTelemedic);
             if (telemedicEntity != null){
-                if (telemedicEntity.getJumlahCover() != null && telemedicEntity.getJumlahCover().compareTo(new BigDecimal(0)) == 0){
+                if (telemedicEntity.getJumlahCover() == null || telemedicEntity.getJumlahCover().compareTo(new BigDecimal(0)) == 0){
                     AntrianTelemedic antrianTelemedic = new AntrianTelemedic();
                     antrianTelemedic.setId(idAntrianTelemedic);
                     antrianTelemedic.setJumlahCover(coverAsuransi);
