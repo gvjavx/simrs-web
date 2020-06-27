@@ -1129,7 +1129,7 @@ public class VerifikatorPembayaranAction {
             ImSimrsAsuransiEntity asuransiEntity = asuransiBo.getEntityAsuransiById(detailCheckupEntity.getIdAsuransi());
             if (asuransiEntity != null) {
                 masterId = asuransiEntity.getNoMaster();
-                jenisPasien = "Asuransi " + asuransiEntity.getNamaAsuransi() + " No. Kartu" + detailCheckupEntity.getNoKartuAsuransi();
+                jenisPasien = "Asuransi " + asuransiEntity.getNamaAsuransi() + " No. Kartu " + detailCheckupEntity.getNoKartuAsuransi();
             } else {
                 logger.error("[CheckupDetailAction.closingJurnalNonTunai] Error Asuransi tidak ditemukan");
                 response.setStatus("error");
@@ -1155,9 +1155,54 @@ public class VerifikatorPembayaranAction {
 
         // MENDAPATKAN SEMUA BIAYA RAWAT;
         BigDecimal jumlah = getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "", "");
-
+        BigDecimal ppnObat = new BigDecimal(0);
         Map mapJurnal = new HashMap();
         if ("Y".equalsIgnoreCase(flagResep)){
+
+            BigDecimal jumlahResep = getJumlahNilaiBiayaByKeterangan(idDetailCheckup, idJenisPeriksaPasien, "resep");
+            if (jumlahResep != null && jumlahResep.compareTo(new BigDecimal(0)) == 1){
+
+                if (jumlahResep.compareTo(new BigDecimal(0)) == 1) {
+                    ppnObat = jumlahResep.multiply(new BigDecimal(0.1)).setScale(2, BigDecimal.ROUND_HALF_UP);
+                }
+
+                Map mapPajakObat = new HashMap();
+                mapPajakObat.put("bukti", invoice);
+                mapPajakObat.put("nilai", ppnObat);
+                mapPajakObat.put("master_id", CommonConstant.MASTER_PAJAK_OBAT);
+
+                if ("umum".equalsIgnoreCase(idJenisPeriksaPasien)){
+                    invoice = billingSystemBo.createInvoiceNumber("JRJ", branchId);
+
+                    // create list map piutang
+                    Map mapPiutang = new HashMap();
+                    mapPiutang.put("bukti", invoice);
+                    mapPiutang.put("nilai",  jumlah.add(ppnObat));
+                    mapPiutang.put("pasien_id", idPasien);
+
+                    mapJurnal.put("ppn_keluaran", mapPajakObat);
+                    mapJurnal.put("pendapatan_rawat_jalan_umum", listOfTindakan);
+                    mapJurnal.put("piutang_pasien_umum", mapPiutang);
+                    transId = "62";
+
+                } else if ("asuransi".equalsIgnoreCase(idJenisPeriksaPasien)){
+                    invoice = billingSystemBo.createInvoiceNumber("JRJ", branchId);
+
+                    // create list map piutang
+                    Map mapPiutang = new HashMap();
+                    mapPiutang.put("bukti", invoice);
+                    mapPiutang.put("nilai", jumlah.add(ppnObat));
+                    mapPiutang.put("master_id", masterId);
+//                                mapPiutang.put("pasien_id", idPasien);
+                    // debit piutang pasien asuransi
+                    mapJurnal.put("ppn_keluaran", mapPajakObat);
+                    mapJurnal.put("pendapatan_rawat_jalan_asuransi", listOfTindakan);
+                    mapJurnal.put("piutang_pasien_asuransi", mapPiutang);
+                    transId = "17";
+                }
+
+
+            }
 
         } else {
             if ("umum".equalsIgnoreCase(idJenisPeriksaPasien)){
@@ -1218,7 +1263,7 @@ public class VerifikatorPembayaranAction {
                 mapJurnal = new HashMap();
                 Map mapPiutang = new HashMap();
                 mapPiutang.put("bukti", invoice);
-                mapPiutang.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, idJenisPeriksaPasien, ""));
+                mapPiutang.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, idJenisPeriksaPasien, "").add(ppnObat));
                 mapPiutang.put("master_id", getMasterIdByTipe(idDetailCheckup, idJenisPeriksaPasien));
 
                 mapJurnal.put("kas",mapKas);
