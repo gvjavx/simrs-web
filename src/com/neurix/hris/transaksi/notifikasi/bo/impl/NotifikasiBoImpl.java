@@ -55,7 +55,6 @@ import com.neurix.hris.transaksi.training.dao.TrainingPersonDao;
 import com.neurix.hris.transaksi.training.model.ItHrisTrainingEntity;
 import com.neurix.hris.transaksi.training.model.ItHrisTrainingPersonEntity;
 import com.neurix.hris.transaksi.training.model.TrainingPerson;
-import io.agora.recording.common.Common;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 

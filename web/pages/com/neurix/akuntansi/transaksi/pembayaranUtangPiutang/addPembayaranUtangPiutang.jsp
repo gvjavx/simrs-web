@@ -223,6 +223,8 @@
                                                                     coaDivisi: item.coaDivisi,
                                                                     coaLawan: item.coa,
                                                                     coaLawanName: item.coaName,
+                                                                    noKontrak: item.noKontrak,
+                                                                    namaKontrak: item.namaKontrak,
                                                                     jumlah: item.stJumlah
                                                                 };
                                                                 functions.push(labelItem);
@@ -235,6 +237,8 @@
                                                             $('#jumlah_pengajuan').val(selectedObj.jumlah);
                                                             $('#no_budgetting').val(selectedObj.noBudgeting);
                                                             $('#keperluan').val(selectedObj.keperluan);
+                                                            $('#no_kontrak').val(selectedObj.noKontrak);
+                                                            $('#nama_kontrak').val(selectedObj.namaKontrak);
                                                             $('#divisi_id').val(selectedObj.coaDivisi);
                                                             $('#nama_divisi').val(selectedObj.divisiName);
                                                             var option = '<option value="'+selectedObj.coaLawan+'">'+selectedObj.coaLawanName+'</option>';
@@ -373,11 +377,22 @@
                                                              cssClass="form-control" cssStyle="margin-top: 7px" />
                                             </div>
                                         </div>
+                                        <div class="form-group" id="no_kontrak_view">
+                                            <label class="col-md-4" style="margin-top: 7px">No. Kontrak</label>
+                                            <div class="col-md-8">
+                                                <s:textfield id="no_kontrak" readonly="true" cssClass="form-control" cssStyle="margin-top: 7px" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group" id="nama_kontrak_view">
+                                            <label class="col-md-4" style="margin-top: 7px">Nama Kontrak</label>
+                                            <div class="col-md-8">
+                                                <s:textfield id="nama_kontrak" readonly="true" cssClass="form-control" cssStyle="margin-top: 7px" />
+                                            </div>
+                                        </div>
                                         <div class="form-group" id="jumlah_pengajuan_view">
                                             <label class="col-md-4" style="margin-top: 7px">Jumlah Pengajuan (RP)</label>
                                             <div class="col-md-8">
-                                                <s:textfield id="jumlah_pengajuan" onkeypress="$(this).css('border','')" readonly="true"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px" />
+                                                <s:textfield id="jumlah_pengajuan" readonly="true" cssClass="form-control" cssStyle="margin-top: 7px" />
                                             </div>
                                         </div>
                                         <div class="form-group">

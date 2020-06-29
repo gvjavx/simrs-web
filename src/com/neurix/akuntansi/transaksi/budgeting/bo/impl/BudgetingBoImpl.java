@@ -1407,8 +1407,8 @@ public class BudgetingBoImpl implements BudgetingBo {
             throw new GeneralBOException("[BudgetingBoImpl.getBudgetBiayaDivisiSaatIni] ERROR. ",e);
         }
         for (BudgettingDTO budgettingDTO : budgettingDTOList){
-            budget = budgettingDTO.getNilai();
-            budgetSdBulanIni = budgettingDTO.getNilai();
+            budget = budgettingDTO.getNilai().add(budgettingDTO.getNilaiAdendum1()).add(budgettingDTO.getNilaiAdendum2()).add(budgettingDTO.getNilaiAdendum3());
+            budgetSdBulanIni = budgettingDTO.getNilai().add(budgettingDTO.getNilaiAdendum1()).add(budgettingDTO.getNilaiAdendum2()).add(budgettingDTO.getNilaiAdendum3());
         }
 
         budgeting.setBudgetSaatIni(budget);

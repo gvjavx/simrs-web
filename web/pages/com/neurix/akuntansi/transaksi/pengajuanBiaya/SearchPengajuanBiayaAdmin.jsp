@@ -219,7 +219,7 @@
                                                 <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Pengajuan Biaya</h3>
                                             </div>
                                             <div class="box-body">
-                                                <table id="myTable" class="tablePengajuanBiaya table table-bordered table-striped">
+                                                <table id="myTableAllRows" class="tablePengajuanBiaya table table-bordered table-striped">
                                                     <thead >
                                                     <tr bgcolor="#90ee90">
                                                         <td>ID Pengajuan Biaya</td>
@@ -231,6 +231,7 @@
                                                         <td>Keperluan</td>
                                                         <td>Status Saat Ini</td>
                                                         <td align="center">View</td>
+                                                        <td align="center">Dibayar</td>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -245,9 +246,16 @@
                                                             <td><s:property value="keperluan"/></td>
                                                             <td><s:property value="statusSaatIni"/></td>
                                                             <td align="center">
+                                                                <s:if test='#row.canView'>
                                                                 <a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanBiayaDetailId}"/>" class="item-view">
                                                                     <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" name="icon_view">
                                                                 </a>
+                                                                </s:if>
+                                                            </td>
+                                                            <td align="center">
+                                                                <s:if test='#row.sudahDibayar'>
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_dibayar">
+                                                                </s:if>
                                                             </td>
                                                         </tr>
                                                     </s:iterator>

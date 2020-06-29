@@ -86,12 +86,68 @@ public class PengajuanBiayaDetail extends BaseModel {
     private String stTanggalSelesaiRealisasi;
 
     private boolean canPrint=false;
+    private boolean sudahDibayar=false;
+    private boolean canView =true;
 
     private String coa;
     private String coaName;
     private String coaDivisi;
 
     private String pembayaran;
+
+    private String noKontrak;
+    private String namaKontrak;
+
+    private BigDecimal pph;
+    private String stPph;
+
+    public BigDecimal getPph() {
+        return pph;
+    }
+
+    public void setPph(BigDecimal pph) {
+        this.pph = pph;
+    }
+
+    public String getStPph() {
+        return stPph;
+    }
+
+    public void setStPph(String stPph) {
+        this.stPph = stPph;
+    }
+
+    public String getNoKontrak() {
+        return noKontrak;
+    }
+
+    public void setNoKontrak(String noKontrak) {
+        this.noKontrak = noKontrak;
+    }
+
+    public String getNamaKontrak() {
+        return namaKontrak;
+    }
+
+    public void setNamaKontrak(String namaKontrak) {
+        this.namaKontrak = namaKontrak;
+    }
+
+    public boolean isCanView() {
+        return canView;
+    }
+
+    public void setCanView(boolean canView) {
+        this.canView = canView;
+    }
+
+    public boolean isSudahDibayar() {
+        return sudahDibayar;
+    }
+
+    public void setSudahDibayar(boolean sudahDibayar) {
+        this.sudahDibayar = sudahDibayar;
+    }
 
     public String getPembayaran() {
         return pembayaran;

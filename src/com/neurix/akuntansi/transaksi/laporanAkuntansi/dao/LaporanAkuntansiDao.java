@@ -2741,7 +2741,8 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "\tid_pengadaan,\n" +
                 "\tnama_pengadaan," +
                 "\tno_kontrak," +
-                "\tnilai_kontrak\n" +
+                "\tnilai_kontrak,\n" +
+                "\tnama_kontrak\n" +
                 "FROM\n" +
                 "\tit_akun_budgeting_detail bd LEFT JOIN\n" +
                 "\tit_akun_budgeting_pengadaan bp ON bp.no_budgeting_detail = bd.no_budgeting_detail\n" +
@@ -2754,7 +2755,8 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
         for (Object[] row : results) {
             BudgetingPengadaan data= new BudgetingPengadaan();
             data.setIdPengadaan((String) row[0]);
-            data.setNamPengadaan((String) row[1]);
+            data.setNamPengadaan((String) row[4]);
+//            data.setNamPengadaan((String) row[1]);
 //            data.setNamPengadaan((String) row[0]+" | "+(String) row[1]);
             data.setNoKontrak((String) row[2]);
             if (row[3]!=null){
@@ -2773,7 +2775,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
 
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "select\n" +
-                "\tno_kontrak,nilai_kontrak\n" +
+                "\tno_kontrak,nilai_kontrak,nilai_adendum_1,nilai_adendum_2,nilai_adendum_3\n" +
                 "from\n" +
                 "\tit_akun_budgeting_pengadaan\n" +
                 "where\n" +
@@ -2788,6 +2790,21 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 data.setNilai(BigDecimal.valueOf(Double.parseDouble(row[1].toString())));
             }else{
                 data.setNilai(BigDecimal.ZERO);
+            }
+            if (row[2]!=null){
+                data.setNilaiAdendum1(BigDecimal.valueOf(Double.parseDouble(row[2].toString())));
+            }else{
+                data.setNilaiAdendum1(BigDecimal.ZERO);
+            }
+            if (row[3]!=null){
+                data.setNilaiAdendum2(BigDecimal.valueOf(Double.parseDouble(row[3].toString())));
+            }else{
+                data.setNilaiAdendum2(BigDecimal.ZERO);
+            }
+            if (row[4]!=null){
+                data.setNilaiAdendum3(BigDecimal.valueOf(Double.parseDouble(row[4].toString())));
+            }else{
+                data.setNilaiAdendum3(BigDecimal.ZERO);
             }
             listOfResult.add(data);
         }

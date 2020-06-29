@@ -705,6 +705,13 @@
       </create>
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.jurnal.model.Jurnal"/>
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.jurnal.model.JurnalDetail"/>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.akuntansi.transaksi.pengajuanSetor.action.PengajuanSetorAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.akuntansi.transaksi.pengajuanSetor.model.PengajuanSetor"/>
+      <convert converter="bean" match="com.neurix.akuntansi.transaksi.pengajuanSetor.model.PengajuanSetorDetail"/>
+
   </allow>
 
 </dwr>

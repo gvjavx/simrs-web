@@ -1,0 +1,163 @@
+package com.neurix.akuntansi.transaksi.pengajuanSetor.model;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.Timestamp;
+
+/**
+ * Created by IntelliJ IDEA.
+ * User: gondok
+ * Date: 06/09/17
+ * Time: 14:05
+ * To change this template use File | Settings | File Templates.
+ */
+public class ItPengajuanSetorEntity implements Serializable {
+
+    private String pengajuanSetorId;
+    private String branchId;
+    private String periode;
+    private String tahun;
+    private String bulan;
+    private Date registeredDate;
+
+    private BigDecimal jumlahPph21Payroll;
+    private BigDecimal jumlahPph21Kso;
+    private BigDecimal jumlahPph21Pengajuan;
+    private BigDecimal jumlahSeluruhnya;
+
+    private String flag;
+    private String action;
+    private Timestamp createdDate;
+    private Timestamp lastUpdate;
+    private String createdWho;
+    private String lastUpdateWho;
+
+    public Date getRegisteredDate() {
+        return registeredDate;
+    }
+
+    public void setRegisteredDate(Date registeredDate) {
+        this.registeredDate = registeredDate;
+    }
+
+    public BigDecimal getJumlahPph21Payroll() {
+        return jumlahPph21Payroll;
+    }
+
+    public void setJumlahPph21Payroll(BigDecimal jumlahPph21Payroll) {
+        this.jumlahPph21Payroll = jumlahPph21Payroll;
+    }
+
+    public BigDecimal getJumlahPph21Kso() {
+        return jumlahPph21Kso;
+    }
+
+    public void setJumlahPph21Kso(BigDecimal jumlahPph21Kso) {
+        this.jumlahPph21Kso = jumlahPph21Kso;
+    }
+
+    public BigDecimal getJumlahPph21Pengajuan() {
+        return jumlahPph21Pengajuan;
+    }
+
+    public void setJumlahPph21Pengajuan(BigDecimal jumlahPph21Pengajuan) {
+        this.jumlahPph21Pengajuan = jumlahPph21Pengajuan;
+    }
+
+    public BigDecimal getJumlahSeluruhnya() {
+        return jumlahSeluruhnya;
+    }
+
+    public void setJumlahSeluruhnya(BigDecimal jumlahSeluruhnya) {
+        this.jumlahSeluruhnya = jumlahSeluruhnya;
+    }
+
+    public String getPengajuanSetorId() {
+        return pengajuanSetorId;
+    }
+
+    public void setPengajuanSetorId(String pengajuanSetorId) {
+        this.pengajuanSetorId = pengajuanSetorId;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getPeriode() {
+        return periode;
+    }
+
+    public void setPeriode(String periode) {
+        this.periode = periode;
+    }
+
+    public String getTahun() {
+        return tahun;
+    }
+
+    public void setTahun(String tahun) {
+        this.tahun = tahun;
+    }
+
+    public String getBulan() {
+        return bulan;
+    }
+
+    public void setBulan(String bulan) {
+        this.bulan = bulan;
+    }
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public Timestamp getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Timestamp createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Timestamp getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(Timestamp lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
+
+    public String getCreatedWho() {
+        return createdWho;
+    }
+
+    public void setCreatedWho(String createdWho) {
+        this.createdWho = createdWho;
+    }
+
+    public String getLastUpdateWho() {
+        return lastUpdateWho;
+    }
+
+    public void setLastUpdateWho(String lastUpdateWho) {
+        this.lastUpdateWho = lastUpdateWho;
+    }
+}

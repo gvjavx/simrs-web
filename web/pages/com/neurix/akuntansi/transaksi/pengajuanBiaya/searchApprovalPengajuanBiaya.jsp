@@ -286,6 +286,24 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="control-label col-sm-4" >Tipe : </label>
+                        <div class="col-sm-6">
+                            <input type="text" readonly class="form-control" id="mod_tipe_atasan">
+                        </div>
+                    </div>
+                    <div class="form-group" id="view_no_kontrak_atasan">
+                        <label class="control-label col-sm-4" >No. Kontrak: </label>
+                        <div class="col-sm-6">
+                            <input type="text" readonly class="form-control" id="mod_no_kontrak_atasan">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Keperluan: </label>
+                        <div class="col-sm-6">
+                            <input type="text" readonly class="form-control" id="mod_keperluan_atasan">
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="control-label col-sm-4" >No. Budgetting : </label>
                         <div class="col-sm-6">
                             <input type="text" readonly class="form-control" id="mod_no_budgetting_atasan">
@@ -309,36 +327,36 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Budgeting Bulan Ini (RP) : </label>
+                        <label class="control-label col-sm-4" id="txt_budget_atasan" >Budgeting Bulan Ini (RP) : </label>
                         <div class="col-md-6">
                             <input type="text" readonly class="form-control" id="mod_budget_atasan" style="text-align: right">
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="view_budget_sd_atasan">
                         <label class="control-label col-sm-4" >Budgeting s/d Bulan Ini (RP) : </label>
                         <div class="col-md-6">
                             <input type="text" readonly class="form-control" id="mod_budget_sd_atasan" style="text-align: right">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Budgeting terpakai Bulan Ini (RP) : </label>
+                        <label class="control-label col-sm-4" id="txt_budget_terpakai_atasan" >Budgeting terpakai Bulan Ini (RP) : </label>
                         <div class="col-md-6">
                             <input type="text" readonly class="form-control" id="mod_budget_terpakai_atasan" style="text-align: right">
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="view_budget_terpakai_sd_atasan">
                         <label class="control-label col-sm-4" >Budgeting terpakai s/d Bulan Ini (RP) : </label>
                         <div class="col-md-6">
                             <input type="text" readonly class="form-control" id="mod_budget_terpakai_sd_atasan" style="text-align: right">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Sisa Budget Bulan Ini (RP) : </label>
+                        <label class="control-label col-sm-4" id="txt_sisa_budget_atasan">Sisa Budget Bulan Ini (RP) : </label>
                         <div class="col-md-6">
                             <input type="text" readonly class="form-control" id="mod_sisa_budget_atasan" style="text-align: right">
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="view_sisa_budget_sd_atasan">
                         <label class="control-label col-sm-4" >Sisa Budget s/d Bulan Ini (RP) : </label>
                         <div class="col-md-6">
                             <input type="text" readonly class="form-control" id="mod_sisa_budget_sd_atasan" style="text-align: right">
@@ -395,12 +413,24 @@
                                       listKey="stPositionId" listValue="positionName" headerKey="" headerValue="[Select one]"/>
                         </div>
                     </div>
-                    <%--<div class="form-group">--%>
-                        <%--<label class="control-label col-sm-3" >Transaksi : </label>--%>
-                        <%--<div class="col-sm-8">--%>
-                            <%--<input type="text" readonly class="form-control" id="mod_transaksi_keuangan">--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Tipe : </label>
+                        <div class="col-sm-6">
+                            <input type="text" readonly class="form-control" id="mod_tipe_keuangan">
+                        </div>
+                    </div>
+                    <div class="form-group" id="view_no_kontrak_keuangan">
+                        <label class="control-label col-sm-4" >No. Kontrak: </label>
+                        <div class="col-sm-6">
+                            <input type="text" readonly class="form-control" id="mod_no_kontrak_keuangan">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Keperluan: </label>
+                        <div class="col-sm-6">
+                            <input type="text" readonly class="form-control" id="mod_keperluan_keuangan">
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label class="control-label col-sm-4" >No. Budgetting : </label>
                         <div class="col-sm-6">
@@ -439,36 +469,36 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Budgeting Bulan Ini (RP) : </label>
+                        <label class="control-label col-sm-4" id="txt_budget_keuangan" >Budgeting Bulan Ini (RP) : </label>
                         <div class="col-md-6">
                             <input type="text" readonly class="form-control" id="mod_budget_keuangan" style="text-align: right">
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="view_budget_sd_keuangan">
                         <label class="control-label col-sm-4" >Budgeting s/d Bulan Ini (RP) : </label>
                         <div class="col-md-6">
                             <input type="text" readonly class="form-control" id="mod_budget_sd_keuangan" style="text-align: right">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Budgeting terpakai Bulan Ini (RP) : </label>
+                        <label class="control-label col-sm-4" id="txt_budget_terpakai_keuangan" >Budgeting terpakai Bulan Ini (RP) : </label>
                         <div class="col-md-6">
                             <input type="text" readonly class="form-control" id="mod_budget_terpakai_keuangan" style="text-align: right">
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="view_budget_terpakai_sd_keuangan">
                         <label class="control-label col-sm-4" >Budgeting terpakai s/d Bulan Ini (RP) : </label>
                         <div class="col-md-6">
                             <input type="text" readonly class="form-control" id="mod_budget_terpakai_sd_keuangan" style="text-align: right">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Sisa Budget Bulan Ini (RP) : </label>
+                        <label class="control-label col-sm-4" id="txt_sisa_budget_keuangan" >Sisa Budget Bulan Ini (RP) : </label>
                         <div class="col-md-6">
                             <input type="text" readonly class="form-control" id="mod_sisa_budget_keuangan" style="text-align: right">
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="view_sisa_budget_sd_keuangan">
                         <label class="control-label col-sm-4" >Sisa Budget s/d Bulan Ini (RP) : </label>
                         <div class="col-md-6">
                             <input type="text" readonly class="form-control" id="mod_sisa_budget_sd_keuangan" style="text-align: right">
@@ -533,12 +563,24 @@
                                       listKey="stPositionId" listValue="positionName" headerKey="" headerValue="[Select one]"/>
                         </div>
                     </div>
-                    <%--<div class="form-group">--%>
-                    <%--<label class="control-label col-sm-3" >Transaksi : </label>--%>
-                    <%--<div class="col-sm-8">--%>
-                    <%--<input type="text" readonly class="form-control" id="mod_transaksi_keuangan">--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Tipe : </label>
+                        <div class="col-sm-6">
+                            <input type="text" readonly class="form-control" id="mod_tipe_keuangan_kp">
+                        </div>
+                    </div>
+                    <div class="form-group" id="view_no_kontrak_keuangan">
+                        <label class="control-label col-sm-4" >No. Kontrak: </label>
+                        <div class="col-sm-6">
+                            <input type="text" readonly class="form-control" id="mod_no_kontrak_keuangan_kp">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Keperluan: </label>
+                        <div class="col-sm-6">
+                            <input type="text" readonly class="form-control" id="mod_keperluan_keuangan_kp">
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label class="control-label col-sm-4" >No. Budgetting : </label>
                         <div class="col-sm-6">
@@ -563,36 +605,36 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Budgeting Bulan Ini (RP) : </label>
+                        <label class="control-label col-sm-4" id="txt_budget_keuangan_kp">Budgeting Bulan Ini (RP) : </label>
                         <div class="col-md-6">
                             <input type="text" readonly class="form-control" id="mod_budget_keuangan_kp" style="text-align: right">
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="view_budget_sd_keuangan_kp">
                         <label class="control-label col-sm-4" >Budgeting s/d Bulan Ini (RP) : </label>
                         <div class="col-md-6">
                             <input type="text" readonly class="form-control" id="mod_budget_sd_keuangan_kp" style="text-align: right">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Budgeting terpakai Bulan Ini (RP) : </label>
+                        <label class="control-label col-sm-4" id="txt_budget_terpakai_keuangan_kp" >Budgeting terpakai Bulan Ini (RP) : </label>
                         <div class="col-md-6">
                             <input type="text" readonly class="form-control" id="mod_budget_terpakai_keuangan_kp" style="text-align: right">
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="view_budget_terpakai_sd_keuangan_kp">
                         <label class="control-label col-sm-4" >Budgeting terpakai s/d Bulan Ini (RP) : </label>
                         <div class="col-md-6">
                             <input type="text" readonly class="form-control" id="mod_budget_terpakai_sd_keuangan_kp" style="text-align: right">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Sisa Budget Bulan Ini (RP) : </label>
+                        <label class="control-label col-sm-4" id="txt_sisa_budget_keuangan_kp" >Sisa Budget Bulan Ini (RP) : </label>
                         <div class="col-md-6">
                             <input type="text" readonly class="form-control" id="mod_sisa_budget_keuangan_kp" style="text-align: right">
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="view_sisa_budget_sd_keuangan_kp">
                         <label class="control-label col-sm-4" >Sisa Budget s/d Bulan Ini (RP) : </label>
                         <div class="col-md-6">
                             <input type="text" readonly class="form-control" id="mod_sisa_budget_sd_keuangan_kp" style="text-align: right">
@@ -865,16 +907,16 @@
                         transaksi="Investasi";
                         break;
                 }
-                var approval ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'" tanggal="'+item.stTanggal+'" status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'" budget="'+item.stBudgetBiaya+'" budgetsd="'+item.stBudgetBiayaSdBulanIni+'" budgetterpakai="'+item.stBudgetTerpakai+'" budgetterpakaisd="'+item.stBudgetTerpakaiSdBulanIni+'" sisabudget="'+item.stSisaBudget+'" sisabudgetsd="'+item.stSisaBudgetSdBulanIni+'" noBudgetting="'+item.noBudgeting+'" class="item-approve-atasan" >\n' +
+                var approval ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'" tanggal="'+item.stTanggal+'" status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'" budget="'+item.stBudgetBiaya+'" budgetsd="'+item.stBudgetBiayaSdBulanIni+'" budgetterpakai="'+item.stBudgetTerpakai+'" budgetterpakaisd="'+item.stBudgetTerpakaiSdBulanIni+'" sisabudget="'+item.stSisaBudget+'" sisabudgetsd="'+item.stSisaBudgetSdBulanIni+'" noBudgetting="'+item.noBudgeting+'" tipe="'+item.transaksi+'" keperluan="'+item.keperluanName+'" noKontrak="'+item.noKontrak+'" class="item-approve-atasan" >\n' +
                     '<img border="0" src="<s:url value="/pages/images/icon_approval.ico"/>" name="icon_edit">\n' +
                     '</a></td>';
-                var approvalKeuangan ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'" tanggal="'+item.stTanggal+'" status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'" budget="'+item.stBudgetBiaya+'" budgetsd="'+item.stBudgetBiayaSdBulanIni+'" budgetterpakai="'+item.stBudgetTerpakai+'" budgetterpakaisd="'+item.stBudgetTerpakaiSdBulanIni+'" sisabudget="'+item.stSisaBudget+'" sisabudgetsd="'+item.stSisaBudgetSdBulanIni+'" noBudgetting="'+item.noBudgeting+'" class="item-approve-keuangan" >\n' +
+                var approvalKeuangan ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'" tanggal="'+item.stTanggal+'" status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'" budget="'+item.stBudgetBiaya+'" budgetsd="'+item.stBudgetBiayaSdBulanIni+'" budgetterpakai="'+item.stBudgetTerpakai+'" budgetterpakaisd="'+item.stBudgetTerpakaiSdBulanIni+'" sisabudget="'+item.stSisaBudget+'" sisabudgetsd="'+item.stSisaBudgetSdBulanIni+'" noBudgetting="'+item.noBudgeting+'" tipe="'+item.transaksi+'" keperluan="'+item.keperluanName+'" noKontrak="'+item.noKontrak+'" class="item-approve-keuangan" >\n' +
                     '<img border="0" src="<s:url value="/pages/images/icon_approval.ico"/>" name="icon_edit">\n' +
                     '</a></td>';
-                var approvalKeuanganKp ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'" tanggal="'+item.stTanggal+'" status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'" budget="'+item.stBudgetBiaya+'" budgetsd="'+item.stBudgetBiayaSdBulanIni+'" budgetterpakai="'+item.stBudgetTerpakai+'" budgetterpakaisd="'+item.stBudgetTerpakaiSdBulanIni+'" sisabudget="'+item.stSisaBudget+'" sisabudgetsd="'+item.stSisaBudgetSdBulanIni+'" noBudgetting="'+item.noBudgeting+'" class="item-approve-keuangan-kp" >\n' +
+                var approvalKeuanganKp ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'" tanggal="'+item.stTanggal+'" status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'" budget="'+item.stBudgetBiaya+'" budgetsd="'+item.stBudgetBiayaSdBulanIni+'" budgetterpakai="'+item.stBudgetTerpakai+'" budgetterpakaisd="'+item.stBudgetTerpakaiSdBulanIni+'" sisabudget="'+item.stSisaBudget+'" sisabudgetsd="'+item.stSisaBudgetSdBulanIni+'" noBudgetting="'+item.noBudgeting+'" tipe="'+item.transaksi+'" keperluan="'+item.keperluanName+'" noKontrak="'+item.noKontrak+'" class="item-approve-keuangan-kp" >\n' +
                     '<img border="0" src="<s:url value="/pages/images/icon_approval.ico"/>" name="icon_edit">\n' +
                     '</a></td>';
-                var terimaKeuangan ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'"  status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'" budget="'+item.stBudgetBiaya+'" budgetsd="'+item.stBudgetBiayaSdBulanIni+'" budgetterpakai="'+item.stBudgetTerpakai+'" budgetterpakaisd="'+item.stBudgetTerpakaiSdBulanIni+'" sisabudget="'+item.stSisaBudget+'" sisabudgetsd="'+item.stSisaBudgetSdBulanIni+'" noBudgetting="'+item.noBudgeting+'" class="item-terima-keuangan-kp" >\n' +
+                var terimaKeuangan ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'"  status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'" budget="'+item.stBudgetBiaya+'" budgetsd="'+item.stBudgetBiayaSdBulanIni+'" budgetterpakai="'+item.stBudgetTerpakai+'" budgetterpakaisd="'+item.stBudgetTerpakaiSdBulanIni+'" sisabudget="'+item.stSisaBudget+'" sisabudgetsd="'+item.stSisaBudgetSdBulanIni+'" noBudgetting="'+item.noBudgeting+'" class="item-terima-keuangan-kp" tipe="'+item.transaksi+'"  keperluan="'+item.keperluanName+'" noKontrak="'+item.noKontrak+'" >\n' +
                     '<img border="0" src="<s:url value="/pages/images/icon_approval.ico"/>" name="icon_edit">\n' +
                     '</a></td>';
                 var success ='<td align="center"><a href="javascript:;">\n' +
@@ -1004,6 +1046,15 @@
     $('.pengajuanBiayaTabel').on('click', '.item-approve-atasan', function() {
         var jumlah = $(this).attr('jumlah');
         jumlah = jumlah.replace(",",".");
+        var tipe= $(this).attr('tipe');
+
+        var tipeName ="";
+        if (tipe=="I"){
+            tipeName="Investasi";
+        } else{
+            tipeName="Rutin";
+        }
+
         $('#mod_jumlah_atasan').val(jumlah);
         $('#modPengajuanBiayaDetailIdAtasan').val($(this).attr('data'));
         $('#mod_status_approve_atasan').val($(this).attr('status'));
@@ -1018,6 +1069,27 @@
         $('#mod_budget_terpakai_sd_atasan').val($(this).attr('budgetterpakaisd'));
         $('#mod_sisa_budget_atasan').val($(this).attr('sisabudget'));
         $('#mod_sisa_budget_sd_atasan').val($(this).attr('sisabudgetsd'));
+        $('#mod_keperluan_atasan').val($(this).attr('keperluan'));
+        $('#mod_no_kontrak_atasan').val($(this).attr('noKontrak'));
+        $('#mod_tipe_atasan').val(tipeName);
+
+        if (tipe=="I"){
+            $('#txt_budget_atasan').text("Nilai Kontrak (RP) :");
+            $('#txt_budget_terpakai_atasan').text("Nilai Kontrak Realisasi (RP) :");
+            $('#txt_sisa_budget_atasan').text("Sisa Nilai Kontrak (RP) :");
+            $('#view_budget_sd_atasan').hide();
+            $('#view_budget_terpakai_sd_atasan').hide();
+            $('#view_sisa_budget_sd_atasan').hide();
+            $('#view_no_kontrak_atasan').show();
+        } else{
+            $('#txt_budget_atasan').text("Budgeting Bulan Ini (RP) : ");
+            $('#txt_budget_terpakai_atasan').text("Budgeting terpakai Bulan Ini (RP) : ");
+            $('#txt_sisa_budget_atasan').text("Sisa Budget Bulan Ini (RP) : ");
+            $('#view_budget_sd_atasan').show();
+            $('#view_budget_terpakai_sd_atasan').show();
+            $('#view_sisa_budget_sd_atasan').show();
+            $('#view_no_kontrak_atasan').hide();
+        }
 
         $('#modal-approve-atasan').modal('show');
 
@@ -1065,26 +1137,34 @@
         var noBudgetting = $('#mod_no_budgetting_keuangan').val();
         var tanggalRealisasi = $('#mod_tanggal_realisasi_keuangan').val();
 
-        if (approvalStatus==""||tanggalRealisasi==""){
-            var msg="";
-            if (approvalStatus==""){
-                msg+="Belum memilih metode pembiayaan";
-            }
-            if (tanggalRealisasi==""){
-                msg+="Belum memilih tanggal Realisasi";
-            }
-            alert(msg);
-        }else {
-            if (confirm("Apakah anda ingin menyetujui pengajuan biaya ini ?")){
-                PengajuanBiayaAction.saveApproveKeuanganPengajuan(pengajuanId,status,approvalStatus,branchId,keterangan,jumlah,noBudgetting,divisiId,tanggalRealisasi,function(response) {
-                    alert("Sukses Approve");
-                    if (response=="Y"){
-                        window.location.reload();
-                    } else{
-                        loadPengajuan(id,branchId);
-                        $('#modal-approve-keuangan').modal('hide');
-                    }
-                });
+        var from = tanggalRealisasi.split('-');
+        var f = new Date(from[2], from[1] - 1, from[0]);
+        var d = new Date();
+        d.setDate(d.getDate()-1);
+        if (f<d){
+            alert("tanggal realisasi tidak boleh kurang dari tanggal sekarang");
+        }else{
+            if (approvalStatus==""||tanggalRealisasi==""){
+                var msg="";
+                if (approvalStatus==""){
+                    msg+="Belum memilih metode pembiayaan";
+                }
+                if (tanggalRealisasi==""){
+                    msg+="Belum memilih tanggal Realisasi";
+                }
+                alert(msg);
+            }else {
+                if (confirm("Apakah anda ingin menyetujui pengajuan biaya ini ?")){
+                    PengajuanBiayaAction.saveApproveKeuanganPengajuan(pengajuanId,status,approvalStatus,branchId,keterangan,jumlah,noBudgetting,divisiId,tanggalRealisasi,function(response) {
+                        alert("Sukses Approve");
+                        if (response=="Y"){
+                            window.location.reload();
+                        } else{
+                            loadPengajuan(id,branchId);
+                            $('#modal-approve-keuangan').modal('hide');
+                        }
+                    });
+                }
             }
         }
     });
@@ -1098,6 +1178,16 @@
         $('#kas_keuangan').hide();
         var jumlah = $(this).attr('jumlah');
         jumlah = jumlah.replace(",",".");
+
+        var tipe= $(this).attr('tipe');
+
+        var tipeName ="";
+        if (tipe=="I"){
+            tipeName="Investasi";
+        } else{
+            tipeName="Rutin";
+        }
+
         $('#mod_jumlah_keuangan').val(jumlah);
         $('#modPengajuanBiayaDetailId').val($(this).attr('data'));
         $('#mod_status_approve').val($(this).attr('status'));
@@ -1114,6 +1204,28 @@
         $('#mod_sisa_budget_keuangan').val($(this).attr('sisabudget'));
         $('#mod_sisa_budget_sd_keuangan').val($(this).attr('sisabudgetsd'));
 
+        $('#mod_keperluan_keuangan').val($(this).attr('keperluan'));
+        $('#mod_no_kontrak_keuangan').val($(this).attr('noKontrak'));
+        $('#mod_tipe_keuangan').val(tipeName);
+
+        if (tipe=="I"){
+            $('#txt_budget_keuangan').text("Nilai Kontrak (RP) :");
+            $('#txt_budget_terpakai_keuangan').text("Nilai Kontrak Realisasi (RP) :");
+            $('#txt_sisa_budget_keuangan').text("Sisa Nilai Kontrak (RP) :");
+            $('#view_budget_sd_keuangan').hide();
+            $('#view_budget_terpakai_sd_keuangan').hide();
+            $('#view_sisa_budget_sd_keuangan').hide();
+            $('#view_no_kontrak_keuangan').show();
+        } else{
+            $('#txt_budget_keuangan').text("Budgeting Bulan Ini (RP) : ");
+            $('#txt_budget_terpakai_keuangan').text("Budgeting terpakai Bulan Ini (RP) : ");
+            $('#txt_sisa_budget_keuangan').text("Sisa Budget Bulan Ini (RP) : ");
+            $('#view_budget_sd_keuangan').show();
+            $('#view_budget_terpakai_sd_keuangan').show();
+            $('#view_sisa_budget_sd_keuangan').show();
+            $('#view_no_kontrak_keuangan').hide();
+        }
+
         $('#modal-approve-keuangan').find('.modal-title').text('Approve Pengajuan Biaya Keuangan');
         $('#modal-approve-keuangan').modal('show');
     });
@@ -1122,6 +1234,16 @@
         selectPembayaranKp();
         var jumlah = $(this).attr('jumlah');
         jumlah = jumlah.replace(",",".");
+
+        var tipe= $(this).attr('tipe');
+
+        var tipeName ="";
+        if (tipe=="I"){
+            tipeName="Investasi";
+        } else{
+            tipeName="Rutin";
+        }
+
         $('#mod_jumlah_keuangan_kp').val(jumlah);
         $('#modPengajuanBiayaDetailIdKp').val($(this).attr('data'));
         $('#mod_status_approve_kp').val($(this).attr('status'));
@@ -1136,6 +1258,28 @@
         $('#mod_budget_terpakai_sd_keuangan_kp').val($(this).attr('budgetterpakaisd'));
         $('#mod_sisa_budget_keuangan_kp').val($(this).attr('sisabudget'));
         $('#mod_sisa_budget_sd_keuangan_kp').val($(this).attr('sisabudgetsd'));
+
+        $('#mod_keperluan_keuangan_kp').val($(this).attr('keperluan'));
+        $('#mod_no_kontrak_keuangan_kp').val($(this).attr('noKontrak'));
+        $('#mod_tipe_keuangan_kp').val(tipeName);
+
+        if (tipe=="I"){
+            $('#txt_budget_keuangan_kp').text("Nilai Kontrak (RP) :");
+            $('#txt_budget_terpakai_keuangan_kp').text("Nilai Kontrak Realisasi (RP) :");
+            $('#txt_sisa_budget_keuangan_kp').text("Sisa Nilai Kontrak (RP) :");
+            $('#view_budget_sd_keuangan_kp').hide();
+            $('#view_budget_terpakai_sd_keuangan_kp').hide();
+            $('#view_sisa_budget_sd_keuangan_kp').hide();
+            $('#view_no_kontrak_keuangan_kp').show();
+        } else{
+            $('#txt_budget_keuangan_kp').text("Budgeting Bulan Ini (RP) : ");
+            $('#txt_budget_terpakai_keuangan_kp').text("Budgeting terpakai Bulan Ini (RP) : ");
+            $('#txt_sisa_budget_keuangan_kp').text("Sisa Budget Bulan Ini (RP) : ");
+            $('#view_budget_sd_keuangan_kp').show();
+            $('#view_budget_terpakai_sd_keuangan_kp').show();
+            $('#view_sisa_budget_sd_keuangan_kp').show();
+            $('#view_no_kontrak_keuangan_kp').hide();
+        }
 
         $('#modal-approve-keuangan-kp').find('.modal-title').text('Approve Pengajuan Biaya Keuangan Kantor Pusat');
         $('#modal-approve-keuangan-kp').modal('show');

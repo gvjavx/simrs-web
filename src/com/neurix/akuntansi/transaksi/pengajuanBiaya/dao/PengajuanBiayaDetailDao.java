@@ -1,9 +1,7 @@
 package com.neurix.akuntansi.transaksi.pengajuanBiaya.dao;
 
 import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.ItPengajuanBiayaDetailEntity;
-import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.PengajuanBiaya;
 import com.neurix.common.dao.GenericDao;
-import com.neurix.common.util.CommonUtil;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -91,7 +89,7 @@ public class PengajuanBiayaDetailDao extends GenericDao<ItPengajuanBiayaDetailEn
     }
 
 
-    public List<ItPengajuanBiayaDetailEntity> getListMasihMengajukan(String branchId,String divisiId) throws HibernateException {
+    public List<ItPengajuanBiayaDetailEntity> getListMasihMengajukan(String branchId, String divisiId) throws HibernateException {
         List<ItPengajuanBiayaDetailEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPengajuanBiayaDetailEntity.class)
                 .add(Restrictions.eq("flag", "Y"))
                 .add(Restrictions.eq("branchId", branchId))

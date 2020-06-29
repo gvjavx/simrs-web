@@ -3,10 +3,7 @@ package com.neurix.akuntansi.transaksi.pengajuanBiaya.action;
 //import com.neurix.authorization.company.bo.AreaBo;
 import com.neurix.akuntansi.master.kodeRekening.bo.KodeRekeningBo;
 import com.neurix.akuntansi.master.mappingJurnal.bo.MappingJurnalBo;
-import com.neurix.akuntansi.master.mappingJurnal.model.MappingJurnal;
 import com.neurix.akuntansi.master.tipeJurnal.bo.TipeJurnalBo;
-import com.neurix.akuntansi.master.trans.model.ImTransEntity;
-import com.neurix.akuntansi.master.trans.model.Trans;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.LaporanAkuntansiBo;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.LaporanAkuntansi;
@@ -17,7 +14,6 @@ import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.StokDTO;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.authorization.position.bo.PositionBo;
-import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
@@ -27,7 +23,6 @@ import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
-import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.transaksi.riwayatbarang.model.TransaksiStok;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -814,6 +809,9 @@ public class PengajuanBiayaAction extends BaseMasterAction {
                                        String stSisaBudgetSdBulanIni, String stBudgetTerpakaiAplikasi ,String pembayaran) {
         logger.info("[PengajuanBiayaAction.saveSessionPengajuan] start process >>>");
         String error ="";
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PengajuanBiayaBo pengajuanBiayaBo= (PengajuanBiayaBo) ctx.getBean("pengajuanBiayaBoProxy");
+
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<PengajuanBiayaDetail> listOfResult = (List<PengajuanBiayaDetail>) session.getAttribute("listOfResultPengajuanBiayaDetail");
         boolean save = true;
@@ -843,6 +841,10 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         if ("I".equalsIgnoreCase(transaksi)){
             result.setKeperluanId(keperluan);
             result.setPembayaran(pembayaran);
+            result.setNamaKontrak(keperluanName);
+
+            //set no kontrak dan nama kontrak
+            result.setNoKontrak(pengajuanBiayaBo.getNoKontrak(keperluan));
         }
 
         result.setNoBudgeting(noBudgeting);
@@ -851,7 +853,7 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         result.setKeterangan(keterangan);
         result.setStJumlah(stJumlah);
         result.setJumlah(BigDecimal.valueOf(Double.valueOf(stJumlah.replace(".","").replace(",",""))));
-        //
+
         result.setBudgetBiaya(budgetBiaya);
         result.setBudgetTerpakai(budgetTerpakai);
         result.setSisaBudget(sisaBudget);
@@ -1106,7 +1108,7 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         }
     }
 
-    public PengajuanBiaya getKeteranganPembuatanRk(String pengajuanId,String status){
+    public PengajuanBiaya getKeteranganPembuatanRk(String pengajuanId, String status){
         logger.info("[PengajuanBiayaAction.getKeteranganPembuatanRk] start process >>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PengajuanBiayaBo pengajuanBiayaBo= (PengajuanBiayaBo) ctx.getBean("pengajuanBiayaBoProxy");
@@ -1183,7 +1185,7 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         return pengajuanBiayaBo.cekApakahSudahCloseSemua(pengajuanDetailId);
     }
 
-    public List<StokDTO> getStockPerDivisi (String branchId,String divisiId,String stTanggal,String namaObat){
+    public List<StokDTO> getStockPerDivisi (String branchId, String divisiId, String stTanggal, String namaObat){
         List<StokDTO> results = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PelayananBo pelayananBo= (PelayananBo) ctx.getBean("pelayananBoProxy");
@@ -1197,6 +1199,7 @@ public class PengajuanBiayaAction extends BaseMasterAction {
 
         for (TransaksiStok transaksiStok : transaksiStokList){
             StokDTO data = new StokDTO();
+            data.setIdBarang(transaksiStok.getIdObat());
             data.setQty(String.valueOf(transaksiStok.getQtySaldo()));
             data.setTotalSaldo(CommonUtil.numbericFormat(transaksiStok.getTotalSaldo(),"###,###"));
             data.setSubTotalSaldo(CommonUtil.numbericFormat(transaksiStok.getSubTotalSaldo(),"###,###"));
@@ -1266,7 +1269,7 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         return "cetak_surat_pengajuan_biaya";
     }
 
-    public PengajuanBiayaDetail getBudgetTerpakaiTransaksiSession(String branchId,String divisiId,String stTanggal,String noBudgetting) {
+    public PengajuanBiayaDetail getBudgetTerpakaiTransaksiSession(String branchId, String divisiId, String stTanggal, String noBudgetting) {
         logger.info("[PengajuanBiayaAction.searchSessionPengajuan] start process >>>");
         PengajuanBiayaDetail data = new PengajuanBiayaDetail();
         data.setBudgetTerpakaiTransaksi(BigDecimal.ZERO);
@@ -1285,7 +1288,7 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         return data;
     }
 
-    public PengajuanBiayaDetail getInvestasiTerpakaiTransaksiSession(String branchId,String divisiId,String stTanggal,String idPengajuan) {
+    public PengajuanBiayaDetail getInvestasiTerpakaiTransaksiSession(String branchId, String divisiId, String stTanggal, String idPengajuan) {
         logger.info("[PengajuanBiayaAction.searchSessionPengajuan] start process >>>");
         PengajuanBiayaDetail data = new PengajuanBiayaDetail();
         data.setBudgetTerpakaiTransaksi(BigDecimal.ZERO);

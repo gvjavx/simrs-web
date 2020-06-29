@@ -129,6 +129,7 @@ public class JurnalDao extends GenericDao<ItJurnalEntity, String> {
         Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ItJurnalEntity.class);
         criteria.add(Restrictions.eq("flag", "Y"));
         criteria.add(Restrictions.eq("pengajuanBiayaId", pengajuanId));
+        criteria.add(Restrictions.eq("registeredFlag", "Y"));
         // Order by
         criteria.addOrder(Order.desc("noJurnal"));
         List<ItJurnalEntity> results = criteria.list();

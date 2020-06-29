@@ -1,7 +1,5 @@
 package com.neurix.akuntansi.transaksi.pengajuanBiaya.bo;
 
-import com.neurix.akuntansi.master.trans.model.ImTransEntity;
-import com.neurix.akuntansi.master.trans.model.Trans;
 import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.PengajuanBiaya;
 import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.PengajuanBiayaDetail;
 import com.neurix.common.bo.BaseMasterBo;
@@ -39,11 +37,11 @@ public interface PengajuanBiayaBo extends BaseMasterBo<PengajuanBiaya> {
 
     List<Notifikasi> saveNotApprovePengajuanBiaya(PengajuanBiayaDetail bean) throws GeneralBOException;
 
-    PengajuanBiaya getPengajuanBiayaForRk(String pengajuanId,String status) throws GeneralBOException;
+    PengajuanBiaya getPengajuanBiayaForRk(String pengajuanId, String status) throws GeneralBOException;
 
     void cekApakahBisaDiClose(String pengajuanId) throws GeneralBOException;
 
-    void setRkSudahDikirim(String pengajuanId,String coa) throws GeneralBOException;
+    void setRkSudahDikirim(String pengajuanId, String coa) throws GeneralBOException;
 
     PengajuanBiaya cekApakahBolehRk(String pengajuanId) throws GeneralBOException;
 
@@ -60,4 +58,6 @@ public interface PengajuanBiayaBo extends BaseMasterBo<PengajuanBiaya> {
     PengajuanBiayaDetail modalPopUpDetail(String id);
 
     void setRkDiterima(String pengajuanId) throws GeneralBOException;
+
+    String getNoKontrak(String keperluanId);
 }
