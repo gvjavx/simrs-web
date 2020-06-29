@@ -590,7 +590,7 @@ public class VerifikatorPembayaranAction {
                 // --- create jurnal;
                 JurnalResponse jurnalResponse = new JurnalResponse();
                 if (!"Y".equalsIgnoreCase(antrianTelemedicEntity.getFlagEresep())){
-                    jurnalResponse = closingJurnalNonTunai(idDetailCheckup, idTransaksi, antrianTelemedicEntity.getIdPelayanan(), antrianTelemedicEntity.getIdPasien(), flagResep);
+                    jurnalResponse = closingJurnalNonTunaiTelemedic(idDetailCheckup, idTransaksi, antrianTelemedicEntity.getIdPelayanan(), antrianTelemedicEntity.getIdPasien(), flagResep);
                 }
 
                 // --- update flag; jika success pada prosess membuat jurnal;
@@ -1117,7 +1117,7 @@ public class VerifikatorPembayaranAction {
         logger.info("[VerifikatorPembayaranAction.saveAddToRiwayatTindakan] END process >>>");
     }
 
-    private JurnalResponse closingJurnalNonTunai(String idDetailCheckup, String idTransaksiOnline, String idPoli, String idPasien, String flagResep) {
+    private JurnalResponse closingJurnalNonTunaiTelemedic(String idDetailCheckup, String idTransaksiOnline, String idPoli, String idPasien, String flagResep) {
 
         JurnalResponse response = new JurnalResponse();
         String branchId = CommonUtil.userBranchLogin();
