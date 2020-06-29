@@ -473,6 +473,7 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/respirasi/hibernate/ItSimrsRespirasiEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/icu/hibernate/ItSimrsHeaderIcuEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/icu/hibernate/ItSimrsDetailIcuEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/kandungan/hibernate/ItSimrsAsesmenKandunganEntity.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/hris/master/mappingpersengaji/hibernate/ImHrisMappingPersenGajiHistoryEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/studyJurusan/hibernate/ImStudyJurusanHistoryEntity.hbm.xml</value>

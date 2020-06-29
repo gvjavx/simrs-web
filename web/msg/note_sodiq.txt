@@ -399,6 +399,50 @@ ALTER TABLE public.it_simrs_detail_icu
     ALTER TABLE public.seq_detail_icu
       OWNER TO postgres;
 
+// 26-06-2020
+// ALTER TABLE
+ALTER TABLE im_simrs_diagnosa_asuhan_keperawatan
+ADD COLUMN tipe character varying(100);
+
+
+//TABLE
+CREATE TABLE public.it_simrs_asesmen_kandungan
+(
+  id_asesmen_kandungan character varying(30) NOT NULL,
+  id_detail_checkup character varying(30),
+  parameter text,
+  jawaban text,
+  jenis text,
+  keterangan text,
+  tipe text,
+  score Integer,
+  flag character varying(1),
+  action character varying(1),
+  created_who character varying(100),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  CONSTRAINT pk_id_asesmen_kandungan PRIMARY KEY (id_asesmen_kandungan)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_asesmen_kandungan
+  OWNER TO postgres;
+
+//SEQ
+    CREATE SEQUENCE public.seq_asesmen_kandungan
+      INCREMENT 1
+      MINVALUE 1
+      MAXVALUE 9223372036854775807
+      START 1
+      CACHE 1;
+    ALTER TABLE public.seq_asesmen_kandungan
+      OWNER TO postgres;
+
+//29 Juni 2020
+ALTER TABLE it_simrs_asesmen_kandungan
+ADD COLUMN infomasi text;
 
 
 

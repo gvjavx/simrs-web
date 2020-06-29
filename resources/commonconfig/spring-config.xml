@@ -260,6 +260,7 @@
     <import resource="sshconfig/com/neurix/simrs/transaksi/hemodinamika/spring/HemodinamikaBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/respirasi/spring/RespirasiBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/icu/spring/HeaderIcuBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/kandungan/spring/KandunganBean.xml"/>
 
     <import resource="sshconfig/com/neurix/hris/master/mappingpersengaji/spring/MappingPersenGajiBean.xml"/>
 </beans>

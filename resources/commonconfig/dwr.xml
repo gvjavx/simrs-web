@@ -759,6 +759,12 @@
       </create>
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.jurnal.model.Jurnal"/>
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.jurnal.model.JurnalDetail"/>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.kandungan.action.KandunganAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.kandungan.model.Kandungan"/>
+
   </allow>
 
 </dwr>

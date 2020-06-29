@@ -2271,18 +2271,24 @@
     function loadModalRM(jenis){
         var context = "";
         if(jenis == "ugd"){
-            var um = '<s:property value="headerDetailCheckup.umur"/>';
-            var umur = parseInt(um);
+
+            var um      = '<s:property value="headerDetailCheckup.umur"/>';
+            var umur    = parseInt(um);
+            var jenis   = "";
 
             if(umur >= 0 && umur <= 17){
                 title = "Asesmen Awal Gawat Darurat Anak";
-                context = contextPath+'/pages/modal/modalAsesmenUGD-anak.jsp';
+                jenis = 'anak';
             }else if(umur >= 18 && umur <= 55){
                 title = "Asesmen Awal Gawat Darurat Dewasa";
-                context = contextPath+'/pages/modal/modalAsesmenUGD-dewasa.jsp';
+                jenis = 'dewasa';
             }else if(umur > 56){
                 title = "Asesmen Awal Gawat Darurat Geriatri";
-                context = contextPath+'/pages/modal/modalAsesmenUGD-dewasa.jsp';
+                jenis = 'dewasa';
+            }
+
+            if(jenis != ''){
+                context = contextPath+'/pages/modal/modal-ugd_'+jenis+'.jsp';
             }
             $('#li_title').text(title);
         }

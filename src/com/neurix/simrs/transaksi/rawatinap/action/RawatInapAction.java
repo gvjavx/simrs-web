@@ -311,6 +311,9 @@ public class RawatInapAction extends BaseMasterAction {
                 if(checkup.getTglLahir() != null && !"".equalsIgnoreCase(checkup.getTglLahir().toString())){
                     rawatInap.setUmur(calculateAge(checkup.getTglLahir(), true));
                 }
+                rawatInap.setNamaDiagnosa(checkup.getNamaDiagnosa());
+                rawatInap.setTinggi(checkup.getTinggi());
+                rawatInap.setBerat(checkup.getBerat());
                 rawatInap.setPenunjangMedis(checkup.getPenunjangMedis());
                 rawatInap.setAnamnese(checkup.getAnamnese());
                 rawatInap.setAlamatLengkap(checkup.getNamaDesa()+", "+checkup.getNamaKecamatan()+", "+checkup.getNamaKota());

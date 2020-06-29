@@ -97,7 +97,33 @@ public class RawatInap {
     private String pernafasan;
     private String alamatLengkap;
     private String umur;
+    private String namaDiagnosa;
+    private String berat;
+    private String tinggi;
 
+    public String getBerat() {
+        return berat;
+    }
+
+    public void setBerat(String berat) {
+        this.berat = berat;
+    }
+
+    public String getTinggi() {
+        return tinggi;
+    }
+
+    public void setTinggi(String tinggi) {
+        this.tinggi = tinggi;
+    }
+
+    public String getNamaDiagnosa() {
+        return namaDiagnosa;
+    }
+
+    public void setNamaDiagnosa(String namaDiagnosa) {
+        this.namaDiagnosa = namaDiagnosa;
+    }
 
     public String getAnamnese() {
         return anamnese;

@@ -3474,7 +3474,369 @@ function dataSubjektif(id) {
         'id': '1',
         'subjektif': 'ETT/Tracheocanule',
         'content': '|cuf',
-        'keterangan': 'i'});
+        'keterangan': 'i'
+    });
+    data.push({
+        'id': '1',
+        'subjektif': 'Frekuensi',
+        'content': '',
+        'keterangan': 'i'
+    });
+    data.push({
+        'id': '1',
+        'subjektif': 'Irama',
+        'content': 'teratur|tidak teratur',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '1',
+        'subjektif': 'Kedalaman',
+        'content': 'dalam|dangkal',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '1',
+        'subjektif': 'Sputum',
+        'content': 'putih|kuning/bau',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '1',
+        'subjektif': 'Konsistensi',
+        'content': 'kental|encer',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '1',
+        'subjektif': 'Terdapat darah',
+        'content': 'ya|tidak',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '1',
+        'subjektif': 'Nafas berbunyi',
+        'content': 'ya|tidak',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '1',
+        'subjektif': 'Suara nafas',
+        'content': 'ronchi|wheezing|vesikuler',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '1',
+        'subjektif': 'Analisa gas darah',
+        'content': 'pH|pCO2|pO2|O2',
+        'keterangan': 'i'
+    });
+
+    //id = 2
+    data.push({
+        'id': '2',
+        'subjektif': 'Nadi',
+        'content': '',
+        'keterangan': 'i'
+    });
+    data.push({
+        'id': '2',
+        'subjektif': 'Irama',
+        'content': 'teratur|tidak teratur',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '2',
+        'subjektif': 'Denyut Nadi',
+        'content': 'lemah|kuat',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '2',
+        'subjektif': 'EKG',
+        'content': '',
+        'keterangan': 'i'
+    });
+    data.push({
+        'id': '2',
+        'subjektif': 'Tekanan Darah',
+        'content': '|MAP',
+        'keterangan': 'i'
+    });
+    data.push({
+        'id': '2',
+        'subjektif': 'Distensi vena jugularis',
+        'content': 'tidak|ya',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '2',
+        'subjektif': 'Akral',
+        'content': 'hangat|dingin',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '2',
+        'subjektif': 'Warna Kulit',
+        'content': 'pucat|kemerahan|sianosis',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '2',
+        'subjektif': 'Pengisian kapiler',
+        'content': '< 3 detik| > 3 detik',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '2',
+        'subjektif': 'Edema',
+        'content': 'tidak|ya|muka|tungkai atas|tungkai bawah|seluruh tubuh',
+        'keterangan': 'c'
+    });data.push({
+        'id': '2',
+        'subjektif': 'Jantung Irama',
+        'content': 'teratur|tidak teratur',
+        'keterangan': 'c'
+    });data.push({
+        'id': '2',
+        'subjektif': 'Bunyi',
+        'content': 'BJ I|BJ II|murmur|gallop',
+        'keterangan': 'c'
+    });data.push({
+        'id': '2',
+        'subjektif': 'Keluhan',
+        'content': 'lelah|berdebar-debar|kesemutan|keringat dingin|gemeteran',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '2',
+        'subjektif': 'Sakit Dada',
+        'content': 'ya, timbul|saat aktivitas|tanpa aktivitas|tidak',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '2',
+        'subjektif': 'Karakteristik',
+        'content': 'seperti ditusuk-tusuk|seperti terbakar|mnyebar|seperti tertimpa benda berat',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '2',
+        'subjektif': 'Hb',
+        'content': '|Ht|Eritrosit|Leukosit|Trombosit|',
+        'keterangan': 'i'
+    });
+    data.push({
+        'id': '2',
+        'subjektif': 'Pendarahan',
+        'content': 'gusi mudah berdarah|mimisan|petechine|echimsis|terus menerus|kemah|pucat',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '2',
+        'subjektif': 'CT/BT',
+        'content': '',
+        'keterangan': 'i'
+    });
+    data.push({
+        'id': '2',
+        'subjektif': 'PPT/APPT',
+        'content': '',
+        'keterangan': 'i'
+    });
+
+    //id = 3
+    data.push({
+        'id': '3',
+        'subjektif': 'Tinklat kesadaran',
+        'content': 'kompos mentis|apatis|sanmonela',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '3',
+        'subjektif': 'Pupil',
+        'content': 'Isokor|Unisokor|Miosis|Midrisis',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '3',
+        'subjektif': 'Reaksi pada cahaya',
+        'content': 'positif|negatif',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '3',
+        'subjektif': 'GCS',
+        'content': 'E|M|V|jumlah',
+        'keterangan': 'i'
+    });
+    data.push({
+        'id': '3',
+        'subjektif': 'Terjadi',
+        'content': 'kejang|kelumpuhan, dibagian|kanan|kiri|pelo|mulut menceng|aphasia',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '3',
+        'subjektif': 'ICP',
+        'content': '',
+        'keterangan': 'i'
+    });
+    data.push({
+        'id': '3',
+        'subjektif': 'CVP',
+        'content': '',
+        'keterangan': 'i'
+    });
+    data.push({
+        'id': '3',
+        'subjektif': 'Psikologi',
+        'content': 'sedih/murung|menyendiri|kebersihan diri kurang|gelisah/modar mandir|bicara sendiri|ekspresi wajah datar|ekspresi wajah tegang|mata merah|marah-marah',
+        'keterangan': 'c'
+    });
+
+    //id = 4
+    data.push({
+        'id': '4',
+        'subjektif': 'BAK',
+        'content': 'pola rutin|saat ini',
+        'keterangan': 'i'
+    });
+    data.push({
+        'id': '4',
+        'subjektif': 'Prodoksi urin',
+        'content': '',
+        'keterangan': 'i'
+    });
+    data.push({
+        'id': '4',
+        'subjektif': 'Warna',
+        'content': 'kuning jernih|kuning kental/coklat|merah|bening',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '4',
+        'subjektif': 'Rasa Sakit waktu BAK',
+        'content': 'ya|tidak',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '4',
+        'subjektif': 'Distensi/ketegangan kandung kemih kencing',
+        'content': 'ya|tidak',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '4',
+        'subjektif': 'Keluhan sakit pinggang',
+        'content': 'ya|tidak',
+        'keterangan': 'c'
+    });
+
+    //id = 5
+    data.push({
+        'id': '5',
+        'subjektif': 'BAB',
+        'content': 'pola rutin|saat ini',
+        'keterangan': 'i'
+    });
+    data.push({
+        'id': '5',
+        'subjektif': 'Konsistensi',
+        'content': 'pada|lunak|encer',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '5',
+        'subjektif': 'Warna',
+        'content': 'kuning|hitam|merah|depul/pucat',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '5',
+        'subjektif': 'Lendir',
+        'content': 'ya|tidak',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '5',
+        'subjektif': 'Mual/Muntah',
+        'content': 'ya|tidak',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '5',
+        'subjektif': 'Kembung',
+        'content': 'ya|tidak',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '5',
+        'subjektif': 'Nyeri tekan',
+        'content': 'ya|tidak',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '5',
+        'subjektif': 'Distensi',
+        'content': 'ya|tidak',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '5',
+        'subjektif': 'NGT',
+        'content': 'ya|tidak',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '5',
+        'subjektif': 'Intake',
+        'content': '',
+        'keterangan': 'i'
+    });
+
+    //id = 6
+    data.push({
+        'id': '6',
+        'subjektif': 'Turgor Kulit',
+        'content': 'baik atau eslatic|buruk',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '6',
+        'subjektif': 'Keadaan Kulit',
+        'content': 'baik|terdapat luka',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '6',
+        'subjektif': 'Keadaan Luka',
+        'content': 'baru|infeksi/gangren',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '6',
+        'subjektif': 'Kesulitan dalam pergerakan',
+        'content': 'ya|tidak',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '6',
+        'subjektif': 'Fraktur',
+        'content': 'ya',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '6',
+        'subjektif': 'Odema',
+        'content': 'ya|tidak',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '6',
+        'subjektif': 'Kekuatan otot',
+        'content': '',
+        'keterangan': 'i'
+    });
 
     $.each(data, function (i, item) {
         if (item.id == id) {

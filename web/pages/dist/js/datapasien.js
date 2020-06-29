@@ -1,5 +1,6 @@
 function setDataPasien(){
     var jam = $('.jam').length;
+    var jam2 = $('.jam02').length;
     var tgl = $('.tgl').length;
     var gejala = $('.anamnese').length;
     var penMedis = $('.penunjang-medis').length;
@@ -13,11 +14,17 @@ function setDataPasien(){
     var bb = $('.berat-pasien').length;
     var tb = $('.tinggi-pasien').length;
     var sel = $('.select2').length;
+    var idP = $('.norm-pasien').length;
 
     if (jam > 0) {
         $('.jam').timepicker();
         $('.jam').val(converterTime(new Date()));
     }
+    if (jam2 > 0) {
+        $('.jam02').timepicker();
+        $('.jam02').val(converterTime(new Date()));
+    }
+
     if (tgl > 0) {
         $('.tgl').datepicker({
             dateFormat: 'dd-mm-yy'
@@ -64,5 +71,8 @@ function setDataPasien(){
     }
     if(sel > 0){
         $('.select2').select2();
+    }
+    if(idP > 0){
+        $('.norm-pasien').val(idPasien);
     }
 }

@@ -795,8 +795,12 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setInvoice(obj[29] == null ? "" : obj[29].toString());
                     checkup.setUrlDocRujuk(obj[30] == null ? "" : CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_DOC_RUJUK_PASIEN + obj[30].toString());
                     checkup.setUrlTtd(obj[31] == null ? "" : obj[31].toString());
-                    checkup.setTinggi(obj[32] == null ? "" : obj[32].toString());
-                    checkup.setBerat(obj[33] == null ? "" : obj[33].toString());
+
+                    HeaderCheckup header = getAnamneseTBBB(obj[0].toString());
+
+                    checkup.setTinggi(header.getTinggi());
+                    checkup.setBerat(header.getBerat());
+
                     checkup.setNoBpjs(obj[34] == null ? "" : obj[34].toString());
                     checkup.setNoRujukan(obj[35] == null ? "" : obj[35].toString());
                     checkup.setTglRujukan(obj[36] == null ? "" : obj[36].toString());
@@ -813,13 +817,38 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setNamaDiagnosa(obj[47] == null ? "" : obj[47].toString());
                     checkup.setDiagnosa(obj[48] == null ? "" : obj[48].toString());
                     checkup.setAlergi(getAlergiPasien(obj[0].toString()));
-                    checkup.setAnamnese(obj[49] == null ? "" : obj[49].toString());
+                    checkup.setAnamnese(header.getAnamnese());
                     checkup.setKategoriPelayanan(obj[50] == null ? "" : obj[50].toString());
                     checkup.setPenunjangMedis(getPenunjangMendis(obj[15].toString()));
                 }
             }
         }
 
+        return checkup;
+    }
+
+    public HeaderCheckup getAnamneseTBBB(String noCheckup){
+        HeaderCheckup checkup = new HeaderCheckup();
+        if(noCheckup != null){
+            String SQL = "SELECT \n" +
+                    "tinggi,\n" +
+                    "berat_badan,\n" +
+                    "anamnese \n" +
+                    "FROM it_simrs_header_checkup\n" +
+                    "WHERE no_checkup = :id";
+
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", noCheckup)
+                    .list();
+
+            if(result.size() > 0){
+                Object[] objects = result.get(0);
+                checkup.setTinggi(objects[0] != null ? objects[0].toString() : "");
+                checkup.setBerat(objects[1] != null ? objects[1].toString() : "");
+                checkup.setAnamnese(objects[2] != null ? objects[2].toString() : "");
+            }
+        }
         return checkup;
     }
 

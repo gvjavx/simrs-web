@@ -2343,15 +2343,9 @@
 
     function loadModalRM(jenis) {
         var context = "";
-        if (jenis == "fisioterapi") {
-            context = contextPath + '/pages/modal/modalFisioterapi.jsp';
-        } else if (jenis == "hemodialisa") {
-            context = contextPath + '/pages/modal/modalHD.jsp';
-        } else {
-            var kat = '<s:property value="headerDetailCheckup.kategoriPelayanan"/>';
-            context = contextPath + '/pages/modal/modal-' + kat + '.jsp';
+        if (jenis != "") {
+            context = contextPath + '/pages/modal/modal-'+jenis+'.jsp';
         }
-
         $('#modal-temp').load(context, function (res) {
         });
     }

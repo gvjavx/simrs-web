@@ -157,7 +157,6 @@
     <section class="content-header">
         <h1>
             Rawat Inap Pasien
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -548,8 +547,8 @@
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('pemberian_obat')"
                                                onclick="showModalAsesmenRawatInap('catatan_pemberian')"><i
                                                 class="fa fa-circle-o"></i>Catatan Pemberian Obat</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalAsesmenRawatInap('injeksi')"><i
-                                                class="fa fa-circle-o"></i>Injeksi CPO / Jadwal Pemberian Terapi</a>
+                                        <%--<li><a style="cursor: pointer" onclick="showModalAsesmenRawatInap('injeksi')"><i--%>
+                                                <%--class="fa fa-circle-o"></i>Injeksi CPO / Jadwal Pemberian Terapi</a>--%>
                                         </li>
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('rekonsiliasi')"
                                                onclick="showModalAsesmenRawatInap('rekonsiliasi')"><i
@@ -588,6 +587,24 @@
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('keseimbangan')"  onclick="showModalICU('keseimbangan')"><i class="fa fa-circle-o"></i>Keseimbangan</a></li>
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('obat-obatan')"  onclick="showModalICU('obat-obatan')"><i class="fa fa-circle-o"></i>Obat Obatan/ Intakea/ Output</a></li>
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('asuhan_keperawatan')"  onclick="showModalICU('asuhan_keperawatan')"><i class="fa fa-circle-o"></i>Asuhan Keperawatan</a></li>
+                                    </ul>
+                                </div>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Kebidanan</small>
+                                    </button>
+                                    <button type="button" class="btn btn-primary dropdown-toggle"
+                                            data-toggle="dropdown" style="height: 34px">
+                                        <span class="caret"></span>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('identifikasi_bayi')"  onclick="showModalRB('identifikasi_bayi')"><i class="fa fa-circle-o"></i>Identifikasi Bayi</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('asesmen_ponek')"  onclick="showModalRB('asesmen_ponek')"><i class="fa fa-circle-o"></i>Asesmen Ponek</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('asesmen_awal_bayi')"  onclick="showModalRB('asesmen_awal_bayi')"><i class="fa fa-circle-o"></i>Asesmen Awal Bayi</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('laporan_pembedahan')"  onclick="showModalRB('laporan_pembedahan')"><i class="fa fa-circle-o"></i>Laporan Pembedahan</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('laporan_persalinan')"  onclick="showModalRB('laporan_persalinan')"><i class="fa fa-circle-o"></i>Laporan Persalinan</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('tindakan_rb')"  onclick="showModalRB('tindakan_rb')"><i class="fa fa-circle-o"></i>Persetujuan Tindakan Kedokteran</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('obat-obatan')"  onclick="showModalRB('obat-obatan')"><i class="fa fa-circle-o"></i>Surat Keterangan Lahir</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -3354,6 +3371,7 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/HemodinamikaAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/RespirasiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/IcuAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/KandunganAction.js"/>'></script>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/operasi.js"/>'></script>
@@ -3365,7 +3383,7 @@
 <script type='text/javascript' src='<s:url value="/pages/dist/js/nyeri.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/datapasien.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/icu.js"/>'></script>
-
+<script type='text/javascript' src='<s:url value="/pages/dist/js/kandungan.js"/>'></script>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/rekammedic.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/planrawat.js"/>'></script>
@@ -3512,81 +3530,16 @@
         paintCanvas.addEventListener("mouseup", stopDrawing);
         paintCanvas.addEventListener("mouseout", stopDrawing);
 
+        console.log(diagnosa);
+
     });
 
     function loadModalRM(jenis) {
         var context = "";
-        if (jenis == "operasi") {
-            context = contextPath + '/pages/modal/modalOperasi.jsp';
-        }
-        if (jenis == "mpp") {
-            context = contextPath + '/pages/modal/modalMpp.jsp';
-        }
-        if (jenis == "asesmen_rawat_inap") {
-            context = contextPath + '/pages/modal/modalAsesmenRawatInap.jsp';
-        }
-        if (jenis == "pengkajian_keperawatan") {
-            context = contextPath + '/pages/modal/modalPengkajianKeperawatan.jsp';
-        }
-        if (jenis == "discharge_planing") {
-            context = contextPath + '/pages/modal/modalPemulanganPasien.jsp';
-        }
-        if (jenis == "catatan_integrasi") {
-            context = contextPath + '/pages/modal/modalCatatanTerintegrasi.jsp';
-        }
-        if (jenis == "early_warning") {
-            context = contextPath + '/pages/modal/modalEWS.jsp';
-        }
-        if (jenis == "privasi") {
-            context = contextPath + '/pages/modal/modalPrivasiPasien.jsp';
-        }
-        if (jenis == "pemberian_obat") {
-            context = contextPath + '/pages/modal/modalPemberianObat.jsp';
-        }
-        if (jenis == "asuhan") {
-            context = contextPath + '/pages/modal/modalAsuhanKeperawatan.jsp';
-        }
-        if (jenis == "rekonsiliasi") {
-            context = contextPath + '/pages/modal/modalRekonsiliasiObat.jsp';
-        }
-        if (jenis == "edukasi_pasien") {
-            context = contextPath + '/pages/modal/modalEdukasiPasien.jsp';
-        }
-        if (jenis == "edukasi_pasien_integrasi") {
-            context = contextPath + '/pages/modal/modalEdukasiPasienIntregrasi.jsp';
-        }
-        if (jenis == "ringkasan") {
-            context = contextPath + '/pages/modal/modalRingkasan.jsp';
-        }
-        if (jenis == "transfer_pasien") {
-            context = contextPath + '/pages/modal/modalTransferPasien.jsp';
-        }
-        if (jenis == "icu") {
-            context = contextPath + '/pages/modal/modalAsesmenICU.jsp';
-        }
-        if(jenis == "hemodinamika"){
-            context = contextPath + '/pages/modal/modalHemodinamika.jsp';
-        }
-        if(jenis == "respirasi"){
-            context = contextPath + '/pages/modal/modalRespirasi.jsp';
-        }
-        if(jenis == "keseimbangan"){
-            context = contextPath + '/pages/modal/modalKeseimbangan.jsp';
-        }
-        if(jenis == "obat-obatan"){
-            context = contextPath + '/pages/modal/modalObat-Obatan.jsp';
-        }
-        if(jenis == "intakea"){
-            context = contextPath + '/pages/modal/modalIntakea.jsp';
-        }
-        if(jenis == "output"){
-            context = contextPath + '/pages/modal/modalOutput.jsp';
-        }
-        if(jenis == "asuhan_keperawatan"){
-            context = contextPath + '/pages/modal/modalAsuhanKeperawatanICU.jsp';
+        if(jenis != ""){
+            context = contextPath + '/pages/modal/modal-'+jenis+'.jsp';
         }
         $('#modal-temp').load(context, function (res) {
-
         });
     }
 

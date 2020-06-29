@@ -18,103 +18,6 @@
             padding-left: 2px;
         }
 
-        .form-check input {
-            padding: 0;
-            height: initial;
-            width: initial;
-            margin-bottom: 0;
-            display: none;
-            cursor: pointer;
-        }
-
-        .form-check label {
-            position: relative;
-            cursor: pointer;
-        }
-
-        .form-check label:before {
-            content: '';
-            -webkit-appearance: none;
-            background-color: transparent;
-            border: 2px solid #0079bf;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
-            padding: 10px;
-            display: inline-block;
-            position: relative;
-            vertical-align: middle;
-            cursor: pointer;
-            margin-right: 5px;
-        }
-
-        .form-check input:checked + label:after {
-            content: '';
-            display: block;
-            position: absolute;
-            top: 2px;
-            left: 9px;
-            width: 6px;
-            height: 14px;
-            border: solid #0079bf;
-            border-width: 0 2px 2px 0;
-            transform: rotate(45deg);
-        }
-
-        .custom02 input[type="radio"] {
-            display: none;
-        }
-
-        .custom02 label {
-            position: relative;
-            display: inline-block;
-            padding: 3px 3px 3px 20px;
-            cursor: pointer;
-        }
-
-        .custom02 label::before,
-        .custom02 label::after {
-            position: absolute;
-            content: '';
-            top: 50%;
-            border-radius: 100%;
-            -webkit-transition: all .2s;
-            transition: all .2s;
-        }
-
-        .custom02 label::before {
-            left: 0;
-            width: 14px;
-            height: 14px;
-            margin-top: -8px;
-            background: #f3f3f3;
-            border: 1px solid #ccc;
-        }
-
-        .custom02 label:hover::before {
-            background: #fff;
-        }
-
-        .custom02 label::after {
-            opacity: 0;
-            left: 3px;
-            width: 8px;
-            height: 8px;
-            margin-top: -5px;
-            background: #3498db;
-            -webkit-transform: scale(2);
-            transform: scale(2);
-        }
-
-        .custom02 input[type="radio"]:checked + label::before {
-            background: #fff;
-            border: 1px solid #3498db;
-        }
-
-        .custom02 input[type="radio"]:checked + label::after {
-            opacity: 1;
-            -webkit-transform: scale(1);
-            transform: scale(1);
-        }
-
         .radio-margin {
             margin-top: -7px;
             margin-left: 1px;
@@ -214,6 +117,9 @@
         }
 
     </style>
+    
+    <link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/radio_checkbox.css"/>">
+
 </head>
 
 <body class="hold-transition skin-blue fixed sidebar-mini">
@@ -489,425 +395,202 @@
                         <div class="box-header with-border">
                             <h3 class="box-title"><i class="fa fa-user"></i> Rekam Medik</h3>
                         </div>
-                        <div class="col-md-4">
-                            <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-print"></i> Cetakan</h3>
-                            </div>
-                            <div class="box-body">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-primary"><i class="fa fa-print"></i> Action
-                                    </button>
-                                    <button type="button" class="btn btn-primary dropdown-toggle"
-                                            data-toggle="dropdown" style="height: 34px">
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a target="_blank"
-                                               href="<%= request.getContextPath() %>/rekammedik/printSuratPernyataan_rekammedik.action?id=<s:property value="detailCheckup.idDetailCheckup"/>&tipe=CK01">
-                                            <i class="fa fa-print"></i>General Consent</a></li>
-                                        <li><a target="_blank"
-                                               href="<%= request.getContextPath() %>/rekammedik/printSuratPernyataan_rekammedik.action?id=<s:property value="detailCheckup.idDetailCheckup"/>&tipe=CK02">
-                                            <i class="fa fa-print"></i>Pelepasan Informasi</a></li>
-                                        <li><a target="_blank"
-                                               href="<%= request.getContextPath() %>/rekammedik/printSuratPernyataan_rekammedik.action?id=<s:property value="detailCheckup.idDetailCheckup"/>&tipe=CK03">
-                                            <i class="fa fa-print"></i>Lembar Konsultasi</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="box-header with-border"></div>
-                            <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-file-o"></i> MPP </h3>
-                                <small> (Manajemen Pelayanan Pasien)</small>
-                            </div>
-                            <div class="box-body">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-success"><i class="fa fa-edit"></i> Action
-                                    </button>
-                                    <button onclick="loadModalRM('mpp')" type="button"
-                                            class="btn btn-success dropdown-toggle"
-                                            data-toggle="dropdown" style="height: 34px">
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a style="cursor: pointer" onclick="showModalMpp('evaluasi_awal')"><i
-                                                class="fa fa-circle-o"></i>Form-A Evaluasi Awal</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalMpp('impementasi_mpp')"><i
-                                                class="fa fa-circle-o"></i>Form-B Catatan Implementasi</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="box-header with-border"></div>
-                            <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-print"></i> Surat Pernyataan </h3>
-                            </div>
-                            <div class="box-body">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-primary"><i class="fa fa-print"></i> Action
-                                    </button>
-                                    <button type="button" class="btn btn-primary dropdown-toggle"
-                                            data-toggle="dropdown" style="height: 34px">
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a target="_blank"
-                                               href="<%= request.getContextPath() %>/rekammedik/printSuratPernyataan_rekammedik.action?id=<s:property value="detailCheckup.idDetailCheckup"/>&tipe=SP01">
-                                            <i class="fa fa-print"></i>Surat Pernyataan Gagal SEP</a></li>
-                                        <li><a target="_blank"
-                                               href="<%= request.getContextPath() %>/rekammedik/printSuratPernyataan_rekammedik.action?id=<s:property value="detailCheckup.idDetailCheckup"/>&tipe=SP02">
-                                            <i class="fa fa-print"></i>Surat Pernyataan Selisih Bayar</a></li>
-                                        <li><a target="_blank"
-                                               href="<%= request.getContextPath() %>/rekammedik/printSuratPernyataan_rekammedik.action?id=<s:property value="detailCheckup.idDetailCheckup"/>&tipe=SP03">
-                                            <i class="fa fa-print"></i>Surat Penolakan Tindakan</a></li>
-                                        <li><a target="_blank"
-                                               href="<%= request.getContextPath() %>/rekammedik/printSuratPernyataan_rekammedik.action?id=<s:property value="detailCheckup.idDetailCheckup"/>&tipe=SP04">
-                                            <i class="fa fa-print"></i>Surat Pernyataan Kematian</a></li>
-                                        <li><a target="_blank"
-                                               href="<%= request.getContextPath() %>/rekammedik/printSuratPernyataan_rekammedik.action?id=<s:property value="detailCheckup.idDetailCheckup"/>&tipe=SP05">
-                                            <i class="fa fa-print"></i>Surat Pengantar Jenazah</a></li>
-                                        <li><a target="_blank"
-                                               href="<%= request.getContextPath() %>/rekammedik/printSuratPernyataan_rekammedik.action?id=<s:property value="detailCheckup.idDetailCheckup"/>&tipe=SP06">
-                                            <i class="fa fa-print"></i>Surat Pernyataan Non Bpjs</a></li>
-                                        <li><a target="_blank"
-                                               href="<%= request.getContextPath() %>/rekammedik/printSuratPernyataan_rekammedik.action?id=<s:property value="detailCheckup.idDetailCheckup"/>&tipe=SP07">
-                                            <i class="fa fa-print"></i>Surat Pernyataan Kronologi</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="box-header with-border"></div>
-                            <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-print"></i> Cetak Keterangan </h3>
-                            </div>
-                            <div class="box-body">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-success"><i class="fa fa-print"></i> Action
-                                    </button>
-                                    <button type="button" class="btn btn-success dropdown-toggle"
-                                            data-toggle="dropdown" style="height: 34px">
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a target="_blank"
-                                               href="<%= request.getContextPath() %>/rekammedik/printSuratPernyataan_rekammedik.action?id=<s:property value="detailCheckup.idDetailCheckup"/>&tipe=SK01">
-                                            <i class="fa fa-print"></i>Surat Keterangan Dokter</a></li>
-                                        <li><a target="_blank"
-                                               href="<%= request.getContextPath() %>/rekammedik/printSuratPernyataan_rekammedik.action?id=<s:property value="detailCheckup.idDetailCheckup"/>&tipe=SK02">
-                                            <i class="fa fa-print"></i>Surat keterangan Kamar Penuh</a></li>
-                                        <li><a target="_blank"
-                                               href="<%= request.getContextPath() %>/rekammedik/printSuratPernyataan_rekammedik.action?id=<s:property value="detailCheckup.idDetailCheckup"/>&tipe=SK03">
-                                            <i class="fa fa-print"></i>Surat Keterangan Sehat</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="box-header with-border"></div>
-                            <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-heartbeat"></i> Ringkasan </h3>
-                            </div>
-                            <div class="box-body">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Action
-                                    </button>
-                                    <button onclick="loadModalRM('ringkasan')" type="button"
-                                            class="btn btn-primary dropdown-toggle"
-                                            data-toggle="dropdown" style="height: 34px">
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a style="cursor: pointer"
-                                               onclick="showModalRingkasanPasien('ringkasan_pulang')"><i
-                                                class="fa fa-circle-o"></i>Ringkasan Pulang</a></li>
-                                        <li><a style="cursor: pointer"
-                                               onclick="showModalRingkasanPasien('ringkasan_keluar')"><i
-                                                class="fa fa-circle-o"></i>Ringkasan Masuk Keluar</a></li>
-                                        <li><a style="cursor: pointer"
-                                               onclick="showModalRingkasanPasien('resume_medis')"><i
-                                                class="fa fa-circle-o"></i>Resume Medis</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-stethoscope"></i> Fisioterapi </h3>
-                            </div>
-                            <div class="box-body">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Action
-                                    </button>
-                                    <button onclick="loadModalRM('fisioterapi')" type="button"
-                                            class="btn btn-primary dropdown-toggle"
-                                            data-toggle="dropdown" style="height: 34px">
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a style="cursor: pointer" onclick="pengkajianFisioterapi('<s:property
-                                                value="detailCheckup.idDetailCheckup"/>')"><i
-                                                class="fa fa-edit"></i>Pengkajian Pasien Fisioterapi</a></li>
-                                        <li><a style="cursor: pointer" onclick="addMonitoringFisioterapi('<s:property
-                                                value="detailCheckup.idDetailCheckup"/>')"><i
-                                                class="fa fa-television"></i>Kunjungan Fisioterapi</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="box-header with-border"></div>
-                            <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-certificate"></i> HIV </h3>
-                                <small> (Human Immunodeficiency Virus)</small>
-                            </div>
-                            <div class="box-body">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-success"><i class="fa fa-edit"></i> Action
-                                    </button>
-                                    <button type="button" class="btn btn-success dropdown-toggle"
-                                            data-toggle="dropdown" style="height: 34px">
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a target="_blank"
-                                               href="<%= request.getContextPath() %>/rekammedik/printSuratPernyataan_rekammedik.action?id=<s:property value="detailCheckup.idDetailCheckup"/>&tipe=HV01">
-                                            <i class="fa fa-edit"></i>Persetujuan Test HIV</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="box-header with-border"></div>
-                            <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-hospital-o"></i> Edukasi Pasien </h3>
-                            </div>
-                            <div class="box-body">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Action
-                                    </button>
-                                    <button onclick="loadModalRM('edukasi_pasien')" type="button"
-                                            class="btn btn-primary dropdown-toggle"
-                                            data-toggle="dropdown" style="height: 34px">
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a style="cursor: pointer"
-                                               onclick="showModalAsesmenRawatInap('edukasi_pasien')"><i
-                                                class="fa fa-circle-o"></i>Edukasi Pasien dan Keluarga</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="box-header with-border"></div>
-                            <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-user-md"></i> Gigi </h3>
-                            </div>
-                            <div class="box-body">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-success"><i class="fa fa-edit"></i> Action
-                                    </button>
-                                    <button onclick="loadModalRM('rencana_gigi')" type="button"
-                                            class="btn btn-success dropdown-toggle"
-                                            data-toggle="dropdown" style="height: 34px">
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a style="cursor: pointer"
-                                               onclick="showModalAsesmenRawatInap('rencana_gigi')"><i
-                                                class="fa fa-circle-o"></i>Rencana Perawatan Gigi</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="box-header with-border"></div>
-                            <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-heart-o"></i> Appendecitomy </h3>
-                            </div>
-                            <div class="box-body">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Action
-                                    </button>
-                                    <button onclick="loadModalRM('appendecitomy')" type="button"
-                                            class="btn btn-primary dropdown-toggle"
-                                            data-toggle="dropdown" style="height: 34px">
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a style="cursor: pointer"
-                                               onclick="showModalAppendecitomy('appendecitomy')"><i
-                                                class="fa fa-circle-o"></i>Informed Consent Appendecitomy</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-hotel"></i> Rawat Inap </h3>
-                            </div>
-                            <div class="box-body">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Action
-                                    </button>
-                                    <button type="button" class="btn btn-primary dropdown-toggle"
-                                            data-toggle="dropdown" style="height: 34px">
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a target="_blank"
-                                               href="<%= request.getContextPath() %>/rekammedik/printSuratPernyataan_rekammedik.action?id=<s:property value="detailCheckup.idDetailCheckup"/>&tipe=RI01">
-                                            <i class="fa fa-circle-o"></i>Surat Permintaan Rawat Inap</a></li>
-                                        <li><a style="cursor: pointer"
-                                               onmouseover="loadModalRM('pengkajian_keperawatan')"
-                                               onclick="showModalPengkajianKep('pengkajian')"><i
-                                                class="fa fa-circle-o"></i>Pengkajian Ulang Keperawatan dan Tindakan</a>
-                                        </li>
-                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('asesmen_rawat_inap')"
-                                               onclick="showModalAsesmenRawatInap('asesmen')"><i
-                                                class="fa fa-circle-o"></i>Asesmen Awal Medis Rawat Inap</a></li>
-                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('asuhan')"
-                                               onclick="showModalAsesmenRawatInap('asuhan')"><i
-                                                class="fa fa-circle-o"></i>Rencana Asuhan Keperawatan</a></li>
-                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('discharge_planing')"
-                                               onclick="showModalAsesmenRawatInap('discharge_planing')"><i
-                                                class="fa fa-circle-o"></i>Discharge Planing</a></li>
-                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('catatan_integrasi')"
-                                               onclick="showModalAsesmenRawatInap('catatan_integrasi')"><i
-                                                class="fa fa-circle-o"></i>Catatan Perkembangan Pasien Terintegrasi</a>
-                                        </li>
-                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('transfer_pasien')"
-                                               onclick="showModalAsesmenRawatInap('transfer_pasien')"><i
-                                                class="fa fa-circle-o"></i>Transfer Pasien Antar Ruangan</a></li>
-                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('privasi')"
-                                               onclick="showModalAsesmenRawatInap('privasi')"><i
-                                                class="fa fa-circle-o"></i>Privasi Pasien</a></li>
-                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('early_warning')"
-                                               onclick="showModalAsesmenRawatInap('early_warning')"><i
-                                                class="fa fa-circle-o"></i>Lembar Observasi Pediatric Early Warning
-                                            Score</a></li>
-                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('pemberian_obat')"
-                                               onclick="showModalAsesmenRawatInap('catatan_pemberian')"><i
-                                                class="fa fa-circle-o"></i>Catatan Pemberian Obat</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalAsesmenRawatInap('injeksi')"><i
-                                                class="fa fa-circle-o"></i>Injeksi CPO / Jadwal Pemberian Terapi</a>
-                                        </li>
-                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('rekonsiliasi')"
-                                               onclick="showModalAsesmenRawatInap('rekonsiliasi')"><i
-                                                class="fa fa-circle-o"></i>Rekonsiliasi Obat</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="box-header with-border"></div>
-                            <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-heartbeat"></i> HD </h3>
-                                <small> (Hemodialisa)</small>
-                            </div>
-                            <div class="box-body">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-success"><i class="fa fa-edit"></i> Action
-                                    </button>
-                                    <button onclick="loadModalRM('hd')" type="button"
-                                            class="btn btn-success dropdown-toggle"
-                                            data-toggle="dropdown" style="height: 34px">
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a style="cursor: pointer" onclick="showModalHD('monitoring_hd')"><i
-                                                class="fa fa-circle-o"></i>Monitoring HD</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalHD('perencanaan_hemodialisa')"><i
-                                                class="fa fa-circle-o"></i>Perencanaan HD</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalHD('asesmen_hd')"><i
-                                                class="fa fa-circle-o"></i>Asesmen Awal HD</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalHD('tranfusi_hd')"><i
-                                                class="fa fa-circle-o"></i>Tindakan Medis Transfusi Darah</a></li>
-                                        <li><a style="cursor: pointer"
-                                               onclick="showModalHD('catatan_tranfusi_darah')"><i
-                                                class="fa fa-circle-o"></i>Catatan Pemantauan Tranfusi Darah</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalHD('persetujuan_hd')"><i
-                                                class="fa fa-circle-o"></i>Persetujuan HD</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalHD('travelling')"><i
-                                                class="fa fa-circle-o"></i>Travelling Dialysis</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="box-header with-border"></div>
-                            <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-desktop"></i> Operasi </h3>
-                            </div>
-                            <div class="box-body">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Action
-                                    </button>
-                                    <button onclick="loadModalRM('operasi')" type="button"
-                                            class="btn btn-primary dropdown-toggle"
-                                            data-toggle="dropdown" style="height: 34px">
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a style="cursor: pointer" onclick="showModalOperasi('ceklist_operasi')"><i
-                                                class="fa fa-circle-o"></i>Ceklist Serah Terima Pasien Pre Operasi</a>
-                                        </li>
-                                        <li><a style="cursor: pointer" onclick="showModalOperasi('penandaan_area')"><i
-                                                class="fa fa-circle-o"></i>Penandaan Area Operasi Pasien</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalOperasi('pra_anestesi')"><i
-                                                class="fa fa-circle-o"></i>Asesmen Pra Anestesi</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalOperasi('general_anestesi')"><i
-                                                class="fa fa-circle-o"></i>Edukasi dan Persetujuan General Anestesi</a>
-                                        </li>
-                                        <li><a style="cursor: pointer"
-                                               onclick="showModalOperasi('regional_anestesi')"><i
-                                                class="fa fa-circle-o"></i>Edukasi dan Persetujuan Regional Anestesi</a>
-                                        </li>
-                                        <li><a style="cursor: pointer" onclick="showModalOperasi('pindah_rr')"><i
-                                                class="fa fa-circle-o"></i>Kriteia Pindah dari RR</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="box-header with-border"></div>
-                            <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-medkit"></i> Rawat Jalan </h3>
-                            </div>
-                            <div class="box-body">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-success"><i class="fa fa-edit"></i> Action
-                                    </button>
-                                    <button onclick="loadModalRM('ringkasan_rj')" type="button"
-                                            class="btn btn-success dropdown-toggle"
-                                            data-toggle="dropdown" style="height: 34px">
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a style="cursor: pointer"
-                                               onclick="showModalAsesmenRawatInap('ringkasan_rj')"><i
-                                                class="fa fa-circle-o"></i>Profil Rekam Medis Rawat Jalan</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="box-header with-border"></div>
-                            <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-plus-square"></i> UGD </h3>
-                            </div>
-                            <div class="box-body">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Action
-                                    </button>
-                                    <button onclick="loadModalRM('ugd')" type="button"
-                                            class="btn btn-primary dropdown-toggle"
-                                            data-toggle="dropdown" style="height: 34px">
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a style="cursor: pointer" onclick="showAsesmenUgd()"><i
-                                                class="fa fa-circle-o"></i>Asesmen Awal Gawat Darurat</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
                     </div>
-                    <%--</s:if>--%>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box" style="cursor: pointer">
+                    <span class="info-box-icon bg-aqua"><i class="fa fa-envelope-o" style="margin-top: 20px"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">SPESIALIS</span>
+                        <span class="info-box-number"><small>(Asesmen Spesialis)</small></span>
+                    </div>
+                    <div class="dropup">
+                        <button style="margin-right: 5px; margin-top: 15px" class="btn btn-default dropdown-toggle pull-right" type="button" data-toggle="dropdown">
+                            <span class="caret"></span></button>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a style="cursor: pointer" onclick="showModalRj('ringkasan_rj')"><i class="fa fa-circle-o"></i>Profil Rekam Medis Rawat Jalan</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box" style="cursor: pointer">
+                    <span class="info-box-icon bg-aqua"><i class="fa fa-envelope-o" style="margin-top: 20px"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">HD</span>
+                        <span class="info-box-number"><small>(Hemodialisa)</small></span>
+                    </div>
+                    <div class="dropup">
+                        <button onclick="loadModalRM('hemodialisa');" style="margin-right: 5px; margin-top: 15px" class="btn btn-default dropdown-toggle pull-right" type="button" data-toggle="dropdown">
+                            <span class="caret"></span></button>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a style="cursor: pointer" onclick="showModalHD('monitoring_hd')"><i class="fa fa-circle-o"></i>Monitoring HD</a></li>
+                            <li><a style="cursor: pointer" onclick="showModalHD('perencanaan_hemodialisa')"><i class="fa fa-circle-o"></i>Perencanaan HD</a></li>
+                            <li><a style="cursor: pointer" onclick="showModalHD('asesmen_hd')"><i class="fa fa-circle-o"></i>Asesmen Awal HD</a></li>
+                            <li><a style="cursor: pointer" onclick="showModalHD('tranfusi_hd')"><i class="fa fa-circle-o"></i>Tindakan Medis Transfusi Darah</a></li>
+                            <li><a style="cursor: pointer" onclick="showModalHD('catatan_tranfusi_darah')"><i class="fa fa-circle-o"></i>Catatan Pemantauan Tranfusi Darah</a></li>
+                            <li><a style="cursor: pointer" onclick="showModalHD('persetujuan_hd')"><i class="fa fa-circle-o"></i>Persetujuan HD</a></li>
+                            <li><a style="cursor: pointer" onclick="showModalHD('travelling')"><i class="fa fa-circle-o"></i>Travelling Dialysis</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box" style="cursor: pointer">
+                    <span class="info-box-icon bg-aqua"><i class="fa fa-envelope-o" style="margin-top: 20px"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">FISIOTERAPI</span>
+                        <span class="info-box-number"><small>&nbsp;</small></span>
+                    </div>
+                    <div class="dropup">
+                        <button onclick="loadModalRM('fisioterapi');" style="margin-right: 5px; margin-top: 15px" class="btn btn-default dropdown-toggle pull-right" type="button" data-toggle="dropdown">
+                            <span class="caret"></span></button>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a style="cursor: pointer" onclick="pengkajianFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-circle-o"></i>Pengkajian Pasien Fisioterapi</a></li>
+                            <li><a style="cursor: pointer" onclick="addMonitoringFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-circle-o"></i>Kunjungan Fisioterapi</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box" style="cursor: pointer">
+                    <span class="info-box-icon bg-aqua"><i class="fa fa-envelope-o" style="margin-top: 20px"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">UGD</span>
+                        <span class="info-box-number"><small>(Unit Gawat Darurat)</small></span>
+                    </div>
+                    <div class="dropup">
+                        <button style="margin-right: 5px; margin-top: 15px" class="btn btn-default dropdown-toggle pull-right" type="button" data-toggle="dropdown">
+                            <span class="caret"></span></button>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a style="cursor: pointer" onclick="showAsesmenUgd()"><i class="fa fa-circle-o"></i> Asesmen Awal Gawat Darurat Anak</a></li>
+                            <li><a style="cursor: pointer" onclick="showAsesmenUgd()"><i class="fa fa-circle-o"></i> Asesmen Awal Gawat Darurat Dewasa</a></li>
+                            <li><a style="cursor: pointer" onclick="showAsesmenUgd()"><i class="fa fa-circle-o"></i> Asesmen Awal Gawat Darurat Geriatri</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box" style="cursor: pointer">
+                    <span class="info-box-icon bg-aqua"><i class="fa fa-envelope-o" style="margin-top: 20px"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">RAWAT INAP</span>
+                        <span class="info-box-number"><small>&nbsp;</small></span>
+                    </div>
+                    <div class="dropup">
+                        <button style="margin-right: 5px; margin-top: 15px" class="btn btn-default dropdown-toggle pull-right" type="button" data-toggle="dropdown">
+                            <span class="caret"></span></button>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a style="cursor: pointer" onmouseover="loadModalRM('asesmen_rawat_inap')"
+                                   onclick="showModalAsesmenRawatInap('asesmen')"><i
+                                    class="fa fa-circle-o"></i>Asesmen Awal Medis Rawat Inap</a></li>
+                            <li><a style="cursor: pointer" onmouseover="loadModalRM('catatan_integrasi')"
+                                   onclick="showModalAsesmenRawatInap('catatan_integrasi')"><i
+                                    class="fa fa-circle-o"></i>Catatan Perkembangan Pasien Terintegrasi</a>
+                            </li>
+                            <li><a style="cursor: pointer"
+                                   onmouseover="loadModalRM('pengkajian_keperawatan')"
+                                   onclick="showModalPengkajianKep('pengkajian')"><i
+                                    class="fa fa-circle-o"></i>Pengkajian Ulang Keperawatan dan Tindakan</a>
+                            </li>
+                            <li><a style="cursor: pointer" onmouseover="loadModalRM('asuhan')"
+                                   onclick="showModalAsesmenRawatInap('asuhan')"><i
+                                    class="fa fa-circle-o"></i>Rencana Asuhan Keperawatan</a></li>
+                            <li><a style="cursor: pointer" onmouseover="loadModalRM('mpp')" onclick="showModalMpp('evaluasi_awal')"><i class="fa fa-circle-o"></i>Form-A Evaluasi Awal</a></li>
+                            <li><a style="cursor: pointer" onmouseover="loadModalRM('mpp')" onclick="showModalMpp('impementasi_mpp')"><i class="fa fa-circle-o"></i>Form-B Catatan Implementasi</a></li>
+                            <li><a style="cursor: pointer" onmouseover="loadModalRM('edukasi_pasien')" onclick="showModalAsesmenRawatInap('edukasi_pasien')"><i class="fa fa-circle-o"></i>Edukasi Pasien dan Keluarga</a></li>
+                            <li><a style="cursor: pointer" onmouseover="loadModalRM('edukasi_pasien_integrasi')" onclick="showModalAsesmenRawatInap('edukasi_pasien_terintegrasi')"><i class="fa fa-circle-o"></i>Edukasi Pasien dan Keluarga Terintegrasi</a></li>
+                            <li><a style="cursor: pointer" onmouseover="loadModalRM('discharge_planing')"
+                                   onclick="showModalAsesmenRawatInap('discharge_planing')"><i
+                                    class="fa fa-circle-o"></i>Discharge Planing</a></li>
+                            <li><a style="cursor: pointer" onmouseover="loadModalRM('transfer_pasien')"
+                                   onclick="showModalAsesmenRawatInap('transfer_pasien')"><i
+                                    class="fa fa-circle-o"></i>Transfer Pasien Antar Ruangan</a></li>
+                            <li><a style="cursor: pointer" onmouseover="loadModalRM('privasi')"
+                                   onclick="showModalAsesmenRawatInap('privasi')"><i
+                                    class="fa fa-circle-o"></i>Privasi Pasien</a></li>
+                            <li><a style="cursor: pointer" onmouseover="loadModalRM('early_warning')"
+                                   onclick="showModalAsesmenRawatInap('early_warning')"><i
+                                    class="fa fa-circle-o"></i>Lembar Observasi Pediatric Early Warning
+                                Score</a></li>
+                            <li><a style="cursor: pointer" onmouseover="loadModalRM('pemberian_obat')"
+                                   onclick="showModalAsesmenRawatInap('catatan_pemberian')"><i
+                                    class="fa fa-circle-o"></i>Catatan Pemberian Obat</a></li>
+                            </li>
+                            <li><a style="cursor: pointer" onmouseover="loadModalRM('rekonsiliasi')"
+                                   onclick="showModalAsesmenRawatInap('rekonsiliasi')"><i
+                                    class="fa fa-circle-o"></i>Rekonsiliasi Obat</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box" style="cursor: pointer">
+                    <span class="info-box-icon bg-aqua"><i class="fa fa-envelope-o" style="margin-top: 20px"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">OK</span>
+                        <span class="info-box-number"><small>(Operasi Kamar)</small></span>
+                    </div>
+                    <div class="dropup">
+                        <button style="margin-right: 5px; margin-top: 15px" class="btn btn-default dropdown-toggle pull-right" type="button" data-toggle="dropdown">
+                            <span class="caret"></span></button>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a style="cursor: pointer" onclick="showModalOperasi('ceklist_operasi')"><i class="fa fa-circle-o"></i>Ceklist Serah Terima Pasien Pre Operasi</a></li>
+                            <li><a style="cursor: pointer" onclick="showModalOperasi('penandaan_area')"><i class="fa fa-circle-o"></i>Penandaan Area Operasi Pasien</a></li>
+                            <li><a style="cursor: pointer" onclick="showModalOperasi('pra_anestesi')"><i class="fa fa-circle-o"></i>Asesmen Pra Anestesi</a></li>
+                            <li><a style="cursor: pointer" onclick="showModalOperasi('general_anestesi')"><i class="fa fa-circle-o"></i>Edukasi dan Persetujuan General Anestesi</a></li>
+                            <li><a style="cursor: pointer" onclick="showModalOperasi('regional_anestesi')"><i class="fa fa-circle-o"></i>Edukasi dan Persetujuan Regional Anestesi</a></li>
+                            <li><a style="cursor: pointer" onclick="showModalOperasi('pindah_rr')"><i class="fa fa-circle-o"></i>Kriteia Pindah dari RR</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box" style="cursor: pointer">
+                    <span class="info-box-icon bg-aqua"><i class="fa fa-envelope-o" style="margin-top: 20px"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">ICU</span>
+                        <span class="info-box-number"><small>(Intensive Care Unit)</small></span>
+                    </div>
+                    <div class="dropup">
+                        <button style="margin-right: 5px; margin-top: 15px" class="btn btn-default dropdown-toggle pull-right" type="button" data-toggle="dropdown">
+                            <span class="caret"></span></button>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a style="cursor: pointer" onmouseover="loadModalRM('icu')"  onclick="showModalICU('asesmen_icu')"><i class="fa fa-circle-o"></i>Asesmen ICU</a></li>
+                            <li><a style="cursor: pointer" onmouseover="loadModalRM('hemodinamika')"  onclick="showModalICU('hemodinamika')"><i class="fa fa-circle-o"></i>Hemodinamika</a></li>
+                            <li><a style="cursor: pointer" onmouseover="loadModalRM('respirasi')"  onclick="showModalICU('respirasi')"><i class="fa fa-circle-o"></i>Respirasi</a></li>
+                            <li><a style="cursor: pointer" onmouseover="loadModalRM('keseimbangan')"  onclick="showModalICU('keseimbangan')"><i class="fa fa-circle-o"></i>Keseimbangan</a></li>
+                            <li><a style="cursor: pointer" onmouseover="loadModalRM('obat-obatan')"  onclick="showModalICU('obat-obatan')"><i class="fa fa-circle-o"></i>Obat Obatan/ Intakea/ Output</a></li>
+                            <li><a style="cursor: pointer" onmouseover="loadModalRM('asuhan_keperawatan')"  onclick="showModalICU('asuhan_keperawatan')"><i class="fa fa-circle-o"></i>Asuhan Keperawatan</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box" style="cursor: pointer">
+                    <span class="info-box-icon bg-aqua"><i class="fa fa-envelope-o" style="margin-top: 20px"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">RB</span>
+                        <span class="info-box-number"><small>(Ruang Bersalin)</small></span>
+                    </div>
+                    <div class="dropup">
+                        <button style="margin-right: 5px; margin-top: 15px" class="btn btn-default dropdown-toggle pull-right" type="button" data-toggle="dropdown">
+                            <span class="caret"></span></button>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a style="cursor: pointer" onmouseover="loadModalRM('identifikasi_bayi')"  onclick="showModalRB('identifikasi_bayi')"><i class="fa fa-circle-o"></i>Identifikasi Bayi</a></li>
+                            <li><a style="cursor: pointer" onmouseover="loadModalRM('asesmen_ponek')"  onclick="showModalRB('asesmen_ponek')"><i class="fa fa-circle-o"></i>Asesmen Ponek</a></li>
+                            <li><a style="cursor: pointer" onmouseover="loadModalRM('asesmen_awal_bayi')"  onclick="showModalRB('asesmen_awal_bayi')"><i class="fa fa-circle-o"></i>Asesmen Awal Bayi</a></li>
+                            <li><a style="cursor: pointer" onmouseover="loadModalRM('laporan_pembedahan')"  onclick="showModalRB('laporan_pembedahan')"><i class="fa fa-circle-o"></i>Laporan Pembedahan</a></li>
+                            <li><a style="cursor: pointer" onmouseover="loadModalRM('laporan_persalinan')"  onclick="showModalRB('laporan_persalinan')"><i class="fa fa-circle-o"></i>Laporan Persalinan</a></li>
+                            <li><a style="cursor: pointer" onmouseover="loadModalRM('tindakan_rb')"  onclick="showModalRB('tindakan_rb')"><i class="fa fa-circle-o"></i>Persetujuan Tindakan Kedokteran</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1032,34 +715,24 @@
 </div>
 
 <div id="modal-temp"></div>
+<%@ include file="/pages/modal/modalRingkasanRawatJalan.jsp" %>
 
 <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/FisioterapiAction.js"/>'></script>
-<script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenUgdAction.js"/>'></script>
-<script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenOperasiAction.js"/>'></script>
-<script type='text/javascript' src='<s:url value="/dwr/interface/MppAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/HemodialisaAction.js"/>'></script>
-<script type='text/javascript' src='<s:url value="/dwr/interface/MonitoringTransfusiDarahAction.js"/>'></script>
-<script type='text/javascript' src='<s:url value="/dwr/interface/AppendecitomyAction.js"/>'></script>
-<script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenRawatInapAction.js"/>'></script>
-<script type='text/javascript' src='<s:url value="/dwr/interface/PengkajianUlangKeperawatanAction.js"/>'></script>
-<script type='text/javascript' src='<s:url value="/dwr/interface/CatatanTerintegrasiAction.js"/>'></script>
-<script type='text/javascript' src='<s:url value="/dwr/interface/CatatanPemberianObatAction.js"/>'></script>
-<script type='text/javascript' src='<s:url value="/dwr/interface/RencanaAsuhanKeperawatanAction.js"/>'></script>
-<script type='text/javascript' src='<s:url value="/dwr/interface/RekonsiliasiObatAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/RekamMedisRawatJalanAction.js"/>'></script>
-<script type='text/javascript' src='<s:url value="/dwr/interface/RingkasanPasienAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/MonitoringTransfusiDarahAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenSpesialisAction.js"/>'></script>
 
-<script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
-<script type='text/javascript' src='<s:url value="/pages/dist/js/operasi.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/datapasien.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/fisioterapi.js"/>'></script>
-<script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenUgd.js"/>'></script>
-<script type='text/javascript' src='<s:url value="/pages/dist/js/mpp.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/hd.js"/>'></script>
-<script type='text/javascript' src='<s:url value="/pages/dist/js/appendecitomy.js"/>'></script>
-<script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenrawatinap.js"/>'></script>
-<script type='text/javascript' src='<s:url value="/pages/dist/js/pengkajiankeperawatan.js"/>'></script>
-<script type='text/javascript' src='<s:url value="/pages/dist/js/ringkasanpasien.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/rj.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/addrawatjalan.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/spesialis.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/nyeri.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/history.js"/>'></script>
 
 <script type='text/javascript'>
 
@@ -1068,70 +741,37 @@
     var contextPath = '<%= request.getContextPath() %>';
     var idPasien = $('#id_pasien').val();
 
+    var tglLhr = '<s:property value="headerDetailCheckup.tglLahir"/>';
+    var tglLahir = tglLhr.split("-").reverse().join("-");
+    var namaPasien = '<s:property value="headerDetailCheckup.namaPasien"/>';
+    var anamnese = '<s:property value="headerDetailCheckup.anamnese"/>';
+    var penunjangMedis = '<s:property value="headerDetailCheckup.penunjangMedis"/>';
+    var keluhanUtama = '<s:property value="headerDetailCheckup.keluhanUtama"/>';
+    var suhu = '<s:property value="headerDetailCheckup.suhu"/>';
+    var nadi = '<s:property value="headerDetailCheckup.nadi"/>';
+    var tensi = '<s:property value="headerDetailCheckup.tensi"/>';
+    var pernafasan = '<s:property value="headerDetailCheckup.pernafasan"/>';
+    var alergi = '<s:property value="headerDetailCheckup.alergi"/>';
+    var beratBadan = '<s:property value="headerDetailCheckup.berat"/>';
+    var tinggiBadan = '<s:property value="headerDetailCheckup.tinggi"/>';
+    var diagnosa = '<s:property value="headerDetailCheckup.namaDiagnosa"/>';
+    var umur = '<s:property value="headerDetailCheckup.umur"/>';
+    var alamatLengkap = '<s:property value="headerDetailCheckup.alamatLengkap"/>';
+    var noBpjs = '<s:property value="headerDetailCheckup.noBpjs"/>';
+    var jenisKelamin = '<s:property value="headerDetailCheckup.jenisKelamin"/>';
+
     function loadModalRM(jenis) {
         var context = "";
         if (jenis == "fisioterapi") {
             context = contextPath + '/pages/modal/modalFisioterapi.jsp';
-        }
-        if (jenis == "operasi") {
-            context = contextPath + '/pages/modal/modalOperasi.jsp';
-        }
-        if (jenis == "ugd") {
-            context = contextPath + '/pages/modal/modalAsesmenUGD-dewasa.jsp';
-        }
-        if (jenis == "mpp") {
-            context = contextPath + '/pages/modal/modalMpp.jsp';
-        }
-        if (jenis == "hd") {
+        } else if (jenis == "hemodialisa") {
             context = contextPath + '/pages/modal/modalHD.jsp';
+        } else {
+            var kat = '<s:property value="headerDetailCheckup.kategoriPelayanan"/>';
+            context = contextPath + '/pages/modal/modal-' + kat + '.jsp';
         }
-        if (jenis == "appendecitomy") {
-            context = contextPath + '/pages/modal/modalAppendecitomy.jsp';
-        }
-        if (jenis == "asesmen_rawat_inap") {
-            context = contextPath + '/pages/modal/modalAsesmenRawatInap.jsp';
-        }
-        if (jenis == "pengkajian_keperawatan") {
-            context = contextPath + '/pages/modal/modalPengkajianKeperawatan.jsp';
-        }
-        if (jenis == "discharge_planing") {
-            context = contextPath + '/pages/modal/modalPemulanganPasien.jsp';
-        }
-        if (jenis == "catatan_integrasi") {
-            context = contextPath + '/pages/modal/modalCatatanTerintegrasi.jsp';
-        }
-        if (jenis == "early_warning") {
-            context = contextPath + '/pages/modal/modalEWS.jsp';
-        }
-        if (jenis == "privasi") {
-            context = contextPath + '/pages/modal/modalPrivasiPasien.jsp';
-        }
-        if (jenis == "pemberian_obat") {
-            context = contextPath + '/pages/modal/modalPemberianObat.jsp';
-        }
-        if (jenis == "asuhan") {
-            context = contextPath + '/pages/modal/modalAsuhanKeperawatan.jsp';
-        }
-        if (jenis == "rekonsiliasi") {
-            context = contextPath + '/pages/modal/modalRekonsiliasiObat.jsp';
-        }
-        if (jenis == "edukasi_pasien") {
-            context = contextPath + '/pages/modal/modalEdukasiPasien.jsp';
-        }
-        if (jenis == "ringkasan_rj") {
-            context = contextPath + '/pages/modal/modalRingkasanRawatJalan.jsp';
-        }
-        if (jenis == "rencana_gigi") {
-            context = contextPath + '/pages/modal/modal-spesialis_gigi.jsp';
-        }
-        if (jenis == "ringkasan") {
-            context = contextPath + '/pages/modal/modalRingkasan.jsp';
-        }
-        if (jenis == "transfer_pasien") {
-            context = contextPath + '/pages/modal/modalTransferPasien.jsp';
-        }
-        $('#modal-temp').load(context, function (res) {
 
+        $('#modal-temp').load(context, function (res) {
         });
     }
 
@@ -1152,187 +792,11 @@
             '<option value="100">100</option>';
 
         $('[name=tableRM_length]').html(option);
-
         // if (idDetailCheckup != null && idDetailCheckup != '') {
         //     $('[type=search]').val(idDetailCheckup).trigger('input');
         //     $('#btn-vidio-rm').show();
         // }
     });
-
-    function viewTelemedic() {
-        $('#modal-telemedic').modal({show: true, backdrop: 'static'});
-        var video = "";
-        var id = 0;
-        CheckupAction.getListVideoRm(idPasien, function (res) {
-            if (res.length > 0) {
-                $.each(res, function (i, item) {
-                    if(item.videoRm != null){
-                        var count = id++;
-                        if(count == 0){
-                            video += '<video id="carousel-'+count+'" class="carousel-img carousel-img-displayed" controls src="'+item.videoRm+'" width="100%" height="420px"></video>';
-                        }else {
-                            video += '<video id="carousel-'+count+'" class="carousel-img carousel-img-noDisplay" controls src="'+item.videoRm+'" width="100%" height="420px"></video>';
-                        }
-                    }
-                });
-                $('#body-video-rm').html(video);
-            }
-        });
-    }
-
-    function viewRiwayat() {
-        $('#modal-riwayat').modal({show: true, backdrop: 'static'});
-    }
-
-    function viewHistory() {
-        $('#modal-history').modal({show: true, backdrop: 'static', keyboard: false});
-        var table = "";
-        CheckupAction.getListHistoryPasien(idPasien, function (res) {
-            if(res.length > 0){
-                $.each(res, function (i, item) {
-                    var btn = "";
-                    var icon = "";
-                    if("resep" == item.keterangan || "laboratorium" == item.keterangan || "radiologi" == item.keterangan){
-                        btn = '<img class="hvr-grow" id="btn_'+item.idRiwayatTindakan+'" \n' +
-                            'onclick="detailTindakan(\''+item.idRiwayatTindakan+'\',\''+item.idTindakan+'\',\''+item.keterangan+'\')"\n' +
-                            'src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">';
-                    }
-                    if(item.idDetailCheckup != null && item.idDetailCheckup != ''){
-                        icon = '<a href="detail_rekammedis.action?idPasien='+idPasien+'&id='+item.idDetailCheckup+'"><i class="fa fa-search"></i></a>';
-                    }
-                    table += '<tr id="row_'+item.idRiwayatTindakan+'">' +
-                        '<td>'+icon+' '+cekDataNull(item.namaPelayanan)+'</td>' +
-                        '<td>'+cekDataNull(item.idDetailCheckup)+'</td>' +
-                        '<td>'+cekDataNull(item.tglTindakan)+'</td>' +
-                        '<td>'+cekDataNull(item.namaTindakan)+'</td>' +
-                        '<td>'+cekDataNull(item.keteranganKeluar)+'</td>' +
-                        '<td align="center">'+btn+'</td>' +
-                        '<tr>';
-                });
-                $('#body_history').html(table);
-            }
-        });
-    }
-
-    function detailTindakan(id, idTindakan, keterangan){
-        if (id && idTindakan && keterangan != '') {
-            var head = "";
-            var body = "";
-            CheckupAction.getListDetailHistoryPasien(idTindakan, keterangan, function (res) {
-                if (res.length > 0) {
-                    $.each(res, function (i, item) {
-                        if(keterangan == "radiologi"){
-                            body += '<tr>' +
-                                '<td>'+cekDataNull(item.namaDetailLab)+'</td>' +
-                                '<td>'+cekDataNull(item.satuan)+'</td>' +
-                                '<td>'+cekDataNull(item.acuan)+'</td>' +
-                                '<td>'+cekDataNull(item.kesimpulan)+'</td>' +
-                                '</tr>';
-                        }
-                        if(keterangan == "laboratorium"){
-                            body += '<tr>' +
-                                '<td>'+cekDataNull(item.namaDetailLab)+'</td>' +
-                                '<td>'+cekDataNull(item.satuan)+'</td>' +
-                                '<td>'+cekDataNull(item.acuan)+'</td>' +
-                                '<td>'+cekDataNull(item.kesimpulan)+'</td>' +
-                                '<td>'+cekDataNull(item.keterangan)+'</td>' +
-                                '</tr>';
-                        }
-                        if(keterangan == "resep"){
-                            body += '<tr>' +
-                                '<td>'+cekDataNull(item.namaObat)+'</td>' +
-                                '<td>'+cekDataNull(item.qty)+' '+cekDataNull(item.satuan)+'</td>' +
-                                '<td>'+cekDataNull(item.keterangan)+'</td>' +
-                                '</tr>';
-                        }
-                    });
-                }
-
-                if(keterangan == "radiologi"){
-                    head = '<tr bgcolor="#ffebcd" style="font-weight: bold">' +
-                        '<td>Pemeriksaan</td>' +
-                        '<td>Satuan</td>' +
-                        '<td>Keterangan Acuan</td>' +
-                        '<td>Hasil</td>' +
-                        '</tr>';
-                }
-                if(keterangan == "laboratorium"){
-                    head = '<tr bgcolor="#ffebcd" style="font-weight: bold">' +
-                        '<td>Pemeriksaan</td>' +
-                        '<td>Satuan</td>' +
-                        '<td>Keterangan Acuan</td>' +
-                        '<td>Hasil</td>' +
-                        '<td>Keterangan</td>' +
-                        '</tr>';
-                }
-                if(keterangan == "resep"){
-                    head = '<tr bgcolor="#ffebcd" style="font-weight: bold">' +
-                        '<td>Nama Obat</td>' +
-                        '<td>Qty</td>' +
-                        '<td>Keterangan</td>' +
-                        '</tr>';
-                }
-
-                var table = '<table style="font-size: 12px" class="table table-bordered">' +
-                    '<thead>' + head + '</thead>' +
-                    '<tbody>' + body + '</tbody>' +
-                    '</table>';
-
-                var newRow = $('<tr id="del_' + id + '"><td colspan="6">' + table + '</td></tr>');
-                newRow.insertAfter($('table').find('#row_' + id));
-                var url = contextPath+'/pages/images/minus-allnew.png';
-                $('#btn_' + id).attr('src', url);
-                $('#btn_' + id).attr('onclick', 'delDetail(\'' + id + '\',\''+idTindakan+'\', \''+keterangan+'\')');
-            });
-        }
-    }
-
-    function delDetail(id, idTindakan, keterangan){
-        $('#del_' + id).remove();
-        var url = contextPath+'/pages/images/icons8-plus-25.png';
-        $('#btn_' + id).attr('src', url);
-        $('#btn_' + id).attr('onclick', 'detailTindakan(\'' + id + '\', \''+idTindakan+'\', \''+keterangan+'\')');
-    }
-
-    function cekDataNull(item){
-        var data = "";
-        if(item != null && item != ''){
-            data = item;
-        }
-        return data;
-    }
-
-    function carouselSwipe(id) {
-
-        var currentImg = document.getElementsByClassName('carousel-img-displayed')[0].id.substring(9);
-        var newImg = parseInt(currentImg);
-
-        if (id == 'carousel-arrow-next') {
-            newImg++;
-            if (newImg >= document.getElementsByClassName('carousel-img').length) {
-                newImg = 0;
-            }
-        } else if (id == 'carousel-arrow-prev') {
-            newImg--;
-            if (newImg<0) {
-                newImg = document.getElementsByClassName('carousel-img').length-1;
-            }
-        }
-
-        document.getElementById('carousel-'+currentImg).className = 'carousel-img carousel-img-hidden';
-        var displayedCarousel = document.getElementById('carousel-'+newImg);
-        displayedCarousel.className = 'carousel-img carousel-img-hidden';
-
-        setTimeout(function() {
-            displayedCarousel.className = 'carousel-img carousel-img-displayed';
-        },20);
-
-        setTimeout(function() {
-            document.getElementById('carousel-'+currentImg).className = 'carousel-img carousel-img-noDisplay';
-        },520);
-
-    }
-
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>
