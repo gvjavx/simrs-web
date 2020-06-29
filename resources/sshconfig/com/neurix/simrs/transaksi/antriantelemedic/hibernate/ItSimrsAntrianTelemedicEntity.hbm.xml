@@ -92,6 +92,9 @@
             <basic name="jumlahCover">
                 <column name="jumlah_cover"/>
             </basic>
+            <basic name="jenisPembayaran">
+                <column name="jenis_pembayaran"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

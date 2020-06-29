@@ -52,6 +52,16 @@ public class TelemedicineMobile {
     private String flagEresep;
     private String urlResep;
 
+    private String jenisPembayaran;
+
+    public String getJenisPembayaran() {
+        return jenisPembayaran;
+    }
+
+    public void setJenisPembayaran(String jenisPembayaran) {
+        this.jenisPembayaran = jenisPembayaran;
+    }
+
     public String getUrlResep() {
         return urlResep;
     }

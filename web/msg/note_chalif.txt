@@ -60,3 +60,11 @@
 
 
 <<< //
+
+// 2020-06-29 >>>
+
+    ALTER TABLE public.it_simrs_pengiriman_obat ADD jenis_pembayaran VARCHAR(50) NULL,
+
+
+
+<<< //

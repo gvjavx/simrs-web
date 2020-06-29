@@ -37,6 +37,15 @@ public class ItSimrsAntrianTelemedicEntity {
     private String alamat;
     private String noTelp;
     private BigDecimal jumlahCover;
+    private String jenisPembayaran;
+
+    public String getJenisPembayaran() {
+        return jenisPembayaran;
+    }
+
+    public void setJenisPembayaran(String jenisPembayaran) {
+        this.jenisPembayaran = jenisPembayaran;
+    }
 
     public BigDecimal getJumlahCover() {
         return jumlahCover;

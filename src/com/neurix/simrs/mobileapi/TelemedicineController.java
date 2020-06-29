@@ -289,10 +289,11 @@ public class TelemedicineController implements ModelDriven<Object> {
             bean.setJenisPengambilan(model.getJenisPengambilan());
             bean.setNoTelp(model.getNoTelp());
             bean.setFlagEresep(model.getFlagEresep());
+            bean.setJenisPembayaran(model.getJenisPembayaran());
 
             String fileName = "";
             if (fileUploadResep != null) {
-                fileName = model.getIdPasien()+".jpeg";
+                fileName = model.getIdPasien()+"_"+now.getTime()+".jpeg";
                 File fileCreate = new File(CommonUtil.getPropertyParams("upload.external.dir")+ CommonConstant.RESOURCE_PATH_RESEP, fileName);
                 try {
                     FileUtils.copyFile(fileUploadResep, fileCreate);
@@ -623,6 +624,7 @@ public class TelemedicineController implements ModelDriven<Object> {
                 telemedicineMobile.setFlagBayarKonsultasi(item.getFlagBayarKonsultasi());
                 telemedicineMobile.setKeluhan(item.getKeluhan());
                 telemedicineMobile.setJenisPengambilan(item.getJenisPengambilan());
+                telemedicineMobile.setUrlResep(item.getUrlResep());
 
                 if (flagResep != null && flagResep.equalsIgnoreCase("Y")) {
 

@@ -215,7 +215,7 @@ public class PengirimanObatController implements ModelDriven<Object> {
                 beanNotif.setUserId(idPasien);
 
                 resultNotif = notifikasiFcmBoProxy.getByCriteria(beanNotif);
-                FirebasePushNotif.sendNotificationFirebase(resultNotif.get(0).getTokenFcm(), "Pengiriman Obat", "Kurir telah mengambil obat di apotik", "PD", resultNotif.get(0).getOs());
+                FirebasePushNotif.sendNotificationFirebase(resultNotif.get(0).getTokenFcm(), "Pengiriman Obat", "Kurir telah mengambil obat di apotik", "SK", resultNotif.get(0).getOs());
                 model.setMessage("Success");
             } catch (GeneralBOException e) {
                 logger.error("[PengirimanObatController.create] ERROR. ", e);
@@ -253,7 +253,7 @@ public class PengirimanObatController implements ModelDriven<Object> {
                 beanNotif.setUserId(idPasien);
 
                 resultNotif = notifikasiFcmBoProxy.getByCriteria(beanNotif);
-                FirebasePushNotif.sendNotificationFirebase(resultNotif.get(0).getTokenFcm(), "Pengiriman Obat", "Kurir telah mengirimkan obat", "PD", resultNotif.get(0).getOs());
+                FirebasePushNotif.sendNotificationFirebase(resultNotif.get(0).getTokenFcm(), "Pengiriman Obat", "Kurir telah mengirimkan obat", "SK", resultNotif.get(0).getOs());
                 model.setMessage("Success");
             } catch (GeneralBOException e) {
                 logger.error("[PengirimanObatController.create] ERROR. ", e);
