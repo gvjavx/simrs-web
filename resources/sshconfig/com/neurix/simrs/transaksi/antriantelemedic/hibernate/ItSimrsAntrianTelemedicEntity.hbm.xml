@@ -92,6 +92,9 @@
             <basic name="jumlahCover">
                 <column name="jumlah_cover"/>
             </basic>
+            <basic name="noJurnal">
+                <column name="no_jurnal"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

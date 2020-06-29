@@ -78,6 +78,7 @@ import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.*;
@@ -415,6 +416,39 @@ public class VerifikatorPembayaranAction {
                             notifikasiFcm = notifikasiFcmBo.getByCriteria(bean);
                             FirebasePushNotif.sendNotificationFirebase(notifikasiFcm.get(0).getTokenFcm(),"Resep", "Pembayaran resep telah dikonfirmasi", "WL", notifikasiFcm.get(0).getOs());
 
+                            // jika E-Obat maka create Jurnal Pembelian Obat langsung
+                            if ("Y".equalsIgnoreCase(antrianTelemedicEntity.getFlagEresep())){
+
+                                TransaksiObatDetail trans = new TransaksiObatDetail();
+                                trans.setTotalBayar( new BigInteger(pembayaranOnlineEntity.getNominal().toString()));
+                                trans.setIdPelayanan(antrianTelemedicEntity.getIdPelayanan());
+
+                                JurnalResponse jurnalResponse = createJurnalPembayaranObatBaruEObat(trans);
+                                if ("success".equalsIgnoreCase(jurnalResponse.getStatus())){
+
+                                    // update no_jurnal pada antrian telemedics
+                                    AntrianTelemedic antrian = new AntrianTelemedic();
+                                    antrian.setId(antrianTelemedicEntity.getId());
+                                    antrian.setNoJurnal(jurnalResponse.getNoJurnal());
+                                    antrian.setLastUpdate(time);
+                                    antrian.setLastUpdateWho(userLogin);
+
+                                    try {
+                                        telemedicBo.saveEdit(antrian,"","");
+                                    } catch (GeneralBOException e){
+                                        logger.error("[VerifikatorPembayaranAction.approveTransaksi] ERROR. ",e);
+                                        response.setStatus("error");
+                                        response.setMessage("[VerifikatorPembayaranAction.approveTransaksi] ERROR. " + e);
+                                        return response;
+                                    }
+
+                                } else {
+                                    response.setStatus("error");
+                                    response.setMessage(jurnalResponse.getMsg());
+                                    return response;
+                                }
+                            }
+
                             response.setStatus("success");
                             return response;
                         } catch (GeneralBOException e){
@@ -466,6 +500,7 @@ public class VerifikatorPembayaranAction {
                         headerCheckup.setNoCheckup(noCheckup);
                         headerCheckup.setBranchId(branchId);
                         headerCheckup.setIdPasien(antrianTelemedicEntity.getIdPasien());
+                        headerCheckup.setTglKeluar(time);
 
                         if ("asuransi".equalsIgnoreCase(antrianTelemedicEntity.getIdJenisPeriksaPasien())){
                             headerCheckup.setIdAsuransi(antrianTelemedicEntity.getIdAsuransi());
@@ -1131,9 +1166,9 @@ public class VerifikatorPembayaranAction {
                 masterId = asuransiEntity.getNoMaster();
                 jenisPasien = "Asuransi " + asuransiEntity.getNamaAsuransi() + " No. Kartu " + detailCheckupEntity.getNoKartuAsuransi();
             } else {
-                logger.error("[CheckupDetailAction.closingJurnalNonTunai] Error Asuransi tidak ditemukan");
+                logger.error("[VerifikatorPembayaranAction.closingJurnalNonTunai] Error Asuransi tidak ditemukan");
                 response.setStatus("error");
-                response.setMsg("[CheckupDetailAction.closingJurnalNonTunai] Error Asuransi tidak ditemukan");
+                response.setMsg("[VerifikatorPembayaranAction.closingJurnalNonTunai] Error Asuransi tidak ditemukan");
                 return response;
             }
         }
@@ -1283,14 +1318,88 @@ public class VerifikatorPembayaranAction {
             response.setMsg("[Berhasil]");
 
         } catch (GeneralBOException e) {
-            logger.error("[CheckupDetailAction.closingJurnalNonTunai] Error, ", e);
+            logger.error("[VerifikatorPembayaranAction.closingJurnalNonTunai] Error, ", e);
             response.setStatus("error");
-            response.setMsg("[CheckupDetailAction.closingJurnalNonTunai] Error, " + e);
+            response.setMsg("[VerifikatorPembayaranAction.closingJurnalNonTunai] Error, " + e);
             return response;
         }
 
         response.setInvoice(invoice);
         return response;
+    }
+
+    private JurnalResponse createJurnalPembayaranObatBaruEObat(TransaksiObatDetail trans) {
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+        PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
+        JenisPriksaPasienBo jenisPriksaPasienBo = (JenisPriksaPasienBo) ctx.getBean("jenisPriksaPasienBoProxy");
+
+        String branchId = CommonUtil.userBranchLogin();
+        String pelayananId = trans.getIdPelayanan();
+
+        BigDecimal pendapatan = new BigDecimal(trans.getTotalBayar().toString());
+        BigDecimal ppn = pendapatan.multiply(new BigDecimal(0.1)).setScale(2, BigDecimal.ROUND_HALF_UP);
+        pendapatan = pendapatan.add(ppn);
+
+        JurnalResponse jurnalResponse = new JurnalResponse();
+
+        String divisiId = "";
+        String masterId = "";
+        ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(pelayananId);
+        if (pelayananEntity != null) {
+
+            ImPosition position = positionBo.getPositionEntityById(pelayananEntity.getDivisiId());
+
+            if (position != null) {
+                divisiId = position.getKodering();
+            }
+
+        } else {
+            jurnalResponse.setStatus("error");
+            jurnalResponse.setMsg("[VerifikatorPembayaranAction.createJurnalPembayaranObatbaru] ERROR. tidak dapat divisi_id. ");
+            return jurnalResponse;
+        }
+
+        ImJenisPeriksaPasienEntity jenisPeriksaPasienEntity = jenisPriksaPasienBo.getJenisPerikasEntityById("umum");
+        if (jenisPeriksaPasienEntity != null) {
+            masterId = jenisPeriksaPasienEntity.getMasterId();
+        }
+
+        Map mapPPN = new HashMap();
+        mapPPN.put("bukti", billingSystemBo.createInvoiceNumber("JPD", branchId));
+        mapPPN.put("nilai", ppn);
+
+        Map mapKas = new HashMap();
+        mapKas.put("metode_bayar", "tunai");
+        mapKas.put("nilai", pendapatan);
+
+        // create jurnal
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("metode_bayar", "tunai");
+        hsCriteria.put("kas", mapKas);
+
+        Map mapPendapatan = new HashMap();
+        mapPendapatan.put("nilai", new BigDecimal(trans.getTotalBayar()));
+        mapPendapatan.put("master_id", masterId);
+        mapPendapatan.put("divisi_id", divisiId);
+
+        hsCriteria.put("pendapatan_obat_umum", mapPendapatan);
+        hsCriteria.put("ppn_keluaran", mapPPN);
+
+        String noJurnal = "";
+        try {
+            noJurnal = billingSystemBo.createJurnal("29", hsCriteria, branchId, "Penjualan Obat Apotik Langsung E-Obat " + branchId, "Y");
+            jurnalResponse.setStatus("success");
+            jurnalResponse.setNoJurnal(noJurnal);
+        } catch (GeneralBOException e) {
+            jurnalResponse.setStatus("error");
+            jurnalResponse.setMsg("[VerifikatorPembayaranAction.createJurnalPembayaranObatbaru] ERROR. " + e);
+            return jurnalResponse;
+        }
+
+        return jurnalResponse;
     }
 
     private String getMasterIdByTipe(String idDetailCheckup, String jenis){

@@ -355,7 +355,7 @@
 </div>
 
 <div class="modal fade" id="modal-view-bukti">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -364,7 +364,7 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <div id="body-view-bukti">
+                <div id="body-view-bukti" style="text-align: center">
 
                 </div>
             </div>
@@ -543,7 +543,7 @@
     function viewBukti(var1){
         $("#modal-view-bukti").modal('show');
         var urlImg = firstpath()+"/images/upload/bukti_transfer/"+var1;
-        $("#body-view-bukti").html("<img src='"+urlImg+"'></img>");
+        $("#body-view-bukti").html("<img src='"+urlImg+"' style='max-width: 500px;'></img>");
     }
 
     function saveApprove(idTransaksi) {

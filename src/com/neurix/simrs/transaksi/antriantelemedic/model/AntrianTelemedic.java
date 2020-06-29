@@ -51,6 +51,15 @@ public class AntrianTelemedic {
     private String noTelp;
     private String namaAsuransi;
     private BigDecimal jumlahCover;
+    private String noJurnal;
+
+    public String getNoJurnal() {
+        return noJurnal;
+    }
+
+    public void setNoJurnal(String noJurnal) {
+        this.noJurnal = noJurnal;
+    }
 
     public BigDecimal getJumlahCover() {
         return jumlahCover;
