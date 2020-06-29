@@ -269,21 +269,55 @@ public class VerifikatorPembayaranAction {
                             return response;
                         }
 
-                        // Update Status FN / Finish to Antrian
-                        AntrianTelemedic antrianTelemedic = new AntrianTelemedic();
-                        antrianTelemedic.setId(antrianTelemedicEntity.getId());
-                        antrianTelemedic.setStatus("FN");
-                        antrianTelemedic.setAction("U");
-                        antrianTelemedic.setLastUpdate(time);
-                        antrianTelemedic.setLastUpdateWho(userLogin);
-                        try {
-                            telemedicBo.saveEdit(antrianTelemedic, "", "");
-                        } catch (GeneralBOException e){
-                            logger.error("[VerifikatorPembayaranAction.approveEresep] ERROR. ",e);
-                            response.setStatus("error");
-                            response.setMessage("[VerifikatorPembayaranAction.approveEresep] ERROR. " + e);
-                            return response;
+                        // jika E-Obat maka create Jurnal Pembelian Obat langsung
+                        if ("Y".equalsIgnoreCase(antrianTelemedicEntity.getFlagEresep())){
+
+                            TransaksiObatDetail trans = new TransaksiObatDetail();
+                            trans.setTotalBayar( new BigInteger(pembayaranOnlineEntity.getNominal().toString()));
+                            trans.setIdPelayanan(antrianTelemedicEntity.getIdPelayanan());
+
+                            JurnalResponse jurnalResponse = createJurnalPembayaranObatBaruEObat(trans);
+                            if ("success".equalsIgnoreCase(jurnalResponse.getStatus())){
+
+                                // update no_jurnal pada antrian telemedics
+                                AntrianTelemedic antrian = new AntrianTelemedic();
+                                antrian.setId(antrianTelemedicEntity.getId());
+                                antrian.setNoJurnal(jurnalResponse.getNoJurnal());
+                                antrian.setLastUpdate(time);
+                                antrian.setLastUpdateWho(userLogin);
+                                antrian.setStatus("FN");
+
+                                try {
+                                    telemedicBo.saveEdit(antrian,"","");
+                                } catch (GeneralBOException e){
+                                    logger.error("[VerifikatorPembayaranAction.approveEresep] ERROR. ",e);
+                                    response.setStatus("error");
+                                    response.setMessage("[VerifikatorPembayaranAction.approveEresep] ERROR. " + e);
+                                    return response;
+                                }
+
+                            } else {
+                                response.setStatus("error");
+                                response.setMessage(jurnalResponse.getMsg());
+                                return response;
+                            }
                         }
+
+                        // Update Status FN / Finish to Antrian
+//                        AntrianTelemedic antrianTelemedic = new AntrianTelemedic();
+//                        antrianTelemedic.setId(antrianTelemedicEntity.getId());
+//                        antrianTelemedic.setStatus("FN");
+//                        antrianTelemedic.setAction("U");
+//                        antrianTelemedic.setLastUpdate(time);
+//                        antrianTelemedic.setLastUpdateWho(userLogin);
+//                        try {
+//                            telemedicBo.saveEdit(antrianTelemedic, "", "");
+//                        } catch (GeneralBOException e){
+//                            logger.error("[VerifikatorPembayaranAction.approveEresep] ERROR. ",e);
+//                            response.setStatus("error");
+//                            response.setMessage("[VerifikatorPembayaranAction.approveEresep] ERROR. " + e);
+//                            return response;
+//                        }
                     }
 
                     response.setStatus("success");
@@ -415,39 +449,6 @@ public class VerifikatorPembayaranAction {
                             bean.setUserId(antrianTelemedicEntity.getIdPasien());
                             notifikasiFcm = notifikasiFcmBo.getByCriteria(bean);
                             FirebasePushNotif.sendNotificationFirebase(notifikasiFcm.get(0).getTokenFcm(),"Resep", "Pembayaran resep telah dikonfirmasi", "WL", notifikasiFcm.get(0).getOs());
-
-                            // jika E-Obat maka create Jurnal Pembelian Obat langsung
-                            if ("Y".equalsIgnoreCase(antrianTelemedicEntity.getFlagEresep())){
-
-                                TransaksiObatDetail trans = new TransaksiObatDetail();
-                                trans.setTotalBayar( new BigInteger(pembayaranOnlineEntity.getNominal().toString()));
-                                trans.setIdPelayanan(antrianTelemedicEntity.getIdPelayanan());
-
-                                JurnalResponse jurnalResponse = createJurnalPembayaranObatBaruEObat(trans);
-                                if ("success".equalsIgnoreCase(jurnalResponse.getStatus())){
-
-                                    // update no_jurnal pada antrian telemedics
-                                    AntrianTelemedic antrian = new AntrianTelemedic();
-                                    antrian.setId(antrianTelemedicEntity.getId());
-                                    antrian.setNoJurnal(jurnalResponse.getNoJurnal());
-                                    antrian.setLastUpdate(time);
-                                    antrian.setLastUpdateWho(userLogin);
-
-                                    try {
-                                        telemedicBo.saveEdit(antrian,"","");
-                                    } catch (GeneralBOException e){
-                                        logger.error("[VerifikatorPembayaranAction.approveTransaksi] ERROR. ",e);
-                                        response.setStatus("error");
-                                        response.setMessage("[VerifikatorPembayaranAction.approveTransaksi] ERROR. " + e);
-                                        return response;
-                                    }
-
-                                } else {
-                                    response.setStatus("error");
-                                    response.setMessage(jurnalResponse.getMsg());
-                                    return response;
-                                }
-                            }
 
                             response.setStatus("success");
                             return response;
