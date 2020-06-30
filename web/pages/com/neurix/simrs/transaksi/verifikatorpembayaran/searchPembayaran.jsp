@@ -315,6 +315,80 @@
                         <input type="hidden" id="fin_id_antrian"/>
                         <input type="hidden" id="fin_id_jenis_periksa_pasien"/>
                     </table>
+                    <hr>
+                    <br>
+                    <div id="detail-invoice-bpjs" style="display: none;">
+                        <div class="row top-7">
+                            <div class="col-md-3" align="right">No. Kartu BPJS :</div>
+                            <div class="col-md-6">
+                                <span id="dt-no-kartu-bpjs"></span>
+                                <button onclick="checkBpjs()" class="btn btn-sm btn-success" id="dt-btn-check-bpjs" style="margin-left: 20px">Check</button>
+                                <button class="btn btn-sm btn-success" id="dt-icon-check-bpjs" style="display: none;margin-left: 20px;"><i class="fa fa-check"></i></button>
+                            </div>
+                            <input type="hidden" id="dt-flag-check-bpjs" value="N">
+                        </div>
+                        <div class="row top-7">
+                            <div class="col-md-3" align="right">a.n. :</div>
+                            <div class="col-md-6"><span id="dt-nama-pasien-bpjs"></span></div>
+                        </div>
+                        <div class="row top-7">
+                            <div class="col-md-3" align="right">Keluhan Pasien :</div>
+                            <div class="col-md-6"><textarea class="form-control" cols="4" rows="3" id="dt-keluhan-bpjs" readonly></textarea></div>
+                        </div>
+                        <div class="row top-7">
+                            <div class="col-md-3" align="right">Diagnosa ICD 10 :</div>
+                            <div class="col-md-6">
+                                <input type="text" id="dt-diagnosa-awal-bpjs" style="margin-top: 7px" onkeypress="$(this).css('border','')" class="form-control" required="false"/>
+                                <script>
+                                    var menus, mapped;
+                                    $('#dt-diagnosa-awal-bpjs').typeahead({
+                                        minLength: 3,
+                                        source: function (query, process) {
+                                            menus = [];
+                                            mapped = {};
+
+                                            var data = [];
+                                            dwr.engine.setAsync(false);
+                                            CheckupAction.getListBpjsDiagnosaAwal(query, function (listdata) {
+                                                data = listdata;
+                                            });
+
+                                            $.each(data, function (i, item) {
+                                                var labelItem = item.namaDiagnosaBpjs;
+                                                mapped[labelItem] = {
+                                                    id: item.kodeDiagnosaBpjs,
+                                                    label: labelItem,
+                                                    name: item.namaDiagnosaBpjs
+                                                };
+                                                menus.push(labelItem);
+                                            });
+
+                                            process(menus);
+                                        },
+                                        updater: function (item) {
+                                            var selectedObj = mapped[item];
+                                            // insert to textarea diagnosa_ket
+                                            $("#dt-ket-diagnosa-bpjs").val(selectedObj.name);
+                                            return selectedObj.id;
+                                        }
+                                    });
+                                </script>
+                                <textarea rows="4" id="dt-ket-diagnosa-bpjs"
+                                            style="margin-top: 7px" readonly="true"
+                                            class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="row top-7">
+                            <div class="col-md-3" align="right">Cover BPJS :</div>
+                            <div class="col-md-6"><input type="number" class="form-control" id="dt-cover-bpjs" readonly></div>
+                        </div>
+                        <div class="row top-7">
+                            <div class="col-md-3" align="right"></div>
+                            <div class="col-md-6">
+                                <button onclick="verifikasiBpjs()" class="btn btn-sm btn-success" id="dt-btn-ver-bpjs" style="display: none;">Verifikasi</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="box-header with-border"></div>
             </div>
@@ -411,62 +485,62 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-detail-bpjs">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-document"></i> Approve Pasien Bpjs</span>
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin_bpjs">
-                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    <p id="msg_fin_error_bpjs"></p>
-                </div>
-                <div class="alert alert-success alert-dismissible" style="display: none" id="success_fin_bpjs">
-                    <h4><i class="icon fa fa-info"></i> Info!</h4>
-                    <p id="msg_fin_bpjs">Approve Berhasil</p>
-                </div>
-                <div class="col-md-offset-3">
-                    <div class="row">
-                        <div class="col-md-6"><h3 id="dt-nama-pelayanan-bpjs"></h3></div>
-                    </div>
-                    <div class="row top-7">
-                        <div class="col-md-3" align="right">No. Kartu :</div>
-                        <div class="col-md-6"><span id="dt-no-kartu-bpjs"></span></div>
-                    </div>
-                    <div class="row top-7">
-                        <div class="col-md-3" align="right">a.n. :</div>
-                        <div class="col-md-6"><span id="dt-nama-pasien-bpjs"></span></div>
-                    </div>
-                    <div class="row top-7">
-                        <div class="col-md-3" align="right">Keluhan Pasien :</div>
-                        <div class="col-md-6"><textarea class="form-control" cols="4" rows="3"></textarea></div>
-                    </div>
-                    <div class="row top-7">
-                        <div class="col-md-3" align="right">Diagnosa ICD 10 :</div>
-                        <div class="col-md-6"></div>
-                    </div>
-                    <div class="row top-7">
-                        <div class="col-md-3" align="right">Cover BPJS :</div>
-                        <div class="col-md-6"><input type="number" class="form-control" id="dt-cover-bpjs"></div>
-                    </div>
-                    <div class="row top-7">
-                        <div class="col-md-3" align="right"></div>
-                        <div class="col-md-6"><button onclick="checkBpjs()" class="btn btn-success">Check</button></div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <%--<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close--%>
-                <%--</button>--%>
-                <div id="btn-save-bpjs"></div>
-            </div>
-        </div>
-    </div>
-</div>
+<%--<div class="modal fade" id="modal-detail-bpjs">--%>
+    <%--<div class="modal-dialog">--%>
+        <%--<div class="modal-content">--%>
+            <%--<div class="modal-header">--%>
+                <%--<button type="button" class="close" data-dismiss="modal" aria-label="Close">--%>
+                    <%--<span aria-hidden="true">&times;</span></button>--%>
+                <%--<h4 class="modal-title"><i class="fa fa-document"></i> Approve Pasien Bpjs</span>--%>
+                <%--</h4>--%>
+            <%--</div>--%>
+            <%--<div class="modal-body">--%>
+                <%--<div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin_bpjs">--%>
+                    <%--<h4><i class="icon fa fa-ban"></i> Warning!</h4>--%>
+                    <%--<p id="msg_fin_error_bpjs"></p>--%>
+                <%--</div>--%>
+                <%--<div class="alert alert-success alert-dismissible" style="display: none" id="success_fin_bpjs">--%>
+                    <%--<h4><i class="icon fa fa-info"></i> Info!</h4>--%>
+                    <%--<p id="msg_fin_bpjs">Approve Berhasil</p>--%>
+                <%--</div>--%>
+                <%--<div class="col-md-offset-3">--%>
+                    <%--<div class="row">--%>
+                        <%--<div class="col-md-6"><h3 id="dt-nama-pelayanan-bpjs"></h3></div>--%>
+                    <%--</div>--%>
+                    <%--<div class="row top-7">--%>
+                        <%--<div class="col-md-3" align="right">No. Kartu :</div>--%>
+                        <%--<div class="col-md-6"><span id="dt-no-kartu-bpjs"></span></div>--%>
+                    <%--</div>--%>
+                    <%--<div class="row top-7">--%>
+                        <%--<div class="col-md-3" align="right">a.n. :</div>--%>
+                        <%--<div class="col-md-6"><span id="dt-nama-pasien-bpjs"></span></div>--%>
+                    <%--</div>--%>
+                    <%--<div class="row top-7">--%>
+                        <%--<div class="col-md-3" align="right">Keluhan Pasien :</div>--%>
+                        <%--<div class="col-md-6"><textarea class="form-control" cols="4" rows="3"></textarea></div>--%>
+                    <%--</div>--%>
+                    <%--<div class="row top-7">--%>
+                        <%--<div class="col-md-3" align="right">Diagnosa ICD 10 :</div>--%>
+                        <%--<div class="col-md-6"></div>--%>
+                    <%--</div>--%>
+                    <%--<div class="row top-7">--%>
+                        <%--<div class="col-md-3" align="right">Cover BPJS :</div>--%>
+                        <%--<div class="col-md-6"><input type="number" class="form-control" id="dt-cover-bpjs"></div>--%>
+                    <%--</div>--%>
+                    <%--<div class="row top-7">--%>
+                        <%--<div class="col-md-3" align="right"></div>--%>
+                        <%--<div class="col-md-6"><button onclick="checkBpjs()" class="btn btn-success">Check</button></div>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+            <%--<div class="modal-footer">--%>
+                <%--&lt;%&ndash;<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close&ndash;%&gt;--%>
+                <%--&lt;%&ndash;</button>&ndash;%&gt;--%>
+                <%--<div id="btn-save-bpjs"></div>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+    <%--</div>--%>
+<%--</div>--%>
 
 
 <script type='text/javascript'>
@@ -491,12 +565,12 @@
         $("#modal-invoice").modal('show');
         showDetail(idAntrian, idJenisPeriksaPasien)
     }
-    function showDetail(var1, var2){
+    function showDetail(idAntrian, idJenisPeriksaPasien){
 
-        $("#fin_id_jenis_periksa_pasien").val(var2);
+        $("#fin_id_jenis_periksa_pasien").val(idJenisPeriksaPasien);
 
         var head = "";
-        if (var2 == "asuransi"){
+        if (idJenisPeriksaPasien == "asuransi"){
             head = "<td>Id</td>" +
                 "<td width=\"20%\">Keterangan</td>" +
                 "<td>Approve Flag</td>" +
@@ -506,7 +580,10 @@
                 "<td align=\"center\" width=\"20%\">Total Tarif (Rp.)</td>" +
                 "<td align=\"center\" width=\"20%\">View Bukti</td>" +
                 "<td>Action</td>";
-        } else if (var2 == "bpjs") {
+        } else if (idJenisPeriksaPasien == "bpjs") {
+
+            $("#detail-invoice-bpjs").show();
+
             head = "<td>Id</td>" +
                 "<td width=\"20%\">Keterangan</td>" +
                 "<td>Approve Flag</td>" +
@@ -526,25 +603,50 @@
                 "<td>Action</td>";
         }
 
-        VerifikatorPembayaranAction.listDetailPembayaran(var1, function (response) {
+        VerifikatorPembayaranAction.getSessionAntrianTelemedic(idAntrian, function (telemedicEntity) {
 
-            var str = "";
-            $.each(response, function (i, item) {
-                str += "<tr>" +
-                    "<td>"+item.id+"</td>"+
-                    "<td>"+item.keterangan+"</td>"+
-                    "<td align='center'>"+ iconFlag(item.approvedFlag) +"</td>"+
-                    "<td>"+ nullEscape(item.approvedWho) +"</td>";
+            var data = telemedicEntity;
+            if (data != null){
 
-                if (var2 == "asuransi" || var2 == "bpjs"){
-                    str += "<td>"+item.noKartu+"</td>"+
-                        "<td>"+ formatRupiah ( item.jumlahCover )+"</td>";
+                if (idJenisPeriksaPasien == "bpjs"){
+                    $("#dt-no-kartu-bpjs").text(data.noKartu);
+                    $("#dt-nama-pasien-bpjs").text(data.namaPasien);
+                    $("#dt-keluhan-bpjs").val(data.keluhan);
+                    $("#dt-cover-bpjs").val(data.jumlahCover);
+                    $("#dt-diagnosa-awal-bpjs").val(data.idDiagnosa);
+                    $("#dt-ket-diagnosa-bpjs").text(data.ketDiagnosa);
+
+                    if (data.noSep != null){
+                        $("#dt-btn-check-bpjs").hide();
+                        $("#dt-diagnosa-awal-bpjs").prop('readOnly', 'true');
+                    }
                 }
-                 str += "<td>"+ formatRupiah( item.nominal )+"</td>";
+
+            }
+
+            VerifikatorPembayaranAction.listDetailPembayaran(idAntrian, function (response) {
+
+                var str = "";
+                $.each(response, function (i, item) {
+                    str += "<tr>" +
+                        "<td>"+item.id+"</td>"+
+                        "<td>"+item.keterangan+"</td>"+
+                        "<td align='center'>"+ iconFlag(item.approvedFlag) +"</td>"+
+                        "<td>"+ nullEscape(item.approvedWho) +"</td>";
+
+                    if (idJenisPeriksaPasien == "asuransi"){
+                        str += "<td>"+item.noKartu+"</td>"+
+                            "<td align='right'>"+ formatRupiah ( item.jumlahCover )+"</td>";
+                    } if (idJenisPeriksaPasien == "bpjs"){
+                        str += "<td>"+item.noKartu+"</td>"+
+                            "<td>"+ item.noSep+"</td>";
+                    }
+
+                    str += "<td align='right'>"+ formatRupiah( item.nominal )+"</td>";
 
                     if (item.flagBayar == "Y"){
 
-                        if (item.approvedFlag == "Y"){
+                        if (item.approvedFlag == "Y" || item.noSep == null){
                             str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
                                 "<td align='center'></td>";
                         } else {
@@ -560,7 +662,7 @@
 
                     } else {
 //                        console.log("Id Item : "+item.idItem);
-                        if ((var2 == "asuransi" || var2 == "bpjs") && item.nominal != null) {
+                        if (idJenisPeriksaPasien == "asuransi" && item.nominal != null) {
                             str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
                                 "<td align='center'><button class='btn btn-sm btn-success' onclick=\"actionApprove(\'"+item.id+"\')\"><i class='fa fa-edit'></i> VerifiKasi</button></td>";
                         } else {
@@ -569,11 +671,16 @@
                         }
                     }
                     str += "</tr>";
+                });
+                $("#head_tindakan_fin").html(head);
+                $("#fin_id_antrian").val(idAntrian);
+                $("#body_tindakan_fin").html(str);
             });
-            $("#head_tindakan_fin").html(head);
-            $("#fin_id_antrian").val(var1);
-            $("#body_tindakan_fin").html(str);
-        })
+
+        });
+
+
+
     }
 
     function iconFlag(var1) {
@@ -613,7 +720,7 @@
         VerifikatorPembayaranAction.approveTransaksi(idTransaksi, function (response) {
             dwr.engine.setAsync(false);
             if (response.status == "error"){
-                $("#warning_fin").show();
+                $("#warning_fin").show().fadeOut(5000);
                 $("#success_fin").hide();
                 $("#msg_fin_error").text(response.message);
             } else {
@@ -630,7 +737,7 @@
         VerifikatorPembayaranAction.approveEresep(idTransaksi, function (response) {
             dwr.engine.setAsync(false);
             if (response.status == "error"){
-                $("#warning_fin").show();
+                $("#warning_fin").show().fadeOut(5000);
                 $("#success_fin").hide();
                 $("#msg_fin_error").text(response.message);
             } else {
@@ -643,7 +750,7 @@
     function actionApprove(id) {
         var jenisPasien = $("#fin_id_jenis_periksa_pasien").val();
         $("#dt-id-transaksi-asuransi").val(id);
-        if (jenisPasien == "asuransi" || jenisPasien == "bpjs"){
+        if (jenisPasien == "asuransi"){
             var idAntrian = $("#fin_id_antrian").val();
             VerifikatorPembayaranAction.getSessionAntrianTelemedic(idAntrian, function (telemedicEntity) {
                 if (telemedicEntity != null){
@@ -661,12 +768,6 @@
                             $("#dt-cover-asuransi").prop('readonly', false);
                         }
                     }
-
-                    if (jenisPasien == "bpjs"){
-                        $("#modal-detail-bpjs").modal('show');
-
-                    }
-
                     //console.log("Jumlah Cover : " + item.jumlahCover)
                 }
             });
@@ -692,7 +793,30 @@
     }
 
     function checkBpjs(){
+        var nokartu = $("#dt-no-kartu-bpjs").text();
+        $("#dt-flag-check-bpjs").val("Y");
+        $("#dt-btn-check-bpjs").hide();
+        $("#dt-icon-check-bpjs").show();
+        $("#dt-btn-ver-bpjs").show();
+    }
 
+    function verifikasiBpjs() {
+
+        var idAntrian = $("#fin_id_antrian").val();
+        var noKartu = $("#dt-no-kartu-bpjs").text();
+        var idDiagnosa = $("#dt-diagnosa-awal-bpjs").val();
+        var ketDiagnosa = $("#dt-ket-diagnosa-bpjs").val();
+
+        VerifikatorPembayaranAction.saveVerifikasiBpjs(idAntrian, noKartu, idDiagnosa, ketDiagnosa, function (response) {
+            if (response.status == "error"){
+                $("#warning_fin").show();
+                $("#success_fin").hide();
+                $("#msg_fin_error").text(response.message);
+            } else {
+                $("#success_fin").show().fadeOut(5000);
+                searchPage(idAntrian)
+            }
+        });
     }
 
 </script>

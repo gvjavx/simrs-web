@@ -32,6 +32,15 @@ public class PembayaranOnline {
     private String noKartu;
     private BigDecimal jumlahCover;
     private String namaAsuransi;
+    private String noSep;
+
+    public String getNoSep() {
+        return noSep;
+    }
+
+    public void setNoSep(String noSep) {
+        this.noSep = noSep;
+    }
 
     public String getNamaAsuransi() {
         return namaAsuransi;

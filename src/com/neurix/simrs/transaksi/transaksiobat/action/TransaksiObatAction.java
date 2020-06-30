@@ -1019,6 +1019,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         PaketPeriksaBo paketPeriksaBo = (PaketPeriksaBo) ctx.getBean("paketPeriksaBoProxy");
         MasterBo masterBo = (MasterBo) ctx.getBean("masterBoProxy");
         VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
+        TelemedicBo telemedicBo = (TelemedicBo) ctx.getBean("telemedicBoProxy");
 
         String kode = "";
         String transId = "";
@@ -1038,10 +1039,15 @@ public class TransaksiObatAction extends BaseMasterAction {
             idPasien = checkupEntity.getIdPasien();
         }
 
+        String keterangan = "tindakan";
         if (idTransaksiOnline != null && !"".equalsIgnoreCase(idTransaksiOnline)){
             ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = verifikatorPembayaranBo.getPembayaranOnlineById(idTransaksiOnline);
             if (pembayaranOnlineEntity != null){
                 kodeBank = pembayaranOnlineEntity.getKodeBank();
+
+                if ("resep".equalsIgnoreCase(pembayaranOnlineEntity.getKeterangan())){
+                    keterangan = pembayaranOnlineEntity.getKeterangan();
+                }
             }
         }
 
@@ -1062,18 +1068,12 @@ public class TransaksiObatAction extends BaseMasterAction {
 
         // MAP ALL TINDAKAN BY KETERANGAN
         List<Map> listOfTindakan = new ArrayList<>();
-        List<String> listOfKeteranganRiwayat = riwayatTindakanBo.getListKeteranganByIdDetailCheckup(idDetailCheckup);
-        if (listOfKeteranganRiwayat.size() > 0) {
-
-            for (String keterangan : listOfKeteranganRiwayat) {
-                Map mapTindakan = new HashMap();
-                mapTindakan.put("master_id", masterId);
-                mapTindakan.put("divisi_id", getDivisiId(idDetailCheckup, idJenisPeriksaPasien, keterangan));
-                mapTindakan.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, idJenisPeriksaPasien, keterangan));
-                mapTindakan.put("activity", getAcitivityList(idDetailCheckup, idJenisPeriksaPasien, keterangan, kode));
-                listOfTindakan.add(mapTindakan);
-            }
-        }
+        Map mapTindakan = new HashMap();
+        mapTindakan.put("master_id", masterId);
+        mapTindakan.put("divisi_id", getDivisiId(idDetailCheckup, idJenisPeriksaPasien, keterangan));
+        mapTindakan.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, idJenisPeriksaPasien, keterangan));
+        mapTindakan.put("activity", getAcitivityList(idDetailCheckup, idJenisPeriksaPasien, keterangan, kode));
+        listOfTindakan.add(mapTindakan);
 
         // MENDAPATKAN SEMUA BIAYA RAWAT;
         BigDecimal jumlah = getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "", "");
@@ -1126,33 +1126,6 @@ public class TransaksiObatAction extends BaseMasterAction {
 
             }
 
-        } else {
-            if ("umum".equalsIgnoreCase(idJenisPeriksaPasien)){
-                invoice = billingSystemBo.createInvoiceNumber("JRJ", branchId);
-
-                // create list map piutang
-                Map mapPiutang = new HashMap();
-                mapPiutang.put("bukti", invoice);
-                mapPiutang.put("nilai", jumlah);
-                mapPiutang.put("pasien_id", idPasien);
-
-                mapJurnal.put("pendapatan_rawat_jalan_umum", listOfTindakan);
-                mapJurnal.put("piutang_pasien_umum", mapPiutang);
-                transId = "61";
-            } else if ("asuransi".equalsIgnoreCase(idJenisPeriksaPasien)){
-                invoice = billingSystemBo.createInvoiceNumber("JRJ", branchId);
-
-                // create list map piutang
-                Map mapPiutang = new HashMap();
-                mapPiutang.put("bukti", invoice);
-                mapPiutang.put("nilai", jumlah);
-                mapPiutang.put("master_id", masterId);
-//                                mapPiutang.put("pasien_id", idPasien);
-                // debit piutang pasien asuransi
-                mapJurnal.put("pendapatan_rawat_jalan_asuransi", listOfTindakan);
-                mapJurnal.put("piutang_pasien_asuransi", mapPiutang);
-                transId = "09";
-            }
         }
 
 

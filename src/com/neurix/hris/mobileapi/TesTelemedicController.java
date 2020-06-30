@@ -109,6 +109,9 @@ public class TesTelemedicController implements ModelDriven<Object> {
             case "insert-bpjs-non-resep":
                 insertDataTelemedic("bpjs","");
                 break;
+            case "insert-bpjs-resep":
+                insertDataTelemedic("bpjs","resep");
+                break;
             case "insert-resep":
                 insertObat(this.id);
                 break;
@@ -155,6 +158,7 @@ public class TesTelemedicController implements ModelDriven<Object> {
                 antrianTelemedicEntity.setIdPasien("RS0104200033");
                 antrianTelemedicEntity.setNoKartu(pasienEntity.getNoBpjs());
             }
+            antrianTelemedicEntity.setKeluhan("Tenggorokan Serak Selama 1 Minggu.");
         } else {
             antrianTelemedicEntity.setIdPasien("RS0104200035");
         }

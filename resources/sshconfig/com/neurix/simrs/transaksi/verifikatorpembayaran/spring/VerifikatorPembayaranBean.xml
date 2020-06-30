@@ -34,6 +34,8 @@
           p:transaksiObatDetailDao-ref="transaksiObatDetailDao"
           p:detailDao-ref="checkupDetailDao"
           p:asuransiDao-ref="asuransiDao"
+          p:diagnosaRawatDao-ref="diagnosaRawatDao"
+          p:transaksiStokDao-ref="transaksiStokDao"
     />
 
     <bean id="verifikatorPembayaranBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
