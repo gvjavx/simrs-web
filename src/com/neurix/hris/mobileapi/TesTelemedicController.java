@@ -4,6 +4,8 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.kurir.bo.KurirBo;
 import com.neurix.simrs.master.kurir.model.Kurir;
+import com.neurix.simrs.master.pasien.bo.PasienBo;
+import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
 import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
@@ -34,6 +36,11 @@ public class TesTelemedicController implements ModelDriven<Object> {
     private TelemedicBo telemedicBoProxy;
     private KurirBo kurirBoProxy;
     private VerifikatorPembayaranBo verifikatorPembayaranBoProxy;
+    private PasienBo pasienBoProxy;
+
+    public void setPasienBoProxy(PasienBo pasienBoProxy) {
+        this.pasienBoProxy = pasienBoProxy;
+    }
 
     public String getObat() {
         return obat;
@@ -99,6 +106,9 @@ public class TesTelemedicController implements ModelDriven<Object> {
             case "insert-asuransi-resep":
                 insertDataTelemedic("asuransi","resep");
                 break;
+            case "insert-bpjs-non-resep":
+                insertDataTelemedic("bpjs","");
+                break;
             case "insert-resep":
                 insertObat(this.id);
                 break;
@@ -128,7 +138,6 @@ public class TesTelemedicController implements ModelDriven<Object> {
 
         ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = new ItSimrsAntrianTelemedicEntity();
         antrianTelemedicEntity.setBranchId("RS01");
-        antrianTelemedicEntity.setIdPasien("RS0104200035");
         antrianTelemedicEntity.setIdPelayanan("PYN00000002");
         antrianTelemedicEntity.setIdDokter("DKR00000012");
         antrianTelemedicEntity.setKodeBank("1.1.01.02.01");
@@ -137,14 +146,17 @@ public class TesTelemedicController implements ModelDriven<Object> {
             antrianTelemedicEntity.setFlagResep("Y");
         }
         if ("asuransi".equalsIgnoreCase(tipe)){
+            antrianTelemedicEntity.setIdPasien("RS0104200035");
             antrianTelemedicEntity.setNoKartu("080780808");
             antrianTelemedicEntity.setIdAsuransi("ASN00000002");
-//            if ("resep".equalsIgnoreCase(jenis)){
-//                antrianTelemedicEntity.setFlagBayarResep("Y");
-//                antrianTelemedicEntity.setFlagBayarKonsultasi("Y");
-//            } else {
-//                antrianTelemedicEntity.setFlagBayarKonsultasi("Y");
-//            }
+        } else if ("bpjs".equalsIgnoreCase(tipe)){
+            ImSimrsPasienEntity pasienEntity = pasienBoProxy.getPasienById("RS0104200033");
+            if (pasienEntity != null){
+                antrianTelemedicEntity.setIdPasien("RS0104200033");
+                antrianTelemedicEntity.setNoKartu(pasienEntity.getNoBpjs());
+            }
+        } else {
+            antrianTelemedicEntity.setIdPasien("RS0104200035");
         }
         antrianTelemedicEntity.setCreatedDate(time);
         antrianTelemedicEntity.setCreatedWho("admin");
