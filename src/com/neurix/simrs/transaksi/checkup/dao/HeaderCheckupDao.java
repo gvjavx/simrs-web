@@ -68,6 +68,9 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
             if (mapCriteria.get("tgl_keluar_not_null") != null) {
                 criteria.add(Restrictions.isNotNull("tglKeluar"));
             }
+            if (mapCriteria.get("id_antrian_online") != null) {
+                criteria.add(Restrictions.eq("idAntrianOnline", mapCriteria.get("id_antrian_online").toString()));
+            }
         }
 
         List<ItSimrsHeaderChekupEntity> result = criteria.list();
@@ -144,6 +147,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         String dateFrom = "";
         String dateTo = "";
 
+        String idAntrianOnline = "%";
+
         //sodiq, 17 Nov 2019, penambahan no checkup
         String noCheckup = "%";
         if (mapCriteria.get("no_checkup") != null) {
@@ -177,6 +182,10 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
             dateTo = mapCriteria.get("date_to").toString();
         }
 
+        if (mapCriteria.get("id_antrian_online") != null && !"".equalsIgnoreCase(mapCriteria.get("id_antrian_online").toString())) {
+            idAntrianOnline = mapCriteria.get("id_antrian_online").toString();
+        }
+
         String SQL = "SELECT\n" +
                 "detail.no_checkup,\n" +
                 "h.branch_id\n" +
@@ -195,7 +204,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "AND detail.id_pelayanan LIKE :idPelayanan\n" +
                 "AND detail.status_periksa LIKE :statusPeriksa\n" +
                 "AND detail.flag = 'Y'\n" +
-                "AND h.no_checkup LIKE :noCheckup\n";
+                "AND h.no_checkup LIKE :noCheckup\n" +
+                "AND h.id_antrian_online LIKE :idAntrianOnline";
 
 //        String group = "\n GROUP BY detail.no_checkup, h.branch_id";
         String order = "\n ORDER BY h.created_date DESC";
@@ -216,6 +226,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     .setParameter("noCheckup", noCheckup)
                     .setParameter("dateFrom", dateFrom)
                     .setParameter("dateTo", dateTo)
+                    .setParameter("idAntrianOnline", idAntrianOnline)
                     .list();
 
         } else {
@@ -230,6 +241,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     .setParameter("idPelayanan", idPelayanan)
                     .setParameter("statusPeriksa", statusPeriksa)
                     .setParameter("noCheckup", noCheckup)
+                    .setParameter("idAntrianOnline", idAntrianOnline)
                     .list();
 
         }

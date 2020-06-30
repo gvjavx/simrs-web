@@ -54,6 +54,16 @@ public class PengirimanObat {
         this.status = status;
     }
 
+    private String flagTerkirim;
+
+    public String getFlagTerkirim() {
+        return flagTerkirim;
+    }
+
+    public void setFlagTerkirim(String flagTerkirim) {
+        this.flagTerkirim = flagTerkirim;
+    }
+
     public String getLat() {
         return lat;
     }

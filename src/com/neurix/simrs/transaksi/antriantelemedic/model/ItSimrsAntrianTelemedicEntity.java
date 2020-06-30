@@ -37,7 +37,34 @@ public class ItSimrsAntrianTelemedicEntity {
     private String alamat;
     private String noTelp;
     private BigDecimal jumlahCover;
+    private String jenisPembayaran;
     private String noJurnal;
+    private String noRujukan;
+    private String jenisRujukan;
+
+    public String getNoRujukan() {
+        return noRujukan;
+    }
+
+    public void setNoRujukan(String noRujukan) {
+        this.noRujukan = noRujukan;
+    }
+
+    public String getJenisRujukan() {
+        return jenisRujukan;
+    }
+
+    public void setJenisRujukan(String jenisRujukan) {
+        this.jenisRujukan = jenisRujukan;
+    }
+
+    public String getJenisPembayaran() {
+        return jenisPembayaran;
+    }
+
+    public void setJenisPembayaran(String jenisPembayaran) {
+        this.jenisPembayaran = jenisPembayaran;
+    }
 
     public String getNoJurnal() {
         return noJurnal;

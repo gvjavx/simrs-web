@@ -49,6 +49,53 @@ public class TelemedicineMobile {
     private String jenisPengambilan;
     private String noTelp;
 
+    private String flagEresep;
+    private String urlResep;
+
+    private String jenisPembayaran;
+    private String noRujukan;
+    private String jenisRujukan;
+
+    public String getJenisRujukan() {
+        return jenisRujukan;
+    }
+
+    public void setJenisRujukan(String jenisRujukan) {
+        this.jenisRujukan = jenisRujukan;
+    }
+
+    public String getNoRujukan() {
+        return noRujukan;
+    }
+
+    public void setNoRujukan(String noRujukan) {
+        this.noRujukan = noRujukan;
+    }
+
+    public String getJenisPembayaran() {
+        return jenisPembayaran;
+    }
+
+    public void setJenisPembayaran(String jenisPembayaran) {
+        this.jenisPembayaran = jenisPembayaran;
+    }
+
+    public String getUrlResep() {
+        return urlResep;
+    }
+
+    public void setUrlResep(String urlResep) {
+        this.urlResep = urlResep;
+    }
+
+    public String getFlagEresep() {
+        return flagEresep;
+    }
+
+    public void setFlagEresep(String flagEresep) {
+        this.flagEresep = flagEresep;
+    }
+
     public String getNoTelp() {
         return noTelp;
     }

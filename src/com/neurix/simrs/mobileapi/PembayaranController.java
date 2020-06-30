@@ -245,6 +245,7 @@ public class PembayaranController implements ModelDriven<Object> {
                 pembayaranMobile.setNominal(CommonUtil.numbericFormat(item.getNominal(),"###,###"));
                 pembayaranMobile.setApprovedFlag(item.getApprovedFlag());
                 pembayaranMobile.setJenisPengambilan(item.getJenisPengambilan());
+                pembayaranMobile.setIdItem(item.getIdItem());
 
                 pembayaranMobile.setCreatedDate(CommonUtil.addJamBayar(item.getLastUpdate()));
 

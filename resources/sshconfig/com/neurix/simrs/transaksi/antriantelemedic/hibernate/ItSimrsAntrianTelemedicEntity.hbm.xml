@@ -92,8 +92,17 @@
             <basic name="jumlahCover">
                 <column name="jumlah_cover"/>
             </basic>
+            <basic name="jenisPembayaran">
+                <column name="jenis_pembayaran"/>
+            </basic>
             <basic name="noJurnal">
                 <column name="no_jurnal"/>
+            </basic>
+            <basic name="noRujukan">
+                <column name="no_rujukan"/>
+            </basic>
+            <basic name="jenisRujukan">
+                <column name="jenis_rujukan"/>
             </basic>
         </attributes>
     </entity>

@@ -6,6 +6,9 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.common.util.FirebasePushNotif;
 import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiFcmBo;
 import com.neurix.hris.transaksi.notifikasi.model.NotifikasiFcm;
+import com.neurix.simrs.bpjs.vclaim.bo.BpjsBo;
+import com.neurix.simrs.bpjs.vclaim.model.PesertaResponse;
+import com.neurix.simrs.bpjs.vclaim.model.RujukanResponse;
 import com.neurix.simrs.mobileapi.model.ResepOnlineMobile;
 import com.neurix.simrs.mobileapi.model.TelemedicineMobile;
 import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
@@ -14,6 +17,7 @@ import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedic
 import com.neurix.simrs.transaksi.antriantelemedic.model.StatusAntrianTelemedic;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
+import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.reseponline.bo.ResepOnlineBo;
@@ -36,6 +40,8 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -52,6 +58,7 @@ public class TelemedicineController implements ModelDriven<Object> {
     private NotifikasiFcmBo notifikasiFcmBoProxy;
     private ResepOnlineBo resepOnlineBoProxy;
     private VerifikatorPembayaranBo verifikatorPembayaranBoProxy;
+    private BpjsBo bpjsBoProxy;
 
     private String action;
 
@@ -67,11 +74,47 @@ public class TelemedicineController implements ModelDriven<Object> {
     private String idPembayaranOnline;
     private String idPasien;
     private String flagResep;
+    private String flagEresep;
+    private File fileUploadResep;
 
     private String jsonObat;
     private File fileUploadTtd;
 
+    private String keterangan;
+
     private boolean isResep;
+
+    public BpjsBo getBpjsBoProxy() {
+        return bpjsBoProxy;
+    }
+
+    public void setBpjsBoProxy(BpjsBo bpjsBoProxy) {
+        this.bpjsBoProxy = bpjsBoProxy;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getFlagEresep() {
+        return flagEresep;
+    }
+
+    public void setFlagEresep(String flagEresep) {
+        this.flagEresep = flagEresep;
+    }
+
+    public File getFileUploadResep() {
+        return fileUploadResep;
+    }
+
+    public void setFileUploadResep(File fileUploadResep) {
+        this.fileUploadResep = fileUploadResep;
+    }
 
     public String getTujuanPelayanan() {
         return tujuanPelayanan;
@@ -259,10 +302,23 @@ public class TelemedicineController implements ModelDriven<Object> {
             bean.setLon(model.getLon());
             bean.setJenisPengambilan(model.getJenisPengambilan());
             bean.setNoTelp(model.getNoTelp());
+            bean.setFlagEresep(model.getFlagEresep());
+            bean.setJenisPembayaran(model.getJenisPembayaran());
+
+            String fileName = "";
+            if (fileUploadResep != null) {
+                fileName = model.getIdPasien()+"_"+now.getTime()+".jpeg";
+                File fileCreate = new File(CommonUtil.getPropertyParams("upload.external.dir")+ CommonConstant.RESOURCE_PATH_RESEP, fileName);
+                try {
+                    FileUtils.copyFile(fileUploadResep, fileCreate);
+                    bean.setUrlFotoResep(fileName);
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
 
             bean.setAction("C");
             bean.setFlag("Y");
-
 
             try {
                 String msg = telemedicBoProxy.saveAdd(bean, branchId, kodeBank);
@@ -292,6 +348,99 @@ public class TelemedicineController implements ModelDriven<Object> {
                 }
             } catch (GeneralBOException e) {
                 logger.error("[TelemedicineController.create] Error, " + e.getMessage());
+            }
+        }
+
+        if (action.equalsIgnoreCase("editFlag")) {
+
+            List<ItSimrsPembayaranOnlineEntity> list = new ArrayList<>();
+
+            PembayaranOnline entity = new PembayaranOnline();
+            entity.setIdAntrianTelemedic(idTele);
+
+            try {
+               list = verifikatorPembayaranBoProxy.getSearchEntityByCriteria(entity);
+            } catch (GeneralBOException e) {
+                logger.error("[TelemedicineController.create] Error, " + e.getMessage());
+            }
+
+            if  (list.size() > 0) {
+                for (ItSimrsPembayaranOnlineEntity item : list) {
+                    item.setFlag("N");
+                    item.setFlag("U");
+                    item.setLastUpdateWho("admin");
+
+                    try {
+                        verifikatorPembayaranBoProxy.saveEdit(item);
+                    } catch (GeneralBOException e) {
+                        logger.error("[TelemedicineController.create] Error, " + e.getMessage());
+                    }
+                }
+            }
+
+            AntrianTelemedic bean = new AntrianTelemedic();
+            bean.setId(idTele);
+            bean.setFlag("N");
+
+            try {
+                telemedicBoProxy.saveEdit(bean, branchId, "");
+                model.setMessage("Success");
+            } catch (GeneralBOException e) {
+                logger.error("[TelemedicineController.create] Error, " + e.getMessage());
+            }
+
+            //JIKA BATAL atau TIMEOUT, maka update list antrian
+            if (keterangan.equalsIgnoreCase("batal") || keterangan.equalsIgnoreCase("timeout") ) {
+
+                List<AntrianTelemedic> telemedicList = new ArrayList<>();
+
+                AntrianTelemedic search = new AntrianTelemedic();
+                search.setIdDokter(idDokter);
+                search.setIdPelayanan(idPelayanan);
+                search.setStatus("WL");
+                search.setFlag("Y");
+
+                try{
+                    telemedicList = telemedicBoProxy.getSearchByCriteria(search);
+
+                } catch (GeneralBOException e){
+                    logger.error("[TelemedicineController.create] Error, " + e.getMessage());
+
+                }
+
+                if (telemedicList.size() < 3) {
+
+                    ItSimrsAntrianTelemedicEntity firstOrderAntrian = null;
+
+                    try {
+                        firstOrderAntrian = telemedicBoProxy.getAntrianTelemedicFirstOrder(idPelayanan, idDokter, "LL");
+                    } catch (GeneralBOException e) {
+                        logger.error("[TelemedicineController.create] Error, " + e.getMessage());
+                    }
+
+                    if (firstOrderAntrian != null){
+
+                        AntrianTelemedic antrianTelemedic = new AntrianTelemedic();
+                        antrianTelemedic.setId(antrianTelemedic.getId());
+                        antrianTelemedic.setStatus("WL");
+                        antrianTelemedic.setLastUpdate(now);
+                        antrianTelemedic.setLastUpdateWho("adminMobile");
+
+                        try {
+                            telemedicBoProxy.saveEdit(antrianTelemedic, firstOrderAntrian.getBranchId(), firstOrderAntrian.getKodeBank());
+
+                            //Push Notif ke Pasien terkait perubahan status menjadi WL
+                            NotifikasiFcm beanNotif = new NotifikasiFcm();
+                            beanNotif.setUserId(firstOrderAntrian.getIdPasien());
+                            List<NotifikasiFcm> notifikasiFcm = notifikasiFcmBoProxy.getByCriteria(beanNotif);
+                            FirebasePushNotif.sendNotificationFirebase(notifikasiFcm.get(0).getTokenFcm(),"Telemedic", "Anda telah memasuki Antrian Waiting List. Silahkan lakukan pembayaran", "WL", notifikasiFcm.get(0).getOs());
+
+                        } catch (GeneralBOException e){
+                            logger.error("[TelemedicineController.create] Error, " + e.getMessage());
+                        }
+                    }
+
+                }
             }
         }
 
@@ -410,6 +559,48 @@ public class TelemedicineController implements ModelDriven<Object> {
             }
         }
 
+        if(action.equalsIgnoreCase("getListAntrianEObat")) {
+            listOfTelemedic = new ArrayList<>();
+            AntrianTelemedic bean = new AntrianTelemedic();
+            bean.setIdPelayanan(idPelayanan);
+            bean.setFlag("Y");
+            bean.setFlagEresep("Y");
+            bean.setStatus("ER");
+
+            List<AntrianTelemedic> result = new ArrayList<>();
+
+            try {
+                result = telemedicBoProxy.getSearchByCriteria(bean);
+            } catch (GeneralBOException e){
+                logger.error("[TelemedicineController.getListAntrianSL] Error, " + e.getMessage());
+            }
+
+            int i = 1;
+            for(AntrianTelemedic item : result) {
+                    TelemedicineMobile telemedicineMobile = new TelemedicineMobile();
+                    telemedicineMobile.setNoAntrian(String.valueOf(i++));
+                    telemedicineMobile.setId(item.getId());
+                    telemedicineMobile.setIdAsuransi(item.getIdAsuransi());
+                    telemedicineMobile.setIdDokter(item.getIdDokter());
+                    telemedicineMobile.setIdJenisPeriksaPasien(item.getIdJenisPeriksaPasien());
+                    telemedicineMobile.setIdPasien(item.getIdPasien());
+                    telemedicineMobile.setStatus(item.getStatus());
+                    telemedicineMobile.setFlagResep(item.getFlagResep());
+                    telemedicineMobile.setNoKartu(item.getNoKartu());
+                    telemedicineMobile.setIdPelayanan(item.getIdPelayanan());
+                    telemedicineMobile.setNamaDokter(item.getNamaDokter());
+                    telemedicineMobile.setNamaPasien(item.getNamaPasien());
+                    telemedicineMobile.setNamaPelayanan(item.getNamaPelayanan());
+                    telemedicineMobile.setKetStatus(item.getKetStatus());
+                    telemedicineMobile.setFlagEresep(item.getFlagEresep());
+                    telemedicineMobile.setUrlResep(item.getUrlResep());
+
+                    listOfTelemedic.add(telemedicineMobile);
+                }
+
+
+        }
+
         if (action.equalsIgnoreCase("checkTele")) {
 
             listOfTelemedic = new ArrayList<>();
@@ -447,6 +638,7 @@ public class TelemedicineController implements ModelDriven<Object> {
                 telemedicineMobile.setFlagBayarKonsultasi(item.getFlagBayarKonsultasi());
                 telemedicineMobile.setKeluhan(item.getKeluhan());
                 telemedicineMobile.setJenisPengambilan(item.getJenisPengambilan());
+                telemedicineMobile.setUrlResep(item.getUrlResep());
 
                 if (flagResep != null && flagResep.equalsIgnoreCase("Y")) {
 
@@ -512,21 +704,17 @@ public class TelemedicineController implements ModelDriven<Object> {
         }
 
         if (action.equalsIgnoreCase("getDetailCheckup")) {
-            HeaderCheckup beanHeader = new HeaderCheckup();
-            beanHeader.setIdAntrianOnline(idTele);
-
-
-            List<HeaderCheckup> resultCheckup = new ArrayList<>();
+            ItSimrsHeaderChekupEntity entity = new ItSimrsHeaderChekupEntity();
             List<HeaderDetailCheckup> resultDetailCheckup = new ArrayList<>();
 
             try {
-               resultCheckup = checkupBoProxy.getByCriteria(beanHeader);
+               entity = verifikatorPembayaranBoProxy.getHeaderCheckupByIdAntrinTelemedic(idTele);
             } catch (GeneralBOException e) {
                 logger.error("[TelemedicineController.getDetailCheckup] Error, " + e.getMessage());
             }
 
             HeaderDetailCheckup beanDetail = new HeaderDetailCheckup();
-            beanDetail.setNoCheckup(resultCheckup.get(0).getNoCheckup());
+            beanDetail.setNoCheckup(entity.getNoCheckup());
 
             try {
                 resultDetailCheckup = checkupDetailBoProxy.getByCriteria(beanDetail);
@@ -592,6 +780,102 @@ public class TelemedicineController implements ModelDriven<Object> {
                 model.setMessage(totalHarga.toString());
             } catch (GeneralBOException e) {
                 logger.error("[TelemedicineController.insertResep] Error, " + e.getMessage());
+            }
+        } else if (action.equalsIgnoreCase("createPembayaranResep")) {
+
+            List<AntrianTelemedic> listTele = new ArrayList<>();
+            AntrianTelemedic bean = new AntrianTelemedic();
+            bean.setId(idTele);
+
+            try {
+               listTele = telemedicBoProxy.getSearchByCriteria(bean);
+            } catch (GeneralBOException e) {
+                logger.error("[TelemedicineController.insertResep] Error, " + e.getMessage());
+            }
+
+            AntrianTelemedic tele = listTele.get(0);
+
+            String fileName = "";
+            if (fileUploadTtd != null) {
+                fileName = idTele+".jpeg";
+                File fileCreate = new File(CommonUtil.getPropertyParams("upload.folder")+ CommonConstant.RESOURCE_PATH_TTD_DOKTER, fileName);
+                try {
+                    FileUtils.copyFile(fileUploadTtd, fileCreate);
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+
+            List<TransaksiObatDetail> list = new ArrayList<>();
+            JSONArray jsonArray;
+            if (jsonObat != null && !jsonObat.equalsIgnoreCase("")){
+                try{
+                    jsonArray = (net.sf.json.JSONArray) JSONSerializer.toJSON(jsonObat);
+                    for (int i = 0; i < jsonArray.size(); i++){
+                        TransaksiObatDetail transaksiObatDetail = new TransaksiObatDetail();
+                        transaksiObatDetail.setIdObat(jsonArray.getJSONObject(i).getString("idObat"));
+                        transaksiObatDetail.setQty(BigInteger.valueOf(Long.valueOf(jsonArray.getJSONObject(i).getString("qty"))));
+                        transaksiObatDetail.setQtyApprove(BigInteger.valueOf(Long.valueOf(jsonArray.getJSONObject(i).getString("qty"))));
+                        transaksiObatDetail.setJenisSatuan(jsonArray.getJSONObject(i).getString("jenisSatuan"));
+                        transaksiObatDetail.setKeterangan(jsonArray.getJSONObject(i).getString("keterangan"));
+                        transaksiObatDetail.setFlagRacik(jsonArray.getJSONObject(i).getString("flagRacik"));
+                        transaksiObatDetail.setHariKronis(!jsonArray.getJSONObject(i).getString("hariKronis").equalsIgnoreCase("") ? Integer.valueOf(jsonArray.getJSONObject(i).getString("hariKronis")) : null);
+                        transaksiObatDetail.setCreatedDate(now);
+                        transaksiObatDetail.setLastUpdate(now);
+                        transaksiObatDetail.setCreatedWho(idDokter);
+                        transaksiObatDetail.setLastUpdateWho(idDokter);
+                        transaksiObatDetail.setIdPelayanan(tujuanPelayanan);
+                        transaksiObatDetail.setTtdDokter(fileName);
+
+                        list.add(transaksiObatDetail);
+                    }
+
+                } catch (JSONException e) {
+                    logger.error("[CheckupController.create] Error, get json resep " + e.getMessage());
+                }
+            }
+
+            try {
+                telemedicBoProxy.createPembayaranResep(tele, list);
+
+                NotifikasiFcm notif = new NotifikasiFcm();
+                notif.setUserId(idPasien);
+                List<NotifikasiFcm> fcm = notifikasiFcmBoProxy.getByCriteria(notif);
+                FirebasePushNotif.sendNotificationFirebase(fcm.get(0).getTokenFcm(),"Resep Online", "Silahkan buka aplikasi untuk melakukan pembayaran resep", "BAYAR_RESEP", fcm.get(0).getOs());
+
+                model.setMessage("Success");
+            } catch (GeneralBOException e) {
+                logger.error("[TelemedicineController.insertResep] Error, " + e.getMessage());
+            }
+        } else if (action.equalsIgnoreCase("checkBpjs")) {
+
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            String text = df.format(now);
+
+            PesertaResponse response = new PesertaResponse();
+
+            try {
+               response = bpjsBoProxy.GetPesertaBpjsByAPIBpjs(model.getNoKartu(), text, model.getBranchId());
+            } catch (GeneralBOException e) {
+                logger.error("[TelemedicineController.insertResep] Error, " + e.getMessage());
+            }
+
+            if (response != null) {
+                model.setMessage("Success");
+            }
+
+        } else if (action.equalsIgnoreCase("checkRujukan")) {
+
+            RujukanResponse response = new RujukanResponse();
+
+            try {
+               response = bpjsBoProxy.caraRujukanBerdasarNomorBpjs(model.getNoRujukan(), model.getJenisRujukan(), model.getBranchId());
+            } catch (GeneralBOException e) {
+                logger.error("[TelemedicineController.insertResep] Error, " + e.getMessage());
+            }
+
+            if (response != null) {
+                model.setMessage("Success");
             }
         }
 

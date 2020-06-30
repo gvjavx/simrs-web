@@ -40,7 +40,7 @@ public class FirebasePushNotif {
             info.put("body", body);
             info.put("sound", "default");
             info.put("click_action", CLICK_ACTION);
-            info.put("show_in_foreground", true);
+//            info.put("show_in_foreground", true);
             info.put("priority", "high");
             //info.put("click_action", "MAINACTIVITY");
             if (os.equalsIgnoreCase("Android")) {

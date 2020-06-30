@@ -187,6 +187,7 @@ public class TelemedicBoImpl implements TelemedicBo {
                 antrianTelemedic.setBranchId(telemedicEntity.getBranchId());
                 antrianTelemedic.setKeluhan(telemedicEntity.getKeluhan());
                 antrianTelemedic.setFlagEresep(telemedicEntity.getFlagEresep());
+                antrianTelemedic.setUrlResep(telemedicEntity.getUrlFotoResep());
 
                 // cari pembayaran online konsultasi;
                 PembayaranOnline pembayaranOnline = new PembayaranOnline();
@@ -366,6 +367,9 @@ public class TelemedicBoImpl implements TelemedicBo {
         }
         if (bean.getFlagBayarResep() != null && !"".equalsIgnoreCase(bean.getFlagBayarResep())) {
             hsCriteria.put("flag_bayar_resep", bean.getFlagBayarResep());
+        }
+        if (bean.getFlagEresep() != null && !"".equalsIgnoreCase(bean.getFlagEresep())) {
+            hsCriteria.put("flag_eresep", bean.getFlagEresep());
         }
 
         List<ItSimrsAntrianTelemedicEntity> antrianTelemedicEntities = new ArrayList<>();
@@ -775,6 +779,7 @@ public class TelemedicBoImpl implements TelemedicBo {
         if (bean.getIdResep() != null) {
             hsCriteria.put("id_resep", bean.getIdResep());
         }
+        hsCriteria.put("flag", "Y");
 
         try {
             result = pengirimanObatDao.getByCriteria(hsCriteria);

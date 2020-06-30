@@ -48,6 +48,7 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_PAYROLL = "/upload/payroll/";
     public final static String RESOURCE_PATH_BUKTI_TRANSFER = "/upload/bukti_transfer";
     public final static String RESOURCE_PATH_TTD_PETUGAS = "/upload/ttd_petugas/";
+    public static final String RESOURCE_PATH_RESEP = "/upload/resep/";
 
     public final static String RESOURCE_PATH_PHOTO_PROFILE = "/upload/profile/";
 
