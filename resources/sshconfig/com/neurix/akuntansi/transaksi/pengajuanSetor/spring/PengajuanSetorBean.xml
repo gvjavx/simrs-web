@@ -17,6 +17,8 @@
           p:departmentDao-ref="departmentDao"
           p:pengajuanSetorDetailDao-ref="pengajuanSetorDetailDao"
           p:positionBagianDao-ref="positionBagianDao"
+          p:biodataDao-ref="biodataDao"
+          p:dokterDao-ref="dokterDao"
     />
 
     <bean id="pengajuanSetorBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

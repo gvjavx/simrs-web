@@ -23,6 +23,29 @@
             <column name="registered_date" sql-type="date" not-null="false" />
         </property>
 
+        <property name="noJurnal">
+            <column name="no_jurnal" sql-type="varchar" not-null="false" />
+        </property>
+        <property name="approvalFlag">
+            <column name="approval_flag" sql-type="varchar" not-null="false" />
+        </property>
+        <property name="approvalId">
+            <column name="approval_id" sql-type="varchar" not-null="false" />
+        </property>
+        <property name="approvalDate">
+            <column name="approval_date" sql-type="date" not-null="false" />
+        </property>
+
+        <property name="cancelFlag">
+            <column name="cancel_flag" sql-type="varchar" not-null="false" />
+        </property>
+        <property name="cancelId">
+            <column name="cancel_id" sql-type="varchar" not-null="false" />
+        </property>
+        <property name="cancelDate">
+            <column name="cancel_date" sql-type="date" not-null="false" />
+        </property>
+
         <property name="jumlahPph21Payroll">
             <column name="jumlah_pph21_payroll" sql-type="numeric" not-null="false" />
         </property>

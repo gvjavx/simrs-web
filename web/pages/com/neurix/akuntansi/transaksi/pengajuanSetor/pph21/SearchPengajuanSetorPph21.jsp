@@ -52,7 +52,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Pengajuan Biaya
+            Pengajuan Setor PPH21
         </h1>
     </section>
     <!-- Main content -->
@@ -169,10 +169,10 @@
                                         <div style="text-align: left !important;">
                                             <div class="box-header with-border"></div>
                                             <div class="box-header with-border">
-                                                <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Pengajuan Biaya</h3>
+                                                <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Pengajuan Setor PPH21</h3>
                                             </div>
                                             <div class="box-body">
-                                                <table id="myTable" class="tablePengajuanBiaya table table-bordered table-striped">
+                                                <table id="myTable" class="tablePengajuanSetor table table-bordered table-striped">
                                                     <thead >
                                                     <tr bgcolor="#90ee90">
                                                         <td>ID</td>
@@ -203,14 +203,28 @@
                                                                 </a>
                                                             </td>
                                                             <td align="center">
-                                                                <a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanSetorId}"/>" class="item-delete">
-                                                                    <img border="0" src="<s:url value="/pages/images/icons8-trash-can-25.png"/>" name="icon_delete">
-                                                                </a>
+                                                                <s:if test='#row.cancelFlag == "Y"'>
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_batal">
+                                                                </s:if>
+                                                                <s:elseif test='#row.approvalFlag == "Y"'>
+                                                                </s:elseif>
+                                                                <s:else>
+                                                                    <a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanSetorId}"/>" class="item-delete">
+                                                                        <img border="0" src="<s:url value="/pages/images/icons8-trash-can-25.png"/>" name="icon_delete">
+                                                                    </a>
+                                                                </s:else>
                                                             </td>
                                                             <td align="center">
-                                                                <a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanSetorId}"/>" class="item-posting">
-                                                                    <img border="0" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>" name="icon_posting">
-                                                                </a>
+                                                                <s:if test='#row.cancelFlag == "Y"'>
+                                                                </s:if>
+                                                                <s:elseif test='#row.approvalFlag == "Y"'>
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_batal">
+                                                                </s:elseif>
+                                                                <s:else>
+                                                                    <a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanSetorId}"/>" class="item-posting">
+                                                                        <img border="0" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>" name="icon_posting">
+                                                                    </a>
+                                                                </s:else>
                                                             </td>
                                                         </tr>
                                                     </s:iterator>
@@ -234,3 +248,327 @@
 <%@ include file="/pages/common/lastScript.jsp" %>
 </body>
 </html>
+<div class="modal fade" id="modal-setor">
+    <div class="modal-dialog modal-flat" style="width:1300px;">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-money"></i> Pengajuan Setor</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <br>
+                            <br>
+                            <div class="form-group">
+                                <label class="col-md-4">Pengajuan Setor ID</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_pengajuan_setor_id" onkeypress="$(this).css('border','')" readonly="true" cssClass="form-control" />
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">Unit </label>
+                                <div class="col-md-6">
+                                    <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                    <s:select list="#initComboBranch.listOfComboBranch" id="mod_branch_id" disabled="true"
+                                              listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4">Tanggal Pengajuan</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_tanggal_pengajuan" onkeypress="$(this).css('border','')" readonly="true" cssClass="form-control" />
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4">Total PPH21 Payroll (RP)</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_total_pph21_payroll" cssStyle="text-align: right" onkeypress="$(this).css('border','')" readonly="true" cssClass="form-control"/>
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4">Total PPH21 KSO (RP)</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_total_pph21_kso" cssStyle="text-align: right" onkeypress="$(this).css('border','')" readonly="true" cssClass="form-control"/>
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4">Total PPH21 Pengajuan (RP)</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_total_pph21_pengajuan" cssStyle="text-align: right" onkeypress="$(this).css('border','')" readonly="true" cssClass="form-control"/>
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4">Total Seluruhnya (RP)</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_total_pph21_seluruhnya" cssStyle="text-align: right" onkeypress="$(this).css('border','')" readonly="true" cssClass="form-control"/>
+                                    <br>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="box-header with-border"></div>
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar PPH21</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <ul class="nav nav-pills" id="tabPane">
+                                            <li class="active"><a href="#payroll" data-toggle="tab">PPH21 Payroll</a></li>
+                                            <li><a href="#kso" data-toggle="tab">PPH21 Dokter KSO</a></li>
+                                            <li><a href="#pengajuan" data-toggle="tab">PPH21 Pengajuan</a></li>
+                                        </ul>
+                                        <br>
+                                        <br>
+                                        <div class="tab-content clearfix">
+                                            <div id="payroll" class="tab-pane active col-md-12">
+                                                <table id="table1" class="table table-bordered table-striped sortTable">
+                                                </table>
+                                            </div>
+                                            <div id="kso" class="tab-pane fade">
+                                                <table id="table2" class="table table-bordered table-striped sortTable">
+                                                </table>
+                                            </div>
+                                            <div id="pengajuan" class="tab-pane fade">
+                                                <table id="table3" class="table table-bordered table-striped sortTable">
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="box-header with-border"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-success" id="btnBatalPengajuan" data-dismiss="modal"><i class="fa fa-arrow-right"></i> Batal</button>
+                <button type="button" class="btn btn-success" id="btnPostingPengajuan" data-dismiss="modal"><i class="fa fa-arrow-right"></i> Posting</button>
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.loadSessionPayrollPph= function(){
+        $('#table1').find('tbody').remove();
+        $('#table1').find('thead').remove();
+        dwr.engine.setAsync(false);
+        var tmp_table = "";
+        PengajuanSetorAction.searchDataSessionPph21Payroll(function (listdata) {
+
+            tmp_table = "<thead style='font-size: 12px;' ><tr class='active'>" +
+                "<th style='text-align: center; background-color:  #90ee90'>ID</th>" +
+                "<th style='text-align: center; background-color:  #90ee90'>Tipe</th>" +
+                "<th style='text-align: center; background-color:  #90ee90''>NIP</th>" +
+                "<th style='text-align: center; background-color:  #90ee90''>Nama</th>" +
+                "<th style='text-align: center; background-color:  #90ee90''>Posisi</th>" +
+                "<th style='text-align: center; background-color:  #90ee90''>SubDivisi/SubBidang</th>" +
+                "<th style='text-align: center; background-color:  #90ee90''>Divisi/Bidang</th>" +
+                "<th style='text-align: center; background-color:  #90ee90'>PPH (RP)</th>" +
+                "<th style='text-align: center; background-color:  #90ee90'>Keterangan</th>" +
+                "</tr></thead>";
+            $.each(listdata, function (i, item) {
+                tmp_table += '<tr style="font-size: 10px;" ">' +
+                    '<td >' + item.transaksiId + '</td>' +
+                    '<td align="center">' + item.tipe + '</td>' +
+                    '<td align="left">' + item.personId+ '</td>' +
+                    '<td align="left">' + item.nama + '</td>' +
+                    '<td align="left">' + item.posisiName + '</td>' +
+                    '<td align="left">' + item.bagianName + '</td>' +
+                    '<td align="left">' + item.divisiName + '</td>' +
+                    '<td align="right">' + item.stJumlah + '</td>' +
+                    '<td align="left">' + item.note + '</td>' +
+                    "</tr>";
+            });
+            $('#table1').append(tmp_table);
+        });
+    };
+    window.loadSessionKso= function(){
+        $('#table2').find('tbody').remove();
+        $('#table2').find('thead').remove();
+        dwr.engine.setAsync(false);
+        var tmp_table = "";
+        PengajuanSetorAction.searchDataSessionPph21Kso(function (listdata) {
+            tmp_table = "<thead style='font-size: 14px;' ><tr class='active'>" +
+                "<th style='text-align: center; background-color:  #90ee90'>ID</th>" +
+                "<th style='text-align: center; background-color:  #90ee90'>Tipe</th>" +
+                "<th style='text-align: center; background-color:  #90ee90''>ID Dokter</th>" +
+                "<th style='text-align: center; background-color:  #90ee90''>Nama</th>" +
+                "<th style='text-align: center; background-color:  #90ee90'>PPH (RP)</th>" +
+                "<th style='text-align: center; background-color:  #90ee90'>Keterangan</th>" +
+                "</tr></thead>";
+            $.each(listdata, function (i, item) {
+                tmp_table += '<tr style="font-size: 12px;" ">' +
+                    '<td align="center" >' + item.transaksiId + '</td>' +
+                    '<td align="center">' + item.tipe + '</td>' +
+                    '<td align="center">' + item.personId+ '</td>' +
+                    '<td align="left">' + item.nama + '</td>' +
+                    '<td align="right">' + item.stJumlah + '</td>' +
+                    '<td align="left">' + item.note + '</td>' +
+                    "</tr>";
+            });
+            $('#table2').append(tmp_table);
+        });
+    };
+    window.loadSessionPengajuan= function(){
+        $('#table3').find('tbody').remove();
+        $('#table3').find('thead').remove();
+        dwr.engine.setAsync(false);
+        var tmp_table = "";
+        PengajuanSetorAction.searchDataSessionPph21Pengajuan(function (listdata) {
+            tmp_table = "<thead style='font-size: 14px;' ><tr class='active'>" +
+                "<th style='text-align: center; background-color:  #90ee90'>ID</th>" +
+                "<th style='text-align: center; background-color:  #90ee90'>Tipe</th>" +
+                "<th style='text-align: center; background-color:  #90ee90''>Posisi</th>" +
+                "<th style='text-align: center; background-color:  #90ee90''>SubDivisi/SubBidang</th>" +
+                "<th style='text-align: center; background-color:  #90ee90''>Divisi/Bidang</th>" +
+                "<th style='text-align: center; background-color:  #90ee90'>PPH (RP)</th>" +
+                "<th style='text-align: center; background-color:  #90ee90'>Keterangan</th>" +
+                "</tr></thead>";
+            $.each(listdata, function (i, item) {
+                tmp_table += '<tr style="font-size: 12px;" ">' +
+                    '<td >' + item.transaksiId + '</td>' +
+                    '<td align="center">' + item.tipe + '</td>' +
+                    '<td align="left">' + item.posisiName + '</td>' +
+                    '<td align="left">' + item.bagianName + '</td>' +
+                    '<td align="left">' + item.divisiName + '</td>' +
+                    '<td align="right">' + item.stJumlah + '</td>' +
+                    '<td align="left">' + item.note + '</td>' +
+                    "</tr>";
+            });
+            $('#table3').append(tmp_table);
+        });
+    };
+    $('.tablePengajuanSetor').on('click', '.item-posting', function() {
+        var pengajuanId = $(this).attr('data');
+        $('#mod_pengajuan_setor_id').val(pengajuanId);
+        PengajuanSetorAction.getForModalPopUp(pengajuanId,function (data) {
+            $('#mod_branch_id').val(data.branchId);
+            $('#mod_tanggal_pengajuan').val(data.stRegisteredDate);
+            $('#mod_total_pph21_payroll').val(data.stJumlahPph21Payroll);
+            $('#mod_total_pph21_kso').val(data.stJumlahPph21Kso);
+            $('#mod_total_pph21_pengajuan').val(data.stJumlahPph21Pengajuan);
+            $('#mod_total_pph21_seluruhnya').val(data.stJumlahSeluruhnya);
+        });
+        loadSessionPayrollPph();
+        loadSessionKso();
+        loadSessionPengajuan();
+        $("#modal-setor").find('.modal-title').text('Posting Pengajuan Setor PPH21');
+        $("#modal-setor").modal('show');
+        $("#btnPostingPengajuan").show();
+        $("#btnBatalPengajuan").hide();
+        $('#table1').DataTable({
+            paging: false,
+            "bDestroy": true,
+            "order": [[6,5,4, "asc"]]
+        });
+        $('#table2').DataTable({
+            paging: false,
+            "bDestroy": true,
+            "order": [[1, "asc"]]
+        });
+        $('#table3').DataTable({
+            paging: false,
+            "bDestroy": true,
+            "order": [[1, "asc"]]
+        });
+    });
+    $('.tablePengajuanSetor').on('click', '.item-view', function() {
+        var pengajuanId = $(this).attr('data');
+        $('#mod_pengajuan_setor_id').val(pengajuanId);
+        PengajuanSetorAction.getForModalPopUp(pengajuanId,function (data) {
+            $('#mod_branch_id').val(data.branchId);
+            $('#mod_tanggal_pengajuan').val(data.stRegisteredDate);
+            $('#mod_total_pph21_payroll').val(data.stJumlahPph21Payroll);
+            $('#mod_total_pph21_kso').val(data.stJumlahPph21Kso);
+            $('#mod_total_pph21_pengajuan').val(data.stJumlahPph21Pengajuan);
+            $('#mod_total_pph21_seluruhnya').val(data.stJumlahSeluruhnya);
+        });
+        loadSessionPayrollPph();
+        loadSessionKso();
+        loadSessionPengajuan();
+        $("#modal-setor").find('.modal-title').text('View Pengajuan Setor PPH21');
+        $("#modal-setor").modal('show');
+        $("#btnPostingPengajuan").hide();
+        $("#btnBatalPengajuan").hide();
+        $('#table1').DataTable({
+            paging: false,
+            "bDestroy": true,
+            "order": [[6,5,4, "asc"]]
+        });
+        $('#table2').DataTable({
+            paging: false,
+            "bDestroy": true,
+            "order": [[1, "asc"]]
+        });
+        $('#table3').DataTable({
+            paging: false,
+            "bDestroy": true,
+            "order": [[1, "asc"]]
+        });
+    });
+    $('.tablePengajuanSetor').on('click', '.item-delete', function() {
+        var pengajuanId = $(this).attr('data');
+        $('#mod_pengajuan_setor_id').val(pengajuanId);
+        PengajuanSetorAction.getForModalPopUp(pengajuanId,function (data) {
+            $('#mod_branch_id').val(data.branchId);
+            $('#mod_tanggal_pengajuan').val(data.stRegisteredDate);
+            $('#mod_total_pph21_payroll').val(data.stJumlahPph21Payroll);
+            $('#mod_total_pph21_kso').val(data.stJumlahPph21Kso);
+            $('#mod_total_pph21_pengajuan').val(data.stJumlahPph21Pengajuan);
+            $('#mod_total_pph21_seluruhnya').val(data.stJumlahSeluruhnya);
+        });
+        loadSessionPayrollPph();
+        loadSessionKso();
+        loadSessionPengajuan();
+        $("#modal-setor").find('.modal-title').text('Batalkan Pengajuan Setor PPH21');
+        $("#modal-setor").modal('show');
+        $("#btnPostingPengajuan").hide();
+        $("#btnBatalPengajuan").show();
+        $('#table1').DataTable({
+            paging: false,
+            "bDestroy": true,
+            "order": [[6,5,4, "asc"]]
+        });
+        $('#table2').DataTable({
+            paging: false,
+            "bDestroy": true,
+            "order": [[1, "asc"]]
+        });
+        $('#table3').DataTable({
+            paging: false,
+            "bDestroy": true,
+            "order": [[1, "asc"]]
+        });
+    });
+
+    $('#btnPostingPengajuan').click(function () {
+        var pengajuanSetorId =  $('#mod_pengajuan_setor_id').val();
+        if (confirm("apakah anda ingin memposting pengajuan setor PPH21 dengan ID Pengajuan Setor "+pengajuanSetorId +" ?")){
+            PengajuanSetorAction.postingJurnal(pengajuanSetorId,function (listdata) {
+                alert(listdata);
+                window.location.reload();
+            })
+        }
+    });
+    $('#btnBatalPengajuan').click(function () {
+        var pengajuanSetorId =  $('#mod_pengajuan_setor_id').val();
+        if (confirm("apakah anda ingin membatalkan pengajuan setor PPH21 dengan ID Pengajuan Setor "+pengajuanSetorId +" ?")){
+            PengajuanSetorAction.batalkanPengajuan(pengajuanSetorId,function (listdata) {
+                alert(listdata);
+                window.location.reload();
+            })
+        }
+    })
+</script>

@@ -19,6 +19,7 @@ public class ItPengajuanSetorDetailEntity implements Serializable {
     private String transaksiId;
     private String personId;
     private String koderingDivisi;
+    private String divisiId;
     private String tipe;
     private String note;
     private BigDecimal jumlah;
@@ -28,6 +29,14 @@ public class ItPengajuanSetorDetailEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getDivisiId() {
+        return divisiId;
+    }
+
+    public void setDivisiId(String divisiId) {
+        this.divisiId = divisiId;
+    }
 
     public String getPengajuanSetorDetailId() {
         return pengajuanSetorDetailId;

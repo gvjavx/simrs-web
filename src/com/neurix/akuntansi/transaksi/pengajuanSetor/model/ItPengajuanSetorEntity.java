@@ -26,12 +26,77 @@ public class ItPengajuanSetorEntity implements Serializable {
     private BigDecimal jumlahPph21Pengajuan;
     private BigDecimal jumlahSeluruhnya;
 
+    private String noJurnal;
+    private String approvalId;
+    private Timestamp approvalDate;
+    private String approvalFlag;
+
+    private String cancelId;
+    private Timestamp cancelDate;
+    private String cancelFlag;
+
     private String flag;
     private String action;
     private Timestamp createdDate;
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getCancelId() {
+        return cancelId;
+    }
+
+    public void setCancelId(String cancelId) {
+        this.cancelId = cancelId;
+    }
+
+    public Timestamp getCancelDate() {
+        return cancelDate;
+    }
+
+    public void setCancelDate(Timestamp cancelDate) {
+        this.cancelDate = cancelDate;
+    }
+
+    public String getCancelFlag() {
+        return cancelFlag;
+    }
+
+    public void setCancelFlag(String cancelFlag) {
+        this.cancelFlag = cancelFlag;
+    }
+
+    public String getNoJurnal() {
+        return noJurnal;
+    }
+
+    public void setNoJurnal(String noJurnal) {
+        this.noJurnal = noJurnal;
+    }
+
+    public String getApprovalId() {
+        return approvalId;
+    }
+
+    public void setApprovalId(String approvalId) {
+        this.approvalId = approvalId;
+    }
+
+    public Timestamp getApprovalDate() {
+        return approvalDate;
+    }
+
+    public void setApprovalDate(Timestamp approvalDate) {
+        this.approvalDate = approvalDate;
+    }
+
+    public String getApprovalFlag() {
+        return approvalFlag;
+    }
+
+    public void setApprovalFlag(String approvalFlag) {
+        this.approvalFlag = approvalFlag;
+    }
 
     public Date getRegisteredDate() {
         return registeredDate;

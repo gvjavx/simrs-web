@@ -1,5 +1,6 @@
 package com.neurix.akuntansi.transaksi.pengajuanSetor.dao;
 
+import com.neurix.akuntansi.transaksi.pengajuanSetor.model.ItPengajuanSetorDetailEntity;
 import com.neurix.akuntansi.transaksi.pengajuanSetor.model.ItPengajuanSetorEntity;
 import com.neurix.akuntansi.transaksi.pengajuanSetor.model.PengajuanSetor;
 import com.neurix.akuntansi.transaksi.pengajuanSetor.model.PengajuanSetorDetail;
@@ -38,8 +39,8 @@ public class PengajuanSetorDao extends GenericDao<ItPengajuanSetorEntity, String
 
         // Get Collection and sorting
         if (mapCriteria!=null) {
-            if (mapCriteria.get("pengajuan_biaya_id")!=null) {
-                criteria.add(Restrictions.eq("pengajuanSetorId", (String) mapCriteria.get("pengajuan_biaya_id")));
+            if (mapCriteria.get("pengajuan_setor_id")!=null) {
+                criteria.add(Restrictions.eq("pengajuanSetorId", (String) mapCriteria.get("pengajuan_setor_id")));
             }
             if (mapCriteria.get("branch_id")!=null) {
                 criteria.add(Restrictions.eq("branchId", (String) mapCriteria.get("branch_id")));
@@ -90,12 +91,13 @@ public class PengajuanSetorDao extends GenericDao<ItPengajuanSetorEntity, String
                 "FROM\n" +
                 "\tit_hris_payroll p\n" +
                 "\tLEFT JOIN it_akun_pengajuan_setor_detail sd ON p.payroll_id=sd.transaksi_id\n" +
+                "\t\tLEFT JOIN it_akun_pengajuan_setor s ON s.pengajuan_setor_id=sd.pengajuan_setor_id\n" +
                 "WHERE\n" +
                 "\tp.tahun='"+search.getTahun()+"'\n" +
                 "\tAND p.bulan IN ("+search.getBulan()+")\n" +
                 "\tAND p.pph_gaji <> 0\n" +
                 "\tAND p.branch_id='"+search.getBranchId()+"'\n" +
-                "\tAND sd.pengajuan_setor_detail_id IS NULL\n" +
+                "\tAND (s.cancel_flag='Y' OR sd.pengajuan_setor_detail_id IS NULL)\n" +
                 "\tAND p.approval_flag='Y'";
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -154,12 +156,13 @@ public class PengajuanSetorDao extends GenericDao<ItPengajuanSetorEntity, String
                 "                FROM \n" +
                 "                it_hris_pendapatan_dokter pd\n" +
                 "                LEFT JOIN it_akun_pengajuan_setor_detail sd ON pd.pendapatan_dokter_id=sd.transaksi_id \n" +
+                "\t\tLEFT JOIN it_akun_pengajuan_setor s ON s.pengajuan_setor_id=sd.pengajuan_setor_id\n" +
                 "                WHERE \n" +
                 "                pd.tahun='"+search.getTahun()+"' \n" +
                 "                AND pd.bulan IN ("+search.getBulan()+") \n" +
                 "                AND pd.pph_final <> 0 \n" +
                 "                AND pd.branch_id='"+search.getBranchId()+"' \n" +
-                "                AND sd.pengajuan_setor_detail_id IS NULL \n" +
+                "\tAND (s.cancel_flag='Y' OR sd.pengajuan_setor_detail_id IS NULL)\n" +
                 "                AND pd.approval_flag='Y'";
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -206,12 +209,13 @@ public class PengajuanSetorDao extends GenericDao<ItPengajuanSetorEntity, String
                 "\t\t\t\tFROM \n" +
                 "                it_akun_pengajuan_biaya_detail pbd\n" +
                 "                LEFT JOIN it_akun_pengajuan_setor_detail sd ON pbd.pengajuan_biaya_detail_id=sd.transaksi_id \n" +
+                "\t\tLEFT JOIN it_akun_pengajuan_setor s ON s.pengajuan_setor_id=sd.pengajuan_setor_id\n" +
                 "                WHERE \n" +
                 "                pbd.tanggal<='"+tanggalAkhir+"'\n" +
                 "                AND pbd.tanggal >='"+tanggalAwal+"'\n" +
                 "                AND pbd.pph <> 0 \n" +
                 "                AND pbd.branch_id='"+search.getBranchId()+"' \n" +
-                "                AND sd.pengajuan_setor_detail_id IS NULL \n" +
+                "\tAND (s.cancel_flag='Y' OR sd.pengajuan_setor_detail_id IS NULL)\n" +
                 "\t\t\t\tAND pbd.status_keuangan IS NOT NULL";
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)

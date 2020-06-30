@@ -4,6 +4,7 @@ import com.neurix.common.model.BaseModel;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * Created by IntelliJ IDEA.
@@ -37,6 +38,71 @@ public class PengajuanSetor extends BaseModel {
     private String stTanggalSelesai;
     private String branchName;
     private String bulanAsli;
+
+    private String noJurnal;
+    private String approvalId;
+    private Timestamp approvalDate;
+    private String approvalFlag;
+
+    private String cancelId;
+    private Timestamp cancelDate;
+    private String cancelFlag;
+
+    public String getCancelId() {
+        return cancelId;
+    }
+
+    public void setCancelId(String cancelId) {
+        this.cancelId = cancelId;
+    }
+
+    public Timestamp getCancelDate() {
+        return cancelDate;
+    }
+
+    public void setCancelDate(Timestamp cancelDate) {
+        this.cancelDate = cancelDate;
+    }
+
+    public String getCancelFlag() {
+        return cancelFlag;
+    }
+
+    public void setCancelFlag(String cancelFlag) {
+        this.cancelFlag = cancelFlag;
+    }
+
+    public String getNoJurnal() {
+        return noJurnal;
+    }
+
+    public void setNoJurnal(String noJurnal) {
+        this.noJurnal = noJurnal;
+    }
+
+    public String getApprovalId() {
+        return approvalId;
+    }
+
+    public void setApprovalId(String approvalId) {
+        this.approvalId = approvalId;
+    }
+
+    public Timestamp getApprovalDate() {
+        return approvalDate;
+    }
+
+    public void setApprovalDate(Timestamp approvalDate) {
+        this.approvalDate = approvalDate;
+    }
+
+    public String getApprovalFlag() {
+        return approvalFlag;
+    }
+
+    public void setApprovalFlag(String approvalFlag) {
+        this.approvalFlag = approvalFlag;
+    }
 
     public String getBulanAsli() {
         return bulanAsli;

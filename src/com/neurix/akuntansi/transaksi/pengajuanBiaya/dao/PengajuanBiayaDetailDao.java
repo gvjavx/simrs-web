@@ -265,4 +265,5 @@ public class PengajuanBiayaDetailDao extends GenericDao<ItPengajuanBiayaDetailEn
         }
         return total;
     }
+
 }

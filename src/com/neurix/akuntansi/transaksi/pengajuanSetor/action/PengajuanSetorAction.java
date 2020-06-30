@@ -8,6 +8,8 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
@@ -69,6 +71,28 @@ public class PengajuanSetorAction extends BaseMasterAction {
 
     public static void setLogger(Logger logger) {
         PengajuanSetorAction.logger = logger;
+    }
+
+    public PengajuanSetor init(String kode, String flag){
+        logger.info("[PengajuanSetorAction.init] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<PengajuanSetor> listOfResult = (List<PengajuanSetor>) session.getAttribute("listOfResult");
+
+        if(kode != null && !"".equalsIgnoreCase(kode)){
+            if(listOfResult != null){
+                for (PengajuanSetor pengajuanSetor: listOfResult) {
+                    if(kode.equalsIgnoreCase(pengajuanSetor.getPengajuanSetorId()) && flag.equalsIgnoreCase(pengajuanSetor.getFlag())){
+                        setPengajuanSetor(pengajuanSetor);
+                        break;
+                    }
+                }
+            } else {
+                setPengajuanSetor(new PengajuanSetor());
+            }
+
+            logger.info("[PengajuanSetorAction.init] end process >>>");
+        }
+        return getPengajuanSetor();
     }
 
     public String initFormPengajuanSetorPph21() {
@@ -311,6 +335,208 @@ public class PengajuanSetorAction extends BaseMasterAction {
         logger.info("[PengajuanBiayaAction.searchPengajuanSetorPph21] end process <<<");
 
         return "success_pengajuan_setor_pph21";
+    }
+
+    public PengajuanSetor editSessionPayroll(String id,boolean check) {
+        logger.info("[PengajuanSetorAction.editSessionPayroll] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        PengajuanSetor addPengajuanSetor = (PengajuanSetor) session.getAttribute("listOfResultPengajuanSetor");
+
+        List<PengajuanSetorDetail> pengajuanSetorDetailList = (List<PengajuanSetorDetail>) session.getAttribute("listOfResultPencarianDataPayroll");
+        for (PengajuanSetorDetail pengajuanSetorDetail : pengajuanSetorDetailList){
+            if (id.equalsIgnoreCase(pengajuanSetorDetail.getTransaksiId())){
+                if (check){
+                    pengajuanSetorDetail.setDibayar("Y");
+                    addPengajuanSetor.setJumlahSeluruhnya(addPengajuanSetor.getJumlahSeluruhnya().add(pengajuanSetorDetail.getJumlah()));
+                    addPengajuanSetor.setJumlahPph21Payroll(addPengajuanSetor.getJumlahPph21Payroll().add(pengajuanSetorDetail.getJumlah()));
+                }else{
+                    pengajuanSetorDetail.setDibayar("N");
+                    addPengajuanSetor.setJumlahSeluruhnya(addPengajuanSetor.getJumlahSeluruhnya().subtract(pengajuanSetorDetail.getJumlah()));
+                    addPengajuanSetor.setJumlahPph21Payroll(addPengajuanSetor.getJumlahPph21Payroll().subtract(pengajuanSetorDetail.getJumlah()));
+                }
+            }
+        }
+        addPengajuanSetor.setStJumlahSeluruhnya(CommonUtil.numbericFormat(addPengajuanSetor.getJumlahSeluruhnya(),"###,###"));
+        addPengajuanSetor.setStJumlahPph21Payroll(CommonUtil.numbericFormat(addPengajuanSetor.getJumlahPph21Payroll(),"###,###"));
+
+        logger.info("[PengajuanSetorAction.editSessionPayroll] stop process >>>");
+
+        session.setAttribute("listOfResultPengajuanSetor", addPengajuanSetor);
+        session.setAttribute("listOfResultPencarianDataPayroll", pengajuanSetorDetailList);
+
+        return addPengajuanSetor;
+    }
+
+    public PengajuanSetor editSessionKso(String id,boolean check) {
+        logger.info("[PengajuanSetorAction.editSessionKso] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        PengajuanSetor addPengajuanSetor = (PengajuanSetor) session.getAttribute("listOfResultPengajuanSetor");
+
+        List<PengajuanSetorDetail> pengajuanSetorDetailList = (List<PengajuanSetorDetail>) session.getAttribute("listOfResultPencarianDataKso");
+        for (PengajuanSetorDetail pengajuanSetorDetail : pengajuanSetorDetailList){
+            if (id.equalsIgnoreCase(pengajuanSetorDetail.getTransaksiId())){
+                if (check){
+                    pengajuanSetorDetail.setDibayar("Y");
+                    addPengajuanSetor.setJumlahSeluruhnya(addPengajuanSetor.getJumlahSeluruhnya().add(pengajuanSetorDetail.getJumlah()));
+                    addPengajuanSetor.setJumlahPph21Kso(addPengajuanSetor.getJumlahPph21Kso().add(pengajuanSetorDetail.getJumlah()));
+                }else{
+                    pengajuanSetorDetail.setDibayar("N");
+                    addPengajuanSetor.setJumlahSeluruhnya(addPengajuanSetor.getJumlahSeluruhnya().subtract(pengajuanSetorDetail.getJumlah()));
+                    addPengajuanSetor.setJumlahPph21Kso(addPengajuanSetor.getJumlahPph21Kso().subtract(pengajuanSetorDetail.getJumlah()));
+                }
+            }
+        }
+        addPengajuanSetor.setStJumlahSeluruhnya(CommonUtil.numbericFormat(addPengajuanSetor.getJumlahSeluruhnya(),"###,###"));
+        addPengajuanSetor.setStJumlahPph21Kso(CommonUtil.numbericFormat(addPengajuanSetor.getJumlahPph21Kso(),"###,###"));
+
+        logger.info("[PengajuanSetorAction.editSessionKso] stop process >>>");
+
+        session.setAttribute("listOfResultPengajuanSetor", addPengajuanSetor);
+        session.setAttribute("listOfResultPencarianDataKso", pengajuanSetorDetailList);
+
+        return addPengajuanSetor;
+    }
+
+    public PengajuanSetor editSessionPengajuan(String id,boolean check) {
+        logger.info("[PengajuanSetorAction.editSessionPengajuan] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        PengajuanSetor addPengajuanSetor = (PengajuanSetor) session.getAttribute("listOfResultPengajuanSetor");
+
+        List<PengajuanSetorDetail> pengajuanSetorDetailList = (List<PengajuanSetorDetail>) session.getAttribute("listOfResultPencarianDataPengajuan");
+        for (PengajuanSetorDetail pengajuanSetorDetail : pengajuanSetorDetailList){
+            if (id.equalsIgnoreCase(pengajuanSetorDetail.getTransaksiId())){
+                if (check){
+                    pengajuanSetorDetail.setDibayar("Y");
+                    addPengajuanSetor.setJumlahSeluruhnya(addPengajuanSetor.getJumlahSeluruhnya().add(pengajuanSetorDetail.getJumlah()));
+                    addPengajuanSetor.setJumlahPph21Pengajuan(addPengajuanSetor.getJumlahPph21Pengajuan().add(pengajuanSetorDetail.getJumlah()));
+                }else{
+                    pengajuanSetorDetail.setDibayar("N");
+                    addPengajuanSetor.setJumlahSeluruhnya(addPengajuanSetor.getJumlahSeluruhnya().subtract(pengajuanSetorDetail.getJumlah()));
+                    addPengajuanSetor.setJumlahPph21Pengajuan(addPengajuanSetor.getJumlahPph21Pengajuan().subtract(pengajuanSetorDetail.getJumlah()));
+                }
+            }
+        }
+        addPengajuanSetor.setStJumlahSeluruhnya(CommonUtil.numbericFormat(addPengajuanSetor.getJumlahSeluruhnya(),"###,###"));
+        addPengajuanSetor.setStJumlahPph21Pengajuan(CommonUtil.numbericFormat(addPengajuanSetor.getJumlahPph21Pengajuan(),"###,###"));
+
+        logger.info("[PengajuanSetorAction.editSessionPengajuan] stop process >>>");
+
+        session.setAttribute("listOfResultPengajuanSetor", addPengajuanSetor);
+        session.setAttribute("listOfResultPencarianDataPengajuan", pengajuanSetorDetailList);
+
+        return addPengajuanSetor;
+    }
+
+    public PengajuanSetor getForModalPopUp(String pengajuanSetorId) {
+        logger.info("[PengajuanSetorAction.getForModalPopUp] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PengajuanSetorBo pengajuanSetorBo = (PengajuanSetorBo) ctx.getBean("pengajuanSetorBoProxy");
+        String itemFlag = "Y";
+        PengajuanSetor modalPopUp = new PengajuanSetor();
+        List<PengajuanSetorDetail> listDetailPayroll = new ArrayList<>();
+        List<PengajuanSetorDetail> listDetailKso = new ArrayList<>();
+        List<PengajuanSetorDetail> listDetailPengajuan = new ArrayList<>();
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        try {
+            modalPopUp = init(pengajuanSetorId, itemFlag);
+            if (modalPopUp!=null){
+                listDetailPayroll = pengajuanSetorBo.getDetailPengajuanSetorPPh21(pengajuanSetorId,"Payroll");
+                listDetailKso = pengajuanSetorBo.getDetailPengajuanSetorPPh21(pengajuanSetorId,"Dokter KSO");
+                listDetailPengajuan = pengajuanSetorBo.getDetailPengajuanSetorPPh21(pengajuanSetorId,"Pengajuan Biaya");
+
+                session.setAttribute("listOfResultPencarianDataPayroll",listDetailPayroll);
+                session.setAttribute("listOfResultPencarianDataKso",listDetailKso);
+                session.setAttribute("listOfResultPencarianDataPengajuan",listDetailPengajuan);
+            }
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = pengajuanSetorBo.saveErrorMessage(e.getMessage(), "PengajuanSetorAction.getForModalPopUp");
+            } catch (GeneralBOException e1) {
+                logger.error("[PengajuanSetorAction.getForModalPopUp] Error when retrieving delete data,", e1);
+            }
+            logger.error("[PengajuanSetorAction.getForModalPopUp] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for delete, please inform to your admin.");
+        }
+        return modalPopUp;
+    }
+
+    public String postingJurnal(String pengajuanSetorId){
+        logger.info("[PengajuanSetorAction.postingJurnal] start process >>>");
+        try {
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            PengajuanSetorBo pengajuanSetorBo = (PengajuanSetorBo) ctx.getBean("pengajuanSetorBoProxy");
+            PengajuanSetor data = new PengajuanSetor();
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            //disini untuk posting jurnal untuk mendapat nojurnal
+            String noJurnal = "";
+
+            data.setPengajuanSetorId(pengajuanSetorId);
+            data.setApprovalDate(updateTime);
+            data.setApprovalFlag("Y");
+            data.setApprovalId(userLogin);
+            data.setNoJurnal(noJurnal);
+            data.setLastUpdateWho(userLogin);
+            data.setLastUpdate(updateTime);
+            data.setAction("U");
+            data.setFlag("Y");
+
+            pengajuanSetorBo.postingJurnal(data);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = pengajuanSetorBoProxy.saveErrorMessage(e.getMessage(), "PengajuanSetorAction.postingJurnal");
+            } catch (GeneralBOException e1) {
+                logger.error("[PengajuanSetorAction.postingJurnal] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[PengajuanSetorAction.postingJurnal] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        logger.info("[PengajuanSetorAction.postingJurnal] end process <<<");
+
+        return "Sukses Posting Jurnal";
+    }
+
+    public String batalkanPengajuan(String pengajuanSetorId){
+        logger.info("[PengajuanSetorAction.batalkanPengajuan] start process >>>");
+        try {
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            PengajuanSetorBo pengajuanSetorBo = (PengajuanSetorBo) ctx.getBean("pengajuanSetorBoProxy");
+            PengajuanSetor data = new PengajuanSetor();
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            data.setPengajuanSetorId(pengajuanSetorId);
+            data.setCancelDate(updateTime);
+            data.setCancelFlag("Y");
+            data.setCancelId(userLogin);
+            data.setLastUpdateWho(userLogin);
+            data.setLastUpdate(updateTime);
+            data.setAction("U");
+            data.setFlag("Y");
+
+            pengajuanSetorBo.batalkanPengajuan(data);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = pengajuanSetorBoProxy.saveErrorMessage(e.getMessage(), "PengajuanSetorAction.batalkanPengajuan");
+            } catch (GeneralBOException e1) {
+                logger.error("[PengajuanSetorAction.batalkanPengajuan] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[PengajuanSetorAction.batalkanPengajuan] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        logger.info("[PengajuanSetorAction.batalkanPengajuan] end process <<<");
+
+        return "Berhasil Membatalkan Pengajuan Setor";
     }
 
     public String paging(){

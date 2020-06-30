@@ -24,7 +24,25 @@ public class PengajuanSetorDetail extends BaseModel {
     private String bagianName;
     private String divisiName;
     private String stJumlah;
+    private String branchName;
 
+    private String dibayar;
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
+    public String getDibayar() {
+        return dibayar;
+    }
+
+    public void setDibayar(String dibayar) {
+        this.dibayar = dibayar;
+    }
 
     public String getPosisiName() {
         return posisiName;

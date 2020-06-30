@@ -84,10 +84,10 @@
                     <s:form id="saveAddPengajuanSetor" enctype="multipart/form-data" method="post" namespace="/pengajuanSetor"
                             action="saveAddPengajuanSetorPph21_pengajuanSetor.action" theme="simple">
                         <s:hidden name="pengajuanSetor.branchId" />
-                        <s:hidden name="pengajuanSetor.jumlahPph21Payroll" />
-                        <s:hidden name="pengajuanSetor.jumlahPph21Kso" />
-                        <s:hidden name="pengajuanSetor.jumlahPph21Pengajuan" />
-                        <s:hidden name="pengajuanSetor.jumlahSeluruhnya" />
+                        <s:hidden name="pengajuanSetor.jumlahPph21Payroll" id="jumlahPph21Payroll" />
+                        <s:hidden name="pengajuanSetor.jumlahPph21Kso" id="jumlahPph21Kso"/>
+                        <s:hidden name="pengajuanSetor.jumlahPph21Pengajuan" id="jumlahPph21Pengajuan" />
+                        <s:hidden name="pengajuanSetor.jumlahSeluruhnya" id="jumlahSeluruhnya" />
                         <s:hidden name="pengajuanSetor.bulan" />
                         <s:hidden name="pengajuanSetor.tahun" />
 
@@ -101,6 +101,16 @@
                                                 <i class="fa fa-calendar"></i>
                                             </div>
                                             <input class="form-control datepicker2" id="tanggal_pengajuan_setor" name="pengajuanSetor.stRegisteredDate">
+                                            <script>
+                                                $("#tanggal_pengajuan_setor").datepicker({
+                                                    setDate: new Date(),
+                                                    autoclose: true,
+                                                    changeMonth: true,
+                                                    changeYear:true,
+                                                    dateFormat:'dd-mm-yy'
+                                                });
+                                                $("#tanggal_pengajuan_setor").datepicker("setDate", new Date());
+                                            </script>
                                         </div>
                                     </div>
                                 </div>
@@ -290,6 +300,13 @@
                 "<th style='text-align: center; background-color:  #90ee90'>Status</th>" +
                 "</tr></thead>";
             $.each(listdata, function (i, item) {
+                var check = "";
+                if (item.dibayar=="Y"){
+                    check = "<input type='checkbox' class='checkboxPayroll' id='"+ item.transaksiId +"' checked>";
+                } else{
+                    check = "<input type='checkbox' class='checkboxPayroll' id='"+ item.transaksiId +"'>";
+                }
+
                 tmp_table += '<tr style="font-size: 10px;" ">' +
                     '<td >' + item.transaksiId + '</td>' +
                     '<td align="center">' + item.tipe + '</td>' +
@@ -300,11 +317,7 @@
                     '<td align="left">' + item.divisiName + '</td>' +
                     '<td align="right">' + item.stJumlah + '</td>' +
                     '<td align="left">' + item.note + '</td>' +
-                    '<td align="center">' +
-                    "<a href='javascript:;' class ='item-delete' data ='" + item.transaksiId + "' >" +
-                    "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
-                    '</a>' +
-                    '</td>' +
+                    '<td align="center">'+check + '</td>' +
                     "</tr>";
             });
             $('#table1').append(tmp_table);
@@ -326,6 +339,13 @@
                 "<th style='text-align: center; background-color:  #90ee90'>Status</th>" +
                 "</tr></thead>";
             $.each(listdata, function (i, item) {
+                var check = "";
+                if (item.dibayar=="Y"){
+                    check = "<input type='checkbox' class='checkboxKso' id='"+ item.transaksiId +"' checked>";
+                } else{
+                    check = "<input type='checkbox' class='checkboxKso' id='"+ item.transaksiId +"'>";
+                }
+
                 tmp_table += '<tr style="font-size: 12px;" ">' +
                     '<td align="center" >' + item.transaksiId + '</td>' +
                     '<td align="center">' + item.tipe + '</td>' +
@@ -333,11 +353,7 @@
                     '<td align="left">' + item.nama + '</td>' +
                     '<td align="right">' + item.stJumlah + '</td>' +
                     '<td align="left">' + item.note + '</td>' +
-                    '<td align="center">' +
-                    "<a href='javascript:;' class ='item-delete' data ='" + item.transaksiId + "' >" +
-                    "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
-                    '</a>' +
-                    '</td>' +
+                    '<td align="center">'+check + '</td>' +
                     "</tr>";
             });
             $('#table2').append(tmp_table);
@@ -349,7 +365,7 @@
         dwr.engine.setAsync(false);
         var tmp_table = "";
         PengajuanSetorAction.searchDataSessionPph21Pengajuan(function (listdata) {
-            tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
+            tmp_table = "<thead style='font-size: 14px;' ><tr class='active'>" +
                 "<th style='text-align: center; background-color:  #90ee90'>ID</th>" +
                 "<th style='text-align: center; background-color:  #90ee90'>Tipe</th>" +
                 "<th style='text-align: center; background-color:  #90ee90''>Posisi</th>" +
@@ -360,6 +376,12 @@
                 "<th style='text-align: center; background-color:  #90ee90'>Status</th>" +
                 "</tr></thead>";
             $.each(listdata, function (i, item) {
+                var check = "";
+                if (item.dibayar=="Y"){
+                    check = "<input type='checkbox' class='checkboxPengajuan' id='"+ item.transaksiId +"' checked>";
+                } else{
+                    check = "<input type='checkbox' class='checkboxPengajuan' id='"+ item.transaksiId +"'>";
+                }
                 tmp_table += '<tr style="font-size: 12px;" ">' +
                     '<td >' + item.transaksiId + '</td>' +
                     '<td align="center">' + item.tipe + '</td>' +
@@ -368,11 +390,7 @@
                     '<td align="left">' + item.divisiName + '</td>' +
                     '<td align="right">' + item.stJumlah + '</td>' +
                     '<td align="left">' + item.note + '</td>' +
-                    '<td align="center">' +
-                    "<a href='javascript:;' class ='item-delete' data ='" + item.transaksiId + "' >" +
-                    "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
-                    '</a>' +
-                    '</td>' +
+                    '<td align="center">'+check + '</td>' +
                     "</tr>";
             });
             $('#table3').append(tmp_table);
@@ -382,6 +400,37 @@
         loadSessionPayrollPph();
         loadSessionKso();
         loadSessionPengajuan();
+
+        $('.checkboxPayroll').change(function () {
+            var id = $(this).prop('id');
+            var check = $(this).prop('checked');
+            PengajuanSetorAction.editSessionPayroll(id,check,function (data) {
+                $('#jumlah_pph_21_payroll').val(data.stJumlahPph21Payroll);
+                $('#jumlah_seluruhnya').val(data.stJumlahSeluruhnya);
+                $('#jumlahPph21Payroll').val(data.jumlahPph21Payroll);
+                $('#jumlahSeluruhnya').val(data.jumlahSeluruhnya);
+            });
+        });
+        $('.checkboxKso').change(function () {
+            var id = $(this).prop('id');
+            var check = $(this).prop('checked');
+            PengajuanSetorAction.editSessionKso(id,check,function (data) {
+                $('#jumlah_pph_21_kso').val(data.stJumlahPph21Kso);
+                $('#jumlah_seluruhnya').val(data.stJumlahSeluruhnya);
+                $('#jumlahPph21Kso').val(data.jumlahPph21Kso);
+                $('#jumlahSeluruhnya').val(data.jumlahSeluruhnya);
+            });
+        });
+        $('.checkboxPengajuan').change(function () {
+            var id = $(this).prop('id');
+            var check = $(this).prop('checked');
+            PengajuanSetorAction.editSessionPengajuan(id,check,function (data) {
+                $('#jumlah_pph_21_pengajuan').val(data.stJumlahPph21Pengajuan);
+                $('#jumlah_seluruhnya').val(data.stJumlahSeluruhnya);
+                $('#jumlahPph21Pengajuan').val(data.jumlahPph21Pengajuan);
+                $('#jumlahSeluruhnya').val(data.jumlahSeluruhnya);
+            });
+        });
 
         $('#table1').DataTable({
             paging: false,
