@@ -353,4 +353,7 @@
     ADD COLUMN id_diagnosa VARCHAR(10),
     ADD COLUMN ket_diagnosa TEXT;
 
+    ALTER TABLE it_simrs_pengiriman_obat
+    ADD COLUMN flag_terkirim VARCHAR(1);
+
 <<< ///

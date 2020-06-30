@@ -485,63 +485,6 @@
     </div>
 </div>
 
-<%--<div class="modal fade" id="modal-detail-bpjs">--%>
-    <%--<div class="modal-dialog">--%>
-        <%--<div class="modal-content">--%>
-            <%--<div class="modal-header">--%>
-                <%--<button type="button" class="close" data-dismiss="modal" aria-label="Close">--%>
-                    <%--<span aria-hidden="true">&times;</span></button>--%>
-                <%--<h4 class="modal-title"><i class="fa fa-document"></i> Approve Pasien Bpjs</span>--%>
-                <%--</h4>--%>
-            <%--</div>--%>
-            <%--<div class="modal-body">--%>
-                <%--<div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin_bpjs">--%>
-                    <%--<h4><i class="icon fa fa-ban"></i> Warning!</h4>--%>
-                    <%--<p id="msg_fin_error_bpjs"></p>--%>
-                <%--</div>--%>
-                <%--<div class="alert alert-success alert-dismissible" style="display: none" id="success_fin_bpjs">--%>
-                    <%--<h4><i class="icon fa fa-info"></i> Info!</h4>--%>
-                    <%--<p id="msg_fin_bpjs">Approve Berhasil</p>--%>
-                <%--</div>--%>
-                <%--<div class="col-md-offset-3">--%>
-                    <%--<div class="row">--%>
-                        <%--<div class="col-md-6"><h3 id="dt-nama-pelayanan-bpjs"></h3></div>--%>
-                    <%--</div>--%>
-                    <%--<div class="row top-7">--%>
-                        <%--<div class="col-md-3" align="right">No. Kartu :</div>--%>
-                        <%--<div class="col-md-6"><span id="dt-no-kartu-bpjs"></span></div>--%>
-                    <%--</div>--%>
-                    <%--<div class="row top-7">--%>
-                        <%--<div class="col-md-3" align="right">a.n. :</div>--%>
-                        <%--<div class="col-md-6"><span id="dt-nama-pasien-bpjs"></span></div>--%>
-                    <%--</div>--%>
-                    <%--<div class="row top-7">--%>
-                        <%--<div class="col-md-3" align="right">Keluhan Pasien :</div>--%>
-                        <%--<div class="col-md-6"><textarea class="form-control" cols="4" rows="3"></textarea></div>--%>
-                    <%--</div>--%>
-                    <%--<div class="row top-7">--%>
-                        <%--<div class="col-md-3" align="right">Diagnosa ICD 10 :</div>--%>
-                        <%--<div class="col-md-6"></div>--%>
-                    <%--</div>--%>
-                    <%--<div class="row top-7">--%>
-                        <%--<div class="col-md-3" align="right">Cover BPJS :</div>--%>
-                        <%--<div class="col-md-6"><input type="number" class="form-control" id="dt-cover-bpjs"></div>--%>
-                    <%--</div>--%>
-                    <%--<div class="row top-7">--%>
-                        <%--<div class="col-md-3" align="right"></div>--%>
-                        <%--<div class="col-md-6"><button onclick="checkBpjs()" class="btn btn-success">Check</button></div>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-            <%--<div class="modal-footer">--%>
-                <%--&lt;%&ndash;<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close&ndash;%&gt;--%>
-                <%--&lt;%&ndash;</button>&ndash;%&gt;--%>
-                <%--<div id="btn-save-bpjs"></div>--%>
-            <%--</div>--%>
-        <%--</div>--%>
-    <%--</div>--%>
-<%--</div>--%>
-
 
 <script type='text/javascript'>
 
@@ -646,7 +589,7 @@
 
                     if (item.flagBayar == "Y"){
 
-                        if (item.approvedFlag == "Y" || item.noSep == null){
+                        if (item.approvedFlag == "Y" || (item.noSep == null && idJenisPeriksaPasien == "bpjs")){
                             str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
                                 "<td align='center'></td>";
                         } else {
