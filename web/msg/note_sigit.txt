@@ -336,3 +336,10 @@
     ALTER TABLE it_simrs_antrian_telemedic ADD COLUMN jumlah_cover NUMERIC;
 
 <<< //
+
+// 2020-06-29 >>>
+
+    ALTER TABLE it_simrs_antrian_telemedic
+    ADD COLUMN no_jurnal VARCHAR(30);
+
+<<< //

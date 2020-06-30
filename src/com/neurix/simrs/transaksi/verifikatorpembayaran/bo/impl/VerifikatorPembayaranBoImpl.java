@@ -310,6 +310,7 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
                 headerEntity.setBerat(bean.getBerat());
                 headerEntity.setTinggi(bean.getTinggi());
                 headerEntity.setIdAntrianOnline(bean.getIdAntrianOnline());
+                headerEntity.setTglKeluar(bean.getTglKeluar());
 
                 try {
                     headerCheckupDao.addAndSave(headerEntity);

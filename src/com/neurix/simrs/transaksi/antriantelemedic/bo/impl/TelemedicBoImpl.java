@@ -452,6 +452,7 @@ public class TelemedicBoImpl implements TelemedicBo {
                 telemedicEntity.setFlagBayarKonsultasi(bean.getFlagBayarKonsultasi() == null  ? telemedicEntity.getFlagBayarKonsultasi() : bean.getFlagBayarKonsultasi());
                 telemedicEntity.setStatus(bean.getStatus() == null ? statusSebelum : bean.getStatus());
                 telemedicEntity.setJumlahCover(bean.getJumlahCover() == null ? telemedicEntity.getJumlahCover() : bean.getJumlahCover());
+                telemedicEntity.setNoJurnal(bean.getNoJurnal() == null ? telemedicEntity.getNoJurnal() : bean.getNoJurnal());
                 telemedicEntity.setAction("U");
                 telemedicEntity.setLastUpdate(bean.getLastUpdate());
                 telemedicEntity.setLastUpdateWho(bean.getLastUpdateWho());

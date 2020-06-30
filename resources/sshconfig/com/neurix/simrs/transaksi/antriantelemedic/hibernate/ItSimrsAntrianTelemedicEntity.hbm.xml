@@ -95,6 +95,9 @@
             <basic name="jenisPembayaran">
                 <column name="jenis_pembayaran"/>
             </basic>
+            <basic name="noJurnal">
+                <column name="no_jurnal"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

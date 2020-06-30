@@ -38,6 +38,8 @@ public class ItSimrsAntrianTelemedicEntity {
     private String noTelp;
     private BigDecimal jumlahCover;
     private String jenisPembayaran;
+    private String noJurnal;
+
 
     public String getJenisPembayaran() {
         return jenisPembayaran;
@@ -45,6 +47,14 @@ public class ItSimrsAntrianTelemedicEntity {
 
     public void setJenisPembayaran(String jenisPembayaran) {
         this.jenisPembayaran = jenisPembayaran;
+    }
+
+    public String getNoJurnal() {
+        return noJurnal;
+    }
+
+    public void setNoJurnal(String noJurnal) {
+        this.noJurnal = noJurnal;
     }
 
     public BigDecimal getJumlahCover() {
