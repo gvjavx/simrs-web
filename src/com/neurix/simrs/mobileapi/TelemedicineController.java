@@ -6,6 +6,9 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.common.util.FirebasePushNotif;
 import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiFcmBo;
 import com.neurix.hris.transaksi.notifikasi.model.NotifikasiFcm;
+import com.neurix.simrs.bpjs.vclaim.bo.BpjsBo;
+import com.neurix.simrs.bpjs.vclaim.model.PesertaResponse;
+import com.neurix.simrs.bpjs.vclaim.model.RujukanResponse;
 import com.neurix.simrs.mobileapi.model.ResepOnlineMobile;
 import com.neurix.simrs.mobileapi.model.TelemedicineMobile;
 import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
@@ -37,6 +40,8 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -53,6 +58,7 @@ public class TelemedicineController implements ModelDriven<Object> {
     private NotifikasiFcmBo notifikasiFcmBoProxy;
     private ResepOnlineBo resepOnlineBoProxy;
     private VerifikatorPembayaranBo verifikatorPembayaranBoProxy;
+    private BpjsBo bpjsBoProxy;
 
     private String action;
 
@@ -77,6 +83,14 @@ public class TelemedicineController implements ModelDriven<Object> {
     private String keterangan;
 
     private boolean isResep;
+
+    public BpjsBo getBpjsBoProxy() {
+        return bpjsBoProxy;
+    }
+
+    public void setBpjsBoProxy(BpjsBo bpjsBoProxy) {
+        this.bpjsBoProxy = bpjsBoProxy;
+    }
 
     public String getKeterangan() {
         return keterangan;
@@ -832,6 +846,36 @@ public class TelemedicineController implements ModelDriven<Object> {
                 model.setMessage("Success");
             } catch (GeneralBOException e) {
                 logger.error("[TelemedicineController.insertResep] Error, " + e.getMessage());
+            }
+        } else if (action.equalsIgnoreCase("checkBpjs")) {
+
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            String text = df.format(now);
+
+            PesertaResponse response = new PesertaResponse();
+
+            try {
+               response = bpjsBoProxy.GetPesertaBpjsByAPIBpjs(model.getNoKartu(), text, model.getBranchId());
+            } catch (GeneralBOException e) {
+                logger.error("[TelemedicineController.insertResep] Error, " + e.getMessage());
+            }
+
+            if (response != null) {
+                model.setMessage("Success");
+            }
+
+        } else if (action.equalsIgnoreCase("checkRujukan")) {
+
+            RujukanResponse response = new RujukanResponse();
+
+            try {
+               response = bpjsBoProxy.caraRujukanBerdasarNomorBpjs(model.getNoRujukan(), model.getJenisRujukan(), model.getBranchId());
+            } catch (GeneralBOException e) {
+                logger.error("[TelemedicineController.insertResep] Error, " + e.getMessage());
+            }
+
+            if (response != null) {
+                model.setMessage("Success");
             }
         }
 

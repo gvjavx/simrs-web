@@ -53,6 +53,24 @@ public class TelemedicineMobile {
     private String urlResep;
 
     private String jenisPembayaran;
+    private String noRujukan;
+    private String jenisRujukan;
+
+    public String getJenisRujukan() {
+        return jenisRujukan;
+    }
+
+    public void setJenisRujukan(String jenisRujukan) {
+        this.jenisRujukan = jenisRujukan;
+    }
+
+    public String getNoRujukan() {
+        return noRujukan;
+    }
+
+    public void setNoRujukan(String noRujukan) {
+        this.noRujukan = noRujukan;
+    }
 
     public String getJenisPembayaran() {
         return jenisPembayaran;
