@@ -3298,7 +3298,7 @@ public class SppdBoImpl implements SppdBo {
 
                         for (ItNotifikasiFcmEntity entity : notifikasiFcm){
                             if(entity.getUserId().equals(itPersonilPositionEntity.getNip())){
-                                FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), itNotifEntity.getTipeNotifName(), itNotifEntity.getNote(), CLICK_ACTION, entity.getOs());
+                                FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), itNotifEntity.getTipeNotifName(), itNotifEntity.getNote(), CLICK_ACTION, entity.getOs(), false);
                                 break;
                             }
                         }

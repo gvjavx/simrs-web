@@ -448,7 +448,7 @@ public class VerifikatorPembayaranAction {
                             //Push Notif ke Pasien terkait perubahan status menjadi WL
                             bean.setUserId(antrianTelemedicEntity.getIdPasien());
                             notifikasiFcm = notifikasiFcmBo.getByCriteria(bean);
-                            FirebasePushNotif.sendNotificationFirebase(notifikasiFcm.get(0).getTokenFcm(),"Resep", "Pembayaran resep telah dikonfirmasi", "WL", notifikasiFcm.get(0).getOs());
+                            FirebasePushNotif.sendNotificationFirebase(notifikasiFcm.get(0).getTokenFcm(),"Resep", "Pembayaran resep telah dikonfirmasi", "WL", notifikasiFcm.get(0).getOs(), false);
 
                             response.setStatus("success");
                             return response;
@@ -579,7 +579,7 @@ public class VerifikatorPembayaranAction {
                             //Push Notif ke Pasien terkait perubahan status menjadi WL
                             bean.setUserId(firstOrderAntrian.getIdPasien());
                             notifikasiFcm = notifikasiFcmBo.getByCriteria(bean);
-                            FirebasePushNotif.sendNotificationFirebase(notifikasiFcm.get(0).getTokenFcm(),"Telemedic", "Anda telah memasuki Antrian Waiting List. Silahkan lakukan pembayaran", "WL", notifikasiFcm.get(0).getOs());
+                            FirebasePushNotif.sendNotificationFirebase(notifikasiFcm.get(0).getTokenFcm(),"Telemedic", "Anda telah memasuki Antrian Waiting List. Silahkan lakukan pembayaran", "WL", notifikasiFcm.get(0).getOs(), false);
 
                         } catch (GeneralBOException e){
                             logger.error("[VerifikatorPembayaranAction.approveTransaksi] ERROR. ",e);
@@ -613,7 +613,7 @@ public class VerifikatorPembayaranAction {
                         //Push Notif ke Pasien terkait perubahan status menjadi SL
                         bean.setUserId(antrianTelemedicEntity.getIdPasien());
                         notifikasiFcm = notifikasiFcmBo.getByCriteria(bean);
-                        FirebasePushNotif.sendNotificationFirebase(notifikasiFcm.get(0).getTokenFcm(),"Telemedic", "Anda telah memasuki Antrian Short List. Buka aplikasi untuk menunggu panggilan dokter", "SL", notifikasiFcm.get(0).getOs());
+                        FirebasePushNotif.sendNotificationFirebase(notifikasiFcm.get(0).getTokenFcm(),"Telemedic", "Anda telah memasuki Antrian Short List. Buka aplikasi untuk menunggu panggilan dokter", "SL", notifikasiFcm.get(0).getOs(), false);
                     } catch (GeneralBOException e){
                         logger.error("[VerifikatorPembayaranAction.approveTransaksi] ERROR. ",e);
                         response.setStatus("error");

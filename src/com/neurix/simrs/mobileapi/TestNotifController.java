@@ -25,7 +25,7 @@ public class TestNotifController implements ModelDriven<Object> {
 
     public HttpHeaders create() {
         logger.info("[TestNotifController.create] start process POST / <<<");
-        boolean isSuccess = FirebasePushNotif.sendNotificationFirebase(model.getTokenId(), model.getTitle(), model.getBody(), model.getClick_action(), model.getOs());
+        boolean isSuccess = FirebasePushNotif.sendNotificationFirebase(model.getTokenId(), model.getTitle(), model.getBody(), model.getClick_action(), model.getOs(), true);
 
         if (isSuccess) {
             model.setMessage("Success");

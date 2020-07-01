@@ -703,7 +703,7 @@ public class LemburBoImpl implements LemburBo {
 
             for (ItNotifikasiFcmEntity entity : notifikasiFcm){
                 if(entity.getUserId().equals(atasanNip)){
-                    FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), noteMobile, ACTION_CLICK, bean.getOs());
+                    FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), noteMobile, ACTION_CLICK, bean.getOs(), false);
                     break;
                 }
             }

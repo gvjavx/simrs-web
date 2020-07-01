@@ -12,7 +12,7 @@ import java.util.Properties;
 
 public class FirebasePushNotif {
 
-    public static Boolean sendNotificationFirebase(String tokenId, String title, String body, String CLICK_ACTION, String os){
+    public static Boolean sendNotificationFirebase(String tokenId, String title, String body, String CLICK_ACTION, String os, boolean isDataOnly){
         Integer responseCode = 0;
         Properties properties = new Properties();
 

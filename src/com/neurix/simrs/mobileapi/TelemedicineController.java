@@ -345,7 +345,7 @@ public class TelemedicineController implements ModelDriven<Object> {
                     beanNotif.setUserId(idPasien);
 
                     result = notifikasiFcmBoProxy.getByCriteria(beanNotif);
-                    FirebasePushNotif.sendNotificationFirebase(result.get(0).getTokenFcm(), "Telemedic", "Dokter Memanggil ...", "PD", result.get(0).getOs());
+                    FirebasePushNotif.sendNotificationFirebase(result.get(0).getTokenFcm(), "Telemedic", "Dokter Memanggil ...", "PD", result.get(0).getOs(), true);
                 }
             } catch (GeneralBOException e) {
                 logger.error("[TelemedicineController.create] Error, " + e.getMessage());
@@ -434,7 +434,7 @@ public class TelemedicineController implements ModelDriven<Object> {
                             NotifikasiFcm beanNotif = new NotifikasiFcm();
                             beanNotif.setUserId(firstOrderAntrian.getIdPasien());
                             List<NotifikasiFcm> notifikasiFcm = notifikasiFcmBoProxy.getByCriteria(beanNotif);
-                            FirebasePushNotif.sendNotificationFirebase(notifikasiFcm.get(0).getTokenFcm(),"Telemedic", "Anda telah memasuki Antrian Waiting List. Silahkan lakukan pembayaran", "WL", notifikasiFcm.get(0).getOs());
+                            FirebasePushNotif.sendNotificationFirebase(notifikasiFcm.get(0).getTokenFcm(),"Telemedic", "Anda telah memasuki Antrian Waiting List. Silahkan lakukan pembayaran", "WL", notifikasiFcm.get(0).getOs(), false);
 
                         } catch (GeneralBOException e){
                             logger.error("[TelemedicineController.create] Error, " + e.getMessage());
@@ -776,7 +776,7 @@ public class TelemedicineController implements ModelDriven<Object> {
                 NotifikasiFcm notif = new NotifikasiFcm();
                 notif.setUserId(idPasien);
                 List<NotifikasiFcm> fcm = notifikasiFcmBoProxy.getByCriteria(notif);
-                FirebasePushNotif.sendNotificationFirebase(fcm.get(0).getTokenFcm(),"Resep Online", "Silahkan buka aplikasi untuk melakukan pembayaran resep", "BAYAR_RESEP", fcm.get(0).getOs());
+                FirebasePushNotif.sendNotificationFirebase(fcm.get(0).getTokenFcm(),"Resep Online", "Silahkan buka aplikasi untuk melakukan pembayaran resep", "BAYAR_RESEP", fcm.get(0).getOs(), false);
 
                 model.setMessage(totalHarga.toString());
             } catch (GeneralBOException e) {
@@ -842,7 +842,7 @@ public class TelemedicineController implements ModelDriven<Object> {
                 NotifikasiFcm notif = new NotifikasiFcm();
                 notif.setUserId(idPasien);
                 List<NotifikasiFcm> fcm = notifikasiFcmBoProxy.getByCriteria(notif);
-                FirebasePushNotif.sendNotificationFirebase(fcm.get(0).getTokenFcm(),"Resep Online", "Silahkan buka aplikasi untuk melakukan pembayaran resep", "BAYAR_RESEP", fcm.get(0).getOs());
+                FirebasePushNotif.sendNotificationFirebase(fcm.get(0).getTokenFcm(),"Resep Online", "Silahkan buka aplikasi untuk melakukan pembayaran resep", "BAYAR_RESEP", fcm.get(0).getOs(), false);
 
                 model.setMessage("Success");
             } catch (GeneralBOException e) {
