@@ -1621,6 +1621,7 @@ public class TransaksiObatAction extends BaseMasterAction {
                     transId = "17";
                 } else {
 
+                    jenisPasien = "BPJS No. SEP "+detailCheckupEntity.getNoSep();
                     // piutang bpjs dengan obat
                     Map mapPiutang = new HashMap();
                     mapPiutang.put("bukti", detailCheckupEntity.getNoSep());
@@ -1631,7 +1632,7 @@ public class TransaksiObatAction extends BaseMasterAction {
                     mapJurnal.put("ppn_keluaran", mapPajakObat);
                     mapJurnal.put("pendapatan_rawat_jalan_bpjs", listOfTindakan);
                     mapJurnal.put("piutang_pasien_bpjs", mapPiutang);
-
+                    transId = "13";
                 }
             }
         }
