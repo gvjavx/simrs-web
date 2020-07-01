@@ -1247,8 +1247,6 @@ public class VerifikatorPembayaranAction {
                     mapJurnal.put("piutang_pasien_asuransi", mapPiutang);
                     transId = "17";
                 }
-
-
             }
 
         } else {
@@ -1279,19 +1277,27 @@ public class VerifikatorPembayaranAction {
                 transId = "09";
             } else {
 
-                // BPJS
-                jenisPasien = "BPJS No. SEP " + detailCheckupEntity.getNoSep();
-                invoice = billingSystemBo.createInvoiceNumber("JRJ", branchId);
+                // BPJS only konsultasi
+                if ("N".equalsIgnoreCase(withResep)){
+                    jenisPasien = "BPJS No. SEP " + detailCheckupEntity.getNoSep();
+                    invoice = billingSystemBo.createInvoiceNumber("JRJ", branchId);
 
-                Map mapPiutang = new HashMap();
-                mapPiutang.put("bukti", detailCheckupEntity.getNoSep());
-                mapPiutang.put("nilai", jumlah );
-                mapPiutang.put("master_id", getMasterIdByTipe(idDetailCheckup, "bpjs"));
+                    Map mapPiutang = new HashMap();
+                    mapPiutang.put("bukti", detailCheckupEntity.getNoSep());
+                    mapPiutang.put("nilai", jumlah );
+                    mapPiutang.put("master_id", getMasterIdByTipe(idDetailCheckup, "bpjs"));
 
 
-                mapJurnal.put("pendapatan_rawat_jalan_bpjs", listOfTindakan);
-                mapJurnal.put("piutang_pasien_bpjs", mapPiutang);
-                transId = "06";
+                    mapJurnal.put("pendapatan_rawat_jalan_bpjs", listOfTindakan);
+                    mapJurnal.put("piutang_pasien_bpjs", mapPiutang);
+                    transId = "06";
+                } else {
+
+                    // kembalikan jika dengan resep BPJS
+                    response.setStatus("success");
+                    response.setMsg("[Berhasil]");
+                    return response;
+                }
             }
         }
 

@@ -1547,19 +1547,38 @@ public class TransaksiObatAction extends BaseMasterAction {
 
         // MAP ALL TINDAKAN BY KETERANGAN
         List<Map> listOfTindakan = new ArrayList<>();
-        Map mapTindakan = new HashMap();
-        mapTindakan.put("master_id", masterId);
-        mapTindakan.put("divisi_id", getDivisiId(idDetailCheckup, idJenisPeriksaPasien, keterangan));
-        mapTindakan.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, idJenisPeriksaPasien, keterangan));
-        mapTindakan.put("activity", getAcitivityList(idDetailCheckup, idJenisPeriksaPasien, keterangan, kode));
-        listOfTindakan.add(mapTindakan);
+
+        if ("umum".equalsIgnoreCase(idJenisPeriksaPasien) || "asuransi".equalsIgnoreCase(idJenisPeriksaPasien)) {
+            Map mapTindakan = new HashMap();
+            mapTindakan.put("master_id", masterId);
+            mapTindakan.put("divisi_id", getDivisiId(idDetailCheckup, idJenisPeriksaPasien, keterangan));
+            mapTindakan.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, idJenisPeriksaPasien, keterangan));
+            mapTindakan.put("activity", getAcitivityList(idDetailCheckup, idJenisPeriksaPasien, keterangan, kode));
+            listOfTindakan.add(mapTindakan);
+        } else {
+            // jika bpjs
+            List<String> listOfKeteranganRiwayat = riwayatTindakanBo.getListKeteranganByIdDetailCheckup(idDetailCheckup);
+            if (listOfKeteranganRiwayat.size() > 0) {
+
+                for (String keteranganRiwayat : listOfKeteranganRiwayat) {
+                    Map mapTindakan = new HashMap();
+                    mapTindakan.put("master_id", masterId);
+                    mapTindakan.put("divisi_id", getDivisiId(idDetailCheckup, detailCheckupEntity.getIdJenisPeriksaPasien(), keteranganRiwayat));
+                    mapTindakan.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, detailCheckupEntity.getIdJenisPeriksaPasien(), keteranganRiwayat));
+                    mapTindakan.put("activity", getAcitivityList(idDetailCheckup, detailCheckupEntity.getIdJenisPeriksaPasien(), keteranganRiwayat, kode));
+                    listOfTindakan.add(mapTindakan);
+                }
+            }
+        }
 
         // MENDAPATKAN SEMUA BIAYA RAWAT;
-        BigDecimal jumlah = getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "", "");
         BigDecimal ppnObat = new BigDecimal(0);
         Map mapJurnal = new HashMap();
         if ("Y".equalsIgnoreCase(flagResep)){
+            // jumlah untuk bpjs
+            BigDecimal jumlah = getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "", "");
 
+            // jumlah untuk bpjs
             BigDecimal jumlahResep = getJumlahNilaiBiayaByKeterangan(idDetailCheckup, idJenisPeriksaPasien, "resep");
             if (jumlahResep != null && jumlahResep.compareTo(new BigDecimal(0)) == 1){
 
@@ -1578,7 +1597,7 @@ public class TransaksiObatAction extends BaseMasterAction {
                     // create list map piutang
                     Map mapPiutang = new HashMap();
                     mapPiutang.put("bukti", invoice);
-                    mapPiutang.put("nilai",  jumlah.add(ppnObat));
+                    mapPiutang.put("nilai",  jumlahResep.add(ppnObat));
                     mapPiutang.put("pasien_id", idPasien);
 
                     mapJurnal.put("ppn_keluaran", mapPajakObat);
@@ -1592,7 +1611,7 @@ public class TransaksiObatAction extends BaseMasterAction {
                     // create list map piutang
                     Map mapPiutang = new HashMap();
                     mapPiutang.put("bukti", invoice);
-                    mapPiutang.put("nilai", jumlah.add(ppnObat));
+                    mapPiutang.put("nilai", jumlahResep.add(ppnObat));
                     mapPiutang.put("master_id", masterId);
 //                                mapPiutang.put("pasien_id", idPasien);
                     // debit piutang pasien asuransi
@@ -1600,15 +1619,25 @@ public class TransaksiObatAction extends BaseMasterAction {
                     mapJurnal.put("pendapatan_rawat_jalan_asuransi", listOfTindakan);
                     mapJurnal.put("piutang_pasien_asuransi", mapPiutang);
                     transId = "17";
+                } else {
+
+                    // piutang bpjs dengan obat
+                    Map mapPiutang = new HashMap();
+                    mapPiutang.put("bukti", detailCheckupEntity.getNoSep());
+                    mapPiutang.put("nilai", jumlah.add(ppnObat));
+                    mapPiutang.put("master_id", getMasterIdByTipe(idDetailCheckup, "bpjs"));
+
+                    // kredit jumlah tindakan
+                    mapJurnal.put("ppn_keluaran", mapPajakObat);
+                    mapJurnal.put("pendapatan_rawat_jalan_bpjs", listOfTindakan);
+                    mapJurnal.put("piutang_pasien_bpjs", mapPiutang);
+
                 }
-
-
             }
-
         }
 
 
-        String catatan = "Closing Jurnal Telemedic "+jenisPasien+" Id Detail Checkup " + idDetailCheckup;
+        String catatan = "Closing Jurnal Resep Telemedic "+jenisPasien+" Id Detail Checkup " + idDetailCheckup;
 
         try {
 
