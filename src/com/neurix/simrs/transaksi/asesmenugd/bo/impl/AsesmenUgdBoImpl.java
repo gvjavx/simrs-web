@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.asesmenugd.bo.impl;
 
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.asesmenugd.bo.AsesmenUgdBo;
@@ -17,22 +18,23 @@ import java.util.Map;
 public class AsesmenUgdBoImpl implements AsesmenUgdBo {
     private static transient Logger logger = Logger.getLogger(AsesmenUgdBoImpl.class);
     private AsesmenUgdDao asesmenUgdDao;
+
     @Override
     public List<AsesmenUgd> getByCriteria(AsesmenUgd bean) throws GeneralBOException {
         List<AsesmenUgd> list = new ArrayList<>();
 
-        if(bean != null){
+        if (bean != null) {
             Map hsCriteria = new HashMap();
-            if(bean.getIdAsesmenUgd() != null && !"".equalsIgnoreCase(bean.getIdAsesmenUgd())){
+            if (bean.getIdAsesmenUgd() != null && !"".equalsIgnoreCase(bean.getIdAsesmenUgd())) {
                 hsCriteria.put("id_asesmen_ugd", bean.getIdAsesmenUgd());
             }
-            if(bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
+            if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
                 hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
             }
-            if(bean.getKeterangan() != null && !"".equalsIgnoreCase(bean.getKeterangan())){
+            if (bean.getKeterangan() != null && !"".equalsIgnoreCase(bean.getKeterangan())) {
                 hsCriteria.put("keterangan", bean.getKeterangan());
             }
-            if(bean.getJenis() != null && !"".equalsIgnoreCase(bean.getJenis())){
+            if (bean.getJenis() != null && !"".equalsIgnoreCase(bean.getJenis())) {
                 hsCriteria.put("jenis", bean.getJenis());
             }
 
@@ -40,17 +42,27 @@ public class AsesmenUgdBoImpl implements AsesmenUgdBo {
 
             try {
                 entityList = asesmenUgdDao.getByCriteria(hsCriteria);
-            }catch (HibernateException e){
+            } catch (HibernateException e) {
                 logger.error(e.getMessage());
             }
 
-            if(entityList.size() > 0){
-                for (ItSimrsAsesmenUgdEntity entity: entityList){
+            if (entityList.size() > 0) {
+                for (ItSimrsAsesmenUgdEntity entity : entityList) {
                     AsesmenUgd asesmenUgd = new AsesmenUgd();
                     asesmenUgd.setIdAsesmenUgd(entity.getIdAsesmenUgd());
                     asesmenUgd.setIdDetailCheckup(entity.getIdDetailCheckup());
                     asesmenUgd.setParameter(entity.getParameter());
-                    asesmenUgd.setJawaban(entity.getJawaban());
+
+                    if ("gambar".equalsIgnoreCase(entity.getTipe()) || "ttd".equalsIgnoreCase(entity.getTipe())) {
+                        if ("gambar".equalsIgnoreCase(entity.getTipe())) {
+                            asesmenUgd.setJawaban(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_IMG_RM + entity.getJawaban());
+                        } else {
+                            asesmenUgd.setJawaban(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getJawaban());
+                        }
+                    } else {
+                        asesmenUgd.setJawaban(entity.getJawaban());
+                    }
+
                     asesmenUgd.setKeterangan(entity.getKeterangan());
                     asesmenUgd.setJenis(entity.getJenis());
                     asesmenUgd.setSkor(entity.getSkor());
@@ -60,6 +72,7 @@ public class AsesmenUgdBoImpl implements AsesmenUgdBo {
                     asesmenUgd.setCreatedWho(entity.getCreatedWho());
                     asesmenUgd.setLastUpdate(entity.getLastUpdate());
                     asesmenUgd.setLastUpdateWho(entity.getLastUpdateWho());
+                    asesmenUgd.setTipe(entity.getTipe());
                     list.add(asesmenUgd);
                 }
             }
@@ -71,10 +84,10 @@ public class AsesmenUgdBoImpl implements AsesmenUgdBo {
     @Override
     public CrudResponse saveAdd(List<AsesmenUgd> list) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
-        if(list.size() > 0){
-            for (AsesmenUgd bean: list){
+        if (list.size() > 0) {
+            for (AsesmenUgd bean : list) {
                 ItSimrsAsesmenUgdEntity asesmenUgdEntity = new ItSimrsAsesmenUgdEntity();
-                asesmenUgdEntity.setIdAsesmenUgd("AGD"+asesmenUgdDao.getNextSeq());
+                asesmenUgdEntity.setIdAsesmenUgd("AGD" + asesmenUgdDao.getNextSeq());
                 asesmenUgdEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
                 asesmenUgdEntity.setParameter(bean.getParameter());
                 asesmenUgdEntity.setJawaban(bean.getJawaban());
@@ -87,14 +100,15 @@ public class AsesmenUgdBoImpl implements AsesmenUgdBo {
                 asesmenUgdEntity.setCreatedWho(bean.getCreatedWho());
                 asesmenUgdEntity.setLastUpdate(bean.getLastUpdate());
                 asesmenUgdEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                asesmenUgdEntity.setTipe(bean.getTipe());
 
                 try {
                     asesmenUgdDao.addAndSave(asesmenUgdEntity);
                     response.setStatus("success");
                     response.setMsg("Berhasil");
-                }catch (HibernateException e){
+                } catch (HibernateException e) {
                     response.setStatus("error");
-                    response.setMsg("Found Error "+e.getMessage());
+                    response.setMsg("Found Error " + e.getMessage());
                     logger.error(e.getMessage());
                 }
             }

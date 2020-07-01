@@ -296,6 +296,7 @@
       </create>
       <convert converter="bean" match="com.neurix.simrs.master.tindakan.model.Tindakan"/>
       <convert converter="bean" match="com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity"/>
+      <convert converter="bean" match="com.neurix.simrs.master.tindakanicd9.model.TindakanICD9"/>
 
 
       <!--Tindaakan Rawat-->
@@ -328,6 +329,7 @@
           <param name="class" value="com.neurix.simrs.transaksi.diagnosarawat.action.DiagnosaRawatAction"/>
       </create>
       <convert converter="bean" match="com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat"/>
+      <convert converter="bean" match="com.neurix.simrs.master.diagnosa.model.Diagnosa"/>
 
       <!--Checkup Detail -->
       <create creator="new">
@@ -647,6 +649,8 @@
           <param name="class" value="com.neurix.simrs.transaksi.rencanaasuhankeperawatan.action.RencanaAsuhanKeperawatanAction"/>
       </create>
       <convert converter="bean" match="com.neurix.simrs.transaksi.rencanaasuhankeperawatan.model.RencanaAsuhanKeperawatan"/>
+      <convert converter="bean" match="com.neurix.simrs.master.askep.model.DetailAsuhanKeperawatan"/>
+      <convert converter="bean" match="com.neurix.simrs.master.askep.model.DiagnosaAsuhanKeperawatan"/>
 
       <create creator="new">
           <param name="class" value="com.neurix.simrs.transaksi.rekonsiliasiobat.action.RekonsiliasiObatAction"/>
@@ -701,6 +705,42 @@
       <convert converter="bean" match="com.neurix.hris.master.dokterKsoTindakan.model.ImSimrsDokterKsoTindakan"/>
 
       <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.asesmenspesialis.action.AsesmenSpesialisAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.asesmenspesialis.model.AsesmenSpesialis"/>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.tindakanrawaticd9.action.TindakanRawatICD9Action"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.tindakanrawaticd9.model.TindakanRawatICD9"/>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.edukasipasien.action.EdukasiPasienAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.edukasipasien.model.EdukasiPasien"/>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.asesmenicu.action.AsesmenIcuAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.asesmenicu.model.AsesmenIcu"/>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.hemodinamika.action.HemodinamikaAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.hemodinamika.model.Hemodinamika"/>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.respirasi.action.RespirasiAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.respirasi.model.Respirasi"/>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.icu.action.IcuAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.icu.model.HeaderIcu"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.icu.model.DetailIcu"/>
+
+      <create creator="new">
           <param name="class" value="com.neurix.akuntansi.transaksi.pengajuanBiaya.action.PengajuanBiayaAction"/>
       </create>
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.pengajuanBiaya.model.PengajuanBiaya"/>
@@ -719,6 +759,12 @@
       </create>
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.jurnal.model.Jurnal"/>
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.jurnal.model.JurnalDetail"/>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.kandungan.action.KandunganAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.kandungan.model.Kandungan"/>
+
   </allow>
 
 </dwr>

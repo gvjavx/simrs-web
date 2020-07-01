@@ -3,15 +3,13 @@ function paintTtd(id, change){
     const context = paintCanvas.getContext("2d");
 
     context.lineCap = "round";
+    context.lineWidth = "3";
     var colorPicker = "";
     if(change){
         colorPicker = document.querySelector(".js-color-picker-op");
     }else{
         colorPicker = document.querySelector(".js-color-picker");
     }
-
-    console.log(colorPicker);
-    console.log(change);
     // var clr = $('.js-color-picker').val();
     // context.strokeStyle = clr;
 
@@ -62,6 +60,110 @@ function paintTtd(id, change){
 
 function removePaint(id){
     var canvas = document.getElementById(id);
-    const context = canvas.getContext('2d');
-    context.clearRect(0, 0, canvas.width, canvas.height);
+    if ("area_canvas" == id) {
+        const context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        var url = "";
+        if ("Laki-Laki" == jenisKelamin) {
+            url = contextPath+'/pages/images/penanda-laki-laki.jpg';
+        } else {
+            url = contextPath+'/pages/images/penanda-perempuan.jpg';
+        }
+
+        var ctx = canvas.getContext('2d');
+        var img = new Image();
+        img.src = url;
+        img.onload = function (ev) {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0);
+        }
+    }else if("area_paru" == id){
+        const context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        var url = contextPath+'/pages/images/paru-1.png';
+
+        var ctx = canvas.getContext('2d');
+        var img = new Image();
+        img.src = url;
+        img.onload = function (ev) {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0);
+        }
+    }else if("area_ortopedi" == id){
+        const context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        var url = contextPath+'/pages/images/ortopedi.png';
+
+        var ctx = canvas.getContext('2d');
+        var img = new Image();
+        img.src = url;
+        img.onload = function (ev) {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0);
+        }
+    }else if("area_ginjal" == id){
+        const context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        var url = contextPath+'/pages/images/ginjal-1.png';
+
+        var ctx = canvas.getContext('2d');
+        var img = new Image();
+        img.src = url;
+        img.onload = function (ev) {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0);
+        }
+    } else if ("area_ugd" == id) {
+        const context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        var url = "";
+        if ("Laki-Laki" == jenisKelamin) {
+            url = contextPath+'/pages/images/male.jpg';
+        } else {
+            url = contextPath+'/pages/images/female.jpg';
+        }
+
+        var ctx = canvas.getContext('2d');
+        var img = new Image();
+        img.src = url;
+        img.onload = function (ev) {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0);
+        }
+    }else if ("area_gigi1" == id || "area_gigi2" == id) {
+        const context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        var url = contextPath+'/pages/images/gigi.png';
+
+        var ctx = canvas.getContext('2d');
+        var img = new Image();
+        img.src = url;
+        img.onload = function (ev) {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0);
+        }
+    }else {
+        const context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+    }
+}
+
+function cekItemIsNull(item) {
+    var res = "";
+    if(item != null){
+        res = item;
+    }
+    return res;
 }

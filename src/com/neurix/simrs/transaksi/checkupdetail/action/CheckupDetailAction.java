@@ -528,6 +528,19 @@ public class CheckupDetailAction extends BaseMasterAction {
             detailCheckup.setNamaAsuransi(checkup.getNamaAsuransi());
             detailCheckup.setCoverBiaya(checkup.getCoverBiaya());
             detailCheckup.setIsLaka(checkup.getIsLaka());
+            detailCheckup.setAnamnese(checkup.getAnamnese());
+            detailCheckup.setNamaDiagnosa(checkup.getNamaDiagnosa());
+            detailCheckup.setAlergi(checkup.getAlergi());
+            detailCheckup.setPenunjangMedis(checkup.getPenunjangMedis());
+            detailCheckup.setAlamatLengkap(checkup.getNamaDesa() + ", " + checkup.getNamaKecamatan() + ", " + checkup.getNamaKota());
+            detailCheckup.setNoBpjs(checkup.getNoBpjs());
+            String tahun = calculateAge(checkup.getTglLahir(), true);
+            detailCheckup.setUmur(tahun);
+
+            detailCheckup.setKategoriPelayanan(checkup.getKategoriPelayanan());
+            String label = checkup.getNamaPelayanan().replace("Poli Spesialis", "");
+            detailCheckup.setAsesmenLabel("Asesmen " + label);
+
             setHeaderDetailCheckup(detailCheckup);
 
         } else {
@@ -1244,7 +1257,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         String idJenisPeriksaPasien = "";
         BigDecimal biayaCover = new BigDecimal(0);
         ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getEntityDetailCheckupByIdDetail(idDetailCheckup);
-        if (detailCheckupEntity != null){
+        if (detailCheckupEntity != null) {
             idJenisPeriksaPasien = detailCheckupEntity.getIdJenisPeriksaPasien();
         }
         ItSimrsHeaderChekupEntity checkupEntity = checkupBo.getEntityCheckupById(detailCheckupEntity.getNoCheckup());
@@ -1276,9 +1289,9 @@ public class CheckupDetailAction extends BaseMasterAction {
                 }
 
                 String masterPerusahaan = "";
-                if ("paket_perusahaan".equalsIgnoreCase(idJenisPeriksaPasien)){
+                if ("paket_perusahaan".equalsIgnoreCase(idJenisPeriksaPasien)) {
                     ItSimrsPaketPasienEntity paketPasienEntity = paketPeriksaBo.getPaketPasienEntityByIdPaket(detailCheckupEntity.getIdPaket(), idPasien);
-                    if (paketPasienEntity != null){
+                    if (paketPasienEntity != null) {
                         masterPerusahaan = paketPasienEntity.getIdPerusahaan();
                     }
                 }
@@ -1437,7 +1450,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                             // jumlah debit uang muka
 
-                            if (!"paket_individu".equalsIgnoreCase(idJenisPeriksaPasien) && !"paket_perusahaan".equalsIgnoreCase(idJenisPeriksaPasien)){
+                            if (!"paket_individu".equalsIgnoreCase(idJenisPeriksaPasien) && !"paket_perusahaan".equalsIgnoreCase(idJenisPeriksaPasien)) {
                                 hsCriteria.put("uang_muka", mapUangMuka);
                             }
 
@@ -1453,7 +1466,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                                 Map mapPiutang = new HashMap();
                                 mapPiutang.put("bukti", invoice);
                                 mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
-                                if (!"paket_perusahaan".equalsIgnoreCase(idJenisPeriksaPasien)){
+                                if (!"paket_perusahaan".equalsIgnoreCase(idJenisPeriksaPasien)) {
                                     mapPiutang.put("pasien_id", idPasien);
                                 } else {
                                     mapPiutang.put("master_id", masterPerusahaan);
@@ -1462,7 +1475,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                                 // debit piutang pasien
                                 hsCriteria.put("piutang_pasien_umum", mapPiutang);
 
-                                if ("paket_individu".equalsIgnoreCase(idJenisPeriksaPasien) || "paket_perusahaan".equalsIgnoreCase(idJenisPeriksaPasien)){
+                                if ("paket_individu".equalsIgnoreCase(idJenisPeriksaPasien) || "paket_perusahaan".equalsIgnoreCase(idJenisPeriksaPasien)) {
                                     transId = "62";
                                 } else {
                                     transId = "14";
@@ -1473,7 +1486,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                                 Map mapPiutang = new HashMap();
                                 mapPiutang.put("bukti", invoice);
                                 mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
-                                if (!"paket_perusahaan".equalsIgnoreCase(idJenisPeriksaPasien)){
+                                if (!"paket_perusahaan".equalsIgnoreCase(idJenisPeriksaPasien)) {
                                     mapPiutang.put("pasien_id", idPasien);
                                 } else {
                                     mapPiutang.put("master_id", masterPerusahaan);
@@ -1481,7 +1494,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                                 // debit piutang pasien
                                 hsCriteria.put("piutang_pasien_umum", mapPiutang);
-                                if ("paket_individu".equalsIgnoreCase(idJenisPeriksaPasien) || "paket_perusahaan".equalsIgnoreCase(idJenisPeriksaPasien)){
+                                if ("paket_individu".equalsIgnoreCase(idJenisPeriksaPasien) || "paket_perusahaan".equalsIgnoreCase(idJenisPeriksaPasien)) {
                                     transId = "61";
                                 } else {
                                     transId = "07";
@@ -1547,20 +1560,20 @@ public class CheckupDetailAction extends BaseMasterAction {
                     }
 
                     String catatan = "";
-                    if ("paket_individu".equalsIgnoreCase(idJenisPeriksaPasien) || "paket_perusahaan".equalsIgnoreCase(idJenisPeriksaPasien)){
+                    if ("paket_individu".equalsIgnoreCase(idJenisPeriksaPasien) || "paket_perusahaan".equalsIgnoreCase(idJenisPeriksaPasien)) {
 
                         MtSimrsPaketEntity paketEntity = paketPeriksaBo.getPaketEntityById(detailCheckupEntity.getIdPaket());
                         String namaPaket = "";
-                        if (paketEntity != null){
-                            namaPaket = paketEntity.getNamaPaket()+ " ";
+                        if (paketEntity != null) {
+                            namaPaket = paketEntity.getNamaPaket() + " ";
                         }
 
                         // if paket perusahaan
-                        if ("paket_perusahaan".equalsIgnoreCase(idJenisPeriksaPasien)){
+                        if ("paket_perusahaan".equalsIgnoreCase(idJenisPeriksaPasien)) {
 
                             String namaPerusahaan = "";
                             ImMasterEntity masterEntity = masterBo.getEntityMasterById(masterPerusahaan);
-                            if (masterEntity != null){
+                            if (masterEntity != null) {
                                 namaPerusahaan = masterEntity.getNama();
                             }
 
@@ -3792,7 +3805,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
             String idPaket = "";
             ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getEntityDetailCheckupByIdDetail(idDetail);
-            if (detailCheckupEntity != null){
+            if (detailCheckupEntity != null) {
                 idPaket = detailCheckupEntity.getIdPaket();
             }
 
@@ -3826,11 +3839,11 @@ public class CheckupDetailAction extends BaseMasterAction {
                         riwayatTindakan.setIdDetailCheckup(entity.getIdDetailCheckup());
                         riwayatTindakan.setNamaTindakan(entity.getNamaTindakan());
 
-                        if (!"".equalsIgnoreCase(idPaket)){
+                        if (!"".equalsIgnoreCase(idPaket)) {
 
                             // mengambil berdasarkan idPaket dan idTindakan;
                             MtSimrsItemPaketEntity itemPaketEntity = riwayatTindakanBo.getItemPaketEntity(idPaket, entity.getIdTindakan());
-                            if (itemPaketEntity != null){
+                            if (itemPaketEntity != null) {
 
                                 // jika ada paket;
                                 riwayatTindakan.setTotalTarif(new BigDecimal(itemPaketEntity.getHarga()));
@@ -3905,11 +3918,11 @@ public class CheckupDetailAction extends BaseMasterAction {
                         riwayatTindakan.setNamaTindakan("Periksa Lab " + entity.getLabName());
 
                         // paket lab
-                        if (!"".equalsIgnoreCase(idPaket)){
+                        if (!"".equalsIgnoreCase(idPaket)) {
 
                             // mencari berdasarkan id paket dan id lab
                             ItemPaket itemPaket = riwayatTindakanBo.getTarifPaketLab(idPaket, entity.getIdLab());
-                            if (itemPaket != null){
+                            if (itemPaket != null) {
 
                                 // jika terdapat tarif paket maka menggunakan tarif paket
                                 riwayatTindakan.setTotalTarif(itemPaket.getTarif());
@@ -4318,6 +4331,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             reportParams.put("dokter", "");
             reportParams.put("area", CommonUtil.userAreaName());
             reportParams.put("unit", branchName);
+            reportParams.put("unitKota", branches.getBranchAddress());
             reportParams.put("idPasien", checkup.getIdPasien());
             reportParams.put("logo", logo);
             reportParams.put("nik", checkup.getNoKtp());
@@ -4345,6 +4359,9 @@ public class CheckupDetailAction extends BaseMasterAction {
             reportParams.put("namaRuang", checkup.getNamaRuangan());
             reportParams.put("namaPelayanan", checkup.getNamaPelayanan());
             reportParams.put("rawatInapId", checkup.getIdRawatInap());
+            reportParams.put("noBpjs", checkup.getNoBpjs());
+            String tahun = calculateAge(checkup.getTglLahir(), false);
+            reportParams.put("umur", tahun);
 
             String content1 = "I.\tPersetujuan Untuk Perawatan dan Pengobatan\n" +
                     "a. Saya mengetahui bahwa Saya memiliki kondisi yang membutuhkan perawatan medis, Saya memberi izin kepada dokter dan profesi kesehatan lainnya untuk melakukan prosedur diagnostik dan untuk memberi pengobatan medis seperti yang diperlukan untuk penilaian secara profesional. Prosedur diagnostik dan perawatan medis termasuk tetapi tidak terbatas pada ECG, X Ray, Tes Darah, terapi fisik dan pemberiaan obat.\n" +
@@ -4435,8 +4452,8 @@ public class CheckupDetailAction extends BaseMasterAction {
         if ("SP07".equalsIgnoreCase(tipe)) {
             return "print_kronologi";
         }
-        if ("RI01".equalsIgnoreCase(tipe)) {
-            return "print_rawat_inap";
+        if ("SP08".equalsIgnoreCase(tipe)) {
+            return "print_pernyataan_rujuak";
         }
         if ("SK01".equalsIgnoreCase(tipe)) {
             return "print_keterangan_dokter";
@@ -4447,8 +4464,17 @@ public class CheckupDetailAction extends BaseMasterAction {
         if ("SK03".equalsIgnoreCase(tipe)) {
             return "print_keterangan_kesehatan";
         }
+        if ("SK04".equalsIgnoreCase(tipe)) {
+            return "print_keterangan_kelahiran";
+        }
+        if ("SK05".equalsIgnoreCase(tipe)) {
+            return "print_keterangan_rekomendasi_dpjp";
+        }
         if ("HV01".equalsIgnoreCase(tipe)) {
             return "print_persetujuan_hiv";
+        }
+        if ("RI01".equalsIgnoreCase(tipe)) {
+            return "print_rawat_inap";
         }
 
         return null;
@@ -4536,6 +4562,74 @@ public class CheckupDetailAction extends BaseMasterAction {
         } else {
             return "print_radiologi";
         }
+    }
+
+    private String calculateAge(java.sql.Date birthDate, boolean justTahun) {
+        String umur = "";
+        if (birthDate != null && !"".equalsIgnoreCase(birthDate.toString())) {
+            int years = 0;
+            int months = 0;
+            int days = 0;
+
+            //create calendar object for birth day
+            Calendar birthDay = Calendar.getInstance();
+            birthDay.setTimeInMillis(birthDate.getTime());
+
+            //create calendar object for current day
+            long currentTime = System.currentTimeMillis();
+            Calendar now = Calendar.getInstance();
+            now.setTimeInMillis(currentTime);
+
+            //Get difference between years
+            years = now.get(Calendar.YEAR) - birthDay.get(Calendar.YEAR);
+            int currMonth = now.get(Calendar.MONTH) + 1;
+            int birthMonth = birthDay.get(Calendar.MONTH) + 1;
+
+            //Get difference between months
+            months = currMonth - birthMonth;
+
+            //if month difference is in negative then reduce years by one
+            //and calculate the number of months.
+            if (months < 0) {
+                years--;
+                months = 12 - birthMonth + currMonth;
+                if (now.get(Calendar.DATE) < birthDay.get(Calendar.DATE))
+                    months--;
+            } else if (months == 0 && now.get(Calendar.DATE) < birthDay.get(Calendar.DATE)) {
+                years--;
+                months = 11;
+            }
+
+            //Calculate the days
+            if (now.get(Calendar.DATE) > birthDay.get(Calendar.DATE))
+                days = now.get(Calendar.DATE) - birthDay.get(Calendar.DATE);
+            else if (now.get(Calendar.DATE) < birthDay.get(Calendar.DATE)) {
+                int today = now.get(Calendar.DAY_OF_MONTH);
+                now.add(Calendar.MONTH, -1);
+                days = now.getActualMaximum(Calendar.DAY_OF_MONTH) - birthDay.get(Calendar.DAY_OF_MONTH) + today;
+            } else {
+                days = 0;
+                if (months == 12) {
+                    years++;
+                    months = 0;
+                }
+            }
+
+            if (justTahun) {
+                umur = String.valueOf(years);
+            } else {
+                if (days > 0) {
+                    umur = years + " Tahun, " + months + " Bulan, " + days + " Hari";
+                } else if (months > 0) {
+                    umur = years + " Tahun, " + months + " Bulan";
+                } else {
+                    umur = years + " Tahun";
+                }
+            }
+
+        }
+
+        return umur;
     }
 
 

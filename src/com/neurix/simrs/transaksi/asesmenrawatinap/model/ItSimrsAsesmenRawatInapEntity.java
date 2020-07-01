@@ -18,6 +18,24 @@ public class ItSimrsAsesmenRawatInapEntity implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String tipe;
+    private String informasi;
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
+
+    public String getInformasi() {
+        return informasi;
+    }
+
+    public void setInformasi(String informasi) {
+        this.informasi = informasi;
+    }
 
     public String getIdAsesmenKeperawatanRawatInap() {
         return idAsesmenKeperawatanRawatInap;
