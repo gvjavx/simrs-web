@@ -1,6 +1,7 @@
 package com.neurix.akuntansi.transaksi.pengajuanSetor.dao;
 
 import com.neurix.akuntansi.transaksi.pengajuanSetor.model.ItPengajuanSetorDetailEntity;
+import com.neurix.akuntansi.transaksi.pengajuanSetor.model.PengajuanSetorDetail;
 import com.neurix.common.dao.GenericDao;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -52,5 +53,31 @@ public class PengajuanSetorDetailDao extends GenericDao<ItPengajuanSetorDetailEn
                 .addOrder(Order.asc("pengajuanSetorDetailId"))
                 .list();
         return results;
+    }
+
+    public List<PengajuanSetorDetail> cekApakahSudahDibayarkan(String transaksiId,String tipe) throws HibernateException {
+        List<PengajuanSetorDetail> listOfResult = new ArrayList<>();
+
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "SELECT\n" +
+                "\tsd.transaksi_id,\n" +
+                "\ts.tipe_pengajuan_setor\n" +
+                "FROM\n" +
+                "\tit_akun_pengajuan_setor s\n" +
+                "\tLEFT JOIN it_akun_pengajuan_setor_detail sd ON s.pengajuan_setor_id = sd.pengajuan_setor_id\n" +
+                "WHERE\n" +
+                "\tsd.transaksi_id='"+transaksiId+"'\n" +
+                "\tAND s.tipe_pengajuan_setor = '"+tipe+"'";
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results) {
+            PengajuanSetorDetail data= new PengajuanSetorDetail();
+            data.setTransaksiId(row[0].toString());
+            data.setTipe(row[1].toString());
+            listOfResult.add(data);
+        }
+        return listOfResult;
     }
 }

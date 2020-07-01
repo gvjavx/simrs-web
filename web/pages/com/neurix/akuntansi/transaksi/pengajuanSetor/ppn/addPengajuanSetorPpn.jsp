@@ -121,6 +121,11 @@
                                                           name="pengajuanSetor.tahun" required="true" headerKey=""
                                                           headerValue="Tahun"/>
                                             </div>
+                                            <script>
+                                                var dt = new Date();
+                                                $('#bulan').val(("0" + (dt.getMonth() + 1)).slice(-2));
+                                                $('#tahun').val(dt.getFullYear());
+                                            </script>
                                     </div>
                                 </div>
                             </div>

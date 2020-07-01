@@ -109,6 +109,16 @@
                                             </tr>
                                             <tr>
                                                 <td>
+                                                    <label class="control-label"><small>Keterangan :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:textfield  id="keterangan" name="pengajuanSetor.keterangan" cssClass="form-control"/>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
                                                     <label class="control-label"><small>Tanggal :</small></label>
                                                 </td>
                                                 <td>

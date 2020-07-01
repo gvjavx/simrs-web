@@ -305,12 +305,19 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
     public List<PengajuanSetorDetail> listPPh21Pengajuan(PengajuanSetor search){
         logger.info("[PengajuanSetorBoImpl.listPPh21Pengajuan] start process >>>");
         List<PengajuanSetorDetail> pengajuanSetorDetailList = new ArrayList<>();
+        List<PengajuanSetorDetail> finalPengajuanSetorList = new ArrayList<>();
         try {
             // Get data from database by ID
             pengajuanSetorDetailList = pengajuanSetorDao.listPPhPengajuan(search);
             for (PengajuanSetorDetail pengajuanSetorDetail : pengajuanSetorDetailList){
                 pengajuanSetorDetail.setDibayar("Y");
                 convertPph21Pengajuan(pengajuanSetorDetail);
+                //cek apakah sudah pernah dibayarkan di ppn
+                List<PengajuanSetorDetail> pengajuanSetorDetailEntityList = pengajuanSetorDetailDao.cekApakahSudahDibayarkan(pengajuanSetorDetail.getTransaksiId(),"PPH21");
+                if (pengajuanSetorDetailEntityList.size()==0){
+                    finalPengajuanSetorList.add(pengajuanSetorDetail);
+                }
+
             }
         } catch (HibernateException e) {
             logger.error("[PengajuanSetorBoImpl.listPPh21Pengajuan] Error, " + e.getMessage());
@@ -318,7 +325,7 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
         }
 
         logger.info("[PengajuanSetorBoImpl.listPPh21Pengajuan] stop process >>>");
-        return pengajuanSetorDetailList;
+        return finalPengajuanSetorList;
     }
 
     private PengajuanSetorDetail convertPph21Payroll( PengajuanSetorDetail data){
@@ -853,12 +860,20 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
     public List<PengajuanSetorDetail> listPPnPengajuan(PengajuanSetor search){
         logger.info("[PengajuanSetorBoImpl.listPPh21Pengajuan] start process >>>");
         List<PengajuanSetorDetail> pengajuanSetorDetailList = new ArrayList<>();
+        List<PengajuanSetorDetail> finalPengajuanSetorList = new ArrayList<>();
+
         try {
             // Get data from database by ID
             pengajuanSetorDetailList = pengajuanSetorDao.listPPnPengajuan(search);
             for (PengajuanSetorDetail pengajuanSetorDetail : pengajuanSetorDetailList){
                 pengajuanSetorDetail.setDibayar("Y");
                 convertPpnPengajuan(pengajuanSetorDetail);
+
+                //cek apakah sudah pernah dibayarkan di ppn
+                List<PengajuanSetorDetail> pengajuanSetorDetailEntityList = pengajuanSetorDetailDao.cekApakahSudahDibayarkan(pengajuanSetorDetail.getTransaksiId(),"PPN");
+                if (pengajuanSetorDetailEntityList.size()==0){
+                    finalPengajuanSetorList.add(pengajuanSetorDetail);
+                }
             }
         } catch (HibernateException e) {
             logger.error("[PengajuanSetorBoImpl.listPPh21Pengajuan] Error, " + e.getMessage());
@@ -866,7 +881,7 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
         }
 
         logger.info("[PengajuanSetorBoImpl.listPPh21Pengajuan] stop process >>>");
-        return pengajuanSetorDetailList;
+        return finalPengajuanSetorList;
     }
 
     @Override

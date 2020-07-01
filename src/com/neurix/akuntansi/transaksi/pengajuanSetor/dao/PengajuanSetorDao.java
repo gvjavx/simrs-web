@@ -220,7 +220,7 @@ public class PengajuanSetorDao extends GenericDao<ItPengajuanSetorEntity, String
                 "                pbd.tanggal<='"+tanggalAkhir+"'\n" +
                 "                AND pbd.tanggal >='"+tanggalAwal+"'\n" +
                 "                AND pbd.pph <> 0 \n" +
-                "                \t\t\t\tAND (tipe_pengajuan_setor <> 'PPH21' OR (tipe_pengajuan_setor = 'PPH21' AND cancel_flag='Y') OR (tipe_pengajuan_setor = 'PPH21' AND pengajuan_setor_detail_id IS NULL)) \n " +
+                "                \t\t\t\tAND (tipe_pengajuan_setor <> 'PPH21' OR (tipe_pengajuan_setor = 'PPH21' AND cancel_flag='Y') OR ( pengajuan_setor_detail_id IS NULL)) \n " +
                 "                AND pbd.branch_id='"+search.getBranchId()+"' \n" +
                 "\t\t\t\tAND pbd.status_keuangan IS NOT NULL";
         results = this.sessionFactory.getCurrentSession()
@@ -383,7 +383,7 @@ public class PengajuanSetorDao extends GenericDao<ItPengajuanSetorEntity, String
                 "                pbd.tanggal<='"+tanggalAkhir+"'\n" +
                 "                AND pbd.tanggal >='"+tanggalAwal+"'\n" +
                 "                AND pbd.pph <> 0 \n" +
-                "                \t\t\t\tAND (tipe_pengajuan_setor <> 'PPN' OR (tipe_pengajuan_setor = 'PPN' AND cancel_flag='Y') OR (tipe_pengajuan_setor = 'PPN' AND pengajuan_setor_detail_id IS NULL)) \n " +
+                "                \t\t\t\tAND (tipe_pengajuan_setor <> 'PPN' OR (tipe_pengajuan_setor = 'PPN' AND cancel_flag='Y') OR (pengajuan_setor_detail_id IS NULL)) \n " +
                 "                AND pbd.branch_id='"+search.getBranchId()+"' \n" +
                 "\t\t\t\tAND pbd.status_keuangan IS NOT NULL";
         results = this.sessionFactory.getCurrentSession()
