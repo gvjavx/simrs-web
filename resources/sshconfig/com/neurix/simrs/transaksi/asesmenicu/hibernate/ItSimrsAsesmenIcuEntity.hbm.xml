@@ -47,6 +47,9 @@
             <basic name="lastUpdateWho">
                 <column name="last_update_who"/>
             </basic>
+            <basic name="informasi">
+                <column name="informasi"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

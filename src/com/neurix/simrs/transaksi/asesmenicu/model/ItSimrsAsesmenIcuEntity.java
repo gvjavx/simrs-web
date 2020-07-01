@@ -19,6 +19,15 @@ public class ItSimrsAsesmenIcuEntity {
     private Timestamp createdDate;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String informasi;
+
+    public String getInformasi() {
+        return informasi;
+    }
+
+    public void setInformasi(String informasi) {
+        this.informasi = informasi;
+    }
 
     public String getIdAsesmenIcu() {
         return idAsesmenIcu;

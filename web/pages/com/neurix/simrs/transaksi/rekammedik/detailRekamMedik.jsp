@@ -153,43 +153,6 @@
                                  style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">
                         </div>
                     </div>
-                    <%--<div class="box-body">--%>
-                    <%--<table id="tableRM" class="table table-bordered table-striped">--%>
-                    <%--<thead>--%>
-                    <%--<tr bgcolor="#90ee90">--%>
-                    <%--<td>ID Detail Checkup</td>--%>
-                    <%--<td>Tanggal Masuk</td>--%>
-                    <%--<td>Tanggal Keluar</td>--%>
-                    <%--<td>Keterangan</td>--%>
-                    <%--<td>Pelayanan</td>--%>
-                    <%--<td align="center">Action</td>--%>
-                    <%--</tr>--%>
-                    <%--</thead>--%>
-                    <%--<tbody>--%>
-                    <%--<s:iterator value="#session.listOfRekamMedis" var="row">--%>
-                    <%--<tr>--%>
-                    <%--<td><s:property value="idDetailCheckup"/></td>--%>
-                    <%--<td><s:property value="stTanggalMasuk"/></td>--%>
-                    <%--<td><s:property value="stTanggalKeluar"/></td>--%>
-                    <%--<td><s:property value="keteranganSelesai"/></td>--%>
-                    <%--<td><s:property value="namaPelayanan"/></td>--%>
-                    <%--<td align="center">--%>
-                    <%--<a href="detail_rekammedis.action?idPasien=<s:property value="detailCheckup.idPasien"/>&id=<s:property value="idDetailCheckup"/>">--%>
-                    <%--<img class="hvr-grow"--%>
-                    <%--src="<s:url value="/pages/images/icons8-search-25.png"/>"--%>
-                    <%--style="cursor: pointer;">--%>
-                    <%--</a>--%>
-                    <%--</td>--%>
-                    <%--</tr>--%>
-                    <%--</s:iterator>--%>
-                    <%--</tbody>--%>
-                    <%--</table>--%>
-                    <%--<a class="btn btn-danger" href="detail_rekammedis.action?idPasien=<s:property value="detailCheckup.idPasien"/>"><i class="fa fa-refresh"></i> Reset</a>--%>
-                    <%--<a class="btn btn-warning" href="initForm_rekammedis.action"><i class="fa fa-times"></i> Back</a>--%>
-                    <%--<a class="btn btn-info" style="display: none" id="btn-vidio-rm" onclick="viewTelemedic()"><i class="fa fa-film"></i> Veiw Telemedic</a>--%>
-                    <%--</div>--%>
-                    <%--<div class="box-header with-border"></div>--%>
-                    <%--<s:if test='detailCheckup.idDetailCheckup != null'>--%>
                     <div class="box-body">
                         <div class="row">
                             <div class="col-md-6">
@@ -200,17 +163,6 @@
                                     <s:hidden id="id_pasien" name="detailCheckup.idPasien"/>
                                     <s:hidden id="jenis_pasien" name="detailCheckup.idJenisPeriksaPasien"/>
                                     <s:hidden id="jenis_bayar" name="detailCheckup.metodePembayaran"/>
-                                    <%--<s:if test='detailCheckup.idJenisPeriksaPasien == "bpjs"'>--%>
-                                        <%--<tr>--%>
-                                            <%--<td width="45%"><b>No SEP</b></td>--%>
-                                            <%--<td style="vertical-align: middle;">--%>
-                                                <%--<table>--%>
-                                                    <%--<s:label cssClass="label label-success"--%>
-                                                             <%--name="detailCheckup.noSep"></s:label>--%>
-                                                <%--</table>--%>
-                                            <%--</td>--%>
-                                        <%--</tr>--%>
-                                    <%--</s:if>--%>
                                     <tr>
                                         <td><b>No RM</b></td>
                                         <td>
@@ -383,8 +335,8 @@
                                 <a class="btn btn-danger"
                                    href="detail_rekammedis.action?idPasien=<s:property value="detailCheckup.idPasien"/>"><i
                                         class="fa fa-refresh"></i> Reset</a>
-                                <a class="btn btn-info" id="btn-vidio-rm2" onclick="viewTelemedic()"><i class="fa fa-film"></i>
-                                    Telemedic</a>
+                                <%--<a class="btn btn-info" id="btn-vidio-rm2" onclick="viewTelemedic()"><i class="fa fa-film"></i>--%>
+                                    <%--Telemedic</a>--%>
                                 <%--<a class="btn btn-info" onclick="viewRiwayat()"><i class="fa fa-history"></i> Riwayat Pasien</a>--%>
                                 <a class="btn btn-info" onclick="viewHistory()"><i class="fa fa-history"></i> All History</a>
                             </div>
@@ -402,7 +354,7 @@
         <div class="row">
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="info-box" style="cursor: pointer">
-                    <span class="info-box-icon bg-aqua"><i class="fa fa-envelope-o" style="margin-top: 20px"></i></span>
+                    <span class="info-box-icon bg-aqua"><i class="fa fa fa-book" style="margin-top: 20px"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">SPESIALIS</span>
                         <span class="info-box-number"><small>(Asesmen Spesialis)</small></span>
@@ -418,7 +370,7 @@
             </div>
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="info-box" style="cursor: pointer">
-                    <span class="info-box-icon bg-aqua"><i class="fa fa-envelope-o" style="margin-top: 20px"></i></span>
+                    <span class="info-box-icon bg-aqua"><i class="fa fa fa-book" style="margin-top: 20px"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">HD</span>
                         <span class="info-box-number"><small>(Hemodialisa)</small></span>
@@ -440,7 +392,7 @@
             </div>
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="info-box" style="cursor: pointer">
-                    <span class="info-box-icon bg-aqua"><i class="fa fa-envelope-o" style="margin-top: 20px"></i></span>
+                    <span class="info-box-icon bg-aqua"><i class="fa fa fa-book" style="margin-top: 20px"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">FISIOTERAPI</span>
                         <span class="info-box-number"><small>&nbsp;</small></span>
@@ -457,7 +409,7 @@
             </div>
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="info-box" style="cursor: pointer">
-                    <span class="info-box-icon bg-aqua"><i class="fa fa-envelope-o" style="margin-top: 20px"></i></span>
+                    <span class="info-box-icon bg-aqua"><i class="fa fa fa-book" style="margin-top: 20px"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">UGD</span>
                         <span class="info-box-number"><small>(Unit Gawat Darurat)</small></span>
@@ -478,7 +430,7 @@
         <div class="row">
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="info-box" style="cursor: pointer">
-                    <span class="info-box-icon bg-aqua"><i class="fa fa-envelope-o" style="margin-top: 20px"></i></span>
+                    <span class="info-box-icon bg-aqua"><i class="fa fa fa-book" style="margin-top: 20px"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">RAWAT INAP</span>
                         <span class="info-box-number"><small>&nbsp;</small></span>
@@ -532,7 +484,7 @@
             </div>
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="info-box" style="cursor: pointer">
-                    <span class="info-box-icon bg-aqua"><i class="fa fa-envelope-o" style="margin-top: 20px"></i></span>
+                    <span class="info-box-icon bg-aqua"><i class="fa fa fa-book" style="margin-top: 20px"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">OK</span>
                         <span class="info-box-number"><small>(Operasi Kamar)</small></span>
@@ -553,7 +505,7 @@
             </div>
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="info-box" style="cursor: pointer">
-                    <span class="info-box-icon bg-aqua"><i class="fa fa-envelope-o" style="margin-top: 20px"></i></span>
+                    <span class="info-box-icon bg-aqua"><i class="fa fa fa-book" style="margin-top: 20px"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">ICU</span>
                         <span class="info-box-number"><small>(Intensive Care Unit)</small></span>
@@ -574,7 +526,7 @@
             </div>
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="info-box" style="cursor: pointer">
-                    <span class="info-box-icon bg-aqua"><i class="fa fa-envelope-o" style="margin-top: 20px"></i></span>
+                    <span class="info-box-icon bg-aqua"><i class="fa fa fa-book" style="margin-top: 20px"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">RB</span>
                         <span class="info-box-number"><small>(Ruang Bersalin)</small></span>
@@ -596,36 +548,6 @@
         </div>
     </section>
     <!-- /.content -->
-</div>
-
-<div class="modal fade" id="modal-telemedic">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a; color: white">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-md"></i> Telemedic Pasien
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div class="box-body">
-                    <div class="bungkus">
-                        <div class="carousel">
-                            <button onclick="carouselSwipe('carousel-arrow-prev')" type="button" id="carousel-arrow-prev" class="carousel-arrow carousel-arrow-prev" arial-label="Image précédente"></button>
-                            <button onclick="carouselSwipe('carousel-arrow-next')" type="button" id="carousel-arrow-next" class="carousel-arrow carousel-arrow-next" arial-label="Image suivante"></button>
-                            <div id="body-video-rm">
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                </button>
-            </div>
-        </div>
-    </div>
 </div>
 
 <div class="modal fade" id="modal-riwayat">
@@ -698,12 +620,44 @@
                             <td>Waktu</td>
                             <td>Keterangan</td>
                             <td>Catatan</td>
-                            <td width="10%" align="center">Action</td>
+                            <%--<td width="5%" align="center">Detail</td>--%>
+                            <td width="8%">Telemedic</td>
                         </tr>
                         </thead>
                         <tbody id="body_history">
                         </tbody>
                     </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-telemedic">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-md"></i> Telemedic Pasien Pada Tanggal <span id="tanggal_tele"></span>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <video controls width="100%" height="420px" id="body-video-rm"></video>
+                    <%--<div class="bungkus">--%>
+                    <%--<div class="carousel">--%>
+                    <%--<button onclick="carouselSwipe('carousel-arrow-prev')" type="button" id="carousel-arrow-prev" class="carousel-arrow carousel-arrow-prev" arial-label="Image précédente"></button>--%>
+                    <%--<button onclick="carouselSwipe('carousel-arrow-next')" type="button" id="carousel-arrow-next" class="carousel-arrow carousel-arrow-next" arial-label="Image suivante"></button>--%>
+                    <%--<div id="body-video-rm">--%>
+
+                    <%--</div>--%>
+                    <%--</div>--%>
+                    <%--</div>--%>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">

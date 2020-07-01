@@ -73,6 +73,7 @@ public class AsesmenIcuBoImpl implements AsesmenIcuBo {
                     asesmenIcu.setLastUpdate(entity.getLastUpdate());
                     asesmenIcu.setLastUpdateWho(entity.getLastUpdateWho());
                     asesmenIcu.setTipe(entity.getTipe());
+                    asesmenIcu.setInformasi(entity.getInformasi());
                     list.add(asesmenIcu);
                 }
             }
@@ -102,6 +103,7 @@ public class AsesmenIcuBoImpl implements AsesmenIcuBo {
                 asesmenIcuEntity.setLastUpdate(bean.getLastUpdate());
                 asesmenIcuEntity.setLastUpdateWho(bean.getLastUpdateWho());
                 asesmenIcuEntity.setTipe(bean.getTipe());
+                asesmenIcuEntity.setInformasi(bean.getInformasi());
 
                 try {
                     asesmenIcuDao.addAndSave(asesmenIcuEntity);

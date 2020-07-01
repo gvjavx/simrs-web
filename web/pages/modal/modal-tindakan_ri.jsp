@@ -1,4 +1,4 @@
-<div class="modal fade" id="modal-rb-tindakan_rb">
+<div class="modal fade" id="modal-ina-tindakan_ina">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
@@ -10,21 +10,21 @@
             <div class="modal-body">
                 <div class="box-body btn-hide">
                     <div class="alert alert-success alert-dismissible" style="display: none"
-                         id="warning_rb_tindakan_rb">
+                         id="warning_ina_tindakan_ina">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
-                        <p id="msg_rb_tindakan_rb"></p>
+                        <p id="msg_ina_tindakan_ina"></p>
                     </div>
-                    <button type="button" onclick="showModalRB('add_tindakan_rb')" class="btn btn-success"><i class="fa fa-plus"></i> Tindakan Dokter
+                    <button type="button" onclick="showModalAsesmenRawatInap('add_tindakan_ina')" class="btn btn-success"><i class="fa fa-plus"></i> Tindakan Dokter
                     </button>
                 </div>
                 <div class="box-body">
-                    <table class="table" id="tabel_rb_data_laporan">
+                    <table class="table" id="tabel_ina_data_laporan">
                         <tbody>
-                        <tr id="row_rb_tindakan_rb">
+                        <tr id="row_ina_tindakan_ina">
                             <td>Persetujuan Tindakan</td>
                             <td width="20%" align="center">
-                                <img id="btn_rb_tindakan_rb" class="hvr-grow"
-                                     onclick="detailRB('tindakan_rb')"
+                                <img id="btn_ina_tindakan_ina" class="hvr-grow"
+                                     onclick="detailAsesmenRawatInap('tindakan_ina')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
@@ -40,7 +40,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-rb-add_tindakan_rb">
+<div class="modal fade" id="modal-ina-add_tindakan_ina">
     <div class="modal-dialog" style="width: 55%">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
@@ -51,26 +51,24 @@
             </div>
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none"
-                     id="warning_rb_add_tindakan_rb">
+                     id="warning_ina_add_tindakan_ina">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    <p id="msg_rb_add_tindakan_rb"></p>
+                    <p id="msg_ina_add_tindakan_ina"></p>
                 </div>
                 <div class="box-body">
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-3">Tindakan</label>
                             <div class="col-md-9">
-                                <select class="form-control select2" id="tindakan_rb" style="width: 100%" onchange="pilihTindakanRB(this.value)">
+                                <select class="form-control select2" id="tindakan_ina" style="width: 100%" onchange="pilihTindakanINA(this.value)">
                                     <option value="">[Select One]</option>
-                                    <option value="Kurretage">Kurretage</option>
-                                    <option value="Sectio Caesaria">Sectio Caesaria</option>
-                                    <option value="Laparatomy">Laparatomy</option>
+                                    <option value="Appendecitomy">Appendecitomy</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="box-body" style="display: none" id="form-tindakan-rb">
+                <div class="box-body" style="display: none" id="form-tindakan-ina">
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-3">Tanggal</label>
@@ -79,7 +77,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input class="form-control tgl" id="rb1">
+                                    <input class="form-control tgl" id="ina1">
                                 </div>
                             </div>
                         </div>
@@ -88,7 +86,7 @@
                         <div class="form-group">
                             <label class="col-md-3">Dokter Penanggung Jawab</label>
                             <div class="col-md-9">
-                                <input class="form-control" id="rb2">
+                                <input class="form-control" id="ina2">
                             </div>
                         </div>
                     </div>
@@ -96,7 +94,7 @@
                         <div class="form-group">
                             <label class="col-md-3">Pemberi Informasi</label>
                             <div class="col-md-9">
-                                <input class="form-control" id="rb3">
+                                <input class="form-control" id="ina3">
                             </div>
                         </div>
                     </div>
@@ -104,7 +102,7 @@
                         <div class="form-group">
                             <label class="col-md-3">Penerima Informasi</label>
                             <div class="col-md-9">
-                                <input class="form-control" id="rb4">
+                                <input class="form-control" id="ina4">
                             </div>
                         </div>
                     </div>
@@ -117,13 +115,17 @@
                             <td align="center">Check(<i class="fa fa-check"></i>)</td>
                         </tr>
                         </thead>
-                        <tbody id="body_tindakan_rb">
+                        <tbody id="body_tindakan_ina">
                         </tbody>
                     </table>
                     <br>
                     <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-7" style="text-align: justify">Dengan ini menyatakan bahwa saya telah menerangkan hal-hal di atas secara benar dan jelas dengan memberikan kesempatakan bertanya dan atau diskusi</label>
+                            <div class="col-md-7" style="text-align: justify">
+                                <label>Dengan ini menyatakan bahwa saya</label>
+                                <input class="form-control" id="ina_dokter">
+                                <label>telah menerangkan hal-hal di atas secara benar dan jelas dengan memberikan kesempatakan bertanya dan atau diskusi</label>
+                            </div>
                             <div class="col-md-4">
                                 <canvas class="paint-canvas-ttd" id="ttd1" width="220" height="100"
                                         onmouseover="paintTtd('ttd1')"></canvas>
@@ -138,7 +140,11 @@
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-7" style="text-align: justify">Dengan ini menyatakan bahwa saya telah menerima informasi sebagaimana di atas dan telah memahaminya</label>
+                            <div class="col-md-7" style="text-align: justify">
+                                <label>Dengan ini menyatakan bahwa saya</label>
+                                <input class="form-control nama-pasien" id="ina_pasien">
+                                <label>telah menerima informasi sebagaimana di atas dan telah memahaminya</label>
+                            </div>
                             <div class="col-md-4">
                                 <canvas class="paint-canvas-ttd" id="ttd2" width="220" height="100"
                                         onmouseover="paintTtd('ttd2')"></canvas>
@@ -155,11 +161,11 @@
                         <div class="form-group">
                             <label class="col-md-3">Nama</label>
                             <div class="col-md-4">
-                                <input class="form-control" id="rb5">
+                                <input class="form-control" id="ina5">
                             </div>
                             <label class="col-md-2">Tanggal Lahir</label>
                             <div class="col-md-3">
-                                <input class="form-control ptr-tgl" id="rb6">
+                                <input class="form-control ptr-tgl" id="ina6">
                             </div>
                         </div>
                     </div>
@@ -167,7 +173,7 @@
                         <div class="form-group">
                             <label class="col-md-3">Jenis Kelamin</label>
                             <div class="col-md-4">
-                                <select class="form-control" id="rb7">
+                                <select class="form-control" id="ina7">
                                     <option value="">[Select One]</option>
                                     <option value="Laki-Laki">Laki-Laki</option>
                                     <option value="Perempuan">Perempuan</option>
@@ -175,7 +181,7 @@
                             </div>
                             <label class="col-md-2">Tindakan</label>
                             <div class="col-md-3">
-                                <input class="form-control" readonly id="rb8">
+                                <input class="form-control" readonly id="ina8">
                             </div>
                         </div>
                     </div>
@@ -183,11 +189,11 @@
                         <div class="form-group">
                             <label class="col-md-3">Nama Pasien</label>
                             <div class="col-md-4">
-                                <input class="form-control nama-pasien" id="rb9" readonly>
+                                <input class="form-control nama-pasien" id="ina9" readonly>
                             </div>
                             <label class="col-md-2">Tanggal Lahir Pasien</label>
                             <div class="col-md-3">
-                                <input class="form-control tgl-lahir-pasien" id="rb10" readonly>
+                                <input class="form-control tgl-lahir-pasien" id="ina10" readonly>
                             </div>
                         </div>
                     </div>
@@ -195,7 +201,7 @@
                         <div class="form-group">
                             <label class="col-md-3">Alamat Pasien</label>
                             <div class="col-md-9">
-                                <textarea class="form-control alamat-pasien" id="rb11"></textarea>
+                                <textarea class="form-control alamat-pasien" id="ina11"></textarea>
                             </div>
                         </div>
                     </div>
@@ -245,11 +251,11 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_rb_add_tindakan_rb" class="btn btn-success pull-right"
-                        onclick="saveRB('add_tindakan_rb','tindakan_rb')"><i class="fa fa-check"></i>
+                <button id="save_ina_add_tindakan_ina" class="btn btn-success pull-right"
+                        onclick="saveAsesmenRawatInap('add_tindakan_ina','tindakan_ina')"><i class="fa fa-check"></i>
                     Save
                 </button>
-                <button id="load_rb_add_tindakan_rb" style="display: none; cursor: no-drop" type="button"
+                <button id="load_ina_add_tindakan_ina" style="display: none; cursor: no-drop" type="button"
                         class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>

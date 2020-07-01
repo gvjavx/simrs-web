@@ -553,6 +553,8 @@
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('rekonsiliasi')"
                                                onclick="showModalAsesmenRawatInap('rekonsiliasi')"><i
                                                 class="fa fa-circle-o"></i>Rekonsiliasi Obat</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('tindakan_ri')" onclick="showModalAsesmenRawatInap('tindakan_ina')"><i
+                                                class="fa fa-circle-o"></i>Persetujuan Tindakan Kedokteran</a></li>
                                     </ul>
                                 </div>
                                 <div class="btn-group">
@@ -587,6 +589,7 @@
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('keseimbangan')"  onclick="showModalICU('keseimbangan')"><i class="fa fa-circle-o"></i>Keseimbangan</a></li>
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('obat-obatan')"  onclick="showModalICU('obat-obatan')"><i class="fa fa-circle-o"></i>Obat Obatan/ Intakea/ Output</a></li>
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('asuhan_keperawatan')"  onclick="showModalICU('asuhan_keperawatan')"><i class="fa fa-circle-o"></i>Asuhan Keperawatan</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('tindakan_icu')"  onclick="showModalICU('tindakan_icu')"><i class="fa fa-circle-o"></i>Persetujuan Tindakan Kedokteran</a></li>
                                     </ul>
                                 </div>
                                 <div class="btn-group">
@@ -604,7 +607,8 @@
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('laporan_pembedahan')"  onclick="showModalRB('laporan_pembedahan')"><i class="fa fa-circle-o"></i>Laporan Pembedahan</a></li>
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('laporan_persalinan')"  onclick="showModalRB('laporan_persalinan')"><i class="fa fa-circle-o"></i>Laporan Persalinan</a></li>
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('tindakan_rb')"  onclick="showModalRB('tindakan_rb')"><i class="fa fa-circle-o"></i>Persetujuan Tindakan Kedokteran</a></li>
-                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('obat-obatan')"  onclick="showModalRB('obat-obatan')"><i class="fa fa-circle-o"></i>Surat Keterangan Lahir</a></li>
+                                        <li><a style="cursor: pointer" onclick="printPernyataan('SK04')"><i class="fa fa-print"></i>Surat Keterangan Lahir</a></li>
+                                        <li><a style="cursor: pointer" onclick="printPernyataan('SP08')"><i class="fa fa-print"></i>Surat Pernyataan Rujuk RSDS</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -3530,8 +3534,6 @@
         paintCanvas.addEventListener("mouseup", stopDrawing);
         paintCanvas.addEventListener("mouseout", stopDrawing);
 
-        console.log(diagnosa);
-
     });
 
     function loadModalRM(jenis) {
@@ -3541,6 +3543,10 @@
         }
         $('#modal-temp').load(context, function (res) {
         });
+    }
+
+    function printPernyataan(kode) {
+        window.open(contextPath+'/rekammedik/printSuratPernyataan_rekammedik?id=' + idDetailCheckup + '&tipe=' + kode, '_blank');
     }
 
 </script>

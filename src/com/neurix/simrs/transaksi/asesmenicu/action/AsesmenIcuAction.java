@@ -49,8 +49,11 @@ public class AsesmenIcuAction {
             if(obj.has("skor")){
                 asesmenIcu.setScore(Integer.valueOf(obj.getString("skor")));
             }
+            if(obj.has("informasi")){
+                asesmenIcu.setInformasi(obj.getString("informasi"));
+            }
             if(obj.has("tipe")){
-                if(obj.getString("tipe") != null && !"".equalsIgnoreCase(obj.getString("tipe"))){
+                if("ttd".equalsIgnoreCase(obj.getString("tipe")) || "gambar".equalsIgnoreCase(obj.getString("tipe"))){
                     BASE64Decoder decoder = new BASE64Decoder();
                     byte[] decodedBytes = decoder.decodeBuffer(obj.getString("jawaban"));
                     logger.info("Decoded upload data : " + decodedBytes.length);
@@ -76,8 +79,10 @@ public class AsesmenIcuAction {
                         ImageIO.write(image, "png", f);
                         asesmenIcu.setJawaban(fileName);
                     }
-                    asesmenIcu.setTipe(obj.getString("tipe"));
+                }else{
+                    asesmenIcu.setJawaban(obj.getString("jawaban"));
                 }
+                asesmenIcu.setTipe(obj.getString("tipe"));
             }else{
                 asesmenIcu.setJawaban(obj.getString("jawaban"));
             }

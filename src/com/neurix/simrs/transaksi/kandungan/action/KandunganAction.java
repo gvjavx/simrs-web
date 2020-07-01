@@ -55,7 +55,7 @@ public class KandunganAction {
                 }
             }
             if(obj.has("tipe")){
-                if(obj.getString("tipe") != null && !"".equalsIgnoreCase(obj.getString("tipe"))){
+                if("ttd".equalsIgnoreCase(obj.getString("tipe")) || "gambar".equalsIgnoreCase(obj.getString("tipe"))){
                     BASE64Decoder decoder = new BASE64Decoder();
                     byte[] decodedBytes = decoder.decodeBuffer(obj.getString("jawaban"));
                     logger.info("Decoded upload data : " + decodedBytes.length);
@@ -81,8 +81,10 @@ public class KandunganAction {
                         ImageIO.write(image, "png", f);
                         kandungan.setJawaban(fileName);
                     }
-                    kandungan.setTipe(obj.getString("tipe"));
+                }else{
+                    kandungan.setJawaban(obj.getString("jawaban"));
                 }
+                kandungan.setTipe(obj.getString("tipe"));
             }else{
                 kandungan.setJawaban(obj.getString("jawaban"));
             }

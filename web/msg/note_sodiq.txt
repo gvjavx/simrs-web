@@ -442,7 +442,15 @@ ALTER TABLE public.it_simrs_asesmen_kandungan
 
 //29 Juni 2020
 ALTER TABLE it_simrs_asesmen_kandungan
-ADD COLUMN infomasi text;
+ADD COLUMN informasi text;
+
+//29 Juni 2020
+ALTER TABLE it_simrs_asesmen_icu
+ADD COLUMN informasi text;
+
+ALTER TABLE it_simrs_asesmen_keperawatan_rawat_inap
+ADD COLUMN informasi text,
+ADD COLUMN tipe character varying(100);
 
 
 

@@ -1065,7 +1065,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "c.id_tindakan,\n" +
                     "c.nama_tindakan,\n" +
                     "c.keterangan,\n" +
-                    "b.keterangan_selesai\n" +
+                    "b.keterangan_selesai, \n" +
+                    "b.video_rm\n" +
                     "FROM it_simrs_header_checkup  a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN it_simrs_riwayat_tindakan c ON b.id_detail_checkup = c.id_detail_checkup\n" +
@@ -1104,6 +1105,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                         checkup.setNamaTindakan(namaTindakan);
                     }
                     checkup.setKeterangan(obj[7] == null ? "" : obj[7].toString());
+                    checkup.setVideoRm(obj[9] == null ? null : CommonConstant.EXTERNAL_IMG_URI + obj[9].toString());
                     checkupList.add(checkup);
                 }
             }

@@ -1,23 +1,25 @@
 
-function viewTelemedic() {
+function viewTelemedic(url, tgl) {
+    $('#body-video-rm').attr('src', url);
+    $('#tanggal_tele').html(tgl);
     $('#modal-telemedic').modal({show: true, backdrop: 'static'});
-    var video = "";
-    var id = 0;
-    CheckupAction.getListVideoRm(idPasien, function (res) {
-        if (res.length > 0) {
-            $.each(res, function (i, item) {
-                if(item.videoRm != null){
-                    var count = id++;
-                    if(count == 0){
-                        video += '<video id="carousel-'+count+'" class="carousel-img carousel-img-displayed" controls src="'+item.videoRm+'" width="100%" height="420px"></video>';
-                    }else {
-                        video += '<video id="carousel-'+count+'" class="carousel-img carousel-img-noDisplay" controls src="'+item.videoRm+'" width="100%" height="420px"></video>';
-                    }
-                }
-            });
-            $('#body-video-rm').html(video);
-        }
-    });
+    // var video = "";
+    // var id = 0;
+    // CheckupAction.getListVideoRm(idPasien, function (res) {
+    //     if (res.length > 0) {
+    //         $.each(res, function (i, item) {
+    //             if(item.videoRm != null){
+    //                 var count = id++;
+    //                 if(count == 0){
+    //                     video += '<video id="carousel-'+count+'" class="carousel-img carousel-img-displayed" controls src="'+item.videoRm+'" width="100%" height="420px"></video>';
+    //                 }else {
+    //                     video += '<video id="carousel-'+count+'" class="carousel-img carousel-img-noDisplay" controls src="'+item.videoRm+'" width="100%" height="420px"></video>';
+    //                 }
+    //             }
+    //         });
+    //         $('#body-video-rm').html(video);
+    //     }
+    // });
 }
 
 function viewRiwayat() {
@@ -32,6 +34,8 @@ function viewHistory() {
             $.each(res, function (i, item) {
                 var btn = "";
                 var icon = "";
+                var tele = "";
+
                 if("resep" == item.keterangan || "laboratorium" == item.keterangan || "radiologi" == item.keterangan){
                     btn = '<img class="hvr-grow" id="btn_'+item.idRiwayatTindakan+'" \n' +
                         'onclick="detailTindakan(\''+item.idRiwayatTindakan+'\',\''+item.idTindakan+'\',\''+item.keterangan+'\')"\n' +
@@ -39,14 +43,18 @@ function viewHistory() {
                 }
                 if(item.idDetailCheckup != null && item.idDetailCheckup != ''){
                     icon = '<a href="detail_rekammedis.action?idPasien='+idPasien+'&id='+item.idDetailCheckup+'"><i class="fa fa-search"></i></a>';
+                    if(item.videoRm != null){
+                        tele = '<img style="cursor: pointer" src="'+contextPath+'/pages/images/icons8-movie-beginning-30.png" onclick="viewTelemedic(\''+item.videoRm+'\', \''+item.tglTindakan+'\')">';
+                    }
                 }
                 table += '<tr id="row_'+item.idRiwayatTindakan+'">' +
                     '<td>'+icon+' '+cekDataNull(item.namaPelayanan)+'</td>' +
                     '<td>'+cekDataNull(item.idDetailCheckup)+'</td>' +
                     '<td>'+cekDataNull(item.tglTindakan)+'</td>' +
-                    '<td>'+cekDataNull(item.namaTindakan)+'</td>' +
+                    '<td>'+cekDataNull(item.namaTindakan)+' <div class="pull-right">'+btn+'</div></td>' +
                     '<td>'+cekDataNull(item.keteranganKeluar)+'</td>' +
-                    '<td align="center">'+btn+'</td>' +
+                    // '<td align="center">'+btn+'</td>' +
+                    '<td align="center">'+tele+'</td>' +
                     '<tr>';
             });
             $('#body_history').html(table);
