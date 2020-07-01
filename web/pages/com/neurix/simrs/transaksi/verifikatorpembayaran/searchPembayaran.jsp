@@ -218,7 +218,8 @@
                                     </td>
                                     <td style="vertical-align: middle" align="center">
                                         <s:if test='#row.approveKonsultasi == "Y"'>
-                                            <label class="label label-success"> <i class="fa fa-check"></i></label>
+                                            <img src="<s:url value="/pages/images/icon_success.ico" />">
+                                            <%--<label class="label label-success"> <i class="fa fa-check"></i></label>--%>
                                         </s:if>
                                     </td>
                                     <td style="vertical-align: middle" align="center">
@@ -243,7 +244,8 @@
                                     </td>
                                     <td style="vertical-align: middle" align="center">
                                         <s:if test='#row.approveResep == "Y"'>
-                                            <label class="label label-success"> <i class="fa fa-check"></i></label>
+                                            <img src="<s:url value="/pages/images/icon_success.ico" />">
+                                            <%--<label class="label label-success"> <i class="fa fa-check"></i></label>--%>
                                         </s:if>
                                     </td>
                                     <td align="center">
@@ -460,6 +462,16 @@
                 </h4>
             </div>
             <div class="modal-body">
+
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin_asuransi">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_fin_error_asuransi"></p>
+                </div>
+                <div class="alert alert-success alert-dismissible" style="display: none" id="success_fin_asuransi">
+                    <h4><i class="icon fa fa-info"></i> Info!</h4>
+                    <p id="msg_fin_asuransi">Approve Berhasil</p>
+                </div>
+
                 <div class="col-md-offset-3">
                     <div class="row">
                         <div class="col-md-6"><h3 id="dt-nama-asuransi"></h3></div>
@@ -641,9 +653,9 @@
 
     function iconFlag(var1) {
         if (var1 == "Y")
-            return "<label class=\"label label-success\"> <i class=\"fa fa-check\"></i></label>";
+            return "<img src='<s:url value="/pages/images/icon_success.ico" />'>";
         else if (var1 == "N")
-            return "<label class=\"label label-danger\"> <i class=\"fa fa-cross\"></i></label>";
+            return "<img src='<s:url value="/pages/images/icon_failure.ico" />'>";
         else
             return "";
     }
@@ -736,16 +748,21 @@
 
     function approveAsuransi(idAntrian, idTransaksi) {
         var cover = $("#dt-cover-asuransi").val();
-        VerifikatorPembayaranAction.saveCoverAsuransi(idAntrian, cover, idTransaksi, function (response) {
-            if (response.status == "error"){
-                $("#warning_fin").show();
-                $("#success_fin").hide();
-                $("#msg_fin_error").text(response.message);
-            } else {
-                $("#modal-detail-asuransi").modal('hide');
-                searchPage(idAntrian);
-            }
-        });
+        if (cover == "" || parseInt(cover) == 0){
+            $("#warning_fin_asuransi").show().fadeOut(5000);
+            $("#msg_fin_error_asuransi").text("Nilai Cover Tidak Boleh Kosong.");
+        } else {
+            VerifikatorPembayaranAction.saveCoverAsuransi(idAntrian, cover, idTransaksi, function (response) {
+                if (response.status == "error"){
+                    $("#warning_fin").show();
+                    $("#success_fin").hide();
+                    $("#msg_fin_error").text(response.message);
+                } else {
+                    $("#modal-detail-asuransi").modal('hide');
+                    searchPage(idAntrian);
+                }
+            });
+        }
     }
 
     function checkBpjs(){
