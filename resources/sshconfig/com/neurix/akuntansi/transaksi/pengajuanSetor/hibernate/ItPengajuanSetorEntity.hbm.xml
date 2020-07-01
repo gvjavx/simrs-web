@@ -46,6 +46,10 @@
             <column name="cancel_date" sql-type="date" not-null="false" />
         </property>
 
+        <property name="tipePengajuanSetor">
+            <column name="tipe_pengajuan_setor" sql-type="varchar" not-null="false" />
+        </property>
+
         <property name="jumlahPph21Payroll">
             <column name="jumlah_pph21_payroll" sql-type="numeric" not-null="false" />
         </property>
@@ -57,6 +61,20 @@
         </property>
         <property name="jumlahSeluruhnya">
             <column name="jumlah_seluruhnya" sql-type="numeric" not-null="false" />
+        </property>
+
+        <property name="jumlahPpnMasukan">
+            <column name="jumlah_ppn_masukan" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="jumlahPpnKeluaran">
+            <column name="jumlah_ppn_keluaran" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="jumlahPpnAset">
+            <column name="jumlah_ppn_aset" sql-type="numeric" not-null="false" />
+        </property>
+
+        <property name="keterangan">
+            <column name="keterangan" sql-type="varchar" not-null="false" />
         </property>
 
         <property name="flag">

@@ -20,6 +20,7 @@ public class ItPengajuanSetorEntity implements Serializable {
     private String tahun;
     private String bulan;
     private Date registeredDate;
+    private String tipePengajuanSetor;
 
     private BigDecimal jumlahPph21Payroll;
     private BigDecimal jumlahPph21Kso;
@@ -34,6 +35,7 @@ public class ItPengajuanSetorEntity implements Serializable {
     private String cancelId;
     private Timestamp cancelDate;
     private String cancelFlag;
+    private String keterangan;
 
     private String flag;
     private String action;
@@ -41,6 +43,78 @@ public class ItPengajuanSetorEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    //ppn
+    private BigDecimal jumlahPpnKeluaran;
+    private BigDecimal jumlahPpnMasukan;
+    private BigDecimal jumlahPpnAset;
+    private String stJumlahPpnKeluaran;
+    private String stJumlahPpnMasukan;
+    private String stJumlahPpnAset;
+
+    public BigDecimal getJumlahPpnKeluaran() {
+        return jumlahPpnKeluaran;
+    }
+
+    public void setJumlahPpnKeluaran(BigDecimal jumlahPpnKeluaran) {
+        this.jumlahPpnKeluaran = jumlahPpnKeluaran;
+    }
+
+    public BigDecimal getJumlahPpnMasukan() {
+        return jumlahPpnMasukan;
+    }
+
+    public void setJumlahPpnMasukan(BigDecimal jumlahPpnMasukan) {
+        this.jumlahPpnMasukan = jumlahPpnMasukan;
+    }
+
+    public BigDecimal getJumlahPpnAset() {
+        return jumlahPpnAset;
+    }
+
+    public void setJumlahPpnAset(BigDecimal jumlahPpnAset) {
+        this.jumlahPpnAset = jumlahPpnAset;
+    }
+
+    public String getStJumlahPpnKeluaran() {
+        return stJumlahPpnKeluaran;
+    }
+
+    public void setStJumlahPpnKeluaran(String stJumlahPpnKeluaran) {
+        this.stJumlahPpnKeluaran = stJumlahPpnKeluaran;
+    }
+
+    public String getStJumlahPpnMasukan() {
+        return stJumlahPpnMasukan;
+    }
+
+    public void setStJumlahPpnMasukan(String stJumlahPpnMasukan) {
+        this.stJumlahPpnMasukan = stJumlahPpnMasukan;
+    }
+
+    public String getStJumlahPpnAset() {
+        return stJumlahPpnAset;
+    }
+
+    public void setStJumlahPpnAset(String stJumlahPpnAset) {
+        this.stJumlahPpnAset = stJumlahPpnAset;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getTipePengajuanSetor() {
+        return tipePengajuanSetor;
+    }
+
+    public void setTipePengajuanSetor(String tipePengajuanSetor) {
+        this.tipePengajuanSetor = tipePengajuanSetor;
+    }
 
     public String getCancelId() {
         return cancelId;

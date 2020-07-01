@@ -101,6 +101,26 @@ public class PengajuanBiayaDetail extends BaseModel {
     private BigDecimal pph;
     private String stPph;
 
+    private BigDecimal ppn;
+    private String stPpn;
+
+
+    public BigDecimal getPpn() {
+        return ppn;
+    }
+
+    public void setPpn(BigDecimal ppn) {
+        this.ppn = ppn;
+    }
+
+    public String getStPpn() {
+        return stPpn;
+    }
+
+    public void setStPpn(String stPpn) {
+        this.stPpn = stPpn;
+    }
+
     public BigDecimal getPph() {
         return pph;
     }

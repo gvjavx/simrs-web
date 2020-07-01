@@ -69,6 +69,10 @@
             <column name="pph" sql-type="numeric" not-null="false" />
         </property>
 
+        <property name="ppn">
+            <column name="ppn" sql-type="numeric" not-null="false" />
+        </property>
+
         <property name="budgetBiayaSdBulanIni">
             <column name="budget_biaya_sd_bulan_ini" sql-type="numeric" not-null="false" />
         </property>

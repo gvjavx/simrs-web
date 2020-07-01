@@ -14,7 +14,7 @@
             $('#info_dialog').dialog('close');
         }
         function link(){
-            window.location.href="<s:url action='initFormPengajuanSetorPph21_pengajuanSetor.action'/>";
+            window.location.href="<s:url action='initFormPengajuanSetorPpn_pengajuanSetor.action'/>";
         }
 
         $(document).ready(function () {
@@ -73,7 +73,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Hasil Pencarian Pengajuan Setor PPH21
+            Hasil Pencarian Pengajuan Setor PPN
         </h1>
     </section>
     <!-- Main content -->
@@ -86,11 +86,11 @@
                         <h3 class="box-title"><i class="fa fa-save"></i> Pengajuan Setor</h3>
                     </div>
                     <s:form id="saveAddPengajuanSetor" enctype="multipart/form-data" method="post" namespace="/pengajuanSetor"
-                            action="saveAddPengajuanSetorPph21_pengajuanSetor.action" theme="simple">
+                            action="saveAddPengajuanSetorPpn_pengajuanSetor.action" theme="simple">
                         <s:hidden name="pengajuanSetor.branchId" />
-                        <s:hidden name="pengajuanSetor.jumlahPph21Payroll" id="jumlahPph21Payroll" />
-                        <s:hidden name="pengajuanSetor.jumlahPph21Kso" id="jumlahPph21Kso"/>
-                        <s:hidden name="pengajuanSetor.jumlahPph21Pengajuan" id="jumlahPph21Pengajuan" />
+                        <s:hidden name="pengajuanSetor.jumlahPpnKeluaran" id="jumlahPpnKeluaran" />
+                        <s:hidden name="pengajuanSetor.jumlahPpnMasukan" id="jumlahPpnMasukan"/>
+                        <s:hidden name="pengajuanSetor.jumlahPpnAset" id="jumlahPpnAset" />
                         <s:hidden name="pengajuanSetor.jumlahSeluruhnya" id="jumlahSeluruhnya" />
                         <s:hidden name="pengajuanSetor.bulan" />
                         <s:hidden name="pengajuanSetor.tahun" />
@@ -135,27 +135,27 @@
                                     <div class="box-body">
                                         <div class="row">
                                             <div class="form-group">
-                                                <label class="control-label col-sm-offset-2 col-sm-3" style="margin-top: 7px">Jumlah PPH21 Payroll (RP) </label>
+                                                <label class="control-label col-sm-offset-2 col-sm-3" style="margin-top: 7px">Jumlah PPN Masukan (RP) </label>
                                                 <div class="col-sm-4">
-                                                    <s:textfield name="pengajuanSetor.stJumlahPph21Payroll" id="jumlah_pph_21_payroll" cssStyle="text-align: right"
+                                                    <s:textfield name="pengajuanSetor.stJumlahPpnMasukan" id="jumlah_ppn_masukan" cssStyle="text-align: right"
                                                                  readonly="true" cssClass="form-control" />
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="form-group">
-                                                <label class="control-label col-sm-offset-2 col-sm-3" style="margin-top: 14px">Jumlah PPH21 Dokter KSO (RP)</label>
+                                                <label class="control-label col-sm-offset-2 col-sm-3" style="margin-top: 14px">Jumlah PPN Keluaran (RP)</label>
                                                 <div class="col-sm-4">
-                                                    <s:textfield name="pengajuanSetor.stJumlahPph21Kso" cssStyle="margin-top: 7px;text-align: right" id="jumlah_pph_21_kso"
+                                                    <s:textfield name="pengajuanSetor.stJumlahPpnKeluaran" cssStyle="margin-top: 7px;text-align: right" id="jumlah_ppn_keluaran"
                                                                  readonly="true" cssClass="form-control" />
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="form-group">
-                                                <label class="control-label col-sm-offset-2 col-sm-3" style="margin-top: 14px">Jumlah PPH21 Pengajuan (RP)</label>
+                                                <label class="control-label col-sm-offset-2 col-sm-3" style="margin-top: 14px">Jumlah PPn Pengajuan (RP)</label>
                                                 <div class="col-sm-4">
-                                                    <s:textfield name="pengajuanSetor.stJumlahPph21Pengajuan" cssStyle="margin-top: 7px;text-align: right" id="jumlah_pph_21_pengajuan"
+                                                    <s:textfield name="pengajuanSetor.stJumlahPpnAset" cssStyle="margin-top: 7px;text-align: right" id="jumlah_ppn_pengajuan"
                                                                  readonly="true" cssClass="form-control" />
                                                 </div>
                                             </div>
@@ -183,7 +183,7 @@
                                     <i class="fa fa-save"></i>
                                     Save
                                 </sj:submit>
-                                <a type="button" class="btn btn-danger" href="addPengajuanSetorPph21_pengajuanSetor.action">
+                                <a type="button" class="btn btn-danger" href="addPengajuanSetorPpn_pengajuanSetor.action">
                                     <i class="fa fa-arrow-left"></i> Go Back
                                 </a>
                             </div>
@@ -191,26 +191,26 @@
                                 <div class="col-md-12">
                                     <div class="box-header with-border"></div>
                                     <div class="box-header with-border">
-                                        <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar PPH21</h3>
+                                        <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar PPN</h3>
                                     </div>
                                     <div class="box-body">
                                         <ul class="nav nav-pills" id="tabPane">
-                                            <li class="active"><a href="#payroll" data-toggle="tab">PPH21 Payroll</a></li>
-                                            <li><a href="#kso" data-toggle="tab">PPH21 Dokter KSO</a></li>
-                                            <li><a href="#pengajuan" data-toggle="tab">PPH21 Pengajuan</a></li>
+                                            <li class="active"><a href="#masukan" data-toggle="tab">PPN Masukan</a></li>
+                                            <li><a href="#keluaran" data-toggle="tab">PPN Keluaran</a></li>
+                                            <li><a href="#aset" data-toggle="tab">PPN Pengajuan</a></li>
                                         </ul>
                                         <br>
                                         <br>
                                         <div class="tab-content clearfix">
-                                            <div id="payroll" class="tab-pane active col-md-12">
+                                            <div id="masukan" class="tab-pane active col-md-12">
                                                 <table id="table1" class="table table-bordered table-striped sortTable">
                                                 </table>
                                             </div>
-                                            <div id="kso" class="tab-pane fade">
+                                            <div id="keluaran" class="tab-pane fade">
                                                 <table id="table2" class="table table-bordered table-striped sortTable">
                                                 </table>
                                             </div>
-                                            <div id="pengajuan" class="tab-pane fade">
+                                            <div id="aset" class="tab-pane fade">
                                                 <table id="table3" class="table table-bordered table-striped sortTable">
                                                 </table>
                                             </div>
@@ -291,41 +291,33 @@
 </body>
 </html>
 <script>
-    window.loadSessionPayrollPph= function(){
+    window.loadSessionPpnMasukan= function(){
         $('#table1').find('tbody').remove();
         $('#table1').find('thead').remove();
         dwr.engine.setAsync(false);
         var tmp_table = "";
-        PengajuanSetorAction.searchDataSessionPph21Payroll(function (listdata) {
+        PengajuanSetorAction.searchDataSessionPpnMasukan(function (listdata) {
 
             tmp_table = "<thead style='font-size: 12px;' ><tr class='active'>" +
                 "<th style='text-align: center; background-color:  #90ee90'>ID</th>" +
                 "<th style='text-align: center; background-color:  #90ee90'>Tipe</th>" +
-                "<th style='text-align: center; background-color:  #90ee90''>NIP</th>" +
-                "<th style='text-align: center; background-color:  #90ee90''>Nama</th>" +
-                "<th style='text-align: center; background-color:  #90ee90''>Posisi</th>" +
-                "<th style='text-align: center; background-color:  #90ee90''>SubDivisi/SubBidang</th>" +
-                "<th style='text-align: center; background-color:  #90ee90''>Divisi/Bidang</th>" +
-                "<th style='text-align: center; background-color:  #90ee90'>PPH (RP)</th>" +
+                "<th style='text-align: center; background-color:  #90ee90''>Sumber Jurnal</th>" +
+                "<th style='text-align: center; background-color:  #90ee90'>PPN (RP)</th>" +
                 "<th style='text-align: center; background-color:  #90ee90'>Keterangan</th>" +
                 "<th style='text-align: center; background-color:  #90ee90'>Status</th>" +
                 "</tr></thead>";
             $.each(listdata, function (i, item) {
                 var check = "";
                 if (item.dibayar=="Y"){
-                    check = "<input type='checkbox' class='checkboxPayroll' id='"+ item.transaksiId +"' checked>";
+                    check = "<input type='checkbox' class='checkboxPpnMasukan' id='"+ item.transaksiId +"' checked>";
                 } else{
-                    check = "<input type='checkbox' class='checkboxPayroll' id='"+ item.transaksiId +"'>";
+                    check = "<input type='checkbox' class='checkboxPpnMasukan' id='"+ item.transaksiId +"'>";
                 }
 
                 tmp_table += '<tr style="font-size: 10px;" ">' +
                     '<td >' + item.transaksiId + '</td>' +
                     '<td align="center">' + item.tipe + '</td>' +
                     '<td align="left">' + item.personId+ '</td>' +
-                    '<td align="left">' + item.nama + '</td>' +
-                    '<td align="left">' + item.posisiName + '</td>' +
-                    '<td align="left">' + item.bagianName + '</td>' +
-                    '<td align="left">' + item.divisiName + '</td>' +
                     '<td align="right">' + item.stJumlah + '</td>' +
                     '<td align="left">' + item.note + '</td>' +
                     '<td align="center">'+check + '</td>' +
@@ -334,34 +326,32 @@
             $('#table1').append(tmp_table);
         });
     };
-    window.loadSessionKso= function(){
+    window.loadSessionPpnKeluaran= function(){
         $('#table2').find('tbody').remove();
         $('#table2').find('thead').remove();
         dwr.engine.setAsync(false);
         var tmp_table = "";
-        PengajuanSetorAction.searchDataSessionPph21Kso(function (listdata) {
+        PengajuanSetorAction.searchDataSessionPpnKeluaran(function (listdata) {
             tmp_table = "<thead style='font-size: 14px;' ><tr class='active'>" +
                 "<th style='text-align: center; background-color:  #90ee90'>ID</th>" +
                 "<th style='text-align: center; background-color:  #90ee90'>Tipe</th>" +
-                "<th style='text-align: center; background-color:  #90ee90''>ID Dokter</th>" +
-                "<th style='text-align: center; background-color:  #90ee90''>Nama</th>" +
-                "<th style='text-align: center; background-color:  #90ee90'>PPH (RP)</th>" +
+                "<th style='text-align: center; background-color:  #90ee90''>Sumber Jurnal</th>" +
+                "<th style='text-align: center; background-color:  #90ee90'>PPN (RP)</th>" +
                 "<th style='text-align: center; background-color:  #90ee90'>Keterangan</th>" +
                 "<th style='text-align: center; background-color:  #90ee90'>Status</th>" +
                 "</tr></thead>";
             $.each(listdata, function (i, item) {
                 var check = "";
                 if (item.dibayar=="Y"){
-                    check = "<input type='checkbox' class='checkboxKso' id='"+ item.transaksiId +"' checked>";
+                    check = "<input type='checkbox' class='checkboxPpnKeluaran' id='"+ item.transaksiId +"' checked>";
                 } else{
-                    check = "<input type='checkbox' class='checkboxKso' id='"+ item.transaksiId +"'>";
+                    check = "<input type='checkbox' class='checkboxPpnKeluaran' id='"+ item.transaksiId +"'>";
                 }
 
                 tmp_table += '<tr style="font-size: 12px;" ">' +
-                    '<td align="center" >' + item.transaksiId + '</td>' +
+                    '<td >' + item.transaksiId + '</td>' +
                     '<td align="center">' + item.tipe + '</td>' +
-                    '<td align="center">' + item.personId+ '</td>' +
-                    '<td align="left">' + item.nama + '</td>' +
+                    '<td align="left">' + item.personId+ '</td>' +
                     '<td align="right">' + item.stJumlah + '</td>' +
                     '<td align="left">' + item.note + '</td>' +
                     '<td align="center">'+check + '</td>' +
@@ -375,14 +365,14 @@
         $('#table3').find('thead').remove();
         dwr.engine.setAsync(false);
         var tmp_table = "";
-        PengajuanSetorAction.searchDataSessionPph21Pengajuan(function (listdata) {
+        PengajuanSetorAction.searchDataSessionPpnAset(function (listdata) {
             tmp_table = "<thead style='font-size: 14px;' ><tr class='active'>" +
                 "<th style='text-align: center; background-color:  #90ee90'>ID</th>" +
                 "<th style='text-align: center; background-color:  #90ee90'>Tipe</th>" +
                 "<th style='text-align: center; background-color:  #90ee90''>Posisi</th>" +
                 "<th style='text-align: center; background-color:  #90ee90''>SubDivisi/SubBidang</th>" +
                 "<th style='text-align: center; background-color:  #90ee90''>Divisi/Bidang</th>" +
-                "<th style='text-align: center; background-color:  #90ee90'>PPH (RP)</th>" +
+                "<th style='text-align: center; background-color:  #90ee90'>PPN (RP)</th>" +
                 "<th style='text-align: center; background-color:  #90ee90'>Keterangan</th>" +
                 "<th style='text-align: center; background-color:  #90ee90'>Status</th>" +
                 "</tr></thead>";
@@ -408,37 +398,37 @@
         });
     };
     $('document').ready(function () {
-        loadSessionPayrollPph();
-        loadSessionKso();
+        loadSessionPpnMasukan();
+        loadSessionPpnKeluaran();
         loadSessionPengajuan();
 
-        $('.checkboxPayroll').change(function () {
+        $('.checkboxPpnMasukan').change(function () {
             var id = $(this).prop('id');
             var check = $(this).prop('checked');
-            PengajuanSetorAction.editSessionPayroll(id,check,function (data) {
-                $('#jumlah_pph_21_payroll').val(data.stJumlahPph21Payroll);
+            PengajuanSetorAction.editSessionPpnMasukan(id,check,function (data) {
+                $('#jumlah_ppn_masukan').val(data.stJumlahPpnMasukan);
                 $('#jumlah_seluruhnya').val(data.stJumlahSeluruhnya);
-                $('#jumlahPph21Payroll').val(data.jumlahPph21Payroll);
+                $('#jumlahPpnMasukan').val(data.jumlahPpnMasukan);
                 $('#jumlahSeluruhnya').val(data.jumlahSeluruhnya);
             });
         });
-        $('.checkboxKso').change(function () {
+        $('.checkboxPpnKeluaran').change(function () {
             var id = $(this).prop('id');
             var check = $(this).prop('checked');
-            PengajuanSetorAction.editSessionKso(id,check,function (data) {
-                $('#jumlah_pph_21_kso').val(data.stJumlahPph21Kso);
+            PengajuanSetorAction.editSessionPpnKeluaran(id,check,function (data) {
+                $('#jumlah_ppn_keluaran').val(data.stJumlahPpnKeluaran);
                 $('#jumlah_seluruhnya').val(data.stJumlahSeluruhnya);
-                $('#jumlahPph21Kso').val(data.jumlahPph21Kso);
+                $('#jumlahPpnKeluaran').val(data.jumlahPpnKeluaran);
                 $('#jumlahSeluruhnya').val(data.jumlahSeluruhnya);
             });
         });
         $('.checkboxPengajuan').change(function () {
             var id = $(this).prop('id');
             var check = $(this).prop('checked');
-            PengajuanSetorAction.editSessionPengajuan(id,check,function (data) {
-                $('#jumlah_pph_21_pengajuan').val(data.stJumlahPph21Pengajuan);
+            PengajuanSetorAction.editSessionAset(id,check,function (data) {
+                $('#jumlah_ppn_pengajuan').val(data.stJumlahPpnAset);
+                $('#jumlahPpnAset').val(data.stJumlahPpnAset);
                 $('#jumlah_seluruhnya').val(data.stJumlahSeluruhnya);
-                $('#jumlahPph21Pengajuan').val(data.jumlahPph21Pengajuan);
                 $('#jumlahSeluruhnya').val(data.jumlahSeluruhnya);
             });
         });

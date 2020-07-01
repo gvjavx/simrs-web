@@ -163,6 +163,12 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
             if (searchBean.getBranchId() != null && !"".equalsIgnoreCase(searchBean.getBranchId())) {
                 hsCriteria.put("branch_id", searchBean.getBranchId());
             }
+            if (searchBean.getKeterangan() != null && !"".equalsIgnoreCase(searchBean.getKeterangan())) {
+                hsCriteria.put("keterangan", searchBean.getKeterangan());
+            }
+            if (searchBean.getTipePengajuanSetor() != null && !"".equalsIgnoreCase(searchBean.getTipePengajuanSetor())) {
+                hsCriteria.put("tipe_pengajuan_setor", searchBean.getTipePengajuanSetor());
+            }
             if (searchBean.getStTanggalDari() != null && !"".equalsIgnoreCase(searchBean.getStTanggalDari())) {
                 Timestamp tanggalDari = CommonUtil.convertToTimestamp(searchBean.getStTanggalDari());
                 hsCriteria.put("tanggal_dari", tanggalDari);
@@ -180,7 +186,6 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
             } else {
                 hsCriteria.put("flag", "Y");
             }
-
             List<ItPengajuanSetorEntity> itPengajuanSetorEntities = null;
             try {
                 itPengajuanSetorEntities = pengajuanSetorDao.getByCriteria(hsCriteria);
@@ -202,6 +207,9 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
                     returnPengajuanSetor.setJumlahPph21Payroll(pengajuanSetorEntity.getJumlahPph21Payroll());
                     returnPengajuanSetor.setJumlahPph21Kso(pengajuanSetorEntity.getJumlahPph21Kso());
                     returnPengajuanSetor.setJumlahPph21Pengajuan(pengajuanSetorEntity.getJumlahPph21Pengajuan());
+                    returnPengajuanSetor.setJumlahPpnMasukan(pengajuanSetorEntity.getJumlahPpnMasukan());
+                    returnPengajuanSetor.setJumlahPpnKeluaran(pengajuanSetorEntity.getJumlahPpnKeluaran());
+                    returnPengajuanSetor.setJumlahPpnAset(pengajuanSetorEntity.getJumlahPpnAset());
                     returnPengajuanSetor.setJumlahSeluruhnya(pengajuanSetorEntity.getJumlahSeluruhnya());
                     returnPengajuanSetor.setBranchId(pengajuanSetorEntity.getBranchId());
                     returnPengajuanSetor.setApprovalId(pengajuanSetorEntity.getApprovalId());
@@ -210,11 +218,19 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
                     returnPengajuanSetor.setCancelId(pengajuanSetorEntity.getCancelId());
                     returnPengajuanSetor.setCancelFlag(pengajuanSetorEntity.getCancelFlag());
                     returnPengajuanSetor.setCancelDate(pengajuanSetorEntity.getCancelDate());
+                    returnPengajuanSetor.setKeterangan(pengajuanSetorEntity.getKeterangan());
 
-                    returnPengajuanSetor.setStJumlahPph21Payroll(CommonUtil.numbericFormat(pengajuanSetorEntity.getJumlahPph21Payroll(),"###,###"));
-                    returnPengajuanSetor.setStJumlahPph21Kso(CommonUtil.numbericFormat(pengajuanSetorEntity.getJumlahPph21Kso(),"###,###"));
-                    returnPengajuanSetor.setStJumlahPph21Pengajuan(CommonUtil.numbericFormat(pengajuanSetorEntity.getJumlahPph21Pengajuan(),"###,###"));
-                    returnPengajuanSetor.setStJumlahSeluruhnya(CommonUtil.numbericFormat(pengajuanSetorEntity.getJumlahSeluruhnya(),"###,###"));
+                    if ("PPH21".equalsIgnoreCase(searchBean.getTipePengajuanSetor())){
+                        returnPengajuanSetor.setStJumlahPph21Payroll(CommonUtil.numbericFormat(pengajuanSetorEntity.getJumlahPph21Payroll(),"###,###"));
+                        returnPengajuanSetor.setStJumlahPph21Kso(CommonUtil.numbericFormat(pengajuanSetorEntity.getJumlahPph21Kso(),"###,###"));
+                        returnPengajuanSetor.setStJumlahPph21Pengajuan(CommonUtil.numbericFormat(pengajuanSetorEntity.getJumlahPph21Pengajuan(),"###,###"));
+                        returnPengajuanSetor.setStJumlahSeluruhnya(CommonUtil.numbericFormat(pengajuanSetorEntity.getJumlahSeluruhnya(),"###,###"));
+                    }else if ("PPN".equalsIgnoreCase(searchBean.getTipePengajuanSetor())){
+                        returnPengajuanSetor.setStJumlahPpnMasukan(CommonUtil.numbericFormat(pengajuanSetorEntity.getJumlahPpnMasukan(),"###,###"));
+                        returnPengajuanSetor.setStJumlahPpnKeluaran(CommonUtil.numbericFormat(pengajuanSetorEntity.getJumlahPpnKeluaran(),"###,###"));
+                        returnPengajuanSetor.setStJumlahPpnAset(CommonUtil.numbericFormat(pengajuanSetorEntity.getJumlahPpnAset(),"###,###"));
+                        returnPengajuanSetor.setStJumlahSeluruhnya(CommonUtil.numbericFormat(pengajuanSetorEntity.getJumlahSeluruhnya(),"###,###"));
+                    }
 
                     List<ImBranches> branches = branchDao.getListBranchById(pengajuanSetorEntity.getBranchId());
                     if (branches.size()!=0){
@@ -411,9 +427,14 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
         pengajuanSetorEntity.setJumlahPph21Payroll(bean.getJumlahPph21Payroll());
         pengajuanSetorEntity.setJumlahPph21Kso(bean.getJumlahPph21Kso());
         pengajuanSetorEntity.setJumlahPph21Pengajuan(bean.getJumlahPph21Pengajuan());
+        pengajuanSetorEntity.setJumlahPpnMasukan(BigDecimal.ZERO);
+        pengajuanSetorEntity.setJumlahPpnKeluaran(BigDecimal.ZERO);
+        pengajuanSetorEntity.setJumlahPpnAset(BigDecimal.ZERO);
         pengajuanSetorEntity.setJumlahSeluruhnya(bean.getJumlahSeluruhnya());
         pengajuanSetorEntity.setRegisteredDate(bean.getRegisteredDate());
         pengajuanSetorEntity.setCancelFlag("N");
+        pengajuanSetorEntity.setTipePengajuanSetor("PPH21");
+        pengajuanSetorEntity.setKeterangan(bean.getKeterangan());
 
         pengajuanSetorEntity.setAction(bean.getAction());
         pengajuanSetorEntity.setFlag(bean.getFlag());
@@ -460,6 +481,113 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
         }
 
         logger.info("[PengajuanSetorBoImpl.saveAddPengajuanSetorPph21] stop process >>>");
+    }
+
+    @Override
+    public void saveAddPengajuanSetorPpn(PengajuanSetor bean, List<PengajuanSetorDetail> pengajuanSetorDetailListPayroll, List<PengajuanSetorDetail> pengajuanSetorDetailListKso, List<PengajuanSetorDetail> pengajuanSetorDetailListPengajuan){
+        logger.info("[PengajuanSetorBoImpl.saveAddPengajuanSetorPpn] start process >>>");
+
+        //validasi
+        Calendar c = Calendar.getInstance();
+        c.setTime(new java.util.Date());
+        c.add(Calendar.DATE, -1);
+
+        Date tanggalSekarang = new Date(c.getTimeInMillis());
+
+        if (bean.getRegisteredDate().before(tanggalSekarang)){
+            String status ="Tanggal Pengajuan Setor tidak boleh kurang dari tanggal sekarang";
+            logger.error("[PengajuanSetorBoImpl.saveAddPengajuanSetorPpn] Error :, " + status);
+            throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + status);
+        }
+
+        if (pengajuanSetorDetailListPayroll.size()==0&&pengajuanSetorDetailListKso.size()==0&&pengajuanSetorDetailListPengajuan.size()==0){
+            String status ="Data yang dicari tidak ada atau sudah diajukan";
+            logger.error("[PengajuanSetorBoImpl.saveAddPengajuanSetorPpn] Error :, " + status);
+            throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + status);
+        }
+
+        if (bean.getJumlahSeluruhnya().compareTo(BigDecimal.ZERO)<1){
+            String status ="Jumlah seluruhnya tidak boleh minus";
+            logger.error("[PengajuanSetorBoImpl.saveAddPengajuanSetorPpn] Error :, " + status);
+            throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + status);
+        }
+
+        List<PengajuanSetorDetail> listDetailAll = new ArrayList<>();
+        listDetailAll.addAll(pengajuanSetorDetailListPayroll);
+        listDetailAll.addAll(pengajuanSetorDetailListKso);
+        listDetailAll.addAll(pengajuanSetorDetailListPengajuan);
+
+        String pengajuanSetorId;
+
+        try {
+            pengajuanSetorId = pengajuanSetorDao.getNextPengajuanSetorId();
+        } catch (HibernateException e) {
+            logger.error("[PengajuanSetorBoImpl.saveAddPengajuanSetorPpn] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + e.getMessage());
+        }
+
+        ItPengajuanSetorEntity pengajuanSetorEntity = new ItPengajuanSetorEntity();
+        pengajuanSetorEntity.setPengajuanSetorId(pengajuanSetorId);
+        pengajuanSetorEntity.setBranchId(bean.getBranchId());
+        pengajuanSetorEntity.setBulan(bean.getBulan());
+        pengajuanSetorEntity.setTahun(bean.getTahun());
+        pengajuanSetorEntity.setJumlahPph21Payroll(bean.getJumlahPph21Payroll());
+        pengajuanSetorEntity.setJumlahPph21Kso(bean.getJumlahPph21Kso());
+        pengajuanSetorEntity.setJumlahPph21Pengajuan(bean.getJumlahPph21Pengajuan());
+        pengajuanSetorEntity.setJumlahSeluruhnya(bean.getJumlahSeluruhnya());
+        pengajuanSetorEntity.setRegisteredDate(bean.getRegisteredDate());
+        pengajuanSetorEntity.setCancelFlag("N");
+        pengajuanSetorEntity.setTipePengajuanSetor("PPN");
+        pengajuanSetorEntity.setKeterangan(bean.getKeterangan());
+        pengajuanSetorEntity.setJumlahPpnMasukan(bean.getJumlahPpnMasukan());
+        pengajuanSetorEntity.setJumlahPpnKeluaran(bean.getJumlahPpnKeluaran());
+        pengajuanSetorEntity.setJumlahPpnAset(bean.getJumlahPpnAset());
+
+        pengajuanSetorEntity.setAction(bean.getAction());
+        pengajuanSetorEntity.setFlag(bean.getFlag());
+        pengajuanSetorEntity.setCreatedDate(bean.getCreatedDate());
+        pengajuanSetorEntity.setCreatedWho(bean.getCreatedWho());
+        pengajuanSetorEntity.setLastUpdate(bean.getLastUpdate());
+        pengajuanSetorEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+        try {
+            pengajuanSetorDao.addAndSave(pengajuanSetorEntity);
+        } catch (HibernateException e) {
+            logger.error("[PengajuanSetorBoImpl.saveAddPengajuanSetorPpn] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + e.getMessage());
+        }
+
+        //save detail
+        for (PengajuanSetorDetail pengajuanSetorDetail : listDetailAll){
+            ItPengajuanSetorDetailEntity pengajuanSetorDetailEntity = new ItPengajuanSetorDetailEntity();
+            pengajuanSetorDetailEntity.setPengajuanSetorDetailId(pengajuanSetorDetailDao.getNextPengajuanSetorDetailId());
+            pengajuanSetorDetailEntity.setPengajuanSetorId(pengajuanSetorId);
+            pengajuanSetorDetailEntity.setBranchId(bean.getBranchId());
+            pengajuanSetorDetailEntity.setTransaksiId(pengajuanSetorDetail.getTransaksiId());
+            pengajuanSetorDetailEntity.setPersonId(pengajuanSetorDetail.getPersonId());
+            pengajuanSetorDetailEntity.setTipe(pengajuanSetorDetail.getTipe());
+            pengajuanSetorDetailEntity.setNote(pengajuanSetorDetail.getNote());
+            pengajuanSetorDetailEntity.setJumlah(pengajuanSetorDetail.getJumlah());
+            pengajuanSetorDetailEntity.setDivisiId(pengajuanSetorDetail.getPositionId());
+
+            pengajuanSetorDetailEntity.setAction(bean.getAction());
+            pengajuanSetorDetailEntity.setFlag(bean.getFlag());
+            pengajuanSetorDetailEntity.setCreatedDate(bean.getCreatedDate());
+            pengajuanSetorDetailEntity.setCreatedWho(bean.getCreatedWho());
+            pengajuanSetorDetailEntity.setLastUpdate(bean.getLastUpdate());
+            pengajuanSetorDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+            if ("Y".equalsIgnoreCase(pengajuanSetorDetail.getDibayar())){
+                try {
+                    pengajuanSetorDetailDao.addAndSave(pengajuanSetorDetailEntity);
+                } catch (HibernateException e) {
+                    logger.error("[PengajuanSetorBoImpl.saveAddPengajuanSetorPpn] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + e.getMessage());
+                }
+            }
+        }
+
+        logger.info("[PengajuanSetorBoImpl.saveAddPengajuanSetorPpn] stop process >>>");
     }
 
     @Override
@@ -536,7 +664,7 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
             }else{
                 result.setStJumlah("0");
             }
-        } else if ("Pengajuan Biaya".equalsIgnoreCase(tipe)){
+        } else if ("Pengajuan Biaya PPH21".equalsIgnoreCase(tipe)){
             ImPosition position = positionDao.getById("positionId",data.getDivisiId());
             result.setPosisiName(position.getPositionName());
 
@@ -634,6 +762,189 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
         }
         logger.info("[PengajuanSetorBoImpl.batalkanPengajuan] end process <<<");
     }
+
+    @Override
+    public List<PengajuanSetorDetail> listPPnKeluaran(PengajuanSetor search){
+        logger.info("[PengajuanSetorBoImpl.listPPnKeluaran] start process >>>");
+        List<PengajuanSetorDetail> pengajuanSetorDetailList = new ArrayList<>();
+
+        try {
+            // Get data from database by ID
+            pengajuanSetorDetailList = pengajuanSetorDao.listPPnKeluaran(search);
+            for (PengajuanSetorDetail pengajuanSetorDetail : pengajuanSetorDetailList){
+                pengajuanSetorDetail.setDibayar("Y");
+                convertPpnKeluaran(pengajuanSetorDetail);
+            }
+        } catch (HibernateException e) {
+            logger.error("[PengajuanSetorBoImpl.listPPnKeluaran] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + e.getMessage());
+        }
+                logger.info("[PengajuanSetorBoImpl.listPPnKeluaran] stop process >>>");
+        return pengajuanSetorDetailList;
+    }
+
+    private PengajuanSetorDetail convertPpnKeluaran( PengajuanSetorDetail data){
+
+        if (data.getJumlah()!=null){
+            data.setStJumlah(CommonUtil.numbericFormat(data.getJumlah(),"###,###"));
+        }else{
+            data.setStJumlah("0");
+        }
+        return data;
+    }
+
+    @Override
+    public List<PengajuanSetorDetail> listPPnMasukan(PengajuanSetor search){
+        logger.info("[PengajuanSetorBoImpl.listPPnMasukan] start process >>>");
+        List<PengajuanSetorDetail> pengajuanSetorDetailList = new ArrayList<>();
+
+        try {
+            // Get data from database by ID
+            pengajuanSetorDetailList = pengajuanSetorDao.listPPnMasukan(search);
+            for (PengajuanSetorDetail pengajuanSetorDetail : pengajuanSetorDetailList){
+                pengajuanSetorDetail.setDibayar("Y");
+                convertPpnMasukan(pengajuanSetorDetail);
+            }
+        } catch (HibernateException e) {
+            logger.error("[PengajuanSetorBoImpl.listPPnMasukan] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + e.getMessage());
+        }
+        logger.info("[PengajuanSetorBoImpl.listPPnMasukan] stop process >>>");
+        return pengajuanSetorDetailList;
+    }
+
+    private PengajuanSetorDetail convertPpnMasukan( PengajuanSetorDetail data){
+
+        if (data.getJumlah()!=null){
+            data.setStJumlah(CommonUtil.numbericFormat(data.getJumlah(),"###,###"));
+        }else{
+            data.setStJumlah("0");
+        }
+        return data;
+    }
+
+    private PengajuanSetorDetail convertPpnPengajuan( PengajuanSetorDetail data){
+        ImPosition position = positionDao.getById("positionId",data.getPositionId());
+        data.setPosisiName(position.getPositionName());
+
+        if (position.getBagianId()!=null){
+            ImPositionBagianEntity positionBagian= positionBagianDao.getById("bagianId",position.getBagianId());
+            data.setBagianName(positionBagian.getBagianName());
+        }else{
+            data.setBagianName("");
+        }
+        if (position.getDepartmentId()!=null){
+            ImDepartmentEntity departmentEntity= departmentDao.getById("departmentId",position.getDepartmentId());
+            data.setDivisiName(departmentEntity.getDepartmentName());
+        }else{
+            data.setDivisiName("");
+        }
+
+        if (data.getJumlah()!=null){
+            data.setStJumlah(CommonUtil.numbericFormat(data.getJumlah(),"###,###"));
+        }else{
+            data.setStJumlah("0");
+        }
+
+        return data;
+    }
+
+    @Override
+    public List<PengajuanSetorDetail> listPPnPengajuan(PengajuanSetor search){
+        logger.info("[PengajuanSetorBoImpl.listPPh21Pengajuan] start process >>>");
+        List<PengajuanSetorDetail> pengajuanSetorDetailList = new ArrayList<>();
+        try {
+            // Get data from database by ID
+            pengajuanSetorDetailList = pengajuanSetorDao.listPPnPengajuan(search);
+            for (PengajuanSetorDetail pengajuanSetorDetail : pengajuanSetorDetailList){
+                pengajuanSetorDetail.setDibayar("Y");
+                convertPpnPengajuan(pengajuanSetorDetail);
+            }
+        } catch (HibernateException e) {
+            logger.error("[PengajuanSetorBoImpl.listPPh21Pengajuan] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + e.getMessage());
+        }
+
+        logger.info("[PengajuanSetorBoImpl.listPPh21Pengajuan] stop process >>>");
+        return pengajuanSetorDetailList;
+    }
+
+    @Override
+    public List<PengajuanSetorDetail> getDetailPengajuanSetorPPn(String pengajuanBiayaId, String tipe) throws GeneralBOException {
+        logger.info("[PengajuanSetorBoImpl.getDetailPengajuanSetorPPn] start process >>>");
+        List<PengajuanSetorDetail> listOfResult = new ArrayList<>();
+        List<ItPengajuanSetorDetailEntity> pengajuanSetorDetailEntityList ;
+        try {
+            pengajuanSetorDetailEntityList = pengajuanSetorDetailDao.getByPengajuanBiayaIdAndTipe(pengajuanBiayaId,tipe);
+        } catch (HibernateException e) {
+            logger.error("[PengajuanSetorBoImpl.getDetailPengajuanSetorPPn] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if(pengajuanSetorDetailEntityList != null){
+            PengajuanSetorDetail returnData;
+            // Looping from dao to object and save in collection
+            for(ItPengajuanSetorDetailEntity pengajuanSetorDetailEntity : pengajuanSetorDetailEntityList){
+                returnData = convertPengajuanSetorDetailPPn(pengajuanSetorDetailEntity,tipe);
+
+                listOfResult.add(returnData);
+            }
+        }
+        logger.info("[PengajuanSetorBoImpl.getDetailPengajuanSetorPPn] end process <<<");
+
+        return listOfResult;
+    }
+
+    private PengajuanSetorDetail convertPengajuanSetorDetailPPn (ItPengajuanSetorDetailEntity data,String tipe ){
+        PengajuanSetorDetail result = new PengajuanSetorDetail();
+        result.setBranchId(data.getBranchId());
+        result.setTipe(data.getTipe());
+        result.setNote(data.getNote());
+        result.setPersonId(data.getPersonId());
+        result.setTransaksiId(data.getTransaksiId());
+        List<ImBranches> branches = branchDao.getListBranchById(data.getBranchId());
+        if (branches.size()!=0){
+            for (ImBranches imBranches : branches){
+                result.setBranchName(imBranches.getBranchName());
+            }
+        }
+        if ("PPN Masukan".equalsIgnoreCase(tipe)){
+            if (data.getJumlah()!=null){
+                result.setStJumlah(CommonUtil.numbericFormat(data.getJumlah(),"###,###"));
+            }else{
+                result.setStJumlah("0");
+            }
+        } else if ("PPN Keluaran".equalsIgnoreCase(tipe)){
+            if (data.getJumlah()!=null){
+                result.setStJumlah(CommonUtil.numbericFormat(data.getJumlah(),"###,###"));
+            }else{
+                result.setStJumlah("0");
+            }
+        } else if ("Pengajuan Biaya PPN".equalsIgnoreCase(tipe)){
+            ImPosition position = positionDao.getById("positionId",data.getDivisiId());
+            result.setPosisiName(position.getPositionName());
+
+            if (position.getBagianId()!=null){
+                ImPositionBagianEntity positionBagian= positionBagianDao.getById("bagianId",position.getBagianId());
+                result.setBagianName(positionBagian.getBagianName());
+            }else{
+                result.setBagianName("");
+            }
+            if (position.getDepartmentId()!=null){
+                ImDepartmentEntity departmentEntity= departmentDao.getById("departmentId",position.getDepartmentId());
+                result.setDivisiName(departmentEntity.getDepartmentName());
+            }else{
+                result.setDivisiName("");
+            }
+
+            if (data.getJumlah()!=null){
+                result.setStJumlah(CommonUtil.numbericFormat(data.getJumlah(),"###,###"));
+            }else{
+                result.setStJumlah("0");
+            }
+        }
+        return result;
+    }
+
 
     @Override
     public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {

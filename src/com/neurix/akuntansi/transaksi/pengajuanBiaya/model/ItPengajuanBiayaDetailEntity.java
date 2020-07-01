@@ -80,6 +80,15 @@ public class ItPengajuanBiayaDetailEntity implements Serializable {
     private String namaKontrak;
 
     private BigDecimal pph;
+    private BigDecimal ppn;
+
+    public BigDecimal getPpn() {
+        return ppn;
+    }
+
+    public void setPpn(BigDecimal ppn) {
+        this.ppn = ppn;
+    }
 
     public BigDecimal getPph() {
         return pph;

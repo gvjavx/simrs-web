@@ -24,9 +24,19 @@ public interface PengajuanSetorBo extends BaseMasterBo<PengajuanSetor> {
 
     void saveAddPengajuanSetorPph21(PengajuanSetor bean, List<PengajuanSetorDetail> pengajuanSetorDetailListPayroll, List<PengajuanSetorDetail> pengajuanSetorDetailListKso, List<PengajuanSetorDetail> pengajuanSetorDetailListPengajuan);
 
+    void saveAddPengajuanSetorPpn(PengajuanSetor bean, List<PengajuanSetorDetail> pengajuanSetorDetailListPayroll, List<PengajuanSetorDetail> pengajuanSetorDetailListKso, List<PengajuanSetorDetail> pengajuanSetorDetailListPengajuan);
+
     List<PengajuanSetorDetail> getDetailPengajuanSetorPPh21(String pengajuanBiayaId, String tipe) throws GeneralBOException;
 
     void postingJurnal(PengajuanSetor bean) throws GeneralBOException;
 
     void batalkanPengajuan(PengajuanSetor bean) throws GeneralBOException;
+
+    List<PengajuanSetorDetail> listPPnKeluaran(PengajuanSetor search);
+
+    List<PengajuanSetorDetail> listPPnMasukan(PengajuanSetor search);
+
+    List<PengajuanSetorDetail> listPPnPengajuan(PengajuanSetor search);
+
+    List<PengajuanSetorDetail> getDetailPengajuanSetorPPn(String pengajuanBiayaId, String tipe) throws GeneralBOException;
 }

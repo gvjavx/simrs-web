@@ -76,11 +76,16 @@
             <result name="success_add_pengajuan_setor_pph21">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/pph21/addPengajuanSetorPph21.jsp</result>
             <result name="search_add_pengajuan_setor_pph21">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/pph21/hasilPencarianPengajuanSetorPph21.jsp</result>
             <result name="success_save_pengajuan_setor_pph21">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/pph21/hasilPencarianPengajuanSetorPph21.jsp</result>
-        </action>
-        <action name="paging_displaytag_pengajuanSetor"
-                class="com.neurix.akuntansi.transaksi.pengajuanSetor.action.PengajuanSetorAction" method="paging">
-            <interceptor-ref name="defaultStack"/>
-            <result name="success">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/SearchPengajuanSetor.jsp</result>
+
+            <!-- PPN -->
+            <result name="pengajuan_setor_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/SearchPengajuanSetorPpn.jsp</result>
+            <result name="search_pengajuan_setor_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/SearchPengajuanSetorPpn.jsp</result>
+            <result name="success_pengajuan_setor_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/SearchPengajuanSetorPpn.jsp</result>
+            <result name="add_pengajuan_setor_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/addPengajuanSetorPpn.jsp</result>
+            <result name="success_add_pengajuan_setor_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/addPengajuanSetorPpn.jsp</result>
+            <result name="search_add_pengajuan_setor_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/hasilPencarianPengajuanSetorPpn.jsp</result>
+            <result name="success_save_pengajuan_setor_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/hasilPencarianPengajuanSetorPpn.jsp</result>
+
         </action>
     </package>
 </struts>
