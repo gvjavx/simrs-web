@@ -37,6 +37,15 @@ public class PengirimanObat {
     private String lon;
     private String status;
     private String tipe;
+    private String jenisPembayaran;
+
+    public String getJenisPembayaran() {
+        return jenisPembayaran;
+    }
+
+    public void setJenisPembayaran(String jenisPembayaran) {
+        this.jenisPembayaran = jenisPembayaran;
+    }
 
     public String getTipe() {
         return tipe;

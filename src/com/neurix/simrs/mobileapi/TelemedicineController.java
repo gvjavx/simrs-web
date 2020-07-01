@@ -304,6 +304,7 @@ public class TelemedicineController implements ModelDriven<Object> {
             bean.setNoTelp(model.getNoTelp());
             bean.setFlagEresep(model.getFlagEresep());
             bean.setJenisPembayaran(model.getJenisPembayaran());
+            bean.setJenisRujukan(model.getJenisRujukan());
 
             String fileName = "";
             if (fileUploadResep != null) {
@@ -860,7 +861,7 @@ public class TelemedicineController implements ModelDriven<Object> {
                 logger.error("[TelemedicineController.insertResep] Error, " + e.getMessage());
             }
 
-            if (response != null) {
+            if (response.getNoKartu() != null) {
                 model.setMessage("Success");
             }
 
@@ -874,7 +875,7 @@ public class TelemedicineController implements ModelDriven<Object> {
                 logger.error("[TelemedicineController.insertResep] Error, " + e.getMessage());
             }
 
-            if (response != null) {
+            if (response.getNoRujukan() != null) {
                 model.setMessage("Success");
             }
         }

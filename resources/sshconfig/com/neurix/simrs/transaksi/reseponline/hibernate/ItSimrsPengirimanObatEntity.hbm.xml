@@ -65,6 +65,9 @@
             <basic name="flagTerkirim">
                 <column name="flag_terkirim"/>
             </basic>
+            <basic name="jenisPembayaran">
+                <column name="jenis_pembayaran"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

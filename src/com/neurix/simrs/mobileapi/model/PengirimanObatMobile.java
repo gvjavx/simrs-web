@@ -38,6 +38,16 @@ public class PengirimanObatMobile {
     private String lat;
     private String lon;
 
+    private String jenisPengiriman;
+
+    public String getJenisPengiriman() {
+        return jenisPengiriman;
+    }
+
+    public void setJenisPengiriman(String jenisPengiriman) {
+        this.jenisPengiriman = jenisPengiriman;
+    }
+
     public String getLat() {
         return lat;
     }

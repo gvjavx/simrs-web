@@ -27,6 +27,15 @@ public class ItSimrsPengirimanObatEntity {
     private String lat;
     private String lon;
     private String flagTerkirim;
+    private String jenisPembayaran;
+
+    public String getJenisPembayaran() {
+        return jenisPembayaran;
+    }
+
+    public void setJenisPembayaran(String jenisPembayaran) {
+        this.jenisPembayaran = jenisPembayaran;
+    }
 
     public String getFlagTerkirim() {
         return flagTerkirim;
