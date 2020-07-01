@@ -104,6 +104,15 @@
             <basic name="jenisRujukan">
                 <column name="jenis_rujukan"/>
             </basic>
+            <basic name="noSep">
+                <column name="no_sep"/>
+            </basic>
+            <basic name="idDiagnosa">
+                <column name="id_diagnosa"/>
+            </basic>
+            <basic name="ketDiagnosa">
+                <column name="ket_diagnosa"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

@@ -41,6 +41,33 @@ public class ItSimrsAntrianTelemedicEntity {
     private String noJurnal;
     private String noRujukan;
     private String jenisRujukan;
+    private String noSep;
+    private String idDiagnosa;
+    private String ketDiagnosa;
+
+    public String getIdDiagnosa() {
+        return idDiagnosa;
+    }
+
+    public void setIdDiagnosa(String idDiagnosa) {
+        this.idDiagnosa = idDiagnosa;
+    }
+
+    public String getKetDiagnosa() {
+        return ketDiagnosa;
+    }
+
+    public void setKetDiagnosa(String ketDiagnosa) {
+        this.ketDiagnosa = ketDiagnosa;
+    }
+
+    public String getNoSep() {
+        return noSep;
+    }
+
+    public void setNoSep(String noSep) {
+        this.noSep = noSep;
+    }
 
     public String getNoRujukan() {
         return noRujukan;

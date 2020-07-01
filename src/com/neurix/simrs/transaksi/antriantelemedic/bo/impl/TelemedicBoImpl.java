@@ -167,6 +167,11 @@ public class TelemedicBoImpl implements TelemedicBo {
                 antrianTelemedic.setAction(telemedicEntity.getAction());
                 antrianTelemedic.setJenisPengambilan(telemedicEntity.getJenisPengambilan());
                 antrianTelemedic.setJumlahCover(telemedicEntity.getJumlahCover());
+                antrianTelemedic.setNoSep(telemedicEntity.getNoSep());
+                antrianTelemedic.setNoRujukan(telemedicEntity.getNoRujukan());
+                antrianTelemedic.setJenisRujukan(telemedicEntity.getJenisRujukan());
+                antrianTelemedic.setIdDiagnosa(telemedicEntity.getIdDiagnosa());
+                antrianTelemedic.setKetDiagnosa(telemedicEntity.getKetDiagnosa());
 
                 if (telemedicEntity.getIdPelayanan() != null && !"".equalsIgnoreCase(telemedicEntity.getIdPelayanan())) {
                     antrianTelemedic.setNamaPelayanan(getPelayananById(telemedicEntity.getIdPelayanan()).getNamaPelayanan());
@@ -453,6 +458,9 @@ public class TelemedicBoImpl implements TelemedicBo {
                 telemedicEntity.setStatus(bean.getStatus() == null ? statusSebelum : bean.getStatus());
                 telemedicEntity.setJumlahCover(bean.getJumlahCover() == null ? telemedicEntity.getJumlahCover() : bean.getJumlahCover());
                 telemedicEntity.setNoJurnal(bean.getNoJurnal() == null ? telemedicEntity.getNoJurnal() : bean.getNoJurnal());
+                telemedicEntity.setNoSep(bean.getNoSep() == null ? telemedicEntity.getNoSep() : bean.getNoSep());
+                telemedicEntity.setIdDiagnosa(bean.getIdDiagnosa() == null ? telemedicEntity.getIdDiagnosa() : bean.getIdDiagnosa());
+                telemedicEntity.setKetDiagnosa(bean.getKetDiagnosa() == null ? telemedicEntity.getKetDiagnosa() : bean.getKetDiagnosa());
                 telemedicEntity.setAction("U");
                 telemedicEntity.setLastUpdate(bean.getLastUpdate());
                 telemedicEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -496,10 +504,8 @@ public class TelemedicBoImpl implements TelemedicBo {
             pembayaranOnlineEntity.setLastUpdate(bean.getLastUpdate());
 
             if (tindakanEntity != null){
-                if (!"bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
-                    pembayaranOnlineEntity.setIdItem(tindakanEntity.getIdTindakan());
-                    pembayaranOnlineEntity.setNominal(new BigDecimal(tindakanEntity.getTarif()));
-                }
+                pembayaranOnlineEntity.setIdItem(tindakanEntity.getIdTindakan());
+                pembayaranOnlineEntity.setNominal(new BigDecimal(tindakanEntity.getTarif()));
             }
 
             pembayaranOnlineEntity.setFlag(bean.getFlag());

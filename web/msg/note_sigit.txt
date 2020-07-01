@@ -343,3 +343,17 @@
     ADD COLUMN no_jurnal VARCHAR(30);
 
 <<< //
+
+// 2020-06-30 >>>
+
+    ALTER TABLE it_simrs_antrian_telemedic
+    ADD COLUMN no_sep VARCHAR(50);
+
+    ALTER TABLE it_simrs_antrian_telemedic
+    ADD COLUMN id_diagnosa VARCHAR(10),
+    ADD COLUMN ket_diagnosa TEXT;
+
+    ALTER TABLE it_simrs_pengiriman_obat
+    ADD COLUMN flag_terkirim VARCHAR(1);
+
+<<< ///
