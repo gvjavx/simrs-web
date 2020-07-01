@@ -324,8 +324,10 @@
                                 <span id="dt-no-kartu-bpjs"></span>
                                 <button onclick="checkBpjs()" class="btn btn-sm btn-success" id="dt-btn-check-bpjs" style="margin-left: 20px">Check</button>
                                 <button class="btn btn-sm btn-success" id="dt-icon-check-bpjs" style="display: none;margin-left: 20px;"><i class="fa fa-check"></i></button>
+                                <button class="btn btn-sm btn-danger" id="dt-icon-denied-bpjs" style="display: none;margin-left: 20px;"><i class="fa fa-times"></i></button>
                             </div>
                             <input type="hidden" id="dt-flag-check-bpjs" value="N">
+                            <input type="hidden" id="dt-kelas-pasien-bpjs">
                         </div>
                         <div class="row top-7">
                             <div class="col-md-3" align="right">a.n. :</div>
@@ -748,10 +750,18 @@
 
     function checkBpjs(){
         var nokartu = $("#dt-no-kartu-bpjs").text();
-        $("#dt-flag-check-bpjs").val("Y");
-        $("#dt-btn-check-bpjs").hide();
-        $("#dt-icon-check-bpjs").show();
-        $("#dt-btn-ver-bpjs").show();
+        CheckupAction.checkStatusBpjs(nokartu, function (response) {
+            if (response.keteranganStatusPeserta == "AKTIF") {
+                $("#dt-flag-check-bpjs").val("Y");
+                $("#dt-btn-check-bpjs").hide();
+                $("#dt-icon-check-bpjs").show();
+                $("#dt-btn-ver-bpjs").show();
+                $("#dt-kelas-pasien-bpjs").val(response.kodeKelas)
+            } else {
+                $("#dt-btn-check-bpjs").hide();
+                $("#dt-icon-denied-bpjs").show();
+            }
+        });
     }
 
     function verifikasiBpjs() {
@@ -760,8 +770,9 @@
         var noKartu = $("#dt-no-kartu-bpjs").text();
         var idDiagnosa = $("#dt-diagnosa-awal-bpjs").val();
         var ketDiagnosa = $("#dt-ket-diagnosa-bpjs").val();
+        var kelasPasien = $("#dt-kelas-pasien-bpjs").val();
 
-        VerifikatorPembayaranAction.saveVerifikasiBpjs(idAntrian, noKartu, idDiagnosa, ketDiagnosa, function (response) {
+        VerifikatorPembayaranAction.saveVerifikasiBpjs(idAntrian, noKartu, idDiagnosa, ketDiagnosa, kelasPasien, function (response) {
             if (response.status == "error"){
                 $("#warning_fin").show();
                 $("#success_fin").hide();
