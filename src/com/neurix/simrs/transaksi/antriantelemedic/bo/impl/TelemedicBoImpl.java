@@ -696,8 +696,6 @@ public class TelemedicBoImpl implements TelemedicBo {
                     logger.error("[VerifikatorPembayaranBoImpl.insertResepOnline] ERROR. ", e);
                     throw new GeneralBOException("[VerifikatorPembayaranBoImpl.insertResepOnline] ERROR. ", e);
                 }
-
-                hargaTotal = hargaTotal.add(resepOnlineEntity.getSubTotal());
             }
         }
 
