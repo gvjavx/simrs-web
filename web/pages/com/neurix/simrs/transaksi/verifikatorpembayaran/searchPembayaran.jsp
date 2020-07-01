@@ -589,23 +589,34 @@
 
                     if (item.flagBayar == "Y"){
 
-                        if (item.approvedFlag == "Y" || (item.noSep == null && idJenisPeriksaPasien == "bpjs")){
-                            str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
-                                "<td align='center'></td>";
-                        } else {
-
-                            if (item.flagEresep == "Y"){
+                        if (idJenisPeriksaPasien == "bpjs"){
+                            if (item.noSep == null || item.nominal == 0 || item.approvedFlag == "Y"){
                                 str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
-                                    "<td align='center'><button class='btn btn-sm btn-success' onclick=\"saveApproveEresep(\'"+item.id+"\')\"><i class='fa fa-check'></i> Approve E-Resep</button></td>";
+                                    "<td align='center'></td>";
                             } else {
                                 str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
                                     "<td align='center'><button class='btn btn-sm btn-success' onclick=\"saveApprove(\'"+item.id+"\')\"><i class='fa fa-check'></i> Approve</button></td>";
                             }
-                        }
+                        } else {
 
+                            if (item.approvedFlag == "Y"){
+                                str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
+                                    "<td align='center'></td>";
+                            } else {
+
+                                if (item.flagEresep == "Y"){
+                                    str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
+                                        "<td align='center'><button class='btn btn-sm btn-success' onclick=\"saveApproveEresep(\'"+item.id+"\')\"><i class='fa fa-check'></i> Approve E-Resep</button></td>";
+                                } else {
+                                    str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
+                                        "<td align='center'><button class='btn btn-sm btn-success' onclick=\"saveApprove(\'"+item.id+"\')\"><i class='fa fa-check'></i> Approve</button></td>";
+                                }
+                            }
+
+                        }
                     } else {
 //                        console.log("Id Item : "+item.idItem);
-                        if (idJenisPeriksaPasien == "asuransi" && item.nominal != null) {
+                        if (idJenisPeriksaPasien == "asuransi" && item.nominal != 0) {
                             str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
                                 "<td align='center'><button class='btn btn-sm btn-success' onclick=\"actionApprove(\'"+item.id+"\')\"><i class='fa fa-edit'></i> VerifiKasi</button></td>";
                         } else {

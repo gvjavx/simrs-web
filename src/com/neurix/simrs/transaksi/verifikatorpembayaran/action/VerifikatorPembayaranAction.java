@@ -1724,7 +1724,7 @@ public class VerifikatorPembayaranAction {
 
         String flagResep = "N";
         ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = telemedicBo.getAntrianTelemedicEntityById(idAntrian);
-        if (antrianTelemedicEntity != null && antrianTelemedicEntity.getFlagResep() != null && !"Y".equalsIgnoreCase(antrianTelemedicEntity.getFlagResep())){
+        if (antrianTelemedicEntity != null && antrianTelemedicEntity.getFlagResep() != null && "Y".equalsIgnoreCase(antrianTelemedicEntity.getFlagResep())){
             flagResep = "Y";
         }
 
