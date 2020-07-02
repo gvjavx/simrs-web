@@ -1,5 +1,5 @@
-// 29-05-2020
-// ALTER TABLE
+-- 29-05-2020
+-- ALTER TABLE
 ALTER TABLE it_simrs_periksa_lab
 ADD COLUMN ttd_dokter character varying(100),
 ADD COLUMN ttd_petugas character varying(100);
@@ -7,7 +7,7 @@ ADD COLUMN ttd_petugas character varying(100);
 ALTER TABLE it_simrs_header_checkup
 ADD COLUMN anamnese text;
 
-// CREATE TABLE
+-- 01-06-2020
 CREATE TABLE public.im_simrs_diagnosa_asuhan_keperawatan
 (
   id_diagnosa_asuhan_keperawatan character varying(30) NOT NULL,
@@ -54,11 +54,11 @@ WITH (
 ALTER TABLE public.im_simrs_detail_asuhan_keperawatan
   OWNER TO postgres;
 
-//01 Juni 2020
-ALTER TABLE it_simrs_hemodialisa
-is_ttd character varying(1);
 
-//02 Juni 2020
+ALTER TABLE it_simrs_hemodialisa
+ADD COLUMN is_ttd character varying(1);
+
+
 CREATE TABLE public.it_simrs_asesmen_poli_spesialis
 (
   id_asesmen_poli_spesialis character varying(30) NOT NULL,
@@ -91,7 +91,6 @@ CREATE SEQUENCE public.seq_asesmen_spesialis
 ALTER TABLE public.seq_asesmen_spesialis
   OWNER TO postgres;
 
-//05 junis 2020
 ALTER TABLE im_simrs_pelayanan
 ADD COLUMN kategori_pelayanan character varying(100);
 
@@ -134,7 +133,7 @@ WITH (
 ALTER TABLE public.it_simrs_tindakan_rawat_icd9
   OWNER TO postgres;
 
-// 06 Juni 2020 -- SEQ
+-- SEQ
 CREATE SEQUENCE public.seq_tindakan_rawat_icd9
   INCREMENT 1
   MINVALUE 1
@@ -144,11 +143,7 @@ CREATE SEQUENCE public.seq_tindakan_rawat_icd9
 ALTER TABLE public.seq_tindakan_rawat_icd9
   OWNER TO postgres;
 
-
-// 10 Juni 2020
 ALTER TABLE public.it_simrs_asesmen_ugd ADD tipe varchar(1000);
-
-//11 Juni 2020
 
 CREATE TABLE public.it_simrs_edukasi_pasien_teritegrasi
 (
@@ -179,7 +174,7 @@ WITH (
 ALTER TABLE public.it_simrs_edukasi_pasien_teritegrasi
   OWNER TO postgres;
 
-//SEQ
+
 CREATE SEQUENCE public.seq_edukasi_pasien
   INCREMENT 1
   MINVALUE 1
@@ -189,7 +184,7 @@ CREATE SEQUENCE public.seq_edukasi_pasien
 ALTER TABLE public.seq_edukasi_pasien
   OWNER TO postgres;
 
-//16 Juni 2020
+
 ALTER TABLE public.it_simrs_rencana_asuhan_keperawatan
 ADD implementasi text,
 ADD evaluasi text;
@@ -199,7 +194,6 @@ ALTER COLUMN waktu TYPE varchar(100) USING waktu::varchar(100);
 
 ALTER TABLE public.it_simrs_rencana_asuhan_keperawatan RENAME COLUMN tujuan TO hasil;
 
-// icu
 CREATE TABLE public.it_simrs_asesmen_icu
 (
   id_asesmen_icu character varying(30) NOT NULL,
@@ -224,7 +218,7 @@ WITH (
 ALTER TABLE public.it_simrs_asesmen_icu
   OWNER TO postgres;
 
-  //SEQ
+
  CREATE SEQUENCE public.seq_asesmen_icu
    INCREMENT 1
    MINVALUE 1
@@ -233,8 +227,6 @@ ALTER TABLE public.it_simrs_asesmen_icu
    CACHE 1;
  ALTER TABLE public.seq_asesmen_icu
    OWNER TO postgres;
-
-//17 Juni 2020
 
 CREATE TABLE public.it_simrs_hemodinamika
 (
@@ -266,7 +258,6 @@ WITH (
 ALTER TABLE public.it_simrs_hemodinamika
   OWNER TO postgres;
 
-  //SEQ
  CREATE SEQUENCE public.seq_hemodinamika
    INCREMENT 1
    MINVALUE 1
@@ -275,8 +266,6 @@ ALTER TABLE public.it_simrs_hemodinamika
    CACHE 1;
  ALTER TABLE public.seq_hemodinamika
    OWNER TO postgres;
-
- //18 Juni 2020
 
  CREATE TABLE public.it_simrs_respirasi
  (
@@ -327,7 +316,7 @@ ALTER TABLE public.it_simrs_hemodinamika
  ALTER TABLE public.it_simrs_respirasi
    OWNER TO postgres;
 
-   //SEQ
+
     CREATE SEQUENCE public.seq_respirasi
       INCREMENT 1
       MINVALUE 1
@@ -337,7 +326,6 @@ ALTER TABLE public.it_simrs_hemodinamika
     ALTER TABLE public.seq_respirasi
       OWNER TO postgres;
 
-// 19 Juni 2020
 CREATE TABLE public.it_simrs_header_icu
 (
   id_header_icu character varying(30) NOT NULL,
@@ -379,33 +367,28 @@ WITH (
 ALTER TABLE public.it_simrs_detail_icu
   OWNER TO postgres;
 
-//SEQ
-    CREATE SEQUENCE public.seq_header_icu
-      INCREMENT 1
-      MINVALUE 1
-      MAXVALUE 9223372036854775807
-      START 1
-      CACHE 1;
-    ALTER TABLE public.seq_header_icu
-      OWNER TO postgres;
+CREATE SEQUENCE public.seq_header_icu
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE public.seq_header_icu
+  OWNER TO postgres;
 
-//SEQ
-    CREATE SEQUENCE public.seq_detail_icu
-      INCREMENT 1
-      MINVALUE 1
-      MAXVALUE 9223372036854775807
-      START 1
-      CACHE 1;
-    ALTER TABLE public.seq_detail_icu
-      OWNER TO postgres;
+CREATE SEQUENCE public.seq_detail_icu
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE public.seq_detail_icu
+  OWNER TO postgres;
 
-// 26-06-2020
-// ALTER TABLE
 ALTER TABLE im_simrs_diagnosa_asuhan_keperawatan
 ADD COLUMN tipe character varying(100);
 
 
-//TABLE
 CREATE TABLE public.it_simrs_asesmen_kandungan
 (
   id_asesmen_kandungan character varying(30) NOT NULL,
@@ -430,21 +413,18 @@ WITH (
 ALTER TABLE public.it_simrs_asesmen_kandungan
   OWNER TO postgres;
 
-//SEQ
-    CREATE SEQUENCE public.seq_asesmen_kandungan
-      INCREMENT 1
-      MINVALUE 1
-      MAXVALUE 9223372036854775807
-      START 1
-      CACHE 1;
-    ALTER TABLE public.seq_asesmen_kandungan
-      OWNER TO postgres;
+CREATE SEQUENCE public.seq_asesmen_kandungan
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE public.seq_asesmen_kandungan
+  OWNER TO postgres;
 
-//29 Juni 2020
 ALTER TABLE it_simrs_asesmen_kandungan
 ADD COLUMN informasi text;
 
-//29 Juni 2020
 ALTER TABLE it_simrs_asesmen_icu
 ADD COLUMN informasi text;
 
@@ -452,7 +432,4 @@ ALTER TABLE it_simrs_asesmen_keperawatan_rawat_inap
 ADD COLUMN informasi text,
 ADD COLUMN tipe character varying(100);
 
-
-
-
-
+-- 01-06-2020 END

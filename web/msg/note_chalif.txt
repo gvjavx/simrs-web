@@ -40,6 +40,36 @@
 <<< //
 // 2020-06-18 >>>
 
-    ALTER TABLE public.it_pembayaran_online ADD alamat text NULL;
+    ALTER TABLE public.it_simrs_pembayaran_online ADD alamat text NULL;
+
+<<< //
+
+// 2020-06-23 >>>
+
+    ALTER TABLE public.it_simrs_pengiriman_obat ADD lat VARCHAR(200) NULL,
+                                                  ADD lon VARCHAR(200) NULL;
+
+    ALTER TABLE public.im_simrs_kurir ADD lat VARCHAR(200) NULL
+                                      ADD lon VARCHAR(200) NULL;
+
+   ALTER TABLE public.it_simrs_antrian_telemedic ADD lat VARCHAR(200) NULL,
+                                                ADD lon VARCHAR(200) NULL,
+                                                ADD alamat text NULL,
+                                                ADD jenis_pengambilan VARCHAR(15) NULL,
+                                                ADD no_telp VARCHAR(15) NULL;
+
+
+<<< //
+
+// 2020-06-29 >>>
+
+    ALTER TABLE public.it_simrs_antrian_telemedic ADD jenis_pembayaran VARCHAR(50) NULL,
+
+<<< //
+
+// 2020-06-29 >>>
+
+    ALTER TABLE public.it_simrs_antrian_telemedic ADD no_rujukan VARCHAR(100) NULL,
+                                                  ADD jenis_rujukan VARCHAR(10) NULL
 
 <<< //

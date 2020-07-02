@@ -197,6 +197,15 @@
             <filter-chain pattern="/mobileapi/reseponline/*" filters="none" />
             <filter-chain pattern="/mobileapi/reseponline/*/**" filters="none" />
 
+            <filter-chain pattern="/mobileapi/pengiriman" filters="none" />
+            <filter-chain pattern="/mobileapi/pengiriman/*" filters="none" />
+            <filter-chain pattern="/mobileapi/pengiriman/*/**" filters="none" />
+
+
+            <filter-chain pattern="/mobileapi/asuransi" filters="none" />
+            <filter-chain pattern="/mobileapi/asuransi/*" filters="none" />
+            <filter-chain pattern="/mobileapi/asuransi/*/**" filters="none" />
+
 
             <filter-chain pattern="/**/*"
                           filters="

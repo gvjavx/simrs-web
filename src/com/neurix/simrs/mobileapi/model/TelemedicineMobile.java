@@ -43,6 +43,99 @@ public class TelemedicineMobile {
     private String message;
     private String jumlahAntrian;
 
+    private String lat;
+    private String lon;
+    private String alamat;
+    private String jenisPengambilan;
+    private String noTelp;
+
+    private String flagEresep;
+    private String urlResep;
+
+    private String jenisPembayaran;
+    private String noRujukan;
+    private String jenisRujukan;
+
+    public String getJenisRujukan() {
+        return jenisRujukan;
+    }
+
+    public void setJenisRujukan(String jenisRujukan) {
+        this.jenisRujukan = jenisRujukan;
+    }
+
+    public String getNoRujukan() {
+        return noRujukan;
+    }
+
+    public void setNoRujukan(String noRujukan) {
+        this.noRujukan = noRujukan;
+    }
+
+    public String getJenisPembayaran() {
+        return jenisPembayaran;
+    }
+
+    public void setJenisPembayaran(String jenisPembayaran) {
+        this.jenisPembayaran = jenisPembayaran;
+    }
+
+    public String getUrlResep() {
+        return urlResep;
+    }
+
+    public void setUrlResep(String urlResep) {
+        this.urlResep = urlResep;
+    }
+
+    public String getFlagEresep() {
+        return flagEresep;
+    }
+
+    public void setFlagEresep(String flagEresep) {
+        this.flagEresep = flagEresep;
+    }
+
+    public String getNoTelp() {
+        return noTelp;
+    }
+
+    public void setNoTelp(String noTelp) {
+        this.noTelp = noTelp;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLon() {
+        return lon;
+    }
+
+    public void setLon(String lon) {
+        this.lon = lon;
+    }
+
+    public String getAlamat() {
+        return alamat;
+    }
+
+    public void setAlamat(String alamat) {
+        this.alamat = alamat;
+    }
+
+    public String getJenisPengambilan() {
+        return jenisPengambilan;
+    }
+
+    public void setJenisPengambilan(String jenisPengambilan) {
+        this.jenisPengambilan = jenisPengambilan;
+    }
+
     public String getBranchId() {
         return branchId;
     }

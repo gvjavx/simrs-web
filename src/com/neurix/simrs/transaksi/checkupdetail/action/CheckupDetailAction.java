@@ -3170,7 +3170,6 @@ public class CheckupDetailAction extends BaseMasterAction {
                                     }
                                     if ("alkes".equalsIgnoreCase(entity.getKategoriInaBpjs())) {
                                         tarifRsAlkes = tarifRsAlkes.add(new BigInteger(entity.getTarifBpjs().toString()));
-
                                     }
 
                                     //--------------
@@ -3222,7 +3221,6 @@ public class CheckupDetailAction extends BaseMasterAction {
                                     }
                                     if ("sewa_alat".equalsIgnoreCase(entity.getKategoriInaBpjs())) {
                                         tarifRsSewaAlat = tarifRsSewaAlat.add(new BigInteger(entity.getTarifBpjs().toString()));
-
                                     }
 
                                     Tindakan tin = new Tindakan();

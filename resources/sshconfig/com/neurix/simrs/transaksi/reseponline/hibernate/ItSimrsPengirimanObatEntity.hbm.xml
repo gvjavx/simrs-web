@@ -56,6 +56,15 @@
             <basic name="noTelp">
                 <column name="no_telp"/>
             </basic>
+            <basic name="lat">
+                <column name="lat"/>
+            </basic>
+            <basic name="lon">
+                <column name="lon"/>
+            </basic>
+            <basic name="flagTerkirim">
+                <column name="flag_terkirim"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

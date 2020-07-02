@@ -1048,11 +1048,22 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
         List<PermintaanResep> permintaanResepList = new ArrayList<>();
 
         if (bean != null) {
-            try {
-                permintaanResepList = transaksiObatDetailDao.getListResepPasien(bean);
-            } catch (HibernateException e) {
-                logger.error("[DiagnosaRawatBoImpl.saveEdit] Error when edit diagnosa ", e);
-                throw new GeneralBOException("Error when edit diagnosa " + e.getMessage());
+
+            if ("Y".equalsIgnoreCase(bean.getIsTelemedic())){
+                // untuk eresep telemedic
+                try {
+                    permintaanResepList = transaksiObatDetailDao.getListResepPasienEresep(bean);
+                } catch (HibernateException e) {
+                    logger.error("[DiagnosaRawatBoImpl.saveEdit] Error when edit diagnosa ", e);
+                    throw new GeneralBOException("Error when edit diagnosa " + e.getMessage());
+                }
+            } else {
+                try {
+                    permintaanResepList = transaksiObatDetailDao.getListResepPasien(bean);
+                } catch (HibernateException e) {
+                    logger.error("[DiagnosaRawatBoImpl.saveEdit] Error when edit diagnosa ", e);
+                    throw new GeneralBOException("Error when edit diagnosa " + e.getMessage());
+                }
             }
         }
 

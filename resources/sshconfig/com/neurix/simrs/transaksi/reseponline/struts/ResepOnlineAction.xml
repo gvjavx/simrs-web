@@ -74,6 +74,7 @@
             <interceptor-ref name="ivelinStack" />
 
             <result name="search">/pages/com/neurix/simrs/transaksi/reseponline/searchAssignKurir.jsp</result>
+            <result name="search_monitoring">/pages/com/neurix/simrs/transaksi/reseponline/searchMonitoringPengirimanObat.jsp</result>
 
             <result name="print_final_claim" type="jasper">
                 <param name="location">/pages/report/com/neurix/simrs/printFinalClaim.jasper</param>

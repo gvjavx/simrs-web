@@ -31,18 +31,19 @@ public class StatusAntrianTelemedic {
         List<StatusAntrianTelemedic> antrianTelemedics = new ArrayList<>();
 
         StatusAntrianTelemedic statusAntrian = new StatusAntrianTelemedic();
-        statusAntrian.setStatus("SL");
-        statusAntrian.setIndex(0);
-        antrianTelemedics.add(statusAntrian);
 
-        statusAntrian = new StatusAntrianTelemedic();
-        statusAntrian.setStatus("WL");;
+        statusAntrian.setStatus("SL");
         statusAntrian.setIndex(1);
         antrianTelemedics.add(statusAntrian);
 
         statusAntrian = new StatusAntrianTelemedic();
-        statusAntrian.setStatus("LL");;
+        statusAntrian.setStatus("WL");;
         statusAntrian.setIndex(2);
+        antrianTelemedics.add(statusAntrian);
+
+        statusAntrian = new StatusAntrianTelemedic();
+        statusAntrian.setStatus("LL");;
+        statusAntrian.setIndex(3);
         antrianTelemedics.add(statusAntrian);
 
         return antrianTelemedics;

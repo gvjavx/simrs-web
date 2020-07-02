@@ -251,6 +251,111 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         return permintaanResepList;
     }
 
+    public List<PermintaanResep> getListResepPasienEresep(PermintaanResep bean){
+
+        String isUmum        = "%";
+        String idTujuan      = "%";
+        String branchId      = "%";
+        String idResep       = "%";
+        String idDetil       = "";
+        String nama          = "%";
+        String status        = "%";
+        String flag          = "%";
+
+        if (bean.getIsUmum() != null && !"".equalsIgnoreCase(bean.getIsUmum())){
+            isUmum = bean.getIsUmum();
+        }
+        if (bean.getTujuanPelayanan() != null && !"".equalsIgnoreCase(bean.getTujuanPelayanan())){
+            idTujuan = bean.getTujuanPelayanan();
+        }
+        if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+            branchId = bean.getBranchId();
+        }
+        if (bean.getIdPermintaanResep() != null && !"".equalsIgnoreCase(bean.getIdPermintaanResep())){
+            idResep = bean.getIdPermintaanResep();
+        }
+        if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
+            idDetil = "AND a.id_detail_checkup LIKE '"+bean.getIdDetailCheckup()+"'\n";
+        }
+        if (bean.getNamaPasien() != null && !"".equalsIgnoreCase(bean.getNamaPasien())){
+            nama = "%"+bean.getNamaPasien()+"%";
+        }
+        if (bean.getStatus() != null && !"".equalsIgnoreCase(bean.getStatus())){
+            status = bean.getStatus();
+        }
+//        String telemdic = "";
+//        if (bean.getIsTelemedic() != null && "Y".equalsIgnoreCase(bean.getIsTelemedic())){
+//            telemdic = " AND b.id_transaksi_online is NOT NULL \n";
+//        } else if (bean.getIsTelemedic() != null && "N".equalsIgnoreCase(bean.getIsTelemedic())){
+//            telemdic = " AND b.id_transaksi_online is NULL \n";
+//        }
+
+        String SQL = "SELECT \n" +
+                "a.id_permintaan_resep, \n" +
+                "a.id_detail_checkup, \n" +
+                "f.nama, \n" +
+                "d.keterangan, \n" +
+                "a.id_approval_obat, \n" +
+                "e.id_jenis_periksa_pasien, \n" +
+                "a.flag, \n" +
+                "a.id_transaksi_online  \n" +
+                "FROM mt_simrs_permintaan_resep a\n" +
+                "--LEFT JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
+                "INNER JOIN it_simrs_pembayaran_online c ON c.id = a.id_transaksi_online\n" +
+                "INNER JOIN im_simrs_status_pasien d ON a.status = d.id_status_pasien\n" +
+                "INNER JOIN it_simrs_antrian_telemedic e ON e.id = c.id_antrian_telemedic\n" +
+                "INNER JOIN im_simrs_pasien f ON f.id_pasien = e.id_pasien\n" +
+                "WHERE a.flag LIKE :flag\n" +
+                "AND a.branch_id LIKE :branchId\n" +
+                "AND a.is_umum LIKE :isUmum\n" +
+                "AND a.id_permintaan_resep LIKE :idResep\n" + idDetil +
+                "AND f.nama LIKE :nama\n" +
+                "AND a.status LIKE :status\n" +
+                "AND a.tujuan_pelayanan LIKE :idTujuan\n" +
+                "ORDER BY a.tgl_antrian DESC";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("isUmum", isUmum)
+                .setParameter("idTujuan", idTujuan)
+                .setParameter("branchId", branchId)
+                .setParameter("idResep", idResep)
+                .setParameter("nama", nama)
+                .setParameter("status", status)
+                .setParameter("flag", flag)
+                .list();
+
+        List<PermintaanResep> permintaanResepList = new ArrayList<>();
+
+        String statusName = "";
+        if ("0".equalsIgnoreCase(status)){
+            statusName = "Antrian";
+        } else if ("1".equalsIgnoreCase(status)){
+            statusName = "Proses";
+        } else if ("3".equalsIgnoreCase(status)){
+            statusName = "Selesai";
+        }
+
+        if (results.size() > 0)
+        {
+            PermintaanResep permintaanResep;
+            for (Object[] obj : results)
+            {
+                permintaanResep = new PermintaanResep();
+                permintaanResep.setIdPermintaanResep(obj[0].toString());
+                permintaanResep.setIdDetailCheckup(obj[1] == null ? "" : obj[1].toString());
+                permintaanResep.setNamaPasien(obj[2].toString());
+                permintaanResep.setIdApprovalObat(obj[4].toString());
+                permintaanResep.setStatus(statusName);
+                permintaanResep.setIdJenisPeriksa(obj[5].toString());
+                permintaanResep.setFlag(obj[6].toString());
+                permintaanResep.setKetJenisAntrian(obj[7] == null ? "Resep RS" : "Telemedic");
+                permintaanResepList.add(permintaanResep);
+            }
+        }
+
+        return permintaanResepList;
+    }
+
     public List<TransaksiObatDetail> getListPembelianObat(String idApproval){
 
         String SQL = "SELECT a.id_approval_obat, a.id_transaksi_obat_detail, a.id_obat, b.id_barang, b.qty_approve, b.jenis_satuan FROM mt_simrs_transaksi_obat_detail a\n" +
@@ -414,7 +519,8 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                     "\te.id_pelayanan,\n" +
                     "\tf.no_checkup,\n" +
                     "\tf.id_pasien,\n" +
-                    "\te.id_jenis_periksa_pasien\n" +
+                    "\te.id_jenis_periksa_pasien,\n" +
+                    "\ta.jenis_resep\n" +
                     "\tFROM mt_simrs_permintaan_resep a\n" +
                     "\tINNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
                     "\tINNER JOIN (SELECT id_transaksi_obat_detail, SUM(qty_approve) as qty FROM mt_simrs_transaksi_obat_detail_batch GROUP BY id_transaksi_obat_detail)c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail\n" +

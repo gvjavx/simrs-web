@@ -9,6 +9,11 @@
 
     />
 
+    <bean id="telemedicineController" class="com.neurix.simrs.mobileapi.TelemedicineController"
+          p:bpjsBoProxy-ref="bpjsBoProxy"
+
+    />
+
     <bean id="bpjsBo" class="com.neurix.simrs.bpjs.vclaim.bo.impl.BpjsBoImpl"
     p:branchDao-ref="branchDao"
     />
