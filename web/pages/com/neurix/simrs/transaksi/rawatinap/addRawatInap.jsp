@@ -482,7 +482,7 @@
                                 <button class="btn btn-primary" onclick="showModalPlan('<s:property value="rawatInap.idDetailCheckup"/>','','suster')">
                                     <i class="fa fa-calendar"></i> Schedule Rawat
                                 </button>
-                                <div class="btn-group btn-hide">
+                                <div class="btn-group btn-hide dropdown">
                                     <button type="button" class="btn btn-info"><i class="fa fa-edit"></i> Observasi dan Pemberian
                                     </button>
                                     <button type="button" class="btn btn-info dropdown-toggle"
@@ -503,7 +503,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="btn-group btn-hide">
+                                <div class="btn-group btn-hide dropdown">
                                     <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Asesmen
                                     </button>
                                     <button type="button" class="btn btn-primary dropdown-toggle"
@@ -548,16 +548,18 @@
                                                onclick="showModalAsesmenRawatInap('catatan_pemberian')"><i
                                                 class="fa fa-circle-o"></i>Catatan Pemberian Obat</a></li>
                                         <%--<li><a style="cursor: pointer" onclick="showModalAsesmenRawatInap('injeksi')"><i--%>
-                                                <%--class="fa fa-circle-o"></i>Injeksi CPO / Jadwal Pemberian Terapi</a>--%>
+                                        <%--class="fa fa-circle-o"></i>Injeksi CPO / Jadwal Pemberian Terapi</a>--%>
                                         </li>
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('rekonsiliasi')"
                                                onclick="showModalAsesmenRawatInap('rekonsiliasi')"><i
                                                 class="fa fa-circle-o"></i>Rekonsiliasi Obat</a></li>
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('tindakan_ri')" onclick="showModalAsesmenRawatInap('tindakan_ina')"><i
                                                 class="fa fa-circle-o"></i>Persetujuan Tindakan Kedokteran</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('checklist_transfer_external')" onclick="showModalAsesmenRawatInap('checklist_transfer_external')"><i
+                                                class="fa fa-circle-o"></i>Checklist Persiapan Transfer Pasien Ekternal</a></li>
                                     </ul>
                                 </div>
-                                <div class="btn-group">
+                                <div class="btn-group dropdown">
                                     <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Kamar Operasi
                                     </button>
                                     <button onclick="loadModalRM('operasi')" type="button" class="btn btn-primary dropdown-toggle"
@@ -574,7 +576,7 @@
                                         <li><a style="cursor: pointer" onclick="showModalOperasi('pindah_rr')"><i class="fa fa-circle-o"></i>Kriteia Pindah dari RR</a></li>
                                     </ul>
                                 </div>
-                                <div class="btn-group">
+                                <div class="btn-group dropdown">
                                     <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> ICU
                                     </button>
                                     <button type="button" class="btn btn-primary dropdown-toggle"
@@ -592,7 +594,7 @@
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('tindakan_icu')"  onclick="showModalICU('tindakan_icu')"><i class="fa fa-circle-o"></i>Persetujuan Tindakan Kedokteran</a></li>
                                     </ul>
                                 </div>
-                                <div class="btn-group">
+                                <div class="btn-group dropdown">
                                     <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Kebidanan</small>
                                     </button>
                                     <button type="button" class="btn btn-primary dropdown-toggle"

@@ -353,75 +353,75 @@
         </div>
         <div class="row">
             <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="dropup">
+                    <button style="margin-right: 5px; margin-top: 5px" class="btn btn-default dropdown-toggle pull-right" type="button" data-toggle="dropdown">
+                        <span class="caret"></span></button>
+                    <ul class="dropdown-menu pull-right">
+                        <li><a style="cursor: pointer" onclick="showModalRj('ringkasan_rj')"><i class="fa fa-circle-o"></i>Profil Rekam Medis Rawat Jalan</a></li>
+                    </ul>
+                </div>
                 <div class="info-box" style="cursor: pointer">
                     <span class="info-box-icon bg-aqua"><i class="fa fa fa-book" style="margin-top: 20px"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">SPESIALIS</span>
                         <span class="info-box-number"><small>(Asesmen Spesialis)</small></span>
                     </div>
-                    <div class="dropup">
-                        <button style="margin-right: 5px; margin-top: 15px" class="btn btn-default dropdown-toggle pull-right" type="button" data-toggle="dropdown">
-                            <span class="caret"></span></button>
-                        <ul class="dropdown-menu pull-right">
-                            <li><a style="cursor: pointer" onclick="showModalRj('ringkasan_rj')"><i class="fa fa-circle-o"></i>Profil Rekam Medis Rawat Jalan</a></li>
-                        </ul>
-                    </div>
                 </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="dropup">
+                    <button onclick="loadModalRM('hemodialisa');" style="margin-right: 5px; margin-top: 5px" class="btn btn-default dropdown-toggle pull-right" type="button" data-toggle="dropdown">
+                        <span class="caret"></span></button>
+                    <ul class="dropdown-menu pull-right">
+                        <li><a style="cursor: pointer" onclick="showModalHD('monitoring_hd')"><i class="fa fa-circle-o"></i>Monitoring HD</a></li>
+                        <li><a style="cursor: pointer" onclick="showModalHD('perencanaan_hemodialisa')"><i class="fa fa-circle-o"></i>Perencanaan HD</a></li>
+                        <li><a style="cursor: pointer" onclick="showModalHD('asesmen_hd')"><i class="fa fa-circle-o"></i>Asesmen Awal HD</a></li>
+                        <li><a style="cursor: pointer" onclick="showModalHD('tranfusi_hd')"><i class="fa fa-circle-o"></i>Tindakan Medis Transfusi Darah</a></li>
+                        <li><a style="cursor: pointer" onclick="showModalHD('catatan_tranfusi_darah')"><i class="fa fa-circle-o"></i>Catatan Pemantauan Tranfusi Darah</a></li>
+                        <li><a style="cursor: pointer" onclick="showModalHD('persetujuan_hd')"><i class="fa fa-circle-o"></i>Persetujuan HD</a></li>
+                        <li><a style="cursor: pointer" onclick="showModalHD('travelling')"><i class="fa fa-circle-o"></i>Travelling Dialysis</a></li>
+                    </ul>
+                </div>
                 <div class="info-box" style="cursor: pointer">
                     <span class="info-box-icon bg-aqua"><i class="fa fa fa-book" style="margin-top: 20px"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">HD</span>
                         <span class="info-box-number"><small>(Hemodialisa)</small></span>
                     </div>
-                    <div class="dropup">
-                        <button onclick="loadModalRM('hemodialisa');" style="margin-right: 5px; margin-top: 15px" class="btn btn-default dropdown-toggle pull-right" type="button" data-toggle="dropdown">
-                            <span class="caret"></span></button>
-                        <ul class="dropdown-menu pull-right">
-                            <li><a style="cursor: pointer" onclick="showModalHD('monitoring_hd')"><i class="fa fa-circle-o"></i>Monitoring HD</a></li>
-                            <li><a style="cursor: pointer" onclick="showModalHD('perencanaan_hemodialisa')"><i class="fa fa-circle-o"></i>Perencanaan HD</a></li>
-                            <li><a style="cursor: pointer" onclick="showModalHD('asesmen_hd')"><i class="fa fa-circle-o"></i>Asesmen Awal HD</a></li>
-                            <li><a style="cursor: pointer" onclick="showModalHD('tranfusi_hd')"><i class="fa fa-circle-o"></i>Tindakan Medis Transfusi Darah</a></li>
-                            <li><a style="cursor: pointer" onclick="showModalHD('catatan_tranfusi_darah')"><i class="fa fa-circle-o"></i>Catatan Pemantauan Tranfusi Darah</a></li>
-                            <li><a style="cursor: pointer" onclick="showModalHD('persetujuan_hd')"><i class="fa fa-circle-o"></i>Persetujuan HD</a></li>
-                            <li><a style="cursor: pointer" onclick="showModalHD('travelling')"><i class="fa fa-circle-o"></i>Travelling Dialysis</a></li>
-                        </ul>
-                    </div>
                 </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="dropup">
+                    <button onclick="loadModalRM('fisioterapi');" style="margin-right: 5px; margin-top: 5px" class="btn btn-default dropdown-toggle pull-right" type="button" data-toggle="dropdown">
+                        <span class="caret"></span></button>
+                    <ul class="dropdown-menu pull-right">
+                        <li><a style="cursor: pointer" onclick="pengkajianFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-circle-o"></i>Pengkajian Pasien Fisioterapi</a></li>
+                        <li><a style="cursor: pointer" onclick="addMonitoringFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-circle-o"></i>Kunjungan Fisioterapi</a></li>
+                    </ul>
+                </div>
                 <div class="info-box" style="cursor: pointer">
                     <span class="info-box-icon bg-aqua"><i class="fa fa fa-book" style="margin-top: 20px"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">FISIOTERAPI</span>
                         <span class="info-box-number"><small>&nbsp;</small></span>
                     </div>
-                    <div class="dropup">
-                        <button onclick="loadModalRM('fisioterapi');" style="margin-right: 5px; margin-top: 15px" class="btn btn-default dropdown-toggle pull-right" type="button" data-toggle="dropdown">
-                            <span class="caret"></span></button>
-                        <ul class="dropdown-menu pull-right">
-                            <li><a style="cursor: pointer" onclick="pengkajianFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-circle-o"></i>Pengkajian Pasien Fisioterapi</a></li>
-                            <li><a style="cursor: pointer" onclick="addMonitoringFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-circle-o"></i>Kunjungan Fisioterapi</a></li>
-                        </ul>
-                    </div>
                 </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="dropup">
+                    <button style="margin-right: 5px; margin-top: 5px" class="btn btn-default dropdown-toggle pull-right" type="button" data-toggle="dropdown">
+                        <span class="caret"></span></button>
+                    <ul class="dropdown-menu pull-right">
+                        <li><a style="cursor: pointer" onclick="showAsesmenUgd()"><i class="fa fa-circle-o"></i> Asesmen Awal Gawat Darurat Anak</a></li>
+                        <li><a style="cursor: pointer" onclick="showAsesmenUgd()"><i class="fa fa-circle-o"></i> Asesmen Awal Gawat Darurat Dewasa</a></li>
+                        <li><a style="cursor: pointer" onclick="showAsesmenUgd()"><i class="fa fa-circle-o"></i> Asesmen Awal Gawat Darurat Geriatri</a></li>
+                    </ul>
+                </div>
                 <div class="info-box" style="cursor: pointer">
                     <span class="info-box-icon bg-aqua"><i class="fa fa fa-book" style="margin-top: 20px"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">UGD</span>
                         <span class="info-box-number"><small>(Unit Gawat Darurat)</small></span>
-                    </div>
-                    <div class="dropup">
-                        <button style="margin-right: 5px; margin-top: 15px" class="btn btn-default dropdown-toggle pull-right" type="button" data-toggle="dropdown">
-                            <span class="caret"></span></button>
-                        <ul class="dropdown-menu pull-right">
-                            <li><a style="cursor: pointer" onclick="showAsesmenUgd()"><i class="fa fa-circle-o"></i> Asesmen Awal Gawat Darurat Anak</a></li>
-                            <li><a style="cursor: pointer" onclick="showAsesmenUgd()"><i class="fa fa-circle-o"></i> Asesmen Awal Gawat Darurat Dewasa</a></li>
-                            <li><a style="cursor: pointer" onclick="showAsesmenUgd()"><i class="fa fa-circle-o"></i> Asesmen Awal Gawat Darurat Geriatri</a></li>
-                        </ul>
                     </div>
                 </div>
             </div>
@@ -429,119 +429,119 @@
 
         <div class="row">
             <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="dropup">
+                    <button style="margin-right: 5px; margin-top: 5px" class="btn btn-default dropdown-toggle pull-right" type="button" data-toggle="dropdown">
+                        <span class="caret"></span></button>
+                    <ul class="dropdown-menu pull-right">
+                        <li><a style="cursor: pointer" onmouseover="loadModalRM('asesmen_rawat_inap')"
+                               onclick="showModalAsesmenRawatInap('asesmen')"><i
+                                class="fa fa-circle-o"></i>Asesmen Awal Medis Rawat Inap</a></li>
+                        <li><a style="cursor: pointer" onmouseover="loadModalRM('catatan_integrasi')"
+                               onclick="showModalAsesmenRawatInap('catatan_integrasi')"><i
+                                class="fa fa-circle-o"></i>Catatan Perkembangan Pasien Terintegrasi</a>
+                        </li>
+                        <li><a style="cursor: pointer"
+                               onmouseover="loadModalRM('pengkajian_keperawatan')"
+                               onclick="showModalPengkajianKep('pengkajian')"><i
+                                class="fa fa-circle-o"></i>Pengkajian Ulang Keperawatan dan Tindakan</a>
+                        </li>
+                        <li><a style="cursor: pointer" onmouseover="loadModalRM('asuhan')"
+                               onclick="showModalAsesmenRawatInap('asuhan')"><i
+                                class="fa fa-circle-o"></i>Rencana Asuhan Keperawatan</a></li>
+                        <li><a style="cursor: pointer" onmouseover="loadModalRM('mpp')" onclick="showModalMpp('evaluasi_awal')"><i class="fa fa-circle-o"></i>Form-A Evaluasi Awal</a></li>
+                        <li><a style="cursor: pointer" onmouseover="loadModalRM('mpp')" onclick="showModalMpp('impementasi_mpp')"><i class="fa fa-circle-o"></i>Form-B Catatan Implementasi</a></li>
+                        <li><a style="cursor: pointer" onmouseover="loadModalRM('edukasi_pasien')" onclick="showModalAsesmenRawatInap('edukasi_pasien')"><i class="fa fa-circle-o"></i>Edukasi Pasien dan Keluarga</a></li>
+                        <li><a style="cursor: pointer" onmouseover="loadModalRM('edukasi_pasien_integrasi')" onclick="showModalAsesmenRawatInap('edukasi_pasien_terintegrasi')"><i class="fa fa-circle-o"></i>Edukasi Pasien dan Keluarga Terintegrasi</a></li>
+                        <li><a style="cursor: pointer" onmouseover="loadModalRM('discharge_planing')"
+                               onclick="showModalAsesmenRawatInap('discharge_planing')"><i
+                                class="fa fa-circle-o"></i>Discharge Planing</a></li>
+                        <li><a style="cursor: pointer" onmouseover="loadModalRM('transfer_pasien')"
+                               onclick="showModalAsesmenRawatInap('transfer_pasien')"><i
+                                class="fa fa-circle-o"></i>Transfer Pasien Antar Ruangan</a></li>
+                        <li><a style="cursor: pointer" onmouseover="loadModalRM('privasi')"
+                               onclick="showModalAsesmenRawatInap('privasi')"><i
+                                class="fa fa-circle-o"></i>Privasi Pasien</a></li>
+                        <li><a style="cursor: pointer" onmouseover="loadModalRM('early_warning')"
+                               onclick="showModalAsesmenRawatInap('early_warning')"><i
+                                class="fa fa-circle-o"></i>Lembar Observasi Pediatric Early Warning
+                            Score</a></li>
+                        <li><a style="cursor: pointer" onmouseover="loadModalRM('pemberian_obat')"
+                               onclick="showModalAsesmenRawatInap('catatan_pemberian')"><i
+                                class="fa fa-circle-o"></i>Catatan Pemberian Obat</a></li>
+                        </li>
+                        <li><a style="cursor: pointer" onmouseover="loadModalRM('rekonsiliasi')"
+                               onclick="showModalAsesmenRawatInap('rekonsiliasi')"><i
+                                class="fa fa-circle-o"></i>Rekonsiliasi Obat</a></li>
+                    </ul>
+                </div>
                 <div class="info-box" style="cursor: pointer">
                     <span class="info-box-icon bg-aqua"><i class="fa fa fa-book" style="margin-top: 20px"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">RAWAT INAP</span>
                         <span class="info-box-number"><small>&nbsp;</small></span>
                     </div>
-                    <div class="dropup">
-                        <button style="margin-right: 5px; margin-top: 15px" class="btn btn-default dropdown-toggle pull-right" type="button" data-toggle="dropdown">
-                            <span class="caret"></span></button>
-                        <ul class="dropdown-menu pull-right">
-                            <li><a style="cursor: pointer" onmouseover="loadModalRM('asesmen_rawat_inap')"
-                                   onclick="showModalAsesmenRawatInap('asesmen')"><i
-                                    class="fa fa-circle-o"></i>Asesmen Awal Medis Rawat Inap</a></li>
-                            <li><a style="cursor: pointer" onmouseover="loadModalRM('catatan_integrasi')"
-                                   onclick="showModalAsesmenRawatInap('catatan_integrasi')"><i
-                                    class="fa fa-circle-o"></i>Catatan Perkembangan Pasien Terintegrasi</a>
-                            </li>
-                            <li><a style="cursor: pointer"
-                                   onmouseover="loadModalRM('pengkajian_keperawatan')"
-                                   onclick="showModalPengkajianKep('pengkajian')"><i
-                                    class="fa fa-circle-o"></i>Pengkajian Ulang Keperawatan dan Tindakan</a>
-                            </li>
-                            <li><a style="cursor: pointer" onmouseover="loadModalRM('asuhan')"
-                                   onclick="showModalAsesmenRawatInap('asuhan')"><i
-                                    class="fa fa-circle-o"></i>Rencana Asuhan Keperawatan</a></li>
-                            <li><a style="cursor: pointer" onmouseover="loadModalRM('mpp')" onclick="showModalMpp('evaluasi_awal')"><i class="fa fa-circle-o"></i>Form-A Evaluasi Awal</a></li>
-                            <li><a style="cursor: pointer" onmouseover="loadModalRM('mpp')" onclick="showModalMpp('impementasi_mpp')"><i class="fa fa-circle-o"></i>Form-B Catatan Implementasi</a></li>
-                            <li><a style="cursor: pointer" onmouseover="loadModalRM('edukasi_pasien')" onclick="showModalAsesmenRawatInap('edukasi_pasien')"><i class="fa fa-circle-o"></i>Edukasi Pasien dan Keluarga</a></li>
-                            <li><a style="cursor: pointer" onmouseover="loadModalRM('edukasi_pasien_integrasi')" onclick="showModalAsesmenRawatInap('edukasi_pasien_terintegrasi')"><i class="fa fa-circle-o"></i>Edukasi Pasien dan Keluarga Terintegrasi</a></li>
-                            <li><a style="cursor: pointer" onmouseover="loadModalRM('discharge_planing')"
-                                   onclick="showModalAsesmenRawatInap('discharge_planing')"><i
-                                    class="fa fa-circle-o"></i>Discharge Planing</a></li>
-                            <li><a style="cursor: pointer" onmouseover="loadModalRM('transfer_pasien')"
-                                   onclick="showModalAsesmenRawatInap('transfer_pasien')"><i
-                                    class="fa fa-circle-o"></i>Transfer Pasien Antar Ruangan</a></li>
-                            <li><a style="cursor: pointer" onmouseover="loadModalRM('privasi')"
-                                   onclick="showModalAsesmenRawatInap('privasi')"><i
-                                    class="fa fa-circle-o"></i>Privasi Pasien</a></li>
-                            <li><a style="cursor: pointer" onmouseover="loadModalRM('early_warning')"
-                                   onclick="showModalAsesmenRawatInap('early_warning')"><i
-                                    class="fa fa-circle-o"></i>Lembar Observasi Pediatric Early Warning
-                                Score</a></li>
-                            <li><a style="cursor: pointer" onmouseover="loadModalRM('pemberian_obat')"
-                                   onclick="showModalAsesmenRawatInap('catatan_pemberian')"><i
-                                    class="fa fa-circle-o"></i>Catatan Pemberian Obat</a></li>
-                            </li>
-                            <li><a style="cursor: pointer" onmouseover="loadModalRM('rekonsiliasi')"
-                                   onclick="showModalAsesmenRawatInap('rekonsiliasi')"><i
-                                    class="fa fa-circle-o"></i>Rekonsiliasi Obat</a></li>
-                        </ul>
-                    </div>
                 </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="dropup">
+                    <button style="margin-right: 5px; margin-top: 5px" class="btn btn-default dropdown-toggle pull-right" type="button" data-toggle="dropdown">
+                        <span class="caret"></span></button>
+                    <ul class="dropdown-menu pull-right">
+                        <li><a style="cursor: pointer" onclick="showModalOperasi('ceklist_operasi')"><i class="fa fa-circle-o"></i>Ceklist Serah Terima Pasien Pre Operasi</a></li>
+                        <li><a style="cursor: pointer" onclick="showModalOperasi('penandaan_area')"><i class="fa fa-circle-o"></i>Penandaan Area Operasi Pasien</a></li>
+                        <li><a style="cursor: pointer" onclick="showModalOperasi('pra_anestesi')"><i class="fa fa-circle-o"></i>Asesmen Pra Anestesi</a></li>
+                        <li><a style="cursor: pointer" onclick="showModalOperasi('general_anestesi')"><i class="fa fa-circle-o"></i>Edukasi dan Persetujuan General Anestesi</a></li>
+                        <li><a style="cursor: pointer" onclick="showModalOperasi('regional_anestesi')"><i class="fa fa-circle-o"></i>Edukasi dan Persetujuan Regional Anestesi</a></li>
+                        <li><a style="cursor: pointer" onclick="showModalOperasi('pindah_rr')"><i class="fa fa-circle-o"></i>Kriteia Pindah dari RR</a></li>
+                    </ul>
+                </div>
                 <div class="info-box" style="cursor: pointer">
                     <span class="info-box-icon bg-aqua"><i class="fa fa fa-book" style="margin-top: 20px"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">OK</span>
                         <span class="info-box-number"><small>(Operasi Kamar)</small></span>
                     </div>
-                    <div class="dropup">
-                        <button style="margin-right: 5px; margin-top: 15px" class="btn btn-default dropdown-toggle pull-right" type="button" data-toggle="dropdown">
-                            <span class="caret"></span></button>
-                        <ul class="dropdown-menu pull-right">
-                            <li><a style="cursor: pointer" onclick="showModalOperasi('ceklist_operasi')"><i class="fa fa-circle-o"></i>Ceklist Serah Terima Pasien Pre Operasi</a></li>
-                            <li><a style="cursor: pointer" onclick="showModalOperasi('penandaan_area')"><i class="fa fa-circle-o"></i>Penandaan Area Operasi Pasien</a></li>
-                            <li><a style="cursor: pointer" onclick="showModalOperasi('pra_anestesi')"><i class="fa fa-circle-o"></i>Asesmen Pra Anestesi</a></li>
-                            <li><a style="cursor: pointer" onclick="showModalOperasi('general_anestesi')"><i class="fa fa-circle-o"></i>Edukasi dan Persetujuan General Anestesi</a></li>
-                            <li><a style="cursor: pointer" onclick="showModalOperasi('regional_anestesi')"><i class="fa fa-circle-o"></i>Edukasi dan Persetujuan Regional Anestesi</a></li>
-                            <li><a style="cursor: pointer" onclick="showModalOperasi('pindah_rr')"><i class="fa fa-circle-o"></i>Kriteia Pindah dari RR</a></li>
-                        </ul>
-                    </div>
                 </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="dropup">
+                    <button style="margin-right: 5px; margin-top: 5px" class="btn btn-default dropdown-toggle pull-right" type="button" data-toggle="dropdown">
+                        <span class="caret"></span></button>
+                    <ul class="dropdown-menu pull-right">
+                        <li><a style="cursor: pointer" onmouseover="loadModalRM('icu')"  onclick="showModalICU('asesmen_icu')"><i class="fa fa-circle-o"></i>Asesmen ICU</a></li>
+                        <li><a style="cursor: pointer" onmouseover="loadModalRM('hemodinamika')"  onclick="showModalICU('hemodinamika')"><i class="fa fa-circle-o"></i>Hemodinamika</a></li>
+                        <li><a style="cursor: pointer" onmouseover="loadModalRM('respirasi')"  onclick="showModalICU('respirasi')"><i class="fa fa-circle-o"></i>Respirasi</a></li>
+                        <li><a style="cursor: pointer" onmouseover="loadModalRM('keseimbangan')"  onclick="showModalICU('keseimbangan')"><i class="fa fa-circle-o"></i>Keseimbangan</a></li>
+                        <li><a style="cursor: pointer" onmouseover="loadModalRM('obat-obatan')"  onclick="showModalICU('obat-obatan')"><i class="fa fa-circle-o"></i>Obat Obatan/ Intakea/ Output</a></li>
+                        <li><a style="cursor: pointer" onmouseover="loadModalRM('asuhan_keperawatan')"  onclick="showModalICU('asuhan_keperawatan')"><i class="fa fa-circle-o"></i>Asuhan Keperawatan</a></li>
+                    </ul>
+                </div>
                 <div class="info-box" style="cursor: pointer">
                     <span class="info-box-icon bg-aqua"><i class="fa fa fa-book" style="margin-top: 20px"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">ICU</span>
                         <span class="info-box-number"><small>(Intensive Care Unit)</small></span>
                     </div>
-                    <div class="dropup">
-                        <button style="margin-right: 5px; margin-top: 15px" class="btn btn-default dropdown-toggle pull-right" type="button" data-toggle="dropdown">
-                            <span class="caret"></span></button>
-                        <ul class="dropdown-menu pull-right">
-                            <li><a style="cursor: pointer" onmouseover="loadModalRM('icu')"  onclick="showModalICU('asesmen_icu')"><i class="fa fa-circle-o"></i>Asesmen ICU</a></li>
-                            <li><a style="cursor: pointer" onmouseover="loadModalRM('hemodinamika')"  onclick="showModalICU('hemodinamika')"><i class="fa fa-circle-o"></i>Hemodinamika</a></li>
-                            <li><a style="cursor: pointer" onmouseover="loadModalRM('respirasi')"  onclick="showModalICU('respirasi')"><i class="fa fa-circle-o"></i>Respirasi</a></li>
-                            <li><a style="cursor: pointer" onmouseover="loadModalRM('keseimbangan')"  onclick="showModalICU('keseimbangan')"><i class="fa fa-circle-o"></i>Keseimbangan</a></li>
-                            <li><a style="cursor: pointer" onmouseover="loadModalRM('obat-obatan')"  onclick="showModalICU('obat-obatan')"><i class="fa fa-circle-o"></i>Obat Obatan/ Intakea/ Output</a></li>
-                            <li><a style="cursor: pointer" onmouseover="loadModalRM('asuhan_keperawatan')"  onclick="showModalICU('asuhan_keperawatan')"><i class="fa fa-circle-o"></i>Asuhan Keperawatan</a></li>
-                        </ul>
-                    </div>
                 </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="dropup">
+                    <button style="margin-right: 5px; margin-top: 5px" class="btn btn-default dropdown-toggle pull-right" type="button" data-toggle="dropdown">
+                        <span class="caret"></span></button>
+                    <ul class="dropdown-menu pull-right">
+                        <li><a style="cursor: pointer" onmouseover="loadModalRM('identifikasi_bayi')"  onclick="showModalRB('identifikasi_bayi')"><i class="fa fa-circle-o"></i>Identifikasi Bayi</a></li>
+                        <li><a style="cursor: pointer" onmouseover="loadModalRM('asesmen_ponek')"  onclick="showModalRB('asesmen_ponek')"><i class="fa fa-circle-o"></i>Asesmen Ponek</a></li>
+                        <li><a style="cursor: pointer" onmouseover="loadModalRM('asesmen_awal_bayi')"  onclick="showModalRB('asesmen_awal_bayi')"><i class="fa fa-circle-o"></i>Asesmen Awal Bayi</a></li>
+                        <li><a style="cursor: pointer" onmouseover="loadModalRM('laporan_pembedahan')"  onclick="showModalRB('laporan_pembedahan')"><i class="fa fa-circle-o"></i>Laporan Pembedahan</a></li>
+                        <li><a style="cursor: pointer" onmouseover="loadModalRM('laporan_persalinan')"  onclick="showModalRB('laporan_persalinan')"><i class="fa fa-circle-o"></i>Laporan Persalinan</a></li>
+                        <li><a style="cursor: pointer" onmouseover="loadModalRM('tindakan_rb')"  onclick="showModalRB('tindakan_rb')"><i class="fa fa-circle-o"></i>Persetujuan Tindakan Kedokteran</a></li>
+                    </ul>
+                </div>
                 <div class="info-box" style="cursor: pointer">
                     <span class="info-box-icon bg-aqua"><i class="fa fa fa-book" style="margin-top: 20px"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">RB</span>
                         <span class="info-box-number"><small>(Ruang Bersalin)</small></span>
-                    </div>
-                    <div class="dropup">
-                        <button style="margin-right: 5px; margin-top: 15px" class="btn btn-default dropdown-toggle pull-right" type="button" data-toggle="dropdown">
-                            <span class="caret"></span></button>
-                        <ul class="dropdown-menu pull-right">
-                            <li><a style="cursor: pointer" onmouseover="loadModalRM('identifikasi_bayi')"  onclick="showModalRB('identifikasi_bayi')"><i class="fa fa-circle-o"></i>Identifikasi Bayi</a></li>
-                            <li><a style="cursor: pointer" onmouseover="loadModalRM('asesmen_ponek')"  onclick="showModalRB('asesmen_ponek')"><i class="fa fa-circle-o"></i>Asesmen Ponek</a></li>
-                            <li><a style="cursor: pointer" onmouseover="loadModalRM('asesmen_awal_bayi')"  onclick="showModalRB('asesmen_awal_bayi')"><i class="fa fa-circle-o"></i>Asesmen Awal Bayi</a></li>
-                            <li><a style="cursor: pointer" onmouseover="loadModalRM('laporan_pembedahan')"  onclick="showModalRB('laporan_pembedahan')"><i class="fa fa-circle-o"></i>Laporan Pembedahan</a></li>
-                            <li><a style="cursor: pointer" onmouseover="loadModalRM('laporan_persalinan')"  onclick="showModalRB('laporan_persalinan')"><i class="fa fa-circle-o"></i>Laporan Persalinan</a></li>
-                            <li><a style="cursor: pointer" onmouseover="loadModalRM('tindakan_rb')"  onclick="showModalRB('tindakan_rb')"><i class="fa fa-circle-o"></i>Persetujuan Tindakan Kedokteran</a></li>
-                        </ul>
                     </div>
                 </div>
             </div>
@@ -750,7 +750,15 @@
         //     $('[type=search]').val(idDetailCheckup).trigger('input');
         //     $('#btn-vidio-rm').show();
         // }
+        $('.dropup').on('show.bs.dropdown', function(e){
+            $(this).find('.dropdown-menu').first().stop(true, true).slideDown(350);
+        });
+
+        $('.dropup').on('hide.bs.dropdown', function(e){
+            $(this).find('.dropdown-menu').first().stop(true, true).slideUp(350);
+        });
     });
+
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>

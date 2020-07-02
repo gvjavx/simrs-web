@@ -422,6 +422,14 @@ apply the skin class to the body tag so the changes take effect.
 
 //        cekSession();
 
+        $('.dropdown').on('show.bs.dropdown', function(e){
+            $(this).find('.dropdown-menu').first().stop(true, true).slideDown(350);
+        });
+
+        $('.dropdown').on('hide.bs.dropdown', function(e){
+            $(this).find('.dropdown-menu').first().stop(true, true).slideUp(350);
+        });
+
     });
 
     <%--function cekSession(){--%>

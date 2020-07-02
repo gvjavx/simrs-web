@@ -5,7 +5,7 @@ ADD COLUMN ttd_dokter character varying(100),
 ADD COLUMN ttd_petugas character varying(100);
 
 ALTER TABLE it_simrs_header_checkup
-ADD COLUMN Anamnese text;
+ADD COLUMN anamnese text;
 
 // CREATE TABLE
 CREATE TABLE public.im_simrs_diagnosa_asuhan_keperawatan

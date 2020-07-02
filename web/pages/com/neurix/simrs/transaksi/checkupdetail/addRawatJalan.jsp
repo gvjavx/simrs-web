@@ -441,7 +441,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="btn-group">
+                                <div class="btn-group dropdown">
                                     <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Asesmen
                                     </button>
                                     <button onclick="loadModalRM('<s:property value="headerDetailCheckup.kategoriPelayanan"/>');" type="button" class="btn btn-primary dropdown-toggle"
