@@ -690,7 +690,12 @@
     function viewBukti(var1){
         $("#modal-view-bukti").modal('show');
         var urlImg = firstpath()+"/images/upload/bukti_transfer/"+var1;
-        $("#body-view-bukti").html("<img src='"+urlImg+"' style='max-width: 500px;'></img>");
+        if (var1 == null || var1 == "" || var1 == "null"){
+            urlImg = "<s:url value="/pages/images/ktp-default.jpg" />";
+        }
+        $("#body-view-bukti").html(
+            "<img src='"+urlImg+"' style='max-width: 500px;'/>"
+        );
     }
 
     function saveApprove(idTransaksi) {
