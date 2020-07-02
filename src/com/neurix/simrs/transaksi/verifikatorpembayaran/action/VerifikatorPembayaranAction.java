@@ -1972,7 +1972,10 @@ public class VerifikatorPembayaranAction {
                             sepResponse = bpjsBo.insertSepBpjs(sepRequest, userArea);
                         } catch (Exception e) {
                             logger.error("[VerifikatorPembayaranAction.generateCoverBpjs] Error when insert SEP ," + "[" + e + "] Found problem when saving add data, please inform to your admin.");
-                            throw new GeneralBOException("Error when new insert SEP", e);
+//                            throw new GeneralBOException("Error when new insert SEP", e);
+                            response.setStatus("error");
+                            response.setMessage("Error when new insert SEP"+ e);
+                            return response;
                         }
 
                         if (sepResponse.getNoSep() != null) {
@@ -2005,7 +2008,10 @@ public class VerifikatorPembayaranAction {
                                 responseNewClaim = eklaimBo.insertNewClaimEklaim(klaimRequest, userArea);
                             } catch (GeneralBOException e) {
                                 logger.error("[VerifikatorPembayaranAction.generateCoverBpjs] Error when new claim ," + "[" + e + "] Found problem when saving add data, please inform to your admin.");
-                                throw new GeneralBOException("Error when new claim", e);
+//                                throw new GeneralBOException("Error when new claim", e);
+                                response.setStatus("error");
+                                response.setMessage("Error when new claim"+ e);
+                                return response;
                             }
 
                             List<Tindakan> tindakanList = new ArrayList<>();
@@ -2017,7 +2023,10 @@ public class VerifikatorPembayaranAction {
                                 tindakanList = tindakanBo.getByCriteria(tindakan);
                             } catch (GeneralBOException e) {
                                 logger.error("[VerifikatorPembayaranAction.generateCoverBpjs] Error when tindakan ," + "[" + e + "] Found problem when saving add data, please inform to your admin.");
-                                throw new GeneralBOException("Error when new tindakan", e);
+//                                throw new GeneralBOException("Error when new tindakan", e);
+                                response.setStatus("error");
+                                response.setMessage("Error when new tindakan"+ e);
+                                return response;
                             }
 
                             BigInteger tarifRsProsedurNonBedah = new BigInteger(String.valueOf(0));
@@ -2184,7 +2193,10 @@ public class VerifikatorPembayaranAction {
                                     claimEklaimResponse = eklaimBo.updateDataClaimEklaim(klaimDetailRequest, userArea);
                                 } catch (GeneralBOException e) {
                                     logger.error("[VerifikatorPembayaranAction.generateCoverBpjs] Error when update claim ," + "[" + e + "] Found problem when saving add data, please inform to your admin.");
-                                    throw new GeneralBOException("Error when update claim, [" + claimEklaimResponse.getMessage() + "]", e);
+//                                    throw new GeneralBOException("Error when update claim, [" + claimEklaimResponse.getMessage() + "]", e);
+                                    response.setStatus("error");
+                                    response.setMessage("Error when update claim, [" + claimEklaimResponse.getMessage() + "]"+ e);
+                                    return response;
                                 }
 
                                 if ("200".equalsIgnoreCase(claimEklaimResponse.getStatus())) {
@@ -2195,7 +2207,10 @@ public class VerifikatorPembayaranAction {
                                         grouping1Response = eklaimBo.groupingStage1Eklaim(genNoSep, userArea);
                                     } catch (GeneralBOException e) {
                                         logger.error("[VerifikatorPembayaranAction.generateCoverBpjs] Error when adding item ," + "[" + e + "] Found problem when saving add data, please inform to your admin.");
-                                        throw new GeneralBOException("Error when get cover biaya BPJS, [" + grouping1Response.getMessage() + "]", e);
+//                                        throw new GeneralBOException("Error when get cover biaya BPJS, [" + grouping1Response.getMessage() + "]", e);
+                                        response.setStatus("error");
+                                        response.setMessage("Error Error when get cover biaya BPJS, [" + grouping1Response.getMessage() + "]");
+                                        return response;
                                     }
 
                                     // jika mendapatkan cbgCode dan tarif cbg maka update ke table checkup untuk mengisi total tarif
@@ -2217,11 +2232,17 @@ public class VerifikatorPembayaranAction {
                                                 //======END SET TARIF BPJS=========
                                             } else {
                                                 logger.error("[VerifikatorPembayaranAction.generateCoverBpjs] Error when get cover biaya BPJS " + grouping1Response.getMessage());
-                                                throw new GeneralBOException("Error Error when get cover biaya BPJS, [" + grouping1Response.getMessage() + "]");
+//                                                throw new GeneralBOException("Error Error when get cover biaya BPJS, [" + grouping1Response.getMessage() + "]");
+                                                response.setStatus("error");
+                                                response.setMessage("Error Error when get cover biaya BPJS, [" + grouping1Response.getMessage() + "]");
+                                                return response;
                                             }
                                         } else {
                                             logger.error("[VerifikatorPembayaranAction.generateCoverBpjs] Error when get cover biaya BPJS " + grouping1Response.getMessage());
-                                            throw new GeneralBOException("Error when get cover biaya BPJS, [" + grouping1Response.getMessage() + "]");
+//                                            throw new GeneralBOException("Error when get cover biaya BPJS, [" + grouping1Response.getMessage() + "]");
+                                            response.setStatus("error");
+                                            response.setMessage("Error when get cover biaya BPJS, [" + grouping1Response.getMessage() + "]");
+                                            return response;
                                         }
 
 
@@ -2246,21 +2267,33 @@ public class VerifikatorPembayaranAction {
 
                                 } else {
                                     logger.error("[VerifikatorPembayaranAction.generateCoverBpjs] Error when adding item ,update claim not success " + claimEklaimResponse.getMessage());
-                                    throw new GeneralBOException("Error when adding item ,update claim not success, [" + claimEklaimResponse.getMessage() + "]");
+//                                    throw new GeneralBOException("Error when adding item ,update claim not success, [" + claimEklaimResponse.getMessage() + "]");
+                                    response.setStatus("error");
+                                    response.setMessage("Error when adding item ,update claim not success, [" + claimEklaimResponse.getMessage() + "]");
+                                    return response;
                                 }
                             } else {
                                 logger.error("[VerifikatorPembayaranAction.generateCoverBpjs] Error when get pastien Eklaim, " + responseNewClaim.getMsg());
-                                throw new GeneralBOException("Error when get pastien Eklaim, [" + responseNewClaim.getMsg() + "]");
+//                                throw new GeneralBOException("Error when get pastien Eklaim, [" + responseNewClaim.getMsg() + "]");
+                                response.setStatus("error");
+                                response.setMessage("Error when get pastien Eklaim, [" + responseNewClaim.getMsg() + "]");
+                                return response;
                             }
                         } else {
                             logger.error("[VerifikatorPembayaranAction.generateCoverBpjs] Error when generate SEP, " + response.getMessage());
-                            throw new GeneralBOException("Error when generate SEP, [" + response.getMessage() + "]");
+//                            throw new GeneralBOException("Error when generate SEP, [" + response.getMessage() + "]");
+                            response.setStatus("error");
+                            response.setMessage("Error when generate SEP, [" + response.getMessage() + "]");
+                            return response;
                         }
 
                     }
                 } else {
                     logger.error("[VerifikatorPembayaranAction.generateCoverBpjs] Error when search PPK pelayanan");
-                    throw new GeneralBOException("Error when search PPK pelayanan");
+//                    throw new GeneralBOException("Error when search PPK pelayanan");
+                    response.setStatus("error");
+                    response.setMessage("Error when search PPK pelayanan");
+                    return response;
                 }
             }
 

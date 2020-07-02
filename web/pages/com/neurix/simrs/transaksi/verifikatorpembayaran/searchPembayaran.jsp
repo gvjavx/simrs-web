@@ -389,7 +389,8 @@
                         <div class="row top-7">
                             <div class="col-md-3" align="right"></div>
                             <div class="col-md-6">
-                                <button onclick="verifikasiBpjs()" class="btn btn-sm btn-success" id="dt-btn-ver-bpjs" style="display: none;">Verifikasi</button>
+                                <button onclick="verifikasiBpjs()" class="btn btn-sm btn-success" id="dt-btn-ver-bpjs" style="display: none; float: right"><i class="fa fa-check"></i> Verifikasi</button>
+                                <button onclick="searchPage()" class="btn btn-sm btn-success" id="dt-btn-ref-bpjs" style="display:none; float: right"><i class="fa fa-refresh"></i> OK & Refresh</button>
                             </div>
                         </div>
                     </div>
@@ -514,8 +515,14 @@
     }
 
     function searchPage(idAntrian) {
-        $("#id_antrian").val(idAntrian);
-        $("#searchForm").submit();
+        if (idAntrian == null || idAntrian == ""){
+            var idAntrian_ = $("#fin_id_antrian").val();
+            $("#id_antrian").val(idAntrian_);
+            $("#searchForm").submit();
+        } else {
+            $("#id_antrian").val(idAntrian);
+            $("#searchForm").submit();
+        }
     }
 
     function viewDetail(idAntrian, idJenisPeriksaPasien) {
@@ -540,6 +547,13 @@
         } else if (idJenisPeriksaPasien == "bpjs") {
 
             $("#detail-invoice-bpjs").show();
+            $("#dt-diagnosa-awal-bpjs").val("");
+            $("#dt-ket-diagnosa-bpjs").val("");
+            $("#dt-cover-bpjs").val(0);
+            $("#dt-btn-check-bpjs").show();
+            $("#dt-icon-check-bpjs").hide();
+            $("#dt-icon-denied-bpjs").hide();
+            $("#dt-btn-ver-bpjs").hide();
 
             head = "<td>Id</td>" +
                 "<td width=\"20%\">Keterangan</td>" +
@@ -569,7 +583,7 @@
                     $("#dt-no-kartu-bpjs").text(data.noKartu);
                     $("#dt-nama-pasien-bpjs").text(data.namaPasien);
                     $("#dt-keluhan-bpjs").val(data.keluhan);
-                    $("#dt-cover-bpjs").val(data.jumlahCover);
+                    $("#dt-cover-bpjs").val( formatRupiah(data.jumlahCover));
                     $("#dt-diagnosa-awal-bpjs").val(data.idDiagnosa);
                     $("#dt-ket-diagnosa-bpjs").text(data.ketDiagnosa);
 
@@ -596,7 +610,7 @@
                             "<td align='right'>"+ formatRupiah ( item.jumlahCover )+"</td>";
                     } if (idJenisPeriksaPasien == "bpjs"){
                         str += "<td>"+item.noKartu+"</td>"+
-                            "<td>"+ item.noSep+"</td>";
+                            "<td>" + nullEscape(item.noSep)+"</td>";
                     }
 
                     str += "<td align='right'>"+ formatRupiah( item.nominal )+"</td>";
@@ -791,15 +805,18 @@
 
         VerifikatorPembayaranAction.saveVerifikasiBpjs(idAntrian, noKartu, idDiagnosa, ketDiagnosa, kelasPasien, function (response) {
             if (response.status == "error"){
-                $("#warning_fin").show();
+                $("#warning_fin").show().fadeOut(5000);
                 $("#success_fin").hide();
-                $("#msg_fin_error").text(response.message);
+                $("#msg_fin_error").text(response.msg);
+                $("#dt-diagnosa-awal-bpjs").prop("readOnly",'true');
             } else {
-                $("#success_fin").show().fadeOut(5000);
-                searchPage(idAntrian)
+                $("#success_fin").show();
+                $("#dt-btn-ver-bpjs").hide();
+                $("#dt-btn-ref-bpjs").show();
             }
         });
     }
+
 
 </script>
 
