@@ -47,6 +47,12 @@
         <property name="lastUpdateWho">
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
         </property>
+        <property name="informasi">
+            <column name="informasi" sql-type="text"/>
+        </property>
+        <property name="tipe">
+            <column name="tipe" sql-type="varchar" length="100"/>
+        </property>
 
     </class>
 </hibernate-mapping>

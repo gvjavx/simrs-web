@@ -640,6 +640,7 @@ public class TelemedicineController implements ModelDriven<Object> {
                 telemedicineMobile.setKeluhan(item.getKeluhan());
                 telemedicineMobile.setJenisPengambilan(item.getJenisPengambilan());
                 telemedicineMobile.setUrlResep(item.getUrlResep());
+                telemedicineMobile.setJenisPembayaran(item.getJenisPembayaran());
 
                 if (flagResep != null && flagResep.equalsIgnoreCase("Y")) {
 

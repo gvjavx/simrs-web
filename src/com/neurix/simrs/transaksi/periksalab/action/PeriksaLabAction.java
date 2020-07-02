@@ -9,6 +9,7 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
@@ -17,6 +18,8 @@ import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.periksalab.bo.PeriksaLabBo;
 import com.neurix.simrs.transaksi.periksalab.model.PeriksaLab;
 import com.neurix.simrs.transaksi.periksalab.model.PeriksaLabDetail;
+import com.neurix.simrs.transaksi.profilrekammedisrj.bo.RekamMedisRawatJalanBo;
+import com.neurix.simrs.transaksi.profilrekammedisrj.model.RekamMedisRawatJalan;
 import com.neurix.simrs.transaksi.transaksiobat.model.MtSimrsRiwayatPembelianObat;
 import com.neurix.simrs.transaksi.transaksiobat.model.RiwayatTransaksiObat;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
@@ -292,6 +295,7 @@ public class PeriksaLabAction extends BaseMasterAction {
             PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
 
             periksaLabBo.saveAddWithParameter(periksaLab, idParameter);
+            insertProfilRJ(idDetailCheckup);
 
         } catch (GeneralBOException e) {
             Long logId = null;
@@ -302,6 +306,48 @@ public class PeriksaLabAction extends BaseMasterAction {
 
         logger.info("[PeriksaLabAction.saveOrderLab] End process >>>");
         return SUCCESS;
+    }
+
+    public CrudResponse insertProfilRJ(String idDetailCheckup){
+        CrudResponse response = new CrudResponse();
+        if(idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)) {
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+            RekamMedisRawatJalanBo rekamMedisRawatJalanBo = (RekamMedisRawatJalanBo) ctx.getBean("rekamMedisRawatJalanBoProxy");
+            List<RekamMedisRawatJalan> rekamMedisRawatJalanList = new ArrayList<>();
+            try {
+                RekamMedisRawatJalan rekamMedisRawatJalan = new RekamMedisRawatJalan();
+                rekamMedisRawatJalan.setIdDetailCheckup(idDetailCheckup);
+                rekamMedisRawatJalanList = rekamMedisRawatJalanBo.getByCriteria(rekamMedisRawatJalan);
+                if (rekamMedisRawatJalanList.size() > 0) {
+                    RekamMedisRawatJalan rawatJalan = new RekamMedisRawatJalan();
+                    rawatJalan.setWaktu(new Timestamp(System.currentTimeMillis()));
+                    rawatJalan.setPemeriksaanFisik(checkupBo.getPenunjangMedis(idDetailCheckup));
+                    rawatJalan.setDiagnosa(checkupBo.getDiagnosaPasien(idDetailCheckup));
+                    rawatJalan.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+                    rawatJalan.setLastUpdateWho(CommonUtil.userLogin());
+                    rawatJalan.setAction("U");
+                    response = rekamMedisRawatJalanBo.saveEdit(rawatJalan);
+                } else {
+                    RekamMedisRawatJalan rawatJalan = new RekamMedisRawatJalan();
+                    rawatJalan.setWaktu(new Timestamp(System.currentTimeMillis()));
+                    rawatJalan.setPemeriksaanFisik(checkupBo.getPenunjangMedis(idDetailCheckup));
+                    rawatJalan.setDiagnosa(checkupBo.getDiagnosaPasien(idDetailCheckup));
+                    rawatJalan.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+                    rawatJalan.setLastUpdateWho(CommonUtil.userLogin());
+                    rawatJalan.setCreatedWho(CommonUtil.userLogin());
+                    rawatJalan.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+                    rawatJalan.setIdDetailCheckup(idDetailCheckup);
+                    rawatJalan.setAction("C");
+                    rawatJalan.setFlag("Y");
+                    response = rekamMedisRawatJalanBo.saveAdd(rawatJalan);
+                }
+            } catch (GeneralBOException e) {
+                response.setStatus("error");
+                response.setMsg("error");
+            }
+        }
+        return response;
     }
 
     public List<PeriksaLab> listOrderLab(String idDetailCheckup, String lab) {

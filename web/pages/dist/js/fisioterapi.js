@@ -4,11 +4,13 @@ function pengkajianFisioterapi(idDetailCheckup) {
     }else{
         $('.btn-hide').show();
     }
+    setDataPasien();
     $('#modal-pengkajian-fisioterapi').modal({show: true, backdrop: 'static'});
 }
 
 function addFisioterapi(jenis) {
     if (jenis != '') {
+        setDataPasien();
         $('#modal-fisio-' + jenis).modal({show: true, backdrop: 'static'});
     }
 }
@@ -31,7 +33,7 @@ function saveFisio(jenis){
         var adl = "";
         for(var i=0; i < checkbox.length; i++) {
             if(checkbox[i].checked){
-                if(i == 0){
+                if(adl == ""){
                     adl = checkbox[i].value;
                 }else{
                     adl = adl +', '+checkbox[i].value;
@@ -78,9 +80,16 @@ function saveFisio(jenis){
         var check2 = $('[name=radio_nyeri_jenis]:checked').val();
         var lokasi = $('#y_lokasi').val();
         var inten  = $('#y_inten') .val();
+        var canvasArea = document.getElementById('choice_emoji');
+        var cvs = isCanvasBlank(canvasArea);
 
         if(check1 != '' && check2 != '' && lokasi != '' && inten != ''){
             data.push({'parameter':'Apakah terdapat keluhan nyeri','jawaban': check1, 'keterangan':jenis, 'id_detail_checkup':idDetailCheckup});
+            if(!cvs){
+                var canv = canvasArea.toDataURL("image/png"),
+                    canv = canv.replace(/^data:image\/(png|jpg);base64,/, "");
+                data.push({'parameter':'Scala Nyeri Paint','jawaban': canv, 'keterangan':jenis, 'id_detail_checkup':idDetailCheckup});
+            }
             data.push({'parameter':'Lokasi','jawaban': lokasi, 'keterangan':jenis, 'id_detail_checkup':idDetailCheckup});
             data.push({'parameter':'Intensitas','jawaban': inten, 'keterangan':jenis, 'id_detail_checkup':idDetailCheckup});
             data.push({'parameter':'Jenis','jawaban': check2, 'keterangan':jenis, 'id_detail_checkup':idDetailCheckup});
@@ -174,6 +183,11 @@ function detailFisio(jenis) {
                             '<td width="40%">' + item.parameter + '</td>' +
                             '<td>' + '<ul style="margin-left: 10px;">'+li+'</ul>' + '</td>' +
                             '</tr>';
+                    }else if ("Scala Nyeri Paint" == item.parameter) {
+                        body += '<tr>' +
+                            '<td>' + item.parameter + '</td>' +
+                            '<td>' + '<img src="' + item.jawaban + '" style="width: 100px">' + '</td>' +
+                            '</tr>';
                     }else{
                         body += '<tr>' +
                             '<td width="40%">' + item.parameter + '</td>' +
@@ -248,6 +262,8 @@ function addMonitoringFisio(){
     var mm = String(today.getMonth() + 1).padStart(2, '0');
     var yyyy = today.getFullYear();
     var tglToday = dd + '-' + mm + '-' + yyyy;
+    listTindakanKategoriPoli();
+    $('.select2').select2({});
     $('#mon_tanggal').val(tglToday);
     $('#modal-add-monitoring').modal({show: true, backdrop: 'static'});
 }
@@ -301,4 +317,36 @@ function formaterDate(date){
         tgl = dd + '-' + mm + '-' + yyyy;
     }
     return tgl;
+}
+
+function listTindakanKategoriPoli() {
+    var option = "<option value=''>[Select One]</option>";
+    CheckupDetailAction.getListComboTindakanKategori(idPoli, function (response) {
+        if (response != null) {
+            $.each(response, function (i, item) {
+                option += "<option value='" + item.idKategoriTindakan + "'>" + item.kategoriTindakan + "</option>";
+            });
+            $('#fis_ketgori_tindakan').html(option);
+        } else {
+            $('#fis_ketgori_tindakan').html('');
+        }
+    });
+}
+
+function listTindakanPoli(idKategori){
+    var option = "<option value=''>[Select One]</option>";
+    if (idKategori != '') {
+        CheckupDetailAction.getListComboTindakan(idKategori, function (response) {
+            if (response != null) {
+                $.each(response, function (i, item) {
+                    option += "<option value='" + item.tindakan + "'>" + item.tindakan + "</option>";
+                });
+                $('#mon_tindakan').html(option);
+            } else {
+                $('#mon_tindakan').html('');
+            }
+        });
+    } else {
+        $('#mon_tindakan').html('');
+    }
 }

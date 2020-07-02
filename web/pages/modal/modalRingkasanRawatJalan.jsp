@@ -14,10 +14,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_rj_ringkasan_rj"></p>
                     </div>
-                    <div class="btn-group">
-                        <button type="button" onclick="showModalRj('ringkasan_rj_pasien')" class="btn btn-success"><i class="fa fa-plus"></i> Profil Rawat Jalan
-                        </button>
-                    </div>
+                    <%--<div class="btn-group">--%>
+                        <%--<button type="button" onclick="showModalRj('ringkasan_rj_pasien')" class="btn btn-success"><i class="fa fa-plus"></i> Profil Rawat Jalan--%>
+                        <%--</button>--%>
+                    <%--</div>--%>
                 </div>
                 <div class="box-body">
                     <table class="table table-bordered table-striped" style="font-size: 12px">
