@@ -5,7 +5,6 @@ import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
 import com.neurix.akuntansi.master.mappingJurnal.dao.MappingJurnalDao;
 import com.neurix.akuntansi.master.master.dao.MasterDao;
 import com.neurix.akuntansi.master.master.model.ImMasterEntity;
-import com.neurix.akuntansi.master.tipeJurnal.dao.TipeJurnalDao;
 import com.neurix.akuntansi.master.mappingJurnal.model.ImMappingJurnalEntity;
 import com.neurix.akuntansi.master.trans.dao.TransDao;
 import com.neurix.akuntansi.master.trans.model.ImTransEntity;
@@ -43,6 +42,8 @@ import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
+import com.neurix.simrs.transaksi.obatpoli.dao.ObatPoliDao;
+import com.neurix.simrs.transaksi.obatpoli.model.MtSimrsObatPoliEntity;
 import com.neurix.simrs.transaksi.periksalab.bo.PeriksaLabBo;
 import com.neurix.simrs.transaksi.permintaanresep.dao.PermintaanResepDao;
 import com.neurix.simrs.transaksi.permintaanresep.model.ImSimrsPermintaanResepEntity;
@@ -67,9 +68,10 @@ import org.springframework.web.context.ContextLoader;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Date;
 
 
 public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSystemBo  {
@@ -96,6 +98,11 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
     private PositionDao positionDao;
     private MasterDao masterDao;
     private AsuransiDao asuransiDao;
+    private ObatPoliDao obatPoliDao;
+
+    public void setObatPoliDao(ObatPoliDao obatPoliDao) {
+        this.obatPoliDao = obatPoliDao;
+    }
 
     public void setTransaksiStokDao(TransaksiStokDao transaksiStokDao) {
         this.transaksiStokDao = transaksiStokDao;
@@ -1665,12 +1672,64 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
             }
         }
 
-        // tutup period, sigit
+        // tutup period dan generate saldo bulan lalu transaksi RS, sigit
         try {
             saveUpdateTutupPeriod(tutupPeriod);
         } catch (GeneralBOException e){
             logger.error("[TutupPeriodAction.saveTutupPeriod] ERROR when create tutup periode. ", e);
             throw new GeneralBOException("[BillingSystemBoImpl.saveTutupPeriod] ERROR when create tutup periode. "+e);
+        }
+
+        // create saldo bulan lalu pada transaksi stok;
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("branch_id", tutupPeriod.getUnit());
+        hsCriteria.put("in_pelayanan_medic", "Y");
+        hsCriteria.put("flag", "Y");
+        List<ImSimrsPelayananEntity> pelayananEntities = pelayananDao.getByCriteria(hsCriteria);
+        if (pelayananEntities.size() > 0){
+            for (ImSimrsPelayananEntity pelayananEntity : pelayananEntities){
+
+                // pelayanan selain gudang obat;
+                if (!"gudang_obat".equalsIgnoreCase(pelayananEntity.getTipePelayanan())){
+                    List<String> idObats = obatPoliDao.getIdObatGroup(pelayananEntity.getIdPelayanan(), tutupPeriod.getUnit());
+                    if (idObats.size() > 0){
+                        for (String idObat : idObats){
+
+                            // generate saldo bulan lalu (bulan ini) untuk bulan depan
+                            generateAndSaveCurrentSaldoPersediaanToNextMonth(
+                                    tutupPeriod.getUnit(),
+                                    idObat,
+                                    Integer.valueOf(tutupPeriod.getBulan()),
+                                    Integer.valueOf(tutupPeriod.getTahun()),
+                                    pelayananEntity.getIdPelayanan(),
+                                    tutupPeriod.getLastUpdateWho(),
+                                    tutupPeriod.getLastUpdate(),
+                                    ""
+                                    );
+                        }
+                    }
+                } else {
+
+                    // untuk pelayanan gudang obat;
+                    List<String> idObats = obatDao.getListIdObatGroupByBranchId(tutupPeriod.getUnit());
+                    if (idObats.size() > 0){
+                        for (String idObat : idObats){
+
+                            // generate saldo bulan lalu (bulan ini) untuk bulan depan
+                            generateAndSaveCurrentSaldoPersediaanToNextMonth(
+                                    tutupPeriod.getUnit(),
+                                    idObat,
+                                    Integer.valueOf(tutupPeriod.getBulan()),
+                                    Integer.valueOf(tutupPeriod.getTahun()),
+                                    pelayananEntity.getIdPelayanan(),
+                                    tutupPeriod.getLastUpdateWho(),
+                                    tutupPeriod.getLastUpdate(),
+                                    ""
+                            );
+                        }
+                    }
+                }
+            }
         }
 
         logger.info("[BillingSystemBoImpl.saveTutupPeriod] END <<<");
@@ -1828,6 +1887,69 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
             }
         }
         return listOfTransaksi;
+    }
+
+    public String generateNextIdTransaksiStock( String branchId ){
+        SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
+        return  "RB"+ branchId + f.format(System.currentTimeMillis()) + transaksiStokDao.getNextSeq();
+    }
+
+    private void generateAndSaveCurrentSaldoPersediaanToNextMonth(String branchId, String idObat, Integer bulan, Integer tahun, String idPelayanan, String userLogin, Timestamp times, String idBarang){
+
+        // cari apakah data baru
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("branch_id", branchId);
+        hsCriteria.put("id_barang", idObat);
+        hsCriteria.put("bulan", bulan);
+        hsCriteria.put("tahun", tahun);
+        hsCriteria.put("id_pelayanan", idPelayanan);
+
+        List<TransaksiStok> saldoBulanLaluList = getListTransaksiObat(idPelayanan, tahun, bulan, idObat);
+        if (saldoBulanLaluList.size() > 0){
+            // ambil data yang terakhir untuk saldo bulan lalu
+            TransaksiStok saldoBulanLalu = saldoBulanLaluList.get(saldoBulanLaluList.size() -1);
+            if (saldoBulanLalu != null){
+
+                ItSimrsTransaksiStokEntity transaksiStokEntity = new ItSimrsTransaksiStokEntity();
+                transaksiStokEntity.setIdTransaksi(generateNextIdTransaksiStock(branchId));
+                transaksiStokEntity.setIdObat(idObat);
+                transaksiStokEntity.setKeterangan("Saldo Bulan Lalu "+idObat);
+                transaksiStokEntity.setTipe("D");
+                transaksiStokEntity.setBranchId(branchId);
+                transaksiStokEntity.setQtyLalu(saldoBulanLalu.getQtySaldo());
+                transaksiStokEntity.setTotalLalu(saldoBulanLalu.getTotalSaldo());
+                transaksiStokEntity.setSubTotalLalu(saldoBulanLalu.getSubTotalSaldo());
+                transaksiStokEntity.setCreatedDate(times);
+                transaksiStokEntity.setCreatedWho(userLogin);
+                transaksiStokEntity.setLastUpdate(times);
+                transaksiStokEntity.setLastUpdateWho(userLogin);
+                transaksiStokEntity.setIdBarang(idBarang);
+                transaksiStokEntity.setIdPelayanan(idPelayanan);
+                transaksiStokEntity.setRegisteredDate(getStDateNextMonth(tahun, bulan));
+
+                try {
+                    transaksiStokDao.addAndSave(transaksiStokEntity);
+                } catch (HibernateException e){
+                    logger.error("[BillingSystemBoImpl.generateAndSaveSaldoCurrentToNextMonth] ERROR .", e);
+                    throw new GeneralBOException("[BillingSystemBoImpl.generateAndSaveSaldoCurrentToNextMonth] ERROR .", e);
+                }
+            }
+        }
+    }
+
+    private java.sql.Date getStDateNextMonth(Integer tahun, Integer bulan){
+        Integer tahunDepan = new Integer(0);
+        Integer bulanDepan = new Integer(0);
+
+        if ("12".equalsIgnoreCase(bulan.toString())){
+            tahunDepan = tahun + 1;
+            bulanDepan = 1;
+        } else {
+            tahunDepan = tahun;
+            bulanDepan = bulan + 1;
+        }
+        String stDate = tahunDepan+"-"+bulanDepan+"-"+"1";
+        return java.sql.Date.valueOf(stDate);
     }
 
     @Override

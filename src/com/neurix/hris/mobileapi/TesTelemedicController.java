@@ -6,6 +6,9 @@ import com.neurix.simrs.master.kurir.bo.KurirBo;
 import com.neurix.simrs.master.kurir.model.Kurir;
 import com.neurix.simrs.master.pasien.bo.PasienBo;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
+import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
+import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
+import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
 import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
@@ -20,7 +23,9 @@ import org.apache.log4j.Logger;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by reza on 11/06/20.
@@ -37,6 +42,11 @@ public class TesTelemedicController implements ModelDriven<Object> {
     private KurirBo kurirBoProxy;
     private VerifikatorPembayaranBo verifikatorPembayaranBoProxy;
     private PasienBo pasienBoProxy;
+    private PelayananBo pelayananBoProxy;
+
+    public void setPelayananBoProxy(PelayananBo pelayananBoProxy) {
+        this.pelayananBoProxy = pelayananBoProxy;
+    }
 
     public void setPasienBoProxy(PasienBo pasienBoProxy) {
         this.pasienBoProxy = pasienBoProxy;
@@ -127,6 +137,8 @@ public class TesTelemedicController implements ModelDriven<Object> {
                 bayar(this.id, "resep");
             case "bayar-konsultasi-telemedic":
                 bayar(this.id, "konsultasi");
+            case "pelayanan-telemedic":
+                printLogTesListPelayananMedic();
             default:
                 logger.info("==========NO ONE CARE============");
         }
@@ -338,5 +350,14 @@ public class TesTelemedicController implements ModelDriven<Object> {
             }
         }
         logger.info("[TesTelemedicController.insertObat] END <<<");
+    }
+
+    private void printLogTesListPelayananMedic(){
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("branch_id", "RS01");
+        hsCriteria.put("in_pelayanan_medic", "Y");
+        hsCriteria.put("flag", "Y");
+        List<ImSimrsPelayananEntity> pelayananEntities = pelayananBoProxy.getByCriteria(hsCriteria);
+        logger.info(pelayananEntities);
     }
 }

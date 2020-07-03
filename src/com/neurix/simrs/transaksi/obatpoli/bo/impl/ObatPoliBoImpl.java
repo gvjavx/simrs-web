@@ -1450,7 +1450,6 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             List<ItSimrsTransaksiStokEntity> transaksiStokEntities = transaksiStokDao.getByCriteria(hsCriteria);
             if (transaksiStokEntities.size() == 0){
 
-
                 // jika sudah ditutup bulan ini
                 // maka hitung saldo bulan ini sebagai saldo bulan lalu
                 if (flagTutup){
