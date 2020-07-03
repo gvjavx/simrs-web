@@ -134,6 +134,15 @@ public class CheckupController implements ModelDriven<Object> {
 
     private String flagCall;
     private String jenisResep;
+    private String idJenisObat;
+
+    public String getIdJenisObat() {
+        return idJenisObat;
+    }
+
+    public void setIdJenisObat(String idJenisObat) {
+        this.idJenisObat = idJenisObat;
+    }
 
     public String getJenisResep() {
         return jenisResep;
@@ -681,7 +690,7 @@ public class CheckupController implements ModelDriven<Object> {
             List<ObatPoli> result = new ArrayList<>();
 
             try{
-               result = obatPoliBoProxy.getListObatGroupPoli(idPelayanan, branchId, jenisPasien);
+               result = obatPoliBoProxy.getListObatGroupPoli(idPelayanan, branchId, jenisPasien, idJenisObat);
             } catch (GeneralBOException e){
                 logger.error("CheckupController.create] Error when get obat poli group",e);
             }
@@ -697,6 +706,7 @@ public class CheckupController implements ModelDriven<Object> {
                     obatPoliMobile.setQtyBox(item.getQtyBox() != null ? item.getQtyBox().toString() : "");
                     obatPoliMobile.setQtyLembar(item.getQtyLembar() != null ? item.getQtyLembar().toString() : "");
                     obatPoliMobile.setQtyBiji(item.getQtyBiji() != null ? item.getQtyLembar().toString() : "");
+                    obatPoliMobile.setIdJenisObat(item.getIdJenisObat());
 
                     listOfObatPoli.add(obatPoliMobile);
                 }

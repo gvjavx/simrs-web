@@ -38,7 +38,11 @@ public class FirebasePushNotif {
             data.put("notification", info);
             info.put("title", title);
             info.put("body", body);
-            info.put("sound", "default");
+
+            if  (CLICK_ACTION.equalsIgnoreCase("PD")) {
+                info.put("sound", "call.mp3");
+            } else  info.put("sound", "default");
+
             info.put("click_action", CLICK_ACTION);
 //            info.put("show_in_foreground", true);
             info.put("priority", "high");

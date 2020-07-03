@@ -73,3 +73,8 @@
                                                   ADD jenis_rujukan VARCHAR(10) NULL
 
 <<< //
+
+// 2020-07-03 >>>
+
+    ALTER TABLE public.mt_simrs_obat_poli ADD id_jenis_obat VARCHAR(10) NULL
+<<< //
