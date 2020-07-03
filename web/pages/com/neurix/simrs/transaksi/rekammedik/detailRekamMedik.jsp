@@ -209,6 +209,18 @@
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td><b>Umur</b></td>
+                                        <td>
+                                            <table>
+                                                <script>
+                                                    var umur = '<s:property value="detailCheckup.umur"/>';
+                                                    var umurLengkap = umur+' Tahun';
+                                                    document.write(umurLengkap);
+                                                </script>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td><b>Jenis Pasien</b></td>
                                         <td>
                                             <table>

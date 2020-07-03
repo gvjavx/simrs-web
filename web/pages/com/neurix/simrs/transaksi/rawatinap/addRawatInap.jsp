@@ -609,6 +609,7 @@
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('laporan_pembedahan')"  onclick="showModalRB('laporan_pembedahan')"><i class="fa fa-circle-o"></i>Laporan Pembedahan</a></li>
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('laporan_persalinan')"  onclick="showModalRB('laporan_persalinan')"><i class="fa fa-circle-o"></i>Laporan Persalinan</a></li>
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('tindakan_rb')"  onclick="showModalRB('tindakan_rb')"><i class="fa fa-circle-o"></i>Persetujuan Tindakan Kedokteran</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('asuhan_keperawatan_rb')"  onclick="showModalRB('asuhan_keperawatan_rb')"><i class="fa fa-circle-o"></i>Asuhan Kebidanan</a></li>
                                         <li><a style="cursor: pointer" onclick="printPernyataan('SK04')"><i class="fa fa-print"></i>Surat Keterangan Lahir</a></li>
                                         <li><a style="cursor: pointer" onclick="printPernyataan('SP08')"><i class="fa fa-print"></i>Surat Pernyataan Rujuk RSDS</a></li>
                                     </ul>
