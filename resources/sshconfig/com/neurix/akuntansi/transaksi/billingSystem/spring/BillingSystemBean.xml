@@ -36,6 +36,7 @@
           p:mappingJurnalDao-ref="mappingJurnalDao"
           p:obatPoliDao-ref="obatPoliDao"
           p:transDao-ref="transDao"
+          p:obatDao-ref="obatDao"
     />
 
     <bean id="billingSystemBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

@@ -1896,13 +1896,6 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
 
     private void generateAndSaveCurrentSaldoPersediaanToNextMonth(String branchId, String idObat, Integer bulan, Integer tahun, String idPelayanan, String userLogin, Timestamp times, String idBarang){
 
-        // cari apakah data baru
-        Map hsCriteria = new HashMap();
-        hsCriteria.put("branch_id", branchId);
-        hsCriteria.put("id_barang", idObat);
-        hsCriteria.put("bulan", bulan);
-        hsCriteria.put("tahun", tahun);
-        hsCriteria.put("id_pelayanan", idPelayanan);
 
         List<TransaksiStok> saldoBulanLaluList = getListTransaksiObat(idPelayanan, tahun, bulan, idObat);
         if (saldoBulanLaluList.size() > 0){
