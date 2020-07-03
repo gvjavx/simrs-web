@@ -89,6 +89,7 @@ public class IjinKeluar extends BaseModel {
     private Boolean pengajuanBatal;
     private String flagPengajuanBatal;
     private String roleId;
+    private String nipUserLogin;
 
     public String getOs() {
         return os;
@@ -655,5 +656,13 @@ public class IjinKeluar extends BaseModel {
 
     public void setRoleId(String roleId) {
         this.roleId = roleId;
+    }
+
+    public String getNipUserLogin() {
+        return nipUserLogin;
+    }
+
+    public void setNipUserLogin(String nipUserLogin) {
+        this.nipUserLogin = nipUserLogin;
     }
 }

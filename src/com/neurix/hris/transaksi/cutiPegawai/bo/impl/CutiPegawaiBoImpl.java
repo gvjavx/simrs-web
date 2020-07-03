@@ -2204,7 +2204,8 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
 
                     Notifikasi notifAtasan = new Notifikasi();
                     if (bean.isForMobile())
-                        notifAtasan.setNip(bean.getNip());
+//                        notifAtasan.setNip(bean.getNip());
+                        notifAtasan.setNip(bean.getNipUserLogin());
                     else
                         notifAtasan.setNip(CommonUtil.userIdLogin());
                     notifAtasan.setNoRequest(bean.getCutiPegawaiId());

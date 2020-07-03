@@ -468,4 +468,16 @@ public class NotifikasiDao extends GenericDao<ImNotifikasiEntity, String> {
                 .list();
         return results;
     }
+
+    public List<Object[]> findNotifikasiUmum(String nip, String typeNotifId) {
+
+        String SQL = "SELECT * FROM it_hris_notifikasi WHERE nip = :nip AND tipe_notif_id = :typeNotifId ORDER BY last_update DESC";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(SQL)
+                .setParameter("nip", nip)
+                .setParameter("typeNotifId", typeNotifId)
+                .list();
+        return results;
+    }
 }

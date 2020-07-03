@@ -35,6 +35,15 @@ public class IjinKeluarController implements ModelDriven<Object> {
     private String catatan;
     private String idNotif;
     private String confirm;
+    private String nipUserLogin;
+
+    public String getNipUserLogin() {
+        return nipUserLogin;
+    }
+
+    public void setNipUserLogin(String nipUserLogin) {
+        this.nipUserLogin = nipUserLogin;
+    }
 
     public void setIjinKeluarBoProxy(IjinKeluarBo ijinKeluarBoProxy) {
         this.ijinKeluarBoProxy = ijinKeluarBoProxy;
@@ -118,6 +127,7 @@ public class IjinKeluarController implements ModelDriven<Object> {
             ijinKeluar.setAction("U");
             ijinKeluar.setFlag("Y");
             ijinKeluar.setMobile(true);
+            ijinKeluar.setNipUserLogin(nipUserLogin);
 
            List<Notifikasi> notifikasiList = ijinKeluarBoProxy.saveApprove(ijinKeluar);
 

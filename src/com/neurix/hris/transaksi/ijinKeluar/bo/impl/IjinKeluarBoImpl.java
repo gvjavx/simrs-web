@@ -1843,7 +1843,8 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
 
                     Notifikasi notifAtasan = new Notifikasi();
                     if (bean.isMobile())
-                        notifAtasan.setNip(bean.getNip());
+//                        notifAtasan.setNip(bean.getNip());
+                        notifAtasan.setNip(bean.getNipUserLogin());
                     else
                         notifAtasan.setNip(CommonUtil.userIdLogin());
 
@@ -1852,7 +1853,8 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
                     notifAtasan.setTipeNotifName(("Ijin Keluar Pegawai"));
                     notifAtasan.setNote(imBiodataEntity.getNamaPegawai() + " mengajukan dispensasi pada tanggal " +CommonUtil.convertDateToString(itIjinKeluarEntity.getTanggalAwal()) + " sampai dengan tanggal " + CommonUtil.convertDateToString(itIjinKeluarEntity.getTanggalAkhir()));
                     if (bean.isMobile())
-                        notifAtasan.setNip(bean.getNip());
+//                        notifAtasan.setNip(bean.getNip());
+                        notifAtasan.setNip(bean.getNipUserLogin());
                     else
                         notifAtasan.setNip(CommonUtil.userIdLogin());
 

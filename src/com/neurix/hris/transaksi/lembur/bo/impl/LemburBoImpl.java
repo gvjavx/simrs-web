@@ -76,7 +76,8 @@ public class LemburBoImpl implements LemburBo {
     private LiburDao liburDao;
     private JamKerjaDao jamKerjaDao;
     private NotifikasiFcmDao notifikasiFcmDao;
-    private String ACTION_CLICK = "TASK_LEMBUR";
+//    private String ACTION_CLICK = "TASK_LEMBUR";
+    private String ACTION_CLICK = null;
 
     public void setNotifikasiFcmDao(NotifikasiFcmDao notifikasiFcmDao) {
         this.notifikasiFcmDao = notifikasiFcmDao;
@@ -990,7 +991,8 @@ public class LemburBoImpl implements LemburBo {
                     notifSelf.setNip(itLemburEntity.getNip());
                     notifSelf.setNoRequest(bean.getLemburId());
                     notifSelf.setTipeNotifId("umum");
-                    notifSelf.setTipeNotifName(("Lembur"));
+//                    notifSelf.setTipeNotifName(("Lembur"));
+                    notifSelf.setTipeNotifName(("Pemberitahuan"));
                     notifSelf.setNote("Lembur anda pada tanggal "+CommonUtil.convertDateToString(bean.getTanggalAwalSetuju())+" sampai dengan tanggal "+CommonUtil.convertDateToString(bean.getTanggalAkhirSetuju())+" di approve oleh atasan anda");
                     notifSelf.setCreatedWho(itLemburEntity.getNip());
                     notifSelf.setTo("self");
@@ -1000,7 +1002,8 @@ public class LemburBoImpl implements LemburBo {
                     Notifikasi notifAtasan = new Notifikasi();
 
                     if (bean.getMobile())
-                        notifAtasan.setNip(bean.getNip());
+//                        notifAtasan.setNip(bean.getNip());
+                        notifAtasan.setNip(bean.getNipUserLogin());
                     else
                         notifAtasan.setNip(CommonUtil.userIdLogin());
 
@@ -1010,7 +1013,8 @@ public class LemburBoImpl implements LemburBo {
                     notifAtasan.setNote(imBiodataEntity.getNamaPegawai() + " mengajukan lembur pada tanggal " +CommonUtil.convertDateToString(itLemburEntity.getTanggalAwal()) + " sampai dengan tanggal " + CommonUtil.convertDateToString(itLemburEntity.getTanggalAkhir()));
 
                     if (bean.getMobile())
-                        notifAtasan.setNip(bean.getNip());
+//                        notifAtasan.setNip(bean.getNip());
+                        notifAtasan.setNip(bean.getNipUserLogin());
                     else
                         notifAtasan.setNip(CommonUtil.userIdLogin());
 
@@ -1194,6 +1198,7 @@ public class LemburBoImpl implements LemburBo {
         }
         for (LemburEntity lemburEntity : lemburEntityList){
             hasil.setLemburId(lemburEntity.getLemburId());
+            hasil.setLamaJam(lemburEntity.getLamaJam());
             result.add(hasil);
         }
         return result;

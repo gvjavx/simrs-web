@@ -54,6 +54,16 @@ public class    LemburController implements ModelDriven<Object> {
     private String lamaJamLembur;
     private String namaPegawai;
     private String keterangan;
+    private String nipUserLogin;
+
+
+    public String getNipUserLogin() {
+        return nipUserLogin;
+    }
+
+    public void setNipUserLogin(String nipUserLogin) {
+        this.nipUserLogin = nipUserLogin;
+    }
 
     public String getKeterangan() {
         return keterangan;
@@ -193,6 +203,7 @@ public class    LemburController implements ModelDriven<Object> {
             }
             editLembur.setTmpApprove(who);
             editLembur.setNip(nip);
+            editLembur.setNipUserLogin(nipUserLogin);
 
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             java.util.Date tanggalAwalst = simpleDateFormat.parse(tanggalAwal);
