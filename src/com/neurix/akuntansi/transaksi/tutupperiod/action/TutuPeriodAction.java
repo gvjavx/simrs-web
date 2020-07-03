@@ -155,7 +155,6 @@ public class TutuPeriodAction extends BaseTransactionAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TutupPeriodBo tutupPeriodBo = (TutupPeriodBo) ctx.getBean("tutupPeriodBoProxy");
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
-//        RiwayatTindakanBo riwayatTindakanBo = (RiwayatTindakanBo) ctx.getBean("riwayatTindakanBoProxy");
         BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
 
         // set object tutup period, Sigit
@@ -187,7 +186,6 @@ public class TutuPeriodAction extends BaseTransactionAction {
 
 
                     // mendapatkan list daftar yg akan dibuatkan jurnal transitoris, Sigit
-
                     TutupPeriod transPeriod = new TutupPeriod();
                     transPeriod.setUnit(unit);
                     transPeriod.setTahun(tahun);
@@ -200,25 +198,7 @@ public class TutuPeriodAction extends BaseTransactionAction {
                     transPeriod.setLastUpdateWho(userLogin);
                     transPeriod.setIdDetailCheckup(detailCheckup.getIdDetailCheckup());
                     transPeriod.setIdJenisPeriksaPasien(detailCheckup.getIdJenisPeriksaPasien());
-
                     listJurnalTransData.add(transPeriod);
-
-
-//                    JurnalResponse jurnalResponse = createJurnalTransitoris(tutupPeriod);
-//                    if ("error".equalsIgnoreCase(jurnalResponse.getStatus())){
-//                        response.setStatus("error");
-//                        response.setMsg(jurnalResponse.getMsg());
-//                        return response;
-//                    }
-
-                    // insert into table tindakan transitoris, Sigit
-//                    try {
-//                        riwayatTindakanBo.saveTindakanTransitoris(detailCheckup.getIdDetailCheckup(), time, userLogin);
-//                    } catch (GeneralBOException e){
-//                        response.setStatus("error");
-//                        response.setMsg("[TutuPeriodAction.saveTutupPeriod] ERROR. " + e);
-//                        return response;
-//                    }
                 }
             }
         } catch (GeneralBOException e){
@@ -227,7 +207,6 @@ public class TutuPeriodAction extends BaseTransactionAction {
             response.setMsg("[TutupPeriodAction.saveTutupPeriod] ERROR. "+e);
             return response;
         }
-
 
         // tutup period, sigit
         try {

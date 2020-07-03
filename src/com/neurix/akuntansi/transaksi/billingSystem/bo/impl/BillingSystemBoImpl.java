@@ -1649,6 +1649,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
 
         logger.info("[BillingSystemBoImpl.saveTutupPeriod] START >>>");
 
+        // jika ada transitoris
         for (TutupPeriod transJurnal : listTransitoris){
 
             try {
