@@ -133,12 +133,18 @@ public class TesTelemedicController implements ModelDriven<Object> {
                 break;
             case "create-invoice-e-resep":
                 createPembayaranResep(this.id, this.obat);
+                break;
             case "bayar-resep-telemedic":
                 bayar(this.id, "resep");
+                break;
             case "bayar-konsultasi-telemedic":
                 bayar(this.id, "konsultasi");
+                break;
             case "pelayanan-telemedic":
                 printLogTesListPelayananMedic();
+                break;
+            case "generate-num":
+                generateRandom();
             default:
                 logger.info("==========NO ONE CARE============");
         }
@@ -359,5 +365,19 @@ public class TesTelemedicController implements ModelDriven<Object> {
         hsCriteria.put("flag", "Y");
         List<ImSimrsPelayananEntity> pelayananEntities = pelayananBoProxy.getByCriteria(hsCriteria);
         logger.info(pelayananEntities);
+    }
+
+    private void generateRandom() {
+        int min = 1;
+        int max = 1000;
+        //Generate random double value from 50 to 100
+        logger.info("Random value in double from "+min+" to "+max+ ":");
+        double random_double = Math.random() * (max - min + 1) + min;
+        logger.info(random_double);
+
+        //Generate random int value from 50 to 100
+        logger.info("Random value in int from "+min+" to "+max+ ":");
+        int random_int = (int)(Math.random() * (max - min + 1) + min);
+        logger.info(random_int);
     }
 }

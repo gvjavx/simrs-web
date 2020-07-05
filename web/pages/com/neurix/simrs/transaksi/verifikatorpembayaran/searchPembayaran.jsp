@@ -255,6 +255,10 @@
                                         <s:else>
                                             <button class="btn btn-sm btn-primary" onclick="viewDetail('<s:property value="id"/>','<s:property value="idJenisPeriksaPasien"/>')"><i class="fa fa-edit"></i></button>
                                         </s:else>
+                                        <%--<button class="btn btn-sm btn-primary" onclick="showDialog('loading')">loading test</button>--%>
+                                        <%--<button class="btn btn-sm btn-primary" onclick="showDialog('success')">success test</button>--%>
+                                        <%--<button class="btn btn-sm btn-primary" onclick="showDialog('error')">error test</button>--%>
+
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -411,52 +415,10 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-confirm-dialog">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
-                </h4>
-            </div>
-            <div class="modal-body">
-                <h4>Do you want save this record?</h4>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
-                </button>
-                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modal-view-bukti">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-info"></i> View bukti
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div id="body-view-bukti" style="text-align: center">
-
-                </div>
-            </div>
-            <div class="modal-footer">
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="modal fade" id="modal-detail-asuransi">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title"><i class="fa fa-document"></i> Approve Asuransi</span>
@@ -500,6 +462,108 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-confirm-dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h4>Do you want save this record?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
+                </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-loading-dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Saving ...
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div id="waiting-content" style="text-align: center">
+                    <h4>Please don't close this window, server is processing your request ...</h4>
+                    <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                         src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                         name="image_indicator_write">
+                    <br>
+                    <img class="spin" border="0"
+                         style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                         src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                         name="image_indicator_write">
+                </div>
+
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin_waiting">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_fin_error_waiting"></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <%--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No--%>
+                <%--</button>--%>
+                <%--<button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes--%>
+                <%--</button>--%>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-success-dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Saving ...
+                </h4>
+            </div>
+            <div class="modal-body" style="text-align: center">
+                <img border="0" src="<s:url value="/pages/images/icon_success.png"/>"
+                     name="icon_success">
+                Record has been saved successfully.
+            </div>
+            <div class="modal-footer">
+                <%--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No--%>
+                <%--</button>--%>
+                <button type="button" class="btn btn-sm btn-success" id="ok_con"><i class="fa fa-check"></i> Ok
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-view-bukti">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> View bukti
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div id="body-view-bukti" style="text-align: center">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type='text/javascript'>
 
@@ -511,6 +575,22 @@
             return ribuan;
         } else {
             return "0";
+        }
+    }
+
+    function showDialog(tipe) {
+        if (tipe == "loading"){
+            $("#modal-loading-dialog").modal('show');
+        }
+        if (tipe == "error"){
+            $("#modal-loading-dialog").modal('show');
+            $("#waiting-content").hide();
+            $("#warning_fin_waiting").show();
+//            $("#msg_fin_error_waiting").text("Error. perbaikan");
+        }
+        if (tipe == "success"){
+            $("#modal-loading-dialog").modal('hide');
+            $("#modal-success-dialog").modal('show');
         }
     }
 
@@ -700,36 +780,52 @@
 
     function saveApprove(idTransaksi) {
         var idAntrian = $("#fin_id_antrian").val();
-        $("#msg_fin").text("Loading . . .");
-        $("#success_fin").show();
+//        $("#msg_fin").text("Loading . . .");
+//        $("#success_fin").show();
 
+        showDialog("loading");
         dwr.engine.setAsync(true);
         VerifikatorPembayaranAction.approveTransaksi(idTransaksi, function (response) {
             dwr.engine.setAsync(false);
             if (response.status == "error"){
-                $("#warning_fin").show().fadeOut(5000);
-                $("#success_fin").hide();
-                $("#msg_fin_error").text(response.message);
+                showDialog("error");
+                $("#msg_fin_error_waiting").text(response.message);
+
+//                $("#warning_fin").show().fadeOut(5000);
+//                $("#success_fin").hide();
+//                $("#msg_fin_error").text(response.message);
             } else {
-                $("#success_fin").show().fadeOut(5000);
-                searchPage(idAntrian)
+                showDialog("success");
+                $('#ok_con').on('click', function () {
+                    searchPage(idAntrian)
+                });
+
+//                $("#success_fin").show().fadeOut(5000);
+//                searchPage(idAntrian)
             }
         });
     }
 
     function saveApproveEresep(idTransaksi){
-        $("#success_fin").show().fadeOut(5000);
+//        $("#success_fin").show().fadeOut(5000);
         var idAntrian = $("#fin_id_antrian").val();
 
+        showDialog("loading");
+        dwr.engine.setAsync(true);
         VerifikatorPembayaranAction.approveEresep(idTransaksi, function (response) {
             dwr.engine.setAsync(false);
             if (response.status == "error"){
-                $("#warning_fin").show().fadeOut(5000);
-                $("#success_fin").hide();
-                $("#msg_fin_error").text(response.message);
+                showDialog("error");
+                $("#msg_fin_error_waiting").text(response.message);
+//                $("#warning_fin").show().fadeOut(5000);
+//                $("#success_fin").hide();
+//                $("#msg_fin_error").text(response.message);
             } else {
-                $("#success_fin").show().fadeOut(5000);
-                searchPage(idAntrian)
+                showDialog("success");
+                $('#ok_con').on('click', function () {
+                    searchPage(idAntrian)
+                });
+//                $("#success_fin").show().fadeOut(5000);
             }
         });
     }
@@ -742,7 +838,6 @@
             VerifikatorPembayaranAction.getSessionAntrianTelemedic(idAntrian, function (telemedicEntity) {
                 if (telemedicEntity != null){
                     var item = telemedicEntity;
-
                     if (jenisPasien == "asuransi"){
                         $("#modal-detail-asuransi").modal('show');
                         $("#dt-nama-pasien-asuransi").text(item.namaPasien);
@@ -771,14 +866,28 @@
             $("#warning_fin_asuransi").show().fadeOut(5000);
             $("#msg_fin_error_asuransi").text("Nilai Cover Tidak Boleh Kosong.");
         } else {
+
+            showDialog("loading");
+            dwr.engine.setAsync(true);
             VerifikatorPembayaranAction.saveCoverAsuransi(idAntrian, cover, idTransaksi, function (response) {
+                dwr.engine.setAsync(false);
                 if (response.status == "error"){
-                    $("#warning_fin").show();
-                    $("#success_fin").hide();
-                    $("#msg_fin_error").text(response.message);
+
+                    showDialog("error");
+                    $("#msg_fin_error_waiting").text(response.message);
+
+//                    $("#warning_fin").show();
+//                    $("#success_fin").hide();
+//                    $("#msg_fin_error").text(response.message);
                 } else {
-                    $("#modal-detail-asuransi").modal('hide');
-                    searchPage(idAntrian);
+
+                    showDialog("success");
+                    $('#ok_con').on('click', function (e) {
+                        searchPage(idAntrian)
+                    });
+
+//                    $("#modal-detail-asuransi").modal('hide');
+//                    searchPage(idAntrian);
                 }
             });
         }
