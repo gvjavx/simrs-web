@@ -207,9 +207,9 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
                     returnPengajuanSetor.setJumlahPph21Payroll(pengajuanSetorEntity.getJumlahPph21Payroll());
                     returnPengajuanSetor.setJumlahPph21Kso(pengajuanSetorEntity.getJumlahPph21Kso());
                     returnPengajuanSetor.setJumlahPph21Pengajuan(pengajuanSetorEntity.getJumlahPph21Pengajuan());
-                    returnPengajuanSetor.setJumlahPpnMasukan(pengajuanSetorEntity.getJumlahPpnMasukan());
+                    returnPengajuanSetor.setJumlahPpnMasukanB2(pengajuanSetorEntity.getJumlahPpnMasukanB2());
                     returnPengajuanSetor.setJumlahPpnKeluaran(pengajuanSetorEntity.getJumlahPpnKeluaran());
-                    returnPengajuanSetor.setJumlahPpnAset(pengajuanSetorEntity.getJumlahPpnAset());
+                    returnPengajuanSetor.setJumlahPpnMasukanB3(pengajuanSetorEntity.getJumlahPpnMasukanB3());
                     returnPengajuanSetor.setJumlahSeluruhnya(pengajuanSetorEntity.getJumlahSeluruhnya());
                     returnPengajuanSetor.setBranchId(pengajuanSetorEntity.getBranchId());
                     returnPengajuanSetor.setApprovalId(pengajuanSetorEntity.getApprovalId());
@@ -226,9 +226,9 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
                         returnPengajuanSetor.setStJumlahPph21Pengajuan(CommonUtil.numbericFormat(pengajuanSetorEntity.getJumlahPph21Pengajuan(),"###,###"));
                         returnPengajuanSetor.setStJumlahSeluruhnya(CommonUtil.numbericFormat(pengajuanSetorEntity.getJumlahSeluruhnya(),"###,###"));
                     }else if ("PPN".equalsIgnoreCase(searchBean.getTipePengajuanSetor())){
-                        returnPengajuanSetor.setStJumlahPpnMasukan(CommonUtil.numbericFormat(pengajuanSetorEntity.getJumlahPpnMasukan(),"###,###"));
+                        returnPengajuanSetor.setStJumlahPpnMasukanB2(CommonUtil.numbericFormat(pengajuanSetorEntity.getJumlahPpnMasukanB2(),"###,###"));
                         returnPengajuanSetor.setStJumlahPpnKeluaran(CommonUtil.numbericFormat(pengajuanSetorEntity.getJumlahPpnKeluaran(),"###,###"));
-                        returnPengajuanSetor.setStJumlahPpnAset(CommonUtil.numbericFormat(pengajuanSetorEntity.getJumlahPpnAset(),"###,###"));
+                        returnPengajuanSetor.setStJumlahPpnMasukanB3(CommonUtil.numbericFormat(pengajuanSetorEntity.getJumlahPpnMasukanB3(),"###,###"));
                         returnPengajuanSetor.setStJumlahSeluruhnya(CommonUtil.numbericFormat(pengajuanSetorEntity.getJumlahSeluruhnya(),"###,###"));
                     }
 
@@ -434,9 +434,9 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
         pengajuanSetorEntity.setJumlahPph21Payroll(bean.getJumlahPph21Payroll());
         pengajuanSetorEntity.setJumlahPph21Kso(bean.getJumlahPph21Kso());
         pengajuanSetorEntity.setJumlahPph21Pengajuan(bean.getJumlahPph21Pengajuan());
-        pengajuanSetorEntity.setJumlahPpnMasukan(BigDecimal.ZERO);
+        pengajuanSetorEntity.setJumlahPpnMasukanB2(BigDecimal.ZERO);
         pengajuanSetorEntity.setJumlahPpnKeluaran(BigDecimal.ZERO);
-        pengajuanSetorEntity.setJumlahPpnAset(BigDecimal.ZERO);
+        pengajuanSetorEntity.setJumlahPpnMasukanB3(BigDecimal.ZERO);
         pengajuanSetorEntity.setJumlahSeluruhnya(bean.getJumlahSeluruhnya());
         pengajuanSetorEntity.setRegisteredDate(bean.getRegisteredDate());
         pengajuanSetorEntity.setCancelFlag("N");
@@ -491,7 +491,7 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
     }
 
     @Override
-    public void saveAddPengajuanSetorPpn(PengajuanSetor bean, List<PengajuanSetorDetail> pengajuanSetorDetailListPayroll, List<PengajuanSetorDetail> pengajuanSetorDetailListKso, List<PengajuanSetorDetail> pengajuanSetorDetailListPengajuan){
+    public void saveAddPengajuanSetorPpn(PengajuanSetor bean, List<PengajuanSetorDetail> pengajuanSetorDetailListMasukanB2, List<PengajuanSetorDetail> pengajuanSetorDetailListKeluaran, List<PengajuanSetorDetail> pengajuanSetorDetailListMasukanB3){
         logger.info("[PengajuanSetorBoImpl.saveAddPengajuanSetorPpn] start process >>>");
 
         //validasi
@@ -507,7 +507,7 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
             throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + status);
         }
 
-        if (pengajuanSetorDetailListPayroll.size()==0&&pengajuanSetorDetailListKso.size()==0&&pengajuanSetorDetailListPengajuan.size()==0){
+        if (pengajuanSetorDetailListMasukanB2.size()==0&&pengajuanSetorDetailListKeluaran.size()==0&&pengajuanSetorDetailListMasukanB3.size()==0){
             String status ="Data yang dicari tidak ada atau sudah diajukan";
             logger.error("[PengajuanSetorBoImpl.saveAddPengajuanSetorPpn] Error :, " + status);
             throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + status);
@@ -520,9 +520,9 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
         }
 
         List<PengajuanSetorDetail> listDetailAll = new ArrayList<>();
-        listDetailAll.addAll(pengajuanSetorDetailListPayroll);
-        listDetailAll.addAll(pengajuanSetorDetailListKso);
-        listDetailAll.addAll(pengajuanSetorDetailListPengajuan);
+        listDetailAll.addAll(pengajuanSetorDetailListMasukanB2);
+        listDetailAll.addAll(pengajuanSetorDetailListKeluaran);
+        listDetailAll.addAll(pengajuanSetorDetailListMasukanB3);
 
         String pengajuanSetorId;
 
@@ -546,9 +546,9 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
         pengajuanSetorEntity.setCancelFlag("N");
         pengajuanSetorEntity.setTipePengajuanSetor("PPN");
         pengajuanSetorEntity.setKeterangan(bean.getKeterangan());
-        pengajuanSetorEntity.setJumlahPpnMasukan(bean.getJumlahPpnMasukan());
+        pengajuanSetorEntity.setJumlahPpnMasukanB2(bean.getJumlahPpnMasukanB2());
         pengajuanSetorEntity.setJumlahPpnKeluaran(bean.getJumlahPpnKeluaran());
-        pengajuanSetorEntity.setJumlahPpnAset(bean.getJumlahPpnAset());
+        pengajuanSetorEntity.setJumlahPpnMasukanB3(bean.getJumlahPpnMasukanB3());
 
         pengajuanSetorEntity.setAction(bean.getAction());
         pengajuanSetorEntity.setFlag(bean.getFlag());
@@ -584,7 +584,16 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
             pengajuanSetorDetailEntity.setLastUpdate(bean.getLastUpdate());
             pengajuanSetorDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
 
-            if ("Y".equalsIgnoreCase(pengajuanSetorDetail.getDibayar())){
+            if ("PPN Keluaran".equalsIgnoreCase(pengajuanSetorDetail.getTipe())){
+                if ("Y".equalsIgnoreCase(pengajuanSetorDetail.getDibayar())){
+                    try {
+                        pengajuanSetorDetailDao.addAndSave(pengajuanSetorDetailEntity);
+                    } catch (HibernateException e) {
+                        logger.error("[PengajuanSetorBoImpl.saveAddPengajuanSetorPpn] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + e.getMessage());
+                    }
+                }
+            }else{
                 try {
                     pengajuanSetorDetailDao.addAndSave(pengajuanSetorDetailEntity);
                 } catch (HibernateException e) {
@@ -922,35 +931,19 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
                 result.setBranchName(imBranches.getBranchName());
             }
         }
-        if ("PPN Masukan".equalsIgnoreCase(tipe)){
+        if ("PPN Masukan B2".equalsIgnoreCase(tipe)){
+            if (data.getJumlah()!=null){
+                result.setStJumlah(CommonUtil.numbericFormat(data.getJumlah(),"###,###"));
+            }else{
+                result.setStJumlah("0");
+            }
+        }else if ("PPN Masukan B3".equalsIgnoreCase(tipe)){
             if (data.getJumlah()!=null){
                 result.setStJumlah(CommonUtil.numbericFormat(data.getJumlah(),"###,###"));
             }else{
                 result.setStJumlah("0");
             }
         } else if ("PPN Keluaran".equalsIgnoreCase(tipe)){
-            if (data.getJumlah()!=null){
-                result.setStJumlah(CommonUtil.numbericFormat(data.getJumlah(),"###,###"));
-            }else{
-                result.setStJumlah("0");
-            }
-        } else if ("Pengajuan Biaya PPN".equalsIgnoreCase(tipe)){
-            ImPosition position = positionDao.getById("positionId",data.getDivisiId());
-            result.setPosisiName(position.getPositionName());
-
-            if (position.getBagianId()!=null){
-                ImPositionBagianEntity positionBagian= positionBagianDao.getById("bagianId",position.getBagianId());
-                result.setBagianName(positionBagian.getBagianName());
-            }else{
-                result.setBagianName("");
-            }
-            if (position.getDepartmentId()!=null){
-                ImDepartmentEntity departmentEntity= departmentDao.getById("departmentId",position.getDepartmentId());
-                result.setDivisiName(departmentEntity.getDepartmentName());
-            }else{
-                result.setDivisiName("");
-            }
-
             if (data.getJumlah()!=null){
                 result.setStJumlah(CommonUtil.numbericFormat(data.getJumlah(),"###,###"));
             }else{

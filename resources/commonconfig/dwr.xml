@@ -512,6 +512,7 @@
       </create>
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutangDetail"/>
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutang"/>
+      <convert converter="bean" match="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.EfakturDTO"/>
       <convert converter="bean" match="com.neurix.akuntansi.master.trans.model.Trans"/>
 
       <create creator="new">

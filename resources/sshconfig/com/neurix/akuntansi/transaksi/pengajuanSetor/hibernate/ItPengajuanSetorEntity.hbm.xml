@@ -63,14 +63,14 @@
             <column name="jumlah_seluruhnya" sql-type="numeric" not-null="false" />
         </property>
 
-        <property name="jumlahPpnMasukan">
-            <column name="jumlah_ppn_masukan" sql-type="numeric" not-null="false" />
+        <property name="jumlahPpnMasukanB2">
+            <column name="jumlah_ppn_masukan_b2" sql-type="numeric" not-null="false" />
         </property>
         <property name="jumlahPpnKeluaran">
             <column name="jumlah_ppn_keluaran" sql-type="numeric" not-null="false" />
         </property>
-        <property name="jumlahPpnAset">
-            <column name="jumlah_ppn_aset" sql-type="numeric" not-null="false" />
+        <property name="jumlahPpnMasukanB3">
+            <column name="jumlah_ppn_masukan_b3" sql-type="numeric" not-null="false" />
         </property>
 
         <property name="keterangan">

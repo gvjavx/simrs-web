@@ -224,7 +224,6 @@ public class PengajuanSetorAction extends BaseMasterAction {
         String branchId = CommonUtil.userBranchLogin();
         HttpSession session = ServletActionContext.getRequest().getSession();
         addPengajuanSetor = (PengajuanSetor) session.getAttribute("listOfResultPengajuanSetor");
-
         if (branchId!=null){
             addPengajuanSetor.setBranchId(branchId);
         }else{
@@ -233,7 +232,7 @@ public class PengajuanSetorAction extends BaseMasterAction {
         setPengajuanSetor(addPengajuanSetor);
 
         logger.info("[PengajuanSetorAction.resultAddPengajuanSetorPpn] stop process >>>");
-        return "search_add_pengajuan_setor_ppn";
+        return "success_add_pemilihan_pengajuan_setor_ppn";
     }
 
     public String searchAddPengajuanSetorPph21() {
@@ -528,9 +527,9 @@ public class PengajuanSetorAction extends BaseMasterAction {
         List<PengajuanSetorDetail> listDetailPayroll = new ArrayList<>();
         List<PengajuanSetorDetail> listDetailKso = new ArrayList<>();
         List<PengajuanSetorDetail> listDetailPengajuan = new ArrayList<>();
-        List<PengajuanSetorDetail> listDetailMasukan = new ArrayList<>();
+        List<PengajuanSetorDetail> listDetailMasukanB2 = new ArrayList<>();
         List<PengajuanSetorDetail> listDetailKeluaran = new ArrayList<>();
-        List<PengajuanSetorDetail> listDetailAset = new ArrayList<>();
+        List<PengajuanSetorDetail> listDetailMasukanB3 = new ArrayList<>();
         HttpSession session = ServletActionContext.getRequest().getSession();
         try {
             modalPopUp = init(pengajuanSetorId, itemFlag);
@@ -539,16 +538,16 @@ public class PengajuanSetorAction extends BaseMasterAction {
                 listDetailKso = pengajuanSetorBo.getDetailPengajuanSetorPPh21(pengajuanSetorId,"Dokter KSO");
                 listDetailPengajuan = pengajuanSetorBo.getDetailPengajuanSetorPPh21(pengajuanSetorId,"Pengajuan Biaya PPH21");
 
-                listDetailMasukan = pengajuanSetorBo.getDetailPengajuanSetorPPn(pengajuanSetorId,"PPN Masukan");
+                listDetailMasukanB2 = pengajuanSetorBo.getDetailPengajuanSetorPPn(pengajuanSetorId,"PPN Masukan B2");
                 listDetailKeluaran = pengajuanSetorBo.getDetailPengajuanSetorPPn(pengajuanSetorId,"PPN Keluaran");
-                listDetailAset = pengajuanSetorBo.getDetailPengajuanSetorPPn(pengajuanSetorId,"Pengajuan Biaya PPN");
+                listDetailMasukanB3 = pengajuanSetorBo.getDetailPengajuanSetorPPn(pengajuanSetorId,"PPN Masukan B3");
 
                 session.setAttribute("listOfResultPencarianDataPayroll",listDetailPayroll);
                 session.setAttribute("listOfResultPencarianDataKso",listDetailKso);
                 session.setAttribute("listOfResultPencarianDataPengajuan",listDetailPengajuan);
-                session.setAttribute("listOfResultPencarianDataMasukan", listDetailMasukan);
+                session.setAttribute("listOfResultPencarianDataMasukanB2", listDetailMasukanB2);
                 session.setAttribute("listOfResultPencarianDataKeluaran", listDetailKeluaran);
-                session.setAttribute("listOfResultPencarianDataAset", listDetailAset);
+                session.setAttribute("listOfResultPencarianDataMasukanB3", listDetailMasukanB3);
             }
         } catch (GeneralBOException e) {
             Long logId = null;
@@ -645,9 +644,9 @@ public class PengajuanSetorAction extends BaseMasterAction {
         logger.info("[PengajuanSetorAction.searchAddPengajuanSetorPpn] start process >>>");
         PengajuanSetor addPengajuanSetor = getPengajuanSetor();
         PengajuanSetor resultPengajuanSetor = new PengajuanSetor();
-        resultPengajuanSetor.setJumlahPpnMasukan(BigDecimal.ZERO);
+        resultPengajuanSetor.setJumlahPpnMasukanB2(BigDecimal.ZERO);
         resultPengajuanSetor.setJumlahPpnKeluaran(BigDecimal.ZERO);
-        resultPengajuanSetor.setJumlahPpnAset(BigDecimal.ZERO);
+        resultPengajuanSetor.setJumlahPpnMasukanB3(BigDecimal.ZERO);
         resultPengajuanSetor.setJumlahSeluruhnya(BigDecimal.ZERO);
         resultPengajuanSetor.setTahun(addPengajuanSetor.getTahun());
         resultPengajuanSetor.setBulan(addPengajuanSetor.getBulan());
@@ -657,41 +656,20 @@ public class PengajuanSetorAction extends BaseMasterAction {
         addPengajuanSetor.setBulan(getSearchWhereBulan(addPengajuanSetor.getBulan()));
 
         List<PengajuanSetorDetail> pengajuanSetorDetailKeluaranList = pengajuanSetorBoProxy.listPPnKeluaran(addPengajuanSetor);
-        List<PengajuanSetorDetail> pengajuanSetorDetailMasukanList = pengajuanSetorBoProxy.listPPnMasukan(addPengajuanSetor);
-        List<PengajuanSetorDetail> pengajuanSetorDetailAsetList = pengajuanSetorBoProxy.listPPnPengajuan(addPengajuanSetor);
+        List<PengajuanSetorDetail> pengajuanSetorDetailMasukanB2List = pengajuanSetorBoProxy.listPPnMasukan(addPengajuanSetor);
 
 //        melakukan total keluaran
         for (PengajuanSetorDetail pengajuanSetorDetail : pengajuanSetorDetailKeluaranList){
             resultPengajuanSetor.setJumlahPpnKeluaran(resultPengajuanSetor.getJumlahPpnKeluaran().add(pengajuanSetorDetail.getJumlah()));
         }
 
-//        melakukan total masukan
-        for (PengajuanSetorDetail pengajuanSetorDetail : pengajuanSetorDetailMasukanList){
-            resultPengajuanSetor.setJumlahPpnMasukan(resultPengajuanSetor.getJumlahPpnMasukan().add(pengajuanSetorDetail.getJumlah()));
-        }
-
-//        melakukan total aset
-        for (PengajuanSetorDetail pengajuanSetorDetail : pengajuanSetorDetailAsetList){
-            resultPengajuanSetor.setJumlahPpnAset(resultPengajuanSetor.getJumlahPpnAset().add(pengajuanSetorDetail.getJumlah()));
-        }
-
-
-        //( PPN KELUARAN + PPN PENGAJUAN ) - PPN MASUKAN
-        resultPengajuanSetor.setJumlahSeluruhnya((resultPengajuanSetor.getJumlahPpnKeluaran().add(resultPengajuanSetor.getJumlahPpnAset())).subtract(resultPengajuanSetor.getJumlahPpnMasukan()));
-
-        //set string
-        resultPengajuanSetor.setStJumlahPpnMasukan(CommonUtil.numbericFormat(resultPengajuanSetor.getJumlahPpnKeluaran(),"###,###"));
-        resultPengajuanSetor.setStJumlahPpnKeluaran(CommonUtil.numbericFormat(resultPengajuanSetor.getJumlahPpnMasukan(),"###,###"));
-        resultPengajuanSetor.setStJumlahPpnAset(CommonUtil.numbericFormat(resultPengajuanSetor.getJumlahPpnAset(),"###,###"));
+        resultPengajuanSetor.setStJumlahPpnMasukanB2(CommonUtil.numbericFormat(resultPengajuanSetor.getJumlahPpnMasukanB2(),"###,###"));
+        resultPengajuanSetor.setStJumlahPpnMasukanB3(CommonUtil.numbericFormat(resultPengajuanSetor.getJumlahPpnMasukanB3(),"###,###"));
+        resultPengajuanSetor.setStJumlahPpnKeluaran(CommonUtil.numbericFormat(resultPengajuanSetor.getJumlahPpnKeluaran(),"###,###"));
         resultPengajuanSetor.setStJumlahSeluruhnya(CommonUtil.numbericFormat(resultPengajuanSetor.getJumlahSeluruhnya(),"###,###"));
 
-        session.removeAttribute("listOfResultPengajuanSetor");
-        session.removeAttribute("listOfResultPencarianDataMasukan");
-        session.removeAttribute("listOfResultPencarianDataKeluaran");
-        session.removeAttribute("listOfResultPencarianDataAset");
-        session.setAttribute("listOfResultPencarianDataMasukan", pengajuanSetorDetailMasukanList);
+        session.setAttribute("listOfResultPencarianDataMasukan", pengajuanSetorDetailMasukanB2List);
         session.setAttribute("listOfResultPencarianDataKeluaran", pengajuanSetorDetailKeluaranList);
-        session.setAttribute("listOfResultPencarianDataAset", pengajuanSetorDetailAsetList);
         session.setAttribute("listOfResultPengajuanSetor", resultPengajuanSetor);
 
         logger.info("[PengajuanSetorAction.searchAddPengajuanSetorPpn] stop process >>>");
@@ -705,6 +683,20 @@ public class PengajuanSetorAction extends BaseMasterAction {
         return (List<PengajuanSetorDetail>) session.getAttribute("listOfResultPencarianDataMasukan");
     }
 
+    public List<PengajuanSetorDetail> searchDataSessionPpnMasukanB2() {
+        logger.info("[PengajuanSetorAction.searchDataSessionPpnMasukanB2] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        logger.info("[PengajuanSetorAction.searchDataSessionPpnMasukanB2] stop process >>>");
+        return (List<PengajuanSetorDetail>) session.getAttribute("listOfResultPencarianDataMasukanB2");
+    }
+
+    public List<PengajuanSetorDetail> searchDataSessionPpnMasukanB3() {
+        logger.info("[PengajuanSetorAction.searchDataSessionPpnMasukanB3] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        logger.info("[PengajuanSetorAction.searchDataSessionPpnMasukanB3] stop process >>>");
+        return (List<PengajuanSetorDetail>) session.getAttribute("listOfResultPencarianDataMasukanB3");
+    }
+
     public List<PengajuanSetorDetail> searchDataSessionPpnKeluaran() {
         logger.info("[PengajuanSetorAction.searchDataSessionPpnKeluaran] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -712,40 +704,132 @@ public class PengajuanSetorAction extends BaseMasterAction {
         return (List<PengajuanSetorDetail>) session.getAttribute("listOfResultPencarianDataKeluaran");
     }
 
-    public List<PengajuanSetorDetail> searchDataSessionPpnAset() {
-        logger.info("[PengajuanSetorAction.searchDataSessionPpnAset] start process >>>");
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        logger.info("[PengajuanSetorAction.searchDataSessionPpnAset] stop process >>>");
-        return (List<PengajuanSetorDetail>) session.getAttribute("listOfResultPencarianDataAset");
-    }
-
-    public PengajuanSetor editSessionPpnMasukan(String id,boolean check) {
+    public PengajuanSetor editSessionPpnMasukan(String transaksiId,String data) {
         logger.info("[PengajuanSetorAction.editSessionPpnMasukan] start process >>>");
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        PengajuanSetor addPengajuanSetor = (PengajuanSetor) session.getAttribute("listOfResultPengajuanSetor");
+        PengajuanSetor addPengajuanSetor = new PengajuanSetor();
 
-        List<PengajuanSetorDetail> pengajuanSetorDetailList = (List<PengajuanSetorDetail>) session.getAttribute("listOfResultPencarianDataMasukan");
-        for (PengajuanSetorDetail pengajuanSetorDetail : pengajuanSetorDetailList){
-            if (id.equalsIgnoreCase(pengajuanSetorDetail.getTransaksiId())){
-                if (check){
-                    pengajuanSetorDetail.setDibayar("Y");
-                    addPengajuanSetor.setJumlahSeluruhnya(addPengajuanSetor.getJumlahSeluruhnya().subtract(pengajuanSetorDetail.getJumlah()));
-                    addPengajuanSetor.setJumlahPpnMasukan(addPengajuanSetor.getJumlahPpnMasukan().add(pengajuanSetorDetail.getJumlah()));
-                }else{
-                    pengajuanSetorDetail.setDibayar("N");
-                    addPengajuanSetor.setJumlahSeluruhnya(addPengajuanSetor.getJumlahSeluruhnya().add(pengajuanSetorDetail.getJumlah()));
-                    addPengajuanSetor.setJumlahPpnMasukan(addPengajuanSetor.getJumlahPpnMasukan().subtract(pengajuanSetorDetail.getJumlah()));
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        List<PengajuanSetorDetail> pengajuanSetorPpnMasukanList = (List<PengajuanSetorDetail>) session.getAttribute("listOfResultPencarianDataMasukan");
+        List<PengajuanSetorDetail> pengajuanSetorPpnMasukanB2List = (List<PengajuanSetorDetail>) session.getAttribute("listOfResultPencarianDataMasukanB2");
+        List<PengajuanSetorDetail> pengajuanSetorPpnMasukanB3List = (List<PengajuanSetorDetail>) session.getAttribute("listOfResultPencarianDataMasukanB3");
+        List<PengajuanSetorDetail> pengajuanSetorPpnKeluaranList = (List<PengajuanSetorDetail>) session.getAttribute("listOfResultPencarianDataKeluaran");
+        PengajuanSetor resultPengajuanSetor = (PengajuanSetor) session.getAttribute("listOfResultPengajuanSetor");
+
+        if (pengajuanSetorPpnMasukanB2List==null){
+            pengajuanSetorPpnMasukanB2List =new ArrayList<>();
+        }
+        if (pengajuanSetorPpnMasukanB3List==null){
+            pengajuanSetorPpnMasukanB3List =new ArrayList<>();
+        }
+
+        addPengajuanSetor.setJumlahPpnMasukanB2(BigDecimal.ZERO);
+        addPengajuanSetor.setJumlahPpnMasukanB3(BigDecimal.ZERO);
+        addPengajuanSetor.setJumlahPpnKeluaran(BigDecimal.ZERO);
+        addPengajuanSetor.setJumlahSeluruhnya(BigDecimal.ZERO);
+
+        for (PengajuanSetorDetail pengajuanSetorDetail : pengajuanSetorPpnMasukanList){
+            if (pengajuanSetorDetail.getTransaksiId().equalsIgnoreCase(transaksiId)){
+                boolean sudahUbah=false;
+                int length = 0;
+                pengajuanSetorDetail.setDibayar(data);
+
+                //untuk B2
+                for (PengajuanSetorDetail pengajuanSetorPPnMasukanB2 : pengajuanSetorPpnMasukanB2List){
+                    if (pengajuanSetorPPnMasukanB2.getTransaksiId().equalsIgnoreCase(transaksiId)){
+                        if ("".equalsIgnoreCase(data)){
+                            pengajuanSetorPpnMasukanB2List.remove(length);
+                            sudahUbah=true;
+                            break;
+                        }else if("b2".equalsIgnoreCase(data)){
+                            pengajuanSetorDetail.setTipe("PPN Masukan B2");
+                            sudahUbah=true;
+                            break;
+                        }
+                        else if("b3".equalsIgnoreCase(data)){
+                            pengajuanSetorPpnMasukanB2List.remove(length);
+                            break;
+                        }
+                    }
+                    length++;
+                }
+
+                length = 0;
+                //untuk B3
+                for (PengajuanSetorDetail pengajuanSetorPPnMasukanB3 : pengajuanSetorPpnMasukanB3List){
+                    if (pengajuanSetorPPnMasukanB3.getTransaksiId().equalsIgnoreCase(transaksiId)){
+                        if ("".equalsIgnoreCase(data)){
+                            pengajuanSetorPpnMasukanB3List.remove(length);
+                            sudahUbah=true;
+                            break;
+                        }else if("b3".equalsIgnoreCase(data)){
+                            pengajuanSetorDetail.setTipe("PPN Masukan B3");
+                            sudahUbah=true;
+                            break;
+                        }
+                        else if("b2".equalsIgnoreCase(data)){
+                            pengajuanSetorPpnMasukanB3List.remove(length);
+                            break;
+                        }
+                    }
+                    length++;
+                }
+
+                //jika data baru
+                if (!sudahUbah){
+                    if (data.equalsIgnoreCase("b2")){
+                        pengajuanSetorDetail.setTipe("PPN Masukan B2");
+                        pengajuanSetorPpnMasukanB2List.add(pengajuanSetorDetail);
+                        break;
+                    }else if (data.equalsIgnoreCase("b3")){
+                        pengajuanSetorDetail.setTipe("PPN Masukan B3");
+                        pengajuanSetorPpnMasukanB3List.add(pengajuanSetorDetail);
+                        break;
+                    }
                 }
             }
         }
+
+        //melakukan total ppn keluaran
+        for (PengajuanSetorDetail pengajuanSetorDetail : pengajuanSetorPpnKeluaranList){
+            addPengajuanSetor.setJumlahPpnKeluaran(addPengajuanSetor.getJumlahPpnKeluaran().add(pengajuanSetorDetail.getJumlah()));
+        }
+
+        //melakukan total ppn masukan B2
+        for (PengajuanSetorDetail pengajuanSetorDetail : pengajuanSetorPpnMasukanB2List){
+            addPengajuanSetor.setJumlahPpnMasukanB2(addPengajuanSetor.getJumlahPpnMasukanB2().add(pengajuanSetorDetail.getJumlah()));
+        }
+
+        //melakukan total masukan B3
+        for (PengajuanSetorDetail pengajuanSetorDetail : pengajuanSetorPpnMasukanB3List){
+            addPengajuanSetor.setJumlahPpnMasukanB3(addPengajuanSetor.getJumlahPpnMasukanB3().add(pengajuanSetorDetail.getJumlah()));
+        }
+
+        //Total Seluruhnya
+        addPengajuanSetor.setJumlahSeluruhnya(addPengajuanSetor.getJumlahPpnMasukanB2().add(addPengajuanSetor.getJumlahPpnMasukanB3().add(addPengajuanSetor.getJumlahPpnKeluaran())));
+
+        //set string
+        addPengajuanSetor.setStJumlahPpnKeluaran(CommonUtil.numbericFormat(addPengajuanSetor.getJumlahPpnKeluaran(),"###,###"));
+        addPengajuanSetor.setStJumlahPpnMasukanB2(CommonUtil.numbericFormat(addPengajuanSetor.getJumlahPpnMasukanB2(),"###,###"));
+        addPengajuanSetor.setStJumlahPpnMasukanB3(CommonUtil.numbericFormat(addPengajuanSetor.getJumlahPpnMasukanB3(),"###,###"));
         addPengajuanSetor.setStJumlahSeluruhnya(CommonUtil.numbericFormat(addPengajuanSetor.getJumlahSeluruhnya(),"###,###"));
-        addPengajuanSetor.setStJumlahPpnMasukan(CommonUtil.numbericFormat(addPengajuanSetor.getJumlahPpnMasukan(),"###,###"));
+
+        resultPengajuanSetor.setStJumlahPpnKeluaran(addPengajuanSetor.getStJumlahPpnKeluaran());
+        resultPengajuanSetor.setStJumlahPpnMasukanB2(addPengajuanSetor.getStJumlahPpnMasukanB2());
+        resultPengajuanSetor.setStJumlahPpnMasukanB3(addPengajuanSetor.getStJumlahPpnMasukanB3());
+        resultPengajuanSetor.setStJumlahPpnKeluaran(addPengajuanSetor.getStJumlahPpnKeluaran());
+        resultPengajuanSetor.setStJumlahSeluruhnya(addPengajuanSetor.getStJumlahSeluruhnya());
+        resultPengajuanSetor.setJumlahPpnKeluaran(addPengajuanSetor.getJumlahPpnKeluaran());
+        resultPengajuanSetor.setJumlahPpnMasukanB2(addPengajuanSetor.getJumlahPpnMasukanB2());
+        resultPengajuanSetor.setJumlahPpnMasukanB3(addPengajuanSetor.getJumlahPpnMasukanB3());
+        resultPengajuanSetor.setJumlahSeluruhnya(addPengajuanSetor.getJumlahSeluruhnya());
+
+        session.setAttribute("liresultAddPengajuanSetorPpnstOfResultPencarianDataMasukan", pengajuanSetorPpnMasukanList);
+        session.setAttribute("listOfResultPencarianDataMasukanB2", pengajuanSetorPpnMasukanB2List);
+        session.setAttribute("listOfResultPencarianDataMasukanB3", pengajuanSetorPpnMasukanB3List);
+        session.setAttribute("listOfResultPengajuanSetor", resultPengajuanSetor);
 
         logger.info("[PengajuanSetorAction.editSessionPpnMasukan] stop process >>>");
-
-        session.setAttribute("listOfResultPengajuanSetor", addPengajuanSetor);
-        session.setAttribute("listOfResultPencarianDataMasukan", pengajuanSetorDetailList);
-
         return addPengajuanSetor;
     }
 
@@ -779,43 +863,13 @@ public class PengajuanSetorAction extends BaseMasterAction {
         return addPengajuanSetor;
     }
 
-    public PengajuanSetor editSessionAset(String id,boolean check) {
-        logger.info("[PengajuanSetorAction.editSessionAset] start process >>>");
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        PengajuanSetor addPengajuanSetor = (PengajuanSetor) session.getAttribute("listOfResultPengajuanSetor");
-
-        List<PengajuanSetorDetail> pengajuanSetorDetailList = (List<PengajuanSetorDetail>) session.getAttribute("listOfResultPencarianDataAset");
-        for (PengajuanSetorDetail pengajuanSetorDetail : pengajuanSetorDetailList){
-            if (id.equalsIgnoreCase(pengajuanSetorDetail.getTransaksiId())){
-                if (check){
-                    pengajuanSetorDetail.setDibayar("Y");
-                    addPengajuanSetor.setJumlahSeluruhnya(addPengajuanSetor.getJumlahSeluruhnya().add(pengajuanSetorDetail.getJumlah()));
-                    addPengajuanSetor.setJumlahPpnAset(addPengajuanSetor.getJumlahPpnAset().add(pengajuanSetorDetail.getJumlah()));
-                }else{
-                    pengajuanSetorDetail.setDibayar("N");
-                    addPengajuanSetor.setJumlahSeluruhnya(addPengajuanSetor.getJumlahSeluruhnya().subtract(pengajuanSetorDetail.getJumlah()));
-                    addPengajuanSetor.setJumlahPpnAset(addPengajuanSetor.getJumlahPpnAset().subtract(pengajuanSetorDetail.getJumlah()));
-                }
-            }
-        }
-        addPengajuanSetor.setStJumlahSeluruhnya(CommonUtil.numbericFormat(addPengajuanSetor.getJumlahSeluruhnya(),"###,###"));
-        addPengajuanSetor.setStJumlahPpnAset(CommonUtil.numbericFormat(addPengajuanSetor.getJumlahPpnAset(),"###,###"));
-
-        logger.info("[PengajuanSetorAction.editSessionAset] stop process >>>");
-
-        session.setAttribute("listOfResultPengajuanSetor", addPengajuanSetor);
-        session.setAttribute("listOfResultPencarianDataAset", pengajuanSetorDetailList);
-
-        return addPengajuanSetor;
-    }
-
     public String saveAddPengajuanSetorPpn(){
         logger.info("[PengajuanSetorAction.saveAddPengajuanSetorPpn] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         PengajuanSetor pengajuanSetor = getPengajuanSetor();
-        List<PengajuanSetorDetail> pengajuanSetorDetailListMasukan = (List<PengajuanSetorDetail>) session.getAttribute("listOfResultPencarianDataMasukan");
+        List<PengajuanSetorDetail> pengajuanSetorDetailListMasukanB2 = (List<PengajuanSetorDetail>) session.getAttribute("listOfResultPencarianDataMasukanB2");
         List<PengajuanSetorDetail> pengajuanSetorDetailListKeluaran = (List<PengajuanSetorDetail>) session.getAttribute("listOfResultPencarianDataKeluaran");
-        List<PengajuanSetorDetail> pengajuanSetorDetailListAset = (List<PengajuanSetorDetail>) session.getAttribute("listOfResultPencarianDataAset");
+        List<PengajuanSetorDetail> pengajuanSetorDetailListMasukanB3 = (List<PengajuanSetorDetail>) session.getAttribute("listOfResultPencarianDataMasukanB3");
 
         String username = CommonUtil.userLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
@@ -829,7 +883,7 @@ public class PengajuanSetorAction extends BaseMasterAction {
         pengajuanSetor.setRegisteredDate(CommonUtil.convertStringToDate(pengajuanSetor.getStRegisteredDate()));
 
         try {
-            pengajuanSetorBoProxy.saveAddPengajuanSetorPpn(pengajuanSetor,pengajuanSetorDetailListMasukan,pengajuanSetorDetailListKeluaran,pengajuanSetorDetailListAset);
+            pengajuanSetorBoProxy.saveAddPengajuanSetorPpn(pengajuanSetor,pengajuanSetorDetailListMasukanB2,pengajuanSetorDetailListKeluaran,pengajuanSetorDetailListMasukanB3);
         } catch (GeneralBOException e) {
             logger.error("[PengajuanSetorAction.saveAddPengajuanSetorPpn] Error when save : ", e);
             throw new GeneralBOException(e.getMessage());

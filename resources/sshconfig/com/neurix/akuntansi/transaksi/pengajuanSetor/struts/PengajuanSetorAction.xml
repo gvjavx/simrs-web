@@ -65,6 +65,7 @@
             <exception-mapping exception="java.lang.RuntimeException" result="global_error" />
         </global-exception-mappings>
 
+
         <action name="*_pengajuanSetor"
                 class="com.neurix.akuntansi.transaksi.pengajuanSetor.action.PengajuanSetorAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
@@ -85,6 +86,7 @@
             <result name="success_add_pengajuan_setor_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/addPengajuanSetorPpn.jsp</result>
             <result name="search_add_pengajuan_setor_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/hasilPencarianPengajuanSetorPpn.jsp</result>
             <result name="success_save_pengajuan_setor_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/hasilPencarianPengajuanSetorPpn.jsp</result>
+            <result name="success_add_pemilihan_pengajuan_setor_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/pembagianPengajuanSetorPpn.jsp</result>
 
         </action>
     </package>

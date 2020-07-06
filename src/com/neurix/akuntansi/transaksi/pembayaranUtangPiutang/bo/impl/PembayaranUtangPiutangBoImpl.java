@@ -553,6 +553,8 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
 
             for (PembayaranUtangPiutangDetail data : pembayaranUtangPiutangDetailList){
                 BigDecimal jumlahPembayaran = new BigDecimal(data.getStJumlahPembayaran().replace(".",""));
+                BigDecimal ppn = new BigDecimal(data.getStPpn().replace(".",""));
+                BigDecimal pph = new BigDecimal(data.getStPph().replace(".",""));
                 ImPembayaranUtangPiutangDetailEntity pembayaranUtangPiutangDetailEntity = new ImPembayaranUtangPiutangDetailEntity();
                 String pembayaranUtangPiutangDetailId = pembayaranUtangPiutangDetailDao.getNextPembayaranUtangPiutangDetailId();
                 pembayaranUtangPiutangDetailEntity.setPembayaranUtangPiutangDetailId(pembayaranUtangPiutangDetailId);
@@ -563,6 +565,10 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
                 pembayaranUtangPiutangDetailEntity.setJumlahPembayaran(jumlahPembayaran);
                 pembayaranUtangPiutangDetailEntity.setDivisiId(data.getDivisiId());
                 pembayaranUtangPiutangDetailEntity.setPosisiCoa(data.getPosisiCoa());
+                pembayaranUtangPiutangDetailEntity.setPpn(ppn);
+                pembayaranUtangPiutangDetailEntity.setPph(pph);
+                pembayaranUtangPiutangDetailEntity.setNoFakturPajak(data.getNoFakturPajak());
+                pembayaranUtangPiutangDetailEntity.setUrlFakturImage(data.getUrlFakturImage());
 
                 pembayaranUtangPiutangDetailEntity.setFlag(bean.getFlag());
                 pembayaranUtangPiutangDetailEntity.setAction(bean.getAction());

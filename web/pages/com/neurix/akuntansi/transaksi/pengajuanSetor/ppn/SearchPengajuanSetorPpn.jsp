@@ -194,9 +194,9 @@
                                                     <tr bgcolor="#90ee90">
                                                         <td>ID</td>
                                                         <td>Tanggal Pengajuan</td>
-                                                        <td>PPN Masukan (RP)</td>
                                                         <td>PPN Keluaran (RP)</td>
-                                                        <td>PPN Aset (RP)</td>
+                                                        <td>PPN Masukan B2(RP)</td>
+                                                        <td>PPN Masukan B3 (RP)</td>
                                                         <td>Total (RP)</td>
                                                         <td>Keterangan</td>
                                                         <td align="center">View</td>
@@ -209,9 +209,9 @@
                                                         <tr>
                                                             <td><s:property value="pengajuanSetorId"/></td>
                                                             <td><s:property value="stRegisteredDate"/></td>
-                                                            <td style="text-align: right"><s:property value="stJumlahPpnMasukan"/></td>
                                                             <td style="text-align: right"><s:property value="stJumlahPpnKeluaran"/></td>
-                                                            <td style="text-align: right"><s:property value="stJumlahPpnAset"/></td>
+                                                            <td style="text-align: right"><s:property value="stJumlahPpnMasukanB2"/></td>
+                                                            <td style="text-align: right"><s:property value="stJumlahPpnMasukanB3"/></td>
                                                             <td style="text-align: right"><s:property value="stJumlahSeluruhnya"/></td>
                                                             <td><s:property value="keterangan"/></td>
                                                             <td align="center">
@@ -303,13 +303,6 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4">Total PPN Masukan (RP)</label>
-                                <div class="col-md-6">
-                                    <s:textfield id="mod_total_ppn_masukan" cssStyle="text-align: right" onkeypress="$(this).css('border','')" readonly="true" cssClass="form-control"/>
-                                    <br>
-                                </div>
-                            </div>
-                            <div class="form-group">
                                 <label class="col-md-4">Total PPN Keluaran (RP)</label>
                                 <div class="col-md-6">
                                     <s:textfield id="mod_total_ppn_keluaran" cssStyle="text-align: right" onkeypress="$(this).css('border','')" readonly="true" cssClass="form-control"/>
@@ -317,9 +310,16 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4">Total PPN Aset (RP)</label>
+                                <label class="col-md-4">Total PPN Masukan B2(RP)</label>
                                 <div class="col-md-6">
-                                    <s:textfield id="mod_total_ppn_aset" cssStyle="text-align: right" onkeypress="$(this).css('border','')" readonly="true" cssClass="form-control"/>
+                                    <s:textfield id="mod_total_ppn_masukan_b2" cssStyle="text-align: right" onkeypress="$(this).css('border','')" readonly="true" cssClass="form-control"/>
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4">Total PPN Masukan B3 (RP)</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_total_ppn_masukan_b3" cssStyle="text-align: right" onkeypress="$(this).css('border','')" readonly="true" cssClass="form-control"/>
                                     <br>
                                 </div>
                             </div>
@@ -339,22 +339,22 @@
                                     </div>
                                     <div class="box-body">
                                         <ul class="nav nav-pills" id="tabPane">
-                                            <li class="active"><a href="#masukan" data-toggle="tab">PPN Masukan</a></li>
-                                            <li><a href="#keluaran" data-toggle="tab">PPN Keluaran</a></li>
-                                            <li><a href="#aset" data-toggle="tab">PPN Pengajuan</a></li>
+                                            <li class="active"><a href="#keluaran" data-toggle="tab">PPN Keluaran</a></li>
+                                            <li><a href="#masukanb2" data-toggle="tab">PPN Masukan B2</a></li>
+                                            <li><a href="#masukanb3" data-toggle="tab">PPN Masukan B3</a></li>
                                         </ul>
                                         <br>
                                         <br>
                                         <div class="tab-content clearfix">
-                                            <div id="masukan" class="tab-pane active col-md-12">
+                                            <div id="keluaran" class="tab-pane active col-md-12 ">
                                                 <table id="table1" class="table table-bordered table-striped sortTable">
                                                 </table>
                                             </div>
-                                            <div id="keluaran" class="tab-pane fade">
+                                            <div id="masukanb2" class="tab-pane fade">
                                                 <table id="table2" class="table table-bordered table-striped sortTable">
                                                 </table>
                                             </div>
-                                            <div id="aset" class="tab-pane fade">
+                                            <div id="masukanb3" class="tab-pane fade">
                                                 <table id="table3" class="table table-bordered table-striped sortTable">
                                                 </table>
                                             </div>
@@ -377,12 +377,12 @@
 </div>
 
 <script>
-    window.loadSessionPpnMasukan= function(){
-        $('#table1').find('tbody').remove();
-        $('#table1').find('thead').remove();
+    window.loadSessionPpnMasukanB2= function(){
+        $('#table2').find('tbody').remove();
+        $('#table2').find('thead').remove();
         dwr.engine.setAsync(false);
         var tmp_table = "";
-        PengajuanSetorAction.searchDataSessionPpnMasukan(function (listdata) {
+        PengajuanSetorAction.searchDataSessionPpnMasukanB2(function (listdata) {
 
             tmp_table = "<thead style='font-size: 12px;' ><tr class='active'>" +
                 "<th style='text-align: center; background-color:  #90ee90'>ID</th>" +
@@ -400,12 +400,38 @@
                     '<td align="left">' + item.note + '</td>' +
                     "</tr>";
             });
-            $('#table1').append(tmp_table);
+            $('#table2').append(tmp_table);
+        });
+    };
+    window.loadSessionPpnMasukanB3= function(){
+        $('#table3').find('tbody').remove();
+        $('#table3').find('thead').remove();
+        dwr.engine.setAsync(false);
+        var tmp_table = "";
+        PengajuanSetorAction.searchDataSessionPpnMasukanB3(function (listdata) {
+
+            tmp_table = "<thead style='font-size: 12px;' ><tr class='active'>" +
+                "<th style='text-align: center; background-color:  #90ee90'>ID</th>" +
+                "<th style='text-align: center; background-color:  #90ee90'>Tipe</th>" +
+                "<th style='text-align: center; background-color:  #90ee90''>Sumber Jurnal</th>" +
+                "<th style='text-align: center; background-color:  #90ee90'>PPN (RP)</th>" +
+                "<th style='text-align: center; background-color:  #90ee90'>Keterangan</th>" +
+                "</tr></thead>";
+            $.each(listdata, function (i, item) {
+                tmp_table += '<tr style="font-size: 10px;" ">' +
+                    '<td >' + item.transaksiId + '</td>' +
+                    '<td align="center">' + item.tipe + '</td>' +
+                    '<td align="left">' + item.personId+ '</td>' +
+                    '<td align="right">' + item.stJumlah + '</td>' +
+                    '<td align="left">' + item.note + '</td>' +
+                    "</tr>";
+            });
+            $('#table3').append(tmp_table);
         });
     };
     window.loadSessionPpnKeluaran= function(){
-        $('#table2').find('tbody').remove();
-        $('#table2').find('thead').remove();
+        $('#table1').find('tbody').remove();
+        $('#table1').find('thead').remove();
         dwr.engine.setAsync(false);
         var tmp_table = "";
         PengajuanSetorAction.searchDataSessionPpnKeluaran(function (listdata) {
@@ -425,36 +451,7 @@
                     '<td align="left">' + item.note + '</td>' +
                     "</tr>";
             });
-            $('#table2').append(tmp_table);
-        });
-    };
-    window.loadSessionPengajuan= function(){
-        $('#table3').find('tbody').remove();
-        $('#table3').find('thead').remove();
-        dwr.engine.setAsync(false);
-        var tmp_table = "";
-        PengajuanSetorAction.searchDataSessionPpnAset(function (listdata) {
-            tmp_table = "<thead style='font-size: 14px;' ><tr class='active'>" +
-                "<th style='text-align: center; background-color:  #90ee90'>ID</th>" +
-                "<th style='text-align: center; background-color:  #90ee90'>Tipe</th>" +
-                "<th style='text-align: center; background-color:  #90ee90''>Posisi</th>" +
-                "<th style='text-align: center; background-color:  #90ee90''>SubDivisi/SubBidang</th>" +
-                "<th style='text-align: center; background-color:  #90ee90''>Divisi/Bidang</th>" +
-                "<th style='text-align: center; background-color:  #90ee90'>PPN (RP)</th>" +
-                "<th style='text-align: center; background-color:  #90ee90'>Keterangan</th>" +
-                "</tr></thead>";
-            $.each(listdata, function (i, item) {
-                tmp_table += '<tr style="font-size: 12px;" ">' +
-                    '<td >' + item.transaksiId + '</td>' +
-                    '<td align="center">' + item.tipe + '</td>' +
-                    '<td align="left">' + item.posisiName + '</td>' +
-                    '<td align="left">' + item.bagianName + '</td>' +
-                    '<td align="left">' + item.divisiName + '</td>' +
-                    '<td align="right">' + item.stJumlah + '</td>' +
-                    '<td align="left">' + item.note + '</td>' +
-                    "</tr>";
-            });
-            $('#table3').append(tmp_table);
+            $('#table1').append(tmp_table);
         });
     };
     $('.tablePengajuanSetor').on('click', '.item-posting', function() {
@@ -463,14 +460,14 @@
         PengajuanSetorAction.getForModalPopUp(pengajuanId,function (data) {
             $('#mod_branch_id').val(data.branchId);
             $('#mod_tanggal_pengajuan').val(data.stRegisteredDate);
-            $('#mod_total_ppn_masukan').val(data.stJumlahPpnMasukan);
             $('#mod_total_ppn_keluaran').val(data.stJumlahPpnKeluaran);
-            $('#mod_total_ppn_aset').val(data.stJumlahPpnAset);
+            $('#mod_total_ppn_masukan_b2').val(data.stJumlahPpnMasukanB2);
+            $('#mod_total_ppn_masukan_b3').val(data.stJumlahPpnMasukanB3);
             $('#mod_total_ppn_seluruhnya').val(data.stJumlahSeluruhnya);
         });
-        loadSessionPpnMasukan();
+        loadSessionPpnMasukanB2();
         loadSessionPpnKeluaran();
-        loadSessionPengajuan();
+        loadSessionPpnMasukanB3();
         $("#modal-setor").find('.modal-title').text('Posting Pengajuan Setor PPN');
         $("#modal-setor").modal('show');
         $("#btnPostingPengajuan").show();
@@ -478,7 +475,7 @@
         $('#table1').DataTable({
             paging: false,
             "bDestroy": true,
-            "order": [[6,5,4, "asc"]]
+            "order": [[1, "asc"]]
         });
         $('#table2').DataTable({
             paging: false,
@@ -497,14 +494,14 @@
         PengajuanSetorAction.getForModalPopUp(pengajuanId,function (data) {
             $('#mod_branch_id').val(data.branchId);
             $('#mod_tanggal_pengajuan').val(data.stRegisteredDate);
-            $('#mod_total_ppn_masukan').val(data.stJumlahPpnMasukan);
             $('#mod_total_ppn_keluaran').val(data.stJumlahPpnKeluaran);
-            $('#mod_total_ppn_aset').val(data.stJumlahPpnAset);
+            $('#mod_total_ppn_masukan_b2').val(data.stJumlahPpnMasukanB2);
+            $('#mod_total_ppn_masukan_b3').val(data.stJumlahPpnMasukanB3);
             $('#mod_total_ppn_seluruhnya').val(data.stJumlahSeluruhnya);
         });
-        loadSessionPpnMasukan();
+        loadSessionPpnMasukanB2();
         loadSessionPpnKeluaran();
-        loadSessionPengajuan();
+        loadSessionPpnMasukanB3();
         $("#modal-setor").find('.modal-title').text('View Pengajuan Setor PPN');
         $("#modal-setor").modal('show');
         $("#btnPostingPengajuan").hide();
@@ -512,7 +509,7 @@
         $('#table1').DataTable({
             paging: false,
             "bDestroy": true,
-            "order": [[6,5,4, "asc"]]
+            "order": [[1, "asc"]]
         });
         $('#table2').DataTable({
             paging: false,
@@ -531,14 +528,14 @@
         PengajuanSetorAction.getForModalPopUp(pengajuanId,function (data) {
             $('#mod_branch_id').val(data.branchId);
             $('#mod_tanggal_pengajuan').val(data.stRegisteredDate);
-            $('#mod_total_ppn_masukan').val(data.stJumlahPpnMasukan);
             $('#mod_total_ppn_keluaran').val(data.stJumlahPpnKeluaran);
-            $('#mod_total_ppn_aset').val(data.stJumlahPpnAset);
+            $('#mod_total_ppn_masukan_b2').val(data.stJumlahPpnMasukanB2);
+            $('#mod_total_ppn_masukan_b3').val(data.stJumlahPpnMasukanB3);
             $('#mod_total_ppn_seluruhnya').val(data.stJumlahSeluruhnya);
         });
-        loadSessionPpnMasukan();
+        loadSessionPpnMasukanB2();
         loadSessionPpnKeluaran();
-        loadSessionPengajuan();
+        loadSessionPpnMasukanB3();
         $("#modal-setor").find('.modal-title').text('Batalkan Pengajuan Setor PPN');
         $("#modal-setor").modal('show');
         $("#btnPostingPengajuan").hide();
@@ -546,7 +543,7 @@
         $('#table1').DataTable({
             paging: false,
             "bDestroy": true,
-            "order": [[6,5,4, "asc"]]
+            "order": [[1, "asc"]]
         });
         $('#table2').DataTable({
             paging: false,

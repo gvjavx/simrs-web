@@ -54,162 +54,50 @@ public class PengajuanSetor extends BaseModel {
 
     //ppn
     private BigDecimal jumlahPpnKeluaran;
-    private BigDecimal jumlahPpnMasukan;
-    private BigDecimal jumlahPpnAset;
+    private BigDecimal jumlahPpnMasukanB2;
+    private BigDecimal jumlahPpnMasukanB3;
     private String stJumlahPpnKeluaran;
-    private String stJumlahPpnMasukan;
-    private String stJumlahPpnAset;
+    private String stJumlahPpnMasukanB2;
+    private String stJumlahPpnMasukanB3;
 
-    public BigDecimal getJumlahPpnKeluaran() {
-        return jumlahPpnKeluaran;
+    public String getPengajuanSetorId() {
+        return pengajuanSetorId;
     }
 
-    public void setJumlahPpnKeluaran(BigDecimal jumlahPpnKeluaran) {
-        this.jumlahPpnKeluaran = jumlahPpnKeluaran;
+    public void setPengajuanSetorId(String pengajuanSetorId) {
+        this.pengajuanSetorId = pengajuanSetorId;
     }
 
-    public BigDecimal getJumlahPpnMasukan() {
-        return jumlahPpnMasukan;
+    public String getBranchId() {
+        return branchId;
     }
 
-    public void setJumlahPpnMasukan(BigDecimal jumlahPpnMasukan) {
-        this.jumlahPpnMasukan = jumlahPpnMasukan;
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
     }
 
-    public BigDecimal getJumlahPpnAset() {
-        return jumlahPpnAset;
+    public String getPeriode() {
+        return periode;
     }
 
-    public void setJumlahPpnAset(BigDecimal jumlahPpnAset) {
-        this.jumlahPpnAset = jumlahPpnAset;
+    public void setPeriode(String periode) {
+        this.periode = periode;
     }
 
-    public String getStJumlahPpnKeluaran() {
-        return stJumlahPpnKeluaran;
+    public String getTahun() {
+        return tahun;
     }
 
-    public void setStJumlahPpnKeluaran(String stJumlahPpnKeluaran) {
-        this.stJumlahPpnKeluaran = stJumlahPpnKeluaran;
+    public void setTahun(String tahun) {
+        this.tahun = tahun;
     }
 
-    public String getStJumlahPpnMasukan() {
-        return stJumlahPpnMasukan;
+    public String getBulan() {
+        return bulan;
     }
 
-    public void setStJumlahPpnMasukan(String stJumlahPpnMasukan) {
-        this.stJumlahPpnMasukan = stJumlahPpnMasukan;
-    }
-
-    public String getStJumlahPpnAset() {
-        return stJumlahPpnAset;
-    }
-
-    public void setStJumlahPpnAset(String stJumlahPpnAset) {
-        this.stJumlahPpnAset = stJumlahPpnAset;
-    }
-
-    public String getKeterangan() {
-        return keterangan;
-    }
-
-    public void setKeterangan(String keterangan) {
-        this.keterangan = keterangan;
-    }
-
-    public String getTipePengajuanSetor() {
-        return tipePengajuanSetor;
-    }
-
-    public void setTipePengajuanSetor(String tipePengajuanSetor) {
-        this.tipePengajuanSetor = tipePengajuanSetor;
-    }
-
-    public String getCancelId() {
-        return cancelId;
-    }
-
-    public void setCancelId(String cancelId) {
-        this.cancelId = cancelId;
-    }
-
-    public Timestamp getCancelDate() {
-        return cancelDate;
-    }
-
-    public void setCancelDate(Timestamp cancelDate) {
-        this.cancelDate = cancelDate;
-    }
-
-    public String getCancelFlag() {
-        return cancelFlag;
-    }
-
-    public void setCancelFlag(String cancelFlag) {
-        this.cancelFlag = cancelFlag;
-    }
-
-    public String getNoJurnal() {
-        return noJurnal;
-    }
-
-    public void setNoJurnal(String noJurnal) {
-        this.noJurnal = noJurnal;
-    }
-
-    public String getApprovalId() {
-        return approvalId;
-    }
-
-    public void setApprovalId(String approvalId) {
-        this.approvalId = approvalId;
-    }
-
-    public Timestamp getApprovalDate() {
-        return approvalDate;
-    }
-
-    public void setApprovalDate(Timestamp approvalDate) {
-        this.approvalDate = approvalDate;
-    }
-
-    public String getApprovalFlag() {
-        return approvalFlag;
-    }
-
-    public void setApprovalFlag(String approvalFlag) {
-        this.approvalFlag = approvalFlag;
-    }
-
-    public String getBulanAsli() {
-        return bulanAsli;
-    }
-
-    public void setBulanAsli(String bulanAsli) {
-        this.bulanAsli = bulanAsli;
-    }
-
-    public String getBranchName() {
-        return branchName;
-    }
-
-    public void setBranchName(String branchName) {
-        this.branchName = branchName;
-    }
-
-    public String getStTanggalDari() {
-        return stTanggalDari;
-    }
-
-    public void setStTanggalDari(String stTanggalDari) {
-        this.stTanggalDari = stTanggalDari;
-    }
-
-    public String getStTanggalSelesai() {
-        return stTanggalSelesai;
-    }
-
-    public void setStTanggalSelesai(String stTanggalSelesai) {
-        this.stTanggalSelesai = stTanggalSelesai;
+    public void setBulan(String bulan) {
+        this.bulan = bulan;
     }
 
     public Date getRegisteredDate() {
@@ -292,43 +180,155 @@ public class PengajuanSetor extends BaseModel {
         this.stJumlahSeluruhnya = stJumlahSeluruhnya;
     }
 
-    public String getPengajuanSetorId() {
-        return pengajuanSetorId;
+    public String getStTanggalDari() {
+        return stTanggalDari;
     }
 
-    public void setPengajuanSetorId(String pengajuanSetorId) {
-        this.pengajuanSetorId = pengajuanSetorId;
+    public void setStTanggalDari(String stTanggalDari) {
+        this.stTanggalDari = stTanggalDari;
     }
 
-    public String getBranchId() {
-        return branchId;
+    public String getStTanggalSelesai() {
+        return stTanggalSelesai;
     }
 
-    public void setBranchId(String branchId) {
-        this.branchId = branchId;
+    public void setStTanggalSelesai(String stTanggalSelesai) {
+        this.stTanggalSelesai = stTanggalSelesai;
     }
 
-    public String getPeriode() {
-        return periode;
+    public String getBranchName() {
+        return branchName;
     }
 
-    public void setPeriode(String periode) {
-        this.periode = periode;
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
     }
 
-    public String getTahun() {
-        return tahun;
+    public String getBulanAsli() {
+        return bulanAsli;
     }
 
-    public void setTahun(String tahun) {
-        this.tahun = tahun;
+    public void setBulanAsli(String bulanAsli) {
+        this.bulanAsli = bulanAsli;
     }
 
-    public String getBulan() {
-        return bulan;
+    public String getNoJurnal() {
+        return noJurnal;
     }
 
-    public void setBulan(String bulan) {
-        this.bulan = bulan;
+    public void setNoJurnal(String noJurnal) {
+        this.noJurnal = noJurnal;
+    }
+
+    public String getApprovalId() {
+        return approvalId;
+    }
+
+    public void setApprovalId(String approvalId) {
+        this.approvalId = approvalId;
+    }
+
+    public Timestamp getApprovalDate() {
+        return approvalDate;
+    }
+
+    public void setApprovalDate(Timestamp approvalDate) {
+        this.approvalDate = approvalDate;
+    }
+
+    public String getApprovalFlag() {
+        return approvalFlag;
+    }
+
+    public void setApprovalFlag(String approvalFlag) {
+        this.approvalFlag = approvalFlag;
+    }
+
+    public String getCancelId() {
+        return cancelId;
+    }
+
+    public void setCancelId(String cancelId) {
+        this.cancelId = cancelId;
+    }
+
+    public Timestamp getCancelDate() {
+        return cancelDate;
+    }
+
+    public void setCancelDate(Timestamp cancelDate) {
+        this.cancelDate = cancelDate;
+    }
+
+    public String getCancelFlag() {
+        return cancelFlag;
+    }
+
+    public void setCancelFlag(String cancelFlag) {
+        this.cancelFlag = cancelFlag;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getTipePengajuanSetor() {
+        return tipePengajuanSetor;
+    }
+
+    public void setTipePengajuanSetor(String tipePengajuanSetor) {
+        this.tipePengajuanSetor = tipePengajuanSetor;
+    }
+
+    public BigDecimal getJumlahPpnKeluaran() {
+        return jumlahPpnKeluaran;
+    }
+
+    public void setJumlahPpnKeluaran(BigDecimal jumlahPpnKeluaran) {
+        this.jumlahPpnKeluaran = jumlahPpnKeluaran;
+    }
+
+    public BigDecimal getJumlahPpnMasukanB2() {
+        return jumlahPpnMasukanB2;
+    }
+
+    public void setJumlahPpnMasukanB2(BigDecimal jumlahPpnMasukanB2) {
+        this.jumlahPpnMasukanB2 = jumlahPpnMasukanB2;
+    }
+
+    public BigDecimal getJumlahPpnMasukanB3() {
+        return jumlahPpnMasukanB3;
+    }
+
+    public void setJumlahPpnMasukanB3(BigDecimal jumlahPpnMasukanB3) {
+        this.jumlahPpnMasukanB3 = jumlahPpnMasukanB3;
+    }
+
+    public String getStJumlahPpnKeluaran() {
+        return stJumlahPpnKeluaran;
+    }
+
+    public void setStJumlahPpnKeluaran(String stJumlahPpnKeluaran) {
+        this.stJumlahPpnKeluaran = stJumlahPpnKeluaran;
+    }
+
+    public String getStJumlahPpnMasukanB2() {
+        return stJumlahPpnMasukanB2;
+    }
+
+    public void setStJumlahPpnMasukanB2(String stJumlahPpnMasukanB2) {
+        this.stJumlahPpnMasukanB2 = stJumlahPpnMasukanB2;
+    }
+
+    public String getStJumlahPpnMasukanB3() {
+        return stJumlahPpnMasukanB3;
+    }
+
+    public void setStJumlahPpnMasukanB3(String stJumlahPpnMasukanB3) {
+        this.stJumlahPpnMasukanB3 = stJumlahPpnMasukanB3;
     }
 }

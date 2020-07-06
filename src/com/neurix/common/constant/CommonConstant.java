@@ -166,5 +166,6 @@ public class CommonConstant {
     public final static String posisiDirkeuKp = "P002";
     public final static String posisiKadivKeuanganUnit = "";
     public final static String posisiGmUnit = "";
+    public final static String RESOURCE_PATH_FAKTUR_PAJAK = "/upload/faktur_pajak/";
 
 }

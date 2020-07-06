@@ -46,171 +46,12 @@ public class ItPengajuanSetorEntity implements Serializable {
 
     //ppn
     private BigDecimal jumlahPpnKeluaran;
-    private BigDecimal jumlahPpnMasukan;
-    private BigDecimal jumlahPpnAset;
+    private BigDecimal jumlahPpnMasukanB2;
+    private BigDecimal jumlahPpnMasukanB3;
     private String stJumlahPpnKeluaran;
-    private String stJumlahPpnMasukan;
-    private String stJumlahPpnAset;
+    private String stJumlahPpnMasukanB2;
+    private String stJumlahPpnMasukanB3;
 
-    public BigDecimal getJumlahPpnKeluaran() {
-        return jumlahPpnKeluaran;
-    }
-
-    public void setJumlahPpnKeluaran(BigDecimal jumlahPpnKeluaran) {
-        this.jumlahPpnKeluaran = jumlahPpnKeluaran;
-    }
-
-    public BigDecimal getJumlahPpnMasukan() {
-        return jumlahPpnMasukan;
-    }
-
-    public void setJumlahPpnMasukan(BigDecimal jumlahPpnMasukan) {
-        this.jumlahPpnMasukan = jumlahPpnMasukan;
-    }
-
-    public BigDecimal getJumlahPpnAset() {
-        return jumlahPpnAset;
-    }
-
-    public void setJumlahPpnAset(BigDecimal jumlahPpnAset) {
-        this.jumlahPpnAset = jumlahPpnAset;
-    }
-
-    public String getStJumlahPpnKeluaran() {
-        return stJumlahPpnKeluaran;
-    }
-
-    public void setStJumlahPpnKeluaran(String stJumlahPpnKeluaran) {
-        this.stJumlahPpnKeluaran = stJumlahPpnKeluaran;
-    }
-
-    public String getStJumlahPpnMasukan() {
-        return stJumlahPpnMasukan;
-    }
-
-    public void setStJumlahPpnMasukan(String stJumlahPpnMasukan) {
-        this.stJumlahPpnMasukan = stJumlahPpnMasukan;
-    }
-
-    public String getStJumlahPpnAset() {
-        return stJumlahPpnAset;
-    }
-
-    public void setStJumlahPpnAset(String stJumlahPpnAset) {
-        this.stJumlahPpnAset = stJumlahPpnAset;
-    }
-
-    public String getKeterangan() {
-        return keterangan;
-    }
-
-    public void setKeterangan(String keterangan) {
-        this.keterangan = keterangan;
-    }
-
-    public String getTipePengajuanSetor() {
-        return tipePengajuanSetor;
-    }
-
-    public void setTipePengajuanSetor(String tipePengajuanSetor) {
-        this.tipePengajuanSetor = tipePengajuanSetor;
-    }
-
-    public String getCancelId() {
-        return cancelId;
-    }
-
-    public void setCancelId(String cancelId) {
-        this.cancelId = cancelId;
-    }
-
-    public Timestamp getCancelDate() {
-        return cancelDate;
-    }
-
-    public void setCancelDate(Timestamp cancelDate) {
-        this.cancelDate = cancelDate;
-    }
-
-    public String getCancelFlag() {
-        return cancelFlag;
-    }
-
-    public void setCancelFlag(String cancelFlag) {
-        this.cancelFlag = cancelFlag;
-    }
-
-    public String getNoJurnal() {
-        return noJurnal;
-    }
-
-    public void setNoJurnal(String noJurnal) {
-        this.noJurnal = noJurnal;
-    }
-
-    public String getApprovalId() {
-        return approvalId;
-    }
-
-    public void setApprovalId(String approvalId) {
-        this.approvalId = approvalId;
-    }
-
-    public Timestamp getApprovalDate() {
-        return approvalDate;
-    }
-
-    public void setApprovalDate(Timestamp approvalDate) {
-        this.approvalDate = approvalDate;
-    }
-
-    public String getApprovalFlag() {
-        return approvalFlag;
-    }
-
-    public void setApprovalFlag(String approvalFlag) {
-        this.approvalFlag = approvalFlag;
-    }
-
-    public Date getRegisteredDate() {
-        return registeredDate;
-    }
-
-    public void setRegisteredDate(Date registeredDate) {
-        this.registeredDate = registeredDate;
-    }
-
-    public BigDecimal getJumlahPph21Payroll() {
-        return jumlahPph21Payroll;
-    }
-
-    public void setJumlahPph21Payroll(BigDecimal jumlahPph21Payroll) {
-        this.jumlahPph21Payroll = jumlahPph21Payroll;
-    }
-
-    public BigDecimal getJumlahPph21Kso() {
-        return jumlahPph21Kso;
-    }
-
-    public void setJumlahPph21Kso(BigDecimal jumlahPph21Kso) {
-        this.jumlahPph21Kso = jumlahPph21Kso;
-    }
-
-    public BigDecimal getJumlahPph21Pengajuan() {
-        return jumlahPph21Pengajuan;
-    }
-
-    public void setJumlahPph21Pengajuan(BigDecimal jumlahPph21Pengajuan) {
-        this.jumlahPph21Pengajuan = jumlahPph21Pengajuan;
-    }
-
-    public BigDecimal getJumlahSeluruhnya() {
-        return jumlahSeluruhnya;
-    }
-
-    public void setJumlahSeluruhnya(BigDecimal jumlahSeluruhnya) {
-        this.jumlahSeluruhnya = jumlahSeluruhnya;
-    }
 
     public String getPengajuanSetorId() {
         return pengajuanSetorId;
@@ -250,6 +91,118 @@ public class ItPengajuanSetorEntity implements Serializable {
 
     public void setBulan(String bulan) {
         this.bulan = bulan;
+    }
+
+    public Date getRegisteredDate() {
+        return registeredDate;
+    }
+
+    public void setRegisteredDate(Date registeredDate) {
+        this.registeredDate = registeredDate;
+    }
+
+    public String getTipePengajuanSetor() {
+        return tipePengajuanSetor;
+    }
+
+    public void setTipePengajuanSetor(String tipePengajuanSetor) {
+        this.tipePengajuanSetor = tipePengajuanSetor;
+    }
+
+    public BigDecimal getJumlahPph21Payroll() {
+        return jumlahPph21Payroll;
+    }
+
+    public void setJumlahPph21Payroll(BigDecimal jumlahPph21Payroll) {
+        this.jumlahPph21Payroll = jumlahPph21Payroll;
+    }
+
+    public BigDecimal getJumlahPph21Kso() {
+        return jumlahPph21Kso;
+    }
+
+    public void setJumlahPph21Kso(BigDecimal jumlahPph21Kso) {
+        this.jumlahPph21Kso = jumlahPph21Kso;
+    }
+
+    public BigDecimal getJumlahPph21Pengajuan() {
+        return jumlahPph21Pengajuan;
+    }
+
+    public void setJumlahPph21Pengajuan(BigDecimal jumlahPph21Pengajuan) {
+        this.jumlahPph21Pengajuan = jumlahPph21Pengajuan;
+    }
+
+    public BigDecimal getJumlahSeluruhnya() {
+        return jumlahSeluruhnya;
+    }
+
+    public void setJumlahSeluruhnya(BigDecimal jumlahSeluruhnya) {
+        this.jumlahSeluruhnya = jumlahSeluruhnya;
+    }
+
+    public String getNoJurnal() {
+        return noJurnal;
+    }
+
+    public void setNoJurnal(String noJurnal) {
+        this.noJurnal = noJurnal;
+    }
+
+    public String getApprovalId() {
+        return approvalId;
+    }
+
+    public void setApprovalId(String approvalId) {
+        this.approvalId = approvalId;
+    }
+
+    public Timestamp getApprovalDate() {
+        return approvalDate;
+    }
+
+    public void setApprovalDate(Timestamp approvalDate) {
+        this.approvalDate = approvalDate;
+    }
+
+    public String getApprovalFlag() {
+        return approvalFlag;
+    }
+
+    public void setApprovalFlag(String approvalFlag) {
+        this.approvalFlag = approvalFlag;
+    }
+
+    public String getCancelId() {
+        return cancelId;
+    }
+
+    public void setCancelId(String cancelId) {
+        this.cancelId = cancelId;
+    }
+
+    public Timestamp getCancelDate() {
+        return cancelDate;
+    }
+
+    public void setCancelDate(Timestamp cancelDate) {
+        this.cancelDate = cancelDate;
+    }
+
+    public String getCancelFlag() {
+        return cancelFlag;
+    }
+
+    public void setCancelFlag(String cancelFlag) {
+        this.cancelFlag = cancelFlag;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
     }
 
     public String getFlag() {
@@ -298,5 +251,53 @@ public class ItPengajuanSetorEntity implements Serializable {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public BigDecimal getJumlahPpnKeluaran() {
+        return jumlahPpnKeluaran;
+    }
+
+    public void setJumlahPpnKeluaran(BigDecimal jumlahPpnKeluaran) {
+        this.jumlahPpnKeluaran = jumlahPpnKeluaran;
+    }
+
+    public BigDecimal getJumlahPpnMasukanB2() {
+        return jumlahPpnMasukanB2;
+    }
+
+    public void setJumlahPpnMasukanB2(BigDecimal jumlahPpnMasukanB2) {
+        this.jumlahPpnMasukanB2 = jumlahPpnMasukanB2;
+    }
+
+    public BigDecimal getJumlahPpnMasukanB3() {
+        return jumlahPpnMasukanB3;
+    }
+
+    public void setJumlahPpnMasukanB3(BigDecimal jumlahPpnMasukanB3) {
+        this.jumlahPpnMasukanB3 = jumlahPpnMasukanB3;
+    }
+
+    public String getStJumlahPpnKeluaran() {
+        return stJumlahPpnKeluaran;
+    }
+
+    public void setStJumlahPpnKeluaran(String stJumlahPpnKeluaran) {
+        this.stJumlahPpnKeluaran = stJumlahPpnKeluaran;
+    }
+
+    public String getStJumlahPpnMasukanB2() {
+        return stJumlahPpnMasukanB2;
+    }
+
+    public void setStJumlahPpnMasukanB2(String stJumlahPpnMasukanB2) {
+        this.stJumlahPpnMasukanB2 = stJumlahPpnMasukanB2;
+    }
+
+    public String getStJumlahPpnMasukanB3() {
+        return stJumlahPpnMasukanB3;
+    }
+
+    public void setStJumlahPpnMasukanB3(String stJumlahPpnMasukanB3) {
+        this.stJumlahPpnMasukanB3 = stJumlahPpnMasukanB3;
     }
 }
