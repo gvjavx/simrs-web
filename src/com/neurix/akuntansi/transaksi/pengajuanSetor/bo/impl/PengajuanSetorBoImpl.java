@@ -11,6 +11,7 @@ import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.authorization.position.model.ImPosition;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.dao.BiodataDao;
@@ -329,22 +330,6 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
     }
 
     private PengajuanSetorDetail convertPph21Payroll( PengajuanSetorDetail data){
-        ImPosition position = positionDao.getById("positionId",data.getPositionId());
-        data.setPosisiName(position.getPositionName());
-
-        if (position.getBagianId()!=null){
-            ImPositionBagianEntity positionBagian= positionBagianDao.getById("bagianId",position.getBagianId());
-            data.setBagianName(positionBagian.getBagianName());
-        }else{
-            data.setBagianName("");
-        }
-        if (position.getDepartmentId()!=null){
-            ImDepartmentEntity departmentEntity= departmentDao.getById("departmentId",position.getDepartmentId());
-            data.setDivisiName(departmentEntity.getDepartmentName());
-        }else{
-            data.setDivisiName("");
-        }
-
         if (data.getJumlah()!=null){
             data.setStJumlah(CommonUtil.numbericFormat(data.getJumlah(),"###,###"));
         }else{
@@ -354,28 +339,11 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
     }
 
     private PengajuanSetorDetail convertPph21Pengajuan( PengajuanSetorDetail data){
-        ImPosition position = positionDao.getById("positionId",data.getPositionId());
-        data.setPosisiName(position.getPositionName());
-
-        if (position.getBagianId()!=null){
-            ImPositionBagianEntity positionBagian= positionBagianDao.getById("bagianId",position.getBagianId());
-            data.setBagianName(positionBagian.getBagianName());
-        }else{
-            data.setBagianName("");
-        }
-        if (position.getDepartmentId()!=null){
-            ImDepartmentEntity departmentEntity= departmentDao.getById("departmentId",position.getDepartmentId());
-            data.setDivisiName(departmentEntity.getDepartmentName());
-        }else{
-            data.setDivisiName("");
-        }
-
         if (data.getJumlah()!=null){
             data.setStJumlah(CommonUtil.numbericFormat(data.getJumlah(),"###,###"));
         }else{
             data.setStJumlah("0");
         }
-
         return data;
     }
 
@@ -645,24 +613,13 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
             }
         }
         if ("Payroll".equalsIgnoreCase(tipe)){
-            ImBiodataEntity biodataEntity = biodataDao.getById("nip",data.getPersonId());
-
-            result.setNama(biodataEntity.getNamaPegawai());
-
-            ImPosition position = positionDao.getById("positionId",data.getDivisiId());
-            result.setPosisiName(position.getPositionName());
-
-            if (position.getBagianId()!=null){
-                ImPositionBagianEntity positionBagian= positionBagianDao.getById("bagianId",position.getBagianId());
-                result.setBagianName(positionBagian.getBagianName());
+            if (data.getDivisiId()!=null){
+                List<ImPosition> positionList = positionDao.getListPositionKodering(data.getDivisiId());
+                for (ImPosition position : positionList){
+                    result.setPosisiName(position.getPositionName());
+                }
             }else{
-                result.setBagianName("");
-            }
-            if (position.getDepartmentId()!=null){
-                ImDepartmentEntity departmentEntity= departmentDao.getById("departmentId",position.getDepartmentId());
-                result.setDivisiName(departmentEntity.getDepartmentName());
-            }else{
-                result.setDivisiName("");
+                result.setPosisiName("");
             }
 
             if (data.getJumlah()!=null){
@@ -671,9 +628,10 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
                 result.setStJumlah("0");
             }
         } else if ("Dokter KSO".equalsIgnoreCase(tipe)){
-            ImSimrsDokterEntity dokterEntity= dokterDao.getById("idDokter",data.getPersonId());
-
-            result.setNama(dokterEntity.getNamaDokter());
+            List<ImSimrsDokterEntity> dokterEntityList = dokterDao.getDataDokterByKodering(data.getPersonId());
+            for (ImSimrsDokterEntity dokterEntity : dokterEntityList){
+                result.setNama(dokterEntity.getNamaDokter());
+            }
 
             if (data.getJumlah()!=null){
                 result.setStJumlah(CommonUtil.numbericFormat(data.getJumlah(),"###,###"));
@@ -681,20 +639,13 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
                 result.setStJumlah("0");
             }
         } else if ("Pengajuan Biaya PPH21".equalsIgnoreCase(tipe)){
-            ImPosition position = positionDao.getById("positionId",data.getDivisiId());
-            result.setPosisiName(position.getPositionName());
-
-            if (position.getBagianId()!=null){
-                ImPositionBagianEntity positionBagian= positionBagianDao.getById("bagianId",position.getBagianId());
-                result.setBagianName(positionBagian.getBagianName());
+            if (data.getDivisiId()!=null){
+                List<ImPosition> positionList = positionDao.getListPositionKodering(data.getDivisiId());
+                for (ImPosition position : positionList){
+                    result.setPosisiName(position.getPositionName());
+                }
             }else{
-                result.setBagianName("");
-            }
-            if (position.getDepartmentId()!=null){
-                ImDepartmentEntity departmentEntity= departmentDao.getById("departmentId",position.getDepartmentId());
-                result.setDivisiName(departmentEntity.getDepartmentName());
-            }else{
-                result.setDivisiName("");
+                result.setPosisiName("");
             }
 
             if (data.getJumlah()!=null){
@@ -953,6 +904,40 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
         return result;
     }
 
+    @Override
+    public ItPengajuanSetorEntity getPengajuanSetorById(String pengajuanSetorId){
+        return pengajuanSetorDao.getById("pengajuanSetorId",pengajuanSetorId);
+    }
+
+    @Override
+    public Map getBillingForPosting(String pengajuanSetorId){
+        logger.info("[PengajuanSetorBoImpl.getBillingForPosting] start process <<<");
+        Map dataBilling = new HashMap();
+
+        List<Map> dataDetailList = new ArrayList<>();
+
+        BigDecimal total = BigDecimal.ZERO;
+
+        List<ItPengajuanSetorDetailEntity> pengajuanSetorDetailEntityList = pengajuanSetorDetailDao.getByPengajuanSetorId(pengajuanSetorId);
+        for (ItPengajuanSetorDetailEntity data : pengajuanSetorDetailEntityList){
+            Map dataDetail = new HashMap();
+            dataDetail.put("bukti",data.getTransaksiId());
+            dataDetail.put("nilai",data.getJumlah());
+            total = total.add(data.getJumlah());
+            dataDetailList.add(dataDetail);
+        }
+
+        Map kas = new HashMap();
+        kas.put("metode_bayar","transfer");
+        kas.put("bank", CommonConstant.COA_PAYROLL);
+        kas.put("nilai",total);
+
+        dataBilling.put("hutang_pph_21",dataDetailList);
+        dataBilling.put("kas",kas);
+
+        logger.info("[PengajuanSetorBoImpl.getBillingForPosting] stop process >>>");
+        return dataBilling;
+    }
 
     @Override
     public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {

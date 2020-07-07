@@ -1,6 +1,8 @@
 package com.neurix.akuntansi.transaksi.pengajuanSetor.action;
 
+import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.akuntansi.transaksi.pengajuanSetor.bo.PengajuanSetorBo;
+import com.neurix.akuntansi.transaksi.pengajuanSetor.model.ItPengajuanSetorEntity;
 import com.neurix.akuntansi.transaksi.pengajuanSetor.model.PengajuanSetor;
 import com.neurix.akuntansi.transaksi.pengajuanSetor.model.PengajuanSetorDetail;
 import com.neurix.common.action.BaseMasterAction;
@@ -246,9 +248,11 @@ public class PengajuanSetorAction extends BaseMasterAction {
         resultPengajuanSetor.setTahun(addPengajuanSetor.getTahun());
         resultPengajuanSetor.setBulan(addPengajuanSetor.getBulan());
         HttpSession session = ServletActionContext.getRequest().getSession();
-        addPengajuanSetor.setPeriode(addPengajuanSetor.getBulan()+"/"+addPengajuanSetor.getTahun());
-        addPengajuanSetor.setBulanAsli(addPengajuanSetor.getBulan());
-        addPengajuanSetor.setBulan(getSearchWhereBulan(addPengajuanSetor.getBulan()));
+        addPengajuanSetor.setBulan(addPengajuanSetor.getBulan());
+
+        Integer tahunSebelumnya = Integer.parseInt(addPengajuanSetor.getTahun())-1;
+        addPengajuanSetor.setStTanggalDari(String.valueOf(tahunSebelumnya)+"-12-01");
+        addPengajuanSetor.setStTanggalSelesai(String.valueOf(addPengajuanSetor.getTahun())+"-"+addPengajuanSetor.getBulan()+"-01");
 
         List<PengajuanSetorDetail> pengajuanSetorDetailPayrollList = pengajuanSetorBoProxy.listPPhPayroll(addPengajuanSetor);
         List<PengajuanSetorDetail> pengajuanSetorDetailKsoList = pengajuanSetorBoProxy.listPPh21KsoDokter(addPengajuanSetor);
@@ -567,12 +571,16 @@ public class PengajuanSetorAction extends BaseMasterAction {
         try {
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             PengajuanSetorBo pengajuanSetorBo = (PengajuanSetorBo) ctx.getBean("pengajuanSetorBoProxy");
+            BillingSystemBo billingSystemBo= (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+
             PengajuanSetor data = new PengajuanSetor();
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            ItPengajuanSetorEntity pengajuanSetor = pengajuanSetorBo.getPengajuanSetorById(pengajuanSetorId);
 
+            Map dataPostingJurnal = pengajuanSetorBo.getBillingForPosting(pengajuanSetorId);
             //disini untuk posting jurnal untuk mendapat nojurnal
-            String noJurnal = "";
+            String noJurnal = billingSystemBo.createJurnal("65",dataPostingJurnal,pengajuanSetor.getBranchId(),pengajuanSetor.getKeterangan(),"Y");
 
             data.setPengajuanSetorId(pengajuanSetorId);
             data.setApprovalDate(updateTime);

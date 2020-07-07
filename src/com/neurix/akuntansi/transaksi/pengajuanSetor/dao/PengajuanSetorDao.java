@@ -4,6 +4,7 @@ import com.neurix.akuntansi.transaksi.pengajuanSetor.model.ItPengajuanSetorDetai
 import com.neurix.akuntansi.transaksi.pengajuanSetor.model.ItPengajuanSetorEntity;
 import com.neurix.akuntansi.transaksi.pengajuanSetor.model.PengajuanSetor;
 import com.neurix.akuntansi.transaksi.pengajuanSetor.model.PengajuanSetorDetail;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -78,69 +79,43 @@ public class PengajuanSetorDao extends GenericDao<ItPengajuanSetorEntity, String
         List<PengajuanSetorDetail> listOfResult = new ArrayList<>();
 
         List<Object[]> results = new ArrayList<Object[]>();
-        String query = "SELECT\n" +
-                "\tp.nip,\n" +
-                "\tp.nama,\n" +
-                "\tp.position_id,\n" +
-                "\tp.pph_gaji,\n" +
-                "\tp.flag_payroll,\n" +
-                "\tp.flag_thr,\n" +
-                "\tp.flag_cuti_tahunan,\n" +
-                "\tp.flag_jasprod,\n" +
-                "\tp.flag_cuti_panjang,\n" +
-                "\tp.flag_pensiun,\n" +
-                "\tp.flag_insentif,\n" +
-                "\tp.flag_jubileum,\n" +
-                "\tp.payroll_id,\n" +
-                "\tp.bulan,\n" +
-                "\tp.tahun \n" +
-                "FROM\n" +
-                "\tit_hris_payroll p\n" +
-                "\tLEFT JOIN it_akun_pengajuan_setor_detail sd ON p.payroll_id=sd.transaksi_id\n" +
-                "\t\tLEFT JOIN it_akun_pengajuan_setor s ON s.pengajuan_setor_id=sd.pengajuan_setor_id\n" +
+        String query = "SELECT \n" +
+                "\tjd.divisi_id,\n" +
+                "\tp.position_name,\n" +
+                "\tjd.jumlah_kredit,\n" +
+                "\tjd.no_nota,\n" +
+                "\tj.keterangan\n" +
+                "FROM \n" +
+                "\tit_akun_jurnal j\n" +
+                "\tLEFT JOIN it_akun_jurnal_detail jd ON j.no_jurnal=jd.no_jurnal\n" +
+                "\tLEFT JOIN im_position p ON jd.divisi_id = p.kodering\n" +
+                "\tLEFT JOIN it_akun_pengajuan_setor_detail ps ON ps.transaksi_id = jd.no_nota\n" +
+                "\tLEFT JOIN it_akun_pengajuan_setor s ON ps.pengajuan_setor_id = s.pengajuan_setor_id\n" +
                 "WHERE\n" +
-                "\tp.tahun='"+search.getTahun()+"'\n" +
-                "\tAND p.bulan IN ("+search.getBulan()+")\n" +
-                "\tAND p.pph_gaji <> 0\n" +
-                "\tAND p.branch_id='"+search.getBranchId()+"'\n" +
-                "\tAND (s.cancel_flag='Y' OR sd.pengajuan_setor_detail_id IS NULL)\n" +
-                "\tAND p.approval_flag='Y'";
+                "\tj.keterangan ilike 'Pembayaran gaji%'\n" +
+                "\tAND j.branch_id='"+search.getBranchId()+"'\n" +
+                "\tAND j.tanggal_jurnal >='"+search.getStTanggalDari()+"'\n" +
+                "\tAND j.tanggal_jurnal <'"+search.getStTanggalSelesai()+"'\n" +
+                "\tAND j.registered_flag='Y'\n" +
+                "\tAND jd.rekening_id='"+CommonConstant.REKENING_PPH21+"'\n" +
+                "\tAND (s.cancel_flag='Y' OR ps.pengajuan_setor_detail_id IS NULL)";
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
                 .list();
 
         for (Object[] row : results) {
             PengajuanSetorDetail data= new PengajuanSetorDetail();
-            String periode = row[13].toString()+"/"+row[14].toString();
             data.setTipe("Payroll");
-            data.setPersonId(row[0].toString());
-            data.setNama(row[1].toString());
-            data.setPositionId(row[2].toString());
+            data.setNote(row[4].toString());
+            data.setPositionId(row[0].toString());
+            data.setPosisiName(row[1].toString());
 
-            if (row[3]!=null){
-                data.setJumlah(BigDecimal.valueOf(Double.parseDouble(row[3].toString())));
+            if (row[2]!=null){
+                data.setJumlah(BigDecimal.valueOf(Double.parseDouble(row[2].toString())));
             }else{
                 data.setJumlah(BigDecimal.ZERO);
             }
-
-            if ("Y".equalsIgnoreCase(row[4].toString())){
-                data.setNote("PPh Gaji "+periode);
-            }else if ("Y".equalsIgnoreCase(row[5].toString())){
-                data.setNote("PPh THR "+periode);
-            }else if ("Y".equalsIgnoreCase(row[6].toString())){
-                data.setNote("PPh Cuti Tahunan "+periode);
-            }else if ("Y".equalsIgnoreCase(row[7].toString())){
-                data.setNote("PPh Jasa Operasional "+periode);
-            }else if ("Y".equalsIgnoreCase(row[8].toString())){
-                data.setNote("PPh Cuti Panjang "+periode);
-            }else if ("Y".equalsIgnoreCase(row[9].toString())){
-                data.setNote("PPh Pensiun "+periode);
-            }else if ("Y".equalsIgnoreCase(row[10].toString())){
-                data.setNote("PPh Insentif "+periode);
-            }else if ("Y".equalsIgnoreCase(row[11].toString())){
-                data.setNote("PPh Penghargaan Masa Kerja "+periode);
-            }
-            data.setTransaksiId(row[12].toString());
+            data.setTransaksiId(row[3].toString());
 
             listOfResult.add(data);
         }
@@ -153,31 +128,33 @@ public class PengajuanSetorDao extends GenericDao<ItPengajuanSetorEntity, String
 
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "SELECT \n" +
-                "                pd.dokter_id, \n" +
-                "                pd.dokter_name, \n" +
-                "                pd.pph_final,\n" +
-                "                pd.pendapatan_dokter_id, \n" +
-                "                pd.bulan, \n" +
-                "                pd.tahun  \n" +
-                "                FROM \n" +
-                "                it_hris_pendapatan_dokter pd\n" +
-                "                LEFT JOIN it_akun_pengajuan_setor_detail sd ON pd.pendapatan_dokter_id=sd.transaksi_id \n" +
-                "\t\tLEFT JOIN it_akun_pengajuan_setor s ON s.pengajuan_setor_id=sd.pengajuan_setor_id\n" +
-                "                WHERE \n" +
-                "                pd.tahun='"+search.getTahun()+"' \n" +
-                "                AND pd.bulan IN ("+search.getBulan()+") \n" +
-                "                AND pd.pph_final <> 0 \n" +
-                "                AND pd.branch_id='"+search.getBranchId()+"' \n" +
-                "\tAND (s.cancel_flag='Y' OR sd.pengajuan_setor_detail_id IS NULL)\n" +
-                "                AND pd.approval_flag='Y'";
+                "\tjd.master_id,\n" +
+                "\td.nama_dokter,\n" +
+                "\tjd.jumlah_kredit,\n" +
+                "\tjd.no_nota,\n" +
+                "\tj.keterangan\n" +
+                "FROM \n" +
+                "\tit_akun_jurnal j\n" +
+                "\tLEFT JOIN it_akun_jurnal_detail jd ON j.no_jurnal=jd.no_jurnal\n" +
+                "\tLEFT JOIN im_simrs_dokter d ON d.kodering = jd.master_id\n" +
+                "\tLEFT JOIN it_akun_pengajuan_setor_detail ps ON ps.transaksi_id = jd.no_nota\n" +
+                "\tLEFT JOIN it_akun_pengajuan_setor s ON ps.pengajuan_setor_id = s.pengajuan_setor_id\n" +
+                "WHERE\n" +
+                "\tj.keterangan ilike 'Pendapatan dokter%'\n" +
+                "\tAND j.branch_id='"+search.getBranchId()+"'\n" +
+                "\tAND j.tanggal_jurnal >='"+search.getStTanggalDari()+"'\n" +
+                "\tAND j.tanggal_jurnal <'"+search.getStTanggalSelesai()+"'\n" +
+                "\tAND j.registered_flag='Y'\n" +
+                "\tAND (s.cancel_flag='Y' OR ps.pengajuan_setor_detail_id IS NULL)"+
+                "\tAND jd.rekening_id='"+CommonConstant.REKENING_PPH21+"'";
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
                 .list();
 
         for (Object[] row : results) {
             PengajuanSetorDetail data= new PengajuanSetorDetail();
-            String periode = row[4].toString()+"/"+row[5].toString();
             data.setTipe("Dokter KSO");
+            data.setNote(row[4].toString());
             data.setPersonId(row[0].toString());
             data.setNama(row[1].toString());
 
@@ -186,9 +163,6 @@ public class PengajuanSetorDao extends GenericDao<ItPengajuanSetorEntity, String
             }else{
                 data.setJumlah(BigDecimal.ZERO);
             }
-
-            data.setNote("Dokter KSO "+periode);
-
             data.setTransaksiId(row[3].toString());
 
             listOfResult.add(data);
@@ -197,32 +171,30 @@ public class PengajuanSetorDao extends GenericDao<ItPengajuanSetorEntity, String
     }
 
     public List<PengajuanSetorDetail> listPPhPengajuan (PengajuanSetor search){
-        String tanggalAwal = search.getTahun()+"-01-01";
-        String tanggalAkhir = search.getTahun()+"-"+search.getBulanAsli()+"-01";
-
         List<PengajuanSetorDetail> listOfResult = new ArrayList<>();
 
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "SELECT \n" +
-                "                pbd.divisi_id, \n" +
-                "                pbd.keperluan, \n" +
-                "                pbd.pph,\n" +
-                "                pbd.pengajuan_biaya_detail_id, \n" +
-                "                pbd.tanggal,\n" +
-                "\t\t\t\tpbd.status_keuangan,\n" +
-                "\t\t\t\tpbd.approval_keuangan_kp_flag,\n" +
-                "\t\t\t\tpbd.approval_keuangan_flag\n" +
-                "\t\t\t\tFROM \n" +
-                "                it_akun_pengajuan_biaya_detail pbd\n" +
-                "                LEFT JOIN it_akun_pengajuan_setor_detail sd ON pbd.pengajuan_biaya_detail_id=sd.transaksi_id \n" +
-                "\t\tLEFT JOIN it_akun_pengajuan_setor s ON s.pengajuan_setor_id=sd.pengajuan_setor_id\n" +
-                "                WHERE \n" +
-                "                pbd.tanggal<='"+tanggalAkhir+"'\n" +
-                "                AND pbd.tanggal >='"+tanggalAwal+"'\n" +
-                "                AND pbd.pph <> 0 \n" +
-                "                \t\t\t\tAND (tipe_pengajuan_setor <> 'PPH21' OR (tipe_pengajuan_setor = 'PPH21' AND cancel_flag='Y') OR ( pengajuan_setor_detail_id IS NULL)) \n " +
-                "                AND pbd.branch_id='"+search.getBranchId()+"' \n" +
-                "\t\t\t\tAND pbd.status_keuangan IS NOT NULL";
+                "\tjd.divisi_id,\n" +
+                "\tp.position_name,\n" +
+                "\tjd.jumlah_kredit,\n" +
+                "\tjd.no_nota,\n" +
+                "\tj.keterangan\n" +
+                "FROM \n" +
+                "\tit_akun_jurnal j\n" +
+                "\tLEFT JOIN it_akun_jurnal_detail jd ON j.no_jurnal=jd.no_jurnal\n" +
+                "\tLEFT JOIN im_position p ON p.kodering = jd.divisi_id\n" +
+                "\tLEFT JOIN it_akun_pengajuan_setor_detail ps ON ps.transaksi_id = jd.no_nota\n" +
+                "\tLEFT JOIN it_akun_pengajuan_setor s ON ps.pengajuan_setor_id = s.pengajuan_setor_id\n" +
+                "WHERE\n" +
+                "\tj.keterangan NOT ILIKE 'Pendapatan dokter%'\n" +
+                "\tAND j.keterangan NOT ILIKE 'Pembayaran gaji%'\n" +
+                "\tAND j.branch_id='"+search.getBranchId()+"'\n" +
+                "\tAND j.tanggal_jurnal >='"+search.getStTanggalDari()+"'\n" +
+                "\tAND j.tanggal_jurnal <'"+search.getStTanggalSelesai()+"'\n" +
+                "\tAND j.registered_flag='Y'\n" +
+                "\tAND (s.cancel_flag='Y' OR ps.pengajuan_setor_detail_id IS NULL)"+
+                "\tAND jd.rekening_id='"+ CommonConstant.REKENING_PPH21 +"'";
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
                 .list();
@@ -230,8 +202,10 @@ public class PengajuanSetorDao extends GenericDao<ItPengajuanSetorEntity, String
         for (Object[] row : results) {
             PengajuanSetorDetail data= new PengajuanSetorDetail();
             data.setTipe("Pengajuan Biaya PPH21");
+            data.setNote(row[4].toString());
             data.setPositionId(row[0].toString());
-            data.setNote(row[1].toString());
+            data.setPosisiName(row[1].toString());
+
             if (row[2]!=null){
                 data.setJumlah(BigDecimal.valueOf(Double.parseDouble(row[2].toString())));
             }else{
@@ -239,16 +213,7 @@ public class PengajuanSetorDao extends GenericDao<ItPengajuanSetorEntity, String
             }
             data.setTransaksiId(row[3].toString());
 
-            String status = row[5].toString();
-            String approvalKeuanganKpFlag = row[6].toString();
-            String approvalKeuanganFlag = row[7].toString();
-
-            if ("KP".equalsIgnoreCase(status)&&"Y".equalsIgnoreCase(approvalKeuanganKpFlag)){
-                listOfResult.add(data);
-            }else if ("A".equalsIgnoreCase(approvalKeuanganFlag)){
-                listOfResult.add(data);
-            }
-
+            listOfResult.add(data);
         }
         return listOfResult;
     }

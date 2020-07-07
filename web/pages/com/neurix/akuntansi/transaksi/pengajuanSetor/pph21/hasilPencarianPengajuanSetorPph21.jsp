@@ -301,11 +301,7 @@
             tmp_table = "<thead style='font-size: 12px;' ><tr class='active'>" +
                 "<th style='text-align: center; background-color:  #90ee90'>ID</th>" +
                 "<th style='text-align: center; background-color:  #90ee90'>Tipe</th>" +
-                "<th style='text-align: center; background-color:  #90ee90''>NIP</th>" +
-                "<th style='text-align: center; background-color:  #90ee90''>Nama</th>" +
                 "<th style='text-align: center; background-color:  #90ee90''>Posisi</th>" +
-                "<th style='text-align: center; background-color:  #90ee90''>SubDivisi/SubBidang</th>" +
-                "<th style='text-align: center; background-color:  #90ee90''>Divisi/Bidang</th>" +
                 "<th style='text-align: center; background-color:  #90ee90'>PPH (RP)</th>" +
                 "<th style='text-align: center; background-color:  #90ee90'>Keterangan</th>" +
                 // "<th style='text-align: center; background-color:  #90ee90'>Status</th>" +
@@ -321,11 +317,7 @@
                 tmp_table += '<tr style="font-size: 10px;" ">' +
                     '<td >' + item.transaksiId + '</td>' +
                     '<td align="center">' + item.tipe + '</td>' +
-                    '<td align="left">' + item.personId+ '</td>' +
-                    '<td align="left">' + item.nama + '</td>' +
                     '<td align="left">' + item.posisiName + '</td>' +
-                    '<td align="left">' + item.bagianName + '</td>' +
-                    '<td align="left">' + item.divisiName + '</td>' +
                     '<td align="right">' + item.stJumlah + '</td>' +
                     '<td align="left">' + item.note + '</td>' +
                     // '<td align="center">'+check + '</td>' +
@@ -343,8 +335,7 @@
             tmp_table = "<thead style='font-size: 14px;' ><tr class='active'>" +
                 "<th style='text-align: center; background-color:  #90ee90'>ID</th>" +
                 "<th style='text-align: center; background-color:  #90ee90'>Tipe</th>" +
-                "<th style='text-align: center; background-color:  #90ee90''>ID Dokter</th>" +
-                "<th style='text-align: center; background-color:  #90ee90''>Nama</th>" +
+                "<th style='text-align: center; background-color:  #90ee90''>Nama Dokter</th>" +
                 "<th style='text-align: center; background-color:  #90ee90'>PPH (RP)</th>" +
                 "<th style='text-align: center; background-color:  #90ee90'>Keterangan</th>" +
                 // "<th style='text-align: center; background-color:  #90ee90'>Status</th>" +
@@ -360,7 +351,6 @@
                 tmp_table += '<tr style="font-size: 12px;" ">' +
                     '<td align="center" >' + item.transaksiId + '</td>' +
                     '<td align="center">' + item.tipe + '</td>' +
-                    '<td align="center">' + item.personId+ '</td>' +
                     '<td align="left">' + item.nama + '</td>' +
                     '<td align="right">' + item.stJumlah + '</td>' +
                     '<td align="left">' + item.note + '</td>' +
@@ -380,8 +370,6 @@
                 "<th style='text-align: center; background-color:  #90ee90'>ID</th>" +
                 "<th style='text-align: center; background-color:  #90ee90'>Tipe</th>" +
                 "<th style='text-align: center; background-color:  #90ee90''>Posisi</th>" +
-                "<th style='text-align: center; background-color:  #90ee90''>SubDivisi/SubBidang</th>" +
-                "<th style='text-align: center; background-color:  #90ee90''>Divisi/Bidang</th>" +
                 "<th style='text-align: center; background-color:  #90ee90'>PPH (RP)</th>" +
                 "<th style='text-align: center; background-color:  #90ee90'>Keterangan</th>" +
                 // "<th style='text-align: center; background-color:  #90ee90'>Status</th>" +
@@ -397,8 +385,6 @@
                     '<td >' + item.transaksiId + '</td>' +
                     '<td align="center">' + item.tipe + '</td>' +
                     '<td align="left">' + item.posisiName + '</td>' +
-                    '<td align="left">' + item.bagianName + '</td>' +
-                    '<td align="left">' + item.divisiName + '</td>' +
                     '<td align="right">' + item.stJumlah + '</td>' +
                     '<td align="left">' + item.note + '</td>' +
                     // '<td align="center">'+check + '</td>' +
@@ -445,7 +431,7 @@
 
         $('#table1').DataTable({
             paging: false,
-            "order": [[6,5,4, "asc"]]
+            "order": [[3, "asc"]]
         });
         $('#table2').DataTable({
             paging: false,

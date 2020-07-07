@@ -1,11 +1,13 @@
 package com.neurix.akuntansi.transaksi.pengajuanSetor.bo;
 
+import com.neurix.akuntansi.transaksi.pengajuanSetor.model.ItPengajuanSetorEntity;
 import com.neurix.akuntansi.transaksi.pengajuanSetor.model.PengajuanSetor;
 import com.neurix.akuntansi.transaksi.pengajuanSetor.model.PengajuanSetorDetail;
 import com.neurix.common.bo.BaseMasterBo;
 import com.neurix.common.exception.GeneralBOException;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -39,4 +41,8 @@ public interface PengajuanSetorBo extends BaseMasterBo<PengajuanSetor> {
     List<PengajuanSetorDetail> listPPnPengajuan(PengajuanSetor search);
 
     List<PengajuanSetorDetail> getDetailPengajuanSetorPPn(String pengajuanBiayaId, String tipe) throws GeneralBOException;
+
+    ItPengajuanSetorEntity getPengajuanSetorById(String pengajuanSetorId);
+
+    Map getBillingForPosting(String pengajuanSetorId);
 }
