@@ -1747,8 +1747,8 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
         try {
             stokEntities = transaksiStokDao.getByCriteria(hsCriteria);
         } catch (HibernateException e){
-            logger.error("[ObatPoliBoImpl.getListReporTransaksiObat] ERROR .", e);
-            throw new GeneralBOException("[ObatPoliBoImpl.getListReporTransaksiObat] ERROR .", e);
+            logger.error("[ObatPoliBoImpl.getListReporTransaksiObat] ERROR Search Transaksi Stock .", e);
+            throw new GeneralBOException("[ObatPoliBoImpl.getListReporTransaksiObat] ERROR Search Transaksi Stock."+ e);
         }
 
         BigDecimal nol = new BigDecimal(0);
@@ -1767,8 +1767,8 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                     try {
                         obatEntity = obatDao.getById("idBarang", stok.getIdBarang());
                     } catch (HibernateException e){
-                        logger.error("[ObatPoliBoImpl.getListReporTransaksiObat] ERROR .", e);
-                        throw new GeneralBOException("[ObatPoliBoImpl.getListReporTransaksiObat] ERROR .", e);
+                        logger.error("[ObatPoliBoImpl.getListReporTransaksiObat] ERROR get Obat By ID.", e);
+                        throw new GeneralBOException("[ObatPoliBoImpl.getListReporTransaksiObat] ERROR get Obat By ID. "+ e);
                     }
 
                     if (obatEntity != null){
@@ -1928,6 +1928,30 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                     logger.error("[BillingSystemBoImpl.generateAndSaveSaldoCurrentToNextMonth] ERROR .", e);
                     throw new GeneralBOException("[BillingSystemBoImpl.generateAndSaveSaldoCurrentToNextMonth] ERROR .", e);
                 }
+            }
+        } if (saldoBulanLaluList.size() == 0) {
+            ItSimrsTransaksiStokEntity transaksiStokEntity = new ItSimrsTransaksiStokEntity();
+            transaksiStokEntity.setIdTransaksi(generateNextIdTransaksiStock(branchId));
+            transaksiStokEntity.setIdObat(idObat);
+            transaksiStokEntity.setKeterangan("Saldo Bulan Lalu "+idObat);
+            transaksiStokEntity.setTipe("D");
+            transaksiStokEntity.setBranchId(branchId);
+            transaksiStokEntity.setQtyLalu(new BigInteger(String.valueOf(0)));
+            transaksiStokEntity.setTotalLalu(new BigDecimal(0));
+            transaksiStokEntity.setSubTotalLalu(new BigDecimal(0));
+            transaksiStokEntity.setCreatedDate(times);
+            transaksiStokEntity.setCreatedWho(userLogin);
+            transaksiStokEntity.setLastUpdate(times);
+            transaksiStokEntity.setLastUpdateWho(userLogin);
+            transaksiStokEntity.setIdBarang(idBarang);
+            transaksiStokEntity.setIdPelayanan(idPelayanan);
+            transaksiStokEntity.setRegisteredDate(getStDateNextMonth(tahun, bulan));
+
+            try {
+                transaksiStokDao.addAndSave(transaksiStokEntity);
+            } catch (HibernateException e){
+                logger.error("[BillingSystemBoImpl.generateAndSaveSaldoCurrentToNextMonth] ERROR .", e);
+                throw new GeneralBOException("[BillingSystemBoImpl.generateAndSaveSaldoCurrentToNextMonth] ERROR .", e);
             }
         }
     }
