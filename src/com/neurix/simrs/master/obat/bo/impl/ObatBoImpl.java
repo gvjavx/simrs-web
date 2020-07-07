@@ -1422,7 +1422,17 @@ public class ObatBoImpl implements ObatBo {
                             trans.setQtySaldo(minStok.getQtyLalu().add(trans.getQty()));
 
                             // total saldo = sub total lalu + sub total / qty saldo
-                            trans.setTotalSaldo(minStok.getSubTotalLalu().add(trans.getSubTotal()).divide(new BigDecimal(trans.getQtySaldo()), 2, BigDecimal.ROUND_HALF_UP));
+                            BigDecimal qtySaldo = new BigDecimal(trans.getQtySaldo() == null ? new BigInteger(String.valueOf(0)) : trans.getQtySaldo());
+                            BigDecimal subTotalLalu =  minStok.getSubTotalLalu() == null ? new BigDecimal(0) : minStok.getSubTotalLalu();
+                            BigDecimal totalSubTotalLalu = subTotalLalu.add(trans.getSubTotal());
+                            BigDecimal totalSaldo = totalSubTotalLalu.compareTo(new BigDecimal(0)) == 1 ? totalSubTotalLalu.divide(qtySaldo, 2, BigDecimal.ROUND_HALF_UP) : new BigDecimal(0) ;
+//                            BigDecimal totalSaldo = (
+//                                    minStok.getSubTotalLalu() == null ? new BigDecimal(0) : minStok.getSubTotalLalu()
+//                                    .add(trans.getSubTotal() == null ? new BigDecimal(0) : trans.getSubTotal())
+//                                    .divide(qtySaldo, 2, BigDecimal.ROUND_HALF_UP)
+//                            );
+
+                            trans.setTotalSaldo(totalSaldo);
 
                             // sub total saldo = total saldo * qty saldo
                             trans.setSubTotalSaldo(trans.getTotalSaldo().multiply(new BigDecimal(trans.getQtySaldo())));

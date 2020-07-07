@@ -1911,6 +1911,9 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                 transaksiStokEntity.setKeterangan("Saldo Bulan Lalu "+idObat);
                 transaksiStokEntity.setTipe("D");
                 transaksiStokEntity.setBranchId(branchId);
+                transaksiStokEntity.setQty(new BigInteger(String.valueOf(0)));
+                transaksiStokEntity.setTotal(new BigDecimal(0));
+                transaksiStokEntity.setSubTotal(new BigDecimal(0));
                 transaksiStokEntity.setQtyLalu(saldoBulanLalu.getQtySaldo());
                 transaksiStokEntity.setTotalLalu(saldoBulanLalu.getTotalSaldo());
                 transaksiStokEntity.setSubTotalLalu(saldoBulanLalu.getSubTotalSaldo());
@@ -1929,13 +1932,17 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                     throw new GeneralBOException("[BillingSystemBoImpl.generateAndSaveSaldoCurrentToNextMonth] ERROR .", e);
                 }
             }
-        } if (saldoBulanLaluList.size() == 0) {
+        }
+        if (saldoBulanLaluList.size() == 0) {
             ItSimrsTransaksiStokEntity transaksiStokEntity = new ItSimrsTransaksiStokEntity();
             transaksiStokEntity.setIdTransaksi(generateNextIdTransaksiStock(branchId));
             transaksiStokEntity.setIdObat(idObat);
             transaksiStokEntity.setKeterangan("Saldo Bulan Lalu "+idObat);
             transaksiStokEntity.setTipe("D");
             transaksiStokEntity.setBranchId(branchId);
+            transaksiStokEntity.setQty(new BigInteger(String.valueOf(0)));
+            transaksiStokEntity.setTotal(new BigDecimal(0));
+            transaksiStokEntity.setSubTotal(new BigDecimal(0));
             transaksiStokEntity.setQtyLalu(new BigInteger(String.valueOf(0)));
             transaksiStokEntity.setTotalLalu(new BigDecimal(0));
             transaksiStokEntity.setSubTotalLalu(new BigDecimal(0));
