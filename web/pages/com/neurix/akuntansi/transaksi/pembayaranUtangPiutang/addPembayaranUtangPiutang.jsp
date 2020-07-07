@@ -843,6 +843,7 @@
         });
 
         $('#mod_btnSaveDetailPembayaran').click(function () {
+            $('#tipePengajuan').val("Y");
             var tanggalRealisasi = $('#mod_tanggal_realisasi').val();
             var jumlahPengajuan = $('#mod_jumlah_pengajuan').val();
             var jumlahPembayaran = $('#mod_jumlah_pembayaran').val();

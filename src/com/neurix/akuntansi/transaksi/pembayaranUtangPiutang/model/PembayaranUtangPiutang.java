@@ -39,6 +39,25 @@ public class PembayaranUtangPiutang extends BaseModel {
 
     private String tipePengajuanBiaya;
 
+    private String noJurnalPpn;
+    private String noJurnalPph;
+
+    public String getNoJurnalPpn() {
+        return noJurnalPpn;
+    }
+
+    public void setNoJurnalPpn(String noJurnalPpn) {
+        this.noJurnalPpn = noJurnalPpn;
+    }
+
+    public String getNoJurnalPph() {
+        return noJurnalPph;
+    }
+
+    public void setNoJurnalPph(String noJurnalPph) {
+        this.noJurnalPph = noJurnalPph;
+    }
+
     public String getTipePengajuanBiaya() {
         return tipePengajuanBiaya;
     }

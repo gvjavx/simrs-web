@@ -317,7 +317,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4">Total PPH21 Pengajuan (RP)</label>
+                                <label class="col-md-4">Total PPH21 Rekanan yang Dipotong (RP)</label>
                                 <div class="col-md-6">
                                     <s:textfield id="mod_total_pph21_pengajuan" cssStyle="text-align: right" onkeypress="$(this).css('border','')" readonly="true" cssClass="form-control"/>
                                     <br>
@@ -341,7 +341,7 @@
                                         <ul class="nav nav-pills" id="tabPane">
                                             <li class="active"><a href="#payroll" data-toggle="tab">PPH21 Payroll</a></li>
                                             <li><a href="#kso" data-toggle="tab">PPH21 Dokter KSO</a></li>
-                                            <li><a href="#pengajuan" data-toggle="tab">PPH21 Pengajuan</a></li>
+                                            <li><a href="#pengajuan" data-toggle="tab">PPH21 Rekanan yang Dipotong</a></li>
                                         </ul>
                                         <br>
                                         <br>

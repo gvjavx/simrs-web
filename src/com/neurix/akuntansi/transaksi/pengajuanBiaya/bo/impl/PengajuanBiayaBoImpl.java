@@ -1213,7 +1213,7 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
         if ("N".equalsIgnoreCase(data.getApprovalKeuanganKpFlag())){
             returnData.setStatusSaatIni("Tidak diapprove oleh Admin Keuangan Kantor Pusat");
         }else if ("N".equalsIgnoreCase(data.getApprovalKeuanganFlag())){
-            returnData.setStatusSaatIni("Tidak diapprove oleh Admin Keuangan ");
+            returnData.setStatusSaatIni("Tidak diapprove oleh Admin Keuangan");
         }else if ("N".equalsIgnoreCase(data.getApprovalGmFlag())) {
             if (!CommonConstant.ID_KANPUS.equalsIgnoreCase(data.getBranchId())) {
                 returnData.setStatusSaatIni("Tidak diapprove oleh Kepala Rumah Sakit");
@@ -1695,6 +1695,9 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
             if (searchBean.getDivisiId() != null && !"".equalsIgnoreCase(searchBean.getDivisiId())) {
                 hsCriteria.put("divisi_id", searchBean.getDivisiId());
             }
+            if (searchBean.getTransaksi() != null && !"".equalsIgnoreCase(searchBean.getTransaksi())) {
+                hsCriteria.put("transaksi", searchBean.getTransaksi());
+            }
             if (searchBean.getStTanggalDari() != null && !"".equalsIgnoreCase(searchBean.getStTanggalDari())) {
                 Timestamp tanggalDari = CommonUtil.convertToTimestamp(searchBean.getStTanggalDari());
                 hsCriteria.put("tanggal_dari", tanggalDari);
@@ -1734,6 +1737,12 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                 BigDecimal total = BigDecimal.ZERO;
                 for(ItPengajuanBiayaDetailEntity pengajuanBiayaDetailEntity : itPengajuanBiayaDetailEntityList){
                     PengajuanBiayaDetail returnData = convertPengajuanBiayaDetail(pengajuanBiayaDetailEntity);
+
+                    if (!"".equalsIgnoreCase(searchBean.getStatusSaatIni())){
+                        if (!returnData.getStatusSaatIni().equalsIgnoreCase(searchBean.getStatusSaatIni())){
+                            continue;
+                        }
+                    }
                     List<ItJurnalEntity> jurnalEntityList = jurnalDao.getListJurnalByPengajuanId(returnData.getPengajuanBiayaDetailId());
                     if (jurnalEntityList.size()>0){
                         returnData.setSudahDibayar(true);

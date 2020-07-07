@@ -191,6 +191,47 @@
                                                     </script>
                                                 </td>
                                             </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Tipe Pengajuan :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:select list="#{'R':'Rutin', 'I' : 'Investasi'}"
+                                                                  id="transaksi" name="pengajuanBiayaDetail.transaksi"
+                                                                  headerKey="" headerValue="" cssClass="form-control" />
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Status Pengajuan :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:select list="#{'Sudah diapprove admin keuangan kantor pusat':'Sudah diapprove admin keuangan kantor pusat',
+                                                         'Menunggu approval keuangan kantor pusat' : 'Menunggu approval keuangan kantor pusat',
+                                                         'Sudah diapprove admin keuangan' : 'Sudah diapprove admin keuangan',
+                                                         'Menunggu approval Admin Keuangan' : 'Menunggu approval Admin Keuangan',
+                                                         'Menunggu approval Direktur Keuangan' : 'Menunggu approval Direktur Keuangan',
+                                                         'Menunggu approval Kepala Rumah Sakit' : 'Menunggu approval Kepala Rumah Sakit',
+                                                         'Menunggu approval Kepala Bidang' : 'Menunggu approval Kepala Bidang',
+                                                         'Menunggu approval Kepala Divisi' : 'Menunggu approval Kepala Divisi',
+                                                         'Menunggu approval Kepala Sub Bidang' : 'Menunggu approval Kepala Sub Bidang',
+                                                         'Menunggu approval Kepala Sub Divisi' : 'Menunggu approval Kepala Sub Divisi',
+                                                         'Tidak diapprove oleh Kepala Sub Bidang' : 'Tidak diapprove oleh Kepala Sub Bidang',
+                                                         'Tidak diapprove oleh Kepala Sub Divisi' : 'Tidak diapprove oleh Kepala Sub Divisi',
+                                                         'Tidak diapprove oleh Kepala Bidang' : 'Tidak diapprove oleh Kepala Bidang',
+                                                         'Tidak diapprove oleh Kepala Divisi' : 'Tidak diapprove oleh Kepala Divisi',
+                                                         'Tidak diapprove oleh Direktur Keuangan' : 'Tidak diapprove oleh Direktur Keuangan',
+                                                         'Tidak diapprove oleh Kepala Rumah Sakit' : 'Tidak diapprove oleh Kepala Rumah Sakit',
+                                                         'Tidak diapprove oleh Admin Keuangan' : 'Tidak diapprove oleh Admin Keuangan',
+                                                         'Tidak diapprove oleh Admin Keuangan Kantor Pusat' : 'Tidak diapprove oleh Admin Keuangan Kantor Pusat'}"
+                                                                  id="statusSaatIni" name="pengajuanBiayaDetail.statusSaatIni"
+                                                                  headerKey="" headerValue="" cssClass="form-control" />
+                                                    </table>
+                                                </td>
+                                            </tr>
                                         </table>
                                         <br>
                                         <div id="actions" class="form-actions">

@@ -459,16 +459,6 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         String userLogin = CommonUtil.userLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
         BigDecimal bayar = BigDecimal.valueOf(Double.valueOf(pembayaranUtangPiutang.getStBayar().replace(".","")));
-        pembayaranUtangPiutang.setBayar(bayar);
-        pembayaranUtangPiutang.setTanggal(CommonUtil.convertStringToDate2(pembayaranUtangPiutang.getStTanggal()));
-
-        pembayaranUtangPiutang.setCreatedWho(userLogin);
-        pembayaranUtangPiutang.setLastUpdate(updateTime);
-        pembayaranUtangPiutang.setCreatedDate(updateTime);
-        pembayaranUtangPiutang.setLastUpdateWho(userLogin);
-        pembayaranUtangPiutang.setAction("C");
-        pembayaranUtangPiutang.setFlag("Y");
-
         try {
             //get parameter pembayaran
             String parameter = billingSystemBoProxy.getParameterPembayaran(pembayaranUtangPiutang.getTipeTransaksi());
@@ -479,12 +469,16 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
             List<Map> dataMap = new ArrayList<>();
             String pengajuanBiayaDetailId="";
             String sumberDana ="";
+            Map mapPph = new HashMap();
+            Map mapPpn = new HashMap();
+
             for (PembayaranUtangPiutangDetail pembayaranUtangPiutangDetail : pembayaranUtangPiutangDetailList){
                 String rekeningId = kodeRekeningBoProxy.getRekeningIdByKodeRekening(pembayaranUtangPiutangDetail.getRekeningId());
                 BigDecimal jumlahPembayaran = new BigDecimal(pembayaranUtangPiutangDetail.getStJumlahPembayaran().replace(".",""));
                 BigDecimal ppn = new BigDecimal(pembayaranUtangPiutangDetail.getStPpn().replace(".",""));
                 BigDecimal pph = new BigDecimal(pembayaranUtangPiutangDetail.getStPph().replace(".",""));
-
+                jumlahPembayaran=jumlahPembayaran.add(ppn);
+                jumlahPembayaran=jumlahPembayaran.add(pph);
                 Map hs = new HashMap();
                 hs.put("bukti",pembayaranUtangPiutangDetail.getNoNota());
                 hs.put("nilai",jumlahPembayaran);
@@ -513,6 +507,14 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
                         pembayaranUtangPiutangDetail.setUrlFakturImage(fileName);
                     }
                 }
+
+                mapPph.put("bukti",billingSystemBoProxy.createInvoiceNumber("JKK",pembayaranUtangPiutang.getBranchId()));
+                mapPph.put("divisi_id",pembayaranUtangPiutangDetail.getDivisiId());
+                mapPph.put("nilai",pph);
+
+                mapPpn.put("bukti",billingSystemBoProxy.createInvoiceNumber("JKK",pembayaranUtangPiutang.getBranchId()));
+                mapPpn.put("divisi_id",pembayaranUtangPiutangDetail.getDivisiId());
+                mapPpn.put("nilai",ppn);
             }
 
             Map kas = new HashMap();
@@ -521,6 +523,8 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
 
             Map data = new HashMap();
             data.put(parameter,dataMap);
+            data.put("pph",mapPph);
+            data.put("ppn",mapPpn);
             data.put("metode_bayar",kas);
             if ("Y".equalsIgnoreCase(pembayaranUtangPiutang.getTipePengajuanBiaya())){
                 List<ItJurnalEntity> jurnalEntityList = billingSystemBoProxy.getJurnalByPengajuanId(pengajuanBiayaDetailId);
@@ -531,8 +535,17 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
                 data.put("sumber_dana",sumberDana);
             }
 
-            noJurnal= billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N");
-            pembayaranUtangPiutang.setNoJurnal(noJurnal);
+            pembayaranUtangPiutang.setBayar(bayar);
+            pembayaranUtangPiutang.setTanggal(CommonUtil.convertStringToDate2(pembayaranUtangPiutang.getStTanggal()));
+
+            pembayaranUtangPiutang.setCreatedWho(userLogin);
+            pembayaranUtangPiutang.setLastUpdate(updateTime);
+            pembayaranUtangPiutang.setCreatedDate(updateTime);
+            pembayaranUtangPiutang.setLastUpdateWho(userLogin);
+            pembayaranUtangPiutang.setAction("C");
+            pembayaranUtangPiutang.setFlag("Y");
+            pembayaranUtangPiutang.setNoJurnal(billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N"));
+
             pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList);
         }catch (GeneralBOException e) {
             Long logId = null;

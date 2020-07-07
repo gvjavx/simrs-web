@@ -1844,10 +1844,12 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
 
                         Map pphDokter = new HashMap();
                         pphDokter.put("nilai",pendapatanDokter.getTotalPphFinal());
+                        pphDokter.put("bukti",mappingJurnalDao.getNextInvoiceId("JKR",entity.getBranchId()));
                         pphDokter.put("master_id",koderingDokter);
 
                         Map potKs = new HashMap();
                         potKs.put("nilai",pendapatanDokter.getTotalPotKs());
+                        potKs.put("bukti",mappingJurnalDao.getNextInvoiceId("JKR",entity.getBranchId()));
                         potKs.put("master_id",koderingDokter);
 
                         billing.put("hutang_dokter",hutangDokter);
