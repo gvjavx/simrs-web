@@ -1787,9 +1787,9 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                         trans.setTotalLalu(nol);
                         trans.setSubTotalLalu(nol);
 
-                        trans.setQtyLalu(stok.getQtyLalu());
-                        trans.setTotalLalu(stok.getTotalLalu());
-                        trans.setSubTotalLalu(stok.getSubTotalLalu());
+                        trans.setQtyLalu(stok.getQtyLalu() == null ? new BigInteger(String.valueOf(0)) : stok.getQtyLalu());
+                        trans.setTotalLalu(stok.getTotalLalu() == null ? new BigDecimal(0) : stok.getTotalLalu());
+                        trans.setSubTotalLalu(stok.getSubTotalLalu() == null ? new BigDecimal(0) : stok.getSubTotalLalu());
                         listOfTransaksi.add(trans);
                         n++;
                     } else {
@@ -1812,32 +1812,34 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
 
                     TransaksiStok minStok = listOfTransaksi.get(n-1);
                     if ("D".equalsIgnoreCase(stok.getTipe())){
-                        trans.setQty(stok.getQty());
-                        trans.setTotal(stok.getTotal());
-                        trans.setSubTotal(stok.getSubTotal());
+                        trans.setQty(stok.getQty() == null ? new BigInteger(String.valueOf(0)) : stok.getQty());
+                        trans.setTotal(stok.getTotal() == null ? new BigDecimal(0) : stok.getTotal());
+                        trans.setSubTotal(stok.getSubTotal() == null ? new BigDecimal(0) : stok.getSubTotal());
 
                         // qty saldo = qty masuk + qty lalu;
-                        trans.setQtySaldo(minStok.getQtyLalu().add(stok.getQty()));
+                        trans.setQtySaldo(minStok.getQtyLalu().add(trans.getQty()));
 
                         // total saldo = sub total lalu + sub total / qty saldo
                         trans.setTotalSaldo(minStok.getSubTotalLalu().add(stok.getSubTotal()).divide(new BigDecimal(trans.getQtySaldo()), 2, BigDecimal.ROUND_HALF_UP));
 
                         // sub total saldo = total saldo * qty saldo
-                        trans.setSubTotalSaldo(trans.getTotal().multiply(new BigDecimal(trans.getQtySaldo())));
+//                        trans.setSubTotalSaldo(trans.getTotal().multiply(new BigDecimal(trans.getQtySaldo())));
+                        trans.setSubTotalSaldo(trans.getTotalSaldo().multiply(new BigDecimal(trans.getQtySaldo())));
                     } else {
 
-                        trans.setQtyKredit(stok.getQty());
-                        trans.setTotalKredit(stok.getTotal());
-                        trans.setSubTotalKredit(stok.getSubTotal());
+                        trans.setQtyKredit(stok.getQty() == null ? new BigInteger(String.valueOf(0)) : stok.getQty());
+                        trans.setTotalKredit(stok.getTotal() == null ? new BigDecimal(0) : stok.getTotal());
+                        trans.setSubTotalKredit(stok.getSubTotal() == null ? new BigDecimal(0) : stok.getSubTotal());
 
                         // qty saldo = qty bulan lalu - qty masuk
-                        trans.setQtySaldo(minStok.getQtyLalu().subtract(stok.getQty()));
+                        trans.setQtySaldo((minStok.getQtyLalu() == null ? new BigInteger(String.valueOf(0)) : minStok.getQtyLalu()).subtract(trans.getQty() == null ? new BigInteger(String.valueOf(0)) : trans.getQty()));
 
                         // total saldo = total lalu
-                        trans.setTotalSaldo(stok.getTotalLalu());
+                        trans.setTotalSaldo(stok.getTotalLalu() == null ? new BigDecimal(String.valueOf(0)) : stok.getTotalLalu());
 
                         // sub total saldo = total saldo * qty saldo
-                        trans.setSubTotalSaldo(trans.getTotal().multiply(new BigDecimal(trans.getQtySaldo())));
+//                        trans.setSubTotalSaldo(trans.getTotal().multiply(new BigDecimal(trans.getQtySaldo())));
+                        trans.setSubTotalSaldo(trans.getTotalSaldo().multiply(new BigDecimal(trans.getQtySaldo())));
                     }
                     listOfTransaksi.add(trans);
                     n++;
@@ -1854,26 +1856,26 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                     TransaksiStok minStok = listOfTransaksi.get(n-1);
 
                     if ("D".equalsIgnoreCase(stok.getTipe())){
-                        trans.setQty(stok.getQty());
-                        trans.setTotal(stok.getTotal());
-                        trans.setSubTotal(stok.getSubTotal());
+                        trans.setQty(stok.getQty() == null ? new BigInteger(String.valueOf(0)) : stok.getQty());
+                        trans.setTotal(stok.getTotal() == null ? new BigDecimal(0) : stok.getTotal());
+                        trans.setSubTotal(stok.getSubTotal() == null ? new BigDecimal(0) : stok.getSubTotal());
 
                         // qty saldo = qty saldo lalu + qty
-                        trans.setQtySaldo(minStok.getQtySaldo().add(stok.getQty()));
+                        trans.setQtySaldo(minStok.getQtySaldo().add(trans.getQty()));
 
                         // total saldo = sub total saldo lalu + sub total / qty saldo
-                        trans.setTotalSaldo(minStok.getSubTotalSaldo().add(stok.getSubTotal()).divide(new BigDecimal(trans.getQtySaldo()), 2, BigDecimal.ROUND_HALF_UP));
+                        trans.setTotalSaldo(minStok.getSubTotalSaldo().add(trans.getSubTotal()).divide(new BigDecimal(trans.getQtySaldo()), 2, BigDecimal.ROUND_HALF_UP));
 
                         // sub total saldo = sub total saldo
                         trans.setSubTotalSaldo(trans.getTotalSaldo().multiply(new BigDecimal(trans.getQtySaldo())));
                     } else {
 
-                        trans.setQtyKredit(stok.getQty());
-                        trans.setTotalKredit(stok.getTotal());
-                        trans.setSubTotalKredit(stok.getSubTotal());
+                        trans.setQtyKredit(stok.getQty() == null ? new BigInteger(String.valueOf(0)) : stok.getQty());
+                        trans.setTotalKredit(stok.getTotal() == null ? new BigDecimal(0) : stok.getTotal());
+                        trans.setSubTotalKredit(stok.getSubTotal() == null ? new BigDecimal(0) : stok.getSubTotal());
 
                         // qty saldo = qty saldo - qty
-                        trans.setQtySaldo(minStok.getQtySaldo().subtract(stok.getQty()));
+                        trans.setQtySaldo(minStok.getQtySaldo().subtract(trans.getQtyKredit()));
 
                         // total saldo = total saldo lalu
                         trans.setTotalSaldo(minStok.getTotalSaldo());
