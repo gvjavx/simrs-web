@@ -660,8 +660,11 @@ public class PengajuanSetorAction extends BaseMasterAction {
         resultPengajuanSetor.setBulan(addPengajuanSetor.getBulan());
         HttpSession session = ServletActionContext.getRequest().getSession();
         addPengajuanSetor.setPeriode(addPengajuanSetor.getBulan()+"/"+addPengajuanSetor.getTahun());
-        addPengajuanSetor.setBulanAsli(addPengajuanSetor.getBulan());
-        addPengajuanSetor.setBulan(getSearchWhereBulan(addPengajuanSetor.getBulan()));
+        addPengajuanSetor.setBulan(addPengajuanSetor.getBulan());
+
+        Integer tahunSebelumnya = Integer.parseInt(addPengajuanSetor.getTahun())-1;
+        addPengajuanSetor.setStTanggalDari(String.valueOf(tahunSebelumnya)+"-12-01");
+        addPengajuanSetor.setStTanggalSelesai(String.valueOf(addPengajuanSetor.getTahun())+"-"+addPengajuanSetor.getBulan()+"-01");
 
         List<PengajuanSetorDetail> pengajuanSetorDetailKeluaranList = pengajuanSetorBoProxy.listPPnKeluaran(addPengajuanSetor);
         List<PengajuanSetorDetail> pengajuanSetorDetailMasukanB2List = pengajuanSetorBoProxy.listPPnMasukan(addPengajuanSetor);
@@ -671,6 +674,7 @@ public class PengajuanSetorAction extends BaseMasterAction {
             resultPengajuanSetor.setJumlahPpnKeluaran(resultPengajuanSetor.getJumlahPpnKeluaran().add(pengajuanSetorDetail.getJumlah()));
         }
 
+        resultPengajuanSetor.setJumlahSeluruhnya(resultPengajuanSetor.getJumlahPpnKeluaran());
         resultPengajuanSetor.setStJumlahPpnMasukanB2(CommonUtil.numbericFormat(resultPengajuanSetor.getJumlahPpnMasukanB2(),"###,###"));
         resultPengajuanSetor.setStJumlahPpnMasukanB3(CommonUtil.numbericFormat(resultPengajuanSetor.getJumlahPpnMasukanB3(),"###,###"));
         resultPengajuanSetor.setStJumlahPpnKeluaran(CommonUtil.numbericFormat(resultPengajuanSetor.getJumlahPpnKeluaran(),"###,###"));

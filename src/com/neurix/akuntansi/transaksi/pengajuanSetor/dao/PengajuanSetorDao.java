@@ -228,8 +228,6 @@ public class PengajuanSetorDao extends GenericDao<ItPengajuanSetorEntity, String
     }
 
     public List<PengajuanSetorDetail> listPPnKeluaran (PengajuanSetor search){
-        String tanggalAwal = search.getTahun()+"-01-01";
-        String tanggalAkhir = search.getTahun()+"-"+search.getBulanAsli()+"-01";
         List<PengajuanSetorDetail> listOfResult = new ArrayList<>();
 
         List<Object[]> results = new ArrayList<Object[]>();
@@ -246,8 +244,8 @@ public class PengajuanSetorDao extends GenericDao<ItPengajuanSetorEntity, String
                 "WHERE \n" +
                 "  j.branch_id = '"+search.getBranchId()+"' \n" +
                 "  AND j.registered_flag = 'Y' \n" +
-                "  AND j.tanggal_jurnal >= '"+tanggalAwal+"' \n" +
-                "  AND j.tanggal_jurnal <= '"+tanggalAkhir+"' \n" +
+                "  AND j.tanggal_jurnal >= '"+search.getStTanggalDari()+"' \n" +
+                "  AND j.tanggal_jurnal < '"+search.getStTanggalSelesai()+"' \n" +
                 "  AND jd.rekening_id = '00199' \n" +
                 "  AND (\n" +
                 "    s.cancel_flag = 'Y' \n" +
@@ -277,26 +275,24 @@ public class PengajuanSetorDao extends GenericDao<ItPengajuanSetorEntity, String
     }
 
     public List<PengajuanSetorDetail> listPPnMasukan (PengajuanSetor search){
-        String tanggalAwal = search.getTahun()+"-01-01";
-        String tanggalAkhir = search.getTahun()+"-"+search.getBulanAsli()+"-01";
         List<PengajuanSetorDetail> listOfResult = new ArrayList<>();
 
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "SELECT \n" +
-                "  j.no_jurnal, \n" +
+                "  jd.no_nota, \n" +
                 "  j.sumber, \n" +
                 "  jd.jumlah_debit, \n" +
                 "  j.keterangan \n" +
                 "FROM \n" +
                 "  it_akun_jurnal j \n" +
                 "  LEFT JOIN it_akun_jurnal_detail jd ON jd.no_jurnal = j.no_jurnal \n" +
-                "  LEFT JOIN it_akun_pengajuan_setor_detail sd ON j.no_jurnal = sd.transaksi_id \n" +
+                "  LEFT JOIN it_akun_pengajuan_setor_detail sd ON jd.no_nota = sd.transaksi_id \n" +
                 "  LEFT JOIN it_akun_pengajuan_setor s ON s.pengajuan_setor_id = sd.pengajuan_setor_id \n" +
                 "WHERE \n" +
                 "  j.branch_id = '"+search.getBranchId()+"' \n" +
                 "  AND j.registered_flag = 'Y' \n" +
-                "  AND j.tanggal_jurnal >= '"+tanggalAwal+"' \n" +
-                "  AND j.tanggal_jurnal <= '"+tanggalAkhir+"' \n" +
+                "  AND j.tanggal_jurnal >= '"+search.getStTanggalDari()+"' \n" +
+                "  AND j.tanggal_jurnal < '"+search.getStTanggalSelesai()+"' \n" +
                 "  AND jd.rekening_id = '00198' \n" +
                 "  AND (\n" +
                 "    s.cancel_flag = 'Y' \n" +

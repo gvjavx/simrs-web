@@ -610,16 +610,27 @@
                 <script>
                     $('#btnAddNoFaktur').click(function () {
                         var stTanggalFaktur = $('#mod_tgl_faktur').val();
+                        var statusFaktur = $('#mod_status_faktur').val();
                         var currentDate = new Date();
                         currentDate.setMonth(currentDate.getMonth()-3);
                         var dateParts = stTanggalFaktur.split("/");
                         var tanggalFaktur = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
-                        if (tanggalFaktur < currentDate){
-                            alert("Tanggal Faktur sudah tidak valid , silahkan membuat faktur baru");
-                        }{
-                            alert("Berhasil menambahkan No. Faktur");
-                            $('#mod_no_faktur').val($('#mod_scan_faktur').val());
-                            $('#modal-scan-faktur').modal('hide');
+                        if (statusFaktur!=""){
+                            if (tanggalFaktur < currentDate){
+                                alert("Tanggal Faktur sudah tidak valid , silahkan membuat faktur baru");
+                                $('.mod_scan_faktur').val('');
+                                $('#no_faktur_view').text("Scan QR disini");
+                                $("#mod_scan_faktur").prop('readonly', false);
+                            }{
+                                alert("Berhasil menambahkan No. Faktur");
+                                $('#mod_no_faktur').val($('#mod_scan_faktur').val());
+                                $('#modal-scan-faktur').modal('hide');
+                            }
+                        } else{
+                            alert("QR atau faktur tidak valid ");
+                            $('.mod_scan_faktur').val('');
+                            $('#no_faktur_view').text("Scan QR disini");
+                            $("#mod_scan_faktur").prop('readonly', false);
                         }
                     })
                 </script>

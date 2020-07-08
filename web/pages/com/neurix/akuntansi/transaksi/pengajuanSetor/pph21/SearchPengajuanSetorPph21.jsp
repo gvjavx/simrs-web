@@ -196,7 +196,7 @@
                                                         <td>Tanggal Pengajuan</td>
                                                         <td>Payroll (RP)</td>
                                                         <td>KSO (RP)</td>
-                                                        <td>Pengajuan (RP)</td>
+                                                        <td>PPH21 Rekanan(RP)</td>
                                                         <td>Total (RP)</td>
                                                         <td>Keterangan</td>
                                                         <td align="center">View</td>
@@ -327,8 +327,7 @@
                                 <label class="col-md-4">Total Seluruhnya (RP)</label>
                                 <div class="col-md-6">
                                     <s:textfield id="mod_total_pph21_seluruhnya" cssStyle="text-align: right" onkeypress="$(this).css('border','')" readonly="true" cssClass="form-control"/>
-                                    <br>
-                                </div>
+                                    <br></div>
                             </div>
                             <br>
                             <div class="form-group">
@@ -384,7 +383,7 @@
         var tmp_table = "";
         PengajuanSetorAction.searchDataSessionPph21Payroll(function (listdata) {
 
-            tmp_table = "<thead style='font-size: 12px;' ><tr class='active'>" +
+            tmp_table = "<thead style='font-size: 14px;' ><tr class='active'>" +
                 "<th style='text-align: center; background-color:  #90ee90'>ID</th>" +
                 "<th style='text-align: center; background-color:  #90ee90'>Tipe</th>" +
                 "<th style='text-align: center; background-color:  #90ee90''>Posisi</th>" +
@@ -392,8 +391,8 @@
                 "<th style='text-align: center; background-color:  #90ee90'>Keterangan</th>" +
                 "</tr></thead>";
             $.each(listdata, function (i, item) {
-                tmp_table += '<tr style="font-size: 10px;" ">' +
-                    '<td >' + item.transaksiId + '</td>' +
+                tmp_table += '<tr style="font-size: 12px;" ">' +
+                    '<td align="center">' + item.transaksiId + '</td>' +
                     '<td align="center">' + item.tipe + '</td>' +
                     '<td align="left">' + item.posisiName + '</td>' +
                     '<td align="right">' + item.stJumlah + '</td>' +

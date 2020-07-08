@@ -238,9 +238,11 @@
                                                                     <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_batal">
                                                                 </s:elseif>
                                                                 <s:else>
-                                                                    <a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanSetorId}"/>" class="item-posting">
-                                                                        <img border="0" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>" name="icon_posting">
-                                                                    </a>
+                                                                    <s:if test='#row.branchId == "KP"'>
+                                                                        <a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanSetorId}"/>" class="item-posting">
+                                                                            <img border="0" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>" name="icon_posting">
+                                                                        </a>
+                                                                    </s:if>
                                                                 </s:else>
                                                             </td>
                                                         </tr>
