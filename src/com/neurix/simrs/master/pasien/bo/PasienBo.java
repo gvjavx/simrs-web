@@ -42,4 +42,5 @@ public interface PasienBo extends GeneralBo {
 
     public Pasien saveAddWithResponse(Pasien pasien) throws GeneralBOException;
     public List<Pasien> getListPasienWithPaket(String nama) throws GeneralBOException;
+    public ImSimrsPasienEntity getPasienById(String id) throws GeneralBOException;
 }

@@ -190,11 +190,6 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                             saldoAkhirEntity.setLastUpdate(bean.getLastUpdate());
                             saldoAkhirEntity.setLastUpdateWho(bean.getLastUpdateWho());
 
-//                            if ("00013".equalsIgnoreCase(saldoAkhirEntity.getRekeningId())){
-//                                logger.info("PIUTANG PASIEN NON BPJS : DEBIT >>>> :" + saldoAkhirEntity.getJumlahDebit());
-//                                logger.info("PIUTANG PASIEN NON BPJS : KREDIT >>>> :" + saldoAkhirEntity.getJumlahKredit());
-//                            }
-
                             // mendapatkan data saldo akhir periode sebelumnya dengan rekening_id dan unit
                             SaldoAkhir saldoAkhir = new SaldoAkhir();
                             saldoAkhir.setPeriode(getPeriodeSebelum(jurnalDetail.getBulan(), jurnalDetail.getTahun()));
@@ -258,9 +253,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
 
                         // mengambil parent diatasnya sekaligus insert;
                         List<TutupPeriod> tutupPeriods = prosesTutupPeriod(listOfTutupData, bean, level-1);
-                        if (tutupPeriods.size() == 0){
-                            isClear = true;
-                        }
+                        isClear = tutupPeriods.size() == 0;
                     }
                 }
 
@@ -440,6 +433,10 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                     saldoAkhir.setPasienId(jurnal.getPasienId());
                 }
 
+                if (jurnal.getKdBarang() != null && !"".equalsIgnoreCase(jurnal.getKdBarang())){
+                    saldoAkhir.setKdBarang(jurnal.getKdBarang());
+                }
+
                 // MENDAPATKAN SALDO AKHIR DETAIL PERIODE LALU
                 ItAkunSaldoAkhirDetailEntity saldoAkhirDetaillalu = new ItAkunSaldoAkhirDetailEntity();
                 List<ItAkunSaldoAkhirDetailEntity> saldoAkhirDetailEntities = getListEntitySaldoAkhirDetail(saldoAkhir);
@@ -612,29 +609,6 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                         }
                     }
 
-                    // mendapatkan data saldo akhir periode sebelumnya dengan rekening_id dan unit
-//                    SaldoAkhir saldoAkhir = new SaldoAkhir();
-//                    saldoAkhir.setPeriode(getPeriodeSebelum(bean.getBulan(), bean.getTahun()));
-//                    saldoAkhir.setBranchId(bean.getUnit());
-//                    saldoAkhir.setRekeningId(saldoAkhirEntity.getRekeningId());
-//
-//                    ItAkunSaldoAkhirEntity saldoAkhirLalu = new ItAkunSaldoAkhirEntity();
-//                    List<ItAkunSaldoAkhirEntity> saldoAkhirEntities = getListEntitySaldoAkhir(saldoAkhir);
-//                    if (saldoAkhirEntities.size() > 0){
-//                        saldoAkhirLalu = saldoAkhirEntities.get(0);
-//
-//                        // jika posisi saldo akhir yang lalu dengan rekening_id yang dicari adalah debit maka akan menambah jumlah debit
-//                        if ("D".equalsIgnoreCase(saldoAkhirLalu.getPosisi())){
-//                            saldoAkhirEntity.setJumlahDebit(saldoAkhirEntity.getJumlahDebit().add(saldoAkhirLalu.getSaldo()));
-//                            parentPeriod.setJumlahDebit(saldoAkhirEntity.getJumlahDebit().add(saldoAkhirLalu.getSaldo()));
-//                        } else {
-//                            // jika saldo akhir lalu adalah kredit maka akan menambah jumlah kredit
-//                            saldoAkhirEntity.setJumlahKredit(saldoAkhirEntity.getJumlahKredit().add(saldoAkhirLalu.getSaldo()));
-//                            parentPeriod.setJumlahKredit(saldoAkhirEntity.getJumlahKredit().add(saldoAkhirLalu.getSaldo()));
-//                        }
-//                    }
-                    // end
-
                     // SET SALDO
                     if (saldoAkhirEntity.getJumlahDebit().compareTo(saldoAkhirEntity.getJumlahKredit()) == 1){
 
@@ -664,7 +638,6 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                 prosesTutupPeriod(listOfMapingParents, bean, level);
             }
         }
-
         return new ArrayList<>();
     }
 
@@ -821,6 +794,12 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                 hsCriteria.put("pasien_id", bean.getMasterId());
             } else {
                 hsCriteria.put("pasien_id", "null");
+            }
+
+            if (bean.getKdBarang() != null){
+                hsCriteria.put("kd_barang", bean.getKdBarang());
+            } else {
+                hsCriteria.put("kd_barang", "null");
             }
 
             try {

@@ -2626,6 +2626,7 @@ public class BiodataBoImpl implements BiodataBo {
             }
 
             biodata.setNip(imBiodata.getNip());
+            biodata.setNipLama(imBiodata.getNipLama());
             biodata.setMasaKerja(masaKerja);
             biodata.setNamaPegawai(imBiodata.getNamaPegawai());
             biodata.setGelarDepan(imBiodata.getGelarDepan());
@@ -2685,7 +2686,12 @@ public class BiodataBoImpl implements BiodataBo {
 
             if(!"".equalsIgnoreCase(imBiodata.getGolongan())){
                 if(imBiodata.getImGolonganEntity() != null){
-                    biodata.setGolonganName(imBiodata.getImGolonganEntity().getGolonganName());
+                    if ("TP03".equalsIgnoreCase(imBiodata.getTipePegawai())) {
+                        ImGolonganPkwtEntity golonganPkwtEntity = golonganPkwtDao.getById("golonganPkwtId",imBiodata.getGolongan());
+                        biodata.setGolonganName(golonganPkwtEntity.getGolonganPkwtName());
+                    }else{
+                        biodata.setGolonganName(imBiodata.getImGolonganEntity().getGolonganName());
+                    }
                     biodata.setGolongan(imBiodata.getGolongan());
                 }else{
                     biodata.setGolongan(imBiodata.getGolongan());
@@ -2698,9 +2704,9 @@ public class BiodataBoImpl implements BiodataBo {
             biodata.setStatusPegawai(imBiodata.getStatusPegawai());
             if(imBiodata.getStatusPegawai() != null){
                 if(imBiodata.getStatusPegawai().equalsIgnoreCase("KS")){
-                    biodata.setStatusPegawaiName("Karyawan Staf");
+                    biodata.setStatusPegawaiName("Pimpinan");
                 }else{
-                    biodata.setStatusPegawaiName("Karyawan Non Staf");
+                    biodata.setStatusPegawaiName("Pelaksana");
                 }
             }
             biodata.setStatusKeluarga(imBiodata.getStatusKeluarga());
@@ -4686,8 +4692,11 @@ public class BiodataBoImpl implements BiodataBo {
     private Biodata convertEntityToModel (ImBiodataEntity biodataEntity) {
         logger.info("[BiodataBoImpl.convertEntityToModel] start process >>>");
         Biodata result = new Biodata();
-        result.setNip(biodataEntity.getNip());
-        result.setNamaPegawai(biodataEntity.getNamaPegawai());
+        if (biodataEntity != null) {
+            result.setNip(biodataEntity.getNip());
+            result.setNamaPegawai(biodataEntity.getNamaPegawai());
+            result.setFotoUpload(biodataEntity.getFotoUpload());
+        }
         logger.info("[BiodataBoImpl.convertEntityToModel] start process >>>");
         return result;
     }

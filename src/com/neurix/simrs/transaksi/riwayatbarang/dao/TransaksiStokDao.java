@@ -60,7 +60,8 @@ public class TransaksiStokDao extends GenericDao<ItSimrsTransaksiStokEntity, Str
             }
         }
 
-        return criteria.list();
+        List list = criteria.list();
+        return list;
     }
 
     public String getNextSeq() {

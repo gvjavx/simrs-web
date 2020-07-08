@@ -50,6 +50,9 @@
         <property name="lastUpdateWho">
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
         </property>
+        <property name="isTtd">
+            <column name="is_ttd" sql-type="varchar" length="1" not-null="false" />
+        </property>
 
     </class>
 </hibernate-mapping>

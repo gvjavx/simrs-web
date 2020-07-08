@@ -125,7 +125,17 @@
                                         <s:select list="#{'1':'Proses', '3':'Selesai'}" cssStyle="margin-top: 7px"
                                                   id="status" name="permintaanResep.status"
                                                   headerKey="0" headerValue="Antrian"
-                                                  cssClass="form-control select2"/>
+                                                  cssClass="form-control"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Jenis Antrian</label>
+                                    <div class="col-sm-4">
+                                        <s:select list="#{'Y':'Telemedic'}" cssStyle="margin-top: 7px"
+                                                  id="isTelemedic" name="permintaanResep.isTelemedic"
+                                                  headerKey="N" headerValue="Resep RS"
+                                                  cssClass="form-control"/>
                                     </div>
                                 </div>
 
@@ -191,6 +201,7 @@
                                 <td>No Checkup Detail</td>
                                 <td>Nama</td>
                                 <td>Status</td>
+                                <td>Jenis Antrian</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -201,6 +212,7 @@
                                     <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="status"/></td>
+                                    <td><s:property value="ketJenisAntrian"/></td>
                                     <td align="center">
                                         <s:if test='#row.flag == "N"'>
                                             <s:url var="add_print" namespace="/reseppoli" action="printStrukResepPasien_reseppoli" escapeAmp="false">

@@ -537,7 +537,7 @@
                     </ul>
                 </li>
                 <li class="dropdown user user-menu">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <a style="cursor: pointer" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="<s:url value="/pages/images/unknown-person.png"/>" class="user-image" alt="User Image">
                         <span class="hidden-xs" id="user_name_head"></span>
                     </a>

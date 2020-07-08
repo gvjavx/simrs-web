@@ -440,6 +440,7 @@ public class PelayananBoImpl implements PelayananBo{
                         pelayanan.setDivisiName(positionName);
                     }
 
+                    pelayanan.setKategoriPelayanan(entity.getKategoriPelayanan());
                     result.add(pelayanan);
                 }
             }
@@ -533,5 +534,10 @@ public class PelayananBoImpl implements PelayananBo{
     @Override
     public List<Pelayanan> getListPelayananFarmasi(String branchId) throws GeneralBOException {
         return pelayananDao.getListPelayananFarmasi(branchId);
+    }
+
+    @Override
+    public List<ImSimrsPelayananEntity> getByCriteria(Map criteria) throws GeneralBOException {
+        return pelayananDao.getByCriteria(criteria);
     }
 }

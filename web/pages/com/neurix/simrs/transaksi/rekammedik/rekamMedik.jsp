@@ -167,7 +167,8 @@
         }
 
         .garis{
-            border: solid 0.5px #ddd;
+            /*border: solid 0.5px #ddd;*/
+            color: #ddd;
         }
     </style>
 </head>
@@ -821,7 +822,7 @@
             context = contextPath+'/pages/modal/modalOperasi.jsp';
         }
         if(jenis == "ugd"){
-            context = contextPath+'/pages/modal/modalAsesmenUGD.jsp';
+            context = contextPath+'/pages/modal/modalAsesmenUGD-dewasa.jsp';
         }
         if(jenis == "mpp"){
             context = contextPath+'/pages/modal/modalMpp.jsp';
@@ -866,7 +867,7 @@
             context = contextPath+'/pages/modal/modalRingkasanRawatJalan.jsp';
         }
         if(jenis == "rencana_gigi"){
-            context = contextPath+'/pages/modal/modalRencanaPerawatanGigi.jsp';
+            context = contextPath+'/pages/modal/modal-spesialis_gigi.jsp';
         }
         if(jenis == "ringkasan"){
             context = contextPath+'/pages/modal/modalRingkasan.jsp';

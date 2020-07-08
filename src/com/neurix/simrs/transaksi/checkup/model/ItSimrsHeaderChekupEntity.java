@@ -39,8 +39,26 @@ public class ItSimrsHeaderChekupEntity implements Serializable {
     private String tinggi;
     private String berat;
     private Timestamp tglKeluar;
+    private String idAntrianOnline;
 
     private String flagCall;
+    private String anamnese;
+
+    public String getAnamnese() {
+        return anamnese;
+    }
+
+    public void setAnamnese(String anamnese) {
+        this.anamnese = anamnese;
+    }
+
+    public String getIdAntrianOnline() {
+        return idAntrianOnline;
+    }
+
+    public void setIdAntrianOnline(String idAntrianOnline) {
+        this.idAntrianOnline = idAntrianOnline;
+    }
 
     public String getFlagCall() {
         return flagCall;

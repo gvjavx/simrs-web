@@ -46,9 +46,10 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_DOC_RM = "/upload/cetakan_rm/";
     public final static String RESOURCE_PATH_VIDEO_RM = "/upload/video_rm/";
     public final static String RESOURCE_PATH_PAYROLL = "/upload/payroll/";
-
+    public final static String RESOURCE_PATH_BUKTI_TRANSFER = "/upload/bukti_transfer";
     public final static String RESOURCE_PATH_TTD_PETUGAS = "/upload/ttd_petugas/";
-
+    public static final String RESOURCE_PATH_RESEP = "/upload/resep/";
+    public final static String RESOURCE_PATH_IMG_RM = "/upload/img_rm/";
     public final static String RESOURCE_PATH_PHOTO_PROFILE = "/upload/profile/";
 
 //    public final static String RESOURCE_PATH_USER_UPLOAD = CommonUtil.getPropertyParams("resource.dir")+"/profile/";
@@ -169,4 +170,6 @@ public class CommonConstant {
     public final static String REKENING_PPH21 = "00187";
     public final static String RESOURCE_PATH_FAKTUR_PAJAK = "/upload/faktur_pajak/";
 
+    //TELEMEDICINE
+    public static final int ADD_JAM_BAYAR = 30; //MENIT
 }

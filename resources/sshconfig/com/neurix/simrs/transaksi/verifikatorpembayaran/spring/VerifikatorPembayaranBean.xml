@@ -6,29 +6,56 @@
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
     <bean id="verifikatorPembayaranAction" class="com.neurix.simrs.transaksi.verifikatorpembayaran.action.VerifikatorPembayaranAction"
+          p:verifikatorPembayaranBoProxy-ref="verifikatorPembayaranBoProxy"
+          p:telemedicBoProxy-ref="telemedicBoProxy"
+          p:notifikasiFcmBoProxy-ref="notifikasiFcmBoProxy"
+    />
+
+    <bean id="pembayaranController" class="com.neurix.simrs.mobileapi.PembayaranController"
+        p:verifikatorPembayaranBoProxy-ref="verifikatorPembayaranBo"
+    />
+
+    <bean id="telemedicineController" class="com.neurix.simrs.mobileapi.TelemedicineController"
+          p:verifikatorPembayaranBoProxy-ref="verifikatorPembayaranBo"
     />
 
     <bean id="verifikatorPembayaranBo" class="com.neurix.simrs.transaksi.verifikatorpembayaran.bo.impl.VerifikatorPembayaranBoImpl"
           p:verifikatorPembayaranDao-ref="verifikatorPembayaranDao"
           p:telemedicDao-ref="telemedicDao"
+          p:tindakanDao-ref="tindakanDao"
+          p:headerCheckupDao-ref="headerCheckupDao"
+          p:dokterTeamDao-ref="dokterTeamDao"
+          p:checkupDetailDao-ref="checkupDetailDao"
+          p:riwayatTindakanDao-ref="riwayatTindakanDao"
+          p:tindakanRawatDao-ref="tindakanRawatDao"
+          p:resepOnlineDao-ref="resepOnlineDao"
+          p:permintaanResepDao-ref="permintaanResepDao"
+          p:approvalTransaksiObatDao-ref="approvalTransaksiObatDao"
+          p:transaksiObatDetailDao-ref="transaksiObatDetailDao"
+          p:detailDao-ref="checkupDetailDao"
+          p:asuransiDao-ref="asuransiDao"
+          p:diagnosaRawatDao-ref="diagnosaRawatDao"
+          p:transaksiStokDao-ref="transaksiStokDao"
     />
 
     <bean id="verifikatorPembayaranBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="verifikatorPembayaranBo">
         <property name="interceptorNames">
             <list>
-                <value>transactionObatDetailInterceptor</value>
+                <value>transactionVerifikatorPembayaranInterceptor</value>
                 <value>hibernateInterceptor</value>
             </list>
         </property>
     </bean>
 
-    <bean id="transactionObatDetailInterceptor"
+    <bean id="transactionVerifikatorPembayaranInterceptor"
           class="org.springframework.transaction.interceptor.TransactionInterceptor"
           p:transactionManager-ref="transactionManager">
         <property name="transactionAttributes">
             <props>
                 <prop key="getSearchByCriteria">readOnly</prop>
+                <prop key="approveTransaksi">PROPAGATION_REQUIRED</prop>
+                <prop key="saveEdit">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>

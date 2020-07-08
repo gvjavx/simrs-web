@@ -1441,8 +1441,6 @@ function checkIcon(val) {
 }
 
 function penandaAreaOperasi() {
-    var jenisKelamin = $('#jenis_kelamin').val();
-    $('#jk_pasien').html(jenisKelamin);
     var url = "";
     if ("Laki-Laki" == jenisKelamin) {
         url = contextPath+'/pages/images/penanda-laki-laki.jpg';
@@ -1478,7 +1476,6 @@ function clearConvas(jenis) {
         var canvas = document.getElementById('area_canvas');
         const context = canvas.getContext('2d');
         context.clearRect(0, 0, canvas.width, canvas.height);
-        var jenisKelamin = $('#jenis_kelamin').val();
         var url = "";
         if ("Laki-Laki" == jenisKelamin) {
             url = contextPath+'/pages/images/penanda-laki-laki.jpg';

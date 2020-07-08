@@ -24,6 +24,87 @@ public class PembayaranOnline {
     private BigDecimal nominal;
     private String idRiwayatTindakan;
     private String kodeBank;
+    private String flagBayar;
+    private String jenisPengambilan;
+    private String alamat;
+    private String message;
+    private String flagEresep;
+    private String noKartu;
+    private BigDecimal jumlahCover;
+    private String namaAsuransi;
+    private String noSep;
+
+    public String getNoSep() {
+        return noSep;
+    }
+
+    public void setNoSep(String noSep) {
+        this.noSep = noSep;
+    }
+
+    public String getNamaAsuransi() {
+        return namaAsuransi;
+    }
+
+    public void setNamaAsuransi(String namaAsuransi) {
+        this.namaAsuransi = namaAsuransi;
+    }
+
+    public String getNoKartu() {
+        return noKartu;
+    }
+
+    public void setNoKartu(String noKartu) {
+        this.noKartu = noKartu;
+    }
+
+    public BigDecimal getJumlahCover() {
+        return jumlahCover;
+    }
+
+    public void setJumlahCover(BigDecimal jumlahCover) {
+        this.jumlahCover = jumlahCover;
+    }
+
+    public String getFlagEresep() {
+        return flagEresep;
+    }
+
+    public void setFlagEresep(String flagEresep) {
+        this.flagEresep = flagEresep;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getAlamat() {
+        return alamat;
+    }
+
+    public void setAlamat(String alamat) {
+        this.alamat = alamat;
+    }
+
+    public String getJenisPengambilan() {
+        return jenisPengambilan;
+    }
+
+    public void setJenisPengambilan(String jenisPengambilan) {
+        this.jenisPengambilan = jenisPengambilan;
+    }
+
+    public String getFlagBayar() {
+        return flagBayar;
+    }
+
+    public void setFlagBayar(String flagBayar) {
+        this.flagBayar = flagBayar;
+    }
 
     public String getKodeBank() {
         return kodeBank;

@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.antriantelemedic.model;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 
@@ -22,12 +23,155 @@ public class ItSimrsAntrianTelemedicEntity {
     private String lastUpdateWho;
     private String flag;
     private String action;
-    private Integer column16;
     private String noKartu;
     private String idJenisPeriksaPasien;
     private String idAsuransi;
     private String kodeBank;
     private String branchId;
+    private String keluhan;
+    private String flagEresep;
+    private String urlFotoResep;
+    private String jenisPengambilan;
+    private String lat;
+    private String lon;
+    private String alamat;
+    private String noTelp;
+    private BigDecimal jumlahCover;
+    private String jenisPembayaran;
+    private String noJurnal;
+    private String noRujukan;
+    private String jenisRujukan;
+    private String noSep;
+    private String idDiagnosa;
+    private String ketDiagnosa;
+
+    public String getIdDiagnosa() {
+        return idDiagnosa;
+    }
+
+    public void setIdDiagnosa(String idDiagnosa) {
+        this.idDiagnosa = idDiagnosa;
+    }
+
+    public String getKetDiagnosa() {
+        return ketDiagnosa;
+    }
+
+    public void setKetDiagnosa(String ketDiagnosa) {
+        this.ketDiagnosa = ketDiagnosa;
+    }
+
+    public String getNoSep() {
+        return noSep;
+    }
+
+    public void setNoSep(String noSep) {
+        this.noSep = noSep;
+    }
+
+    public String getNoRujukan() {
+        return noRujukan;
+    }
+
+    public void setNoRujukan(String noRujukan) {
+        this.noRujukan = noRujukan;
+    }
+
+    public String getJenisRujukan() {
+        return jenisRujukan;
+    }
+
+    public void setJenisRujukan(String jenisRujukan) {
+        this.jenisRujukan = jenisRujukan;
+    }
+
+    public String getJenisPembayaran() {
+        return jenisPembayaran;
+    }
+
+    public void setJenisPembayaran(String jenisPembayaran) {
+        this.jenisPembayaran = jenisPembayaran;
+    }
+
+    public String getNoJurnal() {
+        return noJurnal;
+    }
+
+    public void setNoJurnal(String noJurnal) {
+        this.noJurnal = noJurnal;
+    }
+
+    public BigDecimal getJumlahCover() {
+        return jumlahCover;
+    }
+
+    public void setJumlahCover(BigDecimal jumlahCover) {
+        this.jumlahCover = jumlahCover;
+    }
+
+    public String getNoTelp() {
+        return noTelp;
+    }
+
+    public void setNoTelp(String noTelp) {
+        this.noTelp = noTelp;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLon() {
+        return lon;
+    }
+
+    public void setLon(String lon) {
+        this.lon = lon;
+    }
+
+    public String getAlamat() {
+        return alamat;
+    }
+
+    public void setAlamat(String alamat) {
+        this.alamat = alamat;
+    }
+
+    public String getJenisPengambilan() {
+        return jenisPengambilan;
+    }
+
+    public void setJenisPengambilan(String jenisPengambilan) {
+        this.jenisPengambilan = jenisPengambilan;
+    }
+
+    public String getFlagEresep() {
+        return flagEresep;
+    }
+
+    public void setFlagEresep(String flagEresep) {
+        this.flagEresep = flagEresep;
+    }
+
+    public String getUrlFotoResep() {
+        return urlFotoResep;
+    }
+
+    public void setUrlFotoResep(String urlFotoResep) {
+        this.urlFotoResep = urlFotoResep;
+    }
+
+    public void setKeluhan(String keluhan) {
+        this.keluhan = keluhan;
+    }
+
+    public String getKeluhan() {
+        return keluhan;
+    }
 
     public String getBranchId() {
         return branchId;

@@ -171,6 +171,40 @@
             <filter-chain pattern="/mobileapi/absensi/*" filters="none" />
             <filter-chain pattern="/mobileapi/absensi/*/**" filters="none" />
 
+            <filter-chain pattern="/mobileapi/kasir" filters="none" />
+            <filter-chain pattern="/mobileapi/kasir/*" filters="none" />
+            <filter-chain pattern="/mobileapi/kasir/*/**" filters="none" />
+
+            <filter-chain pattern="/mobileapi/telemedicine" filters="none" />
+            <filter-chain pattern="/mobileapi/telemedicine/*" filters="none" />
+            <filter-chain pattern="/mobileapi/telemedicine/*/**" filters="none" />
+
+            <filter-chain pattern="/mobileapi/pembayaran" filters="none" />
+            <filter-chain pattern="/mobileapi/pembayaran/*" filters="none" />
+            <filter-chain pattern="/mobileapi/pembayaran/*/**" filters="none" />
+
+            <filter-chain pattern="/mobileapi/testelemedic" filters="none" />
+
+            <filter-chain pattern="/mobileapi/testnotif" filters="none" />
+            <filter-chain pattern="/mobileapi/testnotif/*" filters="none" />
+            <filter-chain pattern="/mobileapi/testnotif/*/**" filters="none" />
+
+            <filter-chain pattern="/mobileapi/kurir" filters="none" />
+            <filter-chain pattern="/mobileapi/kurir/*" filters="none" />
+            <filter-chain pattern="/mobileapi/kurir/*/**" filters="none" />
+
+            <filter-chain pattern="/mobileapi/reseponline" filters="none" />
+            <filter-chain pattern="/mobileapi/reseponline/*" filters="none" />
+            <filter-chain pattern="/mobileapi/reseponline/*/**" filters="none" />
+
+            <filter-chain pattern="/mobileapi/pengiriman" filters="none" />
+            <filter-chain pattern="/mobileapi/pengiriman/*" filters="none" />
+            <filter-chain pattern="/mobileapi/pengiriman/*/**" filters="none" />
+
+
+            <filter-chain pattern="/mobileapi/asuransi" filters="none" />
+            <filter-chain pattern="/mobileapi/asuransi/*" filters="none" />
+            <filter-chain pattern="/mobileapi/asuransi/*/**" filters="none" />
 
 
             <filter-chain pattern="/**/*"

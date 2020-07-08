@@ -47,6 +47,10 @@
           p:checkupDetailBoProxy-ref="checkupDetailBoProxy"
     />
 
+    <bean id="telemedicineController" class="com.neurix.simrs.mobileapi.TelemedicineController"
+          p:checkupDetailBoProxy-ref="checkupDetailBoProxy"
+    />
+
     <bean id="checkupDetailBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="checkupDetailBo">
         <property name="interceptorNames">

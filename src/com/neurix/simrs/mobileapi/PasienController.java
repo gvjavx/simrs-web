@@ -33,6 +33,14 @@ public class PasienController extends ValidationAwareSupport implements ModelDri
 
     private String newPassword;
 
+    public String getTokenFcm() {
+        return tokenFcm;
+    }
+
+    public void setTokenFcm(String tokenFcm) {
+        this.tokenFcm = tokenFcm;
+    }
+
     public HttpHeaders create(){
         logger.info("[PasienController.create] start process POST /loginpasien >>>");
 

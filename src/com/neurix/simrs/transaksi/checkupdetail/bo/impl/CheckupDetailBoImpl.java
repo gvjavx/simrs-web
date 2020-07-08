@@ -269,6 +269,11 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     }
 
     @Override
+    public ItSimrsHeaderDetailCheckupEntity getEntityDetailCheckupByIdTransaksi(String id) throws GeneralBOException {
+        return checkupDetailDao.getById("idTransaksiOnline", id);
+    }
+
+    @Override
     public HeaderDetailCheckup getTotalBiayaTindakanBpjs(String idDetailCheckup) throws GeneralBOException {
         HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
         try {
@@ -372,20 +377,24 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         detailCheckupEntityList = getListEntityByCriteria(detailCheckup);
         if (!detailCheckupEntityList.isEmpty()) {
             ItSimrsHeaderDetailCheckupEntity entity = detailCheckupEntityList.get(0);
-            entity.setStatusPeriksa(bean.getStatusPeriksa());
-            entity.setKeteranganSelesai(bean.getKeteranganSelesai());
+            entity.setStatusPeriksa(bean.getStatusPeriksa() == null ? entity.getStatusBayar() : bean.getStatusPeriksa());
+            entity.setKeteranganSelesai(bean.getKeteranganSelesai() == null ? entity.getKeteranganSelesai() : bean.getKeteranganSelesai());
             entity.setKeteranganCekupUlang(bean.getKeteranganCekupUlang() != null && !"".equalsIgnoreCase(bean.getKeteranganCekupUlang()) ? bean.getKeteranganCekupUlang() : null);
-            entity.setTglCekup(bean.getTglCekup());
-            entity.setJenisLab(bean.getJenisLab());
-            entity.setFlag(bean.getFlag());
-            entity.setAction(bean.getAction());
-            entity.setLastUpdate(bean.getLastUpdate());
-            entity.setLastUpdateWho(bean.getLastUpdateWho());
+            entity.setTglCekup(bean.getTglCekup() == null ? entity.getTglCekup() : bean.getTglCekup());
+            entity.setJenisLab(bean.getJenisLab() == null ? entity.getJenisLab() : bean.getJenisLab());
+            entity.setFlag(bean.getFlag() == null ? entity.getFlag() : bean.getFlag());
+            entity.setAction(bean.getAction() == null ? entity.getAction() : bean.getAction());
+            entity.setLastUpdate(bean.getLastUpdate() == null ? entity.getLastUpdate() : bean.getLastUpdate());
+            entity.setLastUpdateWho(bean.getLastUpdateWho() == null ? entity.getLastUpdateWho() : bean.getLastUpdateWho());
             entity.setCaraPasienPulang(bean.getCaraPasienPulang() != null && !"".equalsIgnoreCase(bean.getCaraPasienPulang()) ? bean.getCaraPasienPulang() : null);
             entity.setPendamping(bean.getPendamping() != null && !"".equalsIgnoreCase(bean.getPendamping()) ? bean.getPendamping() : null);
             entity.setTempatTujuan(bean.getTempatTujuan() != null && !"".equalsIgnoreCase(bean.getTempatTujuan()) ? bean.getTempatTujuan() : null);
-            entity.setInvoice(bean.getInvoice());
-            entity.setUrlTtd(bean.getUrlTtd());
+            entity.setInvoice(bean.getInvoice() == null ? entity.getInvoice() : bean.getInvoice());
+            entity.setUrlTtd(bean.getUrlTtd() == null ? entity.getUrlTtd() : bean.getUrlTtd());
+            entity.setNoSep(bean.getNoSep() == null ? entity.getNoSep() : bean.getNoSep());
+            entity.setTarifBpjs(bean.getTarifBpjs() == null ? entity.getTarifBpjs() : bean.getTarifBpjs());
+            entity.setKodeCbg(bean.getKodeCbg() == null ? entity.getKodeCbg() : bean.getKodeCbg());
+            entity.setIdPelayananBpjs(bean.getIdPelayananBpjs() == null ? entity.getIdPelayananBpjs() : bean.getIdPelayananBpjs());
 
             try {
                 checkupDetailDao.updateAndSave(entity);
@@ -1290,8 +1299,12 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                         detailCheckupEntity.setTransDate(bean.getTransDate());
                         detailCheckupEntity.setInvoiceTrans(bean.getInvoice());
                     } else {
-                        detailCheckupEntity.setInvoice(bean.getInvoice());
-                        detailCheckupEntity.setNoJurnal(bean.getNoJurnal());
+
+                        String invoice = bean.getInvoice() == null ? detailCheckupEntity.getInvoice() : bean.getInvoice();
+                        String noJurnal = bean.getNoJurnal() == null ? detailCheckupEntity.getNoJurnal() : bean.getNoJurnal();
+
+                        detailCheckupEntity.setInvoice(invoice);
+                        detailCheckupEntity.setNoJurnal(noJurnal);
                     }
 
                     try {

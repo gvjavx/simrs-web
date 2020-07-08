@@ -188,6 +188,35 @@
         <action name="absensi/*" class="com.neurix.hris.mobileapi.AbsensiOnlineController">
             <interceptor-ref name="mobileStack"/>
         </action>
+        <action name="kasir/*" class="com.neurix.simrs.mobileapi.KasirController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
+        <action name="telemedicine/*" class="com.neurix.simrs.mobileapi.TelemedicineController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
+        <action name="pembayaran/*" class="com.neurix.simrs.mobileapi.PembayaranController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
+        <action name="testelemedic/*" class="com.neurix.hris.mobileapi.TesTelemedicController">
+            <interceptor-ref name="mobileStack"/>
+            <param name="id">{1}</param>
+        </action>
+        <action name="testnotif/*" class="com.neurix.simrs.mobileapi.TestNotifController">
+            <interceptor-ref name="mobileStack"/>
+            <param name="id">{1}</param>
+        </action>
+        <action name="kurir/*" class="com.neurix.simrs.mobileapi.KurirContoller">
+            <interceptor-ref name="mobileStack"/>
+        </action>
+        <action name="reseponline/*" class="com.neurix.simrs.mobileapi.ResepOnlineController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
+        <action name="pengiriman/*" class="com.neurix.simrs.mobileapi.PengirimanObatController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
+        <action name="asuransi/*" class="com.neurix.simrs.mobileapi.AsuransiController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
     </package>
 
 </struts>

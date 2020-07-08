@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.simrs.master.kurir.model.ImSimrsKurirEntity" dynamic-update="true"
+           table="im_simrs_kurir" select-before-update="true" schema="public">
+
+        <id name="idKurir">
+            <column name="id_kurir" sql-type="varchar" length="30" not-null="true" />
+        </id>
+
+        <property name="nama">
+            <column name="nama" sql-type="varchar" length="100"/>
+        </property>
+
+        <property name="noKtp">
+            <column name="no_ktp" sql-type="varchar" length="100"/>
+        </property>
+
+        <property name="noPolisi">
+            <column name="no_polisi" sql-type="varchar" length="10"/>
+        </property>
+
+        <property name="noTelp">
+            <column name="no_telp" sql-type="varchar" length="100"/>
+        </property>
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+
+        <property name="flagReady">
+            <column name="flag_ready" sql-type="varchar" length="1" not-null="false" />
+        </property>
+
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+
+        <property name="createdDate">
+            <column name="created_date" sql-type="timestamp" not-null="false" />
+        </property>
+
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="timestamp" not-null="false" />
+        </property>
+
+        <property name="password">
+            <column name="password" sql-type="varchar" length="8" not-null="false" />
+        </property>
+
+        <property name="branchId">
+            <column name="branch_id" sql-type="varchar" length="5" not-null="false" />
+        </property>
+        <property name="lat">
+            <column name="lat" sql-type="varchar" length="200" not-null="false" />
+        </property>
+        <property name="lon">
+            <column name="lon" sql-type="varchar" length="200" not-null="false" />
+        </property>
+
+    </class>
+</hibernate-mapping>

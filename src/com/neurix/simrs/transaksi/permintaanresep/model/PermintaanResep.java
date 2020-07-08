@@ -60,6 +60,78 @@ public class PermintaanResep{
     private String jenisResep;
 
     private String isRead;
+    private String isTelemedic;
+    private String ketJenisAntrian;
+    private String idTransaksiOnline;
+    private String noTelp;
+    private String lat;
+    private String lon;
+    private String jenisPengambilan;
+    private String flagEresep;
+
+    public String getFlagEresep() {
+        return flagEresep;
+    }
+
+    public void setFlagEresep(String flagEresep) {
+        this.flagEresep = flagEresep;
+    }
+
+    public String getNoTelp() {
+        return noTelp;
+    }
+
+    public void setNoTelp(String noTelp) {
+        this.noTelp = noTelp;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLon() {
+        return lon;
+    }
+
+    public void setLon(String lon) {
+        this.lon = lon;
+    }
+
+    public String getJenisPengambilan() {
+        return jenisPengambilan;
+    }
+
+    public void setJenisPengambilan(String jenisPengambilan) {
+        this.jenisPengambilan = jenisPengambilan;
+    }
+
+    public String getIdTransaksiOnline() {
+        return idTransaksiOnline;
+    }
+
+    public void setIdTransaksiOnline(String idTransaksiOnline) {
+        this.idTransaksiOnline = idTransaksiOnline;
+    }
+
+    public String getKetJenisAntrian() {
+        return ketJenisAntrian;
+    }
+
+    public void setKetJenisAntrian(String ketJenisAntrian) {
+        this.ketJenisAntrian = ketJenisAntrian;
+    }
+
+    public String getIsTelemedic() {
+        return isTelemedic;
+    }
+
+    public void setIsTelemedic(String isTelemedic) {
+        this.isTelemedic = isTelemedic;
+    }
 
     public String getIsRead() {
         return isRead;

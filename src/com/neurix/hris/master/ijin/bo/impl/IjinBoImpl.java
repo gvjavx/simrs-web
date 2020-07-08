@@ -434,6 +434,7 @@ public class IjinBoImpl implements IjinBo {
                         itemComboIjin.setIjinId(imIjinEntity.getIjinId());
                         itemComboIjin.setIjinName(imIjinEntity.getIjinName());
                         itemComboIjin.setJumlahIjin(imIjinEntity.getJumlahIjin());
+
                         itemComboIjin.setGender(imIjinEntity.getGender());
                         listComboIjin.add(itemComboIjin);
                     }

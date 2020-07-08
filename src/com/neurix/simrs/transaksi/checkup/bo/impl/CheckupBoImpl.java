@@ -195,6 +195,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             if (bean.getGetStTglTo() != null && !"".equalsIgnoreCase(bean.getGetStTglTo())) {
                 hsCriteria.put("date_to", bean.getGetStTglTo());
             }
+            if (bean.getIdAntrianOnline() != null && !"".equalsIgnoreCase(bean.getIdAntrianOnline())) {
+                hsCriteria.put("id_antrian_online", bean.getIdAntrianOnline());
+            }
 
             hsCriteria.put("flag", "Y");
             List<String> listOfNoCheckup = new ArrayList<>();
@@ -2439,6 +2442,61 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             logger.error("Found error "+e.getMessage());
         }
         return headerCheckupList;
+    }
+
+    @Override
+    public CrudResponse updateAnamnese(HeaderCheckup bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        ItSimrsHeaderChekupEntity chekupEntity = new ItSimrsHeaderChekupEntity();
+        try{
+            chekupEntity = headerCheckupDao.getById("noCheckup", bean.getNoCheckup());
+            if(chekupEntity.getNoCheckup() != null){
+                chekupEntity.setAnamnese(bean.getAnamnese());
+                chekupEntity.setLastUpdate(bean.getLastUpdate());
+                chekupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                try {
+                    headerCheckupDao.updateAndSave(chekupEntity);
+                    response.setMsg("Berhasil");
+                    response.setStatus("success");
+                }catch (HibernateException e){
+                    response.setMsg("Error when update data "+e.getMessage());
+                    response.setStatus("error");
+                }
+            }
+        }catch (HibernateException e){
+            response.setMsg("Error when update data "+e.getMessage());
+            response.setStatus("error");
+        }
+        return response;
+    }
+
+    @Override
+    public String getDiagnosaPasien(String idDetailCheckup) throws GeneralBOException {
+        return headerCheckupDao.getDiagnosa(idDetailCheckup);
+    }
+
+    @Override
+    public String getTindakanRawat(String idDetailCheckup) throws GeneralBOException {
+        return headerCheckupDao.getTindakanRawat(idDetailCheckup);
+    }
+
+    @Override
+    public String getPenunjangMedis(String idDetailCheckup) throws GeneralBOException {
+        return headerCheckupDao.getPenunjangMendis(idDetailCheckup);
+    }
+
+    @Override
+    public String getResepPasien(String idDetailCheckup) throws GeneralBOException {
+        return headerCheckupDao.getResepPasien(idDetailCheckup);
+    }
+
+    @Override
+    public String getAlergi(String noCheckup) throws GeneralBOException {
+        return headerCheckupDao.getAlergiPasien(noCheckup);
+    }
+
+    public ItSimrsHeaderChekupEntity getById(String columnName, String id) throws GeneralBOException {
+        return headerCheckupDao.getById(columnName, id);
     }
 
     @Override

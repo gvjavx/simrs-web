@@ -4,6 +4,7 @@ import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
@@ -37,9 +38,18 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
             criteria.add(Restrictions.eq("status", mapCriteria.get("status").toString()));
         if (mapCriteria.get("flag") != null)
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
+        if (mapCriteria.get("jenis_pasien") != null)
+            criteria.add(Restrictions.eq("idJenisPeriksaPasien", mapCriteria.get("jenis_pasien").toString()));
         if (mapCriteria.get("branch_id") != null)
             criteria.add(Restrictions.eq("branchId", mapCriteria.get("branch_id").toString()));
-
+        if (mapCriteria.get("flag_resep") != null)
+            criteria.add(Restrictions.eq("flagResep", mapCriteria.get("flag_resep").toString()));
+        if (mapCriteria.get("flag_bayar_resep") != null)
+            criteria.add(Restrictions.eq("flagBayarResep", mapCriteria.get("flag_bayar_resep").toString()));
+        if (mapCriteria.get("asc_limit_1") != null){
+            criteria.addOrder(Order.asc("createdDate"));
+            criteria.setMaxResults(1);
+        }
         return criteria.list();
     }
 

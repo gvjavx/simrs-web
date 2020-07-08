@@ -180,6 +180,27 @@
                 <param name="reportParameters">reportParams</param>
             </result>
 
+            <result name="print_keterangan_kelahiran" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printSuratKeteranganKelahiran.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
+            <result name="print_pernyataan_rujuak" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printSuratPernyataanRujuk.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
+            <result name="print_keterangan_rekomendasi_dpjp" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printSuratRekomendasiDPJP.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
         </action>
 
     </package>

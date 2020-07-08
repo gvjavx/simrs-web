@@ -1,10 +1,13 @@
 package com.neurix.simrs.mobileapi;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.hris.master.biodata.bo.BiodataBo;
+import com.neurix.hris.master.biodata.model.Biodata;
 import com.neurix.simrs.master.dokter.bo.DokterBo;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.mobileapi.model.DokterMobile;
 import com.opensymphony.xwork2.ModelDriven;
+import org.apache.batik.dom.GenericElement;
 import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
@@ -23,6 +26,7 @@ public class DokterController implements ModelDriven<Object> {
     private DokterMobile model = new DokterMobile();
     private Collection<DokterMobile> listOfDokter;
     private DokterBo dokterBoProxy;
+    private BiodataBo biodataBoProxy;
 
     private String idDokter;
     private String namaDokter;
@@ -34,6 +38,43 @@ public class DokterController implements ModelDriven<Object> {
     private String lon;
     private String flagCall;
     private String flagTele;
+
+    private String idPelayanan;
+    private String branchId;
+
+    private String foto;
+
+    public BiodataBo getBiodataBoProxy() {
+        return biodataBoProxy;
+    }
+
+    public void setBiodataBoProxy(BiodataBo biodataBoProxy) {
+        this.biodataBoProxy = biodataBoProxy;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
 
     public String getFlagCall() {
         return flagCall;
@@ -148,6 +189,7 @@ public class DokterController implements ModelDriven<Object> {
         logger.info("[DokterController.create] start process POST / <<<");
 
         List<Dokter> result = new ArrayList<>();
+        Biodata resultBio = new Biodata();
 
         Dokter bean = new Dokter();
         bean.setIdDokter(idDokter);
@@ -171,6 +213,17 @@ public class DokterController implements ModelDriven<Object> {
             model.setLat(result.get(0).getLat());
             model.setLon(result.get(0).getLon());
             model.setFlagCall(result.get(0).getFlagCall());
+
+            try {
+                resultBio = biodataBoProxy.getBiodataByNip(model.getIdDokter());
+            } catch (GeneralBOException e) {
+                logger.error("[DokterController.create] Error, " + e.getMessage());
+            }
+
+            if (resultBio != null) {
+                model.setFoto(resultBio.getFotoUpload());
+            }
+
         }
 
         if (action.equalsIgnoreCase("kuota")) {
@@ -201,6 +254,35 @@ public class DokterController implements ModelDriven<Object> {
         if  (action.equalsIgnoreCase("editFlagTele")) {
             try {
                 dokterBoProxy.editFlagTele(idDokter, flagTele);
+            } catch (GeneralBOException e) {
+                logger.error("[DokterController.create] Error, " + e.getMessage());
+            }
+        }
+
+        if (action.equalsIgnoreCase("getDokterByPelayanan")) {
+            listOfDokter = new ArrayList<>();
+            try {
+               result = dokterBoProxy.getDokterByPelayanan(idPelayanan);
+
+               for (Dokter item : result ){
+                   DokterMobile dokterMobile = new DokterMobile();
+                   dokterMobile.setIdDokter(item.getIdDokter());
+                   dokterMobile.setNamaDokter(item.getNamaDokter());
+                   dokterMobile.setKuota(item.getKuota());
+                   dokterMobile.setFlagTele(item.getFlagTele());
+
+                   try {
+                       resultBio = biodataBoProxy.getBiodataByNip(item.getIdDokter());
+                   } catch (GeneralBOException e) {
+                       logger.error("[DokterController.create] Error, " + e.getMessage());
+                   }
+
+                   if (resultBio != null) {
+                       dokterMobile.setFoto(resultBio.getFotoUpload());
+                   }
+
+                   listOfDokter.add(dokterMobile);
+               }
             } catch (GeneralBOException e) {
                 logger.error("[DokterController.create] Error, " + e.getMessage());
             }

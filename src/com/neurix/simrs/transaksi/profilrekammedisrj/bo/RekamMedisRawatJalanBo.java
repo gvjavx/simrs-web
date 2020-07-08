@@ -10,4 +10,5 @@ public interface RekamMedisRawatJalanBo {
 
     public List<RekamMedisRawatJalan> getByCriteria(RekamMedisRawatJalan bean) throws GeneralBOException;
     public CrudResponse saveAdd(RekamMedisRawatJalan bean) throws GeneralBOException;
+    public CrudResponse saveEdit(RekamMedisRawatJalan bean) throws GeneralBOException;
 }
