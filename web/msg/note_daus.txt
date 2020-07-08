@@ -128,3 +128,40 @@
     RENAME COLUMN jumlah_ppn_aset TO jumlah_ppn_masukan_b3;
     ALTER TABLE it_akun_pembayaran_utang_piutang_detail ADD COLUMN ppn numeric(25,2);
     ALTER TABLE it_akun_pembayaran_utang_piutang_detail ADD COLUMN pph numeric(25,2);
+
+    CREATE TABLE public.it_akun_pengajuan_biaya
+    (
+        pengajuan_biaya_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+        divisi_id character varying(20) COLLATE pg_catalog."default",
+        coa_ajuan character varying(30) COLLATE pg_catalog."default",
+        coa_target character varying(30) COLLATE pg_catalog."default",
+        total_biaya numeric(25,2),
+        tanggal date,
+        aproval_id character varying(100) COLLATE pg_catalog."default",
+        aproval_date date,
+        aproval_flag character varying(1) COLLATE pg_catalog."default",
+        budget_saat_ini numeric(25,2),
+        branch_id character varying(5) COLLATE pg_catalog."default",
+        transaksi character varying(5) COLLATE pg_catalog."default",
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        last_update timestamp without time zone,
+        aproval_name character varying(100) COLLATE pg_catalog."default",
+        keterangan text COLLATE pg_catalog."default",
+        no_jurnal character varying(30) COLLATE pg_catalog."default",
+        rk_dikirim character varying(1) COLLATE pg_catalog."default",
+        flag_batal character varying(1) COLLATE pg_catalog."default",
+        keterangan_batal character varying(200) COLLATE pg_catalog."default",
+        tanggal_realisasi date,
+        CONSTRAINT it_akun_pengajuan_biaya_pkey PRIMARY KEY (pengajuan_biaya_id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.it_akun_pengajuan_biaya
+        OWNER to postgres;
