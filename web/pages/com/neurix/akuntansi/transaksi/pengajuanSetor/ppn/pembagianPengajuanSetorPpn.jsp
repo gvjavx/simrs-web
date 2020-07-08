@@ -15,7 +15,7 @@
         }
 
         function link() {
-            window.location.href = "<s:url action='initFormPengajuanSetorPpn_pengajuanSetor.action'/>";
+            window.location.href = "<s:url action='resultAddTmpPengajuanSetorPpn_pengajuanSetor.action'/>";
         }
 
         $(document).ready(function () {
@@ -25,26 +25,11 @@
                 $('#info_dialog').dialog('close');
             };
             $.subscribe('beforeProcessSave', function (event, data) {
-                var tanggal = $('#tanggal_pengajuan_setor').val();
-                var keterangan = $('#keterangan').val();
-                if (tanggal != '' && keterangan != '') {
-                    if (confirm('Do you want to proses this record?')) {
-                        event.originalEvent.options.submit = true;
-                        $.publish('showDialog');
-                    } else {
-                        event.originalEvent.options.submit = false;
-                    }
+                if (confirm('Do you want to proses this record?')) {
+                    event.originalEvent.options.submit = true;
+                    $.publish('showDialog');
                 } else {
                     event.originalEvent.options.submit = false;
-                    var msg = "";
-                    if (tanggal == '') {
-                        msg += 'Field <strong>Tanggal</strong> is required.' + '<br/>';
-                    }
-                    if (keterangan == '') {
-                        msg += 'Field <strong>Keterangan</strong> is required.' + '<br/>';
-                    }
-                    document.getElementById('errorValidationMessage').innerHTML = msg;
-                    $.publish('showErrorValidationDialog');
                 }
             });
             $.subscribe('successDialog', function (event, data) {
@@ -88,7 +73,7 @@
                     </div>
                     <s:form id="saveAddPengajuanSetor" enctype="multipart/form-data" method="post"
                             namespace="/pengajuanSetor"
-                            action="saveAddPengajuanSetorPpn_pengajuanSetor.action" theme="simple">
+                            action="saveAddTmpPengajuanSetorPpn_pengajuanSetor.action" theme="simple">
                         <s:hidden name="pengajuanSetor.branchId" />
                         <s:hidden name="pengajuanSetor.jumlahPpnKeluaran" id="jumlahPpnKeluaran" />
                         <s:hidden name="pengajuanSetor.jumlahPpnMasukanB2" id="jumlahPpnMasukanB2"/>
@@ -97,36 +82,6 @@
                         <s:hidden name="pengajuanSetor.bulan" />
                         <s:hidden name="pengajuanSetor.tahun" />
                         <div class="box-body">
-                            <div class="row">
-                                <div class="form-group">
-                                    <label class="col-sm-offset-2 col-sm-3" style="margin-top: 14px">Tanggal Pengajuan Setor</label>
-                                    <div class="col-md-4">
-                                        <div class="input-group date" style="margin-top: 7px" id="stTanggalPengajuanSetor">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            <input class="form-control datepicker2" id="tanggal_pengajuan_setor" name="pengajuanSetor.stRegisteredDate">
-                                            <script>
-                                                $("#tanggal_pengajuan_setor").datepicker({
-                                                    setDate: new Date(),
-                                                    autoclose: true,
-                                                    changeMonth: true,
-                                                    changeYear:true,
-                                                    dateFormat:'dd-mm-yy'
-                                                });
-                                                $("#tanggal_pengajuan_setor").datepicker("setDate", new Date());
-                                            </script>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-offset-2 col-sm-3" style="margin-top: 7px">Keterangan</label>
-                                    <div class="col-md-4">
-                                        <s:textarea id="keterangan" rows="3" cssStyle="margin-top: 7px" onkeypress="$(this).css('border','')"
-                                                    name="pengajuanSetor.keterangan" cssClass="form-control"/>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="box-header with-border"></div>
@@ -181,8 +136,8 @@
                                            onCompleteTopics="closeDialog,successDialog"
                                            onSuccessTopics="successDialog"
                                            onErrorTopics="errorDialog">
-                                    <i class="fa fa-save"></i>
-                                    Save
+                                    <i class="fa fa-refresh"></i>
+                                    Proses
                                 </sj:submit>
                                 <a type="button" class="btn btn-danger"
                                    href="addPengajuanSetorPpn_pengajuanSetor.action">

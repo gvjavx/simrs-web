@@ -237,6 +237,16 @@ public class PengajuanSetorAction extends BaseMasterAction {
         return "success_add_pemilihan_pengajuan_setor_ppn";
     }
 
+    public String resultAddTmpPengajuanSetorPpn(){
+        logger.info("[PengajuanSetorAction.resultAddTmpPengajuanSetorPpn] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        PengajuanSetor addPengajuanSetor =  (PengajuanSetor) session.getAttribute("listOfResultPengajuanSetor");
+        setPengajuanSetor(addPengajuanSetor);
+
+        logger.info("[PengajuanSetorAction.resultAddTmpPengajuanSetorPpn] stop process >>>");
+        return "success_add_hasil_pengajuan_setor_ppn";
+    }
+
     public String searchAddPengajuanSetorPph21() {
         logger.info("[PengajuanSetorAction.searchAddPengajuanSetorPph21] start process >>>");
         PengajuanSetor addPengajuanSetor = getPengajuanSetor();
@@ -903,6 +913,27 @@ public class PengajuanSetorAction extends BaseMasterAction {
 
         logger.info("[PengajuanSetorAction.saveAddPengajuanSetorPpn] stop process >>>");
         return "success_save_pengajuan_setor_ppn";
+    }
+
+    public String saveAddTmpPengajuanSetorPpn(){
+        logger.info("[PengajuanSetorAction.saveAddTmpPengajuanSetorPpn] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        PengajuanSetor pengajuanSetor = getPengajuanSetor();
+        List<PengajuanSetorDetail> pengajuanSetorDetailListKeluaran = (List<PengajuanSetorDetail>) session.getAttribute("listOfResultPencarianDataKeluaran");
+
+        int length=0;
+        for (PengajuanSetorDetail pengajuanSetorDetail : pengajuanSetorDetailListKeluaran){
+            if (!"Y".equalsIgnoreCase(pengajuanSetorDetail.getDibayar())){
+                pengajuanSetorDetailListKeluaran.remove(length);
+            }
+            length++;
+        }
+
+        session.setAttribute("listOfResultPencarianDataKeluaran",pengajuanSetorDetailListKeluaran);
+        session.setAttribute("listOfResultPengajuanSetor",pengajuanSetor);
+
+        logger.info("[PengajuanSetorAction.saveAddTmpPengajuanSetorPpn] stop process >>>");
+        return "success_save_tmp_pengajuan_setor_ppn";
     }
 
     public String paging(){
