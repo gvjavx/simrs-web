@@ -8,9 +8,7 @@ import com.neurix.simrs.master.jenisobat.dao.JenisObatDao;
 import com.neurix.simrs.master.jenisobat.model.ImSimrsJenisObatEntity;
 import com.neurix.simrs.master.jenisobat.model.JenisObat;
 import com.neurix.simrs.master.obat.bo.ObatBo;
-import com.neurix.simrs.master.obat.dao.ObatDao;
-import com.neurix.simrs.master.obat.dao.ReturObatDao;
-import com.neurix.simrs.master.obat.dao.ReturObatDetailDao;
+import com.neurix.simrs.master.obat.dao.*;
 import com.neurix.simrs.master.obat.model.*;
 import com.neurix.simrs.master.obatgejala.dao.ObatGejalaDao;
 import com.neurix.simrs.master.obatgejala.model.ImSimrsObatGejalaEntity;
@@ -64,6 +62,16 @@ public class ObatBoImpl implements ObatBo {
     private TransaksiStokDao transaksiStokDao;
     private PelayananDao pelayananDao;
     private BatasTutupPeriodDao batasTutupPeriodDao;
+    private KandunganObatDetailDao kandunganObatDetailDao;
+    private KandunganObatDao kandunganObatDao;
+
+    public void setKandunganObatDetailDao(KandunganObatDetailDao kandunganObatDetailDao) {
+        this.kandunganObatDetailDao = kandunganObatDetailDao;
+    }
+
+    public void setKandunganObatDao(KandunganObatDao kandunganObatDao) {
+        this.kandunganObatDao = kandunganObatDao;
+    }
 
     public void setPelayananDao(PelayananDao pelayananDao) {
         this.pelayananDao = pelayananDao;
@@ -194,6 +202,40 @@ public class ObatBoImpl implements ObatBo {
                         }
                         obat.setJenisObat(listJenisObat.toString());
                     }
+
+                    hsCriteria = new HashMap();
+                    hsCriteria.put("id_obat", obat.getIdObat());
+
+                    List<ImSimrsKandunganObatEntity> kandunganObatEntities = kandunganObatDetailDao.getByCriteria(hsCriteria);
+                    if (kandunganObatEntities.size() > 0){
+
+                        List<KandunganObat> kandunganObats = new ArrayList<>();
+
+                        for (ImSimrsKandunganObatEntity kandunganObatEntity : kandunganObatEntities){
+                            KandunganObat kandunganObat = new KandunganObat();
+
+                            ImSimrsKandunganEntity kandunganEntity = kandunganObatDao.getById("idKandungan", kandunganObatEntity.getIdKandungan());
+                            if (kandunganEntity != null){
+                                kandunganEntity.setKandungan(kandunganEntity.getKandungan());
+                            }
+
+                            kandunganObat.setId(kandunganObatEntity.getId());
+                            kandunganObat.setIdKandungan(kandunganObatEntity.getIdKandungan());
+                            kandunganObat.setIdObat(kandunganObatEntity.getIdObat());
+                            kandunganObat.setBentuk(kandunganObatEntity.getBentuk());
+                            kandunganObat.setSediaan(kandunganObatEntity.getSediaan());
+                            kandunganObat.setFlag(kandunganObatEntity.getFlag());
+                            kandunganObat.setAction(kandunganObatEntity.getAction());
+                            kandunganObat.setCreatedDate(kandunganObatEntity.getCreatedDate());
+                            kandunganObat.setCreatedWho(kandunganObatEntity.getCreatedWho());
+                            kandunganObat.setLastUpdate(kandunganObatEntity.getLastUpdate());
+                            kandunganObat.setLastUpdateWho(kandunganObatEntity.getLastUpdateWho());
+                            kandunganObats.add(kandunganObat);
+                        }
+
+                        obat.setKandunganObats(kandunganObats);
+                    }
+
                     result.add(obat);
                 }
             }

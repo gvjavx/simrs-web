@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Obat extends BaseModel {
@@ -76,6 +77,16 @@ public class Obat extends BaseModel {
     private String periode;
     private String namaPelayanan;
     private String type;
+
+    private List<KandunganObat> kandunganObats = new ArrayList<>();
+
+    public List<KandunganObat> getKandunganObats() {
+        return kandunganObats;
+    }
+
+    public void setKandunganObats(List<KandunganObat> kandunganObats) {
+        this.kandunganObats = kandunganObats;
+    }
 
     public String getType() {
         return type;

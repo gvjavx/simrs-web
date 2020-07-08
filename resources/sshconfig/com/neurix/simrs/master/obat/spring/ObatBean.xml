@@ -30,6 +30,8 @@
           p:transaksiStokDao-ref="transaksiStokDao"
           p:batasTutupPeriodDao-ref="batasTutupPeriodDao"
           p:pelayananDao-ref="pelayananDao"
+          p:kandunganObatDao-ref="kandunganObatDao"
+          p:kandunganObatDetailDao-ref="kandunganObatDetailDao"
     />
 
     <bean id="obatBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -64,6 +66,12 @@
           p:sessionFactory-ref="sessionFactory" />
 
     <bean id="returObatDetailDao" class="com.neurix.simrs.master.obat.dao.ReturObatDetailDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <bean id="kandunganObatDao" class="com.neurix.simrs.master.obat.dao.KandunganObatDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <bean id="kandunganObatDetailDao" class="com.neurix.simrs.master.obat.dao.KandunganObatDetailDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

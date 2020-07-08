@@ -345,7 +345,6 @@
 <<< //
 
 // 2020-06-30 >>>
-
     ALTER TABLE it_simrs_antrian_telemedic
     ADD COLUMN no_sep VARCHAR(50);
 
@@ -355,5 +354,59 @@
 
     ALTER TABLE it_simrs_pengiriman_obat
     ADD COLUMN flag_terkirim VARCHAR(1);
-
 <<< ///
+
+// 2020-07-08 >>>
+    CREATE SEQUENCE seq_kandungan_obat;
+    CREATE SEQUENCE seq_kandungan;
+
+    -- Table: public.im_simrs_kandungan
+
+    -- DROP TABLE public.im_simrs_kandungan;
+
+    CREATE TABLE public.im_simrs_kandungan
+    (
+        id_kandungan character varying(30) COLLATE pg_catalog."default" NOT NULL,
+        kandungan character varying(100) COLLATE pg_catalog."default",
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        CONSTRAINT pk_kandungan PRIMARY KEY (id_kandungan)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.im_simrs_kandungan
+        OWNER to postgres;
+
+    -- Table: public.im_simrs_kandungan_obat
+
+    -- DROP TABLE public.im_simrs_kandungan_obat;
+
+    CREATE TABLE public.im_simrs_kandungan_obat
+    (
+        id character varying(50) COLLATE pg_catalog."default" NOT NULL,
+        id_obat character varying(30) COLLATE pg_catalog."default",
+        id_kandungan character varying(30) COLLATE pg_catalog."default",
+        bentuk character varying(30) COLLATE pg_catalog."default",
+        sediaan numeric,
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        CONSTRAINT pk_kandungan_obat PRIMARY KEY (id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.im_simrs_kandungan_obat
+        OWNER to postgres;
