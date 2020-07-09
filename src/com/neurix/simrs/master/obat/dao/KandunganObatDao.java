@@ -1,7 +1,7 @@
 package com.neurix.simrs.master.obat.dao;
 
 import com.neurix.common.dao.GenericDao;
-import com.neurix.simrs.master.obat.model.ImSimrsKandunganEntity;
+import com.neurix.simrs.master.obat.model.ImSimrsKandunganObatEntity;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
@@ -14,17 +14,17 @@ import java.util.Map;
 /**
  * Created by reza on 08/07/20.
  */
-public class KandunganObatDao extends GenericDao<ImSimrsKandunganEntity, String> {
+public class KandunganObatDao extends GenericDao<ImSimrsKandunganObatEntity, String> {
 
     @Override
-    protected Class<ImSimrsKandunganEntity> getEntityClass() {
-        return ImSimrsKandunganEntity.class;
+    protected Class<ImSimrsKandunganObatEntity> getEntityClass() {
+        return ImSimrsKandunganObatEntity.class;
     }
 
     @Override
-    public List<ImSimrsKandunganEntity> getByCriteria(Map mapCriteria) {
+    public List<ImSimrsKandunganObatEntity> getByCriteria(Map mapCriteria) {
 
-        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsKandunganEntity.class);
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsKandunganObatEntity.class);
 
         if (mapCriteria.get("id_kandungan") != null)
             criteria.add(Restrictions.eq("idKandungan", mapCriteria.get("id_kandungan").toString()));
@@ -36,7 +36,7 @@ public class KandunganObatDao extends GenericDao<ImSimrsKandunganEntity, String>
 
 
     public String getNextId() {
-        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_kandungan')");
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_kandungan_obat')");
         Iterator<BigInteger> iter = query.list().iterator();
         String sId = String.format("%08d", iter.next());
         return sId;

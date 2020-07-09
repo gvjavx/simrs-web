@@ -453,6 +453,7 @@
       <convert converter="bean" match="com.neurix.simrs.master.labdetail.model.LabDetail"/>
       <convert converter="bean" match="com.neurix.simrs.master.labdetail.model.ImSimrsLabDetailEntity"/>
       <convert converter="bean" match="com.neurix.simrs.master.pasien.model.RekamMedicLama"/>
+      <convert converter="bean" match="com.neurix.simrs.master.obat.model.KandunganObat"/>
 
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkup.model.CheckResponse"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup"/>

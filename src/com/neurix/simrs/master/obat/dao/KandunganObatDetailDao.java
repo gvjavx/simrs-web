@@ -1,8 +1,8 @@
 package com.neurix.simrs.master.obat.dao;
 
 import com.neurix.common.dao.GenericDao;
-import com.neurix.simrs.master.obat.model.ImSimrsKandunganEntity;
-import com.neurix.simrs.master.obat.model.ImSimrsKandunganObatEntity;
+import com.neurix.simrs.master.obat.model.ImSimrsKandunganObatDetailEntity;
+
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
@@ -15,17 +15,17 @@ import java.util.Map;
 /**
  * Created by reza on 08/07/20.
  */
-public class KandunganObatDetailDao extends GenericDao<ImSimrsKandunganObatEntity, String> {
+public class KandunganObatDetailDao extends GenericDao<ImSimrsKandunganObatDetailEntity, String> {
 
     @Override
-    protected Class<ImSimrsKandunganObatEntity> getEntityClass() {
-        return ImSimrsKandunganObatEntity.class;
+    protected Class<ImSimrsKandunganObatDetailEntity> getEntityClass() {
+        return ImSimrsKandunganObatDetailEntity.class;
     }
 
     @Override
-    public List<ImSimrsKandunganObatEntity> getByCriteria(Map mapCriteria) {
+    public List<ImSimrsKandunganObatDetailEntity> getByCriteria(Map mapCriteria) {
 
-        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsKandunganObatEntity.class);
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsKandunganObatDetailEntity.class);
 
         if (mapCriteria.get("id") != null)
             criteria.add(Restrictions.eq("id", mapCriteria.get("id").toString()));
@@ -41,7 +41,7 @@ public class KandunganObatDetailDao extends GenericDao<ImSimrsKandunganObatEntit
 
 
     public String getNextId() {
-        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_kandungan_obat')");
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_kandungan_obat_detail')");
         Iterator<BigInteger> iter = query.list().iterator();
         String sId = String.format("%08d", iter.next());
         return sId;

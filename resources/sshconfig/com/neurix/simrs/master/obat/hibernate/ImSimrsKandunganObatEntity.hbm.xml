@@ -5,20 +5,11 @@
     <entity class="com.neurix.simrs.master.obat.model.ImSimrsKandunganObatEntity">
         <table name="im_simrs_kandungan_obat" schema="public"/>
         <attributes>
-            <id name="id">
-                <column name="id"/>
-            </id>
-            <basic name="idObat">
-                <column name="id_obat"/>
-            </basic>
-            <basic name="idKandungan">
+            <id name="idKandungan">
                 <column name="id_kandungan"/>
-            </basic>
-            <basic name="bentuk">
-                <column name="bentuk"/>
-            </basic>
-            <basic name="sediaan">
-                <column name="sediaan"/>
+            </id>
+            <basic name="kandungan">
+                <column name="kandungan"/>
             </basic>
             <basic name="flag">
                 <column name="flag"/>

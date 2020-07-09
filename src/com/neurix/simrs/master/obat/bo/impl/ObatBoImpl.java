@@ -203,38 +203,6 @@ public class ObatBoImpl implements ObatBo {
                         obat.setJenisObat(listJenisObat.toString());
                     }
 
-                    hsCriteria = new HashMap();
-                    hsCriteria.put("id_obat", obat.getIdObat());
-
-                    List<ImSimrsKandunganObatEntity> kandunganObatEntities = kandunganObatDetailDao.getByCriteria(hsCriteria);
-                    if (kandunganObatEntities.size() > 0){
-
-                        List<KandunganObat> kandunganObats = new ArrayList<>();
-
-                        for (ImSimrsKandunganObatEntity kandunganObatEntity : kandunganObatEntities){
-                            KandunganObat kandunganObat = new KandunganObat();
-
-                            ImSimrsKandunganEntity kandunganEntity = kandunganObatDao.getById("idKandungan", kandunganObatEntity.getIdKandungan());
-                            if (kandunganEntity != null){
-                                kandunganEntity.setKandungan(kandunganEntity.getKandungan());
-                            }
-
-                            kandunganObat.setId(kandunganObatEntity.getId());
-                            kandunganObat.setIdKandungan(kandunganObatEntity.getIdKandungan());
-                            kandunganObat.setIdObat(kandunganObatEntity.getIdObat());
-                            kandunganObat.setBentuk(kandunganObatEntity.getBentuk());
-                            kandunganObat.setSediaan(kandunganObatEntity.getSediaan());
-                            kandunganObat.setFlag(kandunganObatEntity.getFlag());
-                            kandunganObat.setAction(kandunganObatEntity.getAction());
-                            kandunganObat.setCreatedDate(kandunganObatEntity.getCreatedDate());
-                            kandunganObat.setCreatedWho(kandunganObatEntity.getCreatedWho());
-                            kandunganObat.setLastUpdate(kandunganObatEntity.getLastUpdate());
-                            kandunganObat.setLastUpdateWho(kandunganObatEntity.getLastUpdateWho());
-                            kandunganObats.add(kandunganObat);
-                        }
-
-                        obat.setKandunganObats(kandunganObats);
-                    }
 
                     result.add(obat);
                 }
@@ -2015,5 +1983,76 @@ public class ObatBoImpl implements ObatBo {
 
         logger.info("[ObatBoImpl.getListSummaryStok] END <<<");
         return listObat;
+    }
+
+    @Override
+    public List<KandunganObat> getListKandunganObatDetail(String idObat) throws GeneralBOException {
+        logger.info("[ObatBoImpl.getListKandunganObat] START >>>");
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_obat",idObat);
+
+        List<KandunganObat> kandunganObats = new ArrayList<>();
+        List<ImSimrsKandunganObatDetailEntity> kandunganObatDetailEntities = kandunganObatDetailDao.getByCriteria(hsCriteria);
+        if (kandunganObatDetailEntities.size() > 0){
+
+
+            for (ImSimrsKandunganObatDetailEntity kandunganObatDetailEntity : kandunganObatDetailEntities){
+                KandunganObat kandunganObat = new KandunganObat();
+
+                ImSimrsKandunganObatEntity kandunganObatEntity = kandunganObatDao.getById("idKandungan", kandunganObatDetailEntity.getIdKandungan());
+                if (kandunganObatEntity != null){
+                    kandunganObat.setKandungan(kandunganObatEntity.getKandungan());
+                }
+
+                if (kandunganObatDetailEntity.getIdObat() != null && !"".equalsIgnoreCase(kandunganObatDetailEntity.getIdObat())){
+                    ImSimrsObatEntity obatEntity = getObatByIdObat(kandunganObatDetailEntity.getIdObat());
+                    if (obatEntity != null){
+                        kandunganObat.setNamaObat(obatEntity.getNamaObat());
+                    }
+                }
+
+                kandunganObat.setId(kandunganObatDetailEntity.getId());
+                kandunganObat.setIdKandungan(kandunganObatDetailEntity.getIdKandungan());
+                kandunganObat.setIdObat(kandunganObatDetailEntity.getIdObat());
+                kandunganObat.setBentuk(kandunganObatDetailEntity.getBentuk());
+                kandunganObat.setSediaan(kandunganObatDetailEntity.getSediaan());
+                kandunganObat.setSatuanSediaan(kandunganObatDetailEntity.getSatuanSediaan());
+                kandunganObat.setFlag(kandunganObatDetailEntity.getFlag());
+                kandunganObat.setAction(kandunganObatDetailEntity.getAction());
+                kandunganObat.setCreatedDate(kandunganObatDetailEntity.getCreatedDate());
+                kandunganObat.setCreatedWho(kandunganObatDetailEntity.getCreatedWho());
+                kandunganObat.setLastUpdate(kandunganObatDetailEntity.getLastUpdate());
+                kandunganObat.setLastUpdateWho(kandunganObatDetailEntity.getLastUpdateWho());
+                kandunganObats.add(kandunganObat);
+            }
+        }
+
+        logger.info("[ObatBoImpl.getListKandunganObat] END <<<");
+        return kandunganObats;
+    }
+
+    @Override
+    public ImSimrsKandunganObatEntity getMasterKandunganObatById(String idKandunganObat) throws GeneralBOException {
+        return kandunganObatDao.getById("idKandungan", idKandunganObat);
+    }
+
+    @Override
+    public ImSimrsObatEntity getObatByIdObat(String idObat) throws GeneralBOException {
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_obat", idObat);
+        hsCriteria.put("desc", "Y");
+        hsCriteria.put("limit","1");
+
+        List<ImSimrsObatEntity> obatEntities = new ArrayList<>();
+        try {
+            obatEntities = obatDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[TransaksiObatBoImpl.getObatByIdObat] ERROR.", e);
+            throw new GeneralBOException("[TransaksiObatBoImpl.getObatByIdObat] ERROR." + e.getMessage());
+        }
+
+        return obatEntities.size() > 0 ? obatEntities.get(0) : null;
     }
 }

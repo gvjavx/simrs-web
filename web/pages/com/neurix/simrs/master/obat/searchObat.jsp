@@ -443,6 +443,33 @@
                         </div>
                     </div>
                 </div>
+                <hr>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+
+                            <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_kandungan_obat">
+                                <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                                <p id="kandungan_obat_error"></p>
+                            </div>
+
+                            <div id="table-kandungan">
+                                <label style="margin-top: 7px">Kandungan Obat</label> <button class="btn btn-sm btn-primary" style="float: right"><i class="fa fa-plus"></i></button>
+                                <table class="table table-bordered table-striped" style="width: 100%">
+                                    <thead>
+                                    <td>Kandungan</td>
+                                    <td>Bentuk</td>
+                                    <td>Sediaan</td>
+                                    <%--<td>Satuan</td>--%>
+                                    <td align="center">Action</td>
+                                    </thead>
+                                    <tbody id="body-kandungan-obat">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
@@ -456,159 +483,6 @@
         </div>
     </div>
 </div>
-
-<%--<div class="modal fade" id="modal-obat-edit">--%>
-    <%--<div class="modal-dialog modal-flat">--%>
-        <%--<div class="modal-content">--%>
-            <%--<div class="modal-header" style="background-color: #00a65a">--%>
-                <%--<button type="button" class="close" data-dismiss="modal" aria-label="Close">--%>
-                    <%--<span aria-hidden="true">&times;</span></button>--%>
-                <%--<h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Tambah Obat</h4>--%>
-            <%--</div>--%>
-            <%--<div class="modal-body">--%>
-                <%--<div class="alert alert-danger alert-dismissible" style="display: none" id="edit_warning_obat">--%>
-                    <%--<h4><i class="icon fa fa-ban"></i> Warning!</h4>--%>
-                    <%--<p id="edit_obat_error"></p>--%>
-                <%--</div>--%>
-                <%--<div class="alert alert-warning alert-dismissible" style="display: none" id="edit_warning_exits">--%>
-                    <%--<h4><i class="icon fa fa-ban"></i> Warning!</h4>--%>
-                    <%--<p id="edit_msg_exits"></p>--%>
-                <%--</div>--%>
-                <%--<div class="row">--%>
-                    <%--<div class="form-group">--%>
-                        <%--<label class="col-md-3" style="margin-top: 7px">ID Obat</label>--%>
-                        <%--<div class="col-md-7">--%>
-                            <%--<s:textfield onkeypress="var warn =$('#war_id_obat').is(':visible'); if (warn){$('#cor_id_obat').show().fadeOut(3000);$('#war_id_obat').hide()}"--%>
-                                         <%--type="text" cssClass="form-control" id="add_id_obat" disabled="true"></s:textfield>--%>
-                        <%--</div>--%>
-                        <%--<div class="col-md-2">--%>
-                            <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_id_obat"><i--%>
-                                    <%--class="fa fa-times"></i> required</p>--%>
-                            <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_id_obat">--%>
-                                <%--<i class="fa fa-check"></i> correct</p>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                    <%--<div class="form-group">--%>
-                        <%--<label class="col-md-3" style="margin-top: 7px">Nama Obat</label>--%>
-                        <%--<div class="col-md-7">--%>
-                            <%--<s:textfield onkeypress="var warn =$('#war_nama').is(':visible'); if (warn){$('#cor_nama').show().fadeOut(3000);$('#war_nama').hide()}"--%>
-                                         <%--cssStyle="margin-top: 7px;"--%>
-                                         <%--type="text" cssClass="form-control" id="edit_nama_obat"></s:textfield>--%>
-                        <%--</div>--%>
-                        <%--<div class="col-md-2">--%>
-                            <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_nama"><i--%>
-                                    <%--class="fa fa-times"></i> required</p>--%>
-                            <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_nama">--%>
-                                <%--<i class="fa fa-check"></i> correct</p>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                    <%--<div class="form-group">--%>
-                        <%--<label class="col-md-3" style="margin-top: 7px">Jenis Obat</label>--%>
-                        <%--<div class="col-md-7">--%>
-                            <%--<s:action id="initJenisObat" namespace="/jenisobat"--%>
-                                      <%--name="getListJenisObat_jenisobat"/>--%>
-                            <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-                                      <%--onchange="var warn =$('#war_jenis').is(':visible'); if (warn){$('#cor_jenis').show().fadeOut(3000);$('#war_jenis').hide()}"--%>
-                                      <%--list="#initJenisObat.listOfJenisObat" id="edit_jenis_obat"--%>
-                                      <%--listKey="idJenisObat"--%>
-                                      <%--listValue="namaJenisObat"--%>
-                                      <%--cssClass="form-control select2" multiple="true"/>--%>
-                        <%--</div>--%>
-                        <%--<div class="col-md-2">--%>
-                            <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px"--%>
-                               <%--id="war_jenis"><i class="fa fa-times"></i> required</p>--%>
-                            <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
-                               <%--id="cor_jenis"><i class="fa fa-check"></i> correct</p>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                    <%--<div class="form-group">--%>
-                        <%--<label class="col-md-3" style="margin-top: 7px">ID Pabrik</label>--%>
-                        <%--<div class="col-md-7">--%>
-                            <%--<s:textfield type="text" min="1" cssClass="form-control"--%>
-                                         <%--cssStyle="margin-top: 7px" id="edit_pabrik"--%>
-                                         <%--onkeypress="var warn =$('#war_pabrik').is(':visible'); if (warn){$('#cor_pabrik').show().fadeOut(3000);$('#war_pabrik').hide()}"></s:textfield>--%>
-                        <%--</div>--%>
-                        <%--<div class="col-md-2">--%>
-                            <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px"--%>
-                               <%--id="war_pabrik"><i class="fa fa-times"></i> required</p>--%>
-                            <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
-                               <%--id="cor_pabrik"><i class="fa fa-check"></i> correct</p>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                    <%--<div class="form-group">--%>
-                        <%--<label class="col-md-3" style="margin-top: 7px">Merek</label>--%>
-                        <%--<div class="col-md-7">--%>
-                            <%--<s:textfield type="text" min="1" cssClass="form-control"--%>
-                                         <%--cssStyle="margin-top: 7px" id="edit_merek"--%>
-                                         <%--onkeypress="var warn =$('#war_merek').is(':visible'); if (warn){$('#cor_merek').show().fadeOut(3000);$('#war_merek').hide()}"></s:textfield>--%>
-                        <%--</div>--%>
-                        <%--<div class="col-md-2">--%>
-                            <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px"--%>
-                               <%--id="war_merek"><i class="fa fa-times"></i> required</p>--%>
-                            <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
-                               <%--id="cor_merek"><i class="fa fa-check"></i> correct</p>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                    <%--<div class="form-group">--%>
-                        <%--<label class="col-md-3" style="margin-top: 7px">Jumlah Box</label>--%>
-                        <%--<div class="col-md-3">--%>
-                            <%--<s:textfield type="number" min="1" cssClass="form-control"--%>
-                                         <%--cssStyle="margin-top: 7px" id="edit_box"--%>
-                                         <%--onkeypress="$(this).css('border', '')" disabled="true"></s:textfield>--%>
-                        <%--</div>--%>
-                        <%--<div class="col-md-2">--%>
-                            <%--<p style="margin-top: 10px">Lembar/Box</p>--%>
-                        <%--</div>--%>
-                        <%--<div class="col-md-3">--%>
-                            <%--<s:textfield type="number" min="1" cssClass="form-control"--%>
-                                         <%--cssStyle="margin-top: 7px" id="edit_lembar_box"--%>
-                                         <%--onkeypress="$(this).css('border', '')"></s:textfield>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                    <%--<div class="form-group">--%>
-                        <%--<label class="col-md-3" style="margin-top: 7px">Jumlah Lembar</label>--%>
-                        <%--<div class="col-md-3">--%>
-                            <%--<s:textfield type="number" min="1" cssClass="form-control"--%>
-                                         <%--cssStyle="margin-top: 7px" id="edit_lembar"--%>
-                                         <%--onkeypress="$(this).css('border', '')" disabled="true"></s:textfield>--%>
-                        <%--</div>--%>
-                        <%--<div class="col-md-2">--%>
-                            <%--<p style="margin-top: 10px">Biji/Lembar</p>--%>
-                        <%--</div>--%>
-                        <%--<div class="col-md-3">--%>
-                            <%--<s:textfield type="number" min="1" cssClass="form-control"--%>
-                                         <%--cssStyle="margin-top: 7px" id="edit_biji_lembar"--%>
-                                         <%--onkeypress="$(this).css('border', '')"></s:textfield>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                    <%--<div class="form-group">--%>
-                        <%--<label class="col-md-3" style="margin-top: 7px">Jml Biji</label>--%>
-                        <%--<div class="col-md-3">--%>
-                            <%--<s:textfield type="number" min="1" cssClass="form-control"--%>
-                                         <%--cssStyle="margin-top: 7px" id="edit_biji" disabled="true"--%>
-                                         <%--onkeypress="var warn =$('#war_biji').is(':visible'); if (warn){$('#cor_biji').show().fadeOut(3000);$('#war_biji').hide()}"></s:textfield>--%>
-                        <%--</div>--%>
-                        <%--<div class="col-md-2">--%>
-                            <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px"--%>
-                               <%--id="war_biji"><i class="fa fa-times"></i> required</p>--%>
-                            <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
-                               <%--id="cor_biji"><i class="fa fa-check"></i> correct</p>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-            <%--<div class="modal-footer" style="background-color: #cacaca">--%>
-                <%--<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close--%>
-                <%--</button>--%>
-                <%--<button type="button" class="btn btn-success" id="save_obat" ><i class="fa fa-arrow-right"></i> Save--%>
-                <%--</button>--%>
-                <%--<button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_obat"><i--%>
-                        <%--class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...--%>
-                <%--</button>--%>
-            <%--</div>--%>
-        <%--</div>--%>
-    <%--</div>--%>
-<%--</div>--%>
 
 <div class="modal fade" id="modal-detail-obat">
     <div class="modal-dialog modal-lg">
@@ -845,6 +719,7 @@
         $('#add_min_stok').val(minStok);
         $('#form-edit').hide();
         $('#modal-obat').modal({show:true, backdrop:'static'});
+        showListKandunganObat(idObat);
     }
 
     function listSelectObatEdit(idObat){
@@ -934,13 +809,40 @@
 
     function formaterDate(tanggal){
         var tgl = "";
-
         if(tanggal != null && tanggal != ''){
             tgl = $.datepicker.formatDate("dd-mm-yy", new Date(tanggal));
         }
-
         return tgl;
     }
+    
+    function showListKandunganObat(idObat) {
+        ObatAction.createSessionKandunganObat(idObat, function (res) {
+            if (res.status == "success"){
+                ObatAction.getListFromSessionObat(idObat, function (list) {
+
+                    var str = "";
+                    $.each(list, function (i, item) {
+                        str = "<tr>" +
+                            "<td>"+item.kandungan+"</td>"+
+                            "<td>"+item.bentuk+"</td>"+
+                            "<td>"+item.sediaan+" "+item.satuanSediaan+"</td>"+
+//                            "<td>"+item.satuanSediaan+"</td>"+
+                            "<td align='center'><button class='btn btn-sm btn-primary' onclick='viewEditKandunganObat(\'"+item.id+"\')'><i class='fa fa-edit'></i></button></td>"+
+                            "</tr>";
+                    });
+                    $("#body-kandungan-obat").html(str);
+                });
+            } else {
+                $("#warning_kandungan_obat").show();
+                $("#kandungan_obat_error").text(res.msg);
+            }
+        });
+    }
+
+    function viewEditKandunganObat(idKandunganObat) {
+
+    }
+
 
 </script>
 

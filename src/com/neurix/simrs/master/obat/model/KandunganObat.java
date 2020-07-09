@@ -12,6 +12,7 @@ public class KandunganObat {
     private String idKandungan;
     private String bentuk;
     private BigDecimal sediaan;
+    private String satuanSediaan;
     private String flag;
     private String action;
     private Timestamp createdDate;
@@ -19,6 +20,15 @@ public class KandunganObat {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String kandungan;
+    private String namaObat;
+
+    public String getNamaObat() {
+        return namaObat;
+    }
+
+    public void setNamaObat(String namaObat) {
+        this.namaObat = namaObat;
+    }
 
     public String getKandungan() {
         return kandungan;
@@ -66,6 +76,14 @@ public class KandunganObat {
 
     public void setSediaan(BigDecimal sediaan) {
         this.sediaan = sediaan;
+    }
+
+    public String getSatuanSediaan() {
+        return satuanSediaan;
+    }
+
+    public void setSatuanSediaan(String satuanSediaan) {
+        this.satuanSediaan = satuanSediaan;
     }
 
     public String getFlag() {

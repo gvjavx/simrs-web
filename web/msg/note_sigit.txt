@@ -324,24 +324,18 @@
     ALTER TABLE public.it_simrs_pemesanan_resep_online
         OWNER to postgres;
 
-
     ALTER TABLE it_simrs_antrian_telemedic
     ADD COLUMN flag_eresep VARCHAR(1),
     ADD COLUMN url_foto_resep text;
-
 <<< //
 
 // 2020-06-26 >>>
-
     ALTER TABLE it_simrs_antrian_telemedic ADD COLUMN jumlah_cover NUMERIC;
-
 <<< //
 
 // 2020-06-29 >>>
-
     ALTER TABLE it_simrs_antrian_telemedic
     ADD COLUMN no_jurnal VARCHAR(30);
-
 <<< //
 
 // 2020-06-30 >>>
@@ -358,13 +352,9 @@
 
 // 2020-07-08 >>>
     CREATE SEQUENCE seq_kandungan_obat;
-    CREATE SEQUENCE seq_kandungan;
+    CREATE SEQUENCE seq_kandungan_obat_detail;
 
-    -- Table: public.im_simrs_kandungan
-
-    -- DROP TABLE public.im_simrs_kandungan;
-
-    CREATE TABLE public.im_simrs_kandungan
+    CREATE TABLE public.im_simrs_kandungan_obat
     (
         id_kandungan character varying(30) COLLATE pg_catalog."default" NOT NULL,
         kandungan character varying(100) COLLATE pg_catalog."default",
@@ -374,34 +364,7 @@
         created_who character varying(100) COLLATE pg_catalog."default",
         last_update timestamp without time zone,
         last_update_who character varying(100) COLLATE pg_catalog."default",
-        CONSTRAINT pk_kandungan PRIMARY KEY (id_kandungan)
-    )
-    WITH (
-        OIDS = FALSE
-    )
-    TABLESPACE pg_default;
-
-    ALTER TABLE public.im_simrs_kandungan
-        OWNER to postgres;
-
-    -- Table: public.im_simrs_kandungan_obat
-
-    -- DROP TABLE public.im_simrs_kandungan_obat;
-
-    CREATE TABLE public.im_simrs_kandungan_obat
-    (
-        id character varying(50) COLLATE pg_catalog."default" NOT NULL,
-        id_obat character varying(30) COLLATE pg_catalog."default",
-        id_kandungan character varying(30) COLLATE pg_catalog."default",
-        bentuk character varying(30) COLLATE pg_catalog."default",
-        sediaan numeric,
-        flag character varying(1) COLLATE pg_catalog."default",
-        action character varying(1) COLLATE pg_catalog."default",
-        created_date timestamp without time zone,
-        created_who character varying(100) COLLATE pg_catalog."default",
-        last_update timestamp without time zone,
-        last_update_who character varying(100) COLLATE pg_catalog."default",
-        CONSTRAINT pk_kandungan_obat PRIMARY KEY (id)
+        CONSTRAINT pk_kandungan_obat PRIMARY KEY (id_kandungan)
     )
     WITH (
         OIDS = FALSE
@@ -410,3 +373,30 @@
 
     ALTER TABLE public.im_simrs_kandungan_obat
         OWNER to postgres;
+
+
+    CREATE TABLE public.im_simrs_kandungan_obat_detail
+    (
+        id character varying(50) COLLATE pg_catalog."default" NOT NULL,
+        id_obat character varying(30) COLLATE pg_catalog."default",
+        id_kandungan character varying(30) COLLATE pg_catalog."default",
+        bentuk character varying(30) COLLATE pg_catalog."default",
+        sediaan numeric,
+        satuan_sediaan character varying(30) COLLATE pg_catalog."default",
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        CONSTRAINT pk_kandungan_obat_detail PRIMARY KEY (id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.im_simrs_kandungan_obat_detail
+        OWNER to postgres;
+
+<<< ///

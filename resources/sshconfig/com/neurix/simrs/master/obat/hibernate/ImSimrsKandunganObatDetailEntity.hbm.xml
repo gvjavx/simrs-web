@@ -2,14 +2,26 @@
 <entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
         version="2.0">
 
-    <entity class="com.neurix.simrs.master.obat.model.ImSimrsKandunganEntity">
-        <table name="im_simrs_kandungan" schema="public" />
+    <entity class="com.neurix.simrs.master.obat.model.ImSimrsKandunganObatDetailEntity">
+        <table name="im_simrs_kandungan_obat_detail" schema="public"/>
         <attributes>
-            <id name="idKandungan">
-                <column name="id_kandungan"/>
+            <id name="id">
+                <column name="id"/>
             </id>
-            <basic name="kandungan">
-                <column name="kandungan"/>
+            <basic name="idObat">
+                <column name="id_obat"/>
+            </basic>
+            <basic name="idKandungan">
+                <column name="id_kandungan"/>
+            </basic>
+            <basic name="bentuk">
+                <column name="bentuk"/>
+            </basic>
+            <basic name="sediaan">
+                <column name="sediaan"/>
+            </basic>
+            <basic name="satuanSediaan">
+                <column name="satuan_sediaan"/>
             </basic>
             <basic name="flag">
                 <column name="flag"/>

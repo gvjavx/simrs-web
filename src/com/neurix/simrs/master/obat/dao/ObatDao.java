@@ -77,6 +77,11 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             } else {
                 criteria.addOrder(Order.asc("idObat"));
             }
+
+            // limit
+            if (mapCriteria.get("limit") != null){
+                criteria.setMaxResults(Integer.valueOf(mapCriteria.get("limit").toString()));
+            }
         }
 
 
