@@ -98,6 +98,19 @@
                                 </td>
                             </tr>
 
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Tahun :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:action id="comboPeriode" namespace="/rekruitmen" name="initComboPeriodeTahunSekarang10_rekruitmen"/>
+                                            <s:select cssClass="form-control" list="#comboPeriode.listOfComboPeriode" id="tahunPayroll"
+                                                      name="payrollSkalaGajiPkwt.tahun" required="true" headerKey=""
+                                                      headerValue="[Select one]"/>
+                                        </table>
+                                    </td>
+                                </tr>
 
                             <tr>
                                 <td>
@@ -152,7 +165,7 @@
                                 <tr>
                                     <td align="center">
                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                   height="400" width="550" autoOpen="false"
+                                                   height="450" width="550" autoOpen="false"
                                                    title="Payroll Skala Gaji Pkwt">
                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                         </sj:dialog>
@@ -189,6 +202,7 @@
                                             <display:column property="santunanKhusus" sortable="true" title="Santunan Khusus"  />
                                             <display:column property="tunjFunsional" sortable="true" title="Tunj. Fungsional"  />
                                             <display:column property="tunjtambahan" sortable="true" title="Tunj. Tambahan"  />
+                                            <display:column property="tahun" sortable="true" title="Tahun"  />
                                             <display:column property="flag" sortable="true" title="flag"  />
                                             <display:column property="action" sortable="true" title="action"  />
                                             <display:column property="createdDate" sortable="true" title="Created date"  />

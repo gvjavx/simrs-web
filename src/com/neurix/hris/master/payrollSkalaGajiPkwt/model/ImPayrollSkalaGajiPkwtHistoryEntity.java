@@ -20,6 +20,7 @@ public class ImPayrollSkalaGajiPkwtHistoryEntity implements Serializable {
     private BigDecimal santunanKhusus;
     private BigDecimal tunjFunsional;
     private BigDecimal tunjtambahan;
+    private String tahun;
 
     private String flag;
     private String action;
@@ -130,5 +131,13 @@ public class ImPayrollSkalaGajiPkwtHistoryEntity implements Serializable {
 
     public void setTunjtambahan(BigDecimal tunjtambahan) {
         this.tunjtambahan = tunjtambahan;
+    }
+
+    public String getTahun() {
+        return tahun;
+    }
+
+    public void setTahun(String tahun) {
+        this.tahun = tahun;
     }
 }
