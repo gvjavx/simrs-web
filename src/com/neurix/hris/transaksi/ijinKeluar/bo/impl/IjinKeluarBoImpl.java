@@ -2172,6 +2172,56 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
         return status;
     }
 
+    @Override
+    public String cekPengajuanIjinKeluar(String nip) {
+        logger.info("[IjinKeluarBoImpl.cekPengajuanCuti] start process >>>");
+        String status = "";
+        List<IjinKeluarEntity> listIjinKeluar = null;
+        try {
+            listIjinKeluar = ijinKeluarDao.getListCekIjinKeluar(nip);
+        } catch (HibernateException e) {
+            logger.error("[IjinKeluarBoImpl.cekPengajuanCuti] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
+        }
+
+        if (listIjinKeluar != null){
+            if (listIjinKeluar.size() > 0){
+                status = "exist";
+            }else {
+                status = "notExist";
+            }
+        }else {
+            status = "notExist";
+        }
+
+        return status;
+    }
+
+    @Override
+    public List<IjinKeluar> getListCekNipIjinKeluar(String nip) throws GeneralBOException {
+        logger.info("[IjinKeluarBoimpl.getListCekNipIjinKeluar] start process >>>");
+
+        List<IjinKeluar> listComboIjinKeluar = new ArrayList();
+
+        List<IjinKeluarEntity> listIjinKeluar = null;
+        try {
+            listIjinKeluar = ijinKeluarDao.getListCekIjinKeluar(nip);
+        } catch (HibernateException e) {
+            logger.error("[IjinKeluarBoImpl.getListCekNipIjinKeluar] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
+        }
+
+        if (listIjinKeluar != null) {
+            for (IjinKeluarEntity entity : listIjinKeluar) {
+                IjinKeluar ijinKeluar = new IjinKeluar();
+                ijinKeluar.setNip(entity.getNip());
+                listComboIjinKeluar.add(ijinKeluar);
+            }
+        }
+        logger.info("[IjinKeluarBoImpl.getListCekNipIjinKeluar] end process <<<");
+        return listComboIjinKeluar;
+    }
+
     public String cekStatus(String nip, Date tglAwal, Date tglAkhir){
         String status = "";
         List<ItCutiPegawaiEntity> itCutiPegawaiEntities = new ArrayList<>();

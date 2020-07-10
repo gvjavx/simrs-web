@@ -2098,6 +2098,184 @@ public class AbsensiAction extends BaseMasterAction {
         return "success_print_report_absensi";
     }
 
+//    public String printReportLembur() {
+//        logger.info("[ReportAction.printReportLembur] start process >>>");
+//        List<AbsensiPegawai> listDataFinal = new ArrayList();
+//        String unit = "";
+//        String nama="";
+//        String bagian ="";
+//        String golongan="";
+//        String posisi="";
+//        String branchIdForReport="";
+//        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+//        AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
+//        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+////        StrukturJabatanBo strukturJabatanBo= (StrukturJabatanBo) ctx.getBean("strukturJabatanBoProxy");
+//
+//        Branch searchBranch = new Branch();
+//        searchBranch.setFlag("Y");
+//        searchBranch.setBranchId(getBranchId());
+//        List<Branch> branchList = branchBo.getByCriteria(searchBranch);
+//        for (Branch branch:branchList){
+//            unit=branch.getBranchName();
+//        }
+////        List<StrukturJabatan> strukturJabatanEntityList = strukturJabatanBo.getPerBagianSys();
+////        List<StrukturJabatan> strukturJabatanEntityList2 = strukturJabatanBo.getPerBagianSisa();
+////        strukturJabatanEntityList.addAll(strukturJabatanEntityList2);
+////        for (StrukturJabatan strukturJabatan : strukturJabatanEntityList){
+////            if (strukturJabatan.getNip().equalsIgnoreCase(getNip())){
+////                bagian = strukturJabatan.getBagian();
+////                break;
+////            }
+////        }
+//
+//        AbsensiPegawai search = new AbsensiPegawai();
+//        search.setFlag("Y");
+//        search.setTanggalAwal(CommonUtil.convertToDate(getTglFrom()));
+//        search.setTanggalAkhir(CommonUtil.convertToDate(getTglTo()));
+//        if (!("").equalsIgnoreCase(getNip())){
+//            search.setNip(getNip());
+//
+//            BiodataBo biodataBo = (BiodataBo) ctx.getBean("biodataBoProxy");
+//            Biodata searchBiodata = new Biodata();
+//            searchBiodata.setNip(getNip());
+//            searchBiodata.setFlag("Y");
+//            Biodata biodata = new Biodata();
+//            biodata = biodataBo.detailBiodataSys(getNip());
+//            if (biodata!=null){
+//                golongan=biodata.getGolonganName();
+//                posisi=biodata.getPositionName();
+//            }
+//        }
+//        try {
+//            listDataFinal = absensiBo.getByCriteriaForLembur(search);
+//        } catch (GeneralBOException e) {
+//            Long logId = null;
+//            try {
+//                logId = absensiBoProxy.saveErrorMessage(e.getMessage(), "AbsensiBO.getByCriteriaForLembur");
+//            } catch (GeneralBOException e1) {
+//                logger.error("[AbsensiAction.printReportLembur] Error when saving error,", e1);
+//            }
+//            logger.error("[AbsensiAction.printReportLembur] Error when searching absensi by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+//            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+//        }
+//        List<AbsensiPegawai> listDataFinalTmp = listDataFinal;
+//        listDataFinal = new ArrayList<>();
+//        Double hasilLamaLembur= (double) 0,hasilhariKerja15= (double) 0,hasilhariKerja20= (double) 0,hasilhariLibur20= (double) 0,hasilhariLibur30= (double) 0,hasilhariLibur40= (double) 0,hasilJamLembur= (double)0 ,hasilBiayaLembur= (double) 0;
+//
+//        DecimalFormat df = new DecimalFormat("0.00");
+//        for ( AbsensiPegawai absensiPegawai : listDataFinalTmp){
+//            branchIdForReport = absensiPegawai.getBranchId();
+//            nama=absensiPegawai.getNama();
+//            double realisasi;
+//            if (absensiPegawai.getLamaLembur()<=absensiPegawai.getRealisasiJamLembur()){
+//                realisasi= absensiPegawai.getLamaLembur();
+//            }else{
+//                realisasi= absensiPegawai.getRealisasiJamLembur();
+//            }
+//            AbsensiPegawai tmp = new AbsensiPegawai();
+//            AbsensiPegawai resultSetHari;
+//            resultSetHari = absensiBo.getJamLembur(realisasi,absensiPegawai.getTipeHari());
+//            tmp.setStTanggal(absensiPegawai.getStTanggal());
+//            tmp.setStLamaLembur(df.format(realisasi));
+//            tmp.setStHariKerja15(df.format(resultSetHari.getHariKerja15()));
+//            tmp.setStHariKerja20(df.format(resultSetHari.getHariKerja20()));
+//            tmp.setStHariLibur20(df.format(resultSetHari.getHariLibur20()));
+//            tmp.setStHariLibur30(df.format(resultSetHari.getHariLibur30()));
+//            tmp.setStHariLibur40(df.format(resultSetHari.getHariLibur40()));
+//            tmp.setStJamLembur(df.format(absensiPegawai.getJamLembur()));
+//            tmp.setJamLembur(absensiPegawai.getJamLembur());
+//
+//            if (absensiPegawai.getBiayaLembur()==0d){
+//                tmp.setStBiayaLemburPerjam(CommonUtil.numbericFormat(BigDecimal.valueOf(0),"###,###"));
+//            }else{
+//                tmp.setStBiayaLemburPerjam(CommonUtil.numbericFormat(BigDecimal.valueOf(absensiPegawai.getBiayaLembur()/absensiPegawai.getJamLembur()),"###,###"));
+//            }
+//
+//            tmp.setStBiayaLembur(CommonUtil.numbericFormat(BigDecimal.valueOf(absensiPegawai.getBiayaLembur()),"###,###"));
+//            tmp.setBiayaLembur(absensiPegawai.getBiayaLembur());
+//            hasilBiayaLembur=hasilBiayaLembur+absensiPegawai.getBiayaLembur();
+//            hasilLamaLembur=hasilLamaLembur+realisasi;
+//            hasilJamLembur=hasilJamLembur+absensiPegawai.getJamLembur();
+//
+//            hasilhariKerja15 =hasilhariKerja15+resultSetHari.getHariKerja15();
+//            hasilhariKerja20 =hasilhariKerja20+resultSetHari.getHariKerja20();
+//            hasilhariLibur20 =hasilhariLibur20+resultSetHari.getHariLibur20();
+//            hasilhariLibur30 =hasilhariLibur30+resultSetHari.getHariLibur30();
+//            hasilhariLibur40 =hasilhariLibur40+resultSetHari.getHariLibur40();
+//
+//            listDataFinal.add(tmp);
+//        }
+//        AbsensiPegawai hasil = new AbsensiPegawai();
+//        hasil.setStTanggal("");
+//        hasil.setStLamaLembur(df.format(hasilLamaLembur));
+//        hasil.setStHariKerja15(df.format(hasilhariKerja15));
+//        hasil.setStHariKerja20(df.format(hasilhariKerja20));
+//        hasil.setStHariLibur20(df.format(hasilhariLibur20));
+//        hasil.setStHariLibur30(df.format(hasilhariLibur30));
+//        hasil.setStHariLibur40(df.format(hasilhariLibur40));
+//        hasil.setStJamLembur(df.format(hasilJamLembur));
+//        hasil.setStBiayaLemburPerjam("");
+//        hasil.setStBiayaLembur(CommonUtil.numbericFormat(BigDecimal.valueOf(hasilBiayaLembur),"###,###"));
+//        listDataFinal.add(hasil);
+//
+//        JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(listDataFinal);
+//        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+//        java.sql.Date dataDate = new java.sql.Date(updateTime.getTime());
+//        SimpleDateFormat dt1 = new SimpleDateFormat("dd-MM-yyyy");
+//        String stDate = dt1.format(dataDate);
+//
+//        Branch branch = new Branch();
+//        try{
+//            branch = branchBo.getBranchById(branchIdForReport,"Y");
+//        }catch( HibernateException e){
+//        }
+//        if (branchIdForReport.equalsIgnoreCase("RS01")){
+//            reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01);
+//        }else if (branchIdForReport.equalsIgnoreCase("RS02")){
+//            reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02);
+//        }else if (branchIdForReport.equalsIgnoreCase("RS03")){
+//            reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03);
+//        }else{
+//            reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU);
+//        }
+//        String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
+//        reportParams.put("alamatUni", branch.getAlamatSurat()+","+stTanggal);
+//        reportParams.put("branchName", branch.getBranchName());
+//        reportParams.put("titleReport", "DAFTAR LEMBUR");
+//        reportParams.put("tanggalDari", getTglFrom());
+//        reportParams.put("tanggalSelesai", getTglTo());
+//        reportParams.put("itemDataSource", itemData);
+//        reportParams.put("nip", getNip());
+//        reportParams.put("date", stTanggal);
+//        reportParams.put("nama", nama);
+//        reportParams.put("posisi", posisi);
+//        if (golongan!=null){
+//            reportParams.put("golongan", golongan.replace("Golongan ",""));
+//        }else{
+//            reportParams.put("golongan", "-");
+//        }
+//        reportParams.put("date", stDate);
+//
+//        try {
+//            preDownload();
+//        } catch (SQLException e) {
+//            Long logId = null;
+//            try {
+//                logId = absensiBoProxy.saveErrorMessage(e.getMessage(), "printReportLembur");
+//            } catch (GeneralBOException e1) {
+//                logger.error("[ReportAction.printReportLembur] Error when downloading ,", e1);
+//            }
+//            logger.error("[ReportAction.printReportLembur] Error when print report ," + "[" + logId + "] Found problem when downloading data, please inform to your admin.", e);
+//            addActionError("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
+//            return "failure_print_report_lembur";
+//
+//        }
+//        logger.info("[ReportAction.printReportLembur] end process <<<");
+//
+//        return "success_print_report_lembur";
+//    }
+
     public String printReportLembur() {
         logger.info("[ReportAction.printReportLembur] start process >>>");
         List<AbsensiPegawai> listDataFinal = new ArrayList();
@@ -2107,10 +2285,10 @@ public class AbsensiAction extends BaseMasterAction {
         String golongan="";
         String posisi="";
         String branchIdForReport="";
+        String keteranga="";
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
-//        StrukturJabatanBo strukturJabatanBo= (StrukturJabatanBo) ctx.getBean("strukturJabatanBoProxy");
 
         Branch searchBranch = new Branch();
         searchBranch.setFlag("Y");
@@ -2119,15 +2297,6 @@ public class AbsensiAction extends BaseMasterAction {
         for (Branch branch:branchList){
             unit=branch.getBranchName();
         }
-//        List<StrukturJabatan> strukturJabatanEntityList = strukturJabatanBo.getPerBagianSys();
-//        List<StrukturJabatan> strukturJabatanEntityList2 = strukturJabatanBo.getPerBagianSisa();
-//        strukturJabatanEntityList.addAll(strukturJabatanEntityList2);
-//        for (StrukturJabatan strukturJabatan : strukturJabatanEntityList){
-//            if (strukturJabatan.getNip().equalsIgnoreCase(getNip())){
-//                bagian = strukturJabatan.getBagian();
-//                break;
-//            }
-//        }
 
         AbsensiPegawai search = new AbsensiPegawai();
         search.setFlag("Y");
@@ -2185,6 +2354,9 @@ public class AbsensiAction extends BaseMasterAction {
             tmp.setStHariLibur40(df.format(resultSetHari.getHariLibur40()));
             tmp.setStJamLembur(df.format(absensiPegawai.getJamLembur()));
             tmp.setJamLembur(absensiPegawai.getJamLembur());
+
+            //keterangan lembur
+            tmp.setKeterangan(absensiPegawai.getKeterangan());
 
             if (absensiPegawai.getBiayaLembur()==0d){
                 tmp.setStBiayaLemburPerjam(CommonUtil.numbericFormat(BigDecimal.valueOf(0),"###,###"));

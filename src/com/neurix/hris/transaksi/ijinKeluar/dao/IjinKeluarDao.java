@@ -442,4 +442,14 @@ public class IjinKeluarDao extends GenericDao<IjinKeluarEntity, String> {
         }
         return result;
     }
+
+    public List<IjinKeluarEntity> getListCekIjinKeluar(String nip) throws HibernateException {
+        List<IjinKeluarEntity> results = this.sessionFactory.getCurrentSession().createCriteria(IjinKeluarEntity.class)
+                .add(Restrictions.eq("nip", nip))
+                .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.isNull("approvalFlag"))
+                .add(Restrictions.ne("cancelFlag", "Y"))
+                .list();
+        return results;
+    }
 }

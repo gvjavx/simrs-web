@@ -1925,4 +1925,32 @@ public class IjinKeluarAction extends BaseMasterAction {
         }
         return status;
     }
+
+    public String cekNipIjinKeluar(String nip) {
+        logger.info("[cutiPegawaiAction.cekNipCuti] start process >>>");
+
+        List<IjinKeluar> listOfIjinKeluar = new ArrayList();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        IjinKeluarBo ijinKeluarBo = (IjinKeluarBo) ctx.getBean("ijinKeluarBoProxy");
+        try {
+            listOfIjinKeluar = ijinKeluarBo.getListCekNipIjinKeluar(nip);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = ijinKeluarBo.saveErrorMessage(e.getMessage(), "IjinKeluarAction.cekNipIjinKeluar");
+            } catch (GeneralBOException e1) {
+                logger.error("[IjinKeluarAction.cekNipIjinKeluar] Error when saving error,", e1);
+            }
+            logger.error("[IjinKeluarAction.cekNipIjinKeluar] Error when search data," + "[" + logId + "] Found problem when retrieving combo lokasi kebun data, please inform to your admin.", e);
+        }
+
+        logger.info("[IjinKeluarAction.cekNipIjinKeluar] end process <<<");
+
+        if (listOfIjinKeluar.size()!=0){
+            return "00";
+        }else{
+            return "";
+        }
+    }
 }

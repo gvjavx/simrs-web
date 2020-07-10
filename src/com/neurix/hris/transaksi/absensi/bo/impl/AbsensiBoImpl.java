@@ -41,6 +41,7 @@ import com.neurix.hris.transaksi.ijinKeluar.dao.IjinKeluarDao;
 import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluarEntity;
 import com.neurix.hris.transaksi.indisipliner.dao.IndisiplinerDao;
 import com.neurix.hris.transaksi.indisipliner.model.ItIndisiplinerEntity;
+import com.neurix.hris.transaksi.lembur.bo.LemburBo;
 import com.neurix.hris.transaksi.lembur.dao.JamLemburDao;
 import com.neurix.hris.transaksi.lembur.dao.LemburDao;
 import com.neurix.hris.transaksi.lembur.dao.PengaliFaktorLemburDao;
@@ -67,6 +68,8 @@ import org.apache.struts2.jasper.tagplugins.jstl.core.Catch;
 import org.hibernate.HibernateException;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
@@ -2226,6 +2229,21 @@ public class AbsensiBoImpl implements AbsensiBo {
                             returnAbsensi.setNoUrutBagian(strukturJabatan.getNoUrutBagian());
                         }
                     }
+
+                    //keterangan lembur
+                    ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
+                    if (absensiPegawaiEntity.getTanggal() != null){
+                        Lembur lembur = new Lembur();
+                        LemburBo lemburBo = (LemburBo) context.getBean("lemburBoProxy");
+//                        lembur.setTanggalAwal(absensiPegawaiEntity.getTanggal());
+                        lembur.setStTanggalAwal(CommonUtil.convertDateToString(absensiPegawaiEntity.getTanggal()));
+                        lembur.setStTanggalAkhir(CommonUtil.convertDateToString(absensiPegawaiEntity.getTanggal()));
+                        lembur.setNip(absensiPegawaiEntity.getNip());
+                        List<Lembur> lemburs = lemburBo.getByCriteria(lembur);
+                        String keterangan = lemburs.get(0).getKeterangan();
+                        returnAbsensi.setKeterangan(keterangan);
+                    }
+
 
                     returnAbsensi.setBiayaLembur(absensiPegawaiEntity.getBiayaLembur());
                     returnAbsensi.setTipeHari(absensiPegawaiEntity.getTipeHari());
