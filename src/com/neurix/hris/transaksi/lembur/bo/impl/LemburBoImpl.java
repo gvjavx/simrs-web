@@ -1009,7 +1009,8 @@ public class LemburBoImpl implements LemburBo {
 
                     notifAtasan.setNoRequest(bean.getLemburId());
                     notifAtasan.setTipeNotifId("umum");
-                    notifAtasan.setTipeNotifName(("Lembur Pegawai"));
+//                    notifAtasan.setTipeNotifName(("Lembur Pegawai"));
+                    notifAtasan.setTipeNotifName(("Pemberitahuan"));
                     notifAtasan.setNote(imBiodataEntity.getNamaPegawai() + " mengajukan lembur pada tanggal " +CommonUtil.convertDateToString(itLemburEntity.getTanggalAwal()) + " sampai dengan tanggal " + CommonUtil.convertDateToString(itLemburEntity.getTanggalAkhir()));
 
                     if (bean.getMobile())
@@ -1031,7 +1032,8 @@ public class LemburBoImpl implements LemburBo {
                     notifSelf.setNip(itLemburEntity.getNip());
                     notifSelf.setNoRequest(bean.getLemburId());
                     notifSelf.setTipeNotifId("umum");
-                    notifSelf.setTipeNotifName(("Lembur"));
+//                    notifSelf.setTipeNotifName(("Lembur"));
+                    notifSelf.setTipeNotifName(("Pemberitahuan"));
                     notifSelf.setNote("Lembur anda pada tanggal "+bean.getTanggalAwalSetuju()+" sampai dengan tanggal "+bean.getTanggalAkhirSetuju()+" tidak di approve oleh atasan "+msg);
                     notifSelf.setCreatedWho(itLemburEntity.getNip());
                     notifSelf.setTo("self");
