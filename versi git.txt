@@ -1,0 +1,15 @@
+# 1.0.7
+1. Report Lembur (Per-orangan)										
+	* Kolom Jumlah jam lembur diganti dengan (jam lembur efektif)										
+	* Jumlah jam lembur perhitungan diganti dengan (jam lembur faktor)										
+	* Ditambahkan keterangan lembur										
+	* Kolom Hari Kerja dan Hari Libur dihapus										
+2. Penambahan keterangan pada cuti, dispensasi, dan lembur (Approval)
+3. Perbaikan tanggal awal cuti pada saat approval										
+4. Validasi cuti dan dispensasi apabila sudah mengajukan tidak dapat mengajuakan lagi sebelum di approve										
+5. Perbaikan master Payroll BPJS, Payroll Dapen DPLK, Payroll Dapenpun
+6. Penambahan tahun pada master Payroll Gaji Kary. PKWT
+7. Menghilangkan list perbaikan cuti (Mobile dan Web)																			
+8.Perbaikan icon go-medsys ganda
+9.Perbaikan click notifikasi
+==========================================================================================================
