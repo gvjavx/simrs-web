@@ -17,26 +17,26 @@
 
         $.subscribe('beforeProcessSave', function (event, data) {
             var unit = document.getElementById("branchId1").value;
-            var minBpjsKs = document.getElementById("minBpjsKs1").value;
-            var maxBpjsKs = document.getElementById("maxBpjsKs1").value;
-            var minBpjsTk = document.getElementById("minBpjsTk1").value;
-            var maxBpjsTk = document.getElementById("maxBpjsTk1").value;
+            var minBpjsKs = parseInt(document.getElementById("minBpjsKs1").value);
+            var maxBpjsKs = parseInt(document.getElementById("maxBpjsKs1").value);
+            var minBpjsTk = parseInt(document.getElementById("minBpjsTk1").value);
+            var maxBpjsTk = parseInt(document.getElementById("maxBpjsTk1").value);
 
-            var percentBpjsKsKary = document.getElementById("percentBpjsKsKary1").value;
-            var percentBpjsKsPers = document.getElementById("percentBpjsKsPers1").value;
-            var percentBpjsTkKary = document.getElementById("percentBpjsTkKary1").value;
-            var percentBpjsTkPers = document.getElementById("percentBpjsTkPers1").value;
-
-
-            var iuranKaryawan = document.getElementById("iuranKaryawan1").value;
-             var jpkKaryawan = document.getElementById("jpkKaryawan1").value;
+            var percentBpjsKsKary = parseInt(document.getElementById("percentBpjsKsKary1").value);
+            var percentBpjsKsPers = parseInt(document.getElementById("percentBpjsKsPers1").value);
+            var percentBpjsTkKary = parseInt(document.getElementById("percentBpjsTkKary1").value);
+            var percentBpjsTkPers = parseInt(document.getElementById("percentBpjsTkPers1").value);
 
 
-             var jkkPers = document.getElementById("jkkPers1").value;
-             var jhtPers = document.getElementById("jhtPers1").value;
-             var jkmPers = document.getElementById("jkmPers1").value;
-             var iurPers = document.getElementById("iurPers1").value;
-             var jpkPers = document.getElementById("jpkPers1").value;
+            var iuranKaryawan = parseInt(document.getElementById("iuranKaryawan1").value);
+             var jpkKaryawan = parseInt(document.getElementById("jpkKaryawan1").value);
+
+
+             var jkkPers = parseInt(document.getElementById("jkkPers1").value);
+             var jhtPers = parseInt(document.getElementById("jhtPers1").value);
+             var jkmPers = parseInt(document.getElementById("jkmPers1").value);
+             var iurPers = parseInt(document.getElementById("iurPers1").value);
+             var jpkPers = parseInt(document.getElementById("jpkPers1").value);
 
 
 
