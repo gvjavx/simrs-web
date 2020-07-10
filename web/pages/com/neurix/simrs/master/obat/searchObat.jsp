@@ -21,6 +21,11 @@
         });
 
     </script>
+    <style>
+        .top-7{
+            margin-top: 7px;
+        }
+    </style>
 </head>
 
 <body class="hold-transition skin-blue fixed sidebar-mini">
@@ -454,7 +459,7 @@
                             </div>
 
                             <div id="table-kandungan">
-                                <label style="margin-top: 7px">Kandungan Obat</label> <button class="btn btn-sm btn-primary" style="float: right"><i class="fa fa-plus"></i></button>
+                                <label style="margin-top: 7px">Kandungan Obat</label> <button class="btn btn-sm btn-primary" style="float: right"><i class="fa fa-plus" onclick="viewEditKandunganObat('', 'add')"></i></button>
                                 <table class="table table-bordered table-striped" style="width: 100%">
                                     <thead>
                                     <td>Kandungan</td>
@@ -479,6 +484,89 @@
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_obat"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-view-kandugan-obat">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-document"></i> View Detail Kandungan</span>
+                </h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin_kandungan_obat">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_fin_error_kandungan_obat"></p>
+                </div>
+                <div class="alert alert-success alert-dismissible" style="display: none" id="success_fin_kandungan_obat">
+                    <h4><i class="icon fa fa-info"></i> Info!</h4>
+                    <p id="msg_fin_kandungan_obat">Save Berhasil</p>
+                </div>
+
+                <div class="col-md-offset-2">
+                    <%--<div class="row">--%>
+                        <%--<div class="col-md-9">--%>
+                            <%--&lt;%&ndash;<h3 id="dt-nama-asuransi"></h3>&ndash;%&gt;--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                    <div class="row">
+                        <div class="col-md-3" align="right">Kandungan :</div>
+                        <div class="col-md-7">
+                            <select id="sel_fin_kandungan_obat" class="form-control select2" style="width: 100%">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row top-7">
+                        <div class="col-md-3" align="right">Bentuk</div>
+                        <div class="col-md-7">
+                            <select id="sel_fin_bentuk_kandungan_obat" class="form-control select2" style="width: 100%">
+                                <option value="tab">Tablet</option>
+                                <option value="sys">Syrup</option>
+                                <option value="inj">Injeksi</option>
+                                <option value="cap">Capsule</option>
+                                <option value="drop">Drop</option>
+                                <option value="inf">Infus</option>
+                                <option value="powder">Powder</option>
+                                <option value="oral">Oral</option>
+                                <option value="sachet">Sachet</option>
+                                <option value="supp">Suppositoria</option>
+                                <option value="pulvis">Pulvis</option>
+                                <option value="inf">Infusion</option>
+                                <option value="sol">Sol</option>
+                                <option value="akdr">AKDR</option>
+                                <option value="penfill">Penfill</option>
+                                <option value="enema">Enema</option>
+                                <option value="gel">Gel</option>
+                                <option value="oint">Oint</option>
+                                <option value="respule">Respule</option>
+                                <option value="inhaler">Inhaler</option>
+                                <option value="diskus">Diskus</option>
+                                <option value="nebule">Nebule</option>
+                                <option value="spray">Spray</option>
+                                <option value="cream">Cream</option>
+                                <option value="lar">Lar</option>
+                                <option value="sabun">Sabun</option>
+                                <option value="xr">XR</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row top-7">
+                        <div class="col-md-3" align="right">Sediaan</div>
+                        <div class="col-md-4"><input type="number" id="fin_sediaan_kandungan_obat" class="form-control"></div>
+                        <div class="col-md-3">
+                            <input type="text" id="fin_satuan_kandungan_obat" class="form-control" placeholder="Satuan">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div id="btn-save-kandungan-obat"></div>
             </div>
         </div>
     </div>
@@ -560,6 +648,18 @@
 
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
+
+    $( document ).ready(function() {
+
+        ObatAction.getListKandunganObat(function (list) {
+            var str = "";
+            $.each(list, function (i, item) {
+                str += "<option value='"+item.idKandungan+"'>"+item.kandungan+"</option>";
+            });
+            $("#sel_fin_kandungan_obat").html(str);
+            //console.log(list);
+        });
+    });
 
     function showModal(){
 
@@ -682,26 +782,6 @@
             }
         }
     }
-
-//     function editObat(id, nama, flag, qtyBox, qtyLembar, qtyBiji, lembarPerBox, bijiPerBiji, hargaBox, hargaLembar, hargaBiji, idPbarik, mrek) {
-//         $('#load_obat, #war_nama, #war_jenis, #war_harga, #war_stok').hide();
-//         $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\')').show();
-//         $('#add_nama_obat').val(nama);
-//         $('#add_jenis_obat').val(listSelectObatEdit(id)).trigger('change');
-//         $('#add_merek').val(mrek);
-//         $('#add_pabrik').val(idPbarik);
-//         $('#add_box').val(qtyBox);
-//         $('#add_lembar_box').val(lembarPerBox);
-//         $('#add_lembar').val(qtyLembar);
-//         $('#add_biji_lembar').val(bijiPerBiji);
-//         $('#add_biji').val(qtyBiji);
-//         $('#add_harga_box').val(hargaBox);
-//         $('#add_harga_lembar').val(hargaLembar);
-//         $('#add_harga_biji').val(hargaBiji);
-// //        $('#add_stok').val(stok);
-//         $('#add_flag').val(flag);
-//         $('#modal-obat').modal('show');
-//     }
 
     function editObat(idObat, nama, qtyBox, qtyLembar, qtyBiji, lembarPerBox, bijiPerBiji,idPbarik, mrek, minStok) {
         $('#load_obat, #war_nama, #war_jenis, #war_harga, #war_stok').hide();
@@ -827,7 +907,7 @@
                             "<td>"+item.bentuk+"</td>"+
                             "<td>"+item.sediaan+" "+item.satuanSediaan+"</td>"+
 //                            "<td>"+item.satuanSediaan+"</td>"+
-                            "<td align='center'><button class='btn btn-sm btn-primary' onclick='viewEditKandunganObat(\'"+item.id+"\')'><i class='fa fa-edit'></i></button></td>"+
+                            "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewEditKandunganObat(\'"+item.id+"\')\"><i class='fa fa-edit'></i></button></td>"+
                             "</tr>";
                     });
                     $("#body-kandungan-obat").html(str);
@@ -839,7 +919,19 @@
         });
     }
 
-    function viewEditKandunganObat(idKandunganObat) {
+    function viewEditKandunganObat(idKandunganObat, tipe) {
+        $("#modal-view-kandugan-obat").modal('show');
+
+        if (tipe == "add"){
+
+        } else {
+            ObatAction.initEditKandunganObat(idKandunganObat, function (res) {
+                if (res != null){
+
+                }
+            });
+        }
+
 
     }
 

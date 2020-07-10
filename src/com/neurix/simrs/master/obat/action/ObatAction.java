@@ -1014,4 +1014,23 @@ public class ObatAction extends BaseMasterAction {
         return response;
     }
 
+    public KandunganObat initEditKandunganObat(String idKandunganDetail){
+        logger.info("[ObatAction.listKandunganObat] START >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<KandunganObat> kandunganObats = (List<KandunganObat>) session.getAttribute("listOfKandunganObat");
+
+        List<KandunganObat> filterKandunganObats = kandunganObats.stream().filter(p->p.getId().equalsIgnoreCase(idKandunganDetail)).collect(Collectors.toList());
+        if (filterKandunganObats.size() > 0)
+            return filterKandunganObats.get(0);
+
+        logger.info("[ObatAction.listKandunganObat] END <<<");
+        return null;
+    }
+
+    public List<ImSimrsKandunganObatEntity> getListKandunganObat(){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+        return obatBo.getListAllKandunganObat();
+    }
+
 }

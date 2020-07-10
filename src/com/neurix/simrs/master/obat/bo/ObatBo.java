@@ -51,4 +51,5 @@ public interface ObatBo{
     public List<KandunganObat> getListKandunganObatDetail(String idObat) throws GeneralBOException;
     public ImSimrsKandunganObatEntity getMasterKandunganObatById(String idKandunganObat) throws GeneralBOException;
     public ImSimrsObatEntity getObatByIdObat(String idObat) throws GeneralBOException;
+    public List<ImSimrsKandunganObatEntity> getListAllKandunganObat() throws GeneralBOException;
 }

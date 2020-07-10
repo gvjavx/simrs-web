@@ -2055,4 +2055,11 @@ public class ObatBoImpl implements ObatBo {
 
         return obatEntities.size() > 0 ? obatEntities.get(0) : null;
     }
+
+    @Override
+    public List<ImSimrsKandunganObatEntity> getListAllKandunganObat() throws GeneralBOException {
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("flag", "Y");
+        return kandunganObatDao.getByCriteria(hsCriteria);
+    }
 }
