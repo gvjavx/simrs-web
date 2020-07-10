@@ -6,7 +6,9 @@ function showModalRB(jenis) {
     }
 
     setDataPasien();
-
+    if("asuhan_keperawatan_rb" == jenis){
+        listAsuhanKeperawatanRB(jenis);
+    }
     $('#modal-rb-' + jenis).modal({show: true, backdrop: 'static'});
 }
 

@@ -33,7 +33,6 @@
     <section class="content-header">
         <h1>
             Rawat Inap Pasien
-            <small>e-HEALTH</small>
         </h1>
     </section>
 

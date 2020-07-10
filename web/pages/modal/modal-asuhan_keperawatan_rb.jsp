@@ -15,7 +15,7 @@
                         <p id="msg_rb_asuhan_keperawatan_rb"></p>
                     </div>
                     <div class="btn-group">
-                        <button type="button" onclick="showModalRB('add_asuhan_keperawatan_rb')" class="btn btn-success"><i class="fa fa-plus"></i> Asuhan Keperawatan
+                        <button type="button" onclick="showModalRB('add_asuhan_keperawatan_rb')" class="btn btn-success"><i class="fa fa-plus"></i> Asuhan Kebidanan
                         </button>
                     </div>
                 </div>

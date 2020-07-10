@@ -125,9 +125,12 @@ public class RekamMedikAction extends BaseTransactionAction {
             }
             detailCheckup.setJenisKelamin(jk);
             detailCheckup.setTempatLahir(checkup.getTempatLahir());
-            detailCheckup.setTglLahir(checkup.getTglLahir() == null ? null : checkup.getTglLahir().toString());
-            String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
-            detailCheckup.setTempatTglLahir(checkup.getTempatLahir() + ", " + formatDate);
+            if(checkup.getTglLahir() != null){
+                detailCheckup.setUmur(calculateAge(checkup.getTglLahir(), true));
+                detailCheckup.setTglLahir(checkup.getTglLahir() == null ? null : checkup.getTglLahir().toString());
+                String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+                detailCheckup.setTempatTglLahir(checkup.getTempatLahir() + ", " + formatDate);
+            }
             detailCheckup.setNik(checkup.getNoKtp());
             detailCheckup.setIdJenisPeriksaPasien(checkup.getIdJenisPeriksaPasien());
             detailCheckup.setUrlKtp(checkup.getUrlKtp());
@@ -143,64 +146,70 @@ public class RekamMedikAction extends BaseTransactionAction {
             detailCheckup.setNamaAsuransi(checkup.getNamaAsuransi());
             detailCheckup.setCoverBiaya(checkup.getCoverBiaya());
             detailCheckup.setVideoRm(CommonConstant.EXTERNAL_IMG_URI+checkup.getVideoRm());
-            setDetailCheckup(detailCheckup);
-
-        } else {
-
-            HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
-            try {
-                checkup = checkupBoProxy.getLastDataPasienByIdPasien(idPasien);
-            } catch (GeneralBOException e) {
-                logger.error("Found error when detail pasien " + e.getMessage());
+            if(checkup.getCreatedDate() != null){
+                String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getCreatedDate());
+                detailCheckup.setStTanggalMasuk(formatDate);
             }
-            detailCheckup.setNoCheckup(checkup.getNoCheckup());
-            detailCheckup.setIdDetailCheckup(checkup.getIdDetailCheckup());
-            detailCheckup.setIdPasien(checkup.getIdPasien());
-            detailCheckup.setNamaPasien(checkup.getNama());
-            detailCheckup.setAlamat(checkup.getJalan());
-            detailCheckup.setDesa(checkup.getNamaDesa());
-            detailCheckup.setKecamatan(checkup.getNamaKecamatan());
-            detailCheckup.setKota(checkup.getNamaKota());
-            detailCheckup.setProvinsi(checkup.getNamaProvinsi());
-            detailCheckup.setNamaPelayanan(checkup.getNamaPelayanan());
-            if (checkup.getJenisKelamin() != null) {
-                if ("P".equalsIgnoreCase(checkup.getJenisKelamin())) {
-                    jk = "Perempuan";
-                } else {
-                    jk = "Laki-Laki";
-                }
-            }
-            detailCheckup.setJenisKelamin(jk);
-            detailCheckup.setTempatLahir(checkup.getTempatLahir());
-            detailCheckup.setTglLahir(checkup.getTglLahir() == null ? null : checkup.getTglLahir().toString());
-            String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
-            detailCheckup.setTempatTglLahir(checkup.getTempatLahir() + ", " + formatDate);
-            detailCheckup.setNik(checkup.getNoKtp());
-            detailCheckup.setIdJenisPeriksaPasien(checkup.getIdJenisPeriksaPasien());
-            detailCheckup.setTinggi(checkup.getTinggi());
-            detailCheckup.setBerat(checkup.getBerat());
-            detailCheckup.setNoSep(checkup.getNoSep());
-            detailCheckup.setJenisPeriksaPasien(checkup.getStatusPeriksaName());
-            if(checkup.getTglKeluar() != null){
-                String tglKeluar = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglKeluar());
-                detailCheckup.setTglKeluar(tglKeluar);
-            }
+            detailCheckup.setKategoriPelayanan(checkup.getKategoriPelayanan());
             detailCheckup.setDiagnosa(checkup.getDiagnosa());
-            detailCheckup.setUmur(calculateAge(checkup.getTglLahir(), true));
+            detailCheckup.setNamaDiagnosa(checkup.getNamaDiagnosa());
+            String label = checkup.getNamaPelayanan().replace("Poli Spesialis", "");
+            detailCheckup.setAsesmenLabel("Asesmen " + label);
             setDetailCheckup(detailCheckup);
         }
-
-        if (idPasien != null && !"".equalsIgnoreCase(idPasien)) {
-            List<HeaderDetailCheckup> detailCheckupList = new ArrayList<>();
-            try {
-                detailCheckupList = rekamMedikBoProxy.getDetailListRekamMedis(idPasien);
-            } catch (GeneralBOException e) {
-                logger.error("Found Error when search rekam medis " + e.getMessage());
-            }
-            HttpSession session = ServletActionContext.getRequest().getSession();
-            session.setAttribute("listOfRekamMedis", detailCheckupList);
-        }
-
+//else {
+//            HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+//            try {
+//                checkup = checkupBoProxy.getLastDataPasienByIdPasien(idPasien);
+//            } catch (GeneralBOException e) {
+//                logger.error("Found error when detail pasien " + e.getMessage());
+//            }
+//            detailCheckup.setNoCheckup(checkup.getNoCheckup());
+//            detailCheckup.setIdDetailCheckup(checkup.getIdDetailCheckup());
+//            detailCheckup.setIdPasien(checkup.getIdPasien());
+//            detailCheckup.setNamaPasien(checkup.getNama());
+//            detailCheckup.setAlamat(checkup.getJalan());
+//            detailCheckup.setDesa(checkup.getNamaDesa());
+//            detailCheckup.setKecamatan(checkup.getNamaKecamatan());
+//            detailCheckup.setKota(checkup.getNamaKota());
+//            detailCheckup.setProvinsi(checkup.getNamaProvinsi());
+//            detailCheckup.setNamaPelayanan(checkup.getNamaPelayanan());
+//            if (checkup.getJenisKelamin() != null) {
+//                if ("P".equalsIgnoreCase(checkup.getJenisKelamin())) {
+//                    jk = "Perempuan";
+//                } else {
+//                    jk = "Laki-Laki";
+//                }
+//            }
+//            detailCheckup.setJenisKelamin(jk);
+//            detailCheckup.setTempatLahir(checkup.getTempatLahir());
+//            detailCheckup.setTglLahir(checkup.getTglLahir() == null ? null : checkup.getTglLahir().toString());
+//            String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+//            detailCheckup.setTempatTglLahir(checkup.getTempatLahir() + ", " + formatDate);
+//            detailCheckup.setNik(checkup.getNoKtp());
+//            detailCheckup.setIdJenisPeriksaPasien(checkup.getIdJenisPeriksaPasien());
+//            detailCheckup.setTinggi(checkup.getTinggi());
+//            detailCheckup.setBerat(checkup.getBerat());
+//            detailCheckup.setNoSep(checkup.getNoSep());
+//            detailCheckup.setJenisPeriksaPasien(checkup.getStatusPeriksaName());
+//            if(checkup.getTglKeluar() != null){
+//                String tglKeluar = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglKeluar());
+//                detailCheckup.setTglKeluar(tglKeluar);
+//            }
+//            detailCheckup.setDiagnosa(checkup.getDiagnosa());
+//            detailCheckup.setUmur(calculateAge(checkup.getTglLahir(), true));
+//            setDetailCheckup(detailCheckup);
+//        }
+//        if (idPasien != null && !"".equalsIgnoreCase(idPasien)) {
+//            List<HeaderDetailCheckup> detailCheckupList = new ArrayList<>();
+//            try {
+//                detailCheckupList = rekamMedikBoProxy.getDetailListRekamMedis(idPasien);
+//            } catch (GeneralBOException e) {
+//                logger.error("Found Error when search rekam medis " + e.getMessage());
+//            }
+//            HttpSession session = ServletActionContext.getRequest().getSession();
+//            session.setAttribute("listOfRekamMedis", detailCheckupList);
+//        }
         logger.info("[CheckupDetailAction.add] end process <<<");
         return "init_detail";
     }

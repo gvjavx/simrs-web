@@ -419,7 +419,7 @@
                     <div class="box-header with-border">
                         <div class="row">
                             <div class="col-md-6">
-                                <h3 class="box-title"><i class="fa fa-stethoscope"></i> Anamnesa</h3>
+                                <h3 class="box-title"><i class="fa fa-stethoscope"></i> Anamnesa & Pemeriksaan Fisik</h3>
                             </div>
                             <div class="col-md-6">
                                 <h3 class="box-title"><i class="fa fa-medkit"></i> Rekam Medis</h3>
@@ -429,12 +429,40 @@
                     <div class="box-body">
                         <div class="row">
                             <div class="col-md-6">
+                                <div class="alert alert-danger alert-dismissible" style="display: none" id="war_anamnese">
+                                    <p id="msg_war"></p>
+                                </div>
+                                <div class="alert alert-success alert-dismissible" style="display: none" id="suc_anamnese">
+                                    <p id="msg_suc"></p>
+                                </div>
                                 <div class="row">
-                                    <div class="col-md-10">
-                                        <s:textarea name="headerDetailCheckup.anamnese" cssClass="form-control" rows="4" onchange="saveAnamnese(this.value)"></s:textarea>
+                                    <div class="col-md-12">
+                                        <s:textarea id="fisik_anamnesa" name="headerDetailCheckup.anamnese" cssClass="form-control" rows="4" placeholder="Keterangan Anamnese"></s:textarea>
                                     </div>
-                                    <div class="col-md-2">
-                                        <p id="suc_anamnese" style="color: #449d44; margin-left: -20px; display: none"><i class="fa fa-check"></i> Success</p>
+                                </div>
+                                <div class="row jarak">
+                                    <div class="col-md-3">
+                                        <span>Tensi </span> <small>(mmHg)</small>
+                                        <s:textfield cssClass="form-control" id="fisik_tensi" name="headerDetailCheckup.tensi"></s:textfield>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <span>Suhu</span> <small>(&#8451)</small>
+                                        <s:textfield cssClass="form-control" id="fisik_suhu" name="headerDetailCheckup.suhu"></s:textfield>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <span>Nadi</span> <small>(x/menit)</small>
+                                        <s:textfield cssClass="form-control" id="fisik_nadi" name="headerDetailCheckup.nadi"></s:textfield>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <span>RR</span> <small>(x/menit)</small>
+                                        <s:textfield cssClass="form-control" id="fisik_rr" name="headerDetailCheckup.pernafasan"></s:textfield>
+                                    </div>
+                                </div>
+                                <div class="row jarak">
+                                    <div class="col-md-12">
+                                        <button id="save_fisik" class="btn btn-success pull-right" onclick="saveAnamnese()"><i class="fa fa-check"></i> Save</button>
+                                        <button style="display: none; cursor: no-drop; margin-top: 25px" type="button" class="btn btn-success" id="load_fisik"> <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -448,13 +476,14 @@
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a style="cursor: pointer" onclick="showAsesmenUgd()"><i class="fa fa-circle-o"></i> <span id="li_title"></span></a></li>
-                                        <li><a target="_blank"
-                                               href="<%= request.getContextPath() %>/rekammedik/printSuratPernyataan_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>&tipe=SP03">
-                                            <i class="fa fa-print"></i>Surat Penolakan Tindakan</a></li>
-                                        <li><a target="_blank"
-                                               href="<%= request.getContextPath() %>/rekammedik/printSuratPernyataan_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>&tipe=SP04">
-                                            <i class="fa fa-print"></i>Surat Pernyataan Kematian</a></li>
+                                        <li><a style="cursor: pointer" onclick="showAsesmenUgd()"><i class="fa fa-file-o"></i> <span id="li_title"></span></a></li>
+                                        <li><a style="cursor: pointer" onclick="printPernyataan('SP03')"><i class="fa fa-print"></i>Surat Penolakan Tindakan</a></li>
+                                        <li><a style="cursor: pointer" onclick="printPernyataan('SP06')"><i class="fa fa-print"></i>Surat Pernyataan Non Bpjs / Asuransi</a></li>
+                                        <li><a style="cursor: pointer" onclick="printPernyataan('SK01')"><i class="fa fa-print"></i>Surat Keterangan Dokter</a></li>
+                                        <li><a style="cursor: pointer" onclick="printPernyataan('SP05')"><i class="fa fa-print"></i>Surat Pengantar Jenazah</a></li>
+                                        <li><a style="cursor: pointer" onclick="printPernyataan('SK03')"><i class="fa fa-print"></i>Surat Keterangan Sehat</a></li>
+                                        <li><a style="cursor: pointer" onclick="printPernyataan('SP07')"><i class="fa fa-print"></i>Surat Pernyataan Kronologi</a></li>
+                                        <li><a style="cursor: pointer" onclick="printPernyataan('SP04')"><i class="fa fa-print"></i>Surat Pernyataan Kematian</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -2113,6 +2142,13 @@
     var jenisKelamin = '<s:property value="headerDetailCheckup.jenisKelamin"/>';
     var urlPage = 'igd';
     var title = "";
+    var tempTensi = "";
+    var tempSuhu = "";
+    var tempNadi = "";
+    var tempRr = "";
+    var tempBerat = "";
+    var tempTinggi = "";
+    var tempAnmnesa = "";
 
     $(document).ready(function () {
         $('#igd').addClass('active');
@@ -2294,6 +2330,10 @@
         }
         $('#modal-temp').load(context, function (res) {
         });
+    }
+
+    function printPernyataan(kode) {
+        window.open(contextPath+'/rekammedik/printSuratPernyataan_rekammedik?id=' + idDetailCheckup + '&tipe=' + kode, '_blank');
     }
 
 </script>

@@ -566,6 +566,18 @@ apply the skin class to the body tag so the changes take effect.
         return (hours < 9 ? "0" : "") + hours + ":" + (minutes < 9 ? "0" : "") + minutes;
     }
 
+    function convertSentenceCaseUp(myString){
+        if(myString != null && myString != ''){
+            var rg = /(^\w{1}|\ \s*\w{1})/gi;
+            myString = myString.replace(rg, function(toReplace) {
+                return toReplace.toUpperCase();
+            });
+            return myString;
+        }else{
+            return "";
+        }
+    }
+
 </script>
 
 

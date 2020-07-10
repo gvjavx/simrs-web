@@ -2125,7 +2125,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
 
         if (bean != null) {
             if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())) {
-                idPasien = bean.getIdPasien();
+                idPasien = "%"+bean.getIdPasien()+"%";
             }
             if (bean.getNamaPasien() != null && !"".equalsIgnoreCase(bean.getNamaPasien())) {
                 nama = "%"+bean.getNamaPasien()+"%";
@@ -2143,21 +2143,36 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "b.jenis_kelamin,\n" +
                     "b.tempat_lahir,\n" +
                     "b.tgl_lahir,\n" +
-                    "c.desa_name\n" +
+                    "c.desa_name,\n" +
+                    "a.tgl_keluar,\n" +
+                    "a.created_date,\n" +
+                    "a.nama_pelayanan,\n" +
+                    "a.id_detail_checkup,\n" +
+                    "a.no_checkup\n" +
                     "FROM \n" +
                     "(\n" +
-                    "SELECT a.id_pasien FROM it_simrs_header_checkup a\n" +
+                    "SELECT * FROM (\n" +
+                    "SELECT\n" +
+                    "b.id_detail_checkup,\n" +
+                    "a.no_checkup,\n" +
+                    "a.id_pasien, \n" +
+                    "c.nama_pelayanan, \n" +
+                    "rank() OVER (PARTITION BY a.id_pasien ORDER BY b.created_date DESC) as rank,\n" +
+                    "a.tgl_keluar, \n" +
+                    "b.created_date\n" +
+                    "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                    "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
                     "WHERE b.status_periksa = '3' \n" +
                     "AND a.tgl_keluar IS NOT NULL \n" +
                     "AND a.branch_id LIKE :branchId\n" +
-                    "GROUP BY a.id_pasien\n" +
+                    ") aa WHERE aa.rank = '1' \n" +
                     ") a \n" +
                     "INNER JOIN im_simrs_pasien b ON a.id_pasien = b.id_pasien\n" +
                     "INNER JOIN im_hris_desa c ON CAST(b.desa_id AS VARCHAR) = c.desa_id\n" +
                     "WHERE b.id_pasien LIKE :idPasien\n" +
-                    "AND b.nama LIKE :nama\n" +
-                    "AND b.jenis_kelamin LIKE :jenisKelamin\n";
+                    "AND b.nama ILIKE :nama\n" +
+                    "AND b.jenis_kelamin LIKE :jenisKelamin";
 
             List<Object[]> results = new ArrayList<>();
             results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -2190,6 +2205,13 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                         String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(java.sql.Date.valueOf(detailCheckup.getTglLahir()));
                         detailCheckup.setTempatTglLahir(detailCheckup.getTempatLahir()+", "+formatDate);
                     }
+
+                    if(obj[7] != null && obj[8] != null){
+                        String tglPeriksa = new SimpleDateFormat("dd-MM-yyyy").format(Timestamp.valueOf(obj[7].toString()));
+                        detailCheckup.setPemeriksaanTerakhir(tglPeriksa+", "+obj[8].toString());
+                    }
+                    detailCheckup.setIdDetailCheckup(obj[9] != null ? obj[9].toString() : "");
+                    detailCheckup.setNoCheckup(obj[10] != null ? obj[10].toString() : "");
                     headerDetailCheckups.add(detailCheckup);
                 }
             }

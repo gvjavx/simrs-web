@@ -147,7 +147,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         String dateFrom = "";
         String dateTo = "";
 
-        String idAntrianOnline = "%";
+        String idAntrianOnline = "";
 
         //sodiq, 17 Nov 2019, penambahan no checkup
         String noCheckup = "%";
@@ -183,7 +183,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         }
 
         if (mapCriteria.get("id_antrian_online") != null && !"".equalsIgnoreCase(mapCriteria.get("id_antrian_online").toString())) {
-            idAntrianOnline = mapCriteria.get("id_antrian_online").toString();
+            idAntrianOnline = "AND h.id_antrian_online LIKE "+mapCriteria.get("id_antrian_online").toString();
         }
 
         String SQL = "SELECT\n" +
@@ -204,8 +204,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "AND detail.id_pelayanan LIKE :idPelayanan\n" +
                 "AND detail.status_periksa LIKE :statusPeriksa\n" +
                 "AND detail.flag = 'Y'\n" +
-                "AND h.no_checkup LIKE :noCheckup\n" +
-                "AND h.id_antrian_online LIKE :idAntrianOnline";
+                "AND h.no_checkup LIKE :noCheckup\n" + idAntrianOnline;
 
 //        String group = "\n GROUP BY detail.no_checkup, h.branch_id";
         String order = "\n ORDER BY h.created_date DESC";
@@ -226,7 +225,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     .setParameter("noCheckup", noCheckup)
                     .setParameter("dateFrom", dateFrom)
                     .setParameter("dateTo", dateTo)
-                    .setParameter("idAntrianOnline", idAntrianOnline)
+                    //update sodiq 08-07-2020, karena ketika tidak ada id antrian online data tidak ditemukan
+//                    .setParameter("idAntrianOnline", idAntrianOnline)
                     .list();
 
         } else {
@@ -241,7 +241,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     .setParameter("idPelayanan", idPelayanan)
                     .setParameter("statusPeriksa", statusPeriksa)
                     .setParameter("noCheckup", noCheckup)
-                    .setParameter("idAntrianOnline", idAntrianOnline)
+//                    .setParameter("idAntrianOnline", idAntrianOnline)
                     .list();
 
         }
@@ -831,6 +831,11 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setAlergi(getAlergiPasien(obj[0].toString()));
                     checkup.setAnamnese(header.getAnamnese());
                     checkup.setKategoriPelayanan(obj[50] == null ? "" : obj[50].toString());
+                    HeaderCheckup hdr = getPemeriksaanFisik(obj[0].toString());
+                    checkup.setTensi(hdr.getTensi());
+                    checkup.setSuhu(hdr.getSuhu());
+                    checkup.setNadi(hdr.getNadi());
+                    checkup.setPernafasan(hdr.getPernafasan());
                     checkup.setPenunjangMedis(getPenunjangMendis(obj[15].toString()));
                 }
             }
@@ -991,6 +996,39 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         if (result.size() > 0){
             Object[] obj = result.get(0);
             res = obj[1].toString();
+        }
+        return res;
+    }
+
+    public HeaderCheckup getPemeriksaanFisik(String noCheckup){
+        HeaderCheckup res = new HeaderCheckup();
+        if(noCheckup != null && !"".equalsIgnoreCase(noCheckup)){
+            String SQL = "SELECT\n" +
+                    "no_checkup,\n" +
+                    "berat_badan,\n" +
+                    "tinggi,\n" +
+                    "tensi,\n" +
+                    "suhu,\n" +
+                    "nadi,\n" +
+                    "rr,\n" +
+                    "anamnese\n" +
+                    "FROM it_simrs_header_checkup\n" +
+                    "WHERE no_checkup LIKE :id";
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", noCheckup)
+                    .list();
+            if (result.size() > 0){
+                Object[] obj = result.get(0);
+                res.setNoCheckup(obj[0] != null ? obj[0].toString() : "");
+                res.setBerat(obj[1] != null ? obj[1].toString() : "");
+                res.setTinggi(obj[2] != null ? obj[2].toString() : "");
+                res.setTensi(obj[3] != null ? obj[3].toString() : "");
+                res.setSuhu(obj[4] != null ? obj[4].toString() : "");
+                res.setNadi(obj[5] != null ? obj[5].toString() : "");
+                res.setPernafasan(obj[6] != null ? obj[6].toString() : "");
+                res.setAnamnese(obj[7] != null ? obj[7].toString() : "");
+            }
         }
         return res;
     }

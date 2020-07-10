@@ -46,51 +46,55 @@ public class AsesmenOperasiAction {
             asesmenOperasi.setIdDetailCheckup(obj.getString("id_detail_checkup"));
             asesmenOperasi.setKeterangan(obj.getString("keterangan"));
 
-            if ("penandaan_area".equalsIgnoreCase(obj.getString("keterangan")) ||
-                    "general_penyataan".equalsIgnoreCase(obj.getString("keterangan")) ||
-                    "regional_penyataan".equalsIgnoreCase(obj.getString("keterangan"))) {
-                if (obj.has("jawaban1")) {
-                    if (!"".equalsIgnoreCase(obj.getString("jawaban1"))) {
-                        String name = obj.getString("jawaban1");
-                        String nameFile1 = name.substring(name.length() - 13);
-                        String nameFile2 = nameFile1.replace("=", "a");
-                        BASE64Decoder decoder = new BASE64Decoder();
-                        byte[] decodedBytes = decoder.decodeBuffer(obj.getString("jawaban1"));
-                        logger.info("Decoded upload data : " + decodedBytes.length);
-                        String wkt = time.toString();
-                        String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
-                        logger.info("PATTERN :" + patten);
-                        String fileName = obj.getString("id_detail_checkup") + "-" + nameFile2+i+ "-" + patten + ".png";
-                        String uploadFile = "";
-                        if ("area_penanda".equalsIgnoreCase(obj.getString("jenis"))) {
-                            uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_AREA_OPERASI + fileName;
-                        }
-                        if ("ttd_pasien".equalsIgnoreCase(obj.getString("jenis"))) {
-                            uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_PASIEN + fileName;
-                        }
-                        if ("ttd_dokter".equalsIgnoreCase(obj.getString("jenis"))) {
-                            uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + fileName;
-                        }
-                        if ("general_anestesi".equalsIgnoreCase(obj.getString("jenis"))) {
-                            uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
-                        }
+            if(obj.has("tipe")){
+                if("ttd".equalsIgnoreCase(obj.getString("tipe")) ||
+                   "penanda".equalsIgnoreCase(obj.getString("tipe")) ||
+                   "gambar".equalsIgnoreCase(obj.getString("tipe"))){
 
-                        logger.info("File save path : " + uploadFile);
-                        BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+                    String name = obj.getString("jawaban1");
+                    String nameFile1 = name.substring(name.length() - 13);
+                    String nameFile2 = nameFile1.replace("=", "a");
+                    BASE64Decoder decoder = new BASE64Decoder();
+                    byte[] decodedBytes = decoder.decodeBuffer(obj.getString("jawaban1"));
+                    logger.info("Decoded upload data : " + decodedBytes.length);
+                    String wkt = time.toString();
+                    String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                    logger.info("PATTERN :" + patten);
+                    String fileName = obj.getString("id_detail_checkup") + "-" + nameFile2+i+ "-" + patten + ".png";
+                    String uploadFile = "";
 
-                        if (image == null) {
-                            logger.error("Buffered Image is null");
-                            response.setStatus("error");
-                            response.setMsg("Buffered Image is null");
-                        } else {
-                            File f = new File(uploadFile);
-                            // write the image
-                            ImageIO.write(image, "png", f);
-                            asesmenOperasi.setJawaban1(fileName);
+                    if ("penanda".equalsIgnoreCase(obj.getString("tipe"))) {
+                        uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_AREA_OPERASI + fileName;
+                    }
+                    if("ttd".equalsIgnoreCase(obj.getString("tipe"))){
+                        uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
+                    }
+                    if("gambar".equalsIgnoreCase(obj.getString("tipe"))){
+                        uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_IMG_RM + fileName;
+                    }
+
+                    logger.info("File save path : " + uploadFile);
+                    BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+                    if (image == null) {
+                        logger.error("Buffered Image is null");
+                        response.setStatus("error");
+                        response.setMsg("Buffered Image is null");
+                    } else {
+                        File f = new File(uploadFile);
+                        // write the image
+                        ImageIO.write(image, "png", f);
+                        asesmenOperasi.setJawaban1(fileName);
+                    }
+                }else {
+                    if (obj.has("jawaban1")) {
+                        if (!"".equalsIgnoreCase(obj.getString("jawaban1"))) {
+                            asesmenOperasi.setJawaban1(obj.getString("jawaban1"));
                         }
                     }
                 }
-            } else {
+                asesmenOperasi.setTipe(obj.getString("tipe"));
+            }else{
                 if (obj.has("jawaban1")) {
                     if (!"".equalsIgnoreCase(obj.getString("jawaban1"))) {
                         asesmenOperasi.setJawaban1(obj.getString("jawaban1"));

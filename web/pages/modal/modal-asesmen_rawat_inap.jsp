@@ -121,13 +121,13 @@
                         <div class="form-group">
                             <label class="col-md-4">Alasan Masuk RS</label>
                             <div class="col-md-8">
-                                <textarea id="rk1" class="form-control" rows="3"></textarea>
+                                <textarea id="rk1" class="form-control anamnese" rows="3"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Diagnosa Awal</label>
                             <div class="col-md-8">
-                                <textarea id="rk2" style="margin-top: 7px"class="form-control" rows="3"></textarea>
+                                <textarea id="rk2" style="margin-top: 7px"class="form-control diagnosa-pasien" rows="3"></textarea>
                             </div>
                         </div>
                         <div class="form-group">

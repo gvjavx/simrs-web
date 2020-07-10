@@ -201,6 +201,20 @@
                 <param name="reportParameters">reportParams</param>
             </result>
 
+            <result name="print_pernyataan_selisih" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printSuratSelisihKamarPT.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
+            <result name="print_pernyataan_gagal_sep" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printSuratGagalSEP.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
         </action>
 
     </package>
