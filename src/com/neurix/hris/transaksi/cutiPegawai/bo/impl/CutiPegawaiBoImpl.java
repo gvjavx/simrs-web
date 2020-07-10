@@ -2195,7 +2195,8 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                     notifSelf.setNip(itCutiPegawaiEntity.getNip());
                     notifSelf.setNoRequest(bean.getCutiPegawaiId());
                     notifSelf.setTipeNotifId("umum");
-                    notifSelf.setTipeNotifName(("Cuti Pegawai"));
+//                    notifSelf.setTipeNotifName(("Cuti Pegawai"));
+                    notifSelf.setTipeNotifName(("Pemberitahuan"));
                     notifSelf.setNote("Cuti anda pada tanggal "+CommonUtil.convertDateToString(itCutiPegawaiEntity.getTanggalDari())+" sampai dengan tanggal "+CommonUtil.convertDateToString(itCutiPegawaiEntity.getTanggalSelesai())+" di approve oleh atasan anda");
                     notifSelf.setCreatedWho(itCutiPegawaiEntity.getNip());
                     notifSelf.setTo("self");
@@ -2210,7 +2211,8 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                         notifAtasan.setNip(CommonUtil.userIdLogin());
                     notifAtasan.setNoRequest(bean.getCutiPegawaiId());
                     notifAtasan.setTipeNotifId("umum");
-                    notifAtasan.setTipeNotifName(("Cuti Pegawai"));
+//                    notifAtasan.setTipeNotifName(("Cuti Pegawai"));
+                    notifAtasan.setTipeNotifName(("Pemberitahuan"));
                     notifAtasan.setNote(imBiodataEntity.getNamaPegawai() + " mengajukan cuti pada tanggal " +CommonUtil.convertDateToString(itCutiPegawaiEntity.getTanggalDari()) + " sampai dengan tanggal " + CommonUtil.convertDateToString(itCutiPegawaiEntity.getTanggalSelesai()));
                     if (bean.isForMobile())
                         notifAtasan.setCreatedWho(bean.getNip());
@@ -2227,7 +2229,8 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                         notifElse.setNip(bean.getPegawaiPenggantiSementara());
                         notifElse.setNoRequest(bean.getCutiPegawaiId());
                         notifElse.setTipeNotifId("umum");
-                        notifElse.setTipeNotifName(("Cuti Pegawai"));
+//                        notifElse.setTipeNotifName(("Cuti Pegawai"));
+                        notifElse.setTipeNotifName(("Pemberitahuan"));
                         notifElse.setNote("Tolong untuk bisa Menggantikan sementara " + imBiodataEntity.getNamaPegawai()+" pada Tanggal "+itCutiPegawaiEntity.getTanggalDari()+" sampai "+itCutiPegawaiEntity.getTanggalSelesai());
                         notifElse.setCreatedWho(itCutiPegawaiEntity.getNip());
                         notifElse.setTo("plt");
@@ -2255,7 +2258,8 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                     notifSelf.setNip(itCutiPegawaiEntity.getNip());
                     notifSelf.setNoRequest(bean.getCutiPegawaiId());
                     notifSelf.setTipeNotifId("umum");
-                    notifSelf.setTipeNotifName(("Cuti Pegawai"));
+//                    notifSelf.setTipeNotifName(("Cuti Pegawai"));
+                    notifSelf.setTipeNotifName(("Pemberitahuan"));
                     notifSelf.setNote("Cuti anda pada tanggal "+itCutiPegawaiEntity.getTanggalDari()+" sampai dengan tanggal "+itCutiPegawaiEntity.getTanggalSelesai()+" tidak di approve oleh atasan "+msg);
                     notifSelf.setCreatedWho(itCutiPegawaiEntity.getNip());
                     notifSelf.setTo("self");

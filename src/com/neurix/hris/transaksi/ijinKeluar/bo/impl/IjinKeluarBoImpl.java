@@ -1834,7 +1834,8 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
                     notifSelf.setNip(itIjinKeluarEntity.getNip());
                     notifSelf.setNoRequest(bean.getIjinKeluarId());
                     notifSelf.setTipeNotifId("umum");
-                    notifSelf.setTipeNotifName((tipeNotifName));
+//                    notifSelf.setTipeNotifName((tipeNotifName));
+                    notifSelf.setTipeNotifName(("Pemberitahuan"));
                     notifSelf.setNote(tipeNotifName+" anda pada tanggal "+CommonUtil.convertDateToString(itIjinKeluarEntity.getTanggalAwal())+" di approve oleh atasan anda");
                     notifSelf.setCreatedWho(itIjinKeluarEntity.getNip());
                     notifSelf.setTo("self");
@@ -1850,7 +1851,8 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
 
                     notifAtasan.setNoRequest(bean.getIjinKeluarId());
                     notifAtasan.setTipeNotifId("umum");
-                    notifAtasan.setTipeNotifName(("Ijin Keluar Pegawai"));
+//                    notifAtasan.setTipeNotifName(("Ijin Keluar Pegawai"));
+                    notifAtasan.setTipeNotifName(("Pemberitahuan"));
                     notifAtasan.setNote(imBiodataEntity.getNamaPegawai() + " mengajukan dispensasi pada tanggal " +CommonUtil.convertDateToString(itIjinKeluarEntity.getTanggalAwal()) + " sampai dengan tanggal " + CommonUtil.convertDateToString(itIjinKeluarEntity.getTanggalAkhir()));
                     if (bean.isMobile())
 //                        notifAtasan.setNip(bean.getNip());
@@ -1886,7 +1888,8 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
                     notifSelf.setNip(itIjinKeluarEntity.getNip());
                     notifSelf.setNoRequest(bean.getIjinKeluarId());
                     notifSelf.setTipeNotifId("umum");
-                    notifSelf.setTipeNotifName(tipeNotifName);
+//                    notifSelf.setTipeNotifName(tipeNotifName);
+                    notifSelf.setTipeNotifName(("Pemberitahuan"));
                     notifSelf.setNote(tipeNotifName+" anda pada tanggal "+CommonUtil.convertDateToString(itIjinKeluarEntity.getTanggalAwal())+" tidak di approve oleh atasan "+msg);
                     notifSelf.setCreatedWho(itIjinKeluarEntity.getNip());
                     notifSelf.setTo("self");
