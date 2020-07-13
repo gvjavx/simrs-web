@@ -3,10 +3,7 @@ package com.neurix.simrs.master.obat.bo;
 import com.neurix.akuntansi.master.reportDetail.model.ReportDetail;
 import com.neurix.common.bo.BaseMasterBo;
 import com.neurix.common.exception.GeneralBOException;
-import com.neurix.simrs.master.obat.model.ImSimrsKandunganObatEntity;
-import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
-import com.neurix.simrs.master.obat.model.KandunganObat;
-import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.master.obat.model.*;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.hargaobat.model.HargaObat;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
@@ -52,4 +49,7 @@ public interface ObatBo{
     public ImSimrsKandunganObatEntity getMasterKandunganObatById(String idKandunganObat) throws GeneralBOException;
     public ImSimrsObatEntity getObatByIdObat(String idObat) throws GeneralBOException;
     public List<ImSimrsKandunganObatEntity> getListAllKandunganObat() throws GeneralBOException;
+    public String generateIdKandungan() throws GeneralBOException;
+    public List<ImSimrsBentukBarangEntity> getLitBentukBarangByFlag(String flag) throws GeneralBOException;
+    public ImSimrsBentukBarangEntity getBentukBarangById(String idBentuk) throws GeneralBOException;
 }

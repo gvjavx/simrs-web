@@ -77,6 +77,15 @@ public class Obat extends BaseModel {
     private String periode;
     private String namaPelayanan;
     private String type;
+    private String bentuk;
+
+    public String getBentuk() {
+        return bentuk;
+    }
+
+    public void setBentuk(String bentuk) {
+        this.bentuk = bentuk;
+    }
 
     private List<KandunganObat> kandunganObats = new ArrayList<>();
 

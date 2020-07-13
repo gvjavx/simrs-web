@@ -10,10 +10,7 @@ import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.obat.bo.ObatBo;
-import com.neurix.simrs.master.obat.model.ImSimrsKandunganObatEntity;
-import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
-import com.neurix.simrs.master.obat.model.KandunganObat;
-import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.master.obat.model.*;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.vendor.bo.VendorBo;
@@ -281,6 +278,9 @@ public class ObatAction extends BaseMasterAction {
         String userArea = CommonUtil.userBranchLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<KandunganObat> kandunganObats = (List<KandunganObat>) session.getAttribute("listOfKandunganObat");
+
         Obat obat = new Obat();
         obat.setNamaObat(namaObat);
         obat.setMerk(merek);
@@ -303,11 +303,16 @@ public class ObatAction extends BaseMasterAction {
         obat.setMinStok(minStok);
         obat.setHargaTerakhir(new BigDecimal(String.valueOf(0)));
 
+        if (kandunganObats != null && kandunganObats.size() > 0){
+            obat.setKandunganObats(kandunganObats);
+        }
+
         try {
             checkObatResponse = obatBo.checkFisikObatByIdPabrik(obat);
         } catch (GeneralBOException e) {
             checkObatResponse.setStatus("error");
             checkObatResponse.setMessage("[ERROR] " + e.getMessage());
+            return checkObatResponse;
         }
 
         if ("success".equalsIgnoreCase(checkObatResponse.getStatus())) {
@@ -333,6 +338,9 @@ public class ObatAction extends BaseMasterAction {
             String userArea = CommonUtil.userBranchLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
+            HttpSession session = ServletActionContext.getRequest().getSession();
+            List<KandunganObat> kandunganObats = (List<KandunganObat>) session.getAttribute("listOfKandunganObat");
+
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
 
@@ -348,6 +356,13 @@ public class ObatAction extends BaseMasterAction {
             obat.setBranchId(userArea);
             obat.setAction("U");
             obat.setMinStok(minStok);
+
+            if (kandunganObats != null && kandunganObats.size() > 0){
+                List<KandunganObat> kandunganObatsFiltered = kandunganObats.stream().filter(p -> p.getIdObat().equalsIgnoreCase(idObat)).collect(Collectors.toList());
+                if (kandunganObatsFiltered.size() > 0){
+                    obat.setKandunganObats(kandunganObatsFiltered);
+                }
+            }
 
             response = obatBo.saveEdit(obat, jenisObat);
 
@@ -908,13 +923,17 @@ public class ObatAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<KandunganObat> kandunganObats = (List<KandunganObat>) session.getAttribute("listOfKandunganObat");
 
-        if (kandunganObats.size() > 0){
+        if (kandunganObats != null && kandunganObats.size() > 0){
             List<KandunganObat> kandunganObatList = kandunganObats.stream().filter(p->p.getIdObat().equalsIgnoreCase(idObat)).collect(Collectors.toList());
             if (kandunganObatList.size() > 0){
 
                 session.removeAttribute("listOfKandunganObat");
-                session.setAttribute("listOfKandunganObat", kandunganObats);
+                session.setAttribute("listOfKandunganObat", kandunganObatList);
                 return kandunganObatList;
+            } else {
+                session.removeAttribute("listOfKandunganObat");
+                session.setAttribute("listOfKandunganObat", kandunganObats);
+                return kandunganObats;
             }
 
         }
@@ -935,6 +954,9 @@ public class ObatAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<KandunganObat> kandunganObats = (List<KandunganObat>) session.getAttribute("listOfKandunganObat");
 
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+
         if (kandunganObats.size() > 0){
             List<KandunganObat> kandunganObatList = kandunganObats.stream().filter(p->p.getId().equalsIgnoreCase(idObatKandunganObatDetail)).collect(Collectors.toList());
             if (kandunganObatList.size() > 0){
@@ -948,12 +970,21 @@ public class ObatAction extends BaseMasterAction {
                     kandunganObat.setIdObat(idObat);
                     kandunganObat.setIdKandungan(idKandungan);
                     kandunganObat.setBentuk(bentuk);
+
+                    if (bentuk != null && !"".equalsIgnoreCase(bentuk)){
+                        ImSimrsBentukBarangEntity bentukBarangEntity = obatBo.getBentukBarangById(bentuk);
+                        if (bentukBarangEntity != null){
+                            kandunganObat.setNamaBentuk(bentukBarangEntity.getBentuk());
+                        }
+                    }
+
                     kandunganObat.setSediaan(bSediaan);
                     kandunganObat.setSatuanSediaan(satuan);
 
                 }
                 session.removeAttribute("listOfKandunganObat");
                 session.setAttribute("listOfKandunganObat", kandunganObats);
+                response.setStatus("success");
             }
         }
         logger.info("[ObatAction.editKandunganObatDetail] END <<<");
@@ -977,6 +1008,7 @@ public class ObatAction extends BaseMasterAction {
             bSediaan = new BigDecimal(sediaan);
 
         KandunganObat kandunganObat = new KandunganObat();
+        kandunganObat.setId(obatBo.generateIdKandungan());
         kandunganObat.setIdObat(idObat);
         kandunganObat.setIdKandungan(idKandungan);
         kandunganObat.setBentuk(bentuk);
@@ -997,10 +1029,17 @@ public class ObatAction extends BaseMasterAction {
             }
         }
 
+        if (bentuk != null && !"".equalsIgnoreCase(bentuk)){
+            ImSimrsBentukBarangEntity bentukBarangEntity = obatBo.getBentukBarangById(bentuk);
+            if (bentukBarangEntity != null){
+                kandunganObat.setNamaBentuk(bentukBarangEntity.getBentuk());
+            }
+        }
+
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<KandunganObat> kandunganObats = (List<KandunganObat>) session.getAttribute("listOfKandunganObat");
 
-        if (kandunganObats.size() > 0){
+        if (kandunganObats != null && kandunganObats.size() > 0){
             kandunganObats.add(kandunganObat);
         } else {
             kandunganObats = new ArrayList<>();
@@ -1011,6 +1050,7 @@ public class ObatAction extends BaseMasterAction {
         session.setAttribute("listOfKandunganObat", kandunganObats);
 
         logger.info("[ObatAction.listKandunganObat] END <<<");
+        response.setStatus("success");
         return response;
     }
 
@@ -1031,6 +1071,11 @@ public class ObatAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
         return obatBo.getListAllKandunganObat();
+    }
+
+    public void resetSessionKandunganObat(){
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfKandunganObat");
     }
 
 }

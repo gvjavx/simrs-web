@@ -398,5 +398,4 @@
 
     ALTER TABLE public.im_simrs_kandungan_obat_detail
         OWNER to postgres;
-
 <<< ///

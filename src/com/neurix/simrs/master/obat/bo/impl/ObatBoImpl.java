@@ -64,6 +64,11 @@ public class ObatBoImpl implements ObatBo {
     private BatasTutupPeriodDao batasTutupPeriodDao;
     private KandunganObatDetailDao kandunganObatDetailDao;
     private KandunganObatDao kandunganObatDao;
+    private BentukBarangDao bentukBarangDao;
+
+    public void setBentukBarangDao(BentukBarangDao bentukBarangDao) {
+        this.bentukBarangDao = bentukBarangDao;
+    }
 
     public void setKandunganObatDetailDao(KandunganObatDetailDao kandunganObatDetailDao) {
         this.kandunganObatDetailDao = kandunganObatDetailDao;
@@ -419,6 +424,34 @@ public class ObatBoImpl implements ObatBo {
                 }
             }
         }
+
+        // kandungan obat;
+        if (bean.getKandunganObats() != null && bean.getKandunganObats().size() > 0){
+            for (KandunganObat kandunganObat : bean.getKandunganObats()){
+
+                ImSimrsKandunganObatDetailEntity kandunganObatDetailEntity = new ImSimrsKandunganObatDetailEntity();
+                kandunganObatDetailEntity.setId(kandunganObat.getId());
+                kandunganObatDetailEntity.setIdObat(obatEntity.getIdObat());
+                kandunganObatDetailEntity.setIdKandungan(kandunganObat.getIdKandungan());
+                kandunganObatDetailEntity.setBentuk(kandunganObat.getBentuk());
+                kandunganObatDetailEntity.setSediaan(kandunganObat.getSediaan());
+                kandunganObatDetailEntity.setSatuanSediaan(kandunganObat.getSatuanSediaan());
+                kandunganObatDetailEntity.setFlag("Y");
+                kandunganObatDetailEntity.setAction("C");
+                kandunganObatDetailEntity.setCreatedDate(bean.getLastUpdate());
+                kandunganObatDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                kandunganObatDetailEntity.setLastUpdate(bean.getLastUpdate());
+                kandunganObatDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                try {
+                    kandunganObatDetailDao.addAndSave(kandunganObatDetailEntity);
+                } catch (HibernateException e){
+                    logger.error("[ObatBoImpl.saveAdd] error when add kandungan obat " + e.getMessage());
+                    throw new GeneralBOException("[ObatBoImpl.saveAdd] error when add kandungan obat " + e.getMessage());
+                }
+            }
+        }
+
         logger.info("[ObatBoImpl.saveAdd] End <<<<<<<");
     }
 
@@ -456,6 +489,57 @@ public class ObatBoImpl implements ObatBo {
                         response.setMessage("Found Error when update obat " + e.getMessage());
                         logger.error("[ObatBoImpl.saveEdit] error when update data obat " + e.getMessage());
                         throw new GeneralBOException("[ObatBoImpl.saveEdit] error when update data obat " + e.getMessage());
+                    }
+
+                    if (bean.getKandunganObats() != null && bean.getKandunganObats().size() > 0){
+                        for (KandunganObat kandunganObat : bean.getKandunganObats()){
+
+                            ImSimrsKandunganObatDetailEntity kandunganObatDetailEntity = kandunganObatDetailDao.getById("id", kandunganObat.getId());
+                            if (kandunganObatDetailEntity != null){
+
+                                kandunganObatDetailEntity.setIdObat(kandunganObat.getIdObat() == null ? kandunganObatDetailEntity.getIdObat() : kandunganObat.getIdObat());
+                                kandunganObatDetailEntity.setIdKandungan(kandunganObat.getIdKandungan() == null ? kandunganObatDetailEntity.getIdKandungan() : kandunganObat.getIdKandungan());
+                                kandunganObatDetailEntity.setBentuk(kandunganObat.getBentuk() == null ? kandunganObatDetailEntity.getBentuk() : kandunganObat.getBentuk());
+                                kandunganObatDetailEntity.setSediaan(kandunganObat.getSediaan() == null ? kandunganObatDetailEntity.getSediaan() : kandunganObat.getSediaan());
+                                kandunganObatDetailEntity.setSatuanSediaan(kandunganObat.getSatuanSediaan() == null ? kandunganObatDetailEntity.getSatuanSediaan() : kandunganObat.getSatuanSediaan());
+                                kandunganObatDetailEntity.setAction("U");
+                                kandunganObatDetailEntity.setLastUpdate(bean.getLastUpdate());
+                                kandunganObatDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                                try {
+                                    kandunganObatDetailDao.updateAndSave(kandunganObatDetailEntity);
+                                } catch (HibernateException e){
+                                    response.setStatus("error");
+                                    response.setMessage("Found Error when update kandungan obat " + e.getMessage());
+                                    logger.error("[ObatBoImpl.saveEdit] error when update kandungan obat " + e.getMessage());
+                                    throw new GeneralBOException("[ObatBoImpl.saveEdit] error when update kandungan obat " + e.getMessage());
+                                }
+                            } else {
+                                kandunganObatDetailEntity = new ImSimrsKandunganObatDetailEntity();
+                                kandunganObatDetailEntity.setId(kandunganObat.getId());
+                                kandunganObatDetailEntity.setIdObat(kandunganObat.getIdObat());
+                                kandunganObatDetailEntity.setIdKandungan(kandunganObat.getIdKandungan());
+                                kandunganObatDetailEntity.setBentuk(kandunganObat.getBentuk());
+                                kandunganObatDetailEntity.setSediaan(kandunganObat.getSediaan());
+                                kandunganObatDetailEntity.setSatuanSediaan(kandunganObat.getSatuanSediaan());
+                                kandunganObatDetailEntity.setFlag("Y");
+                                kandunganObatDetailEntity.setAction("C");
+                                kandunganObatDetailEntity.setCreatedDate(bean.getLastUpdate());
+                                kandunganObatDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                                kandunganObatDetailEntity.setLastUpdate(bean.getLastUpdate());
+                                kandunganObatDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                                try {
+                                    kandunganObatDetailDao.addAndSave(kandunganObatDetailEntity);
+                                } catch (HibernateException e){
+                                    response.setStatus("error");
+                                    response.setMessage("Found Error when add kandungan obat " + e.getMessage());
+                                    logger.error("[ObatBoImpl.saveEdit] error when add kandungan obat " + e.getMessage());
+                                    throw new GeneralBOException("[ObatBoImpl.saveEdit] error when add kandungan obat " + e.getMessage());
+                                }
+                            }
+
+                        }
                     }
                 }
                 updateObatGejala(idJenisObats, bean.getIdObat());
@@ -1001,7 +1085,6 @@ public class ObatBoImpl implements ObatBo {
             } catch (HibernateException e) {
                 logger.error("Found Error when search obat " + e.getMessage());
             }
-
         }
         return obatList;
     }
@@ -2012,6 +2095,13 @@ public class ObatBoImpl implements ObatBo {
                     }
                 }
 
+                if (kandunganObatDetailEntity.getBentuk() != null && !"".equalsIgnoreCase(kandunganObatDetailEntity.getBentuk())){
+                    ImSimrsBentukBarangEntity bentukBarangEntity = getBentukBarangById(kandunganObatDetailEntity.getBentuk());
+                    if (bentukBarangEntity != null){
+                        kandunganObat.setNamaBentuk(bentukBarangEntity.getBentuk());
+                    }
+                }
+
                 kandunganObat.setId(kandunganObatDetailEntity.getId());
                 kandunganObat.setIdKandungan(kandunganObatDetailEntity.getIdKandungan());
                 kandunganObat.setIdObat(kandunganObatDetailEntity.getIdObat());
@@ -2061,5 +2151,32 @@ public class ObatBoImpl implements ObatBo {
         Map hsCriteria = new HashMap();
         hsCriteria.put("flag", "Y");
         return kandunganObatDao.getByCriteria(hsCriteria);
+    }
+
+    @Override
+    public String generateIdKandungan() throws GeneralBOException {
+        return "KDD" + kandunganObatDetailDao.getNextId();
+    }
+
+    @Override
+    public List<ImSimrsBentukBarangEntity> getLitBentukBarangByFlag(String flag) throws GeneralBOException {
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("flag", flag == null || "".equalsIgnoreCase(flag) ? "Y" : flag);
+
+        List<ImSimrsBentukBarangEntity> bentukBarangEntities = new ArrayList<>();
+        try {
+            bentukBarangEntities = bentukBarangDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[TransaksiObatBoImpl.getBentukBarangByFlag] ERROR.", e);
+            throw new GeneralBOException("[TransaksiObatBoImpl.getBentukBarangByFlag] ERROR." + e.getMessage());
+        }
+
+        return bentukBarangEntities;
+    }
+
+    @Override
+    public ImSimrsBentukBarangEntity getBentukBarangById(String idBentuk) throws GeneralBOException {
+        return bentukBarangDao.getById("idBentuk", idBentuk);
     }
 }

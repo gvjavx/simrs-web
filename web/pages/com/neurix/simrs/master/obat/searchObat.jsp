@@ -18,6 +18,15 @@
             $('#sortMinStok').DataTable({
                 "order": [[ 4, "asc" ]]
             });
+
+            ObatAction.getListKandunganObat(function (list) {
+                var str = "<option value=''>[Select One]</option>";
+                $.each(list, function (i, item) {
+                    str += "<option value='"+item.idKandungan+"'>"+item.kandungan+"</option>";
+                });
+                $("#sel_fin_kandungan_obat").html(str);
+                //console.log(list);
+            });
         });
 
     </script>
@@ -278,6 +287,7 @@
                     <p id="msg_exits"></p>
                 </div>
                 <div class="row">
+                    <input type="hidden" id="fin_id_obat">
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
                         <div class="col-md-7">
@@ -459,7 +469,7 @@
                             </div>
 
                             <div id="table-kandungan">
-                                <label style="margin-top: 7px">Kandungan Obat</label> <button class="btn btn-sm btn-primary" style="float: right"><i class="fa fa-plus" onclick="viewEditKandunganObat('', 'add')"></i></button>
+                                <label style="margin-top: 7px">Kandungan Obat</label><button class="btn btn-sm btn-primary" style="float: right"  onclick="viewEditKandunganObat('', 'add')"><i class="fa fa-plus"></i></button>
                                 <table class="table table-bordered table-striped" style="width: 100%">
                                     <thead>
                                     <td>Kandungan</td>
@@ -526,6 +536,7 @@
                         <div class="col-md-3" align="right">Bentuk</div>
                         <div class="col-md-7">
                             <select id="sel_fin_bentuk_kandungan_obat" class="form-control select2" style="width: 100%">
+                                <option value="">[Select One]</option>
                                 <option value="tab">Tablet</option>
                                 <option value="sys">Syrup</option>
                                 <option value="inj">Injeksi</option>
@@ -537,7 +548,7 @@
                                 <option value="sachet">Sachet</option>
                                 <option value="supp">Suppositoria</option>
                                 <option value="pulvis">Pulvis</option>
-                                <option value="inf">Infusion</option>
+                                <%--<option value="inf">Infusion</option>--%>
                                 <option value="sol">Sol</option>
                                 <option value="akdr">AKDR</option>
                                 <option value="penfill">Penfill</option>
@@ -649,20 +660,8 @@
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
-    $( document ).ready(function() {
-
-        ObatAction.getListKandunganObat(function (list) {
-            var str = "";
-            $.each(list, function (i, item) {
-                str += "<option value='"+item.idKandungan+"'>"+item.kandungan+"</option>";
-            });
-            $("#sel_fin_kandungan_obat").html(str);
-            //console.log(list);
-        });
-    });
 
     function showModal(){
-
         $('#add_nama_obat, #add_harga_box, #add_harga_lembar, #add_harga_biji, #add_merek, #add_pabrik, #add_box, #add_lembar_box, #add_lembar, #add_biji_lembar, #add_biji, #add_min_stok').val('');
         $('#add_jenis_obat').val('').trigger('change');
         $('#form-edit').show();
@@ -672,7 +671,8 @@
         $('#add_box, #add_lembar_box, #add_lembar, #add_biji_lembar').css('border','');
         $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\')').show();
         $('#modal-obat').modal('show');
-
+        resetSessionKandunganObat();
+        getFromSessionKandunganObat('');
     }
 
     function saveObat(id){
@@ -798,6 +798,7 @@
         $('#add_biji').val(qtyBiji).attr('disabled','');
         $('#add_min_stok').val(minStok);
         $('#form-edit').hide();
+        $('#fin_id_obat').val(idObat);
         $('#modal-obat').modal({show:true, backdrop:'static'});
         showListKandunganObat(idObat);
     }
@@ -898,20 +899,7 @@
     function showListKandunganObat(idObat) {
         ObatAction.createSessionKandunganObat(idObat, function (res) {
             if (res.status == "success"){
-                ObatAction.getListFromSessionObat(idObat, function (list) {
-
-                    var str = "";
-                    $.each(list, function (i, item) {
-                        str = "<tr>" +
-                            "<td>"+item.kandungan+"</td>"+
-                            "<td>"+item.bentuk+"</td>"+
-                            "<td>"+item.sediaan+" "+item.satuanSediaan+"</td>"+
-//                            "<td>"+item.satuanSediaan+"</td>"+
-                            "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewEditKandunganObat(\'"+item.id+"\')\"><i class='fa fa-edit'></i></button></td>"+
-                            "</tr>";
-                    });
-                    $("#body-kandungan-obat").html(str);
-                });
+                getFromSessionKandunganObat(idObat)
             } else {
                 $("#warning_kandungan_obat").show();
                 $("#kandungan_obat_error").text(res.msg);
@@ -919,20 +907,84 @@
         });
     }
 
+    function getFromSessionKandunganObat(idObat){
+
+        console.log("getFromSessionKandunganObat, KLIK");
+        ObatAction.getListFromSessionObat(idObat, function (list) {
+            var str = "";
+            $.each(list, function (i, item) {
+                str += "<tr>" +
+                    "<td>"+item.kandungan+"</td>"+
+                    "<td>"+item.namaBentuk+"</td>"+
+                    "<td>"+item.sediaan+" "+item.satuanSediaan+"</td>"+
+                    "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewEditKandunganObat(\'"+item.id+"\')\"><i class='fa fa-edit'></i></button></td>"+
+                    "</tr>";
+            });
+            $("#body-kandungan-obat").html(str);
+        });
+    }
+
     function viewEditKandunganObat(idKandunganObat, tipe) {
         $("#modal-view-kandugan-obat").modal('show');
 
         if (tipe == "add"){
-
+            $("#sel_fin_kandungan_obat").val("");
+            $("#sel_fin_bentuk_kandungan_obat").val("");
+            $("#fin_sediaan_kandungan_obat").val("");
+            $("#fin_satuan_kandungan_obat").val("");
+            var strBtn = "<button class='btn btn-success' onclick=\"saveKandunganObat(\'\')\"><i class='fa fa-check'></i>Save Add</button>";
+            $("#btn-save-kandungan-obat").html(strBtn);
         } else {
             ObatAction.initEditKandunganObat(idKandunganObat, function (res) {
                 if (res != null){
-
+                    $("#sel_fin_kandungan_obat").val(res.idKandungan);
+                    $("#sel_fin_bentuk_kandungan_obat").val(res.bentuk);
+                    $("#fin_sediaan_kandungan_obat").val(res.sediaan);
+                    $("#fin_satuan_kandungan_obat").val(res.satuanSediaan);
+                    var strBtn = "<button class='btn btn-success' onclick=\"saveKandunganObat(\'" + res.id + "\')\"><i class='fa fa-check'></i> Update</button>";
+                    $("#btn-save-kandungan-obat").html(strBtn);
                 }
             });
         }
+    }
 
+    function saveKandunganObat(id){
 
+        if (id == null)
+            id = "";
+
+        var idObat = $("#fin_id_obat").val();
+        var kandungan = $('#sel_fin_kandungan_obat').val();
+        var bentuk = $('#sel_fin_bentuk_kandungan_obat').val();
+        var sediaan = $("#fin_sediaan_kandungan_obat").val();
+        var satuan = $("#fin_satuan_kandungan_obat").val();
+
+        console.log(kandungan);
+        console.log(bentuk);
+
+        if (id == null || id == ""){
+            ObatAction.addKandunganObat(idObat, kandungan, bentuk, sediaan, satuan, function (res) {
+                if (res.status == "success"){
+                    $("#modal-view-kandugan-obat").modal('hide');
+                    getFromSessionKandunganObat(idObat);
+                } else {
+                    alert("Gagal Menyimpan");
+                }
+            });
+        } else {
+            ObatAction.editKandunganObatDetail(id, idObat, kandungan, bentuk, sediaan, satuan, function (res) {
+                if (res.status == "success"){
+                    $("#modal-view-kandugan-obat").modal('hide');
+                    getFromSessionKandunganObat(idObat);
+                } else {
+                    alert("Gagal Menyimpan");
+                }
+            });
+        }
+    }
+
+    function resetSessionKandunganObat() {
+        ObatAction.resetSessionKandunganObat();
     }
 
 

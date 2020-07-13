@@ -21,6 +21,15 @@ public class KandunganObat {
     private String lastUpdateWho;
     private String kandungan;
     private String namaObat;
+    private String namaBentuk;
+
+    public String getNamaBentuk() {
+        return namaBentuk;
+    }
+
+    public void setNamaBentuk(String namaBentuk) {
+        this.namaBentuk = namaBentuk;
+    }
 
     public String getNamaObat() {
         return namaObat;
