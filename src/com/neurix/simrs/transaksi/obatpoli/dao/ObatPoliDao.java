@@ -282,6 +282,80 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
         return obatPoliList;
     }
 
+    public List<ObatPoli> getIdObatGroupPoliKandunganSerupa(String idPelayanan, String branchId, String flagBpjs, String[] kandugans){
+
+        List<ObatPoli> obatPoliList = new ArrayList<>();
+
+        if(idPelayanan != null && !"".equalsIgnoreCase(idPelayanan) && branchId != null && !"".equalsIgnoreCase(branchId)){
+
+            String flag = "N";
+
+            if("bpjs".equalsIgnoreCase(flagBpjs)){
+                flag = "%";
+            }
+
+            String SQL = "SELECT\n" +
+                    "a.*\n" +
+                    "FROM\n" +
+                    "(\n" +
+                    "\tSELECT\n" +
+                    "\ta.id_pelayanan,\n" +
+                    "\tb.id_obat,\n" +
+                    "\tb.nama_obat,\n" +
+                    "\tSUM(a.qty_box) as box,\n" +
+                    "\tSUM(a.qty_lembar) as lembar,\n" +
+                    "\tSUM(a.qty_biji) as biji,\n" +
+                    "\tb.lembar_per_box,\n" +
+                    "\tb.biji_per_lembar,\n" +
+                    "\tb.flag_kronis,\n" +
+                    "\tc.harga_jual\n" +
+                    "\tFROM mt_simrs_obat_poli a\n" +
+                    "\tINNER JOIN (\n" +
+                    "\tSELECT id_obat, nama_obat, lembar_per_box, biji_per_lembar, flag_kronis\n" +
+                    "\tFROM im_simrs_obat WHERE flag_bpjs LIKE :flag GROUP BY id_obat, nama_obat, lembar_per_box, biji_per_lembar, flag_kronis\n" +
+                    "\t) b ON a.id_obat = b.id_obat\n" +
+                    "\tINNER JOIN mt_simrs_harga_obat c ON a.id_obat = c.id_obat\n" +
+                    "\tINNER JOIN im_simrs_kandungan_obat_detail d ON d.id_obat = a.id_obat\n" +
+                    "\tWHERE a.id_pelayanan = :idPelayanan \n" +
+                    "\tAND a.branch_id = :branchId \n" +
+                    "\tAND d.id_kandungan IN :listKandungan \n" +
+                    "\tGROUP BY a.id_pelayanan,\n" +
+                    "\tb.id_obat,\n" +
+                    "\tb.nama_obat,\n" +
+                    "\tb.lembar_per_box,\n" +
+                    "\tb.biji_per_lembar,\n" +
+                    "\tb.flag_kronis,\n" +
+                    "\tc.harga_jual\n" +
+                    ") a\n" +
+                    "WHERE (box, lembar, biji) != (0,0,0)";
+
+            List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("idPelayanan", idPelayanan)
+                    .setParameter("branchId", branchId)
+                    .setParameter("flag", flag)
+                    .setParameterList("listKandungan", kandugans)
+                    .list();
+
+            if (results.size() > 0){
+                for (Object[] obj : results){
+                    ObatPoli obatPoli = new ObatPoli();
+                    obatPoli.setIdPelayanan(obj[0] == null ? "" : obj[0].toString());
+                    obatPoli.setIdObat(obj[1] == null ? "" : obj[1].toString());
+                    obatPoli.setNamaObat(obj[2] == null ? "" : obj[2].toString());
+                    obatPoli.setQtyBox(obj[3] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[3].toString()));
+                    obatPoli.setQtyLembar(obj[4] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[4].toString()));
+                    obatPoli.setQtyBiji(obj[5] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[5].toString()));
+                    obatPoli.setLembarPerBox(obj[6] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[6].toString()));
+                    obatPoli.setBijiPerLembar(obj[7] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[7].toString()));
+                    obatPoli.setFlagKronis(obj[8] == null ? "" : obj[8].toString());
+                    obatPoli.setHarga(obj[9] == null ? "" : obj[9].toString());
+                    obatPoliList.add(obatPoli);
+                }
+            }
+        }
+        return obatPoliList;
+    }
+
     public ObatPoli getSumStockObatPoliById(String id, String idPelayanan){
 
         String SQL = "SELECT \n" +

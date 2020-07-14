@@ -1698,6 +1698,7 @@
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_rep_obat"><i class="fa fa-check"></i> correct</p>
                             <p style="margin-top: 17px; display: none; margin-left: -20px" id="label-kronis"><label class="label label-warning" >Obat Kronis</label></p>
+                            <button class="btn btn-sm btn-primary" style="display: none;" id="btn-reset-combo-obat" onclick="resetComboObat()"><i class="fa fa-edit"></i></button>
                             <input type="hidden" id="val-kronis"/>
                         </div>
                     </div>
@@ -1706,7 +1707,7 @@
                         <div class="col-md-7">
                             <%--<label style="margin-top: 7px">Stok (Biji)</label>--%>
                             <div class="input-group" style="margin-top: 7px; width: 40%">
-                                <input class="form-control" type="number" min="1" id="resep_stok_biji" readonly onchange="">
+                                <input class="form-control" type="number" min="1" id="resep_stok_biji" readonly>
                                 <div class="input-group-addon">
                                     Biji
                                 </div>
@@ -1714,8 +1715,9 @@
                         </div>
                         <input type="hidden" id="h-qty-default"/>
                     </div>
-                    <div id="obat-serupa" style="display: none" >
-                        <div class="form-group" >
+                    <div id="obat-serupa" style="display: none;">
+                        <input type="hidden" value="N" id="flag-obat-serupa">
+                        <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Obat Kandungan Serupa</label>
                             <div class="col-md-7">
                                 <select class="form-control select2" style="margin-top: 7px; width: 100%"
@@ -2354,6 +2356,21 @@
 
     function printPernyataan(kode) {
         window.open(contextPath+'/rekammedik/printSuratPernyataan_rekammedik?id=' + idDetailCheckup + '&tipe=' + kode, '_blank');
+    }
+
+    function showObatSerupa() {
+
+        var biji = $("#resep_stok_biji").val();
+
+        console.log("showObatSerupa = "+biji);
+        if (parseInt(biji) == 0){
+            $("#obat-serupa").show();
+            $("#flag-obat-serupa").val("Y")
+            $("#resep_nama_obat").prop("disabled",'disabled')
+        } else {
+            $("#obat-serupa").hide();
+            $("#flag-obat-serupa").val("N")
+        }
     }
 
 </script>
