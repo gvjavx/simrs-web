@@ -278,7 +278,7 @@
                             <label class="col-md-3" style="margin-top: 7px">Tekanan Darah</label>
                             <div class="col-md-3">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input type="number" class="form-control" id="pkj8">
+                                    <input type="number" class="form-control tensi-pasien" id="pkj8">
                                     <div class="input-group-addon" style="font-size: 10px; width: 50px">
                                         mmHg
                                     </div>
@@ -287,7 +287,7 @@
                             <label class="col-md-offset-1 col-md-1" style="margin-top: 7px">Suhu</label>
                             <div class="col-md-3">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input type="number" class="form-control" id="pkj10">
+                                    <input type="number" class="form-control suhu-pasien" id="pkj10">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         &#8451
                                     </div>
@@ -1256,21 +1256,21 @@
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Tensi</label>
                             <div class="col-md-3">
-                                <input class="form-control" style="margin-top: 7px" id="asse3" placeholder="mmHg">
+                                <input class="form-control tensi-pasien" style="margin-top: 7px" id="asse3" placeholder="mmHg">
                             </div>
                             <label class="col-md-2" style="margin-top: 7px">Nadi</label>
                             <div class="col-md-3">
-                                <input class="form-control" style="margin-top: 7px" id="asse4" placeholder="x/menit">
+                                <input class="form-control nadi-pasien" style="margin-top: 7px" id="asse4" placeholder="x/menit">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Pernafasan</label>
                             <div class="col-md-3">
-                                <input class="form-control" style="margin-top: 7px" id="asse5" placeholder="x/menit">
+                                <input class="form-control rr-pasien" style="margin-top: 7px" id="asse5" placeholder="x/menit">
                             </div>
                             <label class="col-md-2" style="margin-top: 7px">Suhu</label>
                             <div class="col-md-3">
-                                <input class="form-control" style="margin-top: 7px" id="asse6" placeholder="C">
+                                <input class="form-control suhu-pasien" style="margin-top: 7px" id="asse6" placeholder="C">
                             </div>
                         </div>
                     </div>
@@ -1352,7 +1352,7 @@
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Diagnosa Kerja</label>
                             <div class="col-md-8">
-                                <input class="form-control" style="margin-top: 7px " id="asse19">
+                                <input class="form-control diagnosa-pasien" style="margin-top: 7px " id="asse19">
                             </div>
                         </div>
                         <div class="form-group">

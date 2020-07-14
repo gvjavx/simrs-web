@@ -1554,11 +1554,11 @@
                                                     <i class="fa fa-arrow-left"></i> Back
                                                 </a>
 
-                                                <a type="button" id="btn-rm" style="display:none;"
-                                                   class="btn btn-primary"
-                                                   onclick="initRekamMedic()">
-                                                    <i class="fa fa-search"></i> View Rekam Medik
-                                                </a>
+                                                <%--<a type="button" id="btn-rm" style="display:none;"--%>
+                                                   <%--class="btn btn-primary"--%>
+                                                   <%--onclick="initRekamMedic()">--%>
+                                                    <%--<i class="fa fa-search"></i> View Rekam Medik--%>
+                                                <%--</a>--%>
 
                                                 <a type="button" id="btn-kronis" style="display:none;"
                                                    class="btn btn-info"
