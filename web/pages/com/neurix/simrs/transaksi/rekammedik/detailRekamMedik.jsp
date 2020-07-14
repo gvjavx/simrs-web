@@ -970,7 +970,6 @@
         });
     }
 
-
     $(document).ready(function () {
 
         $('#tableRM').DataTable({

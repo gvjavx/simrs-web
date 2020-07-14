@@ -1897,6 +1897,572 @@ function saveDataOperasi(jenis, ket) {
         }
     }
 
+    if("data_intra_anestesi" == jenis){
+
+        var va1 = $('[name=dt1]');
+        var va2 = $('[name=dt2]');
+        var va3 = $('[name=dt3]');
+        var va4 = $('[name=dt4]');
+        var va5 = $('#dt5').val();
+        var va6 = $('#dt6').val();
+        var va7 = $('#dt7').val();
+        var va8 = $('#dt8').val();
+
+        var va9 = $('[name=dt09]');
+
+        var va10 = $('[name=dt13]:checked').val();
+        var va11 = $('#dt014').val();
+
+        var va12 = $('[name=dt015]');
+        var va13 = $('[name=dt016]');
+
+        var va14 = $('#dt017').val();
+        var va15 = $('#dt018').val();
+        var va16 = $('#dt019').val();
+        var va17 = $('#dt020').val();
+        var va18 = $('#dt021').val();
+        var va19 = $('#dt022').val();
+        var va20 = $('#dt023').val();
+        var va21 = $('#dt024').val();
+
+        var v1 = "";
+        var v2 = "";
+        var v3 = "";
+        var v4 = "";
+        var v9 = "";
+        var v12 = "";
+        var v13 = "";
+
+        $.each(va1, function (i, item) {
+            if(item.checked){
+                if(v1 != ''){
+                    v1 = v1+','+item.value;
+                }else{
+                    v1 = item.value;
+                }
+            }
+        });
+        $.each(va2, function (i, item) {
+            if(item.checked){
+                if(v2 != ''){
+                    v2 = v2+','+item.value;
+                }else{
+                    v2 = item.value;
+                }
+            }
+        });
+        $.each(va3, function (i, item) {
+            if(item.checked){
+                if(v3 != ''){
+                    v3 = v3+','+item.value;
+                }else{
+                    v3 = item.value;
+                }
+            }
+        });
+        $.each(va4, function (i, item) {
+            if(item.checked){
+                if(v4 != ''){
+                    v4 = v4+','+item.value;
+                }else{
+                    v4 = item.value;
+                }
+            }
+        });
+        $.each(va9, function (i, item) {
+            if(item.value != ''){
+                if(v9 != ''){
+                    v9 = v9+','+item.value;
+                }else{
+                    v9 = item.value;
+                }
+            }
+        });
+        $.each(va12, function (i, item) {
+            if(item.value != ''){
+                if(v12 != ''){
+                    v12 = v12+'|'+i+1+'. '+item.value;
+                }else{
+                    v12 = i+1+'. '+item.value;
+                }
+            }
+        });
+        $.each(va13, function (i, item) {
+            if(item.value != ''){
+                if(v13 != ''){
+                    v13 = v13+'|'+i+1+'. '+item.value;
+                }else{
+                    v13 = i+1+'. '+item.value;
+                }
+            }
+        });
+
+        var ttd1 = document.getElementById("ttd1");
+
+        var cekTtd1 = isCanvasBlank(ttd1);
+
+        if (!cekTtd1) {
+
+            var canv1 = ttd1.toDataURL("image/png"),
+                canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");
+
+            data.push({
+                'parameter': 'Teknik Anestesi',
+                'jawaban1': v1,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Pernafasan',
+                'jawaban1': v2,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Posisi',
+                'jawaban1': v3,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Endotracheal',
+                'jawaban1': v4,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Midazolam',
+                'jawaban1': va5+' mg',
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Pethidin',
+                'jawaban1': va6+' mg',
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Sulfas Atropin',
+                'jawaban1': va7+' mg',
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Fentanyl',
+                'jawaban1': va8+' ug',
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Lain-Lain',
+                'jawaban1': v9,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Pemberian',
+                'jawaban1': va10+', Jam '+va11,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Induksi',
+                'jawaban1': v12,
+                'keterangan': jenis,
+                'jenis': ket,
+                'tipe':'li',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Medikasi Lain',
+                'jawaban1': v13,
+                'keterangan': jenis,
+                'jenis': ket,
+                'tipe':'li',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Jumlah Intakea Cairan',
+                'jawaban1': va14,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Perdarahan',
+                'jawaban1': va15+ ' ml',
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Urine',
+                'jawaban1': va16 +' ml',
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Bayi Lahir Jam',
+                'jawaban1': va17,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Jenis Kel',
+                'jawaban1': va18,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'AS',
+                'jawaban1': va19,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'BB',
+                'jawaban1': va20,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'PB',
+                'jawaban1': va21,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+
+            var canv1 = ttd1.toDataURL("image/png"),
+                canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");
+            data.push({
+                'parameter': 'TTD',
+                'jawaban1': canv1,
+                'keterangan': jenis,
+                'jenis': ket,
+                'tipe': 'ttd',
+                'id_detail_checkup': idDetailCheckup
+            });
+            cek = true;
+        }
+    }
+
+    if("add_instruksi_pasca_anestesi" == jenis){
+
+        var va1 = $('#in1').val();
+        var va2 = $('[name=in2]:checked').val();
+        var va3 = $('[name=in3]:checked').val();
+        var va4 = $('[name=in4]:checked').val();
+        var va5 = $('#in5').val();
+        var va6 = $('#in6').val();
+        var va7 = $('#in7').val();
+        var va8 = $('#in8').val();
+        var va9 = $('#in9').val();
+        var va10 = $('#in10').val();
+        var va11 = $('#in11').val();
+        var va12 = $('#in12').val();
+        var va13 = $('#in13').val();
+        var va14 = $('#in14').val();
+        var va15 = $('#in15').val();
+
+        var ttd1 = document.getElementById("ttd1");
+        var cekTtd1 = isCanvasBlank(ttd1);
+
+        if (va2 && va3 && va4 != undefined && va1 && va5 && va6 &&
+            va7 && va8 && va9 && va10 && va11 && va12 && va13 && va14 && va15 != '' && !cekTtd1) {
+
+            var canv1 = ttd1.toDataURL("image/png"),
+                canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");
+
+            data.push({
+                'parameter': 'Keadaaan di akhir pembedahan jam',
+                'jawaban1': va1,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Keadaan Umum',
+                'jawaban1': va2,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Pernafasan',
+                'jawaban1': va3,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Perfusi',
+                'jawaban1': va4 +', Capilarry refill time '+va5,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Tensi',
+                'jawaban1': va6+' mmHg',
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Nadi',
+                'jawaban1': va7+' x/menit',
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'RR',
+                'jawaban1': va8+' x/menit',
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Suhu',
+                'jawaban1': va9+' C',
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '1. Awasi',
+                'jawaban1': 'Keadaan Umum Tensi Nadi Pernafasan Suhu Perdarahan setiap '+va10+' menit',
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '2. Posisi',
+                'jawaban1': va11,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '3. Makan/Minum',
+                'jawaban1': va12,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '4. Infus/Transfusi',
+                'jawaban1': va13,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '5. Obat-Obatan',
+                'jawaban1': va14,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '6. Lain-Lain',
+                'jawaban1': va15,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+
+            var canv1 = ttd1.toDataURL("image/png"),
+                canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");
+            data.push({
+                'parameter': 'TTD Dokter Spesialis Anestesi',
+                'jawaban1': canv1,
+                'keterangan': jenis,
+                'jenis': ket,
+                'tipe': 'ttd',
+                'id_detail_checkup': idDetailCheckup
+            });
+            console.log(data);
+            cek = true;
+        }
+    }
+
+    if("data_pasca_anestesi" == jenis){
+
+        var va1 = $('#in1').val();
+        var va2 = $('[name=in2]:checked').val();
+        var va3 = $('[name=in3]:checked').val();
+        var va4 = $('[name=in4]:checked').val();
+        var va5 = $('#in5').val();
+
+        var va6 = $('#in6').val();
+        var va7 = $('#in7').val();
+        var va8 = $('#in8').val();
+        var va9 = $('#in9').val();
+        var va10 = $('#in10').val();
+        var va11 = $('#in11').val();
+        var va12 = $('#in12').val();
+        var va13 = $('#in13').val();
+        var va14 = $('#in14').val();
+        var va15 = $('#in15').val();
+        var va16 = $('#in16').val();
+        var va17 = $('#in17').val();
+        var va18 = $('#in18').val();
+
+        var ttd1 = document.getElementById("ttd1");
+        var cekTtd1 = isCanvasBlank(ttd1);
+
+        if (va2 && va3 && va4 != undefined && va1 && va5 && va6 &&
+            va7 && va8 && va9 && va10 && va11 && va12 && va13 && va14 && va15 &&
+            va16 && va17 && va18 != '' && !cekTtd1) {
+
+            var canv1 = ttd1.toDataURL("image/png"),
+                canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");
+
+            data.push({
+                'parameter': 'Pasien masuk Ruang Recovery jam',
+                'jawaban1': va1,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Keadaan Umum',
+                'jawaban1': va2,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Pernafasan',
+                'jawaban1': va3,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Perfusi',
+                'jawaban1': va4 +', Capilarry refill time '+va5,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Pindah ruangan jam',
+                'jawaban1': va6,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Keadaan saat pindah ruangan',
+                'jawaban1': 'KU '+va7+', GCS '+va8,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Tensi',
+                'jawaban1': va9+' mmHg',
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Nadi',
+                'jawaban1': va10+' x/menit',
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'RR',
+                'jawaban1': va11+' x/menit',
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Suhu',
+                'jawaban1': va12+' C',
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Jumlah Perdarahan paska op',
+                'jawaban1': va13+ 'CC',
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'TFU',
+                'jawaban1': va14+', Hb : '+va15,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Penilaian pasca anestesi dengan',
+                'jawaban1': '',
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Aldrette score',
+                'jawaban1': va16,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Bromage score',
+                'jawaban1': va17,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Steward score',
+                'jawaban1': va18,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+
+            var canv1 = ttd1.toDataURL("image/png"),
+                canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");
+            data.push({
+                'parameter': 'TTD Perawat Ruang Recovery',
+                'jawaban1': canv1,
+                'keterangan': jenis,
+                'jenis': ket,
+                'tipe': 'ttd',
+                'id_detail_checkup': idDetailCheckup
+            });
+            cek = true;
+        }
+    }
+
     if (cek) {
         var result = JSON.stringify(data);
         $('#save_op_' + jenis).hide();
@@ -1939,6 +2505,8 @@ function detailOperasi(jenis) {
         var tgl = "";
         var totalSkor = 0;
         var cekData = false;
+        var data = [];
+
         AsesmenOperasiAction.getListAsesmenOperasi(idDetailCheckup, jenis, function (res) {
             if (res.length > 0) {
                 $.each(res, function (i, item) {
@@ -2121,6 +2689,18 @@ function detailOperasi(jenis) {
                                 '<td>' + item.parameter + '</td>' +
                                 '<td colspan="2"><img src="' + jwb1 + '" style="width: 100px; height: 70px"></td>' +
                                 '</tr>';
+                        }else if("li" == item.tipe){
+                            var val = jwb1.split("|");
+                            var li = "";
+                            $.each(val, function (i, item) {
+                                li += '<li>'+item+'</li>'
+                            });
+                            if(li != ''){
+                                body += '<tr>' +
+                                    '<td>' + item.parameter + '</td>' +
+                                    '<td><ul style="margin-left: 15px">'+li+'</ul></td>' +
+                                    '</tr>';
+                            }
                         }else{
                             body += '<tr>' +
                                 '<td width="40%">' + item.parameter + '</td>' +
@@ -2584,4 +3164,245 @@ function persetujuanOK(jenis) {
         });
     }
     return dataCari;
+}
+
+function saveMonAnestesi(jenis, ket){
+
+    var data = "";
+    var jam = $('#jam').val();
+    var va1 = $('#mon1').val();
+    var va2 = $('#mon2').val();
+    var va3 = $('#mon3').val();
+    var va4 = $('#mon4').val();
+    var va5 = $('#mon5').val();
+    var va6 = $('#mon6').val();
+    var va7 = $('#mon7').val();
+    var va8 = $('#mon8').val();
+    var va9 = $('#mon9').val();
+    var va10 = $('#mon10').val();
+    var cek = false;
+
+    if("mon_intra_anestesi" == jenis){
+        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 != '') {
+            cek = true;
+        }
+    }
+
+    if("mon_pasca_anestesi" == jenis){
+        if (va1 && va2 && va3 != '') {
+            va4 = va5 = va6 = va7 = va8 = va9 = va10 = "";
+            cek = true;
+        }
+    }
+
+    if (cek) {
+        data = {
+            'id_detail_checkup': idDetailCheckup,
+            'waktu': jam,
+            'rr': va1,
+            'nadi': va2,
+            'tensi': va3,
+            'anest': va4,
+            'o2': va5,
+            'n2o': va6,
+            'ethran': va7,
+            'iso': va8,
+            'sevo': va9,
+            'infus': va10,
+            'keterangan': jenis,
+            'jenis': ket
+        };
+        console.log(data);
+        var result = JSON.stringify(data);
+        $('#save_op_' + jenis).hide();
+        $('#load_op_' + jenis).show();
+        dwr.engine.setAsync(true);
+        AsesmenOperasiAction.saveMonAnestesi(result, {
+            callback: function (res) {
+                if (res.status == "success") {
+                    $('#save_op_' + jenis).show();
+                    $('#load_op_' + jenis).hide();
+                    $('#modal-op-' + jenis).modal('hide');
+                    $('#warning_op_' + ket).show().fadeOut(5000);
+                    $('#msg_op_' + ket).text("Berhasil menambahkan data operasi...");
+                    $('#modal-op-' + jenis).scrollTop(0);
+                } else {
+                    $('#save_op_' + jenis).show();
+                    $('#load_op_' + jenis).hide();
+                    $('#warning_op_' + jenis).show().fadeOut(5000);
+                    $('#msg_op_' + jenis).text(res.msg);
+                    $('#modal-op-' + jenis).scrollTop(0);
+                }
+            }
+        })
+    } else {
+        $('#warning_op_' + jenis).show().fadeOut(5000);
+        $('#msg_op_' + jenis).text("Silahkan cek kembali data inputan anda...!");
+        $('#modal-op-' + jenis).scrollTop(0);
+    }
+}
+
+function detailMonAnestesi(jenis){
+    var body = "";
+    var head = "";
+    AsesmenOperasiAction.getListMonAnestesi(idDetailCheckup, jenis, function (res) {
+        if (res.length > 0) {
+            $.each(res, function (i, item) {
+
+                var tanggal = converterDate(new Date(item.createdDate));
+
+                var tempTgl = "";
+                var btn = "";
+
+                if (i == 0) {
+                    tempTgl = tanggal;
+                    btn = '<i class="fa fa-line-chart" style="cursor: pointer; color: #1ab7ea" onclick="showChartAnestesi(\'' + jenis + '\')"></i>';
+                } else {
+                    var tgl = res[i - 1]["createdDate"];
+                    var tglB = converterDate(new Date(tgl));
+                    if (tanggal == tglB) {
+                        tempTgl = "";
+                    } else {
+                        tempTgl = tanggal;
+                        btn = '<i class="fa fa-line-chart" style="cursor: pointer; color: #1ab7ea" onclick="showChartAnestesi(\'' + jenis + '\')"></i>';
+                    }
+                }
+
+                if("mon_intra_anestesi" == jenis){
+                    body += '<tr>' +
+                        '<td width="18%">'+btn+' '+tempTgl+' '+'<span class="pull-right">'+item.waktu+'</span>'+'</td>' +
+                        '<td>'+item.rr+'</td>' +
+                        '<td>'+item.nadi+'</td>' +
+                        '<td>'+item.tensi+'</td>' +
+                        '<td>'+item.anest+'</td>' +
+                        '<td>'+item.o2+'</td>' +
+                        '<td>'+item.n2O+'</td>' +
+                        '<td>'+item.ethran+'</td>' +
+                        '<td>'+item.iso+'</td>' +
+                        '<td>'+item.sevo+'</td>' +
+                        '<td>'+item.infus+'</td>' +
+                        '</tr>';
+                }
+                if("mon_pasca_anestesi" == jenis){
+                    body += '<tr>' +
+                        '<td width="18%">'+btn+' '+tempTgl+' '+'<span class="pull-right">'+item.waktu+'</span>'+'</td>' +
+                        '<td>'+item.rr+'</td>' +
+                        '<td>'+item.nadi+'</td>' +
+                        '<td>'+item.tensi+'</td>' +
+                        '</tr>';
+                }
+            });
+
+            if("mon_intra_anestesi" == jenis){
+                head = '<tr style="font-weight: bold">' +
+                    '<td align="center">Waktu</td>' +
+                    '<td>RR</td>' +
+                    '<td>Nadi</td>' +
+                    '<td>Tensi</td>' +
+                    '<td>Anest</td>' +
+                    '<td>O2</td>' +
+                    '<td>N2O</td>' +
+                    '<td>Ethran</td>' +
+                    '<td>Iso</td>' +
+                    '<td>Sevo</td>' +
+                    '<td>Infus</td>' +
+                    '</tr>';
+            }
+            if("mon_pasca_anestesi" == jenis){
+                head = '<tr style="font-weight: bold">' +
+                    '<td align="center">Waktu</td>' +
+                    '<td>RR</td>' +
+                    '<td>Nadi</td>' +
+                    '<td>Tensi</td>' +
+                    '</tr>';
+            }
+        }else{
+            body = '<tr><td>Data belum ada</td></tr>';
+        }
+        var table = '<table style="font-size: 12px" class="table table-bordered">' +
+            '<thead>'+head+'</thead>' +
+            '<tr bgcolor="#ffebcd">' +
+            '<tbody>' + body + '</tbody>' +
+            '</table>';
+
+        var newRow = $('<tr id="del_op_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
+        newRow.insertAfter($('table').find('#row_op_' + jenis));
+        var url = contextPath+'/pages/images/minus-allnew.png';
+        $('#btn_op_' + jenis).attr('src', url);
+        $('#btn_op_' + jenis).attr('onclick', 'delRowMon(\'' + jenis + '\')');
+    });
+}
+
+function delRowMon(id) {
+    $('#del_op_' + id).remove();
+    var url = contextPath+'/pages/images/icons8-plus-25.png';
+    $('#btn_op_' + id).attr('src', url);
+    $('#btn_op_' + id).attr('onclick', 'detailMonAnestesi(\'' + id + '\')');
+}
+
+function showChartAnestesi(jenis){
+    $('#modal-op-chart_' + jenis).modal({show: true, backdrop: 'static'});
+    AsesmenOperasiAction.getListMonAnestesi(idDetailCheckup, jenis, function (res) {
+        if (res.length > 0) {
+            var dataArray = [];
+            $.each(res, function (i, item) {
+
+                if("mon_intra_anestesi" == jenis){
+                    dataArray.push({
+                        y: item.waktu,
+                        a: item.rr,
+                        b: item.nadi,
+                        c: item.tensi,
+                        d: item.anest,
+                        e: item.o2,
+                        f: item.n2O,
+                        g: item.ethran,
+                        h: item.iso,
+                        i: item.sevo,
+                        j: item.infus
+                    });
+                }
+                if("mon_pasca_anestesi" == jenis){
+                    dataArray.push({
+                        y: item.waktu,
+                        a: item.rr,
+                        b: item.nadi,
+                        c: item.tensi
+                    });
+                }
+            });
+
+            $('#modal-op-chart_' + jenis).on('shown.bs.modal', function (event) {
+                $('#line-chart_'+jenis).empty();
+                if("mon_intra_anestesi" == jenis){
+                    var line = new Morris.Line({
+                        element: 'line-chart_'+jenis,
+                        resize: true,
+                        data: dataArray,
+                        xkey: 'y',
+                        ykeys: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'],
+                        labels: ['RR', 'Nadi', 'Tensi', 'Anest', 'O2', 'N2O', 'Ethran', 'Iso', 'Sevo', 'Infus'],
+                        lineColors: ['#ff0000', '#0000ff', '#00cc00', '#ff9933', '#cc6600', '#ffff66', '#cc6699', '#666633', '#802000', '#009933'],
+                        hideHover: 'auto',
+                        parseTime: false,
+                        lineWidth: 1
+                    });
+                }
+                if("mon_pasca_anestesi" == jenis){
+                    var line = new Morris.Line({
+                        element: 'line-chart_'+jenis,
+                        resize: true,
+                        data: dataArray,
+                        xkey: 'y',
+                        ykeys: ['a', 'b', 'c'],
+                        labels: ['RR', 'Nadi', 'Tensi'],
+                        lineColors: ['#ff0000', '#0000ff', '#00cc00'],
+                        hideHover: 'auto',
+                        parseTime: false,
+                        lineWidth: 1
+                    });
+                }
+            });
+        }
+    });
 }

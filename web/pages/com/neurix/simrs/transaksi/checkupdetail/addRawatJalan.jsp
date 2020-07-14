@@ -445,19 +445,19 @@
                                 <div class="row jarak">
                                     <div class="col-md-3">
                                         <span>Tensi </span> <small>(mmHg)</small>
-                                        <s:textfield cssClass="form-control" placeholder="mmHg" id="fisik_tensi" name="headerDetailCheckup.tensi"></s:textfield>
+                                        <s:textfield cssClass="form-control" id="fisik_tensi" name="headerDetailCheckup.tensi"></s:textfield>
                                     </div>
                                     <div class="col-md-3">
                                         <span>Suhu</span> <small>(&#8451)</small>
-                                        <s:textfield cssClass="form-control" placeholder="&#8451" id="fisik_suhu" name="headerDetailCheckup.suhu"></s:textfield>
+                                        <s:textfield cssClass="form-control" id="fisik_suhu" name="headerDetailCheckup.suhu"></s:textfield>
                                     </div>
                                     <div class="col-md-3">
                                         <span>Nadi</span> <small>(x/menit)</small>
-                                        <s:textfield cssClass="form-control" placeholder="x/menit" id="fisik_nadi" name="headerDetailCheckup.nadi"></s:textfield>
+                                        <s:textfield cssClass="form-control" id="fisik_nadi" name="headerDetailCheckup.nadi"></s:textfield>
                                     </div>
                                     <div class="col-md-3">
                                         <span>RR</span> <small>(x/menit)</small>
-                                        <s:textfield cssClass="form-control" placeholder="x/menit" id="fisik_rr" name="headerDetailCheckup.pernafasan"></s:textfield>
+                                        <s:textfield cssClass="form-control" id="fisik_rr" name="headerDetailCheckup.pernafasan"></s:textfield>
                                     </div>
                                 </div>
                                 <div class="row jarak">

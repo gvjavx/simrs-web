@@ -584,6 +584,9 @@
                                         <li><a style="cursor: pointer" onclick="showModalOperasi('laporan_operasi')"><i class="fa fa-file-o"></i>Laporan Operasi</a></li>
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('catatan_anestesi')" onclick="showModalOperasi('catatan_anestesi')"><i class="fa fa-file-o"></i>Catatan Anestesi</a></li>
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('checklist_keselamatan_pasien')" onclick="showModalOperasi('checklist_keselamatan_pasien')"><i class="fa fa-file-o"></i>Ceklist Keselamatan Pasien Operasi</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('monitoring_intra_anestesi')" onclick="showModalOperasi('monitoring_intra_anestesi')"><i class="fa fa-file-o"></i>Monitoring Intra Anestesi</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('instruksi_pasca_anestesi')" onclick="showModalOperasi('instruksi_pasca_anestesi')"><i class="fa fa-file-o"></i>Instruksi Pasca Anestesi</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('monitoring_pasca_anestesi')" onclick="showModalOperasi('monitoring_pasca_anestesi')"><i class="fa fa-file-o"></i>Monitoring Pasca Anestesi</a></li>
                                     </ul>
                                 </div>
                                 <div class="btn-group dropdown">

@@ -501,6 +501,8 @@
                 <value>sshconfig/com/neurix/hris/master/positionBagian/hibernate/ImPositionBagianHistoryEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/profesi/hibernate/ImProfesiHistoryEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/golonganPkwt/hibernate/ImGolonganPkwtHistoryEntity.hbm.xml</value>
+
+                <value>sshconfig/com/neurix/simrs/transaksi/asesmenoperasi/hibernate/ItSimrsMonitoringAnestesiEntity.hbm.xml</value>
             </list>
         </property>
     </bean>
