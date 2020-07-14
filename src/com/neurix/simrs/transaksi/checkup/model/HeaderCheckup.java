@@ -137,6 +137,15 @@ public class HeaderCheckup {
     private String idDetailTindakan;
     private String idAntrianOnline;
     private String idTransaksiOnline;
+    private String tipePelayanan;
+
+    public String getTipePelayanan() {
+        return tipePelayanan;
+    }
+
+    public void setTipePelayanan(String tipePelayanan) {
+        this.tipePelayanan = tipePelayanan;
+    }
 
     public String getIdTransaksiOnline() {
         return idTransaksiOnline;

@@ -41,6 +41,8 @@ import com.neurix.simrs.master.pasien.model.Pasien;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
+import com.neurix.simrs.master.rekammedis.bo.RekamMedisPasienBo;
+import com.neurix.simrs.master.rekammedis.model.RekamMedisPasien;
 import com.neurix.simrs.master.ruangan.bo.RuanganBo;
 import com.neurix.simrs.master.ruangan.model.MtSimrsRuanganEntity;
 import com.neurix.simrs.master.ruangan.model.Ruangan;
@@ -553,6 +555,21 @@ public class CheckupDetailAction extends BaseMasterAction {
             detailCheckup.setKategoriPelayanan(checkup.getKategoriPelayanan());
             String label = checkup.getNamaPelayanan().replace("Poli Spesialis", "");
             detailCheckup.setAsesmenLabel("Asesmen " + label);
+
+            List<RekamMedisPasien> listRM = new ArrayList<>();
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            RekamMedisPasienBo rekamMedisPasienBo = (RekamMedisPasienBo) ctx.getBean("rekamMedisPasienBoProxy");
+
+            if(checkup.getTipePelayanan() != null && !"".equalsIgnoreCase(checkup.getTipePelayanan())){
+                try {
+                    listRM = rekamMedisPasienBo.getListRekamMedisByTipePelayanan(checkup.getKategoriPelayanan());
+                }catch (GeneralBOException e){
+                    logger.error("Found Error, "+e.getMessage());
+                }
+                if(listRM.size() > 0){
+                    detailCheckup.setListRekamMedis(listRM);
+                }
+            }
 
             setHeaderDetailCheckup(detailCheckup);
 
