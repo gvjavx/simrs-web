@@ -1715,10 +1715,13 @@
                         </div>
                         <input type="hidden" id="h-qty-default"/>
                     </div>
-                    <div id="obat-serupa" style="display: none;">
+                </div>
+                <div class="row">
+                    <div id="obat-serupa" style="display: none; background-color: #fff4f0; height: 150px;padding-top: 10px;">
+                        <h5 align="center">Obat Kandungan Serupa : </h5>
                         <input type="hidden" value="N" id="flag-obat-serupa">
                         <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Obat Kandungan Serupa</label>
+                            <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
                             <div class="col-md-7">
                                 <select class="form-control select2" style="margin-top: 7px; width: 100%"
                                         id="resep_nama_obat_serupa">
@@ -1734,7 +1737,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Stok Obat Serupa (Biji)</label>
+                            <label class="col-md-3" style="margin-top: 7px">Stok Obat (Biji)</label>
                             <div class="col-md-7">
                                 <%--<label style="margin-top: 7px">Stok (Biji)</label>--%>
                                 <div class="input-group" style="margin-top: 7px; width: 40%">
@@ -1746,6 +1749,8 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="row">
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Jenis Satuan</label>
                         <div class="col-md-7">
