@@ -207,7 +207,7 @@
                                 <td>ID Detail Checkup</td>
                                 <td>No RM</td>
                                 <td>Nama</td>
-                                <td>Jenis Pasien</td>
+                                <td>Desa</td>
                                 <td>Status</td>
                                 <td>Keterangan</td>
                                 <td align="center">Action</td>
@@ -219,7 +219,7 @@
                                     <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
-                                    <td><s:property value="jenisPeriksaPasien"/></td>
+                                    <td><s:property value="desa"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td><s:property value="keteranganSelesai"/></td>
                                     <td align="center">

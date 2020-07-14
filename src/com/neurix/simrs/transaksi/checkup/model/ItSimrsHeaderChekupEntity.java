@@ -44,6 +44,43 @@ public class ItSimrsHeaderChekupEntity implements Serializable {
     private String flagCall;
     private String anamnese;
 
+    private String tensi;
+    private String suhu;
+    private String nadi;
+    private String rr;
+
+    public String getTensi() {
+        return tensi;
+    }
+
+    public void setTensi(String tensi) {
+        this.tensi = tensi;
+    }
+
+    public String getSuhu() {
+        return suhu;
+    }
+
+    public void setSuhu(String suhu) {
+        this.suhu = suhu;
+    }
+
+    public String getNadi() {
+        return nadi;
+    }
+
+    public void setNadi(String nadi) {
+        this.nadi = nadi;
+    }
+
+    public String getRr() {
+        return rr;
+    }
+
+    public void setRr(String rr) {
+        this.rr = rr;
+    }
+
     public String getAnamnese() {
         return anamnese;
     }

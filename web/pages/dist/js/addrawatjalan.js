@@ -2161,13 +2161,31 @@ function defaultValByJenisSatuan(name) {
 
 }
 
-function saveAnamnese(val){
-    if(val != ''){
-        CheckupAction.saveAnamnese(val, noCheckup, idDetailCheckup, function (response) {
+function saveAnamnese(){
+    var anamnesa = $('#fisik_anamnesa').val();
+    var tensi = $('#fisik_tensi').val();
+    var suhu = $('#fisik_suhu').val();
+    var nadi = $('#fisik_nadi').val();
+    var rr = $('#fisik_rr').val();
+    if(anamnesa && tensi && suhu && nadi && rr != ''){
+        $('#save_fisik').hide();
+        $('#load_fisik').show();
+        CheckupAction.saveAnamnese(anamnesa, noCheckup, idDetailCheckup, tensi, suhu, nadi, rr, {callback: function (response) {
             if (response.status == "success") {
                 $('#suc_anamnese').show().fadeOut(5000);
+                $('#save_fisik').show();
+                $('#load_fisik').hide();
+                $('#msg_suc').text("Berhasil menyimpan data pemeriksaan fisik...");
+            }else{
+                $('#war_anamnese').show().fadeOut(5000);
+                $('#save_fisik').show();
+                $('#load_fisik').hide();
+                $('#msg_war').text("Terjadi kesalahan saat penyimpanan data...!");
             }
-        });
+        }});
+    }else{
+        $('#war_anamnese').show().fadeOut(5000);
+        $('#msg_war').text("Silahkan cek kembali data inputan anda...!");
     }
 }
 

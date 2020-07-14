@@ -357,7 +357,7 @@
                             <input type="hidden" id="add_id_desa">
                         </div>
                         <div class="form-group">
-                            <label style="margin-top: 7px">Foto KTP</label>
+                            <label style="margin-top: 7px">Foto Identitas</label>
                             <div class="input-group" id="img_file">
                               <span class="input-group-btn">
                               <span class="btn btn-default btn-file">
