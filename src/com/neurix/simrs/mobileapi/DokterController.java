@@ -6,6 +6,8 @@ import com.neurix.hris.master.biodata.model.Biodata;
 import com.neurix.simrs.master.dokter.bo.DokterBo;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.mobileapi.model.DokterMobile;
+import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
+import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
 import com.opensymphony.xwork2.ModelDriven;
 import org.apache.batik.dom.GenericElement;
 import org.apache.log4j.Logger;
@@ -27,6 +29,7 @@ public class DokterController implements ModelDriven<Object> {
     private Collection<DokterMobile> listOfDokter;
     private DokterBo dokterBoProxy;
     private BiodataBo biodataBoProxy;
+    private TelemedicBo telemedicBoProxy;
 
     private String idDokter;
     private String namaDokter;
@@ -43,6 +46,14 @@ public class DokterController implements ModelDriven<Object> {
     private String branchId;
 
     private String foto;
+
+    public TelemedicBo getTelemedicBoProxy() {
+        return telemedicBoProxy;
+    }
+
+    public void setTelemedicBoProxy(TelemedicBo telemedicBoProxy) {
+        this.telemedicBoProxy = telemedicBoProxy;
+    }
 
     public BiodataBo getBiodataBoProxy() {
         return biodataBoProxy;
@@ -190,6 +201,7 @@ public class DokterController implements ModelDriven<Object> {
 
         List<Dokter> result = new ArrayList<>();
         Biodata resultBio = new Biodata();
+        List<AntrianTelemedic> resultAntrian = new ArrayList<>();
 
         Dokter bean = new Dokter();
         bean.setIdDokter(idDokter);
@@ -280,6 +292,19 @@ public class DokterController implements ModelDriven<Object> {
                    if (resultBio != null) {
                        dokterMobile.setFoto(resultBio.getFotoUpload());
                    }
+
+                   AntrianTelemedic beanAntrian = new AntrianTelemedic();
+                   beanAntrian.setIdDokter(item.getIdDokter());
+
+                   try {
+                      resultAntrian =  telemedicBoProxy.getSearchByCriteria(beanAntrian);
+                   } catch (GeneralBOException e){
+                       logger.error("[DokterController.create] Error, " + e.getMessage());
+                   }
+
+                   if (resultAntrian != null) {
+                       dokterMobile.setJumlahAntrian(String.valueOf(resultAntrian.size()));
+                   } else  dokterMobile.setJumlahAntrian("0");
 
                    listOfDokter.add(dokterMobile);
                }

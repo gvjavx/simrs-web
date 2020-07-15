@@ -68,6 +68,9 @@
             <basic name="jenisPembayaran">
                 <column name="jenis_pembayaran"/>
             </basic>
+            <basic name="fotoKirim">
+                <column name="foto_kirim"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

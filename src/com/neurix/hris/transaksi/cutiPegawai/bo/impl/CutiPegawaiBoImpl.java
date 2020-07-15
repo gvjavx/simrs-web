@@ -1254,7 +1254,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
 
                                         for (ItNotifikasiFcmEntity entity : notifikasiFcm){
                                             if(entity.getUserId().equals(atasanNip)){
-                                                FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), noteMobile, CLICK_ACTION, bean.getOs(), false);
+                                                FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), noteMobile, CLICK_ACTION, bean.getOs(), null);
                                                 break;
                                             }
                                         }

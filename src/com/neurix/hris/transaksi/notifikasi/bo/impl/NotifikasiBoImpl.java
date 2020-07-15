@@ -436,7 +436,7 @@ public class NotifikasiBoImpl implements NotifikasiBo {
 
             for (ItNotifikasiFcmEntity entity : notifikasiFcm){
                 if(entity.getUserId().equals(bean.getNip())){
-                    FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), bean.getTipeNotifName(), bean.getNote(), CLICK_IJIN, bean.getOs(), false);
+                    FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), bean.getTipeNotifName(), bean.getNote(), CLICK_IJIN, bean.getOs(), null);
                     break;
                 }
             }
@@ -884,7 +884,7 @@ public class NotifikasiBoImpl implements NotifikasiBo {
 
                 for (ItNotifikasiFcmEntity entity : notifikasiFcm) {
                     if (entity.getUserId().equals(personilPosition.getNip())) {
-                        FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), note, action, entity.getOs(), false);
+                        FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), note, action, entity.getOs(), null);
                         break;
                     }
                 }
@@ -930,7 +930,7 @@ public class NotifikasiBoImpl implements NotifikasiBo {
 
             for (ItNotifikasiFcmEntity entity : notifikasiFcm) {
                 if (entity.getUserId().equals("0001")) {
-                    FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), note, action, entity.getOs(), false);
+                    FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), note, action, entity.getOs(), null);
                     break;
                 }
             }
@@ -987,7 +987,7 @@ public class NotifikasiBoImpl implements NotifikasiBo {
 
         for (ItNotifikasiFcmEntity entity : notifikasiFcm){
             if(entity.getUserId().equals(nip)){
-                FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), addNotif.getNote(), CLICK_IJIN, entity.getOs(), false);
+                FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), addNotif.getNote(), CLICK_IJIN, entity.getOs(), null);
                 break;
             }
         }
@@ -1040,7 +1040,7 @@ public class NotifikasiBoImpl implements NotifikasiBo {
 
         for (ItNotifikasiFcmEntity entity : notifikasiFcm){
             if(entity.getUserId().equals(nip)){
-                FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), addNotif.getNote(), CLICK_IJIN, entity.getOs(), false);
+                FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), addNotif.getNote(), CLICK_IJIN, entity.getOs(), null);
                 break;
             }
         }
@@ -1095,7 +1095,7 @@ public class NotifikasiBoImpl implements NotifikasiBo {
 
                 for (ItNotifikasiFcmEntity entity : notifikasiFcm){
                     if(entity.getUserId().equals(personilPosition.getNip())){
-                        FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), note, action, entity.getOs(), false);
+                        FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), note, action, entity.getOs(), null);
                         break;
                     }
                 }
@@ -1156,7 +1156,7 @@ public class NotifikasiBoImpl implements NotifikasiBo {
 
                         for (ItNotifikasiFcmEntity entity : notifikasiFcm){
                             if(entity.getUserId().equals(nipKabid)){
-                                FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), note, CLICK_IJIN, entity.getOs(), false);
+                                FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), note, CLICK_IJIN, entity.getOs(), null);
                                 break;
                             }
                         }

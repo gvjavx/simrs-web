@@ -78,3 +78,19 @@
 
     ALTER TABLE public.mt_simrs_obat_poli ADD id_jenis_obat VARCHAR(10) NULL
 <<< //
+// 2020-07-07 >>>
+
+    ALTER TABLE public.it_simrs_pengiriman_obat ADD foto_kurir VARCHAR(100) NULL
+<<< //
+
+// 2020-07-09 >>>
+
+    INSERT INTO im_hris_tipe_notif (tipe_notif_id, tipe_notif_name, flag, action)
+    VALUES ('TN10', 'Telemedic', 'Y', 'C')
+
+    INSERT INTO im_hris_tipe_notif (tipe_notif_id, tipe_notif_name, flag, action)
+    VALUES ('TN11', 'E-Obat', 'Y', 'C')
+
+    INSERT INTO im_hris_tipe_notif (tipe_notif_id, tipe_notif_name, flag, action)
+    VALUES ('TN12', 'Pengiriman Obat', 'Y', 'C')
+<<< //

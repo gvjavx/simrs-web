@@ -95,7 +95,7 @@ public class NotifikasiController implements ModelDriven<Object> {
                 logger.error("[NotifikasiController.isFoundOthePrSessionActiveUserSessionLog] Error when searching / inquiring data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
                 throw new GeneralBOException(e);
             }
-        } else if (typeNotif.equals(("umum"))) {
+        } else if (typeNotif.equals(("umum")) || typeNotif.equalsIgnoreCase("TN10") || typeNotif.equalsIgnoreCase("TN11") || typeNotif.equalsIgnoreCase("TN12")) {
 
             try {
                 listObjectNotif = notifikasiBoProxy.findAllNotifTypeNotif(nip, typeNotif);
@@ -108,7 +108,8 @@ public class NotifikasiController implements ModelDriven<Object> {
                 }
                 logger.error("[NotifikasiController.isFoundOthePrSessionActiveUserSessionLog] Error when searching / inquiring data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
                 throw new GeneralBOException(e);
-            }        }
+            }
+        }
 
         if (listObjectNotif != null) {
             for (Object[] obj : listObjectNotif) {

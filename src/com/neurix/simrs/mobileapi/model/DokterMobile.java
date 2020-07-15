@@ -22,6 +22,16 @@ public class DokterMobile {
 
     private String foto;
 
+    private String jumlahAntrian;
+
+    public String getJumlahAntrian() {
+        return jumlahAntrian;
+    }
+
+    public void setJumlahAntrian(String jumlahAntrian) {
+        this.jumlahAntrian = jumlahAntrian;
+    }
+
     public String getFoto() {
         return foto;
     }

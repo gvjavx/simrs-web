@@ -1,18 +1,25 @@
 package com.neurix.simrs.mobileapi;
 
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.common.util.FirebasePushNotif;
+import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
 import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiFcmBo;
+import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import com.neurix.hris.transaksi.notifikasi.model.NotifikasiFcm;
 import com.neurix.simrs.mobileapi.model.PengirimanObatMobile;
 import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
 import com.neurix.simrs.transaksi.reseponline.model.ItSimrsPengirimanObatEntity;
 import com.neurix.simrs.transaksi.reseponline.model.PengirimanObat;
 import com.opensymphony.xwork2.ModelDriven;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,12 +36,31 @@ public class PengirimanObatController implements ModelDriven<Object> {
     private Collection<PengirimanObatMobile> listOfPengirimanObat;
     private TelemedicBo telemedicBoProxy;
     private NotifikasiFcmBo notifikasiFcmBoProxy;
+    private NotifikasiBo notifikasiBoProxy;
 
     private String action;
     private String idKurir;
     private String idPasien;
     private String idTele;
     private String idPengirimanObat;
+
+    public NotifikasiBo getNotifikasiBoProxy() {
+        return notifikasiBoProxy;
+    }
+
+    public void setNotifikasiBoProxy(NotifikasiBo notifikasiBoProxy) {
+        this.notifikasiBoProxy = notifikasiBoProxy;
+    }
+
+    private File fotoKirim;
+
+    public File getFotoKirim() {
+        return fotoKirim;
+    }
+
+    public void setFotoKirim(File fotoKirim) {
+        this.fotoKirim = fotoKirim;
+    }
 
     public NotifikasiFcmBo getNotifikasiFcmBoProxy() {
         return notifikasiFcmBoProxy;
@@ -149,6 +175,7 @@ public class PengirimanObatController implements ModelDriven<Object> {
                 pengirimanObatMobile.setIdResep(item.getIdResep());
                 pengirimanObatMobile.setLat(item.getLat());
                 pengirimanObatMobile.setLon(item.getLon());
+                pengirimanObatMobile.setFotoKirim(item.getFotoKirim());
 
                 listOfPengirimanObat.add(pengirimanObatMobile);
             }
@@ -210,13 +237,33 @@ public class PengirimanObatController implements ModelDriven<Object> {
             try {
                 telemedicBoProxy.saveEditPengirimanObat(newPengirimanObat);
 
+                Notifikasi notifBean = new Notifikasi();
+                notifBean.setTipeNotifId("TN12");
+                notifBean.setNip(idPasien);
+                notifBean.setNamaPegawai("admin");
+                notifBean.setNote("Kurir telah mengambil obat di apotik");
+                notifBean.setTo("RS0104200035");
+                notifBean.setFromPerson("admin");
+                notifBean.setNoRequest(newPengirimanObat.getId());
+                notifBean.setFlag("Y");
+                notifBean.setRead("N");
+                notifBean.setAction("C");
+                notifBean.setCreatedDate(now);
+                notifBean.setLastUpdate(now);
+                notifBean.setCreatedWho("admin");
+                notifBean.setLastUpdateWho("admin");
+
+                notifikasiBoProxy.saveAdd(notifBean);
+                model.setMessage("Success");
+
+
                 List<NotifikasiFcm> resultNotif = new ArrayList<>();
                 NotifikasiFcm beanNotif = new NotifikasiFcm();
                 beanNotif.setUserId(idPasien);
 
                 resultNotif = notifikasiFcmBoProxy.getByCriteria(beanNotif);
-                FirebasePushNotif.sendNotificationFirebase(resultNotif.get(0).getTokenFcm(), "Pengiriman Obat", "Kurir telah mengambil obat di apotik", "SK", resultNotif.get(0).getOs(), false);
-                model.setMessage("Success");
+                FirebasePushNotif.sendNotificationFirebase(resultNotif.get(0).getTokenFcm(), "Pengiriman Obat", "Kurir telah mengambil obat di apotik", "SK", resultNotif.get(0).getOs(), null);
+
             } catch (GeneralBOException e) {
                 logger.error("[PengirimanObatController.create] ERROR. ", e);
                 throw new GeneralBOException("[PengirimanObatController.create] ERROR. ", e);
@@ -248,14 +295,100 @@ public class PengirimanObatController implements ModelDriven<Object> {
             try {
                 telemedicBoProxy.saveEditPengirimanObat(newPengirimanObat);
 
+                Notifikasi notifBean = new Notifikasi();
+                notifBean.setTipeNotifId("TN12");
+                notifBean.setNip(idPasien);
+                notifBean.setNamaPegawai("admin");
+                notifBean.setNote("Kurir telah mengirimkan obat");
+                notifBean.setTo(idPasien);
+                notifBean.setFromPerson("admin");
+                notifBean.setNoRequest(newPengirimanObat.getId());
+                notifBean.setFlag("Y");
+                notifBean.setRead("N");
+                notifBean.setAction("C");
+                notifBean.setCreatedDate(now);
+                notifBean.setLastUpdate(now);
+                notifBean.setCreatedWho("admin");
+                notifBean.setLastUpdateWho("admin");
+
+                notifikasiBoProxy.saveAdd(notifBean);
+                model.setMessage("Success");
+
                 List<NotifikasiFcm> resultNotif = new ArrayList<>();
                 NotifikasiFcm beanNotif = new NotifikasiFcm();
                 beanNotif.setUserId(idPasien);
 
                 resultNotif = notifikasiFcmBoProxy.getByCriteria(beanNotif);
-                FirebasePushNotif.sendNotificationFirebase(resultNotif.get(0).getTokenFcm(), "Pengiriman Obat", "Kurir telah mengirimkan obat", "SK", resultNotif.get(0).getOs(), false);
+                FirebasePushNotif.sendNotificationFirebase(resultNotif.get(0).getTokenFcm(), "Pengiriman Obat", "Kurir telah mengirimkan obat", "SK", resultNotif.get(0).getOs(), null);
                 model.setMessage("Success");
             } catch (GeneralBOException e) {
+                logger.error("[PengirimanObatController.create] ERROR. ", e);
+                throw new GeneralBOException("[PengirimanObatController.create] ERROR. ", e);
+            }
+        }
+
+        if (action.equalsIgnoreCase("uploadFotoKirim")) {
+
+            String fileName = "";
+            if (fotoKirim != null) {
+                fileName = idPengirimanObat+".jpeg";
+                File fileCreate = new File(CommonUtil.getPropertyParams("upload.folder")+ CommonConstant.RESOURCE_PATH_FOTO_KIRIM, fileName);
+                try {
+                    FileUtils.copyFile(fotoKirim, fileCreate);
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+
+            List<PengirimanObat> result = new ArrayList<>();
+
+            PengirimanObat bean = new PengirimanObat();
+            bean.setIdPasien(idPasien);
+            bean.setId(idPengirimanObat);
+
+            try {
+                result = telemedicBoProxy.getPengirimanByCriteria(bean);
+            } catch (GeneralBOException e){
+                logger.error("[PengirimanObatController.create] ERROR. ", e);
+                throw new GeneralBOException("[PengirimanObatController.create] ERROR. ", e);
+            }
+
+            PengirimanObat newPengirimanObat = result.get(0);
+            newPengirimanObat.setLastUpdate(now);
+            newPengirimanObat.setLastUpdateWho(idKurir);
+            newPengirimanObat.setAction("U");
+            newPengirimanObat.setFotoKirim(fileName);
+
+            try {
+                telemedicBoProxy.saveEditPengirimanObat(newPengirimanObat);
+
+                Notifikasi notifBean = new Notifikasi();
+                notifBean.setTipeNotifId("TN12");
+                notifBean.setNip(idPasien);
+                notifBean.setNamaPegawai("admin");
+                notifBean.setNote("Kurir telah menitipkan obat. Silahkan cek di aplikasi");
+                notifBean.setTo(idPasien);
+                notifBean.setFromPerson("admin");
+                notifBean.setNoRequest(newPengirimanObat.getId());
+                notifBean.setFlag("Y");
+                notifBean.setRead("N");
+                notifBean.setAction("C");
+                notifBean.setCreatedDate(now);
+                notifBean.setLastUpdate(now);
+                notifBean.setCreatedWho("admin");
+                notifBean.setLastUpdateWho("admin");
+
+                notifikasiBoProxy.saveAdd(notifBean);
+                model.setMessage("Success");
+
+                List<NotifikasiFcm> resultNotif = new ArrayList<>();
+                NotifikasiFcm beanNotif = new NotifikasiFcm();
+                beanNotif.setUserId(idPasien);
+
+                resultNotif = notifikasiFcmBoProxy.getByCriteria(beanNotif);
+                FirebasePushNotif.sendNotificationFirebase(resultNotif.get(0).getTokenFcm(), "Pengiriman Obat", "Kurir telah menitipkan obat. Silahkan cek di aplikasi", "SK", resultNotif.get(0).getOs(), null);
+                model.setMessage("Success");
+            } catch (GeneralBOException e){
                 logger.error("[PengirimanObatController.create] ERROR. ", e);
                 throw new GeneralBOException("[PengirimanObatController.create] ERROR. ", e);
             }

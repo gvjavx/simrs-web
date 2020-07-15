@@ -28,6 +28,15 @@ public class ItSimrsPengirimanObatEntity {
     private String lon;
     private String flagTerkirim;
     private String jenisPembayaran;
+    private String fotoKirim;
+
+    public String getFotoKirim() {
+        return fotoKirim;
+    }
+
+    public void setFotoKirim(String fotoKirim) {
+        this.fotoKirim = fotoKirim;
+    }
 
     public String getJenisPembayaran() {
         return jenisPembayaran;

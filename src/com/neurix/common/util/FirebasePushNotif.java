@@ -12,7 +12,7 @@ import java.util.Properties;
 
 public class FirebasePushNotif {
 
-    public static Boolean sendNotificationFirebase(String tokenId, String title, String body, String CLICK_ACTION, String os, boolean isDataOnly){
+    public static Boolean sendNotificationFirebase(String tokenId, String title, String body, String CLICK_ACTION, String os, JSONObject sendData){
         Integer responseCode = 0;
         Properties properties = new Properties();
 
@@ -38,6 +38,10 @@ public class FirebasePushNotif {
             data.put("notification", info);
             info.put("title", title);
             info.put("body", body);
+
+            if  (sendData != null) {
+                data.put("data", sendData);
+            }
 
             if  (CLICK_ACTION.equalsIgnoreCase("PD")) {
                 info.put("sound", "call.mp3");

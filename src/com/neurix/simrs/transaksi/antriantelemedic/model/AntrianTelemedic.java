@@ -60,6 +60,34 @@ public class AntrianTelemedic {
     private String idDiagnosa;
     private String ketDiagnosa;
 
+    private String idPembayaran;
+    private BigDecimal nominal;
+    private String approvedFlag;
+
+    public String getApprovedFlag() {
+        return approvedFlag;
+    }
+
+    public void setApprovedFlag(String approvedFlag) {
+        this.approvedFlag = approvedFlag;
+    }
+
+    public String getIdPembayaran() {
+        return idPembayaran;
+    }
+
+    public void setIdPembayaran(String idPembayaran) {
+        this.idPembayaran = idPembayaran;
+    }
+
+    public BigDecimal getNominal() {
+        return nominal;
+    }
+
+    public void setNominal(BigDecimal nominal) {
+        this.nominal = nominal;
+    }
+
     public String getIdDiagnosa() {
         return idDiagnosa;
     }

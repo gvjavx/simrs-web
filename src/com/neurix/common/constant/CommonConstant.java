@@ -51,6 +51,7 @@ public class CommonConstant {
     public static final String RESOURCE_PATH_RESEP = "/upload/resep/";
     public final static String RESOURCE_PATH_IMG_RM = "/upload/img_rm/";
     public final static String RESOURCE_PATH_PHOTO_PROFILE = "/upload/profile/";
+    public static final String RESOURCE_PATH_FOTO_KIRIM = "/upload/foto_kirim/";
 
 //    public final static String RESOURCE_PATH_USER_UPLOAD = CommonUtil.getPropertyParams("resource.dir")+"/profile/";
     public final static String RESOURCE_PATH_USER_UPLOAD = "/pages/upload/image/profile/";

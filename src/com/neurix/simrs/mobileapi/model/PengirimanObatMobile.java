@@ -39,6 +39,15 @@ public class PengirimanObatMobile {
     private String lon;
 
     private String jenisPengiriman;
+    private String fotoKirim;
+
+    public String getFotoKirim() {
+        return fotoKirim;
+    }
+
+    public void setFotoKirim(String fotoKirim) {
+        this.fotoKirim = fotoKirim;
+    }
 
     public String getJenisPengiriman() {
         return jenisPengiriman;

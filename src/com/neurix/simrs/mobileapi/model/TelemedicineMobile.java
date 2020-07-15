@@ -52,9 +52,45 @@ public class TelemedicineMobile {
     private String flagEresep;
     private String urlResep;
 
+    private String idPembayaran;
+    private String nominal;
     private String jenisPembayaran;
     private String noRujukan;
     private String jenisRujukan;
+    private String keterangan;
+    private String approvedFlag;
+
+    public String getApprovedFlag() {
+        return approvedFlag;
+    }
+
+    public void setApprovedFlag(String approvedFlag) {
+        this.approvedFlag = approvedFlag;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getIdPembayaran() {
+        return idPembayaran;
+    }
+
+    public void setIdPembayaran(String idPembayaran) {
+        this.idPembayaran = idPembayaran;
+    }
+
+    public String getNominal() {
+        return nominal;
+    }
+
+    public void setNominal(String nominal) {
+        this.nominal = nominal;
+    }
 
     public String getJenisRujukan() {
         return jenisRujukan;

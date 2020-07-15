@@ -887,6 +887,7 @@ public class TelemedicBoImpl implements TelemedicBo {
         entity.setLastUpdateWho(bean.getLastUpdateWho());
         entity.setLat(bean.getLat());
         entity.setLon(bean.getLon());
+        entity.setFotoKirim(bean.getFotoKirim());
 
         try {
             pengirimanObatDao.updateAndSave(entity);
@@ -951,5 +952,21 @@ public class TelemedicBoImpl implements TelemedicBo {
     }
     private String getSeqPembayaranOnline(String id){
         return id + "INV" + verifikatorPembayaranDao.getNextSeq();
+    }
+
+    @Override
+    public List<AntrianTelemedic> getHistoryByIdPasien(String idPasien) throws GeneralBOException {
+        logger.info("[TelemedicBoImpl.getHistoryByIdPasien] START <<<");
+        List<AntrianTelemedic> listAntrianTelemedic = new ArrayList<>();
+
+        try {
+            listAntrianTelemedic = telemedicDao.getHistoryByIdPasien(idPasien);
+        } catch (GeneralBOException e){
+            logger.error("[TelemedicBoImpl.getHistoryByIdPasien] ERROR. ", e);
+            throw new GeneralBOException("[TelemedicBoImpl.getHistoryByIdPasien] ERROR. ", e);
+        }
+
+        logger.info("[TelemedicBoImpl.getHistoryByIdPasien] END <<<");
+        return listAntrianTelemedic;
     }
 }
