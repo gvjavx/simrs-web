@@ -2407,9 +2407,9 @@
     }
 
     function printPernyataan(kode) {
-        $('#modal-confirm-rm').modal('show');
+        // $('#modal-confirm-rm').modal('show');
 
-        // window.open(contextPath+'/rekammedik/printSuratPernyataan_rekammedik?id=' + idDetailCheckup + '&tipe=' + kode, '_blank');
+        window.open(contextPath+'/rekammedik/printSuratPernyataan_rekammedik?id=' + idDetailCheckup + '&tipe=' + kode, '_blank');
     }
 
 </script>
