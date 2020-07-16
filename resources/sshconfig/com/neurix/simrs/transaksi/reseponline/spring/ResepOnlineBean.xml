@@ -24,6 +24,7 @@
           p:branchDao-ref="branchDao"
           p:kurirDao-ref="kurirDao"
           p:pengirimanObatDao-ref="pengirimanObatDao"
+          p:settingHargaPengirimanDao-ref="settingHargaPengirimanDao"
     />
 
     <bean id="resepOnlineBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -53,6 +54,9 @@
           p:sessionFactory-ref="sessionFactory" />
 
     <bean id="kurirDao" class="com.neurix.simrs.master.kurir.dao.KurirDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <bean id="settingHargaPengirimanDao" class="com.neurix.simrs.transaksi.reseponline.dao.SettingHargaPengirimanDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>
