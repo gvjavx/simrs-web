@@ -106,7 +106,7 @@
 
 
 
-                <legend align="left">Edit Payroll Gaji Pkwt</legend>
+                <legend align="left">Edit Payroll Gaji PKWT</legend>
 
 
                 <table>

@@ -115,7 +115,7 @@
 
 
 
-                <legend align="left">Add Payroll Gaji Pkwt</legend>
+                <legend align="left">Add Payroll Gaji PKWT</legend>
 
 
                 <table>

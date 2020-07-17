@@ -304,13 +304,14 @@ public class UserAction extends BaseMasterAction {
 
     public String initComboPositionBod() {
 
-        Position position = new Position();
-        position.setKelompokId("KL44");
-        position.setFlag("Y");
+//        Position position = new Position();
+//        position.setKelompokId("KL44");
+//        position.setFlag("Y");
 
         List<Position> listOfPosition = new ArrayList<Position>();
         try {
-            listOfPosition = positionBoProxy.getByCriteria(position);
+//            listOfPosition = positionBoProxy.getByCriteria(position);
+            listOfPosition = positionBoProxy.getComboBodBoc();
         } catch (GeneralBOException e) {
             Long logId = null;
             try {

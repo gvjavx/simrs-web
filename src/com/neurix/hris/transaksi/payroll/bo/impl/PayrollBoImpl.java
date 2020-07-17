@@ -2014,7 +2014,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                                 if (tunjJabatanStruktural.compareTo(BigDecimal.valueOf(0))<1){
                                     List<ImPayrollTunjanganStrategisEntity> listTunjanganStrategis = new ArrayList<>();
                                     try {
-                                        listTunjanganStrategis = payrollTunjanganStrategisDao.getDataTunjStrategisById(payrollEntity.getPositionId(),
+                                        listTunjanganStrategis = payrollTunjanganStrategisDao.getDataTunjStrategisById(payrollEntity.getProfesiId(),
                                                 payrollEntity.getGolonganId());
 
                                         if (listTunjanganStrategis.size()>0){

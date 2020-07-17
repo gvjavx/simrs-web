@@ -2876,7 +2876,7 @@ public class AbsensiAction extends BaseMasterAction {
         DecimalFormat df = new DecimalFormat("0.00");
         int i = 1;
         int length = listDataFinalTmp.size();
-        String nip="",nama="";
+        String nip="",nama="", keterangan = "";
         for ( AbsensiPegawai absensiPegawai : listDataFinalTmp){
             //inisialisasi
             if (i==1){
@@ -2969,6 +2969,7 @@ public class AbsensiAction extends BaseMasterAction {
                     hasilBiayaLemburPerJam = hasilBiayaLembur/hasilJamLembur;
                 }
             }
+//            keterangan = absensiPegawai.getKeterangan();
             i++;
         }
         AbsensiPegawai data = new AbsensiPegawai();
@@ -2988,6 +2989,7 @@ public class AbsensiAction extends BaseMasterAction {
         data.setStBiayaLembur(CommonUtil.numbericFormat(BigDecimal.valueOf(hasilBiayaLembur),"###,###"));
         data.setStTanggalDari(lembur.getStTanggalAwal());
         data.setStTanggalSelesai(lembur.getStTanggalAkhir());
+        data.setKeterangan(keterangan);
         listDataFinal.add(data);
 
         List<AbsensiPegawai> forReport = new ArrayList<>();

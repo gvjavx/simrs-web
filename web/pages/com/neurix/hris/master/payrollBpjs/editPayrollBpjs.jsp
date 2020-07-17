@@ -32,14 +32,19 @@
              var jpkKaryawan = parseInt(document.getElementById("jpkKaryawan1").value);
 
 
-             var jkkPers = parseInt(document.getElementById("jkkPers1").value);
-             var jhtPers = parseInt(document.getElementById("jhtPers1").value);
-             var jkmPers = parseInt(document.getElementById("jkmPers1").value);
-             var iurPers = parseInt(document.getElementById("iurPers1").value);
-             var jpkPers = parseInt(document.getElementById("jpkPers1").value);
+             var jkkPers = parseFloat(document.getElementById("jkkPers1").value);
+             var jhtPers = parseFloat(document.getElementById("jhtPers1").value);
+             var jkmPers = parseFloat(document.getElementById("jkmPers1").value);
+             var iurPers = parseFloat(document.getElementById("iurPers1").value);
+             var jpkPers = parseFloat(document.getElementById("jpkPers1").value);
 
+            console.log('')
 
-
+            console.log('jkk '+jkkPers);
+            console.log('jht '+jhtPers);
+            console.log('jkm '+jkmPers);
+            console.log('iur '+iurPers);
+            console.log('jpk '+jpkPers);
 
             if (unit != ''&& minBpjsKs != '' && maxBpjsKs != '' && minBpjsTk != '' && maxBpjsTk != ''
                     && percentBpjsKsKary != '' && percentBpjsKsPers != '' && percentBpjsTkKary != ''
@@ -49,7 +54,7 @@
                     if (percentBpjsKsKary <= 100 && percentBpjsKsPers <= 100 && percentBpjsTkKary <= 100 && percentBpjsTkPers <= 100
                             && iuranKaryawan <= 100 && jpkKaryawan <= 100 && iurPers <= 100 && jkkPers <= 100 && jhtPers <= 100 && jkmPers <= 100
                             && jpkPers <= 100){
-                        if (minBpjsKs < maxBpjsKs && minBpjsTk < maxBpjsTk){
+                        if (minBpjsKs <= maxBpjsKs && minBpjsTk <= maxBpjsTk){
                             if (confirm('Do you want to save this record?')) {
                                 event.originalEvent.options.submit = true;
                                 $.publish('showDialog');

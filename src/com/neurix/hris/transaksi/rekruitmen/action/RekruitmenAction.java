@@ -2050,6 +2050,7 @@ public class RekruitmenAction extends BaseMasterAction{
 
         return "print_report_per_status_rekruitmen";
     }
+
     private String pendidikanTerakhir ( List<StudyCalonPegawai> studyCalonPegawaiList ){
         String pendidikanTerakhir = "";
         int no = 0;
