@@ -429,3 +429,40 @@
 
     CREATE SEQUENCE seq_setting_harga_pengiriman;
 <<< //
+
+// 2020-07-17 >>>
+    ALTER TABLE it_simrs_header_detail_checkup
+    ADD COLUMN cover_diatanggung numeric;
+
+    -- Table: public.it_simrs_struk_asuransi
+
+    -- DROP TABLE public.it_simrs_struk_asuransi;
+
+    CREATE TABLE public.it_simrs_struk_asuransi
+    (
+        id character varying(30) COLLATE pg_catalog."default" NOT NULL,
+        id_detail_checkup character varying(50) COLLATE pg_catalog."default",
+        jenis character varying(50) COLLATE pg_catalog."default",
+        url_foto_struk text COLLATE pg_catalog."default",
+        approve_flag character varying(1) COLLATE pg_catalog."default",
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        approve_who character varying(100) COLLATE pg_catalog."default",
+        CONSTRAINT it_simrs_struk_asuransi_pkey PRIMARY KEY (id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.it_simrs_struk_asuransi
+        OWNER to postgres;
+
+    ALTER TABLE it_simrs_struk_asuransi ADD COLUMN branch_id VARCHAR(10);
+    CREATE SEQUENCE seq_struk_asuransi;
+
+<<< //

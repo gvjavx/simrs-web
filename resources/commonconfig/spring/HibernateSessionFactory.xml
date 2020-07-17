@@ -358,6 +358,7 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/skorrawatinap/hibernate/ImSimrsParameterSkorRanapEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/skorrawatinap/hibernate/ImSimrsSkorRanapEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/reseponline/hibernate/ImSimrsSettingHargaPengirimanEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/verifikatorasuransi/hibernate/ItSimrsStrukAsuransiEntity.hbm.xml</value>
 
                 <!--Hibernate Config For Transactions SIMRS is HERE-->
                 <value>sshconfig/com/neurix/simrs/transaksi/permintaanvendor/hibernate/ImSimrsTempObatGejalaEntity.hbm.xml</value>
