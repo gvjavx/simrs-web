@@ -28,6 +28,7 @@ public class ResepOnlineController implements ModelDriven<Object> {
 
     private String action;
     private String idPembayaranOnline;
+    private String idDokter;
 
     public String getAction() {
         return action;
@@ -84,6 +85,7 @@ public class ResepOnlineController implements ModelDriven<Object> {
 
             ResepOnline bean = new ResepOnline();
             bean.setIdTransaksiOnline(idPembayaranOnline);
+            bean.setIdDokter(idDokter);
 
             try {
                result = resepOnlineBoProxy.getByCriteria(bean);

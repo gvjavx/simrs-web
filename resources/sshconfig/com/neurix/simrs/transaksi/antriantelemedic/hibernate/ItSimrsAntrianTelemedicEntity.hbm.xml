@@ -68,6 +68,51 @@
             <basic name="keluhan">
                 <column name="keluhan"/>
             </basic>
+            <basic name="flagEresep">
+                <column name="flag_eresep"/>
+            </basic>
+            <basic name="urlFotoResep">
+                <column name="url_foto_resep"/>
+            </basic>
+            <basic name="alamat">
+                <column name="alamat"/>
+            </basic>
+            <basic name="jenisPengambilan">
+                <column name="jenis_pengambilan"/>
+            </basic>
+            <basic name="lat">
+                <column name="lat"/>
+            </basic>
+            <basic name="lon">
+                <column name="lon"/>
+            </basic>
+            <basic name="noTelp">
+                <column name="no_telp"/>
+            </basic>
+            <basic name="jumlahCover">
+                <column name="jumlah_cover"/>
+            </basic>
+            <basic name="jenisPembayaran">
+                <column name="jenis_pembayaran"/>
+            </basic>
+            <basic name="noJurnal">
+                <column name="no_jurnal"/>
+            </basic>
+            <basic name="noRujukan">
+                <column name="no_rujukan"/>
+            </basic>
+            <basic name="jenisRujukan">
+                <column name="jenis_rujukan"/>
+            </basic>
+            <basic name="noSep">
+                <column name="no_sep"/>
+            </basic>
+            <basic name="idDiagnosa">
+                <column name="id_diagnosa"/>
+            </basic>
+            <basic name="ketDiagnosa">
+                <column name="ket_diagnosa"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

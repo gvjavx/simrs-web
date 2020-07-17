@@ -4733,8 +4733,11 @@ public class BiodataBoImpl implements BiodataBo {
     private Biodata convertEntityToModel (ImBiodataEntity biodataEntity) {
         logger.info("[BiodataBoImpl.convertEntityToModel] start process >>>");
         Biodata result = new Biodata();
-        result.setNip(biodataEntity.getNip());
-        result.setNamaPegawai(biodataEntity.getNamaPegawai());
+        if (biodataEntity != null) {
+            result.setNip(biodataEntity.getNip());
+            result.setNamaPegawai(biodataEntity.getNamaPegawai());
+            result.setFotoUpload(biodataEntity.getFotoUpload());
+        }
         logger.info("[BiodataBoImpl.convertEntityToModel] start process >>>");
         return result;
     }

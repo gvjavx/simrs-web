@@ -24,24 +24,24 @@ public class RekamMedisRawatJalanBoImpl implements RekamMedisRawatJalanBo {
     public List<RekamMedisRawatJalan> getByCriteria(RekamMedisRawatJalan bean) throws GeneralBOException {
         List<RekamMedisRawatJalan> list = new ArrayList<>();
 
-        if(bean != null){
+        if (bean != null) {
             Map hsCriteria = new HashMap();
-            if(bean.getIdProfilRekamMedisRj() != null && !"".equalsIgnoreCase(bean.getIdProfilRekamMedisRj())){
+            if (bean.getIdProfilRekamMedisRj() != null && !"".equalsIgnoreCase(bean.getIdProfilRekamMedisRj())) {
                 hsCriteria.put("id_profil_rekam_medis_rj", bean.getIdProfilRekamMedisRj());
             }
-            if(bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
+            if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
                 hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
             }
 
             List<ItSimrsRekamMedisRawatJalanEntity> entityList = new ArrayList<>();
             try {
                 entityList = rekamMedisRawatJalanDao.getByCriteria(hsCriteria);
-            }catch (HibernateException e){
+            } catch (HibernateException e) {
                 logger.error(e.getMessage());
             }
 
-            if(entityList.size() > 0){
-                for (ItSimrsRekamMedisRawatJalanEntity entity: entityList){
+            if (entityList.size() > 0) {
+                for (ItSimrsRekamMedisRawatJalanEntity entity : entityList) {
                     RekamMedisRawatJalan rekamMedisRawatJalan = new RekamMedisRawatJalan();
                     rekamMedisRawatJalan.setIdProfilRekamMedisRj(entity.getIdProfilRekamMedisRj());
                     rekamMedisRawatJalan.setIdDetailCheckup(entity.getIdDetailCheckup());
@@ -68,17 +68,17 @@ public class RekamMedisRawatJalanBoImpl implements RekamMedisRawatJalanBo {
     @Override
     public CrudResponse saveAdd(RekamMedisRawatJalan bean) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
-        if(bean != null){
+        if (bean != null) {
 
             ItSimrsRekamMedisRawatJalanEntity rekamMedisRawatJalanEntity = new ItSimrsRekamMedisRawatJalanEntity();
-            rekamMedisRawatJalanEntity.setIdProfilRekamMedisRj("RMJ"+rekamMedisRawatJalanDao.getNextSeq());
+            rekamMedisRawatJalanEntity.setIdProfilRekamMedisRj("RMJ" + rekamMedisRawatJalanDao.getNextSeq());
             rekamMedisRawatJalanEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
             rekamMedisRawatJalanEntity.setWaktu(bean.getWaktu());
             rekamMedisRawatJalanEntity.setAnamnese(bean.getAnamnese());
             rekamMedisRawatJalanEntity.setPemeriksaanFisik(bean.getPemeriksaanFisik());
             rekamMedisRawatJalanEntity.setDiagnosa(bean.getDiagnosa());
             rekamMedisRawatJalanEntity.setPlaning(bean.getPlaning());
-            rekamMedisRawatJalanEntity.setKeterangan(bean.getKeterangan());
+            rekamMedisRawatJalanEntity.setKeterangan("ringkasan_rj_pasien");
             rekamMedisRawatJalanEntity.setAction(bean.getAction());
             rekamMedisRawatJalanEntity.setFlag(bean.getFlag());
             rekamMedisRawatJalanEntity.setCreatedDate(bean.getCreatedDate());
@@ -90,10 +90,69 @@ public class RekamMedisRawatJalanBoImpl implements RekamMedisRawatJalanBo {
                 rekamMedisRawatJalanDao.addAndSave(rekamMedisRawatJalanEntity);
                 response.setStatus("success");
                 response.setMsg("Berhasil");
-            }catch (HibernateException e){
+            } catch (HibernateException e) {
                 response.setStatus("error");
-                response.setMsg("Found Error "+e.getMessage());
+                response.setMsg("Found Error " + e.getMessage());
                 logger.error(e.getMessage());
+            }
+        }
+
+        return response;
+    }
+
+    @Override
+    public CrudResponse saveEdit(RekamMedisRawatJalan bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        if (bean != null) {
+            Map hsCriteria = new HashMap();
+            if (bean.getIdProfilRekamMedisRj() != null && !"".equalsIgnoreCase(bean.getIdProfilRekamMedisRj())) {
+                hsCriteria.put("id_profil_rekam_medis_rj", bean.getIdProfilRekamMedisRj());
+            }
+            if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
+                hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+            }
+
+            List<ItSimrsRekamMedisRawatJalanEntity> entityList = new ArrayList<>();
+
+            try {
+                entityList = rekamMedisRawatJalanDao.getByCriteria(hsCriteria);
+            } catch (HibernateException e) {
+                logger.error(e.getMessage());
+            }
+
+            if (entityList.size() > 0) {
+                ItSimrsRekamMedisRawatJalanEntity entity = entityList.get(0);
+                if (entity.getIdProfilRekamMedisRj() != null) {
+
+                    entity.setWaktu(bean.getWaktu());
+
+                    if (bean.getAnamnese() != null && !"".equalsIgnoreCase(bean.getAnamnese())) {
+                        entity.setAnamnese(bean.getAnamnese());
+                    }
+                    if (bean.getPemeriksaanFisik() != null && !"".equalsIgnoreCase(bean.getPemeriksaanFisik())) {
+                        entity.setPemeriksaanFisik(bean.getPemeriksaanFisik());
+                    }
+                    if (bean.getDiagnosa() != null && !"".equalsIgnoreCase(bean.getDiagnosa())) {
+                        entity.setDiagnosa(bean.getDiagnosa());
+                    }
+                    if (bean.getPlaning() != null && !"".equalsIgnoreCase(bean.getPlaning())) {
+                        entity.setPlaning(bean.getPlaning());
+                    }
+
+                    entity.setAction(bean.getAction());
+                    entity.setLastUpdate(bean.getLastUpdate());
+                    entity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                    try {
+                        rekamMedisRawatJalanDao.updateAndSave(entity);
+                        response.setStatus("success");
+                        response.setMsg("Berhasil");
+                    } catch (HibernateException e) {
+                        response.setStatus("error");
+                        response.setMsg("Found Error " + e.getMessage());
+                        logger.error(e.getMessage());
+                    }
+                }
             }
         }
 

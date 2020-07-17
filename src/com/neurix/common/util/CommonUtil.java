@@ -1097,4 +1097,8 @@ public class CommonUtil {
         SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
         return df.format(date);
     }
+
+    public static Timestamp getCurrentDateTimes(){
+        return new Timestamp(System.currentTimeMillis());
+    }
 }

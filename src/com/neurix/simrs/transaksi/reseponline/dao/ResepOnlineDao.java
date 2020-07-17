@@ -28,6 +28,8 @@ public class ResepOnlineDao extends GenericDao<ItSimrsResepOnlineEntity, String>
             criteria.add(Restrictions.eq("id", mapCriteria.get("id").toString()));
         if (mapCriteria.get("id_transaksi_online") != null)
             criteria.add(Restrictions.eq("idTransaksiOnline", mapCriteria.get("id_transaksi_online").toString()));
+        if (mapCriteria.get("id_dokter") != null)
+            criteria.add(Restrictions.eq("idDokter", mapCriteria.get("id_dokter").toString()));
         return criteria.list();
     }
 

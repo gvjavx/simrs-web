@@ -18,6 +18,9 @@
     <bean id="kurirController" class="com.neurix.simrs.mobileapi.KurirContoller"
           p:notifikasiFcmBoProxy-ref="notifikasiFcmBoProxy"/>
 
+    <bean id="pengirimanObatController" class="com.neurix.simrs.mobileapi.PengirimanObatController"
+          p:notifikasiFcmBoProxy-ref="notifikasiFcmBoProxy"/>
+
 
     <bean id="notifikasiFcmBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="notifikasiFcmBo">

@@ -50,21 +50,17 @@ public class AsesmenOperasiBoImpl implements AsesmenOperasiBo {
                     operasi.setIdAsesmenOperasi(entity.getIdAsesmenOperasi());
                     operasi.setIdDetailCheckup(entity.getIdDetailCheckup());
                     operasi.setParameter(entity.getParameter());
-                    if ("penandaan_area".equalsIgnoreCase(entity.getKeterangan())) {
-                        if ("area_penanda".equalsIgnoreCase(entity.getJenis())) {
-                            operasi.setJawaban1(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_AREA_OPERASI + entity.getJawaban1());
-                        }
-                        if ("ttd_pasien".equalsIgnoreCase(entity.getJenis())) {
-                            operasi.setJawaban1(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_PASIEN + entity.getJawaban1());
-                        }
-                        if ("ttd_dokter".equalsIgnoreCase(entity.getJenis())) {
-                            operasi.setJawaban1(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_DOKTER + entity.getJawaban1());
-                        }
-                    } else if ("general_penyataan".equalsIgnoreCase(entity.getKeterangan()) || "regional_penyataan".equalsIgnoreCase(entity.getKeterangan())) {
+
+                    if ("penanda".equalsIgnoreCase(entity.getTipe())) {
+                        operasi.setJawaban1(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_AREA_OPERASI + entity.getJawaban1());
+                    } else if ("ttd".equalsIgnoreCase(entity.getTipe())) {
                         operasi.setJawaban1(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getJawaban1());
+                    } else if ("gambar".equalsIgnoreCase(entity.getTipe())) {
+                        operasi.setJawaban1(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_IMG_RM + entity.getJawaban1());
                     } else {
                         operasi.setJawaban1(entity.getJawaban1());
                     }
+
                     operasi.setJawaban2(entity.getJawaban2());
                     operasi.setKeterangan(entity.getKeterangan());
                     operasi.setJenis(entity.getJenis());
@@ -75,6 +71,7 @@ public class AsesmenOperasiBoImpl implements AsesmenOperasiBo {
                     operasi.setCreatedWho(entity.getCreatedWho());
                     operasi.setLastUpdate(entity.getLastUpdate());
                     operasi.setLastUpdateWho(entity.getLastUpdateWho());
+                    operasi.setTipe(entity.getTipe());
                     list.add(operasi);
                 }
             }
@@ -85,8 +82,8 @@ public class AsesmenOperasiBoImpl implements AsesmenOperasiBo {
     @Override
     public CrudResponse saveAdd(List<AsesmenOperasi> list) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
-        if (list.size() >0) {
-            for (AsesmenOperasi bean: list){
+        if (list.size() > 0) {
+            for (AsesmenOperasi bean : list) {
                 ItSimrsAsesmenOperasiEntity operasi = new ItSimrsAsesmenOperasiEntity();
                 operasi.setIdAsesmenOperasi("ASO" + asesmenOperasiDao.getNextSeq());
                 operasi.setIdDetailCheckup(bean.getIdDetailCheckup());
@@ -102,6 +99,8 @@ public class AsesmenOperasiBoImpl implements AsesmenOperasiBo {
                 operasi.setCreatedWho(bean.getCreatedWho());
                 operasi.setLastUpdate(bean.getLastUpdate());
                 operasi.setLastUpdateWho(bean.getLastUpdateWho());
+                operasi.setTipe(bean.getTipe());
+
                 try {
                     asesmenOperasiDao.addAndSave(operasi);
                     response.setStatus("success");

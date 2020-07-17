@@ -46,33 +46,48 @@ public class AsesmenRawatInapAction {
             asesmenRawatInap.setKeterangan(obj.getString("keterangan"));
 
             if(obj.has("jawaban")){
-                if("ttd_early_warning_score".equalsIgnoreCase(obj.getString("jenis")) || "ttd_privasi".equalsIgnoreCase(obj.getString("jenis")) || "ttd_rencana_gigi".equalsIgnoreCase(obj.getString("jenis"))){
-                    BASE64Decoder decoder = new BASE64Decoder();
-                    byte[] decodedBytes = decoder.decodeBuffer(obj.getString("jawaban"));
-                    String wkt = time.toString();
-                    String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
-                    String fileName = obj.getString("id_detail_checkup") + "-" + obj.getString("jenis")+i+ "-" + patten + ".png";
-                    String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
-                    BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+                if(obj.has("tipe")){
+                    if("ttd".equalsIgnoreCase(obj.getString("tipe")) || "gambar".equalsIgnoreCase(obj.getString("tipe"))){
+                        BASE64Decoder decoder = new BASE64Decoder();
+                        byte[] decodedBytes = decoder.decodeBuffer(obj.getString("jawaban"));
+                        String wkt = time.toString();
+                        String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                        String fileName = obj.getString("id_detail_checkup") + "-" + obj.getString("jenis")+i+ "-" + patten + ".png";
+                        String uploadFile = "";
+                        if("ttd".equalsIgnoreCase(obj.getString("tipe"))){
+                            uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
+                        }else{
+                            uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_IMG_RM + fileName;
+                        }
 
-                    if (image == null) {
-                        response.setStatus("error");
-                        response.setMsg("Buffered Image is null");
-                    } else {
-                        File f = new File(uploadFile);
-                        // write the image
-                        ImageIO.write(image, "png", f);
-                        asesmenRawatInap.setJawaban(fileName);
+                        BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+                        if (image == null) {
+                            response.setStatus("error");
+                            response.setMsg("Buffered Image is null");
+                        } else {
+                            File f = new File(uploadFile);
+                            // write the image
+                            ImageIO.write(image, "png", f);
+                            asesmenRawatInap.setJawaban(fileName);
+                        }
+                    }else{
+                        asesmenRawatInap.setJawaban(obj.getString("jawaban"));
                     }
+                    asesmenRawatInap.setTipe(obj.getString("tipe"));
                 }else{
                     asesmenRawatInap.setJawaban(obj.getString("jawaban"));
                 }
             }
+
             if(obj.has("jenis")){
                 asesmenRawatInap.setJenis(obj.getString("jenis"));
             }
             if(obj.has("skor")){
                 asesmenRawatInap.setSkor(Integer.valueOf(obj.getString("skor")));
+            }
+            if(obj.has("informasi")){
+                asesmenRawatInap.setInformasi(obj.getString("informasi"));
             }
 
             asesmenRawatInap.setAction("C");

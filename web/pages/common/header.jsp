@@ -16,6 +16,7 @@
 <%--<link type="text/css" href="<s:url value="/pages/css/style_2.css"/>" rel="stylesheet"/>--%>
 <link type="text/css" href="<s:url value="/pages/bootstraplte/css/bootstrap.min.css"/>" rel="stylesheet"/>
 <link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/select2.css"/>">
+<link rel="stylesheet" href="<s:url value="/pages/plugins/morris/morris.css"/>">
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
 <%--<link type="text/css" href="<s:url value="/pages/bootstraplte/css/font-awesome.min.css"/>" rel="stylesheet"/>--%>
@@ -44,8 +45,8 @@ apply the skin class to the body tag so the changes take effect.
 <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>-->
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.min.js"></script>-->
 
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<script src="<s:url value="/pages/bootstraplte/js/html5shiv.min.js"/>"></script>
+<script src="<s:url value="/pages/bootstraplte/js/respond.min.js"/>"></script>
 <%--<![endif]-->--%>
 
 
@@ -93,7 +94,9 @@ apply the skin class to the body tag so the changes take effect.
 <script src="<s:url value="/pages/bootstraplte/js/jquery.tabletojson.js"/>"></script>
 <script src="<s:url value="/pages/plugins/pace/pace.min.js"/>"></script>
 <script src="<s:url value="/pages/plugins/iCheck/icheck.min.js"/>"></script>
-
+<script type="text/javascript" src="<s:url value="/pages/bootstraplte/js/jquery-ui.js"/>"></script>
+<script src="<s:url value="/pages/plugins/morris/morris.min.js"/>"></script>
+<script src="<s:url value="/pages/plugins/morris/raphael.min.js"/>"></script>
 <%--<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>--%>
 <%--<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>--%>
 <%--<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>--%>
@@ -140,17 +143,17 @@ apply the skin class to the body tag so the changes take effect.
     }
 
 
-    hr {
-        -moz-border-bottom-colors: none;
-        -moz-border-image: none;
-        -moz-border-left-colors: none;
-        -moz-border-right-colors: none;
-        -moz-border-top-colors: none;
-        border-color: #EEEEEE -moz-use-text-color #FFFFFF;
-        border-style: solid none;
-        border-width: 1px 0;
-        margin: 18px 0;
-    }
+    /*hr {*/
+        /*-moz-border-bottom-colors: none;*/
+        /*-moz-border-image: none;*/
+        /*-moz-border-left-colors: none;*/
+        /*-moz-border-right-colors: none;*/
+        /*-moz-border-top-colors: none;*/
+        /*border-color: #EEEEEE -moz-use-text-color #FFFFFF;*/
+        /*border-style: solid none;*/
+        /*border-width: 1px 0;*/
+        /*margin: 18px 0;*/
+    /*}*/
 
     .card {
         background: #fff;
@@ -373,7 +376,6 @@ apply the skin class to the body tag so the changes take effect.
     }
 
 </style>
-<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
 <script>
 
     $(window).load(function() {
@@ -420,6 +422,14 @@ apply the skin class to the body tag so the changes take effect.
 
 //        cekSession();
 
+        $('.dropdown').on('show.bs.dropdown', function(e){
+            $(this).find('.dropdown-menu').first().stop(true, true).slideDown(350);
+        });
+
+        $('.dropdown').on('hide.bs.dropdown', function(e){
+            $(this).find('.dropdown-menu').first().stop(true, true).slideUp(350);
+        });
+
     });
 
     <%--function cekSession(){--%>
@@ -441,10 +451,6 @@ apply the skin class to the body tag so the changes take effect.
 
     });
 
-    function logout(){
-        var host = window.location.hostname;
-        window.location.href = host+"/simrs/j_spring_security_logout";
-    }
     window.checkDec = function(el){
         var ex = /^[0-9]+\.?[0-9]*$/;
         if(ex.test(el.value)==false){
@@ -511,6 +517,65 @@ apply the skin class to the body tag so the changes take effect.
             today = hh + ':' + min;
         }
         return today;
+    }
+
+    function isCanvasBlank(canvas) {
+        const blank = document.createElement("canvas");
+        blank.width = canvas.width;
+        blank.height = canvas.height;
+        return canvas.toDataURL() === blank.toDataURL();
+    }
+
+    function cekIcons(val) {
+        var fa = val;
+        if (val == "Ya") {
+            fa = '<i class="fa fa-check"></i>'
+        }
+        return fa;
+    }
+
+    function converterDateYmd(dateTime) {
+
+        var today = "";
+        if (dateTime != '' && dateTime != null) {
+
+            today = new Date(dateTime);
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+            var hh = ((today.getHours() < 10 ? '0' : '') + today.getHours());
+            var min = ((today.getMinutes() < 10 ? '0' : '') + today.getMinutes());
+            var sec = today.getSeconds();
+            today = yyyy + '-' + mm + '-' + dd;
+        }
+        return today;
+    }
+
+    function diff(start, end) {
+        start = start.split(":");
+        end = end.split(":");
+        var startDate = new Date(0, 0, 0, start[0], start[1], 0);
+        var endDate = new Date(0, 0, 0, end[0], end[1], 0);
+        var diff = endDate.getTime() - startDate.getTime();
+        var hours = Math.floor(diff / 1000 / 60 / 60);
+        diff -= hours * 1000 * 60 * 60;
+        var minutes = Math.floor(diff / 1000 / 60);
+        if (hours < 0){
+            hours = hours + 24;
+        }
+        return (hours < 9 ? "0" : "") + hours + ":" + (minutes < 9 ? "0" : "") + minutes;
+    }
+
+    function convertSentenceCaseUp(myString){
+        if(myString != null && myString != ''){
+            var rg = /(^\w{1}|\ \s*\w{1})/gi;
+            myString = myString.replace(rg, function(toReplace) {
+                return toReplace.toUpperCase();
+            });
+            return myString;
+        }else{
+            return "";
+        }
     }
 
 </script>

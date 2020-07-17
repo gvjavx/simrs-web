@@ -2,6 +2,7 @@ package com.neurix.simrs.mobileapi;
 
 import com.neurix.akuntansi.master.pembayaran.model.ImAkunPembayaranEntity;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.jenisperiksapasien.bo.AsuransiBo;
 import com.neurix.simrs.mobileapi.model.KasirMobile;
 import com.neurix.simrs.transaksi.kasirrawatjalan.bo.KasirRawatJalanBo;
 import com.opensymphony.xwork2.ModelDriven;
@@ -23,8 +24,17 @@ public class KasirController implements ModelDriven<Object> {
     private KasirMobile model = new KasirMobile();
     private Collection<KasirMobile> listOfKasirMobile;
     private KasirRawatJalanBo kasirRawatJalanBoProxy;
+    private AsuransiBo asuransiBoProxy;
 
     private String action;
+
+    public AsuransiBo getAsuransiBoProxy() {
+        return asuransiBoProxy;
+    }
+
+    public void setAsuransiBoProxy(AsuransiBo asuransiBoProxy) {
+        this.asuransiBoProxy = asuransiBoProxy;
+    }
 
     public String getAction() {
         return action;

@@ -193,6 +193,8 @@ public class KurirBoImpl implements KurirBo {
             kurirEntity.setCreatedWho(kurir.getCreatedWho());
             kurirEntity.setLastUpdate(kurir.getLastUpdate());
             kurirEntity.setLastUpdateWho(kurir.getLastUpdateWho());
+            kurirEntity.setLat(kurir.getLat());
+            kurirEntity.setLon(kurir.getLon());
             kurirEntity.setFlag("Y");
             kurirEntity.setAction("U");
 

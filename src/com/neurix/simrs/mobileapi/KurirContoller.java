@@ -41,6 +41,25 @@ public class KurirContoller extends ValidationAwareSupport implements ModelDrive
     private String os;
     private String action;
 
+    private String lat;
+    private String lon;
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLon() {
+        return lon;
+    }
+
+    public void setLon(String lon) {
+        this.lon = lon;
+    }
+
     public String getNama() {
         return nama;
     }
@@ -283,6 +302,57 @@ public class KurirContoller extends ValidationAwareSupport implements ModelDrive
                 kurirBoProxy.saveAdd(kurir);
             } catch (GeneralBOException e) {
                 logger.error("[KurirController.saveAdd] Error when saving error,", e);
+            }
+        } else if (action.equalsIgnoreCase("getLatLon")) {
+            Kurir kurir = new Kurir();
+
+            kurir.setIdKurir(idKurir);
+            kurir.setFlag("Y");
+
+            List<Kurir> kurirList = new ArrayList<>();
+            try {
+                       kurirList = kurirBoProxy.getByCriteria(kurir);
+            } catch (GeneralBOException e){
+                Long logId = null;
+                try {
+                    logId = kurirBoProxy.saveErrorMessage(e.getMessage(), "PasienController.getByCriteria");
+                } catch (GeneralBOException e1) {
+                    logger.error("[KurirController.getByCriteria] Error when saving error,", e1);
+                }
+                logger.error("[KurirController.getByCriteria] Error when searching / inquiring data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+                throw new GeneralBOException(e);
+            }
+
+            model.setLat(kurirList.get(0).getLat());
+            model.setLon(kurirList.get(0).getLon());
+        } else if  (action.equalsIgnoreCase("saveEditLoc")) {
+            Kurir kurir = new Kurir();
+
+            kurir.setIdKurir(idKurir);
+            kurir.setFlag("Y");
+
+            List<Kurir> kurirList = new ArrayList<>();
+            try {
+                kurirList = kurirBoProxy.getByCriteria(kurir);
+            } catch (GeneralBOException e){
+                Long logId = null;
+                try {
+                    logId = kurirBoProxy.saveErrorMessage(e.getMessage(), "PasienController.getByCriteria");
+                } catch (GeneralBOException e1) {
+                    logger.error("[KurirController.getByCriteria] Error when saving error,", e1);
+                }
+                logger.error("[KurirController.getByCriteria] Error when searching / inquiring data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+                throw new GeneralBOException(e);
+            }
+
+            Kurir newKurir = kurirList.get(0);
+            newKurir.setLat(lat);
+            newKurir.setLon(lon);
+
+            try {
+                kurirBoProxy.saveEdit(newKurir);
+            } catch (GeneralBOException e2) {
+                logger.error("[KurirController.getByCriteria] Error when saving error,", e2);
             }
         }
         logger.info("[KurirController.create] end process POST /kurir >>>");

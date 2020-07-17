@@ -51,6 +51,43 @@ public class PembayaranController implements ModelDriven<Object> {
     private String desaId;
 
     private String idPasien;
+    private String idPelayanan;
+    private String branchId;
+
+    private String lat;
+    private String lon;
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLon() {
+        return lon;
+    }
+
+    public void setLon(String lon) {
+        this.lon = lon;
+    }
 
     public String getIdPasien() {
         return idPasien;
@@ -208,6 +245,7 @@ public class PembayaranController implements ModelDriven<Object> {
                 pembayaranMobile.setNominal(CommonUtil.numbericFormat(item.getNominal(),"###,###"));
                 pembayaranMobile.setApprovedFlag(item.getApprovedFlag());
                 pembayaranMobile.setJenisPengambilan(item.getJenisPengambilan());
+                pembayaranMobile.setIdItem(item.getIdItem());
 
                 pembayaranMobile.setCreatedDate(CommonUtil.addJamBayar(item.getLastUpdate()));
 
@@ -235,11 +273,11 @@ public class PembayaranController implements ModelDriven<Object> {
             }
         }
 
-        if (action.equalsIgnoreCase("saveEditPengiriman")) {
+        if (action.equalsIgnoreCase("saveEditPembayaranResep")) {
 
             PembayaranOnline bean = new PembayaranOnline();
             bean.setIdAntrianTelemedic(idTele);
-            bean.setKeterangan(keterangan);
+            bean.setKeterangan("resep");
 
             List<ItSimrsPembayaranOnlineEntity> listEntity = new ArrayList<>();
 
@@ -257,33 +295,11 @@ public class PembayaranController implements ModelDriven<Object> {
 
             try {
                 verifikatorPembayaranBoProxy.saveEdit(newPembayaran);
-            } catch (GeneralBOException e) {
-                logger.error("[PembayaranController.create] Error, " + e.getMessage());
-            }
-
-            List<PengirimanObat> listPengiriman = new ArrayList<>();
-
-            try {
-                listPengiriman = telemedicBoProxy.getListPengirimanById("", idPasien);
-            }catch (GeneralBOException e) {
-                logger.error("[PembayaranController.create] Error, " + e.getMessage());
-
-            }
-
-            PengirimanObat newPengirimanObat = listPengiriman.get(0);
-
-            newPengirimanObat.setAlamat(alamat);
-            newPengirimanObat.setNoTelp(noTelp);
-            newPengirimanObat.setDesaId(desaId);
-            newPengirimanObat.setLastUpdate(now);
-            newPengirimanObat.setLastUpdateWho(idPasien);
-
-            try {
-                telemedicBoProxy.saveEditPengirimanObat(newPengirimanObat);
                 model.setMessage("Success");
             } catch (GeneralBOException e) {
                 logger.error("[PembayaranController.create] Error, " + e.getMessage());
             }
+
         }
 
         logger.info("[PembayaranController.create] end process POST / <<<");

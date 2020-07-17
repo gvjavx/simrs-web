@@ -440,6 +440,7 @@ public class PelayananBoImpl implements PelayananBo{
                         pelayanan.setDivisiName(positionName);
                     }
 
+                    pelayanan.setKategoriPelayanan(entity.getKategoriPelayanan());
                     result.add(pelayanan);
                 }
             }

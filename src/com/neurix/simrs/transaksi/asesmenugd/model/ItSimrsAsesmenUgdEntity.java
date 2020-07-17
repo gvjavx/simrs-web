@@ -19,6 +19,15 @@ public class ItSimrsAsesmenUgdEntity implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String tipe;
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
 
     public String getIdAsesmenUgd() {
         return idAsesmenUgd;

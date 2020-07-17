@@ -1178,7 +1178,7 @@ public class VerifikatorAction extends BaseMasterAction {
                     mapPiutang.put("bukti", detailCheckupEntity.getNoSep());
                     mapPiutang.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "bpjs", ""));
                     mapPiutang.put("master_id", getMasterIdByTipe(idDetailCheckup, "bpjs"));
-
+hsCriteria.put("piutang_pasien_bpjs", mapPiutang);
                     // debit piutang pasien PTPN
                     hsCriteria.put("piutang_pasien_bpjs", mapPiutang);
                     transId = "08";

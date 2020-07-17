@@ -22,6 +22,15 @@ public class ImSimrsPelayananEntity implements Serializable {
     private String branchId;
     private String kodering;
     private String divisiId;
+    private String kategoriPelayanan;
+
+    public String getKategoriPelayanan() {
+        return kategoriPelayanan;
+    }
+
+    public void setKategoriPelayanan(String kategoriPelayanan) {
+        this.kategoriPelayanan = kategoriPelayanan;
+    }
 
     public String getDivisiId() {
         return divisiId;

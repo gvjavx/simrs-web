@@ -264,10 +264,10 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="51" uuid="99b4042b-2903-4347-a906-c893db4e69dd">
+					<jr:column width="67" uuid="99b4042b-2903-4347-a906-c893db4e69dd">
 						<jr:columnHeader height="23" rowSpan="1">
 							<staticText>
-								<reportElement mode="Opaque" x="0" y="0" width="51" height="22" backcolor="#FFFFFF" uuid="83bfe19d-7434-429f-8cb3-4d98e0a86b8e"/>
+								<reportElement mode="Opaque" x="0" y="0" width="67" height="22" backcolor="#FFFFFF" uuid="83bfe19d-7434-429f-8cb3-4d98e0a86b8e"/>
 								<box leftPadding="2" rightPadding="2">
 									<topPen lineWidth="2.0" lineStyle="Double"/>
 									<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -281,7 +281,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 						<jr:columnFooter height="16" rowSpan="1"/>
 						<jr:detailCell height="15" rowSpan="1">
 							<textField isBlankWhenNull="true">
-								<reportElement style="Style1" x="0" y="0" width="51" height="14" uuid="cce2f19b-de12-4d37-9f36-f1d58107dabf"/>
+								<reportElement style="Style1" x="0" y="0" width="67" height="14" uuid="cce2f19b-de12-4d37-9f36-f1d58107dabf"/>
 								<box rightPadding="5"/>
 								<textElement textAlignment="Right" verticalAlignment="Middle">
 									<font size="8"/>

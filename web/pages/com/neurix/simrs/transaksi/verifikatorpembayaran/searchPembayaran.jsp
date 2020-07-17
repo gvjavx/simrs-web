@@ -24,6 +24,11 @@
 
 
     </script>
+    <style>
+        .top-7{
+            margin-top: 7px;
+        }
+    </style>
 </head>
 
 <body class="hold-transition skin-blue fixed sidebar-mini">
@@ -58,6 +63,22 @@
                                     <div class="col-sm-4">
                                         <s:textfield id="id_pasien" cssStyle="margin-top: 7px"
                                                      name="antrianTelemedic.idPasien" required="false"
+                                                     readonly="false" cssClass="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">ID Antrian</label>
+                                    <div class="col-sm-4">
+                                        <s:textfield id="id_antrian" cssStyle="margin-top: 7px"
+                                                     name="antrianTelemedic.id" required="false"
+                                                     readonly="false" cssClass="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">ID Transaksi</label>
+                                    <div class="col-sm-4">
+                                        <s:textfield id="id_transaksi" cssStyle="margin-top: 7px"
+                                                     name="antrianTelemedic.idTransaksi" required="false"
                                                      readonly="false" cssClass="form-control"/>
                                     </div>
                                 </div>
@@ -150,11 +171,12 @@
                                     <td>Id</td>
                                     <td>Id Pasien</td>
                                     <td>Nama</td>
+                                    <td>Jenis</td>
                                     <td>Status</td>
-                                    <td>Status Bayar konsultasi</td>
-                                    <td>Approve Bayar konsultasi</td>
-                                    <td>Status Bayar Resep</td>
-                                    <td>Approve Bayar Resep</td>
+                                    <td>Status konsultasi</td>
+                                    <td>Approve konsultasi</td>
+                                    <td>Status Resep</td>
+                                    <td>Approve Resep</td>
                                     <td align="center">Action</td>
                                 </tr>
                             </thead>
@@ -164,41 +186,74 @@
                                     <td><s:property value="id"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
-                                    <td><s:property value="ketStatus"/></td>
-                                    <td style="vertical-align: middle" align="center">
-                                        <s:if test='#row.flagBayarKonsultasi == "Y"'>
-                                            <label class="label label-success"> sudah bayar</label>
+                                    <td>
+                                        <s:if test='#row.idJenisPeriksaPasien == "asuransi"'>
+                                            <s:property value="idJenisPeriksaPasien"/>  <s:property value="namaAsuransi"/>
                                         </s:if>
                                         <s:else>
-                                            <label class="label label-warning"> belum bayar</label>
+                                            <s:property value="idJenisPeriksaPasien"/>
                                         </s:else>
+                                    </td>
+                                    <td><s:property value="ketStatus"/></td>
+                                    <td style="vertical-align: middle" align="center">
+                                        <s:if test='#row.flagEresep != "Y"'>
+                                            <s:if test='#row.idJenisPeriksaPasien == "umum"'>
+                                                <s:if test='#row.flagBayarKonsultasi == "Y"'>
+                                                    <label class="label label-success"> Sudah Bayar</label>
+                                                </s:if>
+                                                <s:else>
+                                                    <label class="label label-warning"> Belum Bayar</label>
+                                                </s:else>
+                                            </s:if>
+                                            <s:else>
+                                                <s:if test='#row.flagBayarKonsultasi == "Y"'>
+                                                    <label class="label label-success"> Terverifikasi </label>
+                                                </s:if>
+                                                <s:else>
+                                                    <label class="label label-warning"> Belum Diverifikasi </label>
+                                                </s:else>
+                                            </s:else>
+
+                                        </s:if>
                                     </td>
                                     <td style="vertical-align: middle" align="center">
                                         <s:if test='#row.approveKonsultasi == "Y"'>
-                                            <label class="label label-success"> <i class="fa fa-check"></i></label>
+                                            <img src="<s:url value="/pages/images/icon_success.ico" />">
+                                            <%--<label class="label label-success"> <i class="fa fa-check"></i></label>--%>
                                         </s:if>
                                     </td>
                                     <td style="vertical-align: middle" align="center">
                                         <s:if test='#row.flagResep == "Y"'>
-                                            <s:if test='#row.flagBayarResep == "Y"'>
-                                                <label class="label label-success"> sudah bayar</label>
+                                            <s:if test='#row.idJenisPeriksaPasien == "umum"'>
+                                                <s:if test='#row.flagBayarResep == "Y"'>
+                                                    <label class="label label-success"> Sudah Bayar</label>
+                                                </s:if>
+                                                <s:else>
+                                                    <label class="label label-warning"> Belum Bayar</label>
+                                                </s:else>
                                             </s:if>
                                             <s:else>
-                                                <label class="label label-warning"> belum bayar</label>
+                                                <s:if test='#row.flagBayarResep == "Y"'>
+                                                    <label class="label label-success"> Terverifikasi </label>
+                                                </s:if>
+                                                <s:else>
+                                                    <label class="label label-warning"> Belum Diverifikasi </label>
+                                                </s:else>
                                             </s:else>
                                         </s:if>
                                     </td>
                                     <td style="vertical-align: middle" align="center">
                                         <s:if test='#row.approveResep == "Y"'>
-                                            <label class="label label-success"> <i class="fa fa-check"></i></label>
+                                            <img src="<s:url value="/pages/images/icon_success.ico" />">
+                                            <%--<label class="label label-success"> <i class="fa fa-check"></i></label>--%>
                                         </s:if>
                                     </td>
                                     <td align="center">
                                         <s:if test='#row.statusTransaksi == "finish"'>
-                                            <button class="btn btn-sm btn-primary" onclick="showDetail('<s:property value="id"/>')"><i class="fa fa-search"></i></button>
+                                            <button class="btn btn-sm btn-primary" onclick="viewDetail('<s:property value="id"/>','<s:property value="idJenisPeriksaPasien"/>')"><i class="fa fa-search"></i></button>
                                         </s:if>
                                         <s:else>
-                                            <button class="btn btn-sm btn-primary" onclick="showDetail('<s:property value="id"/>')"><i class="fa fa-edit"></i></button>
+                                            <button class="btn btn-sm btn-primary" onclick="viewDetail('<s:property value="id"/>','<s:property value="idJenisPeriksaPasien"/>')"><i class="fa fa-edit"></i></button>
                                         </s:else>
                                     </td>
                                 </tr>
@@ -242,30 +297,109 @@
                     </div>
                     <div class="alert alert-success alert-dismissible" style="display: none" id="success_fin">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
-                        <p id="msg_fin"></p>
+                        <p id="msg_fin">Approve Berhasil</p>
                     </div>
 
-                    <table class="table table-bordered table-striped" id="tabel_tindakan_fin">
+                    <table class="table table-bordered table-striped" id="tabel_tindakan_fin" style="font-size: 12px">
                         <thead>
-                        <tr bgcolor="#90ee90">
-                            <td>Id</td>
-                            <td width="20%">Keterangan</td>
-                            <td>Approve Flag</td>
-                            <td>Approve Who</td>
-                            <td align="center" width="20%">Total Tarif (Rp.)</td>
-                            <td align="center" width="20%">View Bukti</td>
-                            <td width="10%" align="center">Action</td>
+                        <tr bgcolor="#90ee90" id="head_tindakan_fin">
+                            <%--<td>Id</td>--%>
+                            <%--<td width="20%">Keterangan</td>--%>
+                            <%--<td>Approve Flag</td>--%>
+                            <%--<td>Approve Who</td>--%>
+                            <%--<td align="center" width="20%">Total Tarif (Rp.)</td>--%>
+                            <%--<td align="center" width="20%">View Bukti</td>--%>
+                            <%--<td width="10%" align="center">Action</td>--%>
                         </tr>
                         </thead>
                         <tbody id="body_tindakan_fin">
                         </tbody>
+                        <input type="hidden" id="fin_id_antrian"/>
+                        <input type="hidden" id="fin_id_jenis_periksa_pasien"/>
                     </table>
+                    <hr>
+                    <br>
+                    <div id="detail-invoice-bpjs" style="display: none;">
+                        <div class="row top-7">
+                            <div class="col-md-3" align="right">No. Kartu BPJS :</div>
+                            <div class="col-md-6">
+                                <span id="dt-no-kartu-bpjs"></span>
+                                <button onclick="checkBpjs()" class="btn btn-sm btn-success" id="dt-btn-check-bpjs" style="margin-left: 20px">Check</button>
+                                <button class="btn btn-sm btn-success" id="dt-icon-check-bpjs" style="display: none;margin-left: 20px;"><i class="fa fa-check"></i></button>
+                                <button class="btn btn-sm btn-danger" id="dt-icon-denied-bpjs" style="display: none;margin-left: 20px;"><i class="fa fa-times"></i></button>
+                            </div>
+                            <input type="hidden" id="dt-flag-check-bpjs" value="N">
+                            <input type="hidden" id="dt-kelas-pasien-bpjs">
+                        </div>
+                        <div class="row top-7">
+                            <div class="col-md-3" align="right">a.n. :</div>
+                            <div class="col-md-6"><span id="dt-nama-pasien-bpjs"></span></div>
+                        </div>
+                        <div class="row top-7">
+                            <div class="col-md-3" align="right">Keluhan Pasien :</div>
+                            <div class="col-md-6"><textarea class="form-control" cols="4" rows="3" id="dt-keluhan-bpjs" readonly></textarea></div>
+                        </div>
+                        <div class="row top-7">
+                            <div class="col-md-3" align="right">Diagnosa ICD 10 :</div>
+                            <div class="col-md-6">
+                                <input type="text" id="dt-diagnosa-awal-bpjs" style="margin-top: 7px" onkeypress="$(this).css('border','')" class="form-control" required="false"/>
+                                <script>
+                                    var menus, mapped;
+                                    $('#dt-diagnosa-awal-bpjs').typeahead({
+                                        minLength: 3,
+                                        source: function (query, process) {
+                                            menus = [];
+                                            mapped = {};
+
+                                            var data = [];
+                                            dwr.engine.setAsync(false);
+                                            CheckupAction.getListBpjsDiagnosaAwal(query, function (listdata) {
+                                                data = listdata;
+                                            });
+
+                                            $.each(data, function (i, item) {
+                                                var labelItem = item.namaDiagnosaBpjs;
+                                                mapped[labelItem] = {
+                                                    id: item.kodeDiagnosaBpjs,
+                                                    label: labelItem,
+                                                    name: item.namaDiagnosaBpjs
+                                                };
+                                                menus.push(labelItem);
+                                            });
+
+                                            process(menus);
+                                        },
+                                        updater: function (item) {
+                                            var selectedObj = mapped[item];
+                                            // insert to textarea diagnosa_ket
+                                            $("#dt-ket-diagnosa-bpjs").val(selectedObj.name);
+                                            return selectedObj.id;
+                                        }
+                                    });
+                                </script>
+                                <textarea rows="4" id="dt-ket-diagnosa-bpjs"
+                                            style="margin-top: 7px" readonly="true"
+                                            class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="row top-7">
+                            <div class="col-md-3" align="right">Cover BPJS :</div>
+                            <div class="col-md-6"><input type="number" class="form-control" id="dt-cover-bpjs" readonly></div>
+                        </div>
+                        <div class="row top-7">
+                            <div class="col-md-3" align="right"></div>
+                            <div class="col-md-6">
+                                <button onclick="verifikasiBpjs()" class="btn btn-sm btn-success" id="dt-btn-ver-bpjs" style="display: none; float: right"><i class="fa fa-check"></i> Verifikasi</button>
+                                <button onclick="searchPage()" class="btn btn-sm btn-success" id="dt-btn-ref-bpjs" style="display:none; float: right"><i class="fa fa-refresh"></i> OK & Refresh</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="box-header with-border"></div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                </button>
+                <%--<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close--%>
+                <%--</button>--%>
                 <%--<button type="button" class="btn btn-success" id="save_fin" onclick="confirmSavePembayaranTagihan()"><i class="fa fa-arrow-right"></i> Save--%>
                 <%--</button>--%>
                 <%--<button style="display: none; cursor: no-drop" type="button" class="btn btn-success"--%>
@@ -292,14 +426,15 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
                 </button>
-                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes            </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes
+                </button>
             </div>
         </div>
     </div>
 </div>
 
 <div class="modal fade" id="modal-view-bukti">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -308,7 +443,7 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <div id="body-view-bukti">
+                <div id="body-view-bukti" style="text-align: center">
 
                 </div>
             </div>
@@ -317,6 +452,54 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-detail-asuransi">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-document"></i> Approve Asuransi</span>
+                </h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin_asuransi">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_fin_error_asuransi"></p>
+                </div>
+                <div class="alert alert-success alert-dismissible" style="display: none" id="success_fin_asuransi">
+                    <h4><i class="icon fa fa-info"></i> Info!</h4>
+                    <p id="msg_fin_asuransi">Approve Berhasil</p>
+                </div>
+
+                <div class="col-md-offset-3">
+                    <div class="row">
+                        <div class="col-md-6"><h3 id="dt-nama-asuransi"></h3></div>
+                    </div>
+                    <div class="row top-7">
+                        <div class="col-md-3" align="right">No. Kartu :</div>
+                        <div class="col-md-6"><span id="dt-no-kartu-asuransi"></span></div>
+                    </div>
+                    <div class="row top-7">
+                        <div class="col-md-3" align="right">a.n. :</div>
+                        <div class="col-md-6"><span id="dt-nama-pasien-asuransi"></span></div>
+                    </div>
+                    <div class="row top-7">
+                        <div class="col-md-3" align="right">Input Cover :</div>
+                        <div class="col-md-6"><input type="number" class="form-control" id="dt-cover-asuransi"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <%--<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close--%>
+                <%--</button>--%>
+                <div id="btn-save-asuransi"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script type='text/javascript'>
 
@@ -331,46 +514,162 @@
         }
     }
 
-    function showDetail(var1){
+    function searchPage(idAntrian) {
+        if (idAntrian == null || idAntrian == ""){
+            var idAntrian_ = $("#fin_id_antrian").val();
+            $("#id_antrian").val(idAntrian_);
+            $("#searchForm").submit();
+        } else {
+            $("#id_antrian").val(idAntrian);
+            $("#searchForm").submit();
+        }
+    }
+
+    function viewDetail(idAntrian, idJenisPeriksaPasien) {
         $("#modal-invoice").modal('show');
+        showDetail(idAntrian, idJenisPeriksaPasien)
+    }
+    function showDetail(idAntrian, idJenisPeriksaPasien){
 
-        VerifikatorPembayaranAction.listDetailPembayaran(var1, function (response) {
+        $("#fin_id_jenis_periksa_pasien").val(idJenisPeriksaPasien);
 
-            var str = "";
-            $.each(response, function (i, item) {
-                str += "<tr>" +
-                    "<td>"+item.id+"</td>"+
-                    "<td>"+item.keterangan+"</td>"+
-                    "<td align='center'>"+ iconFlag(item.approvedFlag) +"</td>"+
-                    "<td>"+ nullEscape(item.approvedWho) +"</td>"+
-                    "<td>"+ formatRupiah( item.nominal  )+"</td>";
+        var head = "";
+        if (idJenisPeriksaPasien == "asuransi"){
+            head = "<td>Id</td>" +
+                "<td width=\"20%\">Keterangan</td>" +
+                "<td>Approve Flag</td>" +
+                "<td>Approve Who</td>" +
+                "<td>No. Kartu</td>" +
+                "<td>Cover</td>" +
+                "<td align=\"center\" width=\"20%\">Total Tarif (Rp.)</td>" +
+                "<td align=\"center\" width=\"20%\">View Bukti</td>" +
+                "<td>Action</td>";
+        } else if (idJenisPeriksaPasien == "bpjs") {
+
+            $("#detail-invoice-bpjs").show();
+            $("#dt-diagnosa-awal-bpjs").val("");
+            $("#dt-ket-diagnosa-bpjs").val("");
+            $("#dt-cover-bpjs").val(0);
+            $("#dt-btn-check-bpjs").show();
+            $("#dt-icon-check-bpjs").hide();
+            $("#dt-icon-denied-bpjs").hide();
+            $("#dt-btn-ver-bpjs").hide();
+
+            head = "<td>Id</td>" +
+                "<td width=\"20%\">Keterangan</td>" +
+                "<td>Approve Flag</td>" +
+                "<td>Approve Who</td>" +
+                "<td>No. Kartu</td>" +
+                "<td>SEP</td>" +
+                "<td align=\"center\" width=\"20%\">Total Tarif (Rp.)</td>" +
+                "<td align=\"center\" width=\"20%\">View Bukti</td>" +
+                "<td>Action</td>";
+        } else {
+            head = "<td>Id</td>" +
+                "<td width=\"20%\">Keterangan</td>" +
+                "<td>Approve Flag</td>" +
+                "<td>Approve Who</td>" +
+                "<td align=\"center\" width=\"20%\">Total Tarif (Rp.)</td>" +
+                "<td align=\"center\" width=\"20%\">View Bukti</td>" +
+                "<td>Action</td>";
+        }
+
+        VerifikatorPembayaranAction.getSessionAntrianTelemedic(idAntrian, function (telemedicEntity) {
+
+            var data = telemedicEntity;
+            if (data != null){
+
+                if (idJenisPeriksaPasien == "bpjs"){
+                    $("#dt-no-kartu-bpjs").text(data.noKartu);
+                    $("#dt-nama-pasien-bpjs").text(data.namaPasien);
+                    $("#dt-keluhan-bpjs").val(data.keluhan);
+                    $("#dt-cover-bpjs").val( formatRupiah(data.jumlahCover));
+                    $("#dt-diagnosa-awal-bpjs").val(data.idDiagnosa);
+                    $("#dt-ket-diagnosa-bpjs").text(data.ketDiagnosa);
+
+                    if (data.noSep != null){
+                        $("#dt-btn-check-bpjs").hide();
+                        $("#dt-diagnosa-awal-bpjs").prop('readOnly', 'true');
+                    }
+                }
+
+            }
+
+            VerifikatorPembayaranAction.listDetailPembayaran(idAntrian, function (response) {
+
+                var str = "";
+                $.each(response, function (i, item) {
+                    str += "<tr>" +
+                        "<td>"+item.id+"</td>"+
+                        "<td>"+item.keterangan+"</td>"+
+                        "<td align='center'>"+ iconFlag(item.approvedFlag) +"</td>"+
+                        "<td>"+ nullEscape(item.approvedWho) +"</td>";
+
+                    if (idJenisPeriksaPasien == "asuransi"){
+                        str += "<td>"+item.noKartu+"</td>"+
+                            "<td align='right'>"+ formatRupiah ( item.jumlahCover )+"</td>";
+                    } if (idJenisPeriksaPasien == "bpjs"){
+                        str += "<td>"+item.noKartu+"</td>"+
+                            "<td>" + nullEscape(item.noSep)+"</td>";
+                    }
+
+                    str += "<td align='right'>"+ formatRupiah( item.nominal )+"</td>";
 
                     if (item.flagBayar == "Y"){
 
-                        if (item.approvedFlag == "Y"){
-                            str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
-                                "<td align='center'></td>";
+                        if (idJenisPeriksaPasien == "bpjs"){
+                            if (item.noSep == null || item.nominal == 0 || item.approvedFlag == "Y"){
+                                str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
+                                    "<td align='center'></td>";
+                            } else {
+                                str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
+                                    "<td align='center'><button class='btn btn-sm btn-success' onclick=\"saveApprove(\'"+item.id+"\')\"><i class='fa fa-check'></i> Approve</button></td>";
+                            }
                         } else {
-                            str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
-                                "<td align='center'><button class='btn btn-sm btn-success' onclick=\"saveApprove(\'"+item.id+"\')\"><i class='fa fa-check'></i> Approve</button></td>";
-                        }
 
+                            if (item.approvedFlag == "Y"){
+                                str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
+                                    "<td align='center'></td>";
+                            } else {
+
+                                if (item.flagEresep == "Y"){
+                                    str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
+                                        "<td align='center'><button class='btn btn-sm btn-success' onclick=\"saveApproveEresep(\'"+item.id+"\')\"><i class='fa fa-check'></i> Approve E-Resep</button></td>";
+                                } else {
+                                    str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
+                                        "<td align='center'><button class='btn btn-sm btn-success' onclick=\"saveApprove(\'"+item.id+"\')\"><i class='fa fa-check'></i> Approve</button></td>";
+                                }
+                            }
+
+                        }
                     } else {
-                        str += "<td></td>" +
-                            "<td></td>";
+//                        console.log("Id Item : "+item.idItem);
+                        if (idJenisPeriksaPasien == "asuransi" && item.nominal != 0) {
+                            str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
+                                "<td align='center'><button class='btn btn-sm btn-success' onclick=\"actionApprove(\'"+item.id+"\')\"><i class='fa fa-edit'></i> VerifiKasi</button></td>";
+                        } else {
+                            str += "<td></td>" +
+                                "<td></td>";
+                        }
                     }
                     str += "</tr>";
+                });
+                $("#head_tindakan_fin").html(head);
+                $("#fin_id_antrian").val(idAntrian);
+                $("#body_tindakan_fin").html(str);
             });
 
-            $("#body_tindakan_fin").html(str);
-        })
+        });
+
+
+
     }
 
     function iconFlag(var1) {
         if (var1 == "Y")
-            return "<label class=\"label label-success\"> <i class=\"fa fa-check\"></i></label>";
+            return "<img src='<s:url value="/pages/images/icon_success.ico" />'>";
         else if (var1 == "N")
-            return "<label class=\"label label-danger\"> <i class=\"fa fa-cross\"></i></label>";
+            return "<img src='<s:url value="/pages/images/icon_failure.ico" />'>";
         else
             return "";
     }
@@ -390,30 +689,134 @@
 
     function viewBukti(var1){
         $("#modal-view-bukti").modal('show');
-
         var urlImg = firstpath()+"/images/upload/bukti_transfer/"+var1;
-
-        $("#body-view-bukti").html("<img src='"+urlImg+"'></img>");
+        $("#body-view-bukti").html("<img src='"+urlImg+"' style='max-width: 500px;'></img>");
     }
 
-    function saveApprove(var1) {
-
+    function saveApprove(idTransaksi) {
+        var idAntrian = $("#fin_id_antrian").val();
         $("#msg_fin").text("Loading . . .");
         $("#success_fin").show();
 
         dwr.engine.setAsync(true);
-        VerifikatorPembayaranAction.approveTransaksi(var1, function (response) {
+        VerifikatorPembayaranAction.approveTransaksi(idTransaksi, function (response) {
             dwr.engine.setAsync(false);
             if (response.status == "error"){
-                $("#warning_fin").show();
+                $("#warning_fin").show().fadeOut(5000);
                 $("#success_fin").hide();
                 $("#msg_fin_error").text(response.message);
             } else {
                 $("#success_fin").show().fadeOut(5000);
-                $("#msg_fin").text("Success Approve");
+                searchPage(idAntrian)
             }
         });
     }
+
+    function saveApproveEresep(idTransaksi){
+        $("#success_fin").show().fadeOut(5000);
+        var idAntrian = $("#fin_id_antrian").val();
+
+        VerifikatorPembayaranAction.approveEresep(idTransaksi, function (response) {
+            dwr.engine.setAsync(false);
+            if (response.status == "error"){
+                $("#warning_fin").show().fadeOut(5000);
+                $("#success_fin").hide();
+                $("#msg_fin_error").text(response.message);
+            } else {
+                $("#success_fin").show().fadeOut(5000);
+                searchPage(idAntrian)
+            }
+        });
+    }
+
+    function actionApprove(id) {
+        var jenisPasien = $("#fin_id_jenis_periksa_pasien").val();
+        $("#dt-id-transaksi-asuransi").val(id);
+        if (jenisPasien == "asuransi"){
+            var idAntrian = $("#fin_id_antrian").val();
+            VerifikatorPembayaranAction.getSessionAntrianTelemedic(idAntrian, function (telemedicEntity) {
+                if (telemedicEntity != null){
+                    var item = telemedicEntity;
+
+                    if (jenisPasien == "asuransi"){
+                        $("#modal-detail-asuransi").modal('show');
+                        $("#dt-nama-pasien-asuransi").text(item.namaPasien);
+                        $("#dt-nama-asuransi").html(item.namaAsuransi);
+                        $("#dt-no-kartu-asuransi").text(item.noKartu);
+                        $("#dt-cover-asuransi").val(item.jumlahCover);
+                        if (item.jumlahCover != null){
+                            $("#dt-cover-asuransi").prop('readonly', true);
+                        } else {
+                            $("#dt-cover-asuransi").prop('readonly', false);
+                        }
+                    }
+                    //console.log("Jumlah Cover : " + item.jumlahCover)
+                }
+            });
+
+            $("#btn-save-asuransi").html("<button type=\"button\" class=\"btn btn-success\" id=\"save-detail-save\" onclick=\"approveAsuransi(\'"+idAntrian+"\', \'"+id+"\')\"><i class=\"fa fa-arrow-right\"></i> Save</button>");
+        } else {
+            saveApprove(id)
+        }
+    }
+
+    function approveAsuransi(idAntrian, idTransaksi) {
+        var cover = $("#dt-cover-asuransi").val();
+        if (cover == "" || parseInt(cover) == 0){
+            $("#warning_fin_asuransi").show().fadeOut(5000);
+            $("#msg_fin_error_asuransi").text("Nilai Cover Tidak Boleh Kosong.");
+        } else {
+            VerifikatorPembayaranAction.saveCoverAsuransi(idAntrian, cover, idTransaksi, function (response) {
+                if (response.status == "error"){
+                    $("#warning_fin").show();
+                    $("#success_fin").hide();
+                    $("#msg_fin_error").text(response.message);
+                } else {
+                    $("#modal-detail-asuransi").modal('hide');
+                    searchPage(idAntrian);
+                }
+            });
+        }
+    }
+
+    function checkBpjs(){
+        var nokartu = $("#dt-no-kartu-bpjs").text();
+        CheckupAction.checkStatusBpjs(nokartu, function (response) {
+            if (response.keteranganStatusPeserta == "AKTIF") {
+                $("#dt-flag-check-bpjs").val("Y");
+                $("#dt-btn-check-bpjs").hide();
+                $("#dt-icon-check-bpjs").show();
+                $("#dt-btn-ver-bpjs").show();
+                $("#dt-kelas-pasien-bpjs").val(response.kodeKelas)
+            } else {
+                $("#dt-btn-check-bpjs").hide();
+                $("#dt-icon-denied-bpjs").show();
+            }
+        });
+    }
+
+    function verifikasiBpjs() {
+
+        var idAntrian = $("#fin_id_antrian").val();
+        var noKartu = $("#dt-no-kartu-bpjs").text();
+        var idDiagnosa = $("#dt-diagnosa-awal-bpjs").val();
+        var ketDiagnosa = $("#dt-ket-diagnosa-bpjs").val();
+        var kelasPasien = $("#dt-kelas-pasien-bpjs").val();
+
+        VerifikatorPembayaranAction.saveVerifikasiBpjs(idAntrian, noKartu, idDiagnosa, ketDiagnosa, kelasPasien, function (response) {
+            if (response.status == "error"){
+                $("#warning_fin").show().fadeOut(5000);
+                $("#success_fin").hide();
+                $("#msg_fin_error").text(response.msg);
+                $("#dt-diagnosa-awal-bpjs").prop("readOnly",'true');
+            } else {
+                $("#success_fin").show();
+                $("#dt-btn-ver-bpjs").hide();
+                $("#dt-btn-ref-bpjs").show();
+            }
+        });
+    }
+
 
 </script>
 
