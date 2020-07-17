@@ -295,7 +295,7 @@
                                             <display:column property="stLamaLembur" sortable="true" title="Jam Lembur Efektif" />
                                             <%--<display:column property="sJumlahHariKerja" sortable="true" title="Jumlah Hari Kerja" style="text-align:center" />--%>
                                             <%--<display:column property="sJumlahHariLibur" sortable="true" title="Jumlah Hari Libur" style="text-align:center" />--%>
-                                            <display:column property="stJamLembur" sortable="true" title="Jumlah Jam Lembur" style="text-align:center" />
+                                            <display:column property="stJamLembur" sortable="true" title="Jumlah Jam Lembur Faktor" style="text-align:center" />
                                             <display:column property="stBiayaLemburPerjam" sortable="true" title="Tarif Lembur Per Jam" style="text-align:center" />
                                             <display:column property="stBiayaLembur" sortable="true" title="Jumlah Upah Lembur Bruto" style="text-align:center" />
                                         </display:table>

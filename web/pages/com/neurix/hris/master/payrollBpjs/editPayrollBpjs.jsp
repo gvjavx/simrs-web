@@ -370,7 +370,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield type="number" id="jkkPers1" name="payrollBpjs.jkkPers" required="true" cssClass="form-control" onchange="setiuranTkPers()"/>
+                                <s:textfield type="number" step="any" id="jkkPers1" name="payrollBpjs.jkkPers" required="true" cssClass="form-control" onchange="setiuranTkPers()"/>
                             </table>
                         </td>
                     </tr>
@@ -380,7 +380,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield type="number" id="jhtPers1" name="payrollBpjs.jhtPers" required="true" cssClass="form-control" onchange="setiuranTkPers()"/>
+                                <s:textfield type="number" step="any" id="jhtPers1" name="payrollBpjs.jhtPers" required="true" cssClass="form-control" onchange="setiuranTkPers()"/>
                             </table>
                         </td>
                     </tr>
@@ -390,7 +390,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield type="number" id="jkmPers1" name="payrollBpjs.jkmPers" required="true" cssClass="form-control" onchange="setiuranTkPers()"/>
+                                <s:textfield type="number" step="any" id="jkmPers1" name="payrollBpjs.jkmPers" required="true" cssClass="form-control" onchange="setiuranTkPers()"/>
                             </table>
                         </td>
                     </tr>
@@ -400,7 +400,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield readonly="true" id="iurPers1" name="payrollBpjs.iuranPers" required="true" cssClass="form-control"/>
+                                <s:textfield type="number" step="any" readonly="true" id="iurPers1" name="payrollBpjs.iuranPers" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -410,7 +410,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield type="number" id="jpkPers1" name="payrollBpjs.jpkPers" required="true" cssClass="form-control" onchange="setPersenTkPers()"/>
+                                <s:textfield type="number" step="any" id="jpkPers1" name="payrollBpjs.jpkPers" required="true" cssClass="form-control" onchange="setPersenTkPers()"/>
                             </table>
                         </td>
                     </tr>
@@ -420,7 +420,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield readonly="true" id="percentBpjsTkPers1" name="payrollBpjs.iuranBpjsTkPersPersen" required="true" cssClass="form-control"/>
+                                <s:textfield type="number" step="any" readonly="true" id="percentBpjsTkPers1" name="payrollBpjs.iuranBpjsTkPersPersen" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
