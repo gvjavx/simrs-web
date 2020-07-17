@@ -592,49 +592,54 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         }
 
         // saving dokter
+        String idDokter = bean.getIdDokter();
+
         if (bean.getIdDokter() != null && !"".equalsIgnoreCase(bean.getIdDokter()) && detailCheckupEntity.getIdDetailCheckup() != null && !"".equalsIgnoreCase(detailCheckupEntity.getIdDetailCheckup())) {
             DokterTeam dokterTeam = new DokterTeam();
             dokterTeam.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
             dokterTeam.setIdDokter(bean.getIdDokter());
             dokterTeam.setCreatedWho(bean.getCreatedWho());
             dokterTeam.setLastUpdateWho(bean.getLastUpdateWho());
+            if(bean.getRawatInap()){
+                dokterTeam.setIdPelayanan(bean.getIdPelayananDokter());
+            }else{
+                dokterTeam.setIdPelayanan(bean.getIdPelayanan());
+            }
             response = saveTeamDokter(dokterTeam);
         }
 
-        String idDokter = bean.getIdDokter();
+// for rawat Inap
+//            List<ItSimrsDokterTeamEntity> dokterEntities = null;
+//            Map hsCriteria = new HashMap();
+//            // set criteria with old detail id for get old dokter team data
+//            hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+//
+//            try {
+//                dokterEntities = dokterTeamDao.getByCriteria(hsCriteria);
+//                response.setStatus("success");
+//                response.setMsg("Berhasil");
+//            } catch (HibernateException e) {
+//                response.setStatus("error");
+//                response.setMsg("Errro when search dokter team "+e.getMessage());
+//                logger.error("[CheckupDetailBoImpl.saveAdd] Error When getting data dokter team" + e.getMessage());
+//                throw new GeneralBOException("[CheckupDetailBoImpl.saveAdd] Error When getting data dokter team");
+//            }
+//
+//            ItSimrsDokterTeamEntity dokTeam = new ItSimrsDokterTeamEntity();
+//
+//            if (!dokterEntities.isEmpty()) {
+//                dokTeam = dokterEntities.get(0);
+//                idDokter = dokTeam.getIdDokter();
+//                DokterTeam dokterTeam = new DokterTeam();
+//                // set id detail with new id detail
+//                dokterTeam.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+//                dokterTeam.setIdDokter(dokTeam.getIdDokter());
+//                dokterTeam.setCreatedWho(bean.getCreatedWho());
+//                dokterTeam.setLastUpdateWho(bean.getLastUpdateWho());
+//                response = saveTeamDokter(dokterTeam);
+//            }
 
-        // for rawat Inap
         if (bean.getRawatInap()) {
-            List<ItSimrsDokterTeamEntity> dokterEntities = null;
-            Map hsCriteria = new HashMap();
-            // set criteria with old detail id for get old dokter team data
-            hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
-
-            try {
-                dokterEntities = dokterTeamDao.getByCriteria(hsCriteria);
-                response.setStatus("success");
-                response.setMsg("Berhasil");
-            } catch (HibernateException e) {
-                response.setStatus("error");
-                response.setMsg("Errro when search dokter team "+e.getMessage());
-                logger.error("[CheckupDetailBoImpl.saveAdd] Error When getting data dokter team" + e.getMessage());
-                throw new GeneralBOException("[CheckupDetailBoImpl.saveAdd] Error When getting data dokter team");
-            }
-
-            ItSimrsDokterTeamEntity dokTeam = new ItSimrsDokterTeamEntity();
-
-            if (!dokterEntities.isEmpty()) {
-                dokTeam = dokterEntities.get(0);
-                idDokter = dokTeam.getIdDokter();
-                DokterTeam dokterTeam = new DokterTeam();
-                // set id detail with new id detail
-                dokterTeam.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
-                dokterTeam.setIdDokter(dokTeam.getIdDokter());
-                dokterTeam.setCreatedWho(bean.getCreatedWho());
-                dokterTeam.setLastUpdateWho(bean.getLastUpdateWho());
-                response = saveTeamDokter(dokterTeam);
-            }
-
             // save to table rawat inap
             RawatInap rawatInap = new RawatInap();
             rawatInap.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
@@ -783,6 +788,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         entity.setIdTeamDokter("TDT" + id);
         entity.setIdDokter(bean.getIdDokter());
         entity.setIdDetailCheckup(bean.getIdDetailCheckup());
+        entity.setIdPelayanan(bean.getIdPelayanan());
         entity.setFlag("Y");
         entity.setAction("C");
         entity.setCreatedDate(new Timestamp(System.currentTimeMillis()));

@@ -622,6 +622,16 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
         return listOfResult;
     }
 
+    @Override
+    public List<Dokter> getListDokterByBranchId(String branchId, String idDokter) throws GeneralBOException {
+        return dokterDao.getListDokterByBranchId(branchId, idDokter);
+    }
+
+    @Override
+    public List<Dokter> getListDokterByIdDetailCheckup(String idDetailChekcup) throws GeneralBOException {
+        return dokterDao.getListDokterByIdDetailCheckup(idDetailChekcup);
+    }
+
     public void setDokterDao(DokterDao dokterDao) {
         this.dokterDao = dokterDao;
     }

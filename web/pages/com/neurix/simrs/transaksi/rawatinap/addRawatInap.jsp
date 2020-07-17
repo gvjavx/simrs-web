@@ -645,6 +645,7 @@
                             <tr bgcolor="#90ee90">
                                 <td>ID Dokter</td>
                                 <td>Nama</td>
+                                <td>Nama Pelayanan</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -1148,6 +1149,24 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Dokter</label>
+                        <div class="col-md-7">
+                            <select class="form-control select2" style="margin-top: 7px; width: 100%"
+                                    id="tin_id_dokter_dpjp"
+                                    onchange="listSelectTindakanKategori(this.value); var warn =$('#war_dpjp').is(':visible'); if (warn){$('#cor_dpjp').show().fadeOut(3000);$('#war_dpjp').hide()}">
+                                <option value=''>[Select One]</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_dpjp"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_dpjp"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Kategori Tindakan</label>
                         <div class="col-md-7">
                                 <select class="form-control select2" style="margin-top: 7px; width: 100%"
@@ -1162,7 +1181,6 @@
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_kategori"><i class="fa fa-check"></i> correct</p>
                         </div>
-
                     </div>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Tindakan</label>
@@ -3475,13 +3493,13 @@
         listDokter();
         listTindakan();
         listDiagnosa();
-        listSelectDokter();
+        // listSelectDokter();
         listLab();
         listObat();
         listDiet();
         listRuanganInap();
         listResepPasien();
-        listSelectTindakanKategori();
+        // listSelectTindakanKategori();
         hitungStatusBiaya();
         hitungCoverBiaya();
         getJenisResep();

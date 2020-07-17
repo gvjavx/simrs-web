@@ -477,30 +477,30 @@
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <s:if test='headerDetailCheckup.kategoriPelayanan == "hemodialisa"'>
-                                            <li><a style="cursor: pointer" onclick="showModalHD('monitoring_hd')"><i class="fa fa-file-o"></i>Monitoring HD</a></li>
-                                            <li><a style="cursor: pointer" onclick="showModalHD('perencanaan_hemodialisa')"><i class="fa fa-file-o"></i>Perencanaan HD</a></li>
-                                            <li><a style="cursor: pointer" onclick="showModalHD('asesmen_hd')"><i class="fa fa-file-o"></i>Asesmen Awal HD</a></li>
-                                            <li><a style="cursor: pointer" onclick="showModalHD('tranfusi_hd')"><i class="fa fa-file-o"></i>Tindakan Medis Transfusi Darah</a></li>
-                                            <li><a style="cursor: pointer" onclick="showModalHD('catatan_tranfusi_darah')"><i class="fa fa-file-o"></i>Catatan Pemantauan Tranfusi Darah</a></li>
-                                            <li><a style="cursor: pointer" onclick="showModalHD('persetujuan_hd')"><i class="fa fa-file-o"></i>Persetujuan HD</a></li>
-                                            <li><a style="cursor: pointer" onclick="showModalHD('travelling')"><i class="fa fa-file-o"></i>Travelling Dialysis</a></li>
-                                        </s:if>
-                                        <s:elseif test='headerDetailCheckup.kategoriPelayanan == "fisioterapi"'>
-                                            <li><a style="cursor: pointer" onclick="pengkajianFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-file-o"></i>Pengkajian Pasien Fisioterapi</a></li>
-                                            <li><a style="cursor: pointer" onclick="addMonitoringFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-file-o"></i>Kunjungan Fisioterapi</a></li>
-                                        </s:elseif>
-                                        <s:else>
-                                            <li><a style="cursor: pointer" onclick="showModalSPS('<s:property value="headerDetailCheckup.kategoriPelayanan"/>')"><i class="fa fa-file-o"></i><s:property value="headerDetailCheckup.asesmenLabel"/></a></li>
-                                        </s:else>
-                                        <li><a style="cursor: pointer" onclick="showModalRj('ringkasan_rj')"><i class="fa fa-file-o"></i>Profil Rekam Medis Rawat Jalan</a></li>
-                                        <li><a style="cursor: pointer" onclick="printPernyataan('SP03')"><i class="fa fa-print"></i>Surat Penolakan Tindakan</a></li>
-                                        <li><a style="cursor: pointer" onclick="printPernyataan('SP06')"><i class="fa fa-print"></i>Surat Pernyataan Non Bpjs / Asuransi</a></li>
-                                        <li><a style="cursor: pointer" onclick="printPernyataan('SK01')"><i class="fa fa-print"></i>Surat Keterangan Dokter</a></li>
-                                        <li><a style="cursor: pointer" onclick="printPernyataan('SK05')"><i class="fa fa-print"></i>Surat Rekomendasi DPJP</a></li>
-                                        <li><a style="cursor: pointer" onclick="printPernyataan('SK03')"><i class="fa fa-print"></i>Surat Keterangan Sehat</a></li>
-                                        <li><a style="cursor: pointer" onclick="printPernyataan('RI01')"><i class="fa fa-print"></i>Surat Permintaan Rawat Inap</a></li>
+                                    <ul class="dropdown-menu" role="menu" id="asesmen_rj">
+                                        <%--<s:if test='headerDetailCheckup.kategoriPelayanan == "hemodialisa"'>--%>
+                                            <%--<li><a style="cursor: pointer" onclick="showModalHD('monitoring_hd')"><i class="fa fa-file-o"></i>Monitoring HD</a></li>--%>
+                                            <%--<li><a style="cursor: pointer" onclick="showModalHD('perencanaan_hemodialisa')"><i class="fa fa-file-o"></i>Perencanaan HD</a></li>--%>
+                                            <%--<li><a style="cursor: pointer" onclick="showModalHD('asesmen_hd')"><i class="fa fa-file-o"></i>Asesmen Awal HD</a></li>--%>
+                                            <%--<li><a style="cursor: pointer" onclick="showModalHD('tranfusi_hd')"><i class="fa fa-file-o"></i>Tindakan Medis Transfusi Darah</a></li>--%>
+                                            <%--<li><a style="cursor: pointer" onclick="showModalHD('catatan_tranfusi_darah')"><i class="fa fa-file-o"></i>Catatan Pemantauan Tranfusi Darah</a></li>--%>
+                                            <%--<li><a style="cursor: pointer" onclick="showModalHD('persetujuan_hd')"><i class="fa fa-file-o"></i>Persetujuan HD</a></li>--%>
+                                            <%--<li><a style="cursor: pointer" onclick="showModalHD('travelling')"><i class="fa fa-file-o"></i>Travelling Dialysis</a></li>--%>
+                                        <%--</s:if>--%>
+                                        <%--<s:elseif test='headerDetailCheckup.kategoriPelayanan == "fisioterapi"'>--%>
+                                            <%--<li><a style="cursor: pointer" onclick="pengkajianFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-file-o"></i>Pengkajian Pasien Fisioterapi</a></li>--%>
+                                            <%--<li><a style="cursor: pointer" onclick="addMonitoringFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-file-o"></i>Kunjungan Fisioterapi</a></li>--%>
+                                        <%--</s:elseif>--%>
+                                        <%--<s:else>--%>
+                                            <%--<li><a style="cursor: pointer" onclick="showModalSPS('<s:property value="headerDetailCheckup.kategoriPelayanan"/>')"><i class="fa fa-file-o"></i><s:property value="headerDetailCheckup.asesmenLabel"/></a></li>--%>
+                                        <%--</s:else>--%>
+                                        <%--<li><a style="cursor: pointer" onclick="showModalRj('ringkasan_rj')"><i class="fa fa-file-o"></i>Profil Rekam Medis Rawat Jalan</a></li>--%>
+                                        <%--<li><a style="cursor: pointer" onclick="printPernyataan('SP03')"><i class="fa fa-print"></i>Surat Penolakan Tindakan</a></li>--%>
+                                        <%--<li><a style="cursor: pointer" onclick="printPernyataan('SP06')"><i class="fa fa-print"></i>Surat Pernyataan Non Bpjs / Asuransi</a></li>--%>
+                                        <%--<li><a style="cursor: pointer" onclick="printPernyataan('SK01')"><i class="fa fa-print"></i>Surat Keterangan Dokter</a></li>--%>
+                                        <%--<li><a style="cursor: pointer" onclick="printPernyataan('SK05')"><i class="fa fa-print"></i>Surat Rekomendasi DPJP</a></li>--%>
+                                        <%--<li><a style="cursor: pointer" onclick="printPernyataan('SK03')"><i class="fa fa-print"></i>Surat Keterangan Sehat</a></li>--%>
+                                        <%--<li><a style="cursor: pointer" onclick="printPernyataan('RI01')"><i class="fa fa-print"></i>Surat Permintaan Rawat Inap</a></li>--%>
                                     </ul>
                                 </div>
                                 <%----%>
@@ -2234,6 +2234,7 @@
     var alamatLengkap = '<s:property value="headerDetailCheckup.alamatLengkap"/>';
     var noBpjs = '<s:property value="headerDetailCheckup.noBpjs"/>';
     var jenisKelamin = '<s:property value="headerDetailCheckup.jenisKelamin"/>';
+    var tipePelayanan = '<s:property value="headerDetailCheckup.kategoriPelayanan"/>';
     var urlPage = 'checkupdetail';
     var tempTensi = "";
     var tempSuhu = "";
@@ -2242,6 +2243,7 @@
     var tempBerat = "";
     var tempTinggi = "";
     var tempAnmnesa = "";
+    var tempidRm = "";
 
     $(document).ready(function () {
         $('#rawat_jalan').addClass('active');
@@ -2258,6 +2260,7 @@
         listSelectTindakanKategori();
         hitungCoverBiaya();
         listICD9();
+        getListRekamMedis('rawat_jalan', tipePelayanan, idDetailCheckup);
 
         $('#img_ktp').on('click', function (e) {
             e.preventDefault();
@@ -2408,7 +2411,6 @@
 
     function printPernyataan(kode) {
         $('#modal-confirm-rm').modal('show');
-
         // window.open(contextPath+'/rekammedik/printSuratPernyataan_rekammedik?id=' + idDetailCheckup + '&tipe=' + kode, '_blank');
     }
 

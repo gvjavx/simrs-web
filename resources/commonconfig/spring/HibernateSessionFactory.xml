@@ -505,6 +505,7 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/asesmenoperasi/hibernate/ItSimrsMonitoringAnestesiEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/rekammedis/hibernate/ImSimrsRekamMedisPasienEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/rekammedis/hibernate/ImSimrsRekamMedisPelayananEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/rekakmedik/hibernate/ItSimrsStatusPengisianRekamMedisEntity.hbm.xml</value>
             </list>
         </property>
     </bean>

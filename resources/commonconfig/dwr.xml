@@ -317,6 +317,7 @@
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.RiwayatTindakanDTO"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkup.model.ItSImrsCheckupAlergiEntity"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkup.model.CheckupAlergi"/>
+      <convert converter="bean" match="com.neurix.simrs.master.rekammedis.model.RekamMedisPasien"/>
 
       <!--Team Dokter -->
       <create creator="new">

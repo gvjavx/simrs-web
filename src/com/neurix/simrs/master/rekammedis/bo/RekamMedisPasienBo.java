@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface RekamMedisPasienBo extends GeneralBo {
     public List<RekamMedisPasien> getByCriteria(RekamMedisPasien bean) throws GeneralBOException;
-    public List<RekamMedisPasien> getListRekamMedisByTipePelayanan(String idPelayanan) throws GeneralBOException;
+    public List<RekamMedisPasien> getListRekamMedisByTipePelayanan(String tipePelayanan, String jenis, String id) throws GeneralBOException;
 }

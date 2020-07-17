@@ -31,6 +31,8 @@ import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.master.pasien.model.Pasien;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
+import com.neurix.simrs.master.rekammedis.bo.RekamMedisPasienBo;
+import com.neurix.simrs.master.rekammedis.model.RekamMedisPasien;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.master.tindakanicd9.bo.TindakanICD9Bo;
@@ -3576,5 +3578,66 @@ public class CheckupAction extends BaseMasterAction {
 
         logger.info("[CheckupAction.getDiagnosaRawatPasien] end process >>>");
         return tindakanICD9List;
+    }
+
+    public List<RekamMedisPasien> getListRekammedisPasien(String tipePelayanan, String jenis, String id) {
+
+        logger.info("[CheckupAction.getListRekammedisPasien] START process >>>");
+
+        List<RekamMedisPasien> listRM = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RekamMedisPasienBo rekamMedisPasienBo = (RekamMedisPasienBo) ctx.getBean("rekamMedisPasienBoProxy");
+
+        if(tipePelayanan != null && !"".equalsIgnoreCase(tipePelayanan)){
+            try {
+                listRM = rekamMedisPasienBo.getListRekamMedisByTipePelayanan(tipePelayanan, jenis, id);
+            }catch (GeneralBOException e){
+                logger.error("Found Error, "+e.getMessage());
+            }
+        }
+
+        logger.info("[CheckupAction.getListRekammedisPasien] END process >>>");
+        return listRM;
+    }
+
+    public List<Dokter> getListDokterByBranchId(String idDokter) {
+
+        logger.info("[CheckupAction.getListDokterByBranchId] START process >>>");
+
+        List<Dokter> dokterList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        DokterBo dokterBo = (DokterBo) ctx.getBean("dokterBoProxy");
+        String branchId = CommonUtil.userBranchLogin();
+
+        if(branchId != null && !"".equalsIgnoreCase(branchId)){
+            try {
+                dokterList = dokterBo.getListDokterByBranchId(branchId, idDokter);
+            }catch (GeneralBOException e){
+                logger.error("Found Error, "+e.getMessage());
+            }
+        }
+
+        logger.info("[CheckupAction.getListDokterByBranchId] END process >>>");
+        return dokterList;
+    }
+
+    public List<Dokter> getListDokterByIdDetailCheckup(String idDetailCheckup) {
+
+        logger.info("[CheckupAction.getListDokterByBranchId] START process >>>");
+
+        List<Dokter> dokterList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        DokterBo dokterBo = (DokterBo) ctx.getBean("dokterBoProxy");
+
+        if(idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)){
+            try {
+                dokterList = dokterBo.getListDokterByIdDetailCheckup(idDetailCheckup);
+            }catch (GeneralBOException e){
+                logger.error("Found Error, "+e.getMessage());
+            }
+        }
+
+        logger.info("[CheckupAction.getListDokterByBranchId] END process >>>");
+        return dokterList;
     }
 }

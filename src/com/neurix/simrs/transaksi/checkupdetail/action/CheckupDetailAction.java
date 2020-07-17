@@ -555,21 +555,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             detailCheckup.setKategoriPelayanan(checkup.getKategoriPelayanan());
             String label = checkup.getNamaPelayanan().replace("Poli Spesialis", "");
             detailCheckup.setAsesmenLabel("Asesmen " + label);
-
-            List<RekamMedisPasien> listRM = new ArrayList<>();
-            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-            RekamMedisPasienBo rekamMedisPasienBo = (RekamMedisPasienBo) ctx.getBean("rekamMedisPasienBoProxy");
-
-            if(checkup.getTipePelayanan() != null && !"".equalsIgnoreCase(checkup.getTipePelayanan())){
-                try {
-                    listRM = rekamMedisPasienBo.getListRekamMedisByTipePelayanan(checkup.getKategoriPelayanan());
-                }catch (GeneralBOException e){
-                    logger.error("Found Error, "+e.getMessage());
-                }
-                if(listRM.size() > 0){
-                    detailCheckup.setListRekamMedis(listRM);
-                }
-            }
+            detailCheckup.setTipePelayanan(checkup.getTipePelayanan());
 
             setHeaderDetailCheckup(detailCheckup);
 
@@ -985,7 +971,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             }
 
             if ("rujuk".equalsIgnoreCase(idKtg)) {
-                response = rujukRawatInap(noCheckup, idDetailCheckup, kelas, kamar, metodeBayar, uangMuka);
+                response = rujukRawatInap(noCheckup, idDetailCheckup, kelas, kamar, metodeBayar, uangMuka, idDokter, poli);
             }
 
             try {
@@ -2230,7 +2216,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         return finalResponse;
     }
 
-    private CrudResponse rujukRawatInap(String noCheckup, String idDetailCheckup, String kelas, String kamar, String metodeBayar, String uangMuka) {
+    private CrudResponse rujukRawatInap(String noCheckup, String idDetailCheckup, String kelas, String kamar, String metodeBayar, String uangMuka, String idDokterDpjp, String idPoli) {
         logger.info("[CheckupDetailAction.rujukRawatInap] start process >>>");
 
         CrudResponse finalResponse = new CrudResponse();
@@ -2364,37 +2350,36 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                                             String noPPK = noSkdpVal.substring(0, 8);
 
-                                            List<DokterTeam> dokterList = new ArrayList<>();
-                                            DokterTeam dokterTeam = new DokterTeam();
-                                            dokterTeam.setIdDetailCheckup(detailCheckup.getIdDetailCheckup());
+                                            List<Dokter> dokterArrayList = new ArrayList<>();
+                                            Dokter dokter = new Dokter();
+                                            dokter.setIdDokter(idDokterDpjp);
+                                            dokter.setFlag("Y");
 
                                             try {
-                                                dokterList = teamDokterBo.getByCriteria(dokterTeam);
+                                                dokterArrayList = dokterBo.getByCriteria(dokter);
                                             } catch (GeneralBOException e) {
                                                 logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + e + "] Found problem when saving add data, please inform to your admin.", e);
                                             }
 
-                                            if (dokterList.size() > 0) {
-                                                dokterTeam = dokterList.get(0);
-
-                                                List<Dokter> dokterArrayList = new ArrayList<>();
-                                                Dokter dokter = new Dokter();
-                                                dokter.setIdDokter(dokterTeam.getIdDokter());
-                                                dokter.setFlag("Y");
-
-                                                try {
-                                                    dokterArrayList = dokterBo.getByCriteria(dokter);
-                                                } catch (GeneralBOException e) {
-                                                    logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + e + "] Found problem when saving add data, please inform to your admin.", e);
-                                                }
-
-                                                if (dokterArrayList.size() > 0) {
-                                                    namaDokter = dokterArrayList.get(0).getNamaDokter();
-                                                    idDokter = dokterArrayList.get(0).getIdDokter();
-                                                    kodeDpjp = dokterArrayList.get(0).getKodeDpjp();
-                                                }
-
+                                            if (dokterArrayList.size() > 0) {
+                                                namaDokter = dokterArrayList.get(0).getNamaDokter();
+                                                idDokter = dokterArrayList.get(0).getIdDokter();
+                                                kodeDpjp = dokterArrayList.get(0).getKodeDpjp();
                                             }
+
+//                                            List<DokterTeam> dokterList = new ArrayList<>();
+//                                            DokterTeam dokterTeam = new DokterTeam();
+//                                            dokterTeam.setIdDetailCheckup(detailCheckup.getIdDetailCheckup());
+//
+//                                            try {
+//                                                dokterList = teamDokterBo.getByCriteria(dokterTeam);
+//                                            } catch (GeneralBOException e) {
+//                                                logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + e + "] Found problem when saving add data, please inform to your admin.", e);
+//                                            }
+//
+//                                            if (dokterList.size() > 0) {
+//                                                dokterTeam = dokterList.get(0);
+//                                            }
 
                                             SepRequest sepRequest = new SepRequest();
                                             sepRequest.setNoKartu(getPasien.getNoBpjs());
@@ -2758,6 +2743,8 @@ public class CheckupDetailAction extends BaseMasterAction {
                         headerDetailCheckup.setRawatInap(true);
                         headerDetailCheckup.setIdJenisPeriksaPasien(detailCheckup.getIdJenisPeriksaPasien());
                         headerDetailCheckup.setBranchId(branchId);
+                        headerDetailCheckup.setIdDokter(idDokterDpjp);
+                        headerDetailCheckup.setIdPelayananDokter(idPoli);
 
                         if ("umum".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
                             headerDetailCheckup.setJumlahUangMuka(new BigInteger(uangMuka));

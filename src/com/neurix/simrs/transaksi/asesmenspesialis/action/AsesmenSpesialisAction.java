@@ -6,6 +6,8 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.asesmenspesialis.bo.AsesmenSpesialisBo;
 import com.neurix.simrs.transaksi.asesmenspesialis.model.AsesmenSpesialis;
+import com.neurix.simrs.transaksi.rekammedik.bo.RekamMedikBo;
+import com.neurix.simrs.transaksi.rekammedik.model.StatusPengisianRekamMedis;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,7 +29,7 @@ public class AsesmenSpesialisAction {
 
     public static transient Logger logger = Logger.getLogger(AsesmenSpesialisAction.class);
 
-    public CrudResponse save(String data) throws JSONException, IOException {
+    public CrudResponse save(String data, String dataPasien) throws JSONException, IOException {
         CrudResponse response = new CrudResponse();
         String userLogin = CommonUtil.userLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
@@ -88,6 +90,25 @@ public class AsesmenSpesialisAction {
         }
         try {
             response = asesmenSpesialisBo.saveAdd(asesmenSpesialisList);
+            if("success".equalsIgnoreCase(response.getStatus())){
+                JSONObject obj = new JSONObject(dataPasien);
+                RekamMedikBo rekamMedikBo = (RekamMedikBo) ctx.getBean("rekamMedikBoProxy");
+                if(obj != null){
+                    StatusPengisianRekamMedis status = new StatusPengisianRekamMedis();
+                    status.setNoCheckup(obj.getString("no_checkup"));
+                    status.setIdDetailCheckup(obj.getString("id_detail_checkup"));
+                    status.setIdPasien(obj.getString("id_pasien"));
+                    status.setIdRekamMedisPasien(obj.getString("id_rm"));
+                    status.setIsPengisian("Y");
+                    status.setAction("C");
+                    status.setFlag("Y");
+                    status.setCreatedWho(userLogin);
+                    status.setCreatedDate(time);
+                    status.setLastUpdateWho(userLogin);
+                    status.setLastUpdate(time);
+                    response = rekamMedikBo.saveAdd(status);
+                }
+            }
         } catch (GeneralBOException e) {
             response.setStatus("Error");
             response.setMsg("Found Error " + e.getMessage());

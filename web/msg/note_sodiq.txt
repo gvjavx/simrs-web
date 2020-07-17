@@ -529,4 +529,43 @@ WITH (
 ALTER TABLE public.im_simrs_rekam_medis_pelayanan
   OWNER TO postgres;
 
+-- 16-07-2020
+CREATE TABLE public.it_simrs_status_pengisian_rekam_medis
+(
+  id_status_pengisian_rekam_medis character varying(30) NOT NULL,
+  no_checkup character varying(30),
+  id_detail_checkup character varying(30),
+  id_pasien character varying(30),
+  id_rekam_medis_pasien character varying(100),
+  is_pengisian character varying(1),
+  flag character varying(1),
+  action character varying(1),
+  created_who character varying(100),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  CONSTRAINT pk_id_status_pengisian_rekam_medis PRIMARY KEY (id_status_pengisian_rekam_medis)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_status_pengisian_rekam_medis
+  OWNER TO postgres;
+
+
+CREATE SEQUENCE public.seq_status_pengisiain_rm
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE public.seq_status_pengisiain_rm
+  OWNER TO postgres;
+
+
+-- 17-07-2020
+ALTER TABLE it_simrs_dokter_team
+ADD COLUMN id_pelayanan character varying(100)
+
+
 

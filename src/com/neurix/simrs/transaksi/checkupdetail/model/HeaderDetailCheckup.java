@@ -164,6 +164,16 @@ public class HeaderDetailCheckup extends BaseModel{
     private String kategoriPelayanan;
     private String pemeriksaanTerakhir;
 
+    private String idPelayananDokter;
+
+    public String getIdPelayananDokter() {
+        return idPelayananDokter;
+    }
+
+    public void setIdPelayananDokter(String idPelayananDokter) {
+        this.idPelayananDokter = idPelayananDokter;
+    }
+
     private List<RekamMedisPasien> listRekamMedis;
 
     public List<RekamMedisPasien> getListRekamMedis() {

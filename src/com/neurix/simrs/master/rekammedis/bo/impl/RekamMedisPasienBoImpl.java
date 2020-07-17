@@ -59,7 +59,7 @@ public class RekamMedisPasienBoImpl implements RekamMedisPasienBo {
                     rekamMedisPasien.setCreatedWho(entity.getCreatedWho());
                     rekamMedisPasien.setLastUpdate(entity.getLastUpdate());
                     rekamMedisPasien.setLastUpdateWho(entity.getLastUpdateWho());
-                    rekamMedisPasien.setTipe(entity.getTipe());
+                    rekamMedisPasien.setFunction(entity.getFunction());
                     list.add(rekamMedisPasien);
                 }
             }
@@ -69,8 +69,8 @@ public class RekamMedisPasienBoImpl implements RekamMedisPasienBo {
     }
 
     @Override
-    public List<RekamMedisPasien> getListRekamMedisByTipePelayanan(String idPelayanan) throws GeneralBOException {
-        return rekamMedisPasienDao.getListRekamMedisByPelayanan(idPelayanan);
+    public List<RekamMedisPasien> getListRekamMedisByTipePelayanan(String tipePelayanan, String jenis, String id) throws GeneralBOException {
+        return rekamMedisPasienDao.getListRekamMedisByPelayanan(tipePelayanan, jenis, id);
     }
 
     public static Logger getLogger() {

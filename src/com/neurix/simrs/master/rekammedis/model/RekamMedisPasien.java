@@ -16,6 +16,24 @@ public class RekamMedisPasien {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String tipe;
+    private String isPengisian;
+    private String function;
+
+    public String getFunction() {
+        return function;
+    }
+
+    public void setFunction(String function) {
+        this.function = function;
+    }
+
+    public String getIsPengisian() {
+        return isPengisian;
+    }
+
+    public void setIsPengisian(String isPengisian) {
+        this.isPengisian = isPengisian;
+    }
 
     public String getIdRekamMedisPasien() {
         return idRekamMedisPasien;

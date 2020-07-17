@@ -15,7 +15,7 @@ public class ImSimrsRekamMedisPasienEntity {
     private Timestamp createdDate;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
-    private String tipe;
+    private String function;
 
     public String getIdRekamMedisPasien() {
         return idRekamMedisPasien;
@@ -105,12 +105,12 @@ public class ImSimrsRekamMedisPasienEntity {
         this.lastUpdateWho = lastUpdateWho;
     }
 
-    public String getTipe() {
-        return tipe;
+    public String getFunction() {
+        return function;
     }
 
-    public void setTipe(String tipe) {
-        this.tipe = tipe;
+    public void setFunction(String function) {
+        this.function = function;
     }
 
     @Override
@@ -129,11 +129,11 @@ public class ImSimrsRekamMedisPasienEntity {
                 Objects.equals(createdDate, that.createdDate) &&
                 Objects.equals(lastUpdate, that.lastUpdate) &&
                 Objects.equals(lastUpdateWho, that.lastUpdateWho) &&
-                Objects.equals(tipe, that.tipe);
+                Objects.equals(function, that.function);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idRekamMedisPasien, kodeRm, namaRm, keterangan, jenis, flag, action, createdWho, createdDate, lastUpdate, lastUpdateWho, tipe);
+        return Objects.hash(idRekamMedisPasien, kodeRm, namaRm, keterangan, jenis, flag, action, createdWho, createdDate, lastUpdate, lastUpdateWho, function);
     }
 }

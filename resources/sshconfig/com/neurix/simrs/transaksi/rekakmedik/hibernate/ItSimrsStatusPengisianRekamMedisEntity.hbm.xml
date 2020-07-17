@@ -2,23 +2,26 @@
 <entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
         version="2.0">
 
-    <entity class="com.neurix.simrs.master.rekammedis.model.ImSimrsRekamMedisPasienEntity">
-        <table name="im_simrs_rekam_medis_pasien" schema="public"/>
+    <entity class="com.neurix.simrs.transaksi.rekammedik.model.ItSimrsStatusPengisianRekamMedisEntity">
+        <table name="it_simrs_status_pengisian_rekam_medis" schema="public"/>
         <attributes>
-            <id name="idRekamMedisPasien">
-                <column name="id_rekam_medis_pasien"/>
+            <id name="idStatusPengisianRekamMedis">
+                <column name="id_status_pengisian_rekam_medis"/>
             </id>
-            <basic name="kodeRm">
-                <column name="kode_rm"/>
+            <basic name="noCheckup">
+                <column name="no_checkup"/>
             </basic>
-            <basic name="namaRm">
-                <column name="nama_rm"/>
+            <basic name="idDetailCheckup">
+                <column name="id_detail_checkup"/>
             </basic>
-            <basic name="keterangan">
-                <column name="keterangan"/>
+            <basic name="idPasien">
+                <column name="id_pasien"/>
             </basic>
-            <basic name="jenis">
-                <column name="jenis"/>
+            <basic name="idRekamMedisPasien">
+                <column name="id_rekam_medis_pasien"/>
+            </basic>
+            <basic name="isPengisian">
+                <column name="is_pengisian"/>
             </basic>
             <basic name="flag">
                 <column name="flag"/>
@@ -37,9 +40,6 @@
             </basic>
             <basic name="lastUpdateWho">
                 <column name="last_update_who"/>
-            </basic>
-            <basic name="function">
-                <column name="function"/>
             </basic>
         </attributes>
     </entity>

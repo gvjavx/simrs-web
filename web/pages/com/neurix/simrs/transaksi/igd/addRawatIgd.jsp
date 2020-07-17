@@ -938,18 +938,30 @@
                         </div>
                         <div class="row">
                             <div class="col-md-offset-1 col-md-5">
-                                <div class="form-group">
-                                    <label class="col-md-3" style="margin-top: 10px">Keterangan</label>
-                                    <div class="col-md-9">
-                                        <select class="form-control select2" id="keterangan" style="width: 100%"
-                                                onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()}; selectKeterangan(this.value)">
-                                            <option value=''>[Select One]</option>
-                                            <option value='selesai'>Selesai</option>
-                                            <%--<option value='pindah'>Pindah Poli Lain</option>--%>
-                                            <option value='rujuk'>Rujuk Rawat Inap</option>
-                                            <option value='lanjut_biaya'>Lanjut Biaya</option>
-                                            <option value='rujuk_rs_lain'>Rujuk RS Lain</option>
-                                        </select>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="col-md-3" style="margin-top: 10px">Keterangan</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control select2" id="keterangan" style="width: 100%"
+                                                    onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()}; selectKeterangan(this.value)">
+                                                <option value="0">[Select One]</option>
+                                                <option value="selesai">Selesai</option>
+                                                <%--<option value='pindah'>Pindah Poli Lain</option>--%>
+                                                <option value="rujuk">Rujuk Rawat Inap</option>
+                                                <option value="lanjut_biaya">Lanjut Biaya</option>
+                                                <option value="rujuk_rs_lain">Rujuk RS Lain</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" id="form-dpjp" style="display: none">
+                                    <div class="form-group">
+                                        <label class="col-md-3 jarak">Dokter DPJP</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control select2" id="dokter_dpjp" style="width: 100%">
+                                                <option value="0">[Select One]</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
