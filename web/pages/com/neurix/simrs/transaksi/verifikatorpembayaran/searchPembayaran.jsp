@@ -323,6 +323,7 @@
                     </table>
                     <hr>
                     <br>
+                    <div id="list-button-asuransi"></div>
                     <div id="detail-invoice-bpjs" style="display: none;">
                         <div class="row top-7">
                             <div class="col-md-3" align="right">No. Kartu BPJS :</div>
@@ -723,20 +724,27 @@
 
                         }
                     } else {
+                        str += "<td></td>" +
+                            "<td></td>";
 //                        console.log("Id Item : "+item.idItem);
-                        if (idJenisPeriksaPasien == "asuransi" && item.nominal != 0) {
-                            str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
-                                "<td align='center'><button class='btn btn-sm btn-success' onclick=\"actionApprove(\'"+item.id+"\')\"><i class='fa fa-edit'></i> VerifiKasi</button></td>";
-                        } else {
-                            str += "<td></td>" +
-                                "<td></td>";
-                        }
+//                        if (idJenisPeriksaPasien == "asuransi" && item.nominal != 0) {
+//                            str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
+//                                "<td align='center'><button class='btn btn-sm btn-success' onclick=\"actionApprove(\'"+item.id+"\')\"><i class='fa fa-edit'></i> VerifiKasi</button></td>";
+//                        } else {
+//                            str += "<td></td>" +
+//                                "<td></td>";
+//                        }
                     }
                     str += "</tr>";
                 });
+
                 $("#head_tindakan_fin").html(head);
                 $("#fin_id_antrian").val(idAntrian);
                 $("#body_tindakan_fin").html(str);
+
+                if (idJenisPeriksaPasien == "asuransi"){
+                    getDataStrukAsuransi(idAntrian);
+                }
             });
 
         });
@@ -928,6 +936,18 @@
                 $("#dt-btn-ver-bpjs").hide();
                 $("#dt-btn-ref-bpjs").show();
             }
+        });
+    }
+
+    function getDataStrukAsuransi(idAntrian) {
+        VerifikatorPembayaranAction.getListStrukAsuransi(idAntrian, function (res) {
+            var str = "";
+            $.each(res, function (i, item) {
+                if (item.approveFlag == null && item.urlFotoStruk == null && item.jenis == "authorization")
+                    str += "<button class='btn btn-success'><i class='fa fa-edit'>Authorization</i></button>";
+                if (item.approveFlag == null && item.urlFotoStruk == null && item.jenis == "confirmation")
+                    str += "<button class='btn btn-success'><i class='fa fa-edit'>Confirmation</i></button>";
+            })
         });
     }
 

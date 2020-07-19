@@ -13,15 +13,15 @@
           <!--p:branchBoProxy-ref="branchBoProxy"-->
     <!--/>-->
 
-    <bean id="verifikatorAsuransiBo" class="com.neurix.simrs.transaksi.verifikatorasuransi.bo.impl.VerifikatorAsuransiBoImpl"
+    <bean id="verifikatorAsurasiBo" class="com.neurix.simrs.transaksi.verifikatorasuransi.bo.impl.VerifikatorAsuransiBoImpl"
           p:checkupDetailDao-ref="checkupDetailDao"
           p:pasienDao-ref="pasienDao"
           p:headerCheckupDao-ref="headerCheckupDao"
           p:strukAsuransiDao-ref="strukAsuransiDao"
     />
 
-    <bean id="verifikatorBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
-          p:target-ref="verifikatorBo">
+    <bean id="verifikatorAsurasiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="verifikatorAsurasiBo">
         <property name="interceptorNames">
             <list>
                 <value>transactionObatDetailInterceptor</value>

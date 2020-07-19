@@ -19,6 +19,15 @@ public class ItSimrsStrukAsuransiEntity {
     private String lastUpdateWho;
     private String approveWho;
     private String branchId;
+    private String idAntrianTelemedic;
+
+    public String getIdAntrianTelemedic() {
+        return idAntrianTelemedic;
+    }
+
+    public void setIdAntrianTelemedic(String idAntrianTelemedic) {
+        this.idAntrianTelemedic = idAntrianTelemedic;
+    }
 
     public String getBranchId() {
         return branchId;

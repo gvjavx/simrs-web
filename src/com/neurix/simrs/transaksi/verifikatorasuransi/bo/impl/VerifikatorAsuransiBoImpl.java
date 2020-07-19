@@ -60,7 +60,8 @@ public class VerifikatorAsuransiBoImpl implements VerifikatorAsurasiBo{
         return null;
     }
 
-    private List<ItSimrsStrukAsuransiEntity> getListStrukAsurasiEntity(StrukAsuransi bean) throws GeneralBOException {
+    @Override
+    public List<ItSimrsStrukAsuransiEntity> getListStrukAsurasiEntity(StrukAsuransi bean) throws GeneralBOException {
         logger.info("[VerifikatorAsuransiBoImpl.getListStrukAsurasiEntity] START >>>");
 
         Map hsCriteria = new HashMap();
@@ -76,6 +77,8 @@ public class VerifikatorAsuransiBoImpl implements VerifikatorAsurasiBo{
             hsCriteria.put("flag", bean.getFlag());
         if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId()))
             hsCriteria.put("branch_id", bean.getBranchId());
+        if (bean.getIdAntrianTelemedic() != null)
+            hsCriteria.put("id_antrian_telemedic", bean.getIdAntrianTelemedic());
 
         List<ItSimrsStrukAsuransiEntity> strukAsuransiEntities = new ArrayList<>();
 

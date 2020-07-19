@@ -79,6 +79,9 @@ import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
 import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
+import com.neurix.simrs.transaksi.verifikatorasuransi.bo.VerifikatorAsurasiBo;
+import com.neurix.simrs.transaksi.verifikatorasuransi.model.ItSimrsStrukAsuransiEntity;
+import com.neurix.simrs.transaksi.verifikatorasuransi.model.StrukAsuransi;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.bo.VerifikatorPembayaranBo;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.model.ItSimrsPembayaranOnlineEntity;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.model.PembayaranOnline;
@@ -2305,7 +2308,17 @@ public class VerifikatorPembayaranAction {
 
         logger.info("[CheckupDetailAction.generateCoverBpjs] end process >>>");
         return response;
+    }
 
+    public List<ItSimrsStrukAsuransiEntity> getListStrukAsuransi(String idAntrianTelemedic){
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        VerifikatorAsurasiBo verifikatorAsurasiBo = (VerifikatorAsurasiBo) ctx.getBean("verifikatorAsurasiBoProxy");
+
+        StrukAsuransi strukAsuransi = new StrukAsuransi();
+        strukAsuransi.setIdAntrianTelemedic(idAntrianTelemedic);
+
+        return verifikatorAsurasiBo.getListStrukAsurasiEntity(strukAsuransi);
     }
 
 }

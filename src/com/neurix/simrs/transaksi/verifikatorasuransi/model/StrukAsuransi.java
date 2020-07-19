@@ -27,6 +27,15 @@ public class StrukAsuransi {
     private BigDecimal coverDitanggung;
     private String ApproveFlagNull;
     private String branchId;
+    private String idAntrianTelemedic;
+
+    public String getIdAntrianTelemedic() {
+        return idAntrianTelemedic;
+    }
+
+    public void setIdAntrianTelemedic(String idAntrianTelemedic) {
+        this.idAntrianTelemedic = idAntrianTelemedic;
+    }
 
     public String getBranchId() {
         return branchId;

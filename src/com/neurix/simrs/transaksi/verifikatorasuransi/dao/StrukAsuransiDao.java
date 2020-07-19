@@ -37,6 +37,10 @@ public class StrukAsuransiDao extends GenericDao<ItSimrsStrukAsuransiEntity, Str
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
         if (mapCriteria.get("branch_id") != null)
             criteria.add(Restrictions.eq("branhcId", mapCriteria.get("branch_id").toString()));
+        if (mapCriteria.get("id_antrian_telemedic") != null)
+            criteria.add(Restrictions.eq("idAntrianTelemedic", mapCriteria.get("id_antrian_telemedic").toString()));
+        if (mapCriteria.get("jenis") != null)
+            criteria.add(Restrictions.eq("jenis", mapCriteria.get("jenis").toString()));
 
         return criteria.list();
     }

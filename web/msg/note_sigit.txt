@@ -465,4 +465,6 @@
     ALTER TABLE it_simrs_struk_asuransi ADD COLUMN branch_id VARCHAR(10);
     CREATE SEQUENCE seq_struk_asuransi;
 
+    ALTER TABLE it_simrs_struk_asuransi
+        ADD COLUMN id_antrian_telemedic VARCHAR(50);
 <<< //

@@ -44,6 +44,9 @@
             <basic name="branchId">
                 <column name="branch_id"/>
             </basic>
+            <basic name="idAntrianTelemedic">
+                <column name="id_antrian_telemedic"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

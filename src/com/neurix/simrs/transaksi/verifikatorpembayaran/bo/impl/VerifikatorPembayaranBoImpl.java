@@ -43,6 +43,8 @@ import com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailDao;
 import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsApprovalTransaksiObatEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
+import com.neurix.simrs.transaksi.verifikatorasuransi.dao.StrukAsuransiDao;
+import com.neurix.simrs.transaksi.verifikatorasuransi.model.ItSimrsStrukAsuransiEntity;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.action.VerifikatorPembayaranAction;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.bo.VerifikatorPembayaranBo;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.dao.VerifikatorPembayaranDao;
@@ -80,6 +82,11 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
     private AsuransiDao asuransiDao;
     private DiagnosaRawatDao diagnosaRawatDao;
     private TransaksiStokDao transaksiStokDao;
+    private StrukAsuransiDao strukAsuransiDao;
+
+    public void setStrukAsuransiDao(StrukAsuransiDao strukAsuransiDao) {
+        this.strukAsuransiDao = strukAsuransiDao;
+    }
 
     public void setTransaksiStokDao(TransaksiStokDao transaksiStokDao) {
         this.transaksiStokDao = transaksiStokDao;
@@ -171,34 +178,80 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
                 pembayaranOnline.setAction(pembayaranOnlineEntity.getAction());
                 pembayaranOnline.setUrlFotoBukti(pembayaranOnlineEntity.getUrlFotoBukti());
 
-                // mencari apakah sudah di bayar melalui bank
+                // mencari data pada antrian telemedic untuk mengetahui status pembayaran
                 ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = telemedicDao.getById("id", bean.getIdAntrianTelemedic());
                 if (antrianTelemedicEntity != null){
-                    pembayaranOnline.setNoSep(antrianTelemedicEntity.getNoSep());
-                    pembayaranOnline.setFlagEresep(antrianTelemedicEntity.getFlagEresep());
-                    if ("konsultasi".equalsIgnoreCase(pembayaranOnlineEntity.getKeterangan())){
-                        if ("Y".equalsIgnoreCase(antrianTelemedicEntity.getFlagBayarKonsultasi())){
-                            pembayaranOnline.setFlagBayar("Y");
+
+
+
+
+                    // jika asuransi maka mencari data authorization dan confirmation
+                    // jika konsultasi dan
+                    if ("asuransi".equalsIgnoreCase(antrianTelemedicEntity.getIdJenisPeriksaPasien())){
+
+                        ItSimrsStrukAsuransiEntity simrsStrukAsuransiEntity = getStrukAsuransiDataByIdAntrianAndJenis(pembayaranOnlineEntity.getIdAntrianTelemedic(), "authorization");
+                        if (simrsStrukAsuransiEntity != null)
+                            if (simrsStrukAsuransiEntity.getApproveFlag() != null && simrsStrukAsuransiEntity.getUrlFotoStruk() != null)
+                                pembayaranOnline.setFlagBayar("Y");
+
+                        pembayaranOnline.setNoKartu(antrianTelemedicEntity.getNoKartu());
+                        pembayaranOnline.setJumlahCover(antrianTelemedicEntity.getJumlahCover());
+                        if (antrianTelemedicEntity.getIdAsuransi() != null && !"".equalsIgnoreCase(antrianTelemedicEntity.getIdAsuransi())){
+                            ImSimrsAsuransiEntity asuransiEntity = asuransiDao.getById("idAsuransi", antrianTelemedicEntity.getIdAsuransi());
+                            if (asuransiEntity != null){
+                                pembayaranOnline.setNamaAsuransi(asuransiEntity.getNamaAsuransi());
+                            }
                         }
-                    } else if ("resep".equalsIgnoreCase(pembayaranOnlineEntity.getKeterangan())){
-                        if ("Y".equalsIgnoreCase(antrianTelemedicEntity.getFlagBayarResep())){
-                            pembayaranOnline.setFlagBayar("Y");
+                    } else {
+
+                        // mencari apakah sudah di bayar melalui bank selain asuransi
+                        pembayaranOnline.setNoSep(antrianTelemedicEntity.getNoSep());
+                        pembayaranOnline.setFlagEresep(antrianTelemedicEntity.getFlagEresep());
+                        if ("konsultasi".equalsIgnoreCase(pembayaranOnlineEntity.getKeterangan())){
+                            if ("Y".equalsIgnoreCase(antrianTelemedicEntity.getFlagBayarKonsultasi())){
+                                pembayaranOnline.setFlagBayar("Y");
+                            }
+                        } else if ("resep".equalsIgnoreCase(pembayaranOnlineEntity.getKeterangan())){
+                            if ("Y".equalsIgnoreCase(antrianTelemedicEntity.getFlagBayarResep())){
+                                pembayaranOnline.setFlagBayar("Y");
+                            }
                         }
-                    }
-                    pembayaranOnline.setNoKartu(antrianTelemedicEntity.getNoKartu());
-                    pembayaranOnline.setJumlahCover(antrianTelemedicEntity.getJumlahCover());
-                    if (antrianTelemedicEntity.getIdAsuransi() != null && !"".equalsIgnoreCase(antrianTelemedicEntity.getIdAsuransi())){
-                        ImSimrsAsuransiEntity asuransiEntity = asuransiDao.getById("idAsuransi", antrianTelemedicEntity.getIdAsuransi());
-                        if (asuransiEntity != null){
-                            pembayaranOnline.setNamaAsuransi(asuransiEntity.getNamaAsuransi());
+                        pembayaranOnline.setNoKartu(antrianTelemedicEntity.getNoKartu());
+                        pembayaranOnline.setJumlahCover(antrianTelemedicEntity.getJumlahCover());
+                        if (antrianTelemedicEntity.getIdAsuransi() != null && !"".equalsIgnoreCase(antrianTelemedicEntity.getIdAsuransi())){
+                            ImSimrsAsuransiEntity asuransiEntity = asuransiDao.getById("idAsuransi", antrianTelemedicEntity.getIdAsuransi());
+                            if (asuransiEntity != null){
+                                pembayaranOnline.setNamaAsuransi(asuransiEntity.getNamaAsuransi());
+                            }
                         }
                     }
                 }
+
                 pembayaranOnlines.add(pembayaranOnline);
             }
         }
 
         return pembayaranOnlines;
+    }
+
+    private ItSimrsStrukAsuransiEntity getStrukAsuransiDataByIdAntrianAndJenis(String idAntrianTelemedic, String jenis) throws GeneralBOException{
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_antrian_telemdic", idAntrianTelemedic);
+        hsCriteria.put("jenis", jenis);
+
+        List<ItSimrsStrukAsuransiEntity> strukAsuransiEntities = new ArrayList<>();
+
+        try {
+            strukAsuransiEntities = strukAsuransiDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[VerifikatorPembayaranBoImpl.getStrukAsuransiDataByIdAntrianAndJenis] ERROR. ", e);
+            throw new GeneralBOException("[VerifikatorPembayaranBoImpl.getStrukAsuransiDataByIdAntrianAndJenis] ERROR. ", e);
+        }
+
+        if (strukAsuransiEntities.size() > 0)
+            return  strukAsuransiEntities.get(0);
+        return null;
     }
 
     @Override
