@@ -452,12 +452,18 @@
                         <div class="col-md-3" align="right">Input Cover :</div>
                         <div class="col-md-6"><input type="number" class="form-control" id="dt-cover-asuransi"></div>
                     </div>
+                    <div class="row top-7">
+                        <div class="col-md-3" align="right">Upload Struk :</div>
+                        <div class="col-md-6"><s:file class="form-control" id="dt-struk-asuransi" accept=".jpg" name="fileUpload"/></div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <%--<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close--%>
                 <%--</button>--%>
-                <div id="btn-save-asuransi"></div>
+                <div id="btn-save-asuransi">
+                    <button class="btn btn-success" onclick="uploadStrukAsuransi()"><i class="fa fa-check"></i> Save</button>
+                </div>
             </div>
         </div>
     </div>
@@ -883,10 +889,6 @@
 
                     showDialog("error");
                     $("#msg_fin_error_waiting").text(response.message);
-
-//                    $("#warning_fin").show();
-//                    $("#success_fin").hide();
-//                    $("#msg_fin_error").text(response.message);
                 } else {
 
                     showDialog("success");
@@ -894,8 +896,6 @@
                         searchPage(idAntrian)
                     });
 
-//                    $("#modal-detail-asuransi").modal('hide');
-//                    searchPage(idAntrian);
                 }
             });
         }
@@ -944,11 +944,68 @@
             var str = "";
             $.each(res, function (i, item) {
                 if (item.approveFlag == null && item.urlFotoStruk == null && item.jenis == "authorization")
-                    str += "<button class='btn btn-success'><i class='fa fa-edit'>Authorization</i></button>";
+                    str += "<button class='btn btn-success' onclick=\"viewModalDetailAsuransi(\'"+idAntrian+"\', \'"+item.jenis+"\')\"><i class='fa fa-edit'></i> Authorization</button>";
                 if (item.approveFlag == null && item.urlFotoStruk == null && item.jenis == "confirmation")
-                    str += "<button class='btn btn-success'><i class='fa fa-edit'>Confirmation</i></button>";
+                    str += "<button class='btn btn-success' onclick=\"viewModalDetailAsuransi(\'"+idAntrian+"\', \'"+item.jenis+"\')\"><i class='fa fa-edit'></i> Confirmation</button>";
             })
+
+            $("#list-button-asuransi").html(str);
         });
+    }
+    function viewModalDetailAsuransi(idAntrian, jenis){
+
+        VerifikatorPembayaranAction.getSessionAntrianTelemedic(idAntrian, function (telemedicEntity) {
+            if (telemedicEntity != null){
+                var item = telemedicEntity;
+                $("#modal-detail-asuransi").modal('show');
+                $("#dt-nama-pasien-asuransi").text(item.namaPasien);
+                $("#dt-nama-asuransi").html(item.namaAsuransi);
+                $("#dt-no-kartu-asuransi").text(item.noKartu);
+                $("#dt-cover-asuransi").val(item.jumlahCover);
+
+                VerifikatorPembayaranAction.getStrukAsuransiByIdAntrianAndJenis(idAntrian, jenis, function (res) {
+                    if (jenis == "authorization"){
+                        $("#dt-cover-asuransi").hide();
+
+                    }
+                    if (jenis == "confirmation"){
+                        if (item.jumlahCover != null){
+                            $("#dt-cover-asuransi").prop('readonly', true);
+                        } else {
+                            $("#dt-cover-asuransi").prop('readonly', false);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    function uploadStrukAsuransi() {
+        //var uploadFile = $("#dt-struk-asuransi");
+        var uploadFile = dwr.util.getValue('dt-struk-asuransi');
+        //var filenames = uploadFile.val().split("/");
+        //var filename = filenames[filenames.length-1];
+        console.log(uploadFile);
+
+        VerifikatorPembayaranAction.uploadStruk(uploadFile, "", function (res) {
+            if (res.status == "success"){
+                alert(res.msg);
+            } else {
+                alert("ERROR");
+            }
+        });
+    }
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#img-upload').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
     }
 
 

@@ -94,8 +94,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
@@ -2319,6 +2321,35 @@ public class VerifikatorPembayaranAction {
         strukAsuransi.setIdAntrianTelemedic(idAntrianTelemedic);
 
         return verifikatorAsurasiBo.getListStrukAsurasiEntity(strukAsuransi);
+    }
+    public ItSimrsStrukAsuransiEntity getStrukAsuransiByIdAntrianAndJenis(String idAntrianTelemedic, String jenis){
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        VerifikatorAsurasiBo verifikatorAsurasiBo = (VerifikatorAsurasiBo) ctx.getBean("verifikatorAsurasiBoProxy");
+
+        StrukAsuransi strukAsuransi = new StrukAsuransi();
+        strukAsuransi.setIdAntrianTelemedic(idAntrianTelemedic);
+        strukAsuransi.setJenis(jenis);
+
+        List<ItSimrsStrukAsuransiEntity> strukAsuransiEntityList = verifikatorAsurasiBo.getListStrukAsurasiEntity(strukAsuransi);
+        if (strukAsuransiEntityList.size() > 0)
+            return strukAsuransiEntityList.get(0);
+        return null;
+    }
+    public CrudResponse uploadStruk(String uploadFile, String fileName) throws IOException{
+        CrudResponse response = new CrudResponse();
+        if (uploadFile != null){
+            File myFile = new File(uploadFile);
+
+            String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_BUKTI_TRANSFER;
+
+            // persiapan pemindahan file
+            File fileToCreate = new File(filePath, fileName);
+            FileUtils.copyFile(myFile, fileToCreate);
+            response.setStatus("success");
+            response.setMsg("Berhasil di Upload");
+        }
+        return response;
     }
 
 }
