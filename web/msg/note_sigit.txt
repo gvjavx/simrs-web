@@ -1,33 +1,22 @@
-// 2020-05-22 >>>
-
+-- 2020-05-22
     ALTER TABLE it_simrs_transaksi_stok
     ADD COLUMN qty_lalu bigint,
     ADD COLUMN total_lalu numeric,
     ADD COLUMN sub_total_lalu numeric
 
-<<< //
-
-// 2020-05-23 >>>
-
+-- 2020-05-23
     ALTER TABLE mt_simrs_item_paket_periksa
     ADD COLUMN harga bigint
 
-<<< //
-
-
-// 2020-05-28 >>>
-
+-- 2020-05-28
     ALTER TABLE it_simrs_periksa_lab_detail
     ADD COLUMN harga numeric;
 
     ALTER TABLE it_simrs_periksa_radiologi
     ADD COLUMN harga numeric;
 
-<<< //
 
-
-// 2020-05-30 >>>
-
+-- 2020-05-30
     INSERT INTO im_akun_trans
     (trans_id, trans_name, flag, action, created_who, last_update_who, created_date, last_update, flag_sumber_baru)
     VALUES
@@ -58,9 +47,8 @@
         'Y'
     );
 
-<<< //
 
-// 2020-05-31 >>>
+-- 2020-05-31
 
     DELETE FROM im_akun_tipe_rekening WHERE tipe_rekening_id::integer > 4;
     DELETE FROM im_akun_tipe_rekening WHERE tipe_rekening_id = '00';
@@ -70,18 +58,14 @@
     UPDATE im_akun_tipe_rekening SET tipe_rekening_name = 'INVESTASI' WHERE tipe_rekening_id = '04';
     SELECT * FROM im_akun_tipe_rekening
 
-<<< //
-
-// 2020-06-03 >>>
-
+-- 2020-06-03
     ALTER TABLE it_akun_budgeting_pengadaan
       ADD COLUMN no_kontrak CHARACTER VARYING(100),
       ADD COLUMN nilai_kontrak NUMERIC,
       ADD COLUMN no_pengadaan CHARACTER VARYING(100);
 
-<<< //
 
-// 2020-06-08 >>>
+-- 2020-06-08
 
     CREATE SEQUENCE sq_antrian_telemedic;
 
@@ -119,14 +103,11 @@
     ALTER TABLE public.it_simrs_antrian_telemedic
         OWNER to postgres;
 
-<<< //
 
-
-// 2020-06-10 >>>
+-- 2020-06-10
 
 
     ALTER TABLE public.im_roles ALTER COLUMN role_name TYPE VARCHAR(100) USING role_name::VARCHAR(100);
-
 
 
     -- Table: public.it_simrs_pembayaran_online
@@ -181,17 +162,14 @@
     ALTER TABLE public.it_simrs_antrian_telemedic ADD branch_id VARCHAR(10) NULL;
 
 
-<<< //
-
-// 2020-06-12 >>>
+-- 2020-06-12
 
     ALTER TABLE public.it_simrs_header_checkup ADD id_antrian_online VARCHAR(100) NULL;
     ALTER TABLE public.it_simrs_header_detail_checkup ADD id_transaksi_online VARCHAR(100) NULL;
     ALTER TABLE public.mt_simrs_permintaan_resep ADD id_transaksi_online VARCHAR(100) NULL;
 
-<<< //
 
-// 2020-06-16 >>>
+-- 2020-06-16
 
     CREATE SEQUENCE seq_resep_online;
 
@@ -229,9 +207,7 @@
     ALTER TABLE it_akun_saldo_akhir_detail
         ADD COLUMN kd_barang VARCHAR(100);
 
-<<< //
-
-// 2020-06-17 >>>
+--2020-06-17
 
     ALTER TABLE public.it_simrs_resep_online ADD keterangan TEXT NULL;
 
@@ -252,9 +228,8 @@
 
     ALTER TABLE it_akun_jurnal
         ADD COLUMN pengajuan_biaya_id VARCHAR(50);
-<<< //
 
-// 2020-06-18 >>>
+-- 2020-06-18
 
     CREATE TABLE public.it_simrs_pengiriman_obat
     (
@@ -282,19 +257,19 @@
         ADD COLUMN desa_id VARCHAR(30),
         ADD alamat text,
         ADD no_telp VARCHAR(30);
-<<< //
 
-// 2020-06-22 >>>
 
-    // function Pengiriman Obat ==========
+-- 2020-06-22
 
-    "Search Pengiriman Obat"        "/reseponline/searchApprovedResep_reseponline.action"
-    "init form Pengiriman Obat"     "/reseponline/initForm_reseponline.action"
-    "Pengiriman Obat"               "/reseponline/initForm_reseponline.action" (Menu) parent -> menu utama
+    -- function Pengiriman Obat
 
-    role : admin apotek
+    --"Search Pengiriman Obat"        "/reseponline/searchApprovedResep_reseponline.action"
+    --"init form Pengiriman Obat"     "/reseponline/initForm_reseponline.action"
+    --"Pengiriman Obat"               "/reseponline/initForm_reseponline.action" (Menu) parent -> menu utama
 
-    // ===================================
+    --role : admin apotek
+
+    --// ===================================
 
     -- Table: public.it_simrs_pemesanan_resep_online
 
@@ -329,22 +304,19 @@
     ADD COLUMN flag_eresep VARCHAR(1),
     ADD COLUMN url_foto_resep text;
 
-<<< //
 
-// 2020-06-26 >>>
+-- 2020-06-26
 
     ALTER TABLE it_simrs_antrian_telemedic ADD COLUMN jumlah_cover NUMERIC;
 
-<<< //
 
-// 2020-06-29 >>>
+-- 2020-06-29
 
     ALTER TABLE it_simrs_antrian_telemedic
     ADD COLUMN no_jurnal VARCHAR(30);
 
-<<< //
 
-// 2020-06-30 >>>
+-- 2020-06-30
 
     ALTER TABLE it_simrs_antrian_telemedic
     ADD COLUMN no_sep VARCHAR(50);
@@ -355,5 +327,3 @@
 
     ALTER TABLE it_simrs_pengiriman_obat
     ADD COLUMN flag_terkirim VARCHAR(1);
-
-<<< ///

@@ -86,7 +86,7 @@
 			<staticText>
 				<reportElement x="421" y="30" width="59" height="19" uuid="711bd471-61c7-4e26-a5f7-23f47f6c6eb4"/>
 				<textElement>
-					<font fontName="Calibri" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[Printed date : ]]></text>
 			</staticText>
@@ -100,7 +100,7 @@
 			<textField pattern="dd/MM/yyyy HH.mm.ss">
 				<reportElement x="480" y="30" width="75" height="19" uuid="c74fa1f1-4199-4fb4-8162-4173796d277f"/>
 				<textElement>
-					<font fontName="Calibri" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
@@ -470,7 +470,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.nama} == null ? "" : $P{reportParams.nama} ]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{reportParams.nama} == null ? "" : $P{reportParams.nama}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="123" y="190" width="432" height="20" uuid="7476733b-a5a5-4f11-8856-ce3a3bb04563"/>
@@ -478,7 +478,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.noBpjs} == null ? "" : $P{reportParams.noBpjs} ]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{reportParams.noBpjs} == null ? "" : $P{reportParams.noBpjs}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
