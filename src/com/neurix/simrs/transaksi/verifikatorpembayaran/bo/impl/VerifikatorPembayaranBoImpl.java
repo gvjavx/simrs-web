@@ -191,7 +191,7 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
 
                         ItSimrsStrukAsuransiEntity simrsStrukAsuransiEntity = getStrukAsuransiDataByIdAntrianAndJenis(pembayaranOnlineEntity.getIdAntrianTelemedic(), "authorization");
                         if (simrsStrukAsuransiEntity != null)
-                            if (simrsStrukAsuransiEntity.getApproveFlag() != null || simrsStrukAsuransiEntity.getUrlFotoStruk() != null)
+                            if (simrsStrukAsuransiEntity.getApproveFlag() != null && simrsStrukAsuransiEntity.getUrlFotoStruk() != null)
                                 pembayaranOnline.setFlagBayar("Y");
 
                         pembayaranOnline.setNoKartu(antrianTelemedicEntity.getNoKartu());
@@ -237,7 +237,7 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
     private ItSimrsStrukAsuransiEntity getStrukAsuransiDataByIdAntrianAndJenis(String idAntrianTelemedic, String jenis) throws GeneralBOException{
 
         Map hsCriteria = new HashMap();
-        hsCriteria.put("id_antrian_telemdic", idAntrianTelemedic);
+        hsCriteria.put("id_antrian_telemedic", idAntrianTelemedic);
         hsCriteria.put("jenis", jenis);
 
         List<ItSimrsStrukAsuransiEntity> strukAsuransiEntities = new ArrayList<>();

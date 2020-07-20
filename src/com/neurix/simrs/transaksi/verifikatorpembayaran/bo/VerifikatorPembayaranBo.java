@@ -27,4 +27,5 @@ public interface VerifikatorPembayaranBo {
     public String approveTransaksiResep(HeaderCheckup bean, String idTransaksi) throws GeneralBOException;
     public String saveAddResep(PermintaanResep bean, List<TransaksiObatDetail> detailList) throws GeneralBOException;
     public String generateIdSementara();
-    }
+
+}

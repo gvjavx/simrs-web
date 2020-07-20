@@ -464,6 +464,8 @@
                                 </table>
                             </div>
                         </div>
+                        <span style="display: none; color: red" id="dt-msg-belum-bayar">Resep Belum Siap / Belum ada Biaya</span>
+                        <input type="hidden" id="dt-belum-bayar">
                         <div class="row top-7">
                             <div class="col-md-3" align="right">Cover : </div>
                             <div class="col-md-6"><input type="number" class="form-control input-sm" id="dt-cover-asuransi"/></div>
@@ -999,6 +1001,10 @@
                         btn = "<button type=\"button\" class=\"btn btn-success\" id=\"save-detail-save\" onclick=\"uploadStrukAsuransi(\'"+res.jenis+"\')\"><i class=\"fa fa-arrow-right\"></i> Save</button>";
                     }
                     if (res.jenis == "confirmation"){
+                        if (item.flagBelumBayar == "Y"){
+                            $("#dt-msg-belum-bayar").show();
+                            $("#dt-belum-bayar").val(item.flagBelumBayar);
+                        }
                         $("#dt-id-struk").val(res.id);
                         btn = "<button type=\"button\" class=\"btn btn-success\" id=\"save-detail-save\" onclick=\"uploadStrukAsuransi(\'"+res.jenis+"\')\"><i class=\"fa fa-arrow-right\"></i> Save</button>";
                         showListBiaya(idAntrian);
@@ -1057,19 +1063,26 @@
                 }
             });
         } else {
-            var coverAsuransi = $("#dt-cover-asuransi").val();
-            var bayarAsuransi = $("#dt-bayar-asuransi").val();
-            VerifikatorPembayaranAction.uploadStruk("", jenis, idStruk, coverAsuransi, bayarAsuransi, function (res) {
-                if (res.status == "success"){
-                    showDialog("success");
-                    $('#ok_con').on('click', function (e) {
-                        searchPage(idAntrian);
-                    });
-                } else {
-                    showDialog("error");
-                    $("#msg_fin_error_waiting").text(res.msg);
-                }
-            });
+            var flagBelumBayar = $("#dt-belum-bayar").val();
+            if (flagBelumBayar == "Y"){
+                showDialog("error");
+                $("#msg_fin_error_waiting").text("Tidak Bisa Lanjut. Ada Transaksi yang Belum Selesai");
+            } else {
+                var coverAsuransi = $("#dt-cover-asuransi").val();
+                var bayarAsuransi = $("#dt-bayar-asuransi").val();
+                VerifikatorPembayaranAction.uploadStruk("", jenis, idStruk, coverAsuransi, bayarAsuransi, function (res) {
+                    if (res.status == "success"){
+                        showDialog("success");
+                        $('#ok_con').on('click', function (e) {
+                            searchPage(idAntrian);
+                        });
+                    } else {
+                        showDialog("error");
+                        $("#msg_fin_error_waiting").text(res.msg);
+                    }
+                });
+            }
+
         }
 
     }

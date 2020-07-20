@@ -2,6 +2,9 @@ package com.neurix.simrs.transaksi.verifikatorasuransi.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.pasien.dao.PasienDao;
+import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
+import com.neurix.simrs.transaksi.antriantelemedic.dao.TelemedicDao;
+import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
 import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
 import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
@@ -11,9 +14,13 @@ import com.neurix.simrs.transaksi.verifikatorasuransi.bo.VerifikatorAsurasiBo;
 import com.neurix.simrs.transaksi.verifikatorasuransi.dao.StrukAsuransiDao;
 import com.neurix.simrs.transaksi.verifikatorasuransi.model.ItSimrsStrukAsuransiEntity;
 import com.neurix.simrs.transaksi.verifikatorasuransi.model.StrukAsuransi;
+import com.neurix.simrs.transaksi.verifikatorpembayaran.dao.VerifikatorPembayaranDao;
+import com.neurix.simrs.transaksi.verifikatorpembayaran.model.ItSimrsPembayaranOnlineEntity;
+import com.neurix.simrs.transaksi.verifikatorpembayaran.model.PembayaranOnline;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +35,16 @@ public class VerifikatorAsuransiBoImpl implements VerifikatorAsurasiBo{
     private CheckupDetailDao checkupDetailDao;
     private HeaderCheckupDao headerCheckupDao;
     private PasienDao pasienDao;
+    private TelemedicDao telemedicDao;
+    private VerifikatorPembayaranDao verifikatorPembayaranDao;
+
+    public void setVerifikatorPembayaranDao(VerifikatorPembayaranDao verifikatorPembayaranDao) {
+        this.verifikatorPembayaranDao = verifikatorPembayaranDao;
+    }
+
+    public void setTelemedicDao(TelemedicDao telemedicDao) {
+        this.telemedicDao = telemedicDao;
+    }
 
     public void setCheckupDetailDao(CheckupDetailDao checkupDetailDao) {
         this.checkupDetailDao = checkupDetailDao;
@@ -82,6 +99,8 @@ public class VerifikatorAsuransiBoImpl implements VerifikatorAsurasiBo{
             hsCriteria.put("branch_id", bean.getBranchId());
         if (bean.getIdAntrianTelemedic() != null)
             hsCriteria.put("id_antrian_telemedic", bean.getIdAntrianTelemedic());
+        if (bean.getJenis() != null)
+            hsCriteria.put("jenis", bean.getJenis());
 
         List<ItSimrsStrukAsuransiEntity> strukAsuransiEntities = new ArrayList<>();
 
@@ -107,9 +126,14 @@ public class VerifikatorAsuransiBoImpl implements VerifikatorAsurasiBo{
         ItSimrsStrukAsuransiEntity strukAsuransiEntity = getStrukAsuransiEntityById(bean.getId());
         if (strukAsuransiEntity != null){
 
+            boolean noBayar = bean.getDibayarPasien() != null && bean.getDibayarPasien().compareTo(new BigDecimal(0)) == 0;
             strukAsuransiEntity.setUrlFotoStruk(bean.getUrlFotoStruk());
             strukAsuransiEntity.setLastUpdate(bean.getLastUpdate());
             strukAsuransiEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            if (noBayar){
+                strukAsuransiEntity.setApproveFlag("Y");
+                strukAsuransiEntity.setApproveWho(bean.getLastUpdateWho());
+            }
             strukAsuransiEntity.setAction("U");
 
             try {
@@ -142,9 +166,35 @@ public class VerifikatorAsuransiBoImpl implements VerifikatorAsurasiBo{
                         }
                     }
                 }
+
+                if (noBayar){
+                    ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = telemedicDao.getById("id", strukAsuransiEntity.getIdAntrianTelemedic());
+                    if (antrianTelemedicEntity != null){
+
+                        antrianTelemedicEntity.setFlagBayarKonsultasi("Y");
+
+                        if (checkIsWithResep(strukAsuransiEntity.getIdAntrianTelemedic()))
+                            antrianTelemedicEntity.setFlagBayarResep("Y");
+
+                        try {
+                            telemedicDao.updateAndSave(antrianTelemedicEntity);
+                        } catch (HibernateException e){
+                            logger.error("[VerifikatorAsuransiBoImpl.saveUploadStrukAsuransi] ERROR. When Update Flag Bayar Antrian Telemedic ", e);
+                            throw new GeneralBOException("[VerifikatorAsuransiBoImpl.saveUploadStrukAsuransi] ERROR. When Update Flag Bayar Antrian Telemedic "+ e);
+                        }
+                    }
+                }
             }
         }
         logger.info("[VerifikatorAsuransiBoImpl.saveUploadStrukAsuransi] END <<<");
+    }
+
+    private Boolean checkIsWithResep(String idAntrian) throws GeneralBOException{
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_antrian_telemedic", idAntrian);
+        hsCriteria.put("keterangan", "resep");
+        List<ItSimrsPembayaranOnlineEntity> pembayaranOnlineEntities = verifikatorPembayaranDao.getByCriteria(hsCriteria);
+        return pembayaranOnlineEntities != null && pembayaranOnlineEntities.size() > 0;
     }
 
     private String generateIdStrukAsuransi(String branchId) throws GeneralBOException {

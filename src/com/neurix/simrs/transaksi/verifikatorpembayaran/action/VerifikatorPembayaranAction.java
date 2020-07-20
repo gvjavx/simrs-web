@@ -1675,11 +1675,45 @@ public class VerifikatorPembayaranAction {
         List<AntrianTelemedic> sessionTelemedic = (List<AntrianTelemedic>) session.getAttribute("listOfResults");
         List<AntrianTelemedic> antrianTelemedics = sessionTelemedic.stream().filter(p->p.getId().equalsIgnoreCase(id)).collect(Collectors.toList());
         if (antrianTelemedics.size() > 0){
+            AntrianTelemedic antrianTelemedic = antrianTelemedics.get(0);
+
+            if ("Y".equalsIgnoreCase(antrianTelemedic.getFlagResep())){
+                ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+                RiwayatTindakanBo riwayatTindakanBo = (RiwayatTindakanBo) ctx.getBean("riwayatTindakanBoProxy");
+                VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
+
+                ItSimrsHeaderChekupEntity headerChekupEntity = verifikatorPembayaranBo.getHeaderCheckupByIdAntrinTelemedic(id);
+                if (headerChekupEntity != null){
+
+                    ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = getDetailCheckupByNoCheckup(headerChekupEntity.getNoCheckup());
+                    if (detailCheckupEntity != null){
+
+                        RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
+                        riwayatTindakan.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+                        riwayatTindakan.setKeterangan("resep");
+
+                        List<ItSimrsRiwayatTindakanEntity> riwayatTindakanEntities = riwayatTindakanBo.getListEntityRiwayatTindakan(riwayatTindakan);
+                        if (riwayatTindakanEntities == null || riwayatTindakanEntities.size() == 0)
+                            antrianTelemedic.setFlagBelumBayar("Y");
+                    }
+                }
+            }
+
             logger.info("[CheckupDetailAction.getSessionAntrianTelemedic] END <<<");
-            return antrianTelemedics.get(0);
+            return antrianTelemedic;
         }
         logger.info("[CheckupDetailAction.getSessionAntrianTelemedic] END <<<");
         return null;
+    }
+
+    private ItSimrsHeaderDetailCheckupEntity getDetailCheckupByNoCheckup(String noCheckup){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+
+        HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+        detailCheckup.setNoCheckup(noCheckup);
+        List<ItSimrsHeaderDetailCheckupEntity> detailCheckupEntities = checkupDetailBo.getListEntityByCriteria(detailCheckup);
+        return detailCheckupEntities != null && detailCheckupEntities.size() > 0 ? detailCheckupEntities.get(0) : null;
     }
 
     public CrudResponse saveCoverAsuransi(String idAntrianTelemedic, String jumlahCover, String idTransksi){
