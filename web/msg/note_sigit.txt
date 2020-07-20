@@ -468,3 +468,8 @@
     ALTER TABLE it_simrs_struk_asuransi
         ADD COLUMN id_antrian_telemedic VARCHAR(50);
 <<< //
+
+// >>> 2020-07-20
+    ALTER TABLE it_simrs_header_detail_checkup
+        ADD COLUMN dibayar_pasien NUMERIC;
+<<< //

@@ -2421,7 +2421,7 @@ public class VerifikatorPembayaranAction {
             return strukAsuransiEntityList.get(0);
         return null;
     }
-    public CrudResponse uploadStruk(String uploadFile, String jenis, String idStruk, String jumlahCover) throws IOException{
+    public CrudResponse uploadStruk(String uploadFile, String jenis, String idStruk, String jumlahCover, String dibayarPasien) throws IOException{
 
         String userLogin = CommonUtil.userLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
@@ -2437,6 +2437,11 @@ public class VerifikatorPembayaranAction {
         strukAsuransi.setLastUpdate(time);
         strukAsuransi.setLastUpdateWho(userLogin);
 
+        if ("confirmation".equalsIgnoreCase(jenis)){
+            strukAsuransi.setJumlahCover(jumlahCover == null || "".equalsIgnoreCase(jumlahCover) ? new BigDecimal(0) : new BigDecimal(jumlahCover));
+            strukAsuransi.setDibayarPasien(dibayarPasien == null || "".equalsIgnoreCase(dibayarPasien) ? new BigDecimal(0) : new BigDecimal(dibayarPasien));
+        }
+
         try {
             verifikatorAsurasiBo.saveUploadStrukAsuransi(strukAsuransi);
             response.setStatus("success");
@@ -2448,6 +2453,31 @@ public class VerifikatorPembayaranAction {
         }
 
         return response;
+    }
+
+    public List<ItSimrsRiwayatTindakanEntity> getListRiwayatTindakanByIdAntrian(String idAntrian) throws GeneralBOException{
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+        RiwayatTindakanBo riwayatTindakanBo = (RiwayatTindakanBo) ctx.getBean("riwayatTindakanBoProxy");
+
+        ItSimrsHeaderChekupEntity chekupEntity = verifikatorPembayaranBo.getHeaderCheckupByIdAntrinTelemedic(idAntrian);
+        if (chekupEntity != null){
+            HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+            detailCheckup.setNoCheckup(chekupEntity.getNoCheckup());
+            List<ItSimrsHeaderDetailCheckupEntity> detailCheckupEntities = checkupDetailBo.getListEntityByCriteria(detailCheckup);
+            if (detailCheckupEntities.size() > 0){
+                ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = detailCheckupEntities.get(0);
+
+                RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
+                riwayatTindakan.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+
+                List<ItSimrsRiwayatTindakanEntity> riwayatTindakanEntities = riwayatTindakanBo.getListEntityRiwayatTindakan(riwayatTindakan);
+                return riwayatTindakanEntities.size() > 0 ? riwayatTindakanEntities : null;
+            }
+        }
+        return null;
     }
 
 }
