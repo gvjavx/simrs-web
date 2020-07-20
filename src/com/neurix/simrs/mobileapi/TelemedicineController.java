@@ -25,6 +25,9 @@ import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.reseponline.bo.ResepOnlineBo;
 import com.neurix.simrs.transaksi.reseponline.model.ResepOnline;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
+import com.neurix.simrs.transaksi.verifikatorasuransi.dao.StrukAsuransiDao;
+import com.neurix.simrs.transaksi.verifikatorasuransi.model.ItSimrsStrukAsuransiEntity;
+import com.neurix.simrs.transaksi.verifikatorasuransi.model.StrukAsuransi;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.bo.VerifikatorPembayaranBo;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.model.ItSimrsPembayaranOnlineEntity;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.model.PembayaranOnline;
@@ -91,6 +94,25 @@ public class TelemedicineController implements ModelDriven<Object> {
     private String namaDokter;
 
     private String noCheckup;
+
+    private String jenisStruk;
+    private String isStruk;
+
+    public String getIsStruk() {
+        return isStruk;
+    }
+
+    public void setIsStruk(String isStruk) {
+        this.isStruk = isStruk;
+    }
+
+    public String getJenisStruk() {
+        return jenisStruk;
+    }
+
+    public void setJenisStruk(String jenisStruk) {
+        this.jenisStruk = jenisStruk;
+    }
 
     public NotifikasiBo getNotifikasiBoProxy() {
         return notifikasiBoProxy;
@@ -369,6 +391,7 @@ public class TelemedicineController implements ModelDriven<Object> {
 
             try {
                 telemedicBoProxy.saveEdit(bean, branchId, "");
+
                 if (this.status.equalsIgnoreCase("PD")) {
 
                     //KIRIM PUSH NOTIF JIKA STATUS MENJADI PD
@@ -382,9 +405,29 @@ public class TelemedicineController implements ModelDriven<Object> {
                     sendData.put("idPasien", idPasien);
                     sendData.put("noCheckup", noCheckup);
                     sendData.put("branchId", branchId);
+                    sendData.put("isStruk", isStruk);
 
                     result = notifikasiFcmBoProxy.getByCriteria(beanNotif);
                     FirebasePushNotif.sendNotificationFirebase(result.get(0).getTokenFcm(), "Telemedic", "Dokter Memanggil ...", "PD", result.get(0).getOs(), sendData);
+                }
+
+                if (jenisStruk != null) {
+                    List<ItSimrsAntrianTelemedicEntity> result = new ArrayList<>();
+                    AntrianTelemedic antrianTelemedic = new AntrianTelemedic();
+                    antrianTelemedic.setId(idTele);
+
+                    try {
+                        result = telemedicBoProxy.getListEntityByCriteria(antrianTelemedic);
+                    } catch (GeneralBOException e) {
+                        logger.error("[TelemedicineController.insertResep] Error, " + e.getMessage());
+                    }
+
+                    try {
+                        telemedicBoProxy.createStrukAsuransi(result.get(0), jenisStruk);
+                        model.setMessage("Success");
+                    } catch (GeneralBOException e){
+                        logger.error("[TelemedicineController.insertResep] Error, " + e.getMessage());
+                    }
                 }
             } catch (GeneralBOException e) {
                 logger.error("[TelemedicineController.create] Error, " + e.getMessage());
@@ -1006,6 +1049,62 @@ public class TelemedicineController implements ModelDriven<Object> {
 
             if (response.getNoRujukan() != null) {
                 model.setMessage("Success");
+            }
+        } else if (action.equalsIgnoreCase("getStrukAsuransi")){
+
+            List<ItSimrsStrukAsuransiEntity> entityList = new ArrayList<>();
+            listOfTelemedic = new ArrayList<>();
+
+            StrukAsuransi bean = new StrukAsuransi();
+            bean.setIdAntrianTelemedic(idTele);
+            bean.setJenis(jenisStruk);
+
+            try {
+               entityList = telemedicBoProxy.getStrukAsuransi(bean);
+            } catch (GeneralBOException e){
+                logger.error("[TelemedicineController.insertResep] Error, " + e.getMessage());
+
+            }
+
+            if (entityList.size() > 0) {
+                for (ItSimrsStrukAsuransiEntity item : entityList) {
+                    TelemedicineMobile telemedicineMobile = new TelemedicineMobile();
+                    telemedicineMobile.setIdStrukAsuransi(item.getId());
+                    telemedicineMobile.setUrlFotoStruk(item.getUrlFotoStruk());
+                    telemedicineMobile.setApproveFlagStruk(item.getApproveFlag());
+                    telemedicineMobile.setJenisStruk(item.getJenis());
+
+                    listOfTelemedic.add(telemedicineMobile);
+                }
+            }
+        } else if (action.equalsIgnoreCase("updateApproveStrukAsuransi")) {
+
+            StrukAsuransi bean = new StrukAsuransi();
+            bean.setId(idTele);
+            bean.setJenis(jenisStruk);
+            try {
+                telemedicBoProxy.updateFlagApproveStrukAsuransi(bean);
+                model.setMessage("Success");
+            } catch (GeneralBOException e) {
+                logger.error("[TelemedicineController.insertResep] Error, " + e.getMessage());
+            }
+        } else if (action.equalsIgnoreCase("createStrukAsuransi")) {
+
+            List<ItSimrsAntrianTelemedicEntity> result = new ArrayList<>();
+            AntrianTelemedic bean = new AntrianTelemedic();
+            bean.setId(idTele);
+
+            try {
+                result = telemedicBoProxy.getListEntityByCriteria(bean);
+            } catch (GeneralBOException e) {
+                logger.error("[TelemedicineController.insertResep] Error, " + e.getMessage());
+            }
+
+            try {
+                telemedicBoProxy.createStrukAsuransi(result.get(0), jenisStruk);
+                model.setMessage("Success");
+            } catch (GeneralBOException e){
+                logger.error("[TelemedicineController.insertResep] Error, " + e.getMessage());
             }
         }
 

@@ -60,6 +60,61 @@ public class TelemedicineMobile {
     private String keterangan;
     private String approvedFlag;
 
+    private String idStrukAsuransi;
+    private String jenisStruk;
+    private String urlFotoStruk;
+    private String approveFlagStruk;
+    private String jumlahCover;
+    private String coverDitanggung;
+
+    public String getIdStrukAsuransi() {
+        return idStrukAsuransi;
+    }
+
+    public void setIdStrukAsuransi(String idStrukAsuransi) {
+        this.idStrukAsuransi = idStrukAsuransi;
+    }
+
+    public String getJenisStruk() {
+        return jenisStruk;
+    }
+
+    public void setJenisStruk(String jenisStruk) {
+        this.jenisStruk = jenisStruk;
+    }
+
+    public String getUrlFotoStruk() {
+        return urlFotoStruk;
+    }
+
+    public void setUrlFotoStruk(String urlFotoStruk) {
+        this.urlFotoStruk = urlFotoStruk;
+    }
+
+    public String getApproveFlagStruk() {
+        return approveFlagStruk;
+    }
+
+    public void setApproveFlagStruk(String approveFlagStruk) {
+        this.approveFlagStruk = approveFlagStruk;
+    }
+
+    public String getJumlahCover() {
+        return jumlahCover;
+    }
+
+    public void setJumlahCover(String jumlahCover) {
+        this.jumlahCover = jumlahCover;
+    }
+
+    public String getCoverDitanggung() {
+        return coverDitanggung;
+    }
+
+    public void setCoverDitanggung(String coverDitanggung) {
+        this.coverDitanggung = coverDitanggung;
+    }
+
     public String getApprovedFlag() {
         return approvedFlag;
     }

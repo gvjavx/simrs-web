@@ -15,12 +15,10 @@ import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.reseponline.bo.ResepOnlineBo;
 import com.neurix.simrs.transaksi.reseponline.dao.PengirimanObatDao;
-import com.neurix.simrs.transaksi.reseponline.model.ItSimrsPengirimanObatEntity;
-import com.neurix.simrs.transaksi.reseponline.model.PengirimanObat;
+import com.neurix.simrs.transaksi.reseponline.dao.SettingHargaPengirimanDao;
+import com.neurix.simrs.transaksi.reseponline.model.*;
 import org.apache.log4j.Logger;
 import com.neurix.simrs.transaksi.reseponline.dao.ResepOnlineDao;
-import com.neurix.simrs.transaksi.reseponline.model.ItSimrsResepOnlineEntity;
-import com.neurix.simrs.transaksi.reseponline.model.ResepOnline;
 import org.hibernate.HibernateException;
 
 import java.util.ArrayList;
@@ -41,6 +39,11 @@ public class ResepOnlineBoImpl implements ResepOnlineBo {
     private PasienDao pasienDao;
     private BranchDao branchDao;
     private KurirDao kurirDao;
+    private SettingHargaPengirimanDao settingHargaPengirimanDao;
+
+    public void setSettingHargaPengirimanDao(SettingHargaPengirimanDao settingHargaPengirimanDao) {
+        this.settingHargaPengirimanDao = settingHargaPengirimanDao;
+    }
 
     public void setKurirDao(KurirDao kurirDao) {
         this.kurirDao = kurirDao;
@@ -300,5 +303,154 @@ public class ResepOnlineBoImpl implements ResepOnlineBo {
     private String getNextIdPengiriman(String branchId){
         logger.info("[ResepOnlineBoImpl.getNextIdPengiriman] END <<<");
         return branchId + CommonUtil.stDateSeq() + pengirimanObatDao.getNextSeq();
+    }
+
+    private ImBranches getBranchEntityBiId(String id) throws GeneralBOException{
+        logger.info(" [ResepOnlineBoImpl.getBranchEntityBiId] START >>> END <<<< ");
+        ImBranchesPK branchesPK = new ImBranchesPK();
+        branchesPK.setId(id);
+        return branchDao.getById("primaryKey", branchesPK);
+    }
+
+    @Override
+    public List<SettingHargaPengiriman> getListResepOnlineByCriteria(SettingHargaPengiriman bean) throws GeneralBOException {
+        logger.info("[ResepOnlineBoImpl.getListResepOnlineByCriteria] START >>>");
+
+        List<SettingHargaPengiriman> settingHargaPengirimanList = new ArrayList<>();
+        List<ImSimrsSettingHargaPengirimanEntity> settingHargaPengirimanEntities = new ArrayList<>();
+
+        try {
+            settingHargaPengirimanEntities = getListSettingHargaPengirimanEntity(bean);
+        } catch (GeneralBOException e){
+            logger.error("[ResepOnlineBoImpl.getSettingHargaPengirimanEntity] ERROR. ", e);
+            throw new GeneralBOException("[ResepOnlineBoImpl.getSettingHargaPengirimanEntity] ERROR. " + e);
+        }
+
+        SettingHargaPengiriman settingHargaPengiriman;
+        for (ImSimrsSettingHargaPengirimanEntity settingHargaPengirimanEntity : settingHargaPengirimanEntities){
+            settingHargaPengiriman = new SettingHargaPengiriman();
+            settingHargaPengiriman.setId(settingHargaPengirimanEntity.getId());
+            settingHargaPengiriman.setTipe(settingHargaPengirimanEntity.getTipe());
+            settingHargaPengiriman.setBranchId(settingHargaPengirimanEntity.getBranchId());
+            settingHargaPengiriman.setFlag(settingHargaPengirimanEntity.getFlag());
+            settingHargaPengiriman.setAction(settingHargaPengirimanEntity.getAction());
+            settingHargaPengiriman.setCreatedDate(settingHargaPengirimanEntity.getCreatedDate());
+            settingHargaPengiriman.setCreatedWho(settingHargaPengirimanEntity.getCreatedWho());
+            settingHargaPengiriman.setLastUpdate(settingHargaPengirimanEntity.getLastUpdate());
+            settingHargaPengiriman.setLastUpdateWho(settingHargaPengirimanEntity.getLastUpdateWho());
+
+            ImBranches branchesEntity = getBranchEntityBiId(settingHargaPengirimanEntity.getBranchId());
+            if (branchesEntity != null)
+                settingHargaPengiriman.setBranchName(branchesEntity.getBranchName());
+
+            settingHargaPengirimanList.add(settingHargaPengiriman);
+        }
+
+        logger.info("[ResepOnlineBoImpl.getListResepOnlineByCriteria] END <<<");
+        return settingHargaPengirimanList;
+    }
+
+    private List<ImSimrsSettingHargaPengirimanEntity> getListSettingHargaPengirimanEntity(SettingHargaPengiriman bean) throws GeneralBOException {
+        logger.info("[ResepOnlineBoImpl.getSettingHargaPengirimanEntity] START >>>");
+
+        Map hsCriteria = new HashMap();
+        if (bean.getId() != null && !"".equalsIgnoreCase(bean.getId()))
+            hsCriteria.put("id", bean.getId());
+        if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId()))
+            hsCriteria.put("branch_id", bean.getBranchId());
+        if (bean.getTipe() != null && !"".equalsIgnoreCase(bean.getTipe()))
+            hsCriteria.put("tipe", bean.getTipe());
+        if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag()))
+            hsCriteria.put("flag", bean.getFlag());
+
+        List<ImSimrsSettingHargaPengirimanEntity> settingHargaPengirimanEntities = new ArrayList<>();
+
+        try {
+            settingHargaPengirimanEntities = settingHargaPengirimanDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[ResepOnlineBoImpl.getSettingHargaPengirimanEntity] ERROR. ", e);
+            throw new GeneralBOException("[ResepOnlineBoImpl.getSettingHargaPengirimanEntity] ERROR. " + e);
+        }
+
+        logger.info("[ResepOnlineBoImpl.getSettingHargaPengirimanEntity] END <<<");
+        return settingHargaPengirimanEntities;
+    }
+
+    private ImSimrsSettingHargaPengirimanEntity getSettingHargaPengirimanEntityById(String id) throws GeneralBOException{
+        logger.info("[ResepOnlineBoImpl.getSettingHargaPengirimanEntity] START >>> END <<<<");
+        return settingHargaPengirimanDao.getById("id", id);
+    }
+
+    @Override
+    public void saveAddSettingHargaPengiriman(SettingHargaPengiriman bean) throws GeneralBOException {
+        logger.info("[ResepOnlineBoImpl.saveAddSettingHargaPengiriman] START >>>");
+
+        SettingHargaPengiriman settingHargaPengiriman = new SettingHargaPengiriman();
+        settingHargaPengiriman.setBranchId(bean.getBranchId());
+        settingHargaPengiriman.setTipe(bean.getTipe());
+
+        List<ImSimrsSettingHargaPengirimanEntity> hargaPengirimanEntities = getListSettingHargaPengirimanEntity(settingHargaPengiriman);
+        if (hargaPengirimanEntities.size() > 0){
+            ImSimrsSettingHargaPengirimanEntity pengirimanEntity = hargaPengirimanEntities.get(0);
+            logger.error("[ResepOnlineBoImpl.saveAddSettingHargaPengiriman] Data sudah ada pada ID" + pengirimanEntity.getId());
+            throw new GeneralBOException("[ResepOnlineBoImpl.saveAddSettingHargaPengiriman] Data sudah ada pada ID. " + pengirimanEntity.getId());
+        }
+
+        ImSimrsSettingHargaPengirimanEntity settingHargaPengirimanEntity = new ImSimrsSettingHargaPengirimanEntity();
+        settingHargaPengirimanEntity.setId(getNextIdSettingHargaPengiriman(bean.getBranchId()));
+        settingHargaPengirimanEntity.setBranchId(bean.getBranchId());
+        settingHargaPengirimanEntity.setTipe(bean.getTipe());
+        settingHargaPengirimanEntity.setFlag(bean.getFlag());
+        settingHargaPengirimanEntity.setAction(bean.getAction());
+        settingHargaPengirimanEntity.setCreatedDate(bean.getCreatedDate());
+        settingHargaPengirimanEntity.setCreatedWho(bean.getCreatedWho());
+        settingHargaPengirimanEntity.setLastUpdate(bean.getLastUpdate());
+        settingHargaPengirimanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+        try {
+            settingHargaPengirimanDao.addAndSave(settingHargaPengirimanEntity);
+        } catch (HibernateException e){
+            logger.error("[ResepOnlineBoImpl.saveAddSettingHargaPengiriman] ERROR. ", e);
+            throw new GeneralBOException("[ResepOnlineBoImpl.saveAddSettingHargaPengiriman] ERROR. " + e);
+        }
+        logger.info("[ResepOnlineBoImpl.saveAddSettingHargaPengiriman] END <<<");
+    }
+
+    @Override
+    public void saveEditSettingHargaPengiriman(SettingHargaPengiriman bean) throws GeneralBOException {
+        logger.info("[ResepOnlineBoImpl.saveEditSettingHargaPengiriman] START >>>");
+
+        SettingHargaPengiriman settingHargaPengiriman = new SettingHargaPengiriman();
+        settingHargaPengiriman.setBranchId(bean.getBranchId());
+        settingHargaPengiriman.setTipe(bean.getTipe());
+
+        List<ImSimrsSettingHargaPengirimanEntity> hargaPengirimanEntities = getListSettingHargaPengirimanEntity(settingHargaPengiriman);
+        if (hargaPengirimanEntities.size() > 0){
+            ImSimrsSettingHargaPengirimanEntity pengirimanEntity = hargaPengirimanEntities.get(0);
+            logger.error("[ResepOnlineBoImpl.saveEditSettingHargaPengiriman] Data sudah ada pada ID" + pengirimanEntity.getId());
+            throw new GeneralBOException("[ResepOnlineBoImpl.saveEditSettingHargaPengiriman] Data sudah ada pada ID. " + pengirimanEntity.getId());
+        }
+
+        ImSimrsSettingHargaPengirimanEntity settingHargaPengirimanEntity = getSettingHargaPengirimanEntityById(bean.getId());
+        settingHargaPengirimanEntity.setBranchId(bean.getBranchId() == null ? settingHargaPengirimanEntity.getBranchId() : bean.getBranchId());
+        settingHargaPengirimanEntity.setTipe(bean.getTipe() == null ? settingHargaPengirimanEntity.getTipe() : bean.getTipe());
+        settingHargaPengirimanEntity.setFlag(bean.getFlag());
+        settingHargaPengirimanEntity.setAction(bean.getAction());
+        settingHargaPengirimanEntity.setCreatedDate(bean.getCreatedDate());
+        settingHargaPengirimanEntity.setCreatedWho(bean.getCreatedWho());
+        settingHargaPengirimanEntity.setLastUpdate(bean.getLastUpdate());
+        settingHargaPengirimanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+        try {
+            settingHargaPengirimanDao.addAndSave(settingHargaPengirimanEntity);
+        } catch (HibernateException e){
+            logger.error("[ResepOnlineBoImpl.saveEditSettingHargaPengiriman] ERROR. ", e);
+            throw new GeneralBOException("[ResepOnlineBoImpl.saveEditSettingHargaPengiriman] ERROR. " + e);
+        }
+        logger.info("[ResepOnlineBoImpl.saveEditSettingHargaPengiriman] END <<<");
+    }
+
+    private String getNextIdSettingHargaPengiriman(String branchId) throws GeneralBOException{
+        return "STH" + branchId + settingHargaPengirimanDao.getNextId();
     }
 }

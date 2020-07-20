@@ -502,6 +502,8 @@
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.UangMuka"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.permintaanvendor.model.MtSimrsPermintaanVendorEntity"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.plankegiatanrawat.model.PlanKegiatanRawat"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.verifikatorasuransi.model.ItSimrsStrukAsuransiEntity"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.verifikatorasuransi.model.StrukAsuransi"/>
 
       <!--bpjs-->
       <convert converter="bean" match="com.neurix.simrs.bpjs.vclaim.model.DiagnosaResponse"/>
