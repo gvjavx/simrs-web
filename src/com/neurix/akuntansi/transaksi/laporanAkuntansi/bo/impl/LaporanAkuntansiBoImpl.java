@@ -14,6 +14,7 @@ import com.neurix.akuntansi.transaksi.budgeting.model.ItAkunBudgetingEntity;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.LaporanAkuntansiBo;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.dao.LaporanAkuntansiDao;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.*;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.master.biodata.dao.BiodataDao;
 import com.neurix.hris.master.biodata.model.ImBiodataEntity;
@@ -286,8 +287,23 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
         LaporanAkuntansi nama = new LaporanAkuntansi();
         List<ItPersonilPositionEntity> managerList = new ArrayList<>();
 
+        nama.setNipGeneralManager("");
+        nama.setNamaGeneralManager("");
+        nama.setNipManagerKeuangan("");
+        nama.setNamaManagerKeuangan("");
+        String posisiManagerKeuangan="";
+        String posisiGeneralManager="";
+
+        if (branchId.equalsIgnoreCase(CommonConstant.ID_KANPUS)){
+            posisiManagerKeuangan = CommonConstant.posisiKabidKeuanganKp;
+            posisiGeneralManager= CommonConstant.posisiDirkeuKp;
+        }else {
+            posisiManagerKeuangan = CommonConstant.posisiKadivKeuanganUnit;
+            posisiGeneralManager= CommonConstant.posisiGmUnit;
+        }
+
         //untuk manager keuangan
-        managerList=personilPositionDao.getPersonilPositionByUnitdanPosisi(branchId,"201");
+        managerList=personilPositionDao.getPersonilPositionByUnitdanPosisi(branchId,posisiManagerKeuangan);
         if (managerList.size()!=0){
             for (ItPersonilPositionEntity manager : managerList){
                 ImBiodataEntity biodataEntity = biodataDao.getById("nip",manager.getNip());
@@ -296,7 +312,7 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
             }
         }
         //untuk general manager
-        managerList=personilPositionDao.getPersonilPositionByUnitdanPosisi(branchId,"4");
+        managerList=personilPositionDao.getPersonilPositionByUnitdanPosisi(branchId,posisiGeneralManager);
         if (managerList.size()!=0){
             for (ItPersonilPositionEntity manager : managerList){
                 ImBiodataEntity biodataEntity = biodataDao.getById("nip",manager.getNip());

@@ -487,7 +487,13 @@ public class VerifikatorPembayaranAction {
                             verifikatorPembayaranBo.saveEdit(pembayaranOnlineEntity);
 
                             Notifikasi notifBean = new Notifikasi();
-                            notifBean.setTipeNotifId("TN11");
+
+                            if(antrianTelemedicEntity.getFlagEresep() != null) {
+                                if(antrianTelemedicEntity.getFlagEresep().equalsIgnoreCase("Y")){
+                                    notifBean.setTipeNotifId("TN11");
+                                } else notifBean.setTipeNotifId("TN10");
+                            } else notifBean.setTipeNotifId("TN10");
+
                             notifBean.setNip(antrianTelemedicEntity.getIdPasien());
                             notifBean.setNamaPegawai("admin");
                             notifBean.setNote("Pembayaran resep telah dikonfirmasi");
@@ -636,7 +642,7 @@ public class VerifikatorPembayaranAction {
                             telemedicBo.saveEdit(antrianTelemedic, firstOrderAntrian.getBranchId(), firstOrderAntrian.getKodeBank());
 
                             Notifikasi notifBean = new Notifikasi();
-                            notifBean.setTipeNotifId("TN11");
+                            notifBean.setTipeNotifId("TN10");
                             notifBean.setNip(firstOrderAntrian.getIdPasien());
                             notifBean.setNamaPegawai("admin");
                             notifBean.setNote("Anda telah memasuki Antrian Waiting List. Silahkan lakukan pembayaran");
@@ -688,7 +694,7 @@ public class VerifikatorPembayaranAction {
                         response.setStatus("success");
 
                         Notifikasi notifBean = new Notifikasi();
-                        notifBean.setTipeNotifId("TN11");
+                        notifBean.setTipeNotifId("TN10");
                         notifBean.setNip(antrianTelemedicEntity.getIdPasien());
                         notifBean.setNamaPegawai("admin");
                         notifBean.setNote("Anda telah memasuki Antrian Short List. Buka aplikasi untuk menunggu panggilan dokter");

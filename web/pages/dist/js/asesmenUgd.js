@@ -35,13 +35,14 @@ function showKetIntruksi(val){
     }
 }
 
-function showAsesmenUgd() {
+function showAsesmenUgd(jenis) {
     if(isReadRM){
+        $('#title').text(jenis);
         $('.btn-hide').hide();
     }else{
+        $('#title').text(title);
         $('.btn-hide').show();
     }
-    $('#title').text(title);
     $('#modal-asesmen-ugd').modal({show: true, backdrop: 'static'});
 }
 

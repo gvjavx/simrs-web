@@ -96,7 +96,7 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
                 antrianTelemedic.setFlagBayarKonsultasi( obj[9] != null ? obj[9].toString() : null);
                 antrianTelemedic.setFlagBayarResep( obj[10] != null ? obj[10].toString() : null);
                 antrianTelemedic.setIdPembayaran( obj[11] != null ? obj[11].toString() : null);
-                antrianTelemedic.setKeterangan(obj[12].toString() != null ? obj[12].toString() : null);
+                antrianTelemedic.setKeterangan(obj[12] != null ? obj[12].toString() : null);
                 antrianTelemedic.setNominal(obj[13] != null ? new BigDecimal(Float.valueOf(obj[13].toString())) : new BigDecimal(0));
                 antrianTelemedic.setNoKartu( obj[14] != null ? obj[14].toString() : null);
                 antrianTelemedic.setIdJenisPeriksaPasien( obj[15] != null ? obj[15].toString() : null);
@@ -109,7 +109,7 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
                     e.printStackTrace();
                 }
                 antrianTelemedic.setFlag(obj[20].toString());
-                antrianTelemedic.setApprovedFlag(obj[21].toString() != null ? obj[21].toString() : null);
+                antrianTelemedic.setApprovedFlag(obj[21] != null ? obj[21].toString() : null);
                 antrianTelemedicList.add(antrianTelemedic);
             }
         }

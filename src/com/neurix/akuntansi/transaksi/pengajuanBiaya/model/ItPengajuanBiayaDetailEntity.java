@@ -20,6 +20,7 @@ public class ItPengajuanBiayaDetailEntity implements Serializable {
     private String transaksi;
     private String noBudgeting;
     private String keperluan;
+    private String keperluanId;
     private String keterangan;
 
     private Date tanggal;
@@ -72,6 +73,70 @@ public class ItPengajuanBiayaDetailEntity implements Serializable {
     private String lastUpdateWho;
 
     private String notApprovalNote;
+    private BigDecimal budgetTerpakaiTransaksi;
+    private String tipePembayaran;
+
+    private String noKontrak;
+    private String namaKontrak;
+
+    private BigDecimal pph;
+    private BigDecimal ppn;
+
+    public BigDecimal getPpn() {
+        return ppn;
+    }
+
+    public void setPpn(BigDecimal ppn) {
+        this.ppn = ppn;
+    }
+
+    public BigDecimal getPph() {
+        return pph;
+    }
+
+    public void setPph(BigDecimal pph) {
+        this.pph = pph;
+    }
+
+    public String getNoKontrak() {
+        return noKontrak;
+    }
+
+    public void setNoKontrak(String noKontrak) {
+        this.noKontrak = noKontrak;
+    }
+
+    public String getNamaKontrak() {
+        return namaKontrak;
+    }
+
+    public void setNamaKontrak(String namaKontrak) {
+        this.namaKontrak = namaKontrak;
+    }
+
+    public String getTipePembayaran() {
+        return tipePembayaran;
+    }
+
+    public void setTipePembayaran(String tipePembayaran) {
+        this.tipePembayaran = tipePembayaran;
+    }
+
+    public String getKeperluanId() {
+        return keperluanId;
+    }
+
+    public void setKeperluanId(String keperluanId) {
+        this.keperluanId = keperluanId;
+    }
+
+    public BigDecimal getBudgetTerpakaiTransaksi() {
+        return budgetTerpakaiTransaksi;
+    }
+
+    public void setBudgetTerpakaiTransaksi(BigDecimal budgetTerpakaiTransaksi) {
+        this.budgetTerpakaiTransaksi = budgetTerpakaiTransaksi;
+    }
 
     public BigDecimal getSisaBudget() {
         return sisaBudget;

@@ -336,6 +336,7 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
             dokter.setLon(entity.getLon());
             dokter.setKodeDpjp(entity.getKodeDpjp());
             dokter.setFlagCall(entity.getFlagCall());
+            dokter.setFlagTele(entity.getFlagTele());
             results.add(dokter);
         }
 

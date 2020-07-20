@@ -1954,6 +1954,304 @@ function saveAsesmenRawatInap(jenis, ket) {
         }
     }
 
+    if ("transfer_external" == jenis) {
+        var va1 = $('#ina1').val();
+        var va2 = $('#ina2').val();
+        var va3 = $('#ina3').val();
+        var va4 = $('#ina4').val();
+        var va5 = $('#ina5').val();
+        var va6 = $('#ina6').val();
+        var va7 = $('#ina7').val();
+        var va8 = $('#ina8').val();
+        var va9 = $('#ina9').val();
+        var va10 = $('#ina10').val();
+
+        var va11 = $('[name=ina11]:checked').val();
+        var va12 = $('[name=ina12]');
+        var va13 = $('[name=ina13]:checked').val();
+        var va14 = $('[name=ina14]');
+        var va15 = $('[name=ina15]:checked').val();
+        var va16 = $('[name=ina16]');
+        var va17 = $('[name=ina17]:checked').val();
+        var va18 = $('[name=ina18]');
+        var va19 = $('[name=ina19]:checked').val();
+        var va20 = $('[name=ina20]');
+
+        var va21 = $('[name=ina21]:checked').val();
+        var va22 = $('[name=ina22]:checked').val();
+        var va23 = $('[name=ina23]:checked').val();
+        var va24 = $('[name=ina24]:checked').val();
+        var va25 = $('[name=ina25]:checked').val();
+
+        var ttd1 = document.getElementById("ttd1_dokter");
+        var ttd2 = document.getElementById("ttd1_pasien");
+
+        var cekTtd1 = isCanvasBlank(ttd1);
+        var cekTtd2 = isCanvasBlank(ttd2);
+
+        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 != '' && !cekTtd1 && !cekTtd2) {
+
+            var canv1 = ttd1.toDataURL("image/png"),
+                canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");
+            var canv2 = ttd2.toDataURL("image/png"),
+                canv2 = canv2.replace(/^data:image\/(png|jpg);base64,/, "");
+
+            data.push({
+                'parameter': 'Nama Pasien',
+                'jawaban': va1,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Tgl Lahir',
+                'jawaban': va2,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Tanggal Masuk',
+                'jawaban': va3,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'DPJP',
+                'jawaban': va4,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Tanggal dan Jam Transfers',
+                'jawaban': va5+' '+va6,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Dokter konsulen',
+                'jawaban': va7,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Unit yang dituju',
+                'jawaban': va8,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Diagnosa masuk',
+                'jawaban': va9,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Alasan transfer',
+                'jawaban': va10,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+
+            if (va11 != undefined) {
+                var ketIna = "";
+                $.each(va12, function (i, item) {
+                    if(item.checked){
+                        if("Pemeriksaan tanda vital" == item.value){
+
+                            var ket1 = $('#ket_ina1241').val();
+                            var ket2 = $('#ket_ina1242').val();
+                            var ket3 = $('#ket_ina1243').val();
+                            var ket4 = $('#ket_ina1244').val();
+
+                            if(ketIna != ''){
+                                ketIna = ketIna+'| TD : '+ket1+' mmHg, Suhu : '+ket2+'C , Nadi : '+ket3+', RR : '+ket4+' x/menit';
+                            }else{
+                                ketIna = "TD : "+ket1+' mmHg, Suhu : '+ket2+'C , Nadi : '+ket3+', RR : '+ket4+' x/menit';
+                            }
+
+                        }else{
+                            if(ketIna != ''){
+                                ketIna = ketIna+'|'+item.value;
+                            }else{
+                                ketIna = item.value;
+                            }
+                        }
+                    }
+                });
+                data.push({
+                    'parameter': va11,
+                    'jawaban': ketIna,
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'tipe': 'li',
+                    'id_detail_checkup': idDetailCheckup
+                });
+            }
+            if (va13 != undefined) {
+                var ketIna = "";
+                $.each(va14, function (i, item) {
+                    if (item.checked) {
+                        if(ketIna != ''){
+                            ketIna = ketIna+'|'+item.value;
+                        }else{
+                            ketIna = item.value;
+                        }
+                    }
+                });
+                data.push({
+                    'parameter': va13,
+                    'jawaban': ketIna,
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'tipe': 'li',
+                    'id_detail_checkup': idDetailCheckup
+                });
+            }
+            if (va15 != undefined) {
+                var ketIna = "";
+                $.each(va16, function (i, item) {
+                    if (item.checked) {
+                        if(ketIna != ''){
+                            ketIna = ketIna+'|'+item.value;
+                        }else{
+                            ketIna = item.value;
+                        }
+                    }
+                });
+                data.push({
+                    'parameter': va15,
+                    'jawaban': ketIna,
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'tipe': 'li',
+                    'id_detail_checkup': idDetailCheckup
+                });
+            }
+            if (va17 != undefined) {
+                var ketIna = "";
+                $.each(va18, function (i, item) {
+                    if (item.checked) {
+                        if(ketIna != ''){
+                            ketIna = ketIna+'|'+item.value;
+                        }else{
+                            ketIna = item.value;
+                        }
+                    }
+                });
+                data.push({
+                    'parameter': va17,
+                    'jawaban': ketIna,
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'tipe': 'li',
+                    'id_detail_checkup': idDetailCheckup
+                });
+            }
+            if (va19 != undefined) {
+                var ketIna = "";
+                $.each(va20, function (i, item) {
+                    if (item.checked) {
+                        if(ketIna != ''){
+                            ketIna = ketIna+'|'+item.value;
+                        }else{
+                            ketIna = item.value;
+                        }
+                    }
+                });
+                data.push({
+                    'parameter': va19,
+                    'jawaban': ketIna,
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'tipe': 'li',
+                    'id_detail_checkup': idDetailCheckup
+                });
+            }
+
+            if (va21 != undefined) {
+                data.push({
+                    'parameter': va21,
+                    'jawaban': '',
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'tipe':'colspan',
+                    'id_detail_checkup': idDetailCheckup
+                });
+            }
+
+            if (va22 != undefined) {
+                data.push({
+                    'parameter': va22,
+                    'jawaban': '',
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'tipe':'colspan',
+                    'id_detail_checkup': idDetailCheckup
+                });
+            }
+
+            if (va23 != undefined) {
+                data.push({
+                    'parameter': va23,
+                    'jawaban': '',
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'tipe':'colspan',
+                    'id_detail_checkup': idDetailCheckup
+                });
+            }
+
+            if (va24 != undefined) {
+                data.push({
+                    'parameter': va24,
+                    'jawaban': '',
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'tipe':'colspan',
+                    'id_detail_checkup': idDetailCheckup
+                });
+            }
+
+            if (va25 != undefined) {
+                data.push({
+                    'parameter': va25,
+                    'jawaban': '',
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'tipe':'colspan',
+                    'id_detail_checkup': idDetailCheckup
+                });
+            }
+
+            data.push({
+                'parameter': 'TTD Dokter',
+                'jawaban': canv1,
+                'keterangan': jenis,
+                'jenis': ket,
+                'tipe':'ttd',
+                'id_detail_checkup': idDetailCheckup
+            });
+
+            data.push({
+                'parameter': 'TTD Pasien',
+                'jawaban': canv2,
+                'keterangan': jenis,
+                'jenis': ket,
+                'tipe':'ttd',
+                'id_detail_checkup': idDetailCheckup
+            });
+            cek = true;
+        }
+    }
+
     if (cek) {
         var result = JSON.stringify(data);
         $('#save_ina_' + jenis).hide();
@@ -2197,6 +2495,34 @@ function detailAsesmenRawatInap(jenis) {
                             body += '<tr>' +
                                 '<td width="30%">' + item.parameter + '</td>' +
                                 '<td colspan="2">' + jwb + '</td>' +
+                                '</tr>';
+                        }
+                    }else if("transfer_external" == jenis){
+                        if("li" == item.tipe){
+                            var isi = jwb.split("|");
+                            var li = "";
+                            $.each(isi, function (i, item) {
+                                li += '<li>' + item + '</li>';
+                            });
+                            if (li != '') {
+                                body += '<tr>' +
+                                    '<td>'+item.parameter+'</td>'+
+                                    '<td>' + '<ul style="margin-left: 15px">' + li + '</ul>' + '</td>' +
+                                    '</tr>';
+                            }
+                        }else if("ttd" == item.tipe){
+                            body += '<tr>' +
+                                '<td>' + item.parameter + '</td>' +
+                                '<td>' + '<img src="' + item.jawaban + '" style="height: 80px">' + '</td>' +
+                                '</tr>';
+                        }else if("colspan" == item.tipe){
+                            body += '<tr>' +
+                                '<td colspan="2">'+item.parameter+'</td>'+
+                                '</tr>';
+                        }else{
+                            body += '<tr>' +
+                                '<td width="40%">' + item.parameter + '</td>' +
+                                '<td>' + jwb + '</td>' +
                                 '</tr>';
                         }
                     } else {
@@ -3519,7 +3845,7 @@ function searchDiagnosaAskep(id, tipe) {
                         '    </div>\n' +
                         '</div>';
 
-                    if ("all" == tipe) {
+                    if ("all" == tipe || "rb" == tipe) {
                         $('#dia').html(diagnosis);
                         $('#has').html(hasil);
                         $('#pla').html(intervensi);

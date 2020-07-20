@@ -1392,24 +1392,34 @@ public class BudgetingBoImpl implements BudgetingBo {
         logger.info("[BudgetingBoImpl.getInvestasiByNoBudgeting] END <<<<");
         return  budgetingList;
     }
+
     @Override
-    public String getBudgetBiayaInvestasiSaatIni(Budgeting bean){
+    public Budgeting getBudgetBiayaInvestasiSaatIni(Budgeting bean){
         logger.info("[BudgetingBoImpl.getBudgetBiayaDivisiSaatIni] START >>>");
+        Budgeting budgeting = new Budgeting();
         List<BudgettingDTO> budgettingDTOList;
         BigDecimal budget = BigDecimal.ZERO;
+        BigDecimal budgetSdBulanIni = BigDecimal.ZERO;
         try {
             budgettingDTOList = laporanAkuntansiDao.getBudgettingPengadaan(bean.getIdPengadaan());
         } catch (HibernateException e){
             logger.error("[BudgetingBoImpl.getBudgetBiayaDivisiSaatIni] ERROR. ",e);
             throw new GeneralBOException("[BudgetingBoImpl.getBudgetBiayaDivisiSaatIni] ERROR. ",e);
         }
-
         for (BudgettingDTO budgettingDTO : budgettingDTOList){
-            budget = budgettingDTO.getSubTotal();
+            budget = budgettingDTO.getNilai().add(budgettingDTO.getNilaiAdendum1()).add(budgettingDTO.getNilaiAdendum2()).add(budgettingDTO.getNilaiAdendum3());
+            budgetSdBulanIni = budgettingDTO.getNilai().add(budgettingDTO.getNilaiAdendum1()).add(budgettingDTO.getNilaiAdendum2()).add(budgettingDTO.getNilaiAdendum3());
         }
 
+        budgeting.setBudgetSaatIni(budget);
+        budgeting.setStBudgetSaatIni(CommonUtil.numbericFormat(budget,"###,###"));
+
+        budgeting.setBudgetSdSaatIni(budgetSdBulanIni);
+        budgeting.setStBudgetSdSaatIni(CommonUtil.numbericFormat(budgetSdBulanIni,"###,###"));
+
+
         logger.info("[BudgetingBoImpl.getBudgetBiayaDivisiSaatIni] END <<<<");
-        return  CommonUtil.numbericFormat(budget,"###,###");
+        return  budgeting;
     }
 
     public String bulanUntukSdBudgetting(String bulan){
@@ -1454,5 +1464,34 @@ public class BudgetingBoImpl implements BudgetingBo {
         }
 
         return result;
+    }
+
+    @Override
+    public List<BudgetingPengadaan> getTerminPembayaran(String pengadaanId){
+        logger.info("[BudgetingBoImpl.getTerminPembayaran] START >>>");
+        List<BudgetingPengadaan> budgetingList = new ArrayList<>();
+        ItAkunBudgetingPengadaanEntity pengadaanEntity ;
+        try {
+            pengadaanEntity = budgetingPengadaanDao.getById("idPengadaan",pengadaanId);
+        } catch (HibernateException e){
+            logger.error("[BudgetingBoImpl.getTerminPembayaran] ERROR. ",e);
+            throw new GeneralBOException("[BudgetingBoImpl.getTerminPembayaran] ERROR. ",e);
+        }
+        BudgetingPengadaan budgetingPengadaan = new BudgetingPengadaan();
+        if (pengadaanEntity.getPembayaran()!=null){
+            if (pengadaanEntity.getPembayaran().contains("Termin")){
+                String[] pembayaran = pengadaanEntity.getPembayaran().split("\\s+");
+                Integer jumlahTermin = Integer.valueOf(pembayaran[1])+1;
+                String pembayaranVal= "Termin "+jumlahTermin;
+                budgetingPengadaan.setPembayaran(pembayaranVal);
+            }
+        }else{
+            budgetingPengadaan.setPembayaran("Termin 1");
+        }
+
+
+        budgetingList.add(budgetingPengadaan);
+        logger.info("[BudgetingBoImpl.getTerminPembayaran] END <<<<");
+        return  budgetingList;
     }
 }

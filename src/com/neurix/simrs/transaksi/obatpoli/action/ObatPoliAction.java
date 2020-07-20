@@ -558,7 +558,7 @@ public class ObatPoliAction extends BaseMasterAction {
 
     public List<ObatPoli> getSelectOptionObatByPoli(String idPelayanan, String flagBpjs) {
 
-        logger.info("[ObatPoliAction.getStokObat] start process >>>");
+        logger.info("[ObatPoliAction.getSelectOptionObatByPoli] start process >>>");
         List<ObatPoli> obatPoliList = new ArrayList<>();
 
         String branchId = CommonUtil.userBranchLogin();
@@ -573,11 +573,32 @@ public class ObatPoliAction extends BaseMasterAction {
 //            obatPoliList = obatPoliBo.getListObatPoliGroup(idPelayanan, branchId);
             obatPoliList = obatPoliBo.getListObatGroupPoli(idPelayanan, branchId, flagBpjs, "");
         } catch (GeneralBOException e) {
-            logger.error("[ObatPoliAction.getStokObat] Error when get data obat poli ," + "Found problem when searching data, please inform to your admin.", e);
+            logger.error("[ObatPoliAction.getSelectOptionObatByPoli] Error when get data obat poli ," + "Found problem when searching data, please inform to your admin.", e);
             addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
         }
 
-        logger.info("[ObatPoliAction.getStokObat] end process >>>");
+        logger.info("[ObatPoliAction.getSelectOptionObatByPoli] end process >>>");
+        return obatPoliList;
+
+    }
+
+    public List<ObatPoli> getSelectOptionObatByPoliKandunganSerupa(String idPelayanan, String flagBpjs, String idObat) {
+
+        logger.info("[ObatPoliAction.getSelectOptionObatByPoliKandunganSerupa] start process >>>");
+        List<ObatPoli> obatPoliList = new ArrayList<>();
+
+        String branchId = CommonUtil.userBranchLogin();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
+
+        try {
+            obatPoliList = obatPoliBo.getListObatGroupPoliSerupa(idPelayanan, branchId, flagBpjs, idObat);
+        } catch (GeneralBOException e) {
+            logger.error("[ObatPoliAction.getSelectOptionObatByPoliKandunganSerupa] Error when get data obat poli ," + "Found problem when searching data, please inform to your admin.", e);
+            addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+        }
+
+        logger.info("[ObatPoliAction.getSelectOptionObatByPoliKandunganSerupa] end process >>>");
         return obatPoliList;
 
     }

@@ -225,6 +225,7 @@ public class DokterController implements ModelDriven<Object> {
             model.setLat(result.get(0).getLat());
             model.setLon(result.get(0).getLon());
             model.setFlagCall(result.get(0).getFlagCall());
+            model.setFlagTele(result.get(0).getFlagTele());
 
             try {
                 resultBio = biodataBoProxy.getBiodataByNip(model.getIdDokter());

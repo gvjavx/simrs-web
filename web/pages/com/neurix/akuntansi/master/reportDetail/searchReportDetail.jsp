@@ -95,7 +95,7 @@
                                 <div id="grup-tipe-laporan" class="form-group">
                                     <label class="control-label col-sm-4">Tipe Laporan</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'hutang_usaha':'Hutang Usaha', 'piutang_usaha' : 'Piutang Usaha', 'uang_muka':'Uang Muka','piutang_pasien':'Piutang Pasien','uang_muka_p':'Uang Muka Pasien'}"
+                                        <s:select list="#{'hutang_usaha':'Hutang Usaha', 'piutang_usaha' : 'Piutang Usaha', 'uang_muka':'Uang Muka','piutang_pasien':'Piutang Pasien','uang_muka_p':'Uang Muka Pasien','persediaan':'Persediaan'}"
                                                   id="tipeLaporan" name="laporanAkuntansi.tipeLaporanId"
                                                   headerKey="" headerValue="[Select One]" cssClass="form-control" />
                                     </div>

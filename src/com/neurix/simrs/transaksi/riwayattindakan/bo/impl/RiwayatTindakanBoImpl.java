@@ -339,7 +339,12 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
         }
 
         if (itemPaketEntities.size() > 0){
-            return itemPaketEntities.get(0);
+            MtSimrsItemPaketEntity entity = itemPaketEntities.get(0);
+            if(entity.getHarga() != null){
+                return entity;
+            }else{
+                return null;
+            }
         }
 
         return null;

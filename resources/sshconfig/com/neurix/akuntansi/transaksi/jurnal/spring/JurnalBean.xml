@@ -13,6 +13,8 @@
           p:jurnalDetailDao-ref="jurnalDetailDao"
           p:kodeRekeningDao-ref="kodeRekeningDao"
           p:positionDao-ref="positionDao"
+          p:pengajuanBiayaDetailDao-ref="pengajuanBiayaDetailDao"
+          p:pengajuanBiayaDao-ref="pengajuanBiayaDao"
     />
 
     <bean id="jurnalBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

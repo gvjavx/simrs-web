@@ -58,6 +58,7 @@
                 <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
                 <prop key="createJurnal">PROPAGATION_REQUIRED</prop>
                 <prop key="saveTutupPeriod">PROPAGATION_REQUIRED</prop>
+                <!--<prop key="generateAndSaveCurrentSaldoPersediaanToNextMonth">readOnly</prop>-->
             </props>
         </property>
     </bean>

@@ -162,12 +162,15 @@ public class CommonConstant {
     //AKUNTANSI
     public final static String COA_PAYROLL = CommonUtil.getPropertyParams("coa.bank.payroll");
     public final static String COA_RK_GATOEL = CommonUtil.getPropertyParams("coa.rk.gatoel");
-    public final static String COA_KAS_MANDIRI = "1.1.02.01.06";
     public final static String ID_KANPUS = "KP";
     public final static String MASTER_PAJAK_OBAT = "03.00";
+    public final static String posisiKabidKeuanganKp = "P042";
+    public final static String posisiDirkeuKp = "P002";
+    public final static String posisiKadivKeuanganUnit = "";
+    public final static String posisiGmUnit = "";
+    public final static String REKENING_PPH21 = "00187";
+    public final static String RESOURCE_PATH_FAKTUR_PAJAK = "/upload/faktur_pajak/";
 
     //TELEMEDICINE
     public static final int ADD_JAM_BAYAR = 30; //MENIT
-
-
 }

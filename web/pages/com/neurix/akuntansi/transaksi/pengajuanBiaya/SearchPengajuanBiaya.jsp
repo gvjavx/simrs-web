@@ -454,11 +454,6 @@
                         <div class="col-sm-7">
                             <input type="text" class="form-control" id="mod_jumlah_detail" readonly>
                         </div>
-                        <div class="col-md-1" style="margin-top: 7px">
-                            <a href="javascript:;" id="btnViewStok">
-                                <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" name="icon_view">
-                            </a>
-                        </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-3" >Budget RKAP ( RP ) : </label>
@@ -492,31 +487,6 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="modal-daftar-stok">
-    <div class="modal-dialog modal-flat modal-lg">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Daftar Stok Divisi</h4>
-            </div>
-            <div class="modal-body">
-                <div class="box">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <table style="width: 100%;" class="tabelDaftarStok table table-bordered">
-                            </table>
-                            <br>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close </button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script>
     window.loadDetailPengajuan = function () {
@@ -536,15 +506,23 @@
                 "<th style='text-align: center; color: #fff; background-color:  #30d196''>Status</th>" +
                 "<th style='text-align: center; color: #fff; background-color:  #30d196''>Detail</th>" +
                 "<th style='text-align: center; color: #fff; background-color:  #30d196''>Print</th>" +
+                "<th style='text-align: center; color: #fff; background-color:  #30d196''>Dibayar</th>" +
                 "</tr></thead>";
             var i = i;
             $.each(listdata, function (i, item) {
                 var view ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'"  status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'" budget="'+item.stBudgetBiaya+'" noBudgetting="'+item.noBudgeting+'" notApprovalNote="'+item.notApprovalNote+'" statusSaatIni="'+item.statusSaatIni+'" tanggal="'+item.stTanggal+'" tanggalRealisasi="'+item.stTanggalRealisasi+'" class="item-detail" >\n' +
                     '<img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" name="icon_edit">\n' +
                     '</a></td>';
-                var print ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'" class="item-print" >\n' +
-                    '<img border="0" src="<s:url value="/pages/images/icons8-print-25.png"/>" name="icon_edit">\n' +
-                    '</a></td>';
+                var print ='<td></td>';
+                if (item.canPrint){
+                    print ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'" class="item-print" >\n' +
+                        '<img border="0" src="<s:url value="/pages/images/icons8-print-25.png"/>" name="icon_edit">\n' +
+                        '</a></td>';
+                }
+                var dibayar ='<td></td>';
+                if (item.sudahDibayar){
+                    dibayar ='<td align="center"><img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit"></td>';
+                }
                 tmp_table += '<tr style="font-size: 11px;" ">' +
                     '<td align="center">' + (i + 1) + '</td>' +
                     '<td align="center">' + item.pengajuanBiayaDetailId + '</td>' +
@@ -556,6 +534,7 @@
                     '<td align="center">' + item.statusSaatIni + '</td>' +
                         view+
                         print+
+                        dibayar+
                     "</tr>";
             });
             $('.pengajuanTable').append(tmp_table);
@@ -648,51 +627,6 @@
 
             $('#modal-detail').modal('show');
 
-        });
-        $('#btnViewStok').click(function () {
-            var tanggal = $('#mod_tanggal_detail').val();
-            var branchId = $('#mod_branch_id_detail').val();
-            var divisiId = $('#mod_divisi_id_detail').val();
-            $('.tabelDaftarStok').find('tbody').remove();
-            $('.tabelDaftarStok').find('thead').remove();
-            dwr.engine.setAsync(false);
-            var array = tanggal.split('-');
-            var tanggalBaru = array[2]+"-"+array[1]+"-"+array[0];
-            var tmp_table = "";
-            if (tanggal!=""&&branchId!=""&&divisiId!=""){
-                PengajuanBiayaAction.getStockPerDivisi(branchId,divisiId,tanggalBaru,function (result) {
-                    tmp_table = "<thead style='font-size: 12px;' ><tr class='active'>"+
-                        "<th style='text-align: center; background-color:  #90ee90'>No</th>"+
-                        "<th style='text-align: center; background-color:  #90ee90'>Nama Barang</th>"+
-                        "<th style='text-align: center; background-color:  #90ee90'>Qty</th>"+
-                        "<th style='text-align: center; background-color:  #90ee90'>Nilai ( RP )</th>"+
-                        "<th style='text-align: center; background-color:  #90ee90'>Saldo ( RP )</th>"+
-                        "</tr></thead>";
-                    var i = i ;
-                    var totalBayar = 0;
-                    $.each(result, function (i, item) {
-                        var saldo = item.subTotalSaldo.replace(/[,]/g,"");
-                        totalBayar=totalBayar+parseInt(saldo);
-                        tmp_table += '<tr style="font-size: 11px;" ">' +
-                            '<td align="center">' + (i + 1) + '</td>' +
-                            '<td align="center">' + item.namaBarang+ '</td>' +
-                            '<td align="center">' + item.qty+ '</td>' +
-                            '<td align="right">' + item.totalSaldo+ '</td>' +
-                            '<td align="right">' + item.subTotalSaldo+ '</td>' +
-                            "</tr>";
-                    });
-                    tmp_table += '<tr style="font-size: 11px;" ">' +
-                        '<td align="center" colspan="4">' + "Total Saldo ( RP )" + '</td>' +
-                        '<td align="right">' + formatRupiahAngka(String(totalBayar))+ '</td>' +
-                        "</tr>";
-                    $('.tabelDaftarStok').append(tmp_table);
-                    if (totalBayar>0){
-                        $("#modal-daftar-stok").modal('show');
-                    } else{
-                        alert("Data stok kosong");
-                    }
-                })
-            }
         });
         function formatRupiahAngka(angka) {
             var number_string = angka.replace(/[^,\d]/g, '').toString(),

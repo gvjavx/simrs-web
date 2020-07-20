@@ -3,7 +3,6 @@ package com.neurix.akuntansi.transaksi.pengajuanBiaya.dao;
 import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.ImPengajuanBiayaEntity;
 import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.PengajuanBiaya;
 import com.neurix.common.dao.GenericDao;
-import com.neurix.common.util.CommonUtil;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -159,7 +158,7 @@ public class PengajuanBiayaDao extends GenericDao<ImPengajuanBiayaEntity, String
 
     public String getKeperluanNameBudgetting(String keperluanId){
         String query="select\n" +
-                "\tnama_pengadaan\n" +
+                "\tnama_kontrak\n" +
                 "From\n" +
                 "\tit_akun_budgeting_pengadaan\n" +
                 "where\n" +

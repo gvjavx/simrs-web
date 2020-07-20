@@ -70,11 +70,200 @@ public class PengajuanBiayaDetail extends BaseModel {
     private String statusKeuangan;
     private String noJurnal;
     private String transaksiName;
+    private String keperluanId;
     private String keperluanName;
 
     private String statusSaatIni;
 
     private String notApprovalNote;
+
+    private BigDecimal budgetTerpakaiTransaksi;
+    private String stBudgetTerpakaiTransaksi;
+
+    private String stTanggalDari;
+    private String stTanggalSelesai;
+    private String stTanggalDariRealisasi;
+    private String stTanggalSelesaiRealisasi;
+
+    private boolean canPrint=false;
+    private boolean sudahDibayar=false;
+    private boolean canView =true;
+
+    private String coa;
+    private String coaName;
+    private String coaDivisi;
+
+    private String pembayaran;
+
+    private String noKontrak;
+    private String namaKontrak;
+
+    private BigDecimal pph;
+    private String stPph;
+
+    private BigDecimal ppn;
+    private String stPpn;
+
+
+    public BigDecimal getPpn() {
+        return ppn;
+    }
+
+    public void setPpn(BigDecimal ppn) {
+        this.ppn = ppn;
+    }
+
+    public String getStPpn() {
+        return stPpn;
+    }
+
+    public void setStPpn(String stPpn) {
+        this.stPpn = stPpn;
+    }
+
+    public BigDecimal getPph() {
+        return pph;
+    }
+
+    public void setPph(BigDecimal pph) {
+        this.pph = pph;
+    }
+
+    public String getStPph() {
+        return stPph;
+    }
+
+    public void setStPph(String stPph) {
+        this.stPph = stPph;
+    }
+
+    public String getNoKontrak() {
+        return noKontrak;
+    }
+
+    public void setNoKontrak(String noKontrak) {
+        this.noKontrak = noKontrak;
+    }
+
+    public String getNamaKontrak() {
+        return namaKontrak;
+    }
+
+    public void setNamaKontrak(String namaKontrak) {
+        this.namaKontrak = namaKontrak;
+    }
+
+    public boolean isCanView() {
+        return canView;
+    }
+
+    public void setCanView(boolean canView) {
+        this.canView = canView;
+    }
+
+    public boolean isSudahDibayar() {
+        return sudahDibayar;
+    }
+
+    public void setSudahDibayar(boolean sudahDibayar) {
+        this.sudahDibayar = sudahDibayar;
+    }
+
+    public String getPembayaran() {
+        return pembayaran;
+    }
+
+    public void setPembayaran(String pembayaran) {
+        this.pembayaran = pembayaran;
+    }
+
+    public String getCoaDivisi() {
+        return coaDivisi;
+    }
+
+    public void setCoaDivisi(String coaDivisi) {
+        this.coaDivisi = coaDivisi;
+    }
+
+    public String getCoaName() {
+        return coaName;
+    }
+
+    public void setCoaName(String coaName) {
+        this.coaName = coaName;
+    }
+
+    public String getCoa() {
+        return coa;
+    }
+
+    public void setCoa(String coa) {
+        this.coa = coa;
+    }
+
+    public String getKeperluanId() {
+        return keperluanId;
+    }
+
+    public void setKeperluanId(String keperluanId) {
+        this.keperluanId = keperluanId;
+    }
+
+    public boolean isCanPrint() {
+        return canPrint;
+    }
+
+    public void setCanPrint(boolean canPrint) {
+        this.canPrint = canPrint;
+    }
+
+    public String getStTanggalDari() {
+        return stTanggalDari;
+    }
+
+    public void setStTanggalDari(String stTanggalDari) {
+        this.stTanggalDari = stTanggalDari;
+    }
+
+    public String getStTanggalSelesai() {
+        return stTanggalSelesai;
+    }
+
+    public void setStTanggalSelesai(String stTanggalSelesai) {
+        this.stTanggalSelesai = stTanggalSelesai;
+    }
+
+    public String getStTanggalDariRealisasi() {
+        return stTanggalDariRealisasi;
+    }
+
+    public void setStTanggalDariRealisasi(String stTanggalDariRealisasi) {
+        this.stTanggalDariRealisasi = stTanggalDariRealisasi;
+    }
+
+    public String getStTanggalSelesaiRealisasi() {
+        return stTanggalSelesaiRealisasi;
+    }
+
+    public void setStTanggalSelesaiRealisasi(String stTanggalSelesaiRealisasi) {
+        this.stTanggalSelesaiRealisasi = stTanggalSelesaiRealisasi;
+    }
+
+    public BigDecimal getBudgetTerpakaiTransaksi() {
+        return budgetTerpakaiTransaksi;
+    }
+
+    public void setBudgetTerpakaiTransaksi(BigDecimal budgetTerpakaiTransaksi) {
+        this.budgetTerpakaiTransaksi = budgetTerpakaiTransaksi;
+    }
+
+    public String getStBudgetTerpakaiTransaksi() {
+        return stBudgetTerpakaiTransaksi;
+    }
+
+    public void setStBudgetTerpakaiTransaksi(String stBudgetTerpakaiTransaksi) {
+        this.stBudgetTerpakaiTransaksi = stBudgetTerpakaiTransaksi;
+    }
 
     public String getDivisiName() {
         return divisiName;
