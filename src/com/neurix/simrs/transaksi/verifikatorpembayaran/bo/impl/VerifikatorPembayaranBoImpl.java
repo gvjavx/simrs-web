@@ -191,7 +191,7 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
 
                         ItSimrsStrukAsuransiEntity simrsStrukAsuransiEntity = getStrukAsuransiDataByIdAntrianAndJenis(pembayaranOnlineEntity.getIdAntrianTelemedic(), "authorization");
                         if (simrsStrukAsuransiEntity != null)
-                            if (simrsStrukAsuransiEntity.getApproveFlag() != null && simrsStrukAsuransiEntity.getUrlFotoStruk() != null)
+                            if (simrsStrukAsuransiEntity.getApproveFlag() != null || simrsStrukAsuransiEntity.getUrlFotoStruk() != null)
                                 pembayaranOnline.setFlagBayar("Y");
 
                         pembayaranOnline.setNoKartu(antrianTelemedicEntity.getNoKartu());

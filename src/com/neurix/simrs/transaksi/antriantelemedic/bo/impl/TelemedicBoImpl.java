@@ -653,6 +653,8 @@ public class TelemedicBoImpl implements TelemedicBo {
         if (bean.getFlag() != null){
             hsCriteria.put("flag", bean.getFlag());
         }
+        if (bean.getId() != null)
+            hsCriteria.put("id", bean.getId());
 
         List<ItSimrsPembayaranOnlineEntity> pembayaranOnlineEntities = new ArrayList<>();
         try {
@@ -740,6 +742,35 @@ public class TelemedicBoImpl implements TelemedicBo {
                 } catch (HibernateException e){
                     logger.error("[VerifikatorPembayaranBoImpl.insertResepOnline] ERROR. ", e);
                     throw new GeneralBOException("[VerifikatorPembayaranBoImpl.insertResepOnline] ERROR. ", e);
+                }
+
+                PembayaranOnline pembayaranOnline = new PembayaranOnline();
+                pembayaranOnline.setId(idTransaksiOnline);
+                List<ItSimrsPembayaranOnlineEntity> pembayaranOnlineEntities = getPembayaranOnlineEntityByCriteria(pembayaranOnline);
+                if (pembayaranOnlineEntities.size() > 0){
+                    ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = pembayaranOnlineEntities.get(0);
+                    ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = getAntrianTelemedicEntityById(pembayaranOnlineEntity.getIdAntrianTelemedic());
+                    if (antrianTelemedicEntity != null){
+
+                        ItSimrsStrukAsuransiEntity strukAsuransiEntity = new ItSimrsStrukAsuransiEntity();
+                        strukAsuransiEntity.setId(generateIdStrukAsuransi(antrianTelemedicEntity.getBranchId()));
+                        strukAsuransiEntity.setJenis("confirmation");
+                        strukAsuransiEntity.setIdAntrianTelemedic(antrianTelemedicEntity.getId());
+                        strukAsuransiEntity.setBranchId(antrianTelemedicEntity.getBranchId());
+                        strukAsuransiEntity.setFlag("Y");
+                        strukAsuransiEntity.setAction("C");
+                        strukAsuransiEntity.setCreatedDate(obatDetail.getCreatedDate());
+                        strukAsuransiEntity.setCreatedWho(obatDetail.getCreatedWho());
+                        strukAsuransiEntity.setLastUpdate(obatDetail.getLastUpdate());
+                        strukAsuransiEntity.setLastUpdateWho(obatDetail.getLastUpdateWho());
+
+                        try {
+                            strukAsuransiDao.addAndSave(strukAsuransiEntity);
+                        } catch (HibernateException e){
+                            logger.error("[VerifikatorPembayaranBoImpl.insertResepOnline] ERROR When Update StrukAsuransi. ", e);
+                            throw new GeneralBOException("[VerifikatorPembayaranBoImpl.insertResepOnline] ERROR When Update StrukAsuransi.. ", e);
+                        }
+                    }
                 }
             }
         }

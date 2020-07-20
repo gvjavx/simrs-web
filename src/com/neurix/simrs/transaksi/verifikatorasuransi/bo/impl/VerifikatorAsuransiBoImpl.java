@@ -93,9 +93,30 @@ public class VerifikatorAsuransiBoImpl implements VerifikatorAsurasiBo{
         return strukAsuransiEntities;
     }
 
-    @Override
-    public void saveApproveAsuransi(StrukAsuransi bean) throws GeneralBOException {
+    private ItSimrsStrukAsuransiEntity getStrukAsuransiEntityById(String id) throws GeneralBOException{
+        return strukAsuransiDao.getById("id", id);
+    }
 
+    @Override
+    public void saveUploadStrukAsuransi(StrukAsuransi bean) throws GeneralBOException {
+        logger.info("[VerifikatorAsuransiBoImpl.saveUploadStrukAsuransi] START >>>");
+
+        ItSimrsStrukAsuransiEntity strukAsuransiEntity = getStrukAsuransiEntityById(bean.getId());
+        if (strukAsuransiEntity != null){
+
+            strukAsuransiEntity.setUrlFotoStruk(bean.getUrlFotoStruk());
+            strukAsuransiEntity.setLastUpdate(bean.getLastUpdate());
+            strukAsuransiEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            strukAsuransiEntity.setAction("U");
+
+            try {
+                strukAsuransiDao.updateAndSave(strukAsuransiEntity);
+            } catch (HibernateException e){
+                logger.error("[VerifikatorAsuransiBoImpl.saveUploadStrukAsuransi] ERROR. ", e);
+                throw new GeneralBOException("[VerifikatorAsuransiBoImpl.saveUploadStrukAsuransi] ERROR. "+ e);
+            }
+        }
+        logger.info("[VerifikatorAsuransiBoImpl.saveUploadStrukAsuransi] END <<<");
     }
 
     private String generateIdStrukAsuransi(String branchId) throws GeneralBOException {

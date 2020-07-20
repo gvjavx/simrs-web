@@ -448,21 +448,22 @@
                         <div class="col-md-3" align="right">a.n. :</div>
                         <div class="col-md-6"><span id="dt-nama-pasien-asuransi"></span></div>
                     </div>
+                    <%--<div class="row top-7">--%>
+                        <%--<div class="col-md-3" align="right">Input Cover :</div>--%>
+                        <%--<div class="col-md-6"><input type="number" class="form-control" id="dt-cover-asuransi"></div>--%>
+                    <%--</div>--%>
                     <div class="row top-7">
-                        <div class="col-md-3" align="right">Input Cover :</div>
-                        <div class="col-md-6"><input type="number" class="form-control" id="dt-cover-asuransi"></div>
-                    </div>
-                    <div class="row top-7">
-                        <div class="col-md-3" align="right">Upload Struk :</div>
+                        <div class="col-md-3" align="right">Upload Struk</div>
                         <div class="col-md-6"><s:file class="form-control" id="dt-struk-asuransi" accept=".jpg" name="fileUpload"/></div>
                     </div>
+                    <input type="hidden" id="dt-id-struk">
                 </div>
             </div>
             <div class="modal-footer">
                 <%--<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close--%>
                 <%--</button>--%>
                 <div id="btn-save-asuransi">
-                    <button class="btn btn-success" onclick="uploadStrukAsuransi()"><i class="fa fa-check"></i> Save</button>
+                    <%--<button class="btn btn-success" onclick="uploadStrukAsuransi()"><i class="fa fa-check"></i> Save</button>--%>
                 </div>
             </div>
         </div>
@@ -706,6 +707,14 @@
 
                         if (idJenisPeriksaPasien == "bpjs"){
                             if (item.noSep == null || item.nominal == 0 || item.approvedFlag == "Y"){
+                                str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
+                                    "<td align='center'></td>";
+                            } else {
+                                str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
+                                    "<td align='center'><button class='btn btn-sm btn-success' onclick=\"saveApprove(\'"+item.id+"\')\"><i class='fa fa-check'></i> Approve</button></td>";
+                            }
+                        } else if (idJenisPeriksaPasien == "asuransi"){
+                            if (item.nominal == 0 || item.approvedFlag == "Y"){
                                 str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
                                     "<td align='center'></td>";
                             } else {
@@ -963,35 +972,47 @@
                 $("#dt-no-kartu-asuransi").text(item.noKartu);
                 $("#dt-cover-asuransi").val(item.jumlahCover);
 
+                var btn = "";
                 VerifikatorPembayaranAction.getStrukAsuransiByIdAntrianAndJenis(idAntrian, jenis, function (res) {
-                    if (jenis == "authorization"){
-                        $("#dt-cover-asuransi").hide();
-
+                    console.log(res);
+                    if (res.jenis == "authorization"){
+                        $("#dt-id-struk").val(res.id);
+                        btn = "<button type=\"button\" class=\"btn btn-success\" id=\"save-detail-save\" onclick=\"uploadStrukAsuransi(\'"+res.jenis+"\')\"><i class=\"fa fa-arrow-right\"></i> Save</button>";
                     }
-                    if (jenis == "confirmation"){
+                    if (res.jenis == "confirmation"){
+                        btn = "<button type=\"button\" class=\"btn btn-success\" id=\"save-detail-save\" onclick=\"uploadStrukAsuransi(\'"+res.jenis+"\')\"><i class=\"fa fa-arrow-right\"></i> Save</button>";
+
+                        $("#dt-id-struk").val(res.id);
                         if (item.jumlahCover != null){
                             $("#dt-cover-asuransi").prop('readonly', true);
                         } else {
                             $("#dt-cover-asuransi").prop('readonly', false);
                         }
                     }
+
+                    $("#btn-save-asuransi").html(btn);
                 });
             }
         });
     }
 
-    function uploadStrukAsuransi() {
+    function uploadStrukAsuransi(jenis) {
         //var uploadFile = $("#dt-struk-asuransi");
-        var uploadFile = dwr.util.getValue('dt-struk-asuransi');
+        //var uploadFile = dwr.util.getValue('dt-struk-asuransi');
         //var filenames = uploadFile.val().split("/");
         //var filename = filenames[filenames.length-1];
-        console.log(uploadFile);
-
-        VerifikatorPembayaranAction.uploadStruk(uploadFile, "", function (res) {
+        //console.log(uploadFile);
+        var idAntrian = $("#fin_id_antrian").val();
+        var idStruk = $("#dt-id-struk").val();
+        VerifikatorPembayaranAction.uploadStruk("", jenis, idStruk, function (res) {
             if (res.status == "success"){
-                alert(res.msg);
+                showDialog("success");
+                $('#ok_con').on('click', function (e) {
+                    searchPage(idAntrian)
+                });
             } else {
-                alert("ERROR");
+                showDialog("error");
+                $("#msg_fin_error_waiting").text(res.msg);
             }
         });
     }
