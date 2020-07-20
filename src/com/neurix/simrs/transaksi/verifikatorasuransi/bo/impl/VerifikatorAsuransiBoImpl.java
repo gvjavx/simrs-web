@@ -3,7 +3,10 @@ package com.neurix.simrs.transaksi.verifikatorasuransi.bo.impl;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.pasien.dao.PasienDao;
 import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
+import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
+import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
+import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
 import com.neurix.simrs.transaksi.verifikatorasuransi.bo.VerifikatorAsurasiBo;
 import com.neurix.simrs.transaksi.verifikatorasuransi.dao.StrukAsuransiDao;
 import com.neurix.simrs.transaksi.verifikatorasuransi.model.ItSimrsStrukAsuransiEntity;
@@ -114,6 +117,31 @@ public class VerifikatorAsuransiBoImpl implements VerifikatorAsurasiBo{
             } catch (HibernateException e){
                 logger.error("[VerifikatorAsuransiBoImpl.saveUploadStrukAsuransi] ERROR. ", e);
                 throw new GeneralBOException("[VerifikatorAsuransiBoImpl.saveUploadStrukAsuransi] ERROR. "+ e);
+            }
+
+            if ("confirmation".equalsIgnoreCase(strukAsuransiEntity.getJenis())){
+                Map hsCriteria = new HashMap();
+                hsCriteria.put("id_antrian_online", strukAsuransiEntity.getIdAntrianTelemedic());
+                List<ItSimrsHeaderChekupEntity> chekupEntities = headerCheckupDao.getByCriteria(hsCriteria);
+                ItSimrsHeaderChekupEntity chekupEntity = chekupEntities.size() > 0 ? chekupEntities.get(0) : null;
+                if (chekupEntity != null){
+                    hsCriteria = new HashMap();
+                    hsCriteria.put("no_checkup", chekupEntity.getNoCheckup());
+                    List<ItSimrsHeaderDetailCheckupEntity> detailCheckupEntities = checkupDetailDao.getByCriteria(hsCriteria);
+                    ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = detailCheckupEntities.size() > 0 ? detailCheckupEntities.get(0) : null;
+                    if (detailCheckupEntity != null){
+
+                        detailCheckupEntity.setCoverBiaya(bean.getJumlahCover());
+                        detailCheckupEntity.setDibayarPasien(bean.getDibayarPasien());
+
+                        try {
+                            checkupDetailDao.updateAndSave(detailCheckupEntity);
+                        } catch (HibernateException e){
+                            logger.error("[VerifikatorAsuransiBoImpl.saveUploadStrukAsuransi] ERROR. When Update Detail Checkup ", e);
+                            throw new GeneralBOException("[VerifikatorAsuransiBoImpl.saveUploadStrukAsuransi] ERROR. When Update Detail Checkup "+ e);
+                        }
+                    }
+                }
             }
         }
         logger.info("[VerifikatorAsuransiBoImpl.saveUploadStrukAsuransi] END <<<");

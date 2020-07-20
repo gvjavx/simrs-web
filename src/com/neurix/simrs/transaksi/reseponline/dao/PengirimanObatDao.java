@@ -134,7 +134,9 @@ public class PengirimanObatDao extends GenericDao<ItSimrsPengirimanObatEntity, S
                 "   isat.no_telp,\n" +
                 "   isat.lat,\n" +
                 "   isat.lon,\n" +
-                "   isat.jenis_pengambilan\n" +
+                "   isat.jenis_pengambilan,\n" +
+                "   isat.flag_bayar_konsultasi,\n" +
+                "   isat.flag_bayar_resep\n" +
                 "FROM mt_simrs_approval_transaksi_obat msato\n" +
                 "INNER JOIN (SELECT * FROM mt_simrs_permintaan_resep WHERE id_transaksi_online is NOT NULL ) mspr ON mspr.id_approval_obat = msato.id_approval_obat\n" +
                 "INNER JOIN it_simrs_pembayaran_online ispo2 ON ispo2.id = mspr.id_transaksi_online\n" +
@@ -172,6 +174,12 @@ public class PengirimanObatDao extends GenericDao<ItSimrsPengirimanObatEntity, S
                 permintaanResep.setLat(obj[12] == null ? "" : obj[12].toString());
                 permintaanResep.setLon(obj[13] == null ? "" : obj[13].toString());
                 permintaanResep.setJenisPengambilan(obj[14] == null ? "" : obj[14].toString());
+
+                String flagBayarKonsul = obj[15] == null ? null : obj[15].toString();
+                String flagBayarResep = obj[16] == null ? null : obj[16].toString();
+                if (flagBayarKonsul == null && flagBayarResep == null){
+                    permintaanResep.setFlagDelayAsuransi("Y");
+                }
                 permintaanResepList.add(permintaanResep);
             }
         }
