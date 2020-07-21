@@ -478,10 +478,21 @@
                     <div id="dt-body-struk">
                         <div class="row top-7">
                             <div class="col-md-3" align="right">Upload Struk</div>
-                            <div class="col-md-6"><s:file class="form-control" id="dt-struk-asuransi" accept=".jpg" name="fileUpload"/></div>
+                            <div class="col-md-6">
+                                <div class="input-group" id="img_file">
+                                    <span class="input-group-btn">
+                                          <span class="btn btn-default btn-file">
+                                              Browse… <s:file id="imgInp" accept=".jpg" name="fileUpload"
+                                                       onchange="$('#img_file').css('border','')"></s:file>
+                                          </span>
+                                    </span>
+                                    <input type="text" class="form-control" readonly>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <canvas id="img_ktp_canvas" style="display: none"></canvas>
+
+                    <canvas id="img_ktp_canvas" style="border: solid 1px #ccc; width: 300px;"></canvas>
                     <input type="hidden" id="dt-id-struk">
                 </div>
             </div>
