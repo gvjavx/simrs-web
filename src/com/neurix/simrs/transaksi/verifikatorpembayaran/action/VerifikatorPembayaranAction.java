@@ -2414,8 +2414,8 @@ public class VerifikatorPembayaranAction {
             BASE64Decoder decoder = new BASE64Decoder();
             byte[] decodedBytes = decoder.decodeBuffer(uploadString);
             logger.info("Decoded upload data : " + decodedBytes.length);
-            fileName = branchId + "_" + jenis + "_"+idStruk+".jpg";
-            String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_BUKTI_TRANSFER+fileName;
+            fileName = branchId + "_" + jenis + "_"+idStruk+".png";
+            String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_BUKTI_TRANSFER+ "/" + fileName;
             logger.info("File save path : " + uploadFile);
             BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
 
