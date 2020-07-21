@@ -17,12 +17,6 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/VerifikatorPembayaranAction.js"/>'></script>
     <script type='text/javascript'>
 
-        $( document ).ready(function() {
-            $('#bayar_rawat_jalan, #pembayaran_active').addClass('active');
-            $('#pembayaran_open').addClass('menu-open');
-        });
-
-
     </script>
     <style>
         .top-7{
@@ -487,6 +481,7 @@
                             <div class="col-md-6"><s:file class="form-control" id="dt-struk-asuransi" accept=".jpg" name="fileUpload"/></div>
                         </div>
                     </div>
+                    <canvas id="img_ktp_canvas" style="display: none"></canvas>
                     <input type="hidden" id="dt-id-struk">
                 </div>
             </div>
@@ -605,6 +600,42 @@
 </div>
 
 <script type='text/javascript'>
+
+    $( document ).ready(function() {
+        var canvas = document.getElementById('img_ktp_canvas');
+        var ctx = canvas.getContext('2d');
+
+        $(document).on('change', '.btn-file :file', function () {
+            var input = $(this),
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [label]);
+        });
+
+        $('.btn-file :file').on('fileselect', function (event, label) {
+
+            var input = $(this).parents('.input-group').find(':text'),
+                log = label;
+
+            if (input.length) {
+                input.val(log);
+                var reader = new FileReader();
+                reader.onload = function(event){
+                    var img = new Image();
+                    img.onload = function(){
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        ctx.clearRect(0,0,canvas.width,canvas.height);
+                        ctx.drawImage(img,0,0);
+                    }
+                    img.src = event.target.result;
+                }
+                reader.readAsDataURL(event.target.files[0]);
+            } else {
+                if (log) alert(log);
+            }
+
+        });
+    });
 
     function formatRupiah(angka) {
         if(angka != "" && angka != null && parseInt(angka) > 0){
@@ -1080,10 +1111,14 @@
         //console.log(uploadFile);
         var idAntrian = $("#fin_id_antrian").val();
         var idStruk = $("#dt-id-struk").val();
+        var canvas = document.getElementById('img_ktp_canvas');
+        var dataURL = canvas.toDataURL("image/png"),
+            dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+
         showDialog("loading");
         dwr.engine.setAsync(true);
         if (jenis == "authorization") {
-            VerifikatorPembayaranAction.uploadStruk("", jenis, idStruk, "", "", function (res) {
+            VerifikatorPembayaranAction.uploadStruk(dataURL, jenis, idStruk, "", "", function (res) {
                 dwr.engine.setAsync(false);
                 if (res.status == "success"){
                     showDialog("success");
@@ -1103,7 +1138,7 @@
             } else {
                 var coverAsuransi = $("#dt-cover-asuransi").val();
                 var bayarAsuransi = $("#dt-bayar-asuransi").val();
-                VerifikatorPembayaranAction.uploadStruk("", jenis, idStruk, coverAsuransi, bayarAsuransi, function (res) {
+                VerifikatorPembayaranAction.uploadStruk(dataURL, jenis, idStruk, coverAsuransi, bayarAsuransi, function (res) {
                     dwr.engine.setAsync(false);
                     if (res.status == "success"){
                         showDialog("success");

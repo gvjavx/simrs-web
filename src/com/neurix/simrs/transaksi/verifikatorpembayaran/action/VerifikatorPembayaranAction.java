@@ -92,9 +92,12 @@ import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
+import sun.misc.BASE64Decoder;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -2395,19 +2398,40 @@ public class VerifikatorPembayaranAction {
             return strukAsuransiEntityList.get(0);
         return null;
     }
-    public CrudResponse uploadStruk(String uploadFile, String jenis, String idStruk, String jumlahCover, String dibayarPasien) throws IOException{
+    public CrudResponse uploadStruk(String uploadString, String jenis, String idStruk, String jumlahCover, String dibayarPasien) throws IOException{
 
         String userLogin = CommonUtil.userLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
+        String branchId = CommonUtil.userBranchLogin();
 
         CrudResponse response = new CrudResponse();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         VerifikatorAsurasiBo verifikatorAsurasiBo = (VerifikatorAsurasiBo) ctx.getBean("verifikatorAsurasiBoProxy");
 
+        String fileName = "";
+        if (!"".equalsIgnoreCase(uploadString)){
+            BASE64Decoder decoder = new BASE64Decoder();
+            byte[] decodedBytes = decoder.decodeBuffer(uploadString);
+            logger.info("Decoded upload data : " + decodedBytes.length);
+            fileName = branchId + "_" + jenis + "_"+idStruk+".jpg";
+            String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_BUKTI_TRANSFER+fileName;
+            logger.info("File save path : " + uploadFile);
+            BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+            if (image == null) {
+                logger.error("Buffered Image is null");
+            }else{
+                File f = new File(uploadFile);
+                // write the image
+                ImageIO.write(image, "png", f);
+            }
+
+        }
+
         StrukAsuransi strukAsuransi = new StrukAsuransi();
         strukAsuransi.setId(idStruk);
-        strukAsuransi.setUrlFotoStruk(jenis + ".jpg");
+        strukAsuransi.setUrlFotoStruk(fileName);
         strukAsuransi.setLastUpdate(time);
         strukAsuransi.setLastUpdateWho(userLogin);
 
