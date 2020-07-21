@@ -488,19 +488,34 @@ public class TelemedicBoImpl implements TelemedicBo {
 
                 statusSebelum = telemedicEntity.getStatus();
 
-                telemedicEntity.setFlag(bean.getFlag() == null ? telemedicEntity.getFlag() : bean.getFlag());
-                telemedicEntity.setFlagResep(bean.getFlagResep() == null ? telemedicEntity.getFlagResep() : bean.getFlagResep());
-                telemedicEntity.setFlagBayarResep(bean.getFlagBayarResep() == null ? telemedicEntity.getFlagBayarResep() : bean.getFlagBayarResep());
-                telemedicEntity.setFlagBayarKonsultasi(bean.getFlagBayarKonsultasi() == null  ? telemedicEntity.getFlagBayarKonsultasi() : bean.getFlagBayarKonsultasi());
-                telemedicEntity.setStatus(bean.getStatus() == null ? statusSebelum : bean.getStatus());
-                telemedicEntity.setJumlahCover(bean.getJumlahCover() == null ? telemedicEntity.getJumlahCover() : bean.getJumlahCover());
-                telemedicEntity.setNoJurnal(bean.getNoJurnal() == null ? telemedicEntity.getNoJurnal() : bean.getNoJurnal());
-                telemedicEntity.setNoSep(bean.getNoSep() == null ? telemedicEntity.getNoSep() : bean.getNoSep());
-                telemedicEntity.setIdDiagnosa(bean.getIdDiagnosa() == null ? telemedicEntity.getIdDiagnosa() : bean.getIdDiagnosa());
-                telemedicEntity.setKetDiagnosa(bean.getKetDiagnosa() == null ? telemedicEntity.getKetDiagnosa() : bean.getKetDiagnosa());
-                telemedicEntity.setAction("U");
-                telemedicEntity.setLastUpdate(bean.getLastUpdate());
-                telemedicEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                if ("Y".equalsIgnoreCase(bean.getFlagApproveConfirm())){
+                    // jika prosess approve confirm dari asuransi
+
+                    telemedicEntity.setFlagBayarKonsultasi("Y");
+                    if ("Y".equalsIgnoreCase(telemedicEntity.getFlagResep())){
+                        telemedicEntity.setFlagBayarResep("Y");
+                    }
+                    telemedicEntity.setAction("U");
+                    telemedicEntity.setLastUpdate(bean.getLastUpdate());
+                    telemedicEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                } else {
+
+                    // jika untuk yang lain
+                    telemedicEntity.setFlag(bean.getFlag() == null ? telemedicEntity.getFlag() : bean.getFlag());
+                    telemedicEntity.setFlagResep(bean.getFlagResep() == null ? telemedicEntity.getFlagResep() : bean.getFlagResep());
+                    telemedicEntity.setFlagBayarResep(bean.getFlagBayarResep() == null ? telemedicEntity.getFlagBayarResep() : bean.getFlagBayarResep());
+                    telemedicEntity.setFlagBayarKonsultasi(bean.getFlagBayarKonsultasi() == null  ? telemedicEntity.getFlagBayarKonsultasi() : bean.getFlagBayarKonsultasi());
+                    telemedicEntity.setStatus(bean.getStatus() == null ? statusSebelum : bean.getStatus());
+                    telemedicEntity.setJumlahCover(bean.getJumlahCover() == null ? telemedicEntity.getJumlahCover() : bean.getJumlahCover());
+                    telemedicEntity.setNoJurnal(bean.getNoJurnal() == null ? telemedicEntity.getNoJurnal() : bean.getNoJurnal());
+                    telemedicEntity.setNoSep(bean.getNoSep() == null ? telemedicEntity.getNoSep() : bean.getNoSep());
+                    telemedicEntity.setIdDiagnosa(bean.getIdDiagnosa() == null ? telemedicEntity.getIdDiagnosa() : bean.getIdDiagnosa());
+                    telemedicEntity.setKetDiagnosa(bean.getKetDiagnosa() == null ? telemedicEntity.getKetDiagnosa() : bean.getKetDiagnosa());
+                    telemedicEntity.setAction("U");
+                    telemedicEntity.setLastUpdate(bean.getLastUpdate());
+                    telemedicEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                }
 
                 try {
                     telemedicDao.updateAndSave(telemedicEntity);
