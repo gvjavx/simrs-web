@@ -56,7 +56,8 @@ public class ResepOnlineAction {
     public String initForm(){
         logger.info("ResepOnlineAction.initForm >>> ");
         setPengirimanObat(new PengirimanObat());
-
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResults");
         logger.info("ResepOnlineAction.initForm <<< ");
         if ("monitoring".equalsIgnoreCase(this.tipe)){
             return "search_monitoring";

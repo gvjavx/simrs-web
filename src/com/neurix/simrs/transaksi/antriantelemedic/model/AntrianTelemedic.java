@@ -59,6 +59,15 @@ public class AntrianTelemedic {
     private String noSep;
     private String idDiagnosa;
     private String ketDiagnosa;
+    private String flagBelumBayar;
+
+    public String getFlagBelumBayar() {
+        return flagBelumBayar;
+    }
+
+    public void setFlagBelumBayar(String flagBelumBayar) {
+        this.flagBelumBayar = flagBelumBayar;
+    }
 
     private String idPembayaran;
     private BigDecimal nominal;

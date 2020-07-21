@@ -18,6 +18,8 @@
           p:pasienDao-ref="pasienDao"
           p:headerCheckupDao-ref="headerCheckupDao"
           p:strukAsuransiDao-ref="strukAsuransiDao"
+          p:telemedicDao-ref="telemedicDao"
+          p:verifikatorPembayaranDao-ref="verifikatorPembayaranDao"
     />
 
     <bean id="verifikatorAsurasiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -37,6 +39,7 @@
             <props>
                 <prop key="getSearchByCriteria">readOnly</prop>
                 <prop key="saveApprove">PROPAGATION_REQUIRED</prop>
+                <prop key="saveUploadStrukAsuransi">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>
