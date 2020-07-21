@@ -433,7 +433,7 @@ public class TelemedicineController implements ModelDriven<Object> {
                     }
 
                     try {
-                        telemedicBoProxy.createStrukAsuransi(result.get(0), jenisStruk);
+                        telemedicBoProxy.createStrukAsuransi(result.get(0), "");
                         model.setMessage("Success");
                     } catch (GeneralBOException e){
                         logger.error("[TelemedicineController.insertResep] Error, " + e.getMessage());
@@ -840,7 +840,7 @@ public class TelemedicineController implements ModelDriven<Object> {
             model.setNoCheckup(resultDetailCheckup.get(0).getNoCheckup());
             model.setIdDetailCheckup(resultDetailCheckup.get(0).getIdDetailCheckup());
             model.setDibayarPasien(resultDetailCheckup.get(0).getDibayarPasien());
-            model.setCreatedDate(CommonUtil.addJamBayar(resultDetailCheckup.get(0).getLastUpdate()));
+            model.setCreatedDate(CommonUtil.addJamBayar(resultDetailCheckup.get(0).getCreatedDate()));
         }
 
         if(action.equalsIgnoreCase("getHistoryByIdPasien")) {

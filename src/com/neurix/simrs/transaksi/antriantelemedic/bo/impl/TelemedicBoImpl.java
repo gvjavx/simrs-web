@@ -466,10 +466,6 @@ public class TelemedicBoImpl implements TelemedicBo {
         simrsStrukAsuransiEntity.setLastUpdate(bean.getLastUpdate());
         simrsStrukAsuransiEntity.setLastUpdateWho(bean.getLastUpdateWho());
 
-        if(jenis.equalsIgnoreCase("confirmation")) {
-            simrsStrukAsuransiEntity.setUrlFotoStruk(jenis + ".jpg");
-        }
-
         try {
             strukAsuransiDao.addAndSave(simrsStrukAsuransiEntity);
         } catch (HibernateException e){

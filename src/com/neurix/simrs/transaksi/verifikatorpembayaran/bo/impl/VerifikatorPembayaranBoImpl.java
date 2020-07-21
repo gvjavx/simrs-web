@@ -289,7 +289,7 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
         logger.info("[VerifikatorPembayaranBoImpl.updateBuktiTransfer] START >>>");
         Map hsCriteria = new HashMap();
         hsCriteria.put("id_antrian_telemedic", idTele);
-        hsCriteria.put("keterangan", keterangan);
+        hsCriteria.put("keterangan", keterangan.equalsIgnoreCase("all") ? null : keterangan);
 
         List<ItSimrsPembayaranOnlineEntity> resultPembayaran = new ArrayList<>();
 
