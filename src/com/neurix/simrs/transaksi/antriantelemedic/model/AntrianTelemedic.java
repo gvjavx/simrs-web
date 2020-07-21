@@ -61,6 +61,24 @@ public class AntrianTelemedic {
     private String ketDiagnosa;
     private String flagBelumBayar;
     private String flagApproveConfirm;
+    private BigDecimal dibayarPasien;
+    private String urlFotoStruk;
+
+    public String getUrlFotoStruk() {
+        return urlFotoStruk;
+    }
+
+    public void setUrlFotoStruk(String urlFotoStruk) {
+        this.urlFotoStruk = urlFotoStruk;
+    }
+
+    public BigDecimal getDibayarPasien() {
+        return dibayarPasien;
+    }
+
+    public void setDibayarPasien(BigDecimal dibayarPasien) {
+        this.dibayarPasien = dibayarPasien;
+    }
 
     public String getFlagApproveConfirm() {
         return flagApproveConfirm;
