@@ -98,6 +98,16 @@ public class TelemedicineController implements ModelDriven<Object> {
     private String jenisStruk;
     private String isStruk;
 
+    private String dibayarPasien;
+
+    public String getDibayarPasien() {
+        return dibayarPasien;
+    }
+
+    public void setDibayarPasien(String dibayarPasien) {
+        this.dibayarPasien = dibayarPasien;
+    }
+
     public String getIsStruk() {
         return isStruk;
     }
@@ -657,6 +667,7 @@ public class TelemedicineController implements ModelDriven<Object> {
                 telemedicineMobile.setKetStatus(item.getKetStatus());
 
                 listOfTelemedic.add(telemedicineMobile);
+
                 }
 
             }
@@ -827,7 +838,8 @@ public class TelemedicineController implements ModelDriven<Object> {
 
             model.setNoCheckup(resultDetailCheckup.get(0).getNoCheckup());
             model.setIdDetailCheckup(resultDetailCheckup.get(0).getIdDetailCheckup());
-
+            model.setDibayarPasien(resultDetailCheckup.get(0).getDibayarPasien());
+            model.setCreatedDate(CommonUtil.addJamBayar(resultDetailCheckup.get(0).getLastUpdate()));
         }
 
         if(action.equalsIgnoreCase("getHistoryByIdPasien")) {

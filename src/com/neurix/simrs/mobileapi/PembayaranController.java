@@ -265,12 +265,24 @@ public class PembayaranController implements ModelDriven<Object> {
                 }
             }
 
-            try {
-                verifikatorPembayaranBoProxy.updateBuktiTransfer(idTele, fileName, keterangan);
-                model.setMessage("Success");
-            } catch (GeneralBOException e) {
-                logger.error("[PembayaranController.create] Error, " + e.getMessage());
+            if (keterangan.equalsIgnoreCase("all")) {
+                try {
+                    verifikatorPembayaranBoProxy.updateBuktiTransfer(idTele, fileName, "konsultasi");
+                    verifikatorPembayaranBoProxy.updateBuktiTransfer(idTele, fileName, "resep");
+                    model.setMessage("Success");
+                } catch (GeneralBOException e) {
+                    logger.error("[PembayaranController.create] Error, " + e.getMessage());
+                }
+
+            } else {
+                try {
+                    verifikatorPembayaranBoProxy.updateBuktiTransfer(idTele, fileName, keterangan);
+                    model.setMessage("Success");
+                } catch (GeneralBOException e) {
+                    logger.error("[PembayaranController.create] Error, " + e.getMessage());
+                }
             }
+
         }
 
         if (action.equalsIgnoreCase("saveEditPembayaranResep")) {
@@ -298,6 +310,30 @@ public class PembayaranController implements ModelDriven<Object> {
                 model.setMessage("Success");
             } catch (GeneralBOException e) {
                 logger.error("[PembayaranController.create] Error, " + e.getMessage());
+            }
+
+            if (keterangan.equalsIgnoreCase("all")) {
+                bean.setIdAntrianTelemedic(idTele);
+                bean.setKeterangan("konsultasi");
+
+                try {
+                    listEntity = verifikatorPembayaranBoProxy.getSearchEntityByCriteria(bean);
+                } catch (GeneralBOException e) {
+                    logger.error("[PembayaranController.create] Error, " + e.getMessage());
+                }
+
+                newPembayaran = listEntity.get(0);
+
+                newPembayaran.setKodeBank(bankCoa);
+                newPembayaran.setLastUpdate(now);
+                newPembayaran.setLastUpdateWho(idPasien);
+
+                try {
+                    verifikatorPembayaranBoProxy.saveEdit(newPembayaran);
+                    model.setMessage("Success");
+                } catch (GeneralBOException e) {
+                    logger.error("[PembayaranController.create] Error, " + e.getMessage());
+                }
             }
 
         }

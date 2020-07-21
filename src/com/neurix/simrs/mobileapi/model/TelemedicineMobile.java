@@ -67,6 +67,16 @@ public class TelemedicineMobile {
     private String jumlahCover;
     private String coverDitanggung;
 
+    private String dibayarPasien;
+
+    public String getDibayarPasien() {
+        return dibayarPasien;
+    }
+
+    public void setDibayarPasien(String dibayarPasien) {
+        this.dibayarPasien = dibayarPasien;
+    }
+
     public String getIdStrukAsuransi() {
         return idStrukAsuransi;
     }
