@@ -73,7 +73,8 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
                 "INNER JOIN im_simrs_dokter dokter ON dokter.id_dokter = tele.id_dokter\n" +
                 "INNER JOIN im_simrs_pelayanan pelayanan ON pelayanan.id_pelayanan = tele.id_pelayanan\n" +
                 "INNER JOIN it_simrs_pembayaran_online pembayaran ON pembayaran.id_antrian_telemedic = tele.id\n" +
-                "WHERE tele.id_pasien = :idPasien\n";
+                "WHERE tele.id_pasien = :idPasien\n" +
+                "ORDER BY tele.created_date DESC";
 
         List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(sql)
                 .setParameter("idPasien", idPasien)

@@ -725,6 +725,7 @@ public class TelemedicineController implements ModelDriven<Object> {
             bean.setIdDokter(idDokter);
             bean.setFlagResep(flagResep);
             bean.setStatus(this.status);
+            bean.setIdPasien(idPasien);
             bean.setFlag("Y");
 
             try {
