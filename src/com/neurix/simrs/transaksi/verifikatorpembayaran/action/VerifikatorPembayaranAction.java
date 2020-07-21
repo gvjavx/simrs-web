@@ -1756,16 +1756,33 @@ public class VerifikatorPembayaranAction {
 
     public AntrianTelemedic getSessionAntrianTelemedic(String id){
         logger.info("[CheckupDetailAction.getSessionAntrianTelemedic] START >>>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RiwayatTindakanBo riwayatTindakanBo = (RiwayatTindakanBo) ctx.getBean("riwayatTindakanBoProxy");
+        VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
+
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<AntrianTelemedic> sessionTelemedic = (List<AntrianTelemedic>) session.getAttribute("listOfResults");
         List<AntrianTelemedic> antrianTelemedics = sessionTelemedic.stream().filter(p->p.getId().equalsIgnoreCase(id)).collect(Collectors.toList());
         if (antrianTelemedics.size() > 0){
             AntrianTelemedic antrianTelemedic = antrianTelemedics.get(0);
 
+            if (antrianTelemedic.getFlagBayarKonsultasi() == null){
+
+                PembayaranOnline pembayaranOnline = new PembayaranOnline();
+                pembayaranOnline.setIdAntrianTelemedic(id);
+
+                List<ItSimrsPembayaranOnlineEntity> pembayaranOnlineEntities = verifikatorPembayaranBo.getSearchEntityByCriteria(pembayaranOnline);
+                if (pembayaranOnlineEntities.size() > 0){
+                    ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = pembayaranOnlineEntities.get(pembayaranOnlineEntities.size() - 1);
+                    if (pembayaranOnlineEntity.getUrlFotoBukti() != null){
+                        antrianTelemedic.setFlagApproveConfirm("Y");
+                    }
+                }
+            }
+
             if ("Y".equalsIgnoreCase(antrianTelemedic.getFlagResep())){
-                ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-                RiwayatTindakanBo riwayatTindakanBo = (RiwayatTindakanBo) ctx.getBean("riwayatTindakanBoProxy");
-                VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
+
 
                 ItSimrsHeaderChekupEntity headerChekupEntity = verifikatorPembayaranBo.getHeaderCheckupByIdAntrinTelemedic(id);
                 if (headerChekupEntity != null){
