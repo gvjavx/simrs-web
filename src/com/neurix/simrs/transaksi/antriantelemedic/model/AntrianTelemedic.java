@@ -60,6 +60,15 @@ public class AntrianTelemedic {
     private String idDiagnosa;
     private String ketDiagnosa;
     private String flagBelumBayar;
+    private String flagApproveConfirm;
+
+    public String getFlagApproveConfirm() {
+        return flagApproveConfirm;
+    }
+
+    public void setFlagApproveConfirm(String flagApproveConfirm) {
+        this.flagApproveConfirm = flagApproveConfirm;
+    }
 
     public String getFlagBelumBayar() {
         return flagBelumBayar;
