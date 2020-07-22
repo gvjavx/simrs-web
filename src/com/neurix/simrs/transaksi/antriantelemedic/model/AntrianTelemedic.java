@@ -63,6 +63,15 @@ public class AntrianTelemedic {
     private String flagApproveConfirm;
     private BigDecimal dibayarPasien;
     private String urlFotoStruk;
+    private String labelStatusAsuransi;
+
+    public String getLabelStatusAsuransi() {
+        return labelStatusAsuransi;
+    }
+
+    public void setLabelStatusAsuransi(String labelStatusAsuransi) {
+        this.labelStatusAsuransi = labelStatusAsuransi;
+    }
 
     public String getUrlFotoStruk() {
         return urlFotoStruk;

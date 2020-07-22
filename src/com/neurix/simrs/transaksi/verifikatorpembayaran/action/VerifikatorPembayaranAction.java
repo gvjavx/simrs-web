@@ -595,8 +595,8 @@ public class VerifikatorPembayaranAction {
                 }
 
                 // jika selesai approve all tindakan berarti antrian WL berkurang 1;
-                // cari antrian status LL order by createdDate ASCENDING
-                // dimasukan ke antrian WL
+                // cari antrian status LL order by createdDate ASCENDING;
+                // dimasukan ke antrian WL;
 
                 if ("WL".equalsIgnoreCase(antrianTelemedicEntity.getStatus())){
                     ItSimrsAntrianTelemedicEntity firstOrderAntrian = telemedicBo.getAntrianTelemedicFirstOrder(antrianTelemedicEntity.getIdPelayanan(), antrianTelemedicEntity.getIdDokter(), "LL");

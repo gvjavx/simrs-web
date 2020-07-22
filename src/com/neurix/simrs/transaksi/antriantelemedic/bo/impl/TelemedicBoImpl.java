@@ -227,14 +227,30 @@ public class TelemedicBoImpl implements TelemedicBo {
                 }
                 // end;
 
-                if (antrianTelemedic.getFlagResep() == null && antrianTelemedic.getApproveKonsultasi() != null) {
-                    antrianTelemedic.setStatusTransaksi("finish");
-                } else if ("Y".equalsIgnoreCase(antrianTelemedic.getFlagResep()) && antrianTelemedic.getApproveKonsultasi() != null && antrianTelemedic.getApproveResep() != null) {
-                    antrianTelemedic.setStatusTransaksi("finish");
-                } else if ("Y".equalsIgnoreCase(antrianTelemedic.getApproveResep()) && "Y".equalsIgnoreCase(telemedicEntity.getFlagBayarResep())){
-                    antrianTelemedic.setStatusTransaksi("finish");
+                // filter status transaksi
+                if ("asuransi".equalsIgnoreCase(antrianTelemedic.getIdJenisPeriksaPasien())){
+                    if ("Y".equalsIgnoreCase(antrianTelemedic.getFlagBayarKonsultasi())){
+                        antrianTelemedic.setStatusTransaksi("finish");
+                        antrianTelemedic.setLabelStatusAsuransi("Terverifikasi");
+                    }
+                    if (antrianTelemedic.getFlagBayarKonsultasi() == null) {
+                        if ("Y".equalsIgnoreCase(antrianTelemedic.getApproveKonsultasi()) && "Y".equalsIgnoreCase(antrianTelemedic.getApproveResep())){
+                            antrianTelemedic.setStatusTransaksi("confirmation");
+                        } else {
+                            antrianTelemedic.setStatusTransaksi("exist");
+                        }
+                        antrianTelemedic.setLabelStatusAsuransi(labelStatusAsuransi(antrianTelemedic.getId()));
+                    }
                 } else {
-                    antrianTelemedic.setStatusTransaksi("exist");
+                    if (antrianTelemedic.getFlagResep() == null && antrianTelemedic.getApproveKonsultasi() != null) {
+                        antrianTelemedic.setStatusTransaksi("finish");
+                    } else if ("Y".equalsIgnoreCase(antrianTelemedic.getFlagResep()) && antrianTelemedic.getApproveKonsultasi() != null && antrianTelemedic.getApproveResep() != null) {
+                        antrianTelemedic.setStatusTransaksi("finish");
+                    } else if ("Y".equalsIgnoreCase(antrianTelemedic.getApproveResep()) && "Y".equalsIgnoreCase(telemedicEntity.getFlagBayarResep())){
+                        antrianTelemedic.setStatusTransaksi("finish");
+                    } else {
+                        antrianTelemedic.setStatusTransaksi("exist");
+                    }
                 }
                 results.add(antrianTelemedic);
             }
@@ -242,11 +258,45 @@ public class TelemedicBoImpl implements TelemedicBo {
 
         logger.info("[TelemedicBoImpl.getSearchByCriteria] END <<<");
         final String statusTransaksi = bean.getStatusTransaksi();
-        if ("finish".equalsIgnoreCase(statusTransaksi) || "exist".equalsIgnoreCase(statusTransaksi)){
+        if ("finish".equalsIgnoreCase(statusTransaksi) || "exist".equalsIgnoreCase(statusTransaksi) || "confirmation".equalsIgnoreCase(statusTransaksi)){
             return results.stream().filter(p->p.getStatusTransaksi().equalsIgnoreCase(statusTransaksi)).collect(Collectors.toList());
         }
 
         return results;
+    }
+
+    private String labelStatusAsuransi(String idAntrian) throws GeneralBOException{
+
+        String label = "";
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_antrian_telemedic", idAntrian);
+        List<ItSimrsStrukAsuransiEntity> strukAsuransiEntities = strukAsuransiDao.getByCriteria(hsCriteria);
+        if (strukAsuransiEntities.size() > 0){
+            for (ItSimrsStrukAsuransiEntity strukAsuransiEntity : strukAsuransiEntities){
+
+                if ("authorization".equalsIgnoreCase(strukAsuransiEntity.getJenis())){
+                    if ("Y".equalsIgnoreCase(strukAsuransiEntity.getApproveFlag())){
+                        label = "Authorization by Pasien";
+                    } else if (strukAsuransiEntity.getUrlFotoStruk() != null) {
+                        label = "Menunggu Authorization";
+                    } else {
+                        label = "Upload Authorization";
+                    }
+                }
+
+                if ("confirmation".equalsIgnoreCase(strukAsuransiEntity.getJenis())){
+                    if ("Y".equalsIgnoreCase(strukAsuransiEntity.getApproveFlag())){
+                        label = "Confirmation by Pasien";
+                    } else if (strukAsuransiEntity.getUrlFotoStruk() != null) {
+                        label = "Menunggu Confirmation";
+                    } else {
+                        label = "Upload Confirmation";
+                    }
+                }
+            }
+        }
+
+        return label;
     }
 
     @Override
