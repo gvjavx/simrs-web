@@ -40,6 +40,15 @@ public class PengirimanObatMobile {
 
     private String jenisPengiriman;
     private String fotoKirim;
+    private String keterangan;
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
 
     public String getFotoKirim() {
         return fotoKirim;

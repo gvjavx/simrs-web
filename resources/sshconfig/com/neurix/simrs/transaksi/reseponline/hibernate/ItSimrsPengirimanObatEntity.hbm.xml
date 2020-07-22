@@ -71,6 +71,9 @@
             <basic name="fotoKirim">
                 <column name="foto_kirim"/>
             </basic>
+            <basic name="keterangan">
+                <column name="keterangan"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

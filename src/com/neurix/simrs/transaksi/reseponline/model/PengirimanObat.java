@@ -39,6 +39,15 @@ public class PengirimanObat {
     private String tipe;
     private String jenisPembayaran;
     private String fotoKirim;
+    private String keterangan;
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
 
     public String getFotoKirim() {
         return fotoKirim;
