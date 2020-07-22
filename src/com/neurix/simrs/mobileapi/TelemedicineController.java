@@ -446,6 +446,19 @@ public class TelemedicineController implements ModelDriven<Object> {
             }
         }
 
+        if(action.equalsIgnoreCase("editFlagResep")) {
+            AntrianTelemedic bean = new AntrianTelemedic();
+            bean.setId(idTele);
+            bean.setFlagResep(flagResep);
+
+            try {
+                telemedicBoProxy.saveEdit(bean, branchId, "");
+                model.setMessage("Success");
+            } catch (GeneralBOException e) {
+                logger.error("[TelemedicineController.create] Error, " + e.getMessage());
+            }
+        }
+
         if (action.equalsIgnoreCase("editFlag")) {
 
             List<ItSimrsPembayaranOnlineEntity> list = new ArrayList<>();

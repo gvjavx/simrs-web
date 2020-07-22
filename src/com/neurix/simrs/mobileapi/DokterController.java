@@ -37,6 +37,7 @@ public class DokterController implements ModelDriven<Object> {
     private String namaSpesialis;
     private String action;
     private String kuota;
+    private String kuotaTele;
     private String lat;
     private String lon;
     private String flagCall;
@@ -46,6 +47,14 @@ public class DokterController implements ModelDriven<Object> {
     private String branchId;
 
     private String foto;
+
+    public String getKuotaTele() {
+        return kuotaTele;
+    }
+
+    public void setKuotaTele(String kuotaTele) {
+        this.kuotaTele = kuotaTele;
+    }
 
     public TelemedicBo getTelemedicBoProxy() {
         return telemedicBoProxy;
@@ -226,6 +235,7 @@ public class DokterController implements ModelDriven<Object> {
             model.setLon(result.get(0).getLon());
             model.setFlagCall(result.get(0).getFlagCall());
             model.setFlagTele(result.get(0).getFlagTele());
+            model.setKuotaTele(result.get(0).getKuotaTele());
 
             try {
                 resultBio = biodataBoProxy.getBiodataByNip(model.getIdDokter());
@@ -242,7 +252,7 @@ public class DokterController implements ModelDriven<Object> {
         if (action.equalsIgnoreCase("kuota")) {
 
             try {
-                dokterBoProxy.editKuota(idDokter, kuota);
+                dokterBoProxy.editKuota(idDokter, kuota, kuotaTele);
             } catch (GeneralBOException e) {
                 logger.error("[DokterController.create] Error, " + e.getMessage());
             }
@@ -283,6 +293,7 @@ public class DokterController implements ModelDriven<Object> {
                    dokterMobile.setNamaDokter(item.getNamaDokter());
                    dokterMobile.setKuota(item.getKuota());
                    dokterMobile.setFlagTele(item.getFlagTele());
+                   dokterMobile.setKuotaTele(item.getKuotaTele());
 
                    try {
                        resultBio = biodataBoProxy.getBiodataByNip(item.getIdDokter());

@@ -394,7 +394,7 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
     }
 
     @Override
-    public boolean editKuota(String idDokter, String kuota) throws GeneralBOException {
+    public boolean editKuota(String idDokter, String kuota, String kuotaTele) throws GeneralBOException {
         logger.info("[DokterBoImpl.editKuota] Start <<<<<<<<");
 
         ImSimrsDokterEntity dokter = null;
@@ -408,6 +408,7 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
 
         if (dokter != null) {
             dokter.setKuota(kuota);
+            dokter.setKuotaTele(kuotaTele);
             try {
                 dokterDao.updateAndSave(dokter);
                 isSuccess = true;

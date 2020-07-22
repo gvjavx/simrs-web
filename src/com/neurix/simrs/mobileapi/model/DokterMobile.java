@@ -23,6 +23,15 @@ public class DokterMobile {
     private String foto;
 
     private String jumlahAntrian;
+    private String kuotaTele;
+
+    public String getKuotaTele() {
+        return kuotaTele;
+    }
+
+    public void setKuotaTele(String kuotaTele) {
+        this.kuotaTele = kuotaTele;
+    }
 
     public String getJumlahAntrian() {
         return jumlahAntrian;
