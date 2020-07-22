@@ -360,12 +360,23 @@ public class VerifikatorPembayaranAction {
         return response;
     }
 
-    public CheckResponse approveTransaksi(String idTransaksi){
+    public CheckResponse approveTransaksi(String idTransaksi, String user, String branch){
         logger.info("[VerifikatorPembayaranAction.approveTransaksi] START >>>");
 
-        String userLogin = CommonUtil.userIdLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
-        String branchId = CommonUtil.userBranchLogin();
+        String userLogin = "";
+        String branchId = "";
+
+        if (user == null || "".equalsIgnoreCase(user)){
+            userLogin = CommonUtil.userIdLogin();
+        } else {
+            userLogin = user;
+        }
+        if (branch == null || "".equalsIgnoreCase(branch)){
+            branchId = CommonUtil.userBranchLogin();
+        } else {
+            branchId = branch;
+        }
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
@@ -2409,42 +2420,46 @@ public class VerifikatorPembayaranAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         VerifikatorAsurasiBo verifikatorAsurasiBo = (VerifikatorAsurasiBo) ctx.getBean("verifikatorAsurasiBoProxy");
 
-//        String fileName = "";
-//        if (!"".equalsIgnoreCase(uploadString)){
-//            BASE64Decoder decoder = new BASE64Decoder();
-//            byte[] decodedBytes = decoder.decodeBuffer(uploadString);
-//            logger.info("Decoded upload data : " + decodedBytes.length);
-//            fileName = branchId + "_" + jenis + "_"+idStruk+".png";
-//            String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_BUKTI_TRANSFER + "/" + fileName;
-//            logger.info("File save path : " + uploadFile);
-//            BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
-//
-//            if (image == null) {
-//                logger.error("Buffered Image is null");
-//            }else{
-//                File f = new File(uploadFile);
-////                 write the image
-////                File fileCreate = new File(CommonUtil.getPropertyParams("upload.folder")+CommonConstant.RESOURCE_PATH_BUKTI_TRANSFER, fileName);
-////                try {
-////                    FileUtils.copyFile(f, fileCreate);
-////                }catch (IOException e){
-////                    e.printStackTrace();
-////                }
-//
+        String fileName = "";
+        if (!"".equalsIgnoreCase(uploadString)){
+            BASE64Decoder decoder = new BASE64Decoder();
+            byte[] decodedBytes = decoder.decodeBuffer(uploadString);
+            logger.info("Decoded upload data : " + decodedBytes.length);
+            fileName = branchId + "_" + jenis + "_"+idStruk+".png";
+            String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_BUKTI_TRANSFER + "/" + fileName;
+            logger.info("File save path : " + uploadFile);
+            BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+            if (image == null) {
+                logger.error("Buffered Image is null");
+            }else{
+
+//                write the image
+//                File fileCreate = new File(CommonUtil.getPropertyParams("upload.folder")+CommonConstant.RESOURCE_PATH_BUKTI_TRANSFER, fileName);
 //                try {
-//                    ImageIO.write(image, ".png", f);
+//                    FileUtils.copyFile(f, fileCreate);
 //                }catch (IOException e){
-//                    response.setMsg("[VerifikatorPembayaranAction.uploadStruk] ERROR " + e);
-//                    response.setStatus("error");
-//                    return response;
+//                    e.printStackTrace();
 //                }
-//            }
-//
-//        }
+
+
+                File f = new File(uploadFile);
+
+                try {
+                    ImageIO.write(image, "png", f);
+                }catch (IOException e){
+                    response.setMsg("[VerifikatorPembayaranAction.uploadStruk] ERROR " + e);
+                    response.setStatus("error");
+                    return response;
+                }
+            }
+
+        }
 
         StrukAsuransi strukAsuransi = new StrukAsuransi();
         strukAsuransi.setId(idStruk);
-        strukAsuransi.setUrlFotoStruk(jenis + ".jpg");
+//        strukAsuransi.setUrlFotoStruk(jenis + ".jpg");
+        strukAsuransi.setUrlFotoStruk(fileName);
         strukAsuransi.setLastUpdate(time);
         strukAsuransi.setLastUpdateWho(userLogin);
 

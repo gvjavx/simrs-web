@@ -416,7 +416,7 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-document"></i> Approve Asuransi</span>
+                <h4 class="modal-title"><i class="fa fa-document"></i> <span id="label-modal-detail-asuransi"> Approve Asuransi</span>
                 </h4>
             </div>
             <div class="modal-body">
@@ -442,6 +442,11 @@
                         <div class="col-md-3" align="right">a.n. :</div>
                         <div class="col-md-6"><span id="dt-nama-pasien-asuransi"></span></div>
                     </div>
+
+                    <div class="row top-7" style="display: none; text-align: center" id="dt-bukti">
+
+                    </div>
+
                     <div id="dt-list-tarif" style="display: none">
                         <div class="row top-7">
                             <div class="col-md-9">
@@ -460,10 +465,6 @@
                         </div>
                         <span style="display: none; color: red" id="dt-msg-belum-bayar">Resep Belum Siap / Belum ada Biaya</span>
                         <input type="hidden" id="dt-belum-bayar">
-
-                        <div class="row top-7" style="display: none; text-align: center" id="dt-bukti">
-
-                        </div>
                         <div class="row top-7">
                             <div class="col-md-3" align="right">Cover : </div>
                             <div class="col-md-6"><input type="number" class="form-control input-sm" id="dt-cover-asuransi"/></div>
@@ -490,9 +491,9 @@
                                 </div>
                             </div>
                         </div>
+                        <canvas id="img_ktp_canvas" style="border: solid 1px #ccc; width: 300px;"></canvas>
                     </div>
 
-                    <canvas id="img_ktp_canvas" style="border: solid 1px #ccc; width: 300px;"></canvas>
                     <input type="hidden" id="dt-id-struk">
                 </div>
             </div>
@@ -1028,13 +1029,63 @@
         VerifikatorPembayaranAction.getListStrukAsuransi(idAntrian, function (res) {
             var str = "";
             $.each(res, function (i, item) {
-                if (item.approveFlag == null && item.urlFotoStruk == null && item.jenis == "authorization")
-                    str += "<button class='btn btn-success' onclick=\"viewModalDetailAsuransi(\'"+idAntrian+"\', \'"+item.jenis+"\')\"><i class='fa fa-edit'></i> Authorization</button>";
-                if (item.approveFlag == null && item.urlFotoStruk == null && item.jenis == "confirmation")
-                    str += "<button class='btn btn-success' onclick=\"viewModalDetailAsuransi(\'"+idAntrian+"\', \'"+item.jenis+"\')\"><i class='fa fa-edit'></i> Confirmation</button>";
+                if (item.urlFotoStruk == null && item.approveFlag == null){
+                    if (item.jenis == "authorization")
+                        str += "<button class='btn btn-success' onclick=\"viewModalDetailAsuransi(\'"+idAntrian+"\', \'"+item.jenis+"\')\"><i class='fa fa-edit'></i> Authorization</button>";
+                    if (item.approveFlag == null && item.urlFotoStruk == null && item.jenis == "confirmation")
+                        str += "<button class='btn btn-success' onclick=\"viewModalDetailAsuransi(\'"+idAntrian+"\', \'"+item.jenis+"\')\"><i class='fa fa-edit'></i> Confirmation</button>";
+                } else {
+                    if (item.jenis == "authorization")
+                        str += "<button class='btn btn-success' onclick=\"viewUploadStrukAsuransi(\'"+idAntrian+"\', \'"+item.jenis+"\')\"><i class='fa fa-search'></i> View Authorization</button>";
+                    if (item.jenis == "confirmation")
+                        str += "<button class='btn btn-success' onclick=\"viewUploadStrukAsuransi(\'"+idAntrian+"\', \'"+item.jenis+"\')\"><i class='fa fa-search'></i> View Confrimation</button>";
+                }
             })
 
             $("#list-button-asuransi").html(str);
+        });
+    }
+
+    function viewUploadStrukAsuransi(idAntrian, jenis) {
+        VerifikatorPembayaranAction.getSessionAntrianTelemedic(idAntrian, function (telemedicEntity) {
+            if (telemedicEntity != null){
+                var item = telemedicEntity;
+                $("#modal-detail-asuransi").modal('show');
+                $("#dt-nama-pasien-asuransi").text(item.namaPasien);
+                $("#dt-nama-asuransi").html(item.namaAsuransi);
+                $("#dt-no-kartu-asuransi").text(item.noKartu);
+                $("#dt-cover-asuransi").val(item.jumlahCover);
+                $("#dt-body-struk").hide();
+                $("#btn-save-asuransi").html("");
+
+                VerifikatorPembayaranAction.getStrukAsuransiByIdAntrianAndJenis(idAntrian, jenis, function (res) {
+
+
+                    if (res.urlFotoStruk != null){
+                        var pathFoto = firstpath()+"/images/upload/bukti_transfer/"+res.urlFotoStruk;
+                        var imghtml = "<div class='col-md-9'><img src='"+pathFoto+"' style='max-width: 300px;'/></div>";
+                        $("#dt-bukti").show();
+                        $("#dt-bukti").html(imghtml);
+                    }
+
+//                        console.log(res);
+                    if (res.jenis == "authorization"){
+                        $("#label-modal-detail-asuransi").text("View Authorization");
+                        $("#dt-id-struk").val(res.id);
+                        $("#dt-list-tarif").hide();
+                    }
+
+                    if (res.jenis == "confirmation"){
+                        $("#label-modal-detail-asuransi").text("View Confirmation");
+                        if (item.flagBelumBayar == "Y"){
+                            $("#dt-msg-belum-bayar").show();
+                            $("#dt-belum-bayar").val(item.flagBelumBayar);
+                        }
+                        $("#dt-id-struk").val(res.id);
+                        showListBiaya(idAntrian);
+                    }
+                });
+            }
         });
     }
 
@@ -1051,6 +1102,8 @@
 
                 var btn = "";
                 if (jenis == "approve"){
+                    $("#label-modal-detail-asuransi").text("Approve Pembayaran");
+
                     var pathFoto = firstpath()+"/images/upload/bukti_transfer/"+item.urlFotoStruk;
                     var imghtml = "<div class='col-md-9'><img src='"+pathFoto+"' style='max-width: 300px;'/></div>";
                     $("#dt-bukti").show();
@@ -1068,11 +1121,20 @@
                 } else {
                     VerifikatorPembayaranAction.getStrukAsuransiByIdAntrianAndJenis(idAntrian, jenis, function (res) {
 //                        console.log(res);
-                        if (res.jenis == "authorization"){
+                        if (jenis == "authorization"){
+                            $("#label-modal-detail-asuransi").text("Upload Authorization");
+                            $("#dt-bukti").hide();
+                            $("#dt-bukti").html("");
+                            $("#dt-list-tarif").hide();
+
                             $("#dt-id-struk").val(res.id);
                             btn = "<button type=\"button\" class=\"btn btn-success\" id=\"save-detail-save\" onclick=\"uploadStrukAsuransi(\'"+res.jenis+"\')\"><i class=\"fa fa-arrow-right\"></i> Save</button>";
                         }
-                        if (res.jenis == "confirmation"){
+                        if (jenis == "confirmation"){
+                            $("#label-modal-detail-asuransi").text("Upload Confirmation");
+                            $("#dt-bukti").hide();
+                            $("#dt-bukti").html("");
+
                             if (item.flagBelumBayar == "Y"){
                                 $("#dt-msg-belum-bayar").show();
                                 $("#dt-belum-bayar").val(item.flagBelumBayar);
@@ -1091,7 +1153,7 @@
     function showListBiaya(idAntrian) {
 
         VerifikatorPembayaranAction.getListRiwayatTindakanByIdAntrian(idAntrian, function (res) {
-            console.log("showListPembayaran" + res);
+//            console.log("showListPembayaran" + res);
            var str = "";
            var totalTarif = 0;
            $.each(res, function (i, item) {
