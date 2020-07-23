@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.bataltelemedic.model;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
@@ -16,6 +17,15 @@ public class ItSimrsDokterBatalTelemedicEntity {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private Date batalDate;
+
+    public Date getBatalDate() {
+        return batalDate;
+    }
+
+    public void setBatalDate(Date batalDate) {
+        this.batalDate = batalDate;
+    }
 
     public String getId() {
         return id;

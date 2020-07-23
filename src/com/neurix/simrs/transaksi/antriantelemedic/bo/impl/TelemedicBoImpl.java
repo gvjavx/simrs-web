@@ -23,6 +23,10 @@ import com.neurix.simrs.transaksi.antriantelemedic.dao.TelemedicDao;
 import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
 import com.neurix.simrs.transaksi.antriantelemedic.model.StatusAntrianTelemedic;
+import com.neurix.simrs.transaksi.bataltelemedic.dao.BatalDokterTelemedicDao;
+import com.neurix.simrs.transaksi.bataltelemedic.dao.BatalTelemedicDao;
+import com.neurix.simrs.transaksi.bataltelemedic.model.ItSimrsBatalTelemedicEntity;
+import com.neurix.simrs.transaksi.bataltelemedic.model.ItSimrsDokterBatalTelemedicEntity;
 import com.neurix.simrs.transaksi.hargaobat.dao.HargaObatDao;
 import com.neurix.simrs.transaksi.hargaobat.model.MtSimrsHargaObatEntity;
 import com.neurix.simrs.transaksi.reseponline.dao.PengirimanObatDao;
@@ -41,9 +45,10 @@ import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Date;
 import java.util.stream.Collectors;
 
 /**
@@ -64,6 +69,16 @@ public class TelemedicBoImpl implements TelemedicBo {
     private BranchDao branchDao;
     private AsuransiDao asuransiDao;
     private StrukAsuransiDao strukAsuransiDao;
+    private BatalTelemedicDao batalTelemedicDao;
+    private BatalDokterTelemedicDao batalDokterTelemedicDao;
+
+    public void setBatalTelemedicDao(BatalTelemedicDao batalTelemedicDao) {
+        this.batalTelemedicDao = batalTelemedicDao;
+    }
+
+    public void setBatalDokterTelemedicDao(BatalDokterTelemedicDao batalDokterTelemedicDao) {
+        this.batalDokterTelemedicDao = batalDokterTelemedicDao;
+    }
 
     public void setStrukAsuransiDao(StrukAsuransiDao strukAsuransiDao) {
         this.strukAsuransiDao = strukAsuransiDao;
@@ -181,6 +196,13 @@ public class TelemedicBoImpl implements TelemedicBo {
                 antrianTelemedic.setIdDiagnosa(telemedicEntity.getIdDiagnosa());
                 antrianTelemedic.setKetDiagnosa(telemedicEntity.getKetDiagnosa());
 
+                // flag batal dokter;
+                ItSimrsBatalTelemedicEntity batalTelemedicEntity = getBatalTemedicEntityByIdAntrian(telemedicEntity.getId(), telemedicEntity.getIdDokter(), telemedicEntity.getIdPelayanan(), telemedicEntity.getCreatedDate());
+                if (batalTelemedicEntity != null){
+                    antrianTelemedic.setFlagBatalDokter("Y");
+                    antrianTelemedic.setIdBatalDokterTelemedic(batalTelemedicEntity.getId());
+                }
+
                 if (telemedicEntity.getIdPelayanan() != null && !"".equalsIgnoreCase(telemedicEntity.getIdPelayanan())) {
                     antrianTelemedic.setNamaPelayanan(getPelayananById(telemedicEntity.getIdPelayanan()).getNamaPelayanan());
                 }
@@ -263,6 +285,50 @@ public class TelemedicBoImpl implements TelemedicBo {
         }
 
         return results;
+    }
+
+    private ItSimrsBatalTelemedicEntity getBatalTemedicEntityByIdAntrian(String idAntrian, String idDokter, String idPelayanan, Timestamp createdDate){
+
+        java.sql.Date date = new java.sql.Date(createdDate.getTime());
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_dokter", idDokter);
+        hsCriteria.put("id_pelayanan", idPelayanan);
+        hsCriteria.put("flag", "Y");
+        hsCriteria.put("batal_date", date);
+
+        List<ItSimrsDokterBatalTelemedicEntity> dokterBatalTelemedicEntities = new ArrayList<>();
+
+        try {
+            dokterBatalTelemedicEntities = batalDokterTelemedicDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.info("[TelemedicBoImpl.getBatalTemedicEntityByIdAntrian] ERROR. when search Dokter Batal Telemedic. ", e);
+            throw new GeneralBOException("[TelemedicBoImpl.getBatalTemedicEntityByIdAntrian] ERROR. when search Dokter Batal Telemedic. "+ e.getMessage());
+        }
+
+        if (dokterBatalTelemedicEntities.size() > 0){
+            ItSimrsDokterBatalTelemedicEntity batalTelemedicEntity = dokterBatalTelemedicEntities.get(0);
+
+            hsCriteria = new HashMap();
+            hsCriteria.put("id_batal_dokter", batalTelemedicEntity.getId());
+            hsCriteria.put("id_antrian_telemedic", idAntrian);
+            hsCriteria.put("flag", "Y");
+
+            List<ItSimrsBatalTelemedicEntity> batalTelemedicEntities = new ArrayList<>();
+
+            try {
+                batalTelemedicEntities = batalTelemedicDao.getByCriteria(hsCriteria);
+            } catch (HibernateException e){
+                logger.info("[TelemedicBoImpl.getBatalTemedicEntityByIdAntrian] ERROR. when search Telemedic Batal. ", e);
+                throw new GeneralBOException("[TelemedicBoImpl.getBatalTemedicEntityByIdAntrian] ERROR. when search Telemedic Batal. "+ e.getMessage());
+            }
+
+            if (batalTelemedicEntities.size() > 0){
+                return batalTelemedicEntities.get(0);
+            }
+        }
+
+        return null;
     }
 
     private String labelStatusAsuransi(String idAntrian) throws GeneralBOException{
@@ -352,13 +418,13 @@ public class TelemedicBoImpl implements TelemedicBo {
                 case "SK":
                     return "Selesai Konsultasi";
                 case "LL":
-                    return "Antrian Long List . . .";
+                    return "Antrian Long List";
                 case "WL":
-                    return "Waiting List . . .";
+                    return "Waiting List";
                 case "SL":
-                    return "Antrian Short List . . .";
+                    return "Antrian Short List";
                 case "ER":
-                    return "Pembayaran E Resep . . .";
+                    return "Pembayaran E Resep";
                 case "FN":
                     return "Selesai";
                 default:

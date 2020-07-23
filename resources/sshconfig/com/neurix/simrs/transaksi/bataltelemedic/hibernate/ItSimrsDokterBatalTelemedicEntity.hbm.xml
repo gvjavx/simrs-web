@@ -35,6 +35,9 @@
             <basic name="lastUpdateWho">
                 <column name="last_update_who"/>
             </basic>
+            <basic name="batalDate">
+                <column name="batal_date"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

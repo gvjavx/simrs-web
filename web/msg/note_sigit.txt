@@ -529,4 +529,6 @@
 
     CREATE SEQUENCE seq_batal_dokter_telemedic;
     CREATE SEQUENCE seq_batal_telemedic;
+
+    ALTER TABLE it_simrs_batal_dokter_telemedic ADD COLUMN batal_date DATE;
 <<< //
