@@ -247,7 +247,7 @@ public class PembayaranController implements ModelDriven<Object> {
                 pembayaranMobile.setJenisPengambilan(item.getJenisPengambilan());
                 pembayaranMobile.setIdItem(item.getIdItem());
 
-                pembayaranMobile.setCreatedDate(CommonUtil.addJamBayar(item.getLastUpdate()));
+                pembayaranMobile.setCreatedDate(CommonUtil.addJamBayar(item.getCreatedDate()));
 
                 listOfPembayaran.add(pembayaranMobile);
             }

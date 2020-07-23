@@ -35,4 +35,7 @@ public interface TelemedicBo {
     public void createStrukAsuransi(ItSimrsAntrianTelemedicEntity bean, String jenis) throws GeneralBOException;
     public List<ItSimrsStrukAsuransiEntity> getStrukAsuransi(StrukAsuransi bean) throws GeneralBOException;
     public void updateFlagApproveStrukAsuransi(StrukAsuransi bean) throws GeneralBOException;
+
+    public void generateListPembayaran(ItSimrsAntrianTelemedicEntity bean, String branchId, String tipe, String kodeBank, String jenisPeriksa) throws GeneralBOException;
+
 }

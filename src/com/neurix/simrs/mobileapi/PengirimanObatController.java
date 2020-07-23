@@ -43,6 +43,15 @@ public class PengirimanObatController implements ModelDriven<Object> {
     private String idPasien;
     private String idTele;
     private String idPengirimanObat;
+    private String keterangan;
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
 
     public NotifikasiBo getNotifikasiBoProxy() {
         return notifikasiBoProxy;
@@ -176,6 +185,7 @@ public class PengirimanObatController implements ModelDriven<Object> {
                 pengirimanObatMobile.setLat(item.getLat());
                 pengirimanObatMobile.setLon(item.getLon());
                 pengirimanObatMobile.setFotoKirim(item.getFotoKirim());
+                pengirimanObatMobile.setKeterangan(item.getKeterangan());
 
                 listOfPengirimanObat.add(pengirimanObatMobile);
             }
@@ -358,6 +368,7 @@ public class PengirimanObatController implements ModelDriven<Object> {
             newPengirimanObat.setLastUpdateWho(idKurir);
             newPengirimanObat.setAction("U");
             newPengirimanObat.setFotoKirim(fileName);
+            newPengirimanObat.setKeterangan(keterangan);
 
             try {
                 telemedicBoProxy.saveEditPengirimanObat(newPengirimanObat);
@@ -394,6 +405,41 @@ public class PengirimanObatController implements ModelDriven<Object> {
             }
         }
 
+        if(action.equalsIgnoreCase("getHistoryPengiriman")){
+
+            List<PengirimanObat> pengirimanObatList = new ArrayList<>();
+            listOfPengirimanObat = new ArrayList<>();
+
+            PengirimanObat bean = new PengirimanObat();
+            bean.setIdKurir(idKurir);
+            bean.setFlag("");
+
+            try {
+               pengirimanObatList = telemedicBoProxy.getPengirimanByCriteria(bean);
+            } catch (GeneralBOException e){
+                logger.error("[PengirimanObatController.create] ERROR. ", e);
+                throw new GeneralBOException("[PengirimanObatController.create] ERROR. ", e);
+            }
+
+            if (pengirimanObatList.size() > 0) {
+                for (PengirimanObat item : pengirimanObatList){
+                    PengirimanObatMobile pengirimanObatMobile = new PengirimanObatMobile();
+                    pengirimanObatMobile.setId(item.getId());
+                    pengirimanObatMobile.setIdResep(item.getIdResep());
+                    pengirimanObatMobile.setIdPelayanan(item.getIdPelayanan());
+                    pengirimanObatMobile.setIdKurir(item.getIdKurir());
+                    pengirimanObatMobile.setBranchId(item.getBranchId());
+                    pengirimanObatMobile.setDesaId(item.getDesaId());
+                    pengirimanObatMobile.setFlag(item.getFlag());
+                    pengirimanObatMobile.setFlagDiterimaPasien(item.getFlagDiterimaPasien());
+                    pengirimanObatMobile.setFlagPickup(item.getFlagPickup());
+                    pengirimanObatMobile.setFotoKirim(item.getFotoKirim());
+
+                    listOfPengirimanObat.add(pengirimanObatMobile);
+                }
+            }
+
+        }
 
         logger.info("[PengirimanObatController.create] END >>>");
         return new DefaultHttpHeaders("create").disableCaching();

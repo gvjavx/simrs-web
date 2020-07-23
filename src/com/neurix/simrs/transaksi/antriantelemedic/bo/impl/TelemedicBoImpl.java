@@ -537,7 +537,8 @@ public class TelemedicBoImpl implements TelemedicBo {
         }
     }
 
-    private void generateListPembayaran(ItSimrsAntrianTelemedicEntity bean, String branchId, String tipe, String kodeBank, String jenisPeriksa) throws GeneralBOException{
+    @Override
+    public void generateListPembayaran(ItSimrsAntrianTelemedicEntity bean, String branchId, String tipe, String kodeBank, String jenisPeriksa) throws GeneralBOException{
         logger.info("[TelemedicBoIml.generateListPembayaran] START >>>");
 
         if ("konsultasi".equalsIgnoreCase(tipe)){
@@ -866,6 +867,8 @@ public class TelemedicBoImpl implements TelemedicBo {
         logger.info("[VerifikatorPembayaranBoImpl.createPembayaranResep] START >>>");
     }
 
+
+
     @Override
     public List<PengirimanObat> getPengirimanByCriteria(PengirimanObat bean) throws GeneralBOException{
         logger.info("[TelemedicBoImpl.getPembayaranByCriteria] START <<<");
@@ -889,7 +892,9 @@ public class TelemedicBoImpl implements TelemedicBo {
         if (bean.getIdResep() != null) {
             hsCriteria.put("id_resep", bean.getIdResep());
         }
-        hsCriteria.put("flag", "Y");
+        if(bean.getFlag() != null) {
+            hsCriteria.put("flag", bean.getFlag());
+        } else hsCriteria.put("flag", "Y");
 
         try {
             result = pengirimanObatDao.getByCriteria(hsCriteria);
@@ -973,6 +978,7 @@ public class TelemedicBoImpl implements TelemedicBo {
         entity.setLat(bean.getLat());
         entity.setLon(bean.getLon());
         entity.setFotoKirim(bean.getFotoKirim());
+        entity.setKeterangan(bean.getKeterangan());
 
         try {
             pengirimanObatDao.updateAndSave(entity);

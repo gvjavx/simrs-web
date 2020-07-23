@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -207,6 +208,8 @@ public class DokterController implements ModelDriven<Object> {
 
     public HttpHeaders create() {
         logger.info("[DokterController.create] start process POST / <<<");
+
+        Timestamp now = new Timestamp(System.currentTimeMillis());
 
         List<Dokter> result = new ArrayList<>();
         Biodata resultBio = new Biodata();

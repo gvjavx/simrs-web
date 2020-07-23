@@ -42,6 +42,7 @@ public class PengirimanObatMobile {
     private String fotoKirim;
     private String keterangan;
 
+
     public String getKeterangan() {
         return keterangan;
     }

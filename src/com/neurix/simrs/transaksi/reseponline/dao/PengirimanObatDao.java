@@ -78,7 +78,7 @@ public class PengirimanObatDao extends GenericDao<ItSimrsPengirimanObatEntity, S
 
        List<PengirimanObat> listOfResult = new ArrayList<>();
         List<Object[]> results = new ArrayList<Object[]>();
-        query = "SELECT a.id, a.id_kurir, a.id_pasien, a.id_pelayanan, a.branch_id, a.alamat, a.no_telp, a.flag_pickup, a.flag_diterima_pasien, b.nama, b.no_polisi, b.no_telp as no_telp_kurir, c.nama as nama_pasien, d.branch_name, e.nama_pelayanan, a.id_resep, a.lat, a.lon, a.foto_kirim\n" +
+        query = "SELECT a.id, a.id_kurir, a.id_pasien, a.id_pelayanan, a.branch_id, a.alamat, a.no_telp, a.flag_pickup, a.flag_diterima_pasien, b.nama, b.no_polisi, b.no_telp as no_telp_kurir, c.nama as nama_pasien, d.branch_name, e.nama_pelayanan, a.id_resep, a.lat, a.lon, a.foto_kirim, a.keterangan\n" +
                 "FROM it_simrs_pengiriman_obat a\n" +
                 "INNER JOIN im_simrs_kurir b ON a.id_kurir = b.id_kurir\n" +
                 "INNER JOIN im_simrs_pasien c ON a.id_pasien = c.id_pasien\n" +
@@ -112,6 +112,7 @@ public class PengirimanObatDao extends GenericDao<ItSimrsPengirimanObatEntity, S
            result.setLat((String) row[16]);
            result.setLon((String) row[17]);
            result.setFotoKirim((String) row[18]);
+           result.setKeterangan((String) row[19]);
 
            listOfResult.add(result);
        }
