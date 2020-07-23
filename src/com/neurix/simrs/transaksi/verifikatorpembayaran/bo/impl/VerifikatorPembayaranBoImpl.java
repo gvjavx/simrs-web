@@ -182,9 +182,6 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
                 ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = telemedicDao.getById("id", bean.getIdAntrianTelemedic());
                 if (antrianTelemedicEntity != null){
 
-
-
-
                     // jika asuransi maka mencari data authorization dan confirmation
                     // jika konsultasi dan
                     if ("asuransi".equalsIgnoreCase(antrianTelemedicEntity.getIdJenisPeriksaPasien())){

@@ -30,7 +30,7 @@ public class BatalDokterTelemedicDao extends GenericDao<ItSimrsDokterBatalTeleme
         if (mapCriteria.get("id") != null)
             criteria.add(Restrictions.eq("id", mapCriteria.get("id").toString()));
         if (mapCriteria.get("id_dokter") != null)
-            criteria.add(Restrictions.eq("idDokter", mapCriteria.get("Restrictions").toString()));
+            criteria.add(Restrictions.eq("idDokter", mapCriteria.get("id_dokter").toString()));
         if (mapCriteria.get("id_pelayanan") != null)
             criteria.add(Restrictions.eq("idPelayanan", mapCriteria.get("id_pelayanan").toString()));
         if (mapCriteria.get("flag") != null)

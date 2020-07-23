@@ -310,7 +310,7 @@ public class TelemedicBoImpl implements TelemedicBo {
             ItSimrsDokterBatalTelemedicEntity batalTelemedicEntity = dokterBatalTelemedicEntities.get(0);
 
             hsCriteria = new HashMap();
-            hsCriteria.put("id_batal_dokter", batalTelemedicEntity.getId());
+            hsCriteria.put("id_dokter_batal", batalTelemedicEntity.getId());
             hsCriteria.put("id_antrian_telemedic", idAntrian);
             hsCriteria.put("flag", "Y");
 
