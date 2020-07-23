@@ -473,3 +473,60 @@
     ALTER TABLE it_simrs_header_detail_checkup
         ADD COLUMN dibayar_pasien NUMERIC;
 <<< //
+
+// >>> 2020-07-23
+    -- Table: public.it_simrs_batal_dokter_telemedic
+
+    -- DROP TABLE public.it_simrs_batal_dokter_telemedic;
+
+    CREATE TABLE public.it_simrs_batal_dokter_telemedic
+    (
+        id character varying(30) COLLATE pg_catalog."default" NOT NULL,
+        id_dokter character varying(50) COLLATE pg_catalog."default",
+        id_pelayanan character varying(30) COLLATE pg_catalog."default",
+        alasan text COLLATE pg_catalog."default",
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        CONSTRAINT it_simrs_dokter_batal_telemedic_pkey PRIMARY KEY (id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.it_simrs_batal_dokter_telemedic
+        OWNER to postgres;
+
+    -- Table: public.it_simrs_batal_telemedic
+
+    -- DROP TABLE public.it_simrs_batal_telemedic;
+
+    CREATE TABLE public.it_simrs_batal_telemedic
+    (
+        id character varying(30) COLLATE pg_catalog."default" NOT NULL,
+        id_antrian_telemedic character varying(30) COLLATE pg_catalog."default",
+        id_dokter_batal character varying(30) COLLATE pg_catalog."default",
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        no_jurnal character varying(100) COLLATE pg_catalog."default",
+        CONSTRAINT it_simrs_telemedic_batal_pkey PRIMARY KEY (id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.it_simrs_batal_telemedic
+        OWNER to postgres;
+
+    CREATE SEQUENCE seq_batal_dokter_telemedic;
+    CREATE SEQUENCE seq_batal_telemedic;
+<<< //
