@@ -2507,7 +2507,6 @@ public class VerifikatorPembayaranAction {
     }
 
     public CrudResponse approveConfirmAsuransi(String idAntrian){
-
         String userLogin = CommonUtil.userLogin();
         Timestamp times = new Timestamp(System.currentTimeMillis());
 
@@ -2531,7 +2530,6 @@ public class VerifikatorPembayaranAction {
             response.setMsg("[VerifikatorPembayaranAction.approveConfirmAsuransi] ERROR " + e);
             return response;
         }
-
         return response;
     }
 }
