@@ -653,7 +653,8 @@ public class TelemedicBoImpl implements TelemedicBo {
         }
     }
 
-    private void generateListPembayaran(ItSimrsAntrianTelemedicEntity bean, String branchId, String tipe, String kodeBank, String jenisPeriksa) throws GeneralBOException{
+    @Override
+    public void generateListPembayaran(ItSimrsAntrianTelemedicEntity bean, String branchId, String tipe, String kodeBank, String jenisPeriksa) throws GeneralBOException{
         logger.info("[TelemedicBoIml.generateListPembayaran] START >>>");
 
         if ("konsultasi".equalsIgnoreCase(tipe)){
@@ -983,6 +984,25 @@ public class TelemedicBoImpl implements TelemedicBo {
     }
 
     @Override
+    public List<PengirimanObat> getHistoryPengiriman(String idKurir) {
+        logger.info("[TelemedicBoImpl.getHistoryPengiriman] START <<<");
+
+        List<PengirimanObat> listOfResult = new ArrayList<>();
+
+        try {
+            listOfResult = pengirimanObatDao.getHistoryPengiriman(idKurir);
+        }catch (GeneralBOException e) {
+            logger.error("[TelemedicBoImpl.getListPengirimanById] ERROR. ", e);
+            throw new GeneralBOException("[TelemedicBoImpl.getListPengirimanById] ERROR. ", e);
+        }
+
+        logger.info("[TelemedicBoImpl.getHistoryPengiriman] END <<<");
+        return listOfResult;
+
+    }
+
+
+    @Override
     public List<PengirimanObat> getPengirimanByCriteria(PengirimanObat bean) throws GeneralBOException{
         logger.info("[TelemedicBoImpl.getPembayaranByCriteria] START <<<");
 
@@ -1005,7 +1025,9 @@ public class TelemedicBoImpl implements TelemedicBo {
         if (bean.getIdResep() != null) {
             hsCriteria.put("id_resep", bean.getIdResep());
         }
-        hsCriteria.put("flag", "Y");
+        if(bean.getFlag() != null) {
+            hsCriteria.put("flag", bean.getFlag());
+        }
 
         try {
             result = pengirimanObatDao.getByCriteria(hsCriteria);
@@ -1014,7 +1036,6 @@ public class TelemedicBoImpl implements TelemedicBo {
             logger.error("[VerifikatorPembayaranBoImpl.insertResepOnline] ERROR. ", e);
             throw new GeneralBOException("[VerifikatorPembayaranBoImpl.insertResepOnline] ERROR. ", e);
         }
-
 
         for (ItSimrsPengirimanObatEntity item : result) {
             PengirimanObat pengirimanObat = new PengirimanObat();
@@ -1089,6 +1110,7 @@ public class TelemedicBoImpl implements TelemedicBo {
         entity.setLat(bean.getLat());
         entity.setLon(bean.getLon());
         entity.setFotoKirim(bean.getFotoKirim());
+        entity.setKeterangan(bean.getKeterangan());
 
         try {
             pengirimanObatDao.updateAndSave(entity);

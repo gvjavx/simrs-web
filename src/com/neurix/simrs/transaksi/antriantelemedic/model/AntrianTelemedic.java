@@ -83,6 +83,16 @@ public class AntrianTelemedic {
         this.flagBatalDokter = flagBatalDokter;
     }
 
+    private String stCreatedDate;
+
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
+
     public String getLabelStatusAsuransi() {
         return labelStatusAsuransi;
     }

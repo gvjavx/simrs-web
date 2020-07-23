@@ -672,6 +672,22 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
     }
 
     @Override
+    public void saveAdd(ItSimrsPembayaranOnlineEntity bean) throws GeneralBOException {
+        logger.info("[VerifikatorPembayaranBoImpl.saveEdit] Start >>>>>>>>");
+
+
+
+        try {
+            verifikatorPembayaranDao.addAndSave(bean);
+        } catch (GeneralBOException e){
+            logger.error("[VerifikatorPembayaranBoImpl.saveEdit] Error when update ", e);
+            throw new GeneralBOException("[VerifikatorPembayaranBoImpl.saveEdit] Error when update " + e.getMessage());
+        }
+
+        logger.info("[VerifikatorPembayaranBoImpl.saveEdit] End <<<<<<<<");
+    }
+
+    @Override
     public String approveTransaksiResep(HeaderCheckup bean, String idTransaksi) throws GeneralBOException {
         logger.info("[VerifikatorPembayaranBoImpl.approveTransaksiResep] Start >>>>>>>>");
 
