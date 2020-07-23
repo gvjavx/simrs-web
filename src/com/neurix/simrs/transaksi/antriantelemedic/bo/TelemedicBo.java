@@ -40,4 +40,5 @@ public interface TelemedicBo {
 
     public void generateListPembayaran(ItSimrsAntrianTelemedicEntity bean, String branchId, String tipe, String kodeBank, String jenisPeriksa) throws GeneralBOException;
 
+    public List<ItSimrsAntrianTelemedicEntity> processBatalDokter(AntrianTelemedic bean, String alasan) throws GeneralBOException;
 }

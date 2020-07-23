@@ -102,6 +102,16 @@ public class TelemedicineController implements ModelDriven<Object> {
 
     private String dibayarPasien;
 
+    private String alasan;
+
+    public String getAlasan() {
+        return alasan;
+    }
+
+    public void setAlasan(String alasan) {
+        this.alasan = alasan;
+    }
+
     public String getDibayarPasien() {
         return dibayarPasien;
     }
@@ -1191,6 +1201,51 @@ public class TelemedicineController implements ModelDriven<Object> {
             } catch (GeneralBOException e){
                 logger.error("[TelemedicineController.insertResep] Error, " + e.getMessage());
             }
+        } else if (action.equalsIgnoreCase("batalDokter")) {
+
+            List<ItSimrsAntrianTelemedicEntity> listBatal = new ArrayList<>();
+
+            AntrianTelemedic bean = new AntrianTelemedic();
+            bean.setIdPelayanan(idPelayanan);
+            bean.setIdDokter(idDokter);
+
+            try {
+               listBatal = telemedicBoProxy.processBatalDokter(bean, alasan);
+               model.setMessage("Success");
+            } catch (GeneralBOException e) {
+                logger.error("[TelemedicineController.insertResep] Error, " + e.getMessage());
+            }
+
+            //push notif
+            if (listBatal.size() > 0) {
+                for (ItSimrsAntrianTelemedicEntity item : listBatal){
+                    Notifikasi notifBean = new Notifikasi();
+                    notifBean.setTipeNotifId("TN11");
+                    notifBean.setNip(item.getIdPasien());
+                    notifBean.setNamaPegawai("admin");
+                    notifBean.setNote("Silahkan buka aplikasi untuk melakukan pembayaran resep");
+                    notifBean.setTo(item.getIdPasien());
+                    notifBean.setFromPerson("admin");
+                    notifBean.setNoRequest(item.getId());
+                    notifBean.setFlag("Y");
+                    notifBean.setRead("N");
+                    notifBean.setAction("C");
+                    notifBean.setCreatedDate(now);
+                    notifBean.setLastUpdate(now);
+                    notifBean.setCreatedWho("admin");
+                    notifBean.setLastUpdateWho("admin");
+
+                    notifikasiBoProxy.saveAdd(notifBean);
+
+                    NotifikasiFcm notif = new NotifikasiFcm();
+                    notif.setUserId(item.getIdPasien());
+                    List<NotifikasiFcm> fcm = notifikasiFcmBoProxy.getByCriteria(notif);
+                    FirebasePushNotif.sendNotificationFirebase(fcm.get(0).getTokenFcm(),"Dokter Membatalkan Telemedic", "Alasan: " + alasan, "BAYAR_RESEP", fcm.get(0).getOs(), null);
+
+                }
+            }
+
+
         }
 
         logger.info("[TelemedicineController.create] end process POST / <<<");
