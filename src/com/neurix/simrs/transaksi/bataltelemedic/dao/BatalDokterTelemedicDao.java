@@ -8,6 +8,7 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.sql.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -29,11 +30,13 @@ public class BatalDokterTelemedicDao extends GenericDao<ItSimrsDokterBatalTeleme
         if (mapCriteria.get("id") != null)
             criteria.add(Restrictions.eq("id", mapCriteria.get("id").toString()));
         if (mapCriteria.get("id_dokter") != null)
-            criteria.add(Restrictions.eq("idDokter", mapCriteria.get("Restrictions").toString()));
+            criteria.add(Restrictions.eq("idDokter", mapCriteria.get("id_dokter").toString()));
         if (mapCriteria.get("id_pelayanan") != null)
             criteria.add(Restrictions.eq("idPelayanan", mapCriteria.get("id_pelayanan").toString()));
         if (mapCriteria.get("flag") != null)
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
+        if (mapCriteria.get("batal_date") != null)
+            criteria.add(Restrictions.eq("batalDate", (Date) mapCriteria.get("batal_date")));
 
         return criteria.list();
     }

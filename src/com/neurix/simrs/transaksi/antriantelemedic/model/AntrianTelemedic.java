@@ -64,6 +64,24 @@ public class AntrianTelemedic {
     private BigDecimal dibayarPasien;
     private String urlFotoStruk;
     private String labelStatusAsuransi;
+    private String flagBatalDokter;
+    private String idBatalDokterTelemedic;
+
+    public String getIdBatalDokterTelemedic() {
+        return idBatalDokterTelemedic;
+    }
+
+    public void setIdBatalDokterTelemedic(String idBatalDokterTelemedic) {
+        this.idBatalDokterTelemedic = idBatalDokterTelemedic;
+    }
+
+    public String getFlagBatalDokter() {
+        return flagBatalDokter;
+    }
+
+    public void setFlagBatalDokter(String flagBatalDokter) {
+        this.flagBatalDokter = flagBatalDokter;
+    }
 
     public String getLabelStatusAsuransi() {
         return labelStatusAsuransi;

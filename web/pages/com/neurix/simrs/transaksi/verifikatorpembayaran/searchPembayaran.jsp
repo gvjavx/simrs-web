@@ -253,12 +253,18 @@
                                         </s:if>
                                     </td>
                                     <td align="center">
-                                        <s:if test='#row.statusTransaksi == "finish"'>
-                                            <button class="btn btn-sm btn-primary" onclick="viewDetail('<s:property value="id"/>','<s:property value="idJenisPeriksaPasien"/>')"><i class="fa fa-search"></i></button>
+                                        <s:if test='#row.flagBatalDokter == "Y"'>
+                                            <button class="btn btn-sm btn-danger" onclick="viewDetail('<s:property value="idBatalDokterTelemedic"/>','<s:property value="idJenisPeriksaPasien"/>')"><i class="fa fa-times"></i> Approve Batal</button>
                                         </s:if>
                                         <s:else>
-                                            <button class="btn btn-sm btn-primary" onclick="viewDetail('<s:property value="id"/>','<s:property value="idJenisPeriksaPasien"/>')"><i class="fa fa-edit"></i></button>
+                                            <s:if test='#row.statusTransaksi == "finish"'>
+                                                <button class="btn btn-sm btn-primary" onclick="viewDetail('<s:property value="id"/>','<s:property value="idJenisPeriksaPasien"/>')"><i class="fa fa-search"></i></button>
+                                            </s:if>
+                                            <s:else>
+                                                <button class="btn btn-sm btn-primary" onclick="viewDetail('<s:property value="id"/>','<s:property value="idJenisPeriksaPasien"/>')"><i class="fa fa-edit"></i></button>
+                                            </s:else>
                                         </s:else>
+
                                         <%--<button class="btn btn-sm btn-primary" onclick="showDialog('loading')">loading test</button>--%>
                                         <%--<button class="btn btn-sm btn-primary" onclick="showDialog('success')">success test</button>--%>
                                         <%--<button class="btn btn-sm btn-primary" onclick="showDialog('error')">error test</button>--%>

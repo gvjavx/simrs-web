@@ -19,6 +19,8 @@
           p:branchDao-ref="branchDao"
           p:asuransiDao-ref="asuransiDao"
           p:strukAsuransiDao-ref="strukAsuransiDao"
+          p:batalDokterTelemedicDao-ref="batalDokterTelemedicDao"
+          p:batalTelemedicDao-ref="batalTelemedicDao"
     />
 
     <bean id="telemedicineController" class="com.neurix.simrs.mobileapi.TelemedicineController"
@@ -68,5 +70,9 @@
     <bean id="kurirDao" class="com.neurix.simrs.master.kurir.dao.KurirDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="branchDao" class="com.neurix.authorization.company.dao.BranchDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="batalDokterTelemedicDao" class="com.neurix.simrs.transaksi.bataltelemedic.dao.BatalDokterTelemedicDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="batalTelemedicDao" class="com.neurix.simrs.transaksi.bataltelemedic.dao.BatalTelemedicDao"
           p:sessionFactory-ref="sessionFactory" />
 </beans>
