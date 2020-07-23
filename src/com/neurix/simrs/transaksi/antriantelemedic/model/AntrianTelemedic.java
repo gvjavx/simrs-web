@@ -65,6 +65,16 @@ public class AntrianTelemedic {
     private String urlFotoStruk;
     private String labelStatusAsuransi;
 
+    private String stCreatedDate;
+
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
+
     public String getLabelStatusAsuransi() {
         return labelStatusAsuransi;
     }

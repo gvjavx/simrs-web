@@ -26,6 +26,8 @@ public interface TelemedicBo {
 
     public List<PengirimanObat> getListPengirimanById(String idKurir, String idPasien) throws  GeneralBOException;
     public List<PengirimanObat> getPengirimanByCriteria(PengirimanObat bean) throws GeneralBOException;
+    public List<PengirimanObat> getHistoryPengiriman(String idKurir) throws GeneralBOException;
+
     public void saveAddPengirimanObat(PengirimanObat bean) throws GeneralBOException;
     public void saveEditPengirimanObat(PengirimanObat bean) throws GeneralBOException;
     public BigDecimal insertResepOnline(String idTransaksiOnline, List<TransaksiObatDetail> listObat) throws GeneralBOException;

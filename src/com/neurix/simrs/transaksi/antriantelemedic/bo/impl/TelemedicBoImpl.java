@@ -917,6 +917,23 @@ public class TelemedicBoImpl implements TelemedicBo {
         logger.info("[VerifikatorPembayaranBoImpl.createPembayaranResep] START >>>");
     }
 
+    @Override
+    public List<PengirimanObat> getHistoryPengiriman(String idKurir) {
+        logger.info("[TelemedicBoImpl.getHistoryPengiriman] START <<<");
+
+        List<PengirimanObat> listOfResult = new ArrayList<>();
+
+        try {
+            listOfResult = pengirimanObatDao.getHistoryPengiriman(idKurir);
+        }catch (GeneralBOException e) {
+            logger.error("[TelemedicBoImpl.getListPengirimanById] ERROR. ", e);
+            throw new GeneralBOException("[TelemedicBoImpl.getListPengirimanById] ERROR. ", e);
+        }
+
+        logger.info("[TelemedicBoImpl.getHistoryPengiriman] END <<<");
+        return listOfResult;
+
+    }
 
 
     @Override
@@ -944,7 +961,7 @@ public class TelemedicBoImpl implements TelemedicBo {
         }
         if(bean.getFlag() != null) {
             hsCriteria.put("flag", bean.getFlag());
-        } else hsCriteria.put("flag", "Y");
+        }
 
         try {
             result = pengirimanObatDao.getByCriteria(hsCriteria);
@@ -953,7 +970,6 @@ public class TelemedicBoImpl implements TelemedicBo {
             logger.error("[VerifikatorPembayaranBoImpl.insertResepOnline] ERROR. ", e);
             throw new GeneralBOException("[VerifikatorPembayaranBoImpl.insertResepOnline] ERROR. ", e);
         }
-
 
         for (ItSimrsPengirimanObatEntity item : result) {
             PengirimanObat pengirimanObat = new PengirimanObat();

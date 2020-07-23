@@ -199,6 +199,7 @@ public class PengirimanObatController implements ModelDriven<Object> {
             PengirimanObat bean = new PengirimanObat();
             bean.setIdPasien(idPasien);
             bean.setId(idPengirimanObat);
+            bean.setFlag("Y");
 
             try{
                result = telemedicBoProxy.getPengirimanByCriteria(bean);
@@ -230,6 +231,7 @@ public class PengirimanObatController implements ModelDriven<Object> {
             PengirimanObat bean = new PengirimanObat();
             bean.setIdPasien(idPasien);
             bean.setId(idPengirimanObat);
+            bean.setFlag("Y");
 
             try{
                 result = telemedicBoProxy.getPengirimanByCriteria(bean);
@@ -287,6 +289,7 @@ public class PengirimanObatController implements ModelDriven<Object> {
             PengirimanObat bean = new PengirimanObat();
             bean.setIdPasien(idPasien);
             bean.setId(idPengirimanObat);
+            bean.setFlag("Y");
 
             try{
                 result = telemedicBoProxy.getPengirimanByCriteria(bean);
@@ -355,6 +358,7 @@ public class PengirimanObatController implements ModelDriven<Object> {
             PengirimanObat bean = new PengirimanObat();
             bean.setIdPasien(idPasien);
             bean.setId(idPengirimanObat);
+            bean.setFlag("Y");
 
             try {
                 result = telemedicBoProxy.getPengirimanByCriteria(bean);
@@ -407,36 +411,44 @@ public class PengirimanObatController implements ModelDriven<Object> {
 
         if(action.equalsIgnoreCase("getHistoryPengiriman")){
 
-            List<PengirimanObat> pengirimanObatList = new ArrayList<>();
+            List<PengirimanObat> result = new ArrayList<>();
             listOfPengirimanObat = new ArrayList<>();
 
-            PengirimanObat bean = new PengirimanObat();
-            bean.setIdKurir(idKurir);
-            bean.setFlag("");
-
             try {
-               pengirimanObatList = telemedicBoProxy.getPengirimanByCriteria(bean);
+               result = telemedicBoProxy.getHistoryPengiriman(idKurir);
             } catch (GeneralBOException e){
                 logger.error("[PengirimanObatController.create] ERROR. ", e);
                 throw new GeneralBOException("[PengirimanObatController.create] ERROR. ", e);
             }
 
-            if (pengirimanObatList.size() > 0) {
-                for (PengirimanObat item : pengirimanObatList){
+            if (result.size() > 0) {
+                for (PengirimanObat item : result) {
                     PengirimanObatMobile pengirimanObatMobile = new PengirimanObatMobile();
                     pengirimanObatMobile.setId(item.getId());
-                    pengirimanObatMobile.setIdResep(item.getIdResep());
-                    pengirimanObatMobile.setIdPelayanan(item.getIdPelayanan());
                     pengirimanObatMobile.setIdKurir(item.getIdKurir());
+                    pengirimanObatMobile.setIdPasien(item.getIdPasien());
+                    pengirimanObatMobile.setIdPelayanan(item.getIdPelayanan());
                     pengirimanObatMobile.setBranchId(item.getBranchId());
-                    pengirimanObatMobile.setDesaId(item.getDesaId());
-                    pengirimanObatMobile.setFlag(item.getFlag());
-                    pengirimanObatMobile.setFlagDiterimaPasien(item.getFlagDiterimaPasien());
+                    pengirimanObatMobile.setAlamat(item.getAlamat());
                     pengirimanObatMobile.setFlagPickup(item.getFlagPickup());
+                    pengirimanObatMobile.setFlagDiterimaPasien(item.getFlagDiterimaPasien());
+                    pengirimanObatMobile.setBranchName(item.getBranchName());
+                    pengirimanObatMobile.setKurirName(item.getKurirName());
+                    pengirimanObatMobile.setPelayananName(item.getPelayananName());
+                    pengirimanObatMobile.setPasienName(item.getPasienName());
+                    pengirimanObatMobile.setNoTelp(item.getNoTelp());
+                    pengirimanObatMobile.setNoTelpKurir(item.getNoTelpKurir());
+                    pengirimanObatMobile.setNoPolisi(item.getNoPolisi());
+                    pengirimanObatMobile.setIdResep(item.getIdResep());
+                    pengirimanObatMobile.setLat(item.getLat());
+                    pengirimanObatMobile.setLon(item.getLon());
                     pengirimanObatMobile.setFotoKirim(item.getFotoKirim());
+                    pengirimanObatMobile.setKeterangan(item.getKeterangan());
+                    pengirimanObatMobile.setCreatedDate(item.getCreatedDate().toLocaleString());
 
                     listOfPengirimanObat.add(pengirimanObatMobile);
                 }
+
             }
 
         }
