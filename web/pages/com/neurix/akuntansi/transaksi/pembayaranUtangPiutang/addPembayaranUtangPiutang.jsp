@@ -194,7 +194,13 @@
                                                         if (tipeMaster=="pengajuan_biaya") {
                                                             $('.modal_pengajuan').val('');
                                                             $('#modal-add-pengajuan').modal('show');
-                                                        }else{
+                                                        } else if (tipeMaster=="dokter"){
+                                                            $('.modal_dokter').val('');
+                                                            $('#modal-add-dokter').modal('show');
+                                                        } else if (tipeMaster=="vendor"){
+                                                            $('.modal_vendor').val('');
+                                                            $('#modal-add-vendor').modal('show');
+                                                        } else{
                                                             alert("tipe transaksi masih kosong atau belum ada tipe master pada transaksi")
                                                         }
                                                     })
@@ -481,6 +487,54 @@
                                     <s:textfield id="mod_total_ppn" cssClass="form-control modal_pengajuan" cssStyle="margin-top: 7px" placeholder="0" onkeyup="formatRupiah2(this)" />
                                 </div>
                             </div>
+                            <div class="form-group" id="kode_vendor_view_pengajuan">
+                                <label class="col-md-4" style="margin-top: 7px">Kode Vendor</label>
+                                <div class="col-md-3">
+                                    <s:textfield id="mod_kode_vendor_pengajuan" onkeypress="$(this).css('border','')" wajib="Y"
+                                                 cssClass="form-control modal_pengajuan" cssStyle="margin-top: 7px" />
+                                    <script>
+                                        $(document).ready(function() {
+                                            var functions, mapped;
+                                            $('#mod_kode_vendor_pengajuan').typeahead({
+                                                minLength: 1,
+                                                source: function (query, process) {
+                                                    functions = [];
+                                                    mapped = {};
+                                                    var data = [];
+                                                    var master = $('#tipeMaster').val();
+                                                    if (master!=""){
+                                                        dwr.engine.setAsync(false);
+                                                        MasterAction.initTypeaheadMasterPembayaran(query,master,function (listdata) {
+                                                            data = listdata;
+                                                        });
+                                                        $.each(data, function (i, item) {
+                                                            var labelItem = item.nomorVendor + " | " + item.nama;
+                                                            mapped[labelItem] = {
+                                                                id: item.nomorVendor,
+                                                                nama: item.nama
+                                                            };
+                                                            functions.push(labelItem);
+                                                        });
+                                                        process(functions);
+                                                    } else{
+                                                        alert("belum memilih tipe pembayaran");
+                                                    }
+
+                                                },
+                                                updater: function (item) {
+                                                    var selectedObj = mapped[item];
+                                                    $('#mod_nama_vendor_pengajuan').val(selectedObj.nama);
+                                                    return selectedObj.id;
+                                                }
+                                            });
+                                        });
+                                    </script>
+                                </div>
+                                <div class="col-md-5">
+                                    <s:textfield id="mod_nama_vendor_pengajuan" onkeypress="$(this).css('border','')" readonly="true"
+                                                 cssClass="form-control modal_pengajuan" cssStyle="margin-top: 7px" />
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label class="col-md-4" style="margin-top: 7px">No. Faktur Pajak</label>
                                 <div class="col-md-7">
@@ -634,6 +688,197 @@
                         }
                     })
                 </script>
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-add-dokter">
+    <div class="modal-dialog modal-flat modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Add Pengeluaran Kas Dokter</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">COA Lawan</label>
+                                <div class="col-md-8">
+                                    <select class="form-control modal_dokter" id="mod_coa_lawan_dokter" style="margin-top: 7px">
+                                        <option value="" ></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group" id="kode_vendor_dokter">
+                                <label class="col-md-4" style="margin-top: 7px">ID Dokter</label>
+                                <div class="col-md-3">
+                                    <s:textfield id="mod_id_dokter" onkeypress="$(this).css('border','')" wajib="Y"
+                                                 cssClass="form-control modal_dokter" cssStyle="margin-top: 7px" />
+                                    <script>
+                                        $(document).ready(function() {
+                                            var functions, mapped;
+                                            $('#mod_id_dokter').typeahead({
+                                                minLength: 1,
+                                                source: function (query, process) {
+                                                    functions = [];
+                                                    mapped = {};
+                                                    var data = [];
+                                                    var master = $('#tipeMaster').val();
+                                                    dwr.engine.setAsync(false);
+                                                    MasterAction.initTypeaheadMasterPembayaran(query,master,function (listdata) {
+                                                        data = listdata;
+                                                    });
+                                                    $.each(data, function (i, item) {
+                                                        var labelItem = item.nomorVendor + " | " + item.nama;
+                                                        mapped[labelItem] = {
+                                                            id: item.nomorVendor,
+                                                            nama: item.nama
+                                                        };
+                                                        functions.push(labelItem);
+                                                    });
+                                                    process(functions);
+                                                },
+                                                updater: function (item) {
+                                                    var selectedObj = mapped[item];
+                                                    $('#mod_nama_dokter').val(selectedObj.nama);
+                                                    return selectedObj.id;
+                                                }
+                                            });
+                                        });
+                                    </script>
+                                </div>
+                                <div class="col-md-5">
+                                    <s:textfield id="mod_nama_dokter" onkeypress="$(this).css('border','')" readonly="true"
+                                                 cssClass="form-control modal_dokter" cssStyle="margin-top: 7px" />
+                                </div>
+                            </div>
+                            <div class="form-group" id="no_nota_view_dokter">
+                                <label class="col-md-4" style="margin-top: 7px">No. Nota/Pengajuan</label>
+                                <div class="col-md-7">
+                                    <s:textfield id="mod_no_nota_dokter" wajib="Y"
+                                                 cssClass="form-control modal_dokter" readonly="true" cssStyle="margin-top: 7px"/>
+                                </div>
+                                <div class="col-md-1">
+                                    <a href="javascript:void(0)">
+                                        <img  style="margin-top: 10px" id="modBtnSearchNotaDokter" border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_view">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">Jumlah Pembayaran (RP)</label>
+                                <div class="col-md-8">
+                                    <s:textfield id="mod_jumlah_pembayaran_dokter" readonly="true" cssClass="form-control modal_dokter" cssStyle="margin-top: 7px;margin-bottom: 14px" />
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <a id="mod_btnSaveDetailDokter" type="button" class="btn btn-default btn-success"><i class="fa fa-plus"></i> Add</a>
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal-add-vendor">
+    <div class="modal-dialog modal-flat modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Add Pengeluaran Kas Vendor</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">COA Lawan</label>
+                                <div class="col-md-8">
+                                    <select class="form-control modal_vendor" id="mod_coa_lawan_vendor" style="margin-top: 7px">
+                                        <option value="" ></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group" id="kode_vendor">
+                                <label class="col-md-4" style="margin-top: 7px">ID Vendor</label>
+                                <div class="col-md-3">
+                                    <s:textfield id="mod_id_vendor" onkeypress="$(this).css('border','')" wajib="Y"
+                                                 cssClass="form-control modal_vendor" cssStyle="margin-top: 7px" />
+                                    <script>
+                                        $(document).ready(function() {
+                                            var functions, mapped;
+                                            $('#mod_id_vendor').typeahead({
+                                                minLength: 1,
+                                                source: function (query, process) {
+                                                    functions = [];
+                                                    mapped = {};
+                                                    var data = [];
+                                                    var master = $('#tipeMaster').val();
+                                                    dwr.engine.setAsync(false);
+                                                    MasterAction.initTypeaheadMasterPembayaran(query,master,function (listdata) {
+                                                        data = listdata;
+                                                    });
+                                                    $.each(data, function (i, item) {
+                                                        var labelItem = item.nomorVendor + " | " + item.nama;
+                                                        mapped[labelItem] = {
+                                                            id: item.nomorVendor,
+                                                            nama: item.nama
+                                                        };
+                                                        functions.push(labelItem);
+                                                    });
+                                                    process(functions);
+                                                },
+                                                updater: function (item) {
+                                                    var selectedObj = mapped[item];
+                                                    $('#mod_nama_vendor').val(selectedObj.nama);
+                                                    return selectedObj.id;
+                                                }
+                                            });
+                                        });
+                                    </script>
+                                </div>
+                                <div class="col-md-5">
+                                    <s:textfield id="mod_nama_vendor" onkeypress="$(this).css('border','')" readonly="true"
+                                                 cssClass="form-control modal_vendor" cssStyle="margin-top: 7px" />
+                                </div>
+                            </div>
+                            <div class="form-group" id="no_nota_view_vendor">
+                                <label class="col-md-4" style="margin-top: 7px">No. Nota/Pengajuan</label>
+                                <div class="col-md-7">
+                                    <s:textfield id="mod_no_nota_vendor" wajib="Y"
+                                                 cssClass="form-control modal_vendor" readonly="true" cssStyle="margin-top: 7px"/>
+                                </div>
+                                <div class="col-md-1">
+                                    <a href="javascript:void(0)">
+                                        <img  style="margin-top: 10px" id="modBtnSearchNotaVendor" border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_view">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">Jumlah Pembayaran (RP)</label>
+                                <div class="col-md-8">
+                                    <s:textfield id="mod_jumlah_pembayaran_vendor" readonly="true" cssClass="form-control modal_vendor" cssStyle="margin-top: 7px;margin-bottom: 14px" />
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <a id="mod_btnSaveDetailVendor" type="button" class="btn btn-default btn-success"><i class="fa fa-plus"></i> Add</a>
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close </button>
             </div>
         </div>
@@ -862,6 +1107,8 @@
             var jumlah_pph = $('#mod_total_pph').val();
             var rekeningId = $('#mod_coa_lawan').val();
             var divisiId = $('#mod_divisi_id').val();
+            var kodeVendor = $('#mod_kode_vendor_pengajuan').val();
+            var namaVendor = $('#mod_nama_vendor_pengajuan').val();
             var divisiName = $('#mod_nama_divisi').val();
             var tipePengajuanBiaya = $('#tipePengajuan').val();
             var noFakturPajak = $('#mod_no_faktur').val();
@@ -878,7 +1125,7 @@
                 dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
             console.log(cekCanvas);
 
-            if (tanggalRealisasi!=""&&jumlahPengajuan!=""&&jumlahPembayaran!=""&&cekCanvas!=""&&noFakturPajak!="") {
+            if (tanggalRealisasi!=""&&jumlahPengajuan!=""&&jumlahPembayaran!=""&&cekCanvas!=""&&noFakturPajak!=""&&kodeVendor!=""&&namaVendor!="") {
                 jumlahPengajuan = jumlahPengajuan.replace(/[,]/g, "");
                 var nilaijumlahPembayaran = jumlahPembayaran.replace(/[.]/g, "");
                 var nilaiPengajuan = parseInt(jumlahPengajuan);
@@ -888,7 +1135,7 @@
                 if (nilaiPengajuan-(nilaiPembayaran+nilaiPph+nilaiPpn)<0){
                     alert("jumlah Pembayaran + PPN + PPH lebih dari jumlah pengajuan");
                 }else if (nilaiPengajuan >= nilaiPembayaran && tglRealisasi <= currentTime) {
-                    PembayaranUtangPiutangAction.saveDetailPembayaran("", "", "", jumlahPembayaran, rekeningId, divisiId,
+                    PembayaranUtangPiutangAction.saveDetailPembayaran(kodeVendor, namaVendor, "", jumlahPembayaran, rekeningId, divisiId,
                         divisiName, tipePengajuanBiaya, pengajuanBiayaDetailId, noBudgeting,jumlah_ppn,
                         jumlah_pph,noFakturPajak,dataURL, function (result) {
                         if (result == "") {
@@ -941,6 +1188,12 @@
                 }
                 if (cekCanvas=="") {
                     msg += "Belum Upload Faktur Pajak \n";
+                }
+                if (kodeVendor=="") {
+                    msg += "Kode Vendor Masih Kosong \n";
+                }
+                if (namaVendor=="") {
+                    msg += "Kode Vendor tidak valid atau vendor tidak ditemukan \n";
                 }
                 alert(msg);
             }

@@ -22,6 +22,8 @@ public class PengajuanSetor extends BaseModel {
     private String bulan;
     private Date registeredDate;
     private String stRegisteredDate;
+    private String kas;
+    private String kasName;
 
     //for detail
     private BigDecimal jumlahPph21Payroll;
@@ -59,6 +61,22 @@ public class PengajuanSetor extends BaseModel {
     private String stJumlahPpnKeluaran;
     private String stJumlahPpnMasukanB2;
     private String stJumlahPpnMasukanB3;
+
+    public String getKasName() {
+        return kasName;
+    }
+
+    public void setKasName(String kasName) {
+        this.kasName = kasName;
+    }
+
+    public String getKas() {
+        return kas;
+    }
+
+    public void setKas(String kas) {
+        this.kas = kas;
+    }
 
     public String getPengajuanSetorId() {
         return pengajuanSetorId;

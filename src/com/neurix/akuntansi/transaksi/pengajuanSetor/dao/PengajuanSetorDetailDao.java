@@ -63,6 +63,15 @@ public class PengajuanSetorDetailDao extends GenericDao<ItPengajuanSetorDetailEn
                 .list();
         return results;
     }
+    public List<ItPengajuanSetorDetailEntity> getByPengajuanSetorIdAndTipe(String id,String tipe) throws HibernateException {
+        List<ItPengajuanSetorDetailEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPengajuanSetorDetailEntity.class)
+                .add(Restrictions.eq("pengajuanSetorId", id))
+                .add(Restrictions.eq("tipe", tipe))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("pengajuanSetorDetailId"))
+                .list();
+        return results;
+    }
 
     public List<PengajuanSetorDetail> cekApakahSudahDibayarkan(String transaksiId,String tipe) throws HibernateException {
         List<PengajuanSetorDetail> listOfResult = new ArrayList<>();

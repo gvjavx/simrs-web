@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="penyewaanLahanAction" class="com.neurix.akuntansi.transaksi.penyewaanLahan.action.PenyewaanLahanAction"
+          p:penyewaanLahanBoProxy-ref="penyewaanLahanBoProxy" />
+
+    <bean id="penyewaanLahanBo" class="com.neurix.akuntansi.transaksi.penyewaanLahan.bo.impl.PenyewaanLahanBoImpl"
+          p:penyewaanLahanDao-ref="penyewaanLahanDao"
+          p:branchDao-ref="branchDao"
+          p:pembayaranDao-ref="pembayaranDao"
+    />
+
+    <bean id="penyewaanLahanBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="penyewaanLahanBo">
+        <property name="interceptorNames">
+            <list>
+                <value>penyewaanLahanactionUserInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="penyewaanLahanactionUserInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="penyewaanLahanDao" class="com.neurix.akuntansi.transaksi.penyewaanLahan.dao.PenyewaanLahanDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+</beans>

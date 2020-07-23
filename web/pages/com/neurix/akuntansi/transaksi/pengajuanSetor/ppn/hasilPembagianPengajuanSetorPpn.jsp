@@ -8,6 +8,7 @@
 <head>
     <%@ include file="/pages/common/header.jsp" %>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PengajuanSetorAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/KasirRawatJalanAction.js"/>'></script>
     <script type="text/javascript">
         function callSearch2() {
             $('#view_dialog_menu').dialog('close');
@@ -27,7 +28,9 @@
             $.subscribe('beforeProcessSave', function (event, data) {
                 var tanggal = $('#tanggal_pengajuan_setor').val();
                 var keterangan = $('#keterangan').val();
-                if (tanggal != '' && keterangan != '') {
+                var kas = $('#bank').val();
+
+                if (tanggal != '' && keterangan != ''&&kas!='') {
                     if (confirm('Do you want to proses this record?')) {
                         event.originalEvent.options.submit = true;
                         $.publish('showDialog');
@@ -42,6 +45,9 @@
                     }
                     if (keterangan == '') {
                         msg += 'Field <strong>Keterangan</strong> is required.' + '<br/>';
+                    }
+                    if ( kas == '') {
+                        msg += 'Field <strong>Kas</strong> is required.' + '<br/>';
                     }
                     document.getElementById('errorValidationMessage').innerHTML = msg;
                     $.publish('showErrorValidationDialog');
@@ -120,10 +126,17 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-offset-2 col-sm-3" style="margin-top: 7px">Keterangan</label>
+                                    <label class="col-sm-offset-2 col-sm-3" style="margin-top: 7px">Keterangan Untuk Jurnal</label>
                                     <div class="col-md-4">
                                         <s:textarea id="keterangan" rows="3" cssStyle="margin-top: 7px" onkeypress="$(this).css('border','')"
                                                     name="pengajuanSetor.keterangan" cssClass="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-offset-2 col-sm-3" style="margin-top: 7px">Kas </label>
+                                    <div class="col-md-4">
+                                        <s:select list="#{'':''}" cssStyle="margin-top: 7px"
+                                                  id="bank" name="pengajuanSetor.kas" cssClass="form-control" />
                                     </div>
                                 </div>
                             </div>
@@ -378,6 +391,8 @@
         loadSessionPpnMasukanB2();
         loadSessionPpnMasukanB3();
         loadSessionPpnKeluaran();
+        selectPembayaran();
+
         $('#table1').DataTable({
             paging: false,
             "bDestroy": true,
@@ -394,4 +409,17 @@
             "order": [[1, "asc"]]
         });
     });
+    function selectPembayaran(){
+        var option = '<option value="">[Select One]</option>';
+        KasirRawatJalanAction.getListPembayaran(function (res) {
+            if(res.length > 0){
+                $.each(res, function (i, item) {
+                    option += '<option value="'+item.coa+'">'+item.pembayaranName+'</option>';
+                });
+                $('#bank').html(option);
+            }else{
+                $('#bank').html(option);
+            }
+        });
+    }
 </script>

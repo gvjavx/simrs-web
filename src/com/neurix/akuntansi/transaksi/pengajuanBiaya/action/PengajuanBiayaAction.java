@@ -5,6 +5,7 @@ import com.neurix.akuntansi.master.kodeRekening.bo.KodeRekeningBo;
 import com.neurix.akuntansi.master.mappingJurnal.bo.MappingJurnalBo;
 import com.neurix.akuntansi.master.tipeJurnal.bo.TipeJurnalBo;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.LaporanAkuntansiBo;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.LaporanAkuntansi;
 import com.neurix.akuntansi.transaksi.pengajuanBiaya.bo.PengajuanBiayaBo;
@@ -511,8 +512,8 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         dataMap.put("metode_bayar",giro);
 
         try {
-            noJurnal= billingSystemBoProxy.createJurnal(pengajuanBiaya.getTipeTransaksi(),dataMap,branchId,pengajuanBiaya.getKeterangan(),"Y");
-
+            Jurnal jurnal = billingSystemBoProxy.createJurnal(pengajuanBiaya.getTipeTransaksi(),dataMap,branchId,pengajuanBiaya.getKeterangan(),"Y");
+            noJurnal = jurnal.getNoJurnal();
             pengajuanBiaya.setNoJurnal(noJurnal);
             List<Notifikasi> notif = pengajuanBiayaBoProxy.saveAddPengajuanBiaya(pengajuanBiaya);
 

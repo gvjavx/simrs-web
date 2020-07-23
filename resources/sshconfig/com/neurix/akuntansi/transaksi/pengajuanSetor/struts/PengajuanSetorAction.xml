@@ -89,6 +89,16 @@
             <result name="success_add_pemilihan_pengajuan_setor_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/pembagianPengajuanSetorPpn.jsp</result>
             <result name="success_add_hasil_pengajuan_setor_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/hasilPembagianPengajuanSetorPpn.jsp</result>
             <result name="success_save_pengajuan_setor_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/hasilPembagianPengajuanSetorPpn.jsp</result>
+
+            <!-- Proses PPN Kanpus -->
+            <result name="add_proses_ppn_kanpus">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/addProsesPpnKanpus.jsp</result>
+            <result name="success_proses_ppn_kanpus">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/addProsesPpnKanpus.jsp</result>
+            <result name="success_add_proses_ppn_kanpus">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/prosesPpnKanpus.jsp</result>
+            <result name="success_save_proses_ppn_Kanpus">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/prosesPpnKanpus.jsp</result>
+            <result name="view_proses_ppn_Kanpus">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/viewProsesPpnKanpus.jsp</result>
+            <result name="proses_ppn_kd">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/SearchProsesPpnKd.jsp</result>
+            <result name="success_search_proses_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/SearchProsesPpnKd.jsp</result>
+
         </action>
     </package>
 </struts>

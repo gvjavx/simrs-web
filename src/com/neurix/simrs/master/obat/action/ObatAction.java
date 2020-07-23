@@ -1,6 +1,7 @@
 package com.neurix.simrs.master.obat.action;
 
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.authorization.position.bo.PositionBo;
@@ -685,8 +686,8 @@ public class ObatAction extends BaseMasterAction {
             String catatan = "Retur Barang Gudang ke Vendor. "+bean.getIdVendor()+" - "+ bean.getNamaVendor();
 
             try {
-                String noJurnal = billingSystemBo.createJurnal("35", mapJurnal, branchId, catatan, "Y");
-                bean.setNoJurnal(noJurnal);
+                Jurnal jurnal = billingSystemBo.createJurnal("35", mapJurnal, branchId, catatan, "Y");
+                bean.setNoJurnal(jurnal.getNoJurnal());
             } catch (GeneralBOException e) {
                 response.setStatus("error");
                 logger.error("[ObatAction.saveReturObat] ERROR. ", e);

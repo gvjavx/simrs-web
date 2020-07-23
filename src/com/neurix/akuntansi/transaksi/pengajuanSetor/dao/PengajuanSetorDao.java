@@ -80,15 +80,15 @@ public class PengajuanSetorDao extends GenericDao<ItPengajuanSetorEntity, String
 
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "SELECT \n" +
-                "\tjd.divisi_id,\n" +
-                "\tp.position_name,\n" +
+                "\tjd.master_id,\n" +
+                "\tp.nama_pegawai,\n" +
                 "\tjd.jumlah_kredit,\n" +
                 "\tjd.no_nota,\n" +
                 "\tj.keterangan\n" +
                 "FROM \n" +
                 "\tit_akun_jurnal j\n" +
                 "\tLEFT JOIN it_akun_jurnal_detail jd ON j.no_jurnal=jd.no_jurnal\n" +
-                "\tLEFT JOIN im_position p ON jd.divisi_id = p.kodering\n" +
+                "\tLEFT JOIN im_hris_pegawai p ON jd.master_id = p.nip\n" +
                 "\tLEFT JOIN it_akun_pengajuan_setor_detail ps ON ps.transaksi_id = jd.no_nota\n" +
                 "\tLEFT JOIN it_akun_pengajuan_setor s ON ps.pengajuan_setor_id = s.pengajuan_setor_id\n" +
                 "WHERE\n" +
@@ -107,8 +107,8 @@ public class PengajuanSetorDao extends GenericDao<ItPengajuanSetorEntity, String
             PengajuanSetorDetail data= new PengajuanSetorDetail();
             data.setTipe("Payroll");
             data.setNote(row[4].toString());
-            data.setPositionId(row[0].toString());
-            data.setPosisiName(row[1].toString());
+            data.setPersonId(row[0].toString());
+            data.setNama(row[1].toString());
 
             if (row[2]!=null){
                 data.setJumlah(BigDecimal.valueOf(Double.parseDouble(row[2].toString())));
@@ -175,15 +175,15 @@ public class PengajuanSetorDao extends GenericDao<ItPengajuanSetorEntity, String
 
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "SELECT \n" +
-                "\tjd.divisi_id,\n" +
-                "\tp.position_name,\n" +
+                "\tjd.master_id,\n" +
+                "\tm.nama,\n" +
                 "\tjd.jumlah_kredit,\n" +
                 "\tjd.no_nota,\n" +
                 "\tj.keterangan\n" +
                 "FROM \n" +
                 "\tit_akun_jurnal j\n" +
                 "\tLEFT JOIN it_akun_jurnal_detail jd ON j.no_jurnal=jd.no_jurnal\n" +
-                "\tLEFT JOIN im_position p ON p.kodering = jd.divisi_id\n" +
+                "\tLEFT JOIN im_akun_master m ON m.nomor_master = jd.master_id\n" +
                 "\tLEFT JOIN it_akun_pengajuan_setor_detail ps ON ps.transaksi_id = jd.no_nota\n" +
                 "\tLEFT JOIN it_akun_pengajuan_setor s ON ps.pengajuan_setor_id = s.pengajuan_setor_id\n" +
                 "WHERE\n" +
@@ -203,8 +203,8 @@ public class PengajuanSetorDao extends GenericDao<ItPengajuanSetorEntity, String
             PengajuanSetorDetail data= new PengajuanSetorDetail();
             data.setTipe("Pengajuan Biaya PPH21");
             data.setNote(row[4].toString());
-            data.setPositionId(row[0].toString());
-            data.setPosisiName(row[1].toString());
+            data.setPersonId(row[0].toString());
+            data.setNama(row[1].toString());
 
             if (row[2]!=null){
                 data.setJumlah(BigDecimal.valueOf(Double.parseDouble(row[2].toString())));
@@ -375,5 +375,45 @@ public class PengajuanSetorDao extends GenericDao<ItPengajuanSetorEntity, String
 
         }
         return listOfResult;
+    }
+
+    public List<ItPengajuanSetorEntity> getListPengajuanSetorByBulanDanTahun(String bulan,String tahun) throws HibernateException {
+        List<ItPengajuanSetorEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPengajuanSetorEntity.class)
+                .add(Restrictions.eq("tahun", tahun))
+                .add(Restrictions.eq("bulan", bulan))
+                .add(Restrictions.eq("cancelFlag", "N"))
+                .add(Restrictions.eq("branchId", CommonConstant.ID_KANPUS))
+                .add(Restrictions.eq("approvalFlag", "Y"))
+                .add(Restrictions.eq("tipePengajuanSetor", "PPN"))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("pengajuanSetorId"))
+                .list();
+        return results;
+    }
+    public List<ItPengajuanSetorEntity> getListPengajuanSetorByBulanTahunDanBranch(String bulan,String tahun,String branchId) throws HibernateException {
+        List<ItPengajuanSetorEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPengajuanSetorEntity.class)
+                .add(Restrictions.eq("tahun", tahun))
+                .add(Restrictions.eq("branchId", branchId))
+                .add(Restrictions.eq("bulan", bulan))
+                .add(Restrictions.eq("cancelFlag", "N"))
+                .add(Restrictions.eq("approvalFlag", "Y"))
+                .add(Restrictions.eq("tipePengajuanSetor", "PPN"))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("pengajuanSetorId"))
+                .list();
+        return results;
+    }
+
+    public List<ItPengajuanSetorEntity> getListPengajuanSetorForBilling(String bulan,String tahun) throws HibernateException {
+        List<ItPengajuanSetorEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPengajuanSetorEntity.class)
+                .add(Restrictions.eq("tahun", tahun))
+                .add(Restrictions.eq("bulan", bulan))
+                .add(Restrictions.eq("cancelFlag", "N"))
+                .add(Restrictions.eq("approvalFlag", "Y"))
+                .add(Restrictions.eq("tipePengajuanSetor", "PPN"))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("pengajuanSetorId"))
+                .list();
+        return results;
     }
 }

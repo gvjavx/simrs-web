@@ -201,7 +201,7 @@
                                                         <td>Keterangan</td>
                                                         <td align="center">View</td>
                                                         <td align="center">Batal</td>
-                                                        <td align="center">Posting</td>
+                                                        <td align="center">Approve</td>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -329,6 +329,13 @@
                                 <label class="col-md-4">Total Seluruhnya (RP)</label>
                                 <div class="col-md-6">
                                     <s:textfield id="mod_total_ppn_seluruhnya" cssStyle="text-align: right" onkeypress="$(this).css('border','')" readonly="true" cssClass="form-control"/>
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4">Kas</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_kas_name" readonly="true" cssClass="form-control" />
                                     <br>
                                 </div>
                             </div>
@@ -466,6 +473,7 @@
             $('#mod_total_ppn_masukan_b2').val(data.stJumlahPpnMasukanB2);
             $('#mod_total_ppn_masukan_b3').val(data.stJumlahPpnMasukanB3);
             $('#mod_total_ppn_seluruhnya').val(data.stJumlahSeluruhnya);
+            $('#mod_kas_name').val(data.kasName);
         });
         loadSessionPpnMasukanB2();
         loadSessionPpnKeluaran();

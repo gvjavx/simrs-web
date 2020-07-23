@@ -10,6 +10,7 @@ import com.neurix.akuntansi.master.trans.model.ImTransEntity;
 import com.neurix.akuntansi.master.trans.model.Trans;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.akuntansi.transaksi.jurnal.model.ItJurnalEntity;
+import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.LaporanAkuntansiBo;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.LaporanAkuntansi;
 import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.bo.PembayaranUtangPiutangBo;
@@ -508,12 +509,12 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
                     }
                 }
 
-                mapPph.put("bukti",billingSystemBoProxy.createInvoiceNumber("JKK",pembayaranUtangPiutang.getBranchId()));
-                mapPph.put("divisi_id",pembayaranUtangPiutangDetail.getDivisiId());
+//                mapPph.put("bukti",billingSystemBoProxy.createInvoiceNumber("JKK",pembayaranUtangPiutang.getBranchId()));
+                mapPph.put("master_id",pembayaranUtangPiutangDetail.getMasterId());
                 mapPph.put("nilai",pph);
 
-                mapPpn.put("bukti",billingSystemBoProxy.createInvoiceNumber("JKK",pembayaranUtangPiutang.getBranchId()));
-                mapPpn.put("divisi_id",pembayaranUtangPiutangDetail.getDivisiId());
+//                mapPpn.put("bukti",billingSystemBoProxy.createInvoiceNumber("JKK",pembayaranUtangPiutang.getBranchId()));
+                mapPpn.put("master_id",pembayaranUtangPiutangDetail.getMasterId());
                 mapPpn.put("nilai",ppn);
             }
 
@@ -544,7 +545,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
             pembayaranUtangPiutang.setLastUpdateWho(userLogin);
             pembayaranUtangPiutang.setAction("C");
             pembayaranUtangPiutang.setFlag("Y");
-            pembayaranUtangPiutang.setNoJurnal(billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N"));
+            pembayaranUtangPiutang.setNoJurnal(billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N").getNoJurnal());
 
             pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList);
         }catch (GeneralBOException e) {
@@ -622,7 +623,8 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
                 }
                 data.put(mappingJurnal.getKeterangan(),dataMap);
             }
-            noJurnal= billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N");
+            Jurnal jurnal = billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N");
+            noJurnal = jurnal.getNoJurnal();
             pembayaranUtangPiutang.setNoJurnal(noJurnal);
             pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList);
         }catch (GeneralBOException e) {

@@ -169,3 +169,130 @@ ALTER TABLE public.it_akun_pengajuan_biaya
     RENAME COLUMN jumlah_ppn_aset TO jumlah_ppn_masukan_b3;
     ALTER TABLE it_akun_pembayaran_utang_piutang_detail ADD COLUMN ppn numeric(25,2);
     ALTER TABLE it_akun_pembayaran_utang_piutang_detail ADD COLUMN pph numeric(25,2);
+
+
+ --09/07/2020
+ ALTER TABLE it_akun_pengajuan_setor ADD COLUMN kas VARCHAR(30);
+
+ --17/07/2020
+ CREATE TABLE public.it_akun_perhitungan_ppn_kd
+ (
+     perhitungan_ppn_kd_id character varying(15) COLLATE pg_catalog."default" NOT NULL,
+     tahun character varying(5) COLLATE pg_catalog."default",
+     bulan character varying(5) COLLATE pg_catalog."default",
+     approval_flag character varying(1) COLLATE pg_catalog."default",
+     approval_id character varying(100) COLLATE pg_catalog."default",
+     approval_date timestamp without time zone,
+     cancel_flag character varying(1) COLLATE pg_catalog."default",
+     cancel_id character varying(100) COLLATE pg_catalog."default",
+     cancel_date timestamp without time zone,
+     ppn_masukan numeric(25,2),
+     total_ppn_masukan numeric(25,2),
+     ppn_keluaran numeric(25,2),
+     kurang_bayar numeric(25,2),
+     perhitungan_kembali numeric(25,2),
+     total_kurang_bayar numeric(25,2),
+     lb_bulan_yll numeric(25,2),
+     ppn_ekspor numeric(25,2),
+     dipungut_sendiri numeric(25,2),
+     dipungut_oleh_pemungut numeric(25,2),
+     tidak_dipungut numeric(25,2),
+     dibebaskan numeric(25,2),
+     jumlah_terutang_ppn numeric(25,2),
+     jasa_rs numeric(25,2),
+     obat_rawat_inap numeric(25,2),
+     jumlah_tidak_terutang numeric(25,2),
+     penyerahan_barang_dan_jasa numeric(25,2),
+     created_date timestamp without time zone,
+     created_who character varying(100) COLLATE pg_catalog."default",
+     last_update timestamp without time zone,
+     last_update_who character varying(100) COLLATE pg_catalog."default",
+     action character varying(100) COLLATE pg_catalog."default",
+     flag character varying(1) COLLATE pg_catalog."default",
+     CONSTRAINT it_akun_perhitungan_ppn_kd_pkey PRIMARY KEY (perhitungan_ppn_kd)
+ )
+
+ CREATE TABLE public.it_akun_proses_ppn_kd
+  (
+      proses_ppn_kd_id character varying(15) COLLATE pg_catalog."default" NOT NULL,
+      branch_id character varying(5) COLLATE pg_catalog."default",
+      branch_name character varying(100) COLLATE pg_catalog."default",
+      keluaran_unit numeric(25,2),
+      masukan_unit numeric(25,2),
+      keluaran_koreksi numeric(25,2),
+      masukan_koreksi numeric(25,2),
+      keluaran_diambil_kp numeric(25,2),
+      masukan_diambil_kp numeric(25,2),
+      b4 numeric(25,2),
+      created_date timestamp without time zone,
+      created_who character varying(100) COLLATE pg_catalog."default",
+      last_update timestamp without time zone,
+      last_update_who character varying(100) COLLATE pg_catalog."default",
+      action character varying(100) COLLATE pg_catalog."default",
+      flag character varying(1) COLLATE pg_catalog."default",
+      CONSTRAINT it_akun_proses_ppn_kd_pkey PRIMARY KEY (proses_ppn_kd_id)
+  )
+
+-- 20-07-2020
+ALTER TABLE it_akun_proses_ppn_kd ADD COLUMN perhitungan_ppn_kd_id character varying(15);
+ALTER TABLE it_akun_perhitungan_ppn_kd ADD COLUMN tipe character varying(10);
+CREATE SEQUENCE IF NOT EXISTS seq_perhitungan_ppn_kd INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 1;
+CREATE SEQUENCE IF NOT EXISTS seq_proses_ppn_kd INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 1;
+CREATE SEQUENCE IF NOT EXISTS seq_perhitungan_kembali INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 1;
+ALTER TABLE it_akun_proses_ppn_kd ALTER COLUMN branch_id type character varying (10);
+
+CREATE TABLE public.it_akun_ppn_perhitungan_kembali
+(
+    perhitungan_kembali_ppn_id character varying(15) COLLATE pg_catalog."default" NOT NULL,
+    dpp_total_pendapatan_rumah_sakit numeric(25,2),
+    dpp_penyerahan_tidak_terutang_ppn numeric(25,2),
+    dpp_ppn_masukan_yang_telah_direditkan numeric(25,2),
+    ppn_total_pendapatan_rumah_sakit numeric(25,2),
+    ppn_penyerahan_tidak_terutang_ppn numeric(25,2),
+    ppn_penyerahan_terutang_ppn numeric(25,2),
+    ppn_ppn_masukan_yang_telah_dikreditkan numeric(25,2),
+    ppn_ppn_masukan_yang_tidak_dapat_dikreditkan numeric(25,2),
+    ppn_telah_diperhitungkan_kembali numeric(25,2),
+    ppn_hasil_perhitungan_kembali_ppn numeric(25,2),
+    bulan character varying(4) COLLATE pg_catalog."default",
+    tahun character varying(4) COLLATE pg_catalog."default",
+    proses_ppn_kd_id character varying(15) COLLATE pg_catalog."default",
+    CONSTRAINT it_akun_ppn_perhitungan_kembali_pkey PRIMARY KEY (perhitungan_kembali_ppn_id)
+)
+
+-- 21-07-2020
+
+ALTER TABLE it_akun_proses_ppn_kd ADD COLUMN no_urut INTEGER;
+
+-- 22-07-2020
+ALTER TABLE it_akun_perhitungan_ppn_kd ADD COLUMN status_b2 character varying(20);
+
+CREATE TABLE public.it_akun_penyewaan_lahan
+(
+    penyewaan_lahan_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    nama_penyewa character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    keterangan text COLLATE pg_catalog."default" NOT NULL,
+    tanggal_bayar date,
+    nilai numeric(25,2),
+    flag character varying(1) COLLATE pg_catalog."default",
+    action character varying(1) COLLATE pg_catalog."default",
+    created_date timestamp without time zone,
+    last_update timestamp without time zone,
+    created_who character varying(100) COLLATE pg_catalog."default",
+    last_update_who character varying(100) COLLATE pg_catalog."default",
+    CONSTRAINT it_akun_penyewaan_lahan_pkey PRIMARY KEY (penyewaan_lahan_id)
+)
+
+CREATE SEQUENCE IF NOT EXISTS seq_penyewaan_lahan INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 1;
+ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN branch_id character varying (10);
+ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN cancel_flag character varying (1);
+ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN cancel_who character varying (100);
+ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN cancel_date timestamp without time zone;
+ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN approval_flag character varying (1);
+ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN approval_who character varying (100);
+ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN approval_date timestamp without time zone;
+ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN metode_bayar character varying (30);
+ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN bank character varying (20);
+ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN nilai_ppn numeric (25,2);
+ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN nilai_netto numeric (25,2);
+ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN no_jurnal character varying (30);

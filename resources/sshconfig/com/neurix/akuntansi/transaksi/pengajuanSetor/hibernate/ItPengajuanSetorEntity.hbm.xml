@@ -77,6 +77,10 @@
             <column name="keterangan" sql-type="varchar" not-null="false" />
         </property>
 
+        <property name="kas">
+            <column name="kas" sql-type="varchar" not-null="false" />
+        </property>
+
         <property name="flag">
             <column name="flag" sql-type="varchar" not-null="false" />
         </property>

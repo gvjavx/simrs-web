@@ -21,6 +21,7 @@ public class ItPengajuanSetorEntity implements Serializable {
     private String bulan;
     private Date registeredDate;
     private String tipePengajuanSetor;
+    private String kas;
 
     private BigDecimal jumlahPph21Payroll;
     private BigDecimal jumlahPph21Kso;
@@ -52,6 +53,13 @@ public class ItPengajuanSetorEntity implements Serializable {
     private String stJumlahPpnMasukanB2;
     private String stJumlahPpnMasukanB3;
 
+    public String getKas() {
+        return kas;
+    }
+
+    public void setKas(String kas) {
+        this.kas = kas;
+    }
 
     public String getPengajuanSetorId() {
         return pengajuanSetorId;

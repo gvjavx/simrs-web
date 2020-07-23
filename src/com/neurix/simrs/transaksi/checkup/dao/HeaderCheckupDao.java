@@ -147,7 +147,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         String dateFrom = "";
         String dateTo = "";
 
-        String idAntrianOnline = "%";
+        String idAntrianOnline = "";
 
         //sodiq, 17 Nov 2019, penambahan no checkup
         String noCheckup = "%";
@@ -183,7 +183,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         }
 
         if (mapCriteria.get("id_antrian_online") != null && !"".equalsIgnoreCase(mapCriteria.get("id_antrian_online").toString())) {
-            idAntrianOnline = mapCriteria.get("id_antrian_online").toString();
+            idAntrianOnline = "AND h.id_antrian_online LIKE "+mapCriteria.get("id_antrian_online").toString();
         }
 
         String SQL = "SELECT\n" +
@@ -204,8 +204,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "AND detail.id_pelayanan LIKE :idPelayanan\n" +
                 "AND detail.status_periksa LIKE :statusPeriksa\n" +
                 "AND detail.flag = 'Y'\n" +
-                "AND h.no_checkup LIKE :noCheckup\n" +
-                "AND h.id_antrian_online LIKE :idAntrianOnline";
+                "AND h.no_checkup LIKE :noCheckup\n" + idAntrianOnline;
 
 //        String group = "\n GROUP BY detail.no_checkup, h.branch_id";
         String order = "\n ORDER BY h.created_date DESC";
@@ -226,7 +225,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     .setParameter("noCheckup", noCheckup)
                     .setParameter("dateFrom", dateFrom)
                     .setParameter("dateTo", dateTo)
-                    .setParameter("idAntrianOnline", idAntrianOnline)
+                    //update sodiq 08-07-2020, karena ketika tidak ada id antrian online data tidak ditemukan
+//                    .setParameter("idAntrianOnline", idAntrianOnline)
                     .list();
 
         } else {
@@ -241,7 +241,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     .setParameter("idPelayanan", idPelayanan)
                     .setParameter("statusPeriksa", statusPeriksa)
                     .setParameter("noCheckup", noCheckup)
-                    .setParameter("idAntrianOnline", idAntrianOnline)
+//                    .setParameter("idAntrianOnline", idAntrianOnline)
                     .list();
 
         }

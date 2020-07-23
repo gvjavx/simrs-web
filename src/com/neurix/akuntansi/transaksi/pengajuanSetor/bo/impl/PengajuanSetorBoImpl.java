@@ -1,12 +1,12 @@
 package com.neurix.akuntansi.transaksi.pengajuanSetor.bo.impl;
 
+import com.neurix.akuntansi.master.kodeRekening.dao.KodeRekeningDao;
+import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
+import com.neurix.akuntansi.master.masterVendor.dao.MasterVendorDao;
+import com.neurix.akuntansi.master.masterVendor.model.ImMasterVendorEntity;
 import com.neurix.akuntansi.transaksi.pengajuanSetor.bo.PengajuanSetorBo;
-import com.neurix.akuntansi.transaksi.pengajuanSetor.dao.PengajuanSetorDao;
-import com.neurix.akuntansi.transaksi.pengajuanSetor.dao.PengajuanSetorDetailDao;
-import com.neurix.akuntansi.transaksi.pengajuanSetor.model.ItPengajuanSetorDetailEntity;
-import com.neurix.akuntansi.transaksi.pengajuanSetor.model.ItPengajuanSetorEntity;
-import com.neurix.akuntansi.transaksi.pengajuanSetor.model.PengajuanSetor;
-import com.neurix.akuntansi.transaksi.pengajuanSetor.model.PengajuanSetorDetail;
+import com.neurix.akuntansi.transaksi.pengajuanSetor.dao.*;
+import com.neurix.akuntansi.transaksi.pengajuanSetor.model.*;
 import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.authorization.position.dao.PositionDao;
@@ -26,11 +26,16 @@ import com.neurix.hris.transaksi.payroll.model.ItPayrollEntity;
 import com.neurix.simrs.master.dokter.dao.DokterDao;
 import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
 import org.apache.log4j.Logger;
+import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
 
+import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.*;
 
 /**
@@ -50,6 +55,51 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
     private PositionBagianDao positionBagianDao;
     private BiodataDao biodataDao;
     private DokterDao dokterDao;
+    private KodeRekeningDao kodeRekeningDao;
+    private MasterVendorDao masterVendorDao;
+    private PerhitunganPpnKdDao perhitunganPpnKdDao;
+    private ProsesPpnKdDao prosesPpnKdDao;
+    private PerhitunganKembaliPpnDao perhitunganKembaliPpnDao;
+
+    public PerhitunganKembaliPpnDao getPerhitunganKembaliPpnDao() {
+        return perhitunganKembaliPpnDao;
+    }
+
+    public void setPerhitunganKembaliPpnDao(PerhitunganKembaliPpnDao perhitunganKembaliPpnDao) {
+        this.perhitunganKembaliPpnDao = perhitunganKembaliPpnDao;
+    }
+
+    public PerhitunganPpnKdDao getPerhitunganPpnKdDao() {
+        return perhitunganPpnKdDao;
+    }
+
+    public void setPerhitunganPpnKdDao(PerhitunganPpnKdDao perhitunganPpnKdDao) {
+        this.perhitunganPpnKdDao = perhitunganPpnKdDao;
+    }
+
+    public ProsesPpnKdDao getProsesPpnKdDao() {
+        return prosesPpnKdDao;
+    }
+
+    public void setProsesPpnKdDao(ProsesPpnKdDao prosesPpnKdDao) {
+        this.prosesPpnKdDao = prosesPpnKdDao;
+    }
+
+    public MasterVendorDao getMasterVendorDao() {
+        return masterVendorDao;
+    }
+
+    public void setMasterVendorDao(MasterVendorDao masterVendorDao) {
+        this.masterVendorDao = masterVendorDao;
+    }
+
+    public KodeRekeningDao getKodeRekeningDao() {
+        return kodeRekeningDao;
+    }
+
+    public void setKodeRekeningDao(KodeRekeningDao kodeRekeningDao) {
+        this.kodeRekeningDao = kodeRekeningDao;
+    }
 
     public BiodataDao getBiodataDao() {
         return biodataDao;
@@ -220,6 +270,12 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
                     returnPengajuanSetor.setCancelFlag(pengajuanSetorEntity.getCancelFlag());
                     returnPengajuanSetor.setCancelDate(pengajuanSetorEntity.getCancelDate());
                     returnPengajuanSetor.setKeterangan(pengajuanSetorEntity.getKeterangan());
+                    returnPengajuanSetor.setKas(pengajuanSetorEntity.getKas());
+
+                    List<ImKodeRekeningEntity> kodeRekeningEntityList = kodeRekeningDao.getKodeRekeningList(pengajuanSetorEntity.getKas());
+                    for (ImKodeRekeningEntity rekeningEntity : kodeRekeningEntityList){
+                        returnPengajuanSetor.setKasName(rekeningEntity.getNamaKodeRekening());
+                    }
 
                     if ("PPH21".equalsIgnoreCase(searchBean.getTipePengajuanSetor())){
                         returnPengajuanSetor.setStJumlahPph21Payroll(CommonUtil.numbericFormat(pengajuanSetorEntity.getJumlahPph21Payroll(),"###,###"));
@@ -410,6 +466,7 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
         pengajuanSetorEntity.setCancelFlag("N");
         pengajuanSetorEntity.setTipePengajuanSetor("PPH21");
         pengajuanSetorEntity.setKeterangan(bean.getKeterangan());
+        pengajuanSetorEntity.setKas(bean.getKas());
 
         pengajuanSetorEntity.setAction(bean.getAction());
         pengajuanSetorEntity.setFlag(bean.getFlag());
@@ -517,6 +574,7 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
         pengajuanSetorEntity.setJumlahPpnMasukanB2(bean.getJumlahPpnMasukanB2());
         pengajuanSetorEntity.setJumlahPpnKeluaran(bean.getJumlahPpnKeluaran());
         pengajuanSetorEntity.setJumlahPpnMasukanB3(bean.getJumlahPpnMasukanB3());
+        pengajuanSetorEntity.setKas(bean.getKas());
 
         pengajuanSetorEntity.setAction(bean.getAction());
         pengajuanSetorEntity.setFlag(bean.getFlag());
@@ -613,15 +671,12 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
             }
         }
         if ("Payroll".equalsIgnoreCase(tipe)){
-            if (data.getDivisiId()!=null){
-                List<ImPosition> positionList = positionDao.getListPositionKodering(data.getDivisiId());
-                for (ImPosition position : positionList){
-                    result.setPosisiName(position.getPositionName());
-                }
+            if (data.getPersonId()!=null){
+                ImBiodataEntity biodataEntity = biodataDao.getById("nip",data.getPersonId());
+                result.setNama(biodataEntity.getNamaPegawai());
             }else{
-                result.setPosisiName("");
+                result.setNama("");
             }
-
             if (data.getJumlah()!=null){
                 result.setStJumlah(CommonUtil.numbericFormat(data.getJumlah(),"###,###"));
             }else{
@@ -639,14 +694,8 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
                 result.setStJumlah("0");
             }
         } else if ("Pengajuan Biaya PPH21".equalsIgnoreCase(tipe)){
-            if (data.getDivisiId()!=null){
-                List<ImPosition> positionList = positionDao.getListPositionKodering(data.getDivisiId());
-                for (ImPosition position : positionList){
-                    result.setPosisiName(position.getPositionName());
-                }
-            }else{
-                result.setPosisiName("");
-            }
+            ImMasterVendorEntity vendorEntity = masterVendorDao.getById("nomorMaster",data.getPersonId());
+            result.setNama(vendorEntity.getNama());
 
             if (data.getJumlah()!=null){
                 result.setStJumlah(CommonUtil.numbericFormat(data.getJumlah(),"###,###"));
@@ -669,6 +718,7 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
                 logger.error("[PengajuanSetorBoImpl.postingJurnal] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data PembayaranUtangPiutang by Kode PembayaranUtangPiutang, please inform to your admin...," + e.getMessage());
             }
+
             if (itPengajuanSetorEntity != null) {
                 itPengajuanSetorEntity.setApprovalId(bean.getApprovalId());
                 itPengajuanSetorEntity.setApprovalDate(bean.getApprovalDate());
@@ -692,6 +742,44 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
             }
         }
         logger.info("[PengajuanSetorBoImpl.postingJurnal] end process <<<");
+    }
+
+
+    @Override
+    public void postingJurnalProsesPpn(PerhitunganPpnKd bean) throws GeneralBOException {
+        logger.info("[PengajuanSetorBoImpl.postingJurnalProsesPpn] start process >>>");
+        PerhitunganPpnKd search = new PerhitunganPpnKd();
+        search.setTahun(bean.getTahun());
+        search.setBulan(bean.getBulan());
+
+        if (bean!=null) {
+            List<ItAkunPerhitunganPpnKdEntity> perhitunganPpnKdEntityList = new ArrayList<>();
+            try {
+                // Get data from database by ID
+                perhitunganPpnKdEntityList = perhitunganPpnKdDao.getAllPerhitunganPpnKdList(search);
+            } catch (HibernateException e) {
+                logger.error("[PengajuanSetorBoImpl.postingJurnalProsesPpn] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + e.getMessage());
+            }
+            for (ItAkunPerhitunganPpnKdEntity perhitunganPpnKdEntity : perhitunganPpnKdEntityList){
+                perhitunganPpnKdEntity.setApprovalId(bean.getApprovalWho());
+                perhitunganPpnKdEntity.setApprovalDate(bean.getApprovalDate());
+                perhitunganPpnKdEntity.setApprovalFlag(bean.getApprovalFlag());
+
+                perhitunganPpnKdEntity.setFlag(bean.getFlag());
+                perhitunganPpnKdEntity.setAction(bean.getAction());
+                perhitunganPpnKdEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                perhitunganPpnKdEntity.setLastUpdate(bean.getLastUpdate());
+                try {
+                    // Update into database
+                    perhitunganPpnKdDao.updateAndSave(perhitunganPpnKdEntity);
+                } catch (HibernateException e) {
+                    logger.error("[PengajuanSetorBoImpl.postingJurnalProsesPpn] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving, please info to your admin..." + e.getMessage());
+                }
+            }
+        }
+        logger.info("[PengajuanSetorBoImpl.postingJurnalProsesPpn] end process <<<");
     }
 
     @Override
@@ -918,9 +1006,12 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
 
         BigDecimal total = BigDecimal.ZERO;
 
+        ItPengajuanSetorEntity pengajuanSetorEntity = pengajuanSetorDao.getById("pengajuanSetorId",pengajuanSetorId);
+
         List<ItPengajuanSetorDetailEntity> pengajuanSetorDetailEntityList = pengajuanSetorDetailDao.getByPengajuanSetorId(pengajuanSetorId);
         for (ItPengajuanSetorDetailEntity data : pengajuanSetorDetailEntityList){
             Map dataDetail = new HashMap();
+            dataDetail.put("master_id",data.getPersonId());
             dataDetail.put("bukti",data.getTransaksiId());
             dataDetail.put("nilai",data.getJumlah());
             total = total.add(data.getJumlah());
@@ -929,7 +1020,7 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
 
         Map kas = new HashMap();
         kas.put("metode_bayar","transfer");
-        kas.put("bank", CommonConstant.COA_PAYROLL);
+        kas.put("bank", pengajuanSetorEntity.getKas());
         kas.put("nilai",total);
 
         dataBilling.put("hutang_pph_21",dataDetailList);
@@ -940,7 +1031,927 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
     }
 
     @Override
+    public List<ProsesPpnKd> prosesPPnKanpus(PengajuanSetor bean){
+        logger.info("[PengajuanSetorBoImpl.listPPh21Pengajuan] start process >>>");
+        String status = "";
+        Integer urutan = 1;
+        List<ProsesPpnKd> listOfResult = new ArrayList<>();
+        ProsesPpnKd jumlahUnit = new ProsesPpnKd();
+        ProsesPpnKd direksi = rekapBantuan(bean,"normal");
+        ProsesPpnKd konsol = new ProsesPpnKd();
+        List<ImBranches> branchesList = branchDao.getAllBranch();
+        //menghapus kantor pusat
+        int i=0;
+        for (ImBranches branches : branchesList){
+            if (CommonConstant.ID_KANPUS.equalsIgnoreCase(branches.getPrimaryKey().getId())){
+                branchesList.remove(i);
+                break;
+            }
+            i++;
+        }
+
+        List<ItPengajuanSetorEntity> itPengajuanSetorEntityList = pengajuanSetorDao.getListPengajuanSetorByBulanDanTahun(bean.getBulan(),bean.getTahun());
+
+        jumlahUnit.setBranchId("unit");
+        jumlahUnit.setBranchName("JUMLAH UNIT");
+
+        konsol.setBranchId("konsol");
+        konsol.setBranchName("JUMLAH KONSOLIDASI");
+
+        //        if (branchesList.size()==itPengajuanSetorEntityList.size()){
+        if (1==1){
+            for (ItPengajuanSetorEntity pengajuanSetorEntity : itPengajuanSetorEntityList){
+                ProsesPpnKd prosesPpnKd = new ProsesPpnKd();
+                prosesPpnKd.setNo(urutan);
+                prosesPpnKd.setBranchId(pengajuanSetorEntity.getBranchId());
+
+                List<ImBranches> branches = branchDao.getListBranchById(pengajuanSetorEntity.getBranchId());
+                for (ImBranches branch : branches){
+                    prosesPpnKd.setBranchName(branch.getBranchName());
+                }
+
+                //set keluaran
+                prosesPpnKd.setKeluaranUnit(pengajuanSetorEntity.getJumlahPpnKeluaran());
+                prosesPpnKd.setKeluaranKoreksi(BigDecimal.ZERO);
+                prosesPpnKd.setKeluaranDiambilKp(prosesPpnKd.getKeluaranUnit().add(prosesPpnKd.getKeluaranKoreksi()));
+
+                //set masukan
+                prosesPpnKd.setMasukanUnit(pengajuanSetorEntity.getJumlahPpnMasukanB2().add(pengajuanSetorEntity.getJumlahPpnMasukanB3()));
+                prosesPpnKd.setMasukanKoreksi(BigDecimal.ZERO);
+                prosesPpnKd.setMasukanDiambilKp(prosesPpnKd.getMasukanUnit().subtract(prosesPpnKd.getMasukanKoreksi()));
+
+                jumlahUnit.setKeluaranUnit(jumlahUnit.getKeluaranUnit().add(prosesPpnKd.getKeluaranUnit()));
+                jumlahUnit.setMasukanUnit(jumlahUnit.getMasukanUnit().add(prosesPpnKd.getMasukanUnit()));
+                jumlahUnit.setKeluaranKoreksi(jumlahUnit.getKeluaranKoreksi().add(prosesPpnKd.getKeluaranKoreksi()));
+                jumlahUnit.setMasukanKoreksi(jumlahUnit.getMasukanKoreksi().add(prosesPpnKd.getMasukanKoreksi()));
+                jumlahUnit.setKeluaranDiambilKp(jumlahUnit.getKeluaranDiambilKp().add(prosesPpnKd.getKeluaranDiambilKp()));
+                jumlahUnit.setMasukanDiambilKp(jumlahUnit.getMasukanDiambilKp().add(prosesPpnKd.getMasukanDiambilKp()));
+
+                urutan++;
+                listOfResult.add(prosesPpnKd);
+            }
+        }else{
+            status="ERROR : PPN unit masih ada yang belum di proses atau belum di approve";
+            logger.error("[PengajuanSetorBoImpl.prosesPPnKanpus]"+status);
+            throw new GeneralBOException(status);
+        }
+
+
+        jumlahUnit.setNo(urutan);
+        direksi.setNo(urutan+1);
+        konsol.setNo(urutan+2);
+
+        konsol.setKeluaranUnit(jumlahUnit.getKeluaranUnit().add(direksi.getKeluaranUnit()));
+        konsol.setMasukanUnit(jumlahUnit.getMasukanUnit().add(direksi.getMasukanUnit()));
+        konsol.setKeluaranKoreksi(jumlahUnit.getKeluaranKoreksi().add(direksi.getKeluaranKoreksi()));
+        konsol.setMasukanKoreksi(jumlahUnit.getMasukanKoreksi().add(direksi.getMasukanKoreksi()));
+        konsol.setKeluaranDiambilKp(jumlahUnit.getKeluaranDiambilKp().add(direksi.getKeluaranDiambilKp()));
+        konsol.setMasukanDiambilKp(jumlahUnit.getMasukanDiambilKp().add(direksi.getMasukanDiambilKp()));
+
+        listOfResult.add(jumlahUnit);
+        listOfResult.add(direksi);
+        listOfResult.add(konsol);
+
+        logger.info("[PengajuanSetorBoImpl.getDetailPengajuanSetorPPn] end process <<<");
+        return listOfResult;
+    }
+
+    private ProsesPpnKd rekapBantuan (PengajuanSetor data,String tipe){
+        logger.info("[PengajuanSetorBoImpl.listPPh21Pengajuan] start process >>>");
+        String status="";
+        ProsesPpnKd direksi = new ProsesPpnKd();
+        List<ItPengajuanSetorEntity> itPengajuanSetorEntityListKp = pengajuanSetorDao.getListPengajuanSetorByBulanTahunDanBranch(data.getBulan(),data.getTahun(),CommonConstant.ID_KANPUS);
+
+        if (itPengajuanSetorEntityListKp.size()!=0){
+            for (ItPengajuanSetorEntity pengajuanSetorEntity : itPengajuanSetorEntityListKp) {
+                direksi.setBranchId(pengajuanSetorEntity.getBranchId());
+                List<ImBranches> branches = branchDao.getListBranchById(pengajuanSetorEntity.getBranchId());
+                for (ImBranches branches1 : branches) {
+                    direksi.setBranchName(branches1.getBranchName());
+                }
+
+                //set keluaran
+                direksi.setKeluaranUnit(pengajuanSetorEntity.getJumlahPpnKeluaran());
+                direksi.setKeluaranKoreksi(BigDecimal.ZERO);
+                direksi.setKeluaranDiambilKp(direksi.getKeluaranUnit().add(direksi.getKeluaranKoreksi()));
+
+                if ("normal".equalsIgnoreCase(tipe)){
+                    direksi.setMasukanUnit(pengajuanSetorEntity.getJumlahPpnMasukanB2().add(pengajuanSetorEntity.getJumlahPpnMasukanB3()));
+                }else if ("b2".equalsIgnoreCase(tipe)){
+                    direksi.setMasukanUnit(pengajuanSetorEntity.getJumlahPpnMasukanB2());
+                }else if ("b3".equalsIgnoreCase(tipe)){
+                    direksi.setMasukanUnit(pengajuanSetorEntity.getJumlahPpnMasukanB3());
+                }
+                //set masukan
+                direksi.setMasukanKoreksi(BigDecimal.ZERO);
+                direksi.setMasukanDiambilKp(direksi.getMasukanUnit().subtract(direksi.getMasukanKoreksi()));
+
+            }
+        }else{
+            status="ERROR : PPN Kantor Pusat belum di proses atau belum di approve";
+            logger.error("[PengajuanSetorBoImpl.prosesPPnKanpus]"+status);
+            throw new GeneralBOException(status);
+        }
+
+        logger.info("[PengajuanSetorBoImpl.getDetailPengajuanSetorPPn] end process <<<");
+        return direksi;
+    }
+
+
+    @Override
+    public List<ProsesPpnKd> prosesPPnKanpusB2(PengajuanSetor bean){
+        logger.info("[PengajuanSetorBoImpl.prosesPPnKanpusB2] start process >>>");
+        String status = "";
+        Integer urutan = 1;
+        List<ProsesPpnKd> listOfResult = new ArrayList<>();
+        ProsesPpnKd jumlahUnit = new ProsesPpnKd();
+        ProsesPpnKd direksi = rekapBantuan(bean,"b2");
+        ProsesPpnKd konsol = new ProsesPpnKd();
+        List<ImBranches> branchesList = branchDao.getAllBranch();
+        //menghapus kantor pusat
+        int i=0;
+        for (ImBranches branches : branchesList){
+            if (CommonConstant.ID_KANPUS.equalsIgnoreCase(branches.getPrimaryKey().getId())){
+                branchesList.remove(i);
+                break;
+            }
+            i++;
+        }
+
+        List<ItPengajuanSetorEntity> itPengajuanSetorEntityList = pengajuanSetorDao.getListPengajuanSetorByBulanDanTahun(bean.getBulan(),bean.getTahun());
+
+        jumlahUnit.setBranchId("unit");
+        jumlahUnit.setBranchName("JUMLAH UNIT");
+
+        konsol.setBranchId("konsol");
+        konsol.setBranchName("JUMLAH KONSOLIDASI");
+
+        //        if (branchesList.size()==itPengajuanSetorEntityList.size()){
+        if (1==1){
+            for (ItPengajuanSetorEntity pengajuanSetorEntity : itPengajuanSetorEntityList){
+                ProsesPpnKd prosesPpnKd = new ProsesPpnKd();
+                prosesPpnKd.setNo(urutan);
+                prosesPpnKd.setBranchId(pengajuanSetorEntity.getBranchId());
+
+                List<ImBranches> branches = branchDao.getListBranchById(pengajuanSetorEntity.getBranchId());
+                for (ImBranches branch : branches){
+                    prosesPpnKd.setBranchName(branch.getBranchName());
+                }
+
+                //set keluaran
+                prosesPpnKd.setKeluaranUnit(pengajuanSetorEntity.getJumlahPpnKeluaran());
+                prosesPpnKd.setKeluaranKoreksi(BigDecimal.ZERO);
+                prosesPpnKd.setKeluaranDiambilKp(prosesPpnKd.getKeluaranUnit().add(prosesPpnKd.getKeluaranKoreksi()));
+
+                //set masukan
+                if (pengajuanSetorEntity.getJumlahPpnMasukanB2()==null){
+                    pengajuanSetorEntity.setJumlahPpnMasukanB2(BigDecimal.ZERO);
+                }
+
+                prosesPpnKd.setMasukanUnit(pengajuanSetorEntity.getJumlahPpnMasukanB2());
+                prosesPpnKd.setMasukanKoreksi(BigDecimal.ZERO);
+                prosesPpnKd.setMasukanDiambilKp(prosesPpnKd.getMasukanUnit().subtract(prosesPpnKd.getMasukanKoreksi()));
+
+                jumlahUnit.setKeluaranUnit(jumlahUnit.getKeluaranUnit().add(prosesPpnKd.getKeluaranUnit()));
+                jumlahUnit.setMasukanUnit(jumlahUnit.getMasukanUnit().add(prosesPpnKd.getMasukanUnit()));
+                jumlahUnit.setKeluaranKoreksi(jumlahUnit.getKeluaranKoreksi().add(prosesPpnKd.getKeluaranKoreksi()));
+                jumlahUnit.setMasukanKoreksi(jumlahUnit.getMasukanKoreksi().add(prosesPpnKd.getMasukanKoreksi()));
+                jumlahUnit.setKeluaranDiambilKp(jumlahUnit.getKeluaranDiambilKp().add(prosesPpnKd.getKeluaranDiambilKp()));
+                jumlahUnit.setMasukanDiambilKp(jumlahUnit.getMasukanDiambilKp().add(prosesPpnKd.getMasukanDiambilKp()));
+
+                urutan++;
+                listOfResult.add(prosesPpnKd);
+            }
+        }else{
+            status="ERROR : PPN unit masih ada yang belum di proses atau belum di approve";
+            logger.error("[PengajuanSetorBoImpl.prosesPPnKanpusB2]"+status);
+            throw new GeneralBOException(status);
+        }
+
+
+        jumlahUnit.setNo(urutan);
+        direksi.setNo(urutan+1);
+        konsol.setNo(urutan+2);
+
+        konsol.setKeluaranUnit(jumlahUnit.getKeluaranUnit().add(direksi.getKeluaranUnit()));
+        konsol.setMasukanUnit(jumlahUnit.getMasukanUnit().add(direksi.getMasukanUnit()));
+        konsol.setKeluaranKoreksi(jumlahUnit.getKeluaranKoreksi().add(direksi.getKeluaranKoreksi()));
+        konsol.setMasukanKoreksi(jumlahUnit.getMasukanKoreksi().add(direksi.getMasukanKoreksi()));
+        konsol.setKeluaranDiambilKp(jumlahUnit.getKeluaranDiambilKp().add(direksi.getKeluaranDiambilKp()));
+        konsol.setMasukanDiambilKp(jumlahUnit.getMasukanDiambilKp().add(direksi.getMasukanDiambilKp()));
+
+        listOfResult.add(jumlahUnit);
+        listOfResult.add(direksi);
+        listOfResult.add(konsol);
+
+        logger.info("[PengajuanSetorBoImpl.prosesPPnKanpusB2] end process <<<");
+        return listOfResult;
+    }
+
+    @Override
+    public List<ProsesPpnKd> prosesPPnKanpusB3(PengajuanSetor bean){
+        logger.info("[PengajuanSetorBoImpl.prosesPPnKanpusB2] start process >>>");
+        String status = "";
+        Integer urutan = 1;
+        List<ProsesPpnKd> listOfResult = new ArrayList<>();
+        ProsesPpnKd jumlahUnit = new ProsesPpnKd();
+        ProsesPpnKd direksi = rekapBantuan(bean,"b3");
+        ProsesPpnKd konsol = new ProsesPpnKd();
+        List<ImBranches> branchesList = branchDao.getAllBranch();
+        //menghapus kantor pusat
+        int i=0;
+        for (ImBranches branches : branchesList){
+            if (CommonConstant.ID_KANPUS.equalsIgnoreCase(branches.getPrimaryKey().getId())){
+                branchesList.remove(i);
+                break;
+            }
+            i++;
+        }
+
+        List<ItPengajuanSetorEntity> itPengajuanSetorEntityList = pengajuanSetorDao.getListPengajuanSetorByBulanDanTahun(bean.getBulan(),bean.getTahun());
+
+        jumlahUnit.setBranchId("unit");
+        jumlahUnit.setBranchName("JUMLAH UNIT");
+
+        konsol.setBranchId("konsol");
+        konsol.setBranchName("JUMLAH KONSOLIDASI");
+
+        //        if (branchesList.size()==itPengajuanSetorEntityList.size()){
+        if (1==1){
+            for (ItPengajuanSetorEntity pengajuanSetorEntity : itPengajuanSetorEntityList){
+                ProsesPpnKd prosesPpnKd = new ProsesPpnKd();
+                prosesPpnKd.setNo(urutan);
+                prosesPpnKd.setBranchId(pengajuanSetorEntity.getBranchId());
+
+                List<ImBranches> branches = branchDao.getListBranchById(pengajuanSetorEntity.getBranchId());
+                for (ImBranches branch : branches){
+                    prosesPpnKd.setBranchName(branch.getBranchName());
+                }
+
+                //set keluaran
+                prosesPpnKd.setKeluaranUnit(pengajuanSetorEntity.getJumlahPpnKeluaran());
+                prosesPpnKd.setKeluaranKoreksi(BigDecimal.ZERO);
+                prosesPpnKd.setKeluaranDiambilKp(prosesPpnKd.getKeluaranUnit().add(prosesPpnKd.getKeluaranKoreksi()));
+
+                //set masukan
+                if (pengajuanSetorEntity.getJumlahPpnMasukanB3()==null){
+                    pengajuanSetorEntity.setJumlahPpnMasukanB3(BigDecimal.ZERO);
+                }
+
+                prosesPpnKd.setMasukanUnit(pengajuanSetorEntity.getJumlahPpnMasukanB3());
+                prosesPpnKd.setMasukanKoreksi(BigDecimal.ZERO);
+                prosesPpnKd.setMasukanDiambilKp(prosesPpnKd.getMasukanUnit().subtract(prosesPpnKd.getMasukanKoreksi()));
+
+                jumlahUnit.setKeluaranUnit(jumlahUnit.getKeluaranUnit().add(prosesPpnKd.getKeluaranUnit()));
+                jumlahUnit.setMasukanUnit(jumlahUnit.getMasukanUnit().add(prosesPpnKd.getMasukanUnit()));
+                jumlahUnit.setKeluaranKoreksi(jumlahUnit.getKeluaranKoreksi().add(prosesPpnKd.getKeluaranKoreksi()));
+                jumlahUnit.setMasukanKoreksi(jumlahUnit.getMasukanKoreksi().add(prosesPpnKd.getMasukanKoreksi()));
+                jumlahUnit.setKeluaranDiambilKp(jumlahUnit.getKeluaranDiambilKp().add(prosesPpnKd.getKeluaranDiambilKp()));
+                jumlahUnit.setMasukanDiambilKp(jumlahUnit.getMasukanDiambilKp().add(prosesPpnKd.getMasukanDiambilKp()));
+
+                urutan++;
+                listOfResult.add(prosesPpnKd);
+            }
+        }else{
+            status="ERROR : PPN unit masih ada yang belum di proses atau belum di approve";
+            logger.error("[PengajuanSetorBoImpl.prosesPPnKanpusB2]"+status);
+            throw new GeneralBOException(status);
+        }
+
+
+        jumlahUnit.setNo(urutan);
+        direksi.setNo(urutan+1);
+        konsol.setNo(urutan+2);
+
+        konsol.setKeluaranUnit(jumlahUnit.getKeluaranUnit().add(direksi.getKeluaranUnit()));
+        konsol.setMasukanUnit(jumlahUnit.getMasukanUnit().add(direksi.getMasukanUnit()));
+        konsol.setKeluaranKoreksi(jumlahUnit.getKeluaranKoreksi().add(direksi.getKeluaranKoreksi()));
+        konsol.setMasukanKoreksi(jumlahUnit.getMasukanKoreksi().add(direksi.getMasukanKoreksi()));
+        konsol.setKeluaranDiambilKp(jumlahUnit.getKeluaranDiambilKp().add(direksi.getKeluaranDiambilKp()));
+        konsol.setMasukanDiambilKp(jumlahUnit.getMasukanDiambilKp().add(direksi.getMasukanDiambilKp()));
+
+        listOfResult.add(jumlahUnit);
+        listOfResult.add(direksi);
+        listOfResult.add(konsol);
+
+        logger.info("[PengajuanSetorBoImpl.prosesPPnKanpusB2] end process <<<");
+        return listOfResult;
+    }
+
+    @Override
     public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {
         return null;
+    }
+
+    @Override
+    public BigDecimal perhitunganKembaliPpn(PengajuanSetor search){
+        logger.info("[PengajuanSetorBoImpl.perhitunganKembaliPpn] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        PerhitunganKembaliPpn perhitunganKembaliPpn = new PerhitunganKembaliPpn();
+
+        // AMBIL PPN YANG SUDAH DI BAYARKAN ATAU DI KREDITKAN
+        perhitunganKembaliPpn.setPpnPpnMasukanYangTelahDikreditkan(perhitunganPpnKdDao.getPpnMasukanYangTelahDikreditkan(search));
+
+        perhitunganKembaliPpn.setDppPpnMasukanYangTelahDikreditkan(perhitunganKembaliPpn.getPpnPpnMasukanYangTelahDikreditkan().multiply(BigDecimal.TEN));
+
+        // AMBIL PPN OBAT YANG ADA DI RAWAT JALAN ( PPN KELUARAN )
+        perhitunganKembaliPpn.setPpnPenyerahanTerutangPpn(perhitunganPpnKdDao.getPenyerahanYangTerutangPpn(search));
+
+        perhitunganKembaliPpn.setDppPenyerahanTerutangPpn(perhitunganKembaliPpn.getPpnPenyerahanTerutangPpn().multiply(BigDecimal.TEN));
+        perhitunganKembaliPpn.setPpnPenyerahanTidakTerutangPpn(BigDecimal.ZERO);
+
+        // AMBIL OBAT YANG ADA DI RAWAT INAP
+        perhitunganKembaliPpn.setDppPenyerahanTidakTerutangPpn(perhitunganPpnKdDao.getPenyerahanTidakTerutang(search));
+
+        perhitunganKembaliPpn.setDppTotalPendapatanRumahSakit(perhitunganKembaliPpn.getDppPenyerahanTerutangPpn().add(perhitunganKembaliPpn.getDppPenyerahanTidakTerutangPpn()));
+        perhitunganKembaliPpn.setPpnTotalPendapatanRumahSakit(perhitunganKembaliPpn.getPpnPenyerahanTerutangPpn().add(perhitunganKembaliPpn.getPpnPenyerahanTidakTerutangPpn()));
+
+        if (!perhitunganKembaliPpn.getDppTotalPendapatanRumahSakit().equals(BigDecimal.ZERO)){
+            BigDecimal proses1 = perhitunganKembaliPpn.getDppPenyerahanTidakTerutangPpn().divide(perhitunganKembaliPpn.getDppTotalPendapatanRumahSakit(),BigDecimal.ROUND_HALF_UP);
+            BigDecimal ppnMasukanYangTidakDapatDiKreditkan = proses1.multiply(perhitunganKembaliPpn.getPpnPpnMasukanYangTelahDikreditkan());
+            perhitunganKembaliPpn.setPpnPpnMasukanYangTidakDapatDikreditkan(ppnMasukanYangTidakDapatDiKreditkan);
+        }
+
+        PerhitunganKembaliPpn caridata = new PerhitunganKembaliPpn();
+        caridata.setTahun(search.getTahun());
+        caridata.setBulan(CommonUtil.bulanSebelumnya(search.getBulan()));
+        ItAkunPpnPerhitunganKembaliEntity ambilBulanLalu = perhitunganKembaliPpnDao.getPerhitunganKembaliPadaBulanLalu(caridata);
+        perhitunganKembaliPpn.setPpnTelahDiperhitungkanKembaliPpnMasukan(ambilBulanLalu.getPpnTelahDiperhitungkanKembali().add(ambilBulanLalu.getPpnHasilPerhitunganKembaliPpn()));
+
+        perhitunganKembaliPpn.setPpnHasilPerhitunganKembaliPpn(perhitunganKembaliPpn.getPpnPpnMasukanYangTidakDapatDikreditkan().subtract(perhitunganKembaliPpn.getPpnTelahDiperhitungkanKembaliPpnMasukan()));
+        convertPerhitunganKembaliPpn(perhitunganKembaliPpn);
+
+        logger.info("[PengajuanSetorBoImpl.perhitunganKembaliPpn] end process <<<");
+
+        session.setAttribute("perhitunganKembaliPpn",perhitunganKembaliPpn);
+        return perhitunganKembaliPpn.getPpnHasilPerhitunganKembaliPpn();
+    }
+
+    @Override
+    public void saveAddProsesPpnKd(PerhitunganPpnKd bean, List<ProsesPpnKd> prosesPpnKdListNormal, List<ProsesPpnKd> prosesPpnKdListB2, List<ProsesPpnKd> prosesPpnKdListB3, PerhitunganPpnKd perhitunganPpnKdListNormal, PerhitunganPpnKd perhitunganPpnKdListB2, PerhitunganPpnKd perhitunganPpnKdListB3,PerhitunganKembaliPpn perhitunganKembaliPpn){
+        logger.info("[PengajuanSetorBoImpl.saveAddProsesPpnKd] start process >>>");
+
+        String PerhitunganPpnKdId;
+        ItAkunPerhitunganPpnKdEntity perhitunganPpnKdEntity = new ItAkunPerhitunganPpnKdEntity();
+
+        //NORMAL
+        try {
+            PerhitunganPpnKdId = perhitunganPpnKdDao.getNextId();
+        } catch (HibernateException e) {
+            logger.error("[PengajuanSetorBoImpl.saveAddProsesPpnKd] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + e.getMessage());
+        }
+
+        perhitunganPpnKdEntity.setPerhitunganPpnKdId(PerhitunganPpnKdId);
+        perhitunganPpnKdEntity.setTahun(perhitunganPpnKdListNormal.getTahun());
+        perhitunganPpnKdEntity.setBulan(perhitunganPpnKdListNormal.getBulan());
+        perhitunganPpnKdEntity.setCancelFlag(bean.getCancelFlag());
+
+        perhitunganPpnKdEntity.setPpnMasukan(perhitunganPpnKdListNormal.getPpnMasukan());
+        perhitunganPpnKdEntity.setTotalPpnMasukan(perhitunganPpnKdListNormal.getTotalPpnMasukan());
+        perhitunganPpnKdEntity.setPpnKeluaran(perhitunganPpnKdListNormal.getPpnKeluaran());
+        perhitunganPpnKdEntity.setKurangBayar(perhitunganPpnKdListNormal.getKurangBayar());
+        perhitunganPpnKdEntity.setPerhitunganKembali(perhitunganPpnKdListNormal.getPerhitunganKembali());
+        perhitunganPpnKdEntity.setTotalKurangBayar(perhitunganPpnKdListNormal.getTotalKurangBayar());
+        perhitunganPpnKdEntity.setLbBulanYll(perhitunganPpnKdListNormal.getLbBulanYll());
+        perhitunganPpnKdEntity.setPpnEkspor(perhitunganPpnKdListNormal.getPpnEkspor());
+        perhitunganPpnKdEntity.setDipungutSendiri(perhitunganPpnKdListNormal.getDipungutSendiri());
+        perhitunganPpnKdEntity.setDipungutOlehPemungut(perhitunganPpnKdListNormal.getDipungutOlehPemungut());
+        perhitunganPpnKdEntity.setTidakDipungut(perhitunganPpnKdListNormal.getTidakDipungut());
+        perhitunganPpnKdEntity.setDibebaskan(perhitunganPpnKdListNormal.getDibebaskan());
+        perhitunganPpnKdEntity.setJumlahTerutangPpn(perhitunganPpnKdListNormal.getJumlahTerutangPpn());
+        perhitunganPpnKdEntity.setJasaRs(perhitunganPpnKdListNormal.getJasaRs());
+        perhitunganPpnKdEntity.setObatRawatInap(perhitunganPpnKdListNormal.getObatRawatInap());
+        perhitunganPpnKdEntity.setJumlahTidakTerutang(perhitunganPpnKdListNormal.getJumlahTidakTerutang());
+        perhitunganPpnKdEntity.setPenyerahanBarangDanJasa(perhitunganPpnKdListNormal.getPenyerahanBarangDanJasa());
+        perhitunganPpnKdEntity.setTipe("normal");
+        perhitunganPpnKdEntity.setAction(bean.getAction());
+        perhitunganPpnKdEntity.setFlag(bean.getFlag());
+        perhitunganPpnKdEntity.setCreatedDate(bean.getCreatedDate());
+        perhitunganPpnKdEntity.setCreatedWho(bean.getCreatedWho());
+        perhitunganPpnKdEntity.setLastUpdate(bean.getLastUpdate());
+        perhitunganPpnKdEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+        try {
+            perhitunganPpnKdDao.addAndSave(perhitunganPpnKdEntity);
+        } catch (HibernateException e) {
+            logger.error("[PengajuanSetorBoImpl.saveAddProsesPpnKd] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + e.getMessage());
+        }
+
+        //save detail
+        for (ProsesPpnKd prosesPpnKd : prosesPpnKdListNormal){
+            ItAkunProsesPpnKdEntity prosesPpnKdEntity = new ItAkunProsesPpnKdEntity();
+            prosesPpnKdEntity.setProsesPpnKdId(prosesPpnKdDao.getNextId());
+            prosesPpnKdEntity.setPerhitunganPpnKdId(PerhitunganPpnKdId);
+            prosesPpnKdEntity.setBranchId(prosesPpnKd.getBranchId());
+            prosesPpnKdEntity.setBranchName(prosesPpnKd.getBranchName());
+            prosesPpnKdEntity.setKeluaranUnit(prosesPpnKd.getKeluaranUnit());
+            prosesPpnKdEntity.setMasukanUnit(prosesPpnKd.getMasukanUnit());
+            prosesPpnKdEntity.setKeluaranKoreksi(prosesPpnKd.getKeluaranKoreksi());
+            prosesPpnKdEntity.setMasukanKoreksi(prosesPpnKd.getMasukanKoreksi());
+            prosesPpnKdEntity.setKeluaranDiambilKp(prosesPpnKd.getKeluaranDiambilKp());
+            prosesPpnKdEntity.setMasukanDiambilKp(prosesPpnKd.getMasukanDiambilKp());
+            prosesPpnKdEntity.setB4(prosesPpnKd.getB4());
+            prosesPpnKdEntity.setNoUrut(prosesPpnKd.getNo());
+
+            prosesPpnKdEntity.setAction(bean.getAction());
+            prosesPpnKdEntity.setFlag(bean.getFlag());
+            prosesPpnKdEntity.setCreatedDate(bean.getCreatedDate());
+            prosesPpnKdEntity.setCreatedWho(bean.getCreatedWho());
+            prosesPpnKdEntity.setLastUpdate(bean.getLastUpdate());
+            prosesPpnKdEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+            prosesPpnKdDao.addAndSave(prosesPpnKdEntity);
+        }
+
+
+        //B2
+        try {
+            PerhitunganPpnKdId = perhitunganPpnKdDao.getNextId();
+        } catch (HibernateException e) {
+            logger.error("[PengajuanSetorBoImpl.saveAddProsesPpnKd] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + e.getMessage());
+        }
+
+        perhitunganPpnKdEntity = new ItAkunPerhitunganPpnKdEntity();
+        perhitunganPpnKdEntity.setPerhitunganPpnKdId(PerhitunganPpnKdId);
+        perhitunganPpnKdEntity.setTahun(perhitunganPpnKdListB2.getTahun());
+        perhitunganPpnKdEntity.setBulan(perhitunganPpnKdListB2.getBulan());
+        perhitunganPpnKdEntity.setCancelFlag(bean.getCancelFlag());
+        perhitunganPpnKdEntity.setStatusB2(perhitunganPpnKdListB2.getStatusB2());
+
+        perhitunganPpnKdEntity.setAction(bean.getAction());
+        perhitunganPpnKdEntity.setFlag(bean.getFlag());
+        perhitunganPpnKdEntity.setCreatedDate(bean.getCreatedDate());
+        perhitunganPpnKdEntity.setCreatedWho(bean.getCreatedWho());
+        perhitunganPpnKdEntity.setLastUpdate(bean.getLastUpdate());
+        perhitunganPpnKdEntity.setLastUpdateWho(bean.getLastUpdateWho());
+        perhitunganPpnKdEntity.setPpnMasukan(perhitunganPpnKdListB2.getPpnMasukan());
+        perhitunganPpnKdEntity.setTotalPpnMasukan(perhitunganPpnKdListB2.getTotalPpnMasukan());
+        perhitunganPpnKdEntity.setPpnKeluaran(perhitunganPpnKdListB2.getPpnKeluaran());
+        perhitunganPpnKdEntity.setKurangBayar(perhitunganPpnKdListB2.getKurangBayar());
+        perhitunganPpnKdEntity.setPerhitunganKembali(perhitunganPpnKdListB2.getPerhitunganKembali());
+        perhitunganPpnKdEntity.setTotalKurangBayar(perhitunganPpnKdListB2.getTotalKurangBayar());
+        perhitunganPpnKdEntity.setLbBulanYll(perhitunganPpnKdListB2.getLbBulanYll());
+        perhitunganPpnKdEntity.setPpnEkspor(perhitunganPpnKdListB2.getPpnEkspor());
+        perhitunganPpnKdEntity.setDipungutSendiri(perhitunganPpnKdListB2.getDipungutSendiri());
+        perhitunganPpnKdEntity.setDipungutOlehPemungut(perhitunganPpnKdListB2.getDipungutOlehPemungut());
+        perhitunganPpnKdEntity.setTidakDipungut(perhitunganPpnKdListB2.getTidakDipungut());
+        perhitunganPpnKdEntity.setDibebaskan(perhitunganPpnKdListB2.getDibebaskan());
+        perhitunganPpnKdEntity.setJumlahTerutangPpn(perhitunganPpnKdListB2.getJumlahTerutangPpn());
+        perhitunganPpnKdEntity.setJasaRs(perhitunganPpnKdListB2.getJasaRs());
+        perhitunganPpnKdEntity.setObatRawatInap(perhitunganPpnKdListB2.getObatRawatInap());
+        perhitunganPpnKdEntity.setJumlahTidakTerutang(perhitunganPpnKdListB2.getJumlahTidakTerutang());
+        perhitunganPpnKdEntity.setPenyerahanBarangDanJasa(perhitunganPpnKdListB2.getPenyerahanBarangDanJasa());
+        perhitunganPpnKdEntity.setTipe("B2");
+
+        try {
+            perhitunganPpnKdDao.addAndSave(perhitunganPpnKdEntity);
+        } catch (HibernateException e) {
+            logger.error("[PengajuanSetorBoImpl.saveAddProsesPpnKd] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + e.getMessage());
+        }
+
+        //save detail
+        for (ProsesPpnKd prosesPpnKd : prosesPpnKdListB2){
+            ItAkunProsesPpnKdEntity prosesPpnKdEntity = new ItAkunProsesPpnKdEntity();
+            prosesPpnKdEntity.setProsesPpnKdId(prosesPpnKdDao.getNextId());
+            prosesPpnKdEntity.setPerhitunganPpnKdId(PerhitunganPpnKdId);
+            prosesPpnKdEntity.setBranchId(prosesPpnKd.getBranchId());
+            prosesPpnKdEntity.setBranchName(prosesPpnKd.getBranchName());
+            prosesPpnKdEntity.setKeluaranUnit(prosesPpnKd.getKeluaranUnit());
+            prosesPpnKdEntity.setMasukanUnit(prosesPpnKd.getMasukanUnit());
+            prosesPpnKdEntity.setKeluaranKoreksi(prosesPpnKd.getKeluaranKoreksi());
+            prosesPpnKdEntity.setMasukanKoreksi(prosesPpnKd.getMasukanKoreksi());
+            prosesPpnKdEntity.setKeluaranDiambilKp(prosesPpnKd.getKeluaranDiambilKp());
+            prosesPpnKdEntity.setMasukanDiambilKp(prosesPpnKd.getMasukanDiambilKp());
+            prosesPpnKdEntity.setB4(prosesPpnKd.getB4());
+            prosesPpnKdEntity.setNoUrut(prosesPpnKd.getNo());
+
+            prosesPpnKdEntity.setAction(bean.getAction());
+            prosesPpnKdEntity.setFlag(bean.getFlag());
+            prosesPpnKdEntity.setCreatedDate(bean.getCreatedDate());
+            prosesPpnKdEntity.setCreatedWho(bean.getCreatedWho());
+            prosesPpnKdEntity.setLastUpdate(bean.getLastUpdate());
+            prosesPpnKdEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+            prosesPpnKdDao.addAndSave(prosesPpnKdEntity);
+        }
+
+        //save Perhitungan Kembali
+        ItAkunPpnPerhitunganKembaliEntity perhitunganKembaliEntity = new ItAkunPpnPerhitunganKembaliEntity();
+        perhitunganKembaliEntity.setPerhitunganKembaliPpnId(perhitunganKembaliPpnDao.getNextId());
+        perhitunganKembaliEntity.setDppTotalPendapatanRumahSakit(perhitunganKembaliPpn.getDppTotalPendapatanRumahSakit());
+        perhitunganKembaliEntity.setDppPenyerahanTidakTerutangPpn(perhitunganKembaliPpn.getDppPenyerahanTidakTerutangPpn());
+        perhitunganKembaliEntity.setDppPpnMasukanYangTelahDireditkan(perhitunganKembaliPpn.getDppPpnMasukanYangTelahDikreditkan());
+        perhitunganKembaliEntity.setPpnTotalPendapatanRumahSakit(perhitunganKembaliPpn.getPpnTotalPendapatanRumahSakit());
+        perhitunganKembaliEntity.setPpnPenyerahanTidakTerutangPpn(perhitunganKembaliPpn.getPpnPenyerahanTidakTerutangPpn());
+        perhitunganKembaliEntity.setPpnPenyerahanTerutangPpn(perhitunganKembaliPpn.getPpnPenyerahanTerutangPpn());
+        perhitunganKembaliEntity.setPpnPpnMasukanYangTelahDikreditkan(perhitunganKembaliPpn.getPpnPpnMasukanYangTelahDikreditkan());
+        perhitunganKembaliEntity.setPpnPpnMasukanYangTidakDapatDikreditkan(perhitunganKembaliPpn.getPpnPpnMasukanYangTidakDapatDikreditkan());
+        perhitunganKembaliEntity.setPpnTelahDiperhitungkanKembali(perhitunganKembaliPpn.getPpnTelahDiperhitungkanKembaliPpnMasukan());
+        perhitunganKembaliEntity.setPpnHasilPerhitunganKembaliPpn(perhitunganKembaliPpn.getPpnHasilPerhitunganKembaliPpn());
+        perhitunganKembaliEntity.setTahun(perhitunganPpnKdListB2.getTahun());
+        perhitunganKembaliEntity.setBulan(perhitunganPpnKdListB2.getBulan());
+        perhitunganKembaliEntity.setProsesPpnKdId(perhitunganPpnKdEntity.getPerhitunganPpnKdId());
+        perhitunganKembaliEntity.setAction(bean.getAction());
+        perhitunganKembaliEntity.setFlag(bean.getFlag());
+        perhitunganKembaliEntity.setCreatedDate(bean.getCreatedDate());
+        perhitunganKembaliEntity.setCreatedWho(bean.getCreatedWho());
+        perhitunganKembaliEntity.setLastUpdate(bean.getLastUpdate());
+        perhitunganKembaliEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+        perhitunganKembaliPpnDao.addAndSave(perhitunganKembaliEntity);
+
+        //B3
+        try {
+            PerhitunganPpnKdId = perhitunganPpnKdDao.getNextId();
+        } catch (HibernateException e) {
+            logger.error("[PengajuanSetorBoImpl.saveAddProsesPpnKd] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + e.getMessage());
+        }
+
+        perhitunganPpnKdEntity = new ItAkunPerhitunganPpnKdEntity();
+        perhitunganPpnKdEntity.setPerhitunganPpnKdId(PerhitunganPpnKdId);
+        perhitunganPpnKdEntity.setTahun(perhitunganPpnKdListB3.getTahun());
+        perhitunganPpnKdEntity.setBulan(perhitunganPpnKdListB3.getBulan());
+        perhitunganPpnKdEntity.setCancelFlag(bean.getCancelFlag());
+
+        perhitunganPpnKdEntity.setAction(bean.getAction());
+        perhitunganPpnKdEntity.setFlag(bean.getFlag());
+        perhitunganPpnKdEntity.setCreatedDate(bean.getCreatedDate());
+        perhitunganPpnKdEntity.setCreatedWho(bean.getCreatedWho());
+        perhitunganPpnKdEntity.setLastUpdate(bean.getLastUpdate());
+        perhitunganPpnKdEntity.setLastUpdateWho(bean.getLastUpdateWho());
+        perhitunganPpnKdEntity.setPpnMasukan(perhitunganPpnKdListB3.getPpnMasukan());
+        perhitunganPpnKdEntity.setTotalPpnMasukan(perhitunganPpnKdListB3.getTotalPpnMasukan());
+        perhitunganPpnKdEntity.setPpnKeluaran(perhitunganPpnKdListB3.getPpnKeluaran());
+        perhitunganPpnKdEntity.setKurangBayar(perhitunganPpnKdListB3.getKurangBayar());
+        perhitunganPpnKdEntity.setPerhitunganKembali(perhitunganPpnKdListB3.getPerhitunganKembali());
+        perhitunganPpnKdEntity.setTotalKurangBayar(perhitunganPpnKdListB3.getTotalKurangBayar());
+        perhitunganPpnKdEntity.setLbBulanYll(perhitunganPpnKdListB3.getLbBulanYll());
+        perhitunganPpnKdEntity.setPpnEkspor(perhitunganPpnKdListB3.getPpnEkspor());
+        perhitunganPpnKdEntity.setDipungutSendiri(perhitunganPpnKdListB3.getDipungutSendiri());
+        perhitunganPpnKdEntity.setDipungutOlehPemungut(perhitunganPpnKdListB3.getDipungutOlehPemungut());
+        perhitunganPpnKdEntity.setTidakDipungut(perhitunganPpnKdListB3.getTidakDipungut());
+        perhitunganPpnKdEntity.setDibebaskan(perhitunganPpnKdListB3.getDibebaskan());
+        perhitunganPpnKdEntity.setJumlahTerutangPpn(perhitunganPpnKdListB3.getJumlahTerutangPpn());
+        perhitunganPpnKdEntity.setJasaRs(perhitunganPpnKdListB3.getJasaRs());
+        perhitunganPpnKdEntity.setObatRawatInap(perhitunganPpnKdListB3.getObatRawatInap());
+        perhitunganPpnKdEntity.setJumlahTidakTerutang(perhitunganPpnKdListB3.getJumlahTidakTerutang());
+        perhitunganPpnKdEntity.setPenyerahanBarangDanJasa(perhitunganPpnKdListB3.getPenyerahanBarangDanJasa());
+        perhitunganPpnKdEntity.setTipe("B3");
+
+        try {
+            perhitunganPpnKdDao.addAndSave(perhitunganPpnKdEntity);
+        } catch (HibernateException e) {
+            logger.error("[PengajuanSetorBoImpl.saveAddProsesPpnKd] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + e.getMessage());
+        }
+
+        //save detail
+        for (ProsesPpnKd prosesPpnKd : prosesPpnKdListB3){
+            ItAkunProsesPpnKdEntity prosesPpnKdEntity = new ItAkunProsesPpnKdEntity();
+            prosesPpnKdEntity.setProsesPpnKdId(prosesPpnKdDao.getNextId());
+            prosesPpnKdEntity.setPerhitunganPpnKdId(PerhitunganPpnKdId);
+            prosesPpnKdEntity.setBranchId(prosesPpnKd.getBranchId());
+            prosesPpnKdEntity.setBranchName(prosesPpnKd.getBranchName());
+            prosesPpnKdEntity.setKeluaranUnit(prosesPpnKd.getKeluaranUnit());
+            prosesPpnKdEntity.setMasukanUnit(prosesPpnKd.getMasukanUnit());
+            prosesPpnKdEntity.setKeluaranKoreksi(prosesPpnKd.getKeluaranKoreksi());
+            prosesPpnKdEntity.setMasukanKoreksi(prosesPpnKd.getMasukanKoreksi());
+            prosesPpnKdEntity.setKeluaranDiambilKp(prosesPpnKd.getKeluaranDiambilKp());
+            prosesPpnKdEntity.setMasukanDiambilKp(prosesPpnKd.getMasukanDiambilKp());
+            prosesPpnKdEntity.setB4(prosesPpnKd.getB4());
+            prosesPpnKdEntity.setNoUrut(prosesPpnKd.getNo());
+
+            prosesPpnKdEntity.setAction(bean.getAction());
+            prosesPpnKdEntity.setFlag(bean.getFlag());
+            prosesPpnKdEntity.setCreatedDate(bean.getCreatedDate());
+            prosesPpnKdEntity.setCreatedWho(bean.getCreatedWho());
+            prosesPpnKdEntity.setLastUpdate(bean.getLastUpdate());
+            prosesPpnKdEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+            prosesPpnKdDao.addAndSave(prosesPpnKdEntity);
+        }
+
+        logger.info("[PengajuanSetorBoImpl.saveAddProsesPpnKd] stop process >>>");
+    }
+
+    @Override
+    public List<PerhitunganPpnKd> getSearchHomeProsesPpnKd(PerhitunganPpnKd bean) throws GeneralBOException {
+        List<PerhitunganPpnKd> perhitunganPpnKdList = new ArrayList();
+
+        try {
+            // Get data from database by ID
+            perhitunganPpnKdList = perhitunganPpnKdDao.getDataSearchHome(bean.getBulan(), bean.getTahun(), bean.getBulan1(),
+                    bean.getTahun1());
+        } catch (HibernateException e) {
+            logger.error("[PayrollBoImpl.saveDelete] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
+        }
+
+        if(perhitunganPpnKdList.size() > 0){
+            for(PerhitunganPpnKd perhitunganPpnKd : perhitunganPpnKdList){
+                perhitunganPpnKd.setNamaBulan(CommonUtil.convertNumberToStringBulan(perhitunganPpnKd.getBulan()));
+            }
+        }
+        return perhitunganPpnKdList;
+    }
+
+    @Override
+    public PerhitunganPpnKd getPerhitunganPpnKdList(PerhitunganPpnKd search, String tipe){
+        PerhitunganPpnKd result = new PerhitunganPpnKd();
+
+        List<ItAkunPerhitunganPpnKdEntity> perhitunganPpnKdEntityList = perhitunganPpnKdDao.getPerhitunganPpnKdList(search,tipe);
+
+        for (ItAkunPerhitunganPpnKdEntity perhitunganPpnKdEntity : perhitunganPpnKdEntityList){
+                result = convertPerhitunganPpnKd(perhitunganPpnKdEntity);
+        }
+
+        return result;
+    }
+
+    @Override
+    public List<ProsesPpnKd> getProsesPpnKdList(String perhitunganPpnKdId){
+        List<ProsesPpnKd> listOfresult = new ArrayList<>();
+
+        List<ItAkunProsesPpnKdEntity> prosesPpnKdEntityList = prosesPpnKdDao.getProsesPpnKdList(perhitunganPpnKdId);
+
+        for (ItAkunProsesPpnKdEntity prosesPpnKdEntity : prosesPpnKdEntityList){
+            listOfresult.add(convertProsesPpnKd(prosesPpnKdEntity));
+        }
+        return listOfresult;
+    }
+
+    @Override
+    public List<ItAkunPerhitunganPpnKdEntity> getListUntukValidasi(PerhitunganPpnKd search){
+        return perhitunganPpnKdDao.getListUntukValidasi(search);
+    }
+
+    private PerhitunganPpnKd convertPerhitunganPpnKd ( ItAkunPerhitunganPpnKdEntity data ){
+        PerhitunganPpnKd result = new PerhitunganPpnKd();
+        result.setPerhitunganPpnKdId(data.getPerhitunganPpnKdId());
+        result.setTahun(data.getTahun());
+        result.setBulan(data.getBulan());
+        result.setApprovalFlag(data.getApprovalFlag());
+        result.setApprovalWho(data.getApprovalId());
+        result.setApprovalDate(data.getApprovalDate());
+        result.setCancelFlag(data.getCancelFlag());
+        result.setCancelWho(data.getCancelId());
+        result.setCancelDate(data.getCancelDate());
+        result.setPpnMasukan(data.getPpnMasukan());
+        result.setTotalPpnMasukan(data.getTotalPpnMasukan());
+        result.setPpnKeluaran(data.getPpnKeluaran());
+        result.setKurangBayar(data.getKurangBayar());
+        result.setPerhitunganKembali(data.getPerhitunganKembali());
+        result.setTotalKurangBayar(data.getTotalKurangBayar());
+        result.setLbBulanYll(data.getLbBulanYll());
+        result.setPpnEkspor(data.getPpnEkspor());
+        result.setDipungutSendiri(data.getDipungutSendiri());
+        result.setDipungutOlehPemungut(data.getDipungutOlehPemungut());
+        result.setDibebaskan(data.getDibebaskan());
+        result.setJumlahTerutangPpn(data.getJumlahTerutangPpn());
+        result.setJasaRs(data.getJasaRs());
+        result.setObatRawatInap(data.getObatRawatInap());
+        result.setJumlahTidakTerutang(data.getJumlahTidakTerutang());
+        result.setPenyerahanBarangDanJasa(data.getPenyerahanBarangDanJasa());
+        result.setTipe(data.getTipe());
+
+        //convert to numeric
+        result.setStPpnMasukan(CommonUtil.numbericFormat(result.getPpnMasukan(),"###,###"));
+        result.setStTotalPpnMasukan(CommonUtil.numbericFormat(result.getTotalPpnMasukan(),"###,###"));
+        result.setStPpnKeluaran(CommonUtil.numbericFormat(result.getPpnKeluaran(),"###,###"));
+        result.setStKurangBayar(CommonUtil.numbericFormat(result.getKurangBayar(),"###,###"));
+        result.setStPerhitunganKembali(CommonUtil.numbericFormat(result.getPerhitunganKembali(),"###,###"));
+        result.setStTotalKurangBayar(CommonUtil.numbericFormat(result.getTotalKurangBayar(),"###,###"));
+        result.setStLbBulanYll(CommonUtil.numbericFormat(result.getLbBulanYll(),"###,###"));
+        result.setStPpnEkspor(CommonUtil.numbericFormat(result.getPpnEkspor(),"###,###"));
+        result.setStDipungutSendiri(CommonUtil.numbericFormat(result.getDipungutSendiri(),"###,###"));
+        result.setStDipungutOlehPemungut(CommonUtil.numbericFormat(result.getDipungutOlehPemungut(),"###,###"));
+        result.setStDibebaskan(CommonUtil.numbericFormat(result.getDibebaskan(),"###,###"));
+        result.setStJumlahTerutangPpn(CommonUtil.numbericFormat(result.getJumlahTerutangPpn(),"###,###"));
+        result.setStJasaRs(CommonUtil.numbericFormat(result.getJasaRs(),"###,###"));
+        result.setStObatRawatInap(CommonUtil.numbericFormat(result.getObatRawatInap(),"###,###"));
+        result.setStJumlahTidakTerutang(CommonUtil.numbericFormat(result.getJumlahTidakTerutang(),"###,###"));
+        result.setStPenyerahanBarangDanJasa(CommonUtil.numbericFormat(result.getPenyerahanBarangDanJasa(),"###,###"));
+
+
+        return result;
+    }
+
+    private ProsesPpnKd convertProsesPpnKd ( ItAkunProsesPpnKdEntity data ){
+        ProsesPpnKd result = new ProsesPpnKd();
+        result.setProsesPpnKdId(data.getProsesPpnKdId());
+        result.setBranchId(data.getBranchId());
+        result.setBranchName(data.getBranchName());
+        result.setKeluaranUnit(data.getKeluaranUnit());
+        result.setMasukanUnit(data.getMasukanUnit());
+        result.setKeluaranKoreksi(data.getKeluaranKoreksi());
+        result.setKeluaranKoreksi(data.getKeluaranKoreksi());
+        result.setMasukanDiambilKp(data.getMasukanDiambilKp());
+        result.setKeluaranDiambilKp(data.getKeluaranDiambilKp());
+        result.setB4(data.getB4());
+        result.setNo(data.getNoUrut());
+
+        result.setStKeluaranUnit(CommonUtil.numbericFormat(data.getKeluaranUnit(),"###,###"));
+        result.setStMasukanUnit(CommonUtil.numbericFormat(data.getMasukanUnit(),"###,###"));
+        result.setStKeluaranKoreksi(CommonUtil.numbericFormat(data.getKeluaranKoreksi(),"###,###"));
+        result.setStMasukanKoreksi(CommonUtil.numbericFormat(data.getMasukanKoreksi(),"###,###"));
+        result.setStKeluaranDiambilKp(CommonUtil.numbericFormat(data.getKeluaranDiambilKp(),"###,###"));
+        result.setStMasukanDiambilKp(CommonUtil.numbericFormat(data.getMasukanDiambilKp(),"###,###"));
+
+        result.setPerhitunganPpnKdId(data.getPerhitunganPpnKdId());
+
+        return result;
+    }
+
+    private PerhitunganKembaliPpn convertPerhitunganKembaliPpn(PerhitunganKembaliPpn data){
+        data.setStDppTotalPendapatanRumahSakit(CommonUtil.numbericFormat(data.getDppTotalPendapatanRumahSakit(),"###,###"));
+        data.setStDppPenyerahanTidakTerutangPpn(CommonUtil.numbericFormat(data.getDppPenyerahanTidakTerutangPpn(),"###,###"));
+        data.setStDppPenyerahanTerutangPpn(CommonUtil.numbericFormat(data.getDppPenyerahanTerutangPpn(),"###,###"));
+        data.setStDppPpnMasukanYangTelahDikreditkan(CommonUtil.numbericFormat(data.getDppPpnMasukanYangTelahDikreditkan(),"###,###"));
+        data.setStPpnTotalPendapatanRumahSakit(CommonUtil.numbericFormat(data.getPpnTotalPendapatanRumahSakit(),"###,###"));
+        data.setStPpnPenyerahanTidakTerutangPpn(CommonUtil.numbericFormat(data.getPpnPenyerahanTidakTerutangPpn(),"###,###"));
+        data.setStPpnPenyerahanTerutangPpn(CommonUtil.numbericFormat(data.getPpnPenyerahanTerutangPpn(),"###,###"));
+        data.setStPpnPpnMasukanYangTelahDikreditkan(CommonUtil.numbericFormat(data.getPpnPpnMasukanYangTelahDikreditkan(),"###,###"));
+        data.setStPpnPpnMasukanYangTidakDapatDikreditkan(CommonUtil.numbericFormat(data.getPpnPpnMasukanYangTidakDapatDikreditkan(),"###,###"));
+        data.setStPpnTelahDiperhitungkanKembaliPpnMasukan(CommonUtil.numbericFormat(data.getPpnTelahDiperhitungkanKembaliPpnMasukan(),"###,###"));
+        data.setStPpnHasilPerhitunganKembaliPpn(CommonUtil.numbericFormat(data.getPpnHasilPerhitunganKembaliPpn(),"###,###"));
+        return data;
+    }
+
+    @Override
+    public PerhitunganKembaliPpn getPerhitunganKembali(PerhitunganPpnKd search){
+        PerhitunganKembaliPpn searchData = new PerhitunganKembaliPpn();
+        searchData.setTahun(search.getTahun());
+        searchData.setBulan(search.getBulan());
+        PerhitunganKembaliPpn result = new PerhitunganKembaliPpn();
+        List<ItAkunPpnPerhitunganKembaliEntity> perhitunganKembaliEntityList = perhitunganKembaliPpnDao.getPerhitunganKembaliPadaBulan(searchData);
+
+        for (ItAkunPpnPerhitunganKembaliEntity perhitunganKembaliEntity : perhitunganKembaliEntityList){
+            result.setDppTotalPendapatanRumahSakit(perhitunganKembaliEntity.getDppTotalPendapatanRumahSakit());
+            result.setDppPenyerahanTidakTerutangPpn(perhitunganKembaliEntity.getDppPenyerahanTidakTerutangPpn());
+            result.setDppPenyerahanTerutangPpn(perhitunganKembaliEntity.getDppPenyerahanTidakTerutangPpn());
+            result.setDppPpnMasukanYangTelahDikreditkan(perhitunganKembaliEntity.getDppPpnMasukanYangTelahDireditkan());
+            result.setPpnTotalPendapatanRumahSakit(perhitunganKembaliEntity.getPpnTotalPendapatanRumahSakit());
+            result.setPpnPenyerahanTidakTerutangPpn(perhitunganKembaliEntity.getPpnPenyerahanTidakTerutangPpn());
+            result.setPpnPenyerahanTerutangPpn(perhitunganKembaliEntity.getPpnPenyerahanTerutangPpn());
+            result.setPpnPpnMasukanYangTelahDikreditkan(perhitunganKembaliEntity.getPpnPpnMasukanYangTelahDikreditkan());
+            result.setPpnPpnMasukanYangTidakDapatDikreditkan(perhitunganKembaliEntity.getPpnPpnMasukanYangTidakDapatDikreditkan());
+            result.setPpnTelahDiperhitungkanKembaliPpnMasukan(perhitunganKembaliEntity.getPpnTelahDiperhitungkanKembali());
+            result.setPpnHasilPerhitunganKembaliPpn(perhitunganKembaliEntity.getPpnHasilPerhitunganKembaliPpn());
+
+            convertPerhitunganKembaliPpn(result);
+
+        }
+        return result;
+    }
+
+    @Override
+    public PerhitunganPpnKd getModalPostingPpn(String bulan, String tahun){
+        PerhitunganPpnKd result = new PerhitunganPpnKd();
+
+        List<ItAkunPerhitunganPpnKdEntity> itAkunPerhitunganPpnKdEntityList = perhitunganPpnKdDao.getForModalPosting(bulan,tahun,"B2");
+
+        for (ItAkunPerhitunganPpnKdEntity perhitunganPpnKdEntity : itAkunPerhitunganPpnKdEntityList){
+            result = convertPerhitunganPpnKd(perhitunganPpnKdEntity);
+        }
+
+        return result;
+    }
+
+    @Override
+    public BigDecimal getJasaRs(PengajuanSetor search){
+        BigDecimal totalJasaRs = BigDecimal.ZERO;
+
+        return totalJasaRs;
+    }
+
+    @Override
+    public BigDecimal getObatrawatInap(PengajuanSetor search){
+        BigDecimal obatRawatInap = BigDecimal.ZERO;
+
+        return obatRawatInap;
+    }
+
+    @Override
+    public Map getBillingForPostingProsesPpnKoreksi(String bulan,String tahun){
+        logger.info("[PengajuanSetorBoImpl.getBillingForPostingProsesPpnKoreksi] start process <<<");
+        Map dataBilling = new HashMap();
+        List<Map> ppnKeluaranList = new ArrayList<>();
+        List<Map> ppnMasukanList = new ArrayList<>();
+
+        BigDecimal totalPpnKeluaran = BigDecimal.ZERO;
+        BigDecimal totalPpnMasukan = BigDecimal.ZERO;
+
+        List<ItPengajuanSetorEntity> pengajuanSetorEntityList = pengajuanSetorDao.getListPengajuanSetorByBulanDanTahun(bulan,tahun);
+
+        for (ItPengajuanSetorEntity pengajuanSetorEntity : pengajuanSetorEntityList){
+            List<ItPengajuanSetorDetailEntity> pengajuanSetorDetailEntityListB2 = pengajuanSetorDetailDao.getByPengajuanSetorIdAndTipe(pengajuanSetorEntity.getPengajuanSetorId(),"PPN Masukan B2");
+            List<ItPengajuanSetorDetailEntity> pengajuanSetorDetailEntityListKeluaran = pengajuanSetorDetailDao.getByPengajuanSetorIdAndTipe(pengajuanSetorEntity.getPengajuanSetorId(),"PPN Keluaran");
+
+            //Map Untuk B2
+            for (ItPengajuanSetorDetailEntity pengajuanSetorDetailEntity : pengajuanSetorDetailEntityListB2){
+                Map mapB2 = new HashMap();
+                mapB2.put("master_id",pengajuanSetorDetailEntity.getPersonId());
+                mapB2.put("bukti",pengajuanSetorDetailEntity.getTransaksiId());
+                mapB2.put("nilai",pengajuanSetorDetailEntity.getJumlah());
+
+                totalPpnMasukan=totalPpnMasukan.add(pengajuanSetorDetailEntity.getJumlah());
+                ppnMasukanList.add(mapB2);
+            }
+
+            //Map Untuk Keluaran
+            for (ItPengajuanSetorDetailEntity pengajuanSetorDetailEntity : pengajuanSetorDetailEntityListKeluaran){
+                Map mapKeluaran = new HashMap();
+                mapKeluaran.put("master_id",pengajuanSetorDetailEntity.getPersonId());
+                mapKeluaran.put("bukti",pengajuanSetorDetailEntity.getTransaksiId());
+                mapKeluaran.put("nilai",pengajuanSetorDetailEntity.getJumlah());
+
+                totalPpnKeluaran=totalPpnKeluaran.add(pengajuanSetorDetailEntity.getJumlah());
+                ppnKeluaranList.add(mapKeluaran);
+            }
+        }
+
+        Map mapPiutangPpn = new HashMap();
+        mapPiutangPpn.put("master_id","JNK");
+        mapPiutangPpn.put("nilai",totalPpnMasukan.subtract(totalPpnKeluaran));
+
+        dataBilling.put("ppn_masukan",ppnMasukanList);
+        dataBilling.put("ppn_keluaran",ppnKeluaranList);
+        dataBilling.put("piutang_ppn",mapPiutangPpn);
+
+        logger.info("[PengajuanSetorBoImpl.getBillingForPostingProsesPpnKoreksi] stop process >>>");
+        return dataBilling;
+    }
+
+    @Override
+    public Map getBillingForPostingProsesPpnKasKeluar(String bulan, String tahun, String kas){
+        logger.info("[PengajuanSetorBoImpl.getBillingForPostingProsesPpnKasKeluar] start process <<<");
+        Map dataBilling = new HashMap();
+
+        List<ItAkunPerhitunganPpnKdEntity> perhitunganPpnKdEntityList = perhitunganPpnKdDao.getForModalPosting(bulan,tahun,"B2");
+
+        if (perhitunganPpnKdEntityList.size()!=1){
+            String status = "ERROR : Data Perhitungan lebih dari 1 , cek kembali datanya ";
+            logger.error(status);
+            throw new GeneralBOException(status);
+        }
+        for (ItAkunPerhitunganPpnKdEntity perhitunganPpnKdEntity : perhitunganPpnKdEntityList){
+            Map hutangPpn = new HashMap();
+            hutangPpn.put("nilai",perhitunganPpnKdEntity.getTotalKurangBayar());
+
+            Map Mapkas = new HashMap();
+            Mapkas.put("metode_bayar","transfer");
+            Mapkas.put("bank", kas);
+            Mapkas.put("nilai",perhitunganPpnKdEntity.getTotalKurangBayar());
+
+            dataBilling.put("hutang_ppn",hutangPpn);
+            dataBilling.put("kas",Mapkas);
+        }
+
+        logger.info("[PengajuanSetorBoImpl.getBillingForPostingProsesPpnKasKeluar] stop process >>>");
+        return dataBilling;
+    }
+
+    @Override
+    public void cancelProsesPpn(PerhitunganPpnKd bean) throws GeneralBOException {
+        logger.info("[PengajuanSetorBoImpl.cancelProsesPpn] start process >>>");
+        List<ItAkunPerhitunganPpnKdEntity> perhitunganPpnKdEntityList = new ArrayList<>();
+        PerhitunganPpnKd search = new PerhitunganPpnKd();
+        search.setBulan(bean.getBulan());
+        search.setTahun(bean.getTahun());
+
+        if (bean!=null) {
+            try {
+                // Get data from database by ID
+                perhitunganPpnKdEntityList = perhitunganPpnKdDao.getAllPerhitunganPpnKdList(search);
+            } catch (HibernateException e) {
+                logger.error("[PengajuanSetorBoImpl.cancelProsesPpn] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + e.getMessage());
+            }
+
+            for (ItAkunPerhitunganPpnKdEntity perhitunganPpnKdEntity : perhitunganPpnKdEntityList){
+                perhitunganPpnKdEntity.setCancelFlag(bean.getCancelFlag());
+                perhitunganPpnKdEntity.setCancelDate(bean.getCancelDate());
+                perhitunganPpnKdEntity.setCancelId(bean.getCancelWho());
+
+                perhitunganPpnKdEntity.setFlag(bean.getFlag());
+                perhitunganPpnKdEntity.setAction(bean.getAction());
+                perhitunganPpnKdEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                perhitunganPpnKdEntity.setLastUpdate(bean.getLastUpdate());
+                try {
+                    // Update into database
+                    perhitunganPpnKdDao.updateAndSave(perhitunganPpnKdEntity);
+                } catch (HibernateException e) {
+                    logger.error("[PengajuanSetorBoImpl.cancelProsesPpn] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving update data, please info to your admin..." + e.getMessage());
+                }
+            }
+        }
+        logger.info("[PengajuanSetorBoImpl.cancelProsesPpn] end process <<<");
     }
 }

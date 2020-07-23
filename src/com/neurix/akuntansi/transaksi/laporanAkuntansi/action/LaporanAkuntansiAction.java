@@ -1485,6 +1485,18 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
                 titleReport="AGING PIUTANG PASIEN";
                 tipeAging ="pasien";
                 break;
+            case ("pph_dokter_kso"):
+                titleReport="AGING PPH21 DOKTER KSO";
+                tipeAging ="dokter";
+                break;
+            case ("pph_pegawai"):
+                titleReport="AGING PPH21 PEGAWAI";
+                tipeAging ="pegawai";
+                break;
+            case ("pph_rekanan"):
+                titleReport="AGING REKANAN";
+                tipeAging ="usaha";
+                break;
         }
 
         String periodeAging = dataLaporan.getTahun()+"-"+dataLaporan.getBulan();
@@ -1656,7 +1668,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         Aging aging=null;
         for (int i = 0; i < listData.size() && !flag; i++){
             aging = listData.get(i);
-            if (aging.getNoNota().equalsIgnoreCase(data.getNoNota()) && data.getMataUang().equalsIgnoreCase(aging.getMataUang())){
+            if (aging.getNoNota().equalsIgnoreCase(data.getNoNota()) && data.getMataUang().equalsIgnoreCase(aging.getMataUang())&& data.getMasterId().equalsIgnoreCase(aging.getMasterId())){
                 flag = true;
             }
         }
@@ -1668,7 +1680,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         Aging dataReturn = null;
         for (int i = 0; i < listData.size() && !flag; i++){
             dataReturn = listData.get(i);
-            if (dataReturn.getNoNota().equalsIgnoreCase(record.getNoNota())&& dataReturn.getMataUang().equalsIgnoreCase(record.getMataUang())){
+            if (dataReturn.getNoNota().equalsIgnoreCase(record.getNoNota())&& dataReturn.getMataUang().equalsIgnoreCase(record.getMataUang())&&dataReturn.getMasterId().equalsIgnoreCase(record.getMasterId())){
                 flag = true;
             }
         }
@@ -1856,6 +1868,21 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         laporanAkuntansi = new LaporanAkuntansi();
         laporanAkuntansi.setTipeLaporan("persediaan");
         laporanAkuntansi.setTipeLaporanName("Persediaan");
+        laporanAkuntansiList.add(laporanAkuntansi);
+
+        laporanAkuntansi = new LaporanAkuntansi();
+        laporanAkuntansi.setTipeLaporan("pph_dokter_kso");
+        laporanAkuntansi.setTipeLaporanName("PPH21 Dokter");
+        laporanAkuntansiList.add(laporanAkuntansi);
+
+        laporanAkuntansi = new LaporanAkuntansi();
+        laporanAkuntansi.setTipeLaporan("pph_pegawai");
+        laporanAkuntansi.setTipeLaporanName("PPH21 Pegawai");
+        laporanAkuntansiList.add(laporanAkuntansi);
+
+        laporanAkuntansi = new LaporanAkuntansi();
+        laporanAkuntansi.setTipeLaporan("pph_rekanan");
+        laporanAkuntansi.setTipeLaporanName("PPH21 Rekanan");
         laporanAkuntansiList.add(laporanAkuntansi);
 
         return laporanAkuntansiList;

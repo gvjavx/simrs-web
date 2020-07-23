@@ -445,6 +445,9 @@
                 <value>sshconfig/com/neurix/akuntansi/transaksi/pengajuanBiaya/hibernate/ItPengajuanBiayaDetailEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/pengajuanSetor/hibernate/ItPengajuanSetorEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/pengajuanSetor/hibernate/ItPengajuanSetorDetailEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/pengajuanSetor/hibernate/ItAkunPerhitunganPpnKdEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/pengajuanSetor/hibernate/ItAkunProsesPpnKdEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/pengajuanSetor/hibernate/ItAkunPpnPerhitunganKembaliEntity.xml</value>
                 <!--Hibernate Config For PAKET SIMRS-->
                 <value>sshconfig/com/neurix/simrs/transaksi/paketperiksa/hiberanate/ImSimrsKelasPaketEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/paketperiksa/hiberanate/MtSimrsItemPaketEntity.hbm.xml</value>
@@ -507,6 +510,7 @@
                 <value>sshconfig/com/neurix/hris/master/positionBagian/hibernate/ImPositionBagianHistoryEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/profesi/hibernate/ImProfesiHistoryEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/golonganPkwt/hibernate/ImGolonganPkwtHistoryEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/penyewaanLahan/hibernate/ItAkunPenyewaanLahanEntity.hbm.xml</value>
             </list>
         </property>
     </bean>

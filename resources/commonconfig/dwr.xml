@@ -766,11 +766,17 @@
       </create>
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.pengajuanSetor.model.PengajuanSetor"/>
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.pengajuanSetor.model.PengajuanSetorDetail"/>
+      <convert converter="bean" match="com.neurix.akuntansi.transaksi.pengajuanSetor.model.PerhitunganPpnKd"/>
+      <convert converter="bean" match="com.neurix.akuntansi.transaksi.pengajuanSetor.model.PerhitunganKembaliPpn"/>
+      <convert converter="bean" match="com.neurix.akuntansi.transaksi.pengajuanSetor.model.ProsesPpnKd"/>
       <create creator="new">
       <param name="class" value="com.neurix.simrs.transaksi.kandungan.action.KandunganAction"/>
       </create>
       <convert converter="bean" match="com.neurix.simrs.transaksi.kandungan.model.Kandungan"/>
-
+      <create creator="new">
+          <param name="class" value="com.neurix.akuntansi.transaksi.penyewaanLahan.action.PenyewaanLahanAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.akuntansi.transaksi.penyewaanLahan.model.PenyewaanLahan"/>
   </allow>
 
 </dwr>
