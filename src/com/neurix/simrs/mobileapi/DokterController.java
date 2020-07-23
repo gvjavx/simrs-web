@@ -311,6 +311,7 @@ public class DokterController implements ModelDriven<Object> {
                    AntrianTelemedic beanAntrian = new AntrianTelemedic();
                    beanAntrian.setIdDokter(item.getIdDokter());
 
+
                    try {
                       resultAntrian =  telemedicBoProxy.getSearchByCriteria(beanAntrian);
                    } catch (GeneralBOException e){
