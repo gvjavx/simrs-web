@@ -145,6 +145,8 @@ public class TesTelemedicController implements ModelDriven<Object> {
                 break;
             case "generate-num":
                 generateRandom();
+            case "batal-dokter":
+                saveBatalDokter(this.id);
             default:
                 logger.info("==========NO ONE CARE============");
         }
@@ -379,5 +381,22 @@ public class TesTelemedicController implements ModelDriven<Object> {
         logger.info("Random value in int from "+min+" to "+max+ ":");
         int random_int = (int)(Math.random() * (max - min + 1) + min);
         logger.info(random_int);
+    }
+
+    private void saveBatalDokter(String jenis){
+
+        AntrianTelemedic antrianTelemedic = new AntrianTelemedic();
+        antrianTelemedic.setIdPelayanan("PYN00000002");
+        antrianTelemedic.setIdDokter("DKR00000012");
+        antrianTelemedic.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+        antrianTelemedic.setLastUpdateWho("admin");
+        antrianTelemedic.setIdJenisPeriksaPasien(jenis);
+
+        try {
+            telemedicBoProxy.processBatalDokter(antrianTelemedic, "Ada Keperluan Mendadak");
+        } catch (GeneralBOException e){
+            logger.error("[TesTelemedicController.insertObat] saveBatalDokter. ",e);
+            throw new GeneralBOException("[TesTelemedicController.insertObat] saveBatalDokter. ", e);
+        }
     }
 }

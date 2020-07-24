@@ -88,7 +88,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Status Transaksi</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'confirmation':'CONFIRMATION','finish':'FINISH'}" cssStyle="margin-top: 7px"
+                                        <s:select list="#{'confirmation':'CONFIRMATION','finish':'FINISH', 'canceled':'CANCELED'}" cssStyle="margin-top: 7px"
                                                   headerKey="exist" headerValue="EXISTING" name="antrianTelemedic.statusTransaksi"
                                                   cssClass="form-control"/>
                                     </div>
@@ -191,28 +191,32 @@
                                     <td><s:property value="ketStatus"/></td>
                                     <td style="vertical-align: middle" align="center">
                                         <s:if test='#row.flagEresep != "Y"'>
-                                            <s:if test='#row.idJenisPeriksaPasien == "umum"'>
-                                                <s:if test='#row.flagBayarKonsultasi == "Y"'>
-                                                    <label class="label label-success"> Sudah Bayar</label>
-                                                </s:if>
-                                                <s:else>
-                                                    <label class="label label-warning"> Belum Bayar</label>
-                                                </s:else>
+                                            <s:if test='#row.flagBatalDokter == "Y"'>
+                                                <label class="label label-danger"> Dibatalkan Dokter </label>
                                             </s:if>
                                             <s:else>
-                                                <s:if test='#row.flagBayarKonsultasi == "Y"'>
-                                                    <label class="label label-success"> Terverifikasi </label>
-                                                </s:if>
-                                                <s:else>
-                                                    <s:if test='#row.idJenisPeriksaPasien == "asuransi"'>
-                                                        <label class="label label-warning"><s:property value="labelStatusAsuransi"/></label>
+                                                <s:if test='#row.idJenisPeriksaPasien == "umum"'>
+                                                    <s:if test='#row.flagBayarKonsultasi == "Y"'>
+                                                        <label class="label label-success"> Sudah Bayar</label>
                                                     </s:if>
                                                     <s:else>
-                                                        <label class="label label-warning"> Belum Diverifikasi </label>
+                                                        <label class="label label-warning"> Belum Bayar</label>
+                                                    </s:else>
+                                                </s:if>
+                                                <s:else>
+                                                    <s:if test='#row.flagBayarKonsultasi == "Y"'>
+                                                        <label class="label label-success"> Terverifikasi </label>
+                                                    </s:if>
+                                                    <s:else>
+                                                        <s:if test='#row.idJenisPeriksaPasien == "asuransi"'>
+                                                            <label class="label label-warning"><s:property value="labelStatusAsuransi"/></label>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <label class="label label-warning"> Belum Diverifikasi </label>
+                                                        </s:else>
                                                     </s:else>
                                                 </s:else>
                                             </s:else>
-
                                         </s:if>
                                     </td>
                                     <td style="vertical-align: middle" align="center">
@@ -222,29 +226,34 @@
                                         </s:if>
                                     </td>
                                     <td style="vertical-align: middle" align="center">
-                                        <s:if test='#row.flagResep == "Y"'>
-                                            <s:if test='#row.idJenisPeriksaPasien == "umum"'>
-                                                <s:if test='#row.flagBayarResep == "Y"'>
-                                                    <label class="label label-success"> Sudah Bayar</label>
-                                                </s:if>
-                                                <s:else>
-                                                    <label class="label label-warning"> Belum Bayar</label>
-                                                </s:else>
-                                            </s:if>
-                                            <s:else>
-                                                <s:if test='#row.flagBayarResep == "Y"'>
-                                                    <label class="label label-success"> Terverifikasi </label>
-                                                </s:if>
-                                                <s:else>
-                                                    <s:if test='#row.idJenisPeriksaPasien == "asuransi"'>
-                                                        <label class="label label-warning"><s:property value="labelStatusAsuransi"/></label>
+                                        <s:if test='#row.flagBatalDokter == "Y"'>
+                                            <label class="label label-danger"> Dibatalkan Dokter </label>
+                                        </s:if>
+                                        <s:else>
+                                            <s:if test='#row.flagResep == "Y"'>
+                                                <s:if test='#row.idJenisPeriksaPasien == "umum"'>
+                                                    <s:if test='#row.flagBayarResep == "Y"'>
+                                                        <label class="label label-success"> Sudah Bayar</label>
                                                     </s:if>
                                                     <s:else>
-                                                        <label class="label label-warning"> Belum Diverifikasi </label>
+                                                        <label class="label label-warning"> Belum Bayar</label>
+                                                    </s:else>
+                                                </s:if>
+                                                <s:else>
+                                                    <s:if test='#row.flagBayarResep == "Y"'>
+                                                        <label class="label label-success"> Terverifikasi </label>
+                                                    </s:if>
+                                                    <s:else>
+                                                        <s:if test='#row.idJenisPeriksaPasien == "asuransi"'>
+                                                            <label class="label label-warning"><s:property value="labelStatusAsuransi"/></label>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <label class="label label-warning"> Belum Diverifikasi </label>
+                                                        </s:else>
                                                     </s:else>
                                                 </s:else>
-                                            </s:else>
-                                        </s:if>
+                                            </s:if>
+                                        </s:else>
                                     </td>
                                     <td style="vertical-align: middle" align="center">
                                         <s:if test='#row.approveResep == "Y"'>
@@ -254,7 +263,12 @@
                                     </td>
                                     <td align="center">
                                         <s:if test='#row.flagBatalDokter == "Y"'>
-                                            <button class="btn btn-sm btn-danger" onclick="viewDetail('<s:property value="idBatalDokterTelemedic"/>','<s:property value="idJenisPeriksaPasien"/>')"><i class="fa fa-times"></i> Approve Batal</button>
+                                            <s:if test='#row.idJenisPeriksaPasien == "umum"'>
+                                                <button class="btn btn-sm btn-primary" onclick="viewBatalDokter('<s:property value="idBatalDokterTelemedic"/>', '<s:property value="id"/>', '<s:property value="idJenisPeriksaPasien"/>', '<s:property value="alasanBatal"/>')"><i class="fa fa-money"></i></button>
+                                            </s:if>
+                                            <s:else>
+                                                <img src="<s:url value="/pages/images/icon_success.ico" />">
+                                            </s:else>
                                         </s:if>
                                         <s:else>
                                             <s:if test='#row.statusTransaksi == "finish"'>
@@ -528,6 +542,34 @@
                 <div id="btn-save-asuransi">
                     <%--<button class="btn btn-success" onclick="uploadStrukAsuransi()"><i class="fa fa-check"></i> Save</button>--%>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-view-batal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> View Batal Dokter
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="row top-7">
+                    <div class="col-md-3" align="right">Dokter : </div>
+                    <div class="col-md-6"><span id="btl-nama-dokter"></span></div>
+                    <input type="hidden" id="btl-h-id-antrian">
+                </div>
+                <div class="row top-7">
+                    <div class="col-md-3" align="right">Alasan : </div>
+                    <div class="col-md-6"><textarea class="form-control" id="btl-alasan-batal" cols="3" rows="3" disabled></textarea></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-primary" id="save_pengembalian"><i class="fa fa-arrow-right"></i> Konfirmasi Pengembalian Dana
+                </button>
             </div>
         </div>
     </div>
@@ -1292,7 +1334,12 @@
         }
     }
 
-
+    function viewBatalDokter(idBatalDokter, idAntrian, idJenisPeriksaPasien, alasan) {
+        $("#modal-view-batal").modal('show');
+        $("#btl-nama-dokter").val("");
+        $("#btl-h-id-antrian").val(idAntrian);
+        $("#btl-alasan-batal").val(alasan);
+    }
 
 
 </script>

@@ -26,6 +26,7 @@ import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedic
 import com.neurix.simrs.transaksi.antriantelemedic.model.StatusAntrianTelemedic;
 import com.neurix.simrs.transaksi.bataltelemedic.dao.BatalDokterTelemedicDao;
 import com.neurix.simrs.transaksi.bataltelemedic.dao.BatalTelemedicDao;
+import com.neurix.simrs.transaksi.bataltelemedic.model.BatalTelemedic;
 import com.neurix.simrs.transaksi.bataltelemedic.model.ItSimrsBatalTelemedicEntity;
 import com.neurix.simrs.transaksi.bataltelemedic.model.ItSimrsDokterBatalTelemedicEntity;
 import com.neurix.simrs.transaksi.hargaobat.dao.HargaObatDao;
@@ -197,12 +198,6 @@ public class TelemedicBoImpl implements TelemedicBo {
                 antrianTelemedic.setIdDiagnosa(telemedicEntity.getIdDiagnosa());
                 antrianTelemedic.setKetDiagnosa(telemedicEntity.getKetDiagnosa());
 
-                // flag batal dokter;
-                ItSimrsBatalTelemedicEntity batalTelemedicEntity = getBatalTemedicEntityByIdAntrian(telemedicEntity.getId(), telemedicEntity.getIdDokter(), telemedicEntity.getIdPelayanan(), telemedicEntity.getCreatedDate());
-                if (batalTelemedicEntity != null){
-                    antrianTelemedic.setFlagBatalDokter("Y");
-                    antrianTelemedic.setIdBatalDokterTelemedic(batalTelemedicEntity.getId());
-                }
 
                 if (telemedicEntity.getIdPelayanan() != null && !"".equalsIgnoreCase(telemedicEntity.getIdPelayanan())) {
                     antrianTelemedic.setNamaPelayanan(getPelayananById(telemedicEntity.getIdPelayanan()).getNamaPelayanan());
@@ -275,20 +270,31 @@ public class TelemedicBoImpl implements TelemedicBo {
                         antrianTelemedic.setStatusTransaksi("exist");
                     }
                 }
+
+                // flag batal dokter;
+                BatalTelemedic batalTelemedic = getBatalTemedicByIdAntrian(telemedicEntity.getId(), telemedicEntity.getIdDokter(), telemedicEntity.getIdPelayanan(), telemedicEntity.getCreatedDate());
+                if (batalTelemedic != null){
+                    antrianTelemedic.setFlagBatalDokter("Y");
+                    antrianTelemedic.setIdBatalDokterTelemedic(batalTelemedic.getId());
+                    antrianTelemedic.setAlasanBatal(batalTelemedic.getAlasan());
+                    antrianTelemedic.setStatusTransaksi("canceled");
+                }
                 results.add(antrianTelemedic);
             }
         }
 
         logger.info("[TelemedicBoImpl.getSearchByCriteria] END <<<");
         final String statusTransaksi = bean.getStatusTransaksi();
-        if ("finish".equalsIgnoreCase(statusTransaksi) || "exist".equalsIgnoreCase(statusTransaksi) || "confirmation".equalsIgnoreCase(statusTransaksi)){
-            return results.stream().filter(p->p.getStatusTransaksi().equalsIgnoreCase(statusTransaksi)).collect(Collectors.toList());
-        }
+        return results.stream().filter(p->p.getStatusTransaksi().equalsIgnoreCase(statusTransaksi)).collect(Collectors.toList());
 
-        return results;
+//        if ("finish".equalsIgnoreCase(statusTransaksi) || "exist".equalsIgnoreCase(statusTransaksi) || "confirmation".equalsIgnoreCase(statusTransaksi)){
+//            return results.stream().filter(p->p.getStatusTransaksi().equalsIgnoreCase(statusTransaksi)).collect(Collectors.toList());
+//        }
+
+//        return results;
     }
 
-    private ItSimrsBatalTelemedicEntity getBatalTemedicEntityByIdAntrian(String idAntrian, String idDokter, String idPelayanan, Timestamp createdDate){
+    private BatalTelemedic getBatalTemedicByIdAntrian(String idAntrian, String idDokter, String idPelayanan, Timestamp createdDate){
 
         java.sql.Date date = new java.sql.Date(createdDate.getTime());
 
@@ -308,10 +314,10 @@ public class TelemedicBoImpl implements TelemedicBo {
         }
 
         if (dokterBatalTelemedicEntities.size() > 0){
-            ItSimrsDokterBatalTelemedicEntity batalTelemedicEntity = dokterBatalTelemedicEntities.get(0);
+            ItSimrsDokterBatalTelemedicEntity dokterBatalTelemedicEntity = dokterBatalTelemedicEntities.get(0);
 
             hsCriteria = new HashMap();
-            hsCriteria.put("id_dokter_batal", batalTelemedicEntity.getId());
+            hsCriteria.put("id_dokter_batal", dokterBatalTelemedicEntity.getId());
             hsCriteria.put("id_antrian_telemedic", idAntrian);
             hsCriteria.put("flag", "Y");
 
@@ -325,7 +331,18 @@ public class TelemedicBoImpl implements TelemedicBo {
             }
 
             if (batalTelemedicEntities.size() > 0){
-                return batalTelemedicEntities.get(0);
+                ItSimrsBatalTelemedicEntity batalTelemedicEntity = batalTelemedicEntities.get(0);
+                BatalTelemedic batalTelemedic = new BatalTelemedic();
+                batalTelemedic.setId(batalTelemedicEntity.getId());
+                batalTelemedic.setIdAntrianTelemedic(batalTelemedicEntity.getIdAntrianTelemedic());
+                batalTelemedic.setIdDokterBatal(batalTelemedicEntity.getIdDokterBatal());
+                batalTelemedic.setFlag(batalTelemedicEntity.getFlag());
+                batalTelemedic.setAction(batalTelemedicEntity.getAction());
+                batalTelemedic.setCreatedDate(batalTelemedicEntity.getCreatedDate());
+                batalTelemedic.setCreatedWho(batalTelemedicEntity.getCreatedWho());
+                batalTelemedic.setNoJurnal(batalTelemedicEntity.getNoJurnal());
+                batalTelemedic.setAlasan(dokterBatalTelemedicEntity.getAlasan());
+                return batalTelemedic;
             }
         }
 

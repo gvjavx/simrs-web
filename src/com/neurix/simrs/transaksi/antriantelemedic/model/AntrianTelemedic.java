@@ -66,6 +66,15 @@ public class AntrianTelemedic {
     private String labelStatusAsuransi;
     private String flagBatalDokter;
     private String idBatalDokterTelemedic;
+    private String alasanBatal;
+
+    public String getAlasanBatal() {
+        return alasanBatal;
+    }
+
+    public void setAlasanBatal(String alasanBatal) {
+        this.alasanBatal = alasanBatal;
+    }
 
     public String getIdBatalDokterTelemedic() {
         return idBatalDokterTelemedic;
