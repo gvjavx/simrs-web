@@ -35,6 +35,11 @@ import com.neurix.simrs.transaksi.bataltelemedic.dao.BatalTelemedicDao;
 import com.neurix.simrs.transaksi.bataltelemedic.model.BatalTelemedic;
 import com.neurix.simrs.transaksi.bataltelemedic.model.ItSimrsBatalTelemedicEntity;
 import com.neurix.simrs.transaksi.bataltelemedic.model.ItSimrsDokterBatalTelemedicEntity;
+import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
+import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
+import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderDetailCheckupLogEntity;
+import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
+import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
 import com.neurix.simrs.transaksi.hargaobat.dao.HargaObatDao;
 import com.neurix.simrs.transaksi.hargaobat.model.MtSimrsHargaObatEntity;
 import com.neurix.simrs.transaksi.reseponline.dao.PengirimanObatDao;
@@ -81,6 +86,16 @@ public class TelemedicBoImpl implements TelemedicBo {
     private StrukAsuransiDao strukAsuransiDao;
     private BatalTelemedicDao batalTelemedicDao;
     private BatalDokterTelemedicDao batalDokterTelemedicDao;
+    private HeaderCheckupDao headerCheckupDao;
+    private CheckupDetailDao checkupDetailDao;
+
+    public void setHeaderCheckupDao(HeaderCheckupDao headerCheckupDao) {
+        this.headerCheckupDao = headerCheckupDao;
+    }
+
+    public void setCheckupDetailDao(CheckupDetailDao checkupDetailDao) {
+        this.checkupDetailDao = checkupDetailDao;
+    }
 
     public void setBatalTelemedicDao(BatalTelemedicDao batalTelemedicDao) {
         this.batalTelemedicDao = batalTelemedicDao;
@@ -1436,6 +1451,32 @@ public class TelemedicBoImpl implements TelemedicBo {
 
         ItSimrsBatalTelemedicEntity batalTelemedicEntity = batalTelemedicDao.getById("id", bean.getId());
         if (batalTelemedicEntity != null){
+
+            if (batalTelemedicEntity.getIdAntrianTelemedic() != null){
+                ItSimrsHeaderChekupEntity headerChekupEntity = headerCheckupDao.getById("idAntrianOnline", batalTelemedicEntity.getIdAntrianTelemedic());
+                if (headerChekupEntity != null){
+
+                    Map hsCriteria = new HashMap();
+                    hsCriteria.put("no_checkup", headerChekupEntity.getNoCheckup());
+
+                    List<ItSimrsHeaderDetailCheckupEntity> detailCheckupEntities = checkupDetailDao.getByCriteria(hsCriteria);
+                    if (detailCheckupEntities.size() > 0){
+                        for (ItSimrsHeaderDetailCheckupEntity detailCheckupEntity : detailCheckupEntities){
+                            detailCheckupEntity.setStatusPeriksa("4");
+                            detailCheckupEntity.setAction("Y");
+                            detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
+                            detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                            try {
+                                checkupDetailDao.updateAndSave(detailCheckupEntity);
+                            } catch (HibernateException e){
+                                logger.error("[TelemedicBoImpl.confirmKembalian] ERROR. update batal telemedic to detail checkup. ", e);
+                                throw new GeneralBOException("[TelemedicBoImpl.confirmKembalian] ERROR. update batal telemedic to detail checkup. ", e);
+                            }
+                        }
+                    }
+                }
+            }
 
             batalTelemedicEntity.setKembaliKonsultasi(bean.getKembaliKonsultasi() == null ? batalTelemedicEntity.getKembaliKonsultasi() : bean.getKembaliKonsultasi());
             batalTelemedicEntity.setKembaliResep(bean.getKembaliResep() == null ? batalTelemedicEntity.getKembaliResep() : bean.getKembaliResep());

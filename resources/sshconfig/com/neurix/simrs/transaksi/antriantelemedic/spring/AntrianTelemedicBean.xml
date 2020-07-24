@@ -21,6 +21,8 @@
           p:strukAsuransiDao-ref="strukAsuransiDao"
           p:batalDokterTelemedicDao-ref="batalDokterTelemedicDao"
           p:batalTelemedicDao-ref="batalTelemedicDao"
+          p:headerCheckupDao-ref="headerCheckupDao"
+          p:checkupDetailDao-ref="checkupDetailDao"
     />
 
     <bean id="telemedicineController" class="com.neurix.simrs.mobileapi.TelemedicineController"
