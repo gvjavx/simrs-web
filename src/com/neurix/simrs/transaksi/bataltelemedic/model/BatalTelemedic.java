@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.bataltelemedic.model;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
@@ -17,6 +18,51 @@ public class BatalTelemedic {
     private String lastUpdateWho;
     private String noJurnal;
     private String alasan;
+    private BigDecimal kembaliKonsultasi;
+    private String flagKembaliKonsultasi;
+    private BigDecimal kembaliResep;
+    private String flagKembaliResep;
+    private String idTransaksiOnline;
+
+    public String getIdTransaksiOnline() {
+        return idTransaksiOnline;
+    }
+
+    public void setIdTransaksiOnline(String idTransaksiOnline) {
+        this.idTransaksiOnline = idTransaksiOnline;
+    }
+
+    public BigDecimal getKembaliKonsultasi() {
+        return kembaliKonsultasi;
+    }
+
+    public void setKembaliKonsultasi(BigDecimal kembaliKonsultasi) {
+        this.kembaliKonsultasi = kembaliKonsultasi;
+    }
+
+    public String getFlagKembaliKonsultasi() {
+        return flagKembaliKonsultasi;
+    }
+
+    public void setFlagKembaliKonsultasi(String flagKembaliKonsultasi) {
+        this.flagKembaliKonsultasi = flagKembaliKonsultasi;
+    }
+
+    public BigDecimal getKembaliResep() {
+        return kembaliResep;
+    }
+
+    public void setKembaliResep(BigDecimal kembaliResep) {
+        this.kembaliResep = kembaliResep;
+    }
+
+    public String getFlagKembaliResep() {
+        return flagKembaliResep;
+    }
+
+    public void setFlagKembaliResep(String flagKembaliResep) {
+        this.flagKembaliResep = flagKembaliResep;
+    }
 
     public String getAlasan() {
         return alasan;

@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.bataltelemedic.model;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
@@ -16,6 +17,42 @@ public class ItSimrsBatalTelemedicEntity {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String noJurnal;
+    private BigDecimal kembaliKonsultasi;
+    private String flagKembaliKonsultasi;
+    private BigDecimal kembaliResep;
+    private String flagKembaliResep;
+
+    public BigDecimal getKembaliKonsultasi() {
+        return kembaliKonsultasi;
+    }
+
+    public void setKembaliKonsultasi(BigDecimal kembaliKonsultasi) {
+        this.kembaliKonsultasi = kembaliKonsultasi;
+    }
+
+    public String getFlagKembaliKonsultasi() {
+        return flagKembaliKonsultasi;
+    }
+
+    public void setFlagKembaliKonsultasi(String flagKembaliKonsultasi) {
+        this.flagKembaliKonsultasi = flagKembaliKonsultasi;
+    }
+
+    public BigDecimal getKembaliResep() {
+        return kembaliResep;
+    }
+
+    public void setKembaliResep(BigDecimal kembaliResep) {
+        this.kembaliResep = kembaliResep;
+    }
+
+    public String getFlagKembaliResep() {
+        return flagKembaliResep;
+    }
+
+    public void setFlagKembaliResep(String flagKembaliResep) {
+        this.flagKembaliResep = flagKembaliResep;
+    }
 
     public String getId() {
         return id;

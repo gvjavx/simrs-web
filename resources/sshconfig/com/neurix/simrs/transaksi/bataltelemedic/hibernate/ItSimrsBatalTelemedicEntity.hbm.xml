@@ -35,6 +35,18 @@
             <basic name="noJurnal">
                 <column name="no_jurnal"/>
             </basic>
+            <basic name="kembaliKonsultasi">
+                <column name="kembali_konsultasi"/>
+            </basic>
+            <basic name="flagKembaliKonsultasi">
+                <column name="flag_kembali_konsultasi"/>
+            </basic>
+            <basic name="kembaliResep">
+                <column name="kembali_resep"/>
+            </basic>
+            <basic name="flagKembaliResep">
+                <column name="flag_kembali_resep"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

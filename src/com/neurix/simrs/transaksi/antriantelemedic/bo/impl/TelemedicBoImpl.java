@@ -282,6 +282,23 @@ public class TelemedicBoImpl implements TelemedicBo {
                 // flag batal dokter;
                 BatalTelemedic batalTelemedic = getBatalTemedicByIdAntrian(telemedicEntity.getId(), telemedicEntity.getIdDokter(), telemedicEntity.getIdPelayanan(), telemedicEntity.getCreatedDate());
                 if (batalTelemedic != null){
+
+                    if ("Y".equalsIgnoreCase(antrianTelemedic.getFlagResep()) && "Y".equalsIgnoreCase(antrianTelemedic.getFlagBayarResep())){
+                        if ("Y".equalsIgnoreCase(batalTelemedic.getFlagKembaliKonsultasi()) && "Y".equalsIgnoreCase(batalTelemedic.getFlagKembaliResep())){
+                            antrianTelemedic.setFlagDanaDikembaLikan("Y");
+                        } else {
+                            antrianTelemedic.setFlagDanaDikembaLikan("N");
+                        }
+                    } else if ("Y".equalsIgnoreCase(antrianTelemedic.getFlagBayarKonsultasi())){
+                        if ("Y".equalsIgnoreCase(batalTelemedic.getFlagKembaliKonsultasi())){
+                            antrianTelemedic.setFlagDanaDikembaLikan("Y");
+                        } else {
+                            antrianTelemedic.setFlagDanaDikembaLikan("N");
+                        }
+                    } else {
+                        antrianTelemedic.setFlagDanaDikembaLikan("N");
+                    }
+
                     antrianTelemedic.setFlagBatalDokter("Y");
                     antrianTelemedic.setIdBatalDokterTelemedic(batalTelemedic.getId());
                     antrianTelemedic.setAlasanBatal(batalTelemedic.getAlasan());
@@ -350,6 +367,10 @@ public class TelemedicBoImpl implements TelemedicBo {
                 batalTelemedic.setCreatedWho(batalTelemedicEntity.getCreatedWho());
                 batalTelemedic.setNoJurnal(batalTelemedicEntity.getNoJurnal());
                 batalTelemedic.setAlasan(dokterBatalTelemedicEntity.getAlasan());
+                batalTelemedic.setKembaliKonsultasi(batalTelemedicEntity.getKembaliKonsultasi() == null ? new BigDecimal(0) : batalTelemedicEntity.getKembaliKonsultasi());
+                batalTelemedic.setFlagKembaliKonsultasi(batalTelemedicEntity.getFlagKembaliKonsultasi());
+                batalTelemedic.setKembaliResep(batalTelemedicEntity.getKembaliResep() == null ? new BigDecimal(0) : batalTelemedicEntity.getKembaliResep());
+                batalTelemedic.setFlagKembaliResep(batalTelemedicEntity.getFlagKembaliResep());
                 return batalTelemedic;
             }
         }
@@ -1384,11 +1405,6 @@ public class TelemedicBoImpl implements TelemedicBo {
                     // push notif
                     listReturn.add(antrianTelemedicEntity);
                 }
-
-
-
-
-
             }
         }
         logger.info("[TelemedicBoImpl.processBatalDokter] END <<<");
@@ -1412,5 +1428,30 @@ public class TelemedicBoImpl implements TelemedicBo {
             logger.error("[TelemedicBoImpl.insertIntoBatalTelemedic] ERROR. ", e);
             throw new GeneralBOException("[TelemedicBoImpl.insertIntoBatalTelemedic] ERROR. ", e);
         }
+    }
+
+    @Override
+    public void confirmKembalian(BatalTelemedic bean) throws GeneralBOException {
+        logger.info("[TelemedicBoImpl.confirmKembalian] START >>>");
+
+        ItSimrsBatalTelemedicEntity batalTelemedicEntity = batalTelemedicDao.getById("id", bean.getId());
+        if (batalTelemedicEntity != null){
+
+            batalTelemedicEntity.setKembaliKonsultasi(bean.getKembaliKonsultasi() == null ? batalTelemedicEntity.getKembaliKonsultasi() : bean.getKembaliKonsultasi());
+            batalTelemedicEntity.setKembaliResep(bean.getKembaliResep() == null ? batalTelemedicEntity.getKembaliResep() : bean.getKembaliResep());
+            batalTelemedicEntity.setFlagKembaliKonsultasi(bean.getFlagKembaliKonsultasi());
+            batalTelemedicEntity.setFlagKembaliResep(bean.getFlagKembaliResep());
+            batalTelemedicEntity.setAction("U");
+            batalTelemedicEntity.setLastUpdate(bean.getLastUpdate());
+            batalTelemedicEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+            try {
+                batalTelemedicDao.updateAndSave(batalTelemedicEntity);
+            } catch (HibernateException e){
+                logger.error("[TelemedicBoImpl.confirmKembalian] ERROR. update batal telemedic. ", e);
+                throw new GeneralBOException("[TelemedicBoImpl.confirmKembalian] ERROR. update batal telemedic. ", e);
+            }
+        }
+        logger.info("[TelemedicBoImpl.confirmKembalian] END <<<");
     }
 }

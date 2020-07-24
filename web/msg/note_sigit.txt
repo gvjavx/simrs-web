@@ -532,3 +532,10 @@
 
     ALTER TABLE it_simrs_batal_dokter_telemedic ADD COLUMN batal_date DATE;
 <<< //
+
+// >>> 2020-07-24
+    ALTER TABLE it_simrs_batal_telemedic ADD COLUMN kembali_konsultasi NUMERIC;
+    ALTER TABLE it_simrs_batal_telemedic ADD COLUMN flag_kembali_konsultasi VARCHAR(1);
+    ALTER TABLE it_simrs_batal_telemedic ADD COLUMN kembali_resep NUMERIC;
+    ALTER TABLE it_simrs_batal_telemedic ADD COLUMN flag_kembali_resep VARCHAR(1);
+<<< //

@@ -68,6 +68,15 @@ public class AntrianTelemedic {
     private String idBatalDokterTelemedic;
     private String alasanBatal;
     private String alasan;
+    private String flagDanaDikembaLikan;
+
+    public String getFlagDanaDikembaLikan() {
+        return flagDanaDikembaLikan;
+    }
+
+    public void setFlagDanaDikembaLikan(String flagDanaDikembaLikan) {
+        this.flagDanaDikembaLikan = flagDanaDikembaLikan;
+    }
 
     public String getAlasanBatal() {
         return alasanBatal;

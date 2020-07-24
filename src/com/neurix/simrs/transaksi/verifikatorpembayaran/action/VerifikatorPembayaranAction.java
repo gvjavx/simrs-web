@@ -47,6 +47,7 @@ import com.neurix.simrs.transaksi.JurnalResponse;
 import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
 import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
+import com.neurix.simrs.transaksi.bataltelemedic.model.BatalTelemedic;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
@@ -2538,7 +2539,6 @@ public class VerifikatorPembayaranAction {
 //                    return response;
 //                }
 //            }
-//
 //        }
 
         StrukAsuransi strukAsuransi = new StrukAsuransi();
@@ -2613,6 +2613,41 @@ public class VerifikatorPembayaranAction {
             logger.error("[VerifikatorPembayaranAction.approveConfirmAsuransi] ERROR ", e);
             response.setStatus("error");
             response.setMsg("[VerifikatorPembayaranAction.approveConfirmAsuransi] ERROR " + e);
+            return response;
+        }
+        return response;
+    }
+
+    public CrudResponse approveConfirmKembaliDana(String idBatalTelemedic, String jenis, String nominal){
+
+        String userLogin = CommonUtil.userLogin();
+        Timestamp times = new Timestamp(System.currentTimeMillis());
+
+        CrudResponse response = new CrudResponse();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TelemedicBo telemedicBo = (TelemedicBo) ctx.getBean("telemedicBoProxy");
+
+        BatalTelemedic batalTelemedic = new BatalTelemedic();
+        batalTelemedic.setId(idBatalTelemedic);
+        if ("konsultasi".equalsIgnoreCase(jenis)){
+            batalTelemedic.setFlagKembaliKonsultasi("Y");
+            batalTelemedic.setKembaliKonsultasi(nominal == null || nominal == "" ? new BigDecimal(0) : new BigDecimal(nominal));
+        }
+        if ("resep".equalsIgnoreCase(jenis)){
+            batalTelemedic.setFlagKembaliResep("Y");
+            batalTelemedic.setKembaliResep(nominal == null || nominal == "" ? new BigDecimal(0) : new BigDecimal(nominal));
+        }
+        batalTelemedic.setLastUpdate(times);
+        batalTelemedic.setLastUpdateWho(userLogin);
+
+        try {
+            telemedicBo.confirmKembalian(batalTelemedic);
+            response.setStatus("success");
+        } catch (GeneralBOException e){
+            logger.error("[VerifikatorPembayaranAction.approveConfirmKembaliDana] ERROR ", e);
+            response.setStatus("error");
+            response.setMsg("[VerifikatorPembayaranAction.approveConfirmKembaliDana] ERROR " + e);
             return response;
         }
         return response;

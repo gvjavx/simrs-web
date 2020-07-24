@@ -258,13 +258,17 @@
                                     <td style="vertical-align: middle" align="center">
                                         <s:if test='#row.approveResep == "Y"'>
                                             <img src="<s:url value="/pages/images/icon_success.ico" />">
-                                            <%--<label class="label label-success"> <i class="fa fa-check"></i></label>--%>
                                         </s:if>
                                     </td>
                                     <td align="center">
                                         <s:if test='#row.flagBatalDokter == "Y"'>
                                             <s:if test='#row.idJenisPeriksaPasien == "umum"'>
-                                                <button class="btn btn-sm btn-primary" onclick="viewBatalDokter('<s:property value="idBatalDokterTelemedic"/>', '<s:property value="id"/>', '<s:property value="idJenisPeriksaPasien"/>', '<s:property value="alasanBatal"/>')"><i class="fa fa-money"></i></button>
+                                                <s:if test='#row.flagDanaDikembaLikan == "N"'>
+                                                    <button class="btn btn-sm btn-primary" onclick="viewBatalDokter('<s:property value="idBatalDokterTelemedic"/>', '<s:property value="id"/>', '<s:property value="idJenisPeriksaPasien"/>', '<s:property value="alasanBatal"/>')"><i class="fa fa-money"></i></button>
+                                                </s:if>
+                                                <s:else>
+                                                    <img src="<s:url value="/pages/images/icon_success.ico" />">
+                                                </s:else>
                                             </s:if>
                                             <s:else>
                                                 <img src="<s:url value="/pages/images/icon_success.ico" />">
@@ -548,7 +552,7 @@
 </div>
 
 <div class="modal fade" id="modal-view-batal">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -560,16 +564,72 @@
                 <div class="row top-7">
                     <div class="col-md-3" align="right">Dokter : </div>
                     <div class="col-md-6"><span id="btl-nama-dokter"></span></div>
-                    <input type="hidden" id="btl-h-id-antrian">
+                    <input type="hidden" id="btl-h-id-antrian"/>
+                    <input type="hidden" id="btl-h-id-batal-telemedic"/>
                 </div>
                 <div class="row top-7">
                     <div class="col-md-3" align="right">Alasan : </div>
                     <div class="col-md-6"><textarea class="form-control" id="btl-alasan-batal" cols="3" rows="3" disabled></textarea></div>
                 </div>
+                <div class="row top-7">
+                    <div class="col-md-12" align="center">Data Transaksi Pasien</div>
+                </div>
+                <div class="row top-7" align="center" id="btl-list-transaksi">
+                    <div class="col-md-12" align="center">
+                        <table class="table table-striped table-bordered" style="font-size: 13px;" align="center">
+                            <thead style="background-color: #90ee90;">
+                            <tr>
+                                <td>Id</td>
+                                <td>Keterangan</td>
+                                <td>Biaya</td>
+                                <td>Bukti</td>
+                                <td>Action</td>
+                            </tr>
+                            </thead>
+                            <tbody id="btl-body-list-tarif">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <%--<div class="modal-footer">--%>
+                <%--<button type="button" class="btn btn-sm btn-primary" id="save_pengembalian"><i class="fa fa-arrow-right"></i> Konfirmasi Pengembalian Dana--%>
+                <%--</button>--%>
+            <%--</div>--%>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-confirm-dialog-batal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Konfirmasi Pengembalian Dana
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="row top-7" align="center" id="btl-bukti">
+
+                </div>
+                <div class="row top-7">
+                    <div class="col-md-3" align="right">
+                        <label>Nominal Pengembalian</label>
+                    </div>
+                    <div class="col-md-7" align="right">
+                        <input type="number" class="form-control" id="btl-nominal-app-batal"/>
+                    </div>
+                </div>
+                <h4 align="center" class="top-7">Setuju Pengembalian Dana ?</h4>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-primary" id="save_pengembalian"><i class="fa fa-arrow-right"></i> Konfirmasi Pengembalian Dana
+                <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-right: 20px;"><i class="fa fa-times"></i> No
                 </button>
+                <div id="btl-save-con" style="float:right;">
+
+                </div>
             </div>
         </div>
     </div>
@@ -968,7 +1028,6 @@
     }
 
     function saveApproveEresep(idTransaksi){
-//        $("#success_fin").show().fadeOut(5000);
         var idAntrian = $("#fin_id_antrian").val();
 
         showDialog("loading");
@@ -978,15 +1037,11 @@
             if (response.status == "error"){
                 showDialog("error");
                 $("#msg_fin_error_waiting").text(response.message);
-//                $("#warning_fin").show().fadeOut(5000);
-//                $("#success_fin").hide();
-//                $("#msg_fin_error").text(response.message);
             } else {
                 showDialog("success");
                 $('#ok_con').on('click', function () {
                     searchPage(idAntrian)
                 });
-//                $("#success_fin").show().fadeOut(5000);
             }
         });
     }
@@ -1119,7 +1174,6 @@
                 $("#btn-save-asuransi").html("");
 
                 VerifikatorPembayaranAction.getStrukAsuransiByIdAntrianAndJenis(idAntrian, jenis, function (res) {
-
 
                     if (res.urlFotoStruk != null){
                         var pathFoto = firstpath()+"/images/upload/bukti_transfer/"+res.urlFotoStruk;
@@ -1339,6 +1393,83 @@
         $("#btl-nama-dokter").val("");
         $("#btl-h-id-antrian").val(idAntrian);
         $("#btl-alasan-batal").val(alasan);
+        $("#btl-h-id-batal-telemedic").val(idBatalDokter);
+
+        VerifikatorPembayaranAction.getSessionAntrianTelemedic(idAntrian, function (telemedicEntity) {
+            $("#btl-nama-dokter").text(telemedicEntity.namaDokter);
+
+            VerifikatorPembayaranAction.listDetailPembayaran(idAntrian, function (response) {
+
+                var str = "";
+                $.each(response, function(i, item){
+                    str += "<tr>" +
+                        "<td>"+item.id+"</td>"+
+                        "<td>"+item.keterangan+"</td>"+
+                        "<td align='right'>"+ formatRupiah( item.nominal ) +"</td>";
+
+                    if (item.keterangan == "konsultasi"){
+                        if (telemedicEntity.flagBayarKonsultasi == "Y"){
+                            str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>";
+                            if (item.nominal == 0){
+                                str += "<td></td>";
+                            } else {
+                                str += "<td align='center'><button class='btn btn-sm btn-primary'  onclick=\"showConfirmation(\'"+item.nominal+"\',\'"+item.keterangan+"\',\'"+item.urlFotoBukti+"\')\"><i class='fa fa-arrow-right'></i> Konfirmasi Pengembalian Dana</button></td>";
+                            }
+                        } else {
+                            str += "<td></td>"+
+                                    "<td></td>";
+                        }
+
+                    } else if (item.keterangan == "resep") {
+                        if (telemedicEntity.flagBayarResep == "Y"){
+                            str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>";
+                            if (item.nominal == 0){
+                                str += "<td></td>";
+                            } else {
+                                str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"showConfirmation(\'"+item.nominal+"\',\'"+item.keterangan+"\',\'"+item.urlFotoBukti+"\')\"><i class='fa fa-arrow-right'></i> Konfirmasi Pengembalian Dana</button></td>";
+                            }
+                        } else {
+                            str += "<td></td>"+
+                                "<td></td>";
+                        }
+                    }
+                    str += "</tr>";
+                });
+
+                $("#btl-body-list-tarif").html(str);
+            });
+        });
+    }
+
+    function showConfirmation(nominal, jenis, urlFoto){
+        $("#modal-confirm-dialog-batal").modal('show');
+        $("#btl-nominal-app-batal").val(nominal);
+
+        var idBatalTele = $("#btl-h-id-batal-telemedic").val();
+        var pathFoto = firstpath()+"/images/upload/bukti_transfer/"+urlFoto;
+        var imghtml = "<div class='col-md-12'><img src='"+pathFoto+"' style='max-width: 300px;'/></div>";
+        var btn = "<button type=\"button\" class=\"btn btn-success\" onclick=\"approveConfirmBatal(\'"+idBatalTele+"\',\'"+jenis+"\')\"><i class=\"fa fa-check\"></i> Yes </button>";
+        $("#btl-save-con").html(btn);
+        $("#btl-bukti").html(imghtml);
+    }
+
+    function approveConfirmBatal(idBatalTele, jenis){
+       var idAntrian = $("#btl-h-id-antrian").val();
+       var nominal = $("#btl-nominal-app-batal").val();
+       showDialog("loading");
+       dwr.engine.setAsync(true);
+       VerifikatorPembayaranAction.approveConfirmKembaliDana(idBatalTele, jenis, nominal, function (res) {
+           dwr.engine.setAsync(false);
+           if (res.status == "success"){
+               showDialog("success");
+               $('#ok_con').on('click', function (e) {
+                   searchPage(idAntrian);
+               });
+           } else {
+               showDialog("error");
+               $("#msg_fin_error_waiting").text(res.msg);
+           }
+       });
     }
 
 
