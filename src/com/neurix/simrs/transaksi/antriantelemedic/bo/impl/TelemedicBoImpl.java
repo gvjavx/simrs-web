@@ -1452,6 +1452,7 @@ public class TelemedicBoImpl implements TelemedicBo {
         ItSimrsBatalTelemedicEntity batalTelemedicEntity = batalTelemedicDao.getById("id", bean.getId());
         if (batalTelemedicEntity != null){
 
+            // update status 4 to detail checkup
             if (batalTelemedicEntity.getIdAntrianTelemedic() != null){
                 ItSimrsHeaderChekupEntity headerChekupEntity = headerCheckupDao.getById("idAntrianOnline", batalTelemedicEntity.getIdAntrianTelemedic());
                 if (headerChekupEntity != null){
@@ -1466,6 +1467,7 @@ public class TelemedicBoImpl implements TelemedicBo {
                             detailCheckupEntity.setAction("Y");
                             detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
                             detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                            detailCheckupEntity.setKeteranganSelesai("selesai");
 
                             try {
                                 checkupDetailDao.updateAndSave(detailCheckupEntity);
