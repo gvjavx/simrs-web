@@ -35,6 +35,15 @@ public class ObatPoli {
     private String flagKronis;
 
     private String harga;
+    private String idJenisObat;
+
+    public String getIdJenisObat() {
+        return idJenisObat;
+    }
+
+    public void setIdJenisObat(String idJenisObat) {
+        this.idJenisObat = idJenisObat;
+    }
 
     public String getHarga() {
         return harga;

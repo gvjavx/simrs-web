@@ -52,9 +52,137 @@ public class TelemedicineMobile {
     private String flagEresep;
     private String urlResep;
 
+    private String idPembayaran;
+    private String nominal;
     private String jenisPembayaran;
     private String noRujukan;
     private String jenisRujukan;
+    private String keterangan;
+    private String approvedFlag;
+
+    private String idStrukAsuransi;
+    private String jenisStruk;
+    private String urlFotoStruk;
+    private String approveFlagStruk;
+    private String jumlahCover;
+    private String coverDitanggung;
+
+    private String dibayarPasien;
+    private String flagBatalDokter;
+    private String idBatalDokterTelemedic;
+    private String alasan;
+
+    public String getAlasan() {
+        return alasan;
+    }
+
+    public void setAlasan(String alasan) {
+        this.alasan = alasan;
+    }
+
+    public String getFlagBatalDokter() {
+        return flagBatalDokter;
+    }
+
+    public void setFlagBatalDokter(String flagBatalDokter) {
+        this.flagBatalDokter = flagBatalDokter;
+    }
+
+    public String getIdBatalDokterTelemedic() {
+        return idBatalDokterTelemedic;
+    }
+
+    public void setIdBatalDokterTelemedic(String idBatalDokterTelemedic) {
+        this.idBatalDokterTelemedic = idBatalDokterTelemedic;
+    }
+
+    public String getDibayarPasien() {
+        return dibayarPasien;
+    }
+
+    public void setDibayarPasien(String dibayarPasien) {
+        this.dibayarPasien = dibayarPasien;
+    }
+
+    public String getIdStrukAsuransi() {
+        return idStrukAsuransi;
+    }
+
+    public void setIdStrukAsuransi(String idStrukAsuransi) {
+        this.idStrukAsuransi = idStrukAsuransi;
+    }
+
+    public String getJenisStruk() {
+        return jenisStruk;
+    }
+
+    public void setJenisStruk(String jenisStruk) {
+        this.jenisStruk = jenisStruk;
+    }
+
+    public String getUrlFotoStruk() {
+        return urlFotoStruk;
+    }
+
+    public void setUrlFotoStruk(String urlFotoStruk) {
+        this.urlFotoStruk = urlFotoStruk;
+    }
+
+    public String getApproveFlagStruk() {
+        return approveFlagStruk;
+    }
+
+    public void setApproveFlagStruk(String approveFlagStruk) {
+        this.approveFlagStruk = approveFlagStruk;
+    }
+
+    public String getJumlahCover() {
+        return jumlahCover;
+    }
+
+    public void setJumlahCover(String jumlahCover) {
+        this.jumlahCover = jumlahCover;
+    }
+
+    public String getCoverDitanggung() {
+        return coverDitanggung;
+    }
+
+    public void setCoverDitanggung(String coverDitanggung) {
+        this.coverDitanggung = coverDitanggung;
+    }
+
+    public String getApprovedFlag() {
+        return approvedFlag;
+    }
+
+    public void setApprovedFlag(String approvedFlag) {
+        this.approvedFlag = approvedFlag;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getIdPembayaran() {
+        return idPembayaran;
+    }
+
+    public void setIdPembayaran(String idPembayaran) {
+        this.idPembayaran = idPembayaran;
+    }
+
+    public String getNominal() {
+        return nominal;
+    }
+
+    public void setNominal(String nominal) {
+        this.nominal = nominal;
+    }
 
     public String getJenisRujukan() {
         return jenisRujukan;

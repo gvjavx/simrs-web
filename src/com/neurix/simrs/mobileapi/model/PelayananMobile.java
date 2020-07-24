@@ -24,6 +24,25 @@ public class PelayananMobile implements Serializable {
     private String jumlahAntrian;
     private String kuota;
 
+    private String idJenisObat;
+    private String namaJenisObat;
+
+    public String getIdJenisObat() {
+        return idJenisObat;
+    }
+
+    public void setIdJenisObat(String idJenisObat) {
+        this.idJenisObat = idJenisObat;
+    }
+
+    public String getNamaJenisObat() {
+        return namaJenisObat;
+    }
+
+    public void setNamaJenisObat(String namaJenisObat) {
+        this.namaJenisObat = namaJenisObat;
+    }
+
     public String getKuota() {
         return kuota;
     }

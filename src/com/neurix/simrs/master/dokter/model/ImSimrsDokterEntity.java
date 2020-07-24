@@ -23,6 +23,15 @@ public class ImSimrsDokterEntity implements Serializable {
     private String kodering;
     private String flagCall;
     private String flagTele;
+    private String kuotaTele;
+
+    public String getKuotaTele() {
+        return kuotaTele;
+    }
+
+    public void setKuotaTele(String kuotaTele) {
+        this.kuotaTele = kuotaTele;
+    }
 
     public String getFlagTele() {
         return flagTele;

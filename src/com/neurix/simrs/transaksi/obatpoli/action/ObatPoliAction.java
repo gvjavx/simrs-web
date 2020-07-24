@@ -571,7 +571,7 @@ public class ObatPoliAction extends BaseMasterAction {
 
         try {
 //            obatPoliList = obatPoliBo.getListObatPoliGroup(idPelayanan, branchId);
-            obatPoliList = obatPoliBo.getListObatGroupPoli(idPelayanan, branchId, flagBpjs);
+            obatPoliList = obatPoliBo.getListObatGroupPoli(idPelayanan, branchId, flagBpjs, "");
         } catch (GeneralBOException e) {
             logger.error("[ObatPoliAction.getSelectOptionObatByPoli] Error when get data obat poli ," + "Found problem when searching data, please inform to your admin.", e);
             addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());

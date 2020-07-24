@@ -134,6 +134,15 @@ public class CheckupController implements ModelDriven<Object> {
 
     private String flagCall;
     private String jenisResep;
+    private String idJenisObat;
+
+    public String getIdJenisObat() {
+        return idJenisObat;
+    }
+
+    public void setIdJenisObat(String idJenisObat) {
+        this.idJenisObat = idJenisObat;
+    }
 
     public String getJenisResep() {
         return jenisResep;
@@ -516,6 +525,8 @@ public class CheckupController implements ModelDriven<Object> {
                 return listOfObatPoli;
             case "getObatPoliGroup":
                 return listOfObatPoli;
+            case "getObatPoliGroupSerupa":
+                return listOfObatPoli;
             case "getPermintaanResep":
                 return listOfPermintaanResep;
             case "saveKeteranganRawatJalan":
@@ -681,7 +692,7 @@ public class CheckupController implements ModelDriven<Object> {
             List<ObatPoli> result = new ArrayList<>();
 
             try{
-               result = obatPoliBoProxy.getListObatGroupPoli(idPelayanan, branchId, jenisPasien);
+               result = obatPoliBoProxy.getListObatGroupPoli(idPelayanan, branchId, jenisPasien, idJenisObat);
             } catch (GeneralBOException e){
                 logger.error("CheckupController.create] Error when get obat poli group",e);
             }
@@ -697,6 +708,7 @@ public class CheckupController implements ModelDriven<Object> {
                     obatPoliMobile.setQtyBox(item.getQtyBox() != null ? item.getQtyBox().toString() : "");
                     obatPoliMobile.setQtyLembar(item.getQtyLembar() != null ? item.getQtyLembar().toString() : "");
                     obatPoliMobile.setQtyBiji(item.getQtyBiji() != null ? item.getQtyLembar().toString() : "");
+                    obatPoliMobile.setIdJenisObat(item.getIdJenisObat());
 
                     listOfObatPoli.add(obatPoliMobile);
                 }
@@ -898,6 +910,31 @@ public class CheckupController implements ModelDriven<Object> {
                 checkupDetailBoProxy.editFlagCall(idDetailCheckup, flagCall);
             } catch (GeneralBOException e) {
                 logger.error("[DokterController.create] Error, " + e.getMessage());
+            }
+        } else if (action.equalsIgnoreCase("getObatPoliGroupSerupa")) {
+            List<ObatPoli> result = new ArrayList<>();
+
+            try{
+                result = obatPoliBoProxy.getListObatGroupPoliSerupa(idPelayanan, branchId, jenisPasien, idObat);
+            } catch (GeneralBOException e){
+                logger.error("CheckupController.create] Error when get obat poli group",e);
+            }
+
+            if (result != null && result.size() > 0) {
+                for (ObatPoli item : result){
+                    ObatPoliMobile obatPoliMobile = new ObatPoliMobile();
+                    obatPoliMobile.setIdObat(item.getIdObat());
+                    obatPoliMobile.setNamaObat(item.getNamaObat());
+                    obatPoliMobile.setLembarPerBox(item.getLembarPerBox() != null ? item.getLembarPerBox().toString() : "");
+                    obatPoliMobile.setBijiPerLembar(item.getBijiPerLembar() != null ? item.getBijiPerLembar().toString() : "");
+                    obatPoliMobile.setFlagKronis(item.getFlagKronis());
+                    obatPoliMobile.setQtyBox(item.getQtyBox() != null ? item.getQtyBox().toString() : "");
+                    obatPoliMobile.setQtyLembar(item.getQtyLembar() != null ? item.getQtyLembar().toString() : "");
+                    obatPoliMobile.setQtyBiji(item.getQtyBiji() != null ? item.getQtyLembar().toString() : "");
+                    obatPoliMobile.setIdJenisObat(item.getIdJenisObat());
+
+                    listOfObatPoli.add(obatPoliMobile);
+                }
             }
         }
 

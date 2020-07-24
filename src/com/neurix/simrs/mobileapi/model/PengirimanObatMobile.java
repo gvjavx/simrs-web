@@ -38,6 +38,35 @@ public class PengirimanObatMobile {
     private String lat;
     private String lon;
 
+    private String jenisPengiriman;
+    private String fotoKirim;
+    private String keterangan;
+
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getFotoKirim() {
+        return fotoKirim;
+    }
+
+    public void setFotoKirim(String fotoKirim) {
+        this.fotoKirim = fotoKirim;
+    }
+
+    public String getJenisPengiriman() {
+        return jenisPengiriman;
+    }
+
+    public void setJenisPengiriman(String jenisPengiriman) {
+        this.jenisPengiriman = jenisPengiriman;
+    }
+
     public String getLat() {
         return lat;
     }

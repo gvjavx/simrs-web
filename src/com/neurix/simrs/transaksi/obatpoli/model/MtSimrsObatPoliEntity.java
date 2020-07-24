@@ -28,6 +28,15 @@ public class MtSimrsObatPoliEntity implements Serializable {
 
     private String idPabrik;
     private Date expiredDate;
+    private String idJenisObat;
+
+    public String getIdJenisObat() {
+        return idJenisObat;
+    }
+
+    public void setIdJenisObat(String idJenisObat) {
+        this.idJenisObat = idJenisObat;
+    }
 
     public String getIdPabrik() {
         return idPabrik;

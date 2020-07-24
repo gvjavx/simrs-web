@@ -217,9 +217,15 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
         return stringList;
     }
 
-    public List<ObatPoli> getIdObatGroupPoli(String idPelayanan, String branchId, String flagBpjs){
+    public List<ObatPoli> getIdObatGroupPoli(String idPelayanan, String branchId, String flagBpjs, String idJenisObat){
 
         List<ObatPoli> obatPoliList = new ArrayList<>();
+
+        String queryJenisObat = "";
+
+        if (idJenisObat != null && !idJenisObat.equalsIgnoreCase("")) {
+            queryJenisObat = "AND a.id_jenis_obat = '" + idJenisObat + "'";
+        }
 
         if(idPelayanan != null && !"".equalsIgnoreCase(idPelayanan) && branchId != null && !"".equalsIgnoreCase(branchId)){
 
@@ -239,7 +245,8 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     "b.lembar_per_box,\n" +
                     "b.biji_per_lembar,\n" +
                     "b.flag_kronis,\n" +
-                    "c.harga_jual\n" +
+                    "c.harga_jual,\n" +
+                    "a.id_jenis_obat\n"+
                     "FROM mt_simrs_obat_poli a\n" +
                     "INNER JOIN (\n" +
                     "SELECT id_obat, nama_obat, lembar_per_box, biji_per_lembar, flag_kronis\n" +
@@ -247,14 +254,15 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     ") b ON a.id_obat = b.id_obat\n" +
                     "INNER JOIN mt_simrs_harga_obat c ON a.id_obat = c.id_obat\n" +
                     "WHERE a.id_pelayanan = :idPelayanan \n" +
-                    "AND a.branch_id = :branchId \n" +
+                    "AND a.branch_id = :branchId \n" + queryJenisObat +
                     "GROUP BY a.id_pelayanan,\n" +
                     "b.id_obat,\n" +
                     "b.nama_obat,\n" +
                     "b.lembar_per_box,\n" +
                     "b.biji_per_lembar,\n" +
                     "b.flag_kronis,\n" +
-                    "c.harga_jual\n";
+                    "c.harga_jual,\n" +
+                    "a.id_jenis_obat";
 
             List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("idPelayanan", idPelayanan)
@@ -275,6 +283,7 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     obatPoli.setBijiPerLembar(obj[7] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[7].toString()));
                     obatPoli.setFlagKronis(obj[8] == null ? "" : obj[8].toString());
                     obatPoli.setHarga(obj[9] == null ? "" : obj[9].toString());
+                    obatPoli.setIdJenisObat(obj[10] == null ? "" : obj[10].toString());
                     obatPoliList.add(obatPoli);
                 }
             }

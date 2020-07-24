@@ -247,7 +247,7 @@ public class PembayaranController implements ModelDriven<Object> {
                 pembayaranMobile.setJenisPengambilan(item.getJenisPengambilan());
                 pembayaranMobile.setIdItem(item.getIdItem());
 
-                pembayaranMobile.setCreatedDate(CommonUtil.addJamBayar(item.getLastUpdate()));
+                pembayaranMobile.setCreatedDate(CommonUtil.addJamBayar(item.getCreatedDate()));
 
                 listOfPembayaran.add(pembayaranMobile);
             }
@@ -265,15 +265,19 @@ public class PembayaranController implements ModelDriven<Object> {
                 }
             }
 
+
             try {
                 verifikatorPembayaranBoProxy.updateBuktiTransfer(idTele, fileName, keterangan);
                 model.setMessage("Success");
             } catch (GeneralBOException e) {
                 logger.error("[PembayaranController.create] Error, " + e.getMessage());
             }
+
+
         }
 
         if (action.equalsIgnoreCase("saveEditPembayaranResep")) {
+            ItSimrsPembayaranOnlineEntity newPembayaran;
 
             PembayaranOnline bean = new PembayaranOnline();
             bean.setIdAntrianTelemedic(idTele);
@@ -287,17 +291,45 @@ public class PembayaranController implements ModelDriven<Object> {
                 logger.error("[PembayaranController.create] Error, " + e.getMessage());
             }
 
-            ItSimrsPembayaranOnlineEntity newPembayaran = listEntity.get(0);
+            if(listEntity.size() > 0) {
+                newPembayaran = listEntity.get(0);
 
-            newPembayaran.setKodeBank(bankCoa);
-            newPembayaran.setLastUpdate(now);
-            newPembayaran.setLastUpdateWho(idPasien);
+                newPembayaran.setKodeBank(bankCoa);
+                newPembayaran.setLastUpdate(now);
+                newPembayaran.setLastUpdateWho(idPasien);
 
-            try {
-                verifikatorPembayaranBoProxy.saveEdit(newPembayaran);
-                model.setMessage("Success");
-            } catch (GeneralBOException e) {
-                logger.error("[PembayaranController.create] Error, " + e.getMessage());
+                try {
+                    verifikatorPembayaranBoProxy.saveEdit(newPembayaran);
+                    model.setMessage("Success");
+                } catch (GeneralBOException e) {
+                    logger.error("[PembayaranController.create] Error, " + e.getMessage());
+                }
+            }
+
+
+            if (keterangan.equalsIgnoreCase("all")) {
+                bean.setIdAntrianTelemedic(idTele);
+                bean.setKeterangan("konsultasi");
+
+                try {
+                    listEntity = verifikatorPembayaranBoProxy.getSearchEntityByCriteria(bean);
+                } catch (GeneralBOException e) {
+                    logger.error("[PembayaranController.create] Error, " + e.getMessage());
+                }
+
+                if(listEntity.size() > 0) {
+                    newPembayaran = listEntity.get(0);
+
+                    newPembayaran.setKodeBank(bankCoa);
+                    newPembayaran.setLastUpdate(now);
+                    newPembayaran.setLastUpdateWho(idPasien);
+                    try {
+                        verifikatorPembayaranBoProxy.saveEdit(newPembayaran);
+                        model.setMessage("Success");
+                    } catch (GeneralBOException e) {
+                        logger.error("[PembayaranController.create] Error, " + e.getMessage());
+                    }
+                }
             }
 
         }

@@ -36,6 +36,9 @@
     <bean id="pengirimanObatController" class="com.neurix.simrs.mobileapi.PengirimanObatController"
           p:telemedicBoProxy-ref="telemedicBoProxy"/>
 
+    <bean id="dokterController" class="com.neurix.simrs.mobileapi.DokterController"
+          p:telemedicBoProxy-ref="telemedicBoProxy"/>
+
     <bean id="telemedicBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="telemedicBo">
         <property name="interceptorNames">

@@ -27,6 +27,33 @@ public class ItSimrsPengirimanObatEntity {
     private String lat;
     private String lon;
     private String flagTerkirim;
+    private String jenisPembayaran;
+    private String fotoKirim;
+    private String keterangan;
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getFotoKirim() {
+        return fotoKirim;
+    }
+
+    public void setFotoKirim(String fotoKirim) {
+        this.fotoKirim = fotoKirim;
+    }
+
+    public String getJenisPembayaran() {
+        return jenisPembayaran;
+    }
+
+    public void setJenisPembayaran(String jenisPembayaran) {
+        this.jenisPembayaran = jenisPembayaran;
+    }
 
     public String getFlagTerkirim() {
         return flagTerkirim;

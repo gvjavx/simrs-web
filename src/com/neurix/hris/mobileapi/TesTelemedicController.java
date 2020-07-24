@@ -390,7 +390,7 @@ public class TesTelemedicController implements ModelDriven<Object> {
         antrianTelemedic.setIdDokter("DKR00000012");
         antrianTelemedic.setLastUpdate(new Timestamp(System.currentTimeMillis()));
         antrianTelemedic.setLastUpdateWho("admin");
-        antrianTelemedic.setIdJenisPeriksaPasien(jenis);
+        //antrianTelemedic.setIdJenisPeriksaPasien(jenis);
 
         try {
             telemedicBoProxy.processBatalDokter(antrianTelemedic, "Ada Keperluan Mendadak");

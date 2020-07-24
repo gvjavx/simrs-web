@@ -67,6 +67,7 @@ public class AntrianTelemedic {
     private String flagBatalDokter;
     private String idBatalDokterTelemedic;
     private String alasanBatal;
+    private String alasan;
 
     public String getAlasanBatal() {
         return alasanBatal;
@@ -74,6 +75,14 @@ public class AntrianTelemedic {
 
     public void setAlasanBatal(String alasanBatal) {
         this.alasanBatal = alasanBatal;
+    }
+
+    public String getAlasan() {
+        return alasan;
+    }
+
+    public void setAlasan(String alasan) {
+        this.alasan = alasan;
     }
 
     public String getIdBatalDokterTelemedic() {
@@ -90,6 +99,16 @@ public class AntrianTelemedic {
 
     public void setFlagBatalDokter(String flagBatalDokter) {
         this.flagBatalDokter = flagBatalDokter;
+    }
+
+    private String stCreatedDate;
+
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
     }
 
     public String getLabelStatusAsuransi() {
@@ -130,6 +149,34 @@ public class AntrianTelemedic {
 
     public void setFlagBelumBayar(String flagBelumBayar) {
         this.flagBelumBayar = flagBelumBayar;
+    }
+
+    private String idPembayaran;
+    private BigDecimal nominal;
+    private String approvedFlag;
+
+    public String getApprovedFlag() {
+        return approvedFlag;
+    }
+
+    public void setApprovedFlag(String approvedFlag) {
+        this.approvedFlag = approvedFlag;
+    }
+
+    public String getIdPembayaran() {
+        return idPembayaran;
+    }
+
+    public void setIdPembayaran(String idPembayaran) {
+        this.idPembayaran = idPembayaran;
+    }
+
+    public BigDecimal getNominal() {
+        return nominal;
+    }
+
+    public void setNominal(BigDecimal nominal) {
+        this.nominal = nominal;
     }
 
     public String getIdDiagnosa() {
