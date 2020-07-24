@@ -103,6 +103,33 @@ public class TelemedicineController implements ModelDriven<Object> {
     private String dibayarPasien;
 
     private String alasan;
+    private String id;
+    private String nama;
+    private String chat;
+
+    public String getNama() {
+        return nama;
+    }
+
+    public void setNama(String nama) {
+        this.nama = nama;
+    }
+
+    public String getChat() {
+        return chat;
+    }
+
+    public void setChat(String chat) {
+        this.chat = chat;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getAlasan() {
         return alasan;
@@ -1227,10 +1254,10 @@ public class TelemedicineController implements ModelDriven<Object> {
             if (listBatal.size() > 0) {
                 for (ItSimrsAntrianTelemedicEntity item : listBatal){
                     Notifikasi notifBean = new Notifikasi();
-                    notifBean.setTipeNotifId("TN11");
+                    notifBean.setTipeNotifId("TN10");
                     notifBean.setNip(item.getIdPasien());
                     notifBean.setNamaPegawai("admin");
-                    notifBean.setNote("Silahkan buka aplikasi untuk melakukan pembayaran resep");
+                    notifBean.setNote("Dokter Membatalkan Telemedic");
                     notifBean.setTo(item.getIdPasien());
                     notifBean.setFromPerson("admin");
                     notifBean.setNoRequest(item.getId());
@@ -1252,6 +1279,30 @@ public class TelemedicineController implements ModelDriven<Object> {
                 }
             }
 
+
+        } else if (action.equalsIgnoreCase("notifChat")) {
+            Notifikasi notifBean = new Notifikasi();
+            notifBean.setTipeNotifId("TN11");
+            notifBean.setNip(id);
+            notifBean.setNamaPegawai("admin");
+            notifBean.setNote("Chat dari " + nama + ": " + chat);
+            notifBean.setTo(id);
+            notifBean.setFromPerson("admin");
+            notifBean.setNoRequest(id);
+            notifBean.setFlag("Y");
+            notifBean.setRead("N");
+            notifBean.setAction("C");
+            notifBean.setCreatedDate(now);
+            notifBean.setLastUpdate(now);
+            notifBean.setCreatedWho("admin");
+            notifBean.setLastUpdateWho("admin");
+
+            notifikasiBoProxy.saveAdd(notifBean);
+
+            NotifikasiFcm notif = new NotifikasiFcm();
+            notif.setUserId(id);
+            List<NotifikasiFcm> fcm = notifikasiFcmBoProxy.getByCriteria(notif);
+            FirebasePushNotif.sendNotificationFirebase(fcm.get(0).getTokenFcm(),"Chat dari " + nama, chat, "CHAT", fcm.get(0).getOs(), null);
 
         }
 
