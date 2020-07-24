@@ -2058,6 +2058,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         logger.info("[LaporanAkuntansiAction.printLaporanKompilasi] end process <<<");
         return result;
     }
+
     private String getMataUangKurs(String mataUangId) {
         return "0";
     }

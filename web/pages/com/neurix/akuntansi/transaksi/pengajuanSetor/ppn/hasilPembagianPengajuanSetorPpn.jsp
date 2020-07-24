@@ -27,10 +27,7 @@
             };
             $.subscribe('beforeProcessSave', function (event, data) {
                 var tanggal = $('#tanggal_pengajuan_setor').val();
-                var keterangan = $('#keterangan').val();
-                var kas = $('#bank').val();
-
-                if (tanggal != '' && keterangan != ''&&kas!='') {
+                if (tanggal != '') {
                     if (confirm('Do you want to proses this record?')) {
                         event.originalEvent.options.submit = true;
                         $.publish('showDialog');
@@ -42,12 +39,6 @@
                     var msg = "";
                     if (tanggal == '') {
                         msg += 'Field <strong>Tanggal</strong> is required.' + '<br/>';
-                    }
-                    if (keterangan == '') {
-                        msg += 'Field <strong>Keterangan</strong> is required.' + '<br/>';
-                    }
-                    if ( kas == '') {
-                        msg += 'Field <strong>Kas</strong> is required.' + '<br/>';
                     }
                     document.getElementById('errorValidationMessage').innerHTML = msg;
                     $.publish('showErrorValidationDialog');
@@ -111,7 +102,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <input class="form-control datepicker2" id="tanggal_pengajuan_setor" name="pengajuanSetor.stRegisteredDate">
+                                            <input class="form-control" id="tanggal_pengajuan_setor" name="pengajuanSetor.stRegisteredDate">
                                             <script>
                                                 $("#tanggal_pengajuan_setor").datepicker({
                                                     setDate: new Date(),
@@ -123,20 +114,6 @@
                                                 $("#tanggal_pengajuan_setor").datepicker("setDate", new Date());
                                             </script>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-offset-2 col-sm-3" style="margin-top: 7px">Keterangan Untuk Jurnal</label>
-                                    <div class="col-md-4">
-                                        <s:textarea id="keterangan" rows="3" cssStyle="margin-top: 7px" onkeypress="$(this).css('border','')"
-                                                    name="pengajuanSetor.keterangan" cssClass="form-control"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-offset-2 col-sm-3" style="margin-top: 7px">Kas </label>
-                                    <div class="col-md-4">
-                                        <s:select list="#{'':''}" cssStyle="margin-top: 7px"
-                                                  id="bank" name="pengajuanSetor.kas" cssClass="form-control" />
                                     </div>
                                 </div>
                             </div>

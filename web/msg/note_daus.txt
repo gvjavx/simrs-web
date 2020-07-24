@@ -296,3 +296,7 @@ ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN bank character varying (20);
 ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN nilai_ppn numeric (25,2);
 ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN nilai_netto numeric (25,2);
 ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN no_jurnal character varying (30);
+
+ALTER TABLE it_akun_pengajuan_setor ADD COLUMN posting_flag character varying (1);
+ALTER TABLE it_akun_pengajuan_setor ADD COLUMN posting_who character varying (100);
+ALTER TABLE it_akun_pengajuan_setor ADD COLUMN posting_date timestamp without time zone;

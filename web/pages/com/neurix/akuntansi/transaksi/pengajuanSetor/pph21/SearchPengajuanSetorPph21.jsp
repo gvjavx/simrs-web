@@ -202,6 +202,7 @@
                                                         <td align="center">View</td>
                                                         <td align="center">Batal</td>
                                                         <td align="center">Posting</td>
+                                                        <td align="center">Csv</td>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -223,7 +224,7 @@
                                                                 <s:if test='#row.cancelFlag == "Y"'>
                                                                     <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_batal">
                                                                 </s:if>
-                                                                <s:elseif test='#row.approvalFlag == "Y"'>
+                                                                <s:elseif test='#row.postingFlag == "Y"'>
                                                                 </s:elseif>
                                                                 <s:else>
                                                                     <a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanSetorId}"/>" class="item-delete">
@@ -234,7 +235,7 @@
                                                             <td align="center">
                                                                 <s:if test='#row.cancelFlag == "Y"'>
                                                                 </s:if>
-                                                                <s:elseif test='#row.approvalFlag == "Y"'>
+                                                                <s:elseif test='#row.postingFlag == "Y"'>
                                                                     <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_batal">
                                                                 </s:elseif>
                                                                 <s:else>
@@ -242,6 +243,15 @@
                                                                         <img border="0" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>" name="icon_posting">
                                                                     </a>
                                                                 </s:else>
+                                                            </td>
+                                                            <td align="center">
+                                                                <s:if test='#row.cancelFlag == "Y"'>
+                                                                </s:if>
+                                                                <s:elseif test='#row.postingFlag == "Y"'>
+                                                                    <a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanSetorId}"/>" class="item-csv">
+                                                                        <img border="0" src="<s:url value="/pages/images/icons8-download-25.png"/>" name="icon_csv">
+                                                                    </a>
+                                                                </s:elseif>
                                                             </td>
                                                         </tr>
                                                     </s:iterator>
@@ -580,5 +590,15 @@
                 window.location.reload();
             })
         }
-    })
+    });
+
+    $('.tablePengajuanSetor').on('click', '.item-csv', function() {
+        var pengajuanId = $(this).attr('data');
+        if (pengajuanId!=""){
+            if (confirm("Apakah anda ingin mendownload csv ?")){
+                var url = "eksportCsvPph21_pengajuanSetor.action?pengajuanSetor.pengajuanSetorId="+pengajuanId;
+                window.open(url,'_blank');
+            }
+        }
+    });
 </script>

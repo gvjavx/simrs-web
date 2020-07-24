@@ -99,6 +99,25 @@
             <result name="proses_ppn_kd">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/SearchProsesPpnKd.jsp</result>
             <result name="success_search_proses_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/SearchProsesPpnKd.jsp</result>
 
+
+            <!-- REPORT REPORT -->
+            <result name="export_hasil_csv" type="stream" >
+                <param name="contentType">application/octet-stream</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">attachment; filename="tarikan_pajak_pph21.csv"</param>
+                <param name="allowCaching">false</param>
+                <param name="bufferSize">2048</param>
+                <param name="contentCharSet">string</param>
+            </result>
+            <result name="export_hasil_csv_ppn" type="stream" >
+                <param name="contentType">application/octet-stream</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">attachment; filename="tarikan_pajak_ppn.csv"</param>
+                <param name="allowCaching">false</param>
+                <param name="bufferSize">2048</param>
+                <param name="contentCharSet">string</param>
+            </result>
+
         </action>
     </package>
 </struts>

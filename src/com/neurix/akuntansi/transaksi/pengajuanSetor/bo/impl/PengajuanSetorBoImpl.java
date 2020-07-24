@@ -253,6 +253,7 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
                     returnPengajuanSetor.setPengajuanSetorId(pengajuanSetorEntity.getPengajuanSetorId());
                     returnPengajuanSetor.setTahun(pengajuanSetorEntity.getTahun());
                     returnPengajuanSetor.setBulan(pengajuanSetorEntity.getBulan());
+                    returnPengajuanSetor.setBulanName(CommonUtil.convertNumberToStringBulan(pengajuanSetorEntity.getBulan()));
                     returnPengajuanSetor.setRegisteredDate(pengajuanSetorEntity.getRegisteredDate());
                     returnPengajuanSetor.setStRegisteredDate(CommonUtil.convertDateToString(pengajuanSetorEntity.getRegisteredDate()));
                     returnPengajuanSetor.setJumlahPph21Payroll(pengajuanSetorEntity.getJumlahPph21Payroll());
@@ -271,6 +272,9 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
                     returnPengajuanSetor.setCancelDate(pengajuanSetorEntity.getCancelDate());
                     returnPengajuanSetor.setKeterangan(pengajuanSetorEntity.getKeterangan());
                     returnPengajuanSetor.setKas(pengajuanSetorEntity.getKas());
+                    returnPengajuanSetor.setPostingId(pengajuanSetorEntity.getPostingId());
+                    returnPengajuanSetor.setPostingFlag(pengajuanSetorEntity.getPostingFlag());
+                    returnPengajuanSetor.setPostingDate(pengajuanSetorEntity.getPostingDate());
 
                     List<ImKodeRekeningEntity> kodeRekeningEntityList = kodeRekeningDao.getKodeRekeningList(pengajuanSetorEntity.getKas());
                     for (ImKodeRekeningEntity rekeningEntity : kodeRekeningEntityList){
@@ -464,6 +468,7 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
         pengajuanSetorEntity.setJumlahSeluruhnya(bean.getJumlahSeluruhnya());
         pengajuanSetorEntity.setRegisteredDate(bean.getRegisteredDate());
         pengajuanSetorEntity.setCancelFlag("N");
+        pengajuanSetorEntity.setPostingFlag("N");
         pengajuanSetorEntity.setTipePengajuanSetor("PPH21");
         pengajuanSetorEntity.setKeterangan(bean.getKeterangan());
         pengajuanSetorEntity.setKas(bean.getKas());
@@ -569,6 +574,7 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
         pengajuanSetorEntity.setJumlahSeluruhnya(bean.getJumlahSeluruhnya());
         pengajuanSetorEntity.setRegisteredDate(bean.getRegisteredDate());
         pengajuanSetorEntity.setCancelFlag("N");
+        pengajuanSetorEntity.setPostingFlag("N");
         pengajuanSetorEntity.setTipePengajuanSetor("PPN");
         pengajuanSetorEntity.setKeterangan(bean.getKeterangan());
         pengajuanSetorEntity.setJumlahPpnMasukanB2(bean.getJumlahPpnMasukanB2());
@@ -664,6 +670,7 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
         result.setNote(data.getNote());
         result.setPersonId(data.getPersonId());
         result.setTransaksiId(data.getTransaksiId());
+        result.setJumlah(data.getJumlah());
         List<ImBranches> branches = branchDao.getListBranchById(data.getBranchId());
         if (branches.size()!=0){
             for (ImBranches imBranches : branches){
@@ -720,9 +727,9 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
             }
 
             if (itPengajuanSetorEntity != null) {
-                itPengajuanSetorEntity.setApprovalId(bean.getApprovalId());
-                itPengajuanSetorEntity.setApprovalDate(bean.getApprovalDate());
-                itPengajuanSetorEntity.setApprovalFlag(bean.getApprovalFlag());
+                itPengajuanSetorEntity.setPostingId(bean.getPostingId());
+                itPengajuanSetorEntity.setPostingDate(bean.getPostingDate());
+                itPengajuanSetorEntity.setPostingFlag(bean.getPostingFlag());
                 itPengajuanSetorEntity.setNoJurnal(bean.getNoJurnal());
 
                 itPengajuanSetorEntity.setFlag(bean.getFlag());
@@ -746,6 +753,43 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
 
 
     @Override
+    public void approvePengajuanSetor(PengajuanSetor bean) throws GeneralBOException {
+        logger.info("[PengajuanSetorBoImpl.approvePengajuanSetor] start process >>>");
+        if (bean!=null) {
+            ItPengajuanSetorEntity itPengajuanSetorEntity = null;
+            try {
+                // Get data from database by ID
+                itPengajuanSetorEntity = pengajuanSetorDao.getById("pengajuanSetorId", bean.getPengajuanSetorId());
+            } catch (HibernateException e) {
+                logger.error("[PengajuanSetorBoImpl.approvePengajuanSetor] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data , please inform to your admin...," + e.getMessage());
+            }
+
+            if (itPengajuanSetorEntity != null) {
+                itPengajuanSetorEntity.setApprovalId(bean.getApprovalId());
+                itPengajuanSetorEntity.setApprovalDate(bean.getApprovalDate());
+                itPengajuanSetorEntity.setApprovalFlag(bean.getApprovalFlag());
+
+                itPengajuanSetorEntity.setFlag(bean.getFlag());
+                itPengajuanSetorEntity.setAction(bean.getAction());
+                itPengajuanSetorEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                itPengajuanSetorEntity.setLastUpdate(bean.getLastUpdate());
+                try {
+                    // Update into database
+                    pengajuanSetorDao.updateAndSave(itPengajuanSetorEntity);
+                } catch (HibernateException e) {
+                    logger.error("[PengajuanSetorBoImpl.approvePengajuanSetor] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving update data , please info to your admin..." + e.getMessage());
+                }
+            } else {
+                logger.error("[PengajuanSetorBoImpl.approvePengajuanSetor] Error, not found data  with request id, please check again your data ...");
+                throw new GeneralBOException("Error, not found data  with request id, please check again your data ...");
+            }
+        }
+        logger.info("[PengajuanSetorBoImpl.approvePengajuanSetor] end process <<<");
+    }
+
+    @Override
     public void postingJurnalProsesPpn(PerhitunganPpnKd bean) throws GeneralBOException {
         logger.info("[PengajuanSetorBoImpl.postingJurnalProsesPpn] start process >>>");
         PerhitunganPpnKd search = new PerhitunganPpnKd();
@@ -753,6 +797,8 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
         search.setBulan(bean.getBulan());
 
         if (bean!=null) {
+
+            //Untuk Perhitungan Proses PPN
             List<ItAkunPerhitunganPpnKdEntity> perhitunganPpnKdEntityList = new ArrayList<>();
             try {
                 // Get data from database by ID
@@ -773,6 +819,34 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
                 try {
                     // Update into database
                     perhitunganPpnKdDao.updateAndSave(perhitunganPpnKdEntity);
+                } catch (HibernateException e) {
+                    logger.error("[PengajuanSetorBoImpl.postingJurnalProsesPpn] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving, please info to your admin..." + e.getMessage());
+                }
+            }
+
+            //Untuk Pengajuan Setor
+            //Untuk Perhitungan Proses PPN
+            List<ItPengajuanSetorEntity> pengajuanSetorEntityList = new ArrayList<>();
+            try {
+                // Get data from database by ID
+                pengajuanSetorEntityList = pengajuanSetorDao.getListPengajuanSetorPpnByBulanDanTahunForPosting(bean.getBulan(),bean.getTahun());
+            } catch (HibernateException e) {
+                logger.error("[PengajuanSetorBoImpl.postingJurnalProsesPpn] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + e.getMessage());
+            }
+            for (ItPengajuanSetorEntity pengajuanSetorEntity : pengajuanSetorEntityList){
+                pengajuanSetorEntity.setPostingFlag(bean.getApprovalFlag());
+                pengajuanSetorEntity.setPostingDate(bean.getApprovalDate());
+                pengajuanSetorEntity.setPostingId(bean.getApprovalWho());
+
+                pengajuanSetorEntity.setFlag(bean.getFlag());
+                pengajuanSetorEntity.setAction(bean.getAction());
+                pengajuanSetorEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                pengajuanSetorEntity.setLastUpdate(bean.getLastUpdate());
+                try {
+                    // Update into database
+                    pengajuanSetorDao.updateAndSave(pengajuanSetorEntity);
                 } catch (HibernateException e) {
                     logger.error("[PengajuanSetorBoImpl.postingJurnalProsesPpn] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when saving, please info to your admin..." + e.getMessage());
@@ -1825,14 +1899,14 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
 
     @Override
     public BigDecimal getJasaRs(PengajuanSetor search){
-        BigDecimal totalJasaRs = BigDecimal.ZERO;
+        BigDecimal totalJasaRs = perhitunganPpnKdDao.getJasaRs(search);
 
         return totalJasaRs;
     }
 
     @Override
     public BigDecimal getObatrawatInap(PengajuanSetor search){
-        BigDecimal obatRawatInap = BigDecimal.ZERO;
+        BigDecimal obatRawatInap = perhitunganPpnKdDao.getObatRi(search);
 
         return obatRawatInap;
     }
@@ -1877,7 +1951,7 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
         }
 
         Map mapPiutangPpn = new HashMap();
-        mapPiutangPpn.put("master_id","JNK");
+        mapPiutangPpn.put("master_id",CommonConstant.JUNK_MASTER_PIUTANG_PPN);
         mapPiutangPpn.put("nilai",totalPpnMasukan.subtract(totalPpnKeluaran));
 
         dataBilling.put("ppn_masukan",ppnMasukanList);

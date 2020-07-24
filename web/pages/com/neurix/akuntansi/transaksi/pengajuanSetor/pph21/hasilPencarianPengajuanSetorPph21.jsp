@@ -109,7 +109,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <input class="form-control datepicker2" id="tanggal_pengajuan_setor" name="pengajuanSetor.stRegisteredDate">
+                                            <input class="form-control" id="tanggal_pengajuan_setor" name="pengajuanSetor.stRegisteredDate">
                                             <script>
                                                 $("#tanggal_pengajuan_setor").datepicker({
                                                     setDate: new Date(),

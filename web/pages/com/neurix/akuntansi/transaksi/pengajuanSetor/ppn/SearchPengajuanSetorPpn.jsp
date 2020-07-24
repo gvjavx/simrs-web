@@ -202,6 +202,7 @@
                                                         <td align="center">View</td>
                                                         <td align="center">Batal</td>
                                                         <td align="center">Approve</td>
+                                                        <td align="center">Csv</td>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -238,12 +239,19 @@
                                                                     <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_batal">
                                                                 </s:elseif>
                                                                 <s:else>
-                                                                    <s:if test='#row.branchId == "KP"'>
-                                                                        <a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanSetorId}"/>" class="item-posting">
-                                                                            <img border="0" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>" name="icon_posting">
-                                                                        </a>
-                                                                    </s:if>
+                                                                    <a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanSetorId}"/>" class="item-posting">
+                                                                        <img border="0" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>" name="icon_posting">
+                                                                    </a>
                                                                 </s:else>
+                                                            </td>
+                                                            <td align="center">
+                                                                <s:if test='#row.cancelFlag == "Y"'>
+                                                                </s:if>
+                                                                <s:elseif test='#row.postingFlag == "Y"'>
+                                                                    <a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanSetorId}"/>" class="item-csv">
+                                                                        <img border="0" src="<s:url value="/pages/images/icons8-download-25.png"/>" name="icon_csv">
+                                                                    </a>
+                                                                </s:elseif>
                                                             </td>
                                                         </tr>
                                                     </s:iterator>
@@ -378,7 +386,7 @@
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-success" id="btnBatalPengajuan" data-dismiss="modal"><i class="fa fa-arrow-right"></i> Batal</button>
-                <button type="button" class="btn btn-success" id="btnPostingPengajuan" data-dismiss="modal"><i class="fa fa-arrow-right"></i> Posting</button>
+                <button type="button" class="btn btn-success" id="btnPostingPengajuan" data-dismiss="modal"><i class="fa fa-arrow-right"></i> Approve</button>
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close </button>
             </div>
         </div>
@@ -478,7 +486,7 @@
         loadSessionPpnMasukanB2();
         loadSessionPpnKeluaran();
         loadSessionPpnMasukanB3();
-        $("#modal-setor").find('.modal-title').text('Posting Pengajuan Setor PPN');
+        $("#modal-setor").find('.modal-title').text('Approve Pengajuan Setor PPN');
         $("#modal-setor").modal('show');
         $("#btnPostingPengajuan").show();
         $("#btnBatalPengajuan").hide();
@@ -569,8 +577,8 @@
 
     $('#btnPostingPengajuan').click(function () {
         var pengajuanSetorId =  $('#mod_pengajuan_setor_id').val();
-        if (confirm("apakah anda ingin memposting pengajuan setor PPN dengan ID Pengajuan Setor "+pengajuanSetorId +" ?")){
-            PengajuanSetorAction.postingJurnal(pengajuanSetorId,function (listdata) {
+        if (confirm("apakah anda ingin approve pengajuan setor PPN dengan ID Pengajuan Setor "+pengajuanSetorId +" ?")){
+            PengajuanSetorAction.approvePengajuanSetorPpn(pengajuanSetorId,function (listdata) {
                 alert(listdata);
                 window.location.reload();
             })
@@ -584,5 +592,14 @@
                 window.location.reload();
             })
         }
-    })
+    });
+    $('.tablePengajuanSetor').on('click', '.item-csv', function() {
+        var pengajuanId = $(this).attr('data');
+        if (pengajuanId!=""){
+            if (confirm("Apakah anda ingin mendownload csv ?")){
+                var url = "eksportCsvPpn_pengajuanSetor.action?pengajuanSetor.pengajuanSetorId="+pengajuanId;
+                window.open(url,'_blank');
+            }
+        }
+    });
 </script>

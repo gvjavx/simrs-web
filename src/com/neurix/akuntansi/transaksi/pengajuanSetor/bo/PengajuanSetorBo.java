@@ -31,6 +31,8 @@ public interface PengajuanSetorBo extends BaseMasterBo<PengajuanSetor> {
 
     void postingJurnal(PengajuanSetor bean) throws GeneralBOException;
 
+    void approvePengajuanSetor(PengajuanSetor bean) throws GeneralBOException;
+
     void postingJurnalProsesPpn(PerhitunganPpnKd bean) throws GeneralBOException;
 
     void batalkanPengajuan(PengajuanSetor bean) throws GeneralBOException;

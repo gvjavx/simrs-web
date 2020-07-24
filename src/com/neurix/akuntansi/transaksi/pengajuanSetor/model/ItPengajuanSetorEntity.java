@@ -53,6 +53,34 @@ public class ItPengajuanSetorEntity implements Serializable {
     private String stJumlahPpnMasukanB2;
     private String stJumlahPpnMasukanB3;
 
+    private String postingId;
+    private Timestamp postingDate;
+    private String postingFlag;
+
+    public String getPostingId() {
+        return postingId;
+    }
+
+    public void setPostingId(String postingId) {
+        this.postingId = postingId;
+    }
+
+    public Timestamp getPostingDate() {
+        return postingDate;
+    }
+
+    public void setPostingDate(Timestamp postingDate) {
+        this.postingDate = postingDate;
+    }
+
+    public String getPostingFlag() {
+        return postingFlag;
+    }
+
+    public void setPostingFlag(String postingFlag) {
+        this.postingFlag = postingFlag;
+    }
+
     public String getKas() {
         return kas;
     }

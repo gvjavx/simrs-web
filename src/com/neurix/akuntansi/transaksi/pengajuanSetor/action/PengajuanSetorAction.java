@@ -5,6 +5,8 @@ import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.akuntansi.transaksi.pengajuanSetor.bo.PengajuanSetorBo;
 import com.neurix.akuntansi.transaksi.pengajuanSetor.bo.impl.PengajuanSetorBoImpl;
 import com.neurix.akuntansi.transaksi.pengajuanSetor.model.*;
+import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.authorization.company.model.Branch;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
@@ -15,6 +17,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -33,6 +39,15 @@ public class PengajuanSetorAction extends BaseMasterAction {
     private List<PengajuanSetor> listOfComboPengajuanSetor = new ArrayList<PengajuanSetor>();
     private String bulan;
     private String tahun;
+    private InputStream inputStream;
+
+    public InputStream getInputStream() {
+        return inputStream;
+    }
+
+    public void setInputStream(InputStream inputStream) {
+        this.inputStream = inputStream;
+    }
 
     public String getBulan() {
         return bulan;
@@ -687,12 +702,16 @@ public class PengajuanSetorAction extends BaseMasterAction {
             data.setApprovalDate(updateTime);
             data.setApprovalFlag("Y");
             data.setApprovalId(userLogin);
+            data.setPostingDate(updateTime);
+            data.setPostingFlag("Y");
+            data.setPostingId(userLogin);
             data.setNoJurnal(jurnal.getNoJurnal());
             data.setLastUpdateWho(userLogin);
             data.setLastUpdate(updateTime);
             data.setAction("U");
             data.setFlag("Y");
 
+            pengajuanSetorBo.approvePengajuanSetor(data);
             pengajuanSetorBo.postingJurnal(data);
         } catch (GeneralBOException e) {
             Long logId = null;
@@ -710,6 +729,44 @@ public class PengajuanSetorAction extends BaseMasterAction {
         logger.info("[PengajuanSetorAction.postingJurnal] end process <<<");
 
         return "Sukses Posting Jurnal";
+    }
+
+    public String approvePengajuanSetorPpn(String pengajuanSetorId){
+        logger.info("[PengajuanSetorAction.approvePengajuanSetorPpn] start process >>>");
+        try {
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            PengajuanSetorBo pengajuanSetorBo = (PengajuanSetorBo) ctx.getBean("pengajuanSetorBoProxy");
+
+            PengajuanSetor data = new PengajuanSetor();
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            data.setPengajuanSetorId(pengajuanSetorId);
+            data.setApprovalDate(updateTime);
+            data.setApprovalFlag("Y");
+            data.setApprovalId(userLogin);
+            data.setLastUpdateWho(userLogin);
+            data.setLastUpdate(updateTime);
+            data.setAction("U");
+            data.setFlag("Y");
+
+            pengajuanSetorBo.approvePengajuanSetor(data);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = pengajuanSetorBoProxy.saveErrorMessage(e.getMessage(), "PengajuanSetorAction.postingJurnal");
+            } catch (GeneralBOException e1) {
+                logger.error("[PengajuanSetorAction.approvePengajuanSetorPpn] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[PengajuanSetorAction.approvePengajuanSetorPpn] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        logger.info("[PengajuanSetorAction.approvePengajuanSetorPpn] end process <<<");
+
+        return "Sukses Approve Pengajuan Setor PPN";
     }
 
     public String batalkanPengajuan(String pengajuanSetorId){
@@ -1509,6 +1566,128 @@ public class PengajuanSetorAction extends BaseMasterAction {
         logger.info("[PengajuanSetorAction.cancelProsesPpn] end process <<<");
 
         return "Berhasil Membatalkan Proses Pembayaran PPN";
+    }
+
+    public String eksportCsvPph21(){
+        DataOutputStream doStream = null; // declare a print stream object
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PengajuanSetorBo pengajuanSetorBo = (PengajuanSetorBo) ctx.getBean("pengajuanSetorBoProxy");
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+
+        PengajuanSetor pengajuanSetor = getPengajuanSetor();
+        String bulan = "";
+        String tahun = "";
+
+        List<PengajuanSetor> pengajuanSetorList = pengajuanSetorBo.getByCriteria(pengajuanSetor);
+        try {
+            doStream = new DataOutputStream(new FileOutputStream("tarikan_pajak_pph21.csv"));
+
+            Branch branch = branchBo.getBranchById(CommonConstant.ID_KANPUS,"Y");
+            for (PengajuanSetor dataPengajuanSetor : pengajuanSetorList){
+                bulan = dataPengajuanSetor.getBulanName();
+                tahun = dataPengajuanSetor.getTahun();
+            }
+
+            String namaKantorPusat = branch.getBranchName();
+            doStream.writeBytes(namaKantorPusat);
+            doStream.writeBytes("\n");
+            doStream.writeBytes("Nama Report : Tarikan PAJAK PPH21 Bulan "+bulan+" Tahun "+tahun);
+            doStream.writeBytes("\n");
+            doStream.writeBytes("\n");
+            String[] headers = "Tipe,No. Sumber,ID,Nama,PPH21(RP)".split(",");
+
+            for(int i=0; i < headers.length; i++)
+            {
+                if(i != headers.length-1)
+                    doStream.writeBytes("\""+headers[i]+"\", ");
+                else
+                    doStream.writeBytes("\""+headers[i]+"\"");
+            }
+            doStream.writeBytes("\n");
+
+            //list data
+            List<PengajuanSetorDetail> dataPphList = pengajuanSetorBo.getDetailPengajuanSetorPPh21(pengajuanSetor.getPengajuanSetorId(),"Payroll");
+            dataPphList.addAll(pengajuanSetorBo.getDetailPengajuanSetorPPh21(pengajuanSetor.getPengajuanSetorId(),"Dokter KSO"));
+            dataPphList.addAll(pengajuanSetorBo.getDetailPengajuanSetorPPh21(pengajuanSetor.getPengajuanSetorId(),"Pengajuan Biaya PPH21"));
+
+            for (PengajuanSetorDetail a : dataPphList){
+                doStream.writeBytes("\""+a.getTipe()+"\""+",");
+                doStream.writeBytes("\""+a.getTransaksiId()+"\""+",");
+                doStream.writeBytes("\""+a.getPersonId()+"\""+",");
+                doStream.writeBytes("\""+a.getNama()+"\""+",");
+                doStream.writeBytes("\""+a.getJumlah()+"\"");
+                doStream.writeBytes("\n");
+            }
+
+            doStream.flush();
+            doStream.close();
+            setInputStream(new FileInputStream("tarikan_pajak_pph21.csv"));
+
+        } // end try
+        catch (Exception e) {
+            e.printStackTrace();
+        } // end catch
+        return "export_hasil_csv";
+    }
+
+    public String eksportCsvPpn(){
+        DataOutputStream doStream = null; // declare a print stream object
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PengajuanSetorBo pengajuanSetorBo = (PengajuanSetorBo) ctx.getBean("pengajuanSetorBoProxy");
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+
+        PengajuanSetor pengajuanSetor = getPengajuanSetor();
+        String bulan = "";
+        String tahun = "";
+
+        List<PengajuanSetor> pengajuanSetorList = pengajuanSetorBo.getByCriteria(pengajuanSetor);
+        try {
+            doStream = new DataOutputStream(new FileOutputStream("tarikan_pajak_ppn.csv"));
+
+            Branch branch = branchBo.getBranchById(CommonConstant.ID_KANPUS,"Y");
+            for (PengajuanSetor dataPengajuanSetor : pengajuanSetorList){
+                bulan = dataPengajuanSetor.getBulanName();
+                tahun = dataPengajuanSetor.getTahun();
+            }
+
+            String namaKantorPusat = branch.getBranchName();
+            doStream.writeBytes(namaKantorPusat);
+            doStream.writeBytes("\n");
+            doStream.writeBytes("Nama Report : Tarikan PAJAK PPN Bulan "+bulan+" Tahun "+tahun);
+            doStream.writeBytes("\n");
+            doStream.writeBytes("\n");
+            String[] headers = "Tipe,No. Sumber,ID,PPN(RP)".split(",");
+
+            for(int i=0; i < headers.length; i++)
+            {
+                if(i != headers.length-1)
+                    doStream.writeBytes("\""+headers[i]+"\", ");
+                else
+                    doStream.writeBytes("\""+headers[i]+"\"");
+            }
+            doStream.writeBytes("\n");
+
+            //list data
+            List<PengajuanSetorDetail> dataPphList = pengajuanSetorBo.getDetailPengajuanSetorPPh21(pengajuanSetor.getPengajuanSetorId(),"PPN Masukan B2");
+            dataPphList.addAll(pengajuanSetorBo.getDetailPengajuanSetorPPh21(pengajuanSetor.getPengajuanSetorId(),"PPN Keluaran"));
+
+            for (PengajuanSetorDetail a : dataPphList){
+                doStream.writeBytes("\""+a.getTipe()+"\""+",");
+                doStream.writeBytes("\""+a.getTransaksiId()+"\""+",");
+                doStream.writeBytes("\""+a.getPersonId()+"\""+",");
+                doStream.writeBytes("\""+a.getJumlah()+"\"");
+                doStream.writeBytes("\n");
+            }
+
+            doStream.flush();
+            doStream.close();
+            setInputStream(new FileInputStream("tarikan_pajak_ppn.csv"));
+
+        } // end try
+        catch (Exception e) {
+            e.printStackTrace();
+        } // end catch
+        return "export_hasil_csv_ppn";
     }
 
     @Override

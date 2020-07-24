@@ -6,6 +6,7 @@ import com.neurix.akuntansi.transaksi.pengajuanSetor.model.PengajuanSetorDetail;
 import com.neurix.akuntansi.transaksi.pengajuanSetor.model.PerhitunganPpnKd;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
+import com.neurix.common.util.CommonUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
@@ -196,5 +197,52 @@ public class PerhitunganPpnKdDao extends GenericDao<ItAkunPerhitunganPpnKdEntity
                 .setMaxResults(1)
                 .list();
         return results;
+    }
+
+    public BigDecimal getJasaRs(PengajuanSetor search){
+        BigDecimal total = new BigDecimal(0);
+        String periodeSebelumnya = CommonUtil.periodeBulanSebelumnya(search.getBulan(),search.getTahun());
+        String query="SELECT\n" +
+                "\tjumlah_kredit\n" +
+                "FROM\n" +
+                "\tit_akun_jurnal_detail jd\n" +
+                "\tLEFT JOIN it_akun_jurnal j ON jd.no_jurnal = j.no_jurnal\n" +
+                "WHERE\t\n" +
+                "\trekening_id='"+ CommonConstant.REKENING_ID_PENDAPATAN_RI +"'\n" +
+                "\tAND divisi_id='"+CommonConstant.KODERING_INSTALASI_RI+"'\n" +
+                "\tAND registered_flag='Y'\n" +
+                "\tAND tanggal_jurnal >='"+periodeSebelumnya+"-01'\n" +
+                "\tAND tanggal_jurnal < '"+search.getTahun()+"-"+search.getBulan()+"-01'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
+        }else{
+            total = BigDecimal.ZERO;
+        }
+        return total;
+    }
+    public BigDecimal getObatRi(PengajuanSetor search){
+        BigDecimal total = new BigDecimal(0);
+        String periodeSebelumnya = CommonUtil.periodeBulanSebelumnya(search.getBulan(),search.getTahun());
+        String query="SELECT\n" +
+                "\tjumlah_kredit\n" +
+                "FROM\n" +
+                "\tit_akun_jurnal_detail jd\n" +
+                "\tLEFT JOIN it_akun_jurnal j ON jd.no_jurnal = j.no_jurnal\n" +
+                "WHERE\t\n" +
+                "\trekening_id='"+ CommonConstant.REKENING_ID_PENDAPATAN_RI +"'\n" +
+                "\tAND divisi_id='"+CommonConstant.KODERING_FARMASI_RI+"'\n" +
+                "\tAND registered_flag='Y'\n" +
+                "\tAND tanggal_jurnal >='"+periodeSebelumnya+"-01'\n" +
+                "\tAND tanggal_jurnal < '"+search.getTahun()+"-"+search.getBulan()+"-01'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
+        }else{
+            total = BigDecimal.ZERO;
+        }
+        return total;
     }
 }

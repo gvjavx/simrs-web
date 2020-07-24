@@ -416,4 +416,16 @@ public class PengajuanSetorDao extends GenericDao<ItPengajuanSetorEntity, String
                 .list();
         return results;
     }
+
+    public List<ItPengajuanSetorEntity> getListPengajuanSetorPpnByBulanDanTahunForPosting(String bulan,String tahun) throws HibernateException {
+        List<ItPengajuanSetorEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPengajuanSetorEntity.class)
+                .add(Restrictions.eq("tahun", tahun))
+                .add(Restrictions.eq("bulan", bulan))
+                .add(Restrictions.eq("cancelFlag", "N"))
+                .add(Restrictions.eq("tipePengajuanSetor", "PPN"))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("pengajuanSetorId"))
+                .list();
+        return results;
+    }
 }

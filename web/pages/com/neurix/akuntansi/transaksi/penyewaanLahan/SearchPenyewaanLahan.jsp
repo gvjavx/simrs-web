@@ -289,8 +289,14 @@
                                     <s:textfield id="mod_add_tanggal_bayar" cssClass="form-control"  />
                                     <script>
                                         $('#mod_add_tanggal_bayar').datepicker({
-                                            dateFormat: 'dd-mm-yy'
+                                            setDate: new Date(),
+                                            autoclose: true,
+                                            changeMonth: true,
+                                            changeYear:true,
+                                            dateFormat:'dd-mm-yy'
                                         });
+                                        $("#mod_add_tanggal_bayar").datepicker("setDate", new Date());
+
                                     </script>
                                     <br>
                                 </div>
