@@ -1,6 +1,7 @@
 package com.neurix.simrs.mobileapi;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.bo.BiodataBo;
 import com.neurix.hris.master.biodata.model.Biodata;
 import com.neurix.simrs.master.dokter.bo.DokterBo;
@@ -224,7 +225,7 @@ public class DokterController implements ModelDriven<Object> {
         if (action.equalsIgnoreCase("get")) {
 
             try {
-                result = dokterBoProxy.getByCriteria(bean);
+                result = dokterBoProxy.getDokterById(idDokter);
             } catch (GeneralBOException e) {
                 logger.error("[DokterController.create] Error, " + e.getMessage());
             }
@@ -239,6 +240,8 @@ public class DokterController implements ModelDriven<Object> {
             model.setFlagCall(result.get(0).getFlagCall());
             model.setFlagTele(result.get(0).getFlagTele());
             model.setKuotaTele(result.get(0).getKuotaTele());
+            model.setIdPelayanan(result.get(0).getIdPelayanan());
+            model.setNamaPelayanan(result.get(0).getNamaPelayanan());
 
             try {
                 resultBio = biodataBoProxy.getBiodataByNip(model.getIdDokter());
@@ -319,7 +322,15 @@ public class DokterController implements ModelDriven<Object> {
                    }
 
                    if (resultAntrian != null) {
-                       dokterMobile.setJumlahAntrian(String.valueOf(resultAntrian.size()));
+                       List<AntrianTelemedic> temp = new ArrayList<>();
+                       for(AntrianTelemedic antrianTelemedic : resultAntrian ){
+                           String dateAntrian = CommonUtil.convertTimestampToString(antrianTelemedic.getCreatedDate());
+                           String dateNow = CommonUtil.convertTimestampToString(now);
+                           if (dateAntrian.equalsIgnoreCase(dateNow)){
+                               temp.add(antrianTelemedic);
+                           }
+                       }
+                       dokterMobile.setJumlahAntrian(String.valueOf(temp.size()));
                    } else  dokterMobile.setJumlahAntrian("0");
 
                    listOfDokter.add(dokterMobile);
@@ -327,6 +338,34 @@ public class DokterController implements ModelDriven<Object> {
             } catch (GeneralBOException e) {
                 logger.error("[DokterController.create] Error, " + e.getMessage());
             }
+        }
+        if (action.equalsIgnoreCase("getDokterByCriteria")){
+            listOfDokter = new ArrayList<>();
+            Dokter dokter = new Dokter();
+            dokter.setIdDokter(idDokter);
+            try {
+                result = dokterBoProxy.getSearchByCriteria(dokter);
+            } catch (GeneralBOException e){
+                logger.error("[DokterController.create] Error, " + e.getMessage());
+            }
+
+            if (result.size() > 0) {
+                for (Dokter item : result){
+                    DokterMobile dokterMobile = new DokterMobile();
+                    dokterMobile.setIdDokter(item.getIdDokter());
+                    dokterMobile.setNamaDokter(item.getNamaDokter());
+                    dokterMobile.setIdPelayanan(item.getIdPelayanan());
+                    dokterMobile.setNamaPelayanan(item.getNamaPelayanan());
+                    dokterMobile.setKuota(item.getKuota());
+                    dokterMobile.setKuotaTele(item.getKuotaTele());
+                    dokterMobile.setFlagTele(item.getFlagTele());
+                    dokterMobile.setLat(item.getLat());
+                    dokterMobile.setLon(item.getLon());
+
+                    listOfDokter.add(dokterMobile);
+                }
+            }
+
         }
 
         logger.info("[DokterController.create] end process POST / <<<");

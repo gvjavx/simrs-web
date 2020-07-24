@@ -47,6 +47,52 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
         return result;
     }
 
+    public List<Dokter> getListDokterById(String idDokter) {
+        List<Dokter> list = new ArrayList<>();
+
+        if (idDokter != null && !"".equalsIgnoreCase(idDokter)){
+
+            String SQL = "SELECT \n" +
+                    "a.id_dokter, \n" +
+                    "a.nama_dokter, \n" +
+                    "a.kode_dpjp, \n" +
+                    "a.flag_tele, \n" +
+                    "a.kuota, \n" +
+                    "a.kuota_tele, \n" +
+                    "b.id_pelayanan, \n" +
+                    "c.nama_pelayanan, \n" +
+                    "a.lat, \n" +
+                    "a.lon \n" +
+                    "FROM im_simrs_dokter a\n" +
+                    "INNER JOIN im_simrs_dokter_pelayanan b ON a.id_dokter = b.id_dokter\n" +
+                    "INNER JOIN im_simrs_pelayanan c ON c.id_pelayanan = b.id_pelayanan\n" +
+                    "WHERE a.id_dokter = :id";
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", idDokter)
+                    .list();
+
+            if(result.size() > 0){
+
+                for (Object[] obj: result){
+                    Dokter dokter = new Dokter();
+                    dokter.setIdDokter(obj[0] == null ? "" : obj[0].toString());
+                    dokter.setNamaDokter(obj[1] == null ? "" : obj[1].toString());
+                    dokter.setKodeDpjp(obj[2] == null ? "" : obj[2].toString());
+                    dokter.setFlagTele(obj[3] == null ? "" : obj[3].toString());
+                    dokter.setKuota(obj[4] == null ? "" : obj[4].toString());
+                    dokter.setKuotaTele(obj[5] == null ? "" : obj[5].toString());
+                    dokter.setIdPelayanan(obj[6] == null ? "" : obj[6].toString());
+                    dokter.setNamaPelayanan(obj[7] == null ? "" : obj[7].toString());
+                    dokter.setLat(obj[8] == null ? "": obj[8].toString());
+                    dokter.setLon(obj[9] == null ? "": obj[9].toString());
+                    list.add(dokter);
+                }
+            }
+        }
+        return list;
+    }
+
     public List<Dokter> getListDokterByPelayanan(String idPelayanan){
 
         List<Dokter> list = new ArrayList<>();

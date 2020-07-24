@@ -960,6 +960,9 @@ public class TelemedicineController implements ModelDriven<Object> {
                     telemedicineMobile.setKeterangan(item.getKeterangan());
                     telemedicineMobile.setApprovedFlag(item.getApprovedFlag());
                     telemedicineMobile.setFlag(item.getFlag());
+                    telemedicineMobile.setFlagBatalDokter(item.getFlagBatalDokter());
+                    telemedicineMobile.setIdBatalDokterTelemedic(item.getIdBatalDokterTelemedic());
+                    telemedicineMobile.setAlasan(item.getAlasan());
 
                     listOfTelemedic.add(telemedicineMobile);
                 }
@@ -1208,6 +1211,10 @@ public class TelemedicineController implements ModelDriven<Object> {
             AntrianTelemedic bean = new AntrianTelemedic();
             bean.setIdPelayanan(idPelayanan);
             bean.setIdDokter(idDokter);
+            bean.setCreatedDate(now);
+            bean.setLastUpdate(now);
+            bean.setCreatedWho(idDokter);
+            bean.setLastUpdateWho(idDokter);
 
             try {
                listBatal = telemedicBoProxy.processBatalDokter(bean, alasan);

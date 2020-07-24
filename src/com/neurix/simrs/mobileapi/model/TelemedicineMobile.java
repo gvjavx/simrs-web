@@ -68,6 +68,33 @@ public class TelemedicineMobile {
     private String coverDitanggung;
 
     private String dibayarPasien;
+    private String flagBatalDokter;
+    private String idBatalDokterTelemedic;
+    private String alasan;
+
+    public String getAlasan() {
+        return alasan;
+    }
+
+    public void setAlasan(String alasan) {
+        this.alasan = alasan;
+    }
+
+    public String getFlagBatalDokter() {
+        return flagBatalDokter;
+    }
+
+    public void setFlagBatalDokter(String flagBatalDokter) {
+        this.flagBatalDokter = flagBatalDokter;
+    }
+
+    public String getIdBatalDokterTelemedic() {
+        return idBatalDokterTelemedic;
+    }
+
+    public void setIdBatalDokterTelemedic(String idBatalDokterTelemedic) {
+        this.idBatalDokterTelemedic = idBatalDokterTelemedic;
+    }
 
     public String getDibayarPasien() {
         return dibayarPasien;

@@ -25,6 +25,25 @@ public class DokterMobile {
     private String jumlahAntrian;
     private String kuotaTele;
 
+    private String idPelayanan;
+    private String namaPelayanan;
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
+
+    public String getNamaPelayanan() {
+        return namaPelayanan;
+    }
+
+    public void setNamaPelayanan(String namaPelayanan) {
+        this.namaPelayanan = namaPelayanan;
+    }
+
     public String getKuotaTele() {
         return kuotaTele;
     }
