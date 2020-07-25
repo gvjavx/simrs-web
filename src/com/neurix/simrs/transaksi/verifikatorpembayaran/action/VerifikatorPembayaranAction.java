@@ -1341,7 +1341,7 @@ public class VerifikatorPembayaranAction {
                 mapPajakObat.put("master_id", CommonConstant.MASTER_PAJAK_OBAT);
 
                 if ("umum".equalsIgnoreCase(idJenisPeriksaPasien)){
-                    invoice = billingSystemBo.createInvoiceNumber("JKM", branchId);
+                    invoice = billingSystemBo.createInvoiceNumber("JRJ", branchId);
 
                     // create list map piutang
                     Map mapkas = new HashMap();
@@ -1373,7 +1373,7 @@ public class VerifikatorPembayaranAction {
 
         } else {
             if ("umum".equalsIgnoreCase(idJenisPeriksaPasien)){
-                invoice = billingSystemBo.createInvoiceNumber("JKM", branchId);
+                invoice = billingSystemBo.createInvoiceNumber("JRJ", branchId);
 
                 // create list map piutang
                 Map mapkas = new HashMap();
