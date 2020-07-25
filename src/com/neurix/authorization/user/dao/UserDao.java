@@ -356,4 +356,15 @@ public class UserDao extends GenericDao<ImUsers,String> {
         }
         return listOfResult;
     }
+
+
+    public ImUsers getUserByIdPelayanan (String idPelayanan) throws HibernateException {
+
+        List<ImUsers> results = this.sessionFactory.getCurrentSession().createCriteria(ImUsers.class)
+                .add(Restrictions.eq("idPelayanan", idPelayanan))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+
+        return results.size() > 0 ? (ImUsers) results.get(0) : null;
+    }
 }

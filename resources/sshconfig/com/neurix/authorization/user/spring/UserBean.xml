@@ -18,6 +18,9 @@
     <bean id="userController" class="com.neurix.hris.mobileapi.UserController"
           p:userBoProxy-ref="userBoProxy"/>
 
+    <bean id="pelayananController" class="com.neurix.simrs.mobileapi.PelayananController"
+          p:userBoProxy-ref="userBoProxy"/>
+
     <bean id="userMasterAct" class="com.neurix.authorization.user.action.UserAction"
           p:userBoProxy-ref="userBoProxy"
           p:roleBoProxy-ref="roleBoProxy"

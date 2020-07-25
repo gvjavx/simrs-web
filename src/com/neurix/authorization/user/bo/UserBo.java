@@ -22,6 +22,7 @@ public interface UserBo extends GeneralBo {
 
     public User getUserById(String userId, String flag) throws GeneralBOException;
     public User getUserByIdDevice(String idDevice) throws GeneralBOException;
+    public User getUserByIdPelayanan(String idPelayanan) throws GeneralBOException;
     public List<User> getByCriteria(User searchUser) throws GeneralBOException;
     public List<User> getUserSameBranchByCriteria(User searchUsers) throws GeneralBOException;
     public List<User> getUserSamePositionByCriteria(User searchUsers) throws GeneralBOException;
