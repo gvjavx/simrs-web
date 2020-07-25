@@ -170,6 +170,7 @@ public class CommonConstant {
     public final static String posisiGmUnit = "";
     public final static String REKENING_PPH21 = "00187";
     public final static String RESOURCE_PATH_FAKTUR_PAJAK = "/upload/faktur_pajak/";
+    public final static String REK_BANK_BRI_TELE = "01041802112149";
 
     //TELEMEDICINE
     public static final int ADD_JAM_BAYAR = 30; //MENIT

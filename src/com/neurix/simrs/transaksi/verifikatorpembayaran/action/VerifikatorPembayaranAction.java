@@ -242,7 +242,7 @@ public class VerifikatorPembayaranAction {
     }
 
     public CheckResponse approveEresep(String idTransaksi){
-        logger.info("[VerifikatorPembayaranAction.approveTransaksi] START >>>");
+        logger.info("[VerifikatorPembayaranAction.approveEresep] START >>>");
 
         Timestamp time = CommonUtil.getCurrentDateTimes();
         String userLogin = CommonUtil.userLogin();
@@ -695,7 +695,7 @@ public class VerifikatorPembayaranAction {
 
                 // --- create jurnal;
                 JurnalResponse jurnalResponse = new JurnalResponse();
-                if (!"Y".equalsIgnoreCase(antrianTelemedicEntity.getFlagEresep())){
+                if (!"Y".equalsIgnoreCase(antrianTelemedicEntity.getFlagEresep()) && "umum".equalsIgnoreCase(antrianTelemedicEntity.getIdJenisPeriksaPasien())){
                     jurnalResponse = closingJurnalNonTunaiTelemedic(idDetailCheckup, idTransaksi, antrianTelemedicEntity.getIdPelayanan(), antrianTelemedicEntity.getIdPasien(), flagResep);
                 }
 
@@ -1263,7 +1263,7 @@ public class VerifikatorPembayaranAction {
         String kode = "";
         String transId = "";
         String jenisPasien = "Umum ";
-        String kodeBank = "";
+        String kodeBank = CommonConstant.REK_BANK_BRI_TELE;
         String idJenisPeriksaPasien = "";
         String noKartu = "";
         BigDecimal biayaCover = new BigDecimal(0);
@@ -1341,18 +1341,18 @@ public class VerifikatorPembayaranAction {
                 mapPajakObat.put("master_id", CommonConstant.MASTER_PAJAK_OBAT);
 
                 if ("umum".equalsIgnoreCase(idJenisPeriksaPasien)){
-                    invoice = billingSystemBo.createInvoiceNumber("JRJ", branchId);
+                    invoice = billingSystemBo.createInvoiceNumber("JKM", branchId);
 
                     // create list map piutang
-                    Map mapPiutang = new HashMap();
-                    mapPiutang.put("bukti", invoice);
-                    mapPiutang.put("nilai",  jumlah.add(ppnObat));
-                    mapPiutang.put("pasien_id", idPasien);
+                    Map mapkas = new HashMap();
+                    mapkas.put("nilai",  jumlah.add(ppnObat));
+                    mapkas.put("metode_bayar", "transfer");
+                    mapkas.put("bank", kodeBank);
 
                     mapJurnal.put("ppn_keluaran", mapPajakObat);
                     mapJurnal.put("pendapatan_rawat_jalan_umum", listOfTindakan);
-                    mapJurnal.put("piutang_pasien_umum", mapPiutang);
-                    transId = "62";
+                    mapJurnal.put("kas", mapkas);
+                    transId = "91";
 
                 } else if ("asuransi".equalsIgnoreCase(idJenisPeriksaPasien)){
                     invoice = billingSystemBo.createInvoiceNumber("JRJ", branchId);
@@ -1373,17 +1373,17 @@ public class VerifikatorPembayaranAction {
 
         } else {
             if ("umum".equalsIgnoreCase(idJenisPeriksaPasien)){
-                invoice = billingSystemBo.createInvoiceNumber("JRJ", branchId);
+                invoice = billingSystemBo.createInvoiceNumber("JKM", branchId);
 
                 // create list map piutang
-                Map mapPiutang = new HashMap();
-                mapPiutang.put("bukti", invoice);
-                mapPiutang.put("nilai", jumlah);
-                mapPiutang.put("pasien_id", idPasien);
+                Map mapkas = new HashMap();
+                mapkas.put("nilai", jumlah);
+                mapkas.put("metode_bayar", "transfer");
+                mapkas.put("bank", kodeBank);
 
                 mapJurnal.put("pendapatan_rawat_jalan_umum", listOfTindakan);
-                mapJurnal.put("piutang_pasien_umum", mapPiutang);
-                transId = "61";
+                mapJurnal.put("kas", mapkas);
+                transId = "90";
             } else if ("asuransi".equalsIgnoreCase(idJenisPeriksaPasien)){
                 invoice = billingSystemBo.createInvoiceNumber("JRJ", branchId);
 
@@ -1428,46 +1428,16 @@ public class VerifikatorPembayaranAction {
 
         try {
 
-            billingSystemBo.createJurnal(transId, mapJurnal, branchId, catatan, "Y");
+            String noJurnal = billingSystemBo.createJurnal(transId, mapJurnal, branchId, catatan, "Y");
 
             // --- update no invoice;
             HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+            detailCheckup = new HeaderDetailCheckup();
             detailCheckup.setIdDetailCheckup(idDetailCheckup);
             detailCheckup.setInvoice(invoice);
+            detailCheckup.setNoJurnal(noJurnal);
 
             checkupDetailBo.saveUpdateNoJuran(detailCheckup);
-            // ---
-
-            // --- create jurnal pembayaran
-            if ("umum".equalsIgnoreCase(idJenisPeriksaPasien)){
-
-                transId = "02";
-                catatan = "Pembayaran Piutang Pasien Telemedic "+idJenisPeriksaPasien+" Id Detail Checkup " + idDetailCheckup;
-
-                // MAPPING KAS
-                Map mapKas = new HashMap();
-                mapKas.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, idJenisPeriksaPasien, ""));
-                mapKas.put("metode_bayar", "transfer");
-                mapKas.put("bank", kodeBank);
-
-                mapJurnal = new HashMap();
-                Map mapPiutang = new HashMap();
-                mapPiutang.put("bukti", invoice);
-                mapPiutang.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, idJenisPeriksaPasien, "").add(ppnObat));
-                mapPiutang.put("master_id", getMasterIdByTipe(idDetailCheckup, idJenisPeriksaPasien));
-
-                mapJurnal.put("kas",mapKas);
-                mapJurnal.put("piutang_pasien_non_bpjs", mapPiutang);
-
-                String noJurnal = billingSystemBo.createJurnal(transId, mapJurnal, branchId, catatan, "Y");
-
-                // --- update no jurnal;
-                detailCheckup = new HeaderDetailCheckup();
-                detailCheckup.setIdDetailCheckup(idDetailCheckup);
-                detailCheckup.setNoJurnal(noJurnal);
-
-                checkupDetailBo.saveUpdateNoJuran(detailCheckup);
-            }
 
             response.setStatus("success");
             response.setMsg("[Berhasil]");
