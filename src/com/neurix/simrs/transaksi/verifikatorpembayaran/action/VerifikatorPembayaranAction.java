@@ -2568,7 +2568,7 @@ public class VerifikatorPembayaranAction {
             return response;
         }
 
-        List<StrukAsuransi> strukAsuransiList = new ArrayList<>();
+        List<ItSimrsStrukAsuransiEntity> strukAsuransiList = new ArrayList<>();
         List<AntrianTelemedic> antrianTelemedicList = new ArrayList<>();
         List<NotifikasiFcm> notifikasiFcm = new ArrayList<>();
 
@@ -2576,43 +2576,47 @@ public class VerifikatorPembayaranAction {
         strukAsuransi1.setId(idStruk);
 
         try {
-           strukAsuransiList = verifikatorAsurasiBo.getSearchByCriteria(strukAsuransi1);
+           strukAsuransiList = verifikatorAsurasiBo.getListStrukAsurasiEntity(strukAsuransi1);
         } catch (GeneralBOException e){
             logger.error("[VerifikatorPembayaranAction.uploadStruk] Error, " + e);
         }
 
         AntrianTelemedic antrianTelemedic = new AntrianTelemedic();
-        antrianTelemedic.setId(strukAsuransiList.get(0).getIdAntrianTelemedic());
+        if  (strukAsuransiList.size() != 0) {
+            antrianTelemedic.setId(strukAsuransiList.get(0).getIdAntrianTelemedic());
 
-        try {
-           antrianTelemedicList = telemedicBo.getSearchByCriteria(antrianTelemedic);
-        } catch (GeneralBOException e){
-            logger.error("[VerifikatorPembayaranAction.uploadStruk] Error, " + e);
+            try {
+                antrianTelemedicList = telemedicBo.getSearchByCriteria(antrianTelemedic);
+            } catch (GeneralBOException e){
+                logger.error("[VerifikatorPembayaranAction.uploadStruk] Error, " + e);
+            }
+
+            Notifikasi notifBean = new Notifikasi();
+            NotifikasiFcm bean = new NotifikasiFcm();
+
+            notifBean.setNip(antrianTelemedicList.get(0).getIdPasien());
+            notifBean.setNamaPegawai("admin");
+            notifBean.setTipeNotifId("TN10");
+            notifBean.setNote("Struk asuransi telah di upload");
+            notifBean.setTo(antrianTelemedicList.get(0).getIdPasien());
+            notifBean.setFromPerson("admin");
+            notifBean.setNoRequest(antrianTelemedicList.get(0).getId());
+            notifBean.setFlag("Y");
+            notifBean.setRead("N");
+            notifBean.setAction("C");
+            notifBean.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+            notifBean.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+            notifBean.setCreatedWho("admin");
+            notifBean.setLastUpdateWho("admin");
+
+            notifikasiBo.saveAdd(notifBean);
+
+            //Push Notif ketika upload struk
+            bean.setUserId(antrianTelemedicList.get(0).getIdPasien());
+            notifikasiFcm = notifikasiFcmBo.getByCriteria(bean);
+            FirebasePushNotif.sendNotificationFirebase(notifikasiFcm.get(0).getTokenFcm(),"Telemedic", "Struk Asuransi telah di upload", "WL", notifikasiFcm.get(0).getOs(), null);
+
         }
-
-        Notifikasi notifBean = new Notifikasi();
-        NotifikasiFcm bean = new NotifikasiFcm();
-
-        notifBean.setNip(antrianTelemedicList.get(0).getIdPasien());
-        notifBean.setNamaPegawai("admin");
-        notifBean.setNote("Pembayaran resep telah dikonfirmasi");
-        notifBean.setTo(antrianTelemedicList.get(0).getIdPasien());
-        notifBean.setFromPerson("admin");
-        notifBean.setNoRequest(antrianTelemedicList.get(0).getId());
-        notifBean.setFlag("Y");
-        notifBean.setRead("N");
-        notifBean.setAction("C");
-        notifBean.setCreatedDate(new Timestamp(System.currentTimeMillis()));
-        notifBean.setLastUpdate(new Timestamp(System.currentTimeMillis()));
-        notifBean.setCreatedWho("admin");
-        notifBean.setLastUpdateWho("admin");
-
-        notifikasiBo.saveAdd(notifBean);
-
-        //Push Notif ketika upload struk
-        bean.setUserId(antrianTelemedicList.get(0).getIdPasien());
-        notifikasiFcm = notifikasiFcmBo.getByCriteria(bean);
-        FirebasePushNotif.sendNotificationFirebase(notifikasiFcm.get(0).getTokenFcm(),"Telemedic", "Struk Asuransi telah di upload", "WL", notifikasiFcm.get(0).getOs(), null);
 
 
         return response;

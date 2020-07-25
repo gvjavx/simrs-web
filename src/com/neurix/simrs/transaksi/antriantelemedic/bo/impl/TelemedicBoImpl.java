@@ -324,8 +324,12 @@ public class TelemedicBoImpl implements TelemedicBo {
         }
 
         logger.info("[TelemedicBoImpl.getSearchByCriteria] END <<<");
-        final String statusTransaksi = bean.getStatusTransaksi();
-        return results.stream().filter(p->p.getStatusTransaksi().equalsIgnoreCase(statusTransaksi)).collect(Collectors.toList());
+        if (bean.getStatusTransaksi() == null) {
+            return results;
+        } else {
+            final String statusTransaksi = bean.getStatusTransaksi();
+            return results.stream().filter(p->p.getStatusTransaksi().equalsIgnoreCase(statusTransaksi)).collect(Collectors.toList());
+        }
 
 //        if ("finish".equalsIgnoreCase(statusTransaksi) || "exist".equalsIgnoreCase(statusTransaksi) || "confirmation".equalsIgnoreCase(statusTransaksi)){
 //            return results.stream().filter(p->p.getStatusTransaksi().equalsIgnoreCase(statusTransaksi)).collect(Collectors.toList());

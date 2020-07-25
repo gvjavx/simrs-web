@@ -602,6 +602,7 @@ public class TelemedicineController implements ModelDriven<Object> {
                 search.setIdPelayanan(idPelayanan);
                 search.setStatus("WL");
                 search.setFlag("Y");
+                search.setIsMobile("Y");
 
                 try{
                     telemedicList = telemedicBoProxy.getSearchByCriteria(search);
@@ -672,6 +673,7 @@ public class TelemedicineController implements ModelDriven<Object> {
             bean.setIdPelayanan(idPelayanan);
             bean.setStatus(status.getStatusAntrianOrder().get(0).getStatus());
             bean.setFlag("Y");
+            bean.setIsMobile("Y");
 
             List<AntrianTelemedic> result = new ArrayList<>();
 
@@ -705,6 +707,7 @@ public class TelemedicineController implements ModelDriven<Object> {
             bean.setIdDokter(idDokter);
             bean.setIdPelayanan(idPelayanan);
             bean.setFlag("Y");
+            bean.setIsMobile("Y");
 
             List<AntrianTelemedic> result = new ArrayList<>();
 
@@ -746,6 +749,7 @@ public class TelemedicineController implements ModelDriven<Object> {
             bean.setIdDokter(idDokter);
             bean.setIdPelayanan(idPelayanan);
             bean.setFlag("Y");
+            bean.setIsMobile("Y");
 
             List<AntrianTelemedic> result = new ArrayList<>();
 
@@ -788,6 +792,7 @@ public class TelemedicineController implements ModelDriven<Object> {
             bean.setFlag("Y");
             bean.setFlagEresep("Y");
             bean.setStatus("ER");
+            bean.setIsMobile("Y");
 
             List<AntrianTelemedic> result = new ArrayList<>();
 
@@ -835,6 +840,7 @@ public class TelemedicineController implements ModelDriven<Object> {
             bean.setStatus(this.status);
             bean.setIdPasien(idPasien);
             bean.setFlag("Y");
+            bean.setIsMobile("Y");
 
             try {
                 result = telemedicBoProxy.getSearchByCriteria(bean);
@@ -906,6 +912,7 @@ public class TelemedicineController implements ModelDriven<Object> {
             bean.setIdDokter(idDokter);
             bean.setIdPelayanan(idPelayanan);
             bean.setFlag("Y");
+            bean.setIsMobile("Y");
 
             List<AntrianTelemedic> result = new ArrayList<>();
 
@@ -1073,6 +1080,7 @@ public class TelemedicineController implements ModelDriven<Object> {
             List<AntrianTelemedic> listTele = new ArrayList<>();
             AntrianTelemedic bean = new AntrianTelemedic();
             bean.setId(idTele);
+            bean.setIsMobile("Y");
 
             try {
                listTele = telemedicBoProxy.getSearchByCriteria(bean);
