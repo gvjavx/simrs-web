@@ -695,7 +695,7 @@ public class VerifikatorPembayaranAction {
 
                 // --- create jurnal;
                 JurnalResponse jurnalResponse = new JurnalResponse();
-                if (!"Y".equalsIgnoreCase(antrianTelemedicEntity.getFlagEresep())){
+                if (!"Y".equalsIgnoreCase(antrianTelemedicEntity.getFlagEresep()) && "umum".equalsIgnoreCase(antrianTelemedicEntity.getIdJenisPeriksaPasien())){
                     jurnalResponse = closingJurnalNonTunaiTelemedic(idDetailCheckup, idTransaksi, antrianTelemedicEntity.getIdPelayanan(), antrianTelemedicEntity.getIdPasien(), flagResep);
                 }
 
