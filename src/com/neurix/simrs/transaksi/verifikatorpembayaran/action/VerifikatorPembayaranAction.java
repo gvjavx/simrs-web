@@ -2569,6 +2569,36 @@ public class VerifikatorPembayaranAction {
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TelemedicBo telemedicBo = (TelemedicBo) ctx.getBean("telemedicBoProxy");
+        VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+
+        ItSimrsHeaderChekupEntity headerChekupEntity = verifikatorPembayaranBo.getHeaderCheckupByIdAntrinTelemedic(idAntrian);
+        if (headerChekupEntity != null){
+            HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+            detailCheckup.setNoCheckup(headerChekupEntity.getNoCheckup());
+
+            List<ItSimrsHeaderDetailCheckupEntity> detailCheckupEntities = checkupDetailBo.getListEntityByCriteria(detailCheckup);
+            if (detailCheckupEntities.size() > 0){
+                for (ItSimrsHeaderDetailCheckupEntity detailCheckupEntity : detailCheckupEntities){
+                    if (detailCheckupEntity.getDibayarPasien().compareTo(new BigDecimal(0)) == 0){
+                        if (detailCheckupEntity.getIdTransaksiOnline() != null){
+                            ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = verifikatorPembayaranBo.getPembayaranOnlineById(detailCheckupEntity.getIdTransaksiOnline());
+                            if ("konsultasi".equalsIgnoreCase(pembayaranOnlineEntity.getKeterangan())){
+                                closingJurnalNonTunaiTelemedic(detailCheckupEntity.getIdDetailCheckup(), detailCheckupEntity.getIdTransaksiOnline(), detailCheckupEntity.getIdPelayanan(), headerChekupEntity.getIdPasien(), "N");
+                            }
+                            if ("resep".equalsIgnoreCase(pembayaranOnlineEntity.getKeterangan())){
+                                closingJurnalNonTunaiTelemedic(detailCheckupEntity.getIdDetailCheckup(), detailCheckupEntity.getIdTransaksiOnline(), detailCheckupEntity.getIdPelayanan(), headerChekupEntity.getIdPasien(), "Y");
+                            }
+                        } else {
+                            logger.error("[VerifikatorPembayaranAction.approveConfirmAsuransi] ERROR, tidak ditemukan id transaksi online. ");
+                            response.setStatus("error");
+                            response.setMsg("[VerifikatorPembayaranAction.approveConfirmAsuransi] ERROR, tidak ditemukan id transaksi online. ");
+                            return response;
+                        }
+                    }
+                }
+            }
+        }
 
         AntrianTelemedic antrianTelemedic = new AntrianTelemedic();
         antrianTelemedic.setId(idAntrian);
