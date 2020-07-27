@@ -416,7 +416,7 @@
                             <input class="form-control" id="dt021">
                         </div>
                         <div class="col-md-3">
-                            <span>AS</span>
+                            <span>Apgar Skore</span>
                             <input class="form-control" id="dt022">
                         </div>
                         <div class="col-md-3">

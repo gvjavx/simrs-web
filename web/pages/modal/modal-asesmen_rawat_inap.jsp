@@ -165,28 +165,29 @@
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-4">Riwayat Alergi</label>
-                            <div class="col-md-2">
-                                <div class="custom02">
-                                    <input type="radio" onclick="showKetIna(this.value, 'rk6')" value="Tidak" id="rk61" name="rk6" /><label for="rk61">Tidak</label>
-                                </div>
+                            <div class="col-md-8">
+                                <input class="form-control alergi-pasien" id="rk6">
+                                <%--<div class="custom02">--%>
+                                    <%--<input type="radio" onclick="showKetIna(this.value, 'rk6')" value="Tidak" id="rk61" name="rk6" /><label for="rk61">Tidak</label>--%>
+                                <%--</div>--%>
                             </div>
-                            <div class="col-md-6">
-                                <div class="custom02">
-                                    <input type="radio" onclick="showKetIna(this.value, 'rk6')" value="Ya" id="rk62" name="rk6" /><label for="rk62">Ya</label>
-                                </div>
-                            </div>
+                            <%--<div class="col-md-6">--%>
+                                <%--<div class="custom02">--%>
+                                    <%--<input type="radio" onclick="showKetIna(this.value, 'rk6')" value="Ya" id="rk62" name="rk6" /><label for="rk62">Ya</label>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
                         </div>
-                        <div class="form-group" style="display: none" id="form-ina-rk6">
-                            <div class="col-md-offset-4 col-md-4">
-                                <select class="form-control" id="ket1_rk6" style="margin-top: 7px">
-                                    <option value="Obat">Obat</option>
-                                    <option value="Makanan">Makanan</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <input placeholder="Keterangan" class="form-control" id="ket2_rk6" style="margin-top: 7px">
-                            </div>
-                        </div>
+                        <%--<div class="form-group" style="display: none" id="form-ina-rk6">--%>
+                            <%--<div class="col-md-offset-4 col-md-4">--%>
+                                <%--<select class="form-control" id="ket1_rk6" style="margin-top: 7px">--%>
+                                    <%--<option value="Obat">Obat</option>--%>
+                                    <%--<option value="Makanan">Makanan</option>--%>
+                                <%--</select>--%>
+                            <%--</div>--%>
+                            <%--<div class="col-md-4">--%>
+                                <%--<input placeholder="Keterangan" class="form-control" id="ket2_rk6" style="margin-top: 7px">--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
                     </div>
                     <hr class="garis">
                     <div class="row">
@@ -386,7 +387,7 @@
                             <label class="col-md-3">Tekanan Darah</label>
                             <div class="col-md-4">
                                 <div class="input-group">
-                                    <input type="number" class="form-control" id="kd3">
+                                    <input class="form-control tensi-pasien" id="kd3">
                                     <div class="input-group-addon"  style="font-size: 10px">
                                         mmHg
                                     </div>
@@ -395,7 +396,7 @@
                             <label class="col-md-1">Suhu</label>
                             <div class="col-md-3">
                                 <div class="input-group">
-                                    <input type="number" class="form-control" id="kd4">
+                                    <input class="form-control suhu-pasien" id="kd4">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         C
                                     </div>
@@ -407,9 +408,9 @@
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-3">Nadi</label>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="input-group">
-                                    <input type="number" class="form-control" id="kd5">
+                                    <input class="form-control nadi-pasien" id="kd5">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         x/menit
                                     </div>
@@ -431,9 +432,9 @@
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-3">Nafas</label>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="input-group">
-                                    <input type="number" class="form-control" id="kd6">
+                                    <input class="form-control rr-pasien" id="kd6">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         x/menit
                                     </div>
@@ -455,9 +456,9 @@
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-3">Berat Badan</label>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="input-group">
-                                    <input type="number" class="form-control" id="kd7">
+                                    <input type="number" class="form-control berat-pasien" id="kd7">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         Kg
                                     </div>
@@ -466,7 +467,7 @@
                             <label class="col-md-2">Tinggi Badan</label>
                             <div class="col-md-3">
                                 <div class="input-group">
-                                    <input type="number" class="form-control" id="kd8">
+                                    <input type="number" class="form-control tinggi-pasien" id="kd8">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         cm
                                     </div>

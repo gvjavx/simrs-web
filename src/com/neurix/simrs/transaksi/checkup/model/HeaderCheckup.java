@@ -139,6 +139,34 @@ public class HeaderCheckup {
     private String idTransaksiOnline;
     private String tipePelayanan;
 
+    private String idLab;
+    private String isOrderLab;
+    private String lastIdDetailCheckup;
+
+    public String getIsOrderLab() {
+        return isOrderLab;
+    }
+
+    public void setIsOrderLab(String isOrderLab) {
+        this.isOrderLab = isOrderLab;
+    }
+
+    public String getLastIdDetailCheckup() {
+        return lastIdDetailCheckup;
+    }
+
+    public void setLastIdDetailCheckup(String lastIdDetailCheckup) {
+        this.lastIdDetailCheckup = lastIdDetailCheckup;
+    }
+
+    public String getIdLab() {
+        return idLab;
+    }
+
+    public void setIdLab(String idLab) {
+        this.idLab = idLab;
+    }
+
     public String getTipePelayanan() {
         return tipePelayanan;
     }

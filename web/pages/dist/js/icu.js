@@ -1967,9 +1967,9 @@ function setInputan(jenis) {
         dataBody.push({'param': 'b. Kejang berulang', 'ket1': 'Ya', 'ket2': 'Tidak', 'skor': '2'});
         dataBody.push({'param': 'c. Gangguan kesadaran', 'ket1': 'Ya', 'ket2': 'Tidak', 'skor': '2'});
         dataBody.push({'param': 'd. Dehidrasi berat', 'ket1': 'Ya', 'ket2': 'Tidak', 'skor': '2'});
-        dataBody.push({'param': 'e. ', 'ket1': 'Ya', 'ket2': 'Tidak', 'skor': '2'});
-        dataBody.push({'param': 'f. Aritmia Jantung', 'ket1': 'Ya', 'ket2': 'Tidak', 'skor': '2'});
-        dataBody.push({'param': 'g. Astma Jantung', 'ket1': 'Ya', 'ket2': 'Tidak', 'skor': '2'});
+        // dataBody.push({'param': 'e. ', 'ket1': 'Ya', 'ket2': 'Tidak', 'skor': '2'});
+        dataBody.push({'param': 'e. Aritmia Jantung', 'ket1': 'Ya', 'ket2': 'Tidak', 'skor': '2'});
+        dataBody.push({'param': 'f. Astma Akut Berat', 'ket1': 'Ya', 'ket2': 'Tidak', 'skor': '2'});
         dataBody.push({
             'param': 'h. Diabetis yang memerlukan terapi insulin-kontinyu',
             'ket1': 'Ya',

@@ -194,24 +194,26 @@
                             <tbody>
                             <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
-                                    <s:if test='#row.idJenisPeriksaPasien == "bpjs"'>
-                                        <td><s:property value="idDetailCheckup"/> <i style="color: #3bb387" class="fa fa-circle-o pull-right"></i></td>
-                                    </s:if>
-                                    <s:elseif test='#row.idJenisPeriksaPasien == "asuransi"'>
-                                        <td><s:property value="idDetailCheckup"/> <i style="color: #ec971f" class="fa fa-circle-o pull-right"></i></td>
-                                    </s:elseif>
-                                    <s:elseif test='#row.idJenisPeriksaPasien == "umum"'>
-                                        <td><s:property value="idDetailCheckup"/> <i style="color: #337ab7" class="fa fa-circle-o pull-right"></i></td>
-                                    </s:elseif>
-                                    <s:elseif test='#row.idJenisPeriksaPasien == "ptpn"'>
-                                        <td><s:property value="idDetailCheckup"/> <i style="color: #b33c00" class="fa fa-circle-o pull-right"></i></td>
-                                    </s:elseif>
-                                    <s:elseif test='#row.idJenisPeriksaPasien == "paket_individu"'>
-                                        <td><s:property value="idDetailCheckup"/> <i style="color: #1e282c" class="fa fa-circle-o pull-right"></i></td>
-                                    </s:elseif>
-                                    <s:elseif test='#row.idJenisPeriksaPasien == "paket_perusahaan"'>
-                                        <td><s:property value="idDetailCheckup"/> <i style="color: #b8c7ce" class="fa fa-circle-o pull-right"></i></td>
-                                    </s:elseif>
+                                    <%--<s:if test='#row.idJenisPeriksaPasien == "bpjs"'>--%>
+                                        <%--<td><s:property value="idDetailCheckup"/> <i style="color: #3bb387" class="fa fa-circle-o pull-right"></i></td>--%>
+                                    <%--</s:if>--%>
+                                    <%--<s:elseif test='#row.idJenisPeriksaPasien == "asuransi"'>--%>
+                                        <%--<td><s:property value="idDetailCheckup"/> <i style="color: #ec971f" class="fa fa-circle-o pull-right"></i></td>--%>
+                                    <%--</s:elseif>--%>
+                                    <%--<s:elseif test='#row.idJenisPeriksaPasien == "umum"'>--%>
+                                        <%--<td><s:property value="idDetailCheckup"/> <i style="color: #337ab7" class="fa fa-circle-o pull-right"></i></td>--%>
+                                    <%--</s:elseif>--%>
+                                    <%--<s:elseif test='#row.idJenisPeriksaPasien == "ptpn"'>--%>
+                                        <%--<td><s:property value="idDetailCheckup"/> <i style="color: #b33c00" class="fa fa-circle-o pull-right"></i></td>--%>
+                                    <%--</s:elseif>--%>
+                                    <%--<s:elseif test='#row.idJenisPeriksaPasien == "paket_individu"'>--%>
+                                        <%--<td><s:property value="idDetailCheckup"/> <i style="color: #1e282c" class="fa fa-circle-o pull-right"></i></td>--%>
+                                    <%--</s:elseif>--%>
+                                    <%--<s:elseif test='#row.idJenisPeriksaPasien == "paket_perusahaan"'>--%>
+                                        <%--<td><s:property value="idDetailCheckup"/> <i style="color: #b8c7ce" class="fa fa-circle-o pull-right"></i></td>--%>
+                                    <%--</s:elseif>--%>
+
+                                    <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="desa"/></td>

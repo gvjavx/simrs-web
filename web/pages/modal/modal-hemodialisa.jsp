@@ -695,7 +695,7 @@
                         <p id="msg_hd_pemeriksaan"></p>
                     </div>
                     <div class="row">
-                        <label class="col-md-5">Pemeriksaan penunjang (Lab, RX, lain-lain)</label>
+                        <label class="col-md-5">Pemeriksaan penunjang (Lab, RO, lain-lain)</label>
                         <div class="col-md-6">
                             <textarea class="form-control penunjang-medis" rows="3" style="margin-top: 7px" id="pem1"></textarea>
                         </div>
@@ -705,7 +705,7 @@
                         <div class="col-md-12">Gizi (dikaji tiap 3-6 bulan atau diulangi jika dianggap terjadi
                             perburukan asupan gizi)
                         </div>
-                        <label class="col-md-5">Tanggal</label>
+                        <label class="col-md-5 jarak">Tanggal</label>
                         <div class="col-md-6">
                             <div class="input-group" style="margin-top: 7px">
                                 <div class="input-group-addon">
@@ -714,11 +714,11 @@
                                 <input class="form-control tgl" id="pem2">
                             </div>
                         </div>
-                        <label class="col-md-5">Score</label>
+                        <label class="col-md-5 jarak">Score</label>
                         <div class="col-md-6">
                             <input class="form-control" style="margin-top: 7px" id="pem3" type="number">
                         </div>
-                        <label class="col-md-5">Rekomendasi</label>
+                        <label class="col-md-5 jarak">Rekomendasi</label>
                         <div class="col-md-6">
                             <textarea rows="4" class="form-control" style="margin-top: 7px" id="pem4"></textarea>
                         </div>

@@ -71,6 +71,24 @@ public class ItSimrsHeaderDetailCheckupEntity implements Serializable{
     private String videoRm;
 
     private String idTransaksiOnline;
+    private String noCheckupUlang;
+    private String isOrderLab;
+
+    public String getIsOrderLab() {
+        return isOrderLab;
+    }
+
+    public void setIsOrderLab(String isOrderLab) {
+        this.isOrderLab = isOrderLab;
+    }
+
+    public String getNoCheckupUlang() {
+        return noCheckupUlang;
+    }
+
+    public void setNoCheckupUlang(String noCheckupUlang) {
+        this.noCheckupUlang = noCheckupUlang;
+    }
 
     public String getIdTransaksiOnline() {
         return idTransaksiOnline;

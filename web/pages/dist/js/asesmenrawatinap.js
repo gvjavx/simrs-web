@@ -48,19 +48,19 @@ function saveAsesmenRawatInap(jenis, ket) {
         var va4 = $('#rk4').val();
         var va5 = $('[name=rk5]:checked').val();
 
-        var va6 = "";
-        var val6 = $('[name=rk6]:checked').val();
-        if (val6 == "Ya") {
-            var a = $('#ket1_rk6').val();
-            var b = $('#ket2_rk6').val();
-            if (a && b != '') {
-                va6 = a + ', ' + b;
-            }
-        } else {
-            if (val6 != undefined) {
-                va6 = val6;
-            }
-        }
+        var va6 = $('#rk6').val();
+        // var val6 = $('[name=rk6]:checked').val();
+        // if (val6 == "Ya") {
+        //     var a = $('#ket1_rk6').val();
+        //     var b = $('#ket2_rk6').val();
+        //     if (a && b != '') {
+        //         va6 = a + ', ' + b;
+        //     }
+        // } else {
+        //     if (val6 != undefined) {
+        //         va6 = val6;
+        //     }
+        // }
 
         var va7 = "";
         var val7 = $('[name=rk7]:checked').val();
@@ -1508,7 +1508,7 @@ function saveAsesmenRawatInap(jenis, ket) {
 
     if ("catatan_klinis" == jenis) {
         var va1 = $('#ck1').val();
-        var va2 = $('[name=ck2]:checked').val();
+        var va2 = $('#ck2').val();
         var va3 = "";
         var v3 = $('[name=ck3]:checked').val();
         if (v3 != undefined) {
@@ -1543,7 +1543,7 @@ function saveAsesmenRawatInap(jenis, ket) {
         });
         var va8 = $('#ck8').val();
 
-        if (va2 != undefined && va1 && va3 && va4 && va5 && va6 && temp7 && va8 != '') {
+        if (va2 != '' && va1 && va3 && va4 && va5 && va6 && temp7 && va8 != '') {
             data.push({
                 'parameter': 'Anamnesis',
                 'jawaban': va1,

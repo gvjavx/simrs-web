@@ -318,7 +318,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <label class="col-md-12"><b>Dokter Bedah</b></label>
+                        <label class="col-md-12"><b>Dokter Anestesi</b></label>
                     </div>
                     <div class="row">
                         <div class="form-group">
@@ -446,7 +446,7 @@
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-1">4.</label>
+                            <label class="col-md-6">4. Apakah dipasang ?</label>
                             <div class="col-md-3">
                                 <div class="form-check">
                                     <input type="checkbox" name="kes32" id="kes321" value="Drain">

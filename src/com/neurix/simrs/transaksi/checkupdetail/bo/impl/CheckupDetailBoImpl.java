@@ -395,6 +395,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             entity.setTarifBpjs(bean.getTarifBpjs() == null ? entity.getTarifBpjs() : bean.getTarifBpjs());
             entity.setKodeCbg(bean.getKodeCbg() == null ? entity.getKodeCbg() : bean.getKodeCbg());
             entity.setIdPelayananBpjs(bean.getIdPelayananBpjs() == null ? entity.getIdPelayananBpjs() : bean.getIdPelayananBpjs());
+            entity.setNoCheckupUlang(bean.getNoCheckupUlang());
+            entity.setIsOrderLab(bean.getIsOrderLab());
 
             try {
                 checkupDetailDao.updateAndSave(entity);
@@ -770,7 +772,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             diagnosaRawat.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
             diagnosaRawat.setIdDiagnosa(bean.getDiagnosa());
             diagnosaRawat.setKeteranganDiagnosa(bean.getNamaDiagnosa());
-            diagnosaRawat.setJenisDiagnosa("0");
+            diagnosaRawat.setJenisDiagnosa("diagnosa_awal");
             response = saveDiagnosa(diagnosaRawat);
         }
 

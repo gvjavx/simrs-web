@@ -29,6 +29,9 @@ public class CheckupAlergiDao extends GenericDao<ItSImrsCheckupAlergiEntity, Str
         if (mapCriteria.get("no_checkup") != null){
             criteria.add(Restrictions.eq("noCheckup", mapCriteria.get("no_checkup").toString()));
         }
+        if (mapCriteria.get("id_pasien") != null){
+            criteria.add(Restrictions.eq("idPasien", mapCriteria.get("id_pasien").toString()));
+        }
         criteria.add(Restrictions.eq("flag", "Y"));
         List<ItSImrsCheckupAlergiEntity> list = criteria.list();
         return list;

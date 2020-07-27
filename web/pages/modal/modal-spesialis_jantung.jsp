@@ -129,13 +129,13 @@
                     <div class="row jarak">
                         <label class="col-md-4">Terapi</label>
                         <div class="col-md-8">
-                            <textarea rows="2" class="form-control" id="pt6"></textarea>
+                            <textarea rows="2" class="form-control resep-pasien" id="pt6"></textarea>
                         </div>
                     </div>
                     <div class="row jarak">
                         <label class="col-md-4">Tindakan / Rencana Tindakan</label>
                         <div class="col-md-8">
-                            <textarea rows="2" class="form-control" id="pt7"></textarea>
+                            <textarea rows="2" class="form-control tindakan-pasien" id="pt7"></textarea>
                         </div>
                     </div>
                     <div class="row jarak">
@@ -152,7 +152,7 @@
                     <div class="row jarak">
                         <label class="col-md-4">Indikasi Rawat Inap</label>
                         <div class="col-md-8">
-                            <input class="form-control" id="pt9">
+                            <input class="form-control anamnese" id="pt9">
                         </div>
                     </div>
                 </div>

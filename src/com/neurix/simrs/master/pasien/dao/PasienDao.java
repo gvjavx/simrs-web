@@ -4,6 +4,7 @@ import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.master.pasien.model.Pasien;
+import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
@@ -12,6 +13,7 @@ import org.springframework.security.access.method.P;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -199,6 +201,40 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
         }
 
         return pasienList;
+    }
+
+    public HeaderDetailCheckup getLastCheckup(String idPasien){
+        HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+        if(idPasien != null){
+            String SQL = "SELECT\n" +
+                    "b.id_detail_checkup,\n" +
+                    "a.id_pasien,\n" +
+                    "b.tgl_cekup,\n" +
+                    "b.no_checkup_ulang,\n" +
+                    "b.is_order_lab, \n" +
+                    "b.id_pelayanan\n" +
+                    "FROM it_simrs_header_checkup a \n" +
+                    "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                    "WHERE id_pasien = :idPasien\n" +
+                    "AND a.tgl_keluar IS NOT NULL\n" +
+                    "ORDER BY a.created_date DESC\n" +
+                    "LIMIT 1\n";
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("idPasien", idPasien)
+                    .list();
+
+            if(result.size() > 0){
+                Object[] obj = result.get(0);
+                detailCheckup.setIdDetailCheckup(obj[0] != null ? obj[0].toString() : "");
+                detailCheckup.setIdPasien(obj[1] != null ? obj[1].toString() : "");
+                detailCheckup.setTglCekup(obj[2] != null ? Date.valueOf(obj[2].toString()) : null);
+                detailCheckup.setNoCheckupUlang(obj[3] != null ? obj[3].toString() : "");
+                detailCheckup.setIsOrderLab(obj[4] != null ? obj[4].toString() : "");
+                detailCheckup.setIdPelayanan(obj[5] != null ? obj[5].toString() : "");
+            }
+        }
+        return detailCheckup;
     }
 
     public String getNextIdPasien() {

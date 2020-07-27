@@ -266,4 +266,5 @@
 
     <import resource="sshconfig/com/neurix/simrs/transaksi/asesmenoperasi/spring/MonAnestesiBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/master/rekammedis/spring/RekamMedisPasienBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/periksalab/spring/OrderPeriksaLabBean.xml"/>
 </beans>

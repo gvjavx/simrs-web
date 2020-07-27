@@ -159,9 +159,9 @@ function hitungStatusBiaya() {
     });
 }
 
-function listSelectDokter() {
+function listSelectDokter(isi) {
     var option = "<option value=''>[Select One]</option>";
-    CheckupAction.getListDokterByBranchId(function (response) {
+    CheckupAction.getListDokterByBranchId(isi, function (response) {
         if (response.length > 0) {
             $.each(response, function (i, item) {
                 option += "<option value='" + item.idDokter +'|'+item.idPelayanan+"'>" + item.namaDokter+' - '+ item.namaPelayanan + "</option>";
@@ -361,7 +361,7 @@ function saveKeterangan(idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_ce
 
     var metodBayar = '<s:property value="rawatInap.metodePembayaran"/>';
     dwr.engine.setAsync(true);
-    CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, cara, pendamping, tujuan, "", metodBayar, function (response) {
+    CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, cara, pendamping, tujuan, "", metodBayar, "", metodBayar, "", "", function (response) {
         if(response.status == "success"){
             $('#waiting_dialog').dialog('close');
             $('#info_dialog').dialog('open');
@@ -458,7 +458,23 @@ function showModal(select) {
 
     if (select == 1) {
 
-        listSelectDokter();
+        var tabel = $('#tbl_dokter').tableToJSON();
+        var awal = "(";
+        var akhir = ")";
+        var isi = "";
+        if(tabel.length > 0){
+            $.each(tabel, function (i, item) {
+                if(isi != ''){
+                    isi = isi+', '+"'"+tabel[i]["ID Dokter"]+"'";
+                }else{
+                    isi = "'"+tabel[i]["ID Dokter"]+"'";
+                }
+            });
+        }
+        if(isi != ''){
+            isi = awal + isi + akhir;
+        }
+        listSelectDokter(isi);
         $('#dok_id_dokter').val('').trigger('change');
         $('#load_dokter, #warning_dokter, #war_dok').hide();
         $('#save_dokter').attr('onclick', 'saveDokter(\'' + id + '\')').show();
@@ -538,13 +554,20 @@ function formatRupiah(angka) {
 
 function saveDokter(id) {
     var idDokter = $('#dok_id_dokter').val();
+    var idDok = "";
+    var pelayanan = "";
+    if(idDokter != ''){
+        var data = idDokter.split("|");
+        idDok = data[0];
+        pelayanan = data[1];
+    }
 
-    if (idDetailCheckup != '' && idDokter != '') {
+    if (idDetailCheckup != '' && idDok != '' && pelayanan != '') {
         $('#save_dokter').hide();
         $('#load_dokter').show();
         if (id != '') {
             dwr.engine.setAsync(true);
-            TeamDokterAction.editDokter(id, idDokter, function (response) {
+            TeamDokterAction.editDokter(id, idDok, pelayanan, function (response) {
                 if (response == "success") {
                     dwr.engine.setAsync(false);
                     listDokter();
@@ -557,7 +580,7 @@ function saveDokter(id) {
             })
         } else {
             dwr.engine.setAsync(true);
-            TeamDokterAction.saveDokter(idDetailCheckup, idDokter, function (response) {
+            TeamDokterAction.saveDokter(idDetailCheckup, idDok, pelayanan, function (response) {
                 if (response == "success") {
                     dwr.engine.setAsync(false);
                     listDokter();
@@ -587,7 +610,7 @@ function listDokter() {
                     "<td>" + item.idDokter + '<input value="'+item.idDokter+'" type="hidden" id="dokter'+i+'">'+ "</td>" +
                     "<td>" + item.namaDokter + "</td>" +
                     "<td>" + item.namaPelayanan + "</td>" +
-                    "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editDokter(\'' + item.idTeamDokter + '\',\'' + item.idDokter + '\')" src="'+pathImages+'/pages/images/icons8-create-25.png" style="cursor: pointer;">' + "</td>" +
+                    "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editDokter(\'' + item.idTeamDokter + '\',\'' + item.idDokter + '\', \''+item.idPelayanan+'\')" src="'+pathImages+'/pages/images/icons8-create-25.png" style="cursor: pointer;">' + "</td>" +
                     "</tr>";
                 dokter = item.idDokter;
             });
@@ -845,7 +868,7 @@ function listDiagnosa() {
                     ket = item.keteranganDiagnosa;
                 }
                 if (item.jenisDiagnosa != null) {
-                    if (item.jenisDiagnosa == 0) {
+                    if (item.jenisDiagnosa == "diagnosa_awal") {
                         jen = "Diagnosa Awal";
                     } else {
                         jen = "Diagnosa Akhir";
@@ -1385,10 +1408,11 @@ function cekBarcode(value, idOrderGizi){
     }
 }
 
-function editDokter(id, idDokter) {
+function editDokter(id, idDokter, idPelayanan) {
+    listSelectDokter("");
     $('#load_dokter, #war_dok').hide();
     $('#save_dokter').attr('onclick', 'saveDokter(\'' + id + '\')').show();
-    $('#dok_id_dokter').val(idDokter).trigger('change');
+    $('#dok_id_dokter').val(idDokter+'|'+idPelayanan).trigger('change');
     $('#modal-dokter').modal({show:true,backdrop:'static'});
 }
 

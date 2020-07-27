@@ -165,6 +165,24 @@ public class HeaderDetailCheckup extends BaseModel{
     private String pemeriksaanTerakhir;
 
     private String idPelayananDokter;
+    private String noCheckupUlang;
+    private String isOrderLab;
+
+    public String getIsOrderLab() {
+        return isOrderLab;
+    }
+
+    public void setIsOrderLab(String isOrderLab) {
+        this.isOrderLab = isOrderLab;
+    }
+
+    public String getNoCheckupUlang() {
+        return noCheckupUlang;
+    }
+
+    public void setNoCheckupUlang(String noCheckupUlang) {
+        this.noCheckupUlang = noCheckupUlang;
+    }
 
     public String getIdPelayananDokter() {
         return idPelayananDokter;

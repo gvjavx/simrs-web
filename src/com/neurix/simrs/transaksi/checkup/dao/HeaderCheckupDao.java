@@ -1411,6 +1411,46 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         return checkup;
     }
 
+    public List<HeaderCheckup> getRiwayatPemeriksaan(String idPasien){
+        List<HeaderCheckup> response = new ArrayList<>();
+        if(idPasien != ""){
+            String SQL = "SELECT\n" +
+                    "c.nama_pelayanan,\n" +
+                    "aa.id_diagnosa,\n" +
+                    "aa.keterangan_diagnosa\n" +
+                    "FROM it_simrs_header_checkup a\n" +
+                    "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                    "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
+                    "LEFT JOIN (\n" +
+                    "SELECT * FROM (\n" +
+                    "SELECT\n" +
+                    "keterangan_diagnosa,\n" +
+                    "id_diagnosa,\n" +
+                    "id_detail_checkup,\n" +
+                    "rank() OVER (PARTITION BY id_detail_checkup ORDER BY created_date DESC)\n" +
+                    "FROM it_simrs_diagnosa_rawat\n" +
+                    ") a WHERE a.rank = 1\n" +
+                    ") aa ON b.id_detail_checkup = aa.id_detail_checkup\n" +
+                    "WHERE a.id_pasien = :id\n" +
+                    "ORDER BY a.created_date DESC LIMIT 5";
+
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", idPasien)
+                    .list();
+            if(result.size() > 0){
+                for (Object[] obj: result){
+                    HeaderCheckup checkup = new HeaderCheckup();
+                    checkup.setNamaPelayanan(obj[0] == null ? "" : obj[0].toString());
+                    checkup.setDiagnosa(obj[1] == null ? "" : obj[1].toString());
+                    checkup.setNamaDiagnosa(obj[2] == null ? "" : obj[2].toString());
+                    response.add(checkup);
+                }
+            }
+        }
+        return response;
+    }
+
     public String getNextSeq() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_pembayaran_online')");
         Iterator<BigInteger> iter = query.list().iterator();

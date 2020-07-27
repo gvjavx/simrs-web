@@ -167,5 +167,12 @@
             <column name="id_transaksi_online" sql-type="varchar"/>
         </property>
 
+        <property name="noCheckupUlang">
+            <column name="no_checkup_ulang" sql-type="varchar"/>
+        </property>
+        <property name="isOrderLab">
+            <column name="is_order_lab" sql-type="varchar"/>
+        </property>
+
     </class>
 </hibernate-mapping>

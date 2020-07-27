@@ -767,6 +767,10 @@
       </create>
       <convert converter="bean" match="com.neurix.simrs.transaksi.kandungan.model.Kandungan"/>
 
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.master.pelayanan.action.PelayananAction"/>
+      </create>
+
   </allow>
 
 </dwr>
