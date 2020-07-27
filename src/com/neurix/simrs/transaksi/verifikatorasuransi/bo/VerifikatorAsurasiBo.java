@@ -11,6 +11,6 @@ import java.util.List;
  */
 public interface VerifikatorAsurasiBo {
     public List<StrukAsuransi> getSearchByCriteria(StrukAsuransi bean) throws GeneralBOException;
-    public void saveUploadStrukAsuransi(StrukAsuransi bean) throws GeneralBOException;
+    public String saveUploadStrukAsuransi(StrukAsuransi bean) throws GeneralBOException;
     public List<ItSimrsStrukAsuransiEntity> getListStrukAsurasiEntity(StrukAsuransi bean) throws GeneralBOException;
 }

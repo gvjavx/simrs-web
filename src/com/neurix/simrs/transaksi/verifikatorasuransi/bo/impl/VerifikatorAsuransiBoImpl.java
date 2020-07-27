@@ -120,13 +120,13 @@ public class VerifikatorAsuransiBoImpl implements VerifikatorAsurasiBo{
     }
 
     @Override
-    public void saveUploadStrukAsuransi(StrukAsuransi bean) throws GeneralBOException {
+    public String saveUploadStrukAsuransi(StrukAsuransi bean) throws GeneralBOException {
         logger.info("[VerifikatorAsuransiBoImpl.saveUploadStrukAsuransi] START >>>");
 
         ItSimrsStrukAsuransiEntity strukAsuransiEntity = getStrukAsuransiEntityById(bean.getId());
         if (strukAsuransiEntity != null){
 
-            boolean noBayar = bean.getDibayarPasien() != null && bean.getDibayarPasien().compareTo(new BigDecimal(0)) == 0;
+            boolean noBayar =  bean.getDibayarPasien() != null && bean.getDibayarPasien().compareTo(new BigDecimal(0)) == 0 && "confirmation".equalsIgnoreCase(strukAsuransiEntity.getJenis());
             strukAsuransiEntity.setUrlFotoStruk(bean.getUrlFotoStruk());
             strukAsuransiEntity.setLastUpdate(bean.getLastUpdate());
             strukAsuransiEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -182,11 +182,13 @@ public class VerifikatorAsuransiBoImpl implements VerifikatorAsurasiBo{
                             logger.error("[VerifikatorAsuransiBoImpl.saveUploadStrukAsuransi] ERROR. When Update Flag Bayar Antrian Telemedic ", e);
                             throw new GeneralBOException("[VerifikatorAsuransiBoImpl.saveUploadStrukAsuransi] ERROR. When Update Flag Bayar Antrian Telemedic "+ e);
                         }
+                        return antrianTelemedicEntity.getId();
                     }
                 }
             }
         }
         logger.info("[VerifikatorAsuransiBoImpl.saveUploadStrukAsuransi] END <<<");
+        return "";
     }
 
     private Boolean checkIsWithResep(String idAntrian) throws GeneralBOException{
