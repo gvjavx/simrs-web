@@ -8,6 +8,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -52,5 +53,29 @@ public class DokterTeamDao extends GenericDao<ItSimrsDokterTeamEntity, String> {
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%08d", iter.next());
         return sId;
+    }
+
+    public String namaPelayanan(String idPelayanan) {
+        String res = "";
+
+        if(!"".equalsIgnoreCase(idPelayanan) && idPelayanan != null){
+            String SQL = "SELECT \n" +
+                    "id_pelayanan,\n" +
+                    "nama_pelayanan\n" +
+                    "FROM im_simrs_pelayanan \n" +
+                    "WHERE id_pelayanan = :idPelayanan";
+
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("idPelayanan", idPelayanan)
+                    .list();
+
+            if(result.size() > 0){
+                Object[] obj = result.get(0);
+                res = obj[1].toString();
+            }
+        }
+
+        return res;
     }
 }

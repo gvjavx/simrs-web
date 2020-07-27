@@ -237,7 +237,7 @@
                         <div class="form-group">
                             <label class="col-md-4">Diagnosa Medis</label>
                             <div class="col-md-8">
-                                <textarea class="form-control" rows="3" id="dr9"></textarea>
+                                <textarea class="form-control diagnosa-pasien" rows="3" id="dr9"></textarea>
                             </div>
                         </div>
                     </div>
@@ -287,7 +287,7 @@
                         <div class="form-group">
                             <label class="col-md-3">Anamnesis</label>
                             <div class="col-md-8">
-                                <textarea rows="3" class="form-control" id="ck1" style="margin-top: 7px"></textarea>
+                                <textarea rows="3" class="form-control anamnese" id="ck1" style="margin-top: 7px"></textarea>
                             </div>
                         </div>
                     </div>
@@ -295,16 +295,17 @@
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-3">Alergi</label>
-                            <div class="col-md-3">
-                                <div class="custom02">
-                                    <input type="radio" value="Tidak" id="ck21" name="ck2" /><label for="ck21">Tidak</label>
-                                </div>
+                            <div class="col-md-8">
+                                <input class="form-control alergi-pasien" id="ck2">
+                                <%--<div class="custom02">--%>
+                                    <%--<input type="radio" value="Tidak" id="ck21" name="ck2" /><label for="ck21">Tidak</label>--%>
+                                <%--</div>--%>
                             </div>
-                            <div class="col-md-3">
-                                <div class="custom02">
-                                    <input type="radio" value="Tidak" id="ck22" name="ck2" /><label for="ck22">Ya</label>
-                                </div>
-                            </div>
+                            <%--<div class="col-md-3">--%>
+                                <%--<div class="custom02">--%>
+                                    <%--<input type="radio" value="Tidak" id="ck22" name="ck2" /><label for="ck22">Ya</label>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
                         </div>
                     </div>
                     <hr class="garis">

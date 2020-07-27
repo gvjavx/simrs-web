@@ -45,6 +45,15 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
     private PeriksaRadiologiBo periksaRadiologiBoProxy;
     private BranchBo branchBoProxy;
     private String idPeriksa;
+    private String ket;
+
+    public String getKet() {
+        return ket;
+    }
+
+    public void setKet(String ket) {
+        this.ket = ket;
+    }
 
     public void setBranchBoProxy(BranchBo branchBoProxy) {
         this.branchBoProxy = branchBoProxy;
@@ -129,6 +138,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
 
         String id = getId();
         String lab = getLab();
+        String ket = getKet();
         String userArea = CommonUtil.userBranchLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
@@ -175,6 +185,8 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
                 periksaLab.setUrlKtp(checkup.getUrlKtp());
                 periksaLab.setJenisPeriksaPasien(checkup.getStatusPeriksaName());
                 periksaLab.setIdPeriksaLab(lab);
+                periksaLab.setKeterangan(ket);
+                periksaLab.setMetodePembayaran(checkup.getMetodePembayaran());
 
                 PeriksaLab periksalb = new PeriksaLab();
                 try {
@@ -184,6 +196,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
                 }
                 if (periksalb.getIdPeriksaLab() != null) {
                     periksaLab.setKategoriLabName(periksalb.getKategoriLabName());
+                    periksaLab.setIdLab(periksalb.getIdLab());
                 }
 
                 setPeriksaLab(periksaLab);

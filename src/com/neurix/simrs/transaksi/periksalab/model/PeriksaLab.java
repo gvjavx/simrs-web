@@ -73,6 +73,25 @@ public class PeriksaLab extends BaseModel implements Serializable{
     private String ttdPetugas;
     private String namaPetugas;
 
+    private String keterangan;
+    private String metodePembayaran;
+
+    public String getMetodePembayaran() {
+        return metodePembayaran;
+    }
+
+    public void setMetodePembayaran(String metodePembayaran) {
+        this.metodePembayaran = metodePembayaran;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
     public String getNamaPetugas() {
         return namaPetugas;
     }

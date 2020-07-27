@@ -41,6 +41,7 @@ public class TeamDokterBoImpl extends DokterBoImpl implements TeamDokterBo{
                     dokterTeam.setCreatedWho(entity.getCreatedWho());
                     dokterTeam.setLastUpdate(entity.getLastUpdate());
                     dokterTeam.setLastUpdateWho(entity.getLastUpdateWho());
+                    dokterTeam.setIdPelayanan(entity.getIdPelayanan());
 
                     Dokter dokter = new Dokter();
                     dokter.setIdDokter(entity.getIdDokter());
@@ -51,6 +52,10 @@ public class TeamDokterBoImpl extends DokterBoImpl implements TeamDokterBo{
                         Dokter dokterData = dokters.get(0);
                         dokterTeam.setNamaDokter(dokterData.getNamaDokter());
                         dokterTeam.setNamaSpesialis(dokterData.getNamaSpesialis());
+                    }
+
+                    if(entity.getIdPelayanan() != null && !"".equalsIgnoreCase(entity.getIdPelayanan())){
+                        dokterTeam.setNamaPelayanan(dokterTeamDao.namaPelayanan(entity.getIdPelayanan()));
                     }
 
                     results.add(dokterTeam);
@@ -72,6 +77,7 @@ public class TeamDokterBoImpl extends DokterBoImpl implements TeamDokterBo{
         entity.setIdTeamDokter("TDT"+id);
         entity.setIdDokter(bean.getIdDokter());
         entity.setIdDetailCheckup(bean.getIdDetailCheckup());
+        entity.setIdPelayanan(bean.getIdPelayanan());
         entity.setFlag("Y");
         entity.setAction("C");
         entity.setCreatedDate(bean.getCreatedDate());

@@ -23,6 +23,9 @@ function setDataPasien(){
     var nadi = $('.nadi-pasien').length;
     var rr = $('.rr-pasien').length;
 
+    var resep = $('.resep-pasien').length;
+    var tindakan = $('.tindakan-pasien').length;
+
     if(tensi > 0 || gejala > 0 || bb > 0 || tb > 0){
         CheckupAction.getDataPemeriksaanFisik(noCheckup, function (res) {
             if (res != '') {
@@ -63,6 +66,20 @@ function setDataPasien(){
             }
         });
     }
+    if (resep > 0) {
+        CheckupAction.getDataByKey(idDetailCheckup, "resep", function (res) {
+            if (res != '') {
+                $('.resep-pasien').val(res);
+            }
+        });
+    }
+    if (tindakan > 0) {
+        CheckupAction.getDataByKey(idDetailCheckup, "tindakan", function (res) {
+            if (res != '') {
+                $('.tindakan-pasien').val(res);
+            }
+        });
+    }
     if (nama > 0) {
         $('.nama-pasien').val(namaPasien);
     }
@@ -82,7 +99,11 @@ function setDataPasien(){
         $('.diagnosa-pasien').val(diagnosa);
     }
     if (alr > 0) {
-        $('.alergi-pasien').val(alergi);
+        CheckupAction.getDataByKey(noCheckup, "alergi", function (res) {
+            if (res != '') {
+                $('.alergi-pasien').val(res);
+            }
+        });
     }
     if (bb > 0) {
         $('.berat-pasien').val(tempBerat);

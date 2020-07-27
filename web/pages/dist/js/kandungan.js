@@ -1617,7 +1617,7 @@ function tindakanRB(jenis) {
     data.push({
         'jenis': 'Kurretage',
         'parameter': 'Dasar Diagnosis',
-        'informasi': 'USG|Pendarahan',
+        'informasi': 'Pemeriksaan Fisik|Anamnesa|Pemeriksaan Penunjang',
         'keterangan': 'r'
     });
     data.push({
@@ -1677,7 +1677,7 @@ function tindakanRB(jenis) {
     data.push({
         'jenis': 'Sectio Caesaria',
         'parameter': 'Dasar Diagnosis',
-        'informasi': 'USG|Klinis',
+        'informasi': 'Pemeriksaan Fisik|Anamnesa|Pemeriksaan Penunjang',
         'keterangan': 'r'
     });
     data.push({

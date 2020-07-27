@@ -514,7 +514,7 @@
                                     <ul class="dropdown-menu" role="menu">
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('asesmen_rawat_inap')"
                                                onclick="showModalAsesmenRawatInap('asesmen')"><i
-                                                class="fa fa-file-o"></i>Asesmen Awal Medis Rawat Inap</a></li>
+                                                class="fa fa-file-o"></i>Asesmen Awal Keperawatan Rawat Inap</a></li>
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('catatan_integrasi')"
                                                onclick="showModalAsesmenRawatInap('catatan_integrasi')"><i
                                                 class="fa fa-file-o"></i>Catatan Perkembangan Pasien Terintegrasi</a>
@@ -557,6 +557,19 @@
                                                 class="fa fa-file-o"></i>Persetujuan Tindakan Kedokteran</a></li>
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('checklist_transfer_external')" onclick="showModalAsesmenRawatInap('checklist_transfer_external')"><i
                                                 class="fa fa-file-o"></i>Checklist Persiapan Transfer Pasien Ekternal</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('ringkasan')"
+                                               onclick="showModalRingkasanPasien('ringkasan_pulang')"><i
+                                                class="fa fa-circle-o"></i>Ringkasan Pulang</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('ringkasan')"
+                                               onclick="showModalRingkasanPasien('ringkasan_keluar')"><i
+                                                class="fa fa-circle-o"></i>Ringkasan Masuk Keluar</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('ringkasan')"
+                                               onclick="showModalRingkasanPasien('resume_medis')"><i
+                                                class="fa fa-circle-o"></i>Resume Medis</a></li>
+                                        <li><a style="cursor: pointer" onclick="printPernyataan('CK02')">
+                                            <i class="fa fa-print"></i>Pelepasan Informasi</a></li>
+                                        <li><a style="cursor: pointer" onclick="printPernyataan('RI01')"><i class="fa fa-circle-o"></i>Surat Permintaan Rawat Inap</a></li>
+                                        <li><a style="cursor: pointer" onclick="printPernyataan('CK01')"><i class="fa fa-print"></i>General Concent</a></li>
                                         <li><a style="cursor: pointer" onclick="printPernyataan('SP03')"><i class="fa fa-print"></i>Surat Penolakan Tindakan</a></li>
                                         <li><a style="cursor: pointer" onclick="printPernyataan('SP06')"><i class="fa fa-print"></i>Surat Pernyataan Non Bpjs / Asuransi</a></li>
                                         <li><a style="cursor: pointer" onclick="printPernyataan('SK01')"><i class="fa fa-print"></i>Surat Keterangan Dokter</a></li>
@@ -565,6 +578,7 @@
                                         <li><a style="cursor: pointer" onclick="printPernyataan('SK03')"><i class="fa fa-print"></i>Surat Keterangan Sehat</a></li>
                                         <li><a style="cursor: pointer" onclick="printPernyataan('SK02')"><i class="fa fa-print"></i>Surat Keterangan Kamar Penuh</a></li>
                                         <li><a style="cursor: pointer" onclick="printPernyataan('SP05')"><i class="fa fa-print"></i>Surat Pengantar Jenazah</a></li>
+                                        <li><a style="cursor: pointer" onclick="printPernyataan('SP04')"><i class="fa fa-print"></i>Surat Pernyataan Kematian</a></li>
                                     </ul>
                                 </div>
                                 <div class="btn-group dropdown">
@@ -579,7 +593,7 @@
                                         <li><a style="cursor: pointer" onclick="showModalOperasi('ceklist_operasi')"><i class="fa fa-file-o"></i>Ceklist Serah Terima Pasien Pre Operasi</a></li>
                                         <li><a style="cursor: pointer" onclick="showModalOperasi('penandaan_area')"><i class="fa fa-file-o"></i>Penandaan Area Operasi Pasien</a></li>
                                         <li><a style="cursor: pointer" onclick="showModalOperasi('pra_anestesi')"><i class="fa fa-file-o"></i>Asesmen Pra Anestesi</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalOperasi('informasi_dan_persetujuan')"><i class="fa fa-file-o"></i>Pemberian Edukasi dan Persetujuan</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalOperasi('informasi_dan_persetujuan')"><i class="fa fa-file-o"></i>Pemberian Informasi dan Persetujuan Anestesi</a></li>
                                         <li><a style="cursor: pointer" onclick="showModalOperasi('pindah_rr')"><i class="fa fa-file-o"></i>Kriteia Pindah dari RR</a></li>
                                         <li><a style="cursor: pointer" onclick="showModalOperasi('laporan_operasi')"><i class="fa fa-file-o"></i>Laporan Operasi</a></li>
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('catatan_anestesi')" onclick="showModalOperasi('catatan_anestesi')"><i class="fa fa-file-o"></i>Catatan Anestesi</a></li>
@@ -623,6 +637,7 @@
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('laporan_persalinan')"  onclick="showModalRB('laporan_persalinan')"><i class="fa fa-file-o"></i>Laporan Persalinan</a></li>
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('tindakan_rb')"  onclick="showModalRB('tindakan_rb')"><i class="fa fa-file-o"></i>Persetujuan Tindakan Kedokteran</a></li>
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('asuhan_keperawatan_rb')"  onclick="showModalRB('asuhan_keperawatan_rb')"><i class="fa fa-file-o"></i>Asuhan Kebidanan</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('spesialis_obstetri')"  onclick="showModalRB('spesialis_obstetri')"><i class="fa fa-file-o"></i>Asesmen Obsetetri</a></li>
                                         <li><a style="cursor: pointer" onclick="printPernyataan('SK04')"><i class="fa fa-print"></i>Surat Keterangan Lahir</a></li>
                                         <li><a style="cursor: pointer" onclick="printPernyataan('SP08')"><i class="fa fa-print"></i>Surat Pernyataan Rujuk RSDS</a></li>
                                     </ul>
@@ -640,11 +655,12 @@
                         <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
                                 onclick="showModal(1)"><i class="fa fa-plus"></i> Tambah Dokter
                         </button>
-                        <table class="table table-bordered table-striped">
+                        <table class="table table-bordered table-striped" id="tbl_dokter">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>ID Dokter</td>
                                 <td>Nama</td>
+                                <td>Nama Pelayanan</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -1148,6 +1164,24 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Dokter</label>
+                        <div class="col-md-7">
+                            <select class="form-control select2" style="margin-top: 7px; width: 100%"
+                                    id="tin_id_dokter_dpjp"
+                                    onchange="listSelectTindakanKategori(this.value); var warn =$('#war_dpjp').is(':visible'); if (warn){$('#cor_dpjp').show().fadeOut(3000);$('#war_dpjp').hide()}">
+                                <option value=''>[Select One]</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_dpjp"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_dpjp"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Kategori Tindakan</label>
                         <div class="col-md-7">
                                 <select class="form-control select2" style="margin-top: 7px; width: 100%"
@@ -1162,7 +1196,6 @@
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_kategori"><i class="fa fa-check"></i> correct</p>
                         </div>
-
                     </div>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Tindakan</label>
@@ -1249,8 +1282,8 @@
                                     id="nosa_jenis_diagnosa"
                                     onchange="var warn =$('#war_jenis_diagnosa').is(':visible'); if (warn){$('#cor_jenis_diagnosa').show().fadeOut(3000);$('#war_jenis_diagnosa').hide()}">
                                 <option value="">[select one]</option>
-                                <option value="0">Diagnosa Awal</option>
-                                <option value="1">Diagnosa Akhir</option>
+                                <option value="diagnosa_awal">Diagnosa Awal</option>
+                                <option value="diagnosa_akhir">Diagnosa Akhir</option>
                             </select>
                         </div>
                         <div class="col-md-2">
@@ -3475,13 +3508,13 @@
         listDokter();
         listTindakan();
         listDiagnosa();
-        listSelectDokter();
+        // listSelectDokter();
         listLab();
         listObat();
         listDiet();
         listRuanganInap();
         listResepPasien();
-        listSelectTindakanKategori();
+        // listSelectTindakanKategori();
         hitungStatusBiaya();
         hitungCoverBiaya();
         getJenisResep();

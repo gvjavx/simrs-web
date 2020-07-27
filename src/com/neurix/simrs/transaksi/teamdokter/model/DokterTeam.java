@@ -20,6 +20,25 @@ public class DokterTeam extends BaseModel {
     private String namaDokter;
     private String namaSpesialis;
 
+    private String idPelayanan;
+    private String namaPelayanan;
+
+    public String getNamaPelayanan() {
+        return namaPelayanan;
+    }
+
+    public void setNamaPelayanan(String namaPelayanan) {
+        this.namaPelayanan = namaPelayanan;
+    }
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
+
     public String getNamaSpesialis() {
         return namaSpesialis;
     }

@@ -1,9 +1,13 @@
-function showModalSPS(jenis) {
+function showModalSPS(jenis, idRM, isSetIdRM) {
+    if(isSetIdRM == "Y"){
+        tempidRm = idRM;
+    }
     if (isReadRM) {
         $('.btn-hide').hide();
     } else {
         $('.btn-hide').show();
     }
+
     setDataPasien();
 
     if("pemeriksaan_bedah" == jenis || "pemeriksaan_onkologi" == jenis){
@@ -51,6 +55,14 @@ function showModalSPS(jenis) {
 function saveSPS(jenis, ket) {
     var data = [];
     var cek = false;
+    var dataPasien = "";
+
+    dataPasien = {
+        'no_checkup' : noCheckup,
+        'id_detail_checkup' : idDetailCheckup,
+        'id_pasien' : idPasien,
+        'id_rm' : tempidRm
+    }
 
     if ("keadaan_umum_tht" == jenis) {
         var va1 = $('#kut1').val();
@@ -2216,13 +2228,14 @@ function saveSPS(jenis, ket) {
         }
     }
 
-
     if (cek) {
         var result = JSON.stringify(data);
+        var pasienData = JSON.stringify(dataPasien);
+
         $('#save_sps_' + jenis).hide();
         $('#load_sps_' + jenis).show();
         dwr.engine.setAsync(true);
-        AsesmenSpesialisAction.save(result, {
+        AsesmenSpesialisAction.save(result, pasienData, {
             callback: function (res) {
                 if (res.status == "success") {
                     $('#save_sps_' + jenis).show();
@@ -2231,6 +2244,8 @@ function saveSPS(jenis, ket) {
                     $('#warning_sps_' + ket).show().fadeOut(5000);
                     $('#msg_sps_' + ket).text("Berhasil menambahkan data...");
                     $('#modal-sps-' + jenis).scrollTop(0);
+                    getListRekamMedis('rawat_jalan', tipePelayanan, idDetailCheckup);
+
                 } else {
                     $('#save_sps_' + jenis).show();
                     $('#load_sps_' + jenis).hide();

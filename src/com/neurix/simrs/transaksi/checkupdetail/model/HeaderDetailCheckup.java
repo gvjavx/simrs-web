@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.checkupdetail.model;
 
 import com.neurix.common.model.BaseModel;
+import com.neurix.simrs.master.rekammedis.model.RekamMedisPasien;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
 
 import java.io.Serializable;
@@ -162,6 +163,44 @@ public class HeaderDetailCheckup extends BaseModel{
     private String asesmenLabel;
     private String kategoriPelayanan;
     private String pemeriksaanTerakhir;
+
+    private String idPelayananDokter;
+    private String noCheckupUlang;
+    private String isOrderLab;
+
+    public String getIsOrderLab() {
+        return isOrderLab;
+    }
+
+    public void setIsOrderLab(String isOrderLab) {
+        this.isOrderLab = isOrderLab;
+    }
+
+    public String getNoCheckupUlang() {
+        return noCheckupUlang;
+    }
+
+    public void setNoCheckupUlang(String noCheckupUlang) {
+        this.noCheckupUlang = noCheckupUlang;
+    }
+
+    public String getIdPelayananDokter() {
+        return idPelayananDokter;
+    }
+
+    public void setIdPelayananDokter(String idPelayananDokter) {
+        this.idPelayananDokter = idPelayananDokter;
+    }
+
+    private List<RekamMedisPasien> listRekamMedis;
+
+    public List<RekamMedisPasien> getListRekamMedis() {
+        return listRekamMedis;
+    }
+
+    public void setListRekamMedis(List<RekamMedisPasien> listRekamMedis) {
+        this.listRekamMedis = listRekamMedis;
+    }
 
     public String getPemeriksaanTerakhir() {
         return pemeriksaanTerakhir;

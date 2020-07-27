@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="com.neurix.simrs.master.rekammedis.model.ImSimrsRekamMedisPasienEntity">
+        <table name="im_simrs_rekam_medis_pasien" schema="public"/>
+        <attributes>
+            <id name="idRekamMedisPasien">
+                <column name="id_rekam_medis_pasien"/>
+            </id>
+            <basic name="kodeRm">
+                <column name="kode_rm"/>
+            </basic>
+            <basic name="namaRm">
+                <column name="nama_rm"/>
+            </basic>
+            <basic name="keterangan">
+                <column name="keterangan"/>
+            </basic>
+            <basic name="jenis">
+                <column name="jenis"/>
+            </basic>
+            <basic name="flag">
+                <column name="flag"/>
+            </basic>
+            <basic name="action">
+                <column name="action"/>
+            </basic>
+            <basic name="createdWho">
+                <column name="created_who"/>
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date"/>
+            </basic>
+            <basic name="lastUpdate">
+                <column name="last_update"/>
+            </basic>
+            <basic name="lastUpdateWho">
+                <column name="last_update_who"/>
+            </basic>
+            <basic name="function">
+                <column name="function"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

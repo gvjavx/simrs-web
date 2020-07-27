@@ -29,7 +29,7 @@
                             <li><a onclick="showModalICU('nyeri')" style="cursor: pointer"><i class="fa fa-plus"></i> Skala Nyeri</a></li>
                             <li><a onclick="showModalICU('gcs')" style="cursor: pointer"><i class="fa fa-plus"></i> Glasgow Coma Scale</a></li>
                             <li><a onclick="showModalICU('checklist_kriteria')" style="cursor: pointer"><i class="fa fa-plus"></i> Check List Kriteria Pasien</a></li>
-                            <li><a onclick="showModalICU('pengkajian_medik')" style="cursor: pointer"><i class="fa fa-plus"></i> Pengkajian Medik</a></li>
+                            <li><a onclick="showModalICU('pengkajian_medik')" style="cursor: pointer"><i class="fa fa-plus"></i> Pengkajian Medis</a></li>
                             <li><a onclick="showModalICU('pengkajian_keperawatan')" style="cursor: pointer"><i class="fa fa-plus"></i> Pengkajian Keperawatan</a></li>
                             <li><a onclick="showModalICU('catatan_integrasi_pasien')" style="cursor: pointer"><i class="fa fa-plus"></i> Catatan Perkembangan Pasien</a></li>
                             <li><a onclick="showModalICU('terminal')" style="cursor: pointer"><i class="fa fa-plus"></i> Asesmen Tahap Terminal</a></li>
@@ -82,7 +82,7 @@
                             </td>
                         </tr>
                         <tr id="row_icu_pengkajian_medik">
-                            <td>Pengkajian Pasien Tahap Akhir Kehidupan (Pengkajian Medik)</td>
+                            <td>Pengkajian Pasien Tahap Akhir Kehidupan (Pengkajian Medis)</td>
                             <td width="20%" align="center">
                                 <img id="btn_icu_pengkajian_medik" class="hvr-grow" onclick="detailICU('pengkajian_medik')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
@@ -792,7 +792,7 @@
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Pengakajian Medik
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Pengakajian Medis
                 </h4>
             </div>
             <div class="modal-body">
@@ -803,7 +803,7 @@
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-3">Tanggal</label>
+                            <label class="col-md-3">Tanggal Pengkajian</label>
                             <div class="col-md-4">
                                 <div class="input-group">
                                     <div class="input-group-addon">

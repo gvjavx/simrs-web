@@ -1,95 +1,12 @@
-CREATE TABLE public.it_simrs_asesmen_icu
-(
-  id_asesmen_icu character varying(30) NOT NULL,
-  id_detail_checkup character varying(30),
-  parameter text,
-  jawaban text,
-  jenis text,
-  keterangan text,
-  tipe text,
-  score integer,
-  flag character varying(1),
-  action character varying(1),
-  created_who character varying(100),
-  created_date timestamp without time zone,
-  last_update timestamp without time zone,
-  last_update_who character varying(100),
-  informasi text,
-  CONSTRAINT pk_id_asesmen_icu PRIMARY KEY (id_asesmen_icu)
-)
-WITH (
-  OIDS=FALSE
-);
-ALTER TABLE public.it_simrs_asesmen_icu
-  OWNER TO postgres;
-
--- 29-05-2020
--- ALTER TABLE
-ALTER TABLE it_simrs_periksa_lab
-ADD COLUMN ttd_dokter character varying(100),
-ADD COLUMN ttd_petugas character varying(100);
-
-ALTER TABLE it_simrs_header_checkup
-ADD COLUMN anamnese text;
-
--- 01-06-2020
-CREATE TABLE public.im_simrs_diagnosa_asuhan_keperawatan
-(
-  id_diagnosa_asuhan_keperawatan character varying(30) NOT NULL,
-  diagnosa text,
-  flag character varying(1),
-  action character varying(1),
-  created_date timestamp without time zone,
-  created_who character varying(100),
-  last_update timestamp without time zone,
-  last_update_who character varying(100),
-  CONSTRAINT pk_id_diagnosa_asuhan_keperawatan PRIMARY KEY (id_diagnosa_asuhan_keperawatan)
-)
-WITH (
-  OIDS=FALSE
-);
-ALTER TABLE public.im_simrs_diagnosa_asuhan_keperawatan
-  OWNER TO postgres;
-
-CREATE TABLE public.im_simrs_detail_asuhan_keperawatan
-(
-  id_detail_asuhan_keperawatan character varying(30) NOT NULL,
-  id_diagnosa_asuhan_keperawatan character varying(30),
-  diagnosis text,
-  keterangan_diagnosis character varying(100),
-  hasil text,
-  keterangan_hasil character varying(100),
-  intervensi text,
-  keterangan_intervensi character varying(100),
-  implementasi text,
-  keterangan_implementasi character varying(100),
-  evaluasi text,
-  keterangan_evaluasi character varying(100),
-  flag character varying(1),
-  action character varying(1),
-  created_date timestamp without time zone,
-  created_who character varying(100),
-  last_update timestamp without time zone,
-  last_update_who character varying(100),
-  CONSTRAINT pk_id_detail_asuhan_keperawatan PRIMARY KEY (id_detail_asuhan_keperawatan)
-)
-WITH (
-  OIDS=FALSE
-);
-ALTER TABLE public.im_simrs_detail_asuhan_keperawatan
-  OWNER TO postgres;
-
-
 ALTER TABLE it_simrs_hemodialisa
 ADD COLUMN is_ttd character varying(1);
 
-
-CREATE TABLE public.it_simrs_asesmen_poli_spesialis
+-- 14-07-2020
+CREATE TABLE public.im_simrs_rekam_medis_pasien
 (
-  id_asesmen_poli_spesialis character varying(30) NOT NULL,
-  id_detail_checkup character varying(30),
-  parameter text,
-  jawaban text,
+  id_rekam_medis_pasien character varying(30) NOT NULL,
+  kode_rm character varying(100),
+  nama_rm text,
   keterangan character varying(1000),
   jenis character varying(1000),
   flag character varying(1),
@@ -98,416 +15,111 @@ CREATE TABLE public.it_simrs_asesmen_poli_spesialis
   created_date timestamp without time zone,
   last_update timestamp without time zone,
   last_update_who character varying(100),
-  tipe character varying(100),
-  CONSTRAINT pk_id_asesmen_poli_spesialis PRIMARY KEY (id_asesmen_poli_spesialis)
+  CONSTRAINT pk_id_rekam_medis_pasien PRIMARY KEY (id_rekam_medis_pasien)
 )
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE public.it_simrs_asesmen_poli_spesialis
+ALTER TABLE public.im_simrs_rekam_medis_pasien
   OWNER TO postgres;
 
-CREATE SEQUENCE public.seq_asesmen_spesialis
+CREATE TABLE public.im_simrs_rekam_medis_pelayanan
+(
+  id_rekam_medis_pelayanan character varying(30) NOT NULL,
+  id_rekam_medis_pasien character varying(30),
+  tipe_pelayanan character varying(1000),
+  urutan character varying(1000),
+  flag character varying(1),
+  action character varying(1),
+  created_who character varying(100),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  CONSTRAINT pk_id_rekam_medis_pelayanan PRIMARY KEY (id_rekam_medis_pelayanan)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.im_simrs_rekam_medis_pelayanan
+  OWNER TO postgres;
+
+-- 16-07-2020
+CREATE TABLE public.it_simrs_status_pengisian_rekam_medis
+(
+  id_status_pengisian_rekam_medis character varying(30) NOT NULL,
+  no_checkup character varying(30),
+  id_detail_checkup character varying(30),
+  id_pasien character varying(30),
+  id_rekam_medis_pasien character varying(100),
+  is_pengisian character varying(1),
+  flag character varying(1),
+  action character varying(1),
+  created_who character varying(100),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  CONSTRAINT pk_id_status_pengisian_rekam_medis PRIMARY KEY (id_status_pengisian_rekam_medis)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_status_pengisian_rekam_medis
+  OWNER TO postgres;
+
+
+CREATE SEQUENCE public.seq_status_pengisiain_rm
   INCREMENT 1
   MINVALUE 1
   MAXVALUE 9223372036854775807
   START 1
   CACHE 1;
-ALTER TABLE public.seq_asesmen_spesialis
+ALTER TABLE public.seq_status_pengisiain_rm
   OWNER TO postgres;
 
-ALTER TABLE im_simrs_pelayanan
-ADD COLUMN kategori_pelayanan character varying(100);
+-- 17-07-2020
+ALTER TABLE it_simrs_dokter_team
+ADD COLUMN id_pelayanan character varying(100);
 
-CREATE TABLE public.im_simrs_icd9
+-- 20-07-2020
+ALTER TABLE it_simrs_periksa_lab
+ADD COLUMN keterangan character varying(100);
+
+CREATE TABLE public.it_simrs_order_periksa_lab
 (
-  id_icd9 character varying(30) NOT NULL,
-  nama_icd9 character varying(1000),
-  flag character varying(1),
-  action character varying(1),
-  created_date timestamp without time zone,
-  created_who character varying(100),
-  last_update timestamp without time zone,
-  last_update_who character varying(100),
-  CONSTRAINT pk_im_simrs_icd9 PRIMARY KEY (id_icd9)
-)
-WITH (
-  OIDS=FALSE
-);
-ALTER TABLE public.im_simrs_icd9
-  OWNER TO postgres;
-
-
-CREATE TABLE public.it_simrs_tindakan_rawat_icd9
-(
-  id_tindakan_rawat_icd9 character varying(30) NOT NULL,
-  id_icd9 character varying(30),
-  nama_icd9 text,
+  id_order_periksa character varying(30) NOT NULL,
   id_detail_checkup character varying(30),
+  id_lab character varying(30),
+  id_lab_detail character varying(30),
+  is_pemeriksaan character varying(1),
   flag character varying(1),
   action character varying(1),
   created_date timestamp without time zone,
   created_who character varying(100),
   last_update timestamp without time zone,
   last_update_who character varying(100),
-  CONSTRAINT pk_it_simrs_tindakan_rawat_icd9 PRIMARY KEY (id_tindakan_rawat_icd9)
+  keterangan character varying(100),
+  CONSTRAINT pk_id_order_periksa PRIMARY KEY (id_order_periksa)
 )
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE public.it_simrs_tindakan_rawat_icd9
+ALTER TABLE public.it_simrs_order_periksa_lab
   OWNER TO postgres;
 
--- SEQ
-CREATE SEQUENCE public.seq_tindakan_rawat_icd9
-  INCREMENT 1
-  MINVALUE 1
-  MAXVALUE 9223372036854775807
-  START 1
-  CACHE 1;
-ALTER TABLE public.seq_tindakan_rawat_icd9
-  OWNER TO postgres;
+CREATE SEQUENCE seq_order_periksa_lab;
 
-ALTER TABLE public.it_simrs_asesmen_ugd ADD tipe varchar(1000);
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN no_checkup_ulang character varying(100);
 
-CREATE TABLE public.it_simrs_edukasi_pasien_teritegrasi
-(
-  id_edukasi_pasien_teritegrasi character varying(30) NOT NULL,
-  id_detail_checkup character varying(30),
-  durasi character varying(100),
-  edukator character varying(100),
-  edukasi text,
-  pemahaman_awal text,
-  metode_edukasi character varying(100),
-  media_edukasi character varying(100),
-  evaluasi character varying(100),
-  ttd_pasien character varying(100),
-  ttd_staf character varying(100),
-  keterangan character varying(1000),
-  tipe character varying(100),
-  flag character varying(1),
-  action character varying(1),
-  created_who character varying(100),
-  created_date timestamp without time zone,
-  last_update timestamp without time zone,
-  last_update_who character varying(100),
-  CONSTRAINT pk_id_edukasi_pasien_teritegrasi PRIMARY KEY (id_edukasi_pasien_teritegrasi)
-)
-WITH (
-  OIDS=FALSE
-);
-ALTER TABLE public.it_simrs_edukasi_pasien_teritegrasi
-  OWNER TO postgres;
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN is_order_lab character varying(100);
+
+ALTER TABLE it_simrs_checkup_alergi
+ADD COLUMN jenis character varying(100),
+ADD COLUMN id_pasien character varying(100);
+
+ALTER TABLE it_simrs_diagnosa_rawat
+ALTER COLUMN jenis_diagnosa TYPE character varying(100);
 
 
-CREATE SEQUENCE public.seq_edukasi_pasien
-  INCREMENT 1
-  MINVALUE 1
-  MAXVALUE 9223372036854775807
-  START 1
-  CACHE 1;
-ALTER TABLE public.seq_edukasi_pasien
-  OWNER TO postgres;
-
-
-ALTER TABLE public.it_simrs_rencana_asuhan_keperawatan
-ADD implementasi text,
-ADD evaluasi text;
-
-ALTER TABLE public.it_simrs_rencana_asuhan_keperawatan
-ALTER COLUMN waktu TYPE varchar(100) USING waktu::varchar(100);
-
-ALTER TABLE public.it_simrs_rencana_asuhan_keperawatan RENAME COLUMN tujuan TO hasil;
-
-CREATE TABLE public.it_simrs_asesmen_icu
-(
-  id_asesmen_icu character varying(30) NOT NULL,
-  id_detail_checkup character varying(30),
-  parameter text,
-  jawaban text,
-  jenis text,
-  keterangan text,
-  tipe text,
-  score Integer,
-  flag character varying(1),
-  action character varying(1),
-  created_who character varying(100),
-  created_date timestamp without time zone,
-  last_update timestamp without time zone,
-  last_update_who character varying(100),
-  CONSTRAINT pk_id_asesmen_icu PRIMARY KEY (id_asesmen_icu)
-)
-WITH (
-  OIDS=FALSE
-);
-ALTER TABLE public.it_simrs_asesmen_icu
-  OWNER TO postgres;
-
-
- CREATE SEQUENCE public.seq_asesmen_icu
-   INCREMENT 1
-   MINVALUE 1
-   MAXVALUE 9223372036854775807
-   START 1
-   CACHE 1;
- ALTER TABLE public.seq_asesmen_icu
-   OWNER TO postgres;
-
-CREATE TABLE public.it_simrs_hemodinamika
-(
-  id_hemodinamika character varying(30) NOT NULL,
-  id_detail_checkup character varying(30),
-  waktu character varying(100),
-  tanggal date,
-  tensi Integer,
-  bp Integer,
-  hi Integer,
-  rr Integer,
-  ekg Integer,
-  icp Integer,
-  ibp Integer,
-  cvp Integer,
-  map Integer,
-  keterangan text,
-  flag character varying(1),
-  action character varying(1),
-  created_who character varying(100),
-  created_date timestamp without time zone,
-  last_update timestamp without time zone,
-  last_update_who character varying(100),
-  CONSTRAINT pk_id_hemodinamika PRIMARY KEY (id_hemodinamika)
-)
-WITH (
-  OIDS=FALSE
-);
-ALTER TABLE public.it_simrs_hemodinamika
-  OWNER TO postgres;
-
- CREATE SEQUENCE public.seq_hemodinamika
-   INCREMENT 1
-   MINVALUE 1
-   MAXVALUE 9223372036854775807
-   START 1
-   CACHE 1;
- ALTER TABLE public.seq_hemodinamika
-   OWNER TO postgres;
-
- CREATE TABLE public.it_simrs_respirasi
- (
-   id_respirasi character varying(30) NOT NULL,
-   id_detail_checkup character varying(30),
-   waktu character varying(100),
-   tanggal date,
-   gcs character varying(100),
-   diameter_pupil character varying(100),
-   reflek_cahaya character varying(100),
-   tk character varying(100),
-   kk character varying(100),
-   jenis_nk_rm_nrm character varying(100),
-   nk_rm_nrm character varying(100),
-   jenis_t_piece_j_rise character varying(100),
-   t_piece_j_rise character varying(100),
-   tipe_ventilasi character varying(100),
-   jenis_peep_cpap_et character varying(100),
-   peep_cpap_et character varying(100),
-   frekwensi character varying(100),
-   tv character varying(100),
-   mv character varying(100),
-   jenis_p_support_p_asb character varying(100),
-   p_support_p_asb character varying(100),
-   jenis_p_ins_p_con character varying(100),
-   p_ins_p_con character varying(100),
-   triger character varying(100),
-   ins_time character varying(100),
-   flow character varying(100),
-   jenis_fio_kon character varying(100),
-   fio_kon character varying(100),
-   jenis_ukuran_kedalamaan_ett character varying(100),
-   ukuran_kedalamaan_ett character varying(100),
-   spo character varying(100),
-   secret character varying(100),
-   keterangan character varying(100),
-   flag character varying(1),
-   action character varying(1),
-   created_who character varying(100),
-   created_date timestamp without time zone,
-   last_update timestamp without time zone,
-   last_update_who character varying(100),
-   CONSTRAINT pk_id_respirasi PRIMARY KEY (id_respirasi)
- )
- WITH (
-   OIDS=FALSE
- );
- ALTER TABLE public.it_simrs_respirasi
-   OWNER TO postgres;
-
-
-    CREATE SEQUENCE public.seq_respirasi
-      INCREMENT 1
-      MINVALUE 1
-      MAXVALUE 9223372036854775807
-      START 1
-      CACHE 1;
-    ALTER TABLE public.seq_respirasi
-      OWNER TO postgres;
-
-CREATE TABLE public.it_simrs_header_icu
-(
-  id_header_icu character varying(30) NOT NULL,
-  id_detail_checkup character varying(30),
-  jenis character varying(1000),
-  kategori character varying(1000),
-  flag character varying(1),
-  action character varying(1),
-  created_who character varying(100),
-  created_date timestamp without time zone,
-  last_update timestamp without time zone,
-  last_update_who character varying(100),
-  CONSTRAINT pk_id_header_icu PRIMARY KEY (id_header_icu)
-)
-WITH (
-  OIDS=FALSE
-);
-ALTER TABLE public.it_simrs_header_icu
-  OWNER TO postgres;
-
-
-CREATE TABLE public.it_simrs_detail_icu
-(
-  id_detail_icu character varying(30) NOT NULL,
-  id_header_icu character varying(30),
-  nilai character varying(1000),
-  waktu character varying(100),
-  flag character varying(1),
-  action character varying(1),
-  created_who character varying(100),
-  created_date timestamp without time zone,
-  last_update timestamp without time zone,
-  last_update_who character varying(100),
-  CONSTRAINT pk_id_detail_icu PRIMARY KEY (id_detail_icu)
-)
-WITH (
-  OIDS=FALSE
-);
-ALTER TABLE public.it_simrs_detail_icu
-  OWNER TO postgres;
-
-CREATE SEQUENCE public.seq_header_icu
-  INCREMENT 1
-  MINVALUE 1
-  MAXVALUE 9223372036854775807
-  START 1
-  CACHE 1;
-ALTER TABLE public.seq_header_icu
-  OWNER TO postgres;
-
-CREATE SEQUENCE public.seq_detail_icu
-  INCREMENT 1
-  MINVALUE 1
-  MAXVALUE 9223372036854775807
-  START 1
-  CACHE 1;
-ALTER TABLE public.seq_detail_icu
-  OWNER TO postgres;
-
-ALTER TABLE im_simrs_diagnosa_asuhan_keperawatan
-ADD COLUMN tipe character varying(100);
-
-
-CREATE TABLE public.it_simrs_asesmen_kandungan
-(
-  id_asesmen_kandungan character varying(30) NOT NULL,
-  id_detail_checkup character varying(30),
-  parameter text,
-  jawaban text,
-  jenis text,
-  keterangan text,
-  tipe text,
-  score Integer,
-  flag character varying(1),
-  action character varying(1),
-  created_who character varying(100),
-  created_date timestamp without time zone,
-  last_update timestamp without time zone,
-  last_update_who character varying(100),
-  CONSTRAINT pk_id_asesmen_kandungan PRIMARY KEY (id_asesmen_kandungan)
-)
-WITH (
-  OIDS=FALSE
-);
-ALTER TABLE public.it_simrs_asesmen_kandungan
-  OWNER TO postgres;
-
-CREATE SEQUENCE public.seq_asesmen_kandungan
-  INCREMENT 1
-  MINVALUE 1
-  MAXVALUE 9223372036854775807
-  START 1
-  CACHE 1;
-ALTER TABLE public.seq_asesmen_kandungan
-  OWNER TO postgres;
-
-ALTER TABLE it_simrs_asesmen_kandungan
-ADD COLUMN informasi text;
-
-ALTER TABLE it_simrs_asesmen_icu
-ADD COLUMN informasi text;
-
-ALTER TABLE it_simrs_asesmen_keperawatan_rawat_inap
-ADD COLUMN informasi text,
-ADD COLUMN tipe character varying(100);
-
--- 01-06-2020 END
-
--- 06-07-2020 START
-ALTER TABLE it_simrs_asesmen_operasi
-ADD COLUMN tipe character varying(100);
-
--- 10-07-2020
-ALTER TABLE it_simrs_header_checkup
-ADD COLUMN tensi character varying(100),
-ADD COLUMN suhu character varying(100),
-ADD COLUMN nadi character varying(100),
-ADD COLUMN rr character varying(100);
-
--- 13-07-2020
-CREATE TABLE public.it_simrs_monitoring_anestesi
-(
-  id_monitoring_anestesi character varying(30) NOT NULL,
-  id_detail_checkup character varying(30),
-  waktu character varying(100),
-  rr character varying(100),
-  nadi character varying(100),
-  tensi character varying(100),
-  anest character varying(100),
-  o2 character varying(100),
-  n2o character varying(100),
-  ethran character varying(100),
-  iso character varying(100),
-  sevo character varying(100),
-  infus character varying(100),
-  keterangan character varying(1000),
-  jenis character varying(1000),
-  flag character varying(1),
-  action character varying(1),
-  created_who character varying(100),
-  created_date timestamp without time zone,
-  last_update timestamp without time zone,
-  last_update_who character varying(100),
-  CONSTRAINT pk_id_monitoring_anestesi PRIMARY KEY (id_monitoring_anestesi)
-)
-WITH (
-  OIDS=FALSE
-);
-ALTER TABLE public.it_simrs_monitoring_anestesi
-  OWNER TO postgres;
-
-CREATE SEQUENCE public.seq_monitoring_anestesi
-  INCREMENT 1
-  MINVALUE 1
-  MAXVALUE 9223372036854775807
-  START 1
-  CACHE 1;
-ALTER TABLE public.seq_monitoring_anestesi
-  OWNER TO postgres;
 

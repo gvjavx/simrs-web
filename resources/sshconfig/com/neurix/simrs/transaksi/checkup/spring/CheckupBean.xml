@@ -80,6 +80,7 @@
           p:paketPasienDao-ref="paketPasienDao"
           p:itemPaketDao-ref="itemPaketDao"
           p:labDetailDao-ref="labDetailDao"
+          p:orderPeriksaLabDao-ref="orderPeriksaLabDao"
 
     />
 

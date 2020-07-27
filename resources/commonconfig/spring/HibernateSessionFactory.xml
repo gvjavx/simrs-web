@@ -503,6 +503,10 @@
                 <value>sshconfig/com/neurix/hris/master/golonganPkwt/hibernate/ImGolonganPkwtHistoryEntity.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/simrs/transaksi/asesmenoperasi/hibernate/ItSimrsMonitoringAnestesiEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/rekammedis/hibernate/ImSimrsRekamMedisPasienEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/rekammedis/hibernate/ImSimrsRekamMedisPelayananEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/rekakmedik/hibernate/ItSimrsStatusPengisianRekamMedisEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/periksalab/hibernate/ItSimrsOrderPeriksaLabEntity.hbm.xml</value>
             </list>
         </property>
     </bean>

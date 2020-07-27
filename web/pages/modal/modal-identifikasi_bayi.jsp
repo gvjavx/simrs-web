@@ -201,7 +201,7 @@
                                 </button>
                             </div>
                             <div class="col-md-6">
-                                <label style="margin-left: 8px">TTD Dokter/Bidan</label>
+                                <label style="margin-left: 8px">TTD Dokter DPJP</label>
                                 <canvas class="paint-canvas-ttd" id="ttd2" width="220"
                                         onmouseover="paintTtd('ttd2')"></canvas>
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
@@ -215,7 +215,7 @@
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-6">
-                                <label style="margin-left: 8px">TTD Kamar Bersalin</label>
+                                <label style="margin-left: 8px">TTD Bidan Kamar Bersalin</label>
                                 <canvas class="paint-canvas-ttd" id="ttd3" width="220"
                                         onmouseover="paintTtd('ttd3')"></canvas>
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
@@ -224,7 +224,7 @@
                                 </button>
                             </div>
                             <div class="col-md-6">
-                                <label style="margin-left: 8px">TTD Perawatan Ruang Bayi</label>
+                                <label style="margin-left: 8px">TTD Perawat Ruang Bayi</label>
                                 <canvas class="paint-canvas-ttd" id="ttd4" width="220"
                                         onmouseover="paintTtd('ttd4')"></canvas>
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"

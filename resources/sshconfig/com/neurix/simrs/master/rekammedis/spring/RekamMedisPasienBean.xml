@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="rekamMedisPasienBo" class="com.neurix.simrs.master.rekammedis.bo.impl.RekamMedisPasienBoImpl"
+          p:rekamMedisPasienDao-ref="rekamMedisPasienDao"
+    />
+
+    <bean id="rekamMedisPasienBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="rekamMedisPasienBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionPelayananInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionPelayananInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getListAllPelayanan">readOnly</prop>
+                <!--<prop key="saveAdd">PROPAGATION_REQUIRED</prop>-->
+            </props>
+        </property>
+    </bean>
+
+    <bean id="rekamMedisPasienDao" class="com.neurix.simrs.master.rekammedis.dao.RekamMedisPasienDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <bean id="rekamMedisPelayananDao" class="com.neurix.simrs.master.rekammedis.dao.RekamMedisPelayananDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+</beans>
