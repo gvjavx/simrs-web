@@ -1242,27 +1242,35 @@ public class TelemedicBoImpl implements TelemedicBo {
     }
 
     @Override
-    public List<AntrianTelemedic> getHistoryByIdPasien(String idPasien) throws GeneralBOException {
+    public List<AntrianTelemedic> getHistoryByIdPasien(String idPasien, String flagEresep) throws GeneralBOException {
         logger.info("[TelemedicBoImpl.getHistoryByIdPasien] START <<<");
         List<AntrianTelemedic> listAntrianTelemedic = new ArrayList<>();
 
-        try {
-            listAntrianTelemedic = telemedicDao.getHistoryByIdPasien(idPasien);
-        } catch (GeneralBOException e) {
-            logger.error("[TelemedicBoImpl.getHistoryByIdPasien] ERROR. ", e);
-            throw new GeneralBOException("[TelemedicBoImpl.getHistoryByIdPasien] ERROR. ", e);
-        }
+        if  (flagEresep == null || !flagEresep.equalsIgnoreCase("Y")) {
+            try {
+                listAntrianTelemedic = telemedicDao.getHistoryByIdPasien(idPasien);
+            } catch (GeneralBOException e) {
+                logger.error("[TelemedicBoImpl.getHistoryByIdPasien] ERROR. ", e);
+                throw new GeneralBOException("[TelemedicBoImpl.getHistoryByIdPasien] ERROR. ", e);
+            }
 
-        for (AntrianTelemedic item : listAntrianTelemedic){
-            BatalTelemedic batalTelemedic = getBatalTemedicByIdAntrian(item.getId(), item.getIdDokter(), item.getIdPelayanan(), item.getCreatedDate());
-            if (batalTelemedic != null){
-                item.setFlagBatalDokter("Y");
-                item.setIdBatalDokterTelemedic(batalTelemedic.getIdDokterBatal());
-                ItSimrsDokterBatalTelemedicEntity dokterBatalTelemedicEntity = batalDokterTelemedicDao.getById("id",batalTelemedic.getIdDokterBatal());
-                item.setAlasan(dokterBatalTelemedicEntity.getAlasan());
+            for (AntrianTelemedic item : listAntrianTelemedic){
+                BatalTelemedic batalTelemedic = getBatalTemedicByIdAntrian(item.getId(), item.getIdDokter(), item.getIdPelayanan(), item.getCreatedDate());
+                if (batalTelemedic != null){
+                    item.setFlagBatalDokter("Y");
+                    item.setIdBatalDokterTelemedic(batalTelemedic.getIdDokterBatal());
+                    ItSimrsDokterBatalTelemedicEntity dokterBatalTelemedicEntity = batalDokterTelemedicDao.getById("id",batalTelemedic.getIdDokterBatal());
+                    item.setAlasan(dokterBatalTelemedicEntity.getAlasan());
+                }
+            }
+        } else {
+            try {
+                listAntrianTelemedic = telemedicDao.getHistoryEobatByIdPasien(idPasien);
+            } catch (GeneralBOException e) {
+                logger.error("[TelemedicBoImpl.getHistoryByIdPasien] ERROR. ", e);
+                throw new GeneralBOException("[TelemedicBoImpl.getHistoryByIdPasien] ERROR. ", e);
             }
         }
-
 
         logger.info("[TelemedicBoImpl.getHistoryByIdPasien] END <<<");
         return listAntrianTelemedic;

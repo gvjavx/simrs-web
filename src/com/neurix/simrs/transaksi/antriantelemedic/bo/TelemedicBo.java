@@ -33,7 +33,7 @@ public interface TelemedicBo {
     public void saveEditPengirimanObat(PengirimanObat bean) throws GeneralBOException;
     public BigDecimal insertResepOnline(String idTransaksiOnline, List<TransaksiObatDetail> listObat) throws GeneralBOException;
     public void createPembayaranResep(AntrianTelemedic bean, List<TransaksiObatDetail> listObat) throws GeneralBOException;
-    public List<AntrianTelemedic> getHistoryByIdPasien(String idPasien) throws GeneralBOException;
+    public List<AntrianTelemedic> getHistoryByIdPasien(String idPasien, String flagEresep) throws GeneralBOException;
 
     public void createStrukAsuransi(ItSimrsAntrianTelemedicEntity bean, String jenis) throws GeneralBOException;
     public List<ItSimrsStrukAsuransiEntity> getStrukAsuransi(StrukAsuransi bean) throws GeneralBOException;

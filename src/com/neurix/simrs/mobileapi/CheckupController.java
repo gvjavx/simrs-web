@@ -136,6 +136,25 @@ public class CheckupController implements ModelDriven<Object> {
     private String jenisResep;
     private String idJenisObat;
 
+    private String idTindakan;
+    private String keterangan;
+
+    public String getIdTindakan() {
+        return idTindakan;
+    }
+
+    public void setIdTindakan(String idTindakan) {
+        this.idTindakan = idTindakan;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
     public String getIdJenisObat() {
         return idJenisObat;
     }
@@ -533,6 +552,10 @@ public class CheckupController implements ModelDriven<Object> {
                 return crudResponse;
             case "getDokterByIdPelayanan":
                 return listOfDokter;
+            case "getHistoryPasien":
+                return listOfHeaderCheckup;
+            case "getDetailHistoryPasien":
+                return listOfHeaderCheckup;
             default:
                 return model;
         }
@@ -934,6 +957,55 @@ public class CheckupController implements ModelDriven<Object> {
                     obatPoliMobile.setIdJenisObat(item.getIdJenisObat());
 
                     listOfObatPoli.add(obatPoliMobile);
+                }
+            }
+        } else if(action.equalsIgnoreCase("getHistoryPasien")) {
+            List<HeaderCheckup> result = new ArrayList<>();
+
+            try {
+               result = checkupBoProxy.getHistoryPasien(idPasien, branchId);
+            } catch (GeneralBOException e) {
+                logger.error("[CheckupController.create] Error, " + e.getMessage());
+            }
+
+            if (result.size() > 0) {
+                for (HeaderCheckup item : result){
+                    HeaderDetailCheckupMobile headerCheckupMobile = new HeaderDetailCheckupMobile();
+                    headerCheckupMobile.setIdRiwayatTindakan(item.getIdRiwayatTindakan());
+                    headerCheckupMobile.setNoCheckup(item.getNoCheckup());
+                    headerCheckupMobile.setIdDetailCheckup(item.getIdDetailCheckup());
+                    headerCheckupMobile.setNamaPelayanan(item.getNamaPelayanan());
+                    headerCheckupMobile.setKeteranganKeluar(item.getKeteranganKeluar());
+                    headerCheckupMobile.setTglTindakan(item.getTglTindakan());
+                    headerCheckupMobile.setNamaTindakan(item.getNamaTindakan());
+                    headerCheckupMobile.setKeterangan(item.getKeterangan());
+                    headerCheckupMobile.setVideoRm(item.getVideoRm());
+                    headerCheckupMobile.setIdTindakan(item.getIdTindakan());
+
+                    listOfHeaderCheckup.add(headerCheckupMobile);
+                }
+            }
+        } else if(action.equalsIgnoreCase("getDetailHistoryPasien")) {
+            List<HeaderCheckup> result = new ArrayList<>();
+            try {
+               result = checkupBoProxy.getListDetailHistory(idTindakan, keterangan);
+            } catch (GeneralBOException e){
+                logger.error("[CheckupController.create] Error, " + e.getMessage());
+            }
+
+            if (result.size() > 0) {
+                for (HeaderCheckup item : result){
+                    HeaderDetailCheckupMobile headerDetailCheckupMobile = new HeaderDetailCheckupMobile();
+                    headerDetailCheckupMobile.setIdDetailTindakan(item.getIdDetailTindakan());
+                    headerDetailCheckupMobile.setNamaDetailLab(item.getNamaDetailLab());
+                    headerDetailCheckupMobile.setSatuan(item.getSatuan());
+                    headerDetailCheckupMobile.setAcuan(item.getAcuan());
+                    headerDetailCheckupMobile.setKesimpulan(item.getKesimpulan());
+                    headerDetailCheckupMobile.setKeterangan(item.getKeterangan());
+                    headerDetailCheckupMobile.setNamaObat(item.getNamaObat());
+                    headerDetailCheckupMobile.setQty(item.getQty());
+
+                    listOfHeaderCheckup.add(headerDetailCheckupMobile);
                 }
             }
         }

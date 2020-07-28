@@ -253,6 +253,8 @@ public class VerifikatorPembayaranAction {
         VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
         TelemedicBo telemedicBo = (TelemedicBo) ctx.getBean("telemedicBoProxy");
         ResepOnlineBo resepOnlineBo = (ResepOnlineBo) ctx.getBean("resepOnlineBoProxy");
+        NotifikasiFcmBo notifikasiFcmBo = (NotifikasiFcmBo) ctx.getBean("notifikasiFcmBoProxy");
+        NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
 
         ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = verifikatorPembayaranBo.getPembayaranOnlineById(idTransaksi);
         if (pembayaranOnlineEntity != null){
@@ -368,6 +370,38 @@ public class VerifikatorPembayaranAction {
 //                            return response;
 //                        }
                     }
+
+                    List<NotifikasiFcm> notifikasiFcm = new ArrayList<>();
+                    NotifikasiFcm bean = new NotifikasiFcm();
+                    Notifikasi notifBean = new Notifikasi();
+
+                    if(antrianTelemedicEntity.getFlagEresep() != null) {
+                        if(antrianTelemedicEntity.getFlagEresep().equalsIgnoreCase("Y")){
+                            notifBean.setTipeNotifId("TN11");
+                        } else notifBean.setTipeNotifId("TN10");
+                    } else notifBean.setTipeNotifId("TN10");
+
+                    notifBean.setNip(antrianTelemedicEntity.getIdPasien());
+                    notifBean.setNamaPegawai("admin");
+                    notifBean.setNote("Pembayaran resep telah dikonfirmasi");
+                    notifBean.setTo(antrianTelemedicEntity.getIdPasien());
+                    notifBean.setFromPerson("admin");
+                    notifBean.setNoRequest(antrianTelemedicEntity.getId());
+                    notifBean.setFlag("Y");
+                    notifBean.setRead("N");
+                    notifBean.setAction("C");
+                    notifBean.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+                    notifBean.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+                    notifBean.setCreatedWho("admin");
+                    notifBean.setLastUpdateWho("admin");
+
+                    notifikasiBo.saveAdd(notifBean);
+
+                    //Push Notif ke Pasien terkait perubahan status menjadi WL
+                    bean.setUserId(antrianTelemedicEntity.getIdPasien());
+                    notifikasiFcm = notifikasiFcmBo.getByCriteria(bean);
+                    FirebasePushNotif.sendNotificationFirebase(notifikasiFcm.get(0).getTokenFcm(),"Resep", "Pembayaran resep telah dikonfirmasi", "WL", notifikasiFcm.get(0).getOs(), null);
+
 
                     response.setStatus("success");
                 } catch (GeneralBOException e){
@@ -700,7 +734,7 @@ public class VerifikatorPembayaranAction {
                 }
 
                 // --- update flag; jika success pada prosess membuat jurnal;
-                if ("success".equalsIgnoreCase(jurnalResponse.getStatus())){
+                if ("success".equalsIgnoreCase(jurnalResponse.getStatus()) || "asuransi".equalsIgnoreCase(antrianTelemedicEntity.getIdJenisPeriksaPasien())){
 
                     pembayaranOnlineEntity.setIdRiwayatTindakan(idRiwayatTindakan);
                     pembayaranOnlineEntity.setApprovedFlag("Y");

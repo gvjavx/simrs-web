@@ -107,6 +107,16 @@ public class TelemedicineController implements ModelDriven<Object> {
     private String nama;
     private String chat;
 
+    private String batalEObat;
+
+    public String getBatalEObat() {
+        return batalEObat;
+    }
+
+    public void setBatalEObat(String batalEObat) {
+        this.batalEObat = batalEObat;
+    }
+
     public String getNama() {
         return nama;
     }
@@ -592,7 +602,35 @@ public class TelemedicineController implements ModelDriven<Object> {
                 logger.error("[TelemedicineController.create] Error, " + e.getMessage());
             }
 
-            //JIKA BATAL atau TIMEOUT, maka update list antrian
+            if (batalEObat != null) {
+                if (batalEObat.equalsIgnoreCase("Y")) {
+                    Notifikasi notifBean = new Notifikasi();
+                    notifBean.setTipeNotifId("TN12");
+                    notifBean.setNip(idPasien);
+                    notifBean.setNamaPegawai("admin");
+                    notifBean.setNote("E-Obat dibatalkan. Alasan : " + keterangan);
+                    notifBean.setTo(idPasien);
+                    notifBean.setFromPerson("admin");
+                    notifBean.setNoRequest(idTele);
+                    notifBean.setFlag("Y");
+                    notifBean.setRead("N");
+                    notifBean.setAction("C");
+                    notifBean.setCreatedDate(now);
+                    notifBean.setLastUpdate(now);
+                    notifBean.setCreatedWho("admin");
+                    notifBean.setLastUpdateWho("admin");
+
+                    notifikasiBoProxy.saveAdd(notifBean);
+
+                    //Push Notif ke Pasien terkait perubahan status menjadi WL
+                    NotifikasiFcm beanNotif = new NotifikasiFcm();
+                    beanNotif.setUserId(idPasien);
+                    List<NotifikasiFcm> notifikasiFcm = notifikasiFcmBoProxy.getByCriteria(beanNotif);
+                    FirebasePushNotif.sendNotificationFirebase(notifikasiFcm.get(0).getTokenFcm(),"E-Obat dibatalkan", "Alasan : " + keterangan, "WL", notifikasiFcm.get(0).getOs(), null);
+
+                }
+
+            } else //JIKA BATAL atau TIMEOUT, maka update list antrian
             if (keterangan.equalsIgnoreCase("batal") || keterangan.equalsIgnoreCase("timeout") ) {
 
                 List<AntrianTelemedic> telemedicList = new ArrayList<>();
@@ -964,7 +1002,7 @@ public class TelemedicineController implements ModelDriven<Object> {
             listOfTelemedic = new ArrayList<>();
 
             try {
-               listTelemedic =  telemedicBoProxy.getHistoryByIdPasien(idPasien);
+               listTelemedic =  telemedicBoProxy.getHistoryByIdPasien(idPasien, flagEresep);
             } catch (GeneralBOException e){
                 logger.error("[TelemedicineController.getDetailCheckup] Error, " + e.getMessage());
             }
