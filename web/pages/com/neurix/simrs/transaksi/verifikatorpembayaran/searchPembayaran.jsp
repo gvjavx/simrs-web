@@ -88,7 +88,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Status Transaksi</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'confirmation':'CONFIRMATION','finish':'FINISH', 'canceled':'CANCELED'}" cssStyle="margin-top: 7px"
+                                        <s:select list="#{'confirmation':'CONFIRMATION','finish':'SELESAI', 'canceled':'BATAL'}" cssStyle="margin-top: 7px"
                                                   headerKey="exist" headerValue="EXISTING" name="antrianTelemedic.statusTransaksi"
                                                   cssClass="form-control"/>
                                     </div>
@@ -700,7 +700,7 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-info"></i> Saving ...
+                <h4 class="modal-title"><i class="fa fa-info"></i> Success
                 </h4>
             </div>
             <div class="modal-body" style="text-align: center">
@@ -829,9 +829,9 @@
                 "<td>Approve Flag</td>" +
                 "<td>Approve Who</td>" +
                 "<td>No. Kartu</td>" +
-                "<td>Cover</td>" +
+//                "<td>Cover</td>" +
                 "<td align=\"center\" width=\"20%\">Total Tarif (Rp.)</td>" +
-                "<td align=\"center\" width=\"20%\">View Bukti</td>" +
+//                "<td align=\"center\" width=\"20%\">View Bukti</td>" +
                 "<td>Action</td>";
         } else if (idJenisPeriksaPasien == "bpjs") {
 
@@ -851,7 +851,7 @@
                 "<td>No. Kartu</td>" +
                 "<td>SEP</td>" +
                 "<td align=\"center\" width=\"20%\">Total Tarif (Rp.)</td>" +
-                "<td align=\"center\" width=\"20%\">View Bukti</td>" +
+//                "<td align=\"center\" width=\"20%\">View Bukti</td>" +
                 "<td>Action</td>";
         } else {
             head = "<td>Id</td>" +
@@ -895,8 +895,7 @@
                         "<td>"+ nullEscape(item.approvedWho) +"</td>";
 
                     if (idJenisPeriksaPasien == "asuransi"){
-                        str += "<td>"+item.noKartu+"</td>"+
-                            "<td align='right'>"+ formatRupiah ( item.jumlahCover )+"</td>";
+                        str += "<td>"+item.noKartu+"</td>";
                     } if (idJenisPeriksaPasien == "bpjs"){
                         str += "<td>"+item.noKartu+"</td>"+
                             "<td>" + nullEscape(item.noSep)+"</td>";
@@ -908,19 +907,15 @@
 
                         if (idJenisPeriksaPasien == "bpjs"){
                             if (item.noSep == null || item.nominal == 0 || item.approvedFlag == "Y"){
-                                str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
-                                    "<td align='center'></td>";
+                                str += "<td align='center'></td>";
                             } else {
-                                str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
-                                    "<td align='center'><button class='btn btn-sm btn-success' onclick=\"saveApprove(\'"+item.id+"\')\"><i class='fa fa-check'></i> Approve</button></td>";
+                                str += "<td align='center'><button class='btn btn-sm btn-success' onclick=\"saveApprove(\'"+item.id+"\')\"><i class='fa fa-check'></i> Approve</button></td>";
                             }
                         } else if (idJenisPeriksaPasien == "asuransi"){
                             if (item.nominal == 0 || item.approvedFlag == "Y"){
-                                str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
-                                    "<td align='center'></td>";
+                                str += "<td align='center'></td>";
                             } else {
-                                str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
-                                    "<td align='center'><button class='btn btn-sm btn-success' onclick=\"saveApprove(\'"+item.id+"\')\"><i class='fa fa-check'></i> Approve</button></td>";
+                                str += "<td align='center'><button class='btn btn-sm btn-success' onclick=\"saveApprove(\'"+item.id+"\')\"><i class='fa fa-check'></i> Approve</button></td>";
                             }
                         } else {
 
