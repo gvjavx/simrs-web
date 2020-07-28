@@ -20,6 +20,7 @@ import com.neurix.simrs.transaksi.verifikatorpembayaran.model.ItSimrsPembayaranO
 import com.opensymphony.xwork2.ModelDriven;
 import org.apache.log4j.Logger;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -38,11 +39,67 @@ public class TesTelemedicController implements ModelDriven<Object> {
     private String result;
     private String id;
     private String obat;
+    private BigDecimal tindakan;
+    private BigDecimal resep;
+    private BigDecimal pasien;
+
     private TelemedicBo telemedicBoProxy;
     private KurirBo kurirBoProxy;
     private VerifikatorPembayaranBo verifikatorPembayaranBoProxy;
     private PasienBo pasienBoProxy;
     private PelayananBo pelayananBoProxy;
+
+    public static Logger getLogger() {
+        return logger;
+    }
+
+    public static void setLogger(Logger logger) {
+        TesTelemedicController.logger = logger;
+    }
+
+    public BigDecimal getTindakan() {
+        return tindakan;
+    }
+
+    public void setTindakan(BigDecimal tindakan) {
+        this.tindakan = tindakan;
+    }
+
+    public BigDecimal getResep() {
+        return resep;
+    }
+
+    public void setResep(BigDecimal resep) {
+        this.resep = resep;
+    }
+
+    public BigDecimal getPasien() {
+        return pasien;
+    }
+
+    public void setPasien(BigDecimal pasien) {
+        this.pasien = pasien;
+    }
+
+    public TelemedicBo getTelemedicBoProxy() {
+        return telemedicBoProxy;
+    }
+
+    public KurirBo getKurirBoProxy() {
+        return kurirBoProxy;
+    }
+
+    public VerifikatorPembayaranBo getVerifikatorPembayaranBoProxy() {
+        return verifikatorPembayaranBoProxy;
+    }
+
+    public PasienBo getPasienBoProxy() {
+        return pasienBoProxy;
+    }
+
+    public PelayananBo getPelayananBoProxy() {
+        return pelayananBoProxy;
+    }
 
     public void setPelayananBoProxy(PelayananBo pelayananBoProxy) {
         this.pelayananBoProxy = pelayananBoProxy;
@@ -145,8 +202,13 @@ public class TesTelemedicController implements ModelDriven<Object> {
                 break;
             case "generate-num":
                 generateRandom();
+                break;
             case "batal-dokter":
                 saveBatalDokter(this.id);
+                break;
+            case "hitung":
+                hitiungselisi(this.tindakan, this.resep, this.pasien);
+                break;
             default:
                 logger.info("==========NO ONE CARE============");
         }
@@ -398,5 +460,49 @@ public class TesTelemedicController implements ModelDriven<Object> {
             logger.error("[TesTelemedicController.insertObat] saveBatalDokter. ",e);
             throw new GeneralBOException("[TesTelemedicController.insertObat] saveBatalDokter. ", e);
         }
+    }
+
+    private void hitiungselisi(BigDecimal biayaTindakan, BigDecimal biayaResep, BigDecimal dibayarPasien){
+
+        BigDecimal total = biayaTindakan.add(biayaResep);
+        System.out.println("Biaya Tindakan : " + biayaTindakan);
+        System.out.println("Biaya Resep : "+ biayaResep);
+        System.out.println("Total Biaya : "+ total);
+        System.out.println("================================");
+        BigDecimal totalDiCover = total.subtract(dibayarPasien);
+        System.out.println("Dicover Asuransi : "+ totalDiCover);
+        System.out.println("Dibayar Pasien : "+ dibayarPasien);
+//        BigDecimal persenDibayar = total.divide((dibayarPasien.multiply(new BigDecimal(100))), BigDecimal.ROUND_HALF_UP, 2);
+        BigDecimal persenDibayar = dibayarPasien.divide(total, BigDecimal.ROUND_HALF_UP, 2).multiply(new BigDecimal(100));
+        System.out.println("Persen dibayar Pasien dari Cover : " + persenDibayar);
+        System.out.println("================================");
+        BigDecimal dibayarDariTindakan = biayaTindakan.multiply(persenDibayar.divide(new BigDecimal(100), BigDecimal.ROUND_HALF_UP, 2));
+        System.out.println("Tindakan dibayar Pasien dari Cover : " + dibayarDariTindakan);
+        BigDecimal dibayarDariResep = biayaResep.multiply(persenDibayar.divide(new BigDecimal(100), BigDecimal.ROUND_HALF_UP, 2));
+        System.out.println("Resep dibayar Pasien dari Cover : " + dibayarDariTindakan);
+
+        BigDecimal selisih = new BigDecimal(0);
+        BigDecimal totalHasilBagi = dibayarDariTindakan.add(dibayarDariResep);
+
+        System.out.println("================================");
+
+        // jika di olah
+        if (dibayarPasien.compareTo(totalHasilBagi) == 1){
+            selisih = dibayarPasien.subtract(totalHasilBagi);
+            selisih = selisih.divide(new BigDecimal(2), BigDecimal.ROUND_HALF_UP, 2);
+            dibayarDariTindakan = dibayarDariTindakan.add(selisih);
+            dibayarDariResep = dibayarDariResep.add(selisih);
+            System.out.println("Tindakan dibayar Pasien Dari Cover setelah Diolah (+) : " + dibayarDariTindakan);
+            System.out.println("Resep dibayar Pasien Dari Cover setelah Diolah (+) : " + dibayarDariResep);
+        }  else {
+            selisih = totalHasilBagi.subtract(dibayarPasien);
+            selisih = selisih.divide(new BigDecimal(2), BigDecimal.ROUND_HALF_UP, 2);
+            dibayarDariTindakan = dibayarDariTindakan.subtract(selisih);
+            dibayarDariResep = dibayarDariResep.subtract(selisih);
+            System.out.println("Tindakan dibayar Pasien Dari Cover setelah Diolah (-) : " + dibayarDariTindakan);
+            System.out.println("Resep dibayar Pasien Dari Cover setelah Diolah (-) : " + dibayarDariResep);
+        }
+        System.out.println("Total dibayar Pasien : " + dibayarDariTindakan.add(dibayarDariResep));
+
     }
 }

@@ -3,6 +3,7 @@ package com.neurix.simrs.transaksi.verifikatorpembayaran.action;
 import com.neurix.akuntansi.master.master.bo.MasterBo;
 import com.neurix.akuntansi.master.master.model.ImMasterEntity;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.authorization.position.bo.PositionBo;
@@ -623,7 +624,7 @@ public class VerifikatorPembayaranAction {
                 // approve All tindakan and save
                 String idRiwayatTindakan = "";
                 if (!"".equalsIgnoreCase(idDetailCheckup) && !"".equalsIgnoreCase(idJenisPeriksaPasien)){
-                    response = saveApproveAllTindakanRawatJalan(idDetailCheckup, idJenisPeriksaPasien);
+                    response = saveApproveAllTindakanRawatJalan(idDetailCheckup, idJenisPeriksaPasien, userLogin);
                     if ("success".equalsIgnoreCase(response.getStatus())){
 
                         RiwayatTindakan tindakan = new RiwayatTindakan();
@@ -696,7 +697,7 @@ public class VerifikatorPembayaranAction {
                 // --- create jurnal;
                 JurnalResponse jurnalResponse = new JurnalResponse();
                 if (!"Y".equalsIgnoreCase(antrianTelemedicEntity.getFlagEresep()) && "umum".equalsIgnoreCase(antrianTelemedicEntity.getIdJenisPeriksaPasien())){
-                    jurnalResponse = closingJurnalNonTunaiTelemedic(idDetailCheckup, idTransaksi, antrianTelemedicEntity.getIdPelayanan(), antrianTelemedicEntity.getIdPasien(), flagResep);
+                    jurnalResponse = closingJurnalNonTunaiTelemedic(idDetailCheckup, idTransaksi, antrianTelemedicEntity.getIdPelayanan(), antrianTelemedicEntity.getIdPasien(), flagResep, userLogin, branchId);
                 }
 
                 // --- update flag; jika success pada prosess membuat jurnal;
@@ -805,14 +806,13 @@ public class VerifikatorPembayaranAction {
         return response;
     }
 
-    public CheckResponse saveApproveAllTindakanRawatJalan(String idDetailCheckup, String jenisPasien) {
+    public CheckResponse saveApproveAllTindakanRawatJalan(String idDetailCheckup, String jenisPasien, String user) {
 
         logger.info("[VerifikatorPembayaranAction.saveApproveAllTindakanRawatJalan] START process >>>");
         CheckResponse response = new CheckResponse();
         if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)) {
 
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-            String user = CommonUtil.userLogin();
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
             RiwayatTindakanBo riwayatTindakanBo = (RiwayatTindakanBo) ctx.getBean("riwayatTindakanBoProxy");
@@ -829,7 +829,7 @@ public class VerifikatorPembayaranAction {
             }
 
             if ("success".equalsIgnoreCase(response.getStatus())) {
-                saveAddToRiwayatTindakan(idDetailCheckup, jenisPasien);
+                saveAddToRiwayatTindakan(idDetailCheckup, jenisPasien, user);
             }
 
 //            if ("asuransi".equalsIgnoreCase(jenisPasien)) {
@@ -935,12 +935,11 @@ public class VerifikatorPembayaranAction {
         return response;
     }
 
-    public void saveAddToRiwayatTindakan(String idDetail, String jenisPasien) {
+    public void saveAddToRiwayatTindakan(String idDetail, String jenisPasien, String user) {
         logger.info("[VerifikatorPembayaranAction.saveAddToRiwayatTindakan] START process >>>");
         if (idDetail != null && !"".equalsIgnoreCase(idDetail)) {
 
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-            String user = CommonUtil.userLogin();
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             TindakanRawatBo tindakanRawatBo = (TindakanRawatBo) ctx.getBean("tindakanRawatBoProxy");
             PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
@@ -1242,10 +1241,9 @@ public class VerifikatorPembayaranAction {
         logger.info("[VerifikatorPembayaranAction.saveAddToRiwayatTindakan] END process >>>");
     }
 
-    private JurnalResponse closingJurnalNonTunaiTelemedic(String idDetailCheckup, String idTransaksiOnline, String idPoli, String idPasien, String flagResep) {
+    private JurnalResponse closingJurnalNonTunaiTelemedic(String idDetailCheckup, String idTransaksiOnline, String idPoli, String idPasien, String flagResep, String userLogin, String branchId) {
 
         JurnalResponse response = new JurnalResponse();
-        String branchId = CommonUtil.userBranchLogin();
         String invoice = "";
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
@@ -1263,10 +1261,11 @@ public class VerifikatorPembayaranAction {
         String kode = "";
         String transId = "";
         String jenisPasien = "Umum ";
-        String kodeBank = CommonConstant.REK_BANK_BRI_TELE;
+        String kodeBank = "1.1.01.02.01";
         String idJenisPeriksaPasien = "";
-        String noKartu = "";
+        String noRekening = CommonConstant.REK_BANK_BRI_TELE;
         BigDecimal biayaCover = new BigDecimal(0);
+        BigDecimal tarifTele = new BigDecimal(0);
         String withResep = "N";
 
         ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getEntityDetailCheckupByIdDetail(idDetailCheckup);
@@ -1284,6 +1283,7 @@ public class VerifikatorPembayaranAction {
             ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = verifikatorPembayaranBo.getPembayaranOnlineById(idTransaksiOnline);
             if (pembayaranOnlineEntity != null){
                 kodeBank = pembayaranOnlineEntity.getKodeBank();
+                tarifTele = pembayaranOnlineEntity.getNominal();
 
                 if ("resep".equalsIgnoreCase(pembayaranOnlineEntity.getKeterangan())){
                     keterangan = pembayaranOnlineEntity.getKeterangan();
@@ -1325,12 +1325,14 @@ public class VerifikatorPembayaranAction {
                     mapTindakan = new HashMap();
                     mapTindakan.put("master_id", masterId);
                     mapTindakan.put("divisi_id", getDivisiId(idDetailCheckup, idJenisPeriksaPasien, keteranganRiwayat));
-                    mapTindakan.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "", keteranganRiwayat));
-                    mapTindakan.put("activity", getAcitivityList(idDetailCheckup, "", keteranganRiwayat, kode));
+                    mapTindakan.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, idJenisPeriksaPasien, keteranganRiwayat));
+                    mapTindakan.put("activity", getAcitivityList(idDetailCheckup, idJenisPeriksaPasien, keteranganRiwayat, kode));
                     listOfTindakan.add(mapTindakan);
                 }
             }
         } else {
+            //BigDecimal jumlahBiaya = getJumlahNilaiBiayaByKeterangan(idDetailCheckup, idJenisPeriksaPasien, keterangan);
+            //BigDecimal tarifLain = tarifTele.subtract(jumlahBiaya);
             mapTindakan.put("master_id", masterId);
             mapTindakan.put("divisi_id", getDivisiId(idDetailCheckup, idJenisPeriksaPasien, keterangan));
             mapTindakan.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, idJenisPeriksaPasien, keterangan));
@@ -1365,6 +1367,7 @@ public class VerifikatorPembayaranAction {
                     mapkas.put("nilai",  jumlah.add(ppnObat));
                     mapkas.put("metode_bayar", "transfer");
                     mapkas.put("bank", kodeBank);
+                    mapkas.put("nomor_rekening", noRekening);
 
                     mapJurnal.put("ppn_keluaran", mapPajakObat);
                     mapJurnal.put("pendapatan_rawat_jalan_umum", listOfTindakan);
@@ -1397,6 +1400,7 @@ public class VerifikatorPembayaranAction {
                 mapkas.put("nilai", jumlah);
                 mapkas.put("metode_bayar", "transfer");
                 mapkas.put("bank", kodeBank);
+                mapkas.put("nomor_rekening", noRekening);
 
                 mapJurnal.put("pendapatan_rawat_jalan_umum", listOfTindakan);
                 mapJurnal.put("kas", mapkas);
@@ -2569,7 +2573,7 @@ public class VerifikatorPembayaranAction {
                                 ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = verifikatorPembayaranBo.getPembayaranOnlineById(detailCheckupEntity.getIdTransaksiOnline());
 
                                 if ("konsultasi".equalsIgnoreCase(pembayaranOnlineEntity.getKeterangan())){
-                                    JurnalResponse jurnalResponse = closingJurnalNonTunaiTelemedic(detailCheckupEntity.getIdDetailCheckup(), detailCheckupEntity.getIdTransaksiOnline(), detailCheckupEntity.getIdPelayanan(), headerChekupEntity.getIdPasien(), "N");
+                                    JurnalResponse jurnalResponse = closingJurnalNonTunaiTelemedic(detailCheckupEntity.getIdDetailCheckup(), detailCheckupEntity.getIdTransaksiOnline(), detailCheckupEntity.getIdPelayanan(), headerChekupEntity.getIdPasien(), "N", userLogin, branchId);
                                     if ("error".equalsIgnoreCase(jurnalResponse.getStatus())){
                                         logger.error("[VerifikatorPembayaranAction.approveConfirmAsuransi] ERROR. " + response.getMsg());
                                         response.setStatus("error");
@@ -2578,7 +2582,7 @@ public class VerifikatorPembayaranAction {
                                     }
                                 }
                                 if ("resep".equalsIgnoreCase(pembayaranOnlineEntity.getKeterangan())){
-                                    JurnalResponse jurnalResponse = closingJurnalNonTunaiTelemedic(detailCheckupEntity.getIdDetailCheckup(), detailCheckupEntity.getIdTransaksiOnline(), detailCheckupEntity.getIdPelayanan(), headerChekupEntity.getIdPasien(), "Y");
+                                    JurnalResponse jurnalResponse = closingJurnalNonTunaiTelemedic(detailCheckupEntity.getIdDetailCheckup(), detailCheckupEntity.getIdTransaksiOnline(), detailCheckupEntity.getIdPelayanan(), headerChekupEntity.getIdPasien(), "Y", userLogin, branchId);
                                     if ("error".equalsIgnoreCase(jurnalResponse.getStatus())){
                                         logger.error("[VerifikatorPembayaranAction.approveConfirmAsuransi] ERROR. " + response.getMsg());
                                         response.setStatus("error");
@@ -2633,12 +2637,40 @@ public class VerifikatorPembayaranAction {
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TelemedicBo telemedicBo = (TelemedicBo) ctx.getBean("telemedicBoProxy");
+        VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
 
         AntrianTelemedic antrianTelemedic = new AntrianTelemedic();
         antrianTelemedic.setId(idAntrian);
         antrianTelemedic.setFlagApproveConfirm("Y");
         antrianTelemedic.setLastUpdate(times);
         antrianTelemedic.setLastUpdateWho(userLogin);
+
+        // mapping riwayat tindakan jika ada yang dibayar pasien
+        mappingBiayaSelisihDiBayarPasienAsuransi(idAntrian);
+
+        ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = telemedicBo.getAntrianTelemedicEntityById(idAntrian);
+        if (antrianTelemedicEntity != null){
+            ItSimrsHeaderChekupEntity headerChekupEntity = verifikatorPembayaranBo.getHeaderCheckupByIdAntrinTelemedic(idAntrian);
+            if (headerChekupEntity != null){
+
+                HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
+                headerDetailCheckup.setNoCheckup(headerChekupEntity.getNoCheckup());
+
+                List<ItSimrsHeaderDetailCheckupEntity> headerDetailCheckupEntities = checkupDetailBo.getListEntityByCriteria(headerDetailCheckup);
+                if (headerDetailCheckupEntities.size() > 0){
+                    ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = headerDetailCheckupEntities.get(0);
+                    JurnalResponse jurnalResponse = closingJurnalAsuransidanUmum(detailCheckupEntity.getIdDetailCheckup(), antrianTelemedicEntity.getFlagResep());
+                    if ("error".equalsIgnoreCase(jurnalResponse.getStatus())){
+                        logger.error("[VerifikatorPembayaranAction.approveConfirmAsuransi] ERROR " + jurnalResponse.getMsg());
+                        response.setStatus("error");
+                        response.setMsg("[VerifikatorPembayaranAction.approveConfirmAsuransi] ERROR " + jurnalResponse.getMsg());
+                        return response;
+                    }
+                }
+            }
+        }
+
 
         try {
             telemedicBo.saveEdit(antrianTelemedic, "", "");
@@ -2686,4 +2718,301 @@ public class VerifikatorPembayaranAction {
         }
         return response;
     }
+
+    private void mappingBiayaSelisihDiBayarPasienAsuransi(String idAntrian){
+
+        String userLogin = CommonUtil.userIdLogin();
+        Timestamp times = new Timestamp(System.currentTimeMillis());
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+        RiwayatTindakanBo riwayatTindakanBo = (RiwayatTindakanBo) ctx.getBean("riwayatTindakanBoProxy");
+        TelemedicBo telemedicBo = (TelemedicBo) ctx.getBean("telemedicBoProxy");
+        VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
+
+        ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = telemedicBo.getAntrianTelemedicEntityById(idAntrian);
+
+        if (antrianTelemedicEntity != null && "asuransi".equalsIgnoreCase(antrianTelemedicEntity.getIdJenisPeriksaPasien())){
+            ItSimrsHeaderChekupEntity headerChekupEntity = verifikatorPembayaranBo.getHeaderCheckupByIdAntrinTelemedic(idAntrian);
+            if (headerChekupEntity != null){
+
+                HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+                detailCheckup.setNoCheckup(headerChekupEntity.getNoCheckup());
+                List<ItSimrsHeaderDetailCheckupEntity> detailCheckupEntities = checkupDetailBo.getListEntityByCriteria(detailCheckup);
+                if (detailCheckupEntities.size() > 0){
+                    ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = detailCheckupEntities.get(0);
+
+                    if (detailCheckupEntity != null) {
+                        BigDecimal cover = detailCheckupEntity.getCoverBiaya() == null ? new BigDecimal(0) : detailCheckupEntity.getCoverBiaya();
+                        BigDecimal dibayarPasien = detailCheckupEntity.getDibayarPasien() == null ? new BigDecimal(0) : detailCheckupEntity.getDibayarPasien();
+
+                        BigDecimal total = cover.add(dibayarPasien);
+                        BigDecimal biayaTindakan = new BigDecimal(0);
+                        BigDecimal biayaResep = new BigDecimal(0);
+
+                        RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
+                        riwayatTindakan.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+                        List<ItSimrsRiwayatTindakanEntity> tindakanEntities = riwayatTindakanBo.getListEntityRiwayatTindakan(riwayatTindakan);
+                        if (tindakanEntities.size() > 0){
+
+                            BigDecimal persenDibayar = dibayarPasien.divide(total, BigDecimal.ROUND_HALF_UP, 2).multiply(new BigDecimal(100));
+                            BigDecimal dibayarDariTindakan = new BigDecimal(0);
+                            BigDecimal dibayarDariResep = new BigDecimal(0);
+
+                            for (ItSimrsRiwayatTindakanEntity riwayatTindakanEntity : tindakanEntities){
+                                if ("tindakan".equalsIgnoreCase(riwayatTindakanEntity.getKeterangan())){
+                                    biayaTindakan = biayaTindakan.add(riwayatTindakanEntity.getTotalTarif());
+                                    dibayarDariTindakan = biayaTindakan.multiply(persenDibayar.divide(new BigDecimal(100), BigDecimal.ROUND_HALF_UP, 2));
+                                }
+                                if ("resep".equalsIgnoreCase(riwayatTindakanEntity.getKeterangan())){
+                                    biayaResep = biayaResep.add(riwayatTindakanEntity.getTotalTarif());
+                                    dibayarDariResep = biayaResep.multiply(persenDibayar.divide(new BigDecimal(100), BigDecimal.ROUND_HALF_UP, 2));
+                                }
+                            }
+
+                            Map mapBiayaTindakan = new HashMap();
+
+                            BigDecimal selisih = new BigDecimal(0);
+                            BigDecimal totalHasilBagi = dibayarDariTindakan.add(dibayarDariResep);
+
+                            if (dibayarPasien.compareTo(totalHasilBagi) == 1){
+                                selisih = dibayarPasien.subtract(totalHasilBagi);
+                                selisih = selisih.divide(new BigDecimal(2), BigDecimal.ROUND_HALF_UP, 2);
+                                dibayarDariTindakan = dibayarDariTindakan.add(selisih);
+                                dibayarDariResep = dibayarDariResep.add(selisih);
+                                mapBiayaTindakan.put("tindakan", dibayarDariTindakan);
+                                mapBiayaTindakan.put("resep", dibayarDariResep);
+                            }  else {
+                                selisih = totalHasilBagi.subtract(dibayarPasien);
+                                selisih = selisih.divide(new BigDecimal(2), BigDecimal.ROUND_HALF_UP, 2);
+                                dibayarDariTindakan = dibayarDariTindakan.subtract(selisih);
+                                dibayarDariResep = dibayarDariResep.subtract(selisih);
+                                mapBiayaTindakan.put("tindakan", dibayarDariTindakan);
+                                mapBiayaTindakan.put("resep", dibayarDariResep);
+                            }
+
+
+                            for (ItSimrsRiwayatTindakanEntity riwayatTindakanEntity : tindakanEntities){
+                                riwayatTindakanEntity.setLastUpdate(times);
+                                riwayatTindakanEntity.setLastUpdateWho(userLogin);
+
+                                // membuat versi umum dari dibayar pasien;
+                                saveAddSelisihAsuransiKeUmum(riwayatTindakanEntity, mapBiayaTindakan);
+
+                                // update biaya masing-masing tindakan;
+                                BigDecimal tindakanDibayar = (BigDecimal) mapBiayaTindakan.get(riwayatTindakanEntity.getKeterangan());
+                                riwayatTindakanEntity.setTotalTarif(riwayatTindakanEntity.getTotalTarif().subtract(tindakanDibayar));
+                                try {
+                                    riwayatTindakanBo.updateByEntity(riwayatTindakanEntity);
+                                } catch (GeneralBOException e){
+                                    logger.error("[VerifikatorPembayaranAction.mappingBiayaSelisihDiBayarPasienAsuransi] ERROR. ", e);
+                                    throw new GeneralBOException("[VerifikatorPembayaranAction.mappingBiayaSelisihDiBayarPasienAsuransi] ERROR. ", e);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void saveAddSelisihAsuransiKeUmum(ItSimrsRiwayatTindakanEntity bean, Map mapTindakan){
+        logger.info("[VerifikatorPembayaranAction.saveAddSelisihAsuransiKeUmum] START >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RiwayatTindakanBo riwayatTindakanBo = (RiwayatTindakanBo) ctx.getBean("riwayatTindakanBoProxy");
+
+        RiwayatTindakan riwayatTindakanEntityNew = new RiwayatTindakan();
+        riwayatTindakanEntityNew.setIdTindakan(bean.getIdTindakan());
+        riwayatTindakanEntityNew.setNamaTindakan(bean.getNamaTindakan());
+        riwayatTindakanEntityNew.setKeterangan(bean.getKeterangan());
+        riwayatTindakanEntityNew.setJenisPasien("umum");
+        riwayatTindakanEntityNew.setTotalTarif((BigDecimal) mapTindakan.get(bean.getKeterangan()));
+        riwayatTindakanEntityNew.setTanggalTindakan(bean.getTanggalTindakan());
+        riwayatTindakanEntityNew.setIdDetailCheckup(bean.getIdDetailCheckup());
+        riwayatTindakanEntityNew.setKategoriTindakanBpjs(bean.getKategoriTindakanBpjs());
+        riwayatTindakanEntityNew.setApproveBpjsFlag(bean.getApproveBpjsFlag());
+        riwayatTindakanEntityNew.setFlag("Y");
+        riwayatTindakanEntityNew.setAction("C");
+        riwayatTindakanEntityNew.setCreatedDate(bean.getLastUpdate());
+        riwayatTindakanEntityNew.setCreatedWho(bean.getLastUpdateWho());
+        riwayatTindakanEntityNew.setLastUpdate(bean.getLastUpdate());
+        riwayatTindakanEntityNew.setLastUpdateWho(bean.getLastUpdateWho());
+
+        try {
+            riwayatTindakanBo.saveAdd(riwayatTindakanEntityNew);
+        } catch (GeneralBOException e) {
+            logger.error("[VerifikatorPembayaranAction.saveAddSelisihAsuransiKeUmum] ERROR. ", e);
+            throw new GeneralBOException("[VerifikatorPembayaranAction.saveAddSelisihAsuransiKeUmum] ERROR. ", e);
+        }
+
+        logger.info("[VerifikatorPembayaranAction.saveAddSelisihAsuransiKeUmum] END <<<");
+    }
+
+    private JurnalResponse closingJurnalAsuransidanUmum(String idDetailCheckup, String flagResep) {
+        logger.info("[VerifikatorPembayaranAction.closingJurnalAsuransidanUmum] START >>>");
+
+        JurnalResponse response = new JurnalResponse();
+        String branchId = CommonUtil.userBranchLogin();
+        String invoice = "";
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+        AsuransiBo asuransiBo = (AsuransiBo) ctx.getBean("asuransiBoProxy");
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        JenisPriksaPasienBo jenisPriksaPasienBo = (JenisPriksaPasienBo) ctx.getBean("jenisPriksaPasienBoProxy");
+        RiwayatTindakanBo riwayatTindakanBo = (RiwayatTindakanBo) ctx.getBean("riwayatTindakanBoProxy");
+        VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
+        TelemedicBo telemedicBo = (TelemedicBo) ctx.getBean("telemedicBoProxy");
+
+        String kode = "";
+        String transId = "";
+        String jenisPasien = "Umum ";
+        String kodeBank = "1.1.01.02.01";
+        String noRekening = CommonConstant.REK_BANK_BRI_TELE;
+        String idJenisPeriksaPasien = "";
+        String noKartu = "";
+        BigDecimal biayaCover = new BigDecimal(0);
+        BigDecimal tarifTele = new BigDecimal(0);
+        String withResep = "N";
+        String keterangan = "";
+
+        ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getEntityDetailCheckupByIdDetail(idDetailCheckup);
+        if (detailCheckupEntity != null){
+            idJenisPeriksaPasien = detailCheckupEntity.getIdJenisPeriksaPasien();
+        }
+
+        String masterId = jenisPriksaPasienBo.getJenisPerikasEntityById(detailCheckupEntity.getIdJenisPeriksaPasien()).getMasterId();
+        if ("asuransi".equalsIgnoreCase(idJenisPeriksaPasien)){
+
+            ImSimrsAsuransiEntity asuransiEntity = asuransiBo.getEntityAsuransiById(detailCheckupEntity.getIdAsuransi());
+            if (asuransiEntity != null) {
+                masterId = asuransiEntity.getNoMaster();
+                jenisPasien = "Asuransi " + asuransiEntity.getNamaAsuransi() + " No. Kartu " + detailCheckupEntity.getNoKartuAsuransi();
+            } else {
+                logger.error("[VerifikatorPembayaranAction.closingJurnalAsuransidanUmum] Error Asuransi tidak ditemukan");
+                response.setStatus("error");
+                response.setMsg("[VerifikatorPembayaranAction.closingJurnalAsuransidanUmum] Error Asuransi tidak ditemukan");
+                return response;
+            }
+        }
+
+        // MAP ALL TINDAKAN BY KETERANGAN
+        List<Map> listOfTindakan = new ArrayList<>();
+        List<Map> listOfTindakanUmum = new ArrayList<>();
+        Map mapTindakan = new HashMap();
+
+        List<String> listOfKeteranganRiwayat = riwayatTindakanBo.getListKeteranganByIdDetailCheckup(idDetailCheckup);
+        if (listOfKeteranganRiwayat.size() > 0) {
+
+            for (String keteranganRiwayat : listOfKeteranganRiwayat) {
+                mapTindakan = new HashMap();
+                mapTindakan.put("master_id", masterId);
+                mapTindakan.put("divisi_id", getDivisiId(idDetailCheckup, idJenisPeriksaPasien, keteranganRiwayat));
+                mapTindakan.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, idJenisPeriksaPasien, keteranganRiwayat));
+                mapTindakan.put("activity", getAcitivityList(idDetailCheckup, idJenisPeriksaPasien, keteranganRiwayat, kode));
+                listOfTindakan.add(mapTindakan);
+
+                mapTindakan = new HashMap();
+                mapTindakan.put("master_id", masterId);
+                mapTindakan.put("divisi_id", getDivisiId(idDetailCheckup, "umum", keteranganRiwayat));
+                mapTindakan.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "umum", keteranganRiwayat));
+                mapTindakan.put("activity", getAcitivityList(idDetailCheckup, "umum", keteranganRiwayat, kode));
+                listOfTindakanUmum.add(mapTindakan);
+            }
+        }
+
+        Map mapKas = new HashMap();
+        mapKas.put("metode_bayar", "transfer");
+        mapKas.put("bank", kodeBank);
+        mapKas.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "umum", ""));
+        mapKas.put("nomor_rekening", noRekening);
+
+
+        // MENDAPATKAN SEMUA BIAYA RAWAT;
+        BigDecimal jumlah = getJumlahNilaiBiayaByKeterangan(idDetailCheckup, idJenisPeriksaPasien, "");
+        BigDecimal ppnObat = new BigDecimal(0);
+        Map mapJurnal = new HashMap();
+        if ("Y".equalsIgnoreCase(flagResep)){
+            keterangan = " dengan Resep ";
+
+            BigDecimal jumlahResep = getJumlahNilaiBiayaByKeterangan(idDetailCheckup, idJenisPeriksaPasien, "resep");
+            BigDecimal jumlahResepUmum = getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "umum", "resep");
+            if (jumlahResep != null && jumlahResep.compareTo(new BigDecimal(0)) == 1){
+
+                if (jumlahResep.compareTo(new BigDecimal(0)) == 1) {
+                    BigDecimal ppnObatUmum = jumlahResepUmum.multiply(new BigDecimal(0.1)).setScale(2, BigDecimal.ROUND_HALF_UP);
+                    ppnObat = jumlahResep.multiply(new BigDecimal(0.1)).setScale(2, BigDecimal.ROUND_HALF_UP);
+                    ppnObat = ppnObat.add(ppnObatUmum);
+                }
+
+                Map mapPajakObat = new HashMap();
+                mapPajakObat.put("bukti", invoice);
+                mapPajakObat.put("nilai", ppnObat);
+                mapPajakObat.put("master_id", CommonConstant.MASTER_PAJAK_OBAT);
+
+                invoice = billingSystemBo.createInvoiceNumber("JRJ", branchId);
+
+                // create list map piutang
+                Map mapPiutang = new HashMap();
+                mapPiutang.put("bukti", invoice);
+                mapPiutang.put("nilai", jumlah.add(ppnObat));
+                mapPiutang.put("master_id", masterId);
+
+                // debit piutang pasien asuransi
+                mapJurnal.put("kas", mapKas);
+                mapJurnal.put("piutang_pasien_asuransi", mapPiutang);
+                mapJurnal.put("pendapatan_rawat_jalan_asuransi", listOfTindakan);
+                mapJurnal.put("pendapaatan_rawat_jalan_umum", listOfTindakanUmum);
+                mapJurnal.put("ppn_keluaran", mapPajakObat);
+                transId = "19";
+            }
+
+        } else {
+            invoice = billingSystemBo.createInvoiceNumber("JRJ", branchId);
+
+            // create list map piutang
+            Map mapPiutang = new HashMap();
+            mapPiutang.put("bukti", invoice);
+            mapPiutang.put("nilai", jumlah);
+            mapPiutang.put("master_id", masterId);
+
+            // debit piutang pasien asuransi
+            mapJurnal.put("kas", mapKas);
+            mapJurnal.put("piutang_pasien_asuransi", mapPiutang);
+            mapJurnal.put("pendapatan_rawat_jalan_asuransi", listOfTindakan);
+            mapJurnal.put("pendapaatan_rawat_jalan_umum", listOfTindakanUmum);
+            transId = "11";
+        }
+
+
+        String catatan = "Closing Jurnal Telemedic "+jenisPasien+" Id Detail Checkup " + idDetailCheckup + keterangan;
+
+        try {
+
+            String noJurnal = billingSystemBo.createJurnal(transId, mapJurnal, branchId, catatan, "Y");
+
+            // --- update no invoice;
+            HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+            detailCheckup = new HeaderDetailCheckup();
+            detailCheckup.setIdDetailCheckup(idDetailCheckup);
+            detailCheckup.setInvoice(invoice);
+            detailCheckup.setNoJurnal(noJurnal);
+
+            checkupDetailBo.saveUpdateNoJuran(detailCheckup);
+
+            response.setStatus("success");
+            response.setMsg("[Berhasil]");
+
+        } catch (GeneralBOException e) {
+            logger.error("[VerifikatorPembayaranAction.closingJurnalAsuransidanUmum] Error, ", e);
+            response.setStatus("error");
+            response.setMsg("[VerifikatorPembayaranAction.closingJurnalAsuransidanUmum] Error, " + e);
+            return response;
+        }
+
+        response.setInvoice(invoice);
+        logger.info("[VerifikatorPembayaranAction.closingJurnalAsuransidanUmum] END <<<");
+        return response;
+    }
+
 }
