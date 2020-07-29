@@ -325,11 +325,18 @@ public class PembayaranController implements ModelDriven<Object> {
                     newPembayaran.setLastUpdateWho(idPasien);
                     try {
                         verifikatorPembayaranBoProxy.saveEdit(newPembayaran);
-                        model.setMessage("Success");
                     } catch (GeneralBOException e) {
                         logger.error("[PembayaranController.create] Error, " + e.getMessage());
                     }
+
+                    try {
+                        telemedicBoProxy.updateBankCoa(idTele, bankCoa);
+                        model.setMessage("Success");
+                    } catch (GeneralBOException e){
+                        logger.error("[PembayaranController.create] Error, " + e.getMessage());
+                    }
                 }
+
             }
 
         }
