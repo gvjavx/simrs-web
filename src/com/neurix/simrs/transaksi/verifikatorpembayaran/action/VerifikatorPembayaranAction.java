@@ -6,8 +6,10 @@ import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
+import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.authorization.position.bo.PositionBo;
 import com.neurix.authorization.position.model.ImPosition;
+import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
@@ -32,6 +34,7 @@ import com.neurix.simrs.master.jenisperiksapasien.model.ImJenisPeriksaPasienEnti
 import com.neurix.simrs.master.jenisperiksapasien.model.ImSimrsAsuransiEntity;
 import com.neurix.simrs.master.kelasruangan.bo.KelasRuanganBo;
 import com.neurix.simrs.master.kelasruangan.model.ImSimrsKelasRuanganEntity;
+import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.pasien.bo.PasienBo;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.master.pasien.model.Pasien;
@@ -110,6 +113,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -118,7 +122,7 @@ import java.util.stream.Collectors;
 /**
  * Created by reza on 10/06/20.
  */
-public class VerifikatorPembayaranAction {
+public class VerifikatorPembayaranAction extends BaseMasterAction{
     private final static transient Logger logger = Logger.getLogger(VerifikatorPembayaranAction.class);
 
     private VerifikatorPembayaranBo verifikatorPembayaranBoProxy;
@@ -127,6 +131,17 @@ public class VerifikatorPembayaranAction {
     private PembayaranOnline pembayaranOnline;
     public AntrianTelemedic antrianTelemedic;
     private NotifikasiBo notifikasiBoProxy;
+    private String id;
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -187,6 +202,41 @@ public class VerifikatorPembayaranAction {
         setAntrianTelemedic(new AntrianTelemedic());
         logger.info("[VerifikatorPembayaranAction.initForm] END <<<");
         return "search";
+    }
+
+    @Override
+    public String downloadPdf() {
+        return null;
+    }
+
+    @Override
+    public String downloadXls() {
+        return null;
+    }
+
+    @Override
+    public String add() {
+        return null;
+    }
+
+    @Override
+    public String edit() {
+        return null;
+    }
+
+    @Override
+    public String delete() {
+        return null;
+    }
+
+    @Override
+    public String view() {
+        return null;
+    }
+
+    @Override
+    public String save() {
+        return null;
     }
 
     public String search(){
@@ -2521,45 +2571,45 @@ public class VerifikatorPembayaranAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         VerifikatorAsurasiBo verifikatorAsurasiBo = (VerifikatorAsurasiBo) ctx.getBean("verifikatorAsurasiBoProxy");
 
-//        String fileName = "";
-//        if (!"".equalsIgnoreCase(uploadString)){
-//            BASE64Decoder decoder = new BASE64Decoder();
-//            byte[] decodedBytes = decoder.decodeBuffer(uploadString);
-//            logger.info("Decoded upload data : " + decodedBytes.length);
-//            fileName = branchId + "_" + jenis + "_"+idStruk+".png";
-//            String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_BUKTI_TRANSFER + "/" + fileName;
-//            logger.info("File save path : " + uploadFile);
-//            BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
-//
-//            if (image == null) {
-//                logger.error("Buffered Image is null");
-//            }else{
-//
-////                write the image
-////                File fileCreate = new File(CommonUtil.getPropertyParams("upload.folder")+CommonConstant.RESOURCE_PATH_BUKTI_TRANSFER, fileName);
-////                try {
-////                    FileUtils.copyFile(f, fileCreate);
-////                }catch (IOException e){
-////                    e.printStackTrace();
-////                }
-//
-//
-//                File f = new File(uploadFile);
-//
+        String fileName = "";
+        if (!"".equalsIgnoreCase(uploadString)){
+            BASE64Decoder decoder = new BASE64Decoder();
+            byte[] decodedBytes = decoder.decodeBuffer(uploadString);
+            logger.info("Decoded upload data : " + decodedBytes.length);
+            fileName = branchId + "_" + jenis + "_"+idStruk+".png";
+            String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_BUKTI_TRANSFER + "/" + fileName;
+            logger.info("File save path : " + uploadFile);
+            BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+            if (image == null) {
+                logger.error("Buffered Image is null");
+            }else{
+
+//                write the image
+//                File fileCreate = new File(CommonUtil.getPropertyParams("upload.folder")+CommonConstant.RESOURCE_PATH_BUKTI_TRANSFER, fileName);
 //                try {
-//                    ImageIO.write(image, "png", f);
+//                    FileUtils.copyFile(f, fileCreate);
 //                }catch (IOException e){
-//                    response.setMsg("[VerifikatorPembayaranAction.uploadStruk] ERROR " + e);
-//                    response.setStatus("error");
-//                    return response;
+//                    e.printStackTrace();
 //                }
-//            }
-//        }
+
+
+                File f = new File(uploadFile);
+
+                try {
+                    ImageIO.write(image, "png", f);
+                }catch (IOException e){
+                    response.setMsg("[VerifikatorPembayaranAction.uploadStruk] ERROR " + e);
+                    response.setStatus("error");
+                    return response;
+                }
+            }
+        }
 
         StrukAsuransi strukAsuransi = new StrukAsuransi();
         strukAsuransi.setId(idStruk);
-        strukAsuransi.setUrlFotoStruk(jenis + ".jpg");
-//        strukAsuransi.setUrlFotoStruk(fileName);
+//        strukAsuransi.setUrlFotoStruk(jenis + ".jpg");
+        strukAsuransi.setUrlFotoStruk(fileName);
         strukAsuransi.setLastUpdate(time);
         strukAsuransi.setLastUpdateWho(userLogin);
 
@@ -3134,6 +3184,49 @@ public class VerifikatorPembayaranAction {
         response.setInvoice(invoice);
         logger.info("[VerifikatorPembayaranAction.closingJurnalRefundDana] END <<<");
         return response;
+    }
+
+    public String printBuktiRefund(){
+        logger.info("[VerifikatorPembayaranAction.printBuktiRefund] START >>>");
+
+        String branchId = CommonUtil.userBranchLogin();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
+        TelemedicBo telemedicBo = (TelemedicBo) ctx.getBean("telemedicBoProxy");
+
+        ImSimrsPasienEntity pasienEntity = new ImSimrsPasienEntity();
+        ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = telemedicBo.getAntrianTelemedicEntityById(this.id);
+        if (antrianTelemedicEntity != null){
+            pasienEntity = pasienBo.getPasienById(antrianTelemedicEntity.getIdPasien());
+        }
+
+        Branch branches = new Branch();
+        try {
+            branches = branchBo.getBranchById(branchId, "Y");
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when searhc branch logo");
+        }
+
+        String logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + branches.getLogoName();
+        String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(new Timestamp(System.currentTimeMillis()));
+
+        reportParams.put("printDate", formatDate);
+        reportParams.put("unit", branches.getBranchName());
+        reportParams.put("logo", logo);
+        reportParams.put("idAntrian", this.id);
+        reportParams.put("pasienName", pasienEntity.getNama());
+
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            logger.error("[VerifikatorPembayaranAction.printBuktiRefund] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+            return "print_bukti_refund";
+        }
+
+        logger.info("[VerifikatorPembayaranAction.printBuktiRefund] END <<<");
+        return "print_bukti_refund";
     }
 
 }

@@ -267,7 +267,13 @@
                                                     <button class="btn btn-sm btn-primary" onclick="viewBatalDokter('<s:property value="idBatalDokterTelemedic"/>', '<s:property value="id"/>', '<s:property value="idJenisPeriksaPasien"/>', '<s:property value="alasanBatal"/>')"><i class="fa fa-money"></i></button>
                                                 </s:if>
                                                 <s:else>
-                                                    <img src="<s:url value="/pages/images/icon_success.ico" />">
+                                                    <s:url var="print_invo" namespace="/onlinepaymentverif" action="printBuktiRefund_onlinepaymentverif" escapeAmp="false">
+                                                        <s:param name="id"><s:property value="id"/></s:param>
+                                                    </s:url>
+                                                    <s:a href="%{print_invo}" target="_blank">
+                                                        <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>">
+                                                    </s:a>
+                                                    <%--<img src="<s:url value="/pages/images/icon_success.ico" />">--%>
                                                 </s:else>
                                             </s:if>
                                             <s:else>
