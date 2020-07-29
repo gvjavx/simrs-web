@@ -494,6 +494,7 @@
                                     <thead style="background-color: #90ee90;">
                                     <tr>
                                         <td>Keterangan</td>
+                                        <td>Jenis</td>
                                         <td>Biaya</td>
                                     </tr>
                                     </thead>
@@ -506,7 +507,7 @@
                         <span style="display: none; color: red" id="dt-msg-belum-bayar">Resep Belum Siap / Belum ada Biaya</span>
                         <input type="hidden" id="dt-belum-bayar">
                         <div class="row top-7">
-                            <div class="col-md-3" align="right">Cover : </div>
+                            <div class="col-md-3" align="right" id="label-cover">Cover : </div>
                             <div class="col-md-6"><input type="number" class="form-control input-sm" id="dt-cover-asuransi"/></div>
                             <input type="hidden" id="h-dt-cover-asuransi">
                         </div>
@@ -941,8 +942,13 @@
 
                         }
                     } else {
-                        str += "<td></td>" +
-                            "<td></td>";
+                        if (idJenisPeriksaPasien == "asuransi"){
+                            str += "<td></td>";
+                        } else {
+                            str += "<td></td>" +
+                                "<td></td>";
+                        }
+
 //                        console.log("Id Item : "+item.idItem);
 //                        if (idJenisPeriksaPasien == "asuransi" && item.nominal != 0) {
 //                            str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
@@ -1197,11 +1203,12 @@
                             $("#dt-belum-bayar").val(item.flagBelumBayar);
                         }
                         $("#dt-id-struk").val(res.id);
-//                        showListBiaya(idAntrian);
+                        showListBiaya(idAntrian);
 //                        $("#dt-cover-asuransi").val(item.jumlahCover);
 //                        $("#dt-bayar-asuransi").val(item.dibayarPasien);
-//                        $("#dt-cover-asuransi").prop("disabled", 'disabled');
-//                        $("#dt-bayar-asuransi").prop("disabled", 'disabled');
+                        $("#dt-cover-asuransi").hide();
+                        $("#dt-body-check-bayar").hide();
+                        $("#label-cover").hide();
                     }
                 });
             }
@@ -1286,13 +1293,14 @@
            $.each(res, function (i, item) {
               str += "<tr>" +
                       "<td>"+ item.namaTindakan + "</td>"+
+                      "<td>"+ item.jenisPasien +"</td>"+
                       "<td align='right'>"+ formatRupiah(item.totalTarif) +"</td>"+
                   "</tr>";
 
               totalTarif = totalTarif + parseInt(item.totalTarif);
            });
            str += "<tr>" +
-               "<td align='right'>Total : </td>"+
+               "<td align='right' colspan='2'>Total : </td>"+
                "<td align='right'>"+ formatRupiah(totalTarif) +"</td>"+
                "</tr>";
 
