@@ -3187,7 +3187,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
             mapJurnal.put("kas", mapKas);
             mapJurnal.put("piutang_pasien_asuransi", mapPiutang);
             mapJurnal.put("pendapatan_rawat_jalan_asuransi", listOfTindakan);
-            mapJurnal.put("pendapaatan_rawat_jalan_umum", listOfTindakanUmum);
+            mapJurnal.put("pendapatan_rawat_jalan_umum", listOfTindakanUmum);
             transId = "11";
         }
 
