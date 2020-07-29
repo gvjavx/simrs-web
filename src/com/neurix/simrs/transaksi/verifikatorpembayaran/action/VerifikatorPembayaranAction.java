@@ -3215,7 +3215,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
         reportParams.put("unit", branches.getBranchName());
         reportParams.put("logo", logo);
         reportParams.put("idAntrian", this.id);
-        reportParams.put("pasienName", pasienEntity.getNama());
+        reportParams.put("namaPasien", pasienEntity.getNama());
 
         try {
             preDownload();

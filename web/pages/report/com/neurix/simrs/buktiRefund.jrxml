@@ -46,26 +46,26 @@ WHERE flag_kembali is not NULL]]>
 				<text><![CDATA[Refund Telemedic]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="410" y="60" width="59" height="19" uuid="ab5e254a-9634-4181-b07c-b7575e37bda3"/>
-				<textElement>
+				<reportElement x="363" y="68" width="59" height="19" uuid="ab5e254a-9634-4181-b07c-b7575e37bda3"/>
+				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[Printed date : ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="469" y="59" width="100" height="20" uuid="46df8c20-bf98-47ed-8ead-e44e4bcea26f"/>
+				<reportElement x="422" y="67" width="100" height="20" uuid="46df8c20-bf98-47ed-8ead-e44e4bcea26f"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.printDate}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="67" width="100" height="20" uuid="74dcc78b-c158-4da2-82ba-71273d6fa20b"/>
+				<reportElement x="45" y="67" width="100" height="20" uuid="74dcc78b-c158-4da2-82ba-71273d6fa20b"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<text><![CDATA[Pasien : ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="103" y="67" width="100" height="20" uuid="38ca932c-3378-40d2-a9dc-339a43052836"/>
+				<reportElement x="149" y="67" width="100" height="20" uuid="38ca932c-3378-40d2-a9dc-339a43052836"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{reportParams.namaPasien}]]></textFieldExpression>
 			</textField>
@@ -93,7 +93,7 @@ WHERE flag_kembali is not NULL]]>
 					<rightPen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<text><![CDATA[No. Transaksi]]></text>
+				<text><![CDATA[Nominal (Rp)]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="264" y="1" width="100" height="20" backcolor="#CCCCCC" uuid="1edb65ea-3418-4090-afa4-4fdcbe854c74"/>
@@ -134,7 +134,7 @@ WHERE flag_kembali is not NULL]]>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{no_transaksi}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="364" y="0" width="100" height="20" uuid="6c482066-28b3-47db-b4ef-f8729f2d6daf"/>
 				<box leftPadding="3" rightPadding="3">
 					<pen lineWidth="1.0"/>
