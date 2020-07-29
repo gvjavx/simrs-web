@@ -593,6 +593,7 @@ public class TelemedicBoImpl implements TelemedicBo {
 
         bean.setId("TMC"+CommonUtil.stDateSeq()+getSeqTelemedic());
         bean.setBranchId(branchId);
+        bean.setKodeBank(kodeBank);
         Map hsCriteria = new HashMap();
         hsCriteria.put("id_dokter", bean.getIdDokter());
         hsCriteria.put("id_pelayanan", bean.getIdPelayanan());
@@ -1533,5 +1534,33 @@ public class TelemedicBoImpl implements TelemedicBo {
     public ItSimrsBatalTelemedicEntity getEnitityBatalTelemedicById(String idBatalTelemedic) {
         logger.info("[TelemedicBoImpl.getEnitityBatalTelemedicById] START >>>");
         return batalTelemedicDao.getById("id", idBatalTelemedic);
+    }
+
+    @Override
+    public void updateBankCoa(String idTele, String bankCoa) {
+        logger.info("[TelemedicBoImpl.updateBankCoa] START >>>");
+
+        List<ItSimrsAntrianTelemedicEntity> entities = new ArrayList<>();
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id", idTele);
+
+        try {
+           entities = telemedicDao.getByCriteria(hsCriteria);
+        } catch (GeneralBOException e){
+            logger.error("[TelemedicBoImpl.updateBankCoa] ERROR. ", e);
+        }
+
+        if  (entities.size() > 0) {
+
+            entities.get(0).setKodeBank(bankCoa);
+            try {
+                telemedicDao.updateAndSave(entities.get(0));
+            } catch (GeneralBOException e){
+                logger.error("[TelemedicBoImpl.updateBankCoa] ERROR. ", e);
+            }
+
+        }
+        logger.info("[TelemedicBoImpl.updateNoJurnalBatalDokter] END <<<");
     }
 }
