@@ -2934,74 +2934,85 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                 HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
                 detailCheckup.setNoCheckup(headerChekupEntity.getNoCheckup());
                 List<ItSimrsHeaderDetailCheckupEntity> detailCheckupEntities = checkupDetailBo.getListEntityByCriteria(detailCheckup);
+
                 if (detailCheckupEntities.size() > 0){
                     ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = detailCheckupEntities.get(0);
 
                     if (detailCheckupEntity != null) {
-                        BigDecimal cover = detailCheckupEntity.getCoverBiaya() == null ? new BigDecimal(0) : detailCheckupEntity.getCoverBiaya();
-                        BigDecimal dibayarPasien = detailCheckupEntity.getDibayarPasien() == null ? new BigDecimal(0) : detailCheckupEntity.getDibayarPasien();
-
-                        BigDecimal total = cover.add(dibayarPasien);
-                        BigDecimal biayaTindakan = new BigDecimal(0);
-                        BigDecimal biayaResep = new BigDecimal(0);
 
                         RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
                         riwayatTindakan.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
-                        List<ItSimrsRiwayatTindakanEntity> tindakanEntities = riwayatTindakanBo.getListEntityRiwayatTindakan(riwayatTindakan);
-                        if (tindakanEntities.size() > 0){
+                        riwayatTindakan.setJenisPasien("umum");
 
-                            BigDecimal persenDibayar = dibayarPasien.divide(total, BigDecimal.ROUND_HALF_UP, 2).multiply(new BigDecimal(100));
-                            BigDecimal dibayarDariTindakan = new BigDecimal(0);
-                            BigDecimal dibayarDariResep = new BigDecimal(0);
+                        // cari apakah sudah dibuatkan jenis umum;
+                        List<ItSimrsRiwayatTindakanEntity> riwayatTindakanEntities = riwayatTindakanBo.getListEntityRiwayatTindakan(riwayatTindakan);
+                        if (riwayatTindakanEntities.size() == 0){
+                            // jika tidak ada maka prosess selanjutnya
+                            BigDecimal cover = detailCheckupEntity.getCoverBiaya() == null ? new BigDecimal(0) : detailCheckupEntity.getCoverBiaya();
+                            BigDecimal dibayarPasien = detailCheckupEntity.getDibayarPasien() == null ? new BigDecimal(0) : detailCheckupEntity.getDibayarPasien();
 
-                            for (ItSimrsRiwayatTindakanEntity riwayatTindakanEntity : tindakanEntities){
-                                if ("tindakan".equalsIgnoreCase(riwayatTindakanEntity.getKeterangan())){
-                                    biayaTindakan = biayaTindakan.add(riwayatTindakanEntity.getTotalTarif());
-                                    dibayarDariTindakan = biayaTindakan.multiply(persenDibayar.divide(new BigDecimal(100), BigDecimal.ROUND_HALF_UP, 2));
+                            BigDecimal total = cover.add(dibayarPasien);
+                            BigDecimal biayaTindakan = new BigDecimal(0);
+                            BigDecimal biayaResep = new BigDecimal(0);
+
+                            riwayatTindakan = new RiwayatTindakan();
+                            riwayatTindakan.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+                            List<ItSimrsRiwayatTindakanEntity> tindakanEntities = riwayatTindakanBo.getListEntityRiwayatTindakan(riwayatTindakan);
+                            if (tindakanEntities.size() > 0){
+
+                                BigDecimal persenDibayar = dibayarPasien.divide(total, BigDecimal.ROUND_HALF_UP, 2).multiply(new BigDecimal(100));
+                                BigDecimal dibayarDariTindakan = new BigDecimal(0);
+                                BigDecimal dibayarDariResep = new BigDecimal(0);
+
+                                for (ItSimrsRiwayatTindakanEntity riwayatTindakanEntity : tindakanEntities){
+                                    if ("tindakan".equalsIgnoreCase(riwayatTindakanEntity.getKeterangan())){
+                                        biayaTindakan = biayaTindakan.add(riwayatTindakanEntity.getTotalTarif());
+                                        dibayarDariTindakan = biayaTindakan.multiply(persenDibayar.divide(new BigDecimal(100), BigDecimal.ROUND_HALF_UP, 2));
+                                    }
+                                    if ("resep".equalsIgnoreCase(riwayatTindakanEntity.getKeterangan())){
+                                        biayaResep = biayaResep.add(riwayatTindakanEntity.getTotalTarif());
+                                        dibayarDariResep = biayaResep.multiply(persenDibayar.divide(new BigDecimal(100), BigDecimal.ROUND_HALF_UP, 2));
+                                    }
                                 }
-                                if ("resep".equalsIgnoreCase(riwayatTindakanEntity.getKeterangan())){
-                                    biayaResep = biayaResep.add(riwayatTindakanEntity.getTotalTarif());
-                                    dibayarDariResep = biayaResep.multiply(persenDibayar.divide(new BigDecimal(100), BigDecimal.ROUND_HALF_UP, 2));
+
+                                Map mapBiayaTindakan = new HashMap();
+
+                                BigDecimal selisih = new BigDecimal(0);
+                                BigDecimal totalHasilBagi = dibayarDariTindakan.add(dibayarDariResep);
+
+                                if (dibayarPasien.compareTo(totalHasilBagi) == 1){
+                                    selisih = dibayarPasien.subtract(totalHasilBagi);
+                                    selisih = selisih.divide(new BigDecimal(2), BigDecimal.ROUND_HALF_UP, 2);
+                                    dibayarDariTindakan = dibayarDariTindakan.add(selisih);
+                                    dibayarDariResep = dibayarDariResep.add(selisih);
+                                    mapBiayaTindakan.put("tindakan", dibayarDariTindakan);
+                                    mapBiayaTindakan.put("resep", dibayarDariResep);
+                                }  else {
+                                    selisih = totalHasilBagi.subtract(dibayarPasien);
+                                    selisih = selisih.divide(new BigDecimal(2), BigDecimal.ROUND_HALF_UP, 2);
+                                    dibayarDariTindakan = dibayarDariTindakan.subtract(selisih);
+                                    dibayarDariResep = dibayarDariResep.subtract(selisih);
+                                    mapBiayaTindakan.put("tindakan", dibayarDariTindakan);
+                                    mapBiayaTindakan.put("resep", dibayarDariResep);
                                 }
-                            }
-
-                            Map mapBiayaTindakan = new HashMap();
-
-                            BigDecimal selisih = new BigDecimal(0);
-                            BigDecimal totalHasilBagi = dibayarDariTindakan.add(dibayarDariResep);
-
-                            if (dibayarPasien.compareTo(totalHasilBagi) == 1){
-                                selisih = dibayarPasien.subtract(totalHasilBagi);
-                                selisih = selisih.divide(new BigDecimal(2), BigDecimal.ROUND_HALF_UP, 2);
-                                dibayarDariTindakan = dibayarDariTindakan.add(selisih);
-                                dibayarDariResep = dibayarDariResep.add(selisih);
-                                mapBiayaTindakan.put("tindakan", dibayarDariTindakan);
-                                mapBiayaTindakan.put("resep", dibayarDariResep);
-                            }  else {
-                                selisih = totalHasilBagi.subtract(dibayarPasien);
-                                selisih = selisih.divide(new BigDecimal(2), BigDecimal.ROUND_HALF_UP, 2);
-                                dibayarDariTindakan = dibayarDariTindakan.subtract(selisih);
-                                dibayarDariResep = dibayarDariResep.subtract(selisih);
-                                mapBiayaTindakan.put("tindakan", dibayarDariTindakan);
-                                mapBiayaTindakan.put("resep", dibayarDariResep);
-                            }
 
 
-                            for (ItSimrsRiwayatTindakanEntity riwayatTindakanEntity : tindakanEntities){
-                                riwayatTindakanEntity.setLastUpdate(times);
-                                riwayatTindakanEntity.setLastUpdateWho(userLogin);
+                                for (ItSimrsRiwayatTindakanEntity riwayatTindakanEntity : tindakanEntities){
+                                    riwayatTindakanEntity.setLastUpdate(times);
+                                    riwayatTindakanEntity.setLastUpdateWho(userLogin);
 
-                                // membuat versi umum dari dibayar pasien;
-                                saveAddSelisihAsuransiKeUmum(riwayatTindakanEntity, mapBiayaTindakan);
+                                    // membuat versi umum dari dibayar pasien;
+                                    saveAddSelisihAsuransiKeUmum(riwayatTindakanEntity, mapBiayaTindakan);
 
-                                // update biaya masing-masing tindakan;
-                                BigDecimal tindakanDibayar = (BigDecimal) mapBiayaTindakan.get(riwayatTindakanEntity.getKeterangan());
-                                riwayatTindakanEntity.setTotalTarif(riwayatTindakanEntity.getTotalTarif().subtract(tindakanDibayar));
-                                try {
-                                    riwayatTindakanBo.updateByEntity(riwayatTindakanEntity);
-                                } catch (GeneralBOException e){
-                                    logger.error("[VerifikatorPembayaranAction.mappingBiayaSelisihDiBayarPasienAsuransi] ERROR. ", e);
-                                    throw new GeneralBOException("[VerifikatorPembayaranAction.mappingBiayaSelisihDiBayarPasienAsuransi] ERROR. ", e);
+                                    // update biaya masing-masing tindakan;
+                                    BigDecimal tindakanDibayar = (BigDecimal) mapBiayaTindakan.get(riwayatTindakanEntity.getKeterangan());
+                                    riwayatTindakanEntity.setTotalTarif(riwayatTindakanEntity.getTotalTarif().subtract(tindakanDibayar));
+                                    try {
+                                        riwayatTindakanBo.updateByEntity(riwayatTindakanEntity);
+                                    } catch (GeneralBOException e){
+                                        logger.error("[VerifikatorPembayaranAction.mappingBiayaSelisihDiBayarPasienAsuransi] ERROR. ", e);
+                                        throw new GeneralBOException("[VerifikatorPembayaranAction.mappingBiayaSelisihDiBayarPasienAsuransi] ERROR. ", e);
+                                    }
                                 }
                             }
                         }
@@ -3109,7 +3120,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                 listOfTindakan.add(mapTindakan);
 
                 mapTindakan = new HashMap();
-                mapTindakan.put("master_id", masterId);
+                mapTindakan.put("master_id", jenisPriksaPasienBo.getJenisPerikasEntityById("umum").getMasterId());
                 mapTindakan.put("divisi_id", getDivisiId(idDetailCheckup, "umum", keteranganRiwayat));
                 mapTindakan.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "umum", keteranganRiwayat));
                 mapTindakan.put("activity", getAcitivityList(idDetailCheckup, "umum", keteranganRiwayat, kode));
