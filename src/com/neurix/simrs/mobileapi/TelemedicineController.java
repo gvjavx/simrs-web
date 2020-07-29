@@ -19,6 +19,7 @@ import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
 import com.neurix.simrs.transaksi.antriantelemedic.model.StatusAntrianTelemedic;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
+import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
@@ -30,6 +31,7 @@ import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import com.neurix.simrs.transaksi.verifikatorasuransi.dao.StrukAsuransiDao;
 import com.neurix.simrs.transaksi.verifikatorasuransi.model.ItSimrsStrukAsuransiEntity;
 import com.neurix.simrs.transaksi.verifikatorasuransi.model.StrukAsuransi;
+import com.neurix.simrs.transaksi.verifikatorpembayaran.action.VerifikatorPembayaranAction;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.bo.VerifikatorPembayaranBo;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.model.ItSimrsPembayaranOnlineEntity;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.model.PembayaranOnline;
@@ -1350,7 +1352,21 @@ public class TelemedicineController implements ModelDriven<Object> {
             List<NotifikasiFcm> fcm = notifikasiFcmBoProxy.getByCriteria(notif);
             FirebasePushNotif.sendNotificationFirebase(fcm.get(0).getTokenFcm(),"Chat dari " + nama, chat, "CHAT", fcm.get(0).getOs(), null);
 
+        } else if (action.equalsIgnoreCase("approveAsuransi")) {
+            VerifikatorPembayaranAction verifikatorPembayaranAction = new VerifikatorPembayaranAction();
+            CheckResponse response = new CheckResponse();
+
+            try {
+                response = verifikatorPembayaranAction.approveTransaksi(idPembayaranOnline, idPasien, branchId);
+
+            } catch (GeneralBOException e){
+                logger.error("[TelemedicineController.approveAsuransi] Error, " + e.getMessage());
+
+            }
+
+            model.setMessage(response.getStatus());
         }
+
 
         logger.info("[TelemedicineController.create] end process POST / <<<");
         return new DefaultHttpHeaders("create").disableCaching();
