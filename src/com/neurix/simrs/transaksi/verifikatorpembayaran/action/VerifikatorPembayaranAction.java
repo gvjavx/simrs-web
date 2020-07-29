@@ -3291,6 +3291,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
         logger.info("[VerifikatorPembayaranAction.printBuktiRefund] START >>>");
 
         String branchId = CommonUtil.userBranchLogin();
+        String areaName = CommonUtil.userAreaName();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
         PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
@@ -3317,13 +3318,15 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
         reportParams.put("logo", logo);
         reportParams.put("idAntrian", this.id);
         reportParams.put("namaPasien", pasienEntity.getNama());
+        reportParams.put("unit", branches.getBranchName());
+        reportParams.put("area", areaName);
 
         try {
             preDownload();
         } catch (SQLException e) {
             logger.error("[VerifikatorPembayaranAction.printBuktiRefund] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
-            return "print_bukti_refund";
+            return "search";
         }
 
         logger.info("[VerifikatorPembayaranAction.printBuktiRefund] END <<<");
