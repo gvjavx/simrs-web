@@ -5,6 +5,7 @@ import com.neurix.simrs.transaksi.bataltelemedic.model.ItSimrsBatalTelemedicEnti
 import com.neurix.simrs.transaksi.bataltelemedic.model.ItSimrsDokterBatalTelemedicEntity;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
@@ -38,6 +39,7 @@ public class BatalDokterTelemedicDao extends GenericDao<ItSimrsDokterBatalTeleme
         if (mapCriteria.get("batal_date") != null)
             criteria.add(Restrictions.eq("batalDate", (Date) mapCriteria.get("batal_date")));
 
+        criteria.addOrder(Order.desc("id"));
         return criteria.list();
     }
 
