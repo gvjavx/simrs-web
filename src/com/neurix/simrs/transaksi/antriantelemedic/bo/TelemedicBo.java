@@ -4,6 +4,7 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
 import com.neurix.simrs.transaksi.bataltelemedic.model.BatalTelemedic;
+import com.neurix.simrs.transaksi.bataltelemedic.model.ItSimrsBatalTelemedicEntity;
 import com.neurix.simrs.transaksi.reseponline.model.ItSimrsPengirimanObatEntity;
 import com.neurix.simrs.transaksi.reseponline.model.PengirimanObat;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
@@ -42,4 +43,6 @@ public interface TelemedicBo {
     public void generateListPembayaran(ItSimrsAntrianTelemedicEntity bean, String branchId, String tipe, String kodeBank, String jenisPeriksa) throws GeneralBOException;
     public List<ItSimrsAntrianTelemedicEntity> processBatalDokter(AntrianTelemedic bean, String alasan) throws GeneralBOException;
     public void confirmKembalian(BatalTelemedic bean) throws GeneralBOException;
+    public void updateNoJurnalBatalDokter(String idBatalDokter, String noJurnal);
+    public ItSimrsBatalTelemedicEntity getEnitityBatalTelemedicById(String idBatalTelemedic);
 }

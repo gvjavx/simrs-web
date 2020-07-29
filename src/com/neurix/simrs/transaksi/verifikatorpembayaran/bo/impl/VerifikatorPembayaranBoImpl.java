@@ -1062,6 +1062,29 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
         logger.info("[VerifikatorPembayaranBoImpl.saveObatResep] END <<<<<<<");
     }
 
+    @Override
+    public ItSimrsPembayaranOnlineEntity getPembayaranOnlineEntityByIdAntrianAndJenis(String idAntrian, String jenis) throws GeneralBOException {
+        logger.info("[VerifikatorPembayaranBoImpl.getPembayaranOnlineEntityByIdAntrianAndJenis] START >>>>>>>");
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_antrian_telemedic", idAntrian);
+        hsCriteria.put("keterangan", jenis);
+
+        List<ItSimrsPembayaranOnlineEntity> pembayaranOnlineEntities = new ArrayList<>();
+        try {
+            pembayaranOnlineEntities = verifikatorPembayaranDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[VerifikatorPembayaranBoImpl.getPembayaranOnlineEntityByIdAntrianAndJenis]  ERROR. ", e);
+            throw new GeneralBOException("[VerifikatorPembayaranBoImpl.getPembayaranOnlineEntityByIdAntrianAndJenis]  ERROR. ", e);
+        }
+
+        logger.info("[VerifikatorPembayaranBoImpl.getPembayaranOnlineEntityByIdAntrianAndJenis] END <<<<<<<");
+        if (pembayaranOnlineEntities != null){
+            return pembayaranOnlineEntities.get(0);
+        }
+        return null;
+    }
+
     private String getNextIdDiagnosa() {
         String id = "";
         try {

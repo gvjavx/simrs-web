@@ -339,55 +339,57 @@ public class TelemedicBoImpl implements TelemedicBo {
         java.sql.Date date = new java.sql.Date(createdDate.getTime());
 
         Map hsCriteria = new HashMap();
-        hsCriteria.put("id_dokter", idDokter);
-        hsCriteria.put("id_pelayanan", idPelayanan);
+        hsCriteria.put("id_antrian_telemedic", idAntrian);
         hsCriteria.put("flag", "Y");
-        hsCriteria.put("batal_date", date);
 
-        List<ItSimrsDokterBatalTelemedicEntity> dokterBatalTelemedicEntities = new ArrayList<>();
+        List<ItSimrsBatalTelemedicEntity> batalTelemedicEntities = new ArrayList<>();
 
         try {
-            dokterBatalTelemedicEntities = batalDokterTelemedicDao.getByCriteria(hsCriteria);
+            batalTelemedicEntities = batalTelemedicDao.getByCriteria(hsCriteria);
         } catch (HibernateException e){
-            logger.info("[TelemedicBoImpl.getBatalTemedicEntityByIdAntrian] ERROR. when search Dokter Batal Telemedic. ", e);
-            throw new GeneralBOException("[TelemedicBoImpl.getBatalTemedicEntityByIdAntrian] ERROR. when search Dokter Batal Telemedic. "+ e.getMessage());
+            logger.info("[TelemedicBoImpl.getBatalTemedicEntityByIdAntrian] ERROR. when search Telemedic Batal. ", e);
+            throw new GeneralBOException("[TelemedicBoImpl.getBatalTemedicEntityByIdAntrian] ERROR. when search Telemedic Batal. "+ e.getMessage());
         }
 
-        if (dokterBatalTelemedicEntities.size() > 0){
-            ItSimrsDokterBatalTelemedicEntity dokterBatalTelemedicEntity = dokterBatalTelemedicEntities.get(0);
+        if (batalTelemedicEntities.size() > 0){
+            ItSimrsBatalTelemedicEntity batalTelemedicEntity = batalTelemedicEntities.get(0);
 
             hsCriteria = new HashMap();
-            hsCriteria.put("id_dokter_batal", dokterBatalTelemedicEntity.getId());
-            hsCriteria.put("id_antrian_telemedic", idAntrian);
+            hsCriteria.put("id", batalTelemedicEntity.getIdDokterBatal());
+            hsCriteria.put("id_dokter", idDokter);
+            hsCriteria.put("id_pelayanan", idPelayanan);
             hsCriteria.put("flag", "Y");
+            hsCriteria.put("batal_date", date);
 
-            List<ItSimrsBatalTelemedicEntity> batalTelemedicEntities = new ArrayList<>();
-
+            List<ItSimrsDokterBatalTelemedicEntity> dokterBatalTelemedicEntities = new ArrayList<>();
             try {
-                batalTelemedicEntities = batalTelemedicDao.getByCriteria(hsCriteria);
+                dokterBatalTelemedicEntities = batalDokterTelemedicDao.getByCriteria(hsCriteria);
             } catch (HibernateException e){
-                logger.info("[TelemedicBoImpl.getBatalTemedicEntityByIdAntrian] ERROR. when search Telemedic Batal. ", e);
-                throw new GeneralBOException("[TelemedicBoImpl.getBatalTemedicEntityByIdAntrian] ERROR. when search Telemedic Batal. "+ e.getMessage());
+                logger.info("[TelemedicBoImpl.getBatalTemedicEntityByIdAntrian] ERROR. when search Dokter Batal Telemedic. ", e);
+                throw new GeneralBOException("[TelemedicBoImpl.getBatalTemedicEntityByIdAntrian] ERROR. when search Dokter Batal Telemedic. "+ e.getMessage());
             }
 
-            if (batalTelemedicEntities.size() > 0){
-                ItSimrsBatalTelemedicEntity batalTelemedicEntity = batalTelemedicEntities.get(0);
-                BatalTelemedic batalTelemedic = new BatalTelemedic();
-                batalTelemedic.setId(batalTelemedicEntity.getId());
-                batalTelemedic.setIdAntrianTelemedic(batalTelemedicEntity.getIdAntrianTelemedic());
-                batalTelemedic.setIdDokterBatal(batalTelemedicEntity.getIdDokterBatal());
-                batalTelemedic.setFlag(batalTelemedicEntity.getFlag());
-                batalTelemedic.setAction(batalTelemedicEntity.getAction());
-                batalTelemedic.setCreatedDate(batalTelemedicEntity.getCreatedDate());
-                batalTelemedic.setCreatedWho(batalTelemedicEntity.getCreatedWho());
-                batalTelemedic.setNoJurnal(batalTelemedicEntity.getNoJurnal());
-                batalTelemedic.setAlasan(dokterBatalTelemedicEntity.getAlasan());
-                batalTelemedic.setKembaliKonsultasi(batalTelemedicEntity.getKembaliKonsultasi() == null ? new BigDecimal(0) : batalTelemedicEntity.getKembaliKonsultasi());
-                batalTelemedic.setFlagKembaliKonsultasi(batalTelemedicEntity.getFlagKembaliKonsultasi());
-                batalTelemedic.setKembaliResep(batalTelemedicEntity.getKembaliResep() == null ? new BigDecimal(0) : batalTelemedicEntity.getKembaliResep());
-                batalTelemedic.setFlagKembaliResep(batalTelemedicEntity.getFlagKembaliResep());
-                return batalTelemedic;
+            String alasan = "";
+            if (dokterBatalTelemedicEntities.size() > 0){
+                ItSimrsDokterBatalTelemedicEntity dokterBatalTelemedicEntity = dokterBatalTelemedicEntities.get(0);
+                alasan = dokterBatalTelemedicEntity.getAlasan();
             }
+
+            BatalTelemedic batalTelemedic = new BatalTelemedic();
+            batalTelemedic.setId(batalTelemedicEntity.getId());
+            batalTelemedic.setIdAntrianTelemedic(batalTelemedicEntity.getIdAntrianTelemedic());
+            batalTelemedic.setIdDokterBatal(batalTelemedicEntity.getIdDokterBatal());
+            batalTelemedic.setFlag(batalTelemedicEntity.getFlag());
+            batalTelemedic.setAction(batalTelemedicEntity.getAction());
+            batalTelemedic.setCreatedDate(batalTelemedicEntity.getCreatedDate());
+            batalTelemedic.setCreatedWho(batalTelemedicEntity.getCreatedWho());
+            batalTelemedic.setNoJurnal(batalTelemedicEntity.getNoJurnal());
+            batalTelemedic.setAlasan(alasan);
+            batalTelemedic.setKembaliKonsultasi(batalTelemedicEntity.getKembaliKonsultasi() == null ? new BigDecimal(0) : batalTelemedicEntity.getKembaliKonsultasi());
+            batalTelemedic.setFlagKembaliKonsultasi(batalTelemedicEntity.getFlagKembaliKonsultasi());
+            batalTelemedic.setKembaliResep(batalTelemedicEntity.getKembaliResep() == null ? new BigDecimal(0) : batalTelemedicEntity.getKembaliResep());
+            batalTelemedic.setFlagKembaliResep(batalTelemedicEntity.getFlagKembaliResep());
+            return batalTelemedic;
         }
 
         return null;
@@ -1496,5 +1498,28 @@ public class TelemedicBoImpl implements TelemedicBo {
             }
         }
         logger.info("[TelemedicBoImpl.confirmKembalian] END <<<");
+    }
+
+    @Override
+    public void updateNoJurnalBatalDokter(String idBatalDokter, String noJurnal) {
+        logger.info("[TelemedicBoImpl.updateNoJurnalBatalDokter] START >>>");
+        ItSimrsBatalTelemedicEntity batalTelemedicEntity = batalTelemedicDao.getById("id", idBatalDokter);
+        if (batalTelemedicEntity != null){
+
+            batalTelemedicEntity.setNoJurnal(noJurnal);
+            try {
+                batalTelemedicDao.updateAndSave(batalTelemedicEntity);
+            } catch (HibernateException e){
+                logger.error("[TelemedicBoImpl.updateNoJurnalBatalDokter] ERROR. update batal telemedic. ", e);
+                throw new GeneralBOException("[TelemedicBoImpl.updateNoJurnalBatalDokter] ERROR. update batal telemedic. ", e);
+            }
+        }
+        logger.info("[TelemedicBoImpl.updateNoJurnalBatalDokter] END <<<");
+    }
+
+    @Override
+    public ItSimrsBatalTelemedicEntity getEnitityBatalTelemedicById(String idBatalTelemedic) {
+        logger.info("[TelemedicBoImpl.getEnitityBatalTelemedicById] START >>>");
+        return batalTelemedicDao.getById("id", idBatalTelemedic);
     }
 }
