@@ -50,6 +50,7 @@ import com.neurix.simrs.transaksi.verifikatorpembayaran.bo.VerifikatorPembayaran
 import com.neurix.simrs.transaksi.verifikatorpembayaran.dao.VerifikatorPembayaranDao;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.model.ItSimrsPembayaranOnlineEntity;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.model.PembayaranOnline;
+import io.agora.recording.common.Common;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -464,6 +465,7 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
                         DokterTeam dokterTeam = new DokterTeam();
                         dokterTeam.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
                         dokterTeam.setIdDokter(bean.getIdDokter());
+                        dokterTeam.setCreatedWho(bean.getCreatedWho());
                         saveTeamDokter(dokterTeam);
                     }
 
@@ -474,6 +476,7 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
                             diagnosaRawat.setIdDiagnosa(bean.getDiagnosa());
                             diagnosaRawat.setKeteranganDiagnosa(bean.getNamaDiagnosa());
                             diagnosaRawat.setJenisDiagnosa("0");
+                            diagnosaRawat.setCreatedWho(bean.getCreatedWho());
                             saveDiagnosa(diagnosaRawat);
                         }
                     }
@@ -577,8 +580,8 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
             entity.setAction("U");
             entity.setCreatedDate(new Timestamp(System.currentTimeMillis()));
             entity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
-            entity.setCreatedWho(CommonUtil.userLogin());
-            entity.setLastUpdateWho(CommonUtil.userLogin());
+            entity.setCreatedWho(!bean.getCreatedWho().equalsIgnoreCase("") ? bean.getCreatedWho() : CommonUtil.userLogin());
+            entity.setLastUpdateWho(!bean.getCreatedWho().equalsIgnoreCase("") ? bean.getCreatedWho() : CommonUtil.userLogin());
 
             try {
                 diagnosaRawatDao.addAndSave(entity);
@@ -637,9 +640,9 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
         entity.setFlag("Y");
         entity.setAction("C");
         entity.setCreatedDate(new Timestamp(System.currentTimeMillis()));
-        entity.setCreatedWho(CommonUtil.userLogin());
+        entity.setCreatedWho(!bean.getCreatedWho().equalsIgnoreCase("") ? bean.getCreatedWho() : CommonUtil.userLogin());
         entity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
-        entity.setLastUpdateWho(CommonUtil.userLogin());
+        entity.setLastUpdateWho(!bean.getCreatedWho().equalsIgnoreCase("") ? bean.getCreatedWho() : CommonUtil.userLogin());
 
         try {
             dokterTeamDao.addAndSave(entity);
