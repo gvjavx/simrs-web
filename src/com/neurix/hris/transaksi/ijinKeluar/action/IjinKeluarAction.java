@@ -1360,6 +1360,7 @@ public class IjinKeluarAction extends BaseMasterAction {
         List<IjinKeluar> ijinKeluarList= new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         IjinKeluarBo ijinKeluarBo = (IjinKeluarBo) ctx.getBean("ijinKeluarBoProxy");
+        ijinKeluar.setRoleId(CommonUtil.roleIdAsLogin());
         try {
             ijinKeluarList = ijinKeluarBo.getByCriteria(ijinKeluar);
         } catch (GeneralBOException e) {

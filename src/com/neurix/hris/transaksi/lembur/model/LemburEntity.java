@@ -43,6 +43,10 @@ public class LemburEntity implements Serializable {
     private Date tanggalAwalSetuju;
     private Date tanggalAkhirSetuju;
     private String notApprovalNote;
+    private String flagDirubahAtasan;
+    private String jamAwalLama;
+    private String jamAkhirLama;
+    private Double lamaJamLama;
 
     private Timestamp createdDate;
     private String flag;
@@ -325,5 +329,37 @@ public class LemburEntity implements Serializable {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getFlagDirubahAtasan() {
+        return flagDirubahAtasan;
+    }
+
+    public void setFlagDirubahAtasan(String flagDirubahAtasan) {
+        this.flagDirubahAtasan = flagDirubahAtasan;
+    }
+
+    public String getJamAkhirLama() {
+        return jamAkhirLama;
+    }
+
+    public void setJamAkhirLama(String jamAkhirLama) {
+        this.jamAkhirLama = jamAkhirLama;
+    }
+
+    public String getJamAwalLama() {
+        return jamAwalLama;
+    }
+
+    public void setJamAwalLama(String jamAwalLama) {
+        this.jamAwalLama = jamAwalLama;
+    }
+
+    public Double getLamaJamLama() {
+        return lamaJamLama;
+    }
+
+    public void setLamaJamLama(Double lamaJamLama) {
+        this.lamaJamLama = lamaJamLama;
     }
 }

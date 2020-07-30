@@ -933,11 +933,7 @@ public class LemburBoImpl implements LemburBo {
     @Override
     public List<Notifikasi> saveApprove(Lembur bean) throws GeneralBOException {
         logger.info("[LemburBoImpl.saveApprove] start process >>>");
-        List<ImStrukturJabatanEntity> atasan;
         List<Notifikasi> notifikasiList = new ArrayList<>();
-        String atasanName;
-        Map hsCriteria = new HashMap();
-        String atasanNip = null;
 
         if (bean!=null) {
             String LemburId = bean.getLemburId();
@@ -962,6 +958,19 @@ public class LemburBoImpl implements LemburBo {
                     }
                     itLemburEntity.setTanggalAwalSetuju(bean.getTanggalAwalSetuju());
                     itLemburEntity.setTanggalAkhirSetuju(bean.getTanggalAkhirSetuju());
+
+                    if (!bean.getJamAwal().equalsIgnoreCase(itLemburEntity.getJamAwal()) || !bean.getJamAkhir().equalsIgnoreCase(itLemburEntity.getJamAkhir())){
+                        itLemburEntity.setFlagDirubahAtasan("Y");
+                        itLemburEntity.setJamAwalLama(itLemburEntity.getJamAwal());
+                        itLemburEntity.setJamAkhirLama(itLemburEntity.getJamAkhir());
+                        itLemburEntity.setLamaJamLama(itLemburEntity.getLamaJam());
+                    }else {
+                        itLemburEntity.setFlagDirubahAtasan("N");
+                    }
+
+                    itLemburEntity.setJamAwal(bean.getJamAwal());
+                    itLemburEntity.setJamAkhir(bean.getJamAkhir());
+
                     itLemburEntity.setLamaJam(bean.getLamaJam());
                     itLemburEntity.setApprovalId(bean.getApprovalId());
                     itLemburEntity.setApprovalName(bean.getApprovalName());

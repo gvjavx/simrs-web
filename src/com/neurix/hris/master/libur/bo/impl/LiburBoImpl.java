@@ -300,8 +300,13 @@ public class LiburBoImpl implements LiburBo {
                         tipeLibur.setTipeLiburId(liburEntity.getTipeLiburId());
                         tipeLibur.setFlag("Y");
                         List<TipeLibur> tipeLiburs = tipeLiburBo.getByCriteria(tipeLibur);
-                        String tipeLiburName = tipeLiburs.get(0).getTipeLiburName();
-                        returnLibur.setTipeLiburName(tipeLiburName);
+                        if (tipeLiburs.size() > 0){
+                            String tipeLiburName = tipeLiburs.get(0).getTipeLiburName();
+                            returnLibur.setTipeLiburName(tipeLiburName);
+                        }else {
+                            String tipeLiburName = "-";
+                            returnLibur.setTipeLiburName(tipeLiburName);
+                        }
                     }
                     returnLibur.setStCreatedDate(liburEntity.getCreatedDate().toString());
                     returnLibur.setStLastUpdate(liburEntity.getLastUpdate().toString());

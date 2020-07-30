@@ -55,7 +55,15 @@ public class    LemburController implements ModelDriven<Object> {
     private String namaPegawai;
     private String keterangan;
     private String nipUserLogin;
+    private String nameUserLogin;
 
+    public String getNameUserLogin() {
+        return nameUserLogin;
+    }
+
+    public void setNameUserLogin(String nameUserLogin) {
+        this.nameUserLogin = nameUserLogin;
+    }
 
     public String getNipUserLogin() {
         return nipUserLogin;
@@ -204,6 +212,12 @@ public class    LemburController implements ModelDriven<Object> {
             editLembur.setTmpApprove(who);
             editLembur.setNip(nip);
             editLembur.setNipUserLogin(nipUserLogin);
+            editLembur.setLastUpdateWho(nameUserLogin);
+            editLembur.setApprovalName(nameUserLogin);
+            editLembur.setApprovalId(nipUserLogin);
+
+            editLembur.setJamAwal(jamAwal);
+            editLembur.setJamAkhir(jamAkhir);
 
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             java.util.Date tanggalAwalst = simpleDateFormat.parse(tanggalAwal);
@@ -216,13 +230,13 @@ public class    LemburController implements ModelDriven<Object> {
             editLembur.setTanggalAwalSetuju(CommonUtil.convertToDate(tangAwl));
             editLembur.setTanggalAkhirSetuju(CommonUtil.convertToDate(tangAkh));
             editLembur.setLamaJam(Double.valueOf(lamaJamLembur));
-            editLembur.setLastUpdateWho(namaPegawai);
+//            editLembur.setLastUpdateWho(namaPegawai);
 
             editLembur.setLastUpdate(new Timestamp(Calendar.getInstance().getTimeInMillis()));
             editLembur.setAction("U");
             editLembur.setFlag("Y");
             editLembur.setApprovalId(id);
-            editLembur.setApprovalName(namaPegawai);
+//            editLembur.setApprovalName(namaPegawai);
 
             editLembur.setMobile(true);
 

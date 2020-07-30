@@ -277,7 +277,7 @@ public class PayrollTunjanganStrategisBoImpl implements PayrollTunjanganStrategi
     public PayrollTunjanganStrategis saveAdd(PayrollTunjanganStrategis bean) throws GeneralBOException {
         logger.info("[PayrollTunjanganStrategisBoImpl.saveAdd] start process >>>");
         if (bean!=null) {
-            String status = cekStatus(bean.getProfesiId());
+            String status = cekStatus(bean.getProfesiId(), bean.getGolonganId());
             if (!status.equalsIgnoreCase("Exist")){
                 String payrollTunjanganStrategis;
                 try {
@@ -314,7 +314,7 @@ public class PayrollTunjanganStrategisBoImpl implements PayrollTunjanganStrategi
                     throw new GeneralBOException("Found problem when saving new data PayrollTunjanganStrategis, please info to your admin..." + e.getMessage());
                 }
             }else {
-                throw new GeneralBOException("Maaf Jabatan tersebut sudah ada");
+                throw new GeneralBOException("Maaf Data dengan Jabatan dan level tersebut sudah ada");
             }
         }
 
@@ -421,11 +421,11 @@ public class PayrollTunjanganStrategisBoImpl implements PayrollTunjanganStrategi
         return null;
     }
 
-    public String cekStatus(String profesiId)throws GeneralBOException{
+    public String cekStatus(String profesiId, String golonganId)throws GeneralBOException{
         String status ="";
         List<ImPayrollTunjanganStrategisEntity> skalaGajiEntity = new ArrayList<>();
         try {
-            skalaGajiEntity = payrollTunjanganStrategisDao.getListPosition(profesiId);
+            skalaGajiEntity = payrollTunjanganStrategisDao.getListPosition(profesiId, golonganId);
         } catch (HibernateException e) {
             logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
