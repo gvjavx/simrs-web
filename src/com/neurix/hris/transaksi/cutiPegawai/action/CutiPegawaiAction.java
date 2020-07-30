@@ -1217,6 +1217,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
         StrukturJabatanBo strukturJabatanBo = (StrukturJabatanBo) ctx.getBean("strukturJabatanBoProxy");
         NotifikasiBo notifikasiBo= (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
         List<PersonilPosition> personilPositionList = new ArrayList<>();
+        cutiPegawai.setRoleId(CommonUtil.roleIdAsLogin());
 
         try {
             cutiPegawaiList = cutiPegawaiBo.getByCriteria(cutiPegawai);

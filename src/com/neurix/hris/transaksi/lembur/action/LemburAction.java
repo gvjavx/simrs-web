@@ -508,6 +508,7 @@ public class LemburAction extends BaseMasterAction {
         LemburBo lemburBo = (LemburBo) ctx.getBean("lemburBoProxy");
         NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
         String userLogin = CommonUtil.userLogin();
+        String userId = CommonUtil.userIdLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
         Lembur editLembur = new Lembur();
         editLembur.setLemburId(LemburId);
@@ -533,7 +534,9 @@ public class LemburAction extends BaseMasterAction {
         editLembur.setJamAwal(jamAwal);
         editLembur.setJamAkhir(jamAkhir);
         editLembur.setLamaJam(Double.valueOf(lama));
+        editLembur.setApprovalName(userLogin);
         editLembur.setLastUpdateWho(userLogin);
+        editLembur.setApprovalId(userId);
         editLembur.setLastUpdate(updateTime);
         editLembur.setAction("U");
         editLembur.setFlag("Y");

@@ -20,6 +20,15 @@ public class Hemodialisa extends BaseModel {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String isTtd;
+
+    public String getIsTtd() {
+        return isTtd;
+    }
+
+    public void setIsTtd(String isTtd) {
+        this.isTtd = isTtd;
+    }
 
     public String getIdHemodialisa() {
         return idHemodialisa;

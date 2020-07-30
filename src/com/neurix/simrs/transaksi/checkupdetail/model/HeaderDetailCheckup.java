@@ -148,6 +148,125 @@ public class HeaderDetailCheckup extends BaseModel{
 
     private String tglKeluar;
 
+    private String anamnese;
+    private String alergi;
+    private String penunjangMedis;
+    private String keluhanUtama;
+    private String suhu;
+    private String tensi;
+    private String nadi;
+    private String pernafasan;
+    private String alamatLengkap;
+    private String umur;
+
+    private String asesmenLabel;
+    private String kategoriPelayanan;
+    private String pemeriksaanTerakhir;
+
+    public String getPemeriksaanTerakhir() {
+        return pemeriksaanTerakhir;
+    }
+
+    public void setPemeriksaanTerakhir(String pemeriksaanTerakhir) {
+        this.pemeriksaanTerakhir = pemeriksaanTerakhir;
+    }
+
+    public String getKategoriPelayanan() {
+        return kategoriPelayanan;
+    }
+
+    public void setKategoriPelayanan(String kategoriPelayanan) {
+        this.kategoriPelayanan = kategoriPelayanan;
+    }
+
+    public String getAsesmenLabel() {
+        return asesmenLabel;
+    }
+
+    public void setAsesmenLabel(String asesmenLabel) {
+        this.asesmenLabel = asesmenLabel;
+    }
+
+    public String getUmur() {
+        return umur;
+    }
+
+    public void setUmur(String umur) {
+        this.umur = umur;
+    }
+
+    public String getAlamatLengkap() {
+        return alamatLengkap;
+    }
+
+    public void setAlamatLengkap(String alamatLengkap) {
+        this.alamatLengkap = alamatLengkap;
+    }
+
+    public String getPenunjangMedis() {
+        return penunjangMedis;
+    }
+
+    public void setPenunjangMedis(String penunjangMedis) {
+        this.penunjangMedis = penunjangMedis;
+    }
+
+    public String getKeluhanUtama() {
+        return keluhanUtama;
+    }
+
+    public void setKeluhanUtama(String keluhanUtama) {
+        this.keluhanUtama = keluhanUtama;
+    }
+
+    public String getSuhu() {
+        return suhu;
+    }
+
+    public void setSuhu(String suhu) {
+        this.suhu = suhu;
+    }
+
+    public String getTensi() {
+        return tensi;
+    }
+
+    public void setTensi(String tensi) {
+        this.tensi = tensi;
+    }
+
+    public String getNadi() {
+        return nadi;
+    }
+
+    public void setNadi(String nadi) {
+        this.nadi = nadi;
+    }
+
+    public String getPernafasan() {
+        return pernafasan;
+    }
+
+    public void setPernafasan(String pernafasan) {
+        this.pernafasan = pernafasan;
+    }
+
+    public String getAlergi() {
+        return alergi;
+    }
+
+    public void setAlergi(String alergi) {
+        this.alergi = alergi;
+    }
+
+    public String getAnamnese() {
+        return anamnese;
+    }
+
+    public void setAnamnese(String anamnese) {
+        this.anamnese = anamnese;
+    }
+
     public String getTglKeluar() {
         return tglKeluar;
     }

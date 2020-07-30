@@ -453,4 +453,21 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         }
         return listOfResult;
     }
+
+    public List<ImPosition> getPositionBodBoc() {
+        String idBod = "KL44";
+        String idBoc = "KL43";
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class);
+        criteria.add(
+                Restrictions.or(
+                        Restrictions.eq("kelompokId", "" + idBod + ""),
+                        Restrictions.eq("kelompokId", "" + idBoc + "")
+                )
+        );
+        criteria.add(Restrictions.eq("flag", "Y"));
+        criteria.addOrder(Order.asc("positionId"));
+
+        List<ImPosition> results = criteria.list();
+        return results;
+    }
 }

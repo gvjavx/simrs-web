@@ -214,6 +214,9 @@
         <action name="pengiriman/*" class="com.neurix.simrs.mobileapi.PengirimanObatController">
             <interceptor-ref name="mobileStack"/>
         </action>
+        <action name="asuransi/*" class="com.neurix.simrs.mobileapi.AsuransiController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
     </package>
 
 </struts>

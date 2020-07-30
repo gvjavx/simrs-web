@@ -204,8 +204,8 @@
                         <table id="myTable" class="table table-bordered table-striped">
                             <thead >
                             <tr bgcolor="#90ee90">
-                                <td>No Checkup</td>
-                                <td>ID Pasien</td>
+                                <td>ID Detail Checkup</td>
+                                <td>No RM</td>
                                 <td>Nama</td>
                                 <td>Desa</td>
                                 <td>Status</td>
@@ -216,7 +216,7 @@
                             <tbody>
                             <s:iterator value="#session.listOfResult" status="listOfRawatJalan" id="listRawatjalan">
                                 <tr>
-                                    <td><s:property value="noCheckup"/></td>
+                                    <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="desa"/></td>

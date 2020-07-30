@@ -17,6 +17,7 @@
           p:pengirimanObatDao-ref="pengirimanObatDao"
           p:kurirDao-ref="kurirDao"
           p:branchDao-ref="branchDao"
+          p:asuransiDao-ref="asuransiDao"
     />
 
     <bean id="telemedicineController" class="com.neurix.simrs.mobileapi.TelemedicineController"

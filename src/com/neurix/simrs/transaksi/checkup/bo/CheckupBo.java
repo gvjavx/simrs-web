@@ -94,4 +94,13 @@ public interface CheckupBo {
     public List<HeaderCheckup> getListVedioRm(String id) throws GeneralBOException;
     public ItSimrsHeaderChekupEntity getById(String columnName, String id) throws GeneralBOException;
 
+    public CrudResponse updateAnamnese(HeaderCheckup bean) throws GeneralBOException;
+    public String getDiagnosaPasien(String idDetailCheckup) throws GeneralBOException;
+    public String getTindakanRawat(String idDetailCheckup) throws GeneralBOException;
+    public String getPenunjangMedis(String idDetailCheckup) throws GeneralBOException;
+    public String getResepPasien(String idDetailCheckup) throws GeneralBOException;
+    public String getAlergi(String noCheckup) throws GeneralBOException;
+
+    public HeaderCheckup getDataPemeriksaanFisik(String noCheckup) throws GeneralBOException;
+
 }

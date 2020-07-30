@@ -788,13 +788,15 @@
 
                                             <display:column property="nip" sortable="true" title="NIP" />
                                             <display:column property="namaPegawai" sortable="true" title="Nama Pegawai" />
+                                            <display:column property="gender" sortable="true" title="Jenis Kelamin" />
                                             <display:column property="positionName" sortable="true" title="Jabatan" />
                                             <display:column property="profesiName" sortable="true" title="Profesi" />
                                             <display:column property="stTanggalLahir" sortable="true" title="Tanggal Lahir"/>
                                             <display:column property="stTanggalAktif" sortable="true" title="Tanggal Aktif"/>
                                             <display:column property="stTanggalPensiun" sortable="true" title="Tanggal Pensiun"/>
+                                            <display:column property="pendidikanTerakhir" sortable="true" title="Pendidikan Terakhir"/>
 
-                                            <display:column property="lastUpdate" sortable="true" title="Last update"  />
+                                            <display:column property="strLastUpdate" sortable="true" title="Last update"  />
                                             <display:column property="lastUpdateWho" sortable="true" title="Last update who"/>
 
                                         </display:table>

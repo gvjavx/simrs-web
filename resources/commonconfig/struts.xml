@@ -221,6 +221,7 @@
     <include file="sshconfig/com/neurix/simrs/transaksi/rekakmedik/struts/RekamMedisAction.xml"/>
     <include file="sshconfig/com/neurix/hris/transaksi/pendapatanDokter/struts/PendapatanDokterAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/verifikatorpembayaran/struts/VerifikatorPembayaranAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/reseponline/struts/ResepOnlineAction.xml"/>
 
     <!--AKUNTANSI-->
     <!--MASTER -->

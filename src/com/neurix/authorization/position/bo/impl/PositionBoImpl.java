@@ -779,6 +779,68 @@ public class PositionBoImpl implements PositionBo {
         return positionList;
     }
 
+    @Override
+    public List<Position> getComboBodBoc() throws GeneralBOException {
+        logger.info("[PositionBoImpl.getByCriteria] start process >>>");
+
+        List<Position> listOfResultPosition = new ArrayList();
+
+        List<ImPosition> listOfPosition = null;
+        try {
+            listOfPosition = positionDao.getPositionBodBoc();
+        } catch (HibernateException e) {
+            logger.error("[PositionBoImpl.getByCriteria] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        if (listOfPosition != null) {
+            Position resultPosition;
+            for (ImPosition imPosition : listOfPosition) {
+                resultPosition = new Position();
+
+                resultPosition.setPositionId(imPosition.getPositionId());
+                resultPosition.setStPositionId(imPosition.getPositionId().toString());
+                resultPosition.setPositionName(imPosition.getPositionName());
+                resultPosition.setKodering(imPosition.getKodering());
+
+                resultPosition.setDepartmentId(imPosition.getDepartmentId());
+                if(imPosition.getImDepartmentEntity() != null){
+                    resultPosition.setDepartmentName(imPosition.getImDepartmentEntity().getDepartmentName());
+                }else{
+                    resultPosition.setDepartmentName("");
+                }
+
+                if(imPosition.getImKelompokPositionEntity() != null){
+                    resultPosition.setKelompokName(imPosition.getImKelompokPositionEntity().getKelompokName());
+                }else{
+                    resultPosition.setKelompokName("-");
+                }
+                resultPosition.setKelompokId(imPosition.getKelompokId());
+
+                if(imPosition.getImPositionBagianEntity() != null){
+                    resultPosition.setBagianName(imPosition.getImPositionBagianEntity().getBagianName());
+                }else{
+                    resultPosition.setBagianName("-");
+                }
+                resultPosition.setBagianId(imPosition.getBagianId());
+                resultPosition.setFlagDijabatSatuOrang(imPosition.getFlagDijabatSatuOrang());
+                resultPosition.setAction(imPosition.getAction());
+                resultPosition.setCreatedDate(imPosition.getCreatedDate());
+                resultPosition.setCreatedWho(imPosition.getCreatedWho());
+                resultPosition.setLastUpdate(imPosition.getLastUpdate());
+                resultPosition.setLastUpdateWho(imPosition.getLastUpdateWho());
+                resultPosition.setFlag(imPosition.getFlag());
+                resultPosition.setKategori(imPosition.getKategori());
+
+                listOfResultPosition.add(resultPosition);
+            }
+        }
+
+        logger.info("[PositionBoImpl.getByCriteria] end process <<<");
+
+        return listOfResultPosition;
+    }
+
     public List<ImPosition> getPositionByString(String query) throws GeneralBOException {
         String term = "%"+query+"%";
         return positionDao.getListPosition(term);

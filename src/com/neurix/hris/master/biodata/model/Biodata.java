@@ -134,6 +134,8 @@ public class Biodata extends BaseModel {
     private Date tanggalPraPensiun;
     private String stTanggalPraPensiun;
     private String nipLama;
+    private String pendidikanTerakhir;
+    private String strLastUpdate;
 
     public String getProfesiName() {
         return profesiName;
@@ -1049,5 +1051,21 @@ public class Biodata extends BaseModel {
 
     public void setNipLama(String nipLama) {
         this.nipLama = nipLama;
+    }
+
+    public String getPendidikanTerakhir() {
+        return pendidikanTerakhir;
+    }
+
+    public void setPendidikanTerakhir(String pendidikanTerakhir) {
+        this.pendidikanTerakhir = pendidikanTerakhir;
+    }
+
+    public String getStrLastUpdate() {
+        return strLastUpdate;
+    }
+
+    public void setStrLastUpdate(String strLastUpdate) {
+        this.strLastUpdate = strLastUpdate;
     }
 }

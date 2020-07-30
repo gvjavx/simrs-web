@@ -13,15 +13,24 @@
           p:resepOnlineBoProxy-ref="resepOnlineBo"
     />
 
+    <bean id="pengirimanObatAction" class="com.neurix.simrs.transaksi.reseponline.action.ResepOnlineAction"
+          p:resepOnlineBoProxy-ref="resepOnlineBo"
+    />
+
     <bean id="resepOnlineBo" class="com.neurix.simrs.transaksi.reseponline.bo.impl.ResepOnlineBoImpl"
           p:resepOnlineDao-ref="resepOnlineDao"
+          p:pasienDao-ref="pasienDao"
+          p:pelayananDao-ref="pelayananDao"
+          p:branchDao-ref="branchDao"
+          p:kurirDao-ref="kurirDao"
+          p:pengirimanObatDao-ref="pengirimanObatDao"
     />
 
     <bean id="resepOnlineBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="resepOnlineBo">
         <property name="interceptorNames">
             <list>
-                <value>transactionObatPoliInterceptor</value>
+                <value>transactionResepOnlineInterceptor</value>
                 <value>hibernateInterceptor</value>
             </list>
         </property>
@@ -38,6 +47,12 @@
     </bean>
 
     <bean id="resepOnlineDao" class="com.neurix.simrs.transaksi.reseponline.dao.ResepOnlineDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <bean id="pengirimanObatDao" class="com.neurix.simrs.transaksi.reseponline.dao.PengirimanObatDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <bean id="kurirDao" class="com.neurix.simrs.master.kurir.dao.KurirDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

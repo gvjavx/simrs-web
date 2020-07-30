@@ -3,6 +3,10 @@ package com.neurix.simrs.transaksi.rencanaasuhankeperawatan.action;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.askep.bo.DetailAsuhanKeperawatanBo;
+import com.neurix.simrs.master.askep.bo.DiagnosaAsuhanKeperawatanBo;
+import com.neurix.simrs.master.askep.model.DetailAsuhanKeperawatan;
+import com.neurix.simrs.master.askep.model.DiagnosaAsuhanKeperawatan;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.rencanaasuhankeperawatan.bo.RencanaAsuhanKeperawatanBo;
 import com.neurix.simrs.transaksi.rencanaasuhankeperawatan.model.RencanaAsuhanKeperawatan;
@@ -37,14 +41,16 @@ public class RencanaAsuhanKeperawatanAction {
             JSONObject obj = new JSONObject(data);
             RencanaAsuhanKeperawatan catatan = new RencanaAsuhanKeperawatan();
             catatan.setIdDetailCheckup(obj.getString("id_detail_checkup"));
-            catatan.setWaktu(Timestamp.valueOf(obj.getString("waktu")));
+            catatan.setWaktu(obj.getString("waktu"));
             catatan.setDiagnosa(obj.getString("diagnosa"));
-            catatan.setTujuan(obj.getString("tujuan"));
+            catatan.setHasil(obj.getString("hasil"));
             catatan.setIntervensi(obj.getString("intervensi"));
+            catatan.setImplementasi(obj.getString("implementasi"));
+            catatan.setEvaluasi(obj.getString("evaluasi"));
             catatan.setKeterangan(obj.getString("keterangan"));
 
-            if(obj.has("ttd_perawat")){
-                if(!"".equalsIgnoreCase(obj.getString("ttd_perawat"))){
+            if (obj.has("ttd_perawat")) {
+                if (!"".equalsIgnoreCase(obj.getString("ttd_perawat"))) {
                     BASE64Decoder decoder = new BASE64Decoder();
                     byte[] decodedBytes1 = decoder.decodeBuffer(obj.getString("ttd_perawat"));
 
@@ -79,7 +85,7 @@ public class RencanaAsuhanKeperawatanAction {
 
             try {
                 response = rencanaAsuhanKeperawatanBo.saveAdd(catatan);
-            }catch (GeneralBOException e){
+            } catch (GeneralBOException e) {
                 response.setStatus("error");
                 response.setMsg(e.getMessage());
             }
@@ -87,15 +93,46 @@ public class RencanaAsuhanKeperawatanAction {
         return response;
     }
 
-    public List<RencanaAsuhanKeperawatan> getListDetail(String idDetailCheckup) {
+    public List<RencanaAsuhanKeperawatan> getListDetail(String idDetailCheckup, String keterangan) {
         List<RencanaAsuhanKeperawatan> list = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RencanaAsuhanKeperawatanBo rencanaAsuhanKeperawatanBo = (RencanaAsuhanKeperawatanBo) ctx.getBean("rencanaAsuhanKeperawatanBoProxy");
-        if (!"".equalsIgnoreCase(idDetailCheckup)) {
+        if (!"".equalsIgnoreCase(idDetailCheckup) && !"".equalsIgnoreCase(keterangan)) {
             try {
                 RencanaAsuhanKeperawatan catatan = new RencanaAsuhanKeperawatan();
                 catatan.setIdDetailCheckup(idDetailCheckup);
+                catatan.setKeterangan(keterangan);
                 list = rencanaAsuhanKeperawatanBo.getByCriteria(catatan);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error" + e.getMessage());
+            }
+        }
+        return list;
+    }
+
+    public List<DiagnosaAsuhanKeperawatan> getDiagnosaAskep(String key, String tipe) {
+        List<DiagnosaAsuhanKeperawatan> list = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        DiagnosaAsuhanKeperawatanBo diagnosaAsuhanKeperawatanBo = (DiagnosaAsuhanKeperawatanBo) ctx.getBean("diagnosaAsuhanKeperawatanBoProxy");
+        if(!"".equalsIgnoreCase(key) && key != null && !"".equalsIgnoreCase(tipe)){
+            try {
+                list = diagnosaAsuhanKeperawatanBo.getListDiagnosa(key, tipe);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error" + e.getMessage());
+            }
+        }
+        return list;
+    }
+
+    public List<DetailAsuhanKeperawatan> getListDetailDiagnosaAskep(String idDiagnosa) {
+        List<DetailAsuhanKeperawatan> list = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        DetailAsuhanKeperawatanBo detailAsuhanKeperawatanBo = (DetailAsuhanKeperawatanBo) ctx.getBean("detailAsuhanKeperawatanBoProxy");
+        if (!"".equalsIgnoreCase(idDiagnosa) && idDiagnosa != null) {
+            try {
+                DetailAsuhanKeperawatan detailAsuhanKeperawatan = new DetailAsuhanKeperawatan();
+                detailAsuhanKeperawatan.setIdDiagnosaAsuhanKeperawatan(idDiagnosa);
+                list = detailAsuhanKeperawatanBo.getByCriteria(detailAsuhanKeperawatan);
             } catch (GeneralBOException e) {
                 logger.error("Found Error" + e.getMessage());
             }

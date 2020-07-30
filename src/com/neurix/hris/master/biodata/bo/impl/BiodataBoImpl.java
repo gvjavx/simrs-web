@@ -44,6 +44,7 @@ import com.neurix.hris.master.sertifikat.model.Sertifikat;
 import com.neurix.hris.master.strukturJabatan.dao.StrukturJabatanDao;
 import com.neurix.hris.master.strukturJabatan.model.ImStrukturJabatanEntity;
 import com.neurix.hris.master.strukturJabatan.model.StrukturJabatan;
+import com.neurix.hris.master.study.bo.StudyBo;
 import com.neurix.hris.master.study.dao.StudyDao;
 import com.neurix.hris.master.study.model.ImStudyEntity;
 import com.neurix.hris.master.study.model.Study;
@@ -69,6 +70,8 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
 import org.joda.time.*;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
@@ -1885,6 +1888,7 @@ public class BiodataBoImpl implements BiodataBo {
                     returnBiodata.setCreatedWho(personalEntity.getCreatedWho());
                     returnBiodata.setCreatedDate(personalEntity.getCreatedDate());
                     returnBiodata.setLastUpdate(personalEntity.getLastUpdate());
+                    returnBiodata.setStrLastUpdate(personalEntity.getLastUpdate().toString());
                     returnBiodata.setLastUpdateWho(personalEntity.getLastUpdateWho());
                     returnBiodata.setAction(personalEntity.getAction());
                     returnBiodata.setFlag(personalEntity.getFlag());
@@ -1903,6 +1907,26 @@ public class BiodataBoImpl implements BiodataBo {
                                     + "women_employee.png");
                         }
                     }
+
+                    ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
+                    if (personalEntity.getNip() != null){
+                        Study study = new Study();
+                        StudyBo studyBo = (StudyBo) context.getBean("studyBoProxy");
+                        study.setNip(personalEntity.getNip());
+                        study.setFlag("Y");
+                        List<Study> studies = studyBo.getByCriteria(study);
+                        String pendidikanTerkahir = pendidikanTerakhir(studies);
+                        returnBiodata.setPendidikanTerakhir(pendidikanTerkahir);
+
+//                        Branch branch = new Branch();
+//                        BranchBo branchBo = (BranchBo) context.getBean("branchBoProxy");
+//                        branch.setBranchId(entity.getBranchId());
+//                        branch.setFlag("Y");
+//                        List<Branch> branches = branchBo.getByCriteria(branch);
+//                        String branchName = branches.get(0).getBranchName();
+//                        pelayanan.setBranchName(branchName);
+                    }
+
                     listOfResult.add(returnBiodata);
                 }
             }
@@ -4709,8 +4733,11 @@ public class BiodataBoImpl implements BiodataBo {
     private Biodata convertEntityToModel (ImBiodataEntity biodataEntity) {
         logger.info("[BiodataBoImpl.convertEntityToModel] start process >>>");
         Biodata result = new Biodata();
-        result.setNip(biodataEntity.getNip());
-        result.setNamaPegawai(biodataEntity.getNamaPegawai());
+        if (biodataEntity != null) {
+            result.setNip(biodataEntity.getNip());
+            result.setNamaPegawai(biodataEntity.getNamaPegawai());
+            result.setFotoUpload(biodataEntity.getFotoUpload());
+        }
         logger.info("[BiodataBoImpl.convertEntityToModel] start process >>>");
         return result;
     }
@@ -4865,5 +4892,33 @@ public class BiodataBoImpl implements BiodataBo {
         }
 
         return status;
+    }
+
+    private String pendidikanTerakhir ( List<Study> studyEntities ){
+        String pendidikanTerakhir = "";
+        int no = 0;
+
+        for (Study imStudyEntity : studyEntities){
+            if (imStudyEntity.getTypeStudy().equalsIgnoreCase("SD")&&no<=1||imStudyEntity.getTypeStudy().equalsIgnoreCase("SD")&&no==0){
+                pendidikanTerakhir="SD";
+                no=1;
+            }else if (imStudyEntity.getTypeStudy().equalsIgnoreCase("SMP")&&no<=2||imStudyEntity.getTypeStudy().equalsIgnoreCase("SMP")&&no==0){
+                pendidikanTerakhir="SMP";
+                no=2;
+            }else if (imStudyEntity.getTypeStudy().equalsIgnoreCase("SMA")&&no<=3||imStudyEntity.getTypeStudy().equalsIgnoreCase("SMA")&&no==0){
+                pendidikanTerakhir="SMA";
+                no=3;
+            }else if (imStudyEntity.getTypeStudy().equalsIgnoreCase("S1")&&no<=4||imStudyEntity.getTypeStudy().equalsIgnoreCase("S1")&&no==0){
+                pendidikanTerakhir="S1";
+                no=4;
+            }else if (imStudyEntity.getTypeStudy().equalsIgnoreCase("S2")&&no<=5||imStudyEntity.getTypeStudy().equalsIgnoreCase("S2")&&no==0){
+                pendidikanTerakhir="S2";
+                no=5;
+            }else if (imStudyEntity.getTypeStudy().equalsIgnoreCase("S3")&&no<=6||imStudyEntity.getTypeStudy().equalsIgnoreCase("S3")&&no==0){
+                pendidikanTerakhir="S3";
+                no=6;
+            }
+        }
+        return pendidikanTerakhir;
     }
 }

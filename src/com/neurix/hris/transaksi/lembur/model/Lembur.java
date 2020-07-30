@@ -467,4 +467,5 @@ public class Lembur extends BaseModel {
     public void setNipUserLogin(String nipUserLogin) {
         this.nipUserLogin = nipUserLogin;
     }
+
 }

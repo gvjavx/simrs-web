@@ -60,8 +60,6 @@
                 <column name="alamat"/>
             </basic>
 
-
-
         </attributes>
     </entity>
 </entity-mappings>

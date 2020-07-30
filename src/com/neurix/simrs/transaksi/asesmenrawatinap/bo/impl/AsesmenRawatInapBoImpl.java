@@ -52,8 +52,10 @@ public class AsesmenRawatInapBoImpl implements AsesmenRawatInapBo {
                     asesmenRawatInap.setIdAsesmenKeperawatanRawatInap(entity.getIdAsesmenKeperawatanRawatInap());
                     asesmenRawatInap.setIdDetailCheckup(entity.getIdDetailCheckup());
                     asesmenRawatInap.setParameter(entity.getParameter());
-                    if ("ttd_early_warning_score".equalsIgnoreCase(entity.getJenis()) || "ttd_privasi".equalsIgnoreCase(entity.getJenis()) || "ttd_rencana_gigi".equalsIgnoreCase(entity.getJenis())) {
+                    if ("ttd".equalsIgnoreCase(entity.getTipe())) {
                         asesmenRawatInap.setJawaban(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getJawaban());
+                    } else if ("gambar".equalsIgnoreCase(entity.getTipe())) {
+                        asesmenRawatInap.setJawaban(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_IMG_RM + entity.getJawaban());
                     } else {
                         asesmenRawatInap.setJawaban(entity.getJawaban());
                     }
@@ -66,6 +68,8 @@ public class AsesmenRawatInapBoImpl implements AsesmenRawatInapBo {
                     asesmenRawatInap.setCreatedWho(entity.getCreatedWho());
                     asesmenRawatInap.setLastUpdate(entity.getLastUpdate());
                     asesmenRawatInap.setLastUpdateWho(entity.getLastUpdateWho());
+                    asesmenRawatInap.setTipe(entity.getTipe());
+                    asesmenRawatInap.setInformasi(entity.getInformasi());
                     list.add(asesmenRawatInap);
                 }
             }
@@ -93,6 +97,8 @@ public class AsesmenRawatInapBoImpl implements AsesmenRawatInapBo {
                 asesmenRawatInapEntity.setCreatedWho(bean.getCreatedWho());
                 asesmenRawatInapEntity.setLastUpdate(bean.getLastUpdate());
                 asesmenRawatInapEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                asesmenRawatInapEntity.setTipe(bean.getTipe());
+                asesmenRawatInapEntity.setInformasi(bean.getInformasi());
 
                 try {
                     asesmenRawatInapDao.addAndSave(asesmenRawatInapEntity);

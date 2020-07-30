@@ -93,7 +93,7 @@ function listRekamMedisRJ() {
         if (res.length > 0) {
             $.each(res, function (i, item) {
                 table += '<tr>' +
-                    '<td>' + converterDateTime(item.waktu) + '</td>' +
+                    '<td width="15%">' + converterDateTime(item.waktu) + '</td>' +
                     '<td>' + cekNull(item.anamnese) + '</td>' +
                     '<td>' + cekNull(item.pemeriksaanFisik) + '</td>' +
                     '<td>' + cekNull(item.diagnosa) + '</td>' +

@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface HemodialisaBo {
     public List<Hemodialisa> getByCriteria(Hemodialisa bean) throws GeneralBOException;
-    public CrudResponse saveAdd(Hemodialisa bean) throws GeneralBOException;
+    public CrudResponse saveAdd(List<Hemodialisa> list) throws GeneralBOException;
 }

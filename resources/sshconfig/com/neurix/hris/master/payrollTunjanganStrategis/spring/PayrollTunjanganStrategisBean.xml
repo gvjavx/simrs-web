@@ -13,6 +13,7 @@
           p:branchDao-ref="branchDao"
           p:positionDao-ref="positionDao"
           p:golonganDao-ref="golonganDao"
+          p:profesiDao-ref="profesiDao"
           p:payrollTunjanganStrategisHistoryDao-ref="payrollTunjanganStrategisHistoryDao"
     />
 

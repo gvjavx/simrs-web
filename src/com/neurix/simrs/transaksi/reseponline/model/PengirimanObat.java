@@ -33,6 +33,53 @@ public class PengirimanObat {
     private String noPolisi;
     private String noTelpKurir;
 
+    private String lat;
+    private String lon;
+    private String status;
+    private String tipe;
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    private String flagTerkirim;
+
+    public String getFlagTerkirim() {
+        return flagTerkirim;
+    }
+
+    public void setFlagTerkirim(String flagTerkirim) {
+        this.flagTerkirim = flagTerkirim;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLon() {
+        return lon;
+    }
+
+    public void setLon(String lon) {
+        this.lon = lon;
+    }
+
     public String getNoPolisi() {
         return noPolisi;
     }

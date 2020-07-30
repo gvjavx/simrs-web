@@ -96,7 +96,7 @@
 
 
 
-                <legend align="left">Delete Payroll Gaji Pkwt</legend>
+                <legend align="left">Delete Payroll Gaji PKWT</legend>
 
 
                 <table>

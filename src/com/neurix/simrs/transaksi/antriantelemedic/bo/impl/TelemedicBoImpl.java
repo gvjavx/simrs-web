@@ -6,6 +6,9 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.dokter.dao.DokterDao;
 import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
+import com.neurix.simrs.master.jenisperiksapasien.bo.AsuransiBo;
+import com.neurix.simrs.master.jenisperiksapasien.dao.AsuransiDao;
+import com.neurix.simrs.master.jenisperiksapasien.model.ImSimrsAsuransiEntity;
 import com.neurix.simrs.master.kurir.dao.KurirDao;
 import com.neurix.simrs.master.kurir.model.ImSimrsKurirEntity;
 import com.neurix.simrs.master.pasien.dao.PasienDao;
@@ -35,6 +38,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -55,6 +59,11 @@ public class TelemedicBoImpl implements TelemedicBo {
     private PengirimanObatDao pengirimanObatDao;
     private KurirDao kurirDao;
     private BranchDao branchDao;
+    private AsuransiDao asuransiDao;
+
+    public void setAsuransiDao(AsuransiDao asuransiDao) {
+        this.asuransiDao = asuransiDao;
+    }
 
     public void setBranchDao(BranchDao branchDao) {
         this.branchDao = branchDao;
@@ -120,12 +129,20 @@ public class TelemedicBoImpl implements TelemedicBo {
     public List<AntrianTelemedic> getSearchByCriteria(AntrianTelemedic bean) throws GeneralBOException {
         logger.info("[TelemedicBoImpl.getSearchByCriteria] START >>>");
 
+        // untuk pencarian berdasarkan id transaksi
+        if (bean.getIdTransaksi() != null && !"".equalsIgnoreCase(bean.getIdTransaksi())){
+            ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = verifikatorPembayaranDao.getById("id", bean.getIdTransaksi());
+            if (pembayaranOnlineEntity != null){
+                bean.setIdTransaksi(bean.getIdTransaksi());
+            }
+        }
+
         List<AntrianTelemedic> results = new ArrayList<>();
         List<ItSimrsAntrianTelemedicEntity> antrianTelemedicEntities = getListEntityByCriteria(bean);
         if (antrianTelemedicEntities.size() > 0){
 
             AntrianTelemedic antrianTelemedic;
-            for (ItSimrsAntrianTelemedicEntity telemedicEntity : antrianTelemedicEntities){
+            for (ItSimrsAntrianTelemedicEntity telemedicEntity : antrianTelemedicEntities) {
                 antrianTelemedic = new AntrianTelemedic();
                 antrianTelemedic.setId(telemedicEntity.getId());
                 antrianTelemedic.setIdPasien(telemedicEntity.getIdPasien());
@@ -148,14 +165,34 @@ public class TelemedicBoImpl implements TelemedicBo {
                 antrianTelemedic.setFlagBayarResep(telemedicEntity.getFlagBayarResep());
                 antrianTelemedic.setFlag(telemedicEntity.getFlag());
                 antrianTelemedic.setAction(telemedicEntity.getAction());
-                antrianTelemedic.setNamaPelayanan(getPelayananById(telemedicEntity.getIdPelayanan()).getNamaPelayanan());
-                antrianTelemedic.setNamaDokter(getDokterById(telemedicEntity.getIdDokter()).getNamaDokter());
-                antrianTelemedic.setNamaPasien(getPasienById(telemedicEntity.getIdPasien()).getNama());
+                antrianTelemedic.setJenisPengambilan(telemedicEntity.getJenisPengambilan());
+                antrianTelemedic.setJumlahCover(telemedicEntity.getJumlahCover());
+                antrianTelemedic.setNoSep(telemedicEntity.getNoSep());
+                antrianTelemedic.setNoRujukan(telemedicEntity.getNoRujukan());
+                antrianTelemedic.setJenisRujukan(telemedicEntity.getJenisRujukan());
+                antrianTelemedic.setIdDiagnosa(telemedicEntity.getIdDiagnosa());
+                antrianTelemedic.setKetDiagnosa(telemedicEntity.getKetDiagnosa());
+
+                if (telemedicEntity.getIdPelayanan() != null && !"".equalsIgnoreCase(telemedicEntity.getIdPelayanan())) {
+                    antrianTelemedic.setNamaPelayanan(getPelayananById(telemedicEntity.getIdPelayanan()).getNamaPelayanan());
+                }
+                if (telemedicEntity.getIdPasien() != null && !"".equalsIgnoreCase(telemedicEntity.getIdPasien())) {
+                    antrianTelemedic.setNamaPasien(getPasienById(telemedicEntity.getIdPasien()).getNama());
+                }
+                if (telemedicEntity.getIdDokter() != null && !"".equalsIgnoreCase(telemedicEntity.getIdDokter())) {
+                    antrianTelemedic.setNamaDokter(getDokterById(telemedicEntity.getIdDokter()).getNamaDokter());
+                }
+                if (telemedicEntity.getIdAsuransi() != null && !"".equalsIgnoreCase(telemedicEntity.getIdAsuransi())) {
+                    antrianTelemedic.setNamaAsuransi(getAsuransiById(telemedicEntity.getIdAsuransi()).getNamaAsuransi());
+                }
+
                 antrianTelemedic.setKetStatus(ketStatus(telemedicEntity.getStatus()));
                 antrianTelemedic.setKetFlagResep(ketResep(telemedicEntity.getFlagResep()));
                 antrianTelemedic.setKodeBank(telemedicEntity.getKodeBank());
                 antrianTelemedic.setBranchId(telemedicEntity.getBranchId());
                 antrianTelemedic.setKeluhan(telemedicEntity.getKeluhan());
+                antrianTelemedic.setFlagEresep(telemedicEntity.getFlagEresep());
+                antrianTelemedic.setUrlResep(telemedicEntity.getUrlFotoResep());
 
                 // cari pembayaran online konsultasi;
                 PembayaranOnline pembayaranOnline = new PembayaranOnline();
@@ -163,8 +200,8 @@ public class TelemedicBoImpl implements TelemedicBo {
                 pembayaranOnline.setKeterangan("konsultasi");
 
                 List<PembayaranOnline> listKonsultasi = getListPembayaranOnline(pembayaranOnline);
-                if (listKonsultasi.size() > 0){
-                    for (PembayaranOnline konsultasi : listKonsultasi){
+                if (listKonsultasi.size() > 0) {
+                    for (PembayaranOnline konsultasi : listKonsultasi) {
                         antrianTelemedic.setApproveKonsultasi(konsultasi.getApprovedFlag());
                     }
                 }
@@ -175,8 +212,8 @@ public class TelemedicBoImpl implements TelemedicBo {
                 pembayaranOnline.setIdAntrianTelemedic(telemedicEntity.getId());
                 pembayaranOnline.setKeterangan("resep");
                 List<PembayaranOnline> listResep = getListPembayaranOnline(pembayaranOnline);
-                if (listResep.size() > 0){
-                    for (PembayaranOnline resep : listResep){
+                if (listResep.size() > 0) {
+                    for (PembayaranOnline resep : listResep) {
                         antrianTelemedic.setApproveResep(resep.getApprovedFlag());
                     }
                 }
@@ -184,7 +221,9 @@ public class TelemedicBoImpl implements TelemedicBo {
 
                 if (antrianTelemedic.getFlagResep() == null && antrianTelemedic.getApproveKonsultasi() != null) {
                     antrianTelemedic.setStatusTransaksi("finish");
-                } else if ("Y".equalsIgnoreCase(antrianTelemedic.getFlagResep()) && antrianTelemedic.getApproveKonsultasi() != null && antrianTelemedic.getApproveResep() != null){
+                } else if ("Y".equalsIgnoreCase(antrianTelemedic.getFlagResep()) && antrianTelemedic.getApproveKonsultasi() != null && antrianTelemedic.getApproveResep() != null) {
+                    antrianTelemedic.setStatusTransaksi("finish");
+                } else if ("Y".equalsIgnoreCase(antrianTelemedic.getApproveResep()) && "Y".equalsIgnoreCase(telemedicEntity.getFlagBayarResep())){
                     antrianTelemedic.setStatusTransaksi("finish");
                 } else {
                     antrianTelemedic.setStatusTransaksi("exist");
@@ -260,6 +299,10 @@ public class TelemedicBoImpl implements TelemedicBo {
                     return "Waiting List . . .";
                 case "SL":
                     return "Antrian Short List . . .";
+                case "ER":
+                    return "Pembayaran E Resep . . .";
+                case "FN":
+                    return "Selesai";
                 default:
                     return "";
             }
@@ -288,6 +331,10 @@ public class TelemedicBoImpl implements TelemedicBo {
 
     private ImSimrsPasienEntity getPasienById(String idPasien) throws GeneralBOException{
         return pasienDao.getById("idPasien", idPasien);
+    }
+
+    private ImSimrsAsuransiEntity getAsuransiById(String idAsuransi) throws GeneralBOException{
+        return asuransiDao.getById("idAsuransi", idAsuransi);
     }
 
     @Override
@@ -319,6 +366,15 @@ public class TelemedicBoImpl implements TelemedicBo {
         }
         if (bean.getIdJenisPeriksaPasien() != null && !"".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
             hsCriteria.put("jenis_pasien", bean.getIdJenisPeriksaPasien());
+        }
+        if (bean.getFlagResep() != null && !"".equalsIgnoreCase(bean.getFlagResep())){
+            hsCriteria.put("flag_resep", bean.getFlagResep());
+        }
+        if (bean.getFlagBayarResep() != null && !"".equalsIgnoreCase(bean.getFlagBayarResep())) {
+            hsCriteria.put("flag_bayar_resep", bean.getFlagBayarResep());
+        }
+        if (bean.getFlagEresep() != null && !"".equalsIgnoreCase(bean.getFlagEresep())) {
+            hsCriteria.put("flag_eresep", bean.getFlagEresep());
         }
 
         List<ItSimrsAntrianTelemedicEntity> antrianTelemedicEntities = new ArrayList<>();
@@ -358,6 +414,11 @@ public class TelemedicBoImpl implements TelemedicBo {
             bean.setStatus("WL");
         }
 
+        // jika ERESEP
+        if ("Y".equalsIgnoreCase(bean.getFlagEresep())){
+            bean.setStatus("ER");
+        }
+
         try {
             telemedicDao.addAndSave(bean);
         } catch (HibernateException e){
@@ -368,6 +429,9 @@ public class TelemedicBoImpl implements TelemedicBo {
         // jika waiting list maka generate daftar pembayaran;
         if ("WL".equalsIgnoreCase(bean.getStatus())){
             generateListPembayaran(bean, branchId, "konsultasi", kodeBank);
+            if ("Y".equalsIgnoreCase(bean.getFlagResep())){
+                generateListPembayaran(bean, branchId, "resep", kodeBank);
+            }
         }
         logger.info("[TelemedicBoImpl.saveAdd] END <<<");
         return bean.getId();
@@ -391,7 +455,12 @@ public class TelemedicBoImpl implements TelemedicBo {
                 telemedicEntity.setFlagResep(bean.getFlagResep() == null ? telemedicEntity.getFlagResep() : bean.getFlagResep());
                 telemedicEntity.setFlagBayarResep(bean.getFlagBayarResep() == null ? telemedicEntity.getFlagBayarResep() : bean.getFlagBayarResep());
                 telemedicEntity.setFlagBayarKonsultasi(bean.getFlagBayarKonsultasi() == null  ? telemedicEntity.getFlagBayarKonsultasi() : bean.getFlagBayarKonsultasi());
-                telemedicEntity.setStatus(bean.getStatus());
+                telemedicEntity.setStatus(bean.getStatus() == null ? statusSebelum : bean.getStatus());
+                telemedicEntity.setJumlahCover(bean.getJumlahCover() == null ? telemedicEntity.getJumlahCover() : bean.getJumlahCover());
+                telemedicEntity.setNoJurnal(bean.getNoJurnal() == null ? telemedicEntity.getNoJurnal() : bean.getNoJurnal());
+                telemedicEntity.setNoSep(bean.getNoSep() == null ? telemedicEntity.getNoSep() : bean.getNoSep());
+                telemedicEntity.setIdDiagnosa(bean.getIdDiagnosa() == null ? telemedicEntity.getIdDiagnosa() : bean.getIdDiagnosa());
+                telemedicEntity.setKetDiagnosa(bean.getKetDiagnosa() == null ? telemedicEntity.getKetDiagnosa() : bean.getKetDiagnosa());
                 telemedicEntity.setAction("U");
                 telemedicEntity.setLastUpdate(bean.getLastUpdate());
                 telemedicEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -406,6 +475,9 @@ public class TelemedicBoImpl implements TelemedicBo {
                 // jika waiting list maka generate daftar pembayaran jika perubahan dari LL ke WL;
                 if ("LL".equalsIgnoreCase(statusSebelum) && "WL".equalsIgnoreCase(telemedicEntity.getStatus())){
                     generateListPembayaran(telemedicEntity, branchId, "konsultasi", kodeBank);
+                    if ("Y".equalsIgnoreCase(telemedicEntity.getFlagResep())){
+                        generateListPembayaran(telemedicEntity, branchId, "resep", kodeBank);
+                    }
                 }
             }
         }
@@ -414,47 +486,46 @@ public class TelemedicBoImpl implements TelemedicBo {
     private void generateListPembayaran(ItSimrsAntrianTelemedicEntity bean, String branchId, String tipe, String kodeBank) throws GeneralBOException{
         logger.info("[TelemedicBoIml.generateListPembayaran] START >>>");
 
-        // mencari tindakan konsultasi;
-        Map hsCriteria = new HashMap();
-        hsCriteria.put("branch_id", branchId);
-        hsCriteria.put("kategori_ina_bpjs", "konsultasi");
-        List<ImSimrsTindakanEntity> tindakanEntities = tindakanDao.getByCriteria(hsCriteria);
-        ImSimrsTindakanEntity tindakanEntity = null;
-        if (tindakanEntities.size() > 0){
-            tindakanEntity = new ImSimrsTindakanEntity();
-            tindakanEntity = tindakanEntities.get(0);
-        }
+        if ("konsultasi".equalsIgnoreCase(tipe)){
+            // mencari tindakan konsultasi;
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("branch_id", branchId);
+            hsCriteria.put("kategori_ina_bpjs", "konsultasi");
+            List<ImSimrsTindakanEntity> tindakanEntities = tindakanDao.getByCriteria(hsCriteria);
+            ImSimrsTindakanEntity tindakanEntity = null;
+            if (tindakanEntities.size() > 0){
+                tindakanEntity = new ImSimrsTindakanEntity();
+                tindakanEntity = tindakanEntities.get(0);
+            }
 
-        ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = new ItSimrsPembayaranOnlineEntity();
-        pembayaranOnlineEntity.setId(bean.getId()+"INV"+getSeqPembayaranOnline());
-        pembayaranOnlineEntity.setIdAntrianTelemedic(bean.getId());
-        pembayaranOnlineEntity.setLastUpdate(bean.getLastUpdate());
+            ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = new ItSimrsPembayaranOnlineEntity();
+            pembayaranOnlineEntity.setId(getSeqPembayaranOnline(bean.getId()));
+            pembayaranOnlineEntity.setIdAntrianTelemedic(bean.getId());
+            pembayaranOnlineEntity.setLastUpdate(bean.getLastUpdate());
 
-        if (tindakanEntity != null){
-            if (!"bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+            if (tindakanEntity != null){
                 pembayaranOnlineEntity.setIdItem(tindakanEntity.getIdTindakan());
                 pembayaranOnlineEntity.setNominal(new BigDecimal(tindakanEntity.getTarif()));
             }
-        }
 
-        pembayaranOnlineEntity.setFlag(bean.getFlag());
-        pembayaranOnlineEntity.setCreatedDate(bean.getCreatedDate());
-        pembayaranOnlineEntity.setCreatedWho(bean.getCreatedWho());
-        pembayaranOnlineEntity.setLastUpdate(bean.getLastUpdate());
-        pembayaranOnlineEntity.setLastUpdateWho(bean.getLastUpdateWho());
-        pembayaranOnlineEntity.setKeterangan(tipe);
-        pembayaranOnlineEntity.setKodeBank(kodeBank);
+            pembayaranOnlineEntity.setFlag(bean.getFlag());
+            pembayaranOnlineEntity.setCreatedDate(bean.getCreatedDate());
+            pembayaranOnlineEntity.setCreatedWho(bean.getCreatedWho());
+            pembayaranOnlineEntity.setLastUpdate(bean.getLastUpdate());
+            pembayaranOnlineEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            pembayaranOnlineEntity.setKeterangan(tipe);
+            pembayaranOnlineEntity.setKodeBank(kodeBank);
 
-        try {
-            verifikatorPembayaranDao.addAndSave(pembayaranOnlineEntity);
-        } catch (HibernateException e){
-            logger.error("[TelemedicBoIml.generateListPembayaran] ERROR. ",e);
-            throw new GeneralBOException("[TelemedicBoIml.generateListPembayaran] ERROR. ",e);
-        }
-
-        if ("Y".equalsIgnoreCase(bean.getFlagResep())){
-            pembayaranOnlineEntity = new ItSimrsPembayaranOnlineEntity();
-            pembayaranOnlineEntity.setId(bean.getId()+"INV"+getSeqPembayaranOnline());
+            try {
+                verifikatorPembayaranDao.addAndSave(pembayaranOnlineEntity);
+            } catch (HibernateException e){
+                logger.error("[TelemedicBoIml.generateListPembayaran] ERROR. ",e);
+                throw new GeneralBOException("[TelemedicBoIml.generateListPembayaran] ERROR. ",e);
+            }
+        } else if ("resep".equalsIgnoreCase(tipe)){
+            // for resep
+            ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = new ItSimrsPembayaranOnlineEntity();
+            pembayaranOnlineEntity.setId(getSeqPembayaranOnline(bean.getId()));
             pembayaranOnlineEntity.setIdAntrianTelemedic(bean.getId());
             pembayaranOnlineEntity.setLastUpdate(bean.getLastUpdate());
             pembayaranOnlineEntity.setFlag(bean.getFlag());
@@ -579,16 +650,19 @@ public class TelemedicBoImpl implements TelemedicBo {
     }
 
     @Override
-    public void insertResepOnline(String idTransaksiOnline, List<TransaksiObatDetail> listObat) throws GeneralBOException {
+    public BigDecimal insertResepOnline(String idTransaksiOnline, List<TransaksiObatDetail> listObat) throws GeneralBOException {
         logger.info("[VerifikatorPembayaranBoImpl.insertResepOnline] START >>>");
+        BigDecimal hargaTotal = new BigDecimal(0);
+        Timestamp now = new Timestamp(System.currentTimeMillis());
 
         for (TransaksiObatDetail obatDetail : listObat){
 
-            BigDecimal harga = new BigDecimal(0);
 
             Map hsCriteria = new HashMap();
             hsCriteria.put("id_obat", obatDetail.getIdObat());
             List<MtSimrsHargaObatEntity> hargaObatEntities = hargaObatDao.getByCriteria(hsCriteria);
+            BigDecimal harga = new BigDecimal(0);
+
             if (hargaObatEntities.size() > 0){
 
                 MtSimrsHargaObatEntity hargaObatEntity = hargaObatEntities.get(0);
@@ -612,6 +686,9 @@ public class TelemedicBoImpl implements TelemedicBo {
                 resepOnlineEntity.setLastUpdateWho(obatDetail.getLastUpdateWho());
                 resepOnlineEntity.setTtdDokter(obatDetail.getTtdDokter());
                 resepOnlineEntity.setIdDokter(obatDetail.getCreatedWho());
+                resepOnlineEntity.setKeterangan(obatDetail.getKeterangan());
+
+                hargaTotal = hargaTotal.add(resepOnlineEntity.getSubTotal());
 
                 try {
                     resepOnlineDao.addAndSave(resepOnlineEntity);
@@ -622,7 +699,129 @@ public class TelemedicBoImpl implements TelemedicBo {
             }
         }
 
+        List<ItSimrsPembayaranOnlineEntity> listPembayaran;
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id", idTransaksiOnline);
+
+        try{
+           listPembayaran = verifikatorPembayaranDao.getByCriteria(hsCriteria);
+        } catch (GeneralBOException e) {
+            logger.error("[VerifikatorPembayaranBoImpl.insertResepOnline] ERROR. ", e);
+            throw new GeneralBOException("[VerifikatorPembayaranBoImpl.insertResepOnline] ERROR. ", e);
+        }
+
+        if (listPembayaran.size() > 0){
+            ItSimrsPembayaranOnlineEntity newPembayaran = listPembayaran.get(0);
+            newPembayaran.setNominal(hargaTotal);
+            newPembayaran.setLastUpdate(now);
+            newPembayaran.setLastUpdateWho("admin");
+
+            try {
+                verifikatorPembayaranDao.updateAndSave(newPembayaran);
+            } catch (GeneralBOException e) {
+                logger.error("[VerifikatorPembayaranBoImpl.insertResepOnline] ERROR. ", e);
+                throw new GeneralBOException("[VerifikatorPembayaranBoImpl.insertResepOnline] ERROR. ", e);
+            }
+        }
+
         logger.info("[VerifikatorPembayaranBoImpl.insertResepOnline] END <<<");
+        return hargaTotal;
+    }
+
+    @Override
+    public void createPembayaranResep(AntrianTelemedic bean, List<TransaksiObatDetail> listObat) throws GeneralBOException {
+        logger.info("[VerifikatorPembayaranBoImpl.createPembayaranResep] START >>>");
+
+        ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = new ItSimrsPembayaranOnlineEntity();
+        pembayaranOnlineEntity = new ItSimrsPembayaranOnlineEntity();
+        pembayaranOnlineEntity.setId(getSeqPembayaranOnline(bean.getId()));
+        pembayaranOnlineEntity.setIdAntrianTelemedic(bean.getId());
+        pembayaranOnlineEntity.setLastUpdate(bean.getLastUpdate());
+        pembayaranOnlineEntity.setFlag(bean.getFlag());
+        pembayaranOnlineEntity.setCreatedDate(bean.getCreatedDate());
+        pembayaranOnlineEntity.setCreatedWho(bean.getCreatedWho());
+        pembayaranOnlineEntity.setLastUpdate(bean.getLastUpdate());
+        pembayaranOnlineEntity.setLastUpdateWho(bean.getLastUpdateWho());
+        pembayaranOnlineEntity.setKeterangan("resep");
+        pembayaranOnlineEntity.setNominal(new BigDecimal(0));
+
+        if (listObat.size() > 0){
+            BigDecimal harga = insertResepOnline(pembayaranOnlineEntity.getId(), listObat);
+            pembayaranOnlineEntity.setNominal(harga);
+        }
+
+        try {
+            verifikatorPembayaranDao.addAndSave(pembayaranOnlineEntity);
+        } catch (HibernateException e){
+            logger.error("[TelemedicBoIml.createPembayaranResep] ERROR. ",e);
+            throw new GeneralBOException("[TelemedicBoIml.createPembayaranResep] ERROR. ",e);
+        }
+
+        logger.info("[VerifikatorPembayaranBoImpl.createPembayaranResep] START >>>");
+    }
+
+    @Override
+    public List<PengirimanObat> getPengirimanByCriteria(PengirimanObat bean) throws GeneralBOException{
+        logger.info("[TelemedicBoImpl.getPembayaranByCriteria] START <<<");
+
+        List<ItSimrsPengirimanObatEntity> result = new ArrayList<>();
+        List<PengirimanObat> resultReturn = new ArrayList<>();
+
+        Map hsCriteria = new HashMap();
+        if (bean.getId() != null) {
+            hsCriteria.put("id", bean.getId());
+        }
+        if (bean.getIdKurir() != null) {
+            hsCriteria.put("id_kurir", bean.getIdKurir());
+        }
+        if (bean.getIdPasien() != null) {
+            hsCriteria.put("id_pasien", bean.getIdPasien());
+        }
+        if (bean.getIdPelayanan() != null) {
+            hsCriteria.put("id_pelayanan", bean.getIdPelayanan());
+        }
+        if (bean.getIdResep() != null) {
+            hsCriteria.put("id_resep", bean.getIdResep());
+        }
+        hsCriteria.put("flag", "Y");
+
+        try {
+            result = pengirimanObatDao.getByCriteria(hsCriteria);
+
+        } catch (GeneralBOException e) {
+            logger.error("[VerifikatorPembayaranBoImpl.insertResepOnline] ERROR. ", e);
+            throw new GeneralBOException("[VerifikatorPembayaranBoImpl.insertResepOnline] ERROR. ", e);
+        }
+
+
+        for (ItSimrsPengirimanObatEntity item : result) {
+            PengirimanObat pengirimanObat = new PengirimanObat();
+            pengirimanObat.setId(item.getId());
+            pengirimanObat.setIdPasien(item.getIdPasien());
+            pengirimanObat.setIdPelayanan(item.getIdPelayanan());
+            pengirimanObat.setIdResep(item.getIdResep());
+            pengirimanObat.setIdKurir(item.getIdKurir());
+            pengirimanObat.setBranchId(item.getBranchId());
+            pengirimanObat.setDesaId(item.getDesaId());
+            pengirimanObat.setNoTelp(item.getNoTelp());
+            pengirimanObat.setFlagDiterimaPasien(item.getFlagDiterimaPasien());
+            pengirimanObat.setFlagPickup(item.getFlagPickup());
+            pengirimanObat.setFlag(item.getFlag());
+            pengirimanObat.setAction(item.getAction());
+            pengirimanObat.setCreatedWho(item.getCreatedWho());
+            pengirimanObat.setCreatedDate(item.getCreatedDate());
+            pengirimanObat.setLastUpdate(item.getLastUpdate());
+            pengirimanObat.setLastUpdateWho(item.getLastUpdateWho());
+            pengirimanObat.setAlamat(item.getAlamat());
+            pengirimanObat.setLat(item.getLat());
+            pengirimanObat.setLon(item.getLon());
+            resultReturn.add(pengirimanObat);
+        }
+
+
+        logger.info("[TelemedicBoImpl.getPembayaranByCriteria] END <<<");
+        return resultReturn;
+
     }
 
     @Override
@@ -665,9 +864,47 @@ public class TelemedicBoImpl implements TelemedicBo {
         entity.setCreatedWho(bean.getCreatedWho());
         entity.setLastUpdate(bean.getLastUpdate());
         entity.setLastUpdateWho(bean.getLastUpdateWho());
+        entity.setLat(bean.getLat());
+        entity.setLon(bean.getLon());
 
         try {
             pengirimanObatDao.updateAndSave(entity);
+        } catch (GeneralBOException e){
+            logger.error("[TelemedicBoImpl.saveEditPengirimanObat] ERROR. ", e);
+            throw new GeneralBOException("[TelemedicBoImpl.saveEditPengirimanObat] ERROR. ", e);
+        }
+
+        logger.info("[TelemedicBoImpl.saveEditPengirimanObat] END <<<");
+    }
+
+    @Override
+    public void saveAddPengirimanObat(PengirimanObat bean) throws GeneralBOException{
+        logger.info("[TelemedicBoImpl.saveEditPengirimanObat] END <<<");
+
+        ItSimrsPengirimanObatEntity entity = new ItSimrsPengirimanObatEntity();
+
+        entity.setId("PIO" + pengirimanObatDao.getNextSeq());
+        entity.setIdKurir(bean.getIdKurir());
+        entity.setIdPasien(bean.getIdPasien());
+        entity.setIdPelayanan(bean.getIdPelayanan());
+        entity.setIdResep(bean.getIdResep());
+        entity.setBranchId(bean.getBranchId());
+        entity.setDesaId(bean.getDesaId());
+        entity.setAlamat(bean.getAlamat());
+        entity.setFlagDiterimaPasien(bean.getFlagDiterimaPasien());
+        entity.setFlagPickup(bean.getFlagPickup());
+        entity.setFlag(bean.getFlag());
+        entity.setAction(bean.getAction());
+        entity.setNoTelp(bean.getNoTelp());
+        entity.setCreatedDate(bean.getCreatedDate());
+        entity.setCreatedWho(bean.getCreatedWho());
+        entity.setLastUpdate(bean.getLastUpdate());
+        entity.setLastUpdateWho(bean.getLastUpdateWho());
+        entity.setLat(bean.getLat());
+        entity.setLon(bean.getLon());
+
+        try {
+            pengirimanObatDao.addAndSave(entity);
         } catch (GeneralBOException e){
             logger.error("[TelemedicBoImpl.saveEditPengirimanObat] ERROR. ", e);
             throw new GeneralBOException("[TelemedicBoImpl.saveEditPengirimanObat] ERROR. ", e);
@@ -684,7 +921,7 @@ public class TelemedicBoImpl implements TelemedicBo {
     private String getSeqTelemedic(){
         return telemedicDao.getNextSeq();
     }
-    private String getSeqPembayaranOnline(){
-        return verifikatorPembayaranDao.getNextSeq();
+    private String getSeqPembayaranOnline(String id){
+        return id + "INV" + verifikatorPembayaranDao.getNextSeq();
     }
 }
