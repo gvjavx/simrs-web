@@ -101,3 +101,51 @@
   ALTER TABLE public.it_simrs_pengiriman_obat ADD keterangan TEXT NULL,
 
 <<< //
+
+// 2020-08-03 >>>
+
+-- Table: public.im_simrs_rekening_telemedic
+
+-- DROP TABLE public.im_simrs_rekening_telemedic;
+
+CREATE TABLE public.im_simrs_rekening_telemedic
+(
+  id_rekening character varying(20) NOT NULL,
+  pembayaran_id character varying(20),
+  pembayaran_name character varying(20),
+  no_rekening character varying(20),
+  nama_rekening character varying(100),
+  coa character varying(20),
+  branch_id character varying(10),
+  flag character varying(1),
+  action character varying(1),
+  created_date timestamp without time zone,
+  created_who character varying(20),
+  last_update timestamp without time zone,
+  last_update_who character varying(20),
+  CONSTRAINT id PRIMARY KEY (id_rekening)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.im_simrs_rekening_telemedic
+  OWNER TO postgres;
+
+-- Sequence: public.seq_rekening_telemedic
+
+-- DROP SEQUENCE public.seq_rekening_telemedic;
+
+CREATE SEQUENCE public.seq_rekening_telemedic
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE public.seq_rekening_telemedic
+  OWNER TO postgres;
+
+ ALTER TABLE public.it_simrs_antrian_telemedic ADD id_rekening VARCHAR(20) NULL,
+ ALTER TABLE public.it_simrs_pembayaran_online ADD id_rekening VARCHAR(20) NULL,
+
+
+<<< //

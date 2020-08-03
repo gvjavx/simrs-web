@@ -763,6 +763,7 @@ public class TelemedicBoImpl implements TelemedicBo {
             pembayaranOnlineEntity.setLastUpdateWho(bean.getLastUpdateWho());
             pembayaranOnlineEntity.setKeterangan(tipe);
             pembayaranOnlineEntity.setKodeBank(kodeBank);
+            pembayaranOnlineEntity.setIdRekening(bean.getIdRekening());
 
             try {
                 verifikatorPembayaranDao.addAndSave(pembayaranOnlineEntity);

@@ -110,6 +110,15 @@ public class TelemedicineController implements ModelDriven<Object> {
     private String chat;
 
     private String batalEObat;
+    private String idRekening;
+
+    public String getIdRekening() {
+        return idRekening;
+    }
+
+    public void setIdRekening(String idRekening) {
+        this.idRekening = idRekening;
+    }
 
     public String getBatalEObat() {
         return batalEObat;
@@ -420,6 +429,7 @@ public class TelemedicineController implements ModelDriven<Object> {
             bean.setFlagEresep(model.getFlagEresep());
             bean.setJenisPembayaran(model.getJenisPembayaran());
             bean.setJenisRujukan(model.getJenisRujukan());
+            bean.setIdRekening(model.getIdRekening());
 
             String fileName = "";
             if (fileUploadResep != null) {

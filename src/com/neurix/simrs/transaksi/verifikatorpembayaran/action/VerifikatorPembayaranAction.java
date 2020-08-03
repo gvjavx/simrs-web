@@ -2638,6 +2638,8 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                 try {
                     ImageIO.write(image, "png", f);
                 }catch (IOException e){
+                    logger.error("[VerifikatorPembayaranAction.uploadStruk] ERROR ", e);
+
                     response.setMsg("[VerifikatorPembayaranAction.uploadStruk] ERROR " + e);
                     response.setStatus("error");
                     return response;
