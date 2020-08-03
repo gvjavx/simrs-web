@@ -1883,6 +1883,18 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                             antrianTelemedic.setUrlFotoStruk(pembayaranOnlineEntity.getUrlFotoBukti());
                         }
                     }
+                } else {
+                    PembayaranOnline pembayaranOnline = new PembayaranOnline();
+                    pembayaranOnline.setIdAntrianTelemedic(id);
+
+                    List<ItSimrsPembayaranOnlineEntity> pembayaranOnlineEntities = verifikatorPembayaranBo.getSearchEntityByCriteria(pembayaranOnline);
+                    if (pembayaranOnlineEntities.size() > 0){
+                        ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = pembayaranOnlineEntities.get(pembayaranOnlineEntities.size() - 1);
+                        if (pembayaranOnlineEntity.getUrlFotoBukti() != null){
+                            antrianTelemedic.setFlagViewApproveConfirm("Y");
+                            antrianTelemedic.setUrlFotoStruk(pembayaranOnlineEntity.getUrlFotoBukti());
+                        }
+                    }
                 }
 
 
@@ -1901,7 +1913,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                                 antrianTelemedic.setFlagBelumBayar("Y");
                         }
 
-                        if ("Y".equalsIgnoreCase(antrianTelemedic.getFlagApproveConfirm())){
+                        if ("Y".equalsIgnoreCase(antrianTelemedic.getFlagApproveConfirm()) || "Y".equalsIgnoreCase(antrianTelemedic.getFlagViewApproveConfirm())){
                             antrianTelemedic.setDibayarPasien(detailCheckupEntity.getDibayarPasien() == null ? new BigDecimal(0) : detailCheckupEntity.getDibayarPasien());
                             antrianTelemedic.setJumlahCover(detailCheckupEntity.getCoverBiaya() == null ? new BigDecimal(0) : detailCheckupEntity.getCoverBiaya());
                         }
