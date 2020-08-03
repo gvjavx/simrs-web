@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="buktiRefund" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fd849101-c087-406c-8e3e-390f88b2943f">
-	<property name="ireport.zoom" value="1.3310000000000035"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="1.9487171000000056"/>
+	<property name="ireport.x" value="16"/>
+	<property name="ireport.y" value="43"/>
 	<parameter name="reportParams.idAntrian" class="java.lang.String"/>
 	<parameter name="reportParams.namaPasien" class="java.lang.String"/>
 	<parameter name="reportParams.bank" class="java.lang.String"/>
 	<parameter name="reportParams.printDate" class="java.lang.String"/>
+	<parameter name="reportParams.unit" class="java.lang.String"/>
+	<parameter name="reportParams.area" class="java.lang.String"/>
+	<parameter name="reportParams.logo" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
 *
@@ -68,6 +71,26 @@ WHERE flag_kembali is not NULL]]>
 				<reportElement x="149" y="67" width="100" height="20" uuid="38ca932c-3378-40d2-a9dc-339a43052836"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{reportParams.namaPasien}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="35" width="173" height="20" uuid="95a8759f-d17c-48b4-a4cd-b96fbad1c749"/>
+				<box leftPadding="0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.area} == null ? "" : $P{reportParams.area}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="0" y="0" width="94" height="39" uuid="c6a114b8-af6e-4418-86cb-a68903e9d95b"/>
+				<imageExpression><![CDATA[$P{reportParams.logo}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="0" y="52" width="173" height="15" uuid="be25f9ef-4fce-4c76-864f-9e04d5f2f351"/>
+				<box leftPadding="0"/>
+				<textElement verticalAlignment="Top">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.unit} == null ? "" : $P{reportParams.unit}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
