@@ -21,14 +21,8 @@ public class Notifikasi implements Serializable {
     private String jamSelesai;
     private String tipeNotifName;
     private String note;
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
+    private String read;
+    private String tanggal;
 
     public String getTipeNotifName() {
         return tipeNotifName;
@@ -37,6 +31,8 @@ public class Notifikasi implements Serializable {
     public void setTipeNotifName(String tipeNotifName) {
         this.tipeNotifName = tipeNotifName;
     }
+
+    private String actionError;
 
     public String getJamAwal() {
         return jamAwal;
@@ -148,5 +144,37 @@ public class Notifikasi implements Serializable {
 
     public void setLamaCuti(Integer lamaCuti) {
         this.lamaCuti = lamaCuti;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public String getRead() {
+        return read;
+    }
+
+    public void setRead(String read) {
+        this.read = read;
+    }
+
+    public String getTanggal() {
+        return tanggal;
+    }
+
+    public void setTanggal(String tanggal) {
+        this.tanggal = tanggal;
+    }
+
+    public String getActionError() {
+        return actionError;
+    }
+
+    public void setActionError(String actionError) {
+        this.actionError = actionError;
     }
 }

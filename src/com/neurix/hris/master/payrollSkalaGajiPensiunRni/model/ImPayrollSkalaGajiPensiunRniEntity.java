@@ -1,6 +1,7 @@
 package com.neurix.hris.master.payrollSkalaGajiPensiunRni.model;
 
 import com.neurix.hris.master.golongan.model.ImGolonganEntity;
+import com.neurix.hris.master.golonganDapen.model.ImGolonganDapenEntity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -26,14 +27,14 @@ public class ImPayrollSkalaGajiPensiunRniEntity implements Serializable {
     private String createdWho;
     private String lastUpdateWho;
 
-    private ImGolonganEntity imGolonganEntity;
+    private ImGolonganDapenEntity imGolonganDapenEntity;
 
-    public ImGolonganEntity getImGolonganEntity() {
-        return imGolonganEntity;
+    public ImGolonganDapenEntity getImGolonganDapenEntity() {
+        return imGolonganDapenEntity;
     }
 
-    public void setImGolonganEntity(ImGolonganEntity imGolonganEntity) {
-        this.imGolonganEntity = imGolonganEntity;
+    public void setImGolonganDapenEntity(ImGolonganDapenEntity imGolonganDapenEntity) {
+        this.imGolonganDapenEntity = imGolonganDapenEntity;
     }
 
     public String getAction() {

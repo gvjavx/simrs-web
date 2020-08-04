@@ -1217,6 +1217,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
         StrukturJabatanBo strukturJabatanBo = (StrukturJabatanBo) ctx.getBean("strukturJabatanBoProxy");
         NotifikasiBo notifikasiBo= (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
         List<PersonilPosition> personilPositionList = new ArrayList<>();
+        cutiPegawai.setRoleId(CommonUtil.roleIdAsLogin());
 
         try {
             cutiPegawaiList = cutiPegawaiBo.getByCriteria(cutiPegawai);
@@ -1900,7 +1901,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
         String bagianPegawai="";
         int a = 1;
         List<CutiPegawai> forReport = new ArrayList<>();
-        List<StrukturJabatan> strukturBagian= strukturJabatanBo.getPerBagian();
+//        List<StrukturJabatan> strukturBagian= strukturJabatanBo.getPerBagian();
         for(CutiPegawai cutiPegawai: result) {
             if (!bagianPegawai.equalsIgnoreCase(cutiPegawai.getBagian())){
                 CutiPegawai tmp = new CutiPegawai();

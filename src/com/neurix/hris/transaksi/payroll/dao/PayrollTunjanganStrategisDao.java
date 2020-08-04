@@ -79,10 +79,11 @@ public class PayrollTunjanganStrategisDao extends GenericDao<ImPayrollTunjanganS
         return results;
     }
 
-    public List<ImPayrollTunjanganStrategisEntity> getListPosition(String term) throws HibernateException {
+    public List<ImPayrollTunjanganStrategisEntity> getListPosition(String term, String golonganId) throws HibernateException {
 
         List<ImPayrollTunjanganStrategisEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImPayrollTunjanganStrategisEntity.class)
-                .add(Restrictions.ilike("positionId",term))
+                .add(Restrictions.eq("positionId",term))
+                .add(Restrictions.eq("golonganId",golonganId))
                 .add(Restrictions.eq("flag", "Y"))
                 .addOrder(Order.asc("positionId"))
                 .list();

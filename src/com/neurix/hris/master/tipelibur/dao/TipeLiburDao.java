@@ -20,7 +20,7 @@ import java.util.Map;
 public class TipeLiburDao extends GenericDao<ImHrisTipeLibur, String> {
     @Override
     protected Class<ImHrisTipeLibur> getEntityClass() {
-        return null;
+        return ImHrisTipeLibur.class;
     }
 
     @Override
@@ -58,7 +58,7 @@ public class TipeLiburDao extends GenericDao<ImHrisTipeLibur, String> {
     public String getNextLiburHistoryId() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_tipe_libur_history')");
         Iterator<BigInteger> iter=query.list().iterator();
-        return String.valueOf(iter.next().longValue());
+        return "HTL"+String.valueOf(iter.next().longValue());
     }
     public void addAndSaveHistory(ImHrisTipeLiburHistory entity) throws HibernateException {
         this.sessionFactory.getCurrentSession().save(entity);

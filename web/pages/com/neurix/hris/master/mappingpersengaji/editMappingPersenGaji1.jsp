@@ -131,7 +131,7 @@
                                     <%--<s:select list="#{'igd':'IGD', 'rawat_jalan' : 'Rawat Jalan', 'apotek' : 'Apotek',--%>
                                     <%--'rawat_inap' : 'Rawat Inap', 'radiologi' : 'Radiologi', 'lab' : 'LAB'}" id="tipePelayanan" name="pelayanan.tipePelayanan"--%>
                                     <%--listKey="positionId" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
-                                <s:select list="#{'plt':'PLT', 'pjs' : 'PJS', 'percobaan' : 'Percobaan'}"
+                                <s:select list="#{'plt':'PLT', 'pjs' : 'PJS', 'percobaan' : 'Percobaan', 'pegawai_baru' : 'Pegawai Baru'}"
                                           id="namaMappingPersenGaji2" name="mappingPersenGaji.namaMappingPersenGaji"
                                           headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                             </table>
@@ -143,7 +143,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:select list="#{'gaji_golongan':'Gaji Golongan', 'tunjangan_umk' : 'Santunan Khusus', 'tunjangan_jabatan' : 'Tunjangan Jabatan',
+                                <s:select list="#{'gaji_golongan':'Gaji Pokok', 'tunjangan_umk' : 'Santunan Khusus', 'tunjangan_jabatan' : 'Tunjangan Jabatan',
                                                          'tunjangan_jabatan_struktural' : 'Tunjangan Struktural', 'tunjangan_strategis' : 'Tunjangan Fungsional', 'tunjangan_tambahan' : 'Tunjangan Tambahan'}"
                                           id="jenisGaji2" name="mappingPersenGaji.jenisGaji"
                                           headerKey="" headerValue="[Select one]" cssClass="form-control"/>

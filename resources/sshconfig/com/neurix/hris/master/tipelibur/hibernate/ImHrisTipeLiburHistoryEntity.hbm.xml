@@ -4,7 +4,8 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.neurix.hris.master.tipelibur.model.ImHrisTipeLiburHistory" table="im_hris_tipe_libur_history" dynamic-update="true" select-before-update="true" schema="public">
+    <class name="com.neurix.hris.master.tipelibur.model.ImHrisTipeLiburHistory" dynamic-update="true"
+           table="im_hris_tipe_libur_history" select-before-update="true" schema="public">
 
         <id name="id">
             <column name="id" sql-type="varchar" length="20" not-null="true"/>

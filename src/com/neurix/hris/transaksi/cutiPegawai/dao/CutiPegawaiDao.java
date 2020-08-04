@@ -68,6 +68,7 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
         }
 
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+        criteria.add(Restrictions.eq("flagPerbaikan", "N"));
 
         // Order by
         criteria.addOrder(Order.desc("cutiPegawaiId"));

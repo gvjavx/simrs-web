@@ -2340,7 +2340,7 @@
                             <div class="col-md-6">
                                 <label>Tekanan Darah</label>
                                 <div class="input-group">
-                                    <input class="form-control" id="ki3">
+                                    <input class="form-control tensi-pasien" id="ki3">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         mmHg
                                     </div>
@@ -2349,7 +2349,7 @@
                             <div class="col-md-6">
                                 <label>Nadi</label>
                                 <div class="input-group">
-                                    <input class="form-control" id="ki4">
+                                    <input class="form-control nadi-pasien" id="ki4">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         x/menit
                                     </div>
@@ -2362,7 +2362,7 @@
                             <div class="col-md-6">
                                 <label>RR</label>
                                 <div class="input-group">
-                                    <input class="form-control" id="ki5">
+                                    <input class="form-control rr-pasien" id="ki5">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         x/menit
                                     </div>
@@ -2371,7 +2371,7 @@
                             <div class="col-md-6">
                                 <label>Suhu</label>
                                 <div class="input-group">
-                                    <input class="form-control" id="ki6">
+                                    <input class="form-control suhu-pasien" id="ki6">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         &#8451
                                     </div>

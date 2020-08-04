@@ -29,4 +29,6 @@ public interface PositionBo extends BaseMasterBo<Position> {
     public List<ImPosition> getPositionByString(String query) throws GeneralBOException;
 
     List<Position> typeAheadPosition(String key) throws GeneralBOException;
+
+    List<Position> getComboBodBoc() throws GeneralBOException;
 }

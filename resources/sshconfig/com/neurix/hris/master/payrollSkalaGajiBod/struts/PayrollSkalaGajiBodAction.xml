@@ -75,15 +75,15 @@
             <result name="input">/pages/com/neurix/hris/master/payrollSkalaGajiBod/SearchPayrollSkalaGajiBod.jsp</result>
             <result name="success">/pages/com/neurix/hris/master/payrollSkalaGajiBod/SearchPayrollSkalaGajiBod.jsp</result>
 
-            <result name="error">/pages/com/neurix/hris/master/payrollSkalaGajiBod/addPayrollSkalaGajiBod.jsp</result>
-            <result name="init_add">/pages/com/neurix/hris/master/payrollSkalaGajiBod/addPayrollSkalaGajiBod.jsp</result>
-            <result name="success_save_add">/pages/com/neurix/hris/master/payrollSkalaGajiBod/addPayrollSkalaGajiBod.jsp</result>
+            <result name="error">/pages/com/neurix/hris/master/payrollSkalaGajiBod/AddPayrollSkalaGajiBod.jsp</result>
+            <result name="init_add">/pages/com/neurix/hris/master/payrollSkalaGajiBod/AddPayrollSkalaGajiBod.jsp</result>
+            <result name="success_save_add">/pages/com/neurix/hris/master/payrollSkalaGajiBod/AddPayrollSkalaGajiBod.jsp</result>
 
-            <result name="success_save_delete">/pages/com/neurix/hris/master/payrollSkalaGajiBod/deletePayrollSkalaGajiBod.jsp</result>
-            <result name="init_delete">/pages/com/neurix/hris/master/payrollSkalaGajiBod/deletePayrollSkalaGajiBod.jsp</result>
-            <result name="init_edit">/pages/com/neurix/hris/master/payrollSkalaGajiBod/editPayrollSkalaGajiBod.jsp</result>
-            <result name="success_save_edit">/pages/com/neurix/hris/master/payrollSkalaGajiBod/editPayrollSkalaGajiBod.jsp</result>
-            <result name="failure">/pages/com/neurix/hris/master/payrollSkalaGajiBod/editPayrollSkalaGajiBod.jsp</result>
+            <result name="success_save_delete">/pages/com/neurix/hris/master/payrollSkalaGajiBod/DeletePayrollSkalaGajiBod.jsp</result>
+            <result name="init_delete">/pages/com/neurix/hris/master/payrollSkalaGajiBod/DeletePayrollSkalaGajiBod.jsp</result>
+            <result name="init_edit">/pages/com/neurix/hris/master/payrollSkalaGajiBod/EditPayrollSkalaGajiBod.jsp</result>
+            <result name="success_save_edit">/pages/com/neurix/hris/master/payrollSkalaGajiBod/EditPayrollSkalaGajiBod.jsp</result>
+            <result name="failure">/pages/com/neurix/hris/master/payrollSkalaGajiBod/EditPayrollSkalaGajiBod.jsp</result>
 
         </action>
 

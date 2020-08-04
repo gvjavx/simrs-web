@@ -388,20 +388,6 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					</jr:columnGroup>
 				</jr:table>
 			</componentElement>
-			<staticText>
-				<reportElement x="1" y="2" width="65" height="20" uuid="68f05da6-6948-4a0a-a455-781b16a61b17"/>
-				<textElement verticalAlignment="Middle">
-					<font size="10"/>
-				</textElement>
-				<text><![CDATA[Bagian 	:]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="66" y="2" width="288" height="20" uuid="6e23259d-42df-4be7-970f-6dd3b403a16b"/>
-				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.bagian}]]></textFieldExpression>
-			</textField>
 		</band>
 	</detail>
 	<summary>

@@ -58,13 +58,20 @@
             var tglakhir = document.getElementById("tgl2").value;
             var keterangan = document.getElementById("keterangan").value;
             var ket="";
+            var cek="";
             LemburAction.testTanggal(tglawal,tglakhir,nipid, function (data) {
                 if (data !== "") {
                     ket=data;
                 }
             });
+            dwr.engine.setAsync(false);
+            IjinKeluarAction.cekNipIjinKeluar(nipid,function(data){
+                if (data!=""){
+                    cek = data;
+                }
+            });
 
-            if (unit !== ''&& nipid !== ''&& ijinid !== ''&& tglawal !== ''&& tglakhir !== ''&& nama !== ''&& ket === '' ) {
+            if (unit !== ''&& nipid !== ''&& ijinid !== ''&& tglawal !== ''&& tglakhir !== ''&& nama !== ''&& ket === '' && cek === '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -104,6 +111,9 @@
                     $('#tgl2').val("");
                     $('#lamaId').val("");
                     msg += '<strong>'+ket+'</strong>' + '<br/>';
+                }
+                if (cek != '') {
+                    msg += 'Ada dispensasi yang masih di ajukan<br/>';
                 }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 

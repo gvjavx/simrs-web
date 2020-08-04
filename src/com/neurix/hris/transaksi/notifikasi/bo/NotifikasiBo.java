@@ -25,6 +25,8 @@ import java.util.List;
 public interface NotifikasiBo extends BaseMasterBo<Notifikasi>{
     public void saveDelete(Notifikasi bean) throws GeneralBOException;
 
+    public void saveEditMobile(String nip, String typeNotifId, String notifId) throws GeneralBOException;
+
     List<Notifikasi> getByCriteriaForNotif(Notifikasi searchBean) throws GeneralBOException;
 
     public List<Notifikasi> getComboNotifikasiWithCriteria(String query) throws GeneralBOException;
@@ -66,6 +68,10 @@ public interface NotifikasiBo extends BaseMasterBo<Notifikasi>{
     List<Object[]> findAllNotifSppd(String nip, String typeNotifId) throws GeneralBOException;
     List<Object[]> findAllNotifTraining(String nip, String typeNotifId) throws GeneralBOException;
     List<Object[]> findAllNotifLembur(String nip, String typeNotifId) throws GeneralBOException;
+
+    List<Object[]> findNotifByTypeNotif(String nip, String typeNotifId) throws GeneralBOException;
+
+    List<Object[]> updateNotifikasiFlag(String nip, String typeNotifId, String notifId) throws GeneralBOException;
 
     List<Notifikasi> getCutiPensiun();
 

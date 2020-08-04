@@ -486,3 +486,4 @@ CREATE SEQUENCE public.seq_monitoring_anestesi
 ALTER TABLE public.seq_monitoring_anestesi
   OWNER TO postgres;
 
+

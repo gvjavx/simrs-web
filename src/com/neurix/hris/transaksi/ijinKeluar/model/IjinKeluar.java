@@ -89,6 +89,10 @@ public class IjinKeluar extends BaseModel {
     private Boolean pengajuanBatal;
     private String flagPengajuanBatal;
     private String roleId;
+    private String nipUserLogin;
+
+    private boolean suratDokter = false;
+    private boolean cetakSurat = false;
 
     public String getOs() {
         return os;
@@ -655,5 +659,29 @@ public class IjinKeluar extends BaseModel {
 
     public void setRoleId(String roleId) {
         this.roleId = roleId;
+    }
+
+    public String getNipUserLogin() {
+        return nipUserLogin;
+    }
+
+    public void setNipUserLogin(String nipUserLogin) {
+        this.nipUserLogin = nipUserLogin;
+    }
+
+    public boolean isSuratDokter() {
+        return suratDokter;
+    }
+
+    public void setSuratDokter(boolean suratDokter) {
+        this.suratDokter = suratDokter;
+    }
+
+    public boolean isCetakSurat() {
+        return cetakSurat;
+    }
+
+    public void setCetakSurat(boolean cetakSurat) {
+        this.cetakSurat = cetakSurat;
     }
 }

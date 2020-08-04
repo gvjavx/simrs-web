@@ -100,6 +100,7 @@ public class PayrollSkalaGajiPkwtBoImpl implements PayrollSkalaGajiPkwtBo {
                 historyEntity.setSantunanKhusus(imPayrollSkalaGajiEntity.getSantunanKhusus());
                 historyEntity.setTunjFunsional(imPayrollSkalaGajiEntity.getTunjFunsional());
                 historyEntity.setTunjtambahan(imPayrollSkalaGajiEntity.getTunjtambahan());
+                historyEntity.setTahun(imPayrollSkalaGajiEntity.getTahun());
                 historyEntity.setCreatedDate(imPayrollSkalaGajiEntity.getLastUpdate());
                 historyEntity.setCreatedWho(imPayrollSkalaGajiEntity.getLastUpdateWho());
                 historyEntity.setLastUpdate(imPayrollSkalaGajiEntity.getLastUpdate());
@@ -177,6 +178,7 @@ public class PayrollSkalaGajiPkwtBoImpl implements PayrollSkalaGajiPkwtBo {
                 historyEntity.setSantunanKhusus(imPayrollSkalaGajiPkwtEntity.getSantunanKhusus());
                 historyEntity.setTunjFunsional(imPayrollSkalaGajiPkwtEntity.getTunjFunsional());
                 historyEntity.setTunjtambahan(imPayrollSkalaGajiPkwtEntity.getTunjtambahan());
+                historyEntity.setTahun(imPayrollSkalaGajiPkwtEntity.getTahun());
                 historyEntity.setCreatedDate(imPayrollSkalaGajiPkwtEntity.getLastUpdate());
                 historyEntity.setCreatedWho(imPayrollSkalaGajiPkwtEntity.getLastUpdateWho());
                 historyEntity.setLastUpdate(imPayrollSkalaGajiPkwtEntity.getLastUpdate());
@@ -208,6 +210,7 @@ public class PayrollSkalaGajiPkwtBoImpl implements PayrollSkalaGajiPkwtBo {
                 imPayrollSkalaGajiPkwtEntity.setSantunanKhusus(bean.getSantunanKhususNilai());
                 imPayrollSkalaGajiPkwtEntity.setTunjFunsional(bean.getTunjFunsionalNilai());
                 imPayrollSkalaGajiPkwtEntity.setTunjtambahan(bean.getTunjtambahanNilai());
+                imPayrollSkalaGajiPkwtEntity.setTahun(bean.getTahun());
                 imPayrollSkalaGajiPkwtEntity.setFlag(bean.getFlag());
                 imPayrollSkalaGajiPkwtEntity.setAction(bean.getAction());
                 imPayrollSkalaGajiPkwtEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -257,6 +260,7 @@ public class PayrollSkalaGajiPkwtBoImpl implements PayrollSkalaGajiPkwtBo {
                 imPayrollSkalaGajiPkwtEntity.setSantunanKhusus(bean.getSantunanKhususNilai());
                 imPayrollSkalaGajiPkwtEntity.setTunjFunsional(bean.getTunjFunsionalNilai());
                 imPayrollSkalaGajiPkwtEntity.setTunjtambahan(bean.getTunjtambahanNilai());
+                imPayrollSkalaGajiPkwtEntity.setTahun(bean.getTahun());
                 imPayrollSkalaGajiPkwtEntity.setFlag(bean.getFlag());
                 imPayrollSkalaGajiPkwtEntity.setAction(bean.getAction());
                 imPayrollSkalaGajiPkwtEntity.setCreatedWho(bean.getCreatedWho());
@@ -295,6 +299,9 @@ public class PayrollSkalaGajiPkwtBoImpl implements PayrollSkalaGajiPkwtBo {
             }
             if (searchBean.getGolonganPkwtId() != null && !"".equalsIgnoreCase(searchBean.getGolonganPkwtId())) {
                 hsCriteria.put("golongan_pkwt_id", searchBean.getGolonganPkwtId());
+            }
+            if (searchBean.getTahun() != null && !"".equalsIgnoreCase(searchBean.getTahun())) {
+                hsCriteria.put("tahun", searchBean.getTahun());
             }
 
             if (searchBean.getFlag() != null && !"".equalsIgnoreCase(searchBean.getFlag())) {
@@ -336,6 +343,8 @@ public class PayrollSkalaGajiPkwtBoImpl implements PayrollSkalaGajiPkwtBo {
                     returnPayrollSkalaGaji.setTunjFunsional(CommonUtil.numbericFormat(payrollSkalaGajiEntity.getTunjFunsional(),"###,###"));
                     returnPayrollSkalaGaji.setTunjtambahanNilai(payrollSkalaGajiEntity.getTunjtambahan());
                     returnPayrollSkalaGaji.setTunjtambahan(CommonUtil.numbericFormat(payrollSkalaGajiEntity.getTunjtambahan(),"###,###"));
+
+                    returnPayrollSkalaGaji.setTahun(payrollSkalaGajiEntity.getTahun());
 
                     returnPayrollSkalaGaji.setCreatedWho(payrollSkalaGajiEntity.getCreatedWho());
                     returnPayrollSkalaGaji.setCreatedDate(payrollSkalaGajiEntity.getCreatedDate());

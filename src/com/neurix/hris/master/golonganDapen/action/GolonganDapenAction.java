@@ -22,9 +22,18 @@ import java.util.List;
 public class GolonganDapenAction extends BaseMasterAction{
     protected static transient Logger logger = Logger.getLogger(GolonganDapenAction.class);
     private GolonganDapen golonganDapen;
-
-    private List<GolonganDapen> listComboGolongan = new ArrayList<GolonganDapen>();
     private GolonganDapenBo golonganDapenBoProxy;
+    private List<GolonganDapen> golonganDapenList;
+    private List<GolonganDapen> listComboGolongan = new ArrayList<GolonganDapen>();
+
+
+    public List<GolonganDapen> getGolonganDapenList() {
+        return golonganDapenList;
+    }
+
+    public void setGolonganDapenList(List<GolonganDapen> golonganDapenList) {
+        this.golonganDapenList = golonganDapenList;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -40,6 +49,14 @@ public class GolonganDapenAction extends BaseMasterAction{
 
     public void setGolonganBoProxy(GolonganDapenBo golonganDapenBoProxy) {
         this.golonganDapenBoProxy = golonganDapenBoProxy;
+    }
+
+    public GolonganDapen getGolonganDapen() {
+        return golonganDapen;
+    }
+
+    public void setGolonganDapen(GolonganDapen golonganDapen) {
+        this.golonganDapen = golonganDapen;
     }
 
     public GolonganDapen getGolongan() {

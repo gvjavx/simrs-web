@@ -103,8 +103,10 @@ public class KelasRuanganBoImpl implements KelasRuanganBo {
                 position.setPositionId(listEntity.getDivisiId());
                 position.setFlag("Y");
                 List<Position> positions = positionBo.getByCriteria(position);
-                String positionName = positions.get(0).getPositionName();
-                kelasRuangan.setDivisiName(positionName);
+                if(positions.size() > 0){
+                    String positionName = positions.get(0).getPositionName();
+                    kelasRuangan.setDivisiName(positionName);
+                }
 
                 result.add(kelasRuangan);
             }
