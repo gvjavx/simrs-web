@@ -130,6 +130,7 @@ public class RekeningTelemedicBoImpl implements RekeningTelemedicBo {
             rekeningTelemedicEntity.setNoRekening(rekeningTelemedic.getNoRekening());
             rekeningTelemedicEntity.setNamaRekening(rekeningTelemedic.getNamaRekening());
             rekeningTelemedicEntity.setBranchId(rekeningTelemedic.getBranchId());
+            rekeningTelemedicEntity.setCoa(rekeningTelemedic.getCoa());
             rekeningTelemedicEntity.setFlag("Y");
             rekeningTelemedicEntity.setAction("C");
             rekeningTelemedicEntity.setCreatedDate(rekeningTelemedic.getCreatedDate());

@@ -104,11 +104,11 @@
 
 // 2020-08-03 >>>
 
--- Table: public.im_simrs_rekening_telemedic
+-- Table: im_simrs_rekening_telemedic
 
--- DROP TABLE public.im_simrs_rekening_telemedic;
+-- DROP TABLE im_simrs_rekening_telemedic;
 
-CREATE TABLE public.im_simrs_rekening_telemedic
+CREATE TABLE im_simrs_rekening_telemedic
 (
   id_rekening character varying(20) NOT NULL,
   pembayaran_id character varying(20),
@@ -123,13 +123,14 @@ CREATE TABLE public.im_simrs_rekening_telemedic
   created_who character varying(20),
   last_update timestamp without time zone,
   last_update_who character varying(20),
-  CONSTRAINT id PRIMARY KEY (id_rekening)
+  CONSTRAINT im_simrs_rekening_telemedic_pkey PRIMARY KEY (id_rekening)
 )
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE public.im_simrs_rekening_telemedic
+ALTER TABLE im_simrs_rekening_telemedic
   OWNER TO postgres;
+
 
 -- Sequence: public.seq_rekening_telemedic
 
@@ -145,7 +146,6 @@ ALTER TABLE public.seq_rekening_telemedic
   OWNER TO postgres;
 
  ALTER TABLE public.it_simrs_antrian_telemedic ADD id_rekening VARCHAR(20) NULL,
- ALTER TABLE public.it_simrs_pembayaran_online ADD id_rekening VARCHAR(20) NULL,
-
+ ALTER TABLE public.it_simrs_antrian_telemedic ADD id_rekening VARCHAR(20) NULL,
 
 <<< //

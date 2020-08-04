@@ -675,7 +675,7 @@ public class TelemedicineController implements ModelDriven<Object> {
                     if (firstOrderAntrian != null){
 
                         AntrianTelemedic antrianTelemedic = new AntrianTelemedic();
-                        antrianTelemedic.setId(antrianTelemedic.getId());
+                        antrianTelemedic.setId(firstOrderAntrian.getId());
                         antrianTelemedic.setStatus("WL");
                         antrianTelemedic.setLastUpdate(now);
                         antrianTelemedic.setLastUpdateWho("adminMobile");
