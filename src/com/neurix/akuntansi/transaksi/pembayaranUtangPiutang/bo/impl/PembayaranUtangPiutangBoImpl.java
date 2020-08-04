@@ -551,11 +551,14 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
                 throw new GeneralBOException("Found problem when saving new data PembayaranUtangPiutang, please info to your admin..." + e.getMessage());
             }
 
-
             for (PembayaranUtangPiutangDetail data : pembayaranUtangPiutangDetailList){
                 BigDecimal jumlahPembayaran = new BigDecimal(data.getStJumlahPembayaran().replace(".",""));
-                BigDecimal ppn = new BigDecimal(data.getStPpn().replace(".",""));
-                BigDecimal pph = new BigDecimal(data.getStPph().replace(".",""));
+                BigDecimal ppn = BigDecimal.ZERO;
+                BigDecimal pph = BigDecimal.ZERO;
+                if ("Pengajuan Biaya".equalsIgnoreCase(bean.getTipeMaster())) {
+                    ppn = new BigDecimal(data.getStPpn().replace(".",""));
+                    pph = new BigDecimal(data.getStPph().replace(".",""));
+                }
                 ImPembayaranUtangPiutangDetailEntity pembayaranUtangPiutangDetailEntity = new ImPembayaranUtangPiutangDetailEntity();
                 String pembayaranUtangPiutangDetailId = pembayaranUtangPiutangDetailDao.getNextPembayaranUtangPiutangDetailId();
                 pembayaranUtangPiutangDetailEntity.setPembayaranUtangPiutangDetailId(pembayaranUtangPiutangDetailId);

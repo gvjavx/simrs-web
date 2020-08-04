@@ -300,3 +300,39 @@ ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN no_jurnal character varying (30);
 ALTER TABLE it_akun_pengajuan_setor ADD COLUMN posting_flag character varying (1);
 ALTER TABLE it_akun_pengajuan_setor ADD COLUMN posting_who character varying (100);
 ALTER TABLE it_akun_pengajuan_setor ADD COLUMN posting_date timestamp without time zone;
+
+-- 30-07-2020
+
+ALTER TABLE it_akun_pembayaran_utang_piutang_detail ALTER COLUMN no_nota type character varying (20);
+
+-- 02-08-2020
+--jika ingin mencoba proses PPN
+-- insert into it_akun_pengajuan_setor values ('PSC001','KP','09','Y','admin','2020-08-02 00:00:00','2020-08-02 00:00:00','admin','2020-08-02 00:00:00','admin','U','Y',null,null,null,60000,'2020-08-02','2020',null,'N',null,null,'PPN',null,20000,20000,20000,null,'N',null,null);
+
+-- jika ingin clear data untuk akuntansi
+-- delete from it_hris_payroll;
+-- delete from it_hris_notifikasi;
+-- delete from it_hris_pendapatan_dokter;
+-- delete from it_hris_pendapatan_dokter_detail;
+-- delete from it_hris_pendapatan_dokter_pph_lebih;
+-- delete from it_akun_jurnal;
+-- delete from it_akun_jurnal_akhir_tahun;
+-- delete from it_akun_jurnal_detail;
+-- delete from it_akun_jurnal_detail_activity;
+-- delete from it_akun_pembayaran_utang_piutang;
+-- delete from it_akun_pembayaran_utang_piutang_detail;
+-- delete from it_akun_pengajuan_biaya;
+-- delete from it_akun_pengajuan_biaya_detail;
+-- delete from it_akun_pengajuan_setor;
+-- delete from it_akun_pengajuan_setor_detail;
+-- delete from it_akun_penyewaan_lahan;
+-- delete from it_akun_perhitungan_ppn_kd;
+-- delete from it_akun_ppn_perhitungan_kembali;
+-- delete from it_akun_proses_ppn_kd;
+
+-- 03-08-2020
+ALTER TABLE it_akun_pembayaran_utang_piutang_detail ADD COLUMN no_faktur_pajak character varying(30);
+ALTER TABLE it_akun_pembayaran_utang_piutang_detail ADD COLUMN url_faktur_image character varying(100);
+UPDATE im_simrs_dokter_kso SET flag='Y', action='C';
+INSERT INTO im_akun_mapping_jurnal VALUES ('IJ0062','JKR','2.1.03.00.02','K','Y','C','admin','admin','2020-08-03 00:00:00','2020-08-03 00:00:00','Y','Y','44','N','pph_dokter','N');
+INSERT INTO im_akun_mapping_jurnal VALUES ('IJ0063','JKR','2.1.03.00.99','K','Y','C','admin','admin','2020-08-03 00:00:00','2020-08-03 00:00:00','Y','Y','44','N','pot_ks','N');

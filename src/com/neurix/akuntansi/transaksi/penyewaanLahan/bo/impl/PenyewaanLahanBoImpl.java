@@ -97,7 +97,7 @@ public class PenyewaanLahanBoImpl implements PenyewaanLahanBo {
 
             penyewaanLahanEntity.setPenyewaanLahanId(penyewaanLahanId);
             penyewaanLahanEntity.setBranchId(bean.getBranchId());
-            penyewaanLahanEntity.setNamaPenyewa(bean.getBranchId());
+            penyewaanLahanEntity.setNamaPenyewa(bean.getNamaPenyewa());
             penyewaanLahanEntity.setKeterangan(bean.getKeterangan());
             penyewaanLahanEntity.setTanggalBayar(bean.getTanggalBayar());
             penyewaanLahanEntity.setNilai(bean.getNilai());

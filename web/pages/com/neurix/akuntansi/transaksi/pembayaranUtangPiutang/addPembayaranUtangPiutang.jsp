@@ -125,9 +125,9 @@
                                                     <s:param name="tipe">KK</s:param>
                                                 </s:action>
                                                 <s:select list="#comboTrans.listOfComboTrans" id="tipe_transaksi" name="pembayaranUtangPiutang.tipeTransaksi"
-                                                          cssStyle="margin-top: 7px" onchange="isiKeteterangan(),getTipeMaster(),getCoaLawan(),getCoaAsal()"
+                                                          cssStyle="margin-top: 7px" onchange="isiKeteterangan(),getTipeMaster(),getCoaAsal()"
                                                           listKey="transId" listValue="transName" headerKey="" headerValue="" cssClass="form-control" />
-                                                <s:hidden id="tipeMaster" />
+                                                <s:hidden id="tipeMaster" name="pembayaranUtangPiutang.tipeMaster" />
                                                 <s:hidden id="keperluan" />
                                                 <s:hidden id="tipePengajuan" name="pembayaranUtangPiutang.tipePengajuanBiaya" />
                                             </div>
@@ -195,13 +195,23 @@
                                                             $('.modal_pengajuan').val('');
                                                             $('#modal-add-pengajuan').modal('show');
                                                         } else if (tipeMaster=="dokter"){
+                                                            getCoaLawanDokter();
                                                             $('.modal_dokter').val('');
                                                             $('#modal-add-dokter').modal('show');
                                                         } else if (tipeMaster=="vendor"){
+                                                            getCoaLawanVendor();
                                                             $('.modal_vendor').val('');
                                                             $('#modal-add-vendor').modal('show');
                                                         } else{
-                                                            alert("tipe transaksi masih kosong atau belum ada tipe master pada transaksi")
+                                                            getCoaLawanLain();
+                                                            $('#mod_id_lain').attr('readonly', true);
+                                                            $('#mod_no_nota_lain').attr('readonly', true);
+                                                            $('#mod_jumlah_pembayaran_lain').attr('readonly', true);
+                                                            $('#modBtnSearchNotaLain').hide();
+                                                            $('#mod_id_lain').attr('wajib', "N");
+                                                            $('#mod_no_nota_lain').attr('wajib', "N");
+                                                            $('.modal_lain').val('');
+                                                            $('#modal-add-lain').modal('show');
                                                         }
                                                     })
                                                 </script>
@@ -319,30 +329,6 @@
         </div>
     </section>
     <!-- /.content -->
-</div>
-
-<div class="modal fade" id="modal-search-nota">
-    <div class="modal-dialog modal-flat">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Daftar Nota</h4>
-            </div>
-            <div class="modal-body">
-                <div class="box">
-                    <table class="table table-striped table-bordered" id="tabelDaftarNota">
-                    </table>
-                </div>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-success" id="btnAddCheckedNota" data-dismiss="modal"><i class="fa fa-arrow-right"></i> Add Checked
-                </button>
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                </button>
-            </div>
-        </div>
-    </div>
 </div>
 <div class="modal fade" id="modal-add-pengajuan">
     <div class="modal-dialog modal-flat modal-lg">
@@ -764,6 +750,7 @@
                                     <s:textfield id="mod_no_nota_dokter" wajib="Y"
                                                  cssClass="form-control modal_dokter" readonly="true" cssStyle="margin-top: 7px"/>
                                 </div>
+                                <s:hidden id="mod_rekening_id_dokter"/>
                                 <div class="col-md-1">
                                     <a href="javascript:void(0)">
                                         <img  style="margin-top: 10px" id="modBtnSearchNotaDokter" border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_view">
@@ -859,6 +846,7 @@
                                     <s:textfield id="mod_no_nota_vendor" wajib="Y"
                                                  cssClass="form-control modal_vendor" readonly="true" cssStyle="margin-top: 7px"/>
                                 </div>
+                                <s:hidden id="mod_rekening_id_vendor"/>
                                 <div class="col-md-1">
                                     <a href="javascript:void(0)">
                                         <img  style="margin-top: 10px" id="modBtnSearchNotaVendor" border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_view">
@@ -884,6 +872,125 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-add-lain">
+    <div class="modal-dialog modal-flat modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Add Pengeluaran Kas</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">COA Lawan</label>
+                                <div class="col-md-8">
+                                    <select class="form-control modal_lain" id="mod_coa_lawan_lain" onchange="getDisableTrans()" style="margin-top: 7px">
+                                        <option value="" ></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group" id="kode_lain">
+                                <label class="col-md-4" style="margin-top: 7px">ID Divisi</label>
+                                <div class="col-md-3">
+                                    <s:textfield id="mod_id_lain" onkeypress="$(this).css('border','')" wajib="Y"
+                                                 cssClass="form-control modal_lain" cssStyle="margin-top: 7px" />
+                                    <script>
+                                        $(document).ready(function() {
+                                            var functions, mapped;
+                                            $('#mod_id_lain').typeahead({
+                                                minLength: 1,
+                                                source: function (query, process) {
+                                                    functions = [];
+                                                    mapped = {};
+                                                    var data = [];
+                                                    dwr.engine.setAsync(false);
+                                                    PositionAction.typeAheadPosition(query,function (listdata) {
+                                                        data = listdata;
+                                                    });
+                                                    $.each(data, function (i, item) {
+                                                        var labelItem = item.kodering + " | " + item.positionName;
+                                                        mapped[labelItem] = {
+                                                            id: item.kodering,
+                                                            nama: item.positionName
+                                                        };
+                                                        functions.push(labelItem);
+                                                    });
+                                                    process(functions);
+                                                },
+                                                updater: function (item) {
+                                                    var selectedObj = mapped[item];
+                                                    $('#mod_nama_divisi_lain').val(selectedObj.nama);
+                                                    return selectedObj.id;
+                                                }
+                                            });
+                                        });
+                                    </script>
+                                </div>
+                                <div class="col-md-5">
+                                    <s:textfield id="mod_nama_divisi_lain" onkeypress="$(this).css('border','')" readonly="true"
+                                                 cssClass="form-control modal_lain" cssStyle="margin-top: 7px" />
+                                </div>
+                            </div>
+                            <div class="form-group" id="no_nota_view_lain">
+                                <label class="col-md-4" style="margin-top: 7px">No. Nota/Pengajuan</label>
+                                <div class="col-md-7">
+                                    <s:textfield id="mod_no_nota_lain" wajib="Y"
+                                                 cssClass="form-control modal_lain" readonly="true" cssStyle="margin-top: 7px"/>
+                                </div>
+                                <s:hidden id="mod_rekening_id_lain"/>
+                                <div class="col-md-1">
+                                    <a href="javascript:void(0)">
+                                        <img  style="margin-top: 10px" id="modBtnSearchNotaLain" border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_view">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">Jumlah Pembayaran (RP)</label>
+                                <div class="col-md-8">
+                                    <s:textfield id="mod_jumlah_pembayaran_lain" readonly="true" onkeyup="formatRupiah2(this)" cssClass="form-control modal_lain" cssStyle="margin-top: 7px;margin-bottom: 14px;text-align: right" />
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <a id="mod_btnSaveDetailLain" type="button" class="btn btn-default btn-success"><i class="fa fa-plus"></i> Add</a>
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-search-nota">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Daftar Nota</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                    <table class="table table-striped table-bordered" id="tabelDaftarNota">
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
     function selectPembayaran(){
@@ -1038,10 +1145,16 @@
             var noNota = $(this).attr('data');
             var bayar = $(this).attr('bayar');
             var rekeningId = $(this).attr('rekeningId');
-            $('#no_nota').val(noNota);
-            $('#jumlah_pembayaran').val(bayar);
-            $('#rekening_id').val(rekeningId);
-
+            var tipeMaster = $('#tipeMaster').val();
+            if (tipeMaster=="vendor"){
+                $('#mod_no_nota_vendor').val(noNota);
+                $('#mod_jumlah_pembayaran_vendor').val(bayar);
+                $('#mod_rekening_id_vendor').val(rekeningId);
+            }else if (tipeMaster=="dokter"){
+                $('#mod_no_nota_dokter').val(noNota);
+                $('#mod_jumlah_pembayaran_dokter').val(bayar);
+                $('#mod_rekening_id_dokter').val(rekeningId);
+            }
             $("#modal-search-nota").modal('hide');
 
         });
@@ -1310,7 +1423,7 @@
         });
     }
 
-    function getCoaLawan() {
+    function getCoaLawanVendor() {
         var option = '<option value=""></option>';
         var tipeTransaksi = $('#tipe_transaksi option:selected').val();
         KodeRekeningAction.getKodeRekeningLawanByTransId(tipeTransaksi,"D",function (res) {
@@ -1318,57 +1431,41 @@
                 $.each(res, function (i, item) {
                     option += '<option value="'+item.kodeRekening+'">'+item.tampilanCoa+'</option>';
                 });
-                $('#coa_lawan').html(option);
+                $('#mod_coa_lawan_vendor').html(option);
             }else{
-                $('#coa_lawan').html(option);
+                $('#mod_coa_lawan_vendor').html(option);
+            }
+        });
+    }
+    function getCoaLawanDokter() {
+        var option = '<option value=""></option>';
+        var tipeTransaksi = $('#tipe_transaksi option:selected').val();
+        KodeRekeningAction.getKodeRekeningLawanByTransId(tipeTransaksi,"D",function (res) {
+            if(res.length > 0){
+                $.each(res, function (i, item) {
+                    option += '<option value="'+item.kodeRekening+'">'+item.tampilanCoa+'</option>';
+                });
+                $('#mod_coa_lawan_dokter').html(option);
+            }else{
+                $('#mod_coa_lawan_dokter').html(option);
             }
         });
     }
 
-    // function getDisableTrans() {
-    //     $('#divisi_id').attr('readonly', true);
-    //     $('#kode_vendor').attr('readonly', true);
-    //     $('#no_nota').attr('readonly', true);
-    //     $('#jumlah_pembayaran').attr('readonly', true);
-    //     $('#btnSearchNota').hide();
-    //     $('#divisi_id').attr('wajib', "N");
-    //     $('#kode_vendor').attr('wajib', "N");
-    //     $('#no_nota').attr('wajib', "N");
-    //
-    //     var tipeTransaksi = $('#tipe_transaksi option:selected').val();
-    //     var coaLawan = $('#coa_lawan option:selected').val();
-    //     if (tipeTransaksi!=''&&coaLawan!=''){
-    //         PembayaranUtangPiutangAction.getDisableTrans(tipeTransaksi,coaLawan,function (res) {
-    //             if (res.divisiId=="Y"){
-    //                 $('#divisi_id').attr('readonly', false);
-    //                 $('#divisi_id').attr('wajib', "Y");
-    //             }
-    //             if (res.masterId=="Y"){
-    //                 $('#kode_vendor').attr('readonly', false);
-    //                 $('#kode_vendor').attr('wajib', "Y");
-    //             }
-    //             if (res.noNota=="Y"){
-    //                 $('#btnSearchNota').show();
-    //                 $('#no_nota').attr('wajib', "Y");
-    //             }else{
-    //                 $('#no_nota').attr('wajib', "N");
-    //             }
-    //
-    //             if (res.biaya=="Y"){
-    //                 $('#jumlah_pembayaran').attr('readonly', false);
-    //             }
-    //         });
-    //     }else{
-    //         var msg="";
-    //         if (tipeTransaksi==""){
-    //             msg+="Tipe transaksi belum dipilih \n";
-    //         }
-    //         if (coaLawan==""){
-    //             msg+="COA lawan belum dipilih \n";
-    //         }
-    //         alert(msg);
-    //     }
-    // }
+    function getCoaLawanLain() {
+        var option = '<option value=""></option>';
+        var tipeTransaksi = $('#tipe_transaksi option:selected').val();
+        KodeRekeningAction.getKodeRekeningLawanByTransId(tipeTransaksi,"D",function (res) {
+            if(res.length > 0){
+                $.each(res, function (i, item) {
+                    option += '<option value="'+item.kodeRekening+'">'+item.tampilanCoa+'</option>';
+                });
+                $('#mod_coa_lawan_lain').html(option);
+            }else{
+                $('#mod_coa_lawan_lain').html(option);
+            }
+        });
+    }
 
     function formatRupiahAngka(angka) {
         var number_string = angka.replace(/[^,\d]/g, '').toString(),
@@ -1386,6 +1483,268 @@
         return rupiah;
     }
 
+    $('#modBtnSearchNotaVendor').click(function () {
+        var masterId = $('#mod_id_vendor').val();
+        var transaksiId = $('#tipe_transaksi').val();
+        var branchId = $('#branch_id').val();
+        var coaLawan = $('#mod_coa_lawan_vendor').val();
+
+        $('#tabelDaftarNota').find('tbody').remove();
+        $('#tabelDaftarNota').find('thead').remove();
+        dwr.engine.setAsync(false);
+        var tmp_table = "";
+
+        var add=true;
+        if (coaLawan==""||branchId==""||transaksiId==""){
+            add=false;
+        }
+        if (add){
+            PembayaranUtangPiutangAction.searchNotaPembayaran(masterId,transaksiId,branchId,'',coaLawan,function (listdata) {
+                tmp_table = "<thead style='font-size: 14px' ><tr class='active'>" +
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196 '>No</th>" +
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196'><input type='checkbox' id='checkAll'></th>"+
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196 '>Kode Vendor</th>" +
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>Rekening ID</th>" +
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>No. Nota</th>" +
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>Debit</th>" +
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196 '>Add</th>" +
+                    "</tr></thead>";
+                var i = i;
+                $.each(listdata, function (i, item) {
+                    var combo = '<input type="checkbox" checked id="check_'+i+'">';
+                    tmp_table += '<tr style="font-size: 12px;" ">' +
+                        '<td align="center">' + (i + 1) + '</td>' +
+                        '<td align="center">' + combo + '</td>' +
+                        '<td align="center">' + item.masterId + '</td>' +
+                        '<td align="center">' + item.rekeningId + '</td>' +
+                        '<td align="center">' + item.noNota + '</td>' +
+                        '<td align="center">' + item.stJumlahPembayaran + '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-add-data' data ='" + item.noNota + "' bayar ='" + item.stJumlahPembayaran + "' rekeningId ='" + item.rekeningId + "'>" +
+                        "<img border='0' src='<s:url value='/pages/images/add_task1.png'/>' name='icon_add'>" +
+                        '</a>' +
+                        '</td>' +
+                        "</tr>";
+                });
+                $('#tabelDaftarNota').append(tmp_table);
+                $("#checkAll").change(function(){
+                    $('input:checkbox').not(this).prop('checked', this.checked);
+                });
+            });
+            $("#modal-search-nota").modal('show');
+        } else{
+            var msg="";
+            if (transaksiId==""){
+                msg+="Tipe Transaksi belum dipilih \n";
+            }
+            if (branchId==""){
+                msg+="Unit belum dipilih \n";
+            }
+            if (coaLawan==""){
+                msg+="Coa lawan belum dipilih \n";
+            }
+            alert(msg);
+        }
+    });
+
+    $('#modBtnSearchNotaDokter').click(function () {
+        var masterId = $('#mod_id_dokter').val();
+        var transaksiId = $('#tipe_transaksi').val();
+        var branchId = $('#branch_id').val();
+        var coaLawan = $('#mod_coa_lawan_dokter').val();
+
+        $('#tabelDaftarNota').find('tbody').remove();
+        $('#tabelDaftarNota').find('thead').remove();
+        dwr.engine.setAsync(false);
+        var tmp_table = "";
+
+        var add=true;
+        if (coaLawan==""||branchId==""||transaksiId==""){
+            add=false;
+        }
+        if (add){
+            PembayaranUtangPiutangAction.searchNotaPembayaran(masterId,transaksiId,branchId,'',coaLawan,function (listdata) {
+                tmp_table = "<thead style='font-size: 14px' ><tr class='active'>" +
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196 '>No</th>" +
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196'><input type='checkbox' id='checkAll'></th>"+
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196 '>Kode Vendor</th>" +
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>Rekening ID</th>" +
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>No. Nota</th>" +
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>Debit</th>" +
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196 '>Add</th>" +
+                    "</tr></thead>";
+                var i = i;
+                $.each(listdata, function (i, item) {
+                    var combo = '<input type="checkbox" checked id="check_'+i+'">';
+                    tmp_table += '<tr style="font-size: 12px;" ">' +
+                        '<td align="center">' + (i + 1) + '</td>' +
+                        '<td align="center">' + combo + '</td>' +
+                        '<td align="center">' + item.masterId + '</td>' +
+                        '<td align="center">' + item.rekeningId + '</td>' +
+                        '<td align="center">' + item.noNota + '</td>' +
+                        '<td align="center">' + item.stJumlahPembayaran + '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-add-data' data ='" + item.noNota + "' bayar ='" + item.stJumlahPembayaran + "' rekeningId ='" + item.rekeningId + "'>" +
+                        "<img border='0' src='<s:url value='/pages/images/add_task1.png'/>' name='icon_add'>" +
+                        '</a>' +
+                        '</td>' +
+                        "</tr>";
+                });
+                $('#tabelDaftarNota').append(tmp_table);
+                $("#checkAll").change(function(){
+                    $('input:checkbox').not(this).prop('checked', this.checked);
+                });
+            });
+            $("#modal-search-nota").modal('show');
+        } else{
+            var msg="";
+            if (transaksiId==""){
+                msg+="Tipe Transaksi belum dipilih \n";
+            }
+            if (branchId==""){
+                msg+="Unit belum dipilih \n";
+            }
+            if (coaLawan==""){
+                msg+="Coa lawan belum dipilih \n";
+            }
+            alert(msg);
+        }
+    });
+
+    $('#mod_btnSaveDetailVendor').click(function () {
+        var kodeVendor=$('#mod_id_vendor').val();
+        var namaVendor=$('#mod_nama_vendor').val();
+        var noNota=$('#mod_no_nota_vendor').val();
+        var rekeningId=$('#mod_rekening_id_vendor').val();
+        if (rekeningId==""){
+            rekeningId=$('#mod_coa_lawan_vendor').val();
+        }
+        var jumlahPembayaran=$('#mod_jumlah_pembayaran_vendor').val();
+
+        var tipePengajuanBiaya =$('#tipePengajuan').val();
+        //jika pengajuan biasa
+        PembayaranUtangPiutangAction.saveDetailPembayaran(kodeVendor,namaVendor,noNota,jumlahPembayaran,rekeningId,'','',tipePengajuanBiaya,'','',function (result) {
+            if (result==""){
+                loadDetailPembayaran();
+                //dihitung totalbayarnya
+                var totalBayar = $('#bayar').val();
+                totalBayar=totalBayar.replace(/[.]/g,"");
+                var strBayar=jumlahPembayaran.replace(/[.]/g,"");
+                var intTotalBayar=0;
+                if (totalBayar!=''){
+                    intTotalBayar = parseInt(totalBayar);
+                }
+                var intBayar = parseInt(strBayar);
+                totalBayar = intTotalBayar+intBayar;
+                var strTotalBayar = String(totalBayar);
+                $('#bayar').val(formatRupiahAngka(strTotalBayar));
+            } else{
+                alert(result);
+            }
+        });
+    });
+    $('#mod_btnSaveDetailDokter').click(function () {
+        var kodeVendor=$('#mod_id_dokter').val();
+        var namaVendor=$('#mod_nama_dokter').val();
+        var noNota=$('#mod_no_nota_dokter').val();
+        var rekeningId=$('#mod_rekening_id_dokter').val();
+        if (rekeningId==""){
+            rekeningId=$('#mod_coa_lawan_dokter').val();
+        }
+        var jumlahPembayaran=$('#mod_jumlah_pembayaran_dokter').val();
+
+        var tipePengajuanBiaya =$('#tipePengajuan').val();
+        //jika pengajuan biasa
+        PembayaranUtangPiutangAction.saveDetailPembayaran(kodeVendor,namaVendor,noNota,jumlahPembayaran,rekeningId,'','',tipePengajuanBiaya,'','',function (result) {
+            if (result==""){
+                loadDetailPembayaran();
+                //dihitung totalbayarnya
+                var totalBayar = $('#bayar').val();
+                totalBayar=totalBayar.replace(/[.]/g,"");
+                var strBayar=jumlahPembayaran.replace(/[.]/g,"");
+                var intTotalBayar=0;
+                if (totalBayar!=''){
+                    intTotalBayar = parseInt(totalBayar);
+                }
+                var intBayar = parseInt(strBayar);
+                totalBayar = intTotalBayar+intBayar;
+                var strTotalBayar = String(totalBayar);
+                $('#bayar').val(formatRupiahAngka(strTotalBayar));
+            } else{
+                alert(result);
+            }
+        });
+    });
+    $('#mod_btnSaveDetailLain').click(function () {
+        var idDivisi=$('#mod_id_lain').val();
+        var namaDivisi=$('#mod_nama_divisi_lain').val();
+        var noNota=$('#mod_no_nota_lain').val();
+        var rekeningId=$('#mod_rekening_id_lain').val();
+        if (rekeningId==""){
+            rekeningId=$('#mod_coa_lawan_lain').val();
+        }
+        var jumlahPembayaran=$('#mod_jumlah_pembayaran_lain').val();
+
+        var tipePengajuanBiaya =$('#tipePengajuan').val();
+        //jika pengajuan biasa
+        PembayaranUtangPiutangAction.saveDetailPembayaran('','',noNota,jumlahPembayaran,rekeningId,idDivisi,namaDivisi,tipePengajuanBiaya,'','',function (result) {
+            if (result==""){
+                loadDetailPembayaran();
+                //dihitung totalbayarnya
+                var totalBayar = $('#bayar').val();
+                totalBayar=totalBayar.replace(/[.]/g,"");
+                var strBayar=jumlahPembayaran.replace(/[.]/g,"");
+                var intTotalBayar=0;
+                if (totalBayar!=''){
+                    intTotalBayar = parseInt(totalBayar);
+                }
+                var intBayar = parseInt(strBayar);
+                totalBayar = intTotalBayar+intBayar;
+                var strTotalBayar = String(totalBayar);
+                $('#bayar').val(formatRupiahAngka(strTotalBayar));
+            } else{
+                alert(result);
+            }
+        });
+    });
+
+    function getDisableTrans() {
+        $('#mod_id_lain').attr('readonly', true);
+        $('#mod_no_nota_lain').attr('readonly', true);
+        $('#mod_jumlah_pembayaran_lain').attr('readonly', true);
+        $('#modBtnSearchNotaLain').hide();
+        $('#mod_id_lain').attr('wajib', "N");
+        $('#mod_no_nota_lain').attr('wajib', "N");
+
+        var tipeTransaksi = $('#tipe_transaksi option:selected').val();
+        var coaLawan = $('#mod_coa_lawan_lain option:selected').val();
+        if (tipeTransaksi!=''&&coaLawan!=''){
+            PembayaranUtangPiutangAction.getDisableTrans(tipeTransaksi,coaLawan,function (res) {
+                if (res.divisiId=="Y"){
+                    $('#mod_id_lain').attr('readonly', false);
+                    $('#mod_id_lain').attr('wajib', "Y");
+                }
+                if (res.noNota=="Y"){
+                    $('#modBtnSearchNotaLain').show();
+                    $('#mod_no_nota_lain').attr('wajib', "Y");
+                }else{
+                    $('#mod_no_nota_lain').attr('wajib', "N");
+                }
+                if (res.biaya=="Y"){
+                    $('#mod_jumlah_pembayaran_lain').attr('readonly', false);
+                }
+            });
+        }else{
+            var msg="";
+            if (tipeTransaksi==""){
+                msg+="Tipe transaksi belum dipilih \n";
+            }
+            if (coaLawan==""){
+                msg+="COA lawan belum dipilih \n";
+            }
+            alert(msg);
+        }
+    }
 
 </script>
 <%@ include file="/pages/common/footer.jsp" %>

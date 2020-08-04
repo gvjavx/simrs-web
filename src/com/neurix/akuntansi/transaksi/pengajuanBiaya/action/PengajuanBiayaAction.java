@@ -754,7 +754,7 @@ public class PengajuanBiayaAction extends BaseMasterAction {
             }
         }
 
-        BigDecimal bayar = BigDecimal.valueOf(Double.valueOf(jumlah.replace(".","")));
+        BigDecimal bayar = BigDecimal.valueOf(Double.valueOf(jumlah.replace(".","").replace(",","")));
 
         String userLogin = CommonUtil.userLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
