@@ -1473,7 +1473,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
 
                     // create list map piutang
                     Map mapPiutang = new HashMap();
-                    mapPiutang.put("bukti", invoice);
+//                    mapPiutang.put("bukti", invoice);
                     mapPiutang.put("nilai", jumlah.add(ppnObat));
                     mapPiutang.put("master_id", masterId);
 //                                mapPiutang.put("pasien_id", idPasien);
@@ -1505,7 +1505,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
 
                 // create list map piutang
                 Map mapPiutang = new HashMap();
-                mapPiutang.put("bukti", invoice);
+//                mapPiutang.put("bukti", invoice);
                 mapPiutang.put("nilai", jumlah);
                 mapPiutang.put("master_id", masterId);
 //                                mapPiutang.put("pasien_id", idPasien);
@@ -1544,16 +1544,48 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
 
         try {
 
-            String noJurnal = billingSystemBo.createJurnal(transId, mapJurnal, branchId, catatan, "Y");
+            Jurnal noJurnal = billingSystemBo.createJurnal(transId, mapJurnal, branchId, catatan, "Y");
 
             // --- update no invoice;
             HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
             detailCheckup = new HeaderDetailCheckup();
             detailCheckup.setIdDetailCheckup(idDetailCheckup);
-            detailCheckup.setInvoice(invoice);
-            detailCheckup.setNoJurnal(noJurnal);
+            detailCheckup.setInvoice(noJurnal.getSumberDanaId());
+            detailCheckup.setNoJurnal(noJurnal.getNoJurnal());
 
             checkupDetailBo.saveUpdateNoJuran(detailCheckup);
+            // ---
+
+            // --- create jurnal pembayaran
+            if ("umum".equalsIgnoreCase(idJenisPeriksaPasien)){
+
+                transId = "02";
+                catatan = "Pembayaran Piutang Pasien Telemedic "+idJenisPeriksaPasien+" Id Detail Checkup " + idDetailCheckup;
+
+                // MAPPING KAS
+                Map mapKas = new HashMap();
+                mapKas.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, idJenisPeriksaPasien, ""));
+                mapKas.put("metode_bayar", "transfer");
+                mapKas.put("bank", kodeBank);
+
+                mapJurnal = new HashMap();
+                Map mapPiutang = new HashMap();
+                mapPiutang.put("bukti", invoice);
+                mapPiutang.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, idJenisPeriksaPasien, "").add(ppnObat));
+                mapPiutang.put("master_id", getMasterIdByTipe(idDetailCheckup, idJenisPeriksaPasien));
+
+                mapJurnal.put("kas",mapKas);
+                mapJurnal.put("piutang_pasien_non_bpjs", mapPiutang);
+
+                Jurnal jurnal = billingSystemBo.createJurnal(transId, mapJurnal, branchId, catatan, "Y");
+
+                // --- update no jurnal;
+                detailCheckup = new HeaderDetailCheckup();
+                detailCheckup.setIdDetailCheckup(idDetailCheckup);
+                detailCheckup.setNoJurnal(jurnal.getNoJurnal());
+
+                checkupDetailBo.saveUpdateNoJuran(detailCheckup);
+            }
 
             response.setStatus("success");
             response.setMsg("[Berhasil]");
@@ -1631,7 +1663,8 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
 
         String noJurnal = "";
         try {
-            noJurnal = billingSystemBo.createJurnal("29", hsCriteria, branchId, "Penjualan Obat Apotik Langsung E-Obat " + branchId, "Y");
+            Jurnal jurnal = billingSystemBo.createJurnal("29", hsCriteria, branchId, "Penjualan Obat Apotik Langsung E-Obat " + branchId, "Y");
+            noJurnal = jurnal.getNoJurnal();
             jurnalResponse.setStatus("success");
             jurnalResponse.setNoJurnal(noJurnal);
         } catch (GeneralBOException e) {
@@ -3173,7 +3206,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
 
                 // create list map piutang
                 Map mapPiutang = new HashMap();
-                mapPiutang.put("bukti", invoice);
+//                mapPiutang.put("bukti", invoice);
                 mapPiutang.put("nilai", jumlah.add(ppnObat));
                 mapPiutang.put("master_id", masterId);
 
@@ -3191,7 +3224,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
 
             // create list map piutang
             Map mapPiutang = new HashMap();
-            mapPiutang.put("bukti", invoice);
+//            mapPiutang.put("bukti", invoice);
             mapPiutang.put("nilai", jumlah);
             mapPiutang.put("master_id", masterId);
 
@@ -3208,14 +3241,14 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
 
         try {
 
-            String noJurnal = billingSystemBo.createJurnal(transId, mapJurnal, branchId, catatan, "Y");
+            Jurnal noJurnal = billingSystemBo.createJurnal(transId, mapJurnal, branchId, catatan, "Y");
 
             // --- update no invoice;
             HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
             detailCheckup = new HeaderDetailCheckup();
             detailCheckup.setIdDetailCheckup(idDetailCheckup);
-            detailCheckup.setInvoice(invoice);
-            detailCheckup.setNoJurnal(noJurnal);
+            detailCheckup.setInvoice(noJurnal.getSumberDanaId());
+            detailCheckup.setNoJurnal(noJurnal.getNoJurnal());
 
             checkupDetailBo.saveUpdateNoJuran(detailCheckup);
 
@@ -3279,10 +3312,10 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
 
         try {
 
-            String noJurnal = billingSystemBo.createJurnal(transId, mapJurnal, branchId, catatan, "Y");
+            Jurnal noJurnal = billingSystemBo.createJurnal(transId, mapJurnal, branchId, catatan, "Y");
 
             // --- update no jurnal;
-            telemedicBo.updateNoJurnalBatalDokter(idBatalDokter, noJurnal);
+            telemedicBo.updateNoJurnalBatalDokter(idBatalDokter, noJurnal.getNoJurnal());
 
             response.setStatus("success");
             response.setMsg("[Berhasil]");

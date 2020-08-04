@@ -22,6 +22,8 @@ public class PengajuanSetor extends BaseModel {
     private String bulan;
     private Date registeredDate;
     private String stRegisteredDate;
+    private String kas;
+    private String kasName;
 
     //for detail
     private BigDecimal jumlahPph21Payroll;
@@ -59,6 +61,59 @@ public class PengajuanSetor extends BaseModel {
     private String stJumlahPpnKeluaran;
     private String stJumlahPpnMasukanB2;
     private String stJumlahPpnMasukanB3;
+    private String bulanName;
+
+    private String postingId;
+    private Timestamp postingDate;
+    private String postingFlag;
+
+    public String getPostingId() {
+        return postingId;
+    }
+
+    public void setPostingId(String postingId) {
+        this.postingId = postingId;
+    }
+
+    public Timestamp getPostingDate() {
+        return postingDate;
+    }
+
+    public void setPostingDate(Timestamp postingDate) {
+        this.postingDate = postingDate;
+    }
+
+    public String getPostingFlag() {
+        return postingFlag;
+    }
+
+    public void setPostingFlag(String postingFlag) {
+        this.postingFlag = postingFlag;
+    }
+
+    public String getBulanName() {
+        return bulanName;
+    }
+
+    public void setBulanName(String bulanName) {
+        this.bulanName = bulanName;
+    }
+
+    public String getKasName() {
+        return kasName;
+    }
+
+    public void setKasName(String kasName) {
+        this.kasName = kasName;
+    }
+
+    public String getKas() {
+        return kas;
+    }
+
+    public void setKas(String kas) {
+        this.kas = kas;
+    }
 
     public String getPengajuanSetorId() {
         return pengajuanSetorId;

@@ -202,6 +202,7 @@
                                                         <td align="center">View</td>
                                                         <td align="center">Batal</td>
                                                         <td align="center">Posting</td>
+                                                        <td align="center">Csv</td>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -223,7 +224,7 @@
                                                                 <s:if test='#row.cancelFlag == "Y"'>
                                                                     <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_batal">
                                                                 </s:if>
-                                                                <s:elseif test='#row.approvalFlag == "Y"'>
+                                                                <s:elseif test='#row.postingFlag == "Y"'>
                                                                 </s:elseif>
                                                                 <s:else>
                                                                     <a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanSetorId}"/>" class="item-delete">
@@ -234,7 +235,7 @@
                                                             <td align="center">
                                                                 <s:if test='#row.cancelFlag == "Y"'>
                                                                 </s:if>
-                                                                <s:elseif test='#row.approvalFlag == "Y"'>
+                                                                <s:elseif test='#row.postingFlag == "Y"'>
                                                                     <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_batal">
                                                                 </s:elseif>
                                                                 <s:else>
@@ -242,6 +243,15 @@
                                                                         <img border="0" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>" name="icon_posting">
                                                                     </a>
                                                                 </s:else>
+                                                            </td>
+                                                            <td align="center">
+                                                                <s:if test='#row.cancelFlag == "Y"'>
+                                                                </s:if>
+                                                                <s:elseif test='#row.postingFlag == "Y"'>
+                                                                    <a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanSetorId}"/>" class="item-csv">
+                                                                        <img border="0" src="<s:url value="/pages/images/icons8-download-25.png"/>" name="icon_csv">
+                                                                    </a>
+                                                                </s:elseif>
                                                             </td>
                                                         </tr>
                                                     </s:iterator>
@@ -329,6 +339,13 @@
                                     <s:textfield id="mod_total_pph21_seluruhnya" cssStyle="text-align: right" onkeypress="$(this).css('border','')" readonly="true" cssClass="form-control"/>
                                     <br></div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-md-4">Kas</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_kas_name" readonly="true" cssClass="form-control" />
+                                    <br>
+                                </div>
+                            </div>
                             <br>
                             <div class="form-group">
                                 <div class="col-md-12">
@@ -384,17 +401,17 @@
         PengajuanSetorAction.searchDataSessionPph21Payroll(function (listdata) {
 
             tmp_table = "<thead style='font-size: 14px;' ><tr class='active'>" +
-                "<th style='text-align: center; background-color:  #90ee90'>ID</th>" +
-                "<th style='text-align: center; background-color:  #90ee90'>Tipe</th>" +
-                "<th style='text-align: center; background-color:  #90ee90''>Posisi</th>" +
+                "<th style='text-align: center; background-color:  #90ee90'>No. Sumber</th>" +
+                "<th style='text-align: center; background-color:  #90ee90'>NIP</th>" +
+                "<th style='text-align: center; background-color:  #90ee90''>Nama</th>" +
                 "<th style='text-align: center; background-color:  #90ee90'>PPH (RP)</th>" +
                 "<th style='text-align: center; background-color:  #90ee90'>Keterangan</th>" +
                 "</tr></thead>";
             $.each(listdata, function (i, item) {
                 tmp_table += '<tr style="font-size: 12px;" ">' +
                     '<td align="center">' + item.transaksiId + '</td>' +
-                    '<td align="center">' + item.tipe + '</td>' +
-                    '<td align="left">' + item.posisiName + '</td>' +
+                    '<td align="center">' + item.personId + '</td>' +
+                    '<td align="left">' + item.nama + '</td>' +
                     '<td align="right">' + item.stJumlah + '</td>' +
                     '<td align="left">' + item.note + '</td>' +
                     "</tr>";
@@ -409,8 +426,8 @@
         var tmp_table = "";
         PengajuanSetorAction.searchDataSessionPph21Kso(function (listdata) {
             tmp_table = "<thead style='font-size: 14px;' ><tr class='active'>" +
-                "<th style='text-align: center; background-color:  #90ee90'>ID</th>" +
-                "<th style='text-align: center; background-color:  #90ee90'>Tipe</th>" +
+                "<th style='text-align: center; background-color:  #90ee90'>No. Sumber</th>" +
+                "<th style='text-align: center; background-color:  #90ee90'>ID Dokter</th>" +
                 "<th style='text-align: center; background-color:  #90ee90''>Nama Dokter</th>" +
                 "<th style='text-align: center; background-color:  #90ee90'>PPH (RP)</th>" +
                 "<th style='text-align: center; background-color:  #90ee90'>Keterangan</th>" +
@@ -418,7 +435,7 @@
             $.each(listdata, function (i, item) {
                 tmp_table += '<tr style="font-size: 12px;" ">' +
                     '<td align="center" >' + item.transaksiId + '</td>' +
-                    '<td align="center">' + item.tipe + '</td>' +
+                    '<td align="center">' + item.personId + '</td>' +
                     '<td align="left">' + item.nama + '</td>' +
                     '<td align="right">' + item.stJumlah + '</td>' +
                     '<td align="left">' + item.note + '</td>' +
@@ -434,17 +451,17 @@
         var tmp_table = "";
         PengajuanSetorAction.searchDataSessionPph21Pengajuan(function (listdata) {
             tmp_table = "<thead style='font-size: 14px;' ><tr class='active'>" +
-                "<th style='text-align: center; background-color:  #90ee90'>ID</th>" +
-                "<th style='text-align: center; background-color:  #90ee90'>Tipe</th>" +
-                "<th style='text-align: center; background-color:  #90ee90''>Posisi</th>" +
+                "<th style='text-align: center; background-color:  #90ee90'>No. Sumber</th>" +
+                "<th style='text-align: center; background-color:  #90ee90'>ID Vendor</th>" +
+                "<th style='text-align: center; background-color:  #90ee90''>Nama Vendor</th>" +
                 "<th style='text-align: center; background-color:  #90ee90'>PPH (RP)</th>" +
                 "<th style='text-align: center; background-color:  #90ee90'>Keterangan</th>" +
                 "</tr></thead>";
             $.each(listdata, function (i, item) {
                 tmp_table += '<tr style="font-size: 12px;" ">' +
-                    '<td >' + item.transaksiId + '</td>' +
-                    '<td align="center">' + item.tipe + '</td>' +
-                    '<td align="left">' + item.posisiName + '</td>' +
+                    '<td align="center">' + item.transaksiId + '</td>' +
+                    '<td align="center">' + item.personId + '</td>' +
+                    '<td align="left">' + item.nama + '</td>' +
                     '<td align="right">' + item.stJumlah + '</td>' +
                     '<td align="left">' + item.note + '</td>' +
                     "</tr>";
@@ -462,6 +479,7 @@
             $('#mod_total_pph21_kso').val(data.stJumlahPph21Kso);
             $('#mod_total_pph21_pengajuan').val(data.stJumlahPph21Pengajuan);
             $('#mod_total_pph21_seluruhnya').val(data.stJumlahSeluruhnya);
+            $('#mod_kas_name').val(data.kasName);
         });
         loadSessionPayrollPph();
         loadSessionKso();
@@ -572,5 +590,15 @@
                 window.location.reload();
             })
         }
-    })
+    });
+
+    $('.tablePengajuanSetor').on('click', '.item-csv', function() {
+        var pengajuanId = $(this).attr('data');
+        if (pengajuanId!=""){
+            if (confirm("Apakah anda ingin mendownload csv ?")){
+                var url = "eksportCsvPph21_pengajuanSetor.action?pengajuanSetor.pengajuanSetorId="+pengajuanId;
+                window.open(url,'_blank');
+            }
+        }
+    });
 </script>

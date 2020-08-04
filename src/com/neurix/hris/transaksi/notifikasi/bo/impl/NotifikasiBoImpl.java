@@ -3566,7 +3566,7 @@ public class NotifikasiBoImpl implements NotifikasiBo {
             hsCriteria.put("flag","Y");
 
             try {
-                result = pengajuanBiayaDao.getListPengajuanBiayaForApproval(hsCriteria);
+                result = pengajuanBiayaDao.getListPengajuanBiayaRkForApproval(hsCriteria);
             } catch (HibernateException e) {
                 logger.error("[UserBoImpl.searchTrainingPerson] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());

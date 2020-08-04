@@ -19,6 +19,11 @@
           p:positionBagianDao-ref="positionBagianDao"
           p:biodataDao-ref="biodataDao"
           p:dokterDao-ref="dokterDao"
+          p:kodeRekeningDao-ref="kodeRekeningDao"
+          p:masterVendorDao-ref="masterVendorDao"
+          p:perhitunganPpnKdDao-ref="perhitunganPpnKdDao"
+          p:prosesPpnKdDao-ref="prosesPpnKdDao"
+          p:perhitunganKembaliPpnDao-ref="perhitunganKembaliPpnDao"
     />
 
     <bean id="pengajuanSetorBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -45,5 +50,10 @@
           p:sessionFactory-ref="sessionFactory" />
     <bean id="pengajuanSetorDetailDao" class="com.neurix.akuntansi.transaksi.pengajuanSetor.dao.PengajuanSetorDetailDao"
           p:sessionFactory-ref="sessionFactory" />
-
+    <bean id="prosesPpnKdDao" class="com.neurix.akuntansi.transaksi.pengajuanSetor.dao.ProsesPpnKdDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="perhitunganPpnKdDao" class="com.neurix.akuntansi.transaksi.pengajuanSetor.dao.PerhitunganPpnKdDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="perhitunganKembaliPpnDao" class="com.neurix.akuntansi.transaksi.pengajuanSetor.dao.PerhitunganKembaliPpnDao"
+          p:sessionFactory-ref="sessionFactory" />
 </beans>

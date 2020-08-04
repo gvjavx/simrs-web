@@ -220,7 +220,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
     }
 
     @Override
-    public String createJurnal(String transId, Map data, String branchId, String catatanPembuatanJurnal, String flagRegister){
+    public Jurnal createJurnal(String transId, Map data, String branchId, String catatanPembuatanJurnal, String flagRegister){
         logger.info("[PembayaranUtangPiutangBoImpl.createJurnal] start process >>>");
         String noJurnal;
         String status;
@@ -228,6 +228,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
         updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
         String tipeJurnalId;
         String sumber = null;
+        Jurnal returnJurnal = new Jurnal();
 
         //mencari tipe jurnal Id
         try {
@@ -284,13 +285,14 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                 // Generating ID, get from postgre sequence
                 noJurnal=jurnalDao.getNextJurnalId();
 
-                // MEMBUAT JURNAL DETAIL TERLEBIH DAHULU UNTUK MENGAMBIL NOMOR INVOICE DARI PEMBAYARAN
-                if (("Y").equalsIgnoreCase(transEntity.getFlagSumberBaru())){
-                    createJurnalDetail(data,noJurnal,tipeJurnalId,transId,periodSudahTutup);
-                    sumber = createInvoiceNumber(tipeJurnalId,branchId);
-                }else{
-                    sumber = createJurnalDetail(data,noJurnal,tipeJurnalId,transId,periodSudahTutup);
-                }
+                sumber = createJurnalDetail(data,noJurnal,tipeJurnalId,transId,periodSudahTutup,branchId);
+
+//                // MEMBUAT JURNAL DETAIL TERLEBIH DAHULU UNTUK MENGAMBIL NOMOR INVOICE DARI PEMBAYARAN
+//                if (("Y").equalsIgnoreCase(transEntity.getFlagSumberBaru())){
+//                    createJurnalDetail(data,noJurnal,tipeJurnalId,transId,periodSudahTutup);
+//                    sumber = createInvoiceNumber(tipeJurnalId,branchId);
+//                }else{
+//                }
 
                 //MEMBUAT JURNAL HEADER
                 ItJurnalEntity jurnalEntity = new ItJurnalEntity();
@@ -365,7 +367,8 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                     }
                 }
 
-
+                returnJurnal.setNoJurnal(noJurnal);
+                returnJurnal.setSumber(sumber);
             } catch (Exception e){
                 logger.error("[PembayaranUtangPiutangBoImpl.createJurnal]"+e);
                 throw new GeneralBOException("Found problem : "+e+", please info to your admin...");
@@ -376,18 +379,18 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
             throw new GeneralBOException("Found problem when "+status+", please info to your admin...");
         }
         logger.info("[PembayaranUtangPiutangBoImpl.createJurnal] End process <<<");
-        return noJurnal;
+        return returnJurnal;
     }
 
     //////////////////////////////////////// DETAIL BILLING PER TRANS //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private String createJurnalDetail ( Map data , String noJurnal ,String tipeJurnalId,String transId,String periodSudahTutup ){
+    private String createJurnalDetail ( Map data , String noJurnal ,String tipeJurnalId,String transId,String periodSudahTutup ,String branchId ){
         //MEMBUAT JURNAL DETAIL
         String status;
         String metodeBayar=null;
         String bank=null;
         String masterId = null;
         String pasienId = null;
-        String sumber = null;
+        String sumber = createInvoiceNumber(tipeJurnalId,branchId);
         String divisiId= null;
         String nomorRekeningPembayaran =null;
 
@@ -488,14 +491,15 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                                 if (listOfMap.get("bukti")!=null){
                                     noNota = (String) listOfMap.get("bukti");
                                     //untuk mengambil no invoice sebagai kode sumber dari jurnal header
-                                    if (("uang_muka").equalsIgnoreCase(mapping.getKeterangan())){
-                                        sumber=noNota;
-                                    }
+//                                    if (("uang_muka").equalsIgnoreCase(mapping.getKeterangan())){
+//                                        sumber=noNota;
+//                                    }
                                 }
                                 if (noNota==null){
-                                    status="ERROR : dibutuhkan bukti ( Invoice )";
-                                    logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
-                                    throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                    noNota = sumber;
+//                                    status="ERROR : dibutuhkan bukti ( Invoice )";
+//                                    logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+//                                    throw new GeneralBOException("Found problem "+status+", please info to your admin...");
                                 }
                             }
                                 /*else if (!("Y").equalsIgnoreCase(mapping.getKodeBarang())){
@@ -637,9 +641,10 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                                         if (mapList.get(i).get("bukti")!=null){
                                             buktiLoop=(String)mapList.get(i).get("bukti");
                                         }else{
-                                            status="ERROR : ada bukti belum di kirim";
-                                            logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
-                                            throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                            buktiLoop=sumber;
+//                                            status="ERROR : ada bukti belum di kirim";
+//                                            logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+//                                            throw new GeneralBOException("Found problem "+status+", please info to your admin...");
                                         }
                                     }
                                     if (("Y").equalsIgnoreCase(mapping.getDivisiId())){
@@ -1436,6 +1441,8 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RiwayatTindakanBo riwayatTindakanBo = (RiwayatTindakanBo) ctx.getBean("riwayatTindakanBoProxy");
 
+        Jurnal returnJurnal= new Jurnal();
+
         String masterId = "";
         String divisiId = "";
         String jenisPasien = "";
@@ -1529,13 +1536,13 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
 
         try {
 
-            String noJurnal = createJurnal(transId, mapJurnal, bean.getUnit(), catatan, "Y");
+            returnJurnal = createJurnal(transId, mapJurnal, bean.getUnit(), catatan, "Y");
 
             HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
             detailCheckup.setIdDetailCheckup(bean.getIdDetailCheckup());
             detailCheckup.setTransPeriode(bean.getBulan()+"-"+bean.getTahun());
             detailCheckup.setTransDate(bean.getCreatedDate());
-            detailCheckup.setNoJurnalTrans(noJurnal);
+            detailCheckup.setNoJurnalTrans(returnJurnal.getNoJurnal());
             detailCheckup.setInvoice(invoiceNumber);
             detailCheckup.setAction("U");
             detailCheckup.setLastUpdate(bean.getCreatedDate());

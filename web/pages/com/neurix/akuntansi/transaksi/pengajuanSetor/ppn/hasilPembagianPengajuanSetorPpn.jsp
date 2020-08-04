@@ -8,6 +8,7 @@
 <head>
     <%@ include file="/pages/common/header.jsp" %>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PengajuanSetorAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/KasirRawatJalanAction.js"/>'></script>
     <script type="text/javascript">
         function callSearch2() {
             $('#view_dialog_menu').dialog('close');
@@ -26,8 +27,7 @@
             };
             $.subscribe('beforeProcessSave', function (event, data) {
                 var tanggal = $('#tanggal_pengajuan_setor').val();
-                var keterangan = $('#keterangan').val();
-                if (tanggal != '' && keterangan != '') {
+                if (tanggal != '') {
                     if (confirm('Do you want to proses this record?')) {
                         event.originalEvent.options.submit = true;
                         $.publish('showDialog');
@@ -39,9 +39,6 @@
                     var msg = "";
                     if (tanggal == '') {
                         msg += 'Field <strong>Tanggal</strong> is required.' + '<br/>';
-                    }
-                    if (keterangan == '') {
-                        msg += 'Field <strong>Keterangan</strong> is required.' + '<br/>';
                     }
                     document.getElementById('errorValidationMessage').innerHTML = msg;
                     $.publish('showErrorValidationDialog');
@@ -105,7 +102,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <input class="form-control datepicker2" id="tanggal_pengajuan_setor" name="pengajuanSetor.stRegisteredDate">
+                                            <input class="form-control" id="tanggal_pengajuan_setor" name="pengajuanSetor.stRegisteredDate">
                                             <script>
                                                 $("#tanggal_pengajuan_setor").datepicker({
                                                     setDate: new Date(),
@@ -117,13 +114,6 @@
                                                 $("#tanggal_pengajuan_setor").datepicker("setDate", new Date());
                                             </script>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-offset-2 col-sm-3" style="margin-top: 7px">Keterangan</label>
-                                    <div class="col-md-4">
-                                        <s:textarea id="keterangan" rows="3" cssStyle="margin-top: 7px" onkeypress="$(this).css('border','')"
-                                                    name="pengajuanSetor.keterangan" cssClass="form-control"/>
                                     </div>
                                 </div>
                             </div>
@@ -209,11 +199,11 @@
                                                 </table>
                                             </div>
                                             <div id="masukanB3" class="tab-pane fade">
-                                                <table id="table3" class="table table-bordered table-striped sortTable">
+                                                <table id="table2" class="table table-bordered table-striped sortTable">
                                                 </table>
                                             </div>
                                             <div id="keluaran" class="tab-pane fade">
-                                                <table id="table2" class="table table-bordered table-striped sortTable">
+                                                <table id="table3" class="table table-bordered table-striped sortTable">
                                                 </table>
                                             </div>
                                         </div>
@@ -301,43 +291,57 @@
 </body>
 </html>
 <script>
-    window.loadSessionPpnMasukan = function () {
+    window.loadSessionPpnMasukanB2 = function () {
         $('#table1').find('tbody').remove();
         $('#table1').find('thead').remove();
         dwr.engine.setAsync(false);
         var tmp_table = "";
-        PengajuanSetorAction.searchDataSessionPpnMasukan(function (listdata) {
+        PengajuanSetorAction.searchDataSessionPpnMasukanB2(function (listdata) {
 
             tmp_table = "<thead style='font-size: 14px;' ><tr class='active'>" +
                 "<th style='text-align: center; background-color:  #90ee90'>ID</th>" +
                 "<th style='text-align: center; background-color:  #90ee90''>Sumber Jurnal</th>" +
                 "<th style='text-align: center; background-color:  #90ee90'>PPN (RP)</th>" +
                 "<th style='text-align: center; background-color:  #90ee90'>Keterangan</th>" +
-                "<th style='text-align: center; background-color:  #90ee90'>Status</th>" +
                 "</tr></thead>";
             $.each(listdata, function (i, item) {
-                var check = "";
-                if (item.dibayar == "b2") {
-                    check = "<select class='form-control checkboxPpnMasukan' id='status_ppn_masukan' data='" + item.transaksiId + "'><option value=''></option><option value='b2' selected>B2</option><option value='b3'>B3</option></select>";
-                } else if (item.dibayar == "b3") {
-                    check = "<select class='form-control checkboxPpnMasukan' id='status_ppn_masukan' data='" + item.transaksiId + "'><option value=''></option><option value='b2'>B2</option><option value='b3' selected>B3</option></select>";
-                } else{
-                    check = "<select class='form-control checkboxPpnMasukan' id='status_ppn_masukan' data='" + item.transaksiId + "'><option value='' selected></option><option value='b2'>B2</option><option value='b3'>B3</option></select>";
-                }
                 tmp_table += '<tr style="font-size: 12px;" ">' +
                     '<td >' + item.transaksiId + '</td>' +
                     '<td align="left">' + item.personId + '</td>' +
                     '<td align="right">' + item.stJumlah + '</td>' +
                     '<td align="left">' + item.note + '</td>' +
-                    '<td align="center">' + check + '</td>' +
                     "</tr>";
             });
             $('#table1').append(tmp_table);
         });
     };
-    window.loadSessionPpnKeluaran = function () {
+    window.loadSessionPpnMasukanB3 = function () {
         $('#table2').find('tbody').remove();
         $('#table2').find('thead').remove();
+        dwr.engine.setAsync(false);
+        var tmp_table = "";
+        PengajuanSetorAction.searchDataSessionPpnMasukanB3(function (listdata) {
+
+            tmp_table = "<thead style='font-size: 14px;' ><tr class='active'>" +
+                "<th style='text-align: center; background-color:  #90ee90'>ID</th>" +
+                "<th style='text-align: center; background-color:  #90ee90''>Sumber Jurnal</th>" +
+                "<th style='text-align: center; background-color:  #90ee90'>PPN (RP)</th>" +
+                "<th style='text-align: center; background-color:  #90ee90'>Keterangan</th>" +
+                "</tr></thead>";
+            $.each(listdata, function (i, item) {
+                tmp_table += '<tr style="font-size: 12px;" ">' +
+                    '<td >' + item.transaksiId + '</td>' +
+                    '<td align="left">' + item.personId + '</td>' +
+                    '<td align="right">' + item.stJumlah + '</td>' +
+                    '<td align="left">' + item.note + '</td>' +
+                    "</tr>";
+            });
+            $('#table2').append(tmp_table);
+        });
+    };
+    window.loadSessionPpnKeluaran = function () {
+        $('#table3').find('tbody').remove();
+        $('#table3').find('thead').remove();
         dwr.engine.setAsync(false);
         var tmp_table = "";
         PengajuanSetorAction.searchDataSessionPpnKeluaran(function (listdata) {
@@ -346,32 +350,26 @@
                 "<th style='text-align: center; background-color:  #90ee90''>Sumber Jurnal</th>" +
                 "<th style='text-align: center; background-color:  #90ee90'>PPN (RP)</th>" +
                 "<th style='text-align: center; background-color:  #90ee90'>Keterangan</th>" +
-                "<th style='text-align: center; background-color:  #90ee90'>Status</th>" +
                 "</tr></thead>";
             $.each(listdata, function (i, item) {
-                var check = "";
-                if (item.dibayar == "Y") {
-                    check = "<input type='checkbox' class='checkboxPpnKeluaran' id='" + item.transaksiId + "' checked>";
-                } else {
-                    check = "<input type='checkbox' class='checkboxPpnKeluaran' id='" + item.transaksiId + "'>";
-                }
-
                 tmp_table += '<tr style="font-size: 12px;" ">' +
                     '<td >' + item.transaksiId + '</td>' +
                     '<td align="left">' + item.personId + '</td>' +
                     '<td align="right">' + item.stJumlah + '</td>' +
                     '<td align="left">' + item.note + '</td>' +
-                    '<td align="center">' + check + '</td>' +
                     "</tr>";
             });
-            $('#table2').append(tmp_table);
+            $('#table3').append(tmp_table);
 
         });
     };
 
     $('document').ready(function () {
-        loadSessionPpnMasukan();
+        loadSessionPpnMasukanB2();
+        loadSessionPpnMasukanB3();
         loadSessionPpnKeluaran();
+        selectPembayaran();
+
         $('#table1').DataTable({
             paging: false,
             "bDestroy": true,
@@ -382,29 +380,23 @@
             "bDestroy": true,
             "order": [[1, "asc"]]
         });
-
-        $('.checkboxPpnMasukan').change(function () {
-            var transaksiId = $(this).attr('data');
-            var value = this.value;
-            PengajuanSetorAction.editSessionPpnMasukan(transaksiId,value,function (data) {
-                $('#jumlah_ppn_masukan_b2').val(data.stJumlahPpnMasukanB2);
-                $('#jumlahPpnMasukanB2').val(data.jumlahPpnMasukanB2);
-                $('#jumlah_ppn_masukan_b3').val(data.stJumlahPpnMasukanB3);
-                $('#jumlahPpnMasukanB3').val(data.jumlahPpnMasukanB3);
-                $('#jumlah_seluruhnya').val(data.stJumlahSeluruhnya);
-                $('#jumlahSeluruhnya').val(data.jumlahSeluruhnya);
-            });
-        });
-
-        $('.checkboxPpnKeluaran').change(function () {
-            var id = $(this).attr('id');
-            var check = $(this).prop('checked');
-            PengajuanSetorAction.editSessionPpnKeluaran(id,check,function (data) {
-                $('#jumlah_ppn_keluaran').val(data.stJumlahPpnKeluaran);
-                $('#jumlah_seluruhnya').val(data.stJumlahSeluruhnya);
-                $('#jumlahPpnKeluaran').val(data.jumlahPpnKeluaran);
-                $('#jumlahSeluruhnya').val(data.jumlahSeluruhnya);
-            });
+        $('#table3').DataTable({
+            paging: false,
+            "bDestroy": true,
+            "order": [[1, "asc"]]
         });
     });
+    function selectPembayaran(){
+        var option = '<option value="">[Select One]</option>';
+        KasirRawatJalanAction.getListPembayaran(function (res) {
+            if(res.length > 0){
+                $.each(res, function (i, item) {
+                    option += '<option value="'+item.coa+'">'+item.pembayaranName+'</option>';
+                });
+                $('#bank').html(option);
+            }else{
+                $('#bank').html(option);
+            }
+        });
+    }
 </script>

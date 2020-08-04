@@ -748,7 +748,8 @@
                                 intTotalBayar = parseInt(totalBayar);
                             }
                             var intBayar = parseInt(strBayar);
-                            totalBayar = intTotalBayar+intBayar;
+                            totalBayar = intTotalBayar+intBayar;                                                            getCoaLawanDokter();
+
                             var strTotalBayar = String(totalBayar);
                             $('#bayar').val(formatRupiahAngka(strTotalBayar));
                         } else{

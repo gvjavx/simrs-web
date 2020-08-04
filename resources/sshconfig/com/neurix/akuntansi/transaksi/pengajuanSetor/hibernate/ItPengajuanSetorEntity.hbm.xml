@@ -77,6 +77,10 @@
             <column name="keterangan" sql-type="varchar" not-null="false" />
         </property>
 
+        <property name="kas">
+            <column name="kas" sql-type="varchar" not-null="false" />
+        </property>
+
         <property name="flag">
             <column name="flag" sql-type="varchar" not-null="false" />
         </property>
@@ -94,6 +98,16 @@
         </property>
         <property name="lastUpdate">
             <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+
+        <property name="postingFlag">
+            <column name="posting_flag" sql-type="varchar" not-null="false" />
+        </property>
+        <property name="postingId">
+            <column name="posting_who" sql-type="varchar" not-null="false" />
+        </property>
+        <property name="postingDate">
+            <column name="posting_date" sql-type="date" not-null="false" />
         </property>
 
     </class>
