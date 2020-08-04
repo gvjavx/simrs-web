@@ -397,6 +397,193 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
         }
         return listOfResult;
     }
+    public List<Aging> getAgingPegawai(String branchId, String periode,String masterId,String reportId,String tipeLaporan){
+        List<Aging> listOfResult = new ArrayList<>();
+        String tipeWhere = "";
+        if (!"".equalsIgnoreCase(masterId)){
+            tipeWhere = "and masterId like '"+masterId+"'";
+        }
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "select \n" +
+                "  * \n" +
+                "from \n" +
+                "  (\n" +
+                "    select \n" +
+                "      kr.kode_rekening, \n" +
+                "      b.rekening_id, \n" +
+                "      b.no_nota as noNota, \n" +
+                "      a.tanggal_jurnal as tglJurnal, \n" +
+                "      c.kode_mata_uang as mataUang, \n" +
+                "      (b.jumlah_debit - b.jumlah_kredit) as total, \n" +
+                "      b.master_id as masterId, \n" +
+                "      d.nama_pegawai as namaMaster, \n" +
+                "      f.nilai_kurs as kurs, \n" +
+                "      kr.nama_kode_rekening " +
+                "    from \n" +
+                "      (\n" +
+                "        -- mencari semua data di jurnal yang di joinkan dengan setting aging jurnal          \n" +
+                "        select \n" +
+                "          * \n" +
+                "        from \n" +
+                "          it_akun_jurnal \n" +
+                "        where \n" +
+                "          flag = 'Y' \n" +
+                "          and registered_flag = 'Y' \n" +
+                "\t\t  and branch_id IN ("+branchId+")\n" +
+                "      ) a \n" +
+                "      inner join it_akun_jurnal_detail b on b.no_jurnal = a.no_jurnal \n" +
+                "      inner join im_akun_mata_uang c on a.mata_uang_id = c.mata_uang_id \n" +
+                "      inner join im_hris_pegawai d on b.master_id = d.nip \n" +
+                "      INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = b.rekening_id \n" +
+                "      INNER JOIN (\n" +
+                "        select \n" +
+                "          * \n" +
+                "        from \n" +
+                "          mt_akun_kurs \n" +
+                "        where \n" +
+                "          flag = 'A'\n" +
+                "      ) f on f.mata_uang_id = a.mata_uang_id \n" +
+                "    where \n" +
+                "      a.flag = 'Y' \n" +
+                "      and a.registered_flag = 'Y'\n" +
+                "  ) foo \n" +
+                "where \n" +
+                "  to_date(\n" +
+                "    cast(tgljurnal as TEXT), \n" +
+                "    'MM-yyyy'\n" +
+                "  ) < (\n" +
+                "    to_date('"+periode+"', 'MM-yyyy')+ Interval '1 month'\n" +
+                "  ) \n" +
+                "  and rekening_id IN (\n" +
+                "    select \n" +
+                "      rekening_id \n" +
+                "    from \n" +
+                "      im_akun_report_detail \n" +
+                "    where \n" +
+                "      report_id = '"+reportId+"'\n" +
+                "       and tipe_laporan='"+tipeLaporan+"' \n" +
+                "      and flag='Y'"+
+                "  ) \n" +
+                "  "+tipeWhere+" \n" +
+                "order by \n" +
+                "  masterId, \n" +
+                "  tglJurnal, \n" +
+                "  masterId asc\n";
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results) {
+            Aging data= new Aging();
+            data.setKodeRekening((String) row[0]);
+            data.setRekeningId((String) row[1]);
+            data.setNoNota((String) row[2]);
+            data.setTglJurnal((Date) row[3]);
+            data.setMataUang((String) row[4]);
+            data.setTotal(BigDecimal.valueOf(Double.parseDouble(row[5].toString())));
+            data.setMasterId((String) row[6]);
+            data.setNamaMaster((String) row[7]);
+//            data.setMasterGrp(row[8].toString());
+            data.setKurs(BigDecimal.valueOf(Double.parseDouble(row[8].toString())));
+            data.setNamaRekening((String) row[9]);
+            listOfResult.add(data);
+        }
+        return listOfResult;
+    }
+
+    public List<Aging> getAgingDokter(String branchId, String periode,String masterId,String reportId,String tipeLaporan){
+        List<Aging> listOfResult = new ArrayList<>();
+        String tipeWhere = "";
+        if (!"".equalsIgnoreCase(masterId)){
+            tipeWhere = "and masterId like '"+masterId+"'";
+        }
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "select \n" +
+                "  * \n" +
+                "from \n" +
+                "  (\n" +
+                "    select \n" +
+                "      kr.kode_rekening, \n" +
+                "      b.rekening_id, \n" +
+                "      b.no_nota as noNota, \n" +
+                "      a.tanggal_jurnal as tglJurnal, \n" +
+                "      c.kode_mata_uang as mataUang, \n" +
+                "      (b.jumlah_debit - b.jumlah_kredit) as total, \n" +
+                "      b.master_id as masterId, \n" +
+                "      d.nama_dokter as namaMaster, \n" +
+                "      f.nilai_kurs as kurs, \n" +
+                "      kr.nama_kode_rekening " +
+                "    from \n" +
+                "      (\n" +
+                "        -- mencari semua data di jurnal yang di joinkan dengan setting aging jurnal          \n" +
+                "        select \n" +
+                "          * \n" +
+                "        from \n" +
+                "          it_akun_jurnal \n" +
+                "        where \n" +
+                "          flag = 'Y' \n" +
+                "          and registered_flag = 'Y' \n" +
+                "\t\t  and branch_id IN ("+branchId+")\n" +
+                "      ) a \n" +
+                "      inner join it_akun_jurnal_detail b on b.no_jurnal = a.no_jurnal \n" +
+                "      inner join im_akun_mata_uang c on a.mata_uang_id = c.mata_uang_id \n" +
+                "      inner join im_simrs_dokter d on b.master_id = d.kodering \n" +
+                "      INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = b.rekening_id \n" +
+                "      INNER JOIN (\n" +
+                "        select \n" +
+                "          * \n" +
+                "        from \n" +
+                "          mt_akun_kurs \n" +
+                "        where \n" +
+                "          flag = 'A'\n" +
+                "      ) f on f.mata_uang_id = a.mata_uang_id \n" +
+                "    where \n" +
+                "      a.flag = 'Y' \n" +
+                "      and a.registered_flag = 'Y'\n" +
+                "  ) foo \n" +
+                "where \n" +
+                "  to_date(\n" +
+                "    cast(tgljurnal as TEXT), \n" +
+                "    'MM-yyyy'\n" +
+                "  ) < (\n" +
+                "    to_date('"+periode+"', 'MM-yyyy')+ Interval '1 month'\n" +
+                "  ) \n" +
+                "  and rekening_id IN (\n" +
+                "    select \n" +
+                "      rekening_id \n" +
+                "    from \n" +
+                "      im_akun_report_detail \n" +
+                "    where \n" +
+                "      report_id = '"+reportId+"'\n" +
+                "       and tipe_laporan='"+tipeLaporan+"' \n" +
+                "      and flag='Y'"+
+                "  ) \n" +
+                "  "+tipeWhere+" \n" +
+                "order by \n" +
+                "  masterId, \n" +
+                "  tglJurnal, \n" +
+                "  masterId asc\n";
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results) {
+            Aging data= new Aging();
+            data.setKodeRekening((String) row[0]);
+            data.setRekeningId((String) row[1]);
+            data.setNoNota((String) row[2]);
+            data.setTglJurnal((Date) row[3]);
+            data.setMataUang((String) row[4]);
+            data.setTotal(BigDecimal.valueOf(Double.parseDouble(row[5].toString())));
+            data.setMasterId((String) row[6]);
+            data.setNamaMaster((String) row[7]);
+//            data.setMasterGrp(row[8].toString());
+            data.setKurs(BigDecimal.valueOf(Double.parseDouble(row[8].toString())));
+            data.setNamaRekening((String) row[9]);
+            listOfResult.add(data);
+        }
+        return listOfResult;
+    }
 
     public String getLevelKodeRekening(String reportId){
         String result="";

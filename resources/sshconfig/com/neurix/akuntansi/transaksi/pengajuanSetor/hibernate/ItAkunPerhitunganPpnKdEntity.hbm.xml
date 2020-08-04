@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="com.neurix.akuntansi.transaksi.pengajuanSetor.model.ItAkunPerhitunganPpnKdEntity">
+        <table name="it_akun_perhitungan_ppn_kd" schema="public" catalog="simrs"/>
+        <attributes>
+            <id name="perhitunganPpnKdId">
+                <column name="perhitungan_ppn_kd_id"/>
+            </id>
+            <basic name="tahun">
+                <column name="tahun"/>
+            </basic>
+            <basic name="bulan">
+                <column name="bulan"/>
+            </basic>
+            <basic name="approvalFlag">
+                <column name="approval_flag"/>
+            </basic>
+            <basic name="approvalId">
+                <column name="approval_id"/>
+            </basic>
+            <basic name="approvalDate">
+                <column name="approval_date"/>
+            </basic>
+            <basic name="cancelFlag">
+                <column name="cancel_flag"/>
+            </basic>
+            <basic name="cancelId">
+                <column name="cancel_id"/>
+            </basic>
+            <basic name="cancelDate">
+                <column name="cancel_date"/>
+            </basic>
+            <basic name="ppnMasukan">
+                <column name="ppn_masukan"/>
+            </basic>
+            <basic name="totalPpnMasukan">
+                <column name="total_ppn_masukan"/>
+            </basic>
+            <basic name="ppnKeluaran">
+                <column name="ppn_keluaran"/>
+            </basic>
+            <basic name="kurangBayar">
+                <column name="kurang_bayar"/>
+            </basic>
+            <basic name="perhitunganKembali">
+                <column name="perhitungan_kembali"/>
+            </basic>
+            <basic name="totalKurangBayar">
+                <column name="total_kurang_bayar"/>
+            </basic>
+            <basic name="lbBulanYll">
+                <column name="lb_bulan_yll"/>
+            </basic>
+            <basic name="ppnEkspor">
+                <column name="ppn_ekspor"/>
+            </basic>
+            <basic name="dipungutSendiri">
+                <column name="dipungut_sendiri"/>
+            </basic>
+            <basic name="dipungutOlehPemungut">
+                <column name="dipungut_oleh_pemungut"/>
+            </basic>
+            <basic name="tidakDipungut">
+                <column name="tidak_dipungut"/>
+            </basic>
+            <basic name="dibebaskan">
+                <column name="dibebaskan"/>
+            </basic>
+            <basic name="jumlahTerutangPpn">
+                <column name="jumlah_terutang_ppn"/>
+            </basic>
+            <basic name="jasaRs">
+                <column name="jasa_rs"/>
+            </basic>
+            <basic name="obatRawatInap">
+                <column name="obat_rawat_inap"/>
+            </basic>
+            <basic name="jumlahTidakTerutang">
+                <column name="jumlah_tidak_terutang"/>
+            </basic>
+            <basic name="penyerahanBarangDanJasa">
+                <column name="penyerahan_barang_dan_jasa"/>
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date"/>
+            </basic>
+            <basic name="createdWho">
+                <column name="created_who"/>
+            </basic>
+            <basic name="lastUpdate">
+                <column name="last_update"/>
+            </basic>
+            <basic name="lastUpdateWho">
+                <column name="last_update_who"/>
+            </basic>
+            <basic name="action">
+                <column name="action"/>
+            </basic>
+            <basic name="flag">
+                <column name="flag"/>
+            </basic>
+            <basic name="tipe">
+                <column name="tipe"/>
+            </basic>
+            <basic name="statusB2">
+                <column name="status_b2"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

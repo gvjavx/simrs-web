@@ -79,6 +79,15 @@ public class AntrianTelemedic {
     public void setIdRekening(String idRekening) {
         this.idRekening = idRekening;
     }
+    private String flagViewApproveConfirm;
+
+    public String getFlagViewApproveConfirm() {
+        return flagViewApproveConfirm;
+    }
+
+    public void setFlagViewApproveConfirm(String flagViewApproveConfirm) {
+        this.flagViewApproveConfirm = flagViewApproveConfirm;
+    }
 
     public String getIsMobile() {
         return isMobile;

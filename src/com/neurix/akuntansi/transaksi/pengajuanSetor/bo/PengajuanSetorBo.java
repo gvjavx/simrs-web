@@ -1,11 +1,10 @@
 package com.neurix.akuntansi.transaksi.pengajuanSetor.bo;
 
-import com.neurix.akuntansi.transaksi.pengajuanSetor.model.ItPengajuanSetorEntity;
-import com.neurix.akuntansi.transaksi.pengajuanSetor.model.PengajuanSetor;
-import com.neurix.akuntansi.transaksi.pengajuanSetor.model.PengajuanSetorDetail;
+import com.neurix.akuntansi.transaksi.pengajuanSetor.model.*;
 import com.neurix.common.bo.BaseMasterBo;
 import com.neurix.common.exception.GeneralBOException;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +31,10 @@ public interface PengajuanSetorBo extends BaseMasterBo<PengajuanSetor> {
 
     void postingJurnal(PengajuanSetor bean) throws GeneralBOException;
 
+    void approvePengajuanSetor(PengajuanSetor bean) throws GeneralBOException;
+
+    void postingJurnalProsesPpn(PerhitunganPpnKd bean) throws GeneralBOException;
+
     void batalkanPengajuan(PengajuanSetor bean) throws GeneralBOException;
 
     List<PengajuanSetorDetail> listPPnKeluaran(PengajuanSetor search);
@@ -45,4 +48,36 @@ public interface PengajuanSetorBo extends BaseMasterBo<PengajuanSetor> {
     ItPengajuanSetorEntity getPengajuanSetorById(String pengajuanSetorId);
 
     Map getBillingForPosting(String pengajuanSetorId);
+
+    List<ProsesPpnKd> prosesPPnKanpus(PengajuanSetor bean);
+
+    List<ProsesPpnKd> prosesPPnKanpusB2(PengajuanSetor bean);
+
+    List<ProsesPpnKd> prosesPPnKanpusB3(PengajuanSetor bean);
+
+    BigDecimal perhitunganKembaliPpn(PengajuanSetor search);
+
+    void saveAddProsesPpnKd(PerhitunganPpnKd bean, List<ProsesPpnKd> prosesPpnKdListNormal, List<ProsesPpnKd> prosesPpnKdListB2, List<ProsesPpnKd> prosesPpnKdListB3, PerhitunganPpnKd perhitunganPpnKdListNormal, PerhitunganPpnKd perhitunganPpnKdListB2, PerhitunganPpnKd perhitunganPpnKdListB3,PerhitunganKembaliPpn perhitunganKembaliPpn);
+
+    List<PerhitunganPpnKd> getSearchHomeProsesPpnKd(PerhitunganPpnKd bean) throws GeneralBOException;
+
+    PerhitunganPpnKd getPerhitunganPpnKdList(PerhitunganPpnKd search, String tipe);
+
+    List<ProsesPpnKd> getProsesPpnKdList(String perhitunganPpnKdId);
+
+    List<ItAkunPerhitunganPpnKdEntity> getListUntukValidasi(PerhitunganPpnKd search);
+
+    PerhitunganKembaliPpn getPerhitunganKembali(PerhitunganPpnKd search);
+
+    PerhitunganPpnKd getModalPostingPpn(String bulan, String tahun);
+
+    BigDecimal getJasaRs(PengajuanSetor search);
+
+    BigDecimal getObatrawatInap(PengajuanSetor search);
+
+    Map getBillingForPostingProsesPpnKoreksi(String bulan,String tahun);
+
+    Map getBillingForPostingProsesPpnKasKeluar(String bulan, String tahun, String kas);
+
+    void cancelProsesPpn(PerhitunganPpnKd bean) throws GeneralBOException;
 }

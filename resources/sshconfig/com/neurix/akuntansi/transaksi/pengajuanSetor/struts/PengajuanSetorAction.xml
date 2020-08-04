@@ -85,8 +85,38 @@
             <result name="add_pengajuan_setor_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/addPengajuanSetorPpn.jsp</result>
             <result name="success_add_pengajuan_setor_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/addPengajuanSetorPpn.jsp</result>
             <result name="search_add_pengajuan_setor_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/hasilPencarianPengajuanSetorPpn.jsp</result>
-            <result name="success_save_pengajuan_setor_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/hasilPencarianPengajuanSetorPpn.jsp</result>
+            <result name="success_save_tmp_pengajuan_setor_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/pembagianPengajuanSetorPpn.jsp</result>
             <result name="success_add_pemilihan_pengajuan_setor_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/pembagianPengajuanSetorPpn.jsp</result>
+            <result name="success_add_hasil_pengajuan_setor_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/hasilPembagianPengajuanSetorPpn.jsp</result>
+            <result name="success_save_pengajuan_setor_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/hasilPembagianPengajuanSetorPpn.jsp</result>
+
+            <!-- Proses PPN Kanpus -->
+            <result name="add_proses_ppn_kanpus">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/addProsesPpnKanpus.jsp</result>
+            <result name="success_proses_ppn_kanpus">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/addProsesPpnKanpus.jsp</result>
+            <result name="success_add_proses_ppn_kanpus">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/prosesPpnKanpus.jsp</result>
+            <result name="success_save_proses_ppn_Kanpus">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/prosesPpnKanpus.jsp</result>
+            <result name="view_proses_ppn_Kanpus">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/viewProsesPpnKanpus.jsp</result>
+            <result name="proses_ppn_kd">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/SearchProsesPpnKd.jsp</result>
+            <result name="success_search_proses_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/SearchProsesPpnKd.jsp</result>
+
+
+            <!-- REPORT REPORT -->
+            <result name="export_hasil_csv" type="stream" >
+                <param name="contentType">application/octet-stream</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">attachment; filename="tarikan_pajak_pph21.csv"</param>
+                <param name="allowCaching">false</param>
+                <param name="bufferSize">2048</param>
+                <param name="contentCharSet">string</param>
+            </result>
+            <result name="export_hasil_csv_ppn" type="stream" >
+                <param name="contentType">application/octet-stream</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">attachment; filename="tarikan_pajak_ppn.csv"</param>
+                <param name="allowCaching">false</param>
+                <param name="bufferSize">2048</param>
+                <param name="contentCharSet">string</param>
+            </result>
 
         </action>
     </package>

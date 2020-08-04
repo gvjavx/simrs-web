@@ -507,7 +507,7 @@
                         <span style="display: none; color: red" id="dt-msg-belum-bayar">Resep Belum Siap / Belum ada Biaya</span>
                         <input type="hidden" id="dt-belum-bayar">
                         <div class="row top-7">
-                            <div class="col-md-3" align="right" id="label-cover">Cover : </div>
+                            <div class="col-md-3" align="right" id="label-cover">Biaya Dibayar Asuransi : </div>
                             <div class="col-md-6"><input type="number" class="form-control input-sm" id="dt-cover-asuransi"/></div>
                             <input type="hidden" id="h-dt-cover-asuransi">
                         </div>
@@ -515,13 +515,13 @@
                             <div class="row top-7">
                                 <div class="col-md-3" align="right"></div>
                                 <div class="col-md-6">
-                                    <input type="checkbox" id="dt-check-bayar-asuransi" oninput="showBayar(this.checked)"/> Dibayar Pasien
+                                    <input type="checkbox" id="dt-check-bayar-asuransi" oninput="showBayar(this.checked)"/> Biaya Dibayar Pasien
                                 </div>
                             </div>
                         </div>
                         <div id="dt-body-dibayar-pasien" style="display: none">
                             <div class="row top-7">
-                                <div class="col-md-3" align="right">Dibayar Pasien : </div>
+                                <div class="col-md-3" align="right">Jumlah Dibayar : </div>
                                 <div class="col-md-6"><input type="number" class="form-control input-sm" id="dt-bayar-asuransi" oninput="kurangiCover(this.value)"/></div>
                             </div>
                         </div>
@@ -966,10 +966,17 @@
                 $("#body_tindakan_fin").html(str);
 
                 if (idJenisPeriksaPasien == "asuransi"){
-                    getDataStrukAsuransi(idAntrian);
                     var flagApprove = data.flagApproveConfirm;
+                    var flagViewApprove = data.flagViewApproveConfirm;
                     if (flagApprove == "Y"){
+                        getDataStrukAsuransi(idAntrian);
                         var btn = "<button class='btn btn-primary' onclick=\"viewModalDetailAsuransi(\'"+idAntrian+"\', \'approve\')\"><i class='fa fa-edit'></i> Approve Confirmation</button>";
+                        var btnListAsuransi = $("#list-button-asuransi").html();
+                        btnListAsuransi = btnListAsuransi + btn;
+                        $("#list-button-asuransi").html(btnListAsuransi);
+                    } else if (flagViewApprove == "Y") {
+                        getDataStrukAsuransi(idAntrian);
+                        var btn = "<button class='btn btn-success' onclick=\"viewModalDetailAsuransi(\'"+idAntrian+"\', \'view_approve\')\"><i class='fa fa-search'></i> View Approve Confirmation</button>";
                         var btnListAsuransi = $("#list-button-asuransi").html();
                         btnListAsuransi = btnListAsuransi + btn;
                         $("#list-button-asuransi").html(btnListAsuransi);
@@ -1227,7 +1234,7 @@
                 $("#dt-cover-asuransi").val(item.jumlahCover);
 
                 var btn = "";
-                if (jenis == "approve"){
+                if (jenis == "approve" || jenis == "view_approve"){
                     $("#label-modal-detail-asuransi").text("Approve Pembayaran");
 
                     var pathFoto = firstpath()+"/images/upload/bukti_transfer/"+item.urlFotoStruk;
@@ -1244,8 +1251,11 @@
                     $("#dt-body-struk").hide();
                     $("#dt-body-check-bayar").hide();
 
-                    btn = "<button type=\"button\" class=\"btn btn-success\" id=\"save-detail-save\" onclick=\"uploadStrukAsuransi(\'"+jenis+"\')\"><i class=\"fa fa-arrow-check\"></i> Approve</button>";
-                    $("#btn-save-asuransi").html(btn);
+                    if (jenis == "approve"){
+                        btn = "<button type=\"button\" class=\"btn btn-success\" id=\"save-detail-save\" onclick=\"uploadStrukAsuransi(\'"+jenis+"\')\"><i class=\"fa fa-arrow-check\"></i> Approve</button>";
+                        $("#btn-save-asuransi").html(btn);
+                    }
+
                 } else {
                     VerifikatorPembayaranAction.getStrukAsuransiByIdAntrianAndJenis(idAntrian, jenis, function (res) {
 //                        console.log(res);

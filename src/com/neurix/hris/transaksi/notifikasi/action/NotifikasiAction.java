@@ -1205,7 +1205,7 @@ public class NotifikasiAction extends BaseMasterAction{
         if (pengajuanBiayaRk != null){
             try {
                 setPengajuanBiaya(pengajuanBiayaRk);
-                listOfResultPBRK = notifikasiBoProxy.searchPengajuanBiayaRk(pengajuanBiaya);
+                listOfResultPBRK = notifikasiBoProxy.searchPengajuanBiayaRk(pengajuanBiayaRk);
                 function = "pengajuanBiayaRk";
             } catch (GeneralBOException e) {
                 Long logId = null;
