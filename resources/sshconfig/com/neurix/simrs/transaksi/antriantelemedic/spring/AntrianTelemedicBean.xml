@@ -23,6 +23,13 @@
     <bean id="telemedicineController" class="com.neurix.simrs.mobileapi.TelemedicineController"
           p:telemedicBoProxy-ref="telemedicBoProxy"/>
 
+    <bean id="tesTelemedicController" class="com.neurix.hris.mobileapi.TesTelemedicController"
+          p:telemedicBoProxy-ref="telemedicBoProxy"
+          p:verifikatorPembayaranBoProxy-ref="verifikatorPembayaranBoProxy"
+          p:pelayananBoProxy-ref="pelayananBoProxy"
+          p:pasienBoProxy-ref="pasienBoProxy"
+    />
+
     <bean id="pengirimanObatController" class="com.neurix.simrs.mobileapi.PengirimanObatController"
           p:telemedicBoProxy-ref="telemedicBoProxy"/>
 

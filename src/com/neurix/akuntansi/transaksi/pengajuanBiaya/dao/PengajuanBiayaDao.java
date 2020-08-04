@@ -143,6 +143,66 @@ public class PengajuanBiayaDao extends GenericDao<ImPengajuanBiayaEntity, String
         return listOfResult;
     }
 
+    public List<PengajuanBiaya> getListPengajuanBiayaRkForApproval(Map mapCriteria) {
+        List<PengajuanBiaya> listOfResult = new ArrayList<PengajuanBiaya>();
+        List<Object[]> results = new ArrayList<Object[]>();
+        String nip = null, pengajuanBiayaId = null,atasan=null;
+        String searchNip = "" ;
+        String searchPengajuanBiayaId = "" ;
+        String searchAtasan = "" ;
+        // Get Collection and sorting
+        if (mapCriteria != null) {
+            if (mapCriteria.get("pengajuan_biaya_id") != null) {
+                pengajuanBiayaId = (String) mapCriteria.get("pengajuan_biaya_id");
+            }
+            if (mapCriteria.get("nip_atasan") != null) {
+                atasan = (String) mapCriteria.get("nip_atasan");
+            }
+            if (pengajuanBiayaId!=null){
+                if(!pengajuanBiayaId.equalsIgnoreCase("")){
+                    searchPengajuanBiayaId = " AND pengajuan.pengajuan_biaya_id= '" + pengajuanBiayaId + "' " ;
+                }
+            }
+            if (atasan!=null){
+                if(!atasan.equalsIgnoreCase("")){
+                    searchAtasan = " AND notifikasi.nip = '" + atasan + "' " ;
+                }
+            }
+
+            String query = "SELECT pengajuan.* FROM  \n" +
+                    "                    ( SELECT * FROM it_hris_notifikasi ) notifikasi LEFT JOIN  \n" +
+                    "                    ( SELECT * FROM it_akun_pengajuan_biaya ) pengajuan ON notifikasi.no_request=pengajuan.pengajuan_biaya_id " +
+                    "WHERE notifikasi.tipe_notif_id='TN01' AND pengajuan.flag='Y' "+searchAtasan+searchNip+searchPengajuanBiayaId+" ORDER BY pengajuan.pengajuan_biaya_id DESC";
+
+            results = this.sessionFactory.getCurrentSession()
+                    .createSQLQuery(query)
+                    .list();
+
+            for (Object[] row : results) {
+                PengajuanBiaya pengajuanBiaya = new PengajuanBiaya();
+                pengajuanBiaya.setPengajuanBiayaId((String) row[0]);
+                pengajuanBiaya.setDivisiId((String) row[1]);
+                pengajuanBiaya.setCoaAjuan((String) row[2]);
+                pengajuanBiaya.setCoaTarget((String) row[3]);
+                pengajuanBiaya.setAprovalId((String) row[6]);
+                pengajuanBiaya.setAprovalFlag((String) row[8]);
+                pengajuanBiaya.setBranchId((String) row[10]);
+                pengajuanBiaya.setTransaksi((String) row[11]);
+                pengajuanBiaya.setFlag((String) row[12]);
+                pengajuanBiaya.setAction((String) row[13]);
+                pengajuanBiaya.setAprovalName((String) row[18]);
+                pengajuanBiaya.setKeterangan((String) row[19]);
+                pengajuanBiaya.setNoJurnal((String) row[20]);
+                pengajuanBiaya.setTanggal((Date) row[5]);
+                pengajuanBiaya.setTotalBiaya(BigDecimal.valueOf(Double.parseDouble(row[4].toString())));
+                pengajuanBiaya.setStTotalBiaya(CommonUtil.numbericFormat(pengajuanBiaya.getTotalBiaya(),"###,###"));
+
+                listOfResult.add(pengajuanBiaya);
+            }
+        }
+        return listOfResult;
+    }
+
     public String getIdPengajuanByIdPengajuanDetail(String pengajuanDetailId){
         String query="select\n" +
                 "\tpengajuan_biaya_id\n" +
@@ -159,7 +219,7 @@ public class PengajuanBiayaDao extends GenericDao<ImPengajuanBiayaEntity, String
 
     public String getKeperluanNameBudgetting(String keperluanId){
         String query="select\n" +
-                "\tnama_pengadaan\n" +
+                "\tnama_kontrak\n" +
                 "From\n" +
                 "\tit_akun_budgeting_pengadaan\n" +
                 "where\n" +

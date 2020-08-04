@@ -57,7 +57,6 @@ import com.neurix.hris.transaksi.training.dao.TrainingPersonDao;
 import com.neurix.hris.transaksi.training.model.ItHrisTrainingEntity;
 import com.neurix.hris.transaksi.training.model.ItHrisTrainingPersonEntity;
 import com.neurix.hris.transaksi.training.model.TrainingPerson;
-import io.agora.recording.common.Common;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -3661,7 +3660,7 @@ public class NotifikasiBoImpl implements NotifikasiBo {
             hsCriteria.put("flag","Y");
 
             try {
-                result = pengajuanBiayaDao.getListPengajuanBiayaForApproval(hsCriteria);
+                result = pengajuanBiayaDao.getListPengajuanBiayaRkForApproval(hsCriteria);
             } catch (HibernateException e) {
                 logger.error("[UserBoImpl.searchTrainingPerson] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());

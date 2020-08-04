@@ -1,13 +1,9 @@
 package com.neurix.akuntansi.transaksi.jurnal.bo.impl;
 
 import com.neurix.akuntansi.master.kodeRekening.dao.KodeRekeningDao;
-import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
-import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.transaksi.jurnal.bo.JurnalBo;
 import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDao;
 import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDetailDao;
-import com.neurix.akuntansi.transaksi.jurnal.model.ItJurnalDetailEntity;
-import com.neurix.akuntansi.transaksi.jurnal.model.ItJurnalEntity;
 import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.akuntansi.transaksi.jurnal.model.JurnalDetail;
 import com.neurix.akuntansi.transaksi.pengajuanBiaya.dao.PengajuanBiayaDao;
@@ -17,17 +13,10 @@ import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
-import com.neurix.hris.master.biodata.dao.BiodataDao;
 import org.apache.log4j.Logger;
-import org.apache.struts2.ServletActionContext;
-import org.hibernate.HibernateException;
 
-import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.

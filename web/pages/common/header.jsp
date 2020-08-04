@@ -386,6 +386,12 @@ apply the skin class to the body tag so the changes take effect.
     $( document ).ready(function() {
 //        $('#popoverData').popover();
         //$('#popoverData').tooltip({container: 'body'});
+
+        $('#myTableAllRows').DataTable({
+            paging: false,
+            "order": [[ 0, "desc" ]]
+        });
+
         $('#myTable').DataTable();
 
         $('#sortTable').DataTable({

@@ -22,6 +22,12 @@
         <property name="jumlahPembayaran">
             <column name="jumlah_pembayaran" sql-type="numeric" not-null="false" />
         </property>
+        <property name="pph">
+            <column name="pph" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="ppn">
+            <column name="ppn" sql-type="numeric" not-null="false" />
+        </property>
         <property name="rekeningId">
             <column name="rekening_id" sql-type="varchar" length="30" not-null="false" />
         </property>
@@ -30,6 +36,12 @@
         </property>
         <property name="posisiCoa">
             <column name="posisi_coa" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="noFakturPajak">
+            <column name="no_faktur_pajak" sql-type="varchar" not-null="false" />
+        </property>
+        <property name="urlFakturImage">
+            <column name="url_faktur_image" sql-type="varchar" not-null="false" />
         </property>
 
         <property name="flag">

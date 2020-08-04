@@ -428,9 +428,9 @@ public class TelemedicBoImpl implements TelemedicBo {
 
         // jika waiting list maka generate daftar pembayaran;
         if ("WL".equalsIgnoreCase(bean.getStatus())){
-            generateListPembayaran(bean, branchId, "konsultasi", kodeBank);
+            generateListPembayaran(bean, branchId, "konsultasi", kodeBank, bean.getIdJenisPeriksaPasien());
             if ("Y".equalsIgnoreCase(bean.getFlagResep())){
-                generateListPembayaran(bean, branchId, "resep", kodeBank);
+                generateListPembayaran(bean, branchId, "resep", kodeBank, bean.getIdJenisPeriksaPasien());
             }
         }
         logger.info("[TelemedicBoImpl.saveAdd] END <<<");
@@ -474,19 +474,20 @@ public class TelemedicBoImpl implements TelemedicBo {
 
                 // jika waiting list maka generate daftar pembayaran jika perubahan dari LL ke WL;
                 if ("LL".equalsIgnoreCase(statusSebelum) && "WL".equalsIgnoreCase(telemedicEntity.getStatus())){
-                    generateListPembayaran(telemedicEntity, branchId, "konsultasi", kodeBank);
+                    generateListPembayaran(telemedicEntity, branchId, "konsultasi", kodeBank, telemedicEntity.getIdJenisPeriksaPasien());
                     if ("Y".equalsIgnoreCase(telemedicEntity.getFlagResep())){
-                        generateListPembayaran(telemedicEntity, branchId, "resep", kodeBank);
+                        generateListPembayaran(telemedicEntity, branchId, "resep", kodeBank, telemedicEntity.getIdJenisPeriksaPasien());
                     }
                 }
             }
         }
     }
 
-    private void generateListPembayaran(ItSimrsAntrianTelemedicEntity bean, String branchId, String tipe, String kodeBank) throws GeneralBOException{
+    private void generateListPembayaran(ItSimrsAntrianTelemedicEntity bean, String branchId, String tipe, String kodeBank, String jenisPeriksa) throws GeneralBOException{
         logger.info("[TelemedicBoIml.generateListPembayaran] START >>>");
 
         if ("konsultasi".equalsIgnoreCase(tipe)){
+
             // mencari tindakan konsultasi;
             Map hsCriteria = new HashMap();
             hsCriteria.put("branch_id", branchId);
@@ -505,7 +506,14 @@ public class TelemedicBoImpl implements TelemedicBo {
 
             if (tindakanEntity != null){
                 pembayaranOnlineEntity.setIdItem(tindakanEntity.getIdTindakan());
-                pembayaranOnlineEntity.setNominal(new BigDecimal(tindakanEntity.getTarif()));
+
+                // jika umum generate 3 digit jenis angka untuk penambahan pada nominal;
+                if ("umum".equalsIgnoreCase(jenisPeriksa))
+                    pembayaranOnlineEntity.setNominal(new BigDecimal(tindakanEntity.getTarif()).add(generateRandomNumBigDecimal()));
+                else
+                    pembayaranOnlineEntity.setNominal(new BigDecimal(tindakanEntity.getTarif()));
+                // END
+
             }
 
             pembayaranOnlineEntity.setFlag(bean.getFlag());
@@ -712,7 +720,20 @@ public class TelemedicBoImpl implements TelemedicBo {
 
         if (listPembayaran.size() > 0){
             ItSimrsPembayaranOnlineEntity newPembayaran = listPembayaran.get(0);
-            newPembayaran.setNominal(hargaTotal);
+
+            // jika pasien umum ditambahakan generate 3 digit pada nominal
+            boolean isUmum = false;
+            ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = getAntrianTelemedicEntityById(newPembayaran.getIdAntrianTelemedic());
+            if (antrianTelemedicEntity != null)
+                isUmum = "umum".equalsIgnoreCase(antrianTelemedicEntity.getIdJenisPeriksaPasien());
+
+            if (isUmum)
+                newPembayaran.setNominal(hargaTotal.add(generateRandomNumBigDecimal()));
+            else
+                newPembayaran.setNominal(hargaTotal);
+
+            // END;
+
             newPembayaran.setLastUpdate(now);
             newPembayaran.setLastUpdateWho("admin");
 
@@ -911,6 +932,13 @@ public class TelemedicBoImpl implements TelemedicBo {
         }
 
         logger.info("[TelemedicBoImpl.saveEditPengirimanObat] END <<<");
+    }
+
+    private BigDecimal generateRandomNumBigDecimal() {
+        int min = 1;
+        int max = 500;
+        int random_int = (int)(Math.random() * (max - min + 1) + min);
+        return new BigDecimal(random_int);
     }
 
     private String getSeqResepOnline(){

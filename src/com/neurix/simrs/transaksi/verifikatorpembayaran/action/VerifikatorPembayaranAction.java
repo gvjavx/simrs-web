@@ -3,6 +3,7 @@ package com.neurix.simrs.transaksi.verifikatorpembayaran.action;
 import com.neurix.akuntansi.master.master.bo.MasterBo;
 import com.neurix.akuntansi.master.master.model.ImMasterEntity;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.authorization.position.bo.PositionBo;
@@ -1354,12 +1355,12 @@ public class VerifikatorPembayaranAction {
                 mapJurnal.put("kas",mapKas);
                 mapJurnal.put("piutang_pasien_non_bpjs", mapPiutang);
 
-                String noJurnal = billingSystemBo.createJurnal(transId, mapJurnal, branchId, catatan, "Y");
+                Jurnal jurnal = billingSystemBo.createJurnal(transId, mapJurnal, branchId, catatan, "Y");
 
                 // --- update no jurnal;
                 detailCheckup = new HeaderDetailCheckup();
                 detailCheckup.setIdDetailCheckup(idDetailCheckup);
-                detailCheckup.setNoJurnal(noJurnal);
+                detailCheckup.setNoJurnal(jurnal.getNoJurnal());
 
                 checkupDetailBo.saveUpdateNoJuran(detailCheckup);
             }
@@ -1440,7 +1441,8 @@ public class VerifikatorPembayaranAction {
 
         String noJurnal = "";
         try {
-            noJurnal = billingSystemBo.createJurnal("29", hsCriteria, branchId, "Penjualan Obat Apotik Langsung E-Obat " + branchId, "Y");
+            Jurnal jurnal = billingSystemBo.createJurnal("29", hsCriteria, branchId, "Penjualan Obat Apotik Langsung E-Obat " + branchId, "Y");
+            noJurnal = jurnal.getNoJurnal();
             jurnalResponse.setStatus("success");
             jurnalResponse.setNoJurnal(noJurnal);
         } catch (GeneralBOException e) {
@@ -2078,7 +2080,6 @@ public class VerifikatorPembayaranAction {
                                     //--------------
                                     if ("prosedur_bedah".equalsIgnoreCase(entity.getKategoriInaBpjs())) {
                                         tarifRsProsedurBedah = tarifRsProsedurBedah.add(new BigInteger(entity.getTarifBpjs().toString()));
-
                                     }
                                     if ("keperawatan".equalsIgnoreCase(entity.getKategoriInaBpjs())) {
                                         tarifRsKeperawatan = tarifRsKeperawatan.add(new BigInteger(entity.getTarifBpjs().toString()));
@@ -2086,11 +2087,9 @@ public class VerifikatorPembayaranAction {
                                     }
                                     if ("laboratorium".equalsIgnoreCase(entity.getKategoriInaBpjs())) {
                                         tarifRsLaboratorium = tarifRsLaboratorium.add(new BigInteger(entity.getTarifBpjs().toString()));
-
                                     }
                                     if ("kamar_akomodasi".equalsIgnoreCase(entity.getKategoriInaBpjs())) {
                                         tarifRsKamar = tarifRsKamar.add(new BigInteger(entity.getTarifBpjs().toString()));
-
                                     }
                                     if ("obat_kronis".equalsIgnoreCase(entity.getKategoriInaBpjs())) {
                                         tarifRsObatKronis = tarifRsObatKronis.add(new BigInteger(entity.getTarifBpjs().toString()));
@@ -2103,15 +2102,12 @@ public class VerifikatorPembayaranAction {
                                     //--------------
                                     if ("konsultasi".equalsIgnoreCase(entity.getKategoriInaBpjs())) {
                                         tarifRsKonsultasi = tarifRsKonsultasi.add(new BigInteger(entity.getTarifBpjs().toString()));
-
                                     }
                                     if ("penunjang".equalsIgnoreCase(entity.getKategoriInaBpjs())) {
                                         tarifRsPenunjang = tarifRsPenunjang.add(new BigInteger(entity.getTarifBpjs().toString()));
-
                                     }
                                     if ("pelayanan_darah".equalsIgnoreCase(entity.getKategoriInaBpjs())) {
                                         tarifRsPelayananDarah = tarifRsPelayananDarah.add(new BigInteger(entity.getTarifBpjs().toString()));
-
                                     }
                                     if ("rawat_intensif".equalsIgnoreCase(entity.getKategoriInaBpjs())) {
                                         tarifRsRawatIntensif = tarifRsRawatIntensif.add(new BigInteger(entity.getTarifBpjs().toString()));
@@ -2119,7 +2115,6 @@ public class VerifikatorPembayaranAction {
                                     }
                                     if ("obat_kemoterapi".equalsIgnoreCase(entity.getKategoriInaBpjs())) {
                                         tarifRsObatKemoterapi = tarifRsObatKemoterapi.add(new BigInteger(entity.getTarifBpjs().toString()));
-
                                     }
                                     if ("sewa_alat".equalsIgnoreCase(entity.getKategoriInaBpjs())) {
                                         tarifRsSewaAlat = tarifRsSewaAlat.add(new BigInteger(entity.getTarifBpjs().toString()));

@@ -225,6 +225,7 @@
     <import resource="sshconfig/com/neurix/akuntansi/master/reportKeuanganKonsol/spring/ReportKeuanganKonsolDetailBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/transaksi/budgeting/spring/BudgetingBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/transaksi/pengajuanBiaya/spring/PengajuanBiayaBean.xml"/>
+    <import resource="sshconfig/com/neurix/akuntansi/transaksi/pengajuanSetor/spring/PengajuanSetorBean.xml"/>
 
     <import resource="sshconfig/com/neurix/simrs/transaksi/fisioterapi/spring/FisioterapiBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/fisioterapi/spring/MonitoringFisioterapiBean.xml"/>
@@ -265,4 +266,5 @@
     <import resource="sshconfig/com/neurix/hris/master/mappingpersengaji/spring/MappingPersenGajiBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/transaksi/absensi/spring/MesinAbsensiBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/asesmenoperasi/spring/MonAnestesiBean.xml"/>
+    <import resource="sshconfig/com/neurix/akuntansi/transaksi/penyewaanLahan/spring/PenyewaanLahanBean.xml"/>
 </beans>

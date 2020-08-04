@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.transaksiobat.action;
 
 import com.neurix.akuntansi.master.master.bo.MasterBo;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.authorization.position.bo.PositionBo;
@@ -1673,12 +1674,12 @@ public class TransaksiObatAction extends BaseMasterAction {
                 mapJurnal.put("kas",mapKas);
                 mapJurnal.put("piutang_pasien_non_bpjs", mapPiutang);
 
-                String noJurnal = billingSystemBo.createJurnal(transId, mapJurnal, branchId, catatan, "Y");
+                Jurnal jurnal = billingSystemBo.createJurnal(transId, mapJurnal, branchId, catatan, "Y");
 
                 // --- update no jurnal;
                 detailCheckup = new HeaderDetailCheckup();
                 detailCheckup.setIdDetailCheckup(idDetailCheckup);
-                detailCheckup.setNoJurnal(noJurnal);
+                detailCheckup.setNoJurnal(jurnal.getNoJurnal());
 
                 checkupDetailBo.saveUpdateNoJuran(detailCheckup);
             }
@@ -1851,7 +1852,8 @@ public class TransaksiObatAction extends BaseMasterAction {
         String noJurnal = "";
 
         try {
-            noJurnal = billingSystemBo.createJurnal("30", mapJurnal, branchId, catatan, "Y");
+            Jurnal jurnal = billingSystemBo.createJurnal("30", mapJurnal, branchId, catatan, "Y");
+            noJurnal = jurnal.getNoJurnal();
             response.setNoJurnal(noJurnal);
             response.setStatus("success");
         } catch (GeneralBOException e) {
@@ -2606,7 +2608,8 @@ public class TransaksiObatAction extends BaseMasterAction {
 
         String noJurnal = "";
         try {
-            noJurnal = billingSystemBoProxy.createJurnal("29", hsCriteria, branchId, "Penjualan Obat Apotik Langsung " + branchId, "Y");
+            Jurnal jurnal = billingSystemBoProxy.createJurnal("29", hsCriteria, branchId, "Penjualan Obat Apotik Langsung " + branchId, "Y");
+            noJurnal = jurnal.getNoJurnal();
             jurnalResponse.setStatus("success");
             jurnalResponse.setNoJurnal(noJurnal);
         } catch (GeneralBOException e) {

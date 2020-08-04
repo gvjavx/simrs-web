@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <package name="pengajuanSetor" namespace="/pengajuanSetor" extends="struts-default, jasperreports-default, json-default">
+
+        <result-types>
+            <result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult" default="false" />
+            <result-type name="json" class="org.apache.struts2.json.JSONResult" />
+        </result-types>
+
+        <interceptors>
+            <interceptor name="sessionCheckInterceptor"
+                         class="com.neurix.common.interceptor.SessionCheckInterceptor" />
+
+            <interceptor-stack name="ivelinStack">
+                <interceptor-ref name="sessionCheckInterceptor" />
+                <interceptor-ref name="validation">
+                    <param name="excludeMethods">input,back,cancel,browse,initForm,printInvoice</param>
+                </interceptor-ref>
+                <interceptor-ref name="workflow">
+                    <param name="excludeMethods">input,back,cancel,browse</param>
+                </interceptor-ref>
+                <interceptor-ref name="checkbox"/>
+                <interceptor-ref name="params">
+                    <param name="excludeParams">_,d-\d+?-[sop],6578706f7274</param>
+                </interceptor-ref>
+                <interceptor-ref name="fileUpload"/>
+                <interceptor-ref name="defaultStack">
+                    <param name="exception.logEnabled">true</param>
+                    <param name="exception.logLevel">ERROR</param>
+                </interceptor-ref>
+                <interceptor-ref name="basicStack"/>
+
+            </interceptor-stack>
+
+            <interceptor-stack name="defaultStack">
+                <interceptor-ref name="sessionCheckInterceptor"/>
+                <interceptor-ref name="params">
+                    <param name="excludeParams">
+                        _,d-\d+?-[sop],6578706f7274
+                    </param>
+                </interceptor-ref>
+            </interceptor-stack>
+        </interceptors>
+
+        <global-results>
+            <result name="sessionexpired" type="redirectAction">
+                <param name="actionName">loginUser</param>
+                <param name="namespace">/</param>
+                <param name="redirectSession">true</param>
+            </result>
+            <result name="global_error" type="httpheader">
+                <param name="status">500</param>
+                <param name="headers.message">${exception}</param>
+            </result>
+        </global-results>
+
+        <global-exception-mappings>
+            <exception-mapping exception="java.lang.Exception" result="global_error" />
+            <exception-mapping exception="java.lang.Error" result="global_error" />
+            <exception-mapping exception="java.lang.RuntimeException" result="global_error" />
+        </global-exception-mappings>
+
+
+        <action name="*_pengajuanSetor"
+                class="com.neurix.akuntansi.transaksi.pengajuanSetor.action.PengajuanSetorAction" method="{1}">
+            <interceptor-ref name="ivelinStack" />
+            <!-- PPH 21 -->
+            <result name="pengajuan_setor_pph21">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/pph21/SearchPengajuanSetorPph21.jsp</result>
+            <result name="search_pengajuan_setor_pph21">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/pph21/SearchPengajuanSetorPph21.jsp</result>
+            <result name="success_pengajuan_setor_pph21">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/pph21/SearchPengajuanSetorPph21.jsp</result>
+            <result name="add_pengajuan_setor_pph21">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/pph21/addPengajuanSetorPph21.jsp</result>
+            <result name="success_add_pengajuan_setor_pph21">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/pph21/addPengajuanSetorPph21.jsp</result>
+            <result name="search_add_pengajuan_setor_pph21">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/pph21/hasilPencarianPengajuanSetorPph21.jsp</result>
+            <result name="success_save_pengajuan_setor_pph21">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/pph21/hasilPencarianPengajuanSetorPph21.jsp</result>
+
+            <!-- PPN -->
+            <result name="pengajuan_setor_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/SearchPengajuanSetorPpn.jsp</result>
+            <result name="search_pengajuan_setor_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/SearchPengajuanSetorPpn.jsp</result>
+            <result name="success_pengajuan_setor_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/SearchPengajuanSetorPpn.jsp</result>
+            <result name="add_pengajuan_setor_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/addPengajuanSetorPpn.jsp</result>
+            <result name="success_add_pengajuan_setor_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/addPengajuanSetorPpn.jsp</result>
+            <result name="search_add_pengajuan_setor_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/hasilPencarianPengajuanSetorPpn.jsp</result>
+            <result name="success_save_tmp_pengajuan_setor_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/pembagianPengajuanSetorPpn.jsp</result>
+            <result name="success_add_pemilihan_pengajuan_setor_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/pembagianPengajuanSetorPpn.jsp</result>
+            <result name="success_add_hasil_pengajuan_setor_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/hasilPembagianPengajuanSetorPpn.jsp</result>
+            <result name="success_save_pengajuan_setor_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/hasilPembagianPengajuanSetorPpn.jsp</result>
+
+            <!-- Proses PPN Kanpus -->
+            <result name="add_proses_ppn_kanpus">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/addProsesPpnKanpus.jsp</result>
+            <result name="success_proses_ppn_kanpus">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/addProsesPpnKanpus.jsp</result>
+            <result name="success_add_proses_ppn_kanpus">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/prosesPpnKanpus.jsp</result>
+            <result name="success_save_proses_ppn_Kanpus">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/prosesPpnKanpus.jsp</result>
+            <result name="view_proses_ppn_Kanpus">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/viewProsesPpnKanpus.jsp</result>
+            <result name="proses_ppn_kd">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/SearchProsesPpnKd.jsp</result>
+            <result name="success_search_proses_ppn">/pages/com/neurix/akuntansi/transaksi/pengajuanSetor/ppn/SearchProsesPpnKd.jsp</result>
+
+
+            <!-- REPORT REPORT -->
+            <result name="export_hasil_csv" type="stream" >
+                <param name="contentType">application/octet-stream</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">attachment; filename="tarikan_pajak_pph21.csv"</param>
+                <param name="allowCaching">false</param>
+                <param name="bufferSize">2048</param>
+                <param name="contentCharSet">string</param>
+            </result>
+            <result name="export_hasil_csv_ppn" type="stream" >
+                <param name="contentType">application/octet-stream</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">attachment; filename="tarikan_pajak_ppn.csv"</param>
+                <param name="allowCaching">false</param>
+                <param name="bufferSize">2048</param>
+                <param name="contentCharSet">string</param>
+            </result>
+
+        </action>
+    </package>
+</struts>

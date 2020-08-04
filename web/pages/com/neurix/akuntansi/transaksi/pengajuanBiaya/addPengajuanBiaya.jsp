@@ -183,6 +183,7 @@
                                                     $('#budget_terpakai_sd_bulan_ini').val("");
                                                     $('#keperluanText').val("");
                                                     $('#keperluanCombo').val("");
+                                                    $('#termin').val("");
                                                     $('#sisa_budget_saat_ini').val("");
                                                     $('#sisa_budget_saat_ini_sd').val("");
                                                     $('#budget_terpakai_transaksi_ini').val("");
@@ -399,36 +400,36 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4" style="margin-top: 7px">Budgeting Bulan Ini ( RP )</label>
+                                <label class="col-md-4" style="margin-top: 7px" id="txt_budget_bulan_ini">Budgeting Bulan Ini ( RP )</label>
                                 <div class="col-md-6">
                                     <s:textfield id="sisa_budget" readonly="true" cssClass="form-control" cssStyle="margin-top: 7px;text-align: right" />
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="view_sisa_budget_sd_bulan_ini">
                                 <label class="col-md-4" style="margin-top: 7px">Budgeting s/d Bulan Ini ( RP )</label>
                                 <div class="col-md-6">
                                     <s:textfield id="sisa_budget_sd_bulan_ini" readonly="true" cssClass="form-control" cssStyle="margin-top: 7px;text-align: right" />
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4" style="margin-top: 7px">Budget Terpakai Bulan Ini ( RP )</label>
+                                <label class="col-md-4" style="margin-top: 7px" id="txt_budget_terpakai_bulan_ini">Budget Terpakai Bulan Ini ( RP )</label>
                                 <div class="col-md-6">
                                     <s:textfield id="budget_terpakai" readonly="true" cssClass="form-control" cssStyle="margin-top: 7px;text-align: right" />
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="view_budget_terpakai_sd_bulan_ini">
                                 <label class="col-md-4" style="margin-top: 7px">Budget Terpakai s/d Bulan Ini ( RP )</label>
                                 <div class="col-md-6">
                                     <s:textfield id="budget_terpakai_sd_bulan_ini" readonly="true" cssClass="form-control" cssStyle="margin-top: 7px;text-align: right" />
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4" style="margin-top: 7px">Sisa Budget Bulan Ini ( RP )</label>
+                                <label class="col-md-4" style="margin-top: 7px" id="txt_sisa_budget_bulan_ini">Sisa Budget Bulan Ini ( RP )</label>
                                 <div class="col-md-6">
                                     <s:textfield id="sisa_budget_saat_ini" readonly="true" cssClass="form-control" cssStyle="margin-top: 7px;text-align: right" />
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="view_sisa_budget_saat_ini_sd">
                                 <label class="col-md-4" style="margin-top: 7px">Sisa Budget s/d Bulan Ini ( RP )</label>
                                 <div class="col-md-6">
                                     <s:textfield id="sisa_budget_saat_ini_sd" readonly="true" cssClass="form-control" cssStyle="margin-top: 7px;text-align: right" />
@@ -591,6 +592,7 @@
     function initNoBudget(value){
         if (value=="R"){
             $('#view_termin').hide();
+            $('#btnViewStok').show();
             var option = '<option value=""></option>';
             var divisi_Id=$('#divisi_id').val();
             var branch_id=$('#branch_id').val();
@@ -607,8 +609,15 @@
             });
             $('.keperluanText').show();
             $('.keperluanCombo').hide();
+            $('#view_sisa_budget_sd_bulan_ini').show();
+            $('#view_budget_terpakai_sd_bulan_ini').show();
+            $('#view_sisa_budget_saat_ini_sd').show();
+            $('#txt_budget_bulan_ini').text("Budgeting Bulan Ini ( RP )");
+            $('#txt_budget_terpakai_bulan_ini').text("Budget Terpakai Bulan Ini ( RP )");
+            $('#txt_sisa_budget_bulan_ini').text("Sisa Budget Bulan Ini ( RP )");
         } else if (value=="I"){
             $('#view_termin').show();
+            $('#btnViewStok').hide();
             var option = '<option value=""></option>';
             var divisi_Id=$('#divisi_id').val();
             var branch_id=$('#branch_id').val();
@@ -625,6 +634,12 @@
                     $('#no_budget').html(option);
                 }
             });
+            $('#view_sisa_budget_sd_bulan_ini').hide();
+            $('#view_budget_terpakai_sd_bulan_ini').hide();
+            $('#view_sisa_budget_saat_ini_sd').hide();
+            $('#txt_budget_bulan_ini').text("Nilai Kontrak ( RP )");
+            $('#txt_budget_terpakai_bulan_ini').text("Nilai Kontrak Realisasi ( RP )");
+            $('#txt_sisa_budget_bulan_ini').text("Sisa Nilai Kontrak ( RP )");
         }
     }
 
@@ -782,6 +797,7 @@
                 PengajuanBiayaAction.getStockPerDivisi(branchId,divisiId,tanggal,namaObat,function (result) {
                     tmp_table = "<thead style='font-size: 12px;' ><tr class='active'>"+
                         "<th style='text-align: center; background-color:  #90ee90'>No</th>"+
+                        "<th style='text-align: center; background-color:  #90ee90'>ID Obat</th>"+
                         "<th style='text-align: center; background-color:  #90ee90'>Nama Barang</th>"+
                         "<th style='text-align: center; background-color:  #90ee90'>Qty</th>"+
                         "</tr></thead>";
@@ -790,6 +806,7 @@
                         var saldo = item.subTotalSaldo.replace(/[,]/g,"");
                         tmp_table += '<tr style="font-size: 11px;" ">' +
                             '<td align="center">' + (i + 1) + '</td>' +
+                            '<td align="center">' + item.idObat+ '</td>' +
                             '<td align="center">' + item.namaBarang+ '</td>' +
                             '<td align="center">' + item.qty+ '</td>' +
                             "</tr>";
@@ -830,7 +847,8 @@
         return rupiah;
     }
     function getTerminPembayaran(value){
-        var option = '<option value="Lunas">Lunas</option>';
+        var option = '<option value=""></option>';
+        option += '<option value="Lunas">Lunas</option>';
         BudgetingAction.getTerminPembayaran(value,function (res) {
             if(res.length > 0){
                 $.each(res, function (i, item) {

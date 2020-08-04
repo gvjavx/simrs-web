@@ -164,6 +164,19 @@ public class CommonConstant {
     public final static String ID_KANPUS = "KP";
     public final static String MASTER_PAJAK_OBAT = "03.00";
 
+//    public final static String posisiKabidKeuanganKp = "P042";
+//    public final static String posisiDirkeuKp = "P002";
+//    public final static String posisiKadivKeuanganUnit = "";
+//    public final static String posisiGmUnit = "";
+    public final static String REKENING_PPH21 = "00187";
+    public final static String RESOURCE_PATH_FAKTUR_PAJAK = "/upload/faktur_pajak/";
+    public final static String KODERING_FARMASI_RI = "02.02.01";
+    public final static String KODERING_INSTALASI_RI = "03.04.01";
+    public final static String KODERING_FARMASI_RJ = "02.01.01";
+    public final static String REKENING_ID_PENDAPATAN_RI ="00304";
+    public final static String REKENING_ID_PENDAPATAN_RJ ="00303";
+    public final static String JUNK_MASTER_PIUTANG_PPN = "JNK";
+
     //TELEMEDICINE
     public static final int ADD_JAM_BAYAR = 30; //MENIT
 
@@ -172,4 +185,8 @@ public class CommonConstant {
     public final static String posisiKadivKeuanganUnit = "";
     public final static String posisiGmUnit = "";
 
+    // CONSTANT ID TRANSAKSI BILLING
+    public final static String TRANSAKSI_ID_PROSES_PPN_KD_KOREKSI ="67";
+    public final static String TRANSAKSI_ID_PROSES_PPN_KD_KAS_KELUAR ="68";
+    public final static String TRANSAKSI_ID_PENYEWAAN_LAHAN ="69";
 }

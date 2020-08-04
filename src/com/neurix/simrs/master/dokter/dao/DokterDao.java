@@ -102,7 +102,14 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
                 .add(Restrictions.eq("namaDokter", namaDokter))
                 .add(Restrictions.eq("flag", "Y"))
                 .list();
+        return results;
+    }
 
+    public List<ImSimrsDokterEntity> getDataDokterByKodering(String kodering) throws HibernateException {
+        List<ImSimrsDokterEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsDokterEntity.class)
+                .add(Restrictions.eq("kodering", kodering))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
         return results;
     }
 
