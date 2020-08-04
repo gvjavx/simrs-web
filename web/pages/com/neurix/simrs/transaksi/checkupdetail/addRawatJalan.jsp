@@ -445,19 +445,19 @@
                                 <div class="row jarak">
                                     <div class="col-md-3">
                                         <span>Tensi </span> <small>(mmHg)</small>
-                                        <s:textfield cssClass="form-control" id="fisik_tensi" name="headerDetailCheckup.tensi"></s:textfield>
+                                        <s:textfield cssClass="form-control" id="fisik_tensi" name="headerDetailCheckup.tensi" type="number"></s:textfield>
                                     </div>
                                     <div class="col-md-3">
                                         <span>Suhu</span> <small>(&#8451)</small>
-                                        <s:textfield cssClass="form-control" id="fisik_suhu" name="headerDetailCheckup.suhu"></s:textfield>
+                                        <s:textfield cssClass="form-control" id="fisik_suhu" name="headerDetailCheckup.suhu" type="number"></s:textfield>
                                     </div>
                                     <div class="col-md-3">
                                         <span>Nadi</span> <small>(x/menit)</small>
-                                        <s:textfield cssClass="form-control" id="fisik_nadi" name="headerDetailCheckup.nadi"></s:textfield>
+                                        <s:textfield cssClass="form-control" id="fisik_nadi" name="headerDetailCheckup.nadi" type="number"></s:textfield>
                                     </div>
                                     <div class="col-md-3">
                                         <span>RR</span> <small>(x/menit)</small>
-                                        <s:textfield cssClass="form-control" id="fisik_rr" name="headerDetailCheckup.pernafasan"></s:textfield>
+                                        <s:textfield cssClass="form-control" id="fisik_rr" name="headerDetailCheckup.pernafasan" type="number"></s:textfield>
                                     </div>
                                 </div>
                                 <div class="row jarak">
@@ -2200,6 +2200,27 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-confirm-rm">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h4 class="text-center">Do you want save this record?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
+                </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con_rm"><i class="fa fa-arrow-right"></i> Yes            </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="modal-temp"></div>
 <%@ include file="/pages/modal/modalRingkasanRawatJalan.jsp" %>
 
@@ -2423,6 +2444,8 @@
     }
 
     function printPernyataan(kode) {
+        // $('#modal-confirm-rm').modal('show');
+
         window.open(contextPath+'/rekammedik/printSuratPernyataan_rekammedik?id=' + idDetailCheckup + '&tipe=' + kode, '_blank');
     }
 

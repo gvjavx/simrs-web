@@ -186,7 +186,15 @@ public class DispensasiController implements ModelDriven<Object> {
 
             model.setMessage(result);
 
-        } else {
+        } else if (action.equalsIgnoreCase("validate")){
+            String result = "";
+            try{
+                result = ijinKeluarBoProxy.cekPengajuanIjinKeluar(nip);
+            }catch (GeneralBOException e){
+                logger.error("[CutiFormPegawaiController.created] Error when search by criteria,",e);
+            }
+            model.setMessage(result);
+        }else {
             List<Ijin> modelIjin = null;
             try {
                 Ijin search = new Ijin();

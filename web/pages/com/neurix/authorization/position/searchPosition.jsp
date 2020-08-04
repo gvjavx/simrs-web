@@ -15,7 +15,7 @@
 <html>
 <head>
     <%@ include file="/pages/common/header.jsp" %>
-
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PositionBagianAction.js"/>'></script>
     <style>
         .pagebanner{
             background-color: #ededed;
@@ -106,11 +106,17 @@
                                 <td>
                                     <table>
                                         <s:action id="comboMasaTanam" namespace="/department" name="initDepartment_department"/>
-                                        <s:select list="#session.listOfResultDepartment" id="departmentId" name="position.departmentId"
+                                        <s:select list="#session.listOfResultDepartment" id="departmentId" name="position.departmentId" onchange="listPosisiHistory(); cekBidangLain()"
                                                   listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                     </table>
                                 </td>
                             </tr>
+                            <div id="namaBidangLain" class="form-group" style="display: none">
+                                <label class="control-label col-sm-4">Nama Bidang Lain:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="bidangLain">
+                                </div>
+                            </div>
                             <tr>
                                 <td>
                                     <label class="control-label"><small>Bagian :</small></label>
@@ -119,11 +125,17 @@
                                     <table>
                                         <s:action id="comboBagian" namespace="/positionBagian" name="searchPositionBagian_positionBagian"/>
                                         <s:select list="#comboBagian.comboListOfPositionBagian" id="bagianId" name="position.bagianId"
-                                                  listKey="bagianId" listValue="bagianName" headerKey="" headerValue="[Select one]"
+                                                  listKey="bagianId" listValue="bagianName" headerKey="" headerValue="[Select one]" onchange="cekPosisiLain()"
                                                   cssClass="form-control"/>
                                     </table>
                                 </td>
                             </tr>
+                            <div id="namaJabatanLain" class="form-group" style="display: none">
+                                <label class="control-label col-sm-4">Nama Jabatan Lain: </label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="jabatanLain">
+                                </div>
+                            </div>
                             <tr>
                                 <td>
                                     <label class="control-label"><small>Kelompok Jabatan :</small></label>
@@ -271,4 +283,46 @@
 
 </body>
 </html>
+<script>
+    window.listPosisiHistory = function (branch, divisi) {
+//        var branch = document.getElementById("branch1").value;
+        var divisi = document.getElementById("departmentId").value;
+        console.log("Test divisi "+divisi);
+        $('#bagianId').empty();
+        $('#bagianId').append($("<option></option>")
+                .attr("value", '')
+                .text(''));
+        console.log("Test");
+        PositionBagianAction.searchPositionBagian(divisi, function (listdata) {
+            $.each(listdata, function (i, item) {
+                $('#bagianId').append($("<option></option>")
+                        .attr("value", item.bagianId)
+                        .text(item.bagianName));
+            });
+        });
+    };
+    window.cekBidangLain = function(){
+        var divisi = document.getElementById("departmentId").value;
+        console.log("Test2");
+        if (divisi=='0'){
+            $('#bidangLain').val("");
+            $('#namaBidangLain').show();
+        }
+        else{
+            $('#bidangLain').val("");
+            $('#namaBidangLain').hide();
+        }
+    };
+    window.cekPosisiLain = function(){
+        var position = document.getElementById("bagianId").value;
+        if (position=='0'){
+            $('#jabatanLain').val("");
+            $('#namaJabatanLain').show();
+        }
+        else{
+            $('#jabatanLain').val("");
+            $('#namaJabatanLain').hide();
+        }
+    };
+</script>
 

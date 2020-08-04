@@ -6,6 +6,7 @@ import com.neurix.hris.master.tipelibur.dao.TipeLiburDao;
 import com.neurix.hris.master.tipelibur.model.ImHrisTipeLibur;
 import com.neurix.hris.master.tipelibur.model.ImHrisTipeLiburHistory;
 import com.neurix.hris.master.tipelibur.model.TipeLibur;
+import com.neurix.hris.master.tipepegawai.model.ImHrisTipePegawai;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -48,21 +49,45 @@ public class TipeLiburBoImpl implements TipeLiburBo{
         logger.info("[TipePegawaiBoImpl.saveEdit] start process >>>");
         boolean saved = false;
         if (bean!=null) {
-            ImHrisTipeLibur entityData = new ImHrisTipeLibur();
-            entityData.setTipeLiburId(bean.getTipeLiburId());
-            entityData.setTipeLiburName(bean.getTipeLiburName());
-            entityData.setFlag(bean.getFlag());
-            entityData.setAction(bean.getAction());
-            entityData.setCreateDateWho(bean.getCreatedWho());
-            entityData.setLastUpdateWho(bean.getLastUpdateWho());
-            entityData.setCreatedDate(bean.getCreatedDate());
-            entityData.setLastUpdate(bean.getLastUpdate());
+            String liburId = bean.getTipeLiburId();
+            ImHrisTipeLibur imHrisTipeLibur = null;
+            ImHrisTipeLiburHistory historyEntity = new ImHrisTipeLiburHistory();
+            String tipelLiburIdHistory = "";
+
             try {
-                tipeLiburDao.updateAndSave(entityData);
-                saved = true;
+                // Get data from database by ID
+                imHrisTipeLibur = tipeLiburDao.getById("tipeLiburId", liburId);
+                tipelLiburIdHistory = tipeLiburDao.getNextLiburHistoryId();
             } catch (HibernateException e) {
-                logger.error("[TipePegawaiBoImpl.saveEdit] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
+                logger.error("[AlatBoImpl.saveEdit] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
+            }
+
+            if (imHrisTipeLibur != null){
+                historyEntity.setId(imHrisTipeLibur.getTipeLiburId());
+                historyEntity.setTipeLiburId(tipelLiburIdHistory);
+                historyEntity.setTipeLiburName(imHrisTipeLibur.getTipeLiburName());
+                historyEntity.setFlag(imHrisTipeLibur.getFlag());
+                historyEntity.setAction(imHrisTipeLibur.getAction());
+                historyEntity.setCreateDateWho(imHrisTipeLibur.getCreateDateWho());
+                historyEntity.setLastUpdateWho(imHrisTipeLibur.getLastUpdateWho());
+                historyEntity.setCreatedDate(imHrisTipeLibur.getCreatedDate());
+                historyEntity.setLastUpdate(imHrisTipeLibur.getLastUpdate());
+
+                imHrisTipeLibur.setTipeLiburId(bean.getTipeLiburId());
+                imHrisTipeLibur.setTipeLiburName(bean.getTipeLiburName());
+                imHrisTipeLibur.setFlag(bean.getFlag());
+                imHrisTipeLibur.setAction(bean.getAction());
+                imHrisTipeLibur.setLastUpdateWho(bean.getLastUpdateWho());
+                imHrisTipeLibur.setLastUpdate(bean.getLastUpdate());
+                try {
+                    tipeLiburDao.updateAndSave(imHrisTipeLibur);
+                    tipeLiburDao.addAndSaveHistory(historyEntity);
+                    saved = true;
+                } catch (HibernateException e) {
+                    logger.error("[TipePegawaiBoImpl.saveEdit] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
+                }
             }
         }
 
@@ -180,6 +205,8 @@ public class TipeLiburBoImpl implements TipeLiburBo{
                     returnData = new TipeLibur();
                     returnData.setTipeLiburId(liburEntity.getTipeLiburId());
                     returnData.setTipeLiburName(liburEntity.getTipeLiburName());
+                    returnData.setStCreatedDate(liburEntity.getCreatedDate().toString());
+                    returnData.setStLastUpdate(liburEntity.getLastUpdate().toString());
                     returnData.setCreatedDate(liburEntity.getCreatedDate());
                     returnData.setCreatedWho(liburEntity.getCreateDateWho());
                     returnData.setLastUpdate(liburEntity.getLastUpdate());

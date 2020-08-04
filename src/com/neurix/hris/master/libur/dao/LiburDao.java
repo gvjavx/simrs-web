@@ -3,6 +3,7 @@ package com.neurix.hris.master.libur.dao;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.libur.model.ImLiburEntity;
+import com.neurix.hris.master.libur.model.ImLiburHistoryEntity;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -100,5 +101,17 @@ public class LiburDao extends GenericDao<ImLiburEntity, String> {
                 .list();
 
         return results;
+    }
+
+    public String getNextLiburHistoryId() throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_libur_history')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%05d", iter.next());
+
+        return "LH"+sId;
+    }
+
+    public void addAndSaveHistory(ImLiburHistoryEntity entity) throws HibernateException {
+        this.sessionFactory.getCurrentSession().save(entity);
     }
 }

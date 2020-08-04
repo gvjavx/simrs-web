@@ -305,7 +305,7 @@ public class PayrollSkalaGajiPensiunDplkBoImpl implements PayrollSkalaGajiPensiu
                     returnPayrollSkalaGaji.setSkalaGajiPensiunId(payrollSkalaGajiEntity.getSkalaGajiPensiunId());
                     returnPayrollSkalaGaji.setGolonganId(payrollSkalaGajiEntity.getGolonganId());
                     if(payrollSkalaGajiEntity.getGolonganId() != null){
-                        returnPayrollSkalaGaji.setGolonganName(payrollSkalaGajiEntity.getImGolonganEntity().getGolonganName());
+                        returnPayrollSkalaGaji.setGolonganName(payrollSkalaGajiEntity.getImGolonganDapenEntity().getGolonganDapenName());
                     }
                     returnPayrollSkalaGaji.setNilai(payrollSkalaGajiEntity.getNilai());
                     returnPayrollSkalaGaji.setStNilai(CommonUtil.numbericFormat(payrollSkalaGajiEntity.getNilai(), "###,###"));

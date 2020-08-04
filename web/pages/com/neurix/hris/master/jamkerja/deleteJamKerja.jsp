@@ -18,11 +18,9 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
-            <%--var groupShiftId = '<s:property value="jamKerja.jamKerjaId"/>';--%>
-            var groupShiftName = '<s:property value="jamKerja.jamKerjaId"/>';
+            var jamKerjaId = document.getElementById("jamKerjaId3").value;
 
-
-            if (groupShiftName != '' ) {
+            if (jamKerjaId != '' ) {
 
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
@@ -37,7 +35,7 @@
 
                 event.originalEvent.options.submit = false;
                 var msg = "";
-                if (groupShiftName =='') {
+                if (jamKerjaId =='') {
                     msg = 'Field <strong>jam Kerja Id</strong> is required.' + '<br/>';
                 }
 
@@ -88,7 +86,7 @@
 
 <s:form id="deleteForm" method="post" theme="simple" namespace="/jamkerja" action="saveDelete_jamkerja" cssClass="well form-horizontal">
 
-    <legend align="left">Delete Shift</legend>
+    <legend align="left">Delete Jam Kerja</legend>
 
     <table>
         <tr>
@@ -99,49 +97,88 @@
     </table>
 
     <div class="form-group">
-        <label class="control-label col-sm-2">Jam Kerja Id :</label>
-        <div class="col-sm-8">
-            <s:textfield cssClass="form-control" id="jamKerjaId" name="jamKerja.jamKerjaId" readonly="true" required="true" />
+        <label class="control-label col-sm-3">Jam Kerja Id :</label>
+        <div class="col-sm-7">
+            <s:textfield cssClass="form-control" id="jamKerjaId3" name="jamKerja.jamKerjaId" disabled="true" readonly="true" required="true" />
             <s:hidden id="createdDate" name="jamKerja.createdDate" />
             <s:hidden id="createdWho" name="jamKerja.createdWho" />
-            <s:hidden id="statusGiling" name="jamKerja.statusGiling" />
+            <s:hidden id="jamKerjaId3" name="jamKerja.jamKerjaId" />
                 <%--<input type="text" class="form-control" name="kodeAlat" id="alat.kodeAlat" readonly >--%>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-3">Tipe Pegawai:</label>
+        <div class="col-sm-7">
+            <s:action id="comboTipePegawai" namespace="/jamkerja" name="initComboTipePegawai_jamkerja"/>
+            <s:select list="#comboTipePegawai.listOfComboTipePegawai" id="tipePegawaiId3" name="jamKerja.tipePegawaiId"
+                      listKey="tipePegawaiId" listValue="tipePegawaiName" headerKey="" headerValue="[Select one]" disabled="true"
+                      cssClass="form-control"/>
+            <s:hidden id="tipePegawaiId3" name="jamKerja.tipePegawaiId" />
         </div>
     </div>
 
     <%--<div class="form-group">
-        <label class="control-label col-sm-2">Status Giling:</label>
-        <div class="col-sm-8">
+        <label class="control-label col-sm-3">Status Giling:</label>
+        <div class="col-sm-7">
             <s:select cssClass="form-control" list="#{'DMG':'DMG', 'LMG':'LMG'}" id="statusGiling" name="jamKerja.statusGiling"
-                      headerKey="" headerValue="[Select one]" disabled="true"/>
+                      headerKey="" headerValue="[Select one]"/>
         </div>
     </div>--%>
-
     <div class="form-group">
-        <label class="control-label col-sm-2">Jam Awal Kerja :</label>
-        <div class="col-sm-8">
-            <s:select cssClass="form-control" list="#{'01':'01', '02':'02','03':'03','04':'04','05':'05','06':'06','07':'07','08':'08','09':'09','10':'10','11':'11','12':'12','13':'13','14':'14','15':'15','16':'16','17':'17','18':'18','19':'19','20':'20','21':'21','22':'22','23':'23','24':'24'}" id="jamAwalJam" name="jamKerja.jamAwalJam"
-                      headerKey="" headerValue="[Jam]" readonly="true"/>
-            <s:select cssClass="form-control" list="#{'00':'00', '30':'30'}" id="jamAwalMenit" name="jamKerja.jamAwalMenit"
-                      headerKey="" headerValue="[Menit]" readonly="true"/>
+        <label class="control-label col-sm-3">Unit:</label>
+        <div class="col-sm-7">
+            <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
+            <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="unitId3" name="jamKerja.branchId" required="true" disabled="true"
+                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" />
+            <s:hidden id="unitId3" name="jamKerja.branchId" />
         </div>
     </div>
-
     <div class="form-group">
-        <label class="control-label col-sm-2">Jam Akhir Kerja :</label>
-        <div class="col-sm-8">
-            <s:select cssClass="form-control" list="#{'01':'01', '02':'02','03':'03','04':'04','05':'05','06':'06','07':'07','08':'08','09':'09','10':'10','11':'11','12':'12','13':'13','14':'14','15':'15','16':'16','17':'17','18':'18','19':'19','20':'20','21':'21','22':'22','23':'23','24':'24'}" id="jamAkhirJam" name="jamKerja.jamAkhirJam"
-                      headerKey="" headerValue="[Jam]" readonly="true"/>
-            <s:select cssClass="form-control" list="#{'00':'00', '30':'30'}" id="jamAkhirMenit" name="jamKerja.jamAkhirMenit"
-                      headerKey="" headerValue="[Menit]" readonly="true"/>
+        <label class="control-label col-sm-3">Hari Kerja :</label>
+        <div class="col-sm-7" align="left">
+            <s:select cssClass="form-control" list="#{2:'Senin', 3:'Selasa', 4:'Rabu', 5:'Kamis', 6:'Jumat', 7:'Sabtu', 1:'Minggu'}" id="hariKerja3" name="jamKerja.hariKerja"
+                      headerKey="" disabled="true" headerValue="[Select one]"/>
+            <s:hidden id="hariKerja3" name="jamKerja.hariKerja" />
         </div>
     </div>
-
     <div class="form-group">
-        <label class="control-label col-sm-2">Flag :</label>
-        <div class="col-sm-8" align="left">
-            <s:select cssClass="form-control" list="#{'Y':'Active', 'N':'NonActive'}" id="flag" name="jamKerja.flag"
-                      headerKey="" headerValue="[Select one]" readonly="true"/>
+        <label class="control-label col-sm-3">Jam Kerja :</label>
+        <div class="col-sm-7">
+            <div class="input-group date">
+                <div class="input-group-addon">
+                    <i class="fa fa-clock-o"></i>
+                </div>
+                <s:textfield id="jamAwal2" name="jamKerja.jamAwalKerja" readonly="true" size="8" cssClass="form-control pull-right"
+                             required="false" cssStyle=""/>
+                <div class="input-group-addon">
+                    s/d
+                </div>
+                <div class="input-group-addon">
+                    <i class="fa fa-clock-o"></i>
+                </div>
+                <s:textfield id="jamAkhir2" name="jamKerja.jamAkhirKerja" size="12" readonly="true" cssClass="form-control pull-right"
+                             required="false" cssStyle=""/>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-3">Jam Istirahat :</label>
+        <div class="col-sm-7">
+            <div class="input-group date">
+                <div class="input-group-addon">
+                    <i class="fa fa-clock-o"></i>
+                </div>
+                <s:textfield id="istirahatAwal2" name="jamKerja.istirahatAwal" size="8" readonly="true" cssClass="form-control pull-right"
+                             required="false" cssStyle=""/>
+                <div class="input-group-addon">
+                    s/d
+                </div>
+                <div class="input-group-addon">
+                    <i class="fa fa-clock-o"></i>
+                </div>
+                <s:textfield id="istirahatAkhir2" name="jamKerja.istirahatAkhir" size="12" readonly="true" cssClass="form-control pull-right"
+                             required="false" cssStyle=""/>
+            </div>
         </div>
     </div>
 
@@ -169,17 +206,35 @@
                 <div id="crud">
                     <td>
                         <table>
-                            <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
-                                       resizable="false"
-                                       height="350" width="600" autoOpen="false" title="Saving ...">
-                                Please don't close this window, server is processing your request ...
-                                </br>
-                                </br>
-                                </br>
-                                <center>
-                                    <img border="0" src="<s:url value="/pages/images/indicator-trash.gif"/>" name="image_indicator_write">
-                                </center>
-                            </sj:dialog>
+                            <%--<sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"--%>
+                                       <%--resizable="false"--%>
+                                       <%--height="350" width="600" autoOpen="false" title="Saving ...">--%>
+                                <%--Please don't close this window, server is processing your request ...--%>
+                                <%--</br>--%>
+                                <%--</br>--%>
+                                <%--</br>--%>
+                                <%--<center>--%>
+                                    <%--<img border="0" src="<s:url value="/pages/images/indicator-trash.gif"/>" name="image_indicator_write">--%>
+                                <%--</center>--%>
+                            <%--</sj:dialog>--%>
+
+                                <sj:dialog id="waiting_dialog" openTopics="showDialog"
+                                           closeTopics="closeDialog" modal="true"
+                                           resizable="false"
+                                           height="250" width="700" autoOpen="false"
+                                           title="Search Data ...">
+                                    Please don't close this window, server is processing your request ...
+                                    <br>
+                                    <center>
+                                        <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                             src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                             name="image_indicator_write">
+                                        <br>
+                                        <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                             src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                             name="image_indicator_write">
+                                    </center>
+                                </sj:dialog>
 
                             <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
                                        height="200" width="400" autoOpen="false" title="Infomation Dialog"

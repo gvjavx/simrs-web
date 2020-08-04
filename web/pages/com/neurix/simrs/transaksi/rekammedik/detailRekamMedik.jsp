@@ -426,17 +426,17 @@
                                     </s:if>
                                     <li class="divider"></li>
                                     <li style="margin-bottom: -6px"><a><b>Hemodialisa (HD)</b></a></li>
-                                    <li><a style="cursor: pointer" onclick="showModalHD('monitoring_hd')"><i class="fa fa-file-o"></i> Monitoring HD</a></li>
-                                    <li><a style="cursor: pointer" onclick="showModalHD('perencanaan_hemodialisa')"><i class="fa fa-file-o"></i> Perencanaan HD</a></li>
-                                    <li><a style="cursor: pointer" onclick="showModalHD('asesmen_hd')"><i class="fa fa-file-o"></i> Asesmen Awal HD</a></li>
-                                    <li><a style="cursor: pointer" onclick="showModalHD('tranfusi_hd')"><i class="fa fa-file-o"></i> Tindakan Medis Transfusi Darah</a></li>
-                                    <li><a style="cursor: pointer" onclick="showModalHD('catatan_tranfusi_darah')"><i class="fa fa-file-o"></i> Catatan Pemantauan Tranfusi Darah</a></li>
-                                    <li><a style="cursor: pointer" onclick="showModalHD('persetujuan_hd')"><i class="fa fa-file-o"></i> Persetujuan HD</a></li>
-                                    <li><a style="cursor: pointer" onclick="showModalHD('travelling')"><i class="fa fa-file-o"></i> Travelling Dialysis</a></li>
+                                    <li><a style="cursor: pointer" onmouseover="loadModalRM('hemodialisa')" onclick="showModalHD('monitoring_hd')"><i class="fa fa-file-o"></i> Monitoring HD</a></li>
+                                    <li><a style="cursor: pointer" onmouseover="loadModalRM('hemodialisa')" onclick="showModalHD('perencanaan_hemodialisa')"><i class="fa fa-file-o"></i> Perencanaan HD</a></li>
+                                    <li><a style="cursor: pointer" onmouseover="loadModalRM('hemodialisa')" onclick="showModalHD('asesmen_hd')"><i class="fa fa-file-o"></i> Asesmen Awal HD</a></li>
+                                    <li><a style="cursor: pointer" onmouseover="loadModalRM('hemodialisa')" onclick="showModalHD('tranfusi_hd')"><i class="fa fa-file-o"></i> Tindakan Medis Transfusi Darah</a></li>
+                                    <li><a style="cursor: pointer" onmouseover="loadModalRM('hemodialisa')" onclick="showModalHD('catatan_tranfusi_darah')"><i class="fa fa-file-o"></i> Catatan Pemantauan Tranfusi Darah</a></li>
+                                    <li><a style="cursor: pointer" onmouseover="loadModalRM('hemodialisa')" onclick="showModalHD('persetujuan_hd')"><i class="fa fa-file-o"></i> Persetujuan HD</a></li>
+                                    <li><a style="cursor: pointer" onmouseover="loadModalRM('hemodialisa')" onclick="showModalHD('travelling')"><i class="fa fa-file-o"></i> Travelling Dialysis</a></li>
                                     <li class="divider"></li>
                                     <li style="margin-bottom: -6px"><a><b>Fisioterapi</b></a></li>
-                                    <li><a style="cursor: pointer" onclick="pengkajianFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-file-o"></i> Pengkajian Pasien Fisioterapi</a></li>
-                                    <li><a style="cursor: pointer" onclick="addMonitoringFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-file-o"></i> Kunjungan Fisioterapi</a></li>
+                                    <li><a style="cursor: pointer" onmouseover="loadModalRM('fisioterapi')" onclick="pengkajianFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-file-o"></i> Pengkajian Pasien Fisioterapi</a></li>
+                                    <li><a style="cursor: pointer" onmouseover="loadModalRM('fisioterapi')" onclick="addMonitoringFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-file-o"></i> Kunjungan Fisioterapi</a></li>
                                     <li class="divider"></li>
                                     <li style="margin-bottom: -6px"><a><b>Unit Gawat Darurat (UGD)</b></a></li>
                                     <li><a style="cursor: pointer" onmouseover="loadModalRM('ugd_anak')" onclick="showAsesmenUgd('Asesmen Awal Gawat Darurat Anak')"><i class="fa fa-file-o"></i> Asesmen Awal Gawat Darurat Anak</a></li>

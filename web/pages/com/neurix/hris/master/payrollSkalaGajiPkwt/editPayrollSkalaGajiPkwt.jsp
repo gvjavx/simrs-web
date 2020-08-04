@@ -21,8 +21,9 @@
             var sankhus = document.getElementById("sankhus1").value;
             var tunjFungsional = document.getElementById("tunjFungsional1").value;
             var tunjTambahan = document.getElementById("tunjTambahan1").value;
+            var tahun = document.getElementById("tahunPayroll2").value;
 
-            if (golonganId != ''&& nilai != '' && sankhus != '' && tunjFungsional != '' && tunjTambahan != '' ) {
+            if (golonganId != ''&& nilai != '' && sankhus != '' && tunjFungsional != '' && tunjTambahan != '' && tahun != '') {
                 if(isNaN(sankhus) ==  false && isNaN(nilai) == false && isNaN(sankhus) == false&& isNaN(tunjFungsional) == false&& isNaN(tunjTambahan) == false){
                     if (confirm('Do you want to save this record?')) {
                         event.originalEvent.options.submit = true;
@@ -59,6 +60,9 @@
                 }
                 if (nilai == '') {
                     msg += 'Field <strong>Nilai</strong> is required.' + '<br/>';
+                }
+                if (tahun == '') {
+                    msg += 'Field <strong>Tahun</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -102,7 +106,7 @@
 
 
 
-                <legend align="left">Edit Payroll Gaji Pkwt</legend>
+                <legend align="left">Edit Payroll Gaji PKWT</legend>
 
 
                 <table>
@@ -182,6 +186,19 @@
                         </td>
                     </tr>
 
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Tahun :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:action id="comboPeriode" namespace="/rekruitmen" name="initComboPeriodeTahunSekarang10_rekruitmen"/>
+                                <s:select cssClass="form-control" list="#comboPeriode.listOfComboPeriode" id="tahunPayroll2"
+                                          name="payrollSkalaGajiPkwt.tahun" required="true" headerKey=""
+                                          headerValue="[Select one]"/>
+                            </table>
+                        </td>
+                    </tr>
                 </table>
 
 

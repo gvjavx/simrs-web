@@ -195,7 +195,7 @@ public class MappingPersenGajiBoImpl implements MappingPersenGajiBo {
     public MappingPersenGaji saveAdd(MappingPersenGaji bean) throws GeneralBOException {
         logger.info("[DokterBoImpl.saveAdd] start process >>>");
         if (bean!=null) {
-            String status = cekStatus(bean.getNamaMappingPersenGaji());
+            String status = cekStatus(bean.getNamaMappingPersenGaji(), bean.getJenisGaji());
             String mappingId;
             if (!status.equalsIgnoreCase("exist")){
                 try {
@@ -294,6 +294,8 @@ public class MappingPersenGajiBoImpl implements MappingPersenGajiBo {
                         mappingPersenGaji.setStrNamaMappingPersenGaji("PJS");
                     else if ("percobaan".equalsIgnoreCase(entity.getNamaMappingPersenGaji()))
                         mappingPersenGaji.setStrNamaMappingPersenGaji("Percobaan");
+                    else if ("pegawai_baru".equalsIgnoreCase(entity.getNamaMappingPersenGaji()))
+                        mappingPersenGaji.setStrNamaMappingPersenGaji("Pegawai Baru");
 
                     if ("gaji_golongan".equalsIgnoreCase(entity.getJenisGaji()))
                         mappingPersenGaji.setStrJenisGaji("Gaji Pokok");
@@ -326,11 +328,11 @@ public class MappingPersenGajiBoImpl implements MappingPersenGajiBo {
         return null;
     }
 
-    public String cekStatus(String namaMapping)throws GeneralBOException{
+    public String cekStatus(String namaMapping, String jenisGaji)throws GeneralBOException{
         String status ="";
         List<ImHrisMappingPersenGaji> entities = new ArrayList<>();
         try {
-            entities = mappingPersenGajiDao.getDataMapping(namaMapping);
+            entities = mappingPersenGajiDao.getDataMapping(namaMapping, jenisGaji);
         } catch (HibernateException e) {
             logger.error("[DokterBoImpl.cekStatus] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());

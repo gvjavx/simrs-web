@@ -39,6 +39,9 @@ public class PayrollSkalaGajiPkwtDao extends GenericDao<ImPayrollSkalaGajiPkwtEn
             if (mapCriteria.get("golongan_pkwt_id")!=null) {
                 criteria.add(Restrictions.eq("golonganPkwtId", (String) mapCriteria.get("golongan_pkwt_id")));
             }
+            if (mapCriteria.get("tahun")!=null) {
+                criteria.add(Restrictions.eq("tahun", (String) mapCriteria.get("tahun")));
+            }
 
             criteria.add(Restrictions.eq("flag", (String) mapCriteria.get("flag")));
         }
@@ -60,7 +63,7 @@ public class PayrollSkalaGajiPkwtDao extends GenericDao<ImPayrollSkalaGajiPkwtEn
     public List<ImPayrollSkalaGajiPkwtEntity> getSkalaGajiPkwt(String golonganPkwtId,String tahun) throws HibernateException {
         List<ImPayrollSkalaGajiPkwtEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImPayrollSkalaGajiPkwtEntity.class)
                 .add(Restrictions.eq("golonganPkwtId", golonganPkwtId))
-                .add(Restrictions.eq("golonganPkwtId", golonganPkwtId))
+                .add(Restrictions.eq("tahun", tahun))
                 .add(Restrictions.eq("flag", "Y"))
                 .list();
 

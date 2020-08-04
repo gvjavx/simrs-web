@@ -16,10 +16,15 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
-            var groupShiftName = $("#statusGiling").val()
+            var branchId = document.getElementById("unitId").value;
+            var hariKerja = document.getElementById("hariKerja").value;
+            var jamAwal = document.getElementById("jamAwal").value;
+            var jamAkhir = document.getElementById("jamAkhir").value;
+            var istirahatAwal = document.getElementById("istirahatAwal").value;
+            var istirahatAkhir = document.getElementById("istirahatAkhir").value;
 
             //alert(namaAlat.value);
-            if (groupShiftName.value != '' ) {
+            if (branchId != '' && hariKerja != '' && jamAwal != '' && jamAkhir != '' && istirahatAwal != '' && istirahatAkhir != '') {
 
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
@@ -35,8 +40,23 @@
                 event.originalEvent.options.submit = false;
 
                 var msg = "";
-                if (groupShiftName.value =='') {
-                    msg = 'Field <strong>Status Giling</strong> is required.' + '<br/>';
+                if (branchId =='') {
+                    msg = 'Field <strong>Unit</strong> is required.' + '<br/>';
+                }
+                if (hariKerja =='') {
+                    msg = 'Field <strong>Hari Kerja</strong> is required.' + '<br/>';
+                }
+                if (jamAwal =='') {
+                    msg = 'Field <strong>Jam Kerja Awal</strong> is required.' + '<br/>';
+                }
+                if (jamAkhir =='') {
+                    msg = 'Field <strong>Jam Kerja Akhir</strong> is required.' + '<br/>';
+                }
+                if (istirahatAwal =='') {
+                    msg = 'Field <strong>Jam istirahat Awal</strong> is required.' + '<br/>';
+                }
+                if (istirahatAkhir.value =='') {
+                    msg = 'Field <strong>Jam istirahat Akhir</strong> is required.' + '<br/>';
                 }
 
 
@@ -121,7 +141,7 @@
         <label class="control-label col-sm-3">Unit:</label>
         <div class="col-sm-7">
             <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
-            <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="unitId12" name="jamKerja.branchId" required="true"
+            <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="unitId" name="jamKerja.branchId" required="true"
                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" />
         </div>
     </div>
@@ -172,13 +192,6 @@
             </div>
         </div>
     </div>
-    <div class="form-group">
-        <label class="control-label col-sm-3">Flag :</label>
-        <div class="col-sm-7" align="left">
-            <s:select cssClass="form-control" list="#{'Y':'Active', 'N':'NonActive'}" id="flag" name="jamKerja.flag"
-                      headerKey="" headerValue="[Select one]"/>
-        </div>
-    </div>
 
     <br>
     <div class="form-group">
@@ -202,15 +215,33 @@
                 <div id="crud">
                     <td>
                         <table>
-                            <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
+                            <%--<sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"--%>
+                                       <%--resizable="false"--%>
+                                       <%--height="350" width="600" autoOpen="false" title="Saving ...">--%>
+                                <%--Please don't close this window, server is processing your request ...--%>
+                                <%--</br>--%>
+                                <%--</br>--%>
+                                <%--</br>--%>
+                                <%--<center>--%>
+                                    <%--<img border="0" src="<s:url value="/pages/images/loading4.gif"/>" name="image_indicator_write">--%>
+                                <%--</center>--%>
+                            <%--</sj:dialog>--%>
+
+                            <sj:dialog id="waiting_dialog" openTopics="showDialog"
+                                       closeTopics="closeDialog" modal="true"
                                        resizable="false"
-                                       height="350" width="600" autoOpen="false" title="Saving ...">
+                                       height="350" width="600" autoOpen="false"
+                                       title="Jam Kerja">
                                 Please don't close this window, server is processing your request ...
-                                </br>
-                                </br>
-                                </br>
+                                <br>
                                 <center>
-                                    <img border="0" src="<s:url value="/pages/images/loading4.gif"/>" name="image_indicator_write">
+                                    <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                         src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                         name="image_indicator_write">
+                                    <br>
+                                    <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                         src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                         name="image_indicator_write">
                                 </center>
                             </sj:dialog>
 

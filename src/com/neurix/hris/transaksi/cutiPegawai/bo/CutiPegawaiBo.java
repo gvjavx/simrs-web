@@ -81,4 +81,7 @@ public interface CutiPegawaiBo extends BaseMasterBo<CutiPegawai> {
     public String getKabidSdmUmum(String branchId);
     public String getTanggalPensiun(String nip);
     public String cekStatusCuti(String nip, String cutiId, String jenisCuti);
+    public String cekPengajuanCuti(String nip);
+
+    List<CutiPegawai> searchApprovalByCriteria(CutiPegawai bean) throws GeneralBOException;
 }
