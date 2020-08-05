@@ -3378,4 +3378,54 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
         return "print_bukti_refund";
     }
 
+    public CrudResponse kembalikanBukti(String idTransaksi){
+
+        CrudResponse response = new CrudResponse();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
+        TelemedicBo telemedicBo = (TelemedicBo) ctx.getBean("telemedicBoProxy");
+
+        ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = verifikatorPembayaranBo.getPembayaranOnlineById(idTransaksi);
+        if (pembayaranOnlineEntity != null){
+
+            pembayaranOnlineEntity.setUrlFotoBukti("");
+
+            try {
+                verifikatorPembayaranBo.saveEdit(pembayaranOnlineEntity);
+            } catch (HibernateException e){
+                logger.error("[VerifikatorPembayaranAction.kembalikanBukti] Error, save edit verikator pembayaran ", e);
+                response.setStatus("error");
+                response.setMsg("[VerifikatorPembayaranAction.kembalikanBukti] Error,  save edit verikator pembayaran" + e);
+                return response;
+            }
+
+            ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = telemedicBo.getAntrianTelemedicEntityById(pembayaranOnlineEntity.getIdAntrianTelemedic());
+            if (antrianTelemedicEntity != null){
+
+                AntrianTelemedic antrianTelemedic = new AntrianTelemedic();
+                antrianTelemedic.setId(antrianTelemedicEntity.getId());
+                if ("konsultasi".equalsIgnoreCase(pembayaranOnlineEntity.getKeterangan())){
+                    antrianTelemedic.setFlagBayarKonsultasi("");
+                }
+                if ("resep".equalsIgnoreCase(pembayaranOnlineEntity.getKeterangan())){
+                    antrianTelemedic.setFlagResep("");
+                }
+
+                try {
+                    telemedicBo.saveEdit(antrianTelemedic, "", "");
+                } catch (HibernateException e){
+                    logger.error("[VerifikatorPembayaranAction.kembalikanBukti] Error,  save edit antrian telemedic", e);
+                    response.setStatus("error");
+                    response.setMsg("[VerifikatorPembayaranAction.kembalikanBukti] Error, save edit antrian telemedic" + e);
+                    return response;
+                }
+                response.setStatus("success");
+                response.setMsg("berhasil");
+            }
+        }
+
+        return response;
+    }
+
 }
