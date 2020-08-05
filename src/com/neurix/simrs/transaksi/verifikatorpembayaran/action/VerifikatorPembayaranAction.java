@@ -1550,7 +1550,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
             HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
             detailCheckup = new HeaderDetailCheckup();
             detailCheckup.setIdDetailCheckup(idDetailCheckup);
-            detailCheckup.setInvoice(noJurnal.getSumberDanaId());
+            detailCheckup.setInvoice(noJurnal.getNoJurnal());
             detailCheckup.setNoJurnal(noJurnal.getNoJurnal());
 
             checkupDetailBo.saveUpdateNoJuran(detailCheckup);
@@ -3247,7 +3247,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
             HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
             detailCheckup = new HeaderDetailCheckup();
             detailCheckup.setIdDetailCheckup(idDetailCheckup);
-            detailCheckup.setInvoice(noJurnal.getSumberDanaId());
+            detailCheckup.setInvoice(noJurnal.getNoJurnal());
             detailCheckup.setNoJurnal(noJurnal.getNoJurnal());
 
             checkupDetailBo.saveUpdateNoJuran(detailCheckup);
