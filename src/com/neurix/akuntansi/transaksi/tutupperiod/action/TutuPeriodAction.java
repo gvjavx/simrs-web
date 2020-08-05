@@ -3,6 +3,7 @@ package com.neurix.akuntansi.transaksi.tutupperiod.action;
 import com.neurix.akuntansi.master.master.bo.MasterBo;
 import com.neurix.akuntansi.master.master.model.ImMasterEntity;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.akuntansi.transaksi.tutupperiod.bo.TutupPeriodBo;
 import com.neurix.akuntansi.transaksi.tutupperiod.model.BatasTutupPeriod;
 import com.neurix.akuntansi.transaksi.tutupperiod.model.ItSimrsBatasTutupPeriodEntity;
@@ -155,7 +156,6 @@ public class TutuPeriodAction extends BaseTransactionAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TutupPeriodBo tutupPeriodBo = (TutupPeriodBo) ctx.getBean("tutupPeriodBoProxy");
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
-//        RiwayatTindakanBo riwayatTindakanBo = (RiwayatTindakanBo) ctx.getBean("riwayatTindakanBoProxy");
         BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
 
         // set object tutup period, Sigit
@@ -187,7 +187,6 @@ public class TutuPeriodAction extends BaseTransactionAction {
 
 
                     // mendapatkan list daftar yg akan dibuatkan jurnal transitoris, Sigit
-
                     TutupPeriod transPeriod = new TutupPeriod();
                     transPeriod.setUnit(unit);
                     transPeriod.setTahun(tahun);
@@ -200,25 +199,7 @@ public class TutuPeriodAction extends BaseTransactionAction {
                     transPeriod.setLastUpdateWho(userLogin);
                     transPeriod.setIdDetailCheckup(detailCheckup.getIdDetailCheckup());
                     transPeriod.setIdJenisPeriksaPasien(detailCheckup.getIdJenisPeriksaPasien());
-
                     listJurnalTransData.add(transPeriod);
-
-
-//                    JurnalResponse jurnalResponse = createJurnalTransitoris(tutupPeriod);
-//                    if ("error".equalsIgnoreCase(jurnalResponse.getStatus())){
-//                        response.setStatus("error");
-//                        response.setMsg(jurnalResponse.getMsg());
-//                        return response;
-//                    }
-
-                    // insert into table tindakan transitoris, Sigit
-//                    try {
-//                        riwayatTindakanBo.saveTindakanTransitoris(detailCheckup.getIdDetailCheckup(), time, userLogin);
-//                    } catch (GeneralBOException e){
-//                        response.setStatus("error");
-//                        response.setMsg("[TutuPeriodAction.saveTutupPeriod] ERROR. " + e);
-//                        return response;
-//                    }
                 }
             }
         } catch (GeneralBOException e){
@@ -227,7 +208,6 @@ public class TutuPeriodAction extends BaseTransactionAction {
             response.setMsg("[TutupPeriodAction.saveTutupPeriod] ERROR. "+e);
             return response;
         }
-
 
         // tutup period, sigit
         try {
@@ -419,13 +399,13 @@ public class TutuPeriodAction extends BaseTransactionAction {
 
         try {
 
-            String noJurnal = billingSystemBo.createJurnal(transId, mapJurnal, bean.getUnit(), catatan, "Y");
+            Jurnal jurnal= billingSystemBo.createJurnal(transId, mapJurnal, bean.getUnit(), catatan, "Y");
 
             HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
             detailCheckup.setIdDetailCheckup(bean.getIdDetailCheckup());
             detailCheckup.setTransPeriode(bean.getBulan()+"-"+bean.getTahun());
             detailCheckup.setTransDate(bean.getCreatedDate());
-            detailCheckup.setNoJurnalTrans(noJurnal);
+            detailCheckup.setNoJurnalTrans(jurnal.getNoJurnal());
             detailCheckup.setInvoice(invoiceNumber);
             detailCheckup.setAction("U");
             detailCheckup.setLastUpdate(bean.getCreatedDate());

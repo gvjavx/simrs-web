@@ -21,6 +21,10 @@ public class ImPembayaranUtangPiutangDetailEntity implements Serializable {
     private String rekeningId;
     private String divisiId;
     private String posisiCoa;
+    private BigDecimal pph;
+    private BigDecimal ppn;
+    private String noFakturPajak;
+    private String urlFakturImage;
 
     private String flag;
     private String action;
@@ -28,6 +32,38 @@ public class ImPembayaranUtangPiutangDetailEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getNoFakturPajak() {
+        return noFakturPajak;
+    }
+
+    public void setNoFakturPajak(String noFakturPajak) {
+        this.noFakturPajak = noFakturPajak;
+    }
+
+    public String getUrlFakturImage() {
+        return urlFakturImage;
+    }
+
+    public void setUrlFakturImage(String urlFakturImage) {
+        this.urlFakturImage = urlFakturImage;
+    }
+
+    public BigDecimal getPph() {
+        return pph;
+    }
+
+    public void setPph(BigDecimal pph) {
+        this.pph = pph;
+    }
+
+    public BigDecimal getPpn() {
+        return ppn;
+    }
+
+    public void setPpn(BigDecimal ppn) {
+        this.ppn = ppn;
+    }
 
     public String getPosisiCoa() {
         return posisiCoa;

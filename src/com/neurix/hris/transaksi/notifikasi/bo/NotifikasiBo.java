@@ -3,7 +3,6 @@ package com.neurix.hris.transaksi.notifikasi.bo;
 import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.PengajuanBiaya;
 import com.neurix.common.bo.BaseMasterBo;
 import com.neurix.common.exception.GeneralBOException;
-import com.neurix.hris.master.ijin.model.Ijin;
 import com.neurix.hris.transaksi.absensi.model.AbsensiPegawai;
 import com.neurix.hris.transaksi.cutiPegawai.model.CutiPegawai;
 import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluar;

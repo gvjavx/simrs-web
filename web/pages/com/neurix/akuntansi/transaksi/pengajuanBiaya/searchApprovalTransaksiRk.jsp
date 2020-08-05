@@ -142,7 +142,7 @@
                                                 <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                             </sj:dialog>
 
-                                            <s:set name="listOfResultPB" value="#session.listOfResultPengajuanBiaya" scope="request" />
+                                            <s:set name="listOfResultPBRK" value="#session.listOfResultPengajuanBiayaRk" scope="request" />
                                             <display:table name="listOfResultPBRK" class="table table-condensed table-striped table-hover"
                                                            requestURI="paging_displaytag_Notifikasi.action" id="row" pagesize="20" style="font-size:10">
 

@@ -44,6 +44,15 @@ public class ItSimrsAntrianTelemedicEntity {
     private String noSep;
     private String idDiagnosa;
     private String ketDiagnosa;
+    private String idRekening;
+
+    public String getIdRekening() {
+        return idRekening;
+    }
+
+    public void setIdRekening(String idRekening) {
+        this.idRekening = idRekening;
+    }
 
     public String getIdDiagnosa() {
         return idDiagnosa;

@@ -332,7 +332,10 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
                 agingList = laporanAkuntansiDao.getAging(branch,periode,masterId,reportId,tipeLaporan);
             }else if (("pasien").equalsIgnoreCase(tipeAging)){
                 agingList = laporanAkuntansiDao.getAgingPasien(branch,periode,masterId,reportId,tipeLaporan);
-
+            }else if (("dokter").equalsIgnoreCase(tipeAging)){
+                agingList = laporanAkuntansiDao.getAgingDokter(branch,periode,masterId,reportId,tipeLaporan);
+            }else if (("pegawai").equalsIgnoreCase(tipeAging)){
+                agingList = laporanAkuntansiDao.getAgingPegawai(branch,periode,masterId,reportId,tipeLaporan);
             }
         } catch (HibernateException e) {
             logger.error("[LaporanAkuntansiBoImpl.getSearchLaporanAkuntansiByCriteria] Error, " + e.getMessage());

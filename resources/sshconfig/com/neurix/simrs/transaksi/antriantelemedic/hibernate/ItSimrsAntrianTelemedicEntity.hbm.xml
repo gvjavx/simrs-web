@@ -113,6 +113,9 @@
             <basic name="ketDiagnosa">
                 <column name="ket_diagnosa"/>
             </basic>
+            <basic name="idRekening">
+                <column name="id_rekening"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

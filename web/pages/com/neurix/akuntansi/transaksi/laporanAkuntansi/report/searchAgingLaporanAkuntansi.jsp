@@ -137,7 +137,7 @@
                                                     <label class="control-label"><small>Tipe Laporan :</small></label>
                                                 </td>
                                                 <td>
-                                                    <s:select list="#{'hutang_usaha':'Hutang Usaha', 'piutang_usaha' : 'Piutang Usaha', 'uang_muka':'Uang Muka','piutang_pasien':'Piutang Pasien','uang_muka_p':'Uang Muka Pasien'}"
+                                                    <s:select list="#{'hutang_usaha':'Hutang Usaha', 'piutang_usaha' : 'Piutang Usaha', 'uang_muka':'Uang Muka','piutang_pasien':'Piutang Pasien','uang_muka_p':'Uang Muka Pasien','pph_dokter_kso':'PPH21 Dokter','pph_pegawai':'PPH21 Pegawai','pph_rekanan':'PPH21 Rekanan'}"
                                                               id="tipeLaporan" name="laporanAkuntansi.tipeLaporanId"
                                                               headerKey="" headerValue="[Select One]" cssClass="form-control" />
                                                 </td>

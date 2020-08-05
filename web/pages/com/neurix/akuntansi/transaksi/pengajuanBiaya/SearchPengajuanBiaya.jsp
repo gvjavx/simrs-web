@@ -506,6 +506,7 @@
                 "<th style='text-align: center; color: #fff; background-color:  #30d196''>Status</th>" +
                 "<th style='text-align: center; color: #fff; background-color:  #30d196''>Detail</th>" +
                 "<th style='text-align: center; color: #fff; background-color:  #30d196''>Print</th>" +
+                "<th style='text-align: center; color: #fff; background-color:  #30d196''>Dibayar</th>" +
                 "</tr></thead>";
             var i = i;
             $.each(listdata, function (i, item) {
@@ -518,6 +519,10 @@
                         '<img border="0" src="<s:url value="/pages/images/icons8-print-25.png"/>" name="icon_edit">\n' +
                         '</a></td>';
                 }
+                var dibayar ='<td></td>';
+                if (item.sudahDibayar){
+                    dibayar ='<td align="center"><img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit"></td>';
+                }
                 tmp_table += '<tr style="font-size: 11px;" ">' +
                     '<td align="center">' + (i + 1) + '</td>' +
                     '<td align="center">' + item.pengajuanBiayaDetailId + '</td>' +
@@ -529,6 +534,7 @@
                     '<td align="center">' + item.statusSaatIni + '</td>' +
                         view+
                         print+
+                        dibayar+
                     "</tr>";
             });
             $('.pengajuanTable').append(tmp_table);

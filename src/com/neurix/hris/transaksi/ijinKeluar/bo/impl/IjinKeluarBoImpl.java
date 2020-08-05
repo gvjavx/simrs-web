@@ -287,35 +287,36 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
                 imIjinKeluarEntity.setCancelPerson(bean.getCancelPerson());
                 imIjinKeluarEntity.setCancelNote(bean.getCancelNote());
 
-                if ("IJ013".equalsIgnoreCase(bean.getIjinId())){
-                    SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-                    try {
-                        //tglMelahirkan
-                        java.util.Date date = format.parse(bean.getStTglMelahirkan().toString());
-                        Date tglMelahirkan = new Date(date.getTime());
-                        imIjinKeluarEntity.setTglMelahirkan(tglMelahirkan);
+                if (!"Y".equalsIgnoreCase(bean.getCancelFlag())){
+                    if ("IJ013".equalsIgnoreCase(bean.getIjinId())){
+                        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+                        try {
+                            //tglMelahirkan
+                            java.util.Date date = format.parse(bean.getStTglMelahirkan().toString());
+                            Date tglMelahirkan = new Date(date.getTime());
+                            imIjinKeluarEntity.setTglMelahirkan(tglMelahirkan);
 
-                        //tglAkhirOld
-                        java.util.Date date1 = format.parse(bean.getStTanggalAkhir().toString());
-                        Date tglAkhirOld = new Date(date1.getTime());
-                        imIjinKeluarEntity.setTanggalAkhirOld(tglAkhirOld);
+                            //tglAkhirOld
+                            java.util.Date date1 = format.parse(bean.getStTanggalAkhir().toString());
+                            Date tglAkhirOld = new Date(date1.getTime());
+                            imIjinKeluarEntity.setTanggalAkhirOld(tglAkhirOld);
 
-                        //tglAkhirNew
+                            //tglAkhirNew
 //                    java.util.Date date2 = format.parse(bean.getTanggalAkhirBaru().toString());
 //                    Date tglAkhirNew = new Date(date2.getTime());
 //                    imIjinKeluarEntity.setTanggalAkhir(tglAkhirNew);
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(tglMelahirkan);
-                        calendar.add(Calendar.DAY_OF_MONTH, 45);
-                        Date tglAkhirNew = new Date(calendar.getTimeInMillis());
-                        imIjinKeluarEntity.setTanggalAkhir(tglAkhirNew);
-                    } catch (ParseException e) {
-                        logger.error("[IjinKeluarBoImpl.saveEdit] Error, " + e.getMessage());
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setTime(tglMelahirkan);
+                            calendar.add(Calendar.DAY_OF_MONTH, 45);
+                            Date tglAkhirNew = new Date(calendar.getTimeInMillis());
+                            imIjinKeluarEntity.setTanggalAkhir(tglAkhirNew);
+                        } catch (ParseException e) {
+                            logger.error("[IjinKeluarBoImpl.saveEdit] Error, " + e.getMessage());
+                        }
+
+                        imIjinKeluarEntity.setLamaIjin(bean.getLamaIjinBaru());
                     }
-
-                    imIjinKeluarEntity.setLamaIjin(bean.getLamaIjinBaru());
                 }
-
 
 
                 imIjinKeluarEntity.setFlag(bean.getFlag());
@@ -1502,6 +1503,7 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
 //                                    returnIjinKeluar.setUploadFile(ijinKeluarEntity.getSuratDokter());
 //                                    returnIjinKeluar.setStTanggalAkhir(df.format(ijinKeluarEntity.getTanggalAkhir()));
                                     if (ijinKeluarEntity.getTglMelahirkan() != null){
+                                        returnIjinKeluar.setCetakSurat(true);
                                         returnIjinKeluar.setLamaIjin(ijinKeluarEntity.getLamaIjinOld());
                                         returnIjinKeluar.setLamaIjinBaru(ijinKeluarEntity.getLamaIjin());
                                         returnIjinKeluar.setTanggalAkhir(ijinKeluarEntity.getTanggalAkhirOld());
@@ -1511,8 +1513,14 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
 //                                        if (ijinKeluarEntity.getTglMelahirkan() != null)
                                         returnIjinKeluar.setStTglMelahirkan(df.format(ijinKeluarEntity.getTglMelahirkan()));
                                     }
+
                                     returnIjinKeluar.setDispenLahir(true);
-                                    returnIjinKeluar.setUploadFile(ijinKeluarEntity.getSuratDokter());
+                                    if ("".equalsIgnoreCase(ijinKeluarEntity.getSuratDokter())){
+                                        returnIjinKeluar.setSuratDokter(false);
+                                    }else{
+                                        returnIjinKeluar.setUploadFile(ijinKeluarEntity.getSuratDokter());
+                                        returnIjinKeluar.setSuratDokter(true);
+                                    }
                                 }
 //                                else {
 //                                    returnIjinKeluar.setStTanggalAkhir(df.format(ijinKeluarEntity.getTanggalAkhir()));

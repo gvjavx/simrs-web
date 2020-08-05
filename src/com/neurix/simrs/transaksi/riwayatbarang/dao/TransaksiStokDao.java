@@ -60,7 +60,8 @@ public class TransaksiStokDao extends GenericDao<ItSimrsTransaksiStokEntity, Str
             }
         }
 
-        return criteria.list();
+        List list = criteria.list();
+        return list;
     }
 
     public String getNextSeq() {
@@ -221,7 +222,7 @@ public class TransaksiStokDao extends GenericDao<ItSimrsTransaksiStokEntity, Str
                 "\t\tit_simrs_transaksi_stok\n" +
                 "\tWHERE\n" +
                 "\t\tbranch_id=:branchId \n" +
-                "\t\tAND id_pelayanan =:idPelayanan \n" +
+//                "\t\tAND id_pelayanan =:idPelayanan \n" +
                 "\t\tAND id_obat = :idObat \n" +
                 "\t\tAND sub_total_lalu IS NOT NULL\n" +
                 "\t\tAND sub_total_lalu <>0\n" +
@@ -232,7 +233,7 @@ public class TransaksiStokDao extends GenericDao<ItSimrsTransaksiStokEntity, Str
         List<TransaksiStok> list = new ArrayList<>();
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("branchId", branchId)
-                .setParameter("idPelayanan", idPelayanan)
+//                .setParameter("idPelayanan", idPelayanan)
                 .setParameter("idObat", idObat)
                 .setParameter("periode", periode)
                 .list();

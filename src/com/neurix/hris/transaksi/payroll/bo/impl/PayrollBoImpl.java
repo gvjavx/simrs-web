@@ -1,6 +1,7 @@
 package com.neurix.hris.transaksi.payroll.bo.impl;
 
 import com.neurix.akuntansi.master.kodeRekening.dao.KodeRekeningDao;
+import com.neurix.akuntansi.master.mappingJurnal.dao.MappingJurnalDao;
 import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.company.dao.CompanyDao;
 import com.neurix.authorization.company.model.Branch;
@@ -137,6 +138,15 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
     private PayrollParamBpjsDao payrollParamBpjsDao;
     private MappingPersenGajiDao mappingPersenGajiDao;
     private KodeRekeningDao kodeRekeningDao;
+    private MappingJurnalDao mappingJurnalDao;
+
+    public MappingJurnalDao getMappingJurnalDao() {
+        return mappingJurnalDao;
+    }
+
+    public void setMappingJurnalDao(MappingJurnalDao mappingJurnalDao) {
+        this.mappingJurnalDao = mappingJurnalDao;
+    }
 
     public KodeRekeningDao getKodeRekeningDao() {
         return kodeRekeningDao;
@@ -9387,6 +9397,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         List<Map> tunjtantiemdekomlist = new ArrayList<>();
         List<Map> tunjasuransidekomlist = new ArrayList<>();
         List<Map> tunjlainlaindekomlist = new ArrayList<>();
+        List<Map> pphList = new ArrayList<>();
 
         List<Map> penghasilandireksilist = new ArrayList<>();
         List<Map> tunjpphdireksilist = new ArrayList<>();
@@ -9450,7 +9461,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     tunjpphdekom.put("nilai",payrollEntity.getTunjanganPph());
                     tunjpphdekom.put("divisi_id",posisi.getKodering());
                     tunjpphdekomlist.add(tunjpphdekom);
-                    total = total.add(payrollEntity.getTunjanganPph());
+//                    total = total.add(payrollEntity.getTunjanganPph());
 
                     Map tunjtransportkomdekom = new HashMap();
                     tunjtransportkomdekom.put("nilai",BigDecimal.ZERO);
@@ -9563,6 +9574,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 tunjlainlaindekom.put("nilai",BigDecimal.ZERO);
                 tunjlainlaindekom.put("divisi_id",posisi.getKodering());
                 tunjlainlaindekomlist.add(tunjlainlaindekom);
+
             }
         }
 
@@ -9581,7 +9593,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     tunjpphdireksi.put("nilai",payrollEntity.getTunjanganPph());
                     tunjpphdireksi.put("divisi_id",posisi.getKodering());
                     tunjpphdireksilist.add(tunjpphdireksi);
-                    total = total.add(payrollEntity.getTunjanganPph());
+//                    total = total.add(payrollEntity.getTunjanganPph());
 
                     Map tunjtransportkomdireksi = new HashMap();
                     tunjtransportkomdireksi.put("nilai",BigDecimal.ZERO);
@@ -9693,6 +9705,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 tunjlainlaindireksi.put("nilai",BigDecimal.ZERO);
                 tunjlainlaindireksi.put("divisi_id",posisi.getKodering());
                 tunjlainlaindireksilist.add(tunjlainlaindireksi);
+
             }
         }
 
@@ -9727,7 +9740,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                         tunjpajakkaryawantetap.put("nilai",payrollEntity.getTunjanganPph());
                         tunjpajakkaryawantetap.put("divisi_id",posisi.getKodering());
                         tunjpajakkaryawantetaplist.add(tunjpajakkaryawantetap);
-                        total = total.add(payrollEntity.getTunjanganPph());
+//                        total = total.add(payrollEntity.getTunjanganPph());
 
                         Map tunjRLABkaryawantetap = new HashMap();
                         tunjRLABkaryawantetap.put("nilai",payrollEntity.getTotalRlab());
@@ -9813,7 +9826,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                         tunjpajakkaryawantidaktetap.put("nilai",payrollEntity.getTunjanganPph());
                         tunjpajakkaryawantidaktetap.put("divisi_id",posisi.getKodering());
                         tunjpajakkaryawantidaktetaplist.add(tunjpajakkaryawantidaktetap);
-                        total = total.add(payrollEntity.getTunjanganPph());
+//                        total = total.add(payrollEntity.getTunjanganPph());
 
                         Map tunjbpjstkkaryawantidaktetap = new HashMap();
                         tunjbpjstkkaryawantidaktetap.put("nilai",payrollEntity.getTunjanganBpjsTk());
@@ -9967,8 +9980,19 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 tunjlainnyakaryawantidaktetap.put("nilai",BigDecimal.ZERO);
                 tunjlainnyakaryawantidaktetap.put("divisi_id",posisi.getKodering());
                 tunjlainnyakaryawantidaktetaplist.add(tunjlainnyakaryawantidaktetap);
+
             }
         }
+
+        //For PPh
+        for (ItPayrollEntity payrollEntity : payrollEntityList){
+            Map pphGaji = new HashMap();
+            pphGaji.put("nilai",payrollEntity.getPphGaji());
+//            pphGaji.put("bukti",mappingJurnalDao.getNextInvoiceId("JKK",payrollEntity.getBranchId()));
+            pphGaji.put("master_id",payrollEntity.getNip());
+            pphList.add(pphGaji);
+        }
+
 
         dataPayroll.put("penghasilan_dekom", penghasilandekomlist);
         dataPayroll.put("tunj_pph_dekom", tunjpphdekomlist);
@@ -10016,6 +10040,8 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         dataPayroll.put("tunj_khusus_karyawan_tidak_tetap", tunjkhususkaryawantidaktetaplist);
         dataPayroll.put("tunj_lembur_karyawan_tidak_tetap", tunjlemburkaryawantidaktetaplist);
         dataPayroll.put("tunj_lainnya_karyawan_tidak_tetap", tunjlainnyakaryawantidaktetaplist);
+
+        dataPayroll.put("pph_gaji",pphList);
 
         if (bean.isSdm()){
             Map kas = new HashMap();

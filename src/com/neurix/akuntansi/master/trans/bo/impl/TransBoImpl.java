@@ -232,8 +232,14 @@ public class TransBoImpl implements TransBo {
                     if (transEntity.getMaster() != null){
                         if ("vendor".equalsIgnoreCase(transEntity.getMaster()))
                             returnTrans.setMasterName("Vendor");
-                        if ("dokter".equalsIgnoreCase(transEntity.getMaster()))
+                        else if ("dokter".equalsIgnoreCase(transEntity.getMaster()))
                             returnTrans.setMasterName("Dokter");
+                        else if ("pengajuan_biaya".equalsIgnoreCase(transEntity.getMaster()))
+                            returnTrans.setMasterName("Pengajuan Biaya");
+                        else if ("pasien".equalsIgnoreCase(transEntity.getMaster()))
+                            returnTrans.setMasterName("Pasien");
+                        else if ("karyawan".equalsIgnoreCase(transEntity.getMaster()))
+                            returnTrans.setMasterName("Karyawan");
                     }
 
                     returnTrans.setTipePembayaran(transEntity.getTipePembayaran());
@@ -242,9 +248,9 @@ public class TransBoImpl implements TransBo {
                     if (transEntity.getTipePembayaran() != null){
                         if ("KM".equalsIgnoreCase(transEntity.getTipePembayaran()))
                             returnTrans.setTipePembayaranName("Kas Masuk");
-                        if ("KK".equalsIgnoreCase(transEntity.getTipePembayaran()))
+                        else if ("KK".equalsIgnoreCase(transEntity.getTipePembayaran()))
                             returnTrans.setTipePembayaranName("Kas Keluar");
-                        if ("KR".equalsIgnoreCase(transEntity.getTipePembayaran()))
+                        else if ("KR".equalsIgnoreCase(transEntity.getTipePembayaran()))
                             returnTrans.setTipePembayaranName("Koreksi");
                     }
 

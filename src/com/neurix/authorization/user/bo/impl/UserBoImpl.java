@@ -3067,4 +3067,24 @@ public class UserBoImpl implements UserBo {
         logger.info("[UserBoImpl.getUserByIdDevice] end process <<<");
         return user;
     }
+
+    @Override
+    public User getUserByIdPelayanan(String idPelayanan) throws GeneralBOException {
+        logger.info("[UserBoImpl.getUserByIdDevice] start process <<<");
+        ImUsers result = new ImUsers();
+
+        try {
+            result = userDao.getUserByIdPelayanan(idPelayanan);
+        } catch (GeneralBOException e){
+            logger.info("[UserBoImpl.getUserByIdDevice] error get user id device");
+        }
+
+        User user = new User();
+        user.setUsername(result.getUserName());
+        user.setUserId(result.getPrimaryKey().getId());
+        user.setIdPelayanan(result.getIdPelayanan());
+
+        logger.info("[UserBoImpl.getUserByIdDevice] end process <<<");
+        return user;
+    }
 }

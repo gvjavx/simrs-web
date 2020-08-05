@@ -1,9 +1,7 @@
 package com.neurix.akuntansi.transaksi.pengajuanBiaya.dao;
 
 import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.ItPengajuanBiayaDetailEntity;
-import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.PengajuanBiaya;
 import com.neurix.common.dao.GenericDao;
-import com.neurix.common.util.CommonUtil;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -49,6 +47,9 @@ public class PengajuanBiayaDetailDao extends GenericDao<ItPengajuanBiayaDetailEn
         if (mapCriteria.get("divisi_id")!=null) {
             criteria.add(Restrictions.eq("divisiId", (String) mapCriteria.get("divisi_id")));
         }
+        if (mapCriteria.get("transaksi")!=null) {
+            criteria.add(Restrictions.eq("transaksi", (String) mapCriteria.get("transaksi")));
+        }
         if (mapCriteria.get("tanggal_dari")!=null && mapCriteria.get("tanggal_selesai")!=null) {
             criteria.add(Restrictions.between("tanggal",mapCriteria.get("tanggal_dari"),mapCriteria.get("tanggal_selesai")));
         }
@@ -91,7 +92,7 @@ public class PengajuanBiayaDetailDao extends GenericDao<ItPengajuanBiayaDetailEn
     }
 
 
-    public List<ItPengajuanBiayaDetailEntity> getListMasihMengajukan(String branchId,String divisiId) throws HibernateException {
+    public List<ItPengajuanBiayaDetailEntity> getListMasihMengajukan(String branchId, String divisiId) throws HibernateException {
         List<ItPengajuanBiayaDetailEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPengajuanBiayaDetailEntity.class)
                 .add(Restrictions.eq("flag", "Y"))
                 .add(Restrictions.eq("branchId", branchId))
@@ -267,4 +268,5 @@ public class PengajuanBiayaDetailDao extends GenericDao<ItPengajuanBiayaDetailEn
         }
         return total;
     }
+
 }

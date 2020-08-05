@@ -19,9 +19,18 @@ public class Notifikasi implements Serializable {
     private String position;
     private String jamAwal;
     private String jamSelesai;
+    private String tipeNotifName;
     private String note;
     private String read;
     private String tanggal;
+
+    public String getTipeNotifName() {
+        return tipeNotifName;
+    }
+
+    public void setTipeNotifName(String tipeNotifName) {
+        this.tipeNotifName = tipeNotifName;
+    }
 
     private String actionError;
 

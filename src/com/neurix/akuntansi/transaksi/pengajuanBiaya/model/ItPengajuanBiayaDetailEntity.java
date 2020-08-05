@@ -76,6 +76,44 @@ public class ItPengajuanBiayaDetailEntity implements Serializable {
     private BigDecimal budgetTerpakaiTransaksi;
     private String tipePembayaran;
 
+    private String noKontrak;
+    private String namaKontrak;
+
+    private BigDecimal pph;
+    private BigDecimal ppn;
+
+    public BigDecimal getPpn() {
+        return ppn;
+    }
+
+    public void setPpn(BigDecimal ppn) {
+        this.ppn = ppn;
+    }
+
+    public BigDecimal getPph() {
+        return pph;
+    }
+
+    public void setPph(BigDecimal pph) {
+        this.pph = pph;
+    }
+
+    public String getNoKontrak() {
+        return noKontrak;
+    }
+
+    public void setNoKontrak(String noKontrak) {
+        this.noKontrak = noKontrak;
+    }
+
+    public String getNamaKontrak() {
+        return namaKontrak;
+    }
+
+    public void setNamaKontrak(String namaKontrak) {
+        this.namaKontrak = namaKontrak;
+    }
+
     public String getTipePembayaran() {
         return tipePembayaran;
     }

@@ -26,6 +26,51 @@ public class PembayaranUtangPiutangDetail extends BaseModel {
     private String kodeRekening;
     private String posisiCoa;
     private String noBugetting;
+    private String stPpn;
+    private String stPph;
+    private String noFakturPajak;
+    private String stFileUpload;
+    private String urlFakturImage;
+
+    public String getUrlFakturImage() {
+        return urlFakturImage;
+    }
+
+    public void setUrlFakturImage(String urlFakturImage) {
+        this.urlFakturImage = urlFakturImage;
+    }
+
+    public String getNoFakturPajak() {
+        return noFakturPajak;
+    }
+
+    public void setNoFakturPajak(String noFakturPajak) {
+        this.noFakturPajak = noFakturPajak;
+    }
+
+    public String getStFileUpload() {
+        return stFileUpload;
+    }
+
+    public void setStFileUpload(String stFileUpload) {
+        this.stFileUpload = stFileUpload;
+    }
+
+    public String getStPpn() {
+        return stPpn;
+    }
+
+    public void setStPpn(String stPpn) {
+        this.stPpn = stPpn;
+    }
+
+    public String getStPph() {
+        return stPph;
+    }
+
+    public void setStPph(String stPph) {
+        this.stPph = stPph;
+    }
 
     public String getNoBugetting() {
         return noBugetting;

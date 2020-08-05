@@ -51,6 +51,7 @@ public class CommonConstant {
     public static final String RESOURCE_PATH_RESEP = "/upload/resep/";
     public final static String RESOURCE_PATH_IMG_RM = "/upload/img_rm/";
     public final static String RESOURCE_PATH_PHOTO_PROFILE = "/upload/profile/";
+    public static final String RESOURCE_PATH_FOTO_KIRIM = "/upload/foto_kirim/";
 
 //    public final static String RESOURCE_PATH_USER_UPLOAD = CommonUtil.getPropertyParams("resource.dir")+"/profile/";
     public final static String RESOURCE_PATH_USER_UPLOAD = "/pages/upload/image/profile/";
@@ -155,6 +156,7 @@ public class CommonConstant {
     public static final String AGORA_LIB = "/opt/tomcat/webapps/simrs/WEB-INF/lib";
 
     public final static String AGORA_DIR = "/upload/lib/agora/";
+//    public final static String AGORA_DIR = CommonUtil.getPropertyParams("base.dir") + "pages/agora/";
     public static final String AOGRA_REC_DIR = "/home/gondok/workspace/record ";
     public static final String APP_ID = "18016b16da294c7ab3255c5c792384b6";
 
@@ -164,12 +166,27 @@ public class CommonConstant {
     public final static String ID_KANPUS = "KP";
     public final static String MASTER_PAJAK_OBAT = "03.00";
 
-    //TELEMEDICINE
-    public static final int ADD_JAM_BAYAR = 30; //MENIT
-
     public final static String posisiKabidKeuanganKp = "P042";
     public final static String posisiDirkeuKp = "P002";
     public final static String posisiKadivKeuanganUnit = "";
     public final static String posisiGmUnit = "";
+    public final static String REKENING_PPH21 = "00187";
+    public final static String RESOURCE_PATH_FAKTUR_PAJAK = "/upload/faktur_pajak/";
+    public final static String REK_BANK_BRI_TELE = "01041802112149";
+    public final static String KODERING_FARMASI_RI = "02.02.01";
+    public final static String KODERING_INSTALASI_RI = "03.04.01";
+    public final static String KODERING_FARMASI_RJ = "02.01.01";
+    public final static String REKENING_ID_PENDAPATAN_RI ="00304";
+    public final static String REKENING_ID_PENDAPATAN_RJ ="00303";
+    public final static String JUNK_MASTER_PIUTANG_PPN = "JNK";
+
+
+    //TELEMEDICINE
+    public static final int ADD_JAM_BAYAR = 30; //MENIT
+
+    // CONSTANT ID TRANSAKSI BILLING
+    public final static String TRANSAKSI_ID_PROSES_PPN_KD_KOREKSI ="67";
+    public final static String TRANSAKSI_ID_PROSES_PPN_KD_KAS_KELUAR ="68";
+    public final static String TRANSAKSI_ID_PENYEWAAN_LAHAN ="69";
 
 }
