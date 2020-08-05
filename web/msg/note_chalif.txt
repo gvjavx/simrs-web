@@ -73,3 +73,79 @@
                                                   ADD jenis_rujukan VARCHAR(10) NULL
 
 <<< //
+
+// 2020-07-03 >>>
+
+    ALTER TABLE public.mt_simrs_obat_poli ADD id_jenis_obat VARCHAR(10) NULL
+<<< //
+// 2020-07-07 >>>
+
+    ALTER TABLE public.it_simrs_pengiriman_obat ADD foto_kurir VARCHAR(100) NULL
+<<< //
+
+// 2020-07-09 >>>
+
+    INSERT INTO im_hris_tipe_notif (tipe_notif_id, tipe_notif_name, flag, action)
+    VALUES ('TN10', 'Telemedic', 'Y', 'C')
+
+    INSERT INTO im_hris_tipe_notif (tipe_notif_id, tipe_notif_name, flag, action)
+    VALUES ('TN11', 'E-Obat', 'Y', 'C')
+
+    INSERT INTO im_hris_tipe_notif (tipe_notif_id, tipe_notif_name, flag, action)
+    VALUES ('TN12', 'Pengiriman Obat', 'Y', 'C')
+<<< //
+
+// 2020-07-22 >>>
+
+  ALTER TABLE public.im_simrs_dokter ADD kuota_tele VARCHAR(5) NULL,
+  ALTER TABLE public.it_simrs_pengiriman_obat ADD keterangan TEXT NULL,
+
+<<< //
+
+// 2020-08-03 >>>
+
+-- Table: im_simrs_rekening_telemedic
+
+-- DROP TABLE im_simrs_rekening_telemedic;
+
+CREATE TABLE im_simrs_rekening_telemedic
+(
+  id_rekening character varying(20) NOT NULL,
+  pembayaran_id character varying(20),
+  pembayaran_name character varying(20),
+  no_rekening character varying(20),
+  nama_rekening character varying(100),
+  coa character varying(20),
+  branch_id character varying(10),
+  flag character varying(1),
+  action character varying(1),
+  created_date timestamp without time zone,
+  created_who character varying(20),
+  last_update timestamp without time zone,
+  last_update_who character varying(20),
+  CONSTRAINT im_simrs_rekening_telemedic_pkey PRIMARY KEY (id_rekening)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE im_simrs_rekening_telemedic
+  OWNER TO postgres;
+
+
+-- Sequence: public.seq_rekening_telemedic
+
+-- DROP SEQUENCE public.seq_rekening_telemedic;
+
+CREATE SEQUENCE public.seq_rekening_telemedic
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE public.seq_rekening_telemedic
+  OWNER TO postgres;
+
+ ALTER TABLE public.it_simrs_antrian_telemedic ADD id_rekening VARCHAR(20) NULL,
+ ALTER TABLE public.it_simrs_antrian_telemedic ADD id_rekening VARCHAR(20) NULL,
+
+<<< //

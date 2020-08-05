@@ -8,6 +8,9 @@
     <bean id="jenisObatAction" class="com.neurix.simrs.master.jenisobat.action.JenisObatAction"
           p:jenisObatBoProxy-ref="jenisObatBoProxy"/>
 
+    <bean id="pelayananController" class="com.neurix.simrs.mobileapi.PelayananController"
+          p:jenisObatBoProxy-ref="jenisObatBoProxy"/>
+
     <bean id="jenisObatBo" class="com.neurix.simrs.master.jenisobat.bo.impl.JenisObatBoImpl"
           p:jenisObatDao-ref="jenisObatDao"/>
 

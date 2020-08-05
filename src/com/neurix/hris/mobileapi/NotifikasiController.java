@@ -32,6 +32,7 @@ public class NotifikasiController implements ModelDriven<Object> {
         logger.info("[NotifikasiController.create] end process POST /activity <<<");
 
         List<Object[]> listObjectNotif = null;
+        List<com.neurix.hris.transaksi.notifikasi.model.Notifikasi> listNotifikasi = null;
         if(typeNotif.equals("TN66")){
             try {
                 listObjectNotif = notifikasiBoProxy.findAllNotifByNip(nip, typeNotif);
@@ -112,6 +113,22 @@ public class NotifikasiController implements ModelDriven<Object> {
                 logger.error("[NotifikasiController.isFoundOthePrSessionActiveUserSessionLog] Error when searching / inquiring data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
                 throw new GeneralBOException(e);
             }
+        } else if(typeNotif.equalsIgnoreCase("TN10") || typeNotif.equalsIgnoreCase("TN11") || typeNotif.equalsIgnoreCase("TN12")) {
+            try {
+                com.neurix.hris.transaksi.notifikasi.model.Notifikasi bean = new com.neurix.hris.transaksi.notifikasi.model.Notifikasi();
+                bean.setNip(nip);
+                bean.setTipeNotifId(typeNotif);
+                listNotifikasi = notifikasiBoProxy.getByCriteria(bean);
+            } catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = notifikasiBoProxy.saveErrorMessage(e.getMessage(), "NotifikasiController.isFoundOtherSessionActiveUserSessionLog");
+                } catch (GeneralBOException e1) {
+                    logger.error("[NotifikasiController.isFoundOtherSessionActiveUserSessionLog] Error when saving error,", e1);
+                }
+                logger.error("[NotifikasiController.isFoundOthePrSessionActiveUserSessionLog] Error when searching / inquiring data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+                throw new GeneralBOException(e);
+            }
         } else {
             //update flag read
             try{
@@ -141,6 +158,7 @@ public class NotifikasiController implements ModelDriven<Object> {
                     listOfNotification.add(notifikasi);
                 }
             }else {
+
                 for (Object[] obj : listObjectNotif) {
                     Notifikasi pegawai = new Notifikasi();
                     if(obj.length >= 8){
@@ -149,7 +167,7 @@ public class NotifikasiController implements ModelDriven<Object> {
                         pegawai.setJamAwal(obj[7].toString());
                         pegawai.setJamSelesai(obj[8].toString());
                     }
-                    pegawai.setCutiPegawaiId(obj[0].toString());
+                    pegawai.setCutiPegawaiId(obj[0].toString() != null ? obj.toString() : "");
                     pegawai.setNip(obj[1].toString());
                     pegawai.setNamaPegawai(obj[2].toString());
                     if (obj[3] != null)
@@ -164,6 +182,18 @@ public class NotifikasiController implements ModelDriven<Object> {
 
                     listOfNotification.add(pegawai);
                 }
+            }
+        }
+
+        if (listNotifikasi != null) {
+            for (com.neurix.hris.transaksi.notifikasi.model.Notifikasi item : listNotifikasi) {
+                Notifikasi notifikasi = new Notifikasi();
+                notifikasi.setNip(item.getNip());
+                notifikasi.setNotifId(item.getNotifId());
+                notifikasi.setTipeNotifName(item.getTipeNotifName());
+                notifikasi.setNote(item.getNote());
+
+                listOfNotification.add(notifikasi);
             }
         }
 

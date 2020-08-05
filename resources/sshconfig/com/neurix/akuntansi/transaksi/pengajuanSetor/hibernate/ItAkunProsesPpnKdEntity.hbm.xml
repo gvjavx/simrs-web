@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="com.neurix.akuntansi.transaksi.pengajuanSetor.model.ItAkunProsesPpnKdEntity">
+        <table name="it_akun_proses_ppn_kd" schema="public" catalog="simrs"/>
+        <attributes>
+            <id name="prosesPpnKdId">
+                <column name="proses_ppn_kd_id"/>
+            </id>
+            <basic name="branchId">
+                <column name="branch_id"/>
+            </basic>
+            <basic name="branchName">
+                <column name="branch_name"/>
+            </basic>
+            <basic name="keluaranUnit">
+                <column name="keluaran_unit"/>
+            </basic>
+            <basic name="masukanUnit">
+                <column name="masukan_unit"/>
+            </basic>
+            <basic name="keluaranKoreksi">
+                <column name="keluaran_koreksi"/>
+            </basic>
+            <basic name="masukanKoreksi">
+                <column name="masukan_koreksi"/>
+            </basic>
+            <basic name="keluaranDiambilKp">
+                <column name="keluaran_diambil_kp"/>
+            </basic>
+            <basic name="masukanDiambilKp">
+                <column name="masukan_diambil_kp"/>
+            </basic>
+            <basic name="b4">
+                <column name="b4"/>
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date"/>
+            </basic>
+            <basic name="createdWho">
+                <column name="created_who"/>
+            </basic>
+            <basic name="lastUpdate">
+                <column name="last_update"/>
+            </basic>
+            <basic name="lastUpdateWho">
+                <column name="last_update_who"/>
+            </basic>
+            <basic name="action">
+                <column name="action"/>
+            </basic>
+            <basic name="flag">
+                <column name="flag"/>
+            </basic>
+            <basic name="perhitunganPpnKdId">
+                <column name="perhitungan_ppn_kd_id"/>
+            </basic>
+            <basic name="noUrut">
+                <column name="no_urut"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

@@ -782,6 +782,7 @@
         if (idObatVal != "") {
             TransaksiObatAction.listObatPoliEntity(idObatVal, {
                 callback: function (response) {
+                    console.log(" response length = " + response.length + ", id obat = " + idObat + ", id obat val = " + idObatVal);
                     if (response.length > 0 && idObat == idObatVal) {
 
                         $('#loading_data').show();

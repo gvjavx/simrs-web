@@ -65,10 +65,12 @@
                 <!--<prop key="hibernate.connection.username">postgres</prop>-->
                 <!--<prop key="hibernate.connection.password">postgres</prop>-->
 
-                <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs_10062020</prop>-->
+
+                <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs</prop>-->
                 <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
                 <!--<prop key="hibernate.connection.username">postgres</prop>-->
-                <!--<prop key="hibernate.connection.password">123456</prop>-->
+                <!--<prop key="hibernate.connection.password">postgres</prop>-->
+
 
             </props>
         </property>
@@ -352,7 +354,10 @@
                 <value>sshconfig/com/neurix/simrs/master/fingerPrint/hibernate/imSimrsFingerPrintEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/dietgizi/hibernate/ImSimrsDietGiziEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/kategoritindakanina/hibernate/ImSimrsKategoriTindakanInaEntity.hbm.xml</value>
-
+                <value>sshconfig/com/neurix/simrs/master/obat/hibernate/ImSimrsKandunganObatEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/obat/hibernate/ImSimrsKandunganObatDetailEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/obat/hibernate/ImSimrsBentukBarangEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/telemedic/hibernate/ImSimrsRekeningTelemedicEntity.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/simrs/transaksi/resikojatuh/hibernate/ImSimrsKategoriResikoJatuhEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/resikojatuh/hibernate/ImSimrsParameterResikoJatuhEntity.hbm.xml</value>
@@ -362,6 +367,10 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/skorrawatinap/hibernate/ImSimrsKategoriSkorRanapEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/skorrawatinap/hibernate/ImSimrsParameterSkorRanapEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/skorrawatinap/hibernate/ImSimrsSkorRanapEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/reseponline/hibernate/ImSimrsSettingHargaPengirimanEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/verifikatorasuransi/hibernate/ItSimrsStrukAsuransiEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/bataltelemedic/hibernate/ItSimrsBatalTelemedicEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/bataltelemedic/hibernate/ItSimrsDokterBatalTelemedicEntity.hbm.xml</value>
 
                 <!--Hibernate Config For Transactions SIMRS is HERE-->
                 <value>sshconfig/com/neurix/simrs/transaksi/permintaanvendor/hibernate/ImSimrsTempObatGejalaEntity.hbm.xml</value>
@@ -450,7 +459,11 @@
                 <value>sshconfig/com/neurix/akuntansi/transaksi/budgeting/hibernate/ItAkunBudgetingPengadaanEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/pengajuanBiaya/hibernate/ImPengajuanBiayaEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/pengajuanBiaya/hibernate/ItPengajuanBiayaDetailEntity.hbm.xml</value>
-
+                <value>sshconfig/com/neurix/akuntansi/transaksi/pengajuanSetor/hibernate/ItPengajuanSetorEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/pengajuanSetor/hibernate/ItPengajuanSetorDetailEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/pengajuanSetor/hibernate/ItAkunPerhitunganPpnKdEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/pengajuanSetor/hibernate/ItAkunProsesPpnKdEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/pengajuanSetor/hibernate/ItAkunPpnPerhitunganKembaliEntity.xml</value>
                 <!--Hibernate Config For PAKET SIMRS-->
                 <value>sshconfig/com/neurix/simrs/transaksi/paketperiksa/hiberanate/ImSimrsKelasPaketEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/paketperiksa/hiberanate/MtSimrsItemPaketEntity.hbm.xml</value>
@@ -515,6 +528,7 @@
                 <value>sshconfig/com/neurix/hris/master/golonganPkwt/hibernate/ImGolonganPkwtHistoryEntity.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/simrs/transaksi/asesmenoperasi/hibernate/ItSimrsMonitoringAnestesiEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/penyewaanLahan/hibernate/ItAkunPenyewaanLahanEntity.hbm.xml</value>
             </list>
         </property>
     </bean>

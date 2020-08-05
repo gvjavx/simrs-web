@@ -417,7 +417,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{qtyLalu}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="198" y="1" width="60" height="20" uuid="bc2842f0-a749-4734-aafc-f45d191c45b9"/>
 				<box leftPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -425,7 +425,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{totalLalu}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="258" y="1" width="81" height="20" uuid="01450fb2-32d4-4d90-b494-cf64a8db1eb4"/>
 				<box leftPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">

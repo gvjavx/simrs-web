@@ -208,7 +208,7 @@
                                                     <td align="center">
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
                                                                    height="500" width="600" autoOpen="false"
-                                                                   title="Pembayaran Hutang Piutang ">
+                                                                   title="Pengeluaran Kas/Bank ">
                                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                         </sj:dialog>
 
@@ -269,7 +269,7 @@
 </html>
 
 <div class="modal fade" id="modal-posting-jurnal">
-    <div class="modal-dialog modal-flat modal-lg">
+    <div class="modal-dialog modal-flat" style="width: 1300px">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -321,7 +321,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4">Total Bayar</label>
+                                <label class="col-md-4">Total Bayar ( RP )</label>
                                 <div class="col-md-6">
                                     <s:textfield id="mod_total_bayar" onkeypress="$(this).css('border','')" readonly="true"
                                                  cssClass="form-control"/>
@@ -363,7 +363,24 @@
         </div>
     </div>
 </div>
+<div id="modal-view-faktur" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
 
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">View Faktur</h4>
+            </div>
+            <div class="modal-body">
+                <img src="" class="img-responsive" id="my-image">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     $(document).ready(function () {
         $('.tablePembayaranUtangPiutang').on('click', '.item-view', function() {
@@ -380,7 +397,7 @@
             });
             loadPembayaran();
             $("#btnPostingJurnal").hide();
-            $("#modal-posting-jurnal").find('.modal-title').text('View Pembayaran Hutang Piutang');
+            $("#modal-posting-jurnal").find('.modal-title').text('View Pengeluaran Kas/Bank');
             $("#modal-posting-jurnal").modal('show');
         });
 
@@ -434,20 +451,41 @@
                 "<th style='text-align: center; color: #fff; background-color:  #30d196''>Divisi ID</th>" +
                 "<th style='text-align: center; color: #fff; background-color:  #30d196''>No. Nota</th>" +
                 "<th style='text-align: center; color: #fff; background-color:  #30d196''>Jml Pembayaran</th>" +
+                "<th style='text-align: center; color: #fff; background-color:  #30d196''>No. Faktur Pajak</th>" +
+                "<th style='text-align: center; color: #fff; background-color:  #30d196''>View Faktur Pajak</th>" +
                 "</tr></thead>";
             var i = i;
             $.each(listdata, function (i, item) {
-                tmp_table += '<tr style="font-size: 12px;" ">' +
+                var view = '<td align="center"></td>';
+                if (item.noFakturPajak!=""){
+                    view = '<td align="center">' +
+                        "<a href='javascript:;' class ='item-view-faktur' data ='" + item.urlFakturImage + "' judul ='" + item.noFakturPajak + "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/view.png'/>' name='icon_view'>" +
+                        '</a>' +
+                        '</td>';
+                }
+                tmp_table += '<tr style="font-size: 12px;">' +
                     '<td align="center">' + (i + 1) + '</td>' +
                     '<td align="center">' + item.pembayaranUtangPiutangDetailId + '</td>' +
                     '<td align="center">' + item.masterId + '</td>' +
                     '<td align="center">' + item.divisiId + '</td>' +
                     '<td align="center">' + item.noNota + '</td>' +
                     '<td align="center">' + item.stJumlahPembayaran + '</td>' +
+                    '<td align="center">' + item.noFakturPajak + '</td>' +
+                    view+
                     "</tr>";
             });
             $('.pembayaranTable').append(tmp_table);
         });
     };
+
+    $('.pembayaranTable').on('click', '.item-view-faktur', function(){
+        var id = $(this).attr('data');
+        var judul = $(this).attr('judul');
+        dwr.engine.setAsync(false);
+        $("#my-image").attr("src", id);
+        $('#modal-view-faktur').find('.modal-title').text(judul);
+        $('#modal-view-faktur').modal('show');
+    })
 </script>
 

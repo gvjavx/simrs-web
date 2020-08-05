@@ -22,6 +22,7 @@ import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUta
 import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.authorization.company.model.ImBranches;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.dao.BiodataDao;
@@ -550,9 +551,14 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
                 throw new GeneralBOException("Found problem when saving new data PembayaranUtangPiutang, please info to your admin..." + e.getMessage());
             }
 
-
             for (PembayaranUtangPiutangDetail data : pembayaranUtangPiutangDetailList){
                 BigDecimal jumlahPembayaran = new BigDecimal(data.getStJumlahPembayaran().replace(".",""));
+                BigDecimal ppn = BigDecimal.ZERO;
+                BigDecimal pph = BigDecimal.ZERO;
+                if ("Pengajuan Biaya".equalsIgnoreCase(bean.getTipeMaster())) {
+                    ppn = new BigDecimal(data.getStPpn().replace(".",""));
+                    pph = new BigDecimal(data.getStPph().replace(".",""));
+                }
                 ImPembayaranUtangPiutangDetailEntity pembayaranUtangPiutangDetailEntity = new ImPembayaranUtangPiutangDetailEntity();
                 String pembayaranUtangPiutangDetailId = pembayaranUtangPiutangDetailDao.getNextPembayaranUtangPiutangDetailId();
                 pembayaranUtangPiutangDetailEntity.setPembayaranUtangPiutangDetailId(pembayaranUtangPiutangDetailId);
@@ -563,6 +569,10 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
                 pembayaranUtangPiutangDetailEntity.setJumlahPembayaran(jumlahPembayaran);
                 pembayaranUtangPiutangDetailEntity.setDivisiId(data.getDivisiId());
                 pembayaranUtangPiutangDetailEntity.setPosisiCoa(data.getPosisiCoa());
+                pembayaranUtangPiutangDetailEntity.setPpn(ppn);
+                pembayaranUtangPiutangDetailEntity.setPph(pph);
+                pembayaranUtangPiutangDetailEntity.setNoFakturPajak(data.getNoFakturPajak());
+                pembayaranUtangPiutangDetailEntity.setUrlFakturImage(data.getUrlFakturImage());
 
                 pembayaranUtangPiutangDetailEntity.setFlag(bean.getFlag());
                 pembayaranUtangPiutangDetailEntity.setAction(bean.getAction());
@@ -610,6 +620,14 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
                 returnPembayaranUtangPiutangDetail.setNoNota(pembayaranUtangPiutangDetail.getNoNota());
                 returnPembayaranUtangPiutangDetail.setPosisiCoa(pembayaranUtangPiutangDetail.getPosisiCoa());
                 returnPembayaranUtangPiutangDetail.setStJumlahPembayaran(CommonUtil.numbericFormat(pembayaranUtangPiutangDetail.getJumlahPembayaran(),"###,###"));
+                if (pembayaranUtangPiutangDetail.getNoFakturPajak()!=null){
+                    returnPembayaranUtangPiutangDetail.setNoFakturPajak(pembayaranUtangPiutangDetail.getNoFakturPajak());
+                    returnPembayaranUtangPiutangDetail.setUrlFakturImage(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_FAKTUR_PAJAK+pembayaranUtangPiutangDetail.getUrlFakturImage());
+                }else{
+                    returnPembayaranUtangPiutangDetail.setNoFakturPajak("");
+                    returnPembayaranUtangPiutangDetail.setUrlFakturImage("");
+                }
+
                 listOfResult.add(returnPembayaranUtangPiutangDetail);
             }
         }

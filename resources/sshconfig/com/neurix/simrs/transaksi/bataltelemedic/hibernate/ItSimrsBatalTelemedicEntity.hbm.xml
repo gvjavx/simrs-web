@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="com.neurix.simrs.transaksi.bataltelemedic.model.ItSimrsBatalTelemedicEntity">
+        <table name="it_simrs_batal_telemedic" schema="public"/>
+        <attributes>
+            <id name="id">
+                <column name="id"/>
+            </id>
+            <basic name="idAntrianTelemedic">
+                <column name="id_antrian_telemedic"/>
+            </basic>
+            <basic name="idDokterBatal">
+                <column name="id_dokter_batal"/>
+            </basic>
+            <basic name="flag">
+                <column name="flag"/>
+            </basic>
+            <basic name="action">
+                <column name="action"/>
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date"/>
+            </basic>
+            <basic name="createdWho">
+                <column name="created_who"/>
+            </basic>
+            <basic name="lastUpdate">
+                <column name="last_update"/>
+            </basic>
+            <basic name="lastUpdateWho">
+                <column name="last_update_who"/>
+            </basic>
+            <basic name="noJurnal">
+                <column name="no_jurnal"/>
+            </basic>
+            <basic name="kembaliKonsultasi">
+                <column name="kembali_konsultasi"/>
+            </basic>
+            <basic name="flagKembaliKonsultasi">
+                <column name="flag_kembali_konsultasi"/>
+            </basic>
+            <basic name="kembaliResep">
+                <column name="kembali_resep"/>
+            </basic>
+            <basic name="flagKembaliResep">
+                <column name="flag_kembali_resep"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

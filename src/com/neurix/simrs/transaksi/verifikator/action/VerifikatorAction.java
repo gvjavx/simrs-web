@@ -1004,7 +1004,8 @@ public class VerifikatorAction extends BaseMasterAction {
 
             String noJurnal = "";
             try {
-                noJurnal = billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan, "Y");
+                Jurnal jurnal = billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan, "Y");
+                noJurnal = jurnal.getNoJurnal();
                 response.setStatus("success");
                 response.setInvoice(invNumber);
                 response.setNoJurnal(noJurnal);
@@ -1278,7 +1279,8 @@ hsCriteria.put("piutang_pasien_bpjs", mapPiutang);
         String catatan = "Closing" + ketPoli + company + jenisPasien + " No Detail Checkup "+ idDetailCheckup + " No. RM "+ headerChekupEntity.getIdPasien() + noKartu ;
         String noJurnal = "";
         try {
-            noJurnal = billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan, "Y");
+            Jurnal jurnal = billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan, "Y");
+            noJurnal = jurnal.getNoJurnal();
             response.setStatus("success");
             response.setNoJurnal(noJurnal);
             response.setInvoice(noInvoicePtpnMurni);

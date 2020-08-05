@@ -387,7 +387,7 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
                 "from \n" +
                 "  im_akun_kode_rekening \n" +
                 "where \n" +
-                "  kode_rekening = '"+kodeRekening+"'\n";
+                "  kode_rekening = '"+kodeRekening+"' and flag='Y' limit 1\n";
         Object results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query).uniqueResult();
         if (results != null) {

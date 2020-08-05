@@ -2707,6 +2707,7 @@ public class PayrollAction extends BaseMasterAction{
                 billingSystemBo.createJurnal(transId,data,branchId,keterangan,"Y");
             }
         }else{
+            //setoran modal
             transId ="59";
             keterangan = "Setoran modal pembayaran payroll unit "+branchId+" bulan "+bulan+" tahun "+tahun+" Tipe Payroll "+tipe;
 
@@ -2714,7 +2715,18 @@ public class PayrollAction extends BaseMasterAction{
 
             billingSystemBo.createJurnal(transId,data,branchId,keterangan,"Y");
 
+            //pembuatan jkk
+            transId="37";
+            searchPayroll.setSdm(true);
+            keterangan = "Pembayaran gaji unit "+branchId+" bulan "+bulan+" tahun "+tahun+" Tipe Payroll "+tipe;
+
+            Map dataPayroll = payrollBo.getDataForBilling(searchPayroll);
+
+            billingSystemBo.createJurnal(transId,dataPayroll,branchId,keterangan,"Y");
+
+
             payrollBo.approvePayroll(searchPayroll);
+
         }
 
 

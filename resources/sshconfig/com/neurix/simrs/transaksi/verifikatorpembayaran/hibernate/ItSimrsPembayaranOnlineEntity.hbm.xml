@@ -59,7 +59,11 @@
             <basic name="alamat">
                 <column name="alamat"/>
             </basic>
+            <basic name="idRekening">
+                <column name="id_rekening"/>
+            </basic>
 
         </attributes>
     </entity>
 </entity-mappings>
+

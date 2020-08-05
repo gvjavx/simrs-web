@@ -1101,4 +1101,68 @@ public class CommonUtil {
     public static Timestamp getCurrentDateTimes(){
         return new Timestamp(System.currentTimeMillis());
     }
+
+    public static String bulanSebelumnya (String bulan){
+        switch (bulan){
+            case "01":
+                return "";
+            case "02":
+                return "01";
+            case "03":
+                return "02";
+            case "04":
+                return "03";
+            case "05":
+                return "04";
+            case "06":
+                return "05";
+            case "07":
+                return "06";
+            case "08":
+                return "07";
+            case "09":
+                return "08";
+            case "10":
+                return "09";
+            case "11":
+                return "10";
+            case "12":
+                return "11";
+            default:
+                return "";
+        }
+    }
+
+    public static String periodeBulanSebelumnya (String bulan,String tahun){
+        String tahunSebelumnya = String.valueOf(Integer.parseInt(tahun)-1);
+
+        switch (bulan){
+            case "01":
+                return tahunSebelumnya+"-12";
+            case "02":
+                return tahun+"-01";
+            case "03":
+                return tahun+"-02";
+            case "04":
+                return tahun+"-03";
+            case "05":
+                return tahun+"-04";
+            case "06":
+                return tahun+"-05";
+            case "07":
+                return tahun+"-06";
+            case "08":
+                return tahun+"-07";
+            case "09":
+                return tahun+"-08";
+            case "10":
+                return tahun+"-09";
+            case "11":
+                return tahun+"-10";
+            case "12":
+                return tahun+"-11";
+            default:
+                return "";
+        }
+    }
 }

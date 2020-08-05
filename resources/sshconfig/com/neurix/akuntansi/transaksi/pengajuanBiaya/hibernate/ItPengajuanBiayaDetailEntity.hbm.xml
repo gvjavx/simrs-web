@@ -38,6 +38,13 @@
             <column name="keterangan" sql-type="varchar" length="200" not-null="false" />
         </property>
 
+        <property name="noKontrak">
+            <column name="no_kontrak" sql-type="varchar" length="30" not-null="false" />
+        </property>
+        <property name="namaKontrak">
+            <column name="nama_kontrak" sql-type="varchar" length="100" not-null="false" />
+        </property>
+
         <property name="tanggal">
             <column name="tanggal" sql-type="date" not-null="false" />
         </property>
@@ -56,6 +63,14 @@
         </property>
         <property name="sisaBudget">
             <column name="sisa_budget" sql-type="numeric" not-null="false" />
+        </property>
+
+        <property name="pph">
+            <column name="pph" sql-type="numeric" not-null="false" />
+        </property>
+
+        <property name="ppn">
+            <column name="ppn" sql-type="numeric" not-null="false" />
         </property>
 
         <property name="budgetBiayaSdBulanIni">

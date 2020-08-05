@@ -7,7 +7,6 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.bo.BiodataBo;
 import com.neurix.hris.master.biodata.model.Biodata;
-import com.neurix.hris.master.ijin.model.Ijin;
 import com.neurix.hris.transaksi.absensi.model.AbsensiPegawai;
 import com.neurix.hris.transaksi.cutiPegawai.model.CutiPegawai;
 import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluar;
@@ -15,17 +14,14 @@ import com.neurix.hris.transaksi.indisipliner.model.Indisipliner;
 import com.neurix.hris.transaksi.lembur.model.Lembur;
 import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
 import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
-import com.neurix.hris.transaksi.rekruitmenPabrik.model.RekruitmenPabrik;
 import com.neurix.hris.transaksi.rekruitmenPabrik.model.RekruitmenPabrikDetail;
 import com.neurix.hris.transaksi.sppd.bo.SppdBo;
-import com.neurix.hris.transaksi.sppd.model.ImSppdEntity;
 import com.neurix.hris.transaksi.sppd.model.Sppd;
 import com.neurix.hris.transaksi.sppd.model.SppdPerson;
 import com.neurix.hris.transaksi.training.model.TrainingPerson;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
-import org.springframework.security.web.session.SimpleRedirectInvalidSessionStrategy;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
@@ -1209,7 +1205,7 @@ public class NotifikasiAction extends BaseMasterAction{
         if (pengajuanBiayaRk != null){
             try {
                 setPengajuanBiaya(pengajuanBiayaRk);
-                listOfResultPBRK = notifikasiBoProxy.searchPengajuanBiayaRk(pengajuanBiaya);
+                listOfResultPBRK = notifikasiBoProxy.searchPengajuanBiayaRk(pengajuanBiayaRk);
                 function = "pengajuanBiayaRk";
             } catch (GeneralBOException e) {
                 Long logId = null;
