@@ -1448,7 +1448,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                 }
 
                 Map mapPajakObat = new HashMap();
-                mapPajakObat.put("bukti", invoice);
+//                mapPajakObat.put("bukti", invoice);
                 mapPajakObat.put("nilai", ppnObat);
                 mapPajakObat.put("master_id", CommonConstant.MASTER_PAJAK_OBAT);
 
@@ -1641,7 +1641,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
         }
 
         Map mapPPN = new HashMap();
-        mapPPN.put("bukti", billingSystemBo.createInvoiceNumber("JPD", branchId));
+//        mapPPN.put("bukti", billingSystemBo.createInvoiceNumber("JPD", branchId));
         mapPPN.put("nilai", ppn);
 
         Map mapKas = new HashMap();
@@ -3198,7 +3198,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                 }
 
                 Map mapPajakObat = new HashMap();
-                mapPajakObat.put("bukti", invoice);
+//                mapPajakObat.put("bukti", invoice);
                 mapPajakObat.put("nilai", ppnObat);
                 mapPajakObat.put("master_id", CommonConstant.MASTER_PAJAK_OBAT);
 
