@@ -937,7 +937,7 @@ public class VerifikatorAction extends BaseMasterAction {
                 // KREDIT PPN
                 // JIKA RAWAT INAP TIDAK MENYERTAKAN PPN;
                 Map mapPPN = new HashMap();
-                mapPPN.put("bukti", billingSystemBo.createInvoiceNumber(kode, branchId));
+//                mapPPN.put("bukti", billingSystemBo.createInvoiceNumber(kode, branchId));
                 mapPPN.put("nilai", ppn);
                 mapPPN.put("master_id", CommonConstant.MASTER_PAJAK_OBAT);
 
@@ -965,7 +965,7 @@ public class VerifikatorAction extends BaseMasterAction {
 
 
             Map mapPiutang = new HashMap();
-            mapPiutang.put("bukti", headerDetailCheckupEntity.getNoSep());
+//            mapPiutang.put("bukti", headerDetailCheckupEntity.getNoSep());
             mapPiutang.put("nilai", jumlah );
             mapPiutang.put("master_id", getMasterIdByTipe(idDetailCheckup, "bpjs"));
 
@@ -1007,7 +1007,7 @@ public class VerifikatorAction extends BaseMasterAction {
                 Jurnal jurnal = billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan, "Y");
                 noJurnal = jurnal.getNoJurnal();
                 response.setStatus("success");
-                response.setInvoice(invNumber);
+                response.setInvoice(jurnal.getNoJurnal());
                 response.setNoJurnal(noJurnal);
             } catch (GeneralBOException e){
                 logger.error("[VerifikatorAction.closingJurnalPbjs] Error When send data seneter per eklaim", e);
@@ -1148,7 +1148,7 @@ public class VerifikatorAction extends BaseMasterAction {
 
             // PENGURANGAN OLEH TRANSITORIS
             Map mapPajakObat = new HashMap();
-            mapPajakObat.put("bukti", invoice);
+//            mapPajakObat.put("bukti", invoice);
             mapPajakObat.put("nilai", ppnObat);
             mapPajakObat.put("master_id", CommonConstant.MASTER_PAJAK_OBAT);
 
@@ -1165,7 +1165,7 @@ public class VerifikatorAction extends BaseMasterAction {
                     // reate map piutang
                     Map mapPiutang = new HashMap();
                     mapPiutang.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "bpjs", "").add(ppnObat));
-                    mapPiutang.put("bukti", detailCheckupEntity.getNoSep());
+//                    mapPiutang.put("bukti", detailCheckupEntity.getNoSep());
                     mapPiutang.put("master_id", getMasterIdByTipe(idDetailCheckup, "bpjs"));
 
                     // debit piutang pasien PTPN
@@ -1176,10 +1176,10 @@ public class VerifikatorAction extends BaseMasterAction {
 
                     // create map piutang
                     Map mapPiutang = new HashMap();
-                    mapPiutang.put("bukti", detailCheckupEntity.getNoSep());
+//                    mapPiutang.put("bukti", detailCheckupEntity.getNoSep());
                     mapPiutang.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "bpjs", ""));
                     mapPiutang.put("master_id", getMasterIdByTipe(idDetailCheckup, "bpjs"));
-hsCriteria.put("piutang_pasien_bpjs", mapPiutang);
+                    hsCriteria.put("piutang_pasien_bpjs", mapPiutang);
                     // debit piutang pasien PTPN
                     hsCriteria.put("piutang_pasien_bpjs", mapPiutang);
                     transId = "08";
@@ -1193,7 +1193,7 @@ hsCriteria.put("piutang_pasien_bpjs", mapPiutang);
                 hsCriteria.put("pendapatan_rawat_inap_bpjs", listOfMapTindakanBpjs);
 
                 Map mapPiutang = new HashMap();
-                mapPiutang.put("bukti", noInvoicePtpnMurni);
+//                mapPiutang.put("bukti", noInvoicePtpnMurni);
                 mapPiutang.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "bpjs", ""));
                 mapPiutang.put("master_id", getMasterIdByTipe(idDetailCheckup, "bpjs"));
 
@@ -1218,17 +1218,17 @@ hsCriteria.put("piutang_pasien_bpjs", mapPiutang);
 
                 // PENGURANGAN OLEH TRANSITORIS
                 Map mapPajakObat = new HashMap();
-                mapPajakObat.put("bukti", invoice);
+//                mapPajakObat.put("bukti", invoice);
                 mapPajakObat.put("nilai", ppnObat);
                 mapPajakObat.put("master_id", CommonConstant.MASTER_PAJAK_OBAT);
 
                 Map mapPiutangBpjs = new HashMap();
-                mapPiutangBpjs.put("bukti", detailCheckupEntity.getNoSep());
+//                mapPiutangBpjs.put("bukti", detailCheckupEntity.getNoSep());
                 mapPiutangBpjs.put("master_id", getMasterIdByTipe(idDetailCheckup, "bpjs"));
                 mapPiutangBpjs.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "bpjs", ""));
 
                 Map mapPiutangPtpn = new HashMap();
-                mapPiutangPtpn.put("bukti", billingSystemBo.createInvoiceNumber(kode, branchId));
+//                mapPiutangPtpn.put("bukti", billingSystemBo.createInvoiceNumber(kode, branchId));
                 mapPiutangPtpn.put("master_id", getMasterIdByTipe(idDetailCheckup, "ptpn"));
                 mapPiutangPtpn.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "ptpn", "").add(ppnObat));
 
@@ -1253,12 +1253,12 @@ hsCriteria.put("piutang_pasien_bpjs", mapPiutang);
             if ("JRI".equalsIgnoreCase(kode)){
 
                 Map mapPiutangBpjs = new HashMap();
-                mapPiutangBpjs.put("bukti", detailCheckupEntity.getNoSep());
+//                mapPiutangBpjs.put("bukti", detailCheckupEntity.getNoSep());
                 mapPiutangBpjs.put("master_id", getMasterIdByTipe(idDetailCheckup, "bpjs"));
                 mapPiutangBpjs.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "bpjs", "").add(allTindakanTransBpjs));
 
                 Map mapPiutangPtpn = new HashMap();
-                mapPiutangPtpn.put("bukti", billingSystemBo.createInvoiceNumber(kode, branchId));
+//                mapPiutangPtpn.put("bukti", billingSystemBo.createInvoiceNumber(kode, branchId));
                 mapPiutangPtpn.put("master_id", getMasterIdByTipe(idDetailCheckup, "ptpn"));
                 mapPiutangPtpn.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "ptpn", "").add(allTindakanTransPtpn));
 
@@ -1283,7 +1283,7 @@ hsCriteria.put("piutang_pasien_bpjs", mapPiutang);
             noJurnal = jurnal.getNoJurnal();
             response.setStatus("success");
             response.setNoJurnal(noJurnal);
-            response.setInvoice(noInvoicePtpnMurni);
+            response.setInvoice(noJurnal);
         } catch (GeneralBOException e){
             logger.error("[VerifikatorAction.closingPasienPtpnBpjs] ERROR Create Jurnal. ", e);
             response.setStatus("error");
