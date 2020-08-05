@@ -296,6 +296,14 @@
 
     // ===================================
 
+    # function :
+    - search verifikasi online		/onlinepaymentverif/search_onlinepaymentverif.action
+    - init form online verifikasi	/onlinepaymentverif/initForm_onlinepaymentverif.action
+    - Verifikasi Pembayaran			/onlinepaymentverif/initForm_onlinepaymentverif.action (Menu)
+
+    # role :
+    - VERIFIKATOR PEMBAYARAN ONLINE
+
     -- Table: public.it_simrs_pemesanan_resep_online
 
     -- DROP TABLE public.it_simrs_pemesanan_resep_online;
