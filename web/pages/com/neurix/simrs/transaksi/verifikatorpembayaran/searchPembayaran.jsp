@@ -88,8 +88,8 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Status Transaksi</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'confirmation':'CONFIRMATION','finish':'SELESAI', 'canceled':'BATAL'}" cssStyle="margin-top: 7px"
-                                                  headerKey="exist" headerValue="EXISTING" name="antrianTelemedic.statusTransaksi"
+                                        <s:select list="#{'confirmation':'KONFIRMASI','finish':'SELESAI', 'canceled':'BATAL'}" cssStyle="margin-top: 7px"
+                                                  headerKey="exist" headerValue="PROSES" name="antrianTelemedic.statusTransaksi"
                                                   cssClass="form-control"/>
                                     </div>
                                 </div>
@@ -931,15 +931,15 @@
                         } else {
 
                             if (item.approvedFlag == "Y"){
-                                str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\',\'"+idJenisPeriksaPasien+"\',\'"+item.id+"\')\"><i class='fa fa-search'></i></button></td>"+
+                                str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\',\'"+idJenisPeriksaPasien+"\',\'"+item.id+"\',\'"+item.approvedFlag+"\')\"><i class='fa fa-search'></i></button></td>"+
                                     "<td align='center'></td>";
                             } else {
 
                                 if (item.flagEresep == "Y"){
-                                    str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\',\'"+idJenisPeriksaPasien+"\',\'"+item.id+"\')\"><i class='fa fa-search'></i></button></td>"+
+                                    str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\',\'"+idJenisPeriksaPasien+"\',\'"+item.id+"\',\'"+item.approvedFlag+"\')\"><i class='fa fa-search'></i></button></td>"+
                                         "<td align='center'><button class='btn btn-sm btn-success' onclick=\"saveApproveEresep(\'"+item.id+"\')\"><i class='fa fa-check'></i> Approve E-Resep</button></td>";
                                 } else {
-                                    str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\',\'"+idJenisPeriksaPasien+"\',\'"+item.id+"\')\"><i class='fa fa-search'></i></button></td>"+
+                                    str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\',\'"+idJenisPeriksaPasien+"\',\'"+item.id+"\',\'"+item.approvedFlag+"\')\"><i class='fa fa-search'></i></button></td>"+
                                         "<td align='center'><button class='btn btn-sm btn-success' onclick=\"saveApprove(\'"+item.id+"\')\"><i class='fa fa-check'></i> Approve</button></td>";
                                 }
                             }
@@ -1015,7 +1015,7 @@
         return "/" + first;
     }
 
-    function viewBukti(var1, idJenisPerikasPasien, idTransaksi){
+    function viewBukti(var1, idJenisPerikasPasien, idTransaksi, flag){
         $("#modal-view-bukti").modal('show');
         var urlImg = firstpath()+"/images/upload/bukti_transfer/"+var1;
         if (var1 == null || var1 == "" || var1 == "null"){
@@ -1026,7 +1026,7 @@
         );
 
         console.log(idJenisPerikasPasien +" - "+ idTransaksi );
-        if ( idJenisPerikasPasien ==  "umum"){
+        if ( idJenisPerikasPasien ==  "umum" && flag != "Y"){
             $("#btn-kembali-bukti").show();
             $("#id-transaksi-bukti").val(idTransaksi);
         }
