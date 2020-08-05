@@ -300,6 +300,7 @@ public class PengirimanObatController implements ModelDriven<Object> {
 
             PengirimanObat newPengirimanObat = result.get(0);
             newPengirimanObat.setFlagTerkirim("Y");
+            newPengirimanObat.setFlagDiterimaPasien("Y");
             newPengirimanObat.setFlag("N");
             newPengirimanObat.setLastUpdate(now);
             newPengirimanObat.setLastUpdateWho(idPasien);
