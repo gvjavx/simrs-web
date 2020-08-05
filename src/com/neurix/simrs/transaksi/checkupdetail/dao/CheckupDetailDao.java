@@ -250,6 +250,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "AND dt.id_pelayanan LIKE :idPelayanan \n" +
                     "AND dt.id_jenis_periksa_pasien LIKE :jenisPasien \n" +
                     "AND dt.is_kronis IS NULL \n" +
+                    "AND dt.id_transaksi_online IS NULL \n" +
                     "AND dt.status_periksa LIKE :status " + statusBayar + forRekanan;
 
 

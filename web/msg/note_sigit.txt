@@ -539,3 +539,8 @@
     ALTER TABLE it_simrs_batal_telemedic ADD COLUMN kembali_resep NUMERIC;
     ALTER TABLE it_simrs_batal_telemedic ADD COLUMN flag_kembali_resep VARCHAR(1);
 <<< //
+
+// >>> 2020-08-05
+    ALTER TABLE im_akun_kode_rekening
+    ADD COLUMN tipe_budgeting VARCHAR(50);
+<<< //
