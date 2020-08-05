@@ -658,7 +658,7 @@
                 <input type="hidden" id="id-transaksi-bukti"/>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-warning" id="btn-kembali-bukti" style="display: none" onclick="kembalikanBukti()"><i class="fa fa-repeat"></i> Kembalikan Bukti</button>
+                <button class="btn btn-warning" id="btn-kembali-bukti" style="display: none" onclick="kembalikanBukti()"><i class="fa fa-repeat"></i> Kembalikan Bukti Pembayaran</button>
             </div>
         </div>
     </div>
