@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.verifikatorpembayaran.action;
 
+import com.neurix.akuntansi.master.kodeRekening.bo.KodeRekeningBo;
 import com.neurix.akuntansi.master.master.bo.MasterBo;
 import com.neurix.akuntansi.master.master.model.ImMasterEntity;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
@@ -1453,7 +1454,6 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                 mapPajakObat.put("master_id", CommonConstant.MASTER_PAJAK_OBAT);
 
                 if ("umum".equalsIgnoreCase(idJenisPeriksaPasien)){
-                    invoice = billingSystemBo.createInvoiceNumber("JRJ", branchId);
 
                     // create list map piutang
                     Map mapkas = new HashMap();
@@ -1469,7 +1469,6 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                     transId = "91";
 
                 } else if ("asuransi".equalsIgnoreCase(idJenisPeriksaPasien)){
-                    invoice = billingSystemBo.createInvoiceNumber("JRJ", branchId);
 
                     // create list map piutang
                     Map mapPiutang = new HashMap();
@@ -1556,37 +1555,6 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
             checkupDetailBo.saveUpdateNoJuran(detailCheckup);
             // ---
 
-            // --- create jurnal pembayaran
-            if ("umum".equalsIgnoreCase(idJenisPeriksaPasien)){
-
-                transId = "02";
-                catatan = "Pembayaran Piutang Pasien Telemedic "+idJenisPeriksaPasien+" Id Detail Checkup " + idDetailCheckup;
-
-                // MAPPING KAS
-                Map mapKas = new HashMap();
-                mapKas.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, idJenisPeriksaPasien, ""));
-                mapKas.put("metode_bayar", "transfer");
-                mapKas.put("bank", kodeBank);
-
-                mapJurnal = new HashMap();
-                Map mapPiutang = new HashMap();
-                mapPiutang.put("bukti", invoice);
-                mapPiutang.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, idJenisPeriksaPasien, "").add(ppnObat));
-                mapPiutang.put("master_id", getMasterIdByTipe(idDetailCheckup, idJenisPeriksaPasien));
-
-                mapJurnal.put("kas",mapKas);
-                mapJurnal.put("piutang_pasien_non_bpjs", mapPiutang);
-
-                Jurnal jurnal = billingSystemBo.createJurnal(transId, mapJurnal, branchId, catatan, "Y");
-
-                // --- update no jurnal;
-                detailCheckup = new HeaderDetailCheckup();
-                detailCheckup.setIdDetailCheckup(idDetailCheckup);
-                detailCheckup.setNoJurnal(jurnal.getNoJurnal());
-
-                checkupDetailBo.saveUpdateNoJuran(detailCheckup);
-            }
-
             response.setStatus("success");
             response.setMsg("[Berhasil]");
 
@@ -1597,7 +1565,6 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
             return response;
         }
 
-        response.setInvoice(invoice);
         return response;
     }
 
@@ -3279,36 +3246,61 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
         BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
         JenisPriksaPasienBo jenisPriksaPasienBo = (JenisPriksaPasienBo) ctx.getBean("jenisPriksaPasienBoProxy");
         TelemedicBo telemedicBo = (TelemedicBo) ctx.getBean("telemedicBoProxy");
+        KodeRekeningBo kodeRekeningBo = (KodeRekeningBo) ctx.getBean("kodeRekeningBoProxy");
 
         String transId = "";
         String jenisPasien = "Umum ";
-        String kodeBank = antrianTelemedicEntity.getKodeBank();
+        String kodeBank = pembayaranOnlineEntity.getKodeBank();
         String noRekening = CommonConstant.REK_BANK_BRI_TELE;
         String keterangan = "";
+        boolean approved = "Y".equalsIgnoreCase(pembayaranOnlineEntity.getApprovedFlag());
 
         String masterId = jenisPriksaPasienBo.getJenisPerikasEntityById(antrianTelemedicEntity.getIdJenisPeriksaPasien()).getMasterId();
 
         // MAP ALL TINDAKAN BY KETERANGAN
         List<Map> listOfTindakan = new ArrayList<>();
-
-        Map mapTindakan = new HashMap();
-        mapTindakan = new HashMap();
-        mapTindakan.put("master_id", masterId);
-        mapTindakan.put("divisi_id", getKodeRekeningPositionByIdPelayanan(antrianTelemedicEntity.getIdPelayanan()));
-        mapTindakan.put("nilai", nominal);
-        listOfTindakan.add(mapTindakan);
-
-        Map mapKas = new HashMap();
-        mapKas.put("metode_bayar", "transfer");
-        mapKas.put("bank", kodeBank);
-        mapKas.put("nilai", nominal);
-        mapKas.put("nomor_rekening", noRekening);
-
-        // MENDAPATKAN SEMUA BIAYA RAWAT;
         Map mapJurnal = new HashMap();
-        mapJurnal.put("kas", mapKas);
-        mapJurnal.put("pendapatan_rawat_jalan_umum", listOfTindakan);
-        transId = "92";
+
+        if (approved){
+            Map mapTindakan = new HashMap();
+            mapTindakan = new HashMap();
+            mapTindakan.put("master_id", masterId);
+            mapTindakan.put("divisi_id", getKodeRekeningPositionByIdPelayanan(antrianTelemedicEntity.getIdPelayanan()));
+            mapTindakan.put("nilai", nominal);
+            listOfTindakan.add(mapTindakan);
+
+            Map mapKas = new HashMap();
+            mapKas.put("metode_bayar", "transfer");
+            mapKas.put("bank", kodeBank);
+            mapKas.put("nilai", nominal);
+            mapKas.put("nomor_rekening", noRekening);
+
+            // MENDAPATKAN SEMUA BIAYA RAWAT;
+            mapJurnal.put("kas", mapKas);
+            mapJurnal.put("pendapatan_rawat_jalan_umum", listOfTindakan);
+            transId = "92";
+        } else {
+
+            Map mapKasMasuk = new HashMap();
+//            mapKasMasuk.put("metode_bayar", "transfer");
+            mapKasMasuk.put("rekening_id", kodeRekeningBo.getRekeningIdByKodeRekening(kodeBank));
+            mapKasMasuk.put("nilai", nominal);
+            mapKasMasuk.put("nomor_rekening", noRekening);
+
+            Map mapKasKeluar = new HashMap();
+//            mapKasKeluar.put("metode_bayar", "transfer");
+            mapKasKeluar.put("rekening_id", kodeRekeningBo.getRekeningIdByKodeRekening(kodeBank));
+            mapKasKeluar.put("nilai", nominal);
+            mapKasKeluar.put("nomor_rekening", noRekening);
+
+            // MENDAPATKAN SEMUA BIAYA RAWAT;
+            mapJurnal.put("kas_masuk", mapKasMasuk);
+            mapJurnal.put("kas_keluar", mapKasKeluar);
+            transId = "93";
+        }
+
+
+
 
         String catatan = "Closing Jurnal Refund Dana Telemedic " + jenisItem + " " + jenisPasien +" No Transaksi " + pembayaranOnlineEntity.getId() + keterangan;
 

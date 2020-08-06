@@ -294,9 +294,9 @@
             if(res == "ADMIN APOTEK"){
                 pushNotifResep();
             }
-            if(res == "VERIFIKATOR PEMBAYARAN ONLINE"){
-
-            }
+//            if(res == "VERIFIKATOR PEMBAYARAN ONLINE"){
+//
+//            }
         })
     }
 
