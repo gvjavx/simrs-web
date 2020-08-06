@@ -1451,38 +1451,40 @@
 
                 var str = "";
                 $.each(response, function(i, item){
-                    str += "<tr>" +
-                        "<td>"+item.id+"</td>"+
-                        "<td>"+item.keterangan+"</td>"+
-                        "<td align='right'>"+ formatRupiah( item.nominal ) +"</td>";
+                    if (item.nominal != null && item.nominal != 0){
+                        str += "<tr>" +
+                            "<td>"+item.id+"</td>"+
+                            "<td>"+item.keterangan+"</td>"+
+                            "<td align='right'>"+ formatRupiah( item.nominal ) +"</td>";
 
-                    if (item.keterangan == "konsultasi"){
-                        if (telemedicEntity.flagBayarKonsultasi == "Y"){
-                            str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>";
-                            if (item.nominal == 0){
-                                str += "<td></td>";
+                        if (item.keterangan == "konsultasi"){
+                            if (telemedicEntity.flagBayarKonsultasi == "Y"){
+                                str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>";
+                                if (item.nominal == 0){
+                                    str += "<td></td>";
+                                } else {
+                                    str += "<td align='center'><button class='btn btn-sm btn-primary'  onclick=\"showConfirmation(\'"+item.nominal+"\',\'"+item.keterangan+"\',\'"+item.urlFotoBukti+"\')\"><i class='fa fa-arrow-right'></i> Konfirmasi Pengembalian Dana</button></td>";
+                                }
                             } else {
-                                str += "<td align='center'><button class='btn btn-sm btn-primary'  onclick=\"showConfirmation(\'"+item.nominal+"\',\'"+item.keterangan+"\',\'"+item.urlFotoBukti+"\')\"><i class='fa fa-arrow-right'></i> Konfirmasi Pengembalian Dana</button></td>";
-                            }
-                        } else {
-                            str += "<td></td>"+
+                                str += "<td></td>"+
                                     "<td></td>";
-                        }
-
-                    } else if (item.keterangan == "resep") {
-                        if (telemedicEntity.flagBayarResep == "Y"){
-                            str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>";
-                            if (item.nominal == 0){
-                                str += "<td></td>";
-                            } else {
-                                str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"showConfirmation(\'"+item.nominal+"\',\'"+item.keterangan+"\',\'"+item.urlFotoBukti+"\')\"><i class='fa fa-arrow-right'></i> Konfirmasi Pengembalian Dana</button></td>";
                             }
-                        } else {
-                            str += "<td></td>"+
-                                "<td></td>";
+
+                        } else if (item.keterangan == "resep") {
+                            if (telemedicEntity.flagBayarResep == "Y"){
+                                str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>";
+                                if (item.nominal == 0){
+                                    str += "<td></td>";
+                                } else {
+                                    str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"showConfirmation(\'"+item.nominal+"\',\'"+item.keterangan+"\',\'"+item.urlFotoBukti+"\')\"><i class='fa fa-arrow-right'></i> Konfirmasi Pengembalian Dana</button></td>";
+                                }
+                            } else {
+                                str += "<td></td>"+
+                                    "<td></td>";
+                            }
                         }
+                        str += "</tr>";
                     }
-                    str += "</tr>";
                 });
 
                 $("#btl-body-list-tarif").html(str);
