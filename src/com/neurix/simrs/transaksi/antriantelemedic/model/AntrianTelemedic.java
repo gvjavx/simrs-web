@@ -70,6 +70,15 @@ public class AntrianTelemedic {
     private String alasan;
     private String flagDanaDikembaLikan;
     private String isMobile;
+    private String idRekening;
+
+    public String getIdRekening() {
+        return idRekening;
+    }
+
+    public void setIdRekening(String idRekening) {
+        this.idRekening = idRekening;
+    }
     private String flagViewApproveConfirm;
 
     public String getFlagViewApproveConfirm() {

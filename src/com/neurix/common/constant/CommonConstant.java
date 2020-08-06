@@ -156,6 +156,7 @@ public class CommonConstant {
     public static final String AGORA_LIB = "/opt/tomcat/webapps/simrs/WEB-INF/lib";
 
     public final static String AGORA_DIR = "/upload/lib/agora/";
+//    public final static String AGORA_DIR = CommonUtil.getPropertyParams("base.dir") + "pages/agora/";
     public static final String AOGRA_REC_DIR = "/home/gondok/workspace/record ";
     public static final String APP_ID = "18016b16da294c7ab3255c5c792384b6";
 
@@ -181,7 +182,7 @@ public class CommonConstant {
 
 
     //TELEMEDICINE
-    public static final int ADD_JAM_BAYAR = 30; //MENIT
+    public static final int ADD_JAM_BAYAR = 5; //MENIT
 
     // CONSTANT ID TRANSAKSI BILLING
     public final static String TRANSAKSI_ID_PROSES_PPN_KD_KOREKSI ="67";

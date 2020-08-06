@@ -45,4 +45,6 @@ public interface TelemedicBo {
     public void confirmKembalian(BatalTelemedic bean) throws GeneralBOException;
     public void updateNoJurnalBatalDokter(String idBatalDokter, String noJurnal);
     public ItSimrsBatalTelemedicEntity getEnitityBatalTelemedicById(String idBatalTelemedic);
+
+    public void updateBankCoa(String idTele, String bankCoa);
 }

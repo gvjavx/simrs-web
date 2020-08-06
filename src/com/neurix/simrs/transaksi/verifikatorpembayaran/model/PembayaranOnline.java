@@ -35,6 +35,15 @@ public class PembayaranOnline {
     private String noSep;
     private String flagAuthorization;
     private String flagConfirmation;
+    private String idRekening;
+
+    public String getIdRekening() {
+        return idRekening;
+    }
+
+    public void setIdRekening(String idRekening) {
+        this.idRekening = idRekening;
+    }
 
     public String getFlagAuthorization() {
         return flagAuthorization;

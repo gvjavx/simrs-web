@@ -71,6 +71,15 @@ public class TelemedicineMobile {
     private String flagBatalDokter;
     private String idBatalDokterTelemedic;
     private String alasan;
+    private String idRekening;
+
+    public String getIdRekening() {
+        return idRekening;
+    }
+
+    public void setIdRekening(String idRekening) {
+        this.idRekening = idRekening;
+    }
 
     public String getAlasan() {
         return alasan;
