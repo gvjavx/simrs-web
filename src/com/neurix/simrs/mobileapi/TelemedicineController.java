@@ -460,6 +460,7 @@ public class TelemedicineController implements ModelDriven<Object> {
             bean.setId(idTele);
             bean.setStatus(this.status);
 
+
             try {
                 telemedicBoProxy.saveEdit(bean, branchId, "");
 
