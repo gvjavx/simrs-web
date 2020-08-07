@@ -521,7 +521,7 @@
                         </div>
                         <div id="dt-body-dibayar-pasien" style="display: none">
                             <div class="row top-7">
-                                <div class="col-md-3" align="right">Jumlah Dibayar : </div>
+                                <div class="col-md-3" align="right">Dibayar Pasien : </div>
                                 <div class="col-md-6"><input type="number" class="form-control input-sm" id="dt-bayar-asuransi" oninput="kurangiCover(this.value)"/></div>
                             </div>
                         </div>

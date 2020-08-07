@@ -101,6 +101,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
+import org.hibernate.NonUniqueObjectException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 import sun.misc.BASE64Decoder;
@@ -114,6 +115,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -2787,7 +2789,18 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                             if (detailCheckupEntity.getIdTransaksiOnline() != null){
                                 ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = verifikatorPembayaranBo.getPembayaranOnlineById(detailCheckupEntity.getIdTransaksiOnline());
 
-                                if ("konsultasi".equalsIgnoreCase(pembayaranOnlineEntity.getKeterangan())){
+                                ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = telemedicBo.getAntrianTelemedicEntityById(pembayaranOnlineEntity.getIdAntrianTelemedic());
+                                boolean withResep = antrianTelemedicEntity != null && "Y".equalsIgnoreCase(antrianTelemedicEntity.getFlagResep());
+
+                                if (withResep){
+                                    JurnalResponse jurnalResponse = closingJurnalNonTunaiTelemedic(detailCheckupEntity.getIdDetailCheckup(), detailCheckupEntity.getIdTransaksiOnline(), detailCheckupEntity.getIdPelayanan(), headerChekupEntity.getIdPasien(), "Y", userLogin, branchId);
+                                    if ("error".equalsIgnoreCase(jurnalResponse.getStatus())){
+                                        logger.error("[VerifikatorPembayaranAction.approveConfirmAsuransi] ERROR. " + response.getMsg());
+                                        response.setStatus("error");
+                                        response.setMsg("[VerifikatorPembayaranAction.approveConfirmAsuransi] ERROR. " + response.getMsg());
+                                        return response;
+                                    }
+                                } else {
                                     JurnalResponse jurnalResponse = closingJurnalNonTunaiTelemedic(detailCheckupEntity.getIdDetailCheckup(), detailCheckupEntity.getIdTransaksiOnline(), detailCheckupEntity.getIdPelayanan(), headerChekupEntity.getIdPasien(), "N", userLogin, branchId);
                                     if ("error".equalsIgnoreCase(jurnalResponse.getStatus())){
                                         logger.error("[VerifikatorPembayaranAction.approveConfirmAsuransi] ERROR. " + response.getMsg());
@@ -2796,15 +2809,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                                         return response;
                                     }
                                 }
-                                if ("resep".equalsIgnoreCase(pembayaranOnlineEntity.getKeterangan())){
-                                    JurnalResponse jurnalResponse = closingJurnalNonTunaiTelemedic(detailCheckupEntity.getIdDetailCheckup(), detailCheckupEntity.getIdTransaksiOnline(), detailCheckupEntity.getIdPelayanan(), headerChekupEntity.getIdPasien(), "Y", userLogin, branchId);
-                                    if ("error".equalsIgnoreCase(jurnalResponse.getStatus())){
-                                        logger.error("[VerifikatorPembayaranAction.approveConfirmAsuransi] ERROR. " + response.getMsg());
-                                        response.setStatus("error");
-                                        response.setMsg("[VerifikatorPembayaranAction.approveConfirmAsuransi] ERROR. " + response.getMsg());
-                                        return response;
-                                    }
-                                }
+
                             } else {
                                 logger.error("[VerifikatorPembayaranAction.approveConfirmAsuransi] ERROR, tidak ditemukan id transaksi online. ");
                                 response.setStatus("error");
@@ -3031,20 +3036,22 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                                 BigDecimal selisih = new BigDecimal(0);
                                 BigDecimal totalHasilBagi = dibayarDariTindakan.add(dibayarDariResep);
 
+                                MathContext m = new MathContext(3);
+
                                 if (dibayarPasien.compareTo(totalHasilBagi) == 1){
                                     selisih = dibayarPasien.subtract(totalHasilBagi);
                                     selisih = selisih.divide(new BigDecimal(2), BigDecimal.ROUND_HALF_UP, 2);
                                     dibayarDariTindakan = dibayarDariTindakan.add(selisih);
                                     dibayarDariResep = dibayarDariResep.add(selisih);
-                                    mapBiayaTindakan.put("tindakan", dibayarDariTindakan);
-                                    mapBiayaTindakan.put("resep", dibayarDariResep);
+                                    mapBiayaTindakan.put("tindakan", dibayarDariTindakan.round(m));
+                                    mapBiayaTindakan.put("resep", dibayarDariResep.round(m));
                                 }  else {
                                     selisih = totalHasilBagi.subtract(dibayarPasien);
                                     selisih = selisih.divide(new BigDecimal(2), BigDecimal.ROUND_HALF_UP, 2);
                                     dibayarDariTindakan = dibayarDariTindakan.subtract(selisih);
                                     dibayarDariResep = dibayarDariResep.subtract(selisih);
-                                    mapBiayaTindakan.put("tindakan", dibayarDariTindakan);
-                                    mapBiayaTindakan.put("resep", dibayarDariResep);
+                                    mapBiayaTindakan.put("tindakan", dibayarDariTindakan.round(m));
+                                    mapBiayaTindakan.put("resep", dibayarDariResep.round(m));
                                 }
 
 
