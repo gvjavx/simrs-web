@@ -1587,7 +1587,8 @@ public class TelemedicBoImpl implements TelemedicBo {
     }
 
     // notifikasi
-    private void createNotifikasiAdmin(String idItem, String roleId, String branchId, String userName, Timestamp createdDate, String keterangan) {
+    @Override
+    public void createNotifikasiAdmin(String idItem, String roleId, String branchId, String userName, Timestamp createdDate, String keterangan) {
 
         ItNotifikasiAdminTelemedicEntity notif = new ItNotifikasiAdminTelemedicEntity();
         notif.setId(generateIdNotif(branchId));

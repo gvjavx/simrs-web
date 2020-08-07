@@ -12,6 +12,7 @@ import com.neurix.simrs.transaksi.verifikatorasuransi.model.ItSimrsStrukAsuransi
 import com.neurix.simrs.transaksi.verifikatorasuransi.model.StrukAsuransi;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -47,4 +48,5 @@ public interface TelemedicBo {
     public ItSimrsBatalTelemedicEntity getEnitityBatalTelemedicById(String idBatalTelemedic);
 
     public void updateBankCoa(String idTele, String bankCoa);
+    public void createNotifikasiAdmin(String idItem, String roleId, String branchId, String userName, Timestamp createdDate, String keterangan) throws GeneralBOException;
 }
