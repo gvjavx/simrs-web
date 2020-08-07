@@ -204,7 +204,7 @@
                                 <td>Alamat</td>
                                 <td>Flag Pickup</td>
                                 <td>Flag Diterima</td>
-                                <td align="center">View Detail</td>
+                                <%--<td align="center">View Detail</td>--%>
                             </tr>
                             </thead>
                             <tbody id="list-body-pengiriman">
@@ -218,12 +218,12 @@
                                     <td><s:property value="alamat"/></td>
                                     <td align="center"><script>document.write(formatFlag('<s:property value="flagPickup"/>'))</script></td>
                                     <td align="center"><script>document.write(formatFlag('<s:property value="flagDiterimaPasien"/>'))</script></td>
-                                    <td align="center">
-                                        <button class="btn btn-sm btn-success" onclick="viewDetail()"><i class="fa fa-search"></i></button>
-                                        <%--<img border="0" class="hvr-grow" onclick="viewAssign('<s:property value="idPasien"/>','<s:property value="idPelayanan"/>','<s:property value="idPermintaanResep"/>')"--%>
-                                             <%--src="<s:url value="/pages/images/icons8-create-25.png"/>"--%>
-                                             <%--style="cursor: pointer;">--%>
-                                    </td>
+                                    <%--<td align="center">--%>
+                                        <%--<button class="btn btn-sm btn-success" onclick="viewDetail()"><i class="fa fa-search"></i></button>--%>
+                                        <%--&lt;%&ndash;<img border="0" class="hvr-grow" onclick="viewAssign('<s:property value="idPasien"/>','<s:property value="idPelayanan"/>','<s:property value="idPermintaanResep"/>')"&ndash;%&gt;--%>
+                                             <%--&lt;%&ndash;src="<s:url value="/pages/images/icons8-create-25.png"/>"&ndash;%&gt;--%>
+                                             <%--&lt;%&ndash;style="cursor: pointer;">&ndash;%&gt;--%>
+                                    <%--</td>--%>
                                 </tr>
                             </s:iterator>
                             </tbody>
