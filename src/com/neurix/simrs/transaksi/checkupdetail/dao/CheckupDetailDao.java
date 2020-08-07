@@ -1588,7 +1588,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "a.id_apoteker,\n" +
                     "c.user_name\n" +
                     "FROM mt_simrs_permintaan_resep a \n" +
-                    "INNER JOIN im_simrs_dokter b ON a.id_dokter = b.id_dokter\n" +
+                    "LEFT JOIN im_simrs_dokter b ON a.id_dokter = b.id_dokter\n" +
                     "LEFT JOIN im_users c ON a.id_apoteker = c.user_id\n" +
                     "WHERE a.id_permintaan_resep = :id";
             List<Object[]> result = new ArrayList<>();
