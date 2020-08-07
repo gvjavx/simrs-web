@@ -182,7 +182,7 @@ public class CommonConstant {
 
 
     //TELEMEDICINE
-    public static final int ADD_JAM_BAYAR = 5; //MENIT
+    public static final int ADD_JAM_BAYAR = 30; //MENIT
 
     // CONSTANT ID TRANSAKSI BILLING
     public final static String TRANSAKSI_ID_PROSES_PPN_KD_KOREKSI ="67";
