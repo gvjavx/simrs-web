@@ -117,6 +117,8 @@ public class AntrianOnlineController implements ModelDriven<Object> {
     private String channelId;
     private String uid;
 
+    private RecordingEventHandler recordingEventHandler;
+
     private int keepMediaTime = 0;
 
     private boolean isMixMode = false;
@@ -324,138 +326,137 @@ public class AntrianOnlineController implements ModelDriven<Object> {
     public HttpHeaders create() {
         logger.info("[AntrianOnlineController.create] start process POST / <<<");
 
-        RecordingSDK recordingSDK = new RecordingSDK();
-        RecordingSDKInstance = recordingSDK;
-        config = new RecordingConfig();
-        config.channelProfile = Common.CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_COMMUNICATION;
-        config.appliteDir =  CommonUtil.getPropertyParams("upload.folder") + CommonConstant.AGORA_DIR;
-        config.triggerMode = 0;
-        config.recordFileRootDir = CommonUtil.getPropertyParams("upload.folder") + CommonConstant.RESOURCE_PATH_VIDEO_RM;
-        config.idleLimitSec = 5 * 60;
-        config.isVideoOnly = false;
-        config.isAudioOnly = false;
-        config.isMixingEnabled = true;
-        config.mixResolution = "640,360,15,500";
-        config.mixedVideoAudio = Common.MIXED_AV_CODEC_TYPE.values() [Common.MIXED_AV_CODEC_TYPE.MIXED_AV_CODEC_V2.ordinal()];
-        config.cfgFilePath = "/uid/";
-        config.secret = "";
-        config.decryptionMode = "";
-        config.lowUdpPort = 40000;
-        config.highUdpPort = 41000;
-        config.captureInterval = 5;
-        config.audioIndicationInterval = 0;
-        config.decodeAudio = Common.AUDIO_FORMAT_TYPE.values()[Common.AUDIO_FORMAT_TYPE.AUDIO_FORMAT_DEFAULT_TYPE.ordinal()];
-        config.decodeVideo = Common.VIDEO_FORMAT_TYPE.values()[Common.VIDEO_FORMAT_TYPE.VIDEO_FORMAT_DEFAULT_TYPE.ordinal()];
-        config.streamType = Common.REMOTE_VIDEO_STREAM_TYPE.values() [Common.REMOTE_VIDEO_STREAM_TYPE.REMOTE_VIDEO_STREAM_HIGH.ordinal()];
-        config.proxyType = 1;
-        config.proxyServer = "";
-        config.audioProfile = 2;
-        config.defaultVideoBgPath = "";
-        config.defaultUserBgPath = "";
-        config.autoSubscribe = true;
-        config.enableCloudProxy = false;
-        config.enableIntraRequest = true;
-        config.subscribeVideoUids = "";
-        config.subscribeAudioUids = "";
-        config.enableH265Support = false;
-
-        if (config.decodeVideo == Common.VIDEO_FORMAT_TYPE.VIDEO_FORMAT_ENCODED_FRAME_TYPE) {
-            config.decodeVideo = Common.VIDEO_FORMAT_TYPE.VIDEO_FORMAT_H264_FRAME_TYPE;
-        }
-
-        if (!config.autoSubscribe) {
-            if (config.subscribeVideoUids != null) {
-                config.subscribeVideoUids = String.valueOf(config.subscribeVideoUids);
-                String[] struids = config.subscribeVideoUids.split(",");
-                for (int i = 0; i < struids.length; i++) {
-                    if (userAccount.length() > 0) {
-                        subscribedVideoUserAccount.add(struids[i]);
-                    } else {
-                        try {
-                            subscribedVideoUids.add(Long.parseLong(struids[i]));
-                        } catch (Exception e) {
-                            //Ignore exception here.
-                        }
-                    }
-                }
-            }
-            if (config.subscribeVideoUids != null)
-                config.subscribeAudioUids = String.valueOf(config.subscribeAudioUids);
-        }
-
-        if(config.audioProfile > 2) config.audioProfile = 2;
-        if(config.audioProfile < 0) config.audioProfile = 0;
-
-        this.isMixMode = config.isMixingEnabled;
-        this.profile_type = Common.CHANNEL_PROFILE_TYPE.values()[config.channelProfile.getValue()];
-        if (config.isMixingEnabled && !config.isAudioOnly) {
-            String[] sourceStrArray = config.mixResolution.split(",");
-            if (sourceStrArray.length != 4) {
-                logger.info("Illegal resolution:" + config.mixResolution);
-            }
-            this.width = Integer.valueOf(sourceStrArray[0]).intValue();
-            this.height = Integer.valueOf(sourceStrArray[1]).intValue();
-            this.fps = Integer.valueOf(sourceStrArray[2]).intValue();
-            this.kbps = Integer.valueOf(sourceStrArray[3]).intValue();
-        }
-
-
-        RecordingEventHandler recordingEventHandler = new RecordingEventHandler() {
-            @Override
-            public void onLeaveChannel(int reason) {
-                logger.error("[AntrianOnlineController.record] onLeaveChannel : " + reason);
-                videoFileName = getVideoFileName(new File(storageDir));
-                audioFileName = getAudioFileName(new File(storageDir));
-                logger.info("File name : " + videoFileName + " "+ audioFileName);
-                String path = storageDir+videoFileName;
-
-                //TODO CHECK
-                String newPath = path.replace(CommonUtil.getPropertyParams("upload.folder"), "");
-                try {
-                     checkupDetailBoProxy.editVideoRm(idDetailCheckup, newPath);
-                } catch (GeneralBOException e) {
-                    logger.error("[AntrianOnlineController.getAntrianAll] Error get antrian all " + e.getMessage());
-                    throw new GeneralBOException("[AntrianOnlineController.getAntrianAll] Error When Error get antrian all");
-                }
-
-            }
-
-            @Override
-            public void onError(int error, int stat_code) {
-                logger.error("RecordingSDK onError,error:" + error + ",stat code:" + stat_code);
-
-            }
-
-            @Override
-            public void onWarning(int warn) {
-                logger.error("RecordingSDK onWarning,warn:" + warn);
-
-            }
-
-            @Override
-            public void onJoinChannelSuccess(String channelId, long uid) {
-                if(config.decodeAudio != Common.AUDIO_FORMAT_TYPE.AUDIO_FORMAT_DEFAULT_TYPE) {
-                    cleanTimer.schedule(new RecordingCleanTimer(AntrianOnlineController.this), 10000);
-                }
-                logger.info("RecordingSDK joinChannel success, channelId:" + channelId +", uid:" + uid);
-            }
-
-            @Override
-            public void onRemoteVideoStreamStateChanged(long uid, Common.REMOTE_STREAM_STATE state, Common.REMOTE_STREAM_STATE_CHANGED_REASON reason) {
-
-            }
-
-            @Override
-            public void onRemoteAudioStreamStateChanged(long uid, Common.REMOTE_STREAM_STATE state, Common.REMOTE_STREAM_STATE_CHANGED_REASON reason) {
-
-            }
-
-            @Override
-            public void onUserOffline(long uid, int reason) {
-                m_peers.remove(uid);
-                //PrintUsersInfo(m_peers);
-                SetVideoMixingLayout();
-                logger.info("RecordingSDK onUserOffline uid:" + uid + ",offline reason:" + reason);
+//        RecordingSDK recordingSDK = new RecordingSDK();
+//        RecordingSDKInstance = recordingSDK;
+//        config = new RecordingConfig();
+//        config.channelProfile = Common.CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_COMMUNICATION;
+//        config.appliteDir =  CommonUtil.getPropertyParams("upload.folder") + CommonConstant.AGORA_DIR;
+//        config.triggerMode = 0;
+//        config.recordFileRootDir = CommonUtil.getPropertyParams("upload.folder") + CommonConstant.RESOURCE_PATH_VIDEO_RM;
+//        config.idleLimitSec = 5 * 60;
+//        config.isVideoOnly = false;
+//        config.isAudioOnly = false;
+//        config.isMixingEnabled = true;
+//        config.mixResolution = "640,360,15,500";
+//        config.mixedVideoAudio = Common.MIXED_AV_CODEC_TYPE.values() [Common.MIXED_AV_CODEC_TYPE.MIXED_AV_CODEC_V2.ordinal()];
+//        config.cfgFilePath = "/uid/";
+//        config.secret = "";
+//        config.decryptionMode = "";
+//        config.lowUdpPort = 40000;
+//        config.highUdpPort = 41000;
+//        config.captureInterval = 5;
+//        config.audioIndicationInterval = 0;
+//        config.decodeAudio = Common.AUDIO_FORMAT_TYPE.values()[Common.AUDIO_FORMAT_TYPE.AUDIO_FORMAT_DEFAULT_TYPE.ordinal()];
+//        config.decodeVideo = Common.VIDEO_FORMAT_TYPE.values()[Common.VIDEO_FORMAT_TYPE.VIDEO_FORMAT_DEFAULT_TYPE.ordinal()];
+//        config.streamType = Common.REMOTE_VIDEO_STREAM_TYPE.values() [Common.REMOTE_VIDEO_STREAM_TYPE.REMOTE_VIDEO_STREAM_HIGH.ordinal()];
+//        config.proxyType = 1;
+//        config.proxyServer = "";
+//        config.audioProfile = 2;
+//        config.defaultVideoBgPath = "";
+//        config.defaultUserBgPath = "";
+//        config.autoSubscribe = true;
+//        config.enableCloudProxy = false;
+//        config.enableIntraRequest = true;
+//        config.subscribeVideoUids = "";
+//        config.subscribeAudioUids = "";
+//        config.enableH265Support = false;
+//
+//        if (config.decodeVideo == Common.VIDEO_FORMAT_TYPE.VIDEO_FORMAT_ENCODED_FRAME_TYPE) {
+//            config.decodeVideo = Common.VIDEO_FORMAT_TYPE.VIDEO_FORMAT_H264_FRAME_TYPE;
+//        }
+//
+//        if (!config.autoSubscribe) {
+//            if (config.subscribeVideoUids != null) {
+//                config.subscribeVideoUids = String.valueOf(config.subscribeVideoUids);
+//                String[] struids = config.subscribeVideoUids.split(",");
+//                for (int i = 0; i < struids.length; i++) {
+//                    if (userAccount.length() > 0) {
+//                        subscribedVideoUserAccount.add(struids[i]);
+//                    } else {
+//                        try {
+//                            subscribedVideoUids.add(Long.parseLong(struids[i]));
+//                        } catch (Exception e) {
+//                            //Ignore exception here.
+//                        }
+//                    }
+//                }
+//            }
+//            if (config.subscribeVideoUids != null)
+//                config.subscribeAudioUids = String.valueOf(config.subscribeAudioUids);
+//        }
+//
+//        if(config.audioProfile > 2) config.audioProfile = 2;
+//        if(config.audioProfile < 0) config.audioProfile = 0;
+//
+//        this.isMixMode = config.isMixingEnabled;
+//        this.profile_type = Common.CHANNEL_PROFILE_TYPE.values()[config.channelProfile.getValue()];
+//        if (config.isMixingEnabled && !config.isAudioOnly) {
+//            String[] sourceStrArray = config.mixResolution.split(",");
+//            if (sourceStrArray.length != 4) {
+//                logger.info("Illegal resolution:" + config.mixResolution);
+//            }
+//            this.width = Integer.valueOf(sourceStrArray[0]).intValue();
+//            this.height = Integer.valueOf(sourceStrArray[1]).intValue();
+//            this.fps = Integer.valueOf(sourceStrArray[2]).intValue();
+//            this.kbps = Integer.valueOf(sourceStrArray[3]).intValue();
+//        }
+//
+//        RecordingEventHandler recordingEventHandler = new RecordingEventHandler() {
+//            @Override
+//            public void onLeaveChannel(int reason) {
+//                logger.error("[AntrianOnlineController.record] onLeaveChannel : " + reason);
+//                videoFileName = getVideoFileName(new File(storageDir));
+//                audioFileName = getAudioFileName(new File(storageDir));
+//                logger.info("File name : " + videoFileName + " "+ audioFileName);
+//                String path = storageDir+videoFileName;
+//
+//                //TODO CHECK
+//                String newPath = path.replace(CommonUtil.getPropertyParams("upload.folder"), "");
+//                try {
+//                     checkupDetailBoProxy.editVideoRm(idDetailCheckup, newPath);
+//                } catch (GeneralBOException e) {
+//                    logger.error("[AntrianOnlineController.getAntrianAll] Error get antrian all " + e.getMessage());
+//                    throw new GeneralBOException("[AntrianOnlineController.getAntrianAll] Error When Error get antrian all");
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onError(int error, int stat_code) {
+//                logger.error("RecordingSDK onError,error:" + error + ",stat code:" + stat_code);
+//
+//            }
+//
+//            @Override
+//            public void onWarning(int warn) {
+//                logger.error("RecordingSDK onWarning,warn:" + warn);
+//
+//            }
+//
+//            @Override
+//            public void onJoinChannelSuccess(String channelId, long uid) {
+//                if(config.decodeAudio != Common.AUDIO_FORMAT_TYPE.AUDIO_FORMAT_DEFAULT_TYPE) {
+//                    cleanTimer.schedule(new RecordingCleanTimer(AntrianOnlineController.this), 10000);
+//                }
+//                logger.info("RecordingSDK joinChannel success, channelId:" + channelId +", uid:" + uid);
+//            }
+//
+//            @Override
+//            public void onRemoteVideoStreamStateChanged(long uid, Common.REMOTE_STREAM_STATE state, Common.REMOTE_STREAM_STATE_CHANGED_REASON reason) {
+//
+//            }
+//
+//            @Override
+//            public void onRemoteAudioStreamStateChanged(long uid, Common.REMOTE_STREAM_STATE state, Common.REMOTE_STREAM_STATE_CHANGED_REASON reason) {
+//
+//            }
+//
+//            @Override
+//            public void onUserOffline(long uid, int reason) {
+//                m_peers.remove(uid);
+//                //PrintUsersInfo(m_peers);
+//                SetVideoMixingLayout();
+//                logger.info("RecordingSDK onUserOffline uid:" + uid + ",offline reason:" + reason);
 //                if (reason == 0) {
 //                    videoFileName = getVideoFileName(new File(storageDir));
 //                    audioFileName = getAudioFileName(new File(storageDir));
@@ -475,170 +476,170 @@ public class AntrianOnlineController implements ModelDriven<Object> {
 //                    logger.info("Channel leave : " + isLeave);
 //                    recordingSDK.unRegisterOberserver(this);
 //                }
-
-            }
-
-            @Override
-            public void onUserJoined(long uid, String recordingDir) {
-                logger.info("onUserJoined uid:" + uid + ",recordingDir:" + recordingDir);
-                storageDir = recordingDir;
-                logger.info("File name : " + videoFileName + " "+ audioFileName + " UID:" + uid);
-                m_peers.add(uid);
-                //PrintUsersInfo(m_peers);
-                // When the user joined, we can re-layout the canvas
-                if (userAccount.length() > 0) {
-                    if (layoutMode != VERTICALPRESENTATION_LAYOUT || RecordingSDKInstance.getUidByUserAccount(maxResolutionUserAccount) != 0) {
-                        SetVideoMixingLayout();
-                    }
-                }
-                else {
-                    SetVideoMixingLayout();
-                }
-            }
-
-            @Override
-            public void onActiveSpeaker(long uid) {
-                logger.info("User:"+uid+"is speaking");
-
-            }
-
-            @Override
-            public void audioFrameReceived(long uid, Common.AudioFrame frame) {
-                // System.out.println("java demo
-                // audioFrameReceived,uid:"+uid+",type:"+type);
-                byte[] buf = null;
-                long size = 0;
-                checkUser(uid, true);
-                if (frame.type == Common.AUDIO_FRAME_TYPE.AUDIO_FRAME_RAW_PCM) {// pcm
-                    buf = frame.pcm.pcmBuf;
-                    size = frame.pcm.pcmBufSize;
-                } else {// aac
-                    buf = frame.aac.aacBuf;
-                    size = frame.aac.aacBufSize;
-                }
-                WriteBytesToFileClassic(uid, buf, size, true);
-            }
-
-            @Override
-            public void videoFrameReceived(long uid, int type, Common.VideoFrame frame, int rotation) {
-                byte[] buf = null;
-                long size = 0;
-                checkUser(uid, false);
-                // System.out.println("java demovideoFrameReceived,uid:"+uid+",type:"+type);
-
-                if (type == 0) {// yuv
-                    buf = frame.yuv.buf;
-                    size = frame.yuv.bufSize;
-                    if (buf == null) {
-                        logger.info("java demo videoFrameReceived null");
-                    }
-                } else if (type == 1) {// h264
-                    buf = frame.h264.buf;
-                    size = frame.h264.bufSize;
-                } else if (type == 2) {// h265
-                    buf = frame.h265.buf;
-                    size = frame.h265.bufSize;
-                } else if (type == 3) { // jpg
-                    String path = storageDir + Long.toString(uid) + System.currentTimeMillis() + ".jpg";
-                    buf = frame.jpg.buf;
-                    size = frame.jpg.bufSize;
-                    try {
-                        FileOutputStream channel = new FileOutputStream(path, true);
-                        channel.write(buf, 0, (int) size);
-                        channel.close();
-                    } catch(Exception e ){
-                        logger.info("Error write to " + path);
-                    }
-                    return;
-                }
-                WriteBytesToFileClassic(uid, buf, size, false);
-            }
-
-            @Override
-            public void recordingPathCallBack(String path) {
-                storageDir = path;
-            }
-
-            @Override
-            public void onAudioVolumeIndication(Common.AudioVolumeInfo[] infos) {
-                if(infos.length == 0)
-                    return;
-
-                for(int i = 0; i < infos.length; i++) {
-                    logger.info("User:"+ Long.toString(infos[i].uid)+", audio volume:" + infos[i].volume);
-                }
-            }
-
-            @Override
-            public void onFirstRemoteVideoDecoded(long uid, int width, int height, int elapsed) {
-                logger.info("onFirstRemoteVideoDecoded User:"+ Long.toString(uid)+", width:" + width
-                        + ", height:" + height + ", elapsed:" + elapsed);
-            }
-
-            @Override
-            public void onFirstRemoteAudioFrame(long uid, int elapsed) {
-                logger.info("onFirstRemoteAudioFrame User:"+ Long.toString(uid)+", elapsed:" + elapsed);
-
-            }
-
-            @Override
-            public void onReceivingStreamStatusChanged(boolean receivingAudio, boolean receivingVideo) {
-                logger.info("pre receiving audio status is " + m_receivingAudio + ", now receiving audio status is " + receivingAudio);
-                logger.info("pre receiving video status is " + m_receivingVideo + ", now receiving video  status is " + receivingVideo);
-                m_receivingAudio = receivingAudio;
-                m_receivingVideo = receivingVideo;
-            }
-
-            @Override
-            public void onConnectionLost() {
-                logger.info("connection is lost");
-            }
-
-            @Override
-            public void onConnectionInterrupted() {
-               logger.info("connection is interrupted");
-            }
-
-            @Override
-            public void onRejoinChannelSuccess(String channelId, long uid) {
-                logger.info("onRejoinChannelSuccess, channel id : " + channelId + ", uid: " + uid);
-
-            }
-
-            @Override
-            public void onConnectionStateChanged(Common.CONNECTION_STATE_TYPE state, Common.CONNECTION_CHANGED_REASON_TYPE reason) {
-
-            }
-
-            @Override
-            public void onRemoteVideoStats(long uid, Common.RemoteVideoStats stats) {
-
-            }
-
-            @Override
-            public void onRemoteAudioStats(long uid, Common.RemoteAudioStats stats) {
-
-            }
-
-            @Override
-            public void onRecordingStats(Common.RecordingStats stats) {
-            }
-
-            @Override
-            public void onLocalUserRegistered(long uid, String userAccount) {
-                logger.info("onLocalUserRegistered: " + uid + " => " + userAccount);
-
-            }
-
-            @Override
-            public void onUserInfoUpdated(long uid, String userAccount) {
-                logger.info("onUserInfoUpdated: " + uid + " => " + userAccount);
-                if (subscribedVideoUserAccount.contains(userAccount)) {
-                    subscribedVideoUids.add(uid);
-                }
-                SetVideoMixingLayout();
-            }
-        };
+//
+//            }
+//
+//            @Override
+//            public void onUserJoined(long uid, String recordingDir) {
+//                logger.info("onUserJoined uid:" + uid + ",recordingDir:" + recordingDir);
+//                storageDir = recordingDir;
+//                logger.info("File name : " + videoFileName + " "+ audioFileName + " UID:" + uid);
+//                m_peers.add(uid);
+//                //PrintUsersInfo(m_peers);
+//                // When the user joined, we can re-layout the canvas
+//                if (userAccount.length() > 0) {
+//                    if (layoutMode != VERTICALPRESENTATION_LAYOUT || RecordingSDKInstance.getUidByUserAccount(maxResolutionUserAccount) != 0) {
+//                        SetVideoMixingLayout();
+//                    }
+//                }
+//                else {
+//                    SetVideoMixingLayout();
+//                }
+//            }
+//
+//            @Override
+//            public void onActiveSpeaker(long uid) {
+//                logger.info("User:"+uid+"is speaking");
+//
+//            }
+//
+//            @Override
+//            public void audioFrameReceived(long uid, Common.AudioFrame frame) {
+//                // System.out.println("java demo
+//                // audioFrameReceived,uid:"+uid+",type:"+type);
+//                byte[] buf = null;
+//                long size = 0;
+//                checkUser(uid, true);
+//                if (frame.type == Common.AUDIO_FRAME_TYPE.AUDIO_FRAME_RAW_PCM) {// pcm
+//                    buf = frame.pcm.pcmBuf;
+//                    size = frame.pcm.pcmBufSize;
+//                } else {// aac
+//                    buf = frame.aac.aacBuf;
+//                    size = frame.aac.aacBufSize;
+//                }
+//                WriteBytesToFileClassic(uid, buf, size, true);
+//            }
+//
+//            @Override
+//            public void videoFrameReceived(long uid, int type, Common.VideoFrame frame, int rotation) {
+//                byte[] buf = null;
+//                long size = 0;
+//                checkUser(uid, false);
+//                // System.out.println("java demovideoFrameReceived,uid:"+uid+",type:"+type);
+//
+//                if (type == 0) {// yuv
+//                    buf = frame.yuv.buf;
+//                    size = frame.yuv.bufSize;
+//                    if (buf == null) {
+//                        logger.info("java demo videoFrameReceived null");
+//                    }
+//                } else if (type == 1) {// h264
+//                    buf = frame.h264.buf;
+//                    size = frame.h264.bufSize;
+//                } else if (type == 2) {// h265
+//                    buf = frame.h265.buf;
+//                    size = frame.h265.bufSize;
+//                } else if (type == 3) { // jpg
+//                    String path = storageDir + Long.toString(uid) + System.currentTimeMillis() + ".jpg";
+//                    buf = frame.jpg.buf;
+//                    size = frame.jpg.bufSize;
+//                    try {
+//                        FileOutputStream channel = new FileOutputStream(path, true);
+//                        channel.write(buf, 0, (int) size);
+//                        channel.close();
+//                    } catch(Exception e ){
+//                        logger.info("Error write to " + path);
+//                    }
+//                    return;
+//                }
+//                WriteBytesToFileClassic(uid, buf, size, false);
+//            }
+//
+//            @Override
+//            public void recordingPathCallBack(String path) {
+//                storageDir = path;
+//            }
+//
+//            @Override
+//            public void onAudioVolumeIndication(Common.AudioVolumeInfo[] infos) {
+//                if(infos.length == 0)
+//                    return;
+//
+//                for(int i = 0; i < infos.length; i++) {
+//                    logger.info("User:"+ Long.toString(infos[i].uid)+", audio volume:" + infos[i].volume);
+//                }
+//            }
+//
+//            @Override
+//            public void onFirstRemoteVideoDecoded(long uid, int width, int height, int elapsed) {
+//                logger.info("onFirstRemoteVideoDecoded User:"+ Long.toString(uid)+", width:" + width
+//                        + ", height:" + height + ", elapsed:" + elapsed);
+//            }
+//
+//            @Override
+//            public void onFirstRemoteAudioFrame(long uid, int elapsed) {
+//                logger.info("onFirstRemoteAudioFrame User:"+ Long.toString(uid)+", elapsed:" + elapsed);
+//
+//            }
+//
+//            @Override
+//            public void onReceivingStreamStatusChanged(boolean receivingAudio, boolean receivingVideo) {
+//                logger.info("pre receiving audio status is " + m_receivingAudio + ", now receiving audio status is " + receivingAudio);
+//                logger.info("pre receiving video status is " + m_receivingVideo + ", now receiving video  status is " + receivingVideo);
+//                m_receivingAudio = receivingAudio;
+//                m_receivingVideo = receivingVideo;
+//            }
+//
+//            @Override
+//            public void onConnectionLost() {
+//                logger.info("connection is lost");
+//            }
+//
+//            @Override
+//            public void onConnectionInterrupted() {
+//               logger.info("connection is interrupted");
+//            }
+//
+//            @Override
+//            public void onRejoinChannelSuccess(String channelId, long uid) {
+//                logger.info("onRejoinChannelSuccess, channel id : " + channelId + ", uid: " + uid);
+//
+//            }
+//
+//            @Override
+//            public void onConnectionStateChanged(Common.CONNECTION_STATE_TYPE state, Common.CONNECTION_CHANGED_REASON_TYPE reason) {
+//
+//            }
+//
+//            @Override
+//            public void onRemoteVideoStats(long uid, Common.RemoteVideoStats stats) {
+//
+//            }
+//
+//            @Override
+//            public void onRemoteAudioStats(long uid, Common.RemoteAudioStats stats) {
+//
+//            }
+//
+//            @Override
+//            public void onRecordingStats(Common.RecordingStats stats) {
+//            }
+//
+//            @Override
+//            public void onLocalUserRegistered(long uid, String userAccount) {
+//                logger.info("onLocalUserRegistered: " + uid + " => " + userAccount);
+//
+//            }
+//
+//            @Override
+//            public void onUserInfoUpdated(long uid, String userAccount) {
+//                logger.info("onUserInfoUpdated: " + uid + " => " + userAccount);
+//                if (subscribedVideoUserAccount.contains(userAccount)) {
+//                    subscribedVideoUids.add(uid);
+//                }
+//                SetVideoMixingLayout();
+//            }
+//        };
 
         Timestamp now = new Timestamp(System.currentTimeMillis());
 
@@ -724,8 +725,8 @@ public class AntrianOnlineController implements ModelDriven<Object> {
         }
 
         if  (action.equalsIgnoreCase("startRecord")){
+            initRecordingAgora();
             RecordingSDKInstance.registerOberserver(recordingEventHandler);
-
 
             String tmpEnv = System.getenv("KEEPMEDIATIME");
             if (tmpEnv != null && !tmpEnv.isEmpty()) {
@@ -754,16 +755,16 @@ public class AntrianOnlineController implements ModelDriven<Object> {
             String newPath = path.replace(CommonUtil.getPropertyParams("upload.folder"), "");
             try {
                 checkupDetailBoProxy.editVideoRm(idDetailCheckup, newPath);
+                model.setMessage("Success");
             } catch (GeneralBOException e) {
                 logger.error("[AntrianOnlineController.getAntrianAll] Error get antrian all " + e.getMessage());
                 throw new GeneralBOException("[AntrianOnlineController.getAntrianAll] Error When Error get antrian all");
             }
 
-            RecordingEngineProperties recordingEngineProperties = recordingSDK.getProperties();
-            boolean isLeave = recordingSDK.leaveChannel();
+//            RecordingEngineProperties recordingEngineProperties = RecordingSDKInstance.getProperties();
+            boolean isLeave = RecordingSDKInstance.leaveChannel();
             logger.info("Channel leave : " + isLeave);
             RecordingSDKInstance.unRegisterOberserver(recordingEventHandler);
-            model.setMessage("Success");
         }
 
         logger.info("[AntrianOnlineController.create] end process POST / <<<");
@@ -1308,6 +1309,323 @@ public class AntrianOnlineController implements ModelDriven<Object> {
             return false;
         }
         return true;
+    }
+
+    private void initRecordingAgora() {
+        RecordingSDK recordingSDK = new RecordingSDK();
+        RecordingSDKInstance = recordingSDK;
+        config = new RecordingConfig();
+        config.channelProfile = Common.CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_COMMUNICATION;
+        config.appliteDir =  CommonUtil.getPropertyParams("upload.folder") + CommonConstant.AGORA_DIR;
+        config.triggerMode = 0;
+        config.recordFileRootDir = CommonUtil.getPropertyParams("upload.folder") + CommonConstant.RESOURCE_PATH_VIDEO_RM;
+        config.idleLimitSec = 5 * 60;
+        config.isVideoOnly = false;
+        config.isAudioOnly = false;
+        config.isMixingEnabled = true;
+        config.mixResolution = "640,360,15,500";
+        config.mixedVideoAudio = Common.MIXED_AV_CODEC_TYPE.values() [Common.MIXED_AV_CODEC_TYPE.MIXED_AV_CODEC_V2.ordinal()];
+        config.cfgFilePath = "/uid/";
+        config.secret = "";
+        config.decryptionMode = "";
+        config.lowUdpPort = 40000;
+        config.highUdpPort = 41000;
+        config.captureInterval = 5;
+        config.audioIndicationInterval = 0;
+        config.decodeAudio = Common.AUDIO_FORMAT_TYPE.values()[Common.AUDIO_FORMAT_TYPE.AUDIO_FORMAT_DEFAULT_TYPE.ordinal()];
+        config.decodeVideo = Common.VIDEO_FORMAT_TYPE.values()[Common.VIDEO_FORMAT_TYPE.VIDEO_FORMAT_DEFAULT_TYPE.ordinal()];
+        config.streamType = Common.REMOTE_VIDEO_STREAM_TYPE.values() [Common.REMOTE_VIDEO_STREAM_TYPE.REMOTE_VIDEO_STREAM_HIGH.ordinal()];
+        config.proxyType = 1;
+        config.proxyServer = "";
+        config.audioProfile = 2;
+        config.defaultVideoBgPath = "";
+        config.defaultUserBgPath = "";
+        config.autoSubscribe = true;
+        config.enableCloudProxy = false;
+        config.enableIntraRequest = true;
+        config.subscribeVideoUids = "";
+        config.subscribeAudioUids = "";
+        config.enableH265Support = false;
+
+        if (config.decodeVideo == Common.VIDEO_FORMAT_TYPE.VIDEO_FORMAT_ENCODED_FRAME_TYPE) {
+            config.decodeVideo = Common.VIDEO_FORMAT_TYPE.VIDEO_FORMAT_H264_FRAME_TYPE;
+        }
+
+        if (!config.autoSubscribe) {
+            if (config.subscribeVideoUids != null) {
+                config.subscribeVideoUids = String.valueOf(config.subscribeVideoUids);
+                String[] struids = config.subscribeVideoUids.split(",");
+                for (int i = 0; i < struids.length; i++) {
+                    if (userAccount.length() > 0) {
+                        subscribedVideoUserAccount.add(struids[i]);
+                    } else {
+                        try {
+                            subscribedVideoUids.add(Long.parseLong(struids[i]));
+                        } catch (Exception e) {
+                            //Ignore exception here.
+                        }
+                    }
+                }
+            }
+            if (config.subscribeVideoUids != null)
+                config.subscribeAudioUids = String.valueOf(config.subscribeAudioUids);
+        }
+
+        if(config.audioProfile > 2) config.audioProfile = 2;
+        if(config.audioProfile < 0) config.audioProfile = 0;
+
+        this.isMixMode = config.isMixingEnabled;
+        this.profile_type = Common.CHANNEL_PROFILE_TYPE.values()[config.channelProfile.getValue()];
+        if (config.isMixingEnabled && !config.isAudioOnly) {
+            String[] sourceStrArray = config.mixResolution.split(",");
+            if (sourceStrArray.length != 4) {
+                logger.info("Illegal resolution:" + config.mixResolution);
+            }
+            this.width = Integer.valueOf(sourceStrArray[0]).intValue();
+            this.height = Integer.valueOf(sourceStrArray[1]).intValue();
+            this.fps = Integer.valueOf(sourceStrArray[2]).intValue();
+            this.kbps = Integer.valueOf(sourceStrArray[3]).intValue();
+        }
+
+        recordingEventHandler = new RecordingEventHandler() {
+            @Override
+            public void onLeaveChannel(int reason) {
+                logger.error("[AntrianOnlineController.record] onLeaveChannel : " + reason);
+                videoFileName = getVideoFileName(new File(storageDir));
+                audioFileName = getAudioFileName(new File(storageDir));
+                logger.info("File name : " + videoFileName + " "+ audioFileName);
+                String path = storageDir+videoFileName;
+
+                //TODO CHECK
+                String newPath = path.replace(CommonUtil.getPropertyParams("upload.folder"), "");
+                try {
+                    checkupDetailBoProxy.editVideoRm(idDetailCheckup, newPath);
+                } catch (GeneralBOException e) {
+                    logger.error("[AntrianOnlineController.getAntrianAll] Error get antrian all " + e.getMessage());
+                    throw new GeneralBOException("[AntrianOnlineController.getAntrianAll] Error When Error get antrian all");
+                }
+
+            }
+
+            @Override
+            public void onError(int error, int stat_code) {
+                logger.error("RecordingSDK onError,error:" + error + ",stat code:" + stat_code);
+
+            }
+
+            @Override
+            public void onWarning(int warn) {
+                logger.error("RecordingSDK onWarning,warn:" + warn);
+
+            }
+
+            @Override
+            public void onJoinChannelSuccess(String channelId, long uid) {
+                if(config.decodeAudio != Common.AUDIO_FORMAT_TYPE.AUDIO_FORMAT_DEFAULT_TYPE) {
+                    cleanTimer.schedule(new RecordingCleanTimer(AntrianOnlineController.this), 10000);
+                }
+                logger.info("RecordingSDK joinChannel success, channelId:" + channelId +", uid:" + uid);
+            }
+
+            @Override
+            public void onRemoteVideoStreamStateChanged(long uid, Common.REMOTE_STREAM_STATE state, Common.REMOTE_STREAM_STATE_CHANGED_REASON reason) {
+
+            }
+
+            @Override
+            public void onRemoteAudioStreamStateChanged(long uid, Common.REMOTE_STREAM_STATE state, Common.REMOTE_STREAM_STATE_CHANGED_REASON reason) {
+
+            }
+
+            @Override
+            public void onUserOffline(long uid, int reason) {
+                m_peers.remove(uid);
+                //PrintUsersInfo(m_peers);
+                SetVideoMixingLayout();
+                logger.info("RecordingSDK onUserOffline uid:" + uid + ",offline reason:" + reason);
+                if (uid == 2) {
+                    videoFileName = getVideoFileName(new File(storageDir));
+                    audioFileName = getAudioFileName(new File(storageDir));
+                    logger.info("File name : " + videoFileName + " "+ audioFileName + " UID:" + uid);
+                    String path = storageDir+videoFileName;
+
+                    String newPath = path.replace(CommonUtil.getPropertyParams("upload.folder"), "");
+                    try {
+                        checkupDetailBoProxy.editVideoRm(idDetailCheckup, newPath);
+                    } catch (GeneralBOException e) {
+                        logger.error("[AntrianOnlineController.getAntrianAll] Error get antrian all " + e.getMessage());
+                        throw new GeneralBOException("[AntrianOnlineController.getAntrianAll] Error When Error get antrian all");
+                    }
+
+                    RecordingEngineProperties recordingEngineProperties = recordingSDK.getProperties();
+                    boolean isLeave = recordingSDK.leaveChannel();
+                    logger.info("Channel leave : " + isLeave);
+                    recordingSDK.unRegisterOberserver(this);
+                }
+
+            }
+
+            @Override
+            public void onUserJoined(long uid, String recordingDir) {
+                logger.info("onUserJoined uid:" + uid + ",recordingDir:" + recordingDir);
+                storageDir = recordingDir;
+                logger.info("File name : " + videoFileName + " "+ audioFileName + " UID:" + uid);
+                m_peers.add(uid);
+                //PrintUsersInfo(m_peers);
+                // When the user joined, we can re-layout the canvas
+                if (userAccount.length() > 0) {
+                    if (layoutMode != VERTICALPRESENTATION_LAYOUT || RecordingSDKInstance.getUidByUserAccount(maxResolutionUserAccount) != 0) {
+                        SetVideoMixingLayout();
+                    }
+                }
+                else {
+                    SetVideoMixingLayout();
+                }
+            }
+
+            @Override
+            public void onActiveSpeaker(long uid) {
+                logger.info("User:"+uid+"is speaking");
+
+            }
+
+            @Override
+            public void audioFrameReceived(long uid, Common.AudioFrame frame) {
+                // System.out.println("java demo
+                // audioFrameReceived,uid:"+uid+",type:"+type);
+                byte[] buf = null;
+                long size = 0;
+                checkUser(uid, true);
+                if (frame.type == Common.AUDIO_FRAME_TYPE.AUDIO_FRAME_RAW_PCM) {// pcm
+                    buf = frame.pcm.pcmBuf;
+                    size = frame.pcm.pcmBufSize;
+                } else {// aac
+                    buf = frame.aac.aacBuf;
+                    size = frame.aac.aacBufSize;
+                }
+                WriteBytesToFileClassic(uid, buf, size, true);
+            }
+
+            @Override
+            public void videoFrameReceived(long uid, int type, Common.VideoFrame frame, int rotation) {
+                byte[] buf = null;
+                long size = 0;
+                checkUser(uid, false);
+                // System.out.println("java demovideoFrameReceived,uid:"+uid+",type:"+type);
+
+                if (type == 0) {// yuv
+                    buf = frame.yuv.buf;
+                    size = frame.yuv.bufSize;
+                    if (buf == null) {
+                        logger.info("java demo videoFrameReceived null");
+                    }
+                } else if (type == 1) {// h264
+                    buf = frame.h264.buf;
+                    size = frame.h264.bufSize;
+                } else if (type == 2) {// h265
+                    buf = frame.h265.buf;
+                    size = frame.h265.bufSize;
+                } else if (type == 3) { // jpg
+                    String path = storageDir + Long.toString(uid) + System.currentTimeMillis() + ".jpg";
+                    buf = frame.jpg.buf;
+                    size = frame.jpg.bufSize;
+                    try {
+                        FileOutputStream channel = new FileOutputStream(path, true);
+                        channel.write(buf, 0, (int) size);
+                        channel.close();
+                    } catch(Exception e ){
+                        logger.info("Error write to " + path);
+                    }
+                    return;
+                }
+                WriteBytesToFileClassic(uid, buf, size, false);
+            }
+
+            @Override
+            public void recordingPathCallBack(String path) {
+                storageDir = path;
+            }
+
+            @Override
+            public void onAudioVolumeIndication(Common.AudioVolumeInfo[] infos) {
+                if(infos.length == 0)
+                    return;
+
+                for(int i = 0; i < infos.length; i++) {
+                    logger.info("User:"+ Long.toString(infos[i].uid)+", audio volume:" + infos[i].volume);
+                }
+            }
+
+            @Override
+            public void onFirstRemoteVideoDecoded(long uid, int width, int height, int elapsed) {
+                logger.info("onFirstRemoteVideoDecoded User:"+ Long.toString(uid)+", width:" + width
+                        + ", height:" + height + ", elapsed:" + elapsed);
+            }
+
+            @Override
+            public void onFirstRemoteAudioFrame(long uid, int elapsed) {
+                logger.info("onFirstRemoteAudioFrame User:"+ Long.toString(uid)+", elapsed:" + elapsed);
+
+            }
+
+            @Override
+            public void onReceivingStreamStatusChanged(boolean receivingAudio, boolean receivingVideo) {
+                logger.info("pre receiving audio status is " + m_receivingAudio + ", now receiving audio status is " + receivingAudio);
+                logger.info("pre receiving video status is " + m_receivingVideo + ", now receiving video  status is " + receivingVideo);
+                m_receivingAudio = receivingAudio;
+                m_receivingVideo = receivingVideo;
+            }
+
+            @Override
+            public void onConnectionLost() {
+                logger.info("connection is lost");
+            }
+
+            @Override
+            public void onConnectionInterrupted() {
+                logger.info("connection is interrupted");
+            }
+
+            @Override
+            public void onRejoinChannelSuccess(String channelId, long uid) {
+                logger.info("onRejoinChannelSuccess, channel id : " + channelId + ", uid: " + uid);
+
+            }
+
+            @Override
+            public void onConnectionStateChanged(Common.CONNECTION_STATE_TYPE state, Common.CONNECTION_CHANGED_REASON_TYPE reason) {
+
+            }
+
+            @Override
+            public void onRemoteVideoStats(long uid, Common.RemoteVideoStats stats) {
+
+            }
+
+            @Override
+            public void onRemoteAudioStats(long uid, Common.RemoteAudioStats stats) {
+
+            }
+
+            @Override
+            public void onRecordingStats(Common.RecordingStats stats) {
+            }
+
+            @Override
+            public void onLocalUserRegistered(long uid, String userAccount) {
+                logger.info("onLocalUserRegistered: " + uid + " => " + userAccount);
+
+            }
+
+            @Override
+            public void onUserInfoUpdated(long uid, String userAccount) {
+                logger.info("onUserInfoUpdated: " + uid + " => " + userAccount);
+                if (subscribedVideoUserAccount.contains(userAccount)) {
+                    subscribedVideoUids.add(uid);
+                }
+                SetVideoMixingLayout();
+            }
+        };
     }
 
 
