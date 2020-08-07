@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="KartuBukuBesarPerBukuBantu" pageWidth="595" pageHeight="842" columnWidth="567" leftMargin="14" rightMargin="14" topMargin="28" bottomMargin="28" uuid="bdaf2a17-1aac-4e49-a61a-b8cd35b24766">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="2.5937424601000023"/>
-	<property name="ireport.x" value="364"/>
-	<property name="ireport.y" value="222"/>
+	<property name="ireport.zoom" value="1.3310000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -124,7 +124,7 @@ where
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<text><![CDATA[** Selesai **]]></text>
 				</staticText>
@@ -143,7 +143,7 @@ where
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[( $V{SUM_jumlahDebit_1}==null ? BigDecimal.valueOf(0.0) : $V{SUM_jumlahDebit_1} )]]></textFieldExpression>
 				</textField>
@@ -156,7 +156,7 @@ where
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[( $V{SUM_jumlahKredit_1}==null ? BigDecimal.valueOf(0.0) : $V{SUM_jumlahKredit_1} )]]></textFieldExpression>
 				</textField>
@@ -169,7 +169,7 @@ where
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<text><![CDATA[Jumlah Mutasi : ]]></text>
 				</staticText>
@@ -182,7 +182,7 @@ where
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<text><![CDATA[Saldo Akhir : ]]></text>
 				</staticText>
@@ -195,7 +195,7 @@ where
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{saldo}.abs()]]></textFieldExpression>
 				</textField>
@@ -208,7 +208,7 @@ where
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{posisiSaldo}]]></textFieldExpression>
 				</textField>
@@ -232,7 +232,7 @@ where
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[KARTU BUKU BESAR PER BUKU BANTU]]></text>
 			</staticText>
@@ -245,7 +245,7 @@ where
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="8" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<textFieldExpression><![CDATA[": " + $F{kode_rekening} + "    " + $F{nama_kode_rekening}]]></textFieldExpression>
 			</textField>
@@ -284,7 +284,7 @@ where
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="8" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<textFieldExpression><![CDATA[": "+ $P{periodeTitle}]]></textFieldExpression>
 			</textField>
@@ -297,7 +297,7 @@ where
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font size="9" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="9" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{kota}]]></textFieldExpression>
 			</textField>
@@ -314,7 +314,7 @@ where
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Hal.       :"]]></textFieldExpression>
 			</textField>
@@ -327,7 +327,7 @@ where
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
@@ -340,7 +340,7 @@ where
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA["" + $V{PAGE_NUMBER} + ""]]></textFieldExpression>
 			</textField>
@@ -362,7 +362,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Waktu   :"]]></textFieldExpression>
 			</textField>
@@ -375,7 +375,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
@@ -388,7 +388,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Tanggal :"]]></textFieldExpression>
 			</textField>
@@ -401,14 +401,14 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER} + " dari "]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="2" y="17" width="208" height="15" uuid="34df9284-d5d4-4a47-8fa6-7ce40c559ffd"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.areaId}]]></textFieldExpression>
 			</textField>
@@ -489,7 +489,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[Saldo Awal : ]]></text>
 			</staticText>
@@ -586,7 +586,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{keterangan}]]></textFieldExpression>
 			</textField>
@@ -599,7 +599,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{tanggal_jurnal}]]></textFieldExpression>
 			</textField>
@@ -612,7 +612,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{no_jurnal}]]></textFieldExpression>
 			</textField>
@@ -625,7 +625,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nomor_nota}]]></textFieldExpression>
 			</textField>

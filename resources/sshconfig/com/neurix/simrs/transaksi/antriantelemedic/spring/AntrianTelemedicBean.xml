@@ -23,6 +23,7 @@
           p:batalTelemedicDao-ref="batalTelemedicDao"
           p:headerCheckupDao-ref="headerCheckupDao"
           p:checkupDetailDao-ref="checkupDetailDao"
+          p:notifikasiAdminTelemedicDao-ref="notifikasiAdminTelemedicDao"
     />
 
     <bean id="telemedicineController" class="com.neurix.simrs.mobileapi.TelemedicineController"

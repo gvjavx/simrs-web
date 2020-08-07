@@ -2,8 +2,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="subReportDebetJurnal" pageWidth="535" pageHeight="842" columnWidth="535" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="cca1dfc8-ea7f-4a6f-b917-44b46a12815c">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="3.138428376721004"/>
-	<property name="ireport.x" value="17"/>
+	<property name="ireport.zoom" value="1.4641000000000013"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -64,7 +64,7 @@ ORDER BY jumlah_debit DESC]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font isBold="false" isUnderline="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" isBold="false" isUnderline="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[No. Perk. Lawan]]></text>
 			</staticText>
@@ -77,7 +77,7 @@ ORDER BY jumlah_debit DESC]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font isBold="false" isUnderline="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" isBold="false" isUnderline="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Jumlah Kredit]]></text>
 			</staticText>
@@ -90,7 +90,7 @@ ORDER BY jumlah_debit DESC]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font isBold="false" isUnderline="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" isBold="false" isUnderline="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Nama Perk. - Lawan / Uraian]]></text>
 			</staticText>
@@ -103,7 +103,7 @@ ORDER BY jumlah_debit DESC]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font isBold="false" isUnderline="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" isBold="false" isUnderline="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[No. Nota]]></text>
 			</staticText>
@@ -116,7 +116,7 @@ ORDER BY jumlah_debit DESC]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font isBold="false" isUnderline="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" isBold="false" isUnderline="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Jumlah Debit]]></text>
 			</staticText>
@@ -129,7 +129,7 @@ ORDER BY jumlah_debit DESC]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font isBold="false" isUnderline="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" isBold="false" isUnderline="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Divisi ID]]></text>
 			</staticText>
@@ -145,7 +145,9 @@ ORDER BY jumlah_debit DESC]]>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
 				<textFieldExpression><![CDATA[( $F{kode_rekening} == null ? "" : $F{kode_rekening} )]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="false">
@@ -156,7 +158,9 @@ ORDER BY jumlah_debit DESC]]>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{jumlah_kredit}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
@@ -168,7 +172,7 @@ ORDER BY jumlah_debit DESC]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
+					<font fontName="SansSerif" size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nama_kode_rekening} == null ? "" : $F{nama_kode_rekening}]]></textFieldExpression>
 			</textField>
@@ -180,7 +184,9 @@ ORDER BY jumlah_debit DESC]]>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
 				<textFieldExpression><![CDATA[( $F{no_nota} == null ? "" : $F{no_nota} )]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="false">
@@ -191,7 +197,9 @@ ORDER BY jumlah_debit DESC]]>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{jumlah_debit}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
@@ -202,7 +210,9 @@ ORDER BY jumlah_debit DESC]]>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
 				<textFieldExpression><![CDATA[( $F{divisi_id} == null ? "" : $F{divisi_id} )]]></textFieldExpression>
 			</textField>
 		</band>

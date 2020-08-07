@@ -88,8 +88,8 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Status Transaksi</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'confirmation':'CONFIRMATION','finish':'SELESAI', 'canceled':'BATAL'}" cssStyle="margin-top: 7px"
-                                                  headerKey="exist" headerValue="EXISTING" name="antrianTelemedic.statusTransaksi"
+                                        <s:select list="#{'confirmation':'KONFIRMASI','finish':'SELESAI', 'canceled':'BATAL'}" cssStyle="margin-top: 7px"
+                                                  headerKey="exist" headerValue="PROSES" name="antrianTelemedic.statusTransaksi"
                                                   cssClass="form-control"/>
                                     </div>
                                 </div>
@@ -642,6 +642,28 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-view-bukti">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> View bukti
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div id="body-view-bukti" style="text-align: center">
+
+                </div>
+                <input type="hidden" id="id-transaksi-bukti"/>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning" id="btn-kembali-bukti" style="display: none" onclick="kembalikanBukti()"><i class="fa fa-repeat"></i> Kembalikan Bukti Pembayaran</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modal-confirm-dialog">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -725,25 +747,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-view-bukti">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-info"></i> View bukti
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div id="body-view-bukti" style="text-align: center">
 
-                </div>
-            </div>
-            <div class="modal-footer">
-            </div>
-        </div>
-    </div>
-</div>
 
 <script type='text/javascript'>
 
@@ -927,15 +931,15 @@
                         } else {
 
                             if (item.approvedFlag == "Y"){
-                                str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
+                                str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\',\'"+idJenisPeriksaPasien+"\',\'"+item.id+"\',\'"+item.approvedFlag+"\')\"><i class='fa fa-search'></i></button></td>"+
                                     "<td align='center'></td>";
                             } else {
 
                                 if (item.flagEresep == "Y"){
-                                    str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
+                                    str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\',\'"+idJenisPeriksaPasien+"\',\'"+item.id+"\',\'"+item.approvedFlag+"\')\"><i class='fa fa-search'></i></button></td>"+
                                         "<td align='center'><button class='btn btn-sm btn-success' onclick=\"saveApproveEresep(\'"+item.id+"\')\"><i class='fa fa-check'></i> Approve E-Resep</button></td>";
                                 } else {
-                                    str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
+                                    str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\',\'"+idJenisPeriksaPasien+"\',\'"+item.id+"\',\'"+item.approvedFlag+"\')\"><i class='fa fa-search'></i></button></td>"+
                                         "<td align='center'><button class='btn btn-sm btn-success' onclick=\"saveApprove(\'"+item.id+"\')\"><i class='fa fa-check'></i> Approve</button></td>";
                                 }
                             }
@@ -1011,7 +1015,7 @@
         return "/" + first;
     }
 
-    function viewBukti(var1){
+    function viewBukti(var1, idJenisPerikasPasien, idTransaksi, flag){
         $("#modal-view-bukti").modal('show');
         var urlImg = firstpath()+"/images/upload/bukti_transfer/"+var1;
         if (var1 == null || var1 == "" || var1 == "null"){
@@ -1020,6 +1024,32 @@
         $("#body-view-bukti").html(
             "<img src='"+urlImg+"' style='max-width: 500px;'/>"
         );
+
+        console.log(idJenisPerikasPasien +" - "+ idTransaksi );
+        if ( idJenisPerikasPasien ==  "umum" && flag != "Y"){
+            $("#btn-kembali-bukti").show();
+            $("#id-transaksi-bukti").val(idTransaksi);
+        }
+    }
+
+    function kembalikanBukti() {
+        var idTransaksi = $("#id-transaksi-bukti").val();
+        var idAntrian = $("#fin_id_antrian").val();
+        showDialog("loading");
+        dwr.engine.setAsync(true);
+        VerifikatorPembayaranAction.kembalikanBukti(idTransaksi, function (response) {
+            dwr.engine.setAsync(false);
+            if (response.status == "error"){
+                showDialog("error");
+                $("#msg_fin_error_waiting").text(response.message);
+            } else {
+                showDialog("success");
+                $('#ok_con').on('click', function () {
+                    searchPage(idAntrian)
+                });
+            }
+        });
+
     }
 
     function saveApprove(idTransaksi) {
@@ -1421,38 +1451,40 @@
 
                 var str = "";
                 $.each(response, function(i, item){
-                    str += "<tr>" +
-                        "<td>"+item.id+"</td>"+
-                        "<td>"+item.keterangan+"</td>"+
-                        "<td align='right'>"+ formatRupiah( item.nominal ) +"</td>";
+                    if (item.nominal != null && item.nominal != 0){
+                        str += "<tr>" +
+                            "<td>"+item.id+"</td>"+
+                            "<td>"+item.keterangan+"</td>"+
+                            "<td align='right'>"+ formatRupiah( item.nominal ) +"</td>";
 
-                    if (item.keterangan == "konsultasi"){
-                        if (telemedicEntity.flagBayarKonsultasi == "Y"){
-                            str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>";
-                            if (item.nominal == 0){
-                                str += "<td></td>";
+                        if (item.keterangan == "konsultasi"){
+                            if (telemedicEntity.flagBayarKonsultasi == "Y"){
+                                str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>";
+                                if (item.nominal == 0){
+                                    str += "<td></td>";
+                                } else {
+                                    str += "<td align='center'><button class='btn btn-sm btn-primary'  onclick=\"showConfirmation(\'"+item.nominal+"\',\'"+item.keterangan+"\',\'"+item.urlFotoBukti+"\')\"><i class='fa fa-arrow-right'></i> Konfirmasi Pengembalian Dana</button></td>";
+                                }
                             } else {
-                                str += "<td align='center'><button class='btn btn-sm btn-primary'  onclick=\"showConfirmation(\'"+item.nominal+"\',\'"+item.keterangan+"\',\'"+item.urlFotoBukti+"\')\"><i class='fa fa-arrow-right'></i> Konfirmasi Pengembalian Dana</button></td>";
-                            }
-                        } else {
-                            str += "<td></td>"+
+                                str += "<td></td>"+
                                     "<td></td>";
-                        }
-
-                    } else if (item.keterangan == "resep") {
-                        if (telemedicEntity.flagBayarResep == "Y"){
-                            str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>";
-                            if (item.nominal == 0){
-                                str += "<td></td>";
-                            } else {
-                                str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"showConfirmation(\'"+item.nominal+"\',\'"+item.keterangan+"\',\'"+item.urlFotoBukti+"\')\"><i class='fa fa-arrow-right'></i> Konfirmasi Pengembalian Dana</button></td>";
                             }
-                        } else {
-                            str += "<td></td>"+
-                                "<td></td>";
+
+                        } else if (item.keterangan == "resep") {
+                            if (telemedicEntity.flagBayarResep == "Y"){
+                                str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>";
+                                if (item.nominal == 0){
+                                    str += "<td></td>";
+                                } else {
+                                    str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"showConfirmation(\'"+item.nominal+"\',\'"+item.keterangan+"\',\'"+item.urlFotoBukti+"\')\"><i class='fa fa-arrow-right'></i> Konfirmasi Pengembalian Dana</button></td>";
+                                }
+                            } else {
+                                str += "<td></td>"+
+                                    "<td></td>";
+                            }
                         }
+                        str += "</tr>";
                     }
-                    str += "</tr>";
                 });
 
                 $("#btl-body-list-tarif").html(str);

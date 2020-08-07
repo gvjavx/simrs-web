@@ -112,6 +112,16 @@ public class TelemedicineController implements ModelDriven<Object> {
     private String batalEObat;
     private String idRekening;
 
+    private String username;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public String getIdRekening() {
         return idRekening;
     }
@@ -460,6 +470,7 @@ public class TelemedicineController implements ModelDriven<Object> {
             bean.setId(idTele);
             bean.setStatus(this.status);
 
+
             try {
                 telemedicBoProxy.saveEdit(bean, branchId, "");
 
@@ -758,6 +769,7 @@ public class TelemedicineController implements ModelDriven<Object> {
             bean.setIdPelayanan(idPelayanan);
             bean.setFlag("Y");
             bean.setIsMobile("Y");
+            bean.setCreatedDate(now);
 
             List<AntrianTelemedic> result = new ArrayList<>();
 
@@ -1122,6 +1134,8 @@ public class TelemedicineController implements ModelDriven<Object> {
                 List<NotifikasiFcm> fcm = notifikasiFcmBoProxy.getByCriteria(notif);
                 FirebasePushNotif.sendNotificationFirebase(fcm.get(0).getTokenFcm(),"Resep Online", "Silahkan buka aplikasi untuk melakukan pembayaran resep", "BAYAR_RESEP", fcm.get(0).getOs(), null);
 
+                telemedicBoProxy.createNotifikasiAdmin(idTele, "tele", branchId, username, now, username + " telah  membuat resep");
+
             } catch (GeneralBOException e) {
                 logger.error("[TelemedicineController.insertResep] Error, " + e.getMessage());
             }
@@ -1271,6 +1285,9 @@ public class TelemedicineController implements ModelDriven<Object> {
             } catch (GeneralBOException e) {
                 logger.error("[TelemedicineController.insertResep] Error, " + e.getMessage());
             }
+
+            telemedicBoProxy.createNotifikasiAdmin(idTele, "tele", branchId, username, now, username + " telah approve struk asuransi   ");
+
         } else if (action.equalsIgnoreCase("createStrukAsuransi")) {
 
             List<ItSimrsAntrianTelemedicEntity> result = new ArrayList<>();

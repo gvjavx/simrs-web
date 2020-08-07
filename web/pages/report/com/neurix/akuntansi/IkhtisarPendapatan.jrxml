@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="IkhtisarPendapatan" pageWidth="595" pageHeight="842" columnWidth="567" leftMargin="14" rightMargin="14" topMargin="28" bottomMargin="28" isFloatColumnFooter="true" uuid="1ad74e3d-21c5-43ac-b65a-1f771461ad66">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.9487171000000028"/>
+	<property name="ireport.zoom" value="1.3310000000000017"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -253,7 +253,7 @@ FROM
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<text><![CDATA[Total Pendapatan : ]]></text>
 				</staticText>
@@ -266,7 +266,7 @@ FROM
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<text><![CDATA[** Selesai **]]></text>
 				</staticText>
@@ -291,7 +291,7 @@ FROM
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{sumSaldoSekarang2Display}]]></textFieldExpression>
 				</textField>
@@ -304,7 +304,7 @@ FROM
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{sumSaldo2Display}]]></textFieldExpression>
 				</textField>
@@ -317,7 +317,7 @@ FROM
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{SUM_lastSaldo_2}.abs()]]></textFieldExpression>
 				</textField>
@@ -366,7 +366,7 @@ FROM
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<text><![CDATA[JUMLAH : ]]></text>
 				</staticText>
@@ -379,7 +379,7 @@ FROM
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{sumSaldoSekarang1Display}]]></textFieldExpression>
 				</textField>
@@ -392,7 +392,7 @@ FROM
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{sumSaldo1Display}]]></textFieldExpression>
 				</textField>
@@ -405,7 +405,7 @@ FROM
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{SUM_lastSaldo_1}.abs()]]></textFieldExpression>
 				</textField>
@@ -429,7 +429,7 @@ FROM
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportTitle}]]></textFieldExpression>
 			</textField>
@@ -442,7 +442,7 @@ FROM
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER} + " dari "]]></textFieldExpression>
 			</textField>
@@ -455,7 +455,7 @@ FROM
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Waktu   :"]]></textFieldExpression>
 			</textField>
@@ -472,7 +472,7 @@ FROM
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Tanggal :"]]></textFieldExpression>
 			</textField>
@@ -485,7 +485,7 @@ FROM
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Hal.       :"]]></textFieldExpression>
 			</textField>
@@ -498,7 +498,7 @@ FROM
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
@@ -511,14 +511,14 @@ FROM
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font size="9" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="9" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{kota}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="2" y="24" width="208" height="15" uuid="27cfbce7-a32f-437f-8e99-fb7f7e6473d1"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{areaId}]]></textFieldExpression>
 			</textField>
@@ -531,7 +531,7 @@ FROM
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA["" + $V{PAGE_NUMBER} + ""]]></textFieldExpression>
 			</textField>
@@ -544,7 +544,7 @@ FROM
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
@@ -566,7 +566,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Periode : "+ $P{periodeTitle}]]></textFieldExpression>
 			</textField>
@@ -664,7 +664,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{lastSaldoDisplay}]]></textFieldExpression>
 			</textField>
@@ -703,7 +703,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{saldoSekarangDisplay}]]></textFieldExpression>
 			</textField>
@@ -716,7 +716,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{saldoDisplay}]]></textFieldExpression>
 			</textField>

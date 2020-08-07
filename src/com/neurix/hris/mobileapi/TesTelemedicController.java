@@ -12,6 +12,7 @@ import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
 import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
+import com.neurix.simrs.transaksi.notifikasiadmin.bo.NotifikasiAdminBo;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.reseponline.model.ItSimrsResepOnlineEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
@@ -20,6 +21,8 @@ import com.neurix.simrs.transaksi.verifikatorpembayaran.bo.VerifikatorPembayaran
 import com.neurix.simrs.transaksi.verifikatorpembayaran.model.ItSimrsPembayaranOnlineEntity;
 import com.opensymphony.xwork2.ModelDriven;
 import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -262,6 +265,9 @@ public class TesTelemedicController implements ModelDriven<Object> {
             throw new GeneralBOException("[TesTelemedicController.insertDataTelemedic] ERROR. ", e);
         }
 
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        NotifikasiAdminBo notifikasiAdminBo = (NotifikasiAdminBo) ctx.getBean("notifikasiAdminBoProxy");
+
         logger.info("[TesTelemedicController.insertDataTelemedic] END <<<");
     }
 
@@ -309,6 +315,9 @@ public class TesTelemedicController implements ModelDriven<Object> {
 
         Timestamp time = CommonUtil.getCurrentDateTimes();
 
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
+
         AntrianTelemedic antrianTelemedic = new AntrianTelemedic();
         antrianTelemedic.setId(idAntrianTelemedic);
         if ("resep".equalsIgnoreCase(jenis)){
@@ -326,6 +335,25 @@ public class TesTelemedicController implements ModelDriven<Object> {
             logger.error("[TesTelemedicController.bayarResep] ERROR. ",e);
             throw new GeneralBOException("[TesTelemedicController.bayarResep] ERROR. ", e);
         }
+
+        ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = verifikatorPembayaranBo.getPembayaranOnlineEntityByIdAntrianAndJenis(idAntrianTelemedic, jenis);
+        if (pembayaranOnlineEntity != null){
+
+            pembayaranOnlineEntity.setUrlFotoBukti("bukti.png");
+            pembayaranOnlineEntity.setKodeBank("1.1.01.02.01");
+
+            try {
+                verifikatorPembayaranBo.saveEdit(pembayaranOnlineEntity);
+            } catch (GeneralBOException e){
+                logger.error("[TesTelemedicController.bayarResep] Update Pembayaran Online ERROR. ",e);
+                throw new GeneralBOException("[TesTelemedicController.bayarResep] Update Pembayaran Online ERROR. ", e);
+            }
+
+        } else {
+            logger.error("[TesTelemedicController.bayarResep] Tidak ditemukan data. ");
+            throw new GeneralBOException("[TesTelemedicController.bayarResep] Tidak ditemukan data. ");
+        }
+
 
         logger.info("[TesTelemedicController.bayarResep] END <<<");
     }

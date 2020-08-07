@@ -1009,26 +1009,26 @@ public class TransaksiObatAction extends BaseMasterAction {
                                     return response;
                                 }
 
-//                                if (!"Y".equalsIgnoreCase(antrianTelemedicEntity.getFlagEresep())){
-//                                    // create jurnal for telemedic
-//                                    jurnalResponse = new JurnalResponse();
-//                                    jurnalResponse =  closingJurnalNonTunaiTelemedic(tarifResep.getIdDetailCheckup(), permintaanResepEntity.getIdTransaksiOnline(), antrianTelemedicEntity.getIdPelayanan(), antrianTelemedicEntity.getIdPasien(), "Y");
-//                                    if ("success".equalsIgnoreCase(jurnalResponse.getStatus())){
-//                                        pembayaranOnlineEntity.setIdRiwayatTindakan(idRiwayatTindakan);
-//                                        pembayaranOnlineEntity.setLastUpdate(time);
-//                                        pembayaranOnlineEntity.setLastUpdateWho(userLogin);
-//                                        try {
-//                                            verifikatorPembayaranBo.saveEdit(pembayaranOnlineEntity);
-//                                            response.setStatus("success");
-//
-//                                        } catch (GeneralBOException e){
-//                                            logger.error("[TransaksiObatAction.approveTransaksi] ERROR. ",e);
-//                                            response.setStatus("error");
-//                                            response.setMessage("[TransaksiObatAction.approveTransaksi] ERROR. " + e);
-//                                            return response;
-//                                        }
-//                                    }
-//                                }
+                                if (!"Y".equalsIgnoreCase(antrianTelemedicEntity.getFlagEresep()) && "umum".equalsIgnoreCase(antrianTelemedicEntity.getIdJenisPeriksaPasien())){
+                                    // create jurnal for telemedic
+                                    jurnalResponse = new JurnalResponse();
+                                    jurnalResponse =  closingJurnalNonTunaiTelemedic(tarifResep.getIdDetailCheckup(), permintaanResepEntity.getIdTransaksiOnline(), antrianTelemedicEntity.getIdPelayanan(), antrianTelemedicEntity.getIdPasien(), "Y");
+                                    if ("success".equalsIgnoreCase(jurnalResponse.getStatus())){
+                                        pembayaranOnlineEntity.setIdRiwayatTindakan(idRiwayatTindakan);
+                                        pembayaranOnlineEntity.setLastUpdate(time);
+                                        pembayaranOnlineEntity.setLastUpdateWho(userLogin);
+                                        try {
+                                            verifikatorPembayaranBo.saveEdit(pembayaranOnlineEntity);
+                                            response.setStatus("success");
+
+                                        } catch (GeneralBOException e){
+                                            logger.error("[TransaksiObatAction.approveTransaksi] ERROR. ",e);
+                                            response.setStatus("error");
+                                            response.setMessage("[TransaksiObatAction.approveTransaksi] ERROR. " + e);
+                                            return response;
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -1500,7 +1500,6 @@ public class TransaksiObatAction extends BaseMasterAction {
     private JurnalResponse closingJurnalNonTunaiTelemedic(String idDetailCheckup, String idTransaksiOnline, String idPoli, String idPasien, String flagResep) {
 
         JurnalResponse response = new JurnalResponse();
-        String branchId = CommonUtil.userBranchLogin();
         String invoice = "";
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
@@ -1518,10 +1517,13 @@ public class TransaksiObatAction extends BaseMasterAction {
         String kode = "";
         String transId = "";
         String jenisPasien = "Umum ";
-        String kodeBank = "";
+        String kodeBank = "1.1.01.02.01";
         String idJenisPeriksaPasien = "";
-        String noKartu = "";
+        String noRekening = CommonConstant.REK_BANK_BRI_TELE;
         BigDecimal biayaCover = new BigDecimal(0);
+        BigDecimal tarifTele = new BigDecimal(0);
+        BigDecimal nominalUnik = new BigDecimal(0);
+        String withResep = "N";
 
         ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getEntityDetailCheckupByIdDetail(idDetailCheckup);
         if (detailCheckupEntity != null){
@@ -1533,14 +1535,24 @@ public class TransaksiObatAction extends BaseMasterAction {
             idPasien = checkupEntity.getIdPasien();
         }
 
+        String branchId = "";
         String keterangan = "tindakan";
         if (idTransaksiOnline != null && !"".equalsIgnoreCase(idTransaksiOnline)){
             ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = verifikatorPembayaranBo.getPembayaranOnlineById(idTransaksiOnline);
             if (pembayaranOnlineEntity != null){
                 kodeBank = pembayaranOnlineEntity.getKodeBank();
+                tarifTele = pembayaranOnlineEntity.getNominal();
 
                 if ("resep".equalsIgnoreCase(pembayaranOnlineEntity.getKeterangan())){
                     keterangan = pembayaranOnlineEntity.getKeterangan();
+                }
+
+                ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = telemedicBo.getAntrianTelemedicEntityById(pembayaranOnlineEntity.getIdAntrianTelemedic());
+                if (antrianTelemedicEntity != null){
+                    branchId = antrianTelemedicEntity.getBranchId();
+                    if ("Y".equalsIgnoreCase(antrianTelemedicEntity.getFlagResep())){
+                        withResep = "Y";
+                    }
                 }
             }
         }
@@ -1553,47 +1565,52 @@ public class TransaksiObatAction extends BaseMasterAction {
                 masterId = asuransiEntity.getNoMaster();
                 jenisPasien = "Asuransi " + asuransiEntity.getNamaAsuransi() + " No. Kartu " + detailCheckupEntity.getNoKartuAsuransi();
             } else {
-                logger.error("[TransaksiObatAction.closingJurnalNonTunai] Error Asuransi tidak ditemukan");
+                logger.error("[VerifikatorPembayaranAction.closingJurnalNonTunaiTelemedic] Error Asuransi tidak ditemukan");
                 response.setStatus("error");
-                response.setMsg("[TransaksiObatAction.closingJurnalNonTunai] Error Asuransi tidak ditemukan");
+                response.setMsg("[VerifikatorPembayaranAction.closingJurnalNonTunaiTelemedic] Error Asuransi tidak ditemukan");
                 return response;
             }
         }
 
         // MAP ALL TINDAKAN BY KETERANGAN
         List<Map> listOfTindakan = new ArrayList<>();
+        Map mapTindakan = new HashMap();
 
-        if ("umum".equalsIgnoreCase(idJenisPeriksaPasien) || "asuransi".equalsIgnoreCase(idJenisPeriksaPasien)) {
-            Map mapTindakan = new HashMap();
-            mapTindakan.put("master_id", masterId);
-            mapTindakan.put("divisi_id", getDivisiId(idDetailCheckup, idJenisPeriksaPasien, keterangan));
-            mapTindakan.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, idJenisPeriksaPasien, keterangan));
-            mapTindakan.put("activity", getAcitivityList(idDetailCheckup, idJenisPeriksaPasien, keterangan, kode));
-            listOfTindakan.add(mapTindakan);
-        } else {
-            // jika bpjs
+        if ("asuransi".equalsIgnoreCase(idJenisPeriksaPasien)){
             List<String> listOfKeteranganRiwayat = riwayatTindakanBo.getListKeteranganByIdDetailCheckup(idDetailCheckup);
             if (listOfKeteranganRiwayat.size() > 0) {
 
                 for (String keteranganRiwayat : listOfKeteranganRiwayat) {
-                    Map mapTindakan = new HashMap();
+                    mapTindakan = new HashMap();
                     mapTindakan.put("master_id", masterId);
-                    mapTindakan.put("divisi_id", getDivisiId(idDetailCheckup, detailCheckupEntity.getIdJenisPeriksaPasien(), keteranganRiwayat));
-                    mapTindakan.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, detailCheckupEntity.getIdJenisPeriksaPasien(), keteranganRiwayat));
-                    mapTindakan.put("activity", getAcitivityList(idDetailCheckup, detailCheckupEntity.getIdJenisPeriksaPasien(), keteranganRiwayat, kode));
+                    mapTindakan.put("divisi_id", getDivisiId(idDetailCheckup, idJenisPeriksaPasien, keteranganRiwayat));
+                    mapTindakan.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, idJenisPeriksaPasien, keteranganRiwayat));
+                    mapTindakan.put("activity", getAcitivityList(idDetailCheckup, idJenisPeriksaPasien, keteranganRiwayat, kode));
                     listOfTindakan.add(mapTindakan);
                 }
             }
+        } else {
+            //BigDecimal jumlahBiaya = getJumlahNilaiBiayaByKeterangan(idDetailCheckup, idJenisPeriksaPasien, keterangan);
+            //BigDecimal tarifLain = tarifTele.subtract(jumlahBiaya);
+            BigDecimal tarifTindakan =  getJumlahNilaiBiayaByKeterangan(idDetailCheckup, idJenisPeriksaPasien, keterangan);
+            nominalUnik = tarifTele.subtract(tarifTindakan);
+            mapTindakan.put("master_id", masterId);
+            mapTindakan.put("divisi_id", getDivisiId(idDetailCheckup, idJenisPeriksaPasien, keterangan));
+            mapTindakan.put("nilai", tarifTindakan);
+            mapTindakan.put("activity", getAcitivityList(idDetailCheckup, idJenisPeriksaPasien, keterangan, kode));
+            listOfTindakan.add(mapTindakan);
         }
 
+        // pendapatan lain dari nominal unik
+        Map mapPendapatanLain = new HashMap();
+        mapPendapatanLain.put("nilai", nominalUnik);
+
         // MENDAPATKAN SEMUA BIAYA RAWAT;
+//        BigDecimal jumlah = getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "", "");
         BigDecimal ppnObat = new BigDecimal(0);
         Map mapJurnal = new HashMap();
         if ("Y".equalsIgnoreCase(flagResep)){
-            // jumlah untuk bpjs
-            BigDecimal jumlah = getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "", "");
 
-            // jumlah untuk bpjs
             BigDecimal jumlahResep = getJumlahNilaiBiayaByKeterangan(idDetailCheckup, idJenisPeriksaPasien, "resep");
             if (jumlahResep != null && jumlahResep.compareTo(new BigDecimal(0)) == 1){
 
@@ -1602,30 +1619,30 @@ public class TransaksiObatAction extends BaseMasterAction {
                 }
 
                 Map mapPajakObat = new HashMap();
-                mapPajakObat.put("bukti", invoice);
+//                mapPajakObat.put("bukti", invoice);
                 mapPajakObat.put("nilai", ppnObat);
                 mapPajakObat.put("master_id", CommonConstant.MASTER_PAJAK_OBAT);
 
                 if ("umum".equalsIgnoreCase(idJenisPeriksaPasien)){
-                    invoice = billingSystemBo.createInvoiceNumber("JRJ", branchId);
 
                     // create list map piutang
-                    Map mapPiutang = new HashMap();
-                    mapPiutang.put("bukti", invoice);
-                    mapPiutang.put("nilai",  jumlahResep.add(ppnObat));
-                    mapPiutang.put("pasien_id", idPasien);
+                    Map mapkas = new HashMap();
+                    mapkas.put("nilai",  jumlahResep.add(ppnObat).add(nominalUnik));
+                    mapkas.put("metode_bayar", "transfer");
+                    mapkas.put("bank", kodeBank);
+                    mapkas.put("nomor_rekening", noRekening);
 
                     mapJurnal.put("ppn_keluaran", mapPajakObat);
                     mapJurnal.put("pendapatan_rawat_jalan_umum", listOfTindakan);
-                    mapJurnal.put("piutang_pasien_umum", mapPiutang);
-                    transId = "62";
+                    mapJurnal.put("pendapatan_lain", mapPendapatanLain);
+                    mapJurnal.put("kas", mapkas);
+                    transId = "91";
 
                 } else if ("asuransi".equalsIgnoreCase(idJenisPeriksaPasien)){
-                    invoice = billingSystemBo.createInvoiceNumber("JRJ", branchId);
 
                     // create list map piutang
                     Map mapPiutang = new HashMap();
-                    mapPiutang.put("bukti", invoice);
+//                    mapPiutang.put("bukti", invoice);
                     mapPiutang.put("nilai", jumlahResep.add(ppnObat));
                     mapPiutang.put("master_id", masterId);
 //                                mapPiutang.put("pasien_id", idPasien);
@@ -1634,20 +1651,6 @@ public class TransaksiObatAction extends BaseMasterAction {
                     mapJurnal.put("pendapatan_rawat_jalan_asuransi", listOfTindakan);
                     mapJurnal.put("piutang_pasien_asuransi", mapPiutang);
                     transId = "17";
-                } else {
-
-                    jenisPasien = "BPJS No. SEP "+detailCheckupEntity.getNoSep();
-                    // piutang bpjs dengan obat
-                    Map mapPiutang = new HashMap();
-                    mapPiutang.put("bukti", detailCheckupEntity.getNoSep());
-                    mapPiutang.put("nilai", jumlah.add(ppnObat));
-                    mapPiutang.put("master_id", getMasterIdByTipe(idDetailCheckup, "bpjs"));
-
-                    // kredit jumlah tindakan
-                    mapJurnal.put("ppn_keluaran", mapPajakObat);
-                    mapJurnal.put("pendapatan_rawat_jalan_bpjs", listOfTindakan);
-                    mapJurnal.put("piutang_pasien_bpjs", mapPiutang);
-                    transId = "13";
                 }
             }
         }
@@ -1657,54 +1660,25 @@ public class TransaksiObatAction extends BaseMasterAction {
 
         try {
 
-            billingSystemBo.createJurnal(transId, mapJurnal, branchId, catatan, "Y");
+            Jurnal noJurnal = billingSystemBo.createJurnal(transId, mapJurnal, branchId, catatan, "Y");
 
             // --- update no invoice;
             HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+            detailCheckup = new HeaderDetailCheckup();
             detailCheckup.setIdDetailCheckup(idDetailCheckup);
-            detailCheckup.setInvoice(invoice);
+            detailCheckup.setInvoice(noJurnal.getNoJurnal());
+            detailCheckup.setNoJurnal(noJurnal.getNoJurnal());
 
             checkupDetailBo.saveUpdateNoJuran(detailCheckup);
             // ---
-
-            // --- create jurnal pembayaran
-            if ("umum".equalsIgnoreCase(idJenisPeriksaPasien)){
-
-                transId = "02";
-                catatan = "Pembayaran Piutang Pasien Telemedic "+idJenisPeriksaPasien+" Id Detail Checkup " + idDetailCheckup;
-
-                // MAPPING KAS
-                Map mapKas = new HashMap();
-                mapKas.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, idJenisPeriksaPasien, ""));
-                mapKas.put("metode_bayar", "transfer");
-                mapKas.put("bank", kodeBank);
-
-                mapJurnal = new HashMap();
-                Map mapPiutang = new HashMap();
-                mapPiutang.put("bukti", invoice);
-                mapPiutang.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, idJenisPeriksaPasien, "").add(ppnObat));
-                mapPiutang.put("master_id", getMasterIdByTipe(idDetailCheckup, idJenisPeriksaPasien));
-
-                mapJurnal.put("kas",mapKas);
-                mapJurnal.put("piutang_pasien_non_bpjs", mapPiutang);
-
-                Jurnal jurnal = billingSystemBo.createJurnal(transId, mapJurnal, branchId, catatan, "Y");
-
-                // --- update no jurnal;
-                detailCheckup = new HeaderDetailCheckup();
-                detailCheckup.setIdDetailCheckup(idDetailCheckup);
-                detailCheckup.setNoJurnal(jurnal.getNoJurnal());
-
-                checkupDetailBo.saveUpdateNoJuran(detailCheckup);
-            }
 
             response.setStatus("success");
             response.setMsg("[Berhasil]");
 
         } catch (GeneralBOException e) {
-            logger.error("[TransaksiObatAction.closingJurnalNonTunai] Error, ", e);
+            logger.error("[VerifikatorPembayaranAction.closingJurnalNonTunaiTelemedic] Error, ", e);
             response.setStatus("error");
-            response.setMsg("[TransaksiObatAction.closingJurnalNonTunai] Error, " + e);
+            response.setMsg("[VerifikatorPembayaranAction.closingJurnalNonTunaiTelemedic] Error, " + e);
             return response;
         }
 
@@ -2228,7 +2202,7 @@ public class TransaksiObatAction extends BaseMasterAction {
 
                                 // create list map piutang
                                 Map mapPiutang = new HashMap();
-                                mapPiutang.put("bukti", invoice);
+//                                mapPiutang.put("bukti", invoice);
                                 mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
                                 mapPiutang.put("master_id", masterId);
 
@@ -2241,7 +2215,7 @@ public class TransaksiObatAction extends BaseMasterAction {
 
                                 // create list map piutang
                                 Map mapPiutang = new HashMap();
-                                mapPiutang.put("bukti", invoice);
+//                                mapPiutang.put("bukti", invoice);
                                 mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
                                 mapPiutang.put("master_id", masterId);
 //                                mapPiutang.put("pasien_id", idPasien);
@@ -2272,7 +2246,7 @@ public class TransaksiObatAction extends BaseMasterAction {
 
                                 // create list map piutang
                                 Map mapPiutang = new HashMap();
-                                mapPiutang.put("bukti", invoice);
+//                                mapPiutang.put("bukti", invoice);
                                 mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
                                 mapPiutang.put("pasien_id", idPasien);
 
@@ -2284,7 +2258,7 @@ public class TransaksiObatAction extends BaseMasterAction {
 
                                 // create list map piutang
                                 Map mapPiutang = new HashMap();
-                                mapPiutang.put("bukti", invoice);
+//                                mapPiutang.put("bukti", invoice);
                                 mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
                                 mapPiutang.put("pasien_id", idPasien);
 
@@ -2312,7 +2286,7 @@ public class TransaksiObatAction extends BaseMasterAction {
 
                             // create map piutang asuransi
                             Map mapPiutang = new HashMap();
-                            mapPiutang.put("bukti", invoice);
+//                            mapPiutang.put("bukti", invoice);
                             mapPiutang.put("nilai", jumlah.add(allTindakanTrans).subtract(jumlahUm));
                             mapPiutang.put("master_id", masterId);
 
@@ -2331,7 +2305,7 @@ public class TransaksiObatAction extends BaseMasterAction {
 
                             // create map piutang
                             Map mapPiutang = new HashMap();
-                            mapPiutang.put("bukti", invoice);
+//                            mapPiutang.put("bukti", invoice);
                             mapPiutang.put("nilai", jumlah.add(allTindakanTrans).subtract(jumlahUm));
                             mapPiutang.put("pasien_id", idPasien);
 

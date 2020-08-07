@@ -6,6 +6,7 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/CutiPegawaiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/UserAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/TransaksiObatAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/NotifikasiAdminAction.js"/>'></script>
 <script type="text/javascript">
 
     function loadDataLogin() {
@@ -257,6 +258,13 @@
         }, 5000);
     }
 
+    function pushNotifTele(){
+        cekNotifTele();
+        setInterval(function () {
+            cekNotifTele();
+        }, 5000);
+    }
+
     function cekNotifResep(){
         TransaksiObatAction.pushNotifResep(function (res) {
             var listResep = "";
@@ -289,13 +297,45 @@
         });
     }
 
+    function cekNotifTele(){
+        NotifikasiAdminAction.getUnReadNotifAdminEntity("tele", function (res) {
+            var listResep = "";
+            var cekCount = $('#count2').text();
+            if(cekCount == ''){
+                cekCount = 0;
+            }
+            if(res.length > 0){
+                $.each(res, function (i, item) {
+                    listResep += '<li>' +
+                        '<a href="<%= request.getContextPath() %>/onlinepaymentverif/search_onlinepaymentverif.action?id='+item.idItem+'&tipe=notif&notifid='+item.id+'">' +
+                        '<i class="fa fa-info-circle text-green"></i> <small style="margin-left: -8px">'+' ['+item.createdWho +']'+' '+item.keterangan+'</small><br>' +
+                        '</a>' +
+                        '</li>';
+                });
+                $('#inner2').html(listResep);
+                $('#count2').html(res.length);
+                $('#count3').html(res.length);
+                if(res.length > parseInt(cekCount)){
+                    $('#notif_sound').get(0).autoplay = true;
+                    $('#notif_sound').get(0).load();
+                    // $('#notif_sound').get(0).muted = false;
+                    // console.log($('#notif_sound').get(0).preload);
+                }
+            }else{
+                $('#inner2').html(listResep);
+                $('#count2').html('');
+                $('#count3').html('');
+            }
+        });
+    }
+
     function cekRole(){
         TransaksiObatAction.cekRole(function (res) {
             if(res == "ADMIN APOTEK"){
                 pushNotifResep();
             }
             if(res == "VERIFIKATOR PEMBAYARAN ONLINE"){
-
+                pushNotifTele();
             }
         })
     }
