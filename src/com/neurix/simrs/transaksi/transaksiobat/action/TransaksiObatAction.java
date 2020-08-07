@@ -2788,7 +2788,7 @@ public class TransaksiObatAction extends BaseMasterAction {
             VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
             TelemedicBo telemedicBo = (TelemedicBo) ctx.getBean("telemedicBoProxy");
 
-            ImSimrsPasienEntity pasienEntity = new ImSimrsPasienEntity();
+            Pasien pasienEntity = new Pasien();
             ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = new ItSimrsAntrianTelemedicEntity();
             ImSimrsPermintaanResepEntity permintaanResepEntity = permintaanResepBo.getEntityPermintaanResepById(idResep);
             if (permintaanResepEntity != null){
@@ -2796,7 +2796,14 @@ public class TransaksiObatAction extends BaseMasterAction {
                 if (pembayaranOnlineEntity != null){
                     antrianTelemedicEntity = telemedicBo.getAntrianTelemedicEntityById(pembayaranOnlineEntity.getIdAntrianTelemedic());
                     if (antrianTelemedicEntity != null){
-                        pasienEntity = pasienBo.getPasienById(antrianTelemedicEntity.getIdPasien());
+
+                        Pasien pasien = new Pasien();
+                        pasien.setIdPasien(antrianTelemedicEntity.getIdPasien());
+
+                        List<Pasien> pasienList = pasienBo.getByCriteria(pasien);
+                        if (pasienList.size() > 0){
+                            pasienEntity = pasienList.get(0);
+                        }
                     }
                 }
             }
@@ -2814,7 +2821,12 @@ public class TransaksiObatAction extends BaseMasterAction {
 
             String formatDate = "";
             if (checkup.getTglLahir() != null || pasienEntity.getTglLahir() != null){
-                formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir() == null ? pasienEntity.getTglLahir() : checkup.getTglLahir());
+                if (pasienEntity.getTglLahir() != null){
+                    Date dTgl = Date.valueOf(pasienEntity.getTglLahir());
+                    formatDate = new SimpleDateFormat("dd-MM-yyyy").format(dTgl);
+                } else {
+                    formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+                }
             }
 
             reportParams.put("tglLahir", checkup.getTempatLahir() == null ? pasienEntity.getTempatLahir() : checkup.getTempatLahir() + ", " + formatDate);
@@ -2828,10 +2840,10 @@ public class TransaksiObatAction extends BaseMasterAction {
             reportParams.put("jenisKelamin", jk);
             reportParams.put("jenisPasien", checkup.getStatusPeriksaName() == null ? antrianTelemedicEntity.getIdJenisPeriksaPasien() : checkup.getStatusPeriksaName());
             reportParams.put("poli", checkup.getNamaPelayanan() == null ? "E-Obat" : checkup.getNamaPelayanan());
-            reportParams.put("provinsi", checkup.getNamaProvinsi() == null ? "" : checkup.getNamaProvinsi());
-            reportParams.put("kabupaten", checkup.getNamaKota() == null ? "" : checkup.getNamaKota());
-            reportParams.put("kecamatan", checkup.getNamaKecamatan() == null ? "" : checkup.getNamaKecamatan());
-            reportParams.put("desa", checkup.getNamaDesa() == null ? "" : checkup.getNamaDesa());
+            reportParams.put("provinsi", checkup.getNamaProvinsi() == null ? pasienEntity.getProvinsi() : checkup.getNamaProvinsi());
+            reportParams.put("kabupaten", checkup.getNamaKota() == null ? pasienEntity.getKota() : checkup.getNamaKota());
+            reportParams.put("kecamatan", checkup.getNamaKecamatan() == null ? pasienEntity.getKecamatan() : checkup.getNamaKecamatan());
+            reportParams.put("desa", checkup.getNamaDesa() == null ? pasienEntity.getDesa() : checkup.getNamaDesa());
 
         }
 
