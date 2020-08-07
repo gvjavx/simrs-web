@@ -32,6 +32,7 @@ import com.neurix.simrs.master.ruangan.model.MtSimrsRuanganEntity;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.JurnalResponse;
 import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
+import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
@@ -2697,13 +2698,15 @@ public class TransaksiObatAction extends BaseMasterAction {
 
         if (!"".equalsIgnoreCase(idApprove) && idApprove != null) {
 
-            try {
-                checkup = checkupBoProxy.getDataDetailPasien(id);
-            } catch (GeneralBOException e) {
-                logger.error("Found Error when search data detail pasien " + e.getMessage());
+            if (id != null){
+                try {
+                    checkup = checkupBoProxy.getDataDetailPasien(id);
+                } catch (GeneralBOException e) {
+                    logger.error("Found Error when search data detail pasien " + e.getMessage());
+                }
             }
 
-            if (checkup != null) {
+            if (checkup != null || idResep != null) {
 
                 try {
                     permintaanResep = checkupDetailBoProxy.getDataDokter(idResep);
@@ -2779,31 +2782,68 @@ public class TransaksiObatAction extends BaseMasterAction {
                 reportParams.put("tipePelayanan", plyn.getTipePelayanan());
             }
 
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
+            PermintaanResepBo permintaanResepBo = (PermintaanResepBo) ctx.getBean("permintaanResepBoProxy");
+            VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
+            TelemedicBo telemedicBo = (TelemedicBo) ctx.getBean("telemedicBoProxy");
+
+            Pasien pasienEntity = new Pasien();
+            ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = new ItSimrsAntrianTelemedicEntity();
+            ImSimrsPermintaanResepEntity permintaanResepEntity = permintaanResepBo.getEntityPermintaanResepById(idResep);
+            if (permintaanResepEntity != null){
+                ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = verifikatorPembayaranBo.getPembayaranOnlineById(permintaanResepEntity.getIdTransaksiOnline());
+                if (pembayaranOnlineEntity != null){
+                    antrianTelemedicEntity = telemedicBo.getAntrianTelemedicEntityById(pembayaranOnlineEntity.getIdAntrianTelemedic());
+                    if (antrianTelemedicEntity != null){
+
+                        Pasien pasien = new Pasien();
+                        pasien.setIdPasien(antrianTelemedicEntity.getIdPasien());
+
+                        List<Pasien> pasienList = pasienBo.getByCriteria(pasien);
+                        if (pasienList.size() > 0){
+                            pasienEntity = pasienList.get(0);
+                        }
+                    }
+                }
+            }
+
+
             reportParams.put("dokter", permintaanResep.getNamaDokter());
             reportParams.put("ttdDokter", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + permintaanResep.getTtdDokter());
             reportParams.put("resepId", idResep);
             reportParams.put("petugas", permintaanResep.getNamaApoteker());
             reportParams.put("ttdPasien", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_PASIEN + permintaanResep.getTtdPasien());
             reportParams.put("ttdApoteker", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_APOTEKER + permintaanResep.getTtdApoteker());
-            reportParams.put("idPasien", checkup.getIdPasien());
-            reportParams.put("nik", checkup.getNoKtp());
-            reportParams.put("nama", checkup.getNama());
-            String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
-            reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
+            reportParams.put("idPasien", checkup.getIdPasien() == null ? pasienEntity.getIdPasien() : checkup.getIdPasien());
+            reportParams.put("nik", checkup.getNoKtp() == null ? pasienEntity.getNoKtp() : checkup.getNoKtp());
+            reportParams.put("nama", checkup.getNama() == null ? pasienEntity.getNama() : checkup.getNama());
 
-            if ("L".equalsIgnoreCase(checkup.getJenisKelamin())) {
+            String formatDate = "";
+            if (checkup.getTglLahir() != null || pasienEntity.getTglLahir() != null){
+                if (pasienEntity.getTglLahir() != null){
+                    Date dTgl = Date.valueOf(pasienEntity.getTglLahir());
+                    formatDate = new SimpleDateFormat("dd-MM-yyyy").format(dTgl);
+                } else {
+                    formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+                }
+            }
+
+            reportParams.put("tglLahir", checkup.getTempatLahir() == null ? pasienEntity.getTempatLahir() : checkup.getTempatLahir() + ", " + formatDate);
+
+            if ("L".equalsIgnoreCase(checkup.getJenisKelamin() == null ? pasienEntity.getJenisKelamin() : checkup.getJenisKelamin())) {
                 jk = "Laki-Laki";
             } else {
                 jk = "Perempuan";
             }
 
             reportParams.put("jenisKelamin", jk);
-            reportParams.put("jenisPasien", checkup.getStatusPeriksaName());
-            reportParams.put("poli", checkup.getNamaPelayanan());
-            reportParams.put("provinsi", checkup.getNamaProvinsi());
-            reportParams.put("kabupaten", checkup.getNamaKota());
-            reportParams.put("kecamatan", checkup.getNamaKecamatan());
-            reportParams.put("desa", checkup.getNamaDesa());
+            reportParams.put("jenisPasien", checkup.getStatusPeriksaName() == null ? antrianTelemedicEntity.getIdJenisPeriksaPasien() : checkup.getStatusPeriksaName());
+            reportParams.put("poli", checkup.getNamaPelayanan() == null ? "E-Obat" : checkup.getNamaPelayanan());
+            reportParams.put("provinsi", checkup.getNamaProvinsi() == null ? pasienEntity.getProvinsi() : checkup.getNamaProvinsi());
+            reportParams.put("kabupaten", checkup.getNamaKota() == null ? pasienEntity.getKota() : checkup.getNamaKota());
+            reportParams.put("kecamatan", checkup.getNamaKecamatan() == null ? pasienEntity.getKecamatan() : checkup.getNamaKecamatan());
+            reportParams.put("desa", checkup.getNamaDesa() == null ? pasienEntity.getDesa() : checkup.getNamaDesa());
 
         }
 
