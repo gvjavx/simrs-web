@@ -12,6 +12,7 @@ import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
 import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
+import com.neurix.simrs.transaksi.notifikasiadmin.bo.NotifikasiAdminBo;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.reseponline.model.ItSimrsResepOnlineEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
@@ -263,6 +264,9 @@ public class TesTelemedicController implements ModelDriven<Object> {
             logger.error("[TesTelemedicController.insertDataTelemedic] ERROR. ",e);
             throw new GeneralBOException("[TesTelemedicController.insertDataTelemedic] ERROR. ", e);
         }
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        NotifikasiAdminBo notifikasiAdminBo = (NotifikasiAdminBo) ctx.getBean("notifikasiAdminBoProxy");
 
         logger.info("[TesTelemedicController.insertDataTelemedic] END <<<");
     }

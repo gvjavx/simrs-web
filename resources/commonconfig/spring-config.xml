@@ -205,6 +205,7 @@
     <import resource="sshconfig/com/neurix/simrs/master/kurir/spring/KurirBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/reseponline/spring/ResepOnlineBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/verifikatorasuransi/spring/VerifikatorAsuransiBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/notifikasiadmin/spring/NotifikasiAdminBean.xml"/>
 
 
     <!--BEAN AKUNTANSI HERE-->

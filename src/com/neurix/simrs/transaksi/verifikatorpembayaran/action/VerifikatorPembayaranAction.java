@@ -62,6 +62,7 @@ import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
+import com.neurix.simrs.transaksi.notifikasiadmin.bo.NotifikasiAdminBo;
 import com.neurix.simrs.transaksi.ordergizi.bo.OrderGiziBo;
 import com.neurix.simrs.transaksi.ordergizi.model.OrderGizi;
 import com.neurix.simrs.transaksi.paketperiksa.bo.PaketPeriksaBo;
@@ -133,6 +134,24 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
     public AntrianTelemedic antrianTelemedic;
     private NotifikasiBo notifikasiBoProxy;
     private String id;
+    private String tipe;
+    private String notifid;
+
+    public String getNotifid() {
+        return notifid;
+    }
+
+    public void setNotifid(String notifid) {
+        this.notifid = notifid;
+    }
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
 
     @Override
     public String getId() {
@@ -243,19 +262,37 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
     public String search(){
         logger.info("[VerifikatorPembayaranAction.search] START >>>");
 
+        String userName = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
         String branchId = CommonUtil.userBranchLogin();
+
         AntrianTelemedic antrianTelemedic = getAntrianTelemedic();
         AntrianTelemedic searchAntrian = new AntrianTelemedic();
-        searchAntrian.setBranchId(branchId);
-        searchAntrian.setStatusTransaksi(antrianTelemedic.getStatusTransaksi());
-        searchAntrian.setIdPasien(antrianTelemedic.getIdPasien());
-        searchAntrian.setIdJenisPeriksaPasien(antrianTelemedic.getIdJenisPeriksaPasien());
+        if ("notif".equalsIgnoreCase(this.tipe) && this.id != null && this.notifid != null){
 
-        if (antrianTelemedic != null){
-            searchAntrian.setStatus(antrianTelemedic.getStatus());
-            searchAntrian.setIdPelayanan(antrianTelemedic.getIdPelayanan());
-            searchAntrian.setId(antrianTelemedic.getId());
-            searchAntrian.setIdTransaksi(antrianTelemedic.getIdTransaksi());
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            NotifikasiAdminBo notifikasiAdminBo = (NotifikasiAdminBo) ctx.getBean("notifikasiAdminBoProxy");
+
+            try {
+                notifikasiAdminBo.readNotifikasiAdmin(this.notifid, userName, time);
+            } catch (GeneralBOException e){
+                logger.error("[VerifikatorPembayaranAction.search] ERROR Notif. ",e);
+            }
+
+            searchAntrian.setId(this.id);
+
+        } else {
+            searchAntrian.setBranchId(branchId);
+            searchAntrian.setStatusTransaksi(antrianTelemedic.getStatusTransaksi());
+            searchAntrian.setIdPasien(antrianTelemedic.getIdPasien());
+            searchAntrian.setIdJenisPeriksaPasien(antrianTelemedic.getIdJenisPeriksaPasien());
+
+            if (antrianTelemedic != null){
+                searchAntrian.setStatus(antrianTelemedic.getStatus());
+                searchAntrian.setIdPelayanan(antrianTelemedic.getIdPelayanan());
+                searchAntrian.setId(antrianTelemedic.getId());
+                searchAntrian.setIdTransaksi(antrianTelemedic.getIdTransaksi());
+            }
         }
 
         List<AntrianTelemedic> listResults = new ArrayList<>();
