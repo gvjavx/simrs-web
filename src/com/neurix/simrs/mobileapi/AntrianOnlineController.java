@@ -452,26 +452,30 @@ public class AntrianOnlineController implements ModelDriven<Object> {
 
             @Override
             public void onUserOffline(long uid, int reason) {
-                logger.info("RecordingSDK onUserOffline uid:" + uid + ",offline reason:" + reason);
-                videoFileName = getVideoFileName(new File(storageDir));
-                audioFileName = getAudioFileName(new File(storageDir));
-                logger.info("File name : " + videoFileName + " "+ audioFileName + " UID:" + uid);
-                String path = storageDir+videoFileName;
-
-                String newPath = path.replace(CommonUtil.getPropertyParams("upload.folder"), "");
-                try {
-                    checkupDetailBoProxy.editVideoRm(idDetailCheckup, newPath);
-                } catch (GeneralBOException e) {
-                    logger.error("[AntrianOnlineController.getAntrianAll] Error get antrian all " + e.getMessage());
-                    throw new GeneralBOException("[AntrianOnlineController.getAntrianAll] Error When Error get antrian all");
-                }
                 m_peers.remove(uid);
                 //PrintUsersInfo(m_peers);
                 SetVideoMixingLayout();
-                RecordingEngineProperties recordingEngineProperties = recordingSDK.getProperties();
-                boolean isLeave = recordingSDK.leaveChannel();
-                logger.info("Channel leave : " + isLeave);
-                recordingSDK.unRegisterOberserver(this);
+                logger.info("RecordingSDK onUserOffline uid:" + uid + ",offline reason:" + reason);
+//                if (reason == 0) {
+//                    videoFileName = getVideoFileName(new File(storageDir));
+//                    audioFileName = getAudioFileName(new File(storageDir));
+//                    logger.info("File name : " + videoFileName + " "+ audioFileName + " UID:" + uid);
+//                    String path = storageDir+videoFileName;
+//
+//                    String newPath = path.replace(CommonUtil.getPropertyParams("upload.folder"), "");
+//                    try {
+//                        checkupDetailBoProxy.editVideoRm(idDetailCheckup, newPath);
+//                    } catch (GeneralBOException e) {
+//                        logger.error("[AntrianOnlineController.getAntrianAll] Error get antrian all " + e.getMessage());
+//                        throw new GeneralBOException("[AntrianOnlineController.getAntrianAll] Error When Error get antrian all");
+//                    }
+//
+//                    RecordingEngineProperties recordingEngineProperties = recordingSDK.getProperties();
+//                    boolean isLeave = recordingSDK.leaveChannel();
+//                    logger.info("Channel leave : " + isLeave);
+//                    recordingSDK.unRegisterOberserver(this);
+//                }
+
             }
 
             @Override
@@ -742,7 +746,24 @@ public class AntrianOnlineController implements ModelDriven<Object> {
             RecordingSDKInstance.stopService();
         }
         if(action.equalsIgnoreCase("stopRecord")){
+            videoFileName = getVideoFileName(new File(storageDir));
+            audioFileName = getAudioFileName(new File(storageDir));
+            logger.info("File name : " + videoFileName + " "+ audioFileName + " UID:" + uid);
+            String path = storageDir+videoFileName;
 
+            String newPath = path.replace(CommonUtil.getPropertyParams("upload.folder"), "");
+            try {
+                checkupDetailBoProxy.editVideoRm(idDetailCheckup, newPath);
+            } catch (GeneralBOException e) {
+                logger.error("[AntrianOnlineController.getAntrianAll] Error get antrian all " + e.getMessage());
+                throw new GeneralBOException("[AntrianOnlineController.getAntrianAll] Error When Error get antrian all");
+            }
+
+            RecordingEngineProperties recordingEngineProperties = recordingSDK.getProperties();
+            boolean isLeave = recordingSDK.leaveChannel();
+            logger.info("Channel leave : " + isLeave);
+            RecordingSDKInstance.unRegisterOberserver(recordingEventHandler);
+            model.setMessage("Success");
         }
 
         logger.info("[AntrianOnlineController.create] end process POST / <<<");
