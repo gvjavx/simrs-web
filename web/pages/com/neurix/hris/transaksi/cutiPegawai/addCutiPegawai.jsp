@@ -56,11 +56,13 @@
             var tanggalAkhir  = document.getElementById("tgl1").value;
             var sisaCuti  = document.getElementById("sisaCuti").value;
             var lamaCuti  = document.getElementById("lamaCuti").value;
+            var alamatCuti = document.getElementById("alamatCuti12").value;
             var ket="";
             var cek="";
             var intSisaCuti = parseInt(sisaCuti);
             var intLamaCuti = parseInt(lamaCuti);
             var todayDate = new Date().toISOString().slice(0,10);
+
             LemburAction.testTanggal(tanggalAwal,tanggalAkhir,nipid, function (data) {
                 if (data != "") {
                     ket=data;
@@ -79,7 +81,7 @@
 
             }
             else{
-                if ( nipid != ''&& cutiid != ''&& tanggalAkhir != '' && tanggalAwal != ''&&ket==""&&unitid!=""&&cek=="") {
+                if ( nipid != ''&& cutiid != ''&& tanggalAkhir != '' && tanggalAwal != ''&&ket==""&&unitid!=""&&cek=="" && alamatCuti != "") {
                     if (confirm('Do you want to save this record?')) {
                         event.originalEvent.options.submit = true;
                         $.publish('showDialog');
@@ -105,6 +107,9 @@
                     }
                     if ( tanggalAkhir == '') {
                         msg += 'Field <strong>Tanggal Akhir</strong> is required.' + '<br/>';
+                    }
+                    if (alamatCuti == ''){
+                        msg += 'Field <strong>Alamat Cuti</strong> is required.' + '<br/>';
                     }
                     if (ket != "") {
                         $('#tgl1').val("");
@@ -835,6 +840,12 @@
                 }
                 $('#lamaCuti').val(days);
             }
+        }
+
+        if (enddate<startdate){
+            alert ('Tanggal yang dipilih salah');
+            $('#tgl2').val("");
+            $('#tgl1').val("");
         }
     });
 </script>
