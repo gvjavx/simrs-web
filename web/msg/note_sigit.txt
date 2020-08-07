@@ -552,3 +552,35 @@
     ALTER TABLE im_akun_kode_rekening
     ADD COLUMN tipe_budgeting VARCHAR(50);
 <<< //
+
+// >>> 2020-08-06
+    -- Table: public.it_notifikasi_admin_telemedic
+
+    -- DROP TABLE public.it_notifikasi_admin_telemedic;
+
+    CREATE TABLE public.it_notifikasi_admin_telemedic
+    (
+        id character varying(50) COLLATE pg_catalog."default" NOT NULL,
+        id_item character varying(50) COLLATE pg_catalog."default",
+        keterangan text COLLATE pg_catalog."default",
+        user_id character varying(50) COLLATE pg_catalog."default",
+        role_id character varying(50) COLLATE pg_catalog."default",
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        branch_id character varying(10) COLLATE pg_catalog."default",
+        CONSTRAINT it_notifikasi_admin_telemedic_pkey PRIMARY KEY (id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.it_notifikasi_admin_telemedic
+        OWNER to postgres;
+
+    CREATE SEQUENCE seq_notifikasi_admin_telemedic;
+//>>>
