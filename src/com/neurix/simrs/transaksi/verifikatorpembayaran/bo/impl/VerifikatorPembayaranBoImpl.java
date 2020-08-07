@@ -903,6 +903,8 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
                         String pelayananTujuan = "";
                         List<TransaksiObatDetail> detailList = new ArrayList<>();
 
+                        String idDokter = "";
+                        String ttdDokter = "";
                         hsCriteria = new HashMap();
                         hsCriteria.put("id_transaksi_online", bean.getIdTransaksiOnline());
                         List<ItSimrsResepOnlineEntity> resepOnlineEntities = resepOnlineDao.getByCriteria(hsCriteria);
@@ -917,12 +919,16 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
                                 detail.setQty(resepOnlineEntity.getQty());
                                 detail.setJenisSatuan("biji");
                                 detailList.add(detail);
+
+                                idDokter = resepOnlineEntity.getIdDokter();
+                                ttdDokter = resepOnlineEntity.getTtdDokter();
                             }
                         }
 
                         PermintaanResep permintaanResep = new PermintaanResep();
                         permintaanResep.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
-                        permintaanResep.setIdDokter(bean.getIdDokter());
+                        permintaanResep.setIdDokter(idDokter);
+                        permintaanResep.setTtdDokter(ttdDokter);
                         permintaanResep.setIdPelayanan(bean.getIdPelayanan());
                         permintaanResep.setTujuanPelayanan(pelayananTujuan);
                         permintaanResep.setIdPasien(bean.getIdPasien());
