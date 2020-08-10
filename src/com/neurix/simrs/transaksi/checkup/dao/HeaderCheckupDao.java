@@ -738,7 +738,9 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "l.id_diagnosa, \n" +
                     "a.anamnese, \n" +
                     "c.kategori_pelayanan,\n" +
-                    "c.tipe_pelayanan\n"+
+                    "c.tipe_pelayanan,\n"+
+                    "b.is_stay, \n"+
+                    "b.kelas_pasien \n"+
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
@@ -833,6 +835,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setAnamnese(header.getAnamnese());
                     checkup.setKategoriPelayanan(obj[50] == null ? "" : obj[50].toString());
                     checkup.setTipePelayanan(obj[51] == null ? "" : obj[51].toString());
+                    checkup.setIsStay(obj[52] == null ? "" : obj[52].toString());
+                    checkup.setKelasPasien(obj[53] == null ? "" : obj[53].toString());
                     HeaderCheckup hdr = getPemeriksaanFisik(obj[0].toString());
                     checkup.setTensi(hdr.getTensi());
                     checkup.setSuhu(hdr.getSuhu());
@@ -1118,13 +1122,24 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "c.nama_tindakan,\n" +
                     "c.keterangan,\n" +
                     "b.keterangan_selesai, \n" +
-                    "b.video_rm\n" +
+                    "b.video_rm,\n" +
+                    "e.id_diagnosa,\n" +
+                    "e.keterangan_diagnosa\n" +
                     "FROM it_simrs_header_checkup  a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN it_simrs_riwayat_tindakan c ON b.id_detail_checkup = c.id_detail_checkup\n" +
                     "INNER JOIN im_simrs_pelayanan d ON b.id_pelayanan = d.id_pelayanan\n" +
-                    "WHERE a.id_pasien = :id AND a.branch_id = :branchId AND b.status_periksa = '3'\n" +
-                    "AND is_kamar IS NULL ORDER BY b.id_detail_checkup DESC, c.tanggal_tindakan ASC";
+                    "INNER JOIN (\n" +
+                    "SELECT * FROM(\n" +
+                    "SELECT *, \n" +
+                    "rank() OVER (PARTITION BY id_detail_checkup ORDER BY created_date DESC)\n" +
+                    "FROM it_simrs_diagnosa_rawat\n" +
+                    ")a WHERE rank = 1) e ON b.id_detail_checkup = e.id_detail_checkup\n" +
+                    "WHERE a.id_pasien = :id \n" +
+                    "AND a.branch_id = :branchId \n" +
+                    "AND b.status_periksa = '3'\n" +
+                    "ORDER BY b.id_detail_checkup DESC, \n" +
+                    "c.tanggal_tindakan ASC";
 
             List<Object[]> results = new ArrayList<>();
             results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -1143,6 +1158,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                         checkup.setIdDetailCheckup(obj[2].toString());
                         checkup.setNamaPelayanan(obj[3].toString());
                         checkup.setKeteranganKeluar(obj[8] == null ? null : obj[8].toString());
+                        checkup.setDiagnosa(obj[10] == null ? null : obj[10].toString()+"-");
+                        checkup.setNamaDiagnosa(obj[11] == null ? null : obj[11].toString());
                     }
                     if (obj[4] != null) {
                         String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm").format((Timestamp) obj[4]);

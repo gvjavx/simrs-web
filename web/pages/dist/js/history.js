@@ -48,7 +48,7 @@ function viewHistory() {
                     }
                 }
                 table += '<tr id="row_'+item.idRiwayatTindakan+'">' +
-                    '<td>'+icon+' '+cekDataNull(item.namaPelayanan)+'</td>' +
+                    '<td>'+icon+' '+cekDataNull(item.namaPelayanan)+'<p style="margin-left: 10px">'+cekDataNull(item.diagnosa)+cekDataNull(item.namaDiagnosa)+'</p></td>' +
                     '<td>'+cekDataNull(item.idDetailCheckup)+'</td>' +
                     '<td>'+cekDataNull(item.tglTindakan)+'</td>' +
                     '<td>'+cekDataNull(item.namaTindakan)+' <div class="pull-right">'+btn+'</div></td>' +

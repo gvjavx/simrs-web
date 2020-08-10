@@ -44,6 +44,10 @@
             <column name="id_pelayanan" sql-type="varchar" length="100" not-null="false" />
         </property>
 
+        <property name="jenisDpjp">
+            <column name="jenis_dpjp"/>
+        </property>
+
 
     </class>
 </hibernate-mapping>

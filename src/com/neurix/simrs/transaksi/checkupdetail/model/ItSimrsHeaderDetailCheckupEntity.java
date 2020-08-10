@@ -74,6 +74,61 @@ public class ItSimrsHeaderDetailCheckupEntity implements Serializable{
     private String noCheckupUlang;
     private String isOrderLab;
 
+    private String flagCloseTraksaksi;
+    private String tindakLanjut;
+    private String catatan;
+    private String rsRujukan;
+    private String flagTppri;
+    private String isStay;
+
+    public String getIsStay() {
+        return isStay;
+    }
+
+    public void setIsStay(String isStay) {
+        this.isStay = isStay;
+    }
+
+    public String getFlagTppri() {
+        return flagTppri;
+    }
+
+    public void setFlagTppri(String flagTppri) {
+        this.flagTppri = flagTppri;
+    }
+
+    public String getRsRujukan() {
+        return rsRujukan;
+    }
+
+    public void setRsRujukan(String rsRujukan) {
+        this.rsRujukan = rsRujukan;
+    }
+
+    public String getFlagCloseTraksaksi() {
+        return flagCloseTraksaksi;
+    }
+
+    public void setFlagCloseTraksaksi(String flagCloseTraksaksi) {
+        this.flagCloseTraksaksi = flagCloseTraksaksi;
+    }
+
+    public String getTindakLanjut() {
+        return tindakLanjut;
+    }
+
+    public void setTindakLanjut(String tindakLanjut) {
+        this.tindakLanjut = tindakLanjut;
+    }
+
+    public String getCatatan() {
+        return catatan;
+    }
+
+    public void setCatatan(String catatan) {
+        this.catatan = catatan;
+    }
+
     public String getIsOrderLab() {
         return isOrderLab;
     }

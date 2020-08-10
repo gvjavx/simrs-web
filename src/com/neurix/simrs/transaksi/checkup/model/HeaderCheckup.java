@@ -142,6 +142,15 @@ public class HeaderCheckup {
     private String idLab;
     private String isOrderLab;
     private String lastIdDetailCheckup;
+    private String isStay;
+
+    public String getIsStay() {
+        return isStay;
+    }
+
+    public void setIsStay(String isStay) {
+        this.isStay = isStay;
+    }
 
     public String getIsOrderLab() {
         return isOrderLab;

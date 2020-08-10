@@ -41,6 +41,25 @@ public class RiwayatTindakan extends BaseModel {
     private BigDecimal ppnObat;
     private String isKamar;
 
+    private String isPendingTindakan;
+    private String msg;
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public String getIsPendingTindakan() {
+        return isPendingTindakan;
+    }
+
+    public void setIsPendingTindakan(String isPendingTindakan) {
+        this.isPendingTindakan = isPendingTindakan;
+    }
+
     public String getIsKamar() {
         return isKamar;
     }

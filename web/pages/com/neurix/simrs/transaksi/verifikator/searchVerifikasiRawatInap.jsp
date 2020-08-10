@@ -52,7 +52,7 @@
                         <div class="form-group">
                             <s:form id="verifrawatinapForm" method="post" namespace="/verifrawatinap" action="searchRawatInap_verifrawatinap.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">ID Pasien</label>
+                                    <label class="control-label col-sm-4">No RM</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="id_pasien" cssStyle="margin-top: 7px"
                                                      name="rawatInap.idPasien" required="false"
@@ -251,7 +251,7 @@
                             <table class="table table-striped">
                                 <tr>
                                     <td><b>No SEP</b></td>
-                                    <td style="vertical-align: middle"><span class="label label-success" id="det_no_sep"></span></td>
+                                    <td style="vertical-align: middle"><span style="background-color: #00a65a; color: white; border-radius: 5px; border: 1px solid black; padding: 5px" id="det_no_sep"></span></td>
                                 </tr>
                                 <tr>
                                     <td><b>No RM</b></td>
@@ -292,24 +292,8 @@
                                 </tr>
                                 <tr>
                                     <td><b>Jenis Pasien</b></td>
-                                    <td><span id="det_jenis_pasien"></span></td>
+                                    <td><span style="background-color: #286090; color: white; border-radius: 5px; border: 1px solid black; padding: 5px" id="det_jenis_pasien"></span></td>
                                 </tr>
-                                <%--<tr>--%>
-                                <%--<td><b>Provinsi</b></td>--%>
-                                <%--<td><span id="det_provinsi"></span></td>--%>
-                                <%--</tr>--%>
-                                <%--<tr>--%>
-                                <%--<td><b>Kabupaten</b></td>--%>
-                                <%--<td></span></td>--%>
-                                <%--</tr>--%>
-                                <%--<tr>--%>
-                                <%--<td><b>Kecamatan</b></td>--%>
-                                <%--<td><span id="det_kecamatan"></span></td>--%>
-                                <%--</tr>--%>
-                                <%--<tr>--%>
-                                <%--<td><b>Desa</b></td>--%>
-                                <%--<td></span></td>--%>
-                                <%--</tr>--%>
                             </table>
                         </div>
 
@@ -362,7 +346,11 @@
                 <div class="box-header with-border">
                     <h3 class="box-title"><i class="fa fa-medkit"></i> Daftar Tindakan Rawat</h3>
                 </div>
-                <div class="box-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_pending">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_pending"></p>
+                </div>
+                <div class="box-body" id="form-tindakan" style="display: none">
                     <table class="table table-bordered table-striped" id="tabel_tindakan_ts" style="font-size: 12px">
                         <thead>
                         <tr bgcolor="#90ee90">
@@ -419,7 +407,7 @@
                             <table class="table table-striped">
                                 <tr>
                                     <td><b>No SEP</b></td>
-                                    <td style="vertical-align: middle"><span class="label label-success" id="fin_no_sep"></span></td>
+                                    <td style="vertical-align: middle"><span style="background-color: #00a65a; color: white; border-radius: 5px; border: 1px solid black; padding: 5px" id="fin_no_sep"></span></td>
                                 </tr>
                                 <tr>
                                     <td><b>No RM</b></td>
@@ -460,7 +448,7 @@
                                 </tr>
                                 <tr>
                                     <td><b>Jenis Pasien</b></td>
-                                    <td><span id="fin_jenis_pasien"></span></td>
+                                    <td><span style="background-color: #286090; color: white; border-radius: 5px; border: 1px solid black; padding: 5px" id="fin_jenis_pasien"></span></td>
                                 </tr>
                             </table>
                         </div>
@@ -648,6 +636,7 @@
         var total = 0;
         var cekTindakan = false;
         var jenisPasien = "";
+        var cekPending = false;
 
         var url = '<s:url value="/pages/images/spinner.gif"/>';
         $('#v_'+idCheckup).attr('src',url).css('width', '30px', 'height', '40px');
@@ -686,10 +675,22 @@
                 }
             });
 
-            VerifikatorAction.getListTindakanRawat(idCheckup, idDetailCheckup, function (response) {
+            VerifikatorAction.getListTindakanRawat(idCheckup, idDetailCheckup, jenisPasien, function (response) {
                 dataTindakan = response;
-                if (dataTindakan != null) {
+                if (dataTindakan.length > 0) {
                     $.each(dataTindakan, function (i, item) {
+                        if(i == 0){
+                            if(item.isPendingTindakan == "Y"){
+                                $('#form-tindakan').hide();
+                                $('#warning_pending').show();
+                                $('#msg_pending').text(item.msg);
+                                cekPending = true;
+                            }else{
+                                $('#form-tindakan').show();
+                                $('#warning_pending').hide();
+                                $('#msg_pending').text('');
+                            }
+                        }
                         var tarif = "";
                         var tgl = "";
                         var tindakan    = "";
@@ -806,11 +807,15 @@
             $('#det_kecamatan').html(kecamatan);
             $('#det_desa').html(desa);
             $('#tin_id_detail_checkup').val(idDetailCheckup);
-            if(cekTindakan){
-                $('#save_verif').show();
-                $('#save_verif').attr('onclick','confirmSaveApproveTindakan(\''+idDetailCheckup+'\')');
-            }else{
+            if(cekPending){
                 $('#save_verif').hide();
+            }else{
+                if(cekTindakan){
+                    $('#save_verif').show();
+                    $('#save_verif').attr('onclick','confirmSaveApproveTindakan(\''+idDetailCheckup+'\')');
+                }else{
+                    $('#save_verif').hide();
+                }
             }
             var select2 = $('.select-2').length;
             if(select2 > 0){
@@ -855,6 +860,7 @@
         }else{
             $('#msg_tin').text("Silahkan pilih kategori tindakan terlebih dahulu...!");
             $('#warning_tin').show().fadeOut(5000);
+            $('#modal-detail-pasien').scrollTop(0);
         }
     }
 
@@ -874,6 +880,7 @@
         if (cek) {
             $('#msg_tin').text("Silahkan pilih kategori tindakan BPJS terlebih kemudian klik icon di pinggir untuk konfirmasi...!");
             $('#warning_tin').show().fadeOut(5000);
+            $('#modal-detail-pasien').scrollTop(0);
         } else {
             $('#save_con').attr('onclick','saveApproveTindakan(\''+idDetailCheckup+'\')');
             $('#modal-confirm-dialog').modal('show');
@@ -969,7 +976,7 @@
                 }
             });
 
-            VerifikatorAction.getListTindakanRawat(idCheckup, idDetailCheckup, function (response) {
+            VerifikatorAction.getListTindakanRawat(idCheckup, idDetailCheckup, jenisPasien, function (response) {
                 dataTindakan = response;
                 var ppnObat = 0;
                 var bpjs = 0;

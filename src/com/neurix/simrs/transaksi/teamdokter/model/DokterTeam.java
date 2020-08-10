@@ -22,7 +22,15 @@ public class DokterTeam extends BaseModel {
 
     private String idPelayanan;
     private String namaPelayanan;
+    private String jenisDpjp;
 
+    public String getJenisDpjp() {
+        return jenisDpjp;
+    }
+
+    public void setJenisDpjp(String jenisDpjp) {
+        this.jenisDpjp = jenisDpjp;
+    }
     public String getNamaPelayanan() {
         return namaPelayanan;
     }

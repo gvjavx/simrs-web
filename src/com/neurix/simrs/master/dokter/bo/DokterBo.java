@@ -21,6 +21,6 @@ public interface DokterBo extends BaseMasterBo<Dokter> {
     public List<Dokter> getSearchByCriteria(Dokter bean) throws GeneralBOException;
     List<Dokter> typeaheadDokter(String dokterName) throws GeneralBOException;
 
-    public List<Dokter> getListDokterByBranchId(String branchId, String idDokter) throws GeneralBOException;
-    public List<Dokter> getListDokterByIdDetailCheckup(String idDetailChekcup) throws GeneralBOException;
+    public List<Dokter> getListDokterByBranchId(String branchId, String idDokter, String kategori) throws GeneralBOException;
+    public List<Dokter> getListDokterByIdDetailCheckup(String idDetailChekcup, String kategori) throws GeneralBOException;
 }

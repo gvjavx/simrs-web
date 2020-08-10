@@ -122,4 +122,66 @@ ALTER TABLE it_simrs_diagnosa_rawat
 ALTER COLUMN jenis_diagnosa TYPE character varying(100);
 
 
+-- 27-07-2020
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN flag_close_traksaksi character varying(1),
+ADD COLUMN tindak_lanjut text,
+ADD COLUMN catatan text;
+
+-- 29-07-2020
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN rs_rujukan character varying (200);
+
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN flag_tppri character varying(1);
+
+-- Membuat Function
+Verifikasi Transaksi
+/veriftransaksi/initVerif_veriftransaksi.action
+/veriftransaksi/initVerif_veriftransaksi.action
+/veriftransaksi/searchVerif_veriftransaksi.action
+
+Pendaftaran Rawat Inap
+/rawatinap/initTppri_rawatinap.action
+/rawatinap/initTppri_rawatinap.action
+/rawatinap/searchTppri_rawatinap.action
+
+Rawat Intensif
+/rawatintensif/initForm_rawatintensif.action
+/rawatintensif/initForm_rawatintensif.action
+/rawatintensif/searchIntensif_rawatintensif.action
+/rawatintensif/add_rawatintensif.action
+
+Rawat Isolasi
+/rawatisolasi/initForm_rawatisolasi.action
+/rawatisolasi/initForm_rawatisolasi.action
+/rawatisolasi/searchIsolasi_rawatisolasi.action
+/rawatisolasi/add_rawatisolasi.action
+
+Rawat Operasi
+/rawatoperasi/initForm_rawatoperasi.action
+/rawatoperasi/initForm_rawatoperasi.action
+/rawatoperasi/searchOperasi_rawatoperasi.action
+/rawatoperasi/add_rawatoperasi.action
+
+Rawat Bersalin
+/rawatbersalin/initForm_rawatbersalin.action
+/rawatbersalin/initForm_rawatbersalin.action
+/rawatbersalin/searchBersalin_rawatbersalin.action
+/rawatbersalin/add_rawatbersalin.action
+
+-- 30-07-2020
+ALTER TABLE im_simrs_kelas_ruangan
+ADD COLUMN kategori character varying (100);
+
+ALTER TABLE it_simrs_dokter_team
+ADD COLUMN jenis_dpjp character varying (100);
+
+ALTER TABLE it_simrs_rawat_inap
+ADD COLUMN status character varying(1);
+
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN is_stay character varying(1);
+
+
 

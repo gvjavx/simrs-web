@@ -16,4 +16,6 @@ public interface RuanganBo extends GeneralBo {
     public void saveDelete(Ruangan ruangan) throws GeneralBOException;
     public CheckResponse updateRuangan(Ruangan bean) throws GeneralBOException;
     public MtSimrsRuanganEntity getEntityRuanganById(String id) throws GeneralBOException;
+
+    public List<Ruangan> getListRuangan(Ruangan bean) throws GeneralBOException;
 }

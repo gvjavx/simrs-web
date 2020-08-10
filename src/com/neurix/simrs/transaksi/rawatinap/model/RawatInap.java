@@ -101,6 +101,109 @@ public class RawatInap {
     private String berat;
     private String tinggi;
 
+    private String tindakLanjut;
+    private String catatan;
+    private String flagTppri;
+
+    private String isStay;
+    private String isOrderLab;
+    private String rsRujukan;
+
+    private String kategoriRuangan;
+    private String idKelasRuangan;
+
+    private String idRuangLama;
+    private String status;
+    private BigInteger lamakamar;
+
+    public BigInteger getLamakamar() {
+        return lamakamar;
+    }
+
+    public void setLamakamar(BigInteger lamakamar) {
+        this.lamakamar = lamakamar;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getIdRuangLama() {
+        return idRuangLama;
+    }
+
+    public void setIdRuangLama(String idRuangLama) {
+        this.idRuangLama = idRuangLama;
+    }
+
+    public String getIdKelasRuangan() {
+        return idKelasRuangan;
+    }
+
+    public void setIdKelasRuangan(String idKelasRuangan) {
+        this.idKelasRuangan = idKelasRuangan;
+    }
+
+    public String getKategoriRuangan() {
+        return kategoriRuangan;
+    }
+
+    public void setKategoriRuangan(String kategoriRuangan) {
+        this.kategoriRuangan = kategoriRuangan;
+    }
+
+    public String getRsRujukan() {
+        return rsRujukan;
+    }
+
+    public void setRsRujukan(String rsRujukan) {
+        this.rsRujukan = rsRujukan;
+    }
+
+    public String getIsOrderLab() {
+        return isOrderLab;
+    }
+
+    public void setIsOrderLab(String isOrderLab) {
+        this.isOrderLab = isOrderLab;
+    }
+
+    public String getIsStay() {
+        return isStay;
+    }
+
+    public void setIsStay(String isStay) {
+        this.isStay = isStay;
+    }
+
+    public String getFlagTppri() {
+        return flagTppri;
+    }
+
+    public void setFlagTppri(String flagTppri) {
+        this.flagTppri = flagTppri;
+    }
+
+    public String getCatatan() {
+        return catatan;
+    }
+
+    public void setCatatan(String catatan) {
+        this.catatan = catatan;
+    }
+
+    public String getTindakLanjut() {
+        return tindakLanjut;
+    }
+
+    public void setTindakLanjut(String tindakLanjut) {
+        this.tindakLanjut = tindakLanjut;
+    }
+
     public String getBerat() {
         return berat;
     }

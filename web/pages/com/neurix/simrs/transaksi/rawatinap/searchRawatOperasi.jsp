@@ -13,7 +13,8 @@
     <script type='text/javascript'>
 
         $( document ).ready(function() {
-            $('#rawat_inap').addClass('active');
+            $('#rawat_operasi').addClass('active');
+            selectKamar();
         });
 
     </script>
@@ -32,7 +33,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Rawat Inap Pasien
+            Rawat Operasi Pasien
         </h1>
     </section>
 
@@ -43,11 +44,11 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Rawat Inap Pasien</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Rawat Operasi Pasien</h3>
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <s:form id="rawatInapForm" method="post" namespace="/rawatinap" action="search_rawatinap.action" theme="simple" cssClass="form-horizontal">
+                            <s:form id="rawatInapForm" method="post" namespace="/rawatoperasi" action="searchOperasi_rawatoperasi.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">No RM</label>
                                     <div class="col-sm-4">
@@ -72,22 +73,6 @@
                                                   headerKey="1" headerValue="Periksa"
                                                   cssClass="form-control select2"/>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Kelas Ruangan</label>
-                                    <div class="col-sm-4">
-                                        <s:action id="initComboKelas" namespace="/checkupdetail"
-                                                  name="getListComboKelasRuangan_checkupdetail"/>
-                                        <s:select cssStyle="margin-top: 7px" onchange="$(this).css('border',''); listSelectRuangan(this)"
-                                                  list="#initComboKelas.listOfKelasRuangan" id="kelas_kamar"
-                                                  name="rawatInap.idKelas"
-                                                  listKey="idKelasRuangan"
-                                                  listValue="namaKelasRuangan"
-                                                  headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control select2"/>
-                                    </div>
-                                    <div class="col-sm-3" style="display: none;" id="load_ruang">
-                                        <img border="0" src="<s:url value="/pages/images/spinner.gif"/>" style="cursor: pointer; width: 45px; height: 45px"><b style="color: #00a157;">Sedang diproses...</b></div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Ruangan</label>
@@ -127,7 +112,7 @@
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-                                        <a type="button" class="btn btn-danger" href="initForm_rawatinap.action">
+                                        <a type="button" class="btn btn-danger" href="initForm_rawatoperasi.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
                                     </div>
@@ -174,7 +159,7 @@
                                 <td>ID Detail Checkup</td>
                                 <td>No RM</td>
                                 <td>Nama</td>
-                                <td>Desa</td>
+                                <td>Jenis Pasien</td>
                                 <td>Status</td>
                                 <td align="center">Action</td>
                             </tr>
@@ -185,17 +170,16 @@
                                     <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
-                                    <td><s:property value="desa"/></td>
+                                    <td><s:property value="jenisPeriksaPasien"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td align="center">
-                                        <s:url var="add_rawat_inap" namespace="/rawatinap" action="add_rawatinap" escapeAmp="false">
+                                        <s:url var="add_rawat_inap" namespace="/rawatoperasi" action="add_rawatoperasi" escapeAmp="false">
                                             <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
                                             <s:param name="idx"><s:property value="idRawatInap"/></s:param>
                                         </s:url>
                                         <s:a href="%{add_rawat_inap}">
                                             <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                         </s:a>
-                                        <img onclick="printGelangPasien('<s:property value="noCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -243,6 +227,22 @@
         }
 
         $('#nama_ruangan').html(option);
+    }
+
+    function selectKamar(){
+        var option = "<option value=''>[Select One]</option>";
+        CheckupDetailAction.listRuangan(null, false, 'kamar_operasi',
+            { callback: function (response) {
+                    if (response.length > 0) {
+                        $.each(response, function (i, item) {
+                            option += "<option value='" + item.idRuangan + "'>" + item.noRuangan + "-" + item.namaRuangan + "</option>";
+                        });
+                        $('#nama_ruangan').html(option);
+                    } else {
+                        $('#nama_ruangan').html(option);
+                    }
+                }
+            });
     }
 </script>
 

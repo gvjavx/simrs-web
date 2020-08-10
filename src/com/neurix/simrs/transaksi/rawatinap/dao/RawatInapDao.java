@@ -71,6 +71,8 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
             String branchId = "%";
             String jenisPeriksa = "%";
             String statusBayar = "";
+            String kategoriInap = "";
+            String status = "%";
 
             if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())){
                 idPasien = bean.getIdPasien();
@@ -126,6 +128,14 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                 statusBayar = "\n AND b.status_bayar is null \n";
             }
 
+            if(bean.getTindakLanjut() != null && !"".equalsIgnoreCase(bean.getTindakLanjut())){
+                kategoriInap = "AND f.kategori = '"+bean.getTindakLanjut()+"' \n";
+            }
+
+            if (bean.getStatus() != null && !"".equalsIgnoreCase(bean.getStatus())){
+                status = bean.getStatus();
+            }
+
 
             String SQL = "SELECT\n" +
                     "b.id_detail_checkup,\n" +
@@ -150,9 +160,12 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "b.id_jenis_periksa_pasien,\n" +
                     "um.status_bayar AS status_bayar_uang_muka, \n" +
                     "um.id, " +
-                    "um.id_detail_checkup\n" +
+                    "um.id_detail_checkup, \n" +
+                    "f.kategori, \n"+
+                    "jenis.keterangan\n"+
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                    "INNER JOIN im_simrs_jenis_periksa_pasien jenis ON b.id_jenis_periksa_pasien = jenis.id_jenis_periksa_pasien\n" +
                     "INNER JOIN im_simrs_status_pasien c ON b.status_periksa = c.id_status_pasien\n" +
                     "INNER JOIN (SELECT * FROM it_simrs_rawat_inap WHERE flag = 'Y') d ON b.id_detail_checkup = d.id_detail_checkup\n" +
                     "INNER JOIN mt_simrs_ruangan e ON d.id_ruangan = e.id_ruangan\n" +
@@ -169,13 +182,14 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "AND b.is_kronis IS NULL\n" +
                     "AND a.branch_id LIKE :branchId\n" +
                     "AND b.id_jenis_periksa_pasien LIKE :jenisPeriksa\n" +
-                    "AND a.flag = 'Y'\n " +statusBayar;
+                    "AND d.status LIKE :status\n" +
+                    "AND a.flag = 'Y'\n " +statusBayar+kategoriInap;
 
             List<Object[]> results = new ArrayList<>();
 
             if (!"".equalsIgnoreCase(dateFrom) && !"".equalsIgnoreCase(dateTo)){
 
-                SQL = SQL + "\n AND CAST(a.created_date AS date) >= to_date(:dateFrom, 'dd-MM-yyyy') AND CAST(a.created_date AS date) <= to_date(:dateTo, 'dd-MM-yyyy')" +
+                SQL = SQL + "\n AND CAST(d.created_date AS date) >= to_date(:dateFrom, 'dd-MM-yyyy') AND CAST(d.created_date AS date) <= to_date(:dateTo, 'dd-MM-yyyy')" +
                         "\n ORDER BY b.tgl_antrian ASC";
 
                 results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -191,13 +205,14 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                         .setParameter("dateTo", dateTo)
                         .setParameter("branchId", branchId)
                         .setParameter("jenisPeriksa", jenisPeriksa)
+                        .setParameter("status", status)
                         .list();
 
             } else {
 
                 if(!"".equalsIgnoreCase(bean.getStTglFrom())){
 
-                    SQL = SQL + "\n AND CAST(a.created_date AS date) >= to_date(:dateFrom, 'dd-MM-yyyy')" +
+                    SQL = SQL + "\n AND CAST(d.created_date AS date) >= to_date(:dateFrom, 'dd-MM-yyyy')" +
                             "\n ORDER BY b.tgl_antrian ASC";
 
                     results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -212,10 +227,11 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                             .setParameter("dateFrom", dateFrom)
                             .setParameter("branchId", branchId)
                             .setParameter("jenisPeriksa", jenisPeriksa)
+                            .setParameter("status", status)
                             .list();
                 }else if (!"".equalsIgnoreCase(bean.getStTglTo())){
 
-                    SQL = SQL + "\n AND CAST(a.created_date AS date) <= to_date(:dateTo, 'dd-MM-yyyy')" +
+                    SQL = SQL + "\n AND CAST(d.created_date AS date) <= to_date(:dateTo, 'dd-MM-yyyy')" +
                             "\n ORDER BY b.tgl_antrian ASC";
 
                     results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -230,6 +246,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                             .setParameter("dateTo", dateTo)
                             .setParameter("branchId", branchId)
                             .setParameter("jenisPeriksa", jenisPeriksa)
+                            .setParameter("status", status)
                             .list();
                 }else{
 
@@ -246,6 +263,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                             .setParameter("idDetailCheckup", idDetailCheckup)
                             .setParameter("branchId", branchId)
                             .setParameter("jenisPeriksa", jenisPeriksa)
+                            .setParameter("status", status)
                             .list();
                 }
             }
@@ -284,6 +302,8 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                                 rawatInap.setKlaimBpjsFlag(obj[17] == null ? "" : obj[17].toString());
                                 rawatInap.setStatusBayar(obj[18] == null ? "" : obj[18].toString());
                                 rawatInap.setIdJenisPeriksa(obj[19] == null ? "" : obj[19].toString());
+                                rawatInap.setKategoriRuangan(obj[23] == null ? "" : obj[23].toString());
+                                rawatInap.setJenisPeriksaPasien(obj[24] == null ? "" : obj[24].toString());
 
                                 if (!"".equalsIgnoreCase(rawatInap.getDesaId())){
                                     List<Object[]> objDesaList = getListAlamatByDesaId(rawatInap.getDesaId());
@@ -335,6 +355,8 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                             rawatInap.setKlaimBpjsFlag(obj[17] == null ? "" : obj[17].toString());
                             rawatInap.setStatusBayar(obj[18] == null ? "" : obj[18].toString());
                             rawatInap.setIdJenisPeriksa(obj[19] == null ? "" : obj[19].toString());
+                            rawatInap.setKategoriRuangan(obj[23] == null ? "" : obj[23].toString());
+                            rawatInap.setJenisPeriksaPasien(obj[24] == null ? "" : obj[24].toString());
 
                             if (!"".equalsIgnoreCase(rawatInap.getDesaId())){
                                 List<Object[]> objDesaList = getListAlamatByDesaId(rawatInap.getDesaId());
@@ -386,6 +408,8 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                         rawatInap.setKlaimBpjsFlag(obj[17] == null ? "" : obj[17].toString());
                         rawatInap.setStatusBayar(obj[18] == null ? "" : obj[18].toString());
                         rawatInap.setIdJenisPeriksa(obj[19] == null ? "" : obj[19].toString());
+                        rawatInap.setKategoriRuangan(obj[23] == null ? "" : obj[23].toString());
+                        rawatInap.setJenisPeriksaPasien(obj[24] == null ? "" : obj[24].toString());
 
                         if (!"".equalsIgnoreCase(rawatInap.getDesaId())){
                             List<Object[]> objDesaList = getListAlamatByDesaId(rawatInap.getDesaId());
@@ -510,7 +534,13 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_status_pasien c ON b.status_periksa = c.id_status_pasien\n" +
-                    "INNER JOIN it_simrs_rawat_inap d ON b.id_detail_checkup = d.id_detail_checkup\n" +
+                    "INNER JOIN (" +
+                    "SELECT a.* FROM (\n" +
+                    "SELECT *, \n" +
+                    " rank() OVER (PARTITION BY id_detail_checkup ORDER BY created_date ASC)\n" +
+                    " FROM it_simrs_rawat_inap\n" +
+                    ")a WHERE a.rank = 1" +
+                    ") d ON b.id_detail_checkup = d.id_detail_checkup\n" +
                     "INNER JOIN mt_simrs_ruangan e ON d.id_ruangan = e.id_ruangan\n" +
                     "INNER JOIN im_simrs_kelas_ruangan f ON e.id_kelas_ruangan = f.id_kelas_ruangan\n" +
                     "WHERE a.id_pasien LIKE :idPasien\n" +
@@ -730,5 +760,172 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
         }
 
         return null;
+    }
+
+    public List<RawatInap> getListTppri(RawatInap bean){
+        List<RawatInap> response = new ArrayList<>();
+        if(bean != null){
+            String idPasien = "";
+            String nama = "";
+            String idDetailCheckup = "";
+            String branchId = "";
+            String tgl = "";
+
+            if(bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())){
+                idPasien = "AND a.id_pasien LIKE '%"+bean.getIdPasien()+"%' \n";
+            }
+            if(bean.getNamaPasien() != null && !"".equalsIgnoreCase(bean.getNamaPasien())){
+                nama = "AND a.nama ILIKE '%"+bean.getNamaPasien()+"%' \n";
+            }
+            if(bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
+                idDetailCheckup = "AND b.id_detail_checkup LIKE '%"+bean.getIdDetailCheckup()+"%' \n";
+            }
+            if(bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+                branchId = "AND a.branch_id LIKE '"+bean.getBranchId()+"'";
+            }else{
+                branchId = "AND a.branch_id LIKE '%'";
+            }
+
+            if(bean.getStTglTo() != null && !"".equalsIgnoreCase(bean.getStTglTo()) &&
+               bean.getStTglFrom() != null && !"".equalsIgnoreCase(bean.getStTglFrom())){
+                tgl = "AND CAST(a.created_date AS date) >= to_date('"+bean.getStTglFrom()+"', 'dd-MM-yyyy') AND CAST(a.created_date AS date) <= to_date('"+bean.getStTglTo()+"', 'dd-MM-yyyy') \n";
+            }else if(bean.getStTglTo() != null && !"".equalsIgnoreCase(bean.getStTglTo())){
+                tgl = "AND CAST(a.created_date AS date) <= to_date('"+bean.getStTglTo()+"', 'dd-MM-yyyy') \n";
+            }else if(bean.getStTglFrom() != null && !"".equalsIgnoreCase(bean.getStTglFrom())){
+                tgl = "AND CAST(a.created_date AS date) >= to_date('"+bean.getStTglFrom()+"', 'dd-MM-yyyy') \n";
+            }
+
+            String SQL = "SELECT\n" +
+                    "a.no_checkup,\n" +
+                    "a.id_pasien,\n" +
+                    "a.nama,\n" +
+                    "b.id_detail_checkup,\n" +
+                    "b.keterangan_selesai,\n" +
+                    "b.tindak_lanjut,\n" +
+                    "b.catatan,\n" +
+                    "a.tgl_keluar,\n" +
+                    "c.keterangan,\n" +
+                    "b.metode_pembayaran, \n" +
+                    "b.id_jenis_periksa_pasien,\n" +
+                    "b.created_date\n" +
+                    "FROM it_simrs_header_checkup a\n" +
+                    "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                    "INNER JOIN im_simrs_jenis_periksa_pasien c ON b.id_jenis_periksa_pasien = c.id_jenis_periksa_pasien\n" +
+                    "LEFT JOIN it_simrs_rawat_inap d ON b.id_detail_checkup = d.id_detail_checkup\n" +
+                    "WHERE b.status_periksa = '3'\n" +
+                    "AND b.tindak_lanjut IN ('rawat_inap','rawat_intensif','rawat_isolasi','kamar_operasi','ruang_bersalin')\n" +
+                    "AND d.id_detail_checkup IS NULL \n"+
+                    "AND b.flag_tppri IS NULL \n"+
+                    branchId + idPasien + nama + idDetailCheckup + tgl;
+
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .list();
+            if(result.size() > 0){
+                for (Object[] obj: result){
+                    RawatInap rawatInap = new RawatInap();
+                    rawatInap.setNoCheckup(obj[0] == null ? null : obj[0].toString());
+                    rawatInap.setIdPasien(obj[1] == null ? null : obj[1].toString());
+                    rawatInap.setNamaPasien(obj[2] == null ? null : obj[2].toString());
+                    rawatInap.setIdDetailCheckup(obj[3] == null ? null : obj[3].toString());
+                    rawatInap.setKeteranganSelesai(obj[4] == null ? null : obj[4].toString());
+                    rawatInap.setTindakLanjut(obj[5] == null ? null : obj[5].toString());
+                    rawatInap.setCatatan(obj[6] == null ? null : obj[6].toString());
+                    rawatInap.setTglKeluar(obj[7] == null ? null : (Timestamp) obj[7]);
+                    rawatInap.setJenisPeriksaPasien(obj[8] == null ? null : obj[8].toString());
+                    rawatInap.setMetodePembayaran(obj[9] == null ? null : obj[9].toString());
+                    rawatInap.setIdJenisPeriksa(obj[10] == null ? null : obj[10].toString());
+                    rawatInap.setCreatedDate(obj[11] == null ? null : (Timestamp) obj[11]);
+                    response.add(rawatInap);
+                }
+            }
+        }
+        return response;
+    }
+
+    public List<RawatInap> getRuanganRawatInap(RawatInap bean){
+        List<RawatInap> rawatInapList = new ArrayList<>();
+        String idRawatInap = "";
+        String idDetilCheckup = "";
+        if(bean.getIdRawatInap() != null && !"".equalsIgnoreCase(bean.getIdRawatInap())){
+            idRawatInap = "AND a.id_rawat_inap = '"+bean.getIdRawatInap()+"'";
+        }
+        if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
+            idDetilCheckup = "AND a.id_detail_checkup = '"+bean.getIdDetailCheckup()+"'";
+        }
+        String SQL = "SELECT \n" +
+                "a.id_rawat_inap,\n" +
+                "a.id_detail_checkup,\n" +
+                "b.id_ruangan,\n" +
+                "b.no_ruangan,\n" +
+                "b.nama_ruangan,\n" +
+                "c.kategori,\n" +
+                "c.id_kelas_ruangan,\n" +
+                "c.nama_kelas_ruangan\n" +
+                "FROM it_simrs_rawat_inap a\n" +
+                "INNER JOIN mt_simrs_ruangan b ON a.id_ruangan = b.id_ruangan\n" +
+                "INNER JOIN im_simrs_kelas_ruangan c ON b.id_kelas_ruangan = c.id_kelas_ruangan\n" +
+                "WHERE a.flag = 'Y' \n" +idRawatInap + idDetilCheckup;
+
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .list();
+            if(result.size() > 0){
+                for (Object[] objects : result){
+                    RawatInap rawatInap = new RawatInap();
+                    rawatInap.setIdRawatInap(objects[0] == null ? null : objects[0].toString());
+                    rawatInap.setIdDetailCheckup(objects[1] == null ? null : objects[1].toString());
+                    rawatInap.setIdRuangan(objects[2] == null ? null : objects[2].toString());
+                    rawatInap.setNoRuangan(objects[3] == null ? null : objects[3].toString());
+                    rawatInap.setNamaRangan(objects[4] == null ? null : objects[4].toString());
+                    rawatInap.setKategoriRuangan(objects[5] == null ? null : objects[5].toString());
+                    rawatInap.setIdKelasRuangan(objects[6] == null ? null : objects[6].toString());
+                    rawatInap.setKelasRuanganName(objects[7] == null ? null : objects[7].toString());
+                    rawatInapList.add(rawatInap);
+                }
+            }
+        return rawatInapList;
+    }
+
+    public List<RawatInap> getRuanganRawatInap(String idDetailCheckup){
+        List<RawatInap> rawatInapList = new ArrayList<>();
+        if(idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)){
+            String SQL = "SELECT \n" +
+                    "a.id_rawat_inap,\n" +
+                    "a.id_detail_checkup,\n" +
+                    "a.id_ruangan,\n" +
+                    "a.nama_ruangan,\n" +
+                    "a.created_date,\n" +
+                    "a.tgl_masuk, \n" +
+                    "a.tgl_keluar,\n" +
+                    "CAST(DATE_PART('day', a.tgl_keluar - a.tgl_masuk) + 1 AS BIGINT) as hari, \n" +
+                    "b.tarif\n" +
+                    "FROM it_simrs_rawat_inap a\n" +
+                    "INNER JOIN mt_simrs_ruangan b ON a.id_ruangan = b.id_ruangan\n" +
+                    "WHERE status = '3'\n" +
+                    "AND tgl_keluar IS NOT NULL\n" +
+                    "AND id_detail_checkup = :id";
+
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", idDetailCheckup)
+                    .list();
+            if(result.size() > 0){
+                for (Object[] obj: result){
+                    RawatInap rawatInap = new RawatInap();
+                    rawatInap.setIdRawatInap(obj[0] == null ? null : obj[0].toString());
+                    rawatInap.setIdDetailCheckup(obj[1] == null ? null : obj[1].toString());
+                    rawatInap.setIdRuangan(obj[2] == null ? null : obj[2].toString());
+                    rawatInap.setNamaRangan(obj[3] == null ? null : obj[3].toString());
+                    rawatInap.setCreatedDate(obj[4] == null ? null : (Timestamp) obj[4]);
+                    rawatInap.setTglMasuk(obj[5] == null ? null : (Timestamp) obj[5]);
+                    rawatInap.setTglKeluar(obj[6] == null ? null : (Timestamp) obj[6]);
+                    rawatInap.setLamakamar(obj[7] == null ? null : (BigInteger) obj[7]);
+                    rawatInap.setTarif(obj[8] == null ? null : (BigInteger) obj[8]);
+                    rawatInapList.add(rawatInap);
+                }
+            }
+        }
+        return rawatInapList;
     }
 }

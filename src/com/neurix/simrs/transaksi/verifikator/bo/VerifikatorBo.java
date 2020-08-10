@@ -21,4 +21,6 @@ public interface VerifikatorBo {
 
     public List<RiwayatTindakan> getListTindakanApprove(String idDetail) throws GeneralBOException;
     public List<ImSimrsKategoriTindakanInaEntity> getAllKatTindakanInaList() throws GeneralBOException;
+
+    public List<HeaderDetailCheckup> getListVerifTransaksi(HeaderDetailCheckup detailCheckup) throws GeneralBOException;
 }

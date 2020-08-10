@@ -53,6 +53,7 @@ import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
 import com.neurix.simrs.transaksi.tindakanrawat.dao.TindakanRawatDao;
 import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
+import org.apache.log4j.Hierarchy;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -274,6 +275,52 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     }
 
     @Override
+    public List<HeaderDetailCheckup> getListVerifTransaksi(HeaderDetailCheckup detailCheckup) throws GeneralBOException {
+        return checkupDetailDao.getListVerifTransaksi(detailCheckup);
+    }
+
+    @Override
+    public CrudResponse updateDetailCheckup(HeaderDetailCheckup bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        try {
+            ItSimrsHeaderDetailCheckupEntity entity = new ItSimrsHeaderDetailCheckupEntity();
+            entity = checkupDetailDao.getById("idDetailCheckup", bean.getIdDetailCheckup());
+            if(entity != null){
+                if(bean.getInvoice() != null){
+                    entity.setInvoice(bean.getInvoice());
+                }
+                if(bean.getFlagCloseTraksaksi() != null){
+                    entity.setFlagCloseTraksaksi(bean.getFlagCloseTraksaksi());
+                }
+                if(bean.getFlagTppri() != null){
+                    entity.setFlagTppri(bean.getFlagTppri());
+                }
+
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+                entity.setLastUpdate(bean.getLastUpdate());
+                entity.setAction("U");
+
+                try {
+                    checkupDetailDao.updateAndSave(entity);
+                    response.setStatus("success");
+                    response.setMsg("Berhasil");
+                }catch (HibernateException e){
+                    response.setStatus("error");
+                    response.setMsg("IError when update invoice, "+e.getMessage());
+                }
+
+            }else{
+                response.setStatus("error");
+                response.setMsg("ID Detail Checkup Tidak ditemukan");
+            }
+        }catch (HibernateException e){
+            response.setStatus("error");
+            response.setMsg("Error when update invoice, "+e.getMessage());
+        }
+        return response;
+    }
+
+    @Override
     public HeaderDetailCheckup getTotalBiayaTindakanBpjs(String idDetailCheckup) throws GeneralBOException {
         HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
         try {
@@ -397,6 +444,11 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             entity.setIdPelayananBpjs(bean.getIdPelayananBpjs() == null ? entity.getIdPelayananBpjs() : bean.getIdPelayananBpjs());
             entity.setNoCheckupUlang(bean.getNoCheckupUlang());
             entity.setIsOrderLab(bean.getIsOrderLab());
+            entity.setTindakLanjut(bean.getTindakLanjut());
+            if("".equalsIgnoreCase(bean.getCatatan()) && bean.getCatatan() != null){
+                entity.setCatatan(bean.getCatatan());
+            }
+            entity.setRsRujukan(bean.getRsRujukan());
 
             try {
                 checkupDetailDao.updateAndSave(entity);
@@ -410,7 +462,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             }
 
             // update tgl kluar if selesai
-            if ("selesai".equalsIgnoreCase(bean.getStatus()) || "rujuk_rs_lain".equalsIgnoreCase(bean.getStatus())) {
+            if ("selesai".equalsIgnoreCase(bean.getTindakLanjut()) || "rujuk_rs_lain".equalsIgnoreCase(bean.getTindakLanjut())) {
                 HeaderCheckup headerCheckup = new HeaderCheckup();
                 headerCheckup.setNoCheckup(entity.getNoCheckup());
                 List<ItSimrsHeaderChekupEntity> headerChekupEntities = getListEntityCheckup(headerCheckup);
@@ -570,6 +622,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         detailCheckupEntity.setIdAsuransi(bean.getIdAsuransi());
         detailCheckupEntity.setCoverBiaya(bean.getCoverBiaya());
         detailCheckupEntity.setNoKartuAsuransi(bean.getNoKartuAsuransi());
+        detailCheckupEntity.setTindakLanjut(bean.getTindakLanjut());
+        detailCheckupEntity.setKelasPasien(bean.getIdKelas());
 
         if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "ptpn".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
             detailCheckupEntity.setRujuk(bean.getPerujuk() != null ? bean.getPerujuk() : null);
@@ -593,53 +647,18 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             throw new GeneralBOException("[CheckupDetailBoImpl.saveAdd] Error When Saving data detail checkup");
         }
 
-        // saving dokter
-        String idDokter = bean.getIdDokter();
-
-        if (bean.getIdDokter() != null && !"".equalsIgnoreCase(bean.getIdDokter()) && detailCheckupEntity.getIdDetailCheckup() != null && !"".equalsIgnoreCase(detailCheckupEntity.getIdDetailCheckup())) {
-            DokterTeam dokterTeam = new DokterTeam();
-            dokterTeam.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
-            dokterTeam.setIdDokter(bean.getIdDokter());
-            dokterTeam.setCreatedWho(bean.getCreatedWho());
-            dokterTeam.setLastUpdateWho(bean.getLastUpdateWho());
-            if(bean.getRawatInap()){
-                dokterTeam.setIdPelayanan(bean.getIdPelayananDokter());
-            }else{
-                dokterTeam.setIdPelayanan(bean.getIdPelayanan());
+        if (bean.getDokterTeamList().size() > 0) {
+            for (DokterTeam dokterTeam: bean.getDokterTeamList()){
+                DokterTeam dkt = new DokterTeam();
+                dkt.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+                dkt.setIdDokter(dokterTeam.getIdDokter());
+                dkt.setIdPelayanan(dokterTeam.getIdPelayanan());
+                dkt.setJenisDpjp(dokterTeam.getJenisDpjp());
+                dkt.setCreatedWho(bean.getCreatedWho());
+                dkt.setLastUpdateWho(bean.getLastUpdateWho());
+                response = saveTeamDokter(dkt);
             }
-            response = saveTeamDokter(dokterTeam);
         }
-
-// for rawat Inap
-//            List<ItSimrsDokterTeamEntity> dokterEntities = null;
-//            Map hsCriteria = new HashMap();
-//            // set criteria with old detail id for get old dokter team data
-//            hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
-//
-//            try {
-//                dokterEntities = dokterTeamDao.getByCriteria(hsCriteria);
-//                response.setStatus("success");
-//                response.setMsg("Berhasil");
-//            } catch (HibernateException e) {
-//                response.setStatus("error");
-//                response.setMsg("Errro when search dokter team "+e.getMessage());
-//                logger.error("[CheckupDetailBoImpl.saveAdd] Error When getting data dokter team" + e.getMessage());
-//                throw new GeneralBOException("[CheckupDetailBoImpl.saveAdd] Error When getting data dokter team");
-//            }
-//
-//            ItSimrsDokterTeamEntity dokTeam = new ItSimrsDokterTeamEntity();
-//
-//            if (!dokterEntities.isEmpty()) {
-//                dokTeam = dokterEntities.get(0);
-//                idDokter = dokTeam.getIdDokter();
-//                DokterTeam dokterTeam = new DokterTeam();
-//                // set id detail with new id detail
-//                dokterTeam.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
-//                dokterTeam.setIdDokter(dokTeam.getIdDokter());
-//                dokterTeam.setCreatedWho(bean.getCreatedWho());
-//                dokterTeam.setLastUpdateWho(bean.getLastUpdateWho());
-//                response = saveTeamDokter(dokterTeam);
-//            }
 
         if (bean.getRawatInap()) {
             // save to table rawat inap
@@ -663,7 +682,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                     tindakanRawatEntity.setIdTindakanRawat("TDR" + getNextTindakanRawatId());
                     tindakanRawatEntity.setIdTindakan(tindakanEntity.getIdTindakan());
                     tindakanRawatEntity.setNamaTindakan(tindakanEntity.getTindakan());
-                    tindakanRawatEntity.setIdDokter(idDokter);
+                    tindakanRawatEntity.setIdDokter(bean.getIdDokter());
                     tindakanRawatEntity.setCreatedDate(bean.getCreatedDate());
                     tindakanRawatEntity.setCreatedWho(bean.getCreatedWho());
                     tindakanRawatEntity.setLastUpdate(bean.getCreatedDate());
@@ -797,6 +816,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         entity.setCreatedWho(bean.getCreatedWho());
         entity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
         entity.setLastUpdateWho(bean.getLastUpdateWho());
+        entity.setJenisDpjp(bean.getJenisDpjp());
 
         try {
             dokterTeamDao.addAndSave(entity);
@@ -892,6 +912,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             entity.setCreatedWho(bean.getCreatedWho());
             entity.setLastUpdateWho(bean.getCreatedWho());
             entity.setTglMasuk(bean.getCreatedDate());
+            entity.setStatus("1");
 
             try {
                 rawatInapDao.addAndSave(entity);

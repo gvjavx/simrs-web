@@ -153,7 +153,7 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
         return results;
     }
 
-    public List<Dokter> getListDokterByBranchId(String branchId, String idDokter){
+    public List<Dokter> getListDokterByBranchId(String branchId, String idDokter, String kategori){
         List<Dokter> dokterList = new ArrayList<>();
         String notLike = "";
         if(branchId != null && !"".equalsIgnoreCase(branchId)){
@@ -172,12 +172,13 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
                     "INNER JOIN im_simrs_dokter_pelayanan b ON a.id_dokter = b.id_dokter\n" +
                     "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
                     "WHERE c.branch_id = :branchId\n" +
-                    "AND c.tipe_pelayanan = 'rawat_jalan'\n" + notLike +
+                    "AND c.tipe_pelayanan = :kategori\n" + notLike +
                     "ORDER BY c.nama_pelayanan ASC";
 
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("branchId", branchId)
+                    .setParameter("kategori", kategori)
                     .list();
 
             if(result.size() > 0){
@@ -194,7 +195,7 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
         return dokterList;
     }
 
-    public List<Dokter> getListDokterByIdDetailCheckup(String idDetailCheckup){
+    public List<Dokter> getListDokterByIdDetailCheckup(String idDetailCheckup, String kategori){
         List<Dokter> dokterList = new ArrayList<>();
         if(idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)){
             String SQL = "SELECT \n" +
@@ -205,11 +206,12 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
                     "FROM it_simrs_dokter_team a\n" +
                     "INNER JOIN im_simrs_dokter b ON a.id_dokter = b.id_dokter\n" +
                     "INNER JOIN im_simrs_pelayanan c ON a.id_pelayanan = c.id_pelayanan\n" +
-                    "WHERE a.id_detail_checkup = :id";
+                    "WHERE a.id_detail_checkup = :id AND c.tipe_pelayanan = :kat";
 
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("id", idDetailCheckup)
+                    .setParameter("kat", kategori)
                     .list();
 
             if(result.size() > 0){

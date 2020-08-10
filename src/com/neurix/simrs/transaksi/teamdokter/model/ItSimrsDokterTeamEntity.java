@@ -16,6 +16,15 @@ public class ItSimrsDokterTeamEntity implements Serializable {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String idPelayanan;
+    private String jenisDpjp;
+
+    public String getJenisDpjp() {
+        return jenisDpjp;
+    }
+
+    public void setJenisDpjp(String jenisDpjp) {
+        this.jenisDpjp = jenisDpjp;
+    }
 
     public String getIdPelayanan() {
         return idPelayanan;

@@ -336,6 +336,7 @@
       <create creator="new">
           <param name="class" value="com.neurix.simrs.transaksi.checkupdetail.action.CheckupDetailAction"/>
       </create>
+      <convert converter="bean" match="com.neurix.simrs.master.kelasruangan.model.KelasRuangan"/>
 
       <!--Pasien -->
       <create creator="new">

@@ -191,7 +191,9 @@
                                             <td width="45%"><b>No SEP</b></td>
                                             <td style="vertical-align: middle;">
                                                 <table>
-                                                    <s:label cssClass="label label-success" name="headerDetailCheckup.noSep"></s:label>
+                                                    <span style="background-color: #00a65a; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                    <s:property value="headerDetailCheckup.noSep"></s:property>
+                                                    </span>
                                                 </table>
                                             </td>
                                         </tr>
@@ -271,6 +273,8 @@
                                 </table>
                             </div>
                             <!-- /.col -->
+                            <s:hidden value="headerDetailCheckup.jenisPeriksaPasien" id="jenis_periksa"></s:hidden>
+
                             <div class="col-md-6">
                                 <div style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px; text-align: center"
                                      class="card card-4 pull-right">
@@ -284,8 +288,9 @@
                                         <td><b>Jenis Pasien</b></td>
                                         <td>
                                             <table>
-                                                <s:label id="jenis_periksa"
-                                                         name="headerDetailCheckup.jenisPeriksaPasien"></s:label>
+                                                <span style="background-color: #286090; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                    <s:property value="headerDetailCheckup.jenisPeriksaPasien"></s:property>
+                                                </span>
                                             </table>
                                         </td>
                                     </tr>
@@ -623,17 +628,6 @@
                                         <div id="bar_bmi"></div>
                                     </div>
                                 </div>
-                                <%--<small>--%>
-                                    <%--<ul style="list-style-type: none;">--%>
-                                        <%--<li style="float: left"><i class="fa fa-square" style="color: #5bc0de"></i> Kurus berat--%>
-                                        <%--</li>--%>
-                                        <%--<li style="float: left; padding-left: 10px"><i class="fa fa-square" style="color: #337ab7"></i> Kurus ringan--%>
-                                        <%--</li>--%>
-                                        <%--<li style="float: left; padding-left: 10px"><i class="fa fa-square" style="color: #5cb85c"></i> Normal </li>--%>
-                                        <%--<li style="float: left; padding-left: 10px"><i class="fa fa-square" style="color: #f0ad4e"></i> Gemuk ringan  </li>--%>
-                                        <%--<li style="float: left; padding-left: 10px"><i class="fa fa-square" style="color: #d9534f"></i> Gemuk berat    </li>--%>
-                                    <%--</ul>--%>
-                                <%--</small>--%>
                                 <small>
                                     <ul style="list-style-type: none;">
                                         <li style="float: left; padding-left: 10px"><i class="fa fa-square" style="color: #337ab7"></i> Berat badan kurang
@@ -698,14 +692,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <%--<div class="box-header with-border"></div>--%>
-                    <%--<div class="box-header with-border">--%>
-                    <%----%>
-                    <%--</div>--%>
-                    <%--<div class="box-body">--%>
-
-                    <%--</div>--%>
                     <div class="box-header with-border" id="pos_nosa">
                     </div>
                     <div class="box-header with-border">
@@ -922,33 +908,6 @@
                             </tbody>
                         </table>
                     </div>
-
-                    <%--<div class="box-header with-border" id="pos_obat">--%>
-                    <%--</div>--%>
-                    <%--<div class="box-header with-border">--%>
-                        <%--<h3 class="box-title"><i class="fa fa-plus-square"></i> Obat Penunjang</h3>--%>
-                    <%--</div>--%>
-                    <%--<div class="box-body">--%>
-                        <%--<button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"--%>
-                                <%--onclick="showModal(5)"><i class="fa fa-plus"></i> Obat Penunjang--%>
-                        <%--</button>--%>
-                        <%--<table class="table table-bordered table-striped">--%>
-                            <%--<thead>--%>
-                            <%--<tr bgcolor="#90ee90">--%>
-                                <%--<td>Tanggal</td>--%>
-                                <%--<td>ID Obat</td>--%>
-                                <%--<td>Obat</td>--%>
-                                <%--<td align="center">Qty</td>--%>
-                                <%--<td>Jenis Satuan</td>--%>
-                                <%--<td align="center">Action</td>--%>
-                            <%--</tr>--%>
-                            <%--</thead>--%>
-                            <%--<tbody id="body_obat">--%>
-
-                            <%--</tbody>--%>
-                        <%--</table>--%>
-                    <%--</div>--%>
-
                     <div class="box-header with-border" id="pos_rssep">
                     </div>
                     <div class="box-header with-border">
@@ -963,6 +922,7 @@
                             <tr bgcolor="#90ee90">
                                 <td>Tanggal</td>
                                 <td>ID Resep</td>
+                                <td>Status</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -971,107 +931,129 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="box-header with-border">
-                    </div>
-                    <div class="box-header with-border">
-                        <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_all">
-                            <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                            <p id="msg_all_war"></p>
-                        </div>
-                        <div class="alert alert-success alert-dismissible" style="display: none" id="success_all">
-                            <h4><i class="icon fa fa-info"></i> Info!</h4>
-                            <p id="msg_all_suc"></p>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <div class="col-md-offset-4 col-md-4 text-center">
-                                        <a class="btn btn-success" id="save_all" onclick="confirmSaveAllTindakan()"><i class="fa fa-check"></i> Save All Tindakan</a>
-                                        <button style="display: none; cursor: no-drop;" type="button"
-                                                class="btn btn-success" id="load_all"><i class="fa fa-spinner fa-spin"></i>
-                                            Sedang Menyimpan...
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <%--<div class="box-header with-border">--%>
+                    <%--</div>--%>
+                    <%--<div class="box-header with-border">--%>
+                        <%--<div class="alert alert-danger alert-dismissible" style="display: none" id="warning_all">--%>
+                            <%--<h4><i class="icon fa fa-ban"></i> Warning!</h4>--%>
+                            <%--<p id="msg_all_war"></p>--%>
+                        <%--</div>--%>
+                        <%--<div class="alert alert-success alert-dismissible" style="display: none" id="success_all">--%>
+                            <%--<h4><i class="icon fa fa-info"></i> Info!</h4>--%>
+                            <%--<p id="msg_all_suc"></p>--%>
+                        <%--</div>--%>
+                        <%--<div class="row">--%>
+                            <%--<div class="col-md-12">--%>
+                                <%--<div class="form-group">--%>
+                                    <%--<div class="col-md-offset-4 col-md-4 text-center">--%>
+                                        <%--<a class="btn btn-success" id="save_all" onclick="confirmSaveAllTindakan()"><i class="fa fa-check"></i> Save All Tindakan</a>--%>
+                                        <%--<button style="display: none; cursor: no-drop;" type="button"--%>
+                                                <%--class="btn btn-success" id="load_all"><i class="fa fa-spinner fa-spin"></i>--%>
+                                            <%--Sedang Menyimpan...--%>
+                                        <%--</button>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-navicon"></i> Keterangan (Jika sudah pulang / selesai pemeriksaan)</h3>
                     </div>
                     <div class="box-body">
                         <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_ket">
                             <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                            Silahkan cek kembali data inputan!
+                            <p id="warning_msg"></p>
+                        </div>
+                        <div class="alert alert-success alert-dismissible" style="display: none" id="success_ket">
+                            <h4><i class="icon fa fa-info"></i> Succes!</h4>
+                            <p id="success_msg"></p>
                         </div>
                         <div class="row">
-                            <div class="col-md-offset-1 col-md-5">
-                                <div class="form-group">
-                                    <label class="col-md-5" style="margin-top: 10px">Keterangan</label>
-                                    <div class="col-md-7">
-                                        <select class="form-control select2" id="keterangan" style="width: 100%"
-                                                onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()}; selectKeterangan(this.value)">
-                                            <option value=''>[Select One]</option>
-                                            <option value='selesai'>Selesai</option>
-                                            <option value='pindah'>Pindah Poli Lain</option>
-                                            <%--<option value='rujuk'>Rujuk Rawat Inap</option>--%>
-                                            <option value='lanjut_biaya'>Lanjut Biaya</option>
-                                            <option value='rujuk_rs_lain'>Rujuk RS Lain</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-5">
-                                <div id="form-selesai" style="display: none">
+                            <div class="col-md-6">
+                                <div class="row">
                                     <div class="form-group">
-                                        <label class="col-md-4" style="margin-top: 10px">Catatan</label>
+                                        <label class="col-md-4" style="margin-top: 10px">Instruksi Tindak Lanjut</label>
                                         <div class="col-md-8">
-                                        <s:action id="initComboKet" namespace="/checkupdetail"
-                                                  name="getListComboKeteranganKeluar_checkupdetail"/>
-                                        <s:select list="#initComboKet.listOfKeterangan" id="ket_selesai"
-                                                  name="headerCheckup.idPelayanan" listKey="keterangan"
-                                                  listValue="keterangan" cssStyle="width: 100%"
-                                                  onchange="var warn =$('#war_kolom-2').is(':visible'); if (warn){$('#col_kolom-2').show().fadeOut(3000);$('#war_kolom-2').hide()}; showFormCekup(this.value);"
-                                                  headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control select2"/>
+                                            <select class="form-control select2" id="keterangan" style="width: 100%"
+                                                    onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()}; selectKeterangan(this.value)">
+                                                <option value="">[Select One]</option>
+                                                <option value="selesai">Selesai</option>
+                                                <option value="pindah_poli">Pindah Poli</option>
+                                                <option value="rawat_inap">Rawat Inap</option>
+                                                <option value="rawat_intensif">Rawat Intensif</option>
+                                                <option value="rawat_isolasi">Rawat Isolasi</option>
+                                                <option value="kamar_operasi">Kamar Operasi</option>
+                                                <option value="ruang_bersalin">Ruang Bersalin</option>
+                                                <option value="rujuk_rs_lain">Dirujuk</option>
+                                                <option value="kontrol_ulang">Kontrol Ulang</option>
+                                                <option value="lanjut_biaya">Lanjut Biaya</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
-                                <div id="kamar" style="display: none;">
+                                <div class="row" id="form-selesai" style="display: none">
                                     <div class="form-group">
-                                        <label class="col-md-4" style="margin-top: 10px">Kelas</label>
+                                        <label class="col-md-4" style="margin-top: 10px">Keterangan</label>
                                         <div class="col-md-8">
-                                        <s:action id="initComboKelas" namespace="/checkupdetail"
-                                                  name="getListComboKelasRuangan_checkupdetail"/>
+                                            <s:action id="initComboKet" namespace="/checkupdetail"
+                                                      name="getListComboKeteranganKeluar_checkupdetail"/>
+                                            <s:select list="#initComboKet.listOfKeterangan" id="ket_selesai"
+                                                      listKey="keterangan"
+                                                      listValue="keterangan" cssStyle="width: 100%"
+                                                      onchange="var warn =$('#war_kolom-2').is(':visible'); if (warn){$('#col_kolom-2').show().fadeOut(3000);$('#war_kolom-2').hide()}; showFormCekup(this.value);"
+                                                      headerKey="" headerValue="[Select one]"
+                                                      cssClass="form-control select2"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" id="form-ket-rawat_inap" style="display: none">
+                                    <div class="form-group">
+                                        <label class="col-md-4" style="margin-top: 10px">Keterangan</label>
+                                        <div class="col-md-8">
+                                            <select class="form-control select2" id="keterangan_rw" style="width: 100%">
+                                                <option value="">[Select One]</option>
+                                                <option value="Preventif">Preventif</option>
+                                                <option value="Kuratif">Kuratif</option>
+                                                <option value="Variatif">Variatif</option>
+                                                <option value="Paliatif">Paliatif</option>
+                                                <option value="Rehabilitatif">Rehabilitatif</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" style="display: none" id="form-pindah_poli">
+                                    <div class="form-group">
+                                        <label class="col-md-4" style="margin-top: 10px">Poli</label>
+                                    <div class="col-md-8">
+                                        <s:action id="initComboPoli" namespace="/checkup"
+                                                  name="getComboPelayanan_checkup"/>
                                         <s:select
-                                                onchange="var warn =$('#war_kolom-2').is(':visible'); if (warn){$('#col_kolom-2').show().fadeOut(3000);$('#war_kolom-2').hide()}; listSelectRuangan(this)"
-                                                list="#initComboKelas.listOfKelasRuangan" id="kelas_kamar"
-                                                listKey="idKelasRuangan" cssStyle="width: 100%"
-                                                listValue="namaKelasRuangan"
+                                                list="#initComboPoli.listOfPelayanan" id="poli_lain"
+                                                name="headerCheckup.idPelayanan" listKey="idPelayanan"
+                                                listValue="namaPelayanan" cssStyle="width: 100%"
+                                                onchange="listDokterKeterangan(this.value)"
                                                 headerKey="" headerValue="[Select one]"
                                                 cssClass="form-control select2"/>
-                                        </div>
+                                    </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-4" style="margin-top: 10px">Kamar</label>
+                                        <label class="col-md-4" style="margin-top: 10px">Dokter</label>
                                         <div class="col-md-8">
-                                        <select class="form-control select2" id="kamar_detail" style="width: 100%"
-                                                onchange="var warn =$('#war_kolom-3').is(':visible'); if (warn){$('#col_kolom-3').show().fadeOut(3000);$('#war_kolom-3').hide()}">
-                                            <option value=''>[Select One]</option>
-                                        </select>
+                                            <select id="list_dokter" class="form-control select2" style="width: 100%">
+                                                <option value=''>[Select One]</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
-                                <div id="pembayaran" style="display: none;">
+                                <div class="row" style="display: none" id="form-metode_pembayaran">
                                     <div class="form-group">
-                                        <label class="col-md-4" style="margin-top: 10px">Metode Bayar</label>
+                                        <label class="col-md-4" style="margin-top: 10px">Metode Pembayaran</label>
                                         <div class="col-md-8">
-                                            <s:select
-                                                    id="metode_bayar"
-                                                    list="#{'tunai':'Tunai','non_tunai':'Non Tunai'}"
-                                                    cssStyle="margin-top: 7px"
-                                                    headerKey="" headerValue="[Select one]"
-                                                    cssClass="form-control"/>
+                                            <select class="form-control select2" id="metode_bayar" style="width: 100%">
+                                                <option value="">[Select One]</option>
+                                                <option value="tunai">Tunai</option>
+                                                <option value="non_tunai">Non Tunai</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -1081,84 +1063,44 @@
                                                 <div class="input-group-addon">
                                                     Rp.
                                                 </div>
-                                                <s:hidden id="uang_muka_val"></s:hidden>
-                                                <s:textfield type="text" id="uang_muka" cssClass="form-control"/>
+                                                <input class="form-control" id="val_uang_muka" oninput="convertRp(this.id, this.value)">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div id="form-asuransi" style="display: none">
+                                <div class="row" id="form-rs-rujukan" style="display: none">
                                     <div class="form-group">
-                                        <label class="col-md-4" style="margin-top: 10px">Nama Asuransi</label>
+                                        <label class="col-md-4" style="margin-top: 10px">Rumah Sakit Rujukan</label>
                                         <div class="col-md-8">
-                                            <input style="margin-top: 7px" class="form-control" id="ri_nama_asuransi" disabled>
+                                            <s:textfield cssClass="form-control jarak" id="rs_rujukan" placeholder=""></s:textfield>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="row" id="form-tgl-kontrol" style="display: none">
                                     <div class="form-group">
-                                        <label class="col-md-4" style="margin-top: 7px">Cover Biaya</label>
+                                        <label class="col-md-4 jarak">Tanggal Kontrol Ulang</label>
                                         <div class="col-md-8">
-                                            <div class="input-group" style="margin-top: 7px">
+                                            <div class="input-group jarak">
                                                 <div class="input-group-addon">
-                                                    Rp.
+                                                    <i class="fa fa-calendar"></i>
                                                 </div>
-                                                <s:hidden id="rj_cover_biaya_val"></s:hidden>
-                                                <s:textfield type="text" id="rj_cover_biaya" cssClass="form-control"/>
+                                                <s:textfield cssClass="form-control datepicker2 datemask2" id="tgl_kontrol"></s:textfield>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-offset-4 col-md-8">
+                                            <div class="form-check jarak">
+                                                <input onclick="isPemeriksaan(this.id)" type="checkbox" name="pemeriksaan_lab" id="pemeriksaan_lab" value="yes">
+                                                <label for="pemeriksaan_lab"></label> Pemeriksaan Lab/Radiologi?
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div id="form-poli" style="display: none">
+                                <div class="row jarak" id="form-pemeriksaan" style="display: none">
                                     <div class="form-group">
-                                        <label class="col-md-4" style="margin-top: 10px">Poli</label>
+                                        <label class="col-md-4" style="margin-top: 7px">Kategori</label>
                                         <div class="col-md-8">
-                                        <s:action id="initComboPoli" namespace="/checkup"
-                                                  name="getComboPelayanan_checkup"/>
-                                        <s:select
-                                                list="#initComboPoli.listOfPelayanan" id="poli_lain"
-                                                name="headerCheckup.idPelayanan" listKey="idPelayanan"
-                                                listValue="namaPelayanan" cssStyle="width: 100%"
-                                                onchange="var warn =$('#war_kolom-2').is(':visible'); if (warn){$('#col_kolom-2').show().fadeOut(3000);$('#war_kolom-2').hide()}; listDokterKeterangan(this)"
-                                                headerKey="" headerValue="[Select one]"
-                                                cssClass="form-control select2"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4" style="margin-top: 10px">Dokter</label>
-                                        <div class="col-md-8">
-                                        <select id="list_dokter" class="form-control select2" style="width: 100%"
-                                                onchange="var warn =$('#war_kolom-3').is(':visible'); if (warn){$('#col_kolom-3').show().fadeOut(3000);$('#war_kolom-3').hide()}">
-                                            <option value=''>[Select One]</option>
-                                        </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row" style="display: none;" id="form-cekup">
-                            <div class="col-md-offset-1 col-md-5">
-                                <div class="form-group">
-                                    <label class="col-md-5" style="margin-top: 10px">Tgl Checkup Ulang</label>
-                                    <div class="col-md-7">
-                                        <div class="input-group date" style="margin-top: 7px">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            <s:textfield id="tgl_cekup" cssClass="form-control datepicker2 datemask2"/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-offset-5 col-md-7">
-                                        <div class="form-check jarak">
-                                            <input onclick="isPemeriksaan(this.id)" type="checkbox" name="pemeriksaan_lab" id="pemeriksaan_lab" value="yes">
-                                            <label for="pemeriksaan_lab"></label> Pemeriksaan Lab/Radiologi?
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="form-pemeriksaan" style="display: none">
-                                    <div class="form-group">
-                                        <label class="col-md-5" style="margin-top: 7px">Kategori</label>
-                                        <div class="col-md-7">
                                             <s:action id="comboLab2" namespace="/kategorilab"
                                                       name="getListKategoriLab_kategorilab"/>
                                             <s:select cssStyle="margin-top: 7px; width: 100%"
@@ -1171,8 +1113,8 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-5" style="margin-top: 7px">Unit</label>
-                                        <div class="col-md-7">
+                                        <label class="col-md-4" style="margin-top: 7px">Unit</label>
+                                        <div class="col-md-8">
                                             <select class="form-control select2" style="margin-top: 7px; width: 100%" id="ckp_unit"
                                                     onchange="listSelectParameter(this.value);">
                                                 <option value=''>[Select One]</option>
@@ -1180,8 +1122,8 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-5" style="margin-top: 7px">Parameter</label>
-                                        <div class="col-md-7">
+                                        <label class="col-md-4" style="margin-top: 7px">Parameter</label>
+                                        <div class="col-md-8">
                                             <select class="form-control select2" multiple style="margin-top: 7px; width: 100%" id="ckp_parameter">
                                                 <option value=''>[Select One]</option>
                                             </select>
@@ -1189,12 +1131,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-5">
-                                <div class="form-group">
-                                    <label class="col-md-4" style="margin-top: 10px">Catatan Checkup</label>
-                                    <div class="col-md-8">
-                                        <s:textarea cssClass="form-control" rows="9" id="cekup_ket"
-                                                    style="margin-top: 7px"></s:textarea>
+                            <div class="col-md-6">
+                                <div class="row" id="form-catatan" style="display: none">
+                                    <div class="form-group">
+                                        <label class="col-md-4" style="margin-top: 10px">Catatan</label>
+                                        <div class="col-md-8">
+                                            <s:textarea cssClass="form-control jarak" id="pesan_dokter" rows="3" placeholder="Pesan untuk pasien"></s:textarea>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1202,14 +1145,14 @@
                     </div>
                     <div class="box-header with-border">
                     </div>
-                    <div class="box-header with-border">
+                    <div class="box-header with-border" id="pos_finis">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <div class="col-md-offset-4 col-md-4 text-center">
                                         <a class="btn btn-warning" href="initForm_checkupdetail.action"><i class="fa fa-arrow-left"></i> Back</a>
                                         <%--<a class="btn btn-primary" onclick="printGelangPasien()"><i class="fa fa-print"></i> Print</a>--%>
-                                        <a class="btn btn-success" id="save_ket" onclick="confirmSaveKeterangan()"><i class="fa fa-check"></i> Close</a>
+                                        <a class="btn btn-success" id="save_ket" onclick="confirmPemeriksaanPasien()"><i class="fa fa-check"></i> Close</a>
                                         <button style="display: none; cursor: no-drop;" type="button"
                                                 class="btn btn-success" id="load_ket"><i class="fa fa-spinner fa-spin"></i>
                                             Sedang Menyimpan...
@@ -2280,7 +2223,7 @@
     var idPoli = $('#id_palayanan').val();
     var idPasien = $('#id_pasien').val();
     var noCheckup = $('#no_checkup').val();
-    var jenisPeriksa = $('#jenis_periksa').text();
+    var jenisPeriksa = $('#jenis_periksa').val();
     var jenisPeriksaPasien = $('#jenis_pasien').val();
 
     var isReadRM = false;
@@ -2401,34 +2344,6 @@
         paintCanvas.addEventListener("mouseup", stopDrawing);
         paintCanvas.addEventListener("mouseout", stopDrawing);
 
-        var nominal = document.getElementById('uang_muka');
-        if(nominal != ''){
-            nominal.addEventListener('keyup', function (e) {
-                nominal.value = formatRupiah2(this.value);
-                var valBayar = nominal.value.replace(/[.]/g, '');
-
-                if(valBayar != ''){
-                    $('#uang_muka_val').val(valBayar);
-                }else{
-                    $('#uang_muka_val').val('');
-                }
-            });
-        }
-
-        var cover = document.getElementById('rj_cover_biaya');
-        if(cover != ''){
-            cover.addEventListener('keyup', function (e) {
-                cover.value = formatRupiah2(this.value);
-                var valCover = cover.value.replace(/[.]/g, '');
-
-                if(valCover != ''){
-                    $('#rj_cover_biaya_val').val(valCover);
-                }else{
-                    $('#rj_cover_biaya_val').val('');
-                }
-            });
-        }
-
         $(document).on('change', '.btn-file :file', function () {
             var input = $(this),
                 label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
@@ -2489,6 +2404,10 @@
         $('#modal-confirm-rm').modal('hide');
         $('#info_dialog').dialog('open');
         $('#close_pos').val(12);
+    }
+
+    function convertRp(id, val) {
+        $('#'+id).val(formatRupiahAtas2(val));
     }
 
 </script>

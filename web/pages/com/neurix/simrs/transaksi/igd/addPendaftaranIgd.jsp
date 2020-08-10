@@ -1503,22 +1503,15 @@
                                 <h4><i class="icon fa fa-info"></i> Info!</h4>
                                 <p id="msg_kronis2"></p>
                             </div>
-                            <div class="box-header with-border"></div>
+                            <%--<div class="box-header with-border"></div>--%>
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group" style="display: inline;">
-                                            <div class="col-md-offset-3 col-md-7" style="margin-top: 7px">
+                                            <div class="col-md-offset-2 col-md-8 text-center" style="margin-top: 7px">
                                                 <button type="button" id="btn-save" class="btn btn-success" onclick="confirm()"><i
                                                         class="fa fa-arrow-right"></i> Save
                                                 </button>
-                                                <button type="button" class="btn btn-danger"
-                                                        onclick="window.location.reload(true)">
-                                                    <i class="fa fa-refresh"></i> Reset
-                                                </button>
-                                                <a type="button" class="btn btn-warning" href="initForm_igd.action">
-                                                    <i class="fa fa-arrow-left"></i> Back
-                                                </a>
                                                 <%--<a type="button" id="btn-rm" style="display:none;"--%>
                                                    <%--class="btn btn-primary"--%>
                                                    <%--onclick="initRekamMedic()">--%>
@@ -1531,6 +1524,31 @@
                                                     <i class="fa fa-medkit"></i> Obat Kronis
                                                 </a>
 
+                                                <s:if test='tipe == "bpjs"'>
+                                                    <div class="btn-group dropup">
+                                                        <button type="button" class="btn btn-info"><i class="fa fa-print"></i> Print Gagal SEP
+                                                        </button>
+                                                        <button type="button" class="btn btn-info dropdown-toggle"
+                                                                data-toggle="dropdown" style="height: 34px">
+                                                            <span class="caret"></span>
+                                                            <span class="sr-only">Toggle Dropdown</span>
+                                                        </button>
+                                                        <ul class="dropdown-menu" role="menu">
+                                                            <li><a style="cursor: pointer" onclick="printGagalSEP('SP10')"><i class="fa fa-print"></i> Non Aktif</a></li>
+                                                            <li><a style="cursor: pointer" onclick="printGagalSEP('SP11')"><i class="fa fa-print"></i> Kartu Tidak Dibawak</a></li>
+                                                            <li><a style="cursor: pointer" onclick="printGagalSEP('SP12')"><i class="fa fa-print"></i> Kemauan Sendiri</a></li>
+                                                            <li><a style="cursor: pointer" onclick="printGagalSEP('SP13')"><i class="fa fa-print"></i> Masa Pengurusan Denda</a></li>
+                                                            <li><a style="cursor: pointer" onclick="printGagalSEP('SP14')"><i class="fa fa-print"></i> Penangguhan Pasien</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </s:if>
+                                                <button type="button" class="btn btn-danger"
+                                                        onclick="window.location.reload(true)">
+                                                    <i class="fa fa-refresh"></i> Reset
+                                                </button>
+                                                <a type="button" class="btn btn-warning" href="initForm_igd.action">
+                                                    <i class="fa fa-arrow-left"></i> Back
+                                                </a>
                                             </div>
                                         </div>
                                     </div>

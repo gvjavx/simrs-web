@@ -5,7 +5,7 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
-    <package name="rawatinap" namespace="/rawatinap" extends="struts-default, jasperreports-default, json-default">
+    <package name="veriftransaksi" namespace="/veriftransaksi" extends="struts-default, jasperreports-default, json-default">
 
         <result-types>
             <result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult" default="false" />
@@ -69,48 +69,12 @@
             <exception-mapping exception="java.lang.RuntimeException" result="global_error" />
         </global-exception-mappings>
 
-        <action name="*_rawatinap"
-                class="com.neurix.simrs.transaksi.rawatinap.action.RawatInapAction" method="{1}">
+        <action name="*_veriftransaksi"
+                class="com.neurix.simrs.transaksi.verifikator.action.VerifikatorAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
 
-            <result name="search">/pages/com/neurix/simrs/transaksi/rawatinap/searchRawatInap.jsp</result>
-            <result name="init_add">/pages/com/neurix/simrs/transaksi/rawatinap/addRawatInap.jsp</result>
-            <result name="search_tppri">/pages/com/neurix/simrs/transaksi/rawatinap/searchTppri.jsp</result>
+            <result name="search">/pages/com/neurix/simrs/transaksi/verifikator/searchVerifikasiTransaksi.jsp</result>
 
-            <result name="print_resep" type="jasper">
-                <param name="location">/pages/report/com/neurix/simrs/printResepPasien.jasper</param>
-                <param name="connection">connection</param>
-                <param name="format">PDF</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
-
-            <result name="print_gelang_pasien" type="jasper">
-                <param name="location">/pages/report/com/neurix/simrs/printGelangPasien.jasper</param>
-                <param name="connection">connection</param>
-                <param name="format">PDF</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
-
-            <result name="print_lab" type="jasper">
-                <param name="location">/pages/report/com/neurix/simrs/printHasilPeriksaLab.jasper</param>
-                <param name="connection">connection</param>
-                <param name="format">PDF</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
-
-            <result name="print_radiologi" type="jasper">
-                <param name="location">/pages/report/com/neurix/simrs/printHasilPeriksaRadiologi.jasper</param>
-                <param name="connection">connection</param>
-                <param name="format">PDF</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
-
-        </action>
-
-        <action name="paging_displaytag_checkup"
-                class="com.neurix.simrs.transaksi.checkup.action.CheckupAction" method="paging">
-            <interceptor-ref name="defaultStack"/>
-            <result name="success">/pages/com/neurix/simrs/master/pasien/searchPasien.jsp</result>
         </action>
 
     </package>
