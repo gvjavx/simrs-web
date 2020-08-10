@@ -68,10 +68,7 @@
         <action name="*_bgnilaidasar"
                 class="com.neurix.akuntansi.transaksi.budgetingnilaidasar.action.BudgetingNilaiDasarAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
-            <result name="search">/pages/com/neurix/akuntansi/transaksi/budgeting/searchBudgeting.jsp</result>
-            <result name="add">/pages/com/neurix/akuntansi/transaksi/budgeting/addBudgeting.jsp</result>
-            <result name="edit">/pages/com/neurix/akuntansi/transaksi/budgeting/editBudgeting.jsp</result>
-            <result name="edit_detail">/pages/com/neurix/akuntansi/transaksi/budgeting/editBudgetingDetail.jsp</result>
+            <result name="search">/pages/com/neurix/akuntansi/transaksi/budgetingnilaidasar/searchNilaiDasar.jsp</result>
         </action>
 
         <action name="paging_displaytag_jurnal"

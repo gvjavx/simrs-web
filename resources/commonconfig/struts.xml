@@ -246,4 +246,5 @@
     <include file="sshconfig/com/neurix/akuntansi/master/reportKeuanganKonsol/struts/ReportKeuanganKonsolAction.xml"/>
     <include file="sshconfig/com/neurix/hris/master/mappingpersengaji/struts/MappingPersenGajiAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/transaksi/penyewaanLahan/struts/PenyewaanLahanAction.xml"/>
+    <include file="sshconfig/com/neurix/akuntansi/transaksi/budgetingnilaidasar/struts/BudgetingNilaiDasarAction.xml"/>
 </struts>

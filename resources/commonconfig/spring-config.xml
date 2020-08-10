@@ -271,4 +271,5 @@
     <import resource="sshconfig/com/neurix/hris/transaksi/absensi/spring/MesinAbsensiBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/asesmenoperasi/spring/MonAnestesiBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/transaksi/penyewaanLahan/spring/PenyewaanLahanBean.xml"/>
+    <import resource="sshconfig/com/neurix/akuntansi/transaksi/budgetingnilaidasar/spring/BudgetingNilaiDasarBean.xml"/>
 </beans>
