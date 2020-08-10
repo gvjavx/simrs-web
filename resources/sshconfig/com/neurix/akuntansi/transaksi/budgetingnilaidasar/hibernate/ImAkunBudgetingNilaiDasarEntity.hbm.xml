@@ -32,6 +32,9 @@
             <basic name="lastUpdateWho">
                 <column name="last_update_who"/>
             </basic>
+            <basic name="urutan">
+                <column name="urutan"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

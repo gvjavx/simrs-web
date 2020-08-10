@@ -29,7 +29,7 @@ public class MasterBudgetingNilaiDasarDao extends GenericDao<ImAkunBudgetingNila
         if (mapCriteria.get("flag") != null)
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
 
-        criteria.addOrder(Order.asc("id"));
+        criteria.addOrder(Order.asc("urutan"));
         return criteria.list();
     }
 
