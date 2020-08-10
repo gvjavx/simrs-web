@@ -149,6 +149,7 @@ ALTER TABLE public.seq_rekening_telemedic
  ALTER TABLE public.it_simrs_pembayaran_online ADD id_rekening VARCHAR(20) NULL;
  ALTER TABLE public.it_simrs_antrian_telemedic ADD keluhan TEXT NULL
  ALTER TABLE public.it_simrs_antrian_telemedic ADD kode_bank VARCHAR(100) NULL
+ ALTER TABLE public.it_simrs_pengiriman_obat foto_kirim
 
 
 <<< //
