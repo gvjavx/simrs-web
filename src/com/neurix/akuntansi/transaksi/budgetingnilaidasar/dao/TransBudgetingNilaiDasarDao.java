@@ -2,7 +2,13 @@ package com.neurix.akuntansi.transaksi.budgetingnilaidasar.dao;
 
 import com.neurix.akuntansi.transaksi.budgetingnilaidasar.model.ItAkunBudgetingNilaiDasarEntity;
 import com.neurix.common.dao.GenericDao;
+import org.hibernate.Criteria;
+import org.hibernate.Query;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 
+import java.math.BigInteger;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -13,11 +19,29 @@ public class TransBudgetingNilaiDasarDao extends GenericDao<ItAkunBudgetingNilai
 
     @Override
     protected Class<ItAkunBudgetingNilaiDasarEntity> getEntityClass() {
-        return null;
+        return ItAkunBudgetingNilaiDasarEntity.class;
     }
 
     @Override
     public List<ItAkunBudgetingNilaiDasarEntity> getByCriteria(Map mapCriteria) {
-        return null;
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItAkunBudgetingNilaiDasarEntity.class);
+        if (mapCriteria.get("id") != null)
+            criteria.add(Restrictions.eq("id", mapCriteria.get("id").toString()));
+        if (mapCriteria.get("tahun") != null)
+            criteria.add(Restrictions.eq("tahun", mapCriteria.get("tahun").toString()));
+        if (mapCriteria.get("branch_id") != null)
+            criteria.add(Restrictions.eq("branchId", mapCriteria.get("branch_id").toString()));
+        if (mapCriteria.get("flag") != null)
+            criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
+
+        criteria.addOrder(Order.asc("id"));
+        return criteria.list();
+    }
+
+    public String getNextSeq() {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_trans_budgeting_nilai_dasar')");
+        Iterator<BigInteger> iter = query.list().iterator();
+        String sId = String.format("%08d", iter.next());
+        return sId;
     }
 }

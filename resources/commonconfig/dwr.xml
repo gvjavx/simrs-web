@@ -548,6 +548,13 @@
 
       <convert converter="bean" match="com.neurix.simrs.master.kategoritindakanina.model.ImSimrsKategoriTindakanInaEntity"/>
 
+
+      <create creator="new">
+          <param name="class" value="com.neurix.akuntansi.transaksi.budgetingnilaidasar.action.BudgetingNilaiDasarAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgetingnilaidasar.model.ImAkunBudgetingNilaiDasarEntity"/>
+      <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgetingnilaidasar.model.ItAkunBudgetingNilaiDasarEntity"/>
+
       <!--Master Hcm-->
       <create creator="new">
           <param name="class" value="com.neurix.hris.master.payrollSkalaGaji.action.PayrollSkalaGajiAction"/>
