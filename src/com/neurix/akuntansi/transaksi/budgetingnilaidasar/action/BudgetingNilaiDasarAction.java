@@ -99,19 +99,22 @@ public class BudgetingNilaiDasarAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BudgetingNilaiDasarBo budgetingNilaiDasarBo = (BudgetingNilaiDasarBo) ctx.getBean("budgetingNilaiDasarBoProxy");
 
-        BudgetingNilaiDasar budgetingNilaiDasar = new BudgetingNilaiDasar();
         List<BudgetingNilaiDasar> budgetingNilaiDasars = new ArrayList<>();
         JSONArray json = new JSONArray(jsonString);
         for (int i = 0; i < json.length(); i++) {
             JSONObject obj = json.getJSONObject(i);
+            BudgetingNilaiDasar budgetingNilaiDasar = new BudgetingNilaiDasar();
+
             if (!"".equalsIgnoreCase(obj.get("tahun").toString())){
                 budgetingNilaiDasar.setTahun(obj.get("tahun").toString());
             }
             if (!"".equalsIgnoreCase(obj.get("id_nilai_dasar").toString())){
                 budgetingNilaiDasar.setIdNilaiDasar(obj.get("id_nilai_dasar").toString());
             }
-            if (!"".equalsIgnoreCase(obj.get("nilai").toString())){
+            if (obj.get("nilai") != null && !"".equalsIgnoreCase(obj.get("nilai").toString())){
                 budgetingNilaiDasar.setNilai(new BigDecimal(obj.get("nilai").toString()));
+            } else {
+                budgetingNilaiDasar.setNilai(new BigDecimal(0));
             }
             budgetingNilaiDasar.setLastUpdate(times);
             budgetingNilaiDasar.setLastUpdateWho(userLogin);
@@ -132,7 +135,7 @@ public class BudgetingNilaiDasarAction {
     }
 
     public List<BudgetingNilaiDasar> getListNilaiDasarAdd() {
-        logger.info("[BudgetingNilaiDasarAction.getListDetailByTahun] START >>>");
+        logger.info("[BudgetingNilaiDasarAction.getListNilaiDasarAdd] START >>>");
 
         java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
         String tahun = CommonUtil.getDateParted(date, "YEAR");
@@ -142,6 +145,7 @@ public class BudgetingNilaiDasarAction {
 
         BudgetingNilaiDasar budgetingNilaiDasar = new BudgetingNilaiDasar();
         budgetingNilaiDasar.setTahun(tahun);
+        budgetingNilaiDasar.setFlag("Y");
 
         List<BudgetingNilaiDasar> budgetingNilaiDasars = new ArrayList<>();
         try {
@@ -151,6 +155,27 @@ public class BudgetingNilaiDasarAction {
         }
 
         logger.info("[BudgetingNilaiDasarAction.getListNilaiDasarAdd] END <<<");
+        return budgetingNilaiDasars;
+    }
+
+    public List<BudgetingNilaiDasar> getListNilaiDasarEdit(String tahun) {
+        logger.info("[BudgetingNilaiDasarAction.getListNilaiDasarEdit] START >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingNilaiDasarBo budgetingNilaiDasarBo = (BudgetingNilaiDasarBo) ctx.getBean("budgetingNilaiDasarBoProxy");
+
+        BudgetingNilaiDasar budgetingNilaiDasar = new BudgetingNilaiDasar();
+        budgetingNilaiDasar.setTahun(tahun);
+        budgetingNilaiDasar.setFlag("Y");
+
+        List<BudgetingNilaiDasar> budgetingNilaiDasars = new ArrayList<>();
+        try {
+            budgetingNilaiDasars = budgetingNilaiDasarBo.getListMasterNilaiDasarAdd(budgetingNilaiDasar);
+        } catch (GeneralBOException e){
+            logger.error("[BudgetingNilaiDasarAction.getListNilaiDasarEdit] ERROR. ", e);
+        }
+
+        logger.info("[BudgetingNilaiDasarAction.getListNilaiDasarEdit] END <<<");
         return budgetingNilaiDasars;
     }
 }

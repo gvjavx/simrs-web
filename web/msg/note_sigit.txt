@@ -561,3 +561,7 @@
     CREATE SEQUENCE seq_budgeting_nilai_dasar;
     CREATE SEQUENCE seq_trans_budgeting_nilai_dasar;
 // <<<
+
+// >>> 2020-08-10
+    ALTER TABLE im_akun_budgeting_nilai_dasar ADD COLUMN urutan INTEGER;
+// <<<

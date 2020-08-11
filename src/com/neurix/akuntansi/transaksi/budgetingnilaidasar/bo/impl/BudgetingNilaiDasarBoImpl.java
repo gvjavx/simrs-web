@@ -148,10 +148,11 @@ public class BudgetingNilaiDasarBoImpl implements BudgetingNilaiDasarBo {
                 budgetingNilaiDasarEntity.setId(generateIdNilaiDasar(nilaiDasar.getTahun()));
                 budgetingNilaiDasarEntity.setNilai(nilaiDasar.getNilai());
                 budgetingNilaiDasarEntity.setIdNilaiDasar(nilaiDasar.getIdNilaiDasar());
+                budgetingNilaiDasarEntity.setTahun(nilaiDasar.getTahun());
                 budgetingNilaiDasarEntity.setFlag("Y");
                 budgetingNilaiDasarEntity.setAction("C");
-                budgetingNilaiDasarEntity.setCreatedDate(nilaiDasar.getCreatedDate());
-                budgetingNilaiDasarEntity.setCreatedWho(nilaiDasar.getCreatedWho());
+                budgetingNilaiDasarEntity.setCreatedDate(nilaiDasar.getLastUpdate());
+                budgetingNilaiDasarEntity.setCreatedWho(nilaiDasar.getLastUpdateWho());
                 budgetingNilaiDasarEntity.setLastUpdate(nilaiDasar.getLastUpdate());
                 budgetingNilaiDasarEntity.setLastUpdateWho(nilaiDasar.getLastUpdateWho());
 
