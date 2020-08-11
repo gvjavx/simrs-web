@@ -21,6 +21,7 @@ public class Dispensasi {
     private String keterangan;
     private String tanggalAwal;
     private String tanggalAkhir;
+    private String tanggalAkhirBaru;
     private String unitName;
     private String unit;
     private String positionId;
@@ -32,6 +33,14 @@ public class Dispensasi {
 
     private String actionError;
     private String message;
+
+    public String getTanggalAkhirBaru() {
+        return tanggalAkhirBaru;
+    }
+
+    public void setTanggalAkhirBaru(String tanggalAkhirBaru) {
+        this.tanggalAkhirBaru = tanggalAkhirBaru;
+    }
 
     public String getMessage() {
         return message;

@@ -254,6 +254,7 @@ public class CutiFormPegawaiController implements ModelDriven<Object> {
             cutiPegawai.setCreatedDate(new Timestamp(Calendar.getInstance().getTimeInMillis()));
             cutiPegawai.setOs(model.getOs());
             cutiPegawai.setJenisCuti(model.getJenisCuti());
+            cutiPegawai.setCutiTanggunganId(model.getCutiTanggunganId());
 
             List<Notifikasi> notifCuti = cutiPegawaiBoProxy.saveAddCuti(cutiPegawai);
 

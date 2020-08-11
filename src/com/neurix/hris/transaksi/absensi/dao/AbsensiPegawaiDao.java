@@ -400,4 +400,35 @@ public class AbsensiPegawaiDao extends GenericDao<AbsensiPegawaiEntity, String> 
         return listOfResult;
     }
 
+    public List<AbsensiPegawai> getAbsensiByMonth(String nip, String branchId, String firstDate, String lastDate) {
+        List<AbsensiPegawai> absensiPegawaiList = new ArrayList<>();
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "SELECT tanggal, jam_masuk, jam_keluar, status_absensi, lembur, ijin FROM it_hris_absensi_pegawai \n" +
+                "WHERE nip = :nip\n" +
+                "AND tanggal BETWEEN '2020-07-01' AND '2020-07-30'\n" +
+                "AND branch_id = 'KP'";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .setParameter("nip", nip)
+                .setParameter("branchId", branchId)
+                .setParameter("firstDate", firstDate)
+                .setParameter("lastDate", lastDate)
+                .list();
+
+        if (results != null) {
+            for (Object[] item : results) {
+                AbsensiPegawai absensiPegawai = new AbsensiPegawai();
+                absensiPegawai.setTanggal(item[0] != null ? (Date) item[0] : null);
+                absensiPegawai.setJamMasuk(item[1] != null ? (String) item[1] : "");
+                absensiPegawai.setJamKeluar(item[2] != null ? (String) item[2] : "");
+
+                absensiPegawaiList.add(absensiPegawai);
+
+            }
+        }
+
+        return absensiPegawaiList;
+    }
+
 }

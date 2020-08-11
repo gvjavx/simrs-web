@@ -5571,4 +5571,22 @@ public class AbsensiBoImpl implements AbsensiBo {
         }
         return result;
     }
+
+    @Override
+    public List<AbsensiPegawai> getHistoryAbsensiByMonth (String nip, String branchId, Date date){
+        List<AbsensiPegawai> result = new ArrayList<>();
+        int month = date.getMonth();
+        int year = date.getYear();
+        String firstDate = String.valueOf(year) + "-" + String.valueOf(month) + "-" + "01";
+        String lastDate = String.valueOf(year) + "-" + String.valueOf(month) + "-" + CommonUtil.getLastDayOfMonth();
+
+        try {
+            absensiPegawaiDao.getAbsensiByMonth(nip, branchId, firstDate, lastDate);
+        } catch (HibernateException e){
+            logger.error("[AbsensiBoImpl.getByCriteriaMesin] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        return result;
+    }
 }
