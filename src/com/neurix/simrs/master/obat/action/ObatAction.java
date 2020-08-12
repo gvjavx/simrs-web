@@ -11,8 +11,7 @@ import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.obat.bo.ObatBo;
-import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
-import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.master.obat.model.*;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.vendor.bo.VendorBo;
@@ -41,6 +40,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ObatAction extends BaseMasterAction {
 
@@ -279,6 +279,9 @@ public class ObatAction extends BaseMasterAction {
         String userArea = CommonUtil.userBranchLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<KandunganObat> kandunganObats = (List<KandunganObat>) session.getAttribute("listOfKandunganObat");
+
         Obat obat = new Obat();
         obat.setNamaObat(namaObat);
         obat.setMerk(merek);
@@ -301,11 +304,16 @@ public class ObatAction extends BaseMasterAction {
         obat.setMinStok(minStok);
         obat.setHargaTerakhir(new BigDecimal(String.valueOf(0)));
 
+        if (kandunganObats != null && kandunganObats.size() > 0){
+            obat.setKandunganObats(kandunganObats);
+        }
+
         try {
             checkObatResponse = obatBo.checkFisikObatByIdPabrik(obat);
         } catch (GeneralBOException e) {
             checkObatResponse.setStatus("error");
             checkObatResponse.setMessage("[ERROR] " + e.getMessage());
+            return checkObatResponse;
         }
 
         if ("success".equalsIgnoreCase(checkObatResponse.getStatus())) {
@@ -331,6 +339,9 @@ public class ObatAction extends BaseMasterAction {
             String userArea = CommonUtil.userBranchLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
+            HttpSession session = ServletActionContext.getRequest().getSession();
+            List<KandunganObat> kandunganObats = (List<KandunganObat>) session.getAttribute("listOfKandunganObat");
+
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
 
@@ -346,6 +357,13 @@ public class ObatAction extends BaseMasterAction {
             obat.setBranchId(userArea);
             obat.setAction("U");
             obat.setMinStok(minStok);
+
+            if (kandunganObats != null && kandunganObats.size() > 0){
+                List<KandunganObat> kandunganObatsFiltered = kandunganObats.stream().filter(p -> p.getIdObat().equalsIgnoreCase(idObat)).collect(Collectors.toList());
+                if (kandunganObatsFiltered.size() > 0){
+                    obat.setKandunganObats(kandunganObatsFiltered);
+                }
+            }
 
             response = obatBo.saveEdit(obat, jenisObat);
 
@@ -871,6 +889,194 @@ public class ObatAction extends BaseMasterAction {
         } else {
             return "print_riwayat";
         }
+    }
+
+    public CrudResponse createSessionKandunganObat(String idObat){
+        logger.info("[ObatAction.listKandunganObat] START >>>");
+
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+
+        List<KandunganObat> kandunganObats = new ArrayList<>();
+
+        try {
+            kandunganObats = obatBo.getListKandunganObatDetail(idObat);
+            response.setStatus("success");
+        } catch (GeneralBOException e){
+            String erMsg = "[ReportAction.createSessionKandunganObat] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.";
+            logger.error(erMsg, e);
+            response.setMsg(erMsg + e);
+            response.setStatus("error");
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfKandunganObat");
+        session.setAttribute("listOfKandunganObat", kandunganObats);
+
+        logger.info("[ObatAction.createSessionKandunganObat] END <<<");
+        return response;
+    }
+
+    public List<KandunganObat> getListFromSessionObat(String idObat){
+        logger.info("[ObatAction.getListFromSessionObat] START >>>");
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<KandunganObat> kandunganObats = (List<KandunganObat>) session.getAttribute("listOfKandunganObat");
+
+        if (kandunganObats != null && kandunganObats.size() > 0){
+            List<KandunganObat> kandunganObatList = kandunganObats.stream().filter(p->p.getIdObat().equalsIgnoreCase(idObat)).collect(Collectors.toList());
+            if (kandunganObatList.size() > 0){
+
+                session.removeAttribute("listOfKandunganObat");
+                session.setAttribute("listOfKandunganObat", kandunganObatList);
+                return kandunganObatList;
+            } else {
+                session.removeAttribute("listOfKandunganObat");
+                session.setAttribute("listOfKandunganObat", kandunganObats);
+                return kandunganObats;
+            }
+
+        }
+        logger.info("[ObatAction.getListFromSessionObat] END <<<");
+        return new ArrayList<>();
+    }
+
+    public CrudResponse editKandunganObatDetail( String idObatKandunganObatDetail,
+                                                 String idObat,
+                                                 String idKandungan,
+                                                 String bentuk,
+                                                 String sediaan,
+                                                 String satuan ){
+
+        logger.info("[ObatAction.editKandunganObatDetail] START >>>");
+
+        CrudResponse response = new CrudResponse();
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<KandunganObat> kandunganObats = (List<KandunganObat>) session.getAttribute("listOfKandunganObat");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+
+        if (kandunganObats.size() > 0){
+            List<KandunganObat> kandunganObatList = kandunganObats.stream().filter(p->p.getId().equalsIgnoreCase(idObatKandunganObatDetail)).collect(Collectors.toList());
+            if (kandunganObatList.size() > 0){
+
+                for (KandunganObat kandunganObat : kandunganObatList){
+
+                    BigDecimal bSediaan = new BigDecimal(0);
+                    if ( sediaan != null && !"".equalsIgnoreCase(sediaan))
+                        bSediaan = new BigDecimal(sediaan);
+
+                    kandunganObat.setIdObat(idObat);
+                    kandunganObat.setIdKandungan(idKandungan);
+                    kandunganObat.setBentuk(bentuk);
+
+                    if (bentuk != null && !"".equalsIgnoreCase(bentuk)){
+                        ImSimrsBentukBarangEntity bentukBarangEntity = obatBo.getBentukBarangById(bentuk);
+                        if (bentukBarangEntity != null){
+                            kandunganObat.setNamaBentuk(bentukBarangEntity.getBentuk());
+                        }
+                    }
+
+                    kandunganObat.setSediaan(bSediaan);
+                    kandunganObat.setSatuanSediaan(satuan);
+
+                }
+                session.removeAttribute("listOfKandunganObat");
+                session.setAttribute("listOfKandunganObat", kandunganObats);
+                response.setStatus("success");
+            }
+        }
+        logger.info("[ObatAction.editKandunganObatDetail] END <<<");
+        return response;
+    }
+
+    public CrudResponse addKandunganObat( String idObat,
+                                          String idKandungan,
+                                          String bentuk,
+                                          String sediaan,
+                                          String satuan ){
+
+        logger.info("[ObatAction.listKandunganObat] START >>>");
+
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+
+        BigDecimal bSediaan = new BigDecimal(0);
+        if ( sediaan != null && !"".equalsIgnoreCase(sediaan))
+            bSediaan = new BigDecimal(sediaan);
+
+        KandunganObat kandunganObat = new KandunganObat();
+        kandunganObat.setId(obatBo.generateIdKandungan());
+        kandunganObat.setIdObat(idObat);
+        kandunganObat.setIdKandungan(idKandungan);
+        kandunganObat.setBentuk(bentuk);
+        kandunganObat.setSediaan(bSediaan);
+        kandunganObat.setSatuanSediaan(satuan);
+
+        if (idObat != null && !"".equalsIgnoreCase(idObat)){
+            ImSimrsObatEntity obatEntity = obatBo.getObatByIdObat(idObat);
+            if (obatEntity != null){
+                kandunganObat.setNamaObat(obatEntity.getNamaObat());
+            }
+        }
+
+        if (idKandungan != null && !"".equalsIgnoreCase(idKandungan)){
+            ImSimrsKandunganObatEntity kandunganObatEntity = obatBo.getMasterKandunganObatById(idKandungan);
+            if (kandunganObatEntity != null){
+                kandunganObat.setKandungan(kandunganObatEntity.getKandungan());
+            }
+        }
+
+        if (bentuk != null && !"".equalsIgnoreCase(bentuk)){
+            ImSimrsBentukBarangEntity bentukBarangEntity = obatBo.getBentukBarangById(bentuk);
+            if (bentukBarangEntity != null){
+                kandunganObat.setNamaBentuk(bentukBarangEntity.getBentuk());
+            }
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<KandunganObat> kandunganObats = (List<KandunganObat>) session.getAttribute("listOfKandunganObat");
+
+        if (kandunganObats != null && kandunganObats.size() > 0){
+            kandunganObats.add(kandunganObat);
+        } else {
+            kandunganObats = new ArrayList<>();
+            kandunganObats.add(kandunganObat);
+        }
+
+        session.removeAttribute("listOfKandunganObat");
+        session.setAttribute("listOfKandunganObat", kandunganObats);
+
+        logger.info("[ObatAction.listKandunganObat] END <<<");
+        response.setStatus("success");
+        return response;
+    }
+
+    public KandunganObat initEditKandunganObat(String idKandunganDetail){
+        logger.info("[ObatAction.listKandunganObat] START >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<KandunganObat> kandunganObats = (List<KandunganObat>) session.getAttribute("listOfKandunganObat");
+
+        List<KandunganObat> filterKandunganObats = kandunganObats.stream().filter(p->p.getId().equalsIgnoreCase(idKandunganDetail)).collect(Collectors.toList());
+        if (filterKandunganObats.size() > 0)
+            return filterKandunganObats.get(0);
+
+        logger.info("[ObatAction.listKandunganObat] END <<<");
+        return null;
+    }
+
+    public List<ImSimrsKandunganObatEntity> getListKandunganObat(){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+        return obatBo.getListAllKandunganObat();
+    }
+
+    public void resetSessionKandunganObat(){
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfKandunganObat");
     }
 
 }

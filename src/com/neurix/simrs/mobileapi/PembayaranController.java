@@ -4,6 +4,8 @@ import com.neurix.akuntansi.master.pembayaran.bo.PembayaranBo;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.telemedic.bo.RekeningTelemedicBo;
+import com.neurix.simrs.master.telemedic.model.RekeningTelemedic;
 import com.neurix.simrs.mobileapi.model.PembayaranMobile;
 import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
 import com.neurix.simrs.transaksi.reseponline.model.PengirimanObat;
@@ -35,6 +37,7 @@ public class PembayaranController implements ModelDriven<Object> {
     private PembayaranMobile model = new PembayaranMobile();
     private Collection<PembayaranMobile> listOfPembayaran;
     private VerifikatorPembayaranBo verifikatorPembayaranBoProxy;
+    private RekeningTelemedicBo rekeningTelemedicBoProxy;
     private TelemedicBo telemedicBoProxy;
 
     private String action;
@@ -56,6 +59,42 @@ public class PembayaranController implements ModelDriven<Object> {
 
     private String lat;
     private String lon;
+
+    private String idRekening;
+    private String username;
+    private String roleId;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
+    }
+
+    public RekeningTelemedicBo getRekeningTelemedicBoProxy() {
+        return rekeningTelemedicBoProxy;
+    }
+
+    public void setRekeningTelemedicBoProxy(RekeningTelemedicBo rekeningTelemedicBoProxy) {
+        this.rekeningTelemedicBoProxy = rekeningTelemedicBoProxy;
+    }
+
+    public String getIdRekening() {
+        return idRekening;
+    }
+
+    public void setIdRekening(String idRekening) {
+        this.idRekening = idRekening;
+    }
 
     public String getBranchId() {
         return branchId;
@@ -246,8 +285,25 @@ public class PembayaranController implements ModelDriven<Object> {
                 pembayaranMobile.setApprovedFlag(item.getApprovedFlag());
                 pembayaranMobile.setJenisPengambilan(item.getJenisPengambilan());
                 pembayaranMobile.setIdItem(item.getIdItem());
+                pembayaranMobile.setIdRekening(item.getIdRekening());
 
-                pembayaranMobile.setCreatedDate(CommonUtil.addJamBayar(item.getLastUpdate()));
+                RekeningTelemedic rekeningTelemedic = new RekeningTelemedic();
+                rekeningTelemedic.setIdRekening(item.getIdRekening());
+
+                List<RekeningTelemedic> rekeningTelemedicList = new ArrayList<>();
+
+                try {
+                   rekeningTelemedicList = rekeningTelemedicBoProxy.getByCriteria(rekeningTelemedic);
+                } catch (GeneralBOException e){
+                    logger.error("[PembayaranController.create] Error, " + e.getMessage());
+                }
+
+                if (rekeningTelemedicList.size() == 1){
+                    pembayaranMobile.setNoRekening(rekeningTelemedicList.get(0).getNoRekening());
+                    pembayaranMobile.setNamaRekening(rekeningTelemedicList.get(0).getNamaRekening());
+                }
+
+                pembayaranMobile.setCreatedDate(CommonUtil.addJamBayar(item.getCreatedDate()));
 
                 listOfPembayaran.add(pembayaranMobile);
             }
@@ -265,15 +321,19 @@ public class PembayaranController implements ModelDriven<Object> {
                 }
             }
 
+
             try {
                 verifikatorPembayaranBoProxy.updateBuktiTransfer(idTele, fileName, keterangan);
                 model.setMessage("Success");
             } catch (GeneralBOException e) {
                 logger.error("[PembayaranController.create] Error, " + e.getMessage());
             }
+
+            telemedicBoProxy.createNotifikasiAdmin(idTele, "tele", branchId, username, now, username + "telah upload bukti transfer " + keterangan);
         }
 
         if (action.equalsIgnoreCase("saveEditPembayaranResep")) {
+            ItSimrsPembayaranOnlineEntity newPembayaran;
 
             PembayaranOnline bean = new PembayaranOnline();
             bean.setIdAntrianTelemedic(idTele);
@@ -287,17 +347,54 @@ public class PembayaranController implements ModelDriven<Object> {
                 logger.error("[PembayaranController.create] Error, " + e.getMessage());
             }
 
-            ItSimrsPembayaranOnlineEntity newPembayaran = listEntity.get(0);
+            if(listEntity.size() > 0) {
+                newPembayaran = listEntity.get(0);
 
-            newPembayaran.setKodeBank(bankCoa);
-            newPembayaran.setLastUpdate(now);
-            newPembayaran.setLastUpdateWho(idPasien);
+                newPembayaran.setKodeBank(bankCoa);
+                newPembayaran.setLastUpdate(now);
+                newPembayaran.setLastUpdateWho(idPasien);
+                newPembayaran.setIdRekening(idRekening);
 
-            try {
-                verifikatorPembayaranBoProxy.saveEdit(newPembayaran);
-                model.setMessage("Success");
-            } catch (GeneralBOException e) {
-                logger.error("[PembayaranController.create] Error, " + e.getMessage());
+                try {
+                    verifikatorPembayaranBoProxy.saveEdit(newPembayaran);
+                    model.setMessage("Success");
+                } catch (GeneralBOException e) {
+                    logger.error("[PembayaranController.create] Error, " + e.getMessage());
+                }
+            }
+
+
+            if (keterangan.equalsIgnoreCase("all")) {
+                bean.setIdAntrianTelemedic(idTele);
+                bean.setKeterangan("konsultasi");
+
+                try {
+                    listEntity = verifikatorPembayaranBoProxy.getSearchEntityByCriteria(bean);
+                } catch (GeneralBOException e) {
+                    logger.error("[PembayaranController.create] Error, " + e.getMessage());
+                }
+
+                if(listEntity.size() > 0) {
+                    newPembayaran = listEntity.get(0);
+
+                    newPembayaran.setKodeBank(bankCoa);
+                    newPembayaran.setIdRekening(idRekening);
+                    newPembayaran.setLastUpdate(now);
+                    newPembayaran.setLastUpdateWho(idPasien);
+                    try {
+                        verifikatorPembayaranBoProxy.saveEdit(newPembayaran);
+                    } catch (GeneralBOException e) {
+                        logger.error("[PembayaranController.create] Error, " + e.getMessage());
+                    }
+
+                    try {
+                        telemedicBoProxy.updateBankCoa(idTele, bankCoa);
+                        model.setMessage("Success");
+                    } catch (GeneralBOException e){
+                        logger.error("[PembayaranController.create] Error, " + e.getMessage());
+                    }
+                }
+
             }
 
         }

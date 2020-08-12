@@ -4,6 +4,7 @@ import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.model.ItSimrsPembayaranOnlineEntity;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
@@ -41,6 +42,7 @@ public class VerifikatorPembayaranDao extends GenericDao<ItSimrsPembayaranOnline
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
         }
 
+        criteria.addOrder(Order.asc("id"));
         return criteria.list();
     }
 

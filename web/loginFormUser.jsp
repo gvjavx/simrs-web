@@ -143,6 +143,7 @@
                       <s:if test='messageError=="Maximum sessions of 1 for this principal exceeded"'>
                           User yang anda masukkan sudah login pada device lain
                       </s:if>
+
                         <s:else>
                             <s:property value="%{messageError}"/>
                         </s:else>

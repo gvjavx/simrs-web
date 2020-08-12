@@ -7,7 +7,9 @@ import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.authorization.company.model.ImBranchesPK;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.obat.dao.KandunganObatDetailDao;
 import com.neurix.simrs.master.obat.dao.ObatDao;
+import com.neurix.simrs.master.obat.model.ImSimrsKandunganObatDetailEntity;
 import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
@@ -54,6 +56,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
     private TransaksiStokDao transaksiStokDao;
     private BranchDao branchDao;
     private BatasTutupPeriodDao batasTutupPeriodDao;
+    private KandunganObatDetailDao kandunganObatDetailDao;
 
     @Override
     public List<ObatPoli> getObatPoliByCriteria(ObatPoli bean) throws GeneralBOException {
@@ -2764,14 +2767,14 @@ public class ObatPoliBoImpl implements ObatPoliBo {
     }
 
     @Override
-    public List<ObatPoli> getListObatGroupPoli(String idPelayanan, String branchId, String flagBpjs) throws GeneralBOException {
+    public List<ObatPoli> getListObatGroupPoli(String idPelayanan, String branchId, String flagBpjs, String idJenisObat) throws GeneralBOException {
 
         List<ObatPoli> obatPoliList = new ArrayList<>();
 
         if(idPelayanan != null && !"".equalsIgnoreCase(idPelayanan) && branchId != null && !"".equalsIgnoreCase(branchId)){
 
             try {
-                obatPoliList = obatPoliDao.getIdObatGroupPoli(idPelayanan, branchId, flagBpjs);
+                obatPoliList = obatPoliDao.getIdObatGroupPoli(idPelayanan, branchId, flagBpjs, idJenisObat);
             }catch (HibernateException e){
                 logger.error("found error when search obat poli "+e.getMessage());
             }
@@ -2779,6 +2782,40 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
         return obatPoliList;
 
+    }
+
+    @Override
+    public List<ObatPoli> getListObatGroupPoliSerupa(String idPelayanan, String branchId, String flagBpjs, String idObat) throws GeneralBOException {
+        List<ObatPoli> obatPoliList = new ArrayList<>();
+
+        if(idPelayanan != null && !"".equalsIgnoreCase(idPelayanan) && branchId != null && !"".equalsIgnoreCase(branchId)){
+            if (idObat != null && !"".equalsIgnoreCase(idObat)){
+
+                Map hsCriteria = new HashMap();
+                hsCriteria.put("id_obat", idObat);
+                hsCriteria.put("flag", "Y");
+
+
+                List<ImSimrsKandunganObatDetailEntity> kandunganObatDetailEntities = kandunganObatDetailDao.getByCriteria(hsCriteria);
+                if (kandunganObatDetailEntities.size() > 0){
+
+                    String[] kandungans = new String[kandunganObatDetailEntities.size()];
+                    int n = 0;
+                    for (ImSimrsKandunganObatDetailEntity kandunganObatDetailEntity : kandunganObatDetailEntities){
+                        kandungans[n] = kandunganObatDetailEntity.getIdKandungan();
+                        n++;
+                    }
+
+                    try {
+                        obatPoliList = obatPoliDao.getIdObatGroupPoliKandunganSerupa(idPelayanan, branchId, flagBpjs, kandungans);
+                    }catch (HibernateException e){
+                        logger.error("found error when search obat poli "+e.getMessage());
+                    }
+                }
+            }
+        }
+
+        return obatPoliList;
     }
 
     @Override
@@ -2859,5 +2896,9 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
     public void setBatasTutupPeriodDao(BatasTutupPeriodDao batasTutupPeriodDao) {
         this.batasTutupPeriodDao = batasTutupPeriodDao;
+    }
+
+    public void setKandunganObatDetailDao(KandunganObatDetailDao kandunganObatDetailDao) {
+        this.kandunganObatDetailDao = kandunganObatDetailDao;
     }
 }

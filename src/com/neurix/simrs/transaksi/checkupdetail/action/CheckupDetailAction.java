@@ -3,6 +3,7 @@ package com.neurix.simrs.transaksi.checkupdetail.action;
 import com.neurix.akuntansi.master.master.bo.MasterBo;
 import com.neurix.akuntansi.master.master.model.ImMasterEntity;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.authorization.position.bo.PositionBo;
@@ -1349,7 +1350,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                     mapUangMuka.put("master_id", masterId);
 
                     Map mapPajakObat = new HashMap();
-                    mapPajakObat.put("bukti", invoice);
+//                    mapPajakObat.put("bukti", invoice);
                     mapPajakObat.put("nilai", ppnObat);
                     mapPajakObat.put("master_id", CommonConstant.MASTER_PAJAK_OBAT);
 
@@ -1430,7 +1431,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                                 // create list map piutang
                                 Map mapPiutang = new HashMap();
-                                mapPiutang.put("bukti", invoice);
+//                                mapPiutang.put("bukti", invoice);
                                 mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
                                 mapPiutang.put("master_id", masterId);
 
@@ -1443,7 +1444,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                                 // create list map piutang
                                 Map mapPiutang = new HashMap();
-                                mapPiutang.put("bukti", invoice);
+//                                mapPiutang.put("bukti", invoice);
                                 mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
                                 mapPiutang.put("master_id", masterId);
 //                                mapPiutang.put("pasien_id", idPasien);
@@ -1477,7 +1478,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                                 // create list map piutang
                                 Map mapPiutang = new HashMap();
-                                mapPiutang.put("bukti", invoice);
+//                                mapPiutang.put("bukti", invoice);
                                 mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
                                 if (!"paket_perusahaan".equalsIgnoreCase(idJenisPeriksaPasien)) {
                                     mapPiutang.put("pasien_id", idPasien);
@@ -1497,7 +1498,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                                 // create list map piutang
                                 Map mapPiutang = new HashMap();
-                                mapPiutang.put("bukti", invoice);
+//                                mapPiutang.put("bukti", invoice);
                                 mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
                                 if (!"paket_perusahaan".equalsIgnoreCase(idJenisPeriksaPasien)) {
                                     mapPiutang.put("pasien_id", idPasien);
@@ -1533,7 +1534,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                             // create map piutang asuransi
                             Map mapPiutang = new HashMap();
-                            mapPiutang.put("bukti", invoice);
+//                            mapPiutang.put("bukti", invoice);
                             mapPiutang.put("nilai", jumlah.add(allTindakanTrans).subtract(jumlahUm));
                             mapPiutang.put("master_id", masterId);
 
@@ -1552,7 +1553,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                             // create map piutang
                             Map mapPiutang = new HashMap();
-                            mapPiutang.put("bukti", invoice);
+//                            mapPiutang.put("bukti", invoice);
                             mapPiutang.put("nilai", jumlah.add(allTindakanTrans).subtract(jumlahUm));
                             mapPiutang.put("pasien_id", idPasien);
 
@@ -1600,7 +1601,8 @@ public class CheckupDetailAction extends BaseMasterAction {
                     }
 
                     try {
-                        billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan, "Y");
+                        Jurnal noJurnal = billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan, "Y");
+                        response.setInvoice(noJurnal.getNoJurnal());
                         response.setStatus("success");
                         response.setMsg("[Berhasil]");
                     } catch (GeneralBOException e) {
@@ -1619,7 +1621,6 @@ public class CheckupDetailAction extends BaseMasterAction {
             response.setStatus("ptpn");
         }
 
-        response.setInvoice(invoice);
         return response;
     }
 

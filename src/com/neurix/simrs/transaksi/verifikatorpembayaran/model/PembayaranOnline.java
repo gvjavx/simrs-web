@@ -33,6 +33,33 @@ public class PembayaranOnline {
     private BigDecimal jumlahCover;
     private String namaAsuransi;
     private String noSep;
+    private String flagAuthorization;
+    private String flagConfirmation;
+    private String idRekening;
+
+    public String getIdRekening() {
+        return idRekening;
+    }
+
+    public void setIdRekening(String idRekening) {
+        this.idRekening = idRekening;
+    }
+
+    public String getFlagAuthorization() {
+        return flagAuthorization;
+    }
+
+    public void setFlagAuthorization(String flagAuthorization) {
+        this.flagAuthorization = flagAuthorization;
+    }
+
+    public String getFlagConfirmation() {
+        return flagConfirmation;
+    }
+
+    public void setFlagConfirmation(String flagConfirmation) {
+        this.flagConfirmation = flagConfirmation;
+    }
 
     public String getNoSep() {
         return noSep;

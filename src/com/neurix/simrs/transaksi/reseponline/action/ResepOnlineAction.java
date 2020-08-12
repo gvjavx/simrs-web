@@ -2,6 +2,11 @@ package com.neurix.simrs.transaksi.reseponline.action;
 
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.common.util.FirebasePushNotif;
+import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
+import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiFcmBo;
+import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
+import com.neurix.hris.transaksi.notifikasi.model.NotifikasiFcm;
 import com.neurix.simrs.master.kurir.bo.KurirBo;
 import com.neurix.simrs.master.kurir.model.Kurir;
 import com.neurix.simrs.transaksi.CrudResponse;
@@ -56,7 +61,8 @@ public class ResepOnlineAction {
     public String initForm(){
         logger.info("ResepOnlineAction.initForm >>> ");
         setPengirimanObat(new PengirimanObat());
-
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResults");
         logger.info("ResepOnlineAction.initForm <<< ");
         if ("monitoring".equalsIgnoreCase(this.tipe)){
             return "search_monitoring";
@@ -192,6 +198,9 @@ public class ResepOnlineAction {
         TelemedicBo telemedicBo = (TelemedicBo) ctx.getBean("telemedicBoProxy");
         PermintaanResepBo permintaanResepBo = (PermintaanResepBo) ctx.getBean("permintaanResepBoProxy");
         VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
+        NotifikasiFcmBo notifikasiFcmBo = (NotifikasiFcmBo) ctx.getBean("notifikasiFcmBoProxy");
+        NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
+
 
         ItSimrsAntrianTelemedicEntity dataTelemedic = null;
         ImSimrsPermintaanResepEntity permintaanResepEntity = permintaanResepBo.getEntityPermintaanResepById(idResep);
@@ -234,6 +243,35 @@ public class ResepOnlineAction {
             logger.error("[ResepOnlineAction.saveAssignKurir] ERROR. ", e);
             throw new GeneralBOException("[ResepOnlineAction.saveAssignKurir] ERROR. ", e);
         }
+
+
+        List<NotifikasiFcm> notifikasiFcm = new ArrayList<>();
+        NotifikasiFcm bean = new NotifikasiFcm();
+        Notifikasi notifBean = new Notifikasi();
+
+
+        notifBean.setTipeNotifId("TN12");
+        notifBean.setNip(pengirimanObat.getIdPasien());
+        notifBean.setNamaPegawai("admin");
+        notifBean.setNote("Kurir telah di Assign. Silahkan buka aplikasi untuk melihat status pengiriman");
+        notifBean.setTo(pengirimanObat.getIdPasien());
+        notifBean.setFromPerson("admin");
+        notifBean.setNoRequest(pengirimanObat.getId());
+        notifBean.setFlag("Y");
+        notifBean.setRead("N");
+        notifBean.setAction("C");
+        notifBean.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+        notifBean.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+        notifBean.setCreatedWho("admin");
+        notifBean.setLastUpdateWho("admin");
+
+        notifikasiBo.saveAdd(notifBean);
+
+        //Push Notif ke Pasien terkait perubahan status menjadi WL
+        bean.setUserId(pengirimanObat.getIdPasien());
+        notifikasiFcm = notifikasiFcmBo.getByCriteria(bean);
+        FirebasePushNotif.sendNotificationFirebase(notifikasiFcm.get(0).getTokenFcm(),"Resep", "Kurir telah di Assign. Silahkan buka aplikasi untuk melihat status pengiriman", "WL", notifikasiFcm.get(0).getOs(), null);
+
 
         logger.info("ResepOnlineAction.saveAssignKurir <<< ");
         return response;

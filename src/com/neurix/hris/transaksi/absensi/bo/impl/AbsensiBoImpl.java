@@ -963,7 +963,23 @@ public class AbsensiBoImpl implements AbsensiBo {
         HttpSession session = ServletActionContext.getRequest().getSession();
         listOfAbsensiFinal = (List<AbsensiPegawaiEntity>) session.getAttribute("listOfResultAbsensiFinal");
         String tipePegawai;
+
         if (bean != null) {
+            String tahunGaji="";
+            try {
+                ImCompany company = companyDao.getCompanyInfo("Y");
+                if (!("").equalsIgnoreCase(company.getPeriodeGaji())) {
+                    tahunGaji = company.getPeriodeGaji();
+                } else {
+                    String status = "Error : tidak ditemukan periode gaji pada Company";
+                    logger.error("[PayrollBoImpl.dataAddPayroll] " + status);
+                    throw new GeneralBOException(status);
+                }
+            }catch (HibernateException e){
+                logger.error("[PayrollBoImpl.dataAddPayroll] " + e.getMessage());
+                throw new GeneralBOException(e.getMessage());
+            }
+
             // creating object entity serializable
             AbsensiPegawaiEntity absensiPegawaiEntity = new AbsensiPegawaiEntity();
 
@@ -1086,24 +1102,11 @@ public class AbsensiBoImpl implements AbsensiBo {
                         hsCriteria4.put("flag", "Y");
                         double faktor = 0;
                         Double upahLembur = 0d;
+                        Double gapok = 0d;
+                        Double sankhus = 0d;
                         pengaliFaktorLemburEntityList = pengaliFaktorLemburDao.getByCriteria(hsCriteria4);
                         for (PengaliFaktorLemburEntity pengaliFaktorLemburEntity : pengaliFaktorLemburEntityList) {
                             faktor = pengaliFaktorLemburEntity.getFaktor();
-                        }
-
-                        String tahunGaji="";
-                        try {
-                            ImCompany company = companyDao.getCompanyInfo("Y");
-                            if (!("").equalsIgnoreCase(company.getPeriodeGaji())) {
-                                tahunGaji = company.getPeriodeGaji();
-                            } else {
-                                String status = "Error : tidak ditemukan periode gaji pada Company";
-                                logger.error("[PayrollBoImpl.dataAddPayroll] " + status);
-                                throw new GeneralBOException(status);
-                            }
-                        }catch (HibernateException e){
-                            logger.error("[PayrollBoImpl.dataAddPayroll] " + e.getMessage());
-                            throw new GeneralBOException(e.getMessage());
                         }
 
                         hsCriteria4 = new HashMap();
@@ -1116,12 +1119,14 @@ public class AbsensiBoImpl implements AbsensiBo {
                         if (biodataEntity.getTipePegawai().equalsIgnoreCase("TP01")){
                             payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(biodataEntity.getGolongan(),tahunGaji);
                             for (ImPayrollSkalaGajiEntity imPayrollSkalaGajiEntity : payrollSkalaGajiList) {
-                                upahLembur = imPayrollSkalaGajiEntity.getNilai().doubleValue();
+                                gapok = imPayrollSkalaGajiEntity.getNilai().doubleValue();
+                                sankhus = imPayrollSkalaGajiEntity.getSantunanKhusus().doubleValue();
                             }
                         }else if (biodataEntity.getTipePegawai().equalsIgnoreCase("TP03")){
                             payrollSkalaGajiPkwtEntityList = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(biodataEntity.getGolongan(),tahunGaji);
                             for (ImPayrollSkalaGajiPkwtEntity skalaGajiLoop:payrollSkalaGajiPkwtEntityList){
-                                upahLembur = skalaGajiLoop.getGajiPokok().doubleValue();
+                                gapok = skalaGajiLoop.getGajiPokok().doubleValue();
+                                sankhus = skalaGajiLoop.getSantunanKhusus().doubleValue();
                             }
                         }
 
@@ -1155,21 +1160,20 @@ public class AbsensiBoImpl implements AbsensiBo {
                                 j=j+1;
                             }while (lamaLembur>0);
                         }
-                        Double umk =0d;
                         Double peralihan = 0d;
                         peralihan = getTunjPeralihan(absensiPegawaiEntity.getNip(),bean.getTanggal()).doubleValue();
-                        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                        String strDate = dateFormat.format(bean.getTanggal());
-                        String[] a = strDate.split("-");
-                        int intBulan =Integer.valueOf(a[1])-1;
-                        if (intBulan<10){a[1]="0"+intBulan;}
-                        String bulan = a[1];
-                        String tahun = a[2];
-                        List<ItPayrollEntity> payrollEntityList = payrollDao.getTunjanganPeralihan(bean.getNip(),bulan,tahun);
-                        for (ItPayrollEntity itPayrollEntity : payrollEntityList){
-                            peralihan=itPayrollEntity.getTunjanganPeralihan().doubleValue();
-                        }
-                        upahLembur = (upahLembur+peralihan)*faktor*jamLembur;
+//                        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+//                        String strDate = dateFormat.format(bean.getTanggal());
+//                        String[] a = strDate.split("-");
+//                        int intBulan =Integer.valueOf(a[1])-1;
+//                        if (intBulan<10){a[1]="0"+intBulan;}
+//                        String bulan = a[1];
+//                        String tahun = a[2];
+//                        List<ItPayrollEntity> payrollEntityList = payrollDao.getTunjanganPeralihan(bean.getNip(),bulan,tahun);
+//                        for (ItPayrollEntity itPayrollEntity : payrollEntityList){
+//                            peralihan=itPayrollEntity.getTunjanganPeralihan().doubleValue();
+//                        }
+                        upahLembur = (gapok+sankhus+peralihan)*faktor*jamLembur;
 
                         absensiPegawaiEntity.setLembur("Y");
                         absensiPegawaiEntity.setJamLembur(jamLembur);
@@ -1293,6 +1297,8 @@ public class AbsensiBoImpl implements AbsensiBo {
                         hsCriteria4.put("flag", "Y");
                         double faktor = 0;
                         Double upahLembur = 0d;
+                        Double gapok = 0d;
+                        Double sankhus= 0d;
                         pengaliFaktorLemburEntityList = pengaliFaktorLemburDao.getByCriteria(hsCriteria4);
                         for (PengaliFaktorLemburEntity pengaliFaktorLemburEntity : pengaliFaktorLemburEntityList) {
                             faktor = pengaliFaktorLemburEntity.getFaktor();
@@ -1301,12 +1307,13 @@ public class AbsensiBoImpl implements AbsensiBo {
                         hsCriteria4 = new HashMap();
                         hsCriteria4.put("golongan_id", biodataEntity.getGolongan());
                         hsCriteria4.put("point", (int) Math.round(biodataEntity.getPoint()));
-                        hsCriteria4.put("tahun", "2019");
+                        hsCriteria4.put("tahun", tahunGaji);
                         hsCriteria4.put("flag", "Y");
                         List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
                         payrollSkalaGajiList = payrollSkalaGajiDao.getByCriteria(hsCriteria4);
                         for (ImPayrollSkalaGajiEntity imPayrollSkalaGajiEntity : payrollSkalaGajiList) {
-                            upahLembur = imPayrollSkalaGajiEntity.getNilai().doubleValue();
+                            gapok = imPayrollSkalaGajiEntity.getNilai().doubleValue();
+                            sankhus = imPayrollSkalaGajiEntity.getNilai().doubleValue();
                         }
 
                         double jamLembur = 0;
@@ -1339,22 +1346,9 @@ public class AbsensiBoImpl implements AbsensiBo {
                                 j=j+1;
                             }while (lamaLembur>0);
                         }
-                        Double umk =0d;
                         Double peralihan = 0d;
-                        umk = getTunjanganUmk(branch,biodataEntity.getGolongan()).doubleValue();
                         peralihan = getTunjPeralihan(absensiPegawaiEntity.getNip(),bean.getTanggal()).doubleValue();
-                        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                        String strDate = dateFormat.format(bean.getTanggal());
-                        String[] a = strDate.split("-");
-                        int intBulan =Integer.valueOf(a[1])-1;
-                        if (intBulan<10){a[1]="0"+intBulan;}
-                        String bulan = a[1];
-                        String tahun = a[2];
-                        List<ItPayrollEntity> payrollEntityList = payrollDao.getTunjanganPeralihan(bean.getNip(),bulan,tahun);
-                        for (ItPayrollEntity itPayrollEntity : payrollEntityList){
-                            peralihan=itPayrollEntity.getTunjanganPeralihan().doubleValue();
-                        }
-                        upahLembur = (upahLembur+umk+peralihan)*faktor*jamLembur;
+                        upahLembur = (gapok+sankhus+peralihan)*faktor*jamLembur;
 
                         absensiPegawaiEntity.setLembur("Y");
                         absensiPegawaiEntity.setJamLembur(jamLembur);
@@ -1378,6 +1372,8 @@ public class AbsensiBoImpl implements AbsensiBo {
                         hsCriteria4.put("flag", "Y");
                         double faktor = 0;
                         Double upahLembur = 0d;
+                        Double gapok = 0d;
+                        Double sankhus = 0d;
                         pengaliFaktorLemburEntityList = pengaliFaktorLemburDao.getByCriteria(hsCriteria4);
                         for (PengaliFaktorLemburEntity pengaliFaktorLemburEntity : pengaliFaktorLemburEntityList) {
                             faktor = pengaliFaktorLemburEntity.getFaktor();
@@ -1386,12 +1382,13 @@ public class AbsensiBoImpl implements AbsensiBo {
                         hsCriteria4 = new HashMap();
                         hsCriteria4.put("golongan_id", biodataEntity.getGolongan());
                         hsCriteria4.put("point", (int) Math.round(biodataEntity.getPoint()));
-                        hsCriteria4.put("tahun", "2019");
+                        hsCriteria4.put("tahun", tahunGaji);
                         hsCriteria4.put("flag", "Y");
                         List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
                         payrollSkalaGajiList = payrollSkalaGajiDao.getByCriteria(hsCriteria4);
                         for (ImPayrollSkalaGajiEntity imPayrollSkalaGajiEntity : payrollSkalaGajiList) {
-                            upahLembur = imPayrollSkalaGajiEntity.getNilai().doubleValue();
+                            gapok = imPayrollSkalaGajiEntity.getNilai().doubleValue();
+                            sankhus = imPayrollSkalaGajiEntity.getSantunanKhusus().doubleValue();
                         }
 
                         double jamLembur = 0;
@@ -1424,22 +1421,10 @@ public class AbsensiBoImpl implements AbsensiBo {
                                 j=j+1;
                             }while (lamaLembur>0);
                         }
-                        Double umk =0d;
                         Double peralihan = 0d;
-                        umk = getTunjanganUmk(branch,biodataEntity.getGolongan()).doubleValue();
                         peralihan = getTunjPeralihan(absensiPegawaiEntity.getNip(),bean.getTanggal()).doubleValue();
-                        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                        String strDate = dateFormat.format(bean.getTanggal());
-                        String[] a = strDate.split("-");
-                        int intBulan =Integer.valueOf(a[1])-1;
-                        if (intBulan<10){a[1]="0"+intBulan;}
-                        String bulan = a[1];
-                        String tahun = a[2];
-                        List<ItPayrollEntity> payrollEntityList = payrollDao.getTunjanganPeralihan(bean.getNip(),bulan,tahun);
-                        for (ItPayrollEntity itPayrollEntity : payrollEntityList){
-                            peralihan=itPayrollEntity.getTunjanganPeralihan().doubleValue();
-                        }
-                        upahLembur = (upahLembur+umk+peralihan)*faktor*jamLembur;
+
+                        upahLembur = (gapok+sankhus+peralihan)*faktor*jamLembur;
 
                         absensiPegawaiEntity.setLembur("Y");
                         absensiPegawaiEntity.setJamLembur(jamLembur);
@@ -4074,7 +4059,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                 cal.setTime(tanggal);
                 int day = cal.get(Calendar.DAY_OF_WEEK);
                 Map hsCriteria2 = new HashMap();
-                hsCriteria2.put("branch_id","KD01");
+                hsCriteria2.put("branch_id","KP");
                 hsCriteria2.put("hari",day);
                 hsCriteria2.put("flag","Y");
                 jamKerjaList = jamKerjaDao.getByCriteria(hsCriteria2);
@@ -4181,6 +4166,8 @@ public class AbsensiBoImpl implements AbsensiBo {
                     hsCriteria4.put("flag", "Y");
                     double faktor = 0;
                     Double upahLembur = 0d;
+                    Double sankhus = 0d;
+                    Double gapok = 0d;
                     pengaliFaktorLemburEntityList = pengaliFaktorLemburDao.getByCriteria(hsCriteria4);
                     for (PengaliFaktorLemburEntity pengaliFaktorLemburEntity : pengaliFaktorLemburEntityList) {
                         faktor = pengaliFaktorLemburEntity.getFaktor();
@@ -4189,12 +4176,13 @@ public class AbsensiBoImpl implements AbsensiBo {
                     hsCriteria4 = new HashMap();
                     hsCriteria4.put("golongan_id", golongan);
                     hsCriteria4.put("point", (int) Math.round(point));
-                    hsCriteria4.put("tahun", "2019");
+                    hsCriteria4.put("tahun", "2020");
                     hsCriteria4.put("flag", "Y");
                     List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
                     payrollSkalaGajiList = payrollSkalaGajiDao.getByCriteria(hsCriteria4);
                     for (ImPayrollSkalaGajiEntity imPayrollSkalaGajiEntity : payrollSkalaGajiList) {
-                        upahLembur = imPayrollSkalaGajiEntity.getNilai().doubleValue();
+                        gapok = imPayrollSkalaGajiEntity.getNilai().doubleValue();
+                        sankhus = imPayrollSkalaGajiEntity.getSantunanKhusus().doubleValue();
                     }
                     String tipeHari="hari_kerja";
                     if (("Y").equalsIgnoreCase(libur)){
@@ -4230,22 +4218,10 @@ public class AbsensiBoImpl implements AbsensiBo {
                             j=j+1;
                         }while (lamaLembur>0);
                     }
-                    Double umk =0d;
                     Double peralihan = 0d;
-                    umk = getTunjanganUmk("KD01",golongan).doubleValue();
                     peralihan = getTunjPeralihan(absensiPegawaiEntity.getNip(),tanggal).doubleValue();
-                    DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                    String strDate = dateFormat.format(tanggal);
-                    String[] a = strDate.split("-");
-                    int intBulan =Integer.valueOf(a[1])-1;
-                    if (intBulan<10){a[1]="0"+intBulan;}
-                    String bulan = a[1];
-                    String tahun = a[2];
-                    List<ItPayrollEntity> payrollEntityList = payrollDao.getTunjanganPeralihan(nip,bulan,tahun);
-                    for (ItPayrollEntity itPayrollEntity : payrollEntityList){
-                        peralihan=itPayrollEntity.getTunjanganPeralihan().doubleValue();
-                    }
-                    upahLembur = (upahLembur+umk+peralihan)*faktor*jamLembur;
+
+                    upahLembur = (gapok+sankhus+peralihan)*faktor*jamLembur;
 
                     absensiPegawaiEntity.setLembur("Y");
                     absensiPegawaiEntity.setJamLembur(jamLembur);

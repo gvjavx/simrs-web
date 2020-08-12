@@ -59,9 +59,20 @@
             var alamatCuti = document.getElementById("alamatCuti12").value;
             var ket="";
             var cek="";
+            var cekth="";
             var intSisaCuti = parseInt(sisaCuti);
             var intLamaCuti = parseInt(lamaCuti);
             var todayDate = new Date().toISOString().slice(0,10);
+
+            var startdate = $('#tgl2').datepicker('getDate');
+            var enddate = $('#tgl1').datepicker('getDate');
+            var d = new Date(startdate),
+                    year = '' + (d.getFullYear());
+            var d = new Date(enddate),
+                    year1 = '' + (d.getFullYear());
+
+            console.log("Tahun Awal "+year);
+            console.log("Tahun Akhir "+year1);
 
             LemburAction.testTanggal(tanggalAwal,tanggalAkhir,nipid, function (data) {
                 if (data != "") {
@@ -73,6 +84,11 @@
                   cek = data;
               }
             });
+            CutiPegawaiAction.cekTahunCuti(tanggalAwal,tanggalAkhir,nipid,function(data){
+                if (data!=""){
+                    cekth = data;
+                }
+            });
             if (intSisaCuti - intLamaCuti < 0){
                 var sisaCutiMsg ='Maaf, Sisa cuti yang anda ajukan sudah habis';
                 document.getElementById('errorMessageAddCuti').innerHTML = sisaCutiMsg;
@@ -82,14 +98,39 @@
             }
             else{
                 if ( nipid != ''&& cutiid != ''&& tanggalAkhir != '' && tanggalAwal != ''&&ket==""&&unitid!=""&&cek=="" && alamatCuti != "") {
-                    if (confirm('Do you want to save this record?')) {
-                        event.originalEvent.options.submit = true;
-                        $.publish('showDialog');
+                    if (year == year1){
 
-                    } else {
-                        // Cancel Submit comes with 1.8.0
+                        if (cekth == ''){
+                            if (confirm('Do you want to save this record?')) {
+                                event.originalEvent.options.submit = true;
+                                $.publish('showDialog');
+
+                            } else {
+                                // Cancel Submit comes with 1.8.0
+                                event.originalEvent.options.submit = false;
+                            }
+                        }else {
+                            if (confirm('Apakah ingin dilanjutkan? Cuti yang diajukan tahun depan dapat mereset cuti tahunan anda ke tahun berikutnya!!!')) {
+                                event.originalEvent.options.submit = true;
+                                $.publish('showDialog');
+
+                            } else {
+                                // Cancel Submit comes with 1.8.0
+                                event.originalEvent.options.submit = false;
+                            }
+                        }
+
+                    }else {
                         event.originalEvent.options.submit = false;
+                        var msg = "";
+
+                        if (year != year1) {
+                            msg += 'Tidak melakukan cuti normal di tahun yang berbeda<br/>';
+                        }
+                        document.getElementById('errorMessageAddCuti').innerHTML = msg;
+                        $.publish('showErrorValidationDialog');
                     }
+
                 } else {
                     event.originalEvent.options.submit = false;
                     var msg = "";

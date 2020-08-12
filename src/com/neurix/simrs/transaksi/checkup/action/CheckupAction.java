@@ -3392,7 +3392,7 @@ public class CheckupAction extends BaseMasterAction {
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
         if(idPasien != null){
             try {
-                checkupList = checkupBo.getHistoryPasien(idPasien);
+                checkupList = checkupBo.getHistoryPasien(idPasien, "");
             }catch (HibernateException e){
                 logger.error("Found Error "+e.getMessage());
             }
