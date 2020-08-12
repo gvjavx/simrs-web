@@ -43,11 +43,15 @@ public class FirebasePushNotif {
                 data.put("data", sendData);
             }
 
-            if (CLICK_ACTION != null) {
-                if  (CLICK_ACTION.equalsIgnoreCase("PD")) {
+
+            if (CLICK_ACTION != null){
+                if  ("PD".equalsIgnoreCase(CLICK_ACTION)) {
                     info.put("sound", "call.mp3");
-                } else info.put("sound", "default");
-            } else info.put("sound", "default");
+                } else  info.put("sound", "default");
+            }
+//            if  (CLICK_ACTION.equalsIgnoreCase("PD")) {
+//                info.put("sound", "call.mp3");
+//            } else  info.put("sound", "default");
 
 
             info.put("click_action", CLICK_ACTION);
