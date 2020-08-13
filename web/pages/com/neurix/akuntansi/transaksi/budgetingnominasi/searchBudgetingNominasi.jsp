@@ -33,6 +33,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/TutuPeriodAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/BudgetingAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/KodeRekeningAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/BgNominasiAction.js"/>'></script>
     <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.bootstrap3.js"/>"></script>
     <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.js"/>"></script>
     <script src="<s:url value="/pages/plugins/tree/lodash.js"/>"></script>
@@ -41,6 +42,7 @@
         $( document ).ready(function() {
             $('#bayar_rawat_jalan, #pembayaran_active').addClass('active');
             $('#pembayaran_open').addClass('menu-open');
+            changeAction('');
         });
 
     </script>
@@ -69,7 +71,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Budgeting </h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Budgeting Nominasi</h3>
                     </div>
                     <div class="box-body">
                         <%--<s:form id="kasirjalanForm" method="post" namespace="/kasirjalan" action="search_kasirjalan.action" theme="simple" cssClass="form-horizontal">--%>
@@ -90,9 +92,19 @@
                                         <div class="row">
                                             <label class="control-label col-sm-2">Unit</label>
                                             <div class="col-sm-2">
-                                                <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                                <s:select list="#initComboBranch.listOfComboBranch" id="sel-unit" name="budgeting.branchId"
-                                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select Value]" cssClass="form-control" onchange="changeAction(this.value)"/>
+                                                <s:if test='budgeting.flagKp == "Y"'>
+                                                    <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                    <s:select list="#initComboBranch.listOfComboBranch" id="sel-unit" name="budgeting.branchId"
+                                                              listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select Value]" cssClass="form-control" onchange="changeAction(this.value)"/>
+
+                                                </s:if>
+                                                <s:else>
+                                                    <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                    <s:select list="#initComboBranch.listOfComboBranch" name="budgeting.branchId"
+                                                              listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select Value]" cssClass="form-control" onchange="changeAction(this.value)" disabled="true"/>
+                                                    <%--<input type="hidden" id="sel-unit" name="budgeting.branchId"/>--%>
+                                                    <s:hidden id="sel-unit" name="budgeting.branchId"/>
+                                                </s:else>
                                             </div>
                                         </div>
                                         <%--<div class="row">--%>
@@ -153,7 +165,7 @@
                                 <div class="row">
                                     <div class="col-md-6 col-md-offset-4" style="margin-top: 10px">
                                         <button class="btn btn-success" onclick="search()"><i class="fa fa-search"></i> Search</button>
-                                        <%--<button class="btn btn-primary" onclick="add()" id="btn-add"><i class="fa fa-plus"></i> Add</button>--%>
+                                        <button class="btn btn-primary" onclick="add()" id="btn-add"><i class="fa fa-plus"></i> Add</button>
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Action</button>
                                             <button type="button" class="btn btn-primary dropdown-toggle"
@@ -355,7 +367,12 @@
     function changeAction(var1){
 
         var tahun = $("#sel-tahun").val();
-        var unit = var1;
+        var unit = "";
+        if (var1 == null || var1 == "")
+            unit = $("#sel-unit").val();
+        else
+            unit = var1;
+        console.log(unit);
 
         BudgetingAction.findLastStatus(unit, tahun, function(response){
             var str = "";
@@ -662,12 +679,12 @@
     }
 
     function add() {
-        var host = firstpath()+"/budgeting/add_budgeting.action";
+        var host = firstpath()+"/bgnominasi/add_bgnominasi.action";
         post(host);
     }
 
     function reset() {
-        var host = firstpath()+"/budgeting/initForm_budgeting.action";
+        var host = firstpath()+"/bgnominasi/initForm_bgnominasi.action";
         post(host);
     }
 
@@ -691,16 +708,16 @@
 
         if (unit != ""){
             var arr = [];
-            arr.push({
-                "tahun":tahun,
-                "unit":unit,
-                "status":"",
-                "coa":rekeningid
-            });
+//            arr.push({
+//                "tahun":tahun,
+//                "unit":unit,
+//                "status":"",
+//                "coa":rekeningid
+//            });
 
-            var strJson = JSON.stringify(arr);
+//            var strJson = JSON.stringify(arr);
             dwr.engine.setAsync(true);
-            BudgetingAction.getSearchListBudgeting(strJson, function (response) {
+            BgNominasiAction.getSearchListBudgeting(tahun, unit, function (response) {
                 dwr.engine.setAsync(false);
                 $("#alert-success").hide();
                 if (response.status == "error"){
@@ -975,7 +992,7 @@
         if ((unit && tahun) != ""){
 
             var form = {"budgeting.branchId":unit, "budgeting.tahun":tahun};
-            var host = firstpath()+"/budgeting/edit_budgeting.action?status=edit&trans="+var1;
+            var host = firstpath()+"/bgnominasi/edit_bgnominasi.action?status=edit&trans="+var1;
             post(host, form);
         } else {
             alert("Pilih Unit dan Tahun Dulu.")

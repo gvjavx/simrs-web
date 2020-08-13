@@ -81,6 +81,7 @@
                                             <label class="control-label col-sm-2">Tahun</label>
                                             <div class="col-sm-2">
                                                 <select class="form-control" id="sel-tahun">
+                                                    <option value="">[Select One]</option>
                                                     <option value="2020">2020</option>
                                                     <option value="2021">2021</option>
                                                     <option value="2022">2022</option>
@@ -121,11 +122,11 @@
                     </div>
 
                     <div class="box-header with-border"></div>
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-th-list"></i> List Data Budgeting :
-                        <strong><span id="label-tahun"></span> - <span id="label-unit"></span></strong>
-                        </h3>
-                    </div>
+                    <%--<div class="box-header with-border">--%>
+                        <%--<h3 class="box-title"><i class="fa fa-th-list"></i> List Data Budgeting :--%>
+                        <%--<strong><span id="label-tahun"></span> - <span id="label-unit"></span></strong>--%>
+                        <%--</h3>--%>
+                    <%--</div>--%>
                     <div class="box-body">
 
                         <%--<div class="alert alert-info alert-dismissable" id="alert-info">--%>
@@ -239,7 +240,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" id="save_edit" onclick="save('edit')"><i class="fa fa-check"></i> Save</button>
+                <%--<button type="button" class="btn btn-success" id="save_edit" onclick="save('edit')"><i class="fa fa-check"></i> Save</button>--%>
             </div>
         </div>
     </div>
@@ -461,7 +462,7 @@
                 $.each(list, function (i, item) {
                    str += "<tr>" +
                            "<td>"+ item.keterangan +"</td>" +
-                           "<td align='center'><button class='btn btn-primary' onclick=\"modalEdit(\'"+item.tahun+"\')\"><i class='fa fa-edit'></i></button></td>" +
+                           "<td align='center'><button class='btn btn-success' onclick=\"modalEdit(\'"+item.tahun+"\')\"><i class='fa fa-search'></i></button></td>" +
                            "</tr>";
                 });
                 $("#body-budgeting").html(str);
@@ -485,7 +486,7 @@
                 listOfId.push({"id":"add_"+item.idNilaiDasar});
             });
             $("#body-param-add").html(str);
-            console.log(str);
+            //console.log(str);
             //console.log(listOfId);
         });
     }
@@ -506,7 +507,7 @@
                 listOfId.push({"id":"edit_"+item.idNilaiDasar});
             });
             $("#body-param-edit").html(str);
-            console.log(str);
+            //console.log(str);
             //console.log(listOfId);
         });
     }

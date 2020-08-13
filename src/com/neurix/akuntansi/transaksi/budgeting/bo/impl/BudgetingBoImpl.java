@@ -135,6 +135,7 @@ public class BudgetingBoImpl implements BudgetingBo {
                     budgeting.setTipeCoa(kodeRekeningEntity.getTipeRekeningId());
                     budgeting.setFlagDivisi(kodeRekeningEntity.getFlagDivisi());
                     budgeting.setFlagMaster(kodeRekeningEntity.getFlagMaster());
+                    budgeting.setTipeBudgeting(kodeRekeningEntity.getTipeBudgeting());
                 }
 
                 // mencari list periode;
@@ -196,6 +197,11 @@ public class BudgetingBoImpl implements BudgetingBo {
         // short berdasarakan kodeRekening
         Collections.sort(budgetings, Budgeting.getKodeRekeningSorting());
 
+//        if (bean.getTipeBudgeting() != null && !"".equalsIgnoreCase(bean.getTipeBudgeting())){
+//            logger.info("[BudgetingBoImpl.getSearchByCriteria] END <<<");
+//            return budgetings.stream().filter(p -> p.getTipeBudgeting().equalsIgnoreCase(bean.getTipeBudgeting())).collect(Collectors.toList());
+//        }
+
         logger.info("[BudgetingBoImpl.getSearchByCriteria] END <<<");
         return budgetings;
     }
@@ -249,6 +255,9 @@ public class BudgetingBoImpl implements BudgetingBo {
         }
         if (bean.getIdBudgeting() != null){
             hsCriteria.put("id_budgeting", bean.getIdBudgeting());
+        }
+        if (bean.getRekeningIdList() != null && bean.getRekeningIdList().size() > 0){
+            hsCriteria.put("rekening_id_list", bean.getRekeningIdList());
         }
 
         List<ItAkunBudgetingEntity> budgetingEntities = new ArrayList<>();
@@ -1259,6 +1268,16 @@ public class BudgetingBoImpl implements BudgetingBo {
     @Override
     public Budgeting checkBudgeting(String branchId, String tahun) throws GeneralBOException {
         return budgetingDao.getCheckTransaksi(branchId, tahun);
+    }
+
+    @Override
+    public Budgeting checkBudgetingByTipe(String branchId, String tahun, String tipeBudgeting) throws GeneralBOException {
+        return budgetingDao.getCheckTransaksiWithTipeBudgeting(branchId, tahun, tipeBudgeting);
+    }
+
+    @Override
+    public String checkNilaiDasarByTahun(String tahun) throws GeneralBOException {
+        return budgetingDao.checkNilaiDasarByTahun(tahun);
     }
 
     @Override

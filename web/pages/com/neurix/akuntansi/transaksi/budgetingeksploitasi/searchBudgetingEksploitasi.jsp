@@ -33,6 +33,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/TutuPeriodAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/BudgetingAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/KodeRekeningAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/BgEksploitasi.js"/>'></script>
     <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.bootstrap3.js"/>"></script>
     <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.js"/>"></script>
     <script src="<s:url value="/pages/plugins/tree/lodash.js"/>"></script>
@@ -41,6 +42,7 @@
         $( document ).ready(function() {
             $('#bayar_rawat_jalan, #pembayaran_active').addClass('active');
             $('#pembayaran_open').addClass('menu-open');
+            changeAction('');
         });
 
     </script>
@@ -69,7 +71,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Budgeting </h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Budgeting Eksploitasi </h3>
                     </div>
                     <div class="box-body">
                         <%--<s:form id="kasirjalanForm" method="post" namespace="/kasirjalan" action="search_kasirjalan.action" theme="simple" cssClass="form-horizontal">--%>
@@ -153,7 +155,7 @@
                                 <div class="row">
                                     <div class="col-md-6 col-md-offset-4" style="margin-top: 10px">
                                         <button class="btn btn-success" onclick="search()"><i class="fa fa-search"></i> Search</button>
-                                        <%--<button class="btn btn-primary" onclick="add()" id="btn-add"><i class="fa fa-plus"></i> Add</button>--%>
+                                        <button class="btn btn-primary" onclick="add()" id="btn-add"><i class="fa fa-plus"></i> Add</button>
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Action</button>
                                             <button type="button" class="btn btn-primary dropdown-toggle"
@@ -355,98 +357,31 @@
     function changeAction(var1){
 
         var tahun = $("#sel-tahun").val();
-        var unit = var1;
+        var unit = "";
+        if (var1 == null || var1 == "")
+            unit = $("#sel-unit").val();
+        else
+            unit = var1;
+        console.log(unit);
 
-        BudgetingAction.findLastStatus(unit, tahun, function(response){
-            var str = "";
-            if (response.status != ""){
-                if ("ADJUST_REVISI" == response.status){
-                    str += "<li>"+
-                        "<a href=\"#\" onclick=\"action('ADJUST_REVISI')\">"+
-                        "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
-                        "</li><hr>";
-
-                } else if ("APPROVE_REVISI" == response.status){
-
-                    str += "<li>"+
-                        "<a href=\"#\" onclick=\"action('ADJUST_REVISI')\">"+
-                        "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
-                        "</li><hr>";
-
-                } else if ("EDIT_REVISI" == response.status){
-                    str += "<li>"+
-                        "<a href=\"#\" onclick=\"action('EDIT_REVISI')\">"+
-                        "<i class=\"fa fa-edit\"></i>Edit Revisi</a>"+
-                        "</li>";
-
-                    str += "<li>"+
-                        "<a href=\"#\" onclick=\"action('APPROVE_REVISI')\">"+
-                        "<i class=\"fa fa-edit\"></i>Approve Revisi</a>"+
-                        "</li>";
-
-                    str += "<li>"+
-                        "<a href=\"#\" onclick=\"action('ADJUST_REVISI')\">"+
-                        "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
-                        "</li><hr>";
-                } else {
-                    if ("ADJUST_FINAL" ==  response.status){
+        if (unit != null || unit != ""){
+            BudgetingAction.findLastStatus(unit, tahun, function(response){
+                var str = "";
+                if (response.status != ""){
+                    if ("ADJUST_REVISI" == response.status){
                         str += "<li>"+
-                            "<a href=\"#\" onclick=\"action('ADJUST_FINAL')\">"+
-                            "<i class=\"fa fa-edit\"></i>Adjust Final</a>"+
+                            "<a href=\"#\" onclick=\"action('ADJUST_REVISI')\">"+
+                            "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
                             "</li><hr>";
 
-                        str += "<li>"+
-                            "<a href=\"#\" onclick=\"action('EDIT_REVISI')\">"+
-                            "<i class=\"fa fa-edit\"></i>Edit Revisi</a>"+
-                            "</li>";
-
-                        str += "<li>"+
-                            "<a href=\"#\" onclick=\"action('APPROVE_REVISI')\">"+
-                            "<i class=\"fa fa-edit\"></i>Approve Revisi</a>"+
-                            "</li>";
+                    } else if ("APPROVE_REVISI" == response.status){
 
                         str += "<li>"+
                             "<a href=\"#\" onclick=\"action('ADJUST_REVISI')\">"+
                             "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
                             "</li><hr>";
 
-                    } else if ("APPROVE_FINAL" ==  response.status){
-                        str += "<li>"+
-                            "<a href=\"#\" onclick=\"action('ADJUST_FINAL')\">"+
-                            "<i class=\"fa fa-edit\"></i>Adjust Final</a>"+
-                            "</li><hr>";
-
-                        str += "<li>"+
-                            "<a href=\"#\" onclick=\"action('EDIT_REVISI')\">"+
-                            "<i class=\"fa fa-edit\"></i>Edit Revisi</a>"+
-                            "</li>";
-
-                        str += "<li>"+
-                            "<a href=\"#\" onclick=\"action('APPROVE_REVISI')\">"+
-                            "<i class=\"fa fa-edit\"></i>Approve Revisi</a>"+
-                            "</li>";
-
-                        str += "<li>"+
-                            "<a href=\"#\" onclick=\"action('ADJUST_REVISI')\">"+
-                            "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
-                            "</li><hr>";
-
-                    } else if ("EDIT_FINAL" ==  response.status){
-                        str += "<li>"+
-                            "<a href=\"#\" onclick=\"action('EDIT_FINAL')\">"+
-                            "<i class=\"fa fa-edit\"></i>Edit Final</a>"+
-                            "</li>";
-
-                        str += "<li>"+
-                            "<a href=\"#\" onclick=\"action('APPROVE_FINAL')\">"+
-                            "<i class=\"fa fa-edit\"></i>Approve Final</a>"+
-                            "</li>";
-
-                        str += "<li>"+
-                            "<a href=\"#\" onclick=\"action('ADJUST_FINAL')\">"+
-                            "<i class=\"fa fa-edit\"></i>Adjust Final</a>"+
-                            "</li><hr>";
-
+                    } else if ("EDIT_REVISI" == response.status){
                         str += "<li>"+
                             "<a href=\"#\" onclick=\"action('EDIT_REVISI')\">"+
                             "<i class=\"fa fa-edit\"></i>Edit Revisi</a>"+
@@ -462,22 +397,7 @@
                             "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
                             "</li><hr>";
                     } else {
-                        if ("ADJUST_DRAFT" == response.status){
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('ADJUST_DRAFT')\">"+
-                                "<i class=\"fa fa-edit\"></i>Adjust Draft</a>"+
-                                "</li><hr>";
-
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('EDIT_FINAL')\">"+
-                                "<i class=\"fa fa-edit\"></i>Edit Final</a>"+
-                                "</li>";
-
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('APPROVE_FINAL')\">"+
-                                "<i class=\"fa fa-edit\"></i>Approve Final</a>"+
-                                "</li>";
-
+                        if ("ADJUST_FINAL" ==  response.status){
                             str += "<li>"+
                                 "<a href=\"#\" onclick=\"action('ADJUST_FINAL')\">"+
                                 "<i class=\"fa fa-edit\"></i>Adjust Final</a>"+
@@ -497,13 +417,29 @@
                                 "<a href=\"#\" onclick=\"action('ADJUST_REVISI')\">"+
                                 "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
                                 "</li><hr>";
-                        } else if("APPROVE_DRAFT" == response.status){
 
+                        } else if ("APPROVE_FINAL" ==  response.status){
                             str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('ADJUST_DRAFT')\">"+
-                                "<i class=\"fa fa-edit\"></i>Adjust Draft</a>"+
+                                "<a href=\"#\" onclick=\"action('ADJUST_FINAL')\">"+
+                                "<i class=\"fa fa-edit\"></i>Adjust Final</a>"+
                                 "</li><hr>";
 
+                            str += "<li>"+
+                                "<a href=\"#\" onclick=\"action('EDIT_REVISI')\">"+
+                                "<i class=\"fa fa-edit\"></i>Edit Revisi</a>"+
+                                "</li>";
+
+                            str += "<li>"+
+                                "<a href=\"#\" onclick=\"action('APPROVE_REVISI')\">"+
+                                "<i class=\"fa fa-edit\"></i>Approve Revisi</a>"+
+                                "</li>";
+
+                            str += "<li>"+
+                                "<a href=\"#\" onclick=\"action('ADJUST_REVISI')\">"+
+                                "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
+                                "</li><hr>";
+
+                        } else if ("EDIT_FINAL" ==  response.status){
                             str += "<li>"+
                                 "<a href=\"#\" onclick=\"action('EDIT_FINAL')\">"+
                                 "<i class=\"fa fa-edit\"></i>Edit Final</a>"+
@@ -534,63 +470,136 @@
                                 "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
                                 "</li><hr>";
                         } else {
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('EDIT_DRAFT')\">"+
-                                "<i class=\"fa fa-edit\"></i>Edit Draft</a>"+
-                                "</li>";
+                            if ("ADJUST_DRAFT" == response.status){
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('ADJUST_DRAFT')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Adjust Draft</a>"+
+                                    "</li><hr>";
 
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('APPROVE_DRAFT')\">"+
-                                "<i class=\"fa fa-edit\"></i>Approve Draft</a>"+
-                                "</li>";
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('EDIT_FINAL')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Edit Final</a>"+
+                                    "</li>";
 
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('ADJUST_DRAFT')\">"+
-                                "<i class=\"fa fa-edit\"></i>Adjust Draft</a>"+
-                                "</li><hr>";
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('APPROVE_FINAL')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Approve Final</a>"+
+                                    "</li>";
 
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('EDIT_FINAL')\">"+
-                                "<i class=\"fa fa-edit\"></i>Edit Final</a>"+
-                                "</li>";
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('ADJUST_FINAL')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Adjust Final</a>"+
+                                    "</li><hr>";
 
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('APPROVE_FINAL')\">"+
-                                "<i class=\"fa fa-edit\"></i>Approve Final</a>"+
-                                "</li>";
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('EDIT_REVISI')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Edit Revisi</a>"+
+                                    "</li>";
 
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('ADJUST_FINAL')\">"+
-                                "<i class=\"fa fa-edit\"></i>Adjust Final</a>"+
-                                "</li><hr>";
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('APPROVE_REVISI')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Approve Revisi</a>"+
+                                    "</li>";
 
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('EDIT_REVISI')\">"+
-                                "<i class=\"fa fa-edit\"></i>Edit Revisi</a>"+
-                                "</li>";
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('ADJUST_REVISI')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
+                                    "</li><hr>";
+                            } else if("APPROVE_DRAFT" == response.status){
 
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('APPROVE_REVISI')\">"+
-                                "<i class=\"fa fa-edit\"></i>Approve Revisi</a>"+
-                                "</li>";
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('ADJUST_DRAFT')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Adjust Draft</a>"+
+                                    "</li><hr>";
 
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('ADJUST_REVISI')\">"+
-                                "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
-                                "</li><hr>";
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('EDIT_FINAL')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Edit Final</a>"+
+                                    "</li>";
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('APPROVE_FINAL')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Approve Final</a>"+
+                                    "</li>";
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('ADJUST_FINAL')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Adjust Final</a>"+
+                                    "</li><hr>";
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('EDIT_REVISI')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Edit Revisi</a>"+
+                                    "</li>";
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('APPROVE_REVISI')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Approve Revisi</a>"+
+                                    "</li>";
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('ADJUST_REVISI')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
+                                    "</li><hr>";
+                            } else {
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('EDIT_DRAFT')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Edit Draft</a>"+
+                                    "</li>";
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('APPROVE_DRAFT')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Approve Draft</a>"+
+                                    "</li>";
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('ADJUST_DRAFT')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Adjust Draft</a>"+
+                                    "</li><hr>";
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('EDIT_FINAL')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Edit Final</a>"+
+                                    "</li>";
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('APPROVE_FINAL')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Approve Final</a>"+
+                                    "</li>";
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('ADJUST_FINAL')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Adjust Final</a>"+
+                                    "</li><hr>";
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('EDIT_REVISI')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Edit Revisi</a>"+
+                                    "</li>";
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('APPROVE_REVISI')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Approve Revisi</a>"+
+                                    "</li>";
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('ADJUST_REVISI')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
+                                    "</li><hr>";
+                            }
                         }
                     }
+                } else {
+                    str = "";
+                    str += "<li>"+
+                        "<span>"+
+                        "<i class=\"fa fa-info\"></i>Please Add</span>"+
+                        "</li><hr>";
                 }
-            } else {
-                str = "";
-                str += "<li>"+
-                    "<span>"+
-                    "<i class=\"fa fa-info\"></i>Please Add</span>"+
-                    "</li><hr>";
-            }
 
-            $("#action-menu").html(str);
-        });
+                $("#action-menu").html(str);
+            });
+        }
     }
 
     // exemple : post('/contact/', {name: 'Johnny Bravo'});
@@ -662,12 +671,12 @@
     }
 
     function add() {
-        var host = firstpath()+"/budgeting/add_budgeting.action";
+        var host = firstpath()+"/bgeksploitasi/add_bgeksploitasi.action";
         post(host);
     }
 
     function reset() {
-        var host = firstpath()+"/budgeting/initForm_budgeting.action";
+        var host = firstpath()+"/bgeksploitasi/initForm_bgeksploitasi.action";
         post(host);
     }
 
@@ -690,17 +699,17 @@
         $("#label-tahun").text(tahun);
 
         if (unit != ""){
-            var arr = [];
-            arr.push({
-                "tahun":tahun,
-                "unit":unit,
-                "status":"",
-                "coa":rekeningid
-            });
-
-            var strJson = JSON.stringify(arr);
+//            var arr = [];
+//            arr.push({
+//                "tahun":tahun,
+//                "unit":unit,
+//                "status":"",
+//                "coa":rekeningid
+//            });
+//
+//            var strJson = JSON.stringify(arr);
             dwr.engine.setAsync(true);
-            BudgetingAction.getSearchListBudgeting(strJson, function (response) {
+            BgEksploitasiAction.getSearchListBudgeting(tahun, unit, function (response) {
                 dwr.engine.setAsync(false);
                 $("#alert-success").hide();
                 if (response.status == "error"){
@@ -975,7 +984,7 @@
         if ((unit && tahun) != ""){
 
             var form = {"budgeting.branchId":unit, "budgeting.tahun":tahun};
-            var host = firstpath()+"/budgeting/edit_budgeting.action?status=edit&trans="+var1;
+            var host = firstpath()+"/bgeksploitasi/edit_bgeksploitasi.action?status=edit&trans="+var1;
             post(host, form);
         } else {
             alert("Pilih Unit dan Tahun Dulu.")
