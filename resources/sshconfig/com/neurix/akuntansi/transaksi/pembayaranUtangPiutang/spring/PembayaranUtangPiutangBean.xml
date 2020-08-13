@@ -18,6 +18,7 @@
           p:jurnalDao-ref="jurnalDao"
           p:jurnalDetailDao-ref="jurnalDetailDao"
           p:transDao-ref="transDao"
+          p:positionDao-ref="positionDao"
           p:branchDao-ref="branchDao"
           p:mappingJurnalDao-ref="mappingJurnalDao"
     />

@@ -139,9 +139,10 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:action id="comboTrans" namespace="/trans" name="initComboTransPembayaran_trans"/>
+                                                        <s:action id="comboTrans" namespace="/trans" name="initComboTransPembayaran_trans">
+                                                            <s:param name="tipe">KR</s:param>
+                                                        </s:action>
                                                         <s:select list="#comboTrans.listOfComboTrans" id="tipe_transaksi" name="pembayaranUtangPiutang.tipeTransaksi"
-                                                                  onchange="$(this).css('border','')"
                                                                   listKey="transId" listValue="transName" headerKey="" headerValue="[ Select One ]" cssClass="form-control" />
                                                     </table>
                                                 </td>

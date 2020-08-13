@@ -1,5 +1,6 @@
 package com.neurix.hris.transaksi.payroll.dao;
 
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.transaksi.payroll.model.*;
@@ -145,7 +146,6 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
                 .list();
-
 
         for (Object[] row : results) {
             ItPayrollEntity result  = new ItPayrollEntity();
@@ -464,7 +464,8 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
                 "  payroll.flag_jasprod,\n" +
                 "  payroll.flag_jubileum,\n" +
                 "  payroll.flag_pensiun,\n" +
-                "  payroll.flag_insentif\n" +
+                "  payroll.flag_insentif,\n" +
+                "  payroll.approval_aks_flag\n" +
                 "FROM it_hris_payroll payroll\n" +
                 "LEFT JOIN im_branches branch\n" +
                 "  ON branch.branch_id = payroll.branch_id\n" +
@@ -481,6 +482,7 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
                 "         payroll.approval_flag,\n" +
                 "         payroll.approval_unit_flag,\n" +
                 "         payroll.approval_sdm_flag,\n" +
+                "         payroll.approval_aks_flag,\n" +
                 "         payroll.approval_date," +
                 "         payroll.branch_id,\n" +
                 "         payroll.flag_payroll,\n" +
@@ -518,6 +520,7 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
             result.setFlagJubileum((String) row[16]);
             result.setFlagPensiun((String) row[17]);
             result.setFlagInsentif((String) row[18]);
+            result.setApprovalAksFlag((String) row[19]);
 
             listOfResult.add(result);
         }
@@ -1156,16 +1159,82 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
         }else if(tipe.equalsIgnoreCase("PN")){
             tipeWhere = "and flag_pensiun= 'Y' ";
         }
+        String query ="";
+        if ("Y".equalsIgnoreCase(statusApprove)){
+            query = "UPDATE it_hris_payroll\n" +
+                    "SET approval_id = '"+id+"',\n" +
+                    "    approval_date = now(),\n" +
+                    "    approval_flag = '"+statusApprove+"'\n" +
+                    "WHERE bulan = '"+bulan+"'\n" +
+                    "AND tahun = '"+tahun+"'\n" +
+                    tipeWhere+
+                    "AND branch_id = '"+branchId+"'\n" +
+                    "AND flag = 'Y'";
+        }else{
+            query = "UPDATE it_hris_payroll\n" +
+                    "SET approval_id = '"+id+"',\n" +
+                    "    approval_date = now(),\n" +
+                    "    approval_flag = '"+statusApprove+"',\n" +
+                    "    approval_sdm_flag = null, \n" +
+                    "    approval_sdm_id = null,\n" +
+                    "    approval_sdm_date = null \n" +
+                    "WHERE bulan = '"+bulan+"'\n" +
+                    "AND tahun = '"+tahun+"'\n" +
+                    tipeWhere+
+                    "AND branch_id = '"+branchId+"'\n" +
+                    "AND flag = 'Y'";
+        }
 
-        String query = "UPDATE it_hris_payroll\n" +
-                "SET approval_id = '"+id+"',\n" +
-                "    approval_date = now(),\n" +
-                "    approval_flag = '"+statusApprove+"'\n" +
-                "WHERE bulan = '"+bulan+"'\n" +
-                "AND tahun = '"+tahun+"'\n" +
-                tipeWhere+
-                "AND branch_id = '"+branchId+"'\n" +
-                "AND flag = 'Y'";
+        this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .executeUpdate();
+    }
+
+    public void approvePayrollAks(String branchId, String bulan, String tahun, String statusApprove, String tipe){
+        String id = CommonUtil.userIdLogin();
+        String tipeWhere = "";
+        if(tipe.equalsIgnoreCase("PR")){
+            tipeWhere = "and flag_payroll = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("T")){
+            tipeWhere = "and flag_thr = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("PD")){
+            tipeWhere = "and flag_pendidikan = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("R")){
+            tipeWhere = "and flag_rapel= 'Y' ";
+        }else if(tipe.equalsIgnoreCase("JP")){
+            tipeWhere = "and flag_jasprod = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("JB")){
+            tipeWhere = "and flag_jubileum = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("PN")){
+            tipeWhere = "and flag_pensiun= 'Y' ";
+        }
+
+        String query ="";
+
+        if ("Y".equalsIgnoreCase(statusApprove)){
+            query = "UPDATE it_hris_payroll\n" +
+                    "SET approval_aks_id = '"+id+"',\n" +
+                    "    approval_aks_date = now(),\n" +
+                    "    approval_aks_flag = '"+statusApprove+"'\n" +
+                    "WHERE bulan = '"+bulan+"'\n" +
+                    "AND tahun = '"+tahun+"'\n" +
+                    tipeWhere+
+                    "AND branch_id = '"+branchId+"'\n" +
+                    "AND flag = 'Y'";
+        }else{
+            query = "UPDATE it_hris_payroll\n" +
+                    "SET approval_aks_id = '"+id+"',\n" +
+                    "    approval_aks_date = now(),\n" +
+                    "    approval_aks_flag = '"+statusApprove+"',\n" +
+                    "    approval_sdm_date = null,\n" +
+                    "    approval_sdm_id = null,\n" +
+                    "    approval_sdm_flag = null\n" +
+                    "WHERE bulan = '"+bulan+"'\n" +
+                    "AND tahun = '"+tahun+"'\n" +
+                    tipeWhere+
+                    "AND branch_id = '"+branchId+"'\n" +
+                    "AND flag = 'Y'";
+        }
 
         this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -1192,16 +1261,49 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
             tipeWhere = "and flag_pensiun= 'Y' ";
         }
 
-        String query = "UPDATE it_hris_payroll\n" +
-                "SET approval_unit_id = '"+id+"',\n" +
-                "    approval_unit_date = now(),\n" +
-                "    approval_unit_name = '"+name+"',\n" +
-                "    approval_unit_flag = '"+statusApprove+"'\n" +
-                "WHERE bulan = '"+bulan+"'\n" +
-                "AND tahun = '"+tahun+"'\n" +
-                tipeWhere+
-                "AND branch_id = '"+branchId+"'\n" +
-                "AND flag = 'Y'";
+        String query ="";
+        if (statusApprove.equalsIgnoreCase("Y")){
+            query = "UPDATE it_hris_payroll\n" +
+                    "SET approval_unit_id = '"+id+"',\n" +
+                    "    approval_unit_date = now(),\n" +
+                    "    approval_unit_name = '"+name+"',\n" +
+                    "    approval_unit_flag = '"+statusApprove+"'\n" +
+                    "WHERE bulan = '"+bulan+"'\n" +
+                    "AND tahun = '"+tahun+"'\n" +
+                    tipeWhere+
+                    "AND branch_id = '"+branchId+"'\n" +
+                    "AND flag = 'Y'";
+        }else{
+            if (CommonUtil.userBranchLogin().equalsIgnoreCase(CommonConstant.ID_KANPUS)){
+                query = "UPDATE it_hris_payroll\n" +
+                        "SET approval_unit_id = '"+id+"',\n" +
+                        "    approval_unit_date = now(),\n" +
+                        "    approval_unit_name = '"+name+"',\n" +
+                        "    approval_unit_flag = '"+statusApprove+"'\n" +
+                        "WHERE bulan = '"+bulan+"'\n" +
+                        "AND tahun = '"+tahun+"'\n" +
+                        tipeWhere+
+                        "AND branch_id = '"+branchId+"'\n" +
+                        "AND flag = 'Y'";
+            }else{
+                query = "UPDATE it_hris_payroll\n" +
+                        "SET approval_unit_id = '"+id+"',\n" +
+                        "    approval_unit_date = now(),\n" +
+                        "    approval_unit_name = '"+name+"',\n" +
+                        "    approval_unit_flag = '"+statusApprove+"',\n" +
+                        "    approval_id = '"+id+"',\n" +
+                        "    approval_date = now(),\n" +
+                        "    approval_name = '"+name+"', \n" +
+                        "    flag = '"+statusApprove+"', \n" +
+                        "    approval_flag = '"+statusApprove+"' \n" +
+                        "WHERE bulan = '"+bulan+"'\n" +
+                        "AND tahun = '"+tahun+"'\n" +
+                        tipeWhere+
+                        "AND branch_id = '"+branchId+"'\n" +
+                        "AND flag = 'Y'";
+            }
+
+        }
 
         this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -1228,16 +1330,62 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
             tipeWhere = "and flag_pensiun= 'Y' ";
         }
 
-        String query = "UPDATE it_hris_payroll\n" +
-                "SET approval_sdm_id = '"+id+"',\n" +
-                "    approval_sdm_date = now(),\n" +
-                "    approval_sdm_name = '"+name+"',\n" +
-                "    approval_sdm_flag = '"+statusApprove+"'\n" +
-                "WHERE bulan = '"+bulan+"'\n" +
-                "AND tahun = '"+tahun+"'\n" +
-                tipeWhere+
-                "AND branch_id = '"+branchId+"'\n" +
-                "AND flag = 'Y'";
+        String query = "";
+
+        if (CommonConstant.ID_KANPUS.equalsIgnoreCase(branchId)){
+            if ("N".equalsIgnoreCase(statusApprove)){
+                query = "UPDATE it_hris_payroll\n" +
+                        "SET approval_sdm_id = '"+id+"',\n" +
+                        "    approval_sdm_date = now(),\n" +
+                        "    approval_sdm_name = '"+name+"',\n" +
+                        "    approval_sdm_flag = '"+statusApprove+"',\n" +
+                        "    flag = '"+statusApprove+"'\n" +
+                        "WHERE bulan = '"+bulan+"'\n" +
+                        "AND tahun = '"+tahun+"'\n" +
+                        tipeWhere+
+                        "AND branch_id = '"+branchId+"'\n" +
+                        "AND flag = 'Y'";
+            }else{
+                query = "UPDATE it_hris_payroll\n" +
+                        "SET approval_sdm_id = '"+id+"',\n" +
+                        "    approval_sdm_date = now(),\n" +
+                        "    approval_sdm_name = '"+name+"',\n" +
+                        "    approval_sdm_flag = '"+statusApprove+"'\n" +
+                        "WHERE bulan = '"+bulan+"'\n" +
+                        "AND tahun = '"+tahun+"'\n" +
+                        tipeWhere+
+                        "AND branch_id = '"+branchId+"'\n" +
+                        "AND flag = 'Y'";
+            }
+        }else{
+            if ("N".equalsIgnoreCase(statusApprove)){
+                query = "UPDATE it_hris_payroll\n" +
+                        "SET approval_sdm_id = '"+id+"',\n" +
+                        "    approval_sdm_date = now(),\n" +
+                        "    approval_sdm_name = '"+name+"',\n" +
+                        "    approval_sdm_flag = '"+statusApprove+"',\n" +
+                        "    approval_unit_id = null,\n" +
+                        "    approval_unit_date = null,\n" +
+                        "    approval_unit_name = null,\n" +
+                        "    approval_unit_flag = null\n" +
+                        "WHERE bulan = '"+bulan+"'\n" +
+                        "AND tahun = '"+tahun+"'\n" +
+                        tipeWhere+
+                        "AND branch_id = '"+branchId+"'\n" +
+                        "AND flag = 'Y'";
+            }else{
+                query = "UPDATE it_hris_payroll\n" +
+                        "SET approval_sdm_id = '"+id+"',\n" +
+                        "    approval_sdm_date = now(),\n" +
+                        "    approval_sdm_name = '"+name+"',\n" +
+                        "    approval_sdm_flag = '"+statusApprove+"'\n" +
+                        "WHERE bulan = '"+bulan+"'\n" +
+                        "AND tahun = '"+tahun+"'\n" +
+                        tipeWhere+
+                        "AND branch_id = '"+branchId+"'\n" +
+                        "AND flag = 'Y'";
+            }
+        }
 
         this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)

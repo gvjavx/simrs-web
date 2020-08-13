@@ -3,7 +3,7 @@
         version="2.0">
 
     <entity class="com.neurix.akuntansi.transaksi.pengajuanSetor.model.ItAkunPpnPerhitunganKembaliEntity">
-        <table name="it_akun_ppn_perhitungan_kembali" schema="public" catalog="simrs"/>
+        <table name="it_akun_ppn_perhitungan_kembali" schema="public"/>
         <attributes>
             <id name="perhitunganKembaliPpnId">
                 <column name="perhitungan_kembali_ppn_id"/>

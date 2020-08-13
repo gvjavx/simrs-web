@@ -3,6 +3,7 @@ package com.neurix.authorization.position.dao;
 import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.authorization.position.model.ImPositionHistory;
 import com.neurix.authorization.position.model.Position;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -350,7 +351,8 @@ public class PositionDao extends GenericDao<ImPosition,String> {
 
     public List<ImPosition> getListPositionDekom () throws HibernateException {
         List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
-                .add(Restrictions.eq("bagianId", "PB02"))
+                .add(Restrictions.eq("bagianId", CommonConstant.BAGIAN_ID_BOD_BOC))
+                .add(Restrictions.eq("kelompokId", CommonConstant.KELOMPOK_ID_BOC))
                 .add(Restrictions.eq("flag", "Y"))
                 .addOrder(Order.asc("positionId"))
                 .list();
@@ -359,15 +361,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
 
     public List<ImPosition> getListPositionSelainDekomDanDirkom () throws HibernateException {
         List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
-                .add(
-                        Restrictions.or(
-                                Restrictions.or(
-                                        Restrictions.ne("bagianId", "PB01"),
-                                        Restrictions.ne("bagianId", "PB02")
-                                ),
-                                Restrictions.ne("bagianId", "PB03")
-                                )
-                )
+                .add(Restrictions.ne("bagianId", CommonConstant.BAGIAN_ID_BOD_BOC))
                 .add(Restrictions.eq("flag", "Y"))
                 .addOrder(Order.asc("positionId"))
                 .list();
@@ -375,12 +369,8 @@ public class PositionDao extends GenericDao<ImPosition,String> {
     }
     public List<ImPosition> getListPositionDireksi () throws HibernateException {
         List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
-                .add(
-                        Restrictions.or(
-                                Restrictions.eq("bagianId", "PB01"),
-                                Restrictions.eq("bagianId", "PB03")
-                        )
-                )
+                .add(Restrictions.eq("bagianId", CommonConstant.BAGIAN_ID_BOD_BOC))
+                .add(Restrictions.eq("kelompokId", CommonConstant.KELOMPOK_ID_BOD))
                 .add(Restrictions.eq("flag", "Y"))
                 .addOrder(Order.asc("positionId"))
                 .list();

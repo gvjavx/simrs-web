@@ -6381,7 +6381,11 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     tanggal = sdf.format(tanggalApp);
                     payroll.setFlagEdit(false);
                     payroll.setStatusApprove("D");
-                }else if (("Y").equalsIgnoreCase(itPayrollEntity1.getApprovalSdmFlag())){
+                }else if (("Y").equalsIgnoreCase(itPayrollEntity1.getApprovalAksFlag())&&(!CommonConstant.ID_KANPUS.equalsIgnoreCase(CommonUtil.userBranchLogin()))&&CommonConstant.ROLE_ID_ADMIN_AKS.equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
+                    payroll.setStatusApprove("RK");
+                }else if (("Y").equalsIgnoreCase(itPayrollEntity1.getApprovalAksFlag())){
+                    payroll.setStatusApprove("DU");
+                } else if (("Y").equalsIgnoreCase(itPayrollEntity1.getApprovalSdmFlag())){
                     payroll.setStatusApprove("K");
                 }else if (("Y").equalsIgnoreCase(itPayrollEntity1.getApprovalUnitFlag())){
                     payroll.setStatusApprove("S");
@@ -6401,6 +6405,9 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 payroll.setTotalA(CommonUtil.numbericFormat(itPayrollEntity1.getTotalA(), "###,###"));
                 payroll.setApprovalFlag(itPayrollEntity1.getApprovalFlag());
                 payroll.setApprovalDate(itPayrollEntity1.getApprovalDate());
+
+                //untuk flag approval
+                payroll.setApprovalAksFlag(itPayrollEntity1.getApprovalAksFlag());
 
                 if(itPayrollEntity1.getFlagPayroll().equalsIgnoreCase("Y")){
                     payroll.setFlagSlip(true);
@@ -9988,7 +9995,6 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
             pphList.add(pphGaji);
         }
 
-
         dataPayroll.put("penghasilan_dekom", penghasilandekomlist);
         dataPayroll.put("tunj_pph_dekom", tunjpphdekomlist);
         dataPayroll.put("tunj_transport_kom_dekom", tunjtransportkomdekomlist);
@@ -10038,7 +10044,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
 
         dataPayroll.put("pph_gaji",pphList);
 
-        if (bean.isSdm()){
+        if (bean.getBranchId().equalsIgnoreCase(CommonConstant.ID_KANPUS)||bean.isSdm()){
             Map kas = new HashMap();
             kas.put("metode_bayar","transfer");
             kas.put("bank", CommonConstant.COA_PAYROLL);
@@ -10047,12 +10053,19 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
             dataPayroll.put("kas",kas);
             return dataPayroll;
         }else{
-            //membuat mapping
+            //membuat mapping rk
             Map dataMap = new HashMap();
+
+            //mencari coa rk unit
+            List<ImBranches> branchesList = branchDao.getListBranchById(bean.getBranchId());
+            String coaRkUnit="";
+            for (ImBranches branches : branchesList){
+                coaRkUnit = branches.getCoaRk();
+            }
 
             Map rkUnit = new HashMap();
             rkUnit.put("nilai",total);
-            rkUnit.put("rekening_id",kodeRekeningDao.getRekeningIdByCoa(CommonConstant.COA_RK_GATOEL));
+            rkUnit.put("rekening_id",kodeRekeningDao.getRekeningIdByCoa(coaRkUnit));
             dataMap.put("rk_kd_unit",rkUnit);
 
             Map giro = new HashMap();
@@ -10066,20 +10079,18 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
 
     @Override
     public void approvePayroll(Payroll bean) throws GeneralBOException {
-        if(bean.getApprovalFlag().equalsIgnoreCase("Y")){
-            try {
-                payrollDao.approvePayroll(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getApprovalFlag(), bean.getTipe());
-            }catch (HibernateException e){
-                logger.error("[PayrollBoImpl.approvePayroll] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving update data Payroll, please info to your admin..." + e.getMessage());
-            }
-        }else{
+        if( bean.getBranchId().equalsIgnoreCase(CommonConstant.ID_KANPUS)){
+            payrollDao.approvePayrollAks(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getApprovalFlag(), bean.getTipe());
             payrollDao.approvePayroll(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getApprovalFlag(), bean.getTipe());
-            payrollDao.approvePayrollUnit(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getApprovalFlag(), bean.getTipe());
-            HttpSession session = ServletActionContext.getRequest().getSession();
-            session.removeAttribute("listOfResult");
+        }else{
+            payrollDao.approvePayrollAks(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getApprovalFlag(), bean.getTipe());
         }
     }
+    @Override
+    public void approvePayrollAks(Payroll bean) throws GeneralBOException {
+        payrollDao.approvePayroll(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getApprovalFlag(), bean.getTipe());
+    }
+
     @Override
     public void approvePayrollUnit(Payroll bean) throws GeneralBOException {
         payrollDao.approvePayrollUnit(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getApprovalUnitFlag(), bean.getTipe());
@@ -10088,6 +10099,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
     @Override
     public void approvePayrollSdm(Payroll bean) throws GeneralBOException {
         payrollDao.approvePayrollSdm(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getApprovalSdmFlag(), bean.getTipe());
+
     }
 
     @Override
