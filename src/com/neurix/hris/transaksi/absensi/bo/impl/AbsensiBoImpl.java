@@ -5575,13 +5575,15 @@ public class AbsensiBoImpl implements AbsensiBo {
     @Override
     public List<AbsensiPegawai> getHistoryAbsensiByMonth (String nip, String branchId, Date date){
         List<AbsensiPegawai> result = new ArrayList<>();
-        int month = date.getMonth();
-        int year = date.getYear();
-        String firstDate = String.valueOf(year) + "-" + String.valueOf(month) + "-" + "01";
-        String lastDate = String.valueOf(year) + "-" + String.valueOf(month) + "-" + CommonUtil.getLastDayOfMonth();
+        SimpleDateFormat dateFormat  = new SimpleDateFormat("YYYY");
+        String year = dateFormat.format(date);
+        dateFormat = new SimpleDateFormat("MM");
+        String month = dateFormat.format(date);
+        String firstDate = "01-" + month + "-" + year;
+        String lastDate = CommonUtil.getLastDayOfMonth() + "-" + month + "-" + year;
 
         try {
-            absensiPegawaiDao.getAbsensiByMonth(nip, branchId, firstDate, lastDate);
+          result = absensiPegawaiDao.getAbsensiByMonth(nip, branchId, firstDate, lastDate);
         } catch (HibernateException e){
             logger.error("[AbsensiBoImpl.getByCriteriaMesin] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());

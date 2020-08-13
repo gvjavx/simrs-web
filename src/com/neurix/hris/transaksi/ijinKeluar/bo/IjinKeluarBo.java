@@ -54,4 +54,5 @@ public interface IjinKeluarBo extends BaseMasterBo<IjinKeluar> {
     public String cekPengajuanIjinKeluar(String nip);
 
     List<IjinKeluar> getListCekNipIjinKeluar(String query) throws GeneralBOException;
+    List<IjinKeluar> getHistoryIjinKeluarByMonth(String nip, String branchId, Date date) throws GeneralBOException;
 }
