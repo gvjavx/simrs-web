@@ -25,6 +25,7 @@
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/BranchAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/BudgetingAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/BgPendapatanAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/KodeRekeningAction.js"/>'></script>
     <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.bootstrap3.js"/>"></script>
     <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.js"/>"></script>
@@ -59,7 +60,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Budgeting </h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Budgeting Pendapatan</h3>
                     </div>
                     <div class="box-body">
                         <%--<s:form id="kasirjalanForm" method="post" namespace="/kasirjalan" action="search_kasirjalan.action" theme="simple" cssClass="form-horizontal">--%>
@@ -113,8 +114,8 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-md-6 col-md-offset-6" style="margin-top: 10px">
-                                    <button class="btn btn-primary" onclick="add()"><i class="fa fa-plus"></i> Choose</button>
+                                <div class="col-md-6 col-md-offset-5" style="margin-top: 10px">
+                                    <button class="btn btn-primary" onclick="choose()"><i class="fa fa-plus"></i> Choose</button>
                                 </div>
                             </div>
                         </div>
@@ -125,7 +126,7 @@
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-th-list"></i>
-                            <%--List Tutup Period <strong><span id="label-tahun"></span> - <span id="label-bulan"></span></strong> --%>
+                            List Parameter Budgeting Pendapatan <strong><span id="label-tahun"></span> - <span id="label-branch"></span></strong>
                         </h3>
                     </div>
                     <div class="box-body">
@@ -151,17 +152,12 @@
                                     <thead id="head-budgeting">
                                     <tr bgcolor="#90ee90">
                                         <%--<td style="width: 20%">COA</td>--%>
-                                        <td align="center">Keterangan</td>
+                                        <td align="">Parameter Budgeting</td>
+                                        <td align="center">Action</td>
                                         <%--<td align="center">Action</td>--%>
                                     </tr>
                                     </thead>
                                     <tbody id="body-budgeting">
-                                    <s:iterator value="#session.listOfCoa" status="listOfCoa" var="row">
-                                        <tr>
-                                            <%--<td><s:property value="kodeRekening"/></td>--%>
-                                            <td><s:property value="namaKodeRekening"/></td>
-                                        </tr>
-                                    </s:iterator>
                                     </tbody>
                                 </table>
                             </div>
@@ -169,7 +165,7 @@
                         <div class="form-group" style="margin-top: 10px">
                             <div class="col-md-4 col-md-offset-5">
                                 <button class="btn btn-warning" onclick="initForm()"><i class="fa fa-arrow-left"></i> Back</button>
-                                <button class="btn btn-success" id="btn-save" onclick="saveAdd()"><i class="fa fa-arrow-right"></i> Next </button>
+                                <button class="btn btn-success" id="btn-save" onclick="saveAdd()"><i class="fa fa-arrow-check"></i> Save </button>
                             </div>
                         </div>
                     </div>
@@ -180,64 +176,64 @@
     <!-- /.content -->
 </div>
 
-<div class="modal fade" id="modal-add-coa">
+<div class="modal fade" id="modal-edit">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-plus"></i> Add COA
+                <h4 class="modal-title"><i class="fa fa-plus"></i> Edit Nilai Budgeting
                 </h4>
             </div>
             <div class="modal-body">
                 <div class="form-group">
                     <div class="row">
                     <label class="col-md-2 col-md-offset-1">Jenis Investasi</label>
-                    <div class="col-md-6">
-                    <input type="text" class="form-control" id="nama-coa">
-                        <script>
-                            $(document).ready(function() {
-                                var tipe = $("#add-coa-tipe").val();
-                                var functions, mapped;
-                                $('#nama-coa').typeahead({
-                                    minLength: 1,
-                                    source: function (query, process) {
-                                        functions = [];
-                                        mapped = {};
-                                        var data = [];
-                                        dwr.engine.setAsync(false);
-                                        BudgetingAction.getListKodeRekeningByLevel(query, tipe, function (listdata) {
-                                            data = listdata;
-                                        });
-                                        $.each(data, function (i, item) {
-                                            var labelItem = item.namaKodeRekening;
-                                            mapped[labelItem] = {
-                                                id: item.rekeningId,
-                                                nama: item.namaKodeRekening,
-                                                kode : item.kodeRekening,
-                                                parent :item.parentId
-                                            };
-                                            functions.push(labelItem);
-                                        });
-                                        process(functions);
-                                    },
-                                    updater: function (item) {
-                                        var selectedObj = mapped[item];
-                                        $('#rekeningid').val(selectedObj.id);
-                                        $('#namacoa').val(selectedObj.nama);
-                                        $('#parentid').val(selectedObj.parent);
-                                        $('#coa').val(selectedObj.kode);
-                                        return selectedObj.nama;
-                                    }
+                        <div class="col-md-6">
+                        <input type="text" class="form-control" id="nama-coa">
+                            <script>
+                                $(document).ready(function() {
+                                    var tipe = $("#add-coa-tipe").val();
+                                    var functions, mapped;
+                                    $('#nama-coa').typeahead({
+                                        minLength: 1,
+                                        source: function (query, process) {
+                                            functions = [];
+                                            mapped = {};
+                                            var data = [];
+                                            dwr.engine.setAsync(false);
+                                            BudgetingAction.getListKodeRekeningByLevel(query, tipe, function (listdata) {
+                                                data = listdata;
+                                            });
+                                            $.each(data, function (i, item) {
+                                                var labelItem = item.namaKodeRekening;
+                                                mapped[labelItem] = {
+                                                    id: item.rekeningId,
+                                                    nama: item.namaKodeRekening,
+                                                    kode : item.kodeRekening,
+                                                    parent :item.parentId
+                                                };
+                                                functions.push(labelItem);
+                                            });
+                                            process(functions);
+                                        },
+                                        updater: function (item) {
+                                            var selectedObj = mapped[item];
+                                            $('#rekeningid').val(selectedObj.id);
+                                            $('#namacoa').val(selectedObj.nama);
+                                            $('#parentid').val(selectedObj.parent);
+                                            $('#coa').val(selectedObj.kode);
+                                            return selectedObj.nama;
+                                        }
+                                    });
                                 });
-                            });
-                        </script>
+                            </script>
 
-                    <input type="hidden" id="rekeningid">
-                    <input type="hidden" id="namacoa">
-                    <input type="hidden" id="parentid">
-                    <input type="hidden" id="coa">
-                    </div>
+                            <input type="hidden" id="rekeningid">
+                            <input type="hidden" id="namacoa">
+                            <input type="hidden" id="parentid">
+                            <input type="hidden" id="coa">
+                        </div>
                     </div>
 
                     <div class="alert alert-warning alert-dismissable" id="alert-error-modal" style="display: none">
@@ -252,6 +248,90 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-confirm-dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h4>Do you want save this record?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
+                </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_conf"><i class="fa fa-arrow-right"></i> Yes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-loading-dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Saving ...
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div id="waiting-content" style="text-align: center">
+                    <h4>Please don't close this window, server is processing your request ...</h4>
+                    <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                         src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                         name="image_indicator_write">
+                    <br>
+                    <img class="spin" border="0"
+                         style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                         src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                         name="image_indicator_write">
+                </div>
+
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin_waiting">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_fin_error_waiting"></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <%--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No--%>
+                <%--</button>--%>
+                <%--<button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes--%>
+                <%--</button>--%>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-success-dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Success
+                </h4>
+            </div>
+            <div class="modal-body" style="text-align: center">
+                <img border="0" src="<s:url value="/pages/images/icon_success.png"/>"
+                     name="icon_success">
+                Record has been saved successfully.
+            </div>
+            <div class="modal-footer">
+                <%--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No--%>
+                <%--</button>--%>
+                <button type="button" class="btn btn-sm btn-success" id="ok_con"><i class="fa fa-check"></i> Ok
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script type='text/javascript'>
 
@@ -295,7 +375,58 @@
         form.submit();
     }
 
+    function showDialog(tipe) {
+        if (tipe == "loading"){
+            $("#modal-loading-dialog").modal('show');
+        }
+        if (tipe == "error"){
+            $("#modal-loading-dialog").modal('show');
+            $("#waiting-content").hide();
+            $("#warning_fin_waiting").show();
+        }
+        if (tipe == "success"){
+            $("#modal-loading-dialog").modal('hide');
+            $("#modal-success-dialog").modal('show');
+        }
+        if (tipe == "close"){
+            $("#modal-loading-dialog").modal('hide');
+            $("#modal-success-dialog").modal('hide');
+        }
+    }
 
+    function choose() {
+        var tahun = $("#sel-tahun").val();
+        var branch = $("#sel-unit").val();
+        var labelBranch = $("#sel-unit option:selected").text();
+
+        showDialog('loading');
+        dwr.engine.setAsync(true);
+        BgPendapatanAction.getListParameterBudgeting("PDT", function (list) {
+            dwr.engine.setAsync(false);
+            showDialog("success");
+
+            var str = "";
+            $.each(list, function (i, item) {
+                str += "<tr>" +
+                        "<td>"+item.nama+"</td>" +
+                        "<td align='center'>" +
+                        "<button class='btn btn-sm btn-primary' onclick=\"edit(\'"+item.id+"\',\'"+branch+"\',\'"+tahun+"\')\"><i class='fa fa-edit'></i></button> " +
+                        "<button class='btn btn-sm btn-success'><i class='fa fa-search'></i></button>" +
+                        "</td>" +
+                        "</tr>";
+            });
+            $("#body-budgeting").html(str);
+            $("#label-tahun").text(tahun);
+            $("#label-branch").text(labelBranch);
+            $('#ok_con').on('click', function () {
+                showDialog('close');
+            });
+        });
+    }
+
+    function edit(idParam, branch, tahun) {
+        $("#modal-edit").modal('show');
+    }
 
     function formatDate(date) {
         var d = new Date(date),
@@ -318,7 +449,7 @@
     }
 
     function initForm() {
-        var host = firstpath()+"/bginvestasi/initForm_bginvestasi.action";
+        var host = firstpath()+"/bgpendapatan/initForm_bgpendapatan.action";
         post(host);
     }
 
@@ -351,28 +482,12 @@
                     $("#error-msg-modal").text(response.msg);
                 }
             });
-
-//            listOfCoa.push({kode:coa, nama:namacoa, id:rekeningId, parent:parent});
-//
-//
-//            var strBody = "";
-//            $.each(listOfCoa, function (i, item) {
-//                strBody += "<tr>" +
-//                        "<td>"+item.kode+"</td>"+
-//                        "<td>"+item.nama+"</td>"+
-//                        "</tr>";
-//            });
-//            console.log(listOfCoa);
-//            $("#body-budgeting").html(strBody);
-//            $("#modal-add-coa").modal('hide');
-//            $("#btn-save").show();
-        } else {
             alert("COA Harus Diisi !");
         }
     }
 
     function refreshAdd() {
-        var host = firstpath()+"/bginvestasi/add_bginvestasi.action?status=add";
+        var host = firstpath()+"/bgpendapatan/add_bgpendapatan.action?status=add";
         post(host);
     }
 
@@ -389,7 +504,7 @@
 
                     if (flag == "Y"){
                         var form = { "budgeting.tahun":tahun, "budgeting.branchId":unit, "budgeting.tipe":tipe };
-                        var host = firstpath()+"/bginvestasi/add_bginvestasi.action?status=add&tipe=detail&trans=ADD_DRAFT";
+                        var host = firstpath()+"/bgpendapatan/add_bgpendapatan.action?status=add&tipe=detail&trans=ADD_DRAFT";
                         post(host, form);
                     } else {
                         alert("Belum Ada Nilai Dasar untuk Tahun "+ tahun);

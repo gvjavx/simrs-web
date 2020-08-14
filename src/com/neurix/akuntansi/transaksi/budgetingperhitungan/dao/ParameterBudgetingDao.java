@@ -20,7 +20,7 @@ public class ParameterBudgetingDao extends GenericDao<ImAkunParameterBudgetingEn
 
     @Override
     public List<ImAkunParameterBudgetingEntity> getByCriteria(Map mapCriteria) {
-        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItAkunPerhitunganBudgetingEntity.class);
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImAkunParameterBudgetingEntity.class);
         if (mapCriteria.get("id") != null){
             criteria.add(Restrictions.eq("id", mapCriteria.get("id").toString()));
         }

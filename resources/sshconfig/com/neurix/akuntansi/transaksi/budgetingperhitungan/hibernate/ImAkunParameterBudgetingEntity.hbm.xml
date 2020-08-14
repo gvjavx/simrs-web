@@ -3,7 +3,7 @@
         version="2.0">
 
     <entity class="com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ImAkunParameterBudgetingEntity">
-        <table name="im_akun_parameter_budgeting" schema="public" catalog="simrs"/>
+        <table name="im_akun_parameter_budgeting" schema="public"/>
         <attributes>
             <id name="id">
                 <column name="id"/>

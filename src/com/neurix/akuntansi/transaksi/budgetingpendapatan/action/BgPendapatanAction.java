@@ -373,7 +373,7 @@ public class BgPendapatanAction {
         }
     }
 
-    private List<ImAkunParameterBudgetingEntity> getListParametersBudgeting(String idJenis){
+    public List<ImAkunParameterBudgetingEntity> getListParameterBudgeting(String idJenis){
         logger.info("[BgPendapatanAction.getListParametersBudgeting] START >>>");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
