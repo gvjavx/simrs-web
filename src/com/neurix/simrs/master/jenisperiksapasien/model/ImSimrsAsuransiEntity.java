@@ -16,6 +16,8 @@ public class ImSimrsAsuransiEntity implements Serializable{
     private String noMaster;
     private String isLaka;
 
+
+
     public String getIsLaka() {
         return isLaka;
     }
