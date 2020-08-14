@@ -561,8 +561,13 @@
       <create creator="new">
           <param name="class" value="com.neurix.akuntansi.transaksi.budgetingeksploitasi.action.BgEksploitasiAction"/>
       </create>
+      <create creator="new">
+          <param name="class" value="com.neurix.akuntansi.transaksi.budgetingpendapatan.action.BgPendapatanAction"/>
+      </create>
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgetingnilaidasar.model.ImAkunBudgetingNilaiDasarEntity"/>
-      <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgetingnilaidasar.model.ItAkunBudgetingNilaiDasarEntity"/>
+      <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ImAkunJenisBudgetingEntity"/>
+      <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ImAkunParameterBudgetingEntity"/>
+      <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ItAkunPerhitunganBudgetingEntity"/>
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgetingnilaidasar.model.BudgetingNilaiDasar"/>
 
       <!--Master Hcm-->

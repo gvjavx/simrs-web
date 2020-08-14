@@ -4,6 +4,9 @@ import com.neurix.akuntansi.master.kodeRekening.bo.KodeRekeningBo;
 import com.neurix.akuntansi.transaksi.budgeting.action.BudgetingAction;
 import com.neurix.akuntansi.transaksi.budgeting.bo.BudgetingBo;
 import com.neurix.akuntansi.transaksi.budgeting.model.*;
+import com.neurix.akuntansi.transaksi.budgetingperhitungan.bo.BudgetingPerhitunganBo;
+import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ImAkunParameterBudgetingEntity;
+import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ParameterBudgeting;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.common.constant.CommonConstant;
@@ -368,5 +371,17 @@ public class BgPendapatanAction {
             logger.info("[BgPendapatanAction.edit] END <<<");
             return "edit";
         }
+    }
+
+    private List<ImAkunParameterBudgetingEntity> getListParametersBudgeting(String idJenis){
+        logger.info("[BgPendapatanAction.getListParametersBudgeting] START >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
+
+        ParameterBudgeting parameterBudgeting = new ParameterBudgeting();
+        parameterBudgeting.setIdJenisBudgeting(idJenis);
+        return budgetingPerhitunganBo.getListParameterBudgetingEntity(parameterBudgeting);
+
     }
 }
