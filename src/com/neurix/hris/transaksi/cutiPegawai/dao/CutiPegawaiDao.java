@@ -156,6 +156,29 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
                 .list();
         return results;
     }
+
+    public List<ItCutiPegawaiEntity> getListCekCutiTahunan(String nip, String keterangan) throws HibernateException {
+        List<ItCutiPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItCutiPegawaiEntity.class)
+                .add(Restrictions.eq("nip", nip))
+                .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.eq("keterangan",keterangan))
+                .add(Restrictions.eq("flagPerbaikan","Y"))
+                .add(Restrictions.eq("approvalFlag","Y"))
+                .add(Restrictions.ne("cancelFlag", "Y"))
+                .addOrder(Order.desc("cutiPegawaiId"))
+                .setMaxResults(1)
+                .list();
+        return results;
+    }
+
+    public List<ItCutiPegawaiEntity> getCekCuti(String nip) throws HibernateException {
+        List<ItCutiPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItCutiPegawaiEntity.class)
+                .add(Restrictions.eq("nip", nip))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+        return results;
+    }
+
     public List<ItCutiPegawaiEntity> getListCutiPegawai(String term) throws HibernateException {
         List<ItCutiPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItCutiPegawaiEntity.class)
                 .add(Restrictions.eq("flag", "Y"))
