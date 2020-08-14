@@ -115,7 +115,7 @@
 
                             <div class="row">
                                 <div class="col-md-6 col-md-offset-5" style="margin-top: 10px">
-                                    <button class="btn btn-primary" onclick="choose()"><i class="fa fa-plus"></i> Choose</button>
+                                    <button class="btn btn-primary" onclick="choose()"><i class="fa fa-arrow-right"></i> Choose</button>
                                 </div>
                             </div>
                         </div>
@@ -182,7 +182,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-plus"></i> Edit Nilai Budgeting
+                <h4 class="modal-title"><i class="fa fa-edit"></i> Edit Nilai Budgeting
                 </h4>
             </div>
             <div class="modal-body">
