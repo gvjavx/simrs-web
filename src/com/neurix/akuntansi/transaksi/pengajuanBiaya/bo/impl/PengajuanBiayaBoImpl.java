@@ -309,6 +309,7 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
     public  List<Notifikasi> saveAddPengajuan(PengajuanBiaya bean, List<PengajuanBiayaDetail> pengajuanBiayaDetailList) throws GeneralBOException {
         logger.info("[PengajuanBiayaBoImpl.saveAddPengajuan] start process >>>");
         List<Notifikasi> notifikasiList = new ArrayList<>();
+        List<ItPengajuanBiayaDetailEntity> pengajuanBiayaDetailEntityList = new ArrayList<>();
         Date tanggalSekarang = new Date(new java.util.Date().getTime());
         Calendar c = Calendar.getInstance();
         c.setTime(tanggalSekarang);
@@ -354,6 +355,7 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                 }else{
                     detailEntity.setKeperluan(pengajuanBiayaDetail.getKeperluanName());
                 }
+
                 detailEntity.setKeterangan(pengajuanBiayaDetail.getKeterangan());
 
                 detailEntity.setCreatedDate(bean.getCreatedDate());
@@ -370,13 +372,7 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                     throw new GeneralBOException(status);
                 }
 
-                try {
-                    // insert into database
-                    pengajuanBiayaDetailDao.addAndSave(detailEntity);
-                } catch (HibernateException e) {
-                    logger.error("[PengajuanBiayaBoImpl.saveAddPengajuan] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
-                }
+                pengajuanBiayaDetailEntityList.add(detailEntity);
             }
 
             //save entity
@@ -404,14 +400,6 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                 throw new GeneralBOException(status);
             }
 
-            try {
-                // insert into database
-                pengajuanBiayaDao.addAndSave(pengajuanBiayaEntity);
-            } catch (HibernateException e) {
-                logger.error("[PengajuanBiayaBoImpl.saveAddPengajuan] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
-            }
-
             List<User> userList = new ArrayList<>();
             List<ImPosition> positionList ;
 
@@ -421,24 +409,51 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
             try {
                 positionList = positionDao.getListPositionKoderingNKelompokPosition(koderingPosisi[0]+"."+koderingPosisi[1]+"%",CommonConstant.KELOMPOK_ID_PEJABAT_MUDA);
 
+                for (ImPosition imPosition : positionList ){
+                    userList=userDao.getUserPegawaiByBranchAndPositionAndRole(bean.getBranchId(),imPosition.getPositionId());
+                }
+
                 //jika pejabat muda kosong langsung ke pejabat madya
-                if (positionList.size()==0){
-                    positionList = positionDao.getListPositionKoderingNKelompokPosition(koderingPosisi[0]+"."+koderingPosisi[1]+"%",CommonConstant.KELOMPOK_ID_PEJABAT_MUDA);
+                if (positionList.size()==0&&userList.size()==0){
+
+                    //otomatis approve di pejabat muda
+                    for (ItPengajuanBiayaDetailEntity data : pengajuanBiayaDetailEntityList){
+                        data.setApprovalKasubdivId(bean.getAprovalId());
+                        data.setApprovalKasubdivDate(bean.getCreatedDate());
+                        data.setApprovalKasubdivFlag(bean.getFlag());
+                    }
+                    positionList = positionDao.getListPositionKoderingNKelompokPosition(koderingPosisi[0]+"%",CommonConstant.KELOMPOK_ID_PEJABAT_MADYA);
+
+                    for (ImPosition imPosition : positionList ){
+                        userList=userDao.getUserPegawaiByBranchAndPositionAndRole(bean.getBranchId(),imPosition.getPositionId());
+                    }
                 }
 
                 //jika pejabat madya kosong maka langsung ke pejabat utama
-                if (positionList.size()==0){
-                    positionList = positionDao.getListPositionKoderingNKelompokPosition(koderingPosisi[0]+"."+koderingPosisi[1]+"%",CommonConstant.KELOMPOK_ID_PEJABAT_MUDA);
+                if (positionList.size()==0&&userList.size()==0){
+                    //otomatis approve di pejabat madya
+                    for (ItPengajuanBiayaDetailEntity data : pengajuanBiayaDetailEntityList){
+                        data.setApprovalKadivId(bean.getAprovalId());
+                        data.setApprovalKadivDate(bean.getCreatedDate());
+                        data.setApprovalKadivFlag(bean.getFlag());
+                    }
+
+                    positionList = positionDao.getListPositionKoderingNKelompokPosition(koderingPosisi[0]+"%",CommonConstant.KELOMPOK_ID_PEJABAT_UTAMA);
+
+                    for (ImPosition imPosition : positionList ){
+                        userList=userDao.getUserPegawaiByBranchAndPositionAndRole(bean.getBranchId(),imPosition.getPositionId());
+                    }
                 }
 
+                //Jika Pejabat utama kosong maka langsung melempar error
+                if (positionList.size()==0){
+                    String status = "ERROR : atasan sampai  tidak ditemukan";
+                    logger.error("[PengajuanBiayaBoImpl.saveAddPengajuan]"+status);
+                    throw new GeneralBOException(status);
+                }
             } catch (HibernateException e) {
-                String status = "ERROR : Tidak ada jabatan sampai ke Pejabat Utama";
-                logger.error("[PengajuanBiayaBoImpl.saveAddPengajuan]"+status);
-                throw new GeneralBOException(status);
-            }
-
-            for (ImPosition imPosition : positionList ){
-                userList=userDao.getUserByBranchAndPositionAndRole(bean.getBranchId(),imPosition.getPositionId(),CommonConstant.ROLE_ID_KARYAWAN);
+                logger.error("[PengajuanBiayaBoImpl.saveAddPengajuan]"+e.getMessage());
+                throw new GeneralBOException(e.getMessage());
             }
 
             for (User user : userList){
@@ -453,6 +468,25 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                 notif.setTo("ditentukan");
 
                 notifikasiList.add(notif);
+            }
+
+            //save
+            for (ItPengajuanBiayaDetailEntity pengajuanBiayaDetailEntity: pengajuanBiayaDetailEntityList){
+                try {
+                    // insert into database
+                    pengajuanBiayaDetailDao.addAndSave(pengajuanBiayaDetailEntity);
+                } catch (HibernateException e) {
+                    logger.error("[PengajuanBiayaBoImpl.saveAddPengajuan] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
+                }
+            }
+
+            try {
+                // insert into database
+                pengajuanBiayaDao.addAndSave(pengajuanBiayaEntity);
+            } catch (HibernateException e) {
+                logger.error("[PengajuanBiayaBoImpl.saveAddPengajuan] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
             }
 
         }
@@ -826,11 +860,32 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
 
                     ImPosition position = positionDao.getById("positionId",pengajuanBiayaDetailEntity.getDivisiId());
                     String[] koderingPosisi = position.getKodering().split("\\.");
-                    List<ImPosition> positionList = positionDao.getListPositionKoderingNKelompokPosition(koderingPosisi[0]+"%",CommonConstant.KELOMPOK_ID_PEJABAT_MADYA);
+                    List<ImPosition> positionList = positionDao.getListPositionKoderingNKelompokPosition(koderingPosisi[0]+"."+koderingPosisi[1]+"%",CommonConstant.KELOMPOK_ID_PEJABAT_MADYA);
 
                     for (ImPosition imPosition : positionList ){
-                        userList.addAll(userDao.getUserByBranchAndPositionAndRole(pengajuanBiayaDetailEntity.getBranchId(),imPosition.getPositionId(),CommonConstant.ROLE_ID_KARYAWAN));
+                        userList=userDao.getUserPegawaiByBranchAndPositionAndRole(pengajuanBiayaDetailEntity.getBranchId(),imPosition.getPositionId());
                     }
+
+                    //jika pejabat madya kosong maka langsung ke pejabat utama
+                    if (positionList.size()==0&&userList.size()==0){
+                        pengajuanBiayaDetailEntity.setApprovalKadivId(bean.getApprovalKasubdivId());
+                        pengajuanBiayaDetailEntity.setApprovalKadivDate(bean.getApprovalKasubdivDate());
+                        pengajuanBiayaDetailEntity.setApprovalKadivFlag(bean.getApprovalKasubdivFlag());
+
+                        positionList = positionDao.getListPositionKoderingNKelompokPosition(koderingPosisi[0]+"%",CommonConstant.KELOMPOK_ID_PEJABAT_UTAMA);
+
+                        for (ImPosition imPosition : positionList ){
+                            userList=userDao.getUserPegawaiByBranchAndPositionAndRole(pengajuanBiayaDetailEntity.getBranchId(),imPosition.getPositionId());
+                        }
+
+                        //jika pejabat utama kosong maka langsung lempar error
+                        if (positionList.size()==0&&userList.size()==0){
+                            String status = "ERROR : Pejabat utama tidak ditemukan";
+                            logger.error("[PengajuanBiayaBoImpl.saveApproveAtasanPengajuan] Error, " +status);
+                            throw new GeneralBOException(status);
+                        }
+                    }
+
                     break;
                 case "KD":
                     pengajuanBiayaDetailEntity.setApprovalKadivFlag(bean.getApprovalKadivFlag());
@@ -845,16 +900,24 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
 
                     position = positionDao.getById("positionId",pengajuanBiayaDetailEntity.getDivisiId());
                     koderingPosisi = position.getKodering().split("\\.");
+
                     positionList = positionDao.getListPositionKoderingNKelompokPosition(koderingPosisi[0]+"%",CommonConstant.KELOMPOK_ID_PEJABAT_UTAMA);
+
+                    for (ImPosition imPosition : positionList ){
+                        userList=userDao.getUserByBranchAndPositionAndRole(pengajuanBiayaDetailEntity.getBranchId(),imPosition.getPositionId(),CommonConstant.ROLE_ID_KARYAWAN);
+                    }
 
                     if (pengajuanBiayaDetailEntity.getJumlah().compareTo(maxPengajuanBiaya)<0){
                         pengajuanBiayaDetailEntity.setApprovalGmFlag(bean.getApprovalKadivFlag());
                         pengajuanBiayaDetailEntity.setApprovalGmId(bean.getApprovalKadivId());
                         pengajuanBiayaDetailEntity.setApprovalGmDate(bean.getApprovalKadivDate());
-                        userList.addAll(userDao.getUserByBranchAndRole(pengajuanBiayaDetailEntity.getBranchId(),CommonConstant.ROLE_ID_ADMIN_AKS));
+                        userList=userDao.getUserByBranchAndRole(pengajuanBiayaDetailEntity.getBranchId(),CommonConstant.ROLE_ID_ADMIN_AKS);
                     }else{
-                        for (ImPosition imPosition : positionList ){
-                            userList.addAll(userDao.getUserByBranchAndPositionAndRole(pengajuanBiayaDetailEntity.getBranchId(),imPosition.getPositionId(),CommonConstant.ROLE_ID_KARYAWAN));
+                        //jika pejabat utama kosong maka langsung lempar error
+                        if (positionList.size()==0&&userList.size()==0){
+                            String status = "ERROR : Pejabat utama tidak ditemukan";
+                            logger.error("[PengajuanBiayaBoImpl.saveApproveAtasanPengajuan] Error, " +status);
+                            throw new GeneralBOException(status);
                         }
                     }
                     break;
