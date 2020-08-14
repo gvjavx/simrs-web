@@ -101,6 +101,11 @@ public class CompanyBoImpl implements CompanyBo {
                 else
                     imCompanyOld.setIuranPerusahaanJkmJkk(BigDecimal.valueOf(0.0));
 
+                if (companyNew.getParamDapen() != null)
+                    imCompanyOld.setParamDapen(companyNew.getParamDapen());
+                else
+                    imCompanyOld.setParamDapen(BigDecimal.valueOf(0.0));
+
                 if (companyNew.getRemainderJubileum() != null)
                     imCompanyOld.setBulanJubilium(companyNew.getRemainderJubileum());
                 else
@@ -190,6 +195,7 @@ public class CompanyBoImpl implements CompanyBo {
             resultCompany.setRemainderJubileum(imCompany.getBulanJubilium());
             resultCompany.setRemainderPensiun(imCompany.getBulanPensiun());
             resultCompany.setPeriodeGaji(imCompany.getPeriodeGaji());
+            resultCompany.setParamDapen(imCompany.getParamDapen());
         }
 
         logger.info("[CompanyBoImpl.getBranchById] end process <<<");

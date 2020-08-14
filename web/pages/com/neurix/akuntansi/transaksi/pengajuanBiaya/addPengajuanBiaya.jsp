@@ -806,7 +806,7 @@
                         var saldo = item.subTotalSaldo.replace(/[,]/g,"");
                         tmp_table += '<tr style="font-size: 11px;" ">' +
                             '<td align="center">' + (i + 1) + '</td>' +
-                            '<td align="center">' + item.idObat+ '</td>' +
+                            '<td align="center">' + item.idBarang+ '</td>' +
                             '<td align="center">' + item.namaBarang+ '</td>' +
                             '<td align="center">' + item.qty+ '</td>' +
                             "</tr>";

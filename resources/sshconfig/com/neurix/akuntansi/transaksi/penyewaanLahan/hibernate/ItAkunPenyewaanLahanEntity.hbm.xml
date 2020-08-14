@@ -3,7 +3,7 @@
         version="2.0">
 
     <entity class="com.neurix.akuntansi.transaksi.penyewaanLahan.model.ItAkunPenyewaanLahanEntity">
-        <table name="it_akun_penyewaan_lahan" schema="public" catalog="simrs"/>
+        <table name="it_akun_penyewaan_lahan" schema="public"/>
         <attributes>
             <id name="penyewaanLahanId">
                 <column name="penyewaan_lahan_id"/>

@@ -975,7 +975,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         reportParams.put("alamatSurat",branch.getAlamatSurat());
         reportParams.put("jurnalType",data.getTipeJurnalId());
         reportParams.put("areaId",CommonUtil.userAreaName());
-        System.out.println(CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
+//        System.out.println(CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
         try {
             preDownload();
         } catch (SQLException e) {

@@ -16,6 +16,13 @@
     <!--<bean id="dataSource"-->
           <!--class="org.springframework.jdbc.datasource.DriverManagerDataSource"-->
           <!--p:driverClassName="org.postgresql.Driver"-->
+          <!--p:url="jdbc:postgresql://localhost:5432/simrs_03082020"-->
+          <!--p:username="postgres"-->
+          <!--p:password="123456"/>-->
+
+    <!--<bean id="dataSource"-->
+          <!--class="org.springframework.jdbc.datasource.DriverManagerDataSource"-->
+          <!--p:driverClassName="org.postgresql.Driver"-->
           <!--p:url="jdbc:postgresql://localhost:5432/simrs_01062020"-->
           <!--p:username="postgres"-->
           <!--p:password="postgres"/>-->
@@ -24,10 +31,9 @@
     <!--<bean id="dataSource"-->
           <!--class="org.springframework.jdbc.datasource.DriverManagerDataSource"-->
           <!--p:driverClassName="org.postgresql.Driver"-->
-          <!--p:url="jdbc:postgresql://192.168.0.10:5432/gomedsys_nmu"-->
-          <!--p:username="root"-->
+          <!--p:url="jdbc:postgresql://localhost:5432/simrs_prod"-->
+          <!--p:username="postgres"-->
           <!--p:password="123456"/>-->
-
 
     <bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource"
@@ -36,12 +42,10 @@
           p:username="root"
           p:password="123456"/>
 
-
-
     <!--<bean id="dataSource"-->
           <!--class="org.springframework.jdbc.datasource.DriverManagerDataSource"-->
           <!--p:driverClassName="org.postgresql.Driver"-->
-          <!--p:url="jdbc:postgresql://localhost:5432/simrs"-->
+          <!--p:url="jdbc:postgresql://localhost:5432/simrs_prod"-->
           <!--p:username="postgres"-->
           <!--p:password="postgres"/>-->
 </beans>

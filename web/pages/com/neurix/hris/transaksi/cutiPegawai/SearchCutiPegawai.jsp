@@ -181,6 +181,12 @@
                 $.publish('showErrorDialog1');
             });
 
+            $.subscribe('errorDialog3', function (event, data) {
+                $('#modal-reset-panjang').modal('hide');
+                document.getElementById('errorMessage2').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
+                $.publish('showErrorDialog2');
+            });
+
 //            $.subscribe('errorDialog1', function (event, data) {
 //                if (event.originalEvent.request.status == 500){
 //                    alert('Peringatan!!! Terdapat ');
@@ -736,7 +742,7 @@
                             Save Cuti Bersama
                         </sj:submit>
 
-                        <sj:dialog id="error_dialog1" openTopics="showErrorDialog" modal="true" resizable="false"
+                        <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                    buttons="{
                                                                         'OK':function() { $('#error_dialog').dialog('close'); }
@@ -789,10 +795,10 @@
                         Save Reset Tahunan
                     </sj:submit>
 
-                        <sj:dialog id="error_dialog2" openTopics="showErrorDialog1" modal="true" resizable="false"
+                        <sj:dialog id="error_dialog1" openTopics="showErrorDialog1" modal="true" resizable="false"
                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                    buttons="{
-                                                                        'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                        'OK':function() { $('#error_dialog1').dialog('close'); }
                                                                     }"
                         >
                             <div class="alert alert-error fade in">
@@ -836,10 +842,23 @@
                                onBeforeTopics="beforeProcessSaveResetPanjang"
                                onCompleteTopics="closeDialog,successDialog4"
                                onSuccessTopics="successDialog4"
-                               onErrorTopics="errorDialog">
+                               onErrorTopics="errorDialog3">
                         <i class="fa fa-check"></i>
                         Save Reset Panjang
                     </sj:submit>
+
+                    <sj:dialog id="error_dialog2" openTopics="showErrorDialog2" modal="true" resizable="false"
+                               height="250" width="600" autoOpen="false" title="Error Dialog"
+                               buttons="{
+                                                                        'OK':function() { $('#error_dialog2').dialog('close'); }
+                                                                    }"
+                    >
+                        <div class="alert alert-error fade in">
+                            <label class="control-label" align="left">
+                                <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage2"></p>
+                            </label>
+                        </div>
+                    </sj:dialog>
                 </center>
             </div>
             <br>
@@ -1325,7 +1344,7 @@
     $('#btnSavePerbaikanSisaCuti').on('click', function () {
         CutiPegawaiAction.saveInisialisasi(function(data) {
             if (data!=""){
-                alert(data);
+                alert("User Sudah Pernah Memperbaiki Cuti");
             }else{
                 alert("perbaikan berhasil");
                 $('#modal-edit-inisialisasi').modal('hide');

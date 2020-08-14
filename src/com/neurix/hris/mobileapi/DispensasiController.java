@@ -126,6 +126,7 @@ public class DispensasiController implements ModelDriven<Object> {
             search.setFlag("Y");
             search.setFrom("ijinKeluar");
             search.setMobile(true);
+            search.setRoleId("");
 
             List<IjinKeluar> listOfIjinKeluar = null;
 
@@ -179,7 +180,7 @@ public class DispensasiController implements ModelDriven<Object> {
         } else if (action.equalsIgnoreCase("cekHajiZiarah")) {
             String result = "";
             try {
-                result  = ijinKeluarBoProxy.cekStatusIjin(model.getNip());
+                result  = ijinKeluarBoProxy.cekStatusIjin(nip);
             } catch (GeneralBOException e) {
                 logger.error("[DispensasiController.saveEdit] Error when saving dispen,", e);
             }
@@ -387,6 +388,7 @@ public class DispensasiController implements ModelDriven<Object> {
                     model.setKeterangan(dispensasi.getKeterangan());
                     model.setTanggalAwal(dispensasi.getStTanggalAwal());
                     model.setTanggalAkhir(dispensasi.getStTanggalAkhir());
+                    model.setTanggalAkhirBaru(dispensasi.getTanggalAkhirBaru());
                     model.setUnitName(dispensasi.getUnitName());
                     model.setUnit(dispensasi.getUnitId());
                     model.setPositionId(dispensasi.getPositionId());
@@ -410,6 +412,7 @@ public class DispensasiController implements ModelDriven<Object> {
                     model.setKeterangan(dispensasi.getKeterangan());
                     model.setTanggalAwal(dispensasi.getStTanggalAwal());
                     model.setTanggalAkhir(dispensasi.getStTanggalAkhir());
+                    model.setTanggalAkhirBaru(dispensasi.getTanggalAkhirBaru());
                     model.setUnitName(dispensasi.getUnitName());
                     model.setUnit(dispensasi.getUnitId());
                     model.setPositionId(dispensasi.getPositionId());

@@ -108,7 +108,7 @@
                     <s:form id="addPengajuanBiayaForm" enctype="multipart/form-data" method="post" namespace="/pengajuanBiaya"
                             action="saveAdd_pengajuanBiaya.action" theme="simple">
                         <s:hidden name="pengajuanBiaya.tipePembayaran" value="KK" />
-                        <div class="box-body">
+                        <div class="box-body"pengajuanBiaya>
                             <div class="alert alert-danger alert-dismissible" id="warning_pembayaran" style="display: none">
                                 <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                                 <span id="errorText"></span>
@@ -328,7 +328,7 @@
                 posisi="K";
                 break;
             case "PDU":
-                transaksi = "62";
+                transaksi = "65";
                 posisi="D";
                 break;
         }
@@ -354,7 +354,7 @@
                 posisi="D";
                 break;
             case "PDU":
-                transaksi = "62";
+                transaksi = "65";
                 posisi="K";
                 break;
         }
@@ -396,7 +396,7 @@
                 break;
             case "PDU":
                 $('#transaksi').val("PDU");
-                $('#tipe_transaksi').val("62");
+                $('#tipe_transaksi').val("65");
                 break;
         }
     }

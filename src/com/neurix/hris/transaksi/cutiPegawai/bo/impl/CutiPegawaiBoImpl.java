@@ -1085,6 +1085,33 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
         return null;
     }
 
+    public String cekCutiTahunan(String nip, String keterangan)throws GeneralBOException{
+        String status ="notExits";
+        List<ItCutiPegawaiEntity> entities = new ArrayList<>();
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        try {
+            entities = cutiPegawaiDao.getListCekCutiTahunan(nip, keterangan);
+        } catch (HibernateException e) {
+            logger.error("[PelayananBoImpl.cekStatus] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if (entities != null){
+            if (entities.size() != 0){
+                Calendar calendar = Calendar.getInstance();
+                Timestamp approvalDate = entities.get(0).getApprovalDate();
+                calendar.setTime(approvalDate);
+                int year = calendar.get(Calendar.YEAR);
+
+                if (currentYear == year){
+                    status = "exist";
+                }else {
+                    status = "notExits";
+                }
+            }
+        }
+        return status;
+    }
+
     @Override
     public CutiPegawai saveCutiBersama(CutiPegawai bean) throws GeneralBOException {
         logger.info("[CutiPegawaiBoImpl.saveCutiBersama] start process >>>");
@@ -1514,6 +1541,32 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
         }
 
         return status;
+    }
+
+    @Override
+    public List<CutiPegawai> getListNipCuti(String query) throws GeneralBOException {
+        logger.info("[cutiPegawaiBoimpl.getListCekNipCuti] start process >>>");
+
+        List<CutiPegawai> listComboCutiPegawai = null;
+
+        List<ItCutiPegawaiEntity> listCutiPegawai = null;
+        try {
+            listCutiPegawai = cutiPegawaiDao.getCekCuti(query);
+        } catch (HibernateException e) {
+            logger.error("[cutiPegawaiBoimpl.getListCekNipCuti] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
+        }
+
+        if (listCutiPegawai != null) {
+            listComboCutiPegawai = new ArrayList<>();
+            for (ItCutiPegawaiEntity itCutiPegawaiEntity : listCutiPegawai) {
+                CutiPegawai itemComboCutiPegawai = new CutiPegawai();
+                itemComboCutiPegawai.setCutiPegawaiId(itCutiPegawaiEntity.getCutiPegawaiId());
+                listComboCutiPegawai.add(itemComboCutiPegawai);
+            }
+        }
+        logger.info("[cutiPegawaiBoimpl.getListCekNipCuti] end process <<<");
+        return listComboCutiPegawai;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.neurix.hris.transaksi.absensi.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.transaksi.absensi.model.AbsensiPegawai;
 import com.neurix.hris.transaksi.absensi.model.AbsensiPegawaiEntity;
 import org.hibernate.Criteria;
@@ -398,6 +399,43 @@ public class AbsensiPegawaiDao extends GenericDao<AbsensiPegawaiEntity, String> 
             }
         }
         return listOfResult;
+    }
+
+    public List<AbsensiPegawai> getAbsensiByMonth(String nip, String branchId, String firstDate, String lastDate) {
+        List<AbsensiPegawai> absensiPegawaiList = new ArrayList<>();
+        List<Object[]> results = new ArrayList<Object[]>();
+        Date dtFirst = CommonUtil.convertStringToDate(firstDate);
+        Date dtLast = CommonUtil.convertStringToDate(lastDate);
+        String query = "SELECT tanggal, jam_masuk, jam_keluar, status_absensi, lembur, ijin, absensi_pegawai_id FROM it_hris_absensi_pegawai \n" +
+                "WHERE nip = :nip\n" +
+                "AND tanggal BETWEEN :firstDate AND :lastDate\n" +
+                "AND branch_id = :branchId\n " +
+                "AND status_absensi NOT IN ('00', '08', '10', '11', '12', '13')";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .setParameter("nip", nip)
+                .setParameter("branchId", branchId)
+                .setParameter("firstDate", dtFirst)
+                .setParameter("lastDate", dtLast)
+                .list();
+
+        if (results != null) {
+            for (Object[] item : results) {
+                AbsensiPegawai absensiPegawai = new AbsensiPegawai();
+                absensiPegawai.setTanggal(item[0] != null ? (Date) item[0] : null);
+                absensiPegawai.setJamMasuk(item[1] != null ? (String) item[1].toString() : "");
+                absensiPegawai.setJamKeluar(item[2] != null ? (String) item[2].toString() : "");
+                absensiPegawai.setStatusAbsensi(item[3] != null ? (String) item[3].toString() : "");
+                absensiPegawai.setLembur(item[4] != null ? (String) item[4].toString() : "");
+                absensiPegawai.setIjin(item[5] != null ? (String) item[5].toString() : "");
+                absensiPegawai.setAbsensiPegawaiId(item[6] != null ? (String) item[6].toString() : "");
+
+                absensiPegawaiList.add(absensiPegawai);
+            }
+        }
+
+        return absensiPegawaiList;
     }
 
 }

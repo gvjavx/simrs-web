@@ -38,8 +38,12 @@ public interface CutiPegawaiBo extends BaseMasterBo<CutiPegawai> {
 
     List<CutiPegawai> getListCekNipCuti(String query) throws GeneralBOException;
 
+    List<CutiPegawai> getListNipCuti(String query) throws GeneralBOException;
+
 //    List<CutiPegawai> getListCekTahunCuti(String query) throws GeneralBOException;
     String getListCekTahunCuti(Date tanggalAwal, Date tanggalAkhir, String nip);
+
+    String cekCutiTahunan(String nip, String keterangan);
 
     List<CutiPegawai> getHistoryCuti(String nip, String cutiId) throws GeneralBOException;
 
