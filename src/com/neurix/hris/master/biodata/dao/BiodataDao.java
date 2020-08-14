@@ -982,6 +982,17 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
         return results;
     }
 
+    public List<ImBiodataEntity> getByNip(String nip) throws  HibernateException{
+        List<ImBiodataEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImBiodataEntity.class)
+                .add(Restrictions.eq("nip", nip))
+                .add(Restrictions.eq("tipePegawai", "TP01"))
+                .add(Restrictions.isNotNull("tanggalAktif"))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("nip"))
+                .list();
+        return results;
+    }
+
     public List<ImBiodataEntity> getBiodataByUnit(String branchId){
         List<ImBiodataEntity> listOfResult = new ArrayList<ImBiodataEntity>();
         List<Object[]> results = new ArrayList<Object[]>();

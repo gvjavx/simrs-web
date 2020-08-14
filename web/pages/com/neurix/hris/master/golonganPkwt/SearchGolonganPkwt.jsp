@@ -186,7 +186,7 @@
                                                     </sj:a>
                                                 </s:if>
                                             </display:column>
-                                            <%--<display:column property="golonganPkwtId" sortable="true" title="GolonganPkwt ID" />--%>
+                                            <display:column property="golonganPkwtId" sortable="true" title="GolonganPkwt ID" />
                                             <display:column property="golonganPkwtName" sortable="true" title="Nama"  />
                                             <display:column property="flag" sortable="true" title="flag"  />
                                             <display:column property="action" sortable="true" title="action"  />

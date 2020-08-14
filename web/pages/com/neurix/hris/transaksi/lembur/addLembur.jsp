@@ -573,6 +573,18 @@
         }
         $('#jamAwal').timepicker();
         $('#jamAkhir').timepicker();
+
+        $('#tglAkhir').on('change',function(){
+            var startdate =$('#tglAwal').datepicker('getDate');
+            var enddate =$('#tglAkhir').datepicker('getDate');
+            var jamAwal44=$('#jamAwal').val();
+            var jamAkhir44=$('#jamAkhir').val();
+            if (enddate<startdate){
+                alert ('Tanggal yang dipilih salah');
+                $('#tglAwal').val("");
+                $('#tglAkhir').val("");
+            }
+        });
     });
 </script>
 

@@ -1660,6 +1660,43 @@ public class BiodataBoImpl implements BiodataBo {
         }
         return biodataList;
     }
+
+    @Override
+    public List<Biodata> getTanggalAktif(String nip) throws GeneralBOException {
+        logger.info("[BiodataBoImpl.getTanggalAktif] start process >>>");
+
+        List<Biodata> listOfResult = new ArrayList<>();
+
+        if (nip != null){
+            List<ImBiodataEntity> entityList = null;
+            try{
+                entityList = biodataDao.getByNip(nip);
+            }catch (HibernateException e){
+                logger.error("[BiodataBoImpl.getTanggalAktif] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when get tanggal aktif by nip, please info to your admin..." + e.getMessage());
+            }
+
+            if (entityList != null){
+                Biodata biodata;
+
+                for (ImBiodataEntity list : entityList){
+                    biodata = new Biodata();
+
+                    biodata.setNamaPegawai(list.getNamaPegawai());
+                    biodata.setTanggalAktif(list.getTanggalAktif());
+                    biodata.setTanggalMasuk(list.getTanggalMasuk());
+
+                    listOfResult.add(biodata);
+                }
+            }else {
+                throw new GeneralBOException("Found problem when get tanggal aktif by nip, please info to your admin...");
+            }
+        }else {
+            throw new GeneralBOException("nip is null, please info to your admin...");
+        }
+        return listOfResult;
+    }
+
     @Override
     public List<Biodata> getByCriteria(Biodata searchBean) throws GeneralBOException {
         logger.info("[BiodataBoImpl.getByCriteria] start process >>>");
