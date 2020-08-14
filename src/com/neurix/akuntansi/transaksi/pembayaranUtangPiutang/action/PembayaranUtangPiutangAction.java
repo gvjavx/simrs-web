@@ -479,7 +479,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
                     BigDecimal jumlahPembayaran = new BigDecimal(pembayaranUtangPiutangDetail.getStJumlahPembayaran().replace(".",""));
                     BigDecimal ppn = new BigDecimal(pembayaranUtangPiutangDetail.getStPpn().replace(".",""));
                     BigDecimal pph = new BigDecimal(pembayaranUtangPiutangDetail.getStPph().replace(".",""));
-                    jumlahPembayaran=jumlahPembayaran.add(pph);
+//                    jumlahPembayaran=jumlahPembayaran.add(pph);
                     jumlahPembayaran=jumlahPembayaran.subtract(ppn);
                     Map hs = new HashMap();
                     hs.put("bukti",pembayaranUtangPiutangDetail.getNoNota());
@@ -491,7 +491,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
                     pengajuanBiayaDetailId = pembayaranUtangPiutangDetail.getPengajuanBiayaDetailId();
                     sumberDana = pembayaranUtangPiutangDetail.getNoBugetting();
 
-                    if(pembayaranUtangPiutangDetail.getStFileUpload() != null && !"".equalsIgnoreCase(pembayaranUtangPiutangDetail.getStFileUpload())){
+                    if(!"".equalsIgnoreCase(pembayaranUtangPiutangDetail.getNoFakturPajak())&&pembayaranUtangPiutangDetail.getStFileUpload() != null && !"".equalsIgnoreCase(pembayaranUtangPiutangDetail.getStFileUpload())){
                         BASE64Decoder decoder = new BASE64Decoder();
                         byte[] decodedBytes = decoder.decodeBuffer(pembayaranUtangPiutangDetail.getStFileUpload());
                         logger.info("Decoded upload data : " + decodedBytes.length);

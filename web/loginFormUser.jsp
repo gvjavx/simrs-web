@@ -139,10 +139,10 @@
                   <div style="background-color: #edcccc; min-width: 400px; max-width: 500px; padding: 10px; text-align: center;font-size: 12px; border-radius: 10px;margin: auto">
                         Your login attempt was not successful, try again. Caused :
 
-                        </br>
-                        <s:if test='messageError=="Maximum sessions of 1 for this principal exceeded"'>
-                            User yang anda masukkan sudah login pada device lain
-                        </s:if>
+                      </br>
+                      <s:if test='messageError=="Maximum sessions of 1 for this principal exceeded"'>
+                          User yang anda masukkan sudah login pada device lain
+                      </s:if>
 
                         <s:else>
                             <s:property value="%{messageError}"/>

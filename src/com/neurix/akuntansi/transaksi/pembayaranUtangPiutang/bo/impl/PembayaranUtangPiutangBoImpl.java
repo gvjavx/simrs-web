@@ -22,6 +22,8 @@ import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUta
 import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.authorization.company.model.ImBranches;
+import com.neurix.authorization.position.dao.PositionDao;
+import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
@@ -55,7 +57,16 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
     private JurnalDetailDao jurnalDetailDao;
     private TransDao transDao;
     private BranchDao branchDao;
+    private PositionDao positionDao;
     private MappingJurnalDao mappingJurnalDao;
+
+    public PositionDao getPositionDao() {
+        return positionDao;
+    }
+
+    public void setPositionDao(PositionDao positionDao) {
+        this.positionDao = positionDao;
+    }
 
     public MappingJurnalDao getMappingJurnalDao() {
         return mappingJurnalDao;
@@ -616,6 +627,16 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
                 returnPembayaranUtangPiutangDetail.setPembayaranUtangPiutangDetailId(pembayaranUtangPiutangDetail.getPembayaranUtangPiutangDetailId());
                 returnPembayaranUtangPiutangDetail.setMasterId(pembayaranUtangPiutangDetail.getMasterId());
                 returnPembayaranUtangPiutangDetail.setDivisiId(pembayaranUtangPiutangDetail.getDivisiId());
+
+                List<ImPosition> positionList = positionDao.getListPositionKodering(pembayaranUtangPiutangDetail.getDivisiId());
+                if (positionList.size()!=0){
+                    returnPembayaranUtangPiutangDetail.setDivisiName("");
+                }else{
+                    for (ImPosition position : positionList){
+                        returnPembayaranUtangPiutangDetail.setDivisiName(position.getPositionName());
+                    }
+                }
+
                 returnPembayaranUtangPiutangDetail.setRekeningId(pembayaranUtangPiutangDetail.getRekeningId());
                 returnPembayaranUtangPiutangDetail.setNoNota(pembayaranUtangPiutangDetail.getNoNota());
                 returnPembayaranUtangPiutangDetail.setPosisiCoa(pembayaranUtangPiutangDetail.getPosisiCoa());

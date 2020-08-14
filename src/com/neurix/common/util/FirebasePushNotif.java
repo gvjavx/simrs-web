@@ -49,7 +49,6 @@ public class FirebasePushNotif {
                 } else info.put("sound", "default");
             } else info.put("sound", "default");
 
-
             info.put("click_action", CLICK_ACTION);
             info.put("sound", "default");
 //            info.put("click_action", CLICK_ACTION);

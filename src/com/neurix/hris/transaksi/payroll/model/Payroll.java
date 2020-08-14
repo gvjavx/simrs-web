@@ -142,6 +142,12 @@ public class Payroll extends BaseModel {
     private Timestamp approvalSdmDate;
     private String approvalSdmName;
 
+    //approve AKS
+    private String approvalAksFlag;
+    private String approvalAksId;
+    private Timestamp approvalAksDate;
+    private String approvalAksName;
+
     // macam peralihan;
     private BigDecimal peralihanGapok;
     private BigDecimal peralihanSankhus;
@@ -149,6 +155,38 @@ public class Payroll extends BaseModel {
     private String stPeralihanGapok;
     private String stPeralihanSankhus;
     private String stPeralihanTunjangan;
+
+    public String getApprovalAksFlag() {
+        return approvalAksFlag;
+    }
+
+    public void setApprovalAksFlag(String approvalAksFlag) {
+        this.approvalAksFlag = approvalAksFlag;
+    }
+
+    public String getApprovalAksId() {
+        return approvalAksId;
+    }
+
+    public void setApprovalAksId(String approvalAksId) {
+        this.approvalAksId = approvalAksId;
+    }
+
+    public Timestamp getApprovalAksDate() {
+        return approvalAksDate;
+    }
+
+    public void setApprovalAksDate(Timestamp approvalAksDate) {
+        this.approvalAksDate = approvalAksDate;
+    }
+
+    public String getApprovalAksName() {
+        return approvalAksName;
+    }
+
+    public void setApprovalAksName(String approvalAksName) {
+        this.approvalAksName = approvalAksName;
+    }
 
     public boolean isSdm() {
         return sdm;

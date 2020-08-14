@@ -38,7 +38,15 @@ public class Company extends BaseModel implements Serializable {
     private BigDecimal maxBpjsPensiun;
     private BigDecimal maxBpjsKesehatan ;
     private String periodeGaji;
+    private BigDecimal paramDapen;
 
+    public BigDecimal getParamDapen() {
+        return paramDapen;
+    }
+
+    public void setParamDapen(BigDecimal paramDapen) {
+        this.paramDapen = paramDapen;
+    }
 
     public String getPeriodeGaji() {
         return periodeGaji;
