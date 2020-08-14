@@ -308,6 +308,7 @@ public class UserDao extends GenericDao<ImUsers,String> {
                 "\tLEFT JOIN im_areas_branches_users ub ON u.user_id = ub.user_id\n" +
                 "WHERE\n" +
                 "\tbranch_id='"+branchId+"' AND\n" +
+                "\tu.flag='Y' AND\n" +
                 "\trole_id = '"+roleId+"'\n" +
                 "ORDER BY\n" +
                 "\tu.user_id asc";
@@ -341,6 +342,7 @@ public class UserDao extends GenericDao<ImUsers,String> {
                 "WHERE\n" +
                 "\tbranch_id='"+branchId+"' AND\n" +
                 "\tposition_id = '"+positionId+"' AND \n" +
+                "\tu.flag = 'Y' AND \n" +
                 "\trole_id = '"+roleId+"'\n" +
                 "ORDER BY\n" +
                 "\tu.user_id asc";
@@ -371,6 +373,8 @@ public class UserDao extends GenericDao<ImUsers,String> {
                 "\tINNER JOIN it_hris_pegawai_position pp ON p.nip = pp.nip\n" +
                 "WHERE\n" +
                 "\tbranch_id='"+branchId+"' AND\n" +
+                "\tp.flag='Y' AND\n" +
+                "\tpp.flag='Y' AND\n" +
                 "\tposition_id = '"+positionId+"' \n" +
                 "ORDER BY\n" +
                 "\tp.nip asc";
