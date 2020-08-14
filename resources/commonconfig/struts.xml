@@ -250,4 +250,5 @@
     <include file="sshconfig/com/neurix/akuntansi/transaksi/budgetinginvestasi/struts/BgInvestasiAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/transaksi/budgetingeksploitasi/struts/BgEksploitasiAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/transaksi/budgetingnominasi/struts/BgNominasiAction.xml"/>
+    <include file="sshconfig/com/neurix/akuntansi/transaksi/budgetingpendapatan/struts/BgPendapatanAction.xml"/>
 </struts>

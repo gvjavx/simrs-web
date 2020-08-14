@@ -565,3 +565,108 @@
 // >>> 2020-08-10
     ALTER TABLE im_akun_budgeting_nilai_dasar ADD COLUMN urutan INTEGER;
 // <<<
+
+// >>> 2020-08-13
+    -- Table: public.im_simrs_header_tindakan
+
+    -- DROP TABLE public.im_simrs_header_tindakan;
+
+    CREATE TABLE public.im_simrs_header_tindakan
+    (
+        id character varying(30) COLLATE pg_catalog."default" NOT NULL,
+        nama_tindakan text COLLATE pg_catalog."default",
+        id_kategori_tindakan character varying(30) COLLATE pg_catalog."default",
+        standard_cost numeric,
+        diskon numeric,
+        harga_diskon numeric,
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        CONSTRAINT im_simrs_header_tindakan_pkey PRIMARY KEY (id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.im_simrs_header_tindakan
+        OWNER to postgres;
+
+    ALTER TABLE im_simrs_tindakan ADD id_header_tindakan VARCHAR(30);
+    CREATE SEQUENCE seq_header_tindakan;
+<<< //
+
+// >>> 2020-08-14
+    CREATE TABLE public.im_akun_jenis_budgeting
+    (
+        id character varying(50) COLLATE pg_catalog."default" NOT NULL,
+        nama_jenis text COLLATE pg_catalog."default",
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        CONSTRAINT im_akun_jenis_budgeting_pkey PRIMARY KEY (id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.im_akun_jenis_budgeting
+        OWNER to postgres;
+=================================================================================================
+    CREATE TABLE public.im_akun_parameter_budgeting
+    (
+        id character varying(30) COLLATE pg_catalog."default" NOT NULL,
+        nama text COLLATE pg_catalog."default",
+        rekening_id character varying(50) COLLATE pg_catalog."default",
+        id_jenis_budgeting character varying(50) COLLATE pg_catalog."default",
+        tipe character varying(50) COLLATE pg_catalog."default",
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        CONSTRAINT im_akun_parameter_budgeting_pkey PRIMARY KEY (id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.im_akun_parameter_budgeting
+        OWNER to postgres;
+=================================================================================================
+    CREATE TABLE public.it_akun_perhitungan_budgeting
+    (
+        id character varying(50) COLLATE pg_catalog."default" NOT NULL,
+        id_parameter_budgeting character varying(30) COLLATE pg_catalog."default",
+        nilai numeric,
+        operator character varying(1) COLLATE pg_catalog."default",
+        branch_id character varying(55) COLLATE pg_catalog."default",
+        tahun character varying(10) COLLATE pg_catalog."default",
+        urutan integer,
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        CONSTRAINT it_akun_perhitungan_budgeting_pkey PRIMARY KEY (id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.it_akun_perhitungan_budgeting
+        OWNER to postgres;
+
+    CREATE SEQUENCE seq_perhitungan_budgeting;
+<<< //

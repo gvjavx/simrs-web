@@ -96,17 +96,17 @@
                                         </div>
                                     </div>
 
-                                    <div class="row">
-                                        <label class="control-label col-sm-2">Tipe Budgeting</label>
-                                        <div class="col-sm-2">
-                                            <select class="form-control" id="sel-tipe">
-                                                <option value="tahunan">Tahunan</option>
-                                                <option value="bulanan">Bulanan</option>
-                                                <option value="semester">Semester</option>
-                                                <option value="quartal">Quartal</option>
-                                            </select>
-                                        </div>
-                                    </div>
+                                    <%--<div class="row">--%>
+                                        <%--<label class="control-label col-sm-2">Tipe Budgeting</label>--%>
+                                        <%--<div class="col-sm-2">--%>
+                                            <%--<select class="form-control" id="sel-tipe">--%>
+                                                <%--<option value="tahunan">Tahunan</option>--%>
+                                                <%--<option value="bulanan">Bulanan</option>--%>
+                                                <%--<option value="semester">Semester</option>--%>
+                                                <%--<option value="quartal">Quartal</option>--%>
+                                            <%--</select>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
                                     <input type="hidden" id="add-coa-tipe" value="investasi" name="budgeting.tipeBudgeting"/>
 
                                 </div>
@@ -114,7 +114,7 @@
 
                             <div class="row">
                                 <div class="col-md-6 col-md-offset-6" style="margin-top: 10px">
-                                    <button class="btn btn-primary" onclick="add()"><i class="fa fa-plus"></i> Add</button>
+                                    <button class="btn btn-primary" onclick="add()"><i class="fa fa-plus"></i> Choose</button>
                                 </div>
                             </div>
                         </div>
