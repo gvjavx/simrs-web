@@ -18,6 +18,25 @@ function setDataPasien(){
     var tglPasien = $('.tgl-lahir-pasien').length;
     var patTgl = $('.ptr-tgl').length;
 
+    var tensi = $('.tensi-pasien').length;
+    var suhu = $('.suhu-pasien').length;
+    var nadi = $('.nadi-pasien').length;
+    var rr = $('.rr-pasien').length;
+
+    if(tensi > 0 || gejala > 0 || bb > 0 || tb > 0){
+        CheckupAction.getDataPemeriksaanFisik(noCheckup, function (res) {
+            if (res != '') {
+                tempTensi = res.tensi;
+                tempSuhu = res.suhu;
+                tempNadi = res.nadi;
+                tempRr = res.pernafasan;
+                tempBerat = res.berat;
+                tempTinggi = res.tinggi;
+                tempAnmnesa = res.anamnese;
+            }
+        });
+    }
+
     if (jam > 0) {
         $('.jam').timepicker();
         $('.jam').val(converterTime(new Date()));
@@ -35,7 +54,7 @@ function setDataPasien(){
         $('.tgl').inputmask('dd-mm-yyyy', {'placeholder': 'dd-mm-yyyy'});
     }
     if (gejala > 0) {
-        $('.anamnese').val(anamnese);
+        $('.anamnese').val(tempAnmnesa);
     }
     if (penMedis > 0) {
         CheckupAction.getDataByKey(idDetailCheckup, "penunjang_medis", function (res) {
@@ -66,10 +85,10 @@ function setDataPasien(){
         $('.alergi-pasien').val(alergi);
     }
     if (bb > 0) {
-        $('.berat-pasien').val(beratBadan);
+        $('.berat-pasien').val(tempBerat);
     }
     if (tb > 0) {
-        $('.tinggi-pasien').val(tinggiBadan);
+        $('.tinggi-pasien').val(tempTinggi);
     }
     if(sel > 0){
         $('.select2').select2();
@@ -85,5 +104,17 @@ function setDataPasien(){
             dateFormat: 'dd-mm-yy'
         });
         $('.ptr-tgl').inputmask('dd-mm-yyyy', {'placeholder': 'dd-mm-yyyy'});
+    }
+    if(tensi > 0){
+        $('.tensi-pasien').val(tempTensi);
+    }
+    if(suhu > 0){
+        $('.suhu-pasien').val(tempSuhu);
+    }
+    if(nadi > 0){
+        $('.nadi-pasien').val(tempNadi);
+    }
+    if(rr > 0){
+        $('.rr-pasien').val(tempRr);
     }
 }

@@ -13,7 +13,7 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_sps_dokter_umum"></p>
                     </div>
-                    <div class="btn-group btn-hide">
+                    <div class="btn-group">
                         <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
                         </button>
                         <button type="button" class="btn btn-success dropdown-toggle"

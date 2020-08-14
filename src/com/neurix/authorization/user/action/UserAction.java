@@ -302,6 +302,33 @@ public class UserAction extends BaseMasterAction {
         return "init_combo_position";
     }
 
+    public String initComboPositionBod() {
+
+//        Position position = new Position();
+//        position.setKelompokId("KL44");
+//        position.setFlag("Y");
+
+        List<Position> listOfPosition = new ArrayList<Position>();
+        try {
+//            listOfPosition = positionBoProxy.getByCriteria(position);
+            listOfPosition = positionBoProxy.getComboBodBoc();
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = positionBoProxy.saveErrorMessage(e.getMessage(), "PositionBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[UserAction.initComboPosition] Error when saving error,", e1);
+            }
+            logger.error("[UserAction.initComboPosition] Error when searching data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
+            return "failure";
+        }
+
+        listOfComboPositions.addAll(listOfPosition);
+
+        return "init_combo_position";
+    }
+
     @Override
     public String edit() {
         logger.info("[UserAction.edit] start process >>>");

@@ -1,5 +1,6 @@
 package com.neurix.hris.transaksi.cutiPegawai.dao;
 
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
@@ -68,6 +69,7 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
         }
 
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+        criteria.add(Restrictions.eq("flagPerbaikan", "N"));
 
         // Order by
         criteria.addOrder(Order.desc("cutiPegawaiId"));
@@ -707,7 +709,7 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
     public List<ItCutiPegawaiEntity> getDataCuti(String nip) throws HibernateException {
         List<ItCutiPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItCutiPegawaiEntity.class)
                 .add(Restrictions.eq("nip", nip))
-                .add(Restrictions.eq("cutiId", "CT007"))
+                .add(Restrictions.eq("cutiId",  CommonConstant.CUTI_ID_DILUAR_TANGGUNJAWAB))
                 .list();
         return results;
 
@@ -718,7 +720,7 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
 
         List<ItCutiPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItCutiPegawaiEntity.class)
                 .add(Restrictions.eq("nip",nip))
-                .add(Restrictions.eq("cutiId","CT007"))
+                .add(Restrictions.eq("cutiId", CommonConstant.CUTI_ID_DILUAR_TANGGUNJAWAB))
                 .add(Restrictions.le("tanggalDari",tanggal))
                 .add(Restrictions.ge("tanggalSelesai",tanggal))
                 .add(Restrictions.eq("approvalFlag","Y"))

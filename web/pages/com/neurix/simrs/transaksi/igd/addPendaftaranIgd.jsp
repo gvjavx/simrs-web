@@ -958,7 +958,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Foto KTP</label>
+                                            <label class="col-md-4" style="margin-top: 7px">Foto Identitas</label>
                                             <div class="col-md-8">
                                                 <img id="img-upload" width="100%"
                                                      src="<s:url value="/pages/images/ktp-default.jpg"/>"
@@ -1519,11 +1519,11 @@
                                                 <a type="button" class="btn btn-warning" href="initForm_igd.action">
                                                     <i class="fa fa-arrow-left"></i> Back
                                                 </a>
-                                                <a type="button" id="btn-rm" style="display:none;"
-                                                   class="btn btn-primary"
-                                                   onclick="initRekamMedic()">
-                                                    <i class="fa fa-search"></i> View Rekam Medik
-                                                </a>
+                                                <%--<a type="button" id="btn-rm" style="display:none;"--%>
+                                                   <%--class="btn btn-primary"--%>
+                                                   <%--onclick="initRekamMedic()">--%>
+                                                    <%--<i class="fa fa-search"></i> View Rekam Medik--%>
+                                                <%--</a>--%>
 
                                                 <a type="button" id="btn-kronis" style="display:none;"
                                                    class="btn btn-info"

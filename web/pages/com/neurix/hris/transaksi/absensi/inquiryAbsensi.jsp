@@ -203,6 +203,29 @@
                                                 </table>
                                             </td>
                                         </tr>
+
+                                        <tr>
+                                            <td>
+                                                <label class="control-label"><small>Unit :</small></label>
+                                            </td>
+                                            <td>
+                                                <table>
+                                                    <s:if test='absensiPegawai.branchId == "KP"'>
+                                                        <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                        <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="absensiPegawai.branchId"
+                                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                    </s:if>
+                                                    <s:else>
+                                                        <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                        <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="absensiPegawai.branchId" disabled="true"
+                                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                        <s:hidden id="branchId" name="absensiPegawai.branchId"/>
+                                                    </s:else>
+
+                                                </table>
+                                            </td>
+                                        </tr>
+
                                         <tr style="display: none">
                                             <td>
                                                 <label class="control-label"><small>Status Pegawai :</small></label>

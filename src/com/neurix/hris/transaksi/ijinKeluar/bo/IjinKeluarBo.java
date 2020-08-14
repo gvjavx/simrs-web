@@ -51,4 +51,8 @@ public interface IjinKeluarBo extends BaseMasterBo<IjinKeluar> {
     public String cekAgama(String nip, String ijinId, String agama) throws GeneralBOException;
     public String cekStatus(String nip, Date tglAwal, Date tglAkhir) throws GeneralBOException;
     public String cekIfAbsensi(String nip, String tglDari, String tglSelesai);
+    public String cekPengajuanIjinKeluar(String nip);
+
+    List<IjinKeluar> getListCekNipIjinKeluar(String query) throws GeneralBOException;
+    List<IjinKeluar> getHistoryIjinKeluarByMonth(String nip, String branchId, Date date) throws GeneralBOException;
 }

@@ -71,7 +71,6 @@
     <section class="content-header">
         <h1>
             Report Lembur
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -107,15 +106,28 @@
                                     </table>
                                 </td>
                             </tr>
+                            <%--<tr>--%>
+                                <%--<td>--%>
+                                    <%--<label class="control-label"><small>Bagian :</small></label>--%>
+                                <%--</td>--%>
+                                <%--<td>--%>
+                                    <%--<table>--%>
+                                        <%--<s:action id="comboBagian" namespace="/strukturJabatan" name="searchBagian_strukturJabatan"/>--%>
+                                        <%--<s:select cssClass="form-control" list="#comboBagian.listComboStrukturJabatan" id="bagian" required="true"--%>
+                                                  <%--listKey="bagian" listValue="bagianName" headerKey="" headerValue="[Select one]" name="lembur.bagian" />--%>
+                                    <%--</table>--%>
+                                <%--</td>--%>
+                            <%--</tr>--%>
                             <tr>
                                 <td>
                                     <label class="control-label"><small>Bagian :</small></label>
                                 </td>
                                 <td>
                                     <table>
-                                        <s:action id="comboBagian" namespace="/strukturJabatan" name="searchBagian_strukturJabatan"/>
-                                        <s:select cssClass="form-control" list="#comboBagian.listComboStrukturJabatan" id="bagian" required="true"
-                                                  listKey="bagian" listValue="bagianName" headerKey="" headerValue="[Select one]" name="lembur.bagian" />
+                                        <s:action id="comboBagian" namespace="/positionBagian" name="searchPositionBagian_positionBagian"/>
+                                        <s:select list="#comboBagian.comboListOfPositionBagian" id="bagian" name="lembur.bagian"
+                                                  listKey="bagianId" listValue="bagianName" headerKey="" headerValue="[Select one]"
+                                                  cssClass="form-control"/>
                                     </table>
                                 </td>
                             </tr>
@@ -229,17 +241,36 @@
                             <table id="showdata" width="80%">
                                 <tr>
                                     <td align="center">
-                                        <sj:dialog id="waiting_dialog_loading" openTopics="showDialog" closeTopics="closeDialog" modal="true"
+                                        <%--<sj:dialog id="waiting_dialog_loading" openTopics="showDialog" closeTopics="closeDialog" modal="true"--%>
+                                                   <%--resizable="false"--%>
+                                                   <%--height="350" width="600" autoOpen="false" title="Loading ...">--%>
+                                            <%--Please don't close this window, server is processing your request ...--%>
+                                            <%--</br>--%>
+                                            <%--</br>--%>
+                                            <%--</br>--%>
+                                            <%--<center>--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/indicator-read.gif"/>" name="image_indicator_read">--%>
+                                            <%--</center>--%>
+                                        <%--</sj:dialog>--%>
+
+                                        <sj:dialog id="waiting_dialog_loading" openTopics="showDialog"
+                                                   closeTopics="closeDialog" modal="true"
                                                    resizable="false"
-                                                   height="350" width="600" autoOpen="false" title="Loading ...">
+                                                   height="250" width="600" autoOpen="false"
+                                                   title="Searching ...">
                                             Please don't close this window, server is processing your request ...
-                                            </br>
-                                            </br>
-                                            </br>
+                                            <br>
                                             <center>
-                                                <img border="0" src="<s:url value="/pages/images/indicator-read.gif"/>" name="image_indicator_read">
+                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                     name="image_indicator_write">
+                                                <br>
+                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                     name="image_indicator_write">
                                             </center>
                                         </sj:dialog>
+
                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
                                                    height="620" width="900" autoOpen="false"
                                                    title="Absensi">
@@ -261,12 +292,12 @@
                                             </display:column>
                                             <display:column property="nip" sortable="true" title="NIP"  />
                                             <display:column property="nama" sortable="true" title="Nama"  />
-                                            <display:column property="stLamaLembur" sortable="true" title="Lama Lembur" />
-                                            <display:column property="sJumlahHariKerja" sortable="true" title="Jumlah Hari Kerja" style="text-align:center" />
-                                            <display:column property="sJumlahHariLibur" sortable="true" title="Jumlah Hari Libur" style="text-align:center" />
-                                            <display:column property="stJamLembur" sortable="true" title="Jumlah Jam Lembur" style="text-align:center" />
-                                            <display:column property="stBiayaLemburPerjam" sortable="true" title="Lembur per Jam" style="text-align:center" />
-                                            <display:column property="stBiayaLembur" sortable="true" title="Jumlah" style="text-align:center" />
+                                            <display:column property="stLamaLembur" sortable="true" title="Jam Lembur Efektif" />
+                                            <%--<display:column property="sJumlahHariKerja" sortable="true" title="Jumlah Hari Kerja" style="text-align:center" />--%>
+                                            <%--<display:column property="sJumlahHariLibur" sortable="true" title="Jumlah Hari Libur" style="text-align:center" />--%>
+                                            <display:column property="stJamLembur" sortable="true" title="Jumlah Jam Lembur Faktor" style="text-align:center" />
+                                            <display:column property="stBiayaLemburPerjam" sortable="true" title="Tarif Lembur Per Jam" style="text-align:center" />
+                                            <display:column property="stBiayaLembur" sortable="true" title="Jumlah Upah Lembur Bruto" style="text-align:center" />
                                         </display:table>
                                     </td>
                                 </tr>

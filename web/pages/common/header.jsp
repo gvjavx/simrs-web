@@ -428,6 +428,14 @@ apply the skin class to the body tag so the changes take effect.
 
 //        cekSession();
 
+        $('.dropdown').on('show.bs.dropdown', function(e){
+            $(this).find('.dropdown-menu').first().stop(true, true).slideDown(350);
+        });
+
+        $('.dropdown').on('hide.bs.dropdown', function(e){
+            $(this).find('.dropdown-menu').first().stop(true, true).slideUp(350);
+        });
+
     });
 
     <%--function cekSession(){--%>
@@ -562,6 +570,18 @@ apply the skin class to the body tag so the changes take effect.
             hours = hours + 24;
         }
         return (hours < 9 ? "0" : "") + hours + ":" + (minutes < 9 ? "0" : "") + minutes;
+    }
+
+    function convertSentenceCaseUp(myString){
+        if(myString != null && myString != ''){
+            var rg = /(^\w{1}|\ \s*\w{1})/gi;
+            myString = myString.replace(rg, function(toReplace) {
+                return toReplace.toUpperCase();
+            });
+            return myString;
+        }else{
+            return "";
+        }
     }
 
 </script>

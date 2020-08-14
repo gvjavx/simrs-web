@@ -2412,10 +2412,10 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     }
 
     @Override
-    public List<HeaderCheckup> getHistoryPasien(String idPasien) throws GeneralBOException {
+    public List<HeaderCheckup> getHistoryPasien(String idPasien, String branchId) throws GeneralBOException {
         List<HeaderCheckup> headerCheckupList = new ArrayList<>();
         try{
-            headerCheckupList = headerCheckupDao.getListHistoryPasien(idPasien);
+            headerCheckupList = headerCheckupDao.getListHistoryPasien(idPasien, branchId);
         }catch (HibernateException e){
             logger.error("Found error "+e.getMessage());
         }
@@ -2452,6 +2452,10 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             chekupEntity = headerCheckupDao.getById("noCheckup", bean.getNoCheckup());
             if(chekupEntity.getNoCheckup() != null){
                 chekupEntity.setAnamnese(bean.getAnamnese());
+                chekupEntity.setTensi(bean.getTensi());
+                chekupEntity.setSuhu(bean.getSuhu());
+                chekupEntity.setNadi(bean.getNadi());
+                chekupEntity.setRr(bean.getPernafasan());
                 chekupEntity.setLastUpdate(bean.getLastUpdate());
                 chekupEntity.setLastUpdateWho(bean.getLastUpdateWho());
                 try {
@@ -2493,6 +2497,11 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     @Override
     public String getAlergi(String noCheckup) throws GeneralBOException {
         return headerCheckupDao.getAlergiPasien(noCheckup);
+    }
+
+    @Override
+    public HeaderCheckup getDataPemeriksaanFisik(String noCheckup) throws GeneralBOException {
+        return headerCheckupDao.getPemeriksaanFisik(noCheckup);
     }
 
     public ItSimrsHeaderChekupEntity getById(String columnName, String id) throws GeneralBOException {

@@ -89,7 +89,7 @@ public interface CheckupBo {
     public ItSimrsHeaderChekupEntity getEntityCheckupById(String id) throws GeneralBOException;
 
     public HeaderCheckup getLastDataPasienByIdPasien(String idPasien) throws GeneralBOException;
-    public List<HeaderCheckup> getHistoryPasien(String idPasien) throws GeneralBOException;
+    public List<HeaderCheckup> getHistoryPasien(String idPasien, String branchId) throws GeneralBOException;
     public List<HeaderCheckup> getListDetailHistory(String id, String keterangan) throws GeneralBOException;
     public List<HeaderCheckup> getListVedioRm(String id) throws GeneralBOException;
     public ItSimrsHeaderChekupEntity getById(String columnName, String id) throws GeneralBOException;
@@ -100,5 +100,7 @@ public interface CheckupBo {
     public String getPenunjangMedis(String idDetailCheckup) throws GeneralBOException;
     public String getResepPasien(String idDetailCheckup) throws GeneralBOException;
     public String getAlergi(String noCheckup) throws GeneralBOException;
+
+    public HeaderCheckup getDataPemeriksaanFisik(String noCheckup) throws GeneralBOException;
 
 }

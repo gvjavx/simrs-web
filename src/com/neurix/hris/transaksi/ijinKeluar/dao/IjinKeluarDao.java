@@ -1,8 +1,10 @@
 package com.neurix.hris.transaksi.ijinKeluar.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.hris.transaksi.cutiPegawai.model.ItCutiPegawaiEntity;
+import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluar;
 import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluarEntity;
 import com.neurix.hris.transaksi.personilPosition.model.ItPersonilPositionEntity;
 import org.hibernate.Criteria;
@@ -270,7 +272,11 @@ public class IjinKeluarDao extends GenericDao<IjinKeluarEntity, String> {
                 .add(Restrictions.eq("nip", nip))
                 .add(Restrictions.eq("approvalFlag", "Y"))
 //                .add(Restrictions.eq("approvalSdmFlag", "Y"))
-                .add(Restrictions.ne("cancelFlag","Y"))
+//                .add(Restrictions.ne("cancelFlag","Y"))
+                .add(Restrictions.or(
+                        Restrictions.isNull("cancelFlag"),
+                        Restrictions.ne("cancelFlag", "Y")
+                ))
                 .add(Restrictions.ne("ijinId","IJ001"))
                 .add(Restrictions.le("tanggalAwal",tanggal))
                 .add(Restrictions.ge("tanggalAkhir",tanggal))
@@ -441,5 +447,53 @@ public class IjinKeluarDao extends GenericDao<IjinKeluarEntity, String> {
             result="tidak";
         }
         return result;
+    }
+
+    public List<IjinKeluarEntity> getListCekIjinKeluar(String nip) throws HibernateException {
+        List<IjinKeluarEntity> results = this.sessionFactory.getCurrentSession().createCriteria(IjinKeluarEntity.class)
+                .add(Restrictions.eq("nip", nip))
+                .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.isNull("approvalFlag"))
+                .add(Restrictions.ne("cancelFlag", "Y"))
+                .list();
+        return results;
+    }
+
+    public List<IjinKeluar> getHistoryIjinKeluarByMonth(String nip, String branchId, String firstDate, String lastDate){
+
+        List<IjinKeluar> ijinKeluarList = new ArrayList<>();
+        List<Object[]> results = new ArrayList<Object[]>();
+        Date dtFirst = CommonUtil.convertStringToDate(firstDate);
+        Date dtLast = CommonUtil.convertStringToDate(lastDate);
+
+        String query = "SELECT ijin_name, lama_ijin, tanggal_awal, tanggal_akhir, ijin_keluar_id FROM it_hris_ijin_keluar\n" +
+                "WHERE nip = :nip\n" +
+                "AND (tanggal_awal BETWEEN :firstDate AND :lastDate OR tanggal_akhir BETWEEN :firstDate AND :lastDate)\n" +
+                "AND approval_flag = 'Y'\n" +
+                "AND cancel_flag = 'N'\n" +
+                "AND unit_id = :branchId";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .setParameter("nip", nip)
+                .setParameter("branchId", branchId)
+                .setParameter("firstDate", dtFirst)
+                .setParameter("lastDate", dtLast)
+                .list();
+
+        if (results != null) {
+            for (Object[] item : results) {
+                IjinKeluar ijinKeluar = new IjinKeluar();
+                ijinKeluar.setIjinName(item[0] != null ? (String) item[0].toString() : "");
+                ijinKeluar.setLamaIjin(item[1] != null ? (BigInteger) item[1] : new BigInteger("0"));
+                ijinKeluar.setTanggalAwal(item[2] != null ? (Date) item[2] : null);
+                ijinKeluar.setTanggalAkhir(item[3] != null ? (Date) item[3] : null);
+                ijinKeluar.setIjinKeluarId(item[4] != null ? (String) item[4].toString() : "");
+
+                ijinKeluarList.add(ijinKeluar);
+            }
+        }
+
+        return ijinKeluarList;
     }
 }

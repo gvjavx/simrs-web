@@ -33,7 +33,7 @@
                 <prop key="hibernate.use_sql_comments">false</prop>
                 <prop key="hibernate.bytecode.use_reflection_optimizer">false</prop>
 
-<!--                <prop key="hibernate.connection.url">jdbc:postgresql://192.168.0.10:5432/gomedsys_nmu</prop>
+<!--            <prop key="hibernate.connection.url">jdbc:postgresql://192.168.0.10:5432/gomedsys_nmu</prop>
                 <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
                 <prop key="hibernate.connection.username">root</prop>
                 <prop key="hibernate.connection.password">123456</prop>-->
@@ -48,10 +48,20 @@
                 <!--<prop key="hibernate.connection.username">root</prop>-->
                 <!--<prop key="hibernate.connection.password">123456</prop>-->
 
-                <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs_prod</prop>-->
+                <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs_03082020</prop>-->
                 <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
                 <!--<prop key="hibernate.connection.username">postgres</prop>-->
                 <!--<prop key="hibernate.connection.password">123456</prop>-->
+
+                <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs_29072020</prop>-->
+                <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
+                <!--<prop key="hibernate.connection.username">postgres</prop>-->
+                <!--<prop key="hibernate.connection.password">123456</prop>-->
+
+                <prop key="hibernate.connection.url">jdbc:postgresql://192.168.0.10:5432/gomedsys_nmu</prop>
+                <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
+                <prop key="hibernate.connection.username">root</prop>
+                <prop key="hibernate.connection.password">123456</prop>
 
                 <!--<prop key="hibernate.connection.url">jdbc:postgresql://10.88.70.233:5432/gomedsys_nmu</prop>-->
                 <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
@@ -91,12 +101,15 @@
                 <value>sshconfig/com/neurix/authorization/user/hibernate/ItUserSessionLog.hbm.xml</value>
                 <value>sshconfig/com/neurix/authorization/user/hibernate/ItBusinessObjectLog.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/libur/hibernate/ImLiburEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/libur/hibernate/ImLiburHistoryEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/biodata/hibernate/ItTunjLainPegEntity.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/hris/master/tipelibur/hibernate/ImHrisTipeLiburEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/tipelibur/hibernate/ImHrisTipeLiburHistoryEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/golongan/hibernate/ImGolonganEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/golonganDapen/hibernate/ImGolonganDapenEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/golonganPkwt/hibernate/ImGolonganPkwtEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/jamkerja/hibernate/ImHrisJamKerjaHistorycal.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/hris/master/golongan/hibernate/ImGolonganHistoryEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/updateGolongan/hibernate/ImtUpdateGolonganEntity.hbm.xml</value>
@@ -283,6 +296,7 @@
                 <value>sshconfig/com/neurix/hris/transaksi/absensi/hibernate/ItAbsensiPegawaiEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/transaksi/absensi/hibernate/ImPegawaiTambahanEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/transaksi/absensi/hibernate/ImPegawaiTambahanAbsensiEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/transaksi/absensi/hibernate/ImMesinAbsensiHistoryEntity.hbm.xml</value>
                 <!-- For Lembur -->
                 <value>sshconfig/com/neurix/hris/transaksi/Lembur/hibernate/ItLemburEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/transaksi/Lembur/hibernate/ImHrisJamLemburEntity.hbm.xml</value>
@@ -312,6 +326,7 @@
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollRapelDetailEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/payrollMasterInsentif/hibernate/ImPayrollMasterInsentifEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/payrollSkalaGajiBod/hibernate/ImPayrollSkalaGajiBodEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/payrollSkalaGajiBod/hibernate/ImPayrollSkalaGajiBodHistoryEntity.hbm.xml</value>
 
                 <!--Hibernate Config For SIMRS is HERE-->
                 <value>sshconfig/com/neurix/simrs/master/jenisobat/hibernate/ImSimrsJenisObatEntity.hbm.xml</value>
@@ -344,7 +359,10 @@
                 <value>sshconfig/com/neurix/simrs/master/fingerPrint/hibernate/imSimrsFingerPrintEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/dietgizi/hibernate/ImSimrsDietGiziEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/kategoritindakanina/hibernate/ImSimrsKategoriTindakanInaEntity.hbm.xml</value>
-
+                <value>sshconfig/com/neurix/simrs/master/obat/hibernate/ImSimrsKandunganObatEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/obat/hibernate/ImSimrsKandunganObatDetailEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/obat/hibernate/ImSimrsBentukBarangEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/telemedic/hibernate/ImSimrsRekeningTelemedicEntity.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/simrs/transaksi/resikojatuh/hibernate/ImSimrsKategoriResikoJatuhEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/resikojatuh/hibernate/ImSimrsParameterResikoJatuhEntity.hbm.xml</value>
@@ -354,6 +372,10 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/skorrawatinap/hibernate/ImSimrsKategoriSkorRanapEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/skorrawatinap/hibernate/ImSimrsParameterSkorRanapEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/skorrawatinap/hibernate/ImSimrsSkorRanapEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/reseponline/hibernate/ImSimrsSettingHargaPengirimanEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/verifikatorasuransi/hibernate/ItSimrsStrukAsuransiEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/bataltelemedic/hibernate/ItSimrsBatalTelemedicEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/bataltelemedic/hibernate/ItSimrsDokterBatalTelemedicEntity.hbm.xml</value>
 
                 <!--Hibernate Config For Transactions SIMRS is HERE-->
                 <value>sshconfig/com/neurix/simrs/transaksi/permintaanvendor/hibernate/ImSimrsTempObatGejalaEntity.hbm.xml</value>
@@ -410,7 +432,7 @@
                 <value>sshconfig/com/neurix/simrs/master/kurir/hibernate/ImSimrsKurirEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/reseponline/hibernate/ItSimrsResepOnlineEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/reseponline/hibernate/ItSimrsPengirimanObatEntity.hbm.xml</value>
-                <!--<value>sshconfig/com/neurix/simrs/transaksi/reseponline/hibernate/ItSimrsPemesananResepOnlineEntity.hbm.xml</value>-->
+                <value>sshconfig/com/neurix/simrs/transaksi/notifikasiadmin/hibernate/ItNotifikasiAdminTelemedicEntity.hbm.xml</value>
 
                 <!--Hibernate Config For Acountant Feature SIMRS is HERE-->
                 <value>sshconfig/com/neurix/akuntansi/master/kodeRekening/hibernate/ImKodeRekeningEntity.hbm.xml</value>
@@ -509,6 +531,8 @@
                 <value>sshconfig/com/neurix/hris/master/positionBagian/hibernate/ImPositionBagianHistoryEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/profesi/hibernate/ImProfesiHistoryEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/golonganPkwt/hibernate/ImGolonganPkwtHistoryEntity.hbm.xml</value>
+
+                <value>sshconfig/com/neurix/simrs/transaksi/asesmenoperasi/hibernate/ItSimrsMonitoringAnestesiEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/penyewaanLahan/hibernate/ItAkunPenyewaanLahanEntity.hbm.xml</value>
             </list>
         </property>

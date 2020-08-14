@@ -16,12 +16,12 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
-            var idDepartment = document.getElementById("skalaGajiId1").value;
+            var idPayrollPkwt = document.getElementById("skalaGajiId1").value;
             var nameDepartment    = document.getElementById("golonganId1").value;
 
 
 
-            if (nameDepartment != '' ) {
+            if (idPayrollPkwt != '' ) {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -38,8 +38,8 @@
 
                 var msg = "";
 
-                if (nameDepartment == '') {
-                    msg += 'Field <strong>Department Name</strong> is required.' + '<br/>';
+                if (idPayrollPkwt == '') {
+                    msg += 'Field <strong>ID Payroll PKWT</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -96,7 +96,7 @@
 
 
 
-                <legend align="left">Delete Payroll Gaji Pkwt</legend>
+                <legend align="left">Delete Payroll Gaji PKWT</legend>
 
 
                 <table>
@@ -167,6 +167,20 @@
                         <td>
                             <table>
                                 <s:textfield type="number" min="0" id="tunjTambahan1" name="payrollSkalaGajiPkwt.tunjtambahanNilai" readonly="true" required="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Tahun :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:action id="comboPeriode" namespace="/rekruitmen" name="initComboPeriodeTahunSekarang10_rekruitmen"/>
+                                <s:select cssClass="form-control" list="#comboPeriode.listOfComboPeriode" id="tahunPayroll3" disabled="true"
+                                          name="payrollSkalaGajiPkwt.tahun" required="true" headerKey=""
+                                          headerValue="[Select one]"/>
                             </table>
                         </td>
                     </tr>

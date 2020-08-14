@@ -844,7 +844,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
                 mapHutangVendor.put("bukti", noDo);
                 mapHutangVendor.put("nilai", hutangUsaha);
                 mapHutangVendor.put("master_id", requestVendor.getIdVendor());
-                mapHutangVendor.put("nidivisi_id", divisiId);
+                mapHutangVendor.put("divisi_id", divisiId);
 
                 jurnalMap.put("persediaan_gudang", listMapPersediaan);
                 jurnalMap.put("hutang_farmasi_vendor", mapHutangVendor);

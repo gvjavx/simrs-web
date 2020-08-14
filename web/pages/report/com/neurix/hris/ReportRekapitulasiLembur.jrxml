@@ -711,20 +711,6 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					</jr:column>
 				</jr:table>
 			</componentElement>
-			<staticText>
-				<reportElement x="5" y="2" width="65" height="20" uuid="8989692a-e598-4c9d-af31-993c78aaddb6"/>
-				<textElement verticalAlignment="Middle">
-					<font size="10"/>
-				</textElement>
-				<text><![CDATA[Bagian 	:]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="70" y="2" width="288" height="20" uuid="0657ba42-63ea-4565-bf69-b7294ca2460f"/>
-				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.bagian}]]></textFieldExpression>
-			</textField>
 		</band>
 	</detail>
 </jasperReport>

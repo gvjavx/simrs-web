@@ -66,6 +66,7 @@ public class Lembur extends BaseModel {
     private String channelId;
 
     private boolean isMobile = false;
+    private String nipUserLogin;
 
     public String getOs() {
         return os;
@@ -458,4 +459,13 @@ public class Lembur extends BaseModel {
     public void setMobile(Boolean mobile) {
         isMobile = mobile;
     }
+
+    public String getNipUserLogin() {
+        return nipUserLogin;
+    }
+
+    public void setNipUserLogin(String nipUserLogin) {
+        this.nipUserLogin = nipUserLogin;
+    }
+
 }

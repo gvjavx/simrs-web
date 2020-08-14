@@ -9,6 +9,14 @@
     <script type="text/javascript">
 
         $.subscribe('beforeProcessSave', function (event, data) {
+            var branchId = document.getElementById("unitId2").value;
+            var hariKerja = document.getElementById("hariKerja2").value;
+            var jamAwal = document.getElementById("jamAwal2").value;
+            var jamAkhir = document.getElementById("jamAkhir2").value;
+            var istirahatAwal = document.getElementById("istirahatAwal2").value;
+            var istirahatAkhir = document.getElementById("istirahatAkhir2").value;
+
+            if (branchId != '' && hariKerja != '' && jamAwal != '' && jamAkhir != '' && istirahatAwal != '' && istirahatAkhir != '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -17,6 +25,35 @@
                     // Cancel Submit comes with 1.8.0
                     event.originalEvent.options.submit = false;
                 }
+            }else {
+                event.originalEvent.options.submit = false;
+
+                var msg = "";
+                if (branchId =='') {
+                    msg = 'Field <strong>Unit</strong> is required.' + '<br/>';
+                }
+                if (hariKerja =='') {
+                    msg = 'Field <strong>Hari Kerja</strong> is required.' + '<br/>';
+                }
+                if (jamAwal =='') {
+                    msg = 'Field <strong>Jam Kerja Awal</strong> is required.' + '<br/>';
+                }
+                if (jamAkhir =='') {
+                    msg = 'Field <strong>Jam Kerja Akhir</strong> is required.' + '<br/>';
+                }
+                if (istirahatAwal =='') {
+                    msg = 'Field <strong>Jam istirahat Awal</strong> is required.' + '<br/>';
+                }
+                if (istirahatAkhir.value =='') {
+                    msg = 'Field <strong>Jam istirahat Akhir</strong> is required.' + '<br/>';
+                }
+
+
+                document.getElementById('errorValidationMessage').innerHTML = msg;
+
+                $.publish('showErrorValidationDialog');
+            }
+
         })
 
         $.subscribe('beforeProcessDelete', function (event, data) {
@@ -67,7 +104,7 @@
 
 
 
-    <legend align="left">Edit Shift</legend>
+    <legend align="left">Edit Jam Kerja</legend>
 
 
     <table>
@@ -88,10 +125,10 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-sm-3">Tipe Pegawai Id:</label>
+        <label class="control-label col-sm-3">Tipe Pegawai:</label>
         <div class="col-sm-7">
             <s:action id="comboTipePegawai" namespace="/jamkerja" name="initComboTipePegawai_jamkerja"/>
-            <s:select list="#comboTipePegawai.listOfComboTipePegawai" id="tipePegawaiId" name="jamKerja.tipePegawaiId"
+            <s:select list="#comboTipePegawai.listOfComboTipePegawai" id="tipePegawaiId2" name="jamKerja.tipePegawaiId"
                       listKey="tipePegawaiId" listValue="tipePegawaiName" headerKey="" headerValue="[Select one]"
                       cssClass="form-control"/>
         </div>
@@ -108,14 +145,14 @@
         <label class="control-label col-sm-3">Unit:</label>
         <div class="col-sm-7">
             <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
-            <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="unitId12" name="jamKerja.branchId" required="true"
+            <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="unitId2" name="jamKerja.branchId" required="true"
                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" />
         </div>
     </div>
     <div class="form-group">
         <label class="control-label col-sm-3">Hari Kerja :</label>
         <div class="col-sm-7" align="left">
-            <s:select cssClass="form-control" list="#{2:'Senin', 3:'Selasa', 4:'Rabu', 5:'Kamis', 6:'Jumat', 7:'Sabtu', 1:'Minggu'}" id="hariKerja" name="jamKerja.hariKerja"
+            <s:select cssClass="form-control" list="#{2:'Senin', 3:'Selasa', 4:'Rabu', 5:'Kamis', 6:'Jumat', 7:'Sabtu', 1:'Minggu'}" id="hariKerja2" name="jamKerja.hariKerja"
                       headerKey="" headerValue="[Select one]"/>
         </div>
     </div>
@@ -126,7 +163,7 @@
                 <div class="input-group-addon">
                     <i class="fa fa-clock-o"></i>
                 </div>
-                <s:textfield id="jamAwal" name="jamKerja.jamAwalKerja" size="8" cssClass="form-control pull-right"
+                <s:textfield id="jamAwal2" name="jamKerja.jamAwalKerja" size="8" cssClass="form-control pull-right"
                              required="false" cssStyle=""/>
                 <div class="input-group-addon">
                     s/d
@@ -134,7 +171,7 @@
                 <div class="input-group-addon">
                     <i class="fa fa-clock-o"></i>
                 </div>
-                <s:textfield id="jamAkhir" name="jamKerja.jamAkhirKerja" size="12" cssClass="form-control pull-right"
+                <s:textfield id="jamAkhir2" name="jamKerja.jamAkhirKerja" size="12" cssClass="form-control pull-right"
                              required="false" cssStyle=""/>
             </div>
         </div>
@@ -146,7 +183,7 @@
                 <div class="input-group-addon">
                     <i class="fa fa-clock-o"></i>
                 </div>
-                <s:textfield id="istirahatAwal" name="jamKerja.istirahatAwal" size="8" cssClass="form-control pull-right"
+                <s:textfield id="istirahatAwal2" name="jamKerja.istirahatAwal" size="8" cssClass="form-control pull-right"
                              required="false" cssStyle=""/>
                 <div class="input-group-addon">
                     s/d
@@ -154,17 +191,9 @@
                 <div class="input-group-addon">
                     <i class="fa fa-clock-o"></i>
                 </div>
-                <s:textfield id="istirahatAkhir" name="jamKerja.istirahatAkhir" size="12" cssClass="form-control pull-right"
+                <s:textfield id="istirahatAkhir2" name="jamKerja.istirahatAkhir" size="12" cssClass="form-control pull-right"
                              required="false" cssStyle=""/>
             </div>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label class="control-label col-sm-3">Flag :</label>
-        <div class="col-sm-7" align="left">
-            <s:select cssClass="form-control" list="#{'Y':'Active', 'N':'NonActive'}" id="flag" name="jamKerja.flag"
-                      headerKey="" headerValue="[Select one]"/>
         </div>
     </div>
 
@@ -191,17 +220,34 @@
                 <div id="crud">
                     <td>
                         <table>
-                            <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
-                                       resizable="false"
-                                       height="350" width="600" autoOpen="false" title="Saving ...">
-                                Please don't close this window, server is processing your request ...
-                                </br>
-                                </br>
-                                </br>
-                                <center>
-                                    <img border="0" src="<s:url value="/pages/images/loading4.gif"/>" name="image_indicator_write">
-                                </center>
-                            </sj:dialog>
+                            <%--<sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"--%>
+                                       <%--resizable="false"--%>
+                                       <%--height="350" width="600" autoOpen="false" title="Saving ...">--%>
+                                <%--Please don't close this window, server is processing your request ...--%>
+                                <%--</br>--%>
+                                <%--</br>--%>
+                                <%--</br>--%>
+                                <%--<center>--%>
+                                    <%--<img border="0" src="<s:url value="/pages/images/loading4.gif"/>" name="image_indicator_write">--%>
+                                <%--</center>--%>
+                            <%--</sj:dialog>--%>
+                                <sj:dialog id="waiting_dialog" openTopics="showDialog"
+                                           closeTopics="closeDialog" modal="true"
+                                           resizable="false"
+                                           height="250" width="700" autoOpen="false"
+                                           title="Search Data ...">
+                                    Please don't close this window, server is processing your request ...
+                                    <br>
+                                    <center>
+                                        <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                             src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                             name="image_indicator_write">
+                                        <br>
+                                        <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                             src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                             name="image_indicator_write">
+                                    </center>
+                                </sj:dialog>
 
                             <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
                                        height="200" width="400" autoOpen="false" title="Infomation Dialog"
@@ -253,10 +299,10 @@
 </html>
 <script>
     $(document).ready(function(){
-        $('#jamAwal').timepicker();
-        $('#jamAkhir').timepicker();
-        $('#istirahatAwal').timepicker();
-        $('#istirahatAkhir').timepicker();
+        $('#jamAwal2').timepicker();
+        $('#jamAkhir2').timepicker();
+        $('#istirahatAwal2').timepicker();
+        $('#istirahatAkhir2').timepicker();
     })
 </script>
 

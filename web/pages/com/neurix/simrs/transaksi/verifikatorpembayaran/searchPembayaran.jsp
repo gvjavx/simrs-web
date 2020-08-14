@@ -17,12 +17,6 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/VerifikatorPembayaranAction.js"/>'></script>
     <script type='text/javascript'>
 
-        $( document ).ready(function() {
-            $('#bayar_rawat_jalan, #pembayaran_active').addClass('active');
-            $('#pembayaran_open').addClass('menu-open');
-        });
-
-
     </script>
     <style>
         .top-7{
@@ -85,7 +79,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Jenis Pasien</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'asuransi':'ASURANSI', 'bpjs':'BPJS'}" cssStyle="margin-top: 7px"
+                                        <s:select list="#{'asuransi':'ASURANSI'}" cssStyle="margin-top: 7px"
                                                   headerKey="umum" headerValue="UMUM" name="antrianTelemedic.idJenisPeriksaPasien"
                                                   cssClass="form-control"/>
                                     </div>
@@ -94,8 +88,8 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Status Transaksi</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'finish':'FINISH'}" cssStyle="margin-top: 7px"
-                                                  headerKey="exist" headerValue="EXISTING" name="antrianTelemedic.statusTransaksi"
+                                        <s:select list="#{'confirmation':'KONFIRMASI','finish':'SELESAI', 'canceled':'BATAL'}" cssStyle="margin-top: 7px"
+                                                  headerKey="exist" headerValue="PROSES" name="antrianTelemedic.statusTransaksi"
                                                   cssClass="form-control"/>
                                     </div>
                                 </div>
@@ -197,23 +191,32 @@
                                     <td><s:property value="ketStatus"/></td>
                                     <td style="vertical-align: middle" align="center">
                                         <s:if test='#row.flagEresep != "Y"'>
-                                            <s:if test='#row.idJenisPeriksaPasien == "umum"'>
-                                                <s:if test='#row.flagBayarKonsultasi == "Y"'>
-                                                    <label class="label label-success"> Sudah Bayar</label>
-                                                </s:if>
-                                                <s:else>
-                                                    <label class="label label-warning"> Belum Bayar</label>
-                                                </s:else>
+                                            <s:if test='#row.flagBatalDokter == "Y"'>
+                                                <label class="label label-danger"> Dibatalkan Dokter </label>
                                             </s:if>
                                             <s:else>
-                                                <s:if test='#row.flagBayarKonsultasi == "Y"'>
-                                                    <label class="label label-success"> Terverifikasi </label>
+                                                <s:if test='#row.idJenisPeriksaPasien == "umum"'>
+                                                    <s:if test='#row.flagBayarKonsultasi == "Y"'>
+                                                        <label class="label label-success"> Sudah Bayar</label>
+                                                    </s:if>
+                                                    <s:else>
+                                                        <label class="label label-warning"> Belum Bayar</label>
+                                                    </s:else>
                                                 </s:if>
                                                 <s:else>
-                                                    <label class="label label-warning"> Belum Diverifikasi </label>
+                                                    <s:if test='#row.flagBayarKonsultasi == "Y"'>
+                                                        <label class="label label-success"> Terverifikasi </label>
+                                                    </s:if>
+                                                    <s:else>
+                                                        <s:if test='#row.idJenisPeriksaPasien == "asuransi"'>
+                                                            <label class="label label-warning"><s:property value="labelStatusAsuransi"/></label>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <label class="label label-warning"> Belum Diverifikasi </label>
+                                                        </s:else>
+                                                    </s:else>
                                                 </s:else>
                                             </s:else>
-
                                         </s:if>
                                     </td>
                                     <td style="vertical-align: middle" align="center">
@@ -223,38 +226,69 @@
                                         </s:if>
                                     </td>
                                     <td style="vertical-align: middle" align="center">
-                                        <s:if test='#row.flagResep == "Y"'>
-                                            <s:if test='#row.idJenisPeriksaPasien == "umum"'>
-                                                <s:if test='#row.flagBayarResep == "Y"'>
-                                                    <label class="label label-success"> Sudah Bayar</label>
+                                        <s:if test='#row.flagBatalDokter == "Y"'>
+                                            <label class="label label-danger"> Dibatalkan Dokter </label>
+                                        </s:if>
+                                        <s:else>
+                                            <s:if test='#row.flagResep == "Y"'>
+                                                <s:if test='#row.idJenisPeriksaPasien == "umum"'>
+                                                    <s:if test='#row.flagBayarResep == "Y"'>
+                                                        <label class="label label-success"> Sudah Bayar</label>
+                                                    </s:if>
+                                                    <s:else>
+                                                        <label class="label label-warning"> Belum Bayar</label>
+                                                    </s:else>
                                                 </s:if>
                                                 <s:else>
-                                                    <label class="label label-warning"> Belum Bayar</label>
+                                                    <s:if test='#row.flagBayarResep == "Y"'>
+                                                        <label class="label label-success"> Terverifikasi </label>
+                                                    </s:if>
+                                                    <s:else>
+                                                        <s:if test='#row.idJenisPeriksaPasien == "asuransi"'>
+                                                            <label class="label label-warning"><s:property value="labelStatusAsuransi"/></label>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <label class="label label-warning"> Belum Diverifikasi </label>
+                                                        </s:else>
+                                                    </s:else>
                                                 </s:else>
                                             </s:if>
-                                            <s:else>
-                                                <s:if test='#row.flagBayarResep == "Y"'>
-                                                    <label class="label label-success"> Terverifikasi </label>
-                                                </s:if>
-                                                <s:else>
-                                                    <label class="label label-warning"> Belum Diverifikasi </label>
-                                                </s:else>
-                                            </s:else>
-                                        </s:if>
+                                        </s:else>
                                     </td>
                                     <td style="vertical-align: middle" align="center">
                                         <s:if test='#row.approveResep == "Y"'>
                                             <img src="<s:url value="/pages/images/icon_success.ico" />">
-                                            <%--<label class="label label-success"> <i class="fa fa-check"></i></label>--%>
                                         </s:if>
                                     </td>
                                     <td align="center">
-                                        <s:if test='#row.statusTransaksi == "finish"'>
-                                            <button class="btn btn-sm btn-primary" onclick="viewDetail('<s:property value="id"/>','<s:property value="idJenisPeriksaPasien"/>')"><i class="fa fa-search"></i></button>
+                                        <s:if test='#row.flagBatalDokter == "Y"'>
+                                            <s:if test='#row.idJenisPeriksaPasien == "umum"'>
+                                                <s:if test='#row.flagDanaDikembaLikan == "N"'>
+                                                    <button class="btn btn-sm btn-primary" onclick="viewBatalDokter('<s:property value="idBatalDokterTelemedic"/>', '<s:property value="id"/>', '<s:property value="idJenisPeriksaPasien"/>', '<s:property value="alasanBatal"/>')"><i class="fa fa-money"></i></button>
+                                                </s:if>
+                                                <s:else>
+                                                    <s:url var="print_invo" namespace="/onlinepaymentverif" action="printBuktiRefund_onlinepaymentverif" escapeAmp="false">
+                                                        <s:param name="id"><s:property value="id"/></s:param>
+                                                    </s:url>
+                                                    <s:a href="%{print_invo}" target="_blank">
+                                                        <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>">
+                                                    </s:a>
+                                                    <%--<img src="<s:url value="/pages/images/icon_success.ico" />">--%>
+                                                </s:else>
+                                            </s:if>
+                                            <s:else>
+                                                <img src="<s:url value="/pages/images/icon_success.ico" />">
+                                            </s:else>
                                         </s:if>
                                         <s:else>
-                                            <button class="btn btn-sm btn-primary" onclick="viewDetail('<s:property value="id"/>','<s:property value="idJenisPeriksaPasien"/>')"><i class="fa fa-edit"></i></button>
+                                            <s:if test='#row.statusTransaksi == "finish"'>
+                                                <button class="btn btn-sm btn-primary" onclick="viewDetail('<s:property value="id"/>','<s:property value="idJenisPeriksaPasien"/>')"><i class="fa fa-search"></i></button>
+                                            </s:if>
+                                            <s:else>
+                                                <button class="btn btn-sm btn-primary" onclick="viewDetail('<s:property value="id"/>','<s:property value="idJenisPeriksaPasien"/>')"><i class="fa fa-edit"></i></button>
+                                            </s:else>
                                         </s:else>
+
                                         <%--<button class="btn btn-sm btn-primary" onclick="showDialog('loading')">loading test</button>--%>
                                         <%--<button class="btn btn-sm btn-primary" onclick="showDialog('success')">success test</button>--%>
                                         <%--<button class="btn btn-sm btn-primary" onclick="showDialog('error')">error test</button>--%>
@@ -323,6 +357,7 @@
                     </table>
                     <hr>
                     <br>
+                    <div id="list-button-asuransi"></div>
                     <div id="detail-invoice-bpjs" style="display: none;">
                         <div class="row top-7">
                             <div class="col-md-3" align="right">No. Kartu BPJS :</div>
@@ -421,7 +456,7 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-document"></i> Approve Asuransi</span>
+                <h4 class="modal-title"><i class="fa fa-document"></i> <span id="label-modal-detail-asuransi"> Approve Asuransi</span>
                 </h4>
             </div>
             <div class="modal-body">
@@ -435,7 +470,7 @@
                     <p id="msg_fin_asuransi">Approve Berhasil</p>
                 </div>
 
-                <div class="col-md-offset-3">
+                <div class="col-md-offset-3" style="font-size: 13px">
                     <div class="row">
                         <div class="col-md-6"><h3 id="dt-nama-asuransi"></h3></div>
                     </div>
@@ -447,16 +482,183 @@
                         <div class="col-md-3" align="right">a.n. :</div>
                         <div class="col-md-6"><span id="dt-nama-pasien-asuransi"></span></div>
                     </div>
-                    <div class="row top-7">
-                        <div class="col-md-3" align="right">Input Cover :</div>
-                        <div class="col-md-6"><input type="number" class="form-control" id="dt-cover-asuransi"></div>
+
+                    <div class="row top-7" style="display: none; text-align: center" id="dt-bukti">
+
                     </div>
+
+                    <div id="dt-list-tarif" style="display: none">
+                        <div class="row top-7">
+                            <div class="col-md-9">
+                                <table class="table table-striped table-bordered" style="font-size: 13px;">
+                                    <thead style="background-color: #90ee90;">
+                                    <tr>
+                                        <td>Keterangan</td>
+                                        <td>Jenis</td>
+                                        <td>Biaya</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="dt-body-list-tarif">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <span style="display: none; color: red" id="dt-msg-belum-bayar">Resep Belum Siap / Belum ada Biaya</span>
+                        <input type="hidden" id="dt-belum-bayar">
+                        <div class="row top-7">
+                            <div class="col-md-3" align="right" id="label-cover">Biaya Dibayar Asuransi : </div>
+                            <div class="col-md-6"><input type="number" class="form-control input-sm" id="dt-cover-asuransi"/></div>
+                            <input type="hidden" id="h-dt-cover-asuransi">
+                        </div>
+                        <div id="dt-body-check-bayar">
+                            <div class="row top-7">
+                                <div class="col-md-3" align="right"></div>
+                                <div class="col-md-6">
+                                    <input type="checkbox" id="dt-check-bayar-asuransi" oninput="showBayar(this.checked)"/> Biaya Dibayar Pasien
+                                </div>
+                            </div>
+                        </div>
+                        <div id="dt-body-dibayar-pasien" style="display: none">
+                            <div class="row top-7">
+                                <div class="col-md-3" align="right">Dibayar Pasien : </div>
+                                <div class="col-md-6"><input type="number" class="form-control input-sm" id="dt-bayar-asuransi" oninput="kurangiCover(this.value)"/></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="dt-body-struk">
+                        <div class="row top-7">
+                            <div class="col-md-3" align="right">Upload Struk</div>
+                            <div class="col-md-6">
+                                <div class="input-group" id="img_file">
+                                    <span class="input-group-btn">
+                                          <span class="btn btn-default btn-file">
+                                              Browse… <s:file id="imgInp" accept=".jpg" name="fileUpload"
+                                                       onchange="$('#img_file').css('border','')"></s:file>
+                                          </span>
+                                    </span>
+                                    <input type="text" class="form-control" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <canvas id="img_ktp_canvas" style="border: solid 1px #ccc; width: 300px;"></canvas>
+                    </div>
+
+                    <input type="hidden" id="dt-id-struk">
                 </div>
             </div>
             <div class="modal-footer">
                 <%--<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close--%>
                 <%--</button>--%>
-                <div id="btn-save-asuransi"></div>
+                <div id="btn-save-asuransi">
+                    <%--<button class="btn btn-success" onclick="uploadStrukAsuransi()"><i class="fa fa-check"></i> Save</button>--%>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-view-batal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> View Batal Dokter
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="row top-7">
+                    <div class="col-md-3" align="right">Dokter : </div>
+                    <div class="col-md-6"><span id="btl-nama-dokter"></span></div>
+                    <input type="hidden" id="btl-h-id-antrian"/>
+                    <input type="hidden" id="btl-h-id-batal-telemedic"/>
+                </div>
+                <div class="row top-7">
+                    <div class="col-md-3" align="right">Alasan : </div>
+                    <div class="col-md-6"><textarea class="form-control" id="btl-alasan-batal" cols="3" rows="3" disabled></textarea></div>
+                </div>
+                <div class="row top-7">
+                    <div class="col-md-12" align="center">Data Transaksi Pasien</div>
+                </div>
+                <div class="row top-7" align="center" id="btl-list-transaksi">
+                    <div class="col-md-12" align="center">
+                        <table class="table table-striped table-bordered" style="font-size: 13px;" align="center">
+                            <thead style="background-color: #90ee90;">
+                            <tr>
+                                <td>Id</td>
+                                <td>Keterangan</td>
+                                <td>Biaya</td>
+                                <td>Bukti</td>
+                                <td>Action</td>
+                            </tr>
+                            </thead>
+                            <tbody id="btl-body-list-tarif">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <%--<div class="modal-footer">--%>
+                <%--<button type="button" class="btn btn-sm btn-primary" id="save_pengembalian"><i class="fa fa-arrow-right"></i> Konfirmasi Pengembalian Dana--%>
+                <%--</button>--%>
+            <%--</div>--%>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-confirm-dialog-batal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Konfirmasi Pengembalian Dana
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="row top-7" align="center" id="btl-bukti">
+
+                </div>
+                <div class="row top-7">
+                    <div class="col-md-3" align="right">
+                        <label>Nominal Pengembalian</label>
+                    </div>
+                    <div class="col-md-7" align="right">
+                        <input type="number" class="form-control" id="btl-nominal-app-batal"/>
+                    </div>
+                </div>
+                <h4 align="center" class="top-7">Setuju Pengembalian Dana ?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-right: 20px;"><i class="fa fa-times"></i> No
+                </button>
+                <div id="btl-save-con" style="float:right;">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-view-bukti">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> View bukti
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div id="body-view-bukti" style="text-align: center">
+
+                </div>
+                <input type="hidden" id="id-transaksi-bukti"/>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning" id="btn-kembali-bukti" style="display: none" onclick="kembalikanBukti()"><i class="fa fa-repeat"></i> Kembalikan Bukti Pembayaran</button>
             </div>
         </div>
     </div>
@@ -527,7 +729,7 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-info"></i> Saving ...
+                <h4 class="modal-title"><i class="fa fa-info"></i> Success
                 </h4>
             </div>
             <div class="modal-body" style="text-align: center">
@@ -545,27 +747,45 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-view-bukti">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-info"></i> View bukti
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div id="body-view-bukti" style="text-align: center">
 
-                </div>
-            </div>
-            <div class="modal-footer">
-            </div>
-        </div>
-    </div>
-</div>
 
 <script type='text/javascript'>
+
+    $( document ).ready(function() {
+        var canvas = document.getElementById('img_ktp_canvas');
+        var ctx = canvas.getContext('2d');
+
+        $(document).on('change', '.btn-file :file', function () {
+            var input = $(this),
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [label]);
+        });
+
+        $('.btn-file :file').on('fileselect', function (event, label) {
+
+            var input = $(this).parents('.input-group').find(':text'),
+                log = label;
+
+            if (input.length) {
+                input.val(log);
+                var reader = new FileReader();
+                reader.onload = function(event){
+                    var img = new Image();
+                    img.onload = function(){
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        ctx.clearRect(0,0,canvas.width,canvas.height);
+                        ctx.drawImage(img,0,0);
+                    }
+                    img.src = event.target.result;
+                }
+                reader.readAsDataURL(event.target.files[0]);
+            } else {
+                if (log) alert(log);
+            }
+
+        });
+    });
 
     function formatRupiah(angka) {
         if(angka != "" && angka != null && parseInt(angka) > 0){
@@ -620,9 +840,9 @@
                 "<td>Approve Flag</td>" +
                 "<td>Approve Who</td>" +
                 "<td>No. Kartu</td>" +
-                "<td>Cover</td>" +
+//                "<td>Cover</td>" +
                 "<td align=\"center\" width=\"20%\">Total Tarif (Rp.)</td>" +
-                "<td align=\"center\" width=\"20%\">View Bukti</td>" +
+//                "<td align=\"center\" width=\"20%\">View Bukti</td>" +
                 "<td>Action</td>";
         } else if (idJenisPeriksaPasien == "bpjs") {
 
@@ -642,7 +862,7 @@
                 "<td>No. Kartu</td>" +
                 "<td>SEP</td>" +
                 "<td align=\"center\" width=\"20%\">Total Tarif (Rp.)</td>" +
-                "<td align=\"center\" width=\"20%\">View Bukti</td>" +
+//                "<td align=\"center\" width=\"20%\">View Bukti</td>" +
                 "<td>Action</td>";
         } else {
             head = "<td>Id</td>" +
@@ -686,8 +906,7 @@
                         "<td>"+ nullEscape(item.approvedWho) +"</td>";
 
                     if (idJenisPeriksaPasien == "asuransi"){
-                        str += "<td>"+item.noKartu+"</td>"+
-                            "<td align='right'>"+ formatRupiah ( item.jumlahCover )+"</td>";
+                        str += "<td>"+item.noKartu+"</td>";
                     } if (idJenisPeriksaPasien == "bpjs"){
                         str += "<td>"+item.noKartu+"</td>"+
                             "<td>" + nullEscape(item.noSep)+"</td>";
@@ -699,50 +918,79 @@
 
                         if (idJenisPeriksaPasien == "bpjs"){
                             if (item.noSep == null || item.nominal == 0 || item.approvedFlag == "Y"){
-                                str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
-                                    "<td align='center'></td>";
+                                str += "<td align='center'></td>";
                             } else {
-                                str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
-                                    "<td align='center'><button class='btn btn-sm btn-success' onclick=\"saveApprove(\'"+item.id+"\')\"><i class='fa fa-check'></i> Approve</button></td>";
+                                str += "<td align='center'><button class='btn btn-sm btn-success' onclick=\"saveApprove(\'"+item.id+"\')\"><i class='fa fa-check'></i> Approve</button></td>";
+                            }
+                        } else if (idJenisPeriksaPasien == "asuransi"){
+                            if (item.nominal == 0 || item.approvedFlag == "Y"){
+                                str += "<td align='center'></td>";
+                            } else {
+                                str += "<td align='center'><button class='btn btn-sm btn-success' onclick=\"saveApprove(\'"+item.id+"\')\"><i class='fa fa-check'></i> Approve</button></td>";
                             }
                         } else {
 
                             if (item.approvedFlag == "Y"){
-                                str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
+                                str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\',\'"+idJenisPeriksaPasien+"\',\'"+item.id+"\',\'"+item.approvedFlag+"\')\"><i class='fa fa-search'></i></button></td>"+
                                     "<td align='center'></td>";
                             } else {
 
                                 if (item.flagEresep == "Y"){
-                                    str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
+                                    str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\',\'"+idJenisPeriksaPasien+"\',\'"+item.id+"\',\'"+item.approvedFlag+"\')\"><i class='fa fa-search'></i></button></td>"+
                                         "<td align='center'><button class='btn btn-sm btn-success' onclick=\"saveApproveEresep(\'"+item.id+"\')\"><i class='fa fa-check'></i> Approve E-Resep</button></td>";
                                 } else {
-                                    str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
+                                    str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\',\'"+idJenisPeriksaPasien+"\',\'"+item.id+"\',\'"+item.approvedFlag+"\')\"><i class='fa fa-search'></i></button></td>"+
                                         "<td align='center'><button class='btn btn-sm btn-success' onclick=\"saveApprove(\'"+item.id+"\')\"><i class='fa fa-check'></i> Approve</button></td>";
                                 }
                             }
 
                         }
                     } else {
-//                        console.log("Id Item : "+item.idItem);
-                        if (idJenisPeriksaPasien == "asuransi" && item.nominal != 0) {
-                            str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
-                                "<td align='center'><button class='btn btn-sm btn-success' onclick=\"actionApprove(\'"+item.id+"\')\"><i class='fa fa-edit'></i> VerifiKasi</button></td>";
+                        if (idJenisPeriksaPasien == "asuransi"){
+                            str += "<td></td>";
                         } else {
                             str += "<td></td>" +
                                 "<td></td>";
                         }
+
+//                        console.log("Id Item : "+item.idItem);
+//                        if (idJenisPeriksaPasien == "asuransi" && item.nominal != 0) {
+//                            str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>"+
+//                                "<td align='center'><button class='btn btn-sm btn-success' onclick=\"actionApprove(\'"+item.id+"\')\"><i class='fa fa-edit'></i> VerifiKasi</button></td>";
+//                        } else {
+//                            str += "<td></td>" +
+//                                "<td></td>";
+//                        }
                     }
                     str += "</tr>";
                 });
+
                 $("#head_tindakan_fin").html(head);
                 $("#fin_id_antrian").val(idAntrian);
                 $("#body_tindakan_fin").html(str);
+
+                if (idJenisPeriksaPasien == "asuransi"){
+                    var flagApprove = data.flagApproveConfirm;
+                    var flagViewApprove = data.flagViewApproveConfirm;
+                    if (flagApprove == "Y"){
+                        getDataStrukAsuransi(idAntrian);
+                        var btn = "<button class='btn btn-primary' onclick=\"viewModalDetailAsuransi(\'"+idAntrian+"\', \'approve\')\"><i class='fa fa-edit'></i> Approve Confirmation</button>";
+                        var btnListAsuransi = $("#list-button-asuransi").html();
+                        btnListAsuransi = btnListAsuransi + btn;
+                        $("#list-button-asuransi").html(btnListAsuransi);
+                    } else if (flagViewApprove == "Y") {
+                        getDataStrukAsuransi(idAntrian);
+                        var btn = "<button class='btn btn-success' onclick=\"viewModalDetailAsuransi(\'"+idAntrian+"\', \'view_approve\')\"><i class='fa fa-search'></i> View Approve Confirmation</button>";
+                        var btnListAsuransi = $("#list-button-asuransi").html();
+                        btnListAsuransi = btnListAsuransi + btn;
+                        $("#list-button-asuransi").html(btnListAsuransi);
+                    } else {
+                        getDataStrukAsuransi(idAntrian);
+                    }
+                }
             });
 
         });
-
-
-
     }
 
     function iconFlag(var1) {
@@ -767,7 +1015,7 @@
         return "/" + first;
     }
 
-    function viewBukti(var1){
+    function viewBukti(var1, idJenisPerikasPasien, idTransaksi, flag){
         $("#modal-view-bukti").modal('show');
         var urlImg = firstpath()+"/images/upload/bukti_transfer/"+var1;
         if (var1 == null || var1 == "" || var1 == "null"){
@@ -776,12 +1024,36 @@
         $("#body-view-bukti").html(
             "<img src='"+urlImg+"' style='max-width: 500px;'/>"
         );
+
+        console.log(idJenisPerikasPasien +" - "+ idTransaksi );
+        if ( idJenisPerikasPasien ==  "umum" && flag != "Y"){
+            $("#btn-kembali-bukti").show();
+            $("#id-transaksi-bukti").val(idTransaksi);
+        }
+    }
+
+    function kembalikanBukti() {
+        var idTransaksi = $("#id-transaksi-bukti").val();
+        var idAntrian = $("#fin_id_antrian").val();
+        showDialog("loading");
+        dwr.engine.setAsync(true);
+        VerifikatorPembayaranAction.kembalikanBukti(idTransaksi, function (response) {
+            dwr.engine.setAsync(false);
+            if (response.status == "error"){
+                showDialog("error");
+                $("#msg_fin_error_waiting").text(response.message);
+            } else {
+                showDialog("success");
+                $('#ok_con').on('click', function () {
+                    searchPage(idAntrian)
+                });
+            }
+        });
+
     }
 
     function saveApprove(idTransaksi) {
         var idAntrian = $("#fin_id_antrian").val();
-//        $("#msg_fin").text("Loading . . .");
-//        $("#success_fin").show();
 
         showDialog("loading");
         dwr.engine.setAsync(true);
@@ -790,24 +1062,16 @@
             if (response.status == "error"){
                 showDialog("error");
                 $("#msg_fin_error_waiting").text(response.message);
-
-//                $("#warning_fin").show().fadeOut(5000);
-//                $("#success_fin").hide();
-//                $("#msg_fin_error").text(response.message);
             } else {
                 showDialog("success");
                 $('#ok_con').on('click', function () {
                     searchPage(idAntrian)
                 });
-
-//                $("#success_fin").show().fadeOut(5000);
-//                searchPage(idAntrian)
             }
         });
     }
 
     function saveApproveEresep(idTransaksi){
-//        $("#success_fin").show().fadeOut(5000);
         var idAntrian = $("#fin_id_antrian").val();
 
         showDialog("loading");
@@ -817,15 +1081,11 @@
             if (response.status == "error"){
                 showDialog("error");
                 $("#msg_fin_error_waiting").text(response.message);
-//                $("#warning_fin").show().fadeOut(5000);
-//                $("#success_fin").hide();
-//                $("#msg_fin_error").text(response.message);
             } else {
                 showDialog("success");
                 $('#ok_con').on('click', function () {
                     searchPage(idAntrian)
                 });
-//                $("#success_fin").show().fadeOut(5000);
             }
         });
     }
@@ -875,19 +1135,12 @@
 
                     showDialog("error");
                     $("#msg_fin_error_waiting").text(response.message);
-
-//                    $("#warning_fin").show();
-//                    $("#success_fin").hide();
-//                    $("#msg_fin_error").text(response.message);
                 } else {
 
                     showDialog("success");
                     $('#ok_con').on('click', function (e) {
                         searchPage(idAntrian)
                     });
-
-//                    $("#modal-detail-asuransi").modal('hide');
-//                    searchPage(idAntrian);
                 }
             });
         }
@@ -929,6 +1182,345 @@
                 $("#dt-btn-ref-bpjs").show();
             }
         });
+    }
+
+    function getDataStrukAsuransi(idAntrian) {
+        VerifikatorPembayaranAction.getListStrukAsuransi(idAntrian, function (res) {
+            var str = "";
+            $.each(res, function (i, item) {
+                if (item.urlFotoStruk == null && item.approveFlag == null){
+                    if (item.jenis == "authorization")
+                        str += "<button class='btn btn-primary' onclick=\"viewModalDetailAsuransi(\'"+idAntrian+"\', \'"+item.jenis+"\')\"><i class='fa fa-edit'></i> Authorization</button>";
+                    if (item.approveFlag == null && item.urlFotoStruk == null && item.jenis == "confirmation")
+                        str += "<button class='btn btn-primary' onclick=\"viewModalDetailAsuransi(\'"+idAntrian+"\', \'"+item.jenis+"\')\"><i class='fa fa-edit'></i> Confirmation</button>";
+                } else {
+                    if (item.jenis == "authorization")
+                        str += "<button class='btn btn-success' onclick=\"viewUploadStrukAsuransi(\'"+idAntrian+"\', \'"+item.jenis+"\')\"><i class='fa fa-search'></i> View Authorization</button>";
+                    if (item.jenis == "confirmation")
+                        str += "<button class='btn btn-success' onclick=\"viewUploadStrukAsuransi(\'"+idAntrian+"\', \'"+item.jenis+"\')\"><i class='fa fa-search'></i> View Confrimation</button>";
+                }
+            })
+
+            $("#list-button-asuransi").html(str);
+        });
+    }
+
+    function viewUploadStrukAsuransi(idAntrian, jenis) {
+        VerifikatorPembayaranAction.getSessionAntrianTelemedic(idAntrian, function (telemedicEntity) {
+            if (telemedicEntity != null){
+                var item = telemedicEntity;
+                $("#modal-detail-asuransi").modal('show');
+                $("#dt-nama-pasien-asuransi").text(item.namaPasien);
+                $("#dt-nama-asuransi").html(item.namaAsuransi);
+                $("#dt-no-kartu-asuransi").text(item.noKartu);
+                $("#dt-cover-asuransi").val(item.jumlahCover);
+                $("#dt-body-struk").hide();
+                $("#btn-save-asuransi").html("");
+
+                VerifikatorPembayaranAction.getStrukAsuransiByIdAntrianAndJenis(idAntrian, jenis, function (res) {
+
+                    if (res.urlFotoStruk != null){
+                        var pathFoto = firstpath()+"/images/upload/bukti_transfer/"+res.urlFotoStruk;
+                        var imghtml = "<div class='col-md-9'><img src='"+pathFoto+"' style='max-width: 300px;'/></div>";
+                        $("#dt-bukti").show();
+                        $("#dt-bukti").html(imghtml);
+                    }
+
+//                        console.log(res);
+                    if (res.jenis == "authorization"){
+                        $("#label-modal-detail-asuransi").text("View Authorization");
+                        $("#dt-id-struk").val(res.id);
+                        $("#dt-list-tarif").hide();
+                    }
+
+                    if (res.jenis == "confirmation"){
+                        $("#label-modal-detail-asuransi").text("View Confirmation");
+                        if (item.flagBelumBayar == "Y"){
+                            $("#dt-msg-belum-bayar").show();
+                            $("#dt-belum-bayar").val(item.flagBelumBayar);
+                        }
+                        $("#dt-id-struk").val(res.id);
+                        showListBiaya(idAntrian);
+//                        $("#dt-cover-asuransi").val(item.jumlahCover);
+//                        $("#dt-bayar-asuransi").val(item.dibayarPasien);
+                        $("#dt-cover-asuransi").hide();
+                        $("#dt-body-check-bayar").hide();
+                        $("#label-cover").hide();
+                    }
+                });
+            }
+        });
+    }
+
+    function viewModalDetailAsuransi(idAntrian, jenis){
+
+        VerifikatorPembayaranAction.getSessionAntrianTelemedic(idAntrian, function (telemedicEntity) {
+            if (telemedicEntity != null){
+                var item = telemedicEntity;
+                $("#modal-detail-asuransi").modal('show');
+                $("#dt-nama-pasien-asuransi").text(item.namaPasien);
+                $("#dt-nama-asuransi").html(item.namaAsuransi);
+                $("#dt-no-kartu-asuransi").text(item.noKartu);
+                $("#dt-cover-asuransi").val(item.jumlahCover);
+
+                var btn = "";
+                if (jenis == "approve" || jenis == "view_approve"){
+                    $("#label-modal-detail-asuransi").text("Approve Pembayaran");
+
+                    var pathFoto = firstpath()+"/images/upload/bukti_transfer/"+item.urlFotoStruk;
+                    var imghtml = "<div class='col-md-9'><img src='"+pathFoto+"' style='max-width: 300px;'/></div>";
+                    $("#dt-bukti").show();
+                    $("#dt-bukti").html(imghtml);
+
+                    showListBiaya(idAntrian);
+                    showBayar(true);
+                    $("#dt-cover-asuransi").val(item.jumlahCover);
+                    $("#dt-bayar-asuransi").val(item.dibayarPasien);
+                    $("#dt-cover-asuransi").prop("disabled", 'disabled');
+                    $("#dt-bayar-asuransi").prop("disabled", 'disabled');
+                    $("#dt-body-struk").hide();
+                    $("#dt-body-check-bayar").hide();
+
+                    if (jenis == "approve"){
+                        btn = "<button type=\"button\" class=\"btn btn-success\" id=\"save-detail-save\" onclick=\"uploadStrukAsuransi(\'"+jenis+"\')\"><i class=\"fa fa-arrow-check\"></i> Approve</button>";
+                        $("#btn-save-asuransi").html(btn);
+                    }
+
+                } else {
+                    VerifikatorPembayaranAction.getStrukAsuransiByIdAntrianAndJenis(idAntrian, jenis, function (res) {
+//                        console.log(res);
+                        if (jenis == "authorization"){
+                            $("#label-modal-detail-asuransi").text("Upload Authorization");
+                            $("#dt-bukti").hide();
+                            $("#dt-bukti").html("");
+                            $("#dt-body-struk").show();
+                            $("#dt-list-tarif").hide();
+
+                            $("#dt-id-struk").val(res.id);
+                            btn = "<button type=\"button\" class=\"btn btn-success\" id=\"save-detail-save\" onclick=\"uploadStrukAsuransi(\'"+res.jenis+"\')\"><i class=\"fa fa-arrow-right\"></i> Save</button>";
+                        }
+                        if (jenis == "confirmation"){
+                            $("#label-modal-detail-asuransi").text("Upload Confirmation");
+                            $("#dt-bukti").hide();
+                            $("#dt-bukti").html("");
+                            $("#dt-body-struk").show();
+                            $("#dt-check-bayar-asuransi").prop("checked", false);
+                            //$("#dt-body-dibayar-pasien").hide();
+                            //$("#dt-bayar-asuransi").val(0);
+                            showBayar(false);
+
+                            if (item.flagBelumBayar == "Y"){
+                                $("#dt-msg-belum-bayar").show();
+                                $("#dt-belum-bayar").val(item.flagBelumBayar);
+                            }
+                            $("#dt-id-struk").val(res.id);
+                            btn = "<button type=\"button\" class=\"btn btn-success\" id=\"save-detail-save\" onclick=\"uploadStrukAsuransi(\'"+res.jenis+"\')\"><i class=\"fa fa-arrow-right\"></i> Save</button>";
+                            showListBiaya(idAntrian);
+                        }
+                        $("#btn-save-asuransi").html(btn);
+                    });
+                }
+            }
+        });
+    }
+
+    function showListBiaya(idAntrian) {
+
+        VerifikatorPembayaranAction.getListRiwayatTindakanByIdAntrian(idAntrian, function (res) {
+//            console.log("showListPembayaran" + res);
+           var str = "";
+           var totalTarif = 0;
+           $.each(res, function (i, item) {
+              str += "<tr>" +
+                      "<td>"+ item.namaTindakan + "</td>"+
+                      "<td>"+ item.jenisPasien +"</td>"+
+                      "<td align='right'>"+ formatRupiah(item.totalTarif) +"</td>"+
+                  "</tr>";
+
+              totalTarif = totalTarif + parseInt(item.totalTarif);
+           });
+           str += "<tr>" +
+               "<td align='right' colspan='2'>Total : </td>"+
+               "<td align='right'>"+ formatRupiah(totalTarif) +"</td>"+
+               "</tr>";
+
+            $("#dt-cover-asuransi").val(totalTarif);
+            $("#h-dt-cover-asuransi").val(totalTarif);
+            $("#dt-list-tarif").show();
+            $("#dt-body-list-tarif").html(str);
+        });
+    }
+
+    function uploadStrukAsuransi(jenis) {
+        //var uploadFile = $("#dt-struk-asuransi");
+        //var uploadFile = dwr.util.getValue('dt-struk-asuransi');
+        //var filenames = uploadFile.val().split("/");
+        //var filename = filenames[filenames.length-1];
+        //console.log(uploadFile);
+        var idAntrian = $("#fin_id_antrian").val();
+        var idStruk = $("#dt-id-struk").val();
+        var canvas = document.getElementById('img_ktp_canvas');
+        var dataURL = canvas.toDataURL("image/png"),
+            dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+
+        showDialog("loading");
+        dwr.engine.setAsync(true);
+        if (jenis == "authorization") {
+            VerifikatorPembayaranAction.uploadStruk(dataURL, jenis, idStruk, "", "", function (res) {
+                dwr.engine.setAsync(false);
+                if (res.status == "success"){
+                    showDialog("success");
+                    $('#ok_con').on('click', function (e) {
+                        searchPage(idAntrian);
+                    });
+                } else {
+                    showDialog("error");
+                    $("#msg_fin_error_waiting").text(res.msg);
+                }
+            });
+        } else if (jenis == "confirmation") {
+            var flagBelumBayar = $("#dt-belum-bayar").val();
+            if (flagBelumBayar == "Y"){
+                showDialog("error");
+                $("#msg_fin_error_waiting").text("Tidak Bisa Lanjut. Ada Transaksi yang Belum Selesai");
+            } else {
+                var coverAsuransi = $("#dt-cover-asuransi").val();
+                var bayarAsuransi = $("#dt-bayar-asuransi").val();
+                VerifikatorPembayaranAction.uploadStruk(dataURL, jenis, idStruk, coverAsuransi, bayarAsuransi, function (res) {
+                    dwr.engine.setAsync(false);
+                    if (res.status == "success"){
+                        showDialog("success");
+                        $('#ok_con').on('click', function (e) {
+                            searchPage(idAntrian);
+                        });
+                    } else {
+                        showDialog("error");
+                        $("#msg_fin_error_waiting").text(res.msg);
+                    }
+                });
+            }
+        } else {
+            VerifikatorPembayaranAction.approveConfirmAsuransi(idAntrian, function (res) {
+                dwr.engine.setAsync(false);
+                if (res.status == "success"){
+                    showDialog("success");
+                    $('#ok_con').on('click', function (e) {
+                        searchPage(idAntrian);
+                    });
+                } else {
+                    showDialog("error");
+                    $("#msg_fin_error_waiting").text(res.msg);
+                }
+            });
+        }
+
+    }
+
+    function kurangiCover(tarif) {
+        if (tarif == 0){
+            $("#dt-cover-asuransi").val($("#h-dt-cover-asuransi").val());
+        } else {
+            var cover = $("#h-dt-cover-asuransi").val();
+            $("#dt-cover-asuransi").val(parseInt(cover) - parseInt(tarif));
+        }
+    }
+
+    function showBayar(checked){
+        console.log("showBayar >>> "+checked);
+        if (checked){
+            $("#dt-body-dibayar-pasien").show();
+        } else {
+            var cover = $("#h-dt-cover-asuransi").val();
+            $("#dt-cover-asuransi").val(cover);
+            $("#dt-bayar-asuransi").val(0);
+            $("#dt-body-dibayar-pasien").hide();
+        }
+    }
+
+    function viewBatalDokter(idBatalDokter, idAntrian, idJenisPeriksaPasien, alasan) {
+        $("#modal-view-batal").modal('show');
+        $("#btl-nama-dokter").val("");
+        $("#btl-h-id-antrian").val(idAntrian);
+        $("#btl-alasan-batal").val(alasan);
+        $("#btl-h-id-batal-telemedic").val(idBatalDokter);
+
+        VerifikatorPembayaranAction.getSessionAntrianTelemedic(idAntrian, function (telemedicEntity) {
+            $("#btl-nama-dokter").text(telemedicEntity.namaDokter);
+
+            VerifikatorPembayaranAction.listDetailPembayaran(idAntrian, function (response) {
+
+                var str = "";
+                $.each(response, function(i, item){
+                    if (item.nominal != null && item.nominal != 0){
+                        str += "<tr>" +
+                            "<td>"+item.id+"</td>"+
+                            "<td>"+item.keterangan+"</td>"+
+                            "<td align='right'>"+ formatRupiah( item.nominal ) +"</td>";
+
+                        if (item.keterangan == "konsultasi"){
+                            if (telemedicEntity.flagBayarKonsultasi == "Y"){
+                                str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>";
+                                if (item.nominal == 0){
+                                    str += "<td></td>";
+                                } else {
+                                    str += "<td align='center'><button class='btn btn-sm btn-primary'  onclick=\"showConfirmation(\'"+item.nominal+"\',\'"+item.keterangan+"\',\'"+item.urlFotoBukti+"\')\"><i class='fa fa-arrow-right'></i> Konfirmasi Pengembalian Dana</button></td>";
+                                }
+                            } else {
+                                str += "<td></td>"+
+                                    "<td></td>";
+                            }
+
+                        } else if (item.keterangan == "resep") {
+                            if (telemedicEntity.flagBayarResep == "Y"){
+                                str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"viewBukti(\'"+item.urlFotoBukti+"\')\"><i class='fa fa-search'></i></button></td>";
+                                if (item.nominal == 0){
+                                    str += "<td></td>";
+                                } else {
+                                    str += "<td align='center'><button class='btn btn-sm btn-primary' onclick=\"showConfirmation(\'"+item.nominal+"\',\'"+item.keterangan+"\',\'"+item.urlFotoBukti+"\')\"><i class='fa fa-arrow-right'></i> Konfirmasi Pengembalian Dana</button></td>";
+                                }
+                            } else {
+                                str += "<td></td>"+
+                                    "<td></td>";
+                            }
+                        }
+                        str += "</tr>";
+                    }
+                });
+
+                $("#btl-body-list-tarif").html(str);
+            });
+        });
+    }
+
+    function showConfirmation(nominal, jenis, urlFoto){
+        $("#modal-confirm-dialog-batal").modal('show');
+        $("#btl-nominal-app-batal").val(nominal);
+
+        var idBatalTele = $("#btl-h-id-batal-telemedic").val();
+        var pathFoto = firstpath()+"/images/upload/bukti_transfer/"+urlFoto;
+        var imghtml = "<div class='col-md-12'><img src='"+pathFoto+"' style='max-width: 300px;'/></div>";
+        var btn = "<button type=\"button\" class=\"btn btn-success\" onclick=\"approveConfirmBatal(\'"+idBatalTele+"\',\'"+jenis+"\')\"><i class=\"fa fa-check\"></i> Yes </button>";
+        $("#btl-save-con").html(btn);
+        $("#btl-bukti").html(imghtml);
+    }
+
+    function approveConfirmBatal(idBatalTele, jenis){
+       var idAntrian = $("#btl-h-id-antrian").val();
+       var nominal = $("#btl-nominal-app-batal").val();
+       showDialog("loading");
+       dwr.engine.setAsync(true);
+       VerifikatorPembayaranAction.approveConfirmKembaliDana(idBatalTele, jenis, nominal, function (res) {
+           dwr.engine.setAsync(false);
+           if (res.status == "success"){
+               showDialog("success");
+               $('#ok_con').on('click', function (e) {
+                   searchPage(idAntrian);
+               });
+           } else {
+               showDialog("error");
+               $("#msg_fin_error_waiting").text(res.msg);
+           }
+       });
     }
 
 

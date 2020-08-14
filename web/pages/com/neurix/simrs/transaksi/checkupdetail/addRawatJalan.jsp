@@ -421,7 +421,7 @@
                     <div class="box-header with-border">
                         <div class="row">
                             <div class="col-md-6">
-                                <h3 class="box-title"><i class="fa fa-stethoscope"></i> Anamnesa</h3>
+                                <h3 class="box-title"><i class="fa fa-stethoscope"></i> Anamnesa & Pemeriksaan Fisik</h3>
                             </div>
                             <div class="col-md-6">
                                 <h3 class="box-title"><i class="fa fa-medkit"></i> Rekam Medis</h3>
@@ -431,17 +431,45 @@
                     <div class="box-body">
                         <div class="row">
                             <div class="col-md-6">
+                                <div class="alert alert-danger alert-dismissible" style="display: none" id="war_anamnese">
+                                    <p id="msg_war"></p>
+                                </div>
+                                <div class="alert alert-success alert-dismissible" style="display: none" id="suc_anamnese">
+                                    <p id="msg_suc"></p>
+                                </div>
                                 <div class="row">
-                                    <div class="col-md-10">
-                                        <s:textarea name="headerDetailCheckup.anamnese" cssClass="form-control" rows="4" onchange="saveAnamnese(this.value)"></s:textarea>
+                                    <div class="col-md-12">
+                                        <s:textarea id="fisik_anamnesa" name="headerDetailCheckup.anamnese" cssClass="form-control" rows="4" placeholder="Keterangan Anamnese"></s:textarea>
                                     </div>
-                                    <div class="col-md-2">
-                                        <p id="suc_anamnese" style="color: #449d44; margin-left: -20px; display: none"><i class="fa fa-check"></i> Success</p>
+                                </div>
+                                <div class="row jarak">
+                                    <div class="col-md-3">
+                                        <span>Tensi </span> <small>(mmHg)</small>
+                                        <s:textfield cssClass="form-control" id="fisik_tensi" name="headerDetailCheckup.tensi" type="number"></s:textfield>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <span>Suhu</span> <small>(&#8451)</small>
+                                        <s:textfield cssClass="form-control" id="fisik_suhu" name="headerDetailCheckup.suhu" type="number"></s:textfield>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <span>Nadi</span> <small>(x/menit)</small>
+                                        <s:textfield cssClass="form-control" id="fisik_nadi" name="headerDetailCheckup.nadi" type="number"></s:textfield>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <span>RR</span> <small>(x/menit)</small>
+                                        <s:textfield cssClass="form-control" id="fisik_rr" name="headerDetailCheckup.pernafasan" type="number"></s:textfield>
+                                    </div>
+                                </div>
+                                <div class="row jarak">
+                                    <div class="col-md-12">
+                                        <button id="save_fisik" class="btn btn-success pull-right" onclick="saveAnamnese()"><i class="fa fa-check"></i> Save</button>
+                                        <button style="display: none; cursor: no-drop; margin-top: 25px" type="button" class="btn btn-success" id="load_fisik"> <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="btn-group">
+                                <div class="btn-group dropdown">
                                     <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Asesmen
                                     </button>
                                     <button onclick="loadModalRM('<s:property value="headerDetailCheckup.kategoriPelayanan"/>');" type="button" class="btn btn-primary dropdown-toggle"
@@ -451,28 +479,28 @@
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
                                         <s:if test='headerDetailCheckup.kategoriPelayanan == "hemodialisa"'>
-                                            <li><a style="cursor: pointer" onclick="showModalHD('monitoring_hd')"><i class="fa fa-circle-o"></i>Monitoring HD</a></li>
-                                            <li><a style="cursor: pointer" onclick="showModalHD('perencanaan_hemodialisa')"><i class="fa fa-circle-o"></i>Perencanaan HD</a></li>
-                                            <li><a style="cursor: pointer" onclick="showModalHD('asesmen_hd')"><i class="fa fa-circle-o"></i>Asesmen Awal HD</a></li>
-                                            <li><a style="cursor: pointer" onclick="showModalHD('tranfusi_hd')"><i class="fa fa-circle-o"></i>Tindakan Medis Transfusi Darah</a></li>
-                                            <li><a style="cursor: pointer" onclick="showModalHD('catatan_tranfusi_darah')"><i class="fa fa-circle-o"></i>Catatan Pemantauan Tranfusi Darah</a></li>
-                                            <li><a style="cursor: pointer" onclick="showModalHD('persetujuan_hd')"><i class="fa fa-circle-o"></i>Persetujuan HD</a></li>
-                                            <li><a style="cursor: pointer" onclick="showModalHD('travelling')"><i class="fa fa-circle-o"></i>Travelling Dialysis</a></li>
+                                            <li><a style="cursor: pointer" onclick="showModalHD('monitoring_hd')"><i class="fa fa-file-o"></i>Monitoring HD</a></li>
+                                            <li><a style="cursor: pointer" onclick="showModalHD('perencanaan_hemodialisa')"><i class="fa fa-file-o"></i>Perencanaan HD</a></li>
+                                            <li><a style="cursor: pointer" onclick="showModalHD('asesmen_hd')"><i class="fa fa-file-o"></i>Asesmen Awal HD</a></li>
+                                            <li><a style="cursor: pointer" onclick="showModalHD('tranfusi_hd')"><i class="fa fa-file-o"></i>Tindakan Medis Transfusi Darah</a></li>
+                                            <li><a style="cursor: pointer" onclick="showModalHD('catatan_tranfusi_darah')"><i class="fa fa-file-o"></i>Catatan Pemantauan Tranfusi Darah</a></li>
+                                            <li><a style="cursor: pointer" onclick="showModalHD('persetujuan_hd')"><i class="fa fa-file-o"></i>Persetujuan HD</a></li>
+                                            <li><a style="cursor: pointer" onclick="showModalHD('travelling')"><i class="fa fa-file-o"></i>Travelling Dialysis</a></li>
                                         </s:if>
                                         <s:elseif test='headerDetailCheckup.kategoriPelayanan == "fisioterapi"'>
-                                            <li><a style="cursor: pointer" onclick="pengkajianFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-circle-o"></i>Pengkajian Pasien Fisioterapi</a></li>
-                                            <li><a style="cursor: pointer" onclick="addMonitoringFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-circle-o"></i>Kunjungan Fisioterapi</a></li>
+                                            <li><a style="cursor: pointer" onclick="pengkajianFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-file-o"></i>Pengkajian Pasien Fisioterapi</a></li>
+                                            <li><a style="cursor: pointer" onclick="addMonitoringFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-file-o"></i>Kunjungan Fisioterapi</a></li>
                                         </s:elseif>
                                         <s:else>
-                                            <li><a style="cursor: pointer" onclick="showModalSPS('<s:property value="headerDetailCheckup.kategoriPelayanan"/>')"><i class="fa fa-circle-o"></i><s:property value="headerDetailCheckup.asesmenLabel"/></a></li>
+                                            <li><a style="cursor: pointer" onclick="showModalSPS('<s:property value="headerDetailCheckup.kategoriPelayanan"/>')"><i class="fa fa-file-o"></i><s:property value="headerDetailCheckup.asesmenLabel"/></a></li>
                                         </s:else>
-                                        <li><a target="_blank"
-                                               href="<%= request.getContextPath() %>/rekammedik/printSuratPernyataan_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>&tipe=SP03">
-                                            <i class="fa fa-print"></i>Surat Penolakan Tindakan</a></li>
-                                        <li><a target="_blank"
-                                               href="<%= request.getContextPath() %>/rekammedik/printSuratPernyataan_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>&tipe=SP04">
-                                            <i class="fa fa-print"></i>Surat Pernyataan Kematian</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalRj('ringkasan_rj')"><i class="fa fa-circle-o"></i>Profil Rekam Medis Rawat Jalan</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalRj('ringkasan_rj')"><i class="fa fa-file-o"></i>Profil Rekam Medis Rawat Jalan</a></li>
+                                        <li><a style="cursor: pointer" onclick="printPernyataan('SP03')"><i class="fa fa-print"></i>Surat Penolakan Tindakan</a></li>
+                                        <li><a style="cursor: pointer" onclick="printPernyataan('SP06')"><i class="fa fa-print"></i>Surat Pernyataan Non Bpjs / Asuransi</a></li>
+                                        <li><a style="cursor: pointer" onclick="printPernyataan('SK01')"><i class="fa fa-print"></i>Surat Keterangan Dokter</a></li>
+                                        <li><a style="cursor: pointer" onclick="printPernyataan('SK05')"><i class="fa fa-print"></i>Surat Rekomendasi DPJP</a></li>
+                                        <li><a style="cursor: pointer" onclick="printPernyataan('SK03')"><i class="fa fa-print"></i>Surat Keterangan Sehat</a></li>
+                                        <li><a style="cursor: pointer" onclick="printPernyataan('RI01')"><i class="fa fa-print"></i>Surat Permintaan Rawat Inap</a></li>
                                     </ul>
                                 </div>
                                 <%----%>
@@ -1735,6 +1763,7 @@
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_rep_obat"><i class="fa fa-check"></i> correct</p>
                             <p style="margin-top: 17px; display: none; margin-left: -20px" id="label-kronis"><label class="label label-warning" >Obat Kronis</label></p>
+                            <button class="btn btn-sm btn-primary" style="display: none;" id="btn-reset-combo-obat" onclick="resetComboObat()"><i class="fa fa-edit"></i></button>
                             <input type="hidden" id="val-kronis"/>
                         </div>
                     </div>
@@ -1761,6 +1790,42 @@
                         </div>
                         <input type="hidden" id="h-qty-default"/>
                     </div>
+                </div>
+                <div class="row">
+                    <div id="obat-serupa" style="display: none; background-color: #fff4f0; height: 150px;padding-top: 10px;">
+                        <h5 align="center">Obat Kandungan Serupa : </h5>
+                        <input type="hidden" value="N" id="flag-obat-serupa">
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
+                            <div class="col-md-7">
+                                <select class="form-control select2" style="margin-top: 7px; width: 100%"
+                                        id="resep_nama_obat_serupa">
+                                    <option value="">[select one]</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                                   id="war_rep_obat_serupa"><i class="fa fa-times"></i> required</p>
+                                <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                                   id="cor_rep_obat_serupa"><i class="fa fa-check"></i> correct</p>
+                                <p style="margin-top: 17px; display: none; margin-left: -20px" id="label-kronis-serupa"><label class="label label-warning" >Obat Kronis</label></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Stok Obat (Biji)</label>
+                            <div class="col-md-7">
+                                <%--<label style="margin-top: 7px">Stok (Biji)</label>--%>
+                                <div class="input-group" style="margin-top: 7px; width: 40%">
+                                    <input class="form-control" type="number" min="1" id="resep_stok_biji_serupa" readonly>
+                                    <div class="input-group-addon">
+                                        Biji
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Jenis Satuan</label>
                         <div class="col-md-7">
@@ -2135,6 +2200,27 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-confirm-rm">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h4 class="text-center">Do you want save this record?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
+                </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con_rm"><i class="fa fa-arrow-right"></i> Yes            </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="modal-temp"></div>
 <%@ include file="/pages/modal/modalRingkasanRawatJalan.jsp" %>
 
@@ -2186,6 +2272,13 @@
     var noBpjs = '<s:property value="headerDetailCheckup.noBpjs"/>';
     var jenisKelamin = '<s:property value="headerDetailCheckup.jenisKelamin"/>';
     var urlPage = 'checkupdetail';
+    var tempTensi = "";
+    var tempSuhu = "";
+    var tempNadi = "";
+    var tempRr = "";
+    var tempBerat = "";
+    var tempTinggi = "";
+    var tempAnmnesa = "";
 
     $(document).ready(function () {
         $('#rawat_jalan').addClass('active');
@@ -2348,6 +2441,12 @@
         }
         $('#modal-temp').load(context, function (res) {
         });
+    }
+
+    function printPernyataan(kode) {
+        // $('#modal-confirm-rm').modal('show');
+
+        window.open(contextPath+'/rekammedik/printSuratPernyataan_rekammedik?id=' + idDetailCheckup + '&tipe=' + kode, '_blank');
     }
 
 </script>

@@ -140,6 +140,15 @@ public class ImCompany implements Serializable {
     private BigDecimal maxBpjsKesehatan ;
 
     private String periodeGaji;
+    private BigDecimal paramDapen;
+
+    public BigDecimal getParamDapen() {
+        return paramDapen;
+    }
+
+    public void setParamDapen(BigDecimal paramDapen) {
+        this.paramDapen = paramDapen;
+    }
 
     public String getPeriodeGaji() {
         return periodeGaji;

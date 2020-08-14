@@ -41,9 +41,10 @@ public class MappingPersenGajiDao extends GenericDao<ImHrisMappingPersenGaji, St
         return result;
     }
 
-    public List<ImHrisMappingPersenGaji> getDataMapping(String namaMapping) throws HibernateException {
+    public List<ImHrisMappingPersenGaji> getDataMapping(String namaMapping, String jenisGaji) throws HibernateException {
         List<ImHrisMappingPersenGaji> results = this.sessionFactory.getCurrentSession().createCriteria(ImHrisMappingPersenGaji.class)
                 .add(Restrictions.eq("namaMappingPersenGaji", namaMapping))
+                .add(Restrictions.eq("jenisGaji", jenisGaji))
                 .add(Restrictions.eq("flag", "Y"))
                 .list();
 

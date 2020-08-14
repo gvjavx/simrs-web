@@ -89,7 +89,7 @@
         <action name="paging_displaytag"
                 class="com.neurix.authorization.user.action.UserSessionLogAction" method="paging">
             <interceptor-ref name="defaultStack"/>
-            <result name="success">/pages/com/neurix/authorization/user/viewSessionLog.jsp</result>
+            <result name="success">/pages/com/neurix/authorization/user/userSessionLog.jsp</result>
         </action>
 
         <action name="paging_displaytag_count"

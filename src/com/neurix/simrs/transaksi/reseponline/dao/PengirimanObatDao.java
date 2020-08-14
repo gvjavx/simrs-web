@@ -9,6 +9,9 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -62,6 +65,62 @@ public class PengirimanObatDao extends GenericDao<ItSimrsPengirimanObatEntity, S
         return sId;
     }
 
+    public List<PengirimanObat> getHistoryPengiriman(String idKurir) {
+        String query = "";
+
+
+
+        List<PengirimanObat> listOfResult = new ArrayList<>();
+        List<Object[]> results = new ArrayList<Object[]>();
+        query = "SELECT a.id, a.id_kurir, a.id_pasien, a.id_pelayanan, a.branch_id, a.alamat, a.no_telp, a.flag_pickup, a.flag_diterima_pasien, b.nama, b.no_polisi, b.no_telp as no_telp_kurir, c.nama as nama_pasien, d.branch_name, e.nama_pelayanan, a.id_resep, a.lat, a.lon, a.foto_kirim, a.keterangan, a.created_date\n" +
+                "FROM it_simrs_pengiriman_obat a\n" +
+                "INNER JOIN im_simrs_kurir b ON a.id_kurir = b.id_kurir\n" +
+                "INNER JOIN im_simrs_pasien c ON a.id_pasien = c.id_pasien\n" +
+                "INNER JOIN im_branches d ON a.branch_id = d.branch_id\n" +
+                "INNER JOIN im_simrs_pelayanan e ON a.id_pelayanan = e.id_pelayanan\n" +
+                "WHERE a.id_kurir = :idKurir\n"+
+                "ORDER BY a.last_update DESC";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .setParameter("idKurir", idKurir)
+                .list();
+
+        for (Object[] row : results) {
+            PengirimanObat result = new PengirimanObat();
+            result.setId((String) row[0]);
+            result.setIdKurir((String) row[1]);
+            result.setIdPasien((String) row[2]);
+            result.setIdPelayanan((String) row[3]);
+            result.setBranchId((String) row[4]);
+            result.setAlamat((String) row[5]);
+            result.setNoTelp((String) row[6]);
+            result.setFlagPickup((String) row[7]);
+            result.setFlagDiterimaPasien((String) row[8]);
+            result.setKurirName((String) row[9]);
+            result.setNoPolisi((String) row[10]);
+            result.setNoTelpKurir((String) row[11]);
+            result.setPasienName((String) row[12]);
+            result.setBranchName((String) row[13]);
+            result.setPelayananName((String) row[14]);
+            result.setIdResep((String) row[15]);
+            result.setLat((String) row[16]);
+            result.setLon((String) row[17]);
+            result.setFotoKirim((String) row[18]);
+            result.setKeterangan((String) row[19]);
+            try{
+                result.setCreatedDate(row[20] != null ? new Timestamp(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS").parse(row[20].toString()).getTime()) : null);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+
+            listOfResult.add(result);
+        }
+
+        return listOfResult;
+    }
+
     public List<PengirimanObat> getPengirimanById(String idKurir, String idPasien) {
 
        String query = "";
@@ -69,16 +128,17 @@ public class PengirimanObatDao extends GenericDao<ItSimrsPengirimanObatEntity, S
        String searchIdPasien = "";
        String searchIdKurir = "";
 
-       if (idPasien != null && !idPasien.equalsIgnoreCase("")) {
+        if (idPasien != null && !idPasien.equalsIgnoreCase("")) {
            searchIdPasien = " and a.id_pasien = '" + idPasien + "' ";
        }
        if (idKurir != null && !idKurir.equalsIgnoreCase("")) {
            searchIdKurir = " and a.id_kurir = '" + idKurir + "' ";
        }
 
+
        List<PengirimanObat> listOfResult = new ArrayList<>();
         List<Object[]> results = new ArrayList<Object[]>();
-        query = "SELECT a.id, a.id_kurir, a.id_pasien, a.id_pelayanan, a.branch_id, a.alamat, a.no_telp, a.flag_pickup, a.flag_diterima_pasien, b.nama, b.no_polisi, b.no_telp as no_telp_kurir, c.nama as nama_pasien, d.branch_name, e.nama_pelayanan, a.id_resep, a.lat, a.lon\n" +
+        query = "SELECT a.id, a.id_kurir, a.id_pasien, a.id_pelayanan, a.branch_id, a.alamat, a.no_telp, a.flag_pickup, a.flag_diterima_pasien, b.nama, b.no_polisi, b.no_telp as no_telp_kurir, c.nama as nama_pasien, d.branch_name, e.nama_pelayanan, a.id_resep, a.lat, a.lon, a.foto_kirim, a.keterangan\n" +
                 "FROM it_simrs_pengiriman_obat a\n" +
                 "INNER JOIN im_simrs_kurir b ON a.id_kurir = b.id_kurir\n" +
                 "INNER JOIN im_simrs_pasien c ON a.id_pasien = c.id_pasien\n" +
@@ -111,6 +171,8 @@ public class PengirimanObatDao extends GenericDao<ItSimrsPengirimanObatEntity, S
            result.setIdResep((String) row[15]);
            result.setLat((String) row[16]);
            result.setLon((String) row[17]);
+           result.setFotoKirim((String) row[18]);
+           result.setKeterangan((String) row[19]);
 
            listOfResult.add(result);
        }
@@ -134,7 +196,9 @@ public class PengirimanObatDao extends GenericDao<ItSimrsPengirimanObatEntity, S
                 "   isat.no_telp,\n" +
                 "   isat.lat,\n" +
                 "   isat.lon,\n" +
-                "   isat.jenis_pengambilan\n" +
+                "   isat.jenis_pengambilan,\n" +
+                "   isat.flag_bayar_konsultasi,\n" +
+                "   isat.flag_bayar_resep\n" +
                 "FROM mt_simrs_approval_transaksi_obat msato\n" +
                 "INNER JOIN (SELECT * FROM mt_simrs_permintaan_resep WHERE id_transaksi_online is NOT NULL ) mspr ON mspr.id_approval_obat = msato.id_approval_obat\n" +
                 "INNER JOIN it_simrs_pembayaran_online ispo2 ON ispo2.id = mspr.id_transaksi_online\n" +
@@ -172,6 +236,12 @@ public class PengirimanObatDao extends GenericDao<ItSimrsPengirimanObatEntity, S
                 permintaanResep.setLat(obj[12] == null ? "" : obj[12].toString());
                 permintaanResep.setLon(obj[13] == null ? "" : obj[13].toString());
                 permintaanResep.setJenisPengambilan(obj[14] == null ? "" : obj[14].toString());
+
+                String flagBayarKonsul = obj[15] == null ? null : obj[15].toString();
+                String flagBayarResep = obj[16] == null ? null : obj[16].toString();
+                if (flagBayarKonsul == null && flagBayarResep == null){
+                    permintaanResep.setFlagDelayAsuransi("Y");
+                }
                 permintaanResepList.add(permintaanResep);
             }
         }

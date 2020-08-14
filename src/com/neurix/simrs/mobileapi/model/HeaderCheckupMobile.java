@@ -94,6 +94,52 @@ public class HeaderCheckupMobile implements Serializable {
 
     private String isOnline;
 
+    private String idRiwayatTindakan;
+    private String namaTindakan;
+    private String tglTindakan;
+    private String keterangan;
+    private String videoRm;
+
+    public String getVideoRm() {
+        return videoRm;
+    }
+
+    public void setVideoRm(String videoRm) {
+        this.videoRm = videoRm;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getNamaTindakan() {
+        return namaTindakan;
+    }
+
+    public void setNamaTindakan(String namaTindakan) {
+        this.namaTindakan = namaTindakan;
+    }
+
+    public String getTglTindakan() {
+        return tglTindakan;
+    }
+
+    public void setTglTindakan(String tglTindakan) {
+        this.tglTindakan = tglTindakan;
+    }
+
+    public String getIdRiwayatTindakan() {
+        return idRiwayatTindakan;
+    }
+
+    public void setIdRiwayatTindakan(String idRiwayatTindakan) {
+        this.idRiwayatTindakan = idRiwayatTindakan;
+    }
+
     public String getNoAntrian() {
         return noAntrian;
     }

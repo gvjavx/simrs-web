@@ -5,7 +5,7 @@ ADD COLUMN ttd_dokter character varying(100),
 ADD COLUMN ttd_petugas character varying(100);
 
 ALTER TABLE it_simrs_header_checkup
-ADD COLUMN Anamnese text;
+ADD COLUMN anamnese text;
 
 -- 01-06-2020
 CREATE TABLE public.im_simrs_diagnosa_asuhan_keperawatan
@@ -433,3 +433,57 @@ ADD COLUMN informasi text,
 ADD COLUMN tipe character varying(100);
 
 -- 01-06-2020 END
+
+-- 06-07-2020 START
+ALTER TABLE it_simrs_asesmen_operasi
+ADD COLUMN tipe character varying(100);
+
+-- 10-07-2020
+ALTER TABLE it_simrs_header_checkup
+ADD COLUMN tensi character varying(100),
+ADD COLUMN suhu character varying(100),
+ADD COLUMN nadi character varying(100),
+ADD COLUMN rr character varying(100);
+
+-- 13-07-2020
+CREATE TABLE public.it_simrs_monitoring_anestesi
+(
+  id_monitoring_anestesi character varying(30) NOT NULL,
+  id_detail_checkup character varying(30),
+  waktu character varying(100),
+  rr character varying(100),
+  nadi character varying(100),
+  tensi character varying(100),
+  anest character varying(100),
+  o2 character varying(100),
+  n2o character varying(100),
+  ethran character varying(100),
+  iso character varying(100),
+  sevo character varying(100),
+  infus character varying(100),
+  keterangan character varying(1000),
+  jenis character varying(1000),
+  flag character varying(1),
+  action character varying(1),
+  created_who character varying(100),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  CONSTRAINT pk_id_monitoring_anestesi PRIMARY KEY (id_monitoring_anestesi)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_monitoring_anestesi
+  OWNER TO postgres;
+
+CREATE SEQUENCE public.seq_monitoring_anestesi
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE public.seq_monitoring_anestesi
+  OWNER TO postgres;
+
+

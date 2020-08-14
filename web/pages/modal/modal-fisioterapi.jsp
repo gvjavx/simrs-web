@@ -99,7 +99,7 @@
                             <div class="form-group">
                                 <label>Tekanan Darah</label>
                                 <div class="input-group">
-                                    <input class="form-control" type="number" id="f_darah">
+                                    <input class="form-control tensi-pasien" type="number" id="f_darah">
                                     <div class="input-group-addon" style="width: 30%">
                                         mmHg
                                     </div>
@@ -108,7 +108,7 @@
                             <div class="form-group">
                                 <label style="margin-top: 7px">Frekuensi Nadi</label>
                                 <div class="input-group">
-                                    <input class="form-control" type="number" id="f_nadi">
+                                    <input class="form-control nadi-pasien" type="number" id="f_nadi">
                                     <div class="input-group-addon" style="width: 30%">
                                         x/menit
                                     </div>
@@ -117,7 +117,7 @@
                             <div class="form-group">
                                 <label style="margin-top: 7px">Frekuensi Nafas</label>
                                 <div class="input-group">
-                                    <input class="form-control" type="number" id="f_nafas">
+                                    <input class="form-control rr-pasien" type="number" id="f_nafas">
                                     <div class="input-group-addon" style="width: 30%">
                                         x/menit
                                     </div>
@@ -126,7 +126,7 @@
                             <div class="form-group">
                                 <label style="margin-top: 7px">Suhu</label>
                                 <div class="input-group">
-                                    <input class="form-control" type="number" id="f_suhu">
+                                    <input class="form-control suhu-pasien" type="number" id="f_suhu">
                                     <div class="input-group-addon" style="width: 30%">
                                         &#8451
                                     </div>

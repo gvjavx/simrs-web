@@ -1254,7 +1254,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
 
                                         for (ItNotifikasiFcmEntity entity : notifikasiFcm){
                                             if(entity.getUserId().equals(atasanNip)){
-                                                FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), noteMobile, CLICK_ACTION, bean.getOs());
+                                                FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), noteMobile, CLICK_ACTION, bean.getOs(), null);
                                                 break;
                                             }
                                         }
@@ -2195,7 +2195,8 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                     notifSelf.setNip(itCutiPegawaiEntity.getNip());
                     notifSelf.setNoRequest(bean.getCutiPegawaiId());
                     notifSelf.setTipeNotifId("umum");
-                    notifSelf.setTipeNotifName(("Cuti Pegawai"));
+//                    notifSelf.setTipeNotifName(("Cuti Pegawai"));
+                    notifSelf.setTipeNotifName(("Pemberitahuan"));
                     notifSelf.setNote("Cuti anda pada tanggal "+CommonUtil.convertDateToString(itCutiPegawaiEntity.getTanggalDari())+" sampai dengan tanggal "+CommonUtil.convertDateToString(itCutiPegawaiEntity.getTanggalSelesai())+" di approve oleh atasan anda");
                     notifSelf.setCreatedWho(itCutiPegawaiEntity.getNip());
                     notifSelf.setTo("self");
@@ -2204,12 +2205,14 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
 
                     Notifikasi notifAtasan = new Notifikasi();
                     if (bean.isForMobile())
-                        notifAtasan.setNip(bean.getNip());
+//                        notifAtasan.setNip(bean.getNip());
+                        notifAtasan.setNip(bean.getNipUserLogin());
                     else
                         notifAtasan.setNip(CommonUtil.userIdLogin());
                     notifAtasan.setNoRequest(bean.getCutiPegawaiId());
                     notifAtasan.setTipeNotifId("umum");
-                    notifAtasan.setTipeNotifName(("Cuti Pegawai"));
+//                    notifAtasan.setTipeNotifName(("Cuti Pegawai"));
+                    notifAtasan.setTipeNotifName(("Pemberitahuan"));
                     notifAtasan.setNote(imBiodataEntity.getNamaPegawai() + " mengajukan cuti pada tanggal " +CommonUtil.convertDateToString(itCutiPegawaiEntity.getTanggalDari()) + " sampai dengan tanggal " + CommonUtil.convertDateToString(itCutiPegawaiEntity.getTanggalSelesai()));
                     if (bean.isForMobile())
                         notifAtasan.setCreatedWho(bean.getNip());
@@ -2226,7 +2229,8 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                         notifElse.setNip(bean.getPegawaiPenggantiSementara());
                         notifElse.setNoRequest(bean.getCutiPegawaiId());
                         notifElse.setTipeNotifId("umum");
-                        notifElse.setTipeNotifName(("Cuti Pegawai"));
+//                        notifElse.setTipeNotifName(("Cuti Pegawai"));
+                        notifElse.setTipeNotifName(("Pemberitahuan"));
                         notifElse.setNote("Tolong untuk bisa Menggantikan sementara " + imBiodataEntity.getNamaPegawai()+" pada Tanggal "+itCutiPegawaiEntity.getTanggalDari()+" sampai "+itCutiPegawaiEntity.getTanggalSelesai());
                         notifElse.setCreatedWho(itCutiPegawaiEntity.getNip());
                         notifElse.setTo("plt");
@@ -2254,7 +2258,8 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                     notifSelf.setNip(itCutiPegawaiEntity.getNip());
                     notifSelf.setNoRequest(bean.getCutiPegawaiId());
                     notifSelf.setTipeNotifId("umum");
-                    notifSelf.setTipeNotifName(("Cuti Pegawai"));
+//                    notifSelf.setTipeNotifName(("Cuti Pegawai"));
+                    notifSelf.setTipeNotifName(("Pemberitahuan"));
                     notifSelf.setNote("Cuti anda pada tanggal "+itCutiPegawaiEntity.getTanggalDari()+" sampai dengan tanggal "+itCutiPegawaiEntity.getTanggalSelesai()+" tidak di approve oleh atasan "+msg);
                     notifSelf.setCreatedWho(itCutiPegawaiEntity.getNip());
                     notifSelf.setTo("self");
@@ -2783,5 +2788,265 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
         }
 
         return status;
+    }
+
+    @Override
+    public String cekPengajuanCuti(String nip) {
+        logger.info("[cutiPegawaiBoimpl.cekPengajuanCuti] start process >>>");
+        String status = "";
+        List<ItCutiPegawaiEntity> listCutiPegawai = null;
+        try {
+            listCutiPegawai = cutiPegawaiDao.getListCekCuti(nip);
+        } catch (HibernateException e) {
+            logger.error("[cutiPegawaiBoimpl.getListCekNipCuti] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
+        }
+
+        if (listCutiPegawai != null){
+            if (listCutiPegawai.size() > 0){
+                status = "exist";
+            }else {
+                status = "notExist";
+            }
+        }else {
+            status = "notExist";
+        }
+
+        return status;
+    }
+
+    @Override
+    public List<CutiPegawai> searchApprovalByCriteria(CutiPegawai searchBean) throws GeneralBOException {
+        logger.info("[CutiPegawaiBoImpl.getByCriteria] start process >>>");
+
+        // Mapping with collection and put
+        List<CutiPegawai> listOfResult = new ArrayList();
+
+        if (searchBean != null) {
+            Map hsCriteria = new HashMap();
+
+            if (searchBean.getCutiPegawaiId() != null && !"".equalsIgnoreCase(searchBean.getCutiPegawaiId())) {
+                hsCriteria.put("cuti_pegawai_id", searchBean.getCutiPegawaiId());
+            }
+            if (searchBean.getCutiId() != null && !"".equalsIgnoreCase(searchBean.getCutiId())) {
+                hsCriteria.put("cuti_id", searchBean.getCutiId());
+            }
+            if (searchBean.getNip() != null && !"".equalsIgnoreCase(searchBean.getNip())) {
+                hsCriteria.put("nip", searchBean.getNip());
+            }
+            if (searchBean.getStTanggalDari() != null && !"".equalsIgnoreCase(String.valueOf(searchBean.getStTanggalDari()))) {
+                Timestamp tanggalDari = CommonUtil.convertToTimestamp(searchBean.getStTanggalDari());
+                hsCriteria.put("tanggal_dari", tanggalDari);
+            }
+            if (searchBean.getStTanggalSelesai() != null && !"".equalsIgnoreCase(String.valueOf(searchBean.getStTanggalSelesai()))) {
+                Timestamp tanggalSelesai = CommonUtil.convertToTimestamp(searchBean.getStTanggalSelesai());
+                hsCriteria.put("tanggal_selesai", tanggalSelesai);
+            }
+
+            if (searchBean.getFlag() != null && !"".equalsIgnoreCase(searchBean.getFlag())) {
+                if ("N".equalsIgnoreCase(searchBean.getFlag())) {
+                    hsCriteria.put("flag", "N");
+                } else {
+                    hsCriteria.put("flag", searchBean.getFlag());
+                }
+            } else {
+                hsCriteria.put("flag", "Y");
+            }
+
+
+            List<ItCutiPegawaiEntity> itCutiPegawaiEntity = null;
+            try {
+
+                itCutiPegawaiEntity = cutiPegawaiDao.getByCriteria(hsCriteria);
+            } catch (HibernateException e) {
+                logger.error("[CutiPegawaiBoImpl.getSearchCutiPegawaiByCriteria] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+            }
+
+            if(itCutiPegawaiEntity != null){
+                CutiPegawai returnCutiPegawai;
+                // Looping from dao to object and save in collection
+                for(ItCutiPegawaiEntity cutiPegawaiEntity : itCutiPegawaiEntity){
+                    returnCutiPegawai = new CutiPegawai();
+                    returnCutiPegawai.setCutiPegawaiId(cutiPegawaiEntity.getCutiPegawaiId());
+                    returnCutiPegawai.setNip(cutiPegawaiEntity.getNip());
+                    if(cutiPegawaiEntity.getPegawaiPenggantiSementara()!=null){
+                        if (!cutiPegawaiEntity.getPegawaiPenggantiSementara().equalsIgnoreCase("")){
+                            returnCutiPegawai.setPegawaiPenggantiSementara(cutiPegawaiEntity.getPegawaiPenggantiSementara());
+                        }
+                    }
+                    returnCutiPegawai.setCutiId(cutiPegawaiEntity.getCutiId());
+                    returnCutiPegawai.setNamaPegawai(cutiPegawaiEntity.getImBiodataEntity().getNamaPegawai());
+                    returnCutiPegawai.setCutiName(cutiPegawaiEntity.getImCutiEntity().getCutiName());
+                    returnCutiPegawai.setLamaHariCuti(cutiPegawaiEntity.getLamaHariCuti());
+                    returnCutiPegawai.setSisaCutiHari(cutiPegawaiEntity.getSisaCutiHari());
+                    returnCutiPegawai.setApprovalFlag(cutiPegawaiEntity.getApprovalFlag());
+                    returnCutiPegawai.setApprovalDate(cutiPegawaiEntity.getApprovalDate());
+                    returnCutiPegawai.setApprovalId(cutiPegawaiEntity.getApprovalId());
+                    if(cutiPegawaiEntity.getNote()!=null){
+                        if (!cutiPegawaiEntity.getNote().equalsIgnoreCase("")){
+                            returnCutiPegawai.setNote(cutiPegawaiEntity.getNote());
+                        }
+                    }
+                    returnCutiPegawai.setKeterangan(cutiPegawaiEntity.getKeterangan());
+                    returnCutiPegawai.setAlamatCuti(cutiPegawaiEntity.getAlamatCuti());
+                    if(cutiPegawaiEntity.getNoteApproval()!=null){
+                        if (!cutiPegawaiEntity.getNoteApproval().equalsIgnoreCase("")){
+                            returnCutiPegawai.setNoteApproval(cutiPegawaiEntity.getNoteApproval());
+                        }
+                    }
+                    returnCutiPegawai.setTanggalSelesai(cutiPegawaiEntity.getTanggalSelesai());
+                    returnCutiPegawai.setTanggalDari(cutiPegawaiEntity.getTanggalDari());
+                    returnCutiPegawai.setStrTanggalSelesai(CommonUtil.convertDateToString(cutiPegawaiEntity.getTanggalSelesai()));
+                    returnCutiPegawai.setStrTanggalDari(CommonUtil.convertDateToString(cutiPegawaiEntity.getTanggalDari()));
+                    returnCutiPegawai.setAlamatCuti(cutiPegawaiEntity.getAlamatCuti());
+                    List<ItPersonilPositionEntity> personilPositionEntityList = personilPositionDao.getListNip(cutiPegawaiEntity.getNip());
+                    if (personilPositionEntityList!=null){
+                        for (ItPersonilPositionEntity personilPosition : personilPositionEntityList){
+                            ImPosition imPosition = positionDao.getById("positionId",personilPosition.getPositionId());
+                            if (imPosition!=null){
+                                returnCutiPegawai.setPosisiName(imPosition.getPositionName());
+                                returnCutiPegawai.setPosisiId(imPosition.getPositionId());
+                                if (imPosition.getDepartmentId()!=null){
+                                    ImDepartmentEntity imDepartmentEntity = departmentDao.getById("departmentId",imPosition.getDepartmentId());
+                                    if (imDepartmentEntity!=null){
+                                        returnCutiPegawai.setDivisiName(imDepartmentEntity.getDepartmentName());
+                                        returnCutiPegawai.setDivisiId(imDepartmentEntity.getDepartmentId());
+                                    }
+                                }
+                            }
+                            hsCriteria = new HashMap();
+                            hsCriteria.put("branch_id",personilPosition.getBranchId());
+                            hsCriteria.put("flag","Y");
+                            List<ImBranches> branchesList = branchDao.getByCriteria(hsCriteria);
+                            if (branchesList!=null){
+                                for(ImBranches imBranches : branchesList){
+                                    returnCutiPegawai.setUnitName(imBranches.getBranchName());
+                                    returnCutiPegawai.setUnitId(personilPosition.getBranchId());
+                                }
+                            }
+                        }
+                    }
+
+                    DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+                    returnCutiPegawai.setStTanggalDari(df.format(cutiPegawaiEntity.getTanggalDari()));
+                    returnCutiPegawai.setStTanggalSelesai(df.format(cutiPegawaiEntity.getTanggalSelesai()));
+                    returnCutiPegawai.setCancelFlag(cutiPegawaiEntity.getCancelFlag());
+                    if (cutiPegawaiEntity.getCancelDate()!=null){
+                        if (!cutiPegawaiEntity.getCancelDate().equals("")){
+                            returnCutiPegawai.setCancelDate(cutiPegawaiEntity.getCancelDate());
+                        }
+                    }
+                    if(cutiPegawaiEntity.getCancelNote()!=null){
+                        if (!cutiPegawaiEntity.getCancelNote().equalsIgnoreCase("")){
+                            returnCutiPegawai.setCancelNote(cutiPegawaiEntity.getCancelNote());
+                        }
+                    }
+                    if(cutiPegawaiEntity.getCancelPerson()!=null){
+                        if (!cutiPegawaiEntity.getCancelPerson().equalsIgnoreCase("")){
+                            returnCutiPegawai.setCancelPerson(cutiPegawaiEntity.getCancelPerson());
+                        }
+                    }
+
+                    hsCriteria = new HashMap();
+                    hsCriteria.put("nip",cutiPegawaiEntity.getNip());
+                    hsCriteria.put("flag","Y");
+
+                    List<ImBiodataEntity> imBiodataEntities = null;
+                    try {
+
+                        imBiodataEntities = biodataDao.getByCriteria(hsCriteria);
+                    } catch (HibernateException e) {
+                        logger.error("[CutiPegawaiBoImpl.getSearchCutiPegawaiByCriteria] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                    }
+
+                    if ( imBiodataEntities!=null){
+                        for ( ImBiodataEntity listdata:imBiodataEntities){
+                            returnCutiPegawai.setNamaPegawai(listdata.getNamaPegawai());
+                        }
+                    }
+
+                    if(searchBean.isForMobile()) {
+                        returnCutiPegawai.setCekatasan(false);
+                    } else {
+                        String user = CommonUtil.userIdLogin();
+                        if (user.equalsIgnoreCase(cutiPegawaiEntity.getNip())) {
+                            returnCutiPegawai.setCekatasan(true);
+                        }
+                    }
+
+                    returnCutiPegawai.setJenisCuti(cutiPegawaiEntity.getJenisCuti());
+                    returnCutiPegawai.setAction(cutiPegawaiEntity.getAction());
+                    returnCutiPegawai.setFlag(cutiPegawaiEntity.getFlag());
+                    returnCutiPegawai.setCreatedWho(cutiPegawaiEntity.getCreatedWho());
+                    returnCutiPegawai.setCreatedDate(cutiPegawaiEntity.getCreatedDate());
+                    returnCutiPegawai.setLastUpdate(cutiPegawaiEntity.getLastUpdate());
+                    if(cutiPegawaiEntity.getClosed() != null){
+                        if(cutiPegawaiEntity.getClosed().equals("Y") ){
+                            returnCutiPegawai.setCutiPegawaiClosed(true);
+                        }
+                    }
+                    if(cutiPegawaiEntity.getCancelFlag() != null){
+                        if(cutiPegawaiEntity.getCancelFlag().equals("Y") ){
+                            returnCutiPegawai.setCancel(true);
+                        }
+                    }
+
+                    //edit ini
+                    if (cutiPegawaiEntity.getApprovalFlag()!=null){
+                        if(cutiPegawaiEntity.getApprovalFlag().equals("Y")){
+                            returnCutiPegawai.setCutiPegawaiApprove(true);
+                        }else if(cutiPegawaiEntity.getApprovalFlag().equals("N")){
+                            returnCutiPegawai.setNotApprove(true);
+                        }
+                    }
+                    if(cutiPegawaiEntity.getApprovalId() != null){
+                        returnCutiPegawai.setCutiPegawaiApproveStatus(true);
+                    }
+
+                    if (cutiPegawaiEntity.getApprovalFlag() != null){
+//
+                        if (cutiPegawaiEntity.getApprovalFlag().equals("Y") && !searchBean.getRoleId().equalsIgnoreCase("1")){
+                            returnCutiPegawai.setFinish(true);
+                            //perubahan irfan
+                            returnCutiPegawai.setCanCancel(false);
+                            returnCutiPegawai.setPengajuanBatal(true);
+                        }else {
+                            if (cutiPegawaiEntity.getFlagPengajuanBatal() != null){
+                                if (searchBean.getRoleId().equalsIgnoreCase("1") && cutiPegawaiEntity.getFlagPengajuanBatal().equalsIgnoreCase("Y")){
+                                    returnCutiPegawai.setCanCancel(true);
+                                    returnCutiPegawai.setPengajuanBatal(false);
+                                }else {
+                                    returnCutiPegawai.setCanCancel(false);
+                                    returnCutiPegawai.setPengajuanBatal(false);
+                                }
+                            }else {
+                                returnCutiPegawai.setCanCancel(false);
+                                returnCutiPegawai.setPengajuanBatal(false);
+                            }
+                        }
+                    }
+                    else {
+                        //perubahan irfan
+                        returnCutiPegawai.setCanCancel(true);
+                        returnCutiPegawai.setPengajuanBatal(false);
+                    }
+
+                    returnCutiPegawai.setFlagPengajuanBatal(cutiPegawaiEntity.getFlagPengajuanBatal());
+
+                    if (cutiPegawaiEntity.getClosed()!=null){
+                        if (!cutiPegawaiEntity.getClosed().equalsIgnoreCase("Y")||searchBean.isForReset()){
+                            listOfResult.add(returnCutiPegawai);
+                        }
+                    }else{
+                        listOfResult.add(returnCutiPegawai);
+                    }
+                }
+            }
+        }
+        logger.info("[CutiPegawaiBoImpl.getByCriteria] end process <<<");
+
+        return listOfResult;
     }
 }

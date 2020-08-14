@@ -18,6 +18,10 @@ public class Libur extends BaseModel{
     private String tipeLiburId;
     private Timestamp tanggal;
     private String liburKeterangan;
+    private String tipeLiburName;
+
+    private String stCreatedDate;
+    private String stLastUpdate;
 
     public String getLiburId() {
         return liburId;
@@ -65,5 +69,31 @@ public class Libur extends BaseModel{
 
     public void setLiburKeterangan(String liburKeterangan) {
         this.liburKeterangan = liburKeterangan;
+    }
+
+    public String getTipeLiburName() {
+        return tipeLiburName;
+    }
+
+    public void setTipeLiburName(String tipeLiburName) {
+        this.tipeLiburName = tipeLiburName;
+    }
+
+    @Override
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
+
+    @Override
+    public String getStLastUpdate() {
+        return stLastUpdate;
+    }
+
+    public void setStLastUpdate(String stLastUpdate) {
+        this.stLastUpdate = stLastUpdate;
     }
 }

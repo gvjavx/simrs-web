@@ -22,6 +22,33 @@ public class PembayaranMobile {
     private String idRiwayatTindakan;
     private String kodeBank;
     private String jenisPengambilan;
+    private String idRekening;
+    private String noRekening;
+    private String namaRekening;
+
+    public String getNamaRekening() {
+        return namaRekening;
+    }
+
+    public void setNamaRekening(String namaRekening) {
+        this.namaRekening = namaRekening;
+    }
+
+    public String getNoRekening() {
+        return noRekening;
+    }
+
+    public void setNoRekening(String noRekening) {
+        this.noRekening = noRekening;
+    }
+
+    public String getIdRekening() {
+        return idRekening;
+    }
+
+    public void setIdRekening(String idRekening) {
+        this.idRekening = idRekening;
+    }
 
     public String getJenisPengambilan() {
         return jenisPengambilan;

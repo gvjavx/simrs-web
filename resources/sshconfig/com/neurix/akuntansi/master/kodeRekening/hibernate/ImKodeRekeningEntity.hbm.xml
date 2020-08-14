@@ -50,6 +50,9 @@
         <property name="flagDivisi">
             <column name="flag_divisi" sql-type="varchar" length="1" not-null="false" />
         </property>
+        <property name="tipeBudgeting">
+            <column name="tipe_budgeting" sql-type="varchar"/>
+        </property>
 
     </class>
 </hibernate-mapping>

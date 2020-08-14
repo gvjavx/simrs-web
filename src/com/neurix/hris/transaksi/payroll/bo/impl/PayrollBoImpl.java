@@ -1558,6 +1558,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         hasil = CommonUtil.percentage(dasarPerhitunganBpjs, BigDecimal.valueOf(percent));
         return hasil;
     }
+
     public BigDecimal hitungIuranBpjsTk(BigDecimal dasar, String branchId,String jenis){
         BigDecimal hasil = new BigDecimal(0);
         BigDecimal iuran = new BigDecimal(0);
@@ -1565,6 +1566,10 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         Integer greater, smaller;
 
         ImPayrollBpjsEntity bpjs = new ImPayrollBpjsEntity();
+//        Map hsCriteria = new HashMap<>();
+//        hsCriteria.put("branch_id", branchId);
+//        hsCriteria.put("flag", "Y");
+//        bpjs = payrollBpjsDao.getByCriteria(hsCriteria);
         bpjs = payrollBpjsDao.getById("branchId", branchId);
 
         greater = dasar.compareTo(bpjs.getMaxBpjsTk());
@@ -1606,10 +1611,12 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
             List<ImBranches> imBranches;
             Branch branch = new Branch();
             String tahun="";
+            BigDecimal paramDapen = BigDecimal.ZERO;
             try {
                 ImCompany company = companyDao.getCompanyInfo("Y");
                 if (!("").equalsIgnoreCase(company.getPeriodeGaji())){
                     tahun=company.getPeriodeGaji();
+                    paramDapen = company.getParamDapen();
                 }else{
                     String status = "Error : tidak ditemukan periode gaji pada Company";
                     logger.error("[PayrollBoImpl.dataAddPayroll] "+status);
@@ -2024,7 +2031,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                                 if (tunjJabatanStruktural.compareTo(BigDecimal.valueOf(0))<1){
                                     List<ImPayrollTunjanganStrategisEntity> listTunjanganStrategis = new ArrayList<>();
                                     try {
-                                        listTunjanganStrategis = payrollTunjanganStrategisDao.getDataTunjStrategisById(payrollEntity.getPositionId(),
+                                        listTunjanganStrategis = payrollTunjanganStrategisDao.getDataTunjStrategisById(payrollEntity.getProfesiId(),
                                                 payrollEntity.getGolonganId());
 
                                         if (listTunjanganStrategis.size()>0){
@@ -2219,11 +2226,11 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                                 if (payrollEntity.getDanaPensiun().equalsIgnoreCase("DP01")){
                                     gajiPensiun = getDapenDplkSimRs(payrollEntity.getGolonganDapenId(), payrollEntity.getMasaKerjaGol());
                                     iuranDapenPensiunPeg = getIuranPensiunPegSimRs(payrollEntity.getGolonganId());
-                                    iuranDapenPensiunPersh = CommonUtil.percentage(gajiPensiun, BigDecimal.valueOf(7.16));
+                                    iuranDapenPensiunPersh = CommonUtil.percentage(gajiPensiun, paramDapen);
                                 }else if(payrollEntity.getDanaPensiun().equalsIgnoreCase("DP02")){
                                     gajiPensiun = getGajiPensiunSimRs(payrollEntity.getGolonganDapenId(), payrollEntity.getMasaKerjaGol());
                                     iuranDapenPensiunPeg = CommonUtil.percentage(gajiPensiun, BigDecimal.valueOf(6));
-                                    iuranDapenPensiunPersh = CommonUtil.percentage(gajiPensiun, BigDecimal.valueOf(7.16));
+                                    iuranDapenPensiunPersh = CommonUtil.percentage(gajiPensiun, paramDapen);
                                 }
                             }else{
                                 gajiPensiun = BigDecimal.valueOf(0);
@@ -5066,19 +5073,13 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
 
     //Tunjangan Lembur
     private BigDecimal getTunjanganLembur(String nip, String branchId, String awal, String akhir){
-        if(nip.equalsIgnoreCase("93-0191")){
-            int a = 0;
-        }
         BigDecimal hasil = new BigDecimal(0);
         List<AbsensiPegawaiEntity> absensiPegawaiEntityList = null;
         java.sql.Date Awal = null;
         java.sql.Date Akhir = null;
-        try {
-            Awal = java.sql.Date.valueOf(awal);
-            Akhir = java.sql.Date.valueOf(akhir);
-        }catch (Exception C){
-            System.out.println(C);
-        }
+
+        Awal = java.sql.Date.valueOf(awal);
+        Akhir = java.sql.Date.valueOf(akhir);
 
         absensiPegawaiEntityList = absensiPegawaiDao.getDataLembur(nip, branchId, Awal, Akhir);
         if(absensiPegawaiEntityList.size() > 0){

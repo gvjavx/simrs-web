@@ -28,6 +28,15 @@ public class ImKodeRekeningEntity implements Serializable {
     private String lastUpdateWho;
     private String flagMaster;
     private String flagDivisi;
+    private String tipeBudgeting;
+
+    public String getTipeBudgeting() {
+        return tipeBudgeting;
+    }
+
+    public void setTipeBudgeting(String tipeBudgeting) {
+        this.tipeBudgeting = tipeBudgeting;
+    }
 
     public Long getLevel() {
         return level;

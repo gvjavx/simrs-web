@@ -6,7 +6,9 @@ function showModalRB(jenis) {
     }
 
     setDataPasien();
-
+    if("asuhan_keperawatan_rb" == jenis){
+        listAsuhanKeperawatanRB(jenis);
+    }
     $('#modal-rb-' + jenis).modal({show: true, backdrop: 'static'});
 }
 
@@ -1800,4 +1802,268 @@ function tindakanRB(jenis) {
         });
     }
     return dataCari;
+}
+
+function saveAsuhanKeperawatanRB(jenis, ket) {
+
+    var data = [];
+
+    var diagnosis = $('[name=diag]');
+    var hasil = $('[name=hasil]');
+    var inter = $('[name=inter]');
+    var imple = $('[name=imple]');
+    var eva = $('[name=eva]');
+    var ttdPerawat = document.getElementById("ttd_perawat");
+    var tgl = $('.tgl').val();
+    var jam = $('.jam').val();
+
+    var tempDiag = "";
+    var tempHasil = "";
+    var tempInter = "";
+    var tempImple = "";
+    var tempEva = "";
+
+    $.each(diagnosis, function (i, item) {
+        var val = "";
+        if (item.type == 'checkbox') {
+            if (item.checked) {
+                val = item.value;
+            }
+        } else {
+            if (item.value != '') {
+                val = item.value;
+            }
+        }
+
+        if (val != '') {
+            if (tempDiag != '') {
+                tempDiag = tempDiag + '|' + val;
+            } else {
+                tempDiag = val;
+            }
+        }
+    });
+
+    $.each(hasil, function (i, item) {
+        var val = "";
+        if (item.type == 'checkbox') {
+            if (item.checked) {
+                val = item.value;
+            }
+        } else {
+            if (item.value != '') {
+                val = item.value;
+            }
+        }
+
+        if (val != '') {
+            if (tempHasil != '') {
+                tempHasil = tempHasil + '|' + val;
+            } else {
+                tempHasil = val;
+            }
+        }
+    });
+
+    $.each(inter, function (i, item) {
+        var val = "";
+        if (item.type == 'checkbox') {
+            if (item.checked) {
+                val = item.value;
+            }
+        } else {
+            if (item.value != '') {
+                val = item.value;
+            }
+        }
+
+        if (val != '') {
+            if (tempInter != '') {
+                tempInter = tempInter + '|' + val;
+            } else {
+                tempInter = val;
+            }
+        }
+    });
+
+    $.each(imple, function (i, item) {
+        var val = "";
+        if (item.type == 'checkbox') {
+            if (item.checked) {
+                val = item.value;
+            }
+        } else {
+            if (item.value != '') {
+                val = item.value;
+            }
+        }
+
+        if (val != '') {
+            if (tempImple != '') {
+                tempImple = tempImple + '|' + val;
+            } else {
+                tempImple = val;
+            }
+        }
+    });
+
+    $.each(eva, function (i, item) {
+        var val = "";
+        if (item.type == 'checkbox') {
+            if (item.checked) {
+                val = item.value;
+            }
+        } else {
+            if (item.value != '') {
+                val = item.value;
+            }
+        }
+
+        if (val != '') {
+            if (tempEva != '') {
+                tempEva = tempEva + '|' + val;
+            } else {
+                tempEva = val;
+            }
+        }
+    });
+
+    var cekTtd = isCanvasBlank(ttdPerawat);
+
+    if (tgl && jam && tempDiag && tempHasil && tempInter && tempImple && tempEva != '' && !cekTtd) {
+
+        var ttd = ttdPerawat.toDataURL("image/png"),
+            ttd = ttd.replace(/^data:image\/(png|jpg);base64,/, "");
+
+        data = {
+            'id_detail_checkup': idDetailCheckup,
+            'waktu': tgl + ' ' + jam,
+            'diagnosa': tempDiag,
+            'hasil': tempHasil,
+            'intervensi': tempInter,
+            'implementasi': tempImple,
+            'evaluasi': tempEva,
+            'keterangan': ket,
+            'ttd_perawat': ttd
+        }
+
+        var result = JSON.stringify(data);
+
+        $('#save_rb_' + jenis).hide();
+        $('#load_rb_' + jenis).show();
+        dwr.engine.setAsync(true);
+        RencanaAsuhanKeperawatanAction.save(result, {
+            callback: function (res) {
+                if (res.status == "success") {
+                    $('#save_rb_' + jenis).show();
+                    $('#load_rb_' + jenis).hide();
+                    $('#modal-rb-' + jenis).modal('hide');
+                    $('#warning_rb_' + ket).show().fadeOut(5000);
+                    $('#msg_rb_' + ket).text("Berhasil menambahkan data ....");
+                    $('#modal-rb-' + jenis).scrollTop(0);
+                    listAsuhanKeperawatanRB(ket);
+                } else {
+                    $('#save_rb_' + jenis).show();
+                    $('#load_rb_' + jenis).hide();
+                    $('#warning_rb_' + jenis).show().fadeOut(5000);
+                    $('#msg_rb_' + jenis).text(res.msg);
+                    $('#modal-rb-' + jenis).scrollTop(0);
+                }
+            }
+        });
+    } else {
+        $('#save_rb_' + jenis).show();
+        $('#load_rb_' + jenis).hide();
+        $('#warning_rb_' + jenis).show().fadeOut(5000);
+        $('#msg_rb_' + jenis).text("Silahkan cek kembali data inputan anda...");
+        $('#modal-rb-' + jenis).scrollTop(0);
+    }
+}
+
+function listAsuhanKeperawatanRB(jenis) {
+    var table = "";
+    RencanaAsuhanKeperawatanAction.getListDetail(idDetailCheckup, jenis,  function (res) {
+        if (res.length > 0) {
+            $.each(res, function (i, item) {
+
+                var diagnosa = "";
+                var hasil = "";
+                var intervensi = "";
+                var implementasi = "";
+                var evaluasi = "";
+
+                var ul1 = "";
+                var ul2 = "";
+                var ul3 = "";
+                var ul4 = "";
+                var ul5 = "";
+
+                if (item.diagnosa != null) {
+                    var v = item.diagnosa.split("|");
+                    $.each(v, function (i, item) {
+                        diagnosa += '<li>' + item + '</li>';
+                    });
+                }
+
+                if (item.hasil != null) {
+                    var v = item.hasil.split("|");
+                    $.each(v, function (i, item) {
+                        hasil += '<li>' + item + '</li>';
+                    });
+                }
+
+                if (item.intervensi != null) {
+                    var v = item.intervensi.split("|");
+                    $.each(v, function (i, item) {
+                        intervensi += '<li>' + item + '</li>';
+                    });
+                }
+
+                if (item.implementasi != null) {
+                    var v = item.implementasi.split("|");
+                    $.each(v, function (i, item) {
+                        implementasi += '<li>' + item + '</li>';
+                    });
+                }
+
+                if (item.evaluasi != null) {
+                    var v = item.evaluasi.split("|");
+                    $.each(v, function (i, item) {
+                        evaluasi += '<li>' + item + '</li>';
+                    });
+                }
+
+                if (item.ttdPerawat != null) {
+                    evaluasi += '<li style="list-style-type: none; margin-top: 10px">' + '<label>Perawat</label><img style="width: 50px; height: 20px" src="' + item.ttdPerawat + '">' + '</li>';
+                }
+
+                if (diagnosa != '') {
+                    ul1 = '<ul style="margin-left: 12px">' + diagnosa + '</ul>'
+                }
+                if (hasil != '') {
+                    ul2 = '<ul style="margin-left: 12px">' + hasil + '</ul>'
+                }
+                if (intervensi != '') {
+                    ul3 = '<ul style="margin-left: 12px">' + intervensi + '</ul>'
+                }
+                if (implementasi != '') {
+                    ul4 = '<ul style="margin-left: 12px">' + implementasi + '</ul>'
+                }
+                if (evaluasi != '') {
+                    ul5 = '<ul style="margin-left: 12px">' + evaluasi + '</ul>'
+                }
+
+                table += '<tr>' +
+                    '<td>' + item.waktu + '</td>' +
+                    '<td>' + ul1 + '</td>' +
+                    '<td>' + ul2 + '</td>' +
+                    '<td>' + ul3 + '</td>' +
+                    '<td>' + ul4 + '</td>' +
+                    '<td>' + ul5 + '</td>' +
+                    '</tr>';
+            });
+
+            $('#body_asuhan_rb').html(table);
+        }
+    });
 }

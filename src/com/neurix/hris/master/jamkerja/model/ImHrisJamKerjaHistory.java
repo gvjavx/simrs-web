@@ -10,24 +10,19 @@ public class ImHrisJamKerjaHistory implements Serializable {
     private String jamKerjaId;
     private String statusGiling;
     private String tipePegawaiId;
+    private String branchId;
     private Integer hariKerja;
     private String jamAwalKerja;
     private String jamAkhirKerja;
+    private String istirahatAwal;
+    private String istirahatAkhir;
     private Timestamp createdDate;
     private String createDateWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String flag;
     private String action;
-    private String id;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+    private String jamKerjaIdHistory;
 
     public String getJamKerjaId() {
         return jamKerjaId;
@@ -123,5 +118,37 @@ public class ImHrisJamKerjaHistory implements Serializable {
 
     public void setAction(String action) {
         this.action = action;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getIstirahatAkhir() {
+        return istirahatAkhir;
+    }
+
+    public void setIstirahatAkhir(String istirahatAkhir) {
+        this.istirahatAkhir = istirahatAkhir;
+    }
+
+    public String getIstirahatAwal() {
+        return istirahatAwal;
+    }
+
+    public void setIstirahatAwal(String istirahatAwal) {
+        this.istirahatAwal = istirahatAwal;
+    }
+
+    public String getJamKerjaIdHistory() {
+        return jamKerjaIdHistory;
+    }
+
+    public void setJamKerjaIdHistory(String jamKerjaIdHistory) {
+        this.jamKerjaIdHistory = jamKerjaIdHistory;
     }
 }

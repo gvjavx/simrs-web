@@ -550,6 +550,13 @@ public class CommonUtil {
         return jam;
     }
 
+    public static String getLastDayOfMonth() {
+        Calendar cal = Calendar.getInstance();
+        int res = cal.getActualMaximum(Calendar.DATE);
+
+        return String.valueOf(res);
+    }
+
     public static double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
 

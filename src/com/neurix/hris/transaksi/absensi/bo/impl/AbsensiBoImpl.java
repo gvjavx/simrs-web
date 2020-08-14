@@ -41,6 +41,7 @@ import com.neurix.hris.transaksi.ijinKeluar.dao.IjinKeluarDao;
 import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluarEntity;
 import com.neurix.hris.transaksi.indisipliner.dao.IndisiplinerDao;
 import com.neurix.hris.transaksi.indisipliner.model.ItIndisiplinerEntity;
+import com.neurix.hris.transaksi.lembur.bo.LemburBo;
 import com.neurix.hris.transaksi.lembur.dao.JamLemburDao;
 import com.neurix.hris.transaksi.lembur.dao.LemburDao;
 import com.neurix.hris.transaksi.lembur.dao.PengaliFaktorLemburDao;
@@ -67,6 +68,8 @@ import org.apache.struts2.jasper.tagplugins.jstl.core.Catch;
 import org.hibernate.HibernateException;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
@@ -2227,6 +2230,21 @@ public class AbsensiBoImpl implements AbsensiBo {
                         }
                     }
 
+                    //keterangan lembur
+                    ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
+                    if (absensiPegawaiEntity.getTanggal() != null){
+                        Lembur lembur = new Lembur();
+                        LemburBo lemburBo = (LemburBo) context.getBean("lemburBoProxy");
+//                        lembur.setTanggalAwal(absensiPegawaiEntity.getTanggal());
+                        lembur.setStTanggalAwal(CommonUtil.convertDateToString(absensiPegawaiEntity.getTanggal()));
+                        lembur.setStTanggalAkhir(CommonUtil.convertDateToString(absensiPegawaiEntity.getTanggal()));
+                        lembur.setNip(absensiPegawaiEntity.getNip());
+                        List<Lembur> lemburs = lemburBo.getByCriteria(lembur);
+                        String keterangan = lemburs.get(0).getKeterangan();
+                        returnAbsensi.setKeterangan(keterangan);
+                    }
+
+
                     returnAbsensi.setBiayaLembur(absensiPegawaiEntity.getBiayaLembur());
                     returnAbsensi.setTipeHari(absensiPegawaiEntity.getTipeHari());
                     returnAbsensi.setLamaLembur(absensiPegawaiEntity.getLamaLembur());
@@ -3270,7 +3288,7 @@ public class AbsensiBoImpl implements AbsensiBo {
     }
 
     @Override
-    public List<MesinAbsensi> inquiry(String tanggal, Boolean awalTanggal, String statusPegawai) throws Exception {
+    public List<MesinAbsensi> inquiry(String tanggal, Boolean awalTanggal, String statusPegawai, String branchId) throws Exception {
         List<ImBiodataEntity> pegawaiList = new ArrayList<>();
         List<MesinAbsensi> absensiFinal = new ArrayList<>();
         List<ImHrisJamKerja> jamKerjaList = new ArrayList<>();
@@ -3278,16 +3296,7 @@ public class AbsensiBoImpl implements AbsensiBo {
         int iJamMasukDB= 0,iJamPulangDB = 0,iJamIstirahatAwalDB= 0,iJamIstirahatAkhirDB= 0;
 
         try {
-            if (statusPegawai!=null){
-                if (!statusPegawai.equalsIgnoreCase("")){
-                    pegawaiList = biodataDao.getAbsensiPersonShift(statusPegawai);
-                }
-                else {
-                    pegawaiList = biodataDao.getAbsensiPerson();
-                }
-            }else {
-                pegawaiList = biodataDao.getAbsensiPerson();
-            }
+            pegawaiList = biodataDao.getDataBiodata("","",branchId,"","","Y");
         } catch (HibernateException e) {
             logger.error("[biodataDao.getAbsensiPerson] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data, please info to your admin..." + e.getMessage());
@@ -3315,7 +3324,7 @@ public class AbsensiBoImpl implements AbsensiBo {
         java.sql.Timestamp tsTanggalAwal = new java.sql.Timestamp(tanggalAwal.getTime());
         java.sql.Timestamp tsTanggalBesok = new java.sql.Timestamp(tanggalBesok.getTime());
         cal = Calendar.getInstance();
-        String branch = CommonConstant.ID_KANPUS;
+        String branch = branchId;
         cal.setTime(tanggalAwal);
         int day = cal.get(Calendar.DAY_OF_WEEK);
         Map hsCriteria2 = new HashMap();
@@ -5471,7 +5480,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                         Double selisih = null;
                         Calendar cal = Calendar.getInstance();
                         cal.setTime(hasilAbsensi.getTanggal());
-                        String branch = "KD01";
+                        String branch = CommonConstant.ID_KANPUS;
                         int day = cal.get(Calendar.DAY_OF_WEEK);
                         Map hsCriteria2 = new HashMap();
                         hsCriteria2.put("branch_id",branch);
@@ -5560,6 +5569,26 @@ public class AbsensiBoImpl implements AbsensiBo {
             logger.error("[AbsensiBoImpl.getByCriteriaMesin] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
+        return result;
+    }
+
+    @Override
+    public List<AbsensiPegawai> getHistoryAbsensiByMonth (String nip, String branchId, Date date){
+        List<AbsensiPegawai> result = new ArrayList<>();
+        SimpleDateFormat dateFormat  = new SimpleDateFormat("YYYY");
+        String year = dateFormat.format(date);
+        dateFormat = new SimpleDateFormat("MM");
+        String month = dateFormat.format(date);
+        String firstDate = "01-" + month + "-" + year;
+        String lastDate = CommonUtil.getLastDayOfMonth() + "-" + month + "-" + year;
+
+        try {
+          result = absensiPegawaiDao.getAbsensiByMonth(nip, branchId, firstDate, lastDate);
+        } catch (HibernateException e){
+            logger.error("[AbsensiBoImpl.getByCriteriaMesin] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
         return result;
     }
 }

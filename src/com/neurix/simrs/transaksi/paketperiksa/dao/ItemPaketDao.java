@@ -57,6 +57,9 @@ public class ItemPaketDao extends GenericDao<MtSimrsItemPaketEntity, String> {
 
     public ItemPaket getSumTarifPaketLab(String idPaket, String idLab){
 
+        if(idPaket != null || idLab != null || !"".equalsIgnoreCase(idPaket) || !"".equalsIgnoreCase(idLab)){
+            return null;
+        }
         String SQL = "SELECT \n" +
                 "id_paket, \n" +
                 "id_kategori_item,\n" +

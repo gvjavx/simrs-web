@@ -3392,7 +3392,7 @@ public class CheckupAction extends BaseMasterAction {
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
         if(idPasien != null){
             try {
-                checkupList = checkupBo.getHistoryPasien(idPasien);
+                checkupList = checkupBo.getHistoryPasien(idPasien, "");
             }catch (HibernateException e){
                 logger.error("Found Error "+e.getMessage());
             }
@@ -3428,12 +3428,16 @@ public class CheckupAction extends BaseMasterAction {
         return checkupList;
     }
 
-    public CrudResponse saveAnamnese(String anamnese, String noCheckup, String idDetailCheckup) {
+    public CrudResponse saveAnamnese(String anamnese, String noCheckup, String idDetailCheckup, String tensi, String suhu, String nadi, String rr) {
         logger.info("[CheckupAction.savePenunjangPasien] start process >>>");
         CrudResponse response = new CrudResponse();
         HeaderCheckup headerCheckup = new HeaderCheckup();
         headerCheckup.setNoCheckup(noCheckup);
         headerCheckup.setAnamnese(anamnese);
+        headerCheckup.setTensi(tensi);
+        headerCheckup.setSuhu(suhu);
+        headerCheckup.setNadi(nadi);
+        headerCheckup.setPernafasan(rr);
         headerCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
         headerCheckup.setLastUpdateWho(CommonUtil.userLogin());
 
@@ -3517,6 +3521,20 @@ public class CheckupAction extends BaseMasterAction {
             }
             if("tindakan".equalsIgnoreCase(key)){
                 response = checkupBo.getTindakanRawat(id);
+            }
+        }
+        return response;
+    }
+
+    public HeaderCheckup getDataPemeriksaanFisik(String id){
+        HeaderCheckup response = new HeaderCheckup();
+        if(id != null && !"".equalsIgnoreCase(id)){
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+            try {
+                response = checkupBo.getDataPemeriksaanFisik(id);
+            }catch (GeneralBOException e){
+                logger.error("Found Error when search data pemeriksan fisik "+e.getMessage());
             }
         }
         return response;

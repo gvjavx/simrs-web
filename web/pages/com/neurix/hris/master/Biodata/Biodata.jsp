@@ -352,12 +352,12 @@
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <s:select list="#{'islam':'Islam', 'katolik' : 'Katolik', 'hindu' : 'Hindu',
+                                                <s:select list="#{'islam':'Islam', 'kristen' : 'Kristen', 'katolik' : 'Katolik', 'hindu' : 'Hindu',
                                             'budha' : 'Buddha', 'kong hu cu' : 'Kong Hu Cu'}" id="agama" name="biodata.agama"
                                                           cssClass="form-control" disabled="true" />
                                             </s:if>
                                             <s:else>
-                                                <s:select list="#{'islam':'Islam', 'katolik' : 'Katolik', 'hindu' : 'Hindu',
+                                                <s:select list="#{'islam':'Islam', 'kristen' : 'Kristen', 'katolik' : 'Katolik', 'hindu' : 'Hindu',
                                             'budha' : 'Buddha', 'kong hu cu' : 'Kong Hu Cu'}" id="agama" name="biodata.agama"
                                                           cssClass="form-control" />
                                             </s:else>

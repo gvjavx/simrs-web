@@ -1,17 +1,21 @@
 package com.neurix.simrs.mobileapi;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.bo.BiodataBo;
 import com.neurix.hris.master.biodata.model.Biodata;
 import com.neurix.simrs.master.dokter.bo.DokterBo;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.mobileapi.model.DokterMobile;
+import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
+import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
 import com.opensymphony.xwork2.ModelDriven;
 import org.apache.batik.dom.GenericElement;
 import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -27,6 +31,7 @@ public class DokterController implements ModelDriven<Object> {
     private Collection<DokterMobile> listOfDokter;
     private DokterBo dokterBoProxy;
     private BiodataBo biodataBoProxy;
+    private TelemedicBo telemedicBoProxy;
 
     private String idDokter;
     private String namaDokter;
@@ -34,6 +39,7 @@ public class DokterController implements ModelDriven<Object> {
     private String namaSpesialis;
     private String action;
     private String kuota;
+    private String kuotaTele;
     private String lat;
     private String lon;
     private String flagCall;
@@ -43,6 +49,22 @@ public class DokterController implements ModelDriven<Object> {
     private String branchId;
 
     private String foto;
+
+    public String getKuotaTele() {
+        return kuotaTele;
+    }
+
+    public void setKuotaTele(String kuotaTele) {
+        this.kuotaTele = kuotaTele;
+    }
+
+    public TelemedicBo getTelemedicBoProxy() {
+        return telemedicBoProxy;
+    }
+
+    public void setTelemedicBoProxy(TelemedicBo telemedicBoProxy) {
+        this.telemedicBoProxy = telemedicBoProxy;
+    }
 
     public BiodataBo getBiodataBoProxy() {
         return biodataBoProxy;
@@ -188,8 +210,11 @@ public class DokterController implements ModelDriven<Object> {
     public HttpHeaders create() {
         logger.info("[DokterController.create] start process POST / <<<");
 
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+
         List<Dokter> result = new ArrayList<>();
         Biodata resultBio = new Biodata();
+        List<AntrianTelemedic> resultAntrian = new ArrayList<>();
 
         Dokter bean = new Dokter();
         bean.setIdDokter(idDokter);
@@ -200,7 +225,7 @@ public class DokterController implements ModelDriven<Object> {
         if (action.equalsIgnoreCase("get")) {
 
             try {
-                result = dokterBoProxy.getByCriteria(bean);
+                result = dokterBoProxy.getDokterById(idDokter);
             } catch (GeneralBOException e) {
                 logger.error("[DokterController.create] Error, " + e.getMessage());
             }
@@ -213,6 +238,10 @@ public class DokterController implements ModelDriven<Object> {
             model.setLat(result.get(0).getLat());
             model.setLon(result.get(0).getLon());
             model.setFlagCall(result.get(0).getFlagCall());
+            model.setFlagTele(result.get(0).getFlagTele());
+            model.setKuotaTele(result.get(0).getKuotaTele());
+            model.setIdPelayanan(result.get(0).getIdPelayanan());
+            model.setNamaPelayanan(result.get(0).getNamaPelayanan());
 
             try {
                 resultBio = biodataBoProxy.getBiodataByNip(model.getIdDokter());
@@ -229,7 +258,7 @@ public class DokterController implements ModelDriven<Object> {
         if (action.equalsIgnoreCase("kuota")) {
 
             try {
-                dokterBoProxy.editKuota(idDokter, kuota);
+                dokterBoProxy.editKuota(idDokter, kuota, kuotaTele);
             } catch (GeneralBOException e) {
                 logger.error("[DokterController.create] Error, " + e.getMessage());
             }
@@ -270,6 +299,7 @@ public class DokterController implements ModelDriven<Object> {
                    dokterMobile.setNamaDokter(item.getNamaDokter());
                    dokterMobile.setKuota(item.getKuota());
                    dokterMobile.setFlagTele(item.getFlagTele());
+                   dokterMobile.setKuotaTele(item.getKuotaTele());
 
                    try {
                        resultBio = biodataBoProxy.getBiodataByNip(item.getIdDokter());
@@ -281,11 +311,62 @@ public class DokterController implements ModelDriven<Object> {
                        dokterMobile.setFoto(resultBio.getFotoUpload());
                    }
 
+                   AntrianTelemedic beanAntrian = new AntrianTelemedic();
+                   beanAntrian.setIdDokter(item.getIdDokter());
+                   beanAntrian.setIsMobile("Y");
+
+
+                   try {
+                      resultAntrian =  telemedicBoProxy.getSearchByCriteria(beanAntrian);
+                   } catch (GeneralBOException e){
+                       logger.error("[DokterController.create] Error, " + e.getMessage());
+                   }
+
+                   if (resultAntrian != null) {
+                       List<AntrianTelemedic> temp = new ArrayList<>();
+                       for(AntrianTelemedic antrianTelemedic : resultAntrian ){
+                           String dateAntrian = CommonUtil.convertTimestampToString(antrianTelemedic.getCreatedDate());
+                           String dateNow = CommonUtil.convertTimestampToString(now);
+                           if (dateAntrian.equalsIgnoreCase(dateNow)){
+                               temp.add(antrianTelemedic);
+                           }
+                       }
+                       dokterMobile.setJumlahAntrian(String.valueOf(temp.size()));
+                   } else  dokterMobile.setJumlahAntrian("0");
+
                    listOfDokter.add(dokterMobile);
                }
             } catch (GeneralBOException e) {
                 logger.error("[DokterController.create] Error, " + e.getMessage());
             }
+        }
+        if (action.equalsIgnoreCase("getDokterByCriteria")){
+            listOfDokter = new ArrayList<>();
+            Dokter dokter = new Dokter();
+            dokter.setIdDokter(idDokter);
+            try {
+                result = dokterBoProxy.getSearchByCriteria(dokter);
+            } catch (GeneralBOException e){
+                logger.error("[DokterController.create] Error, " + e.getMessage());
+            }
+
+            if (result.size() > 0) {
+                for (Dokter item : result){
+                    DokterMobile dokterMobile = new DokterMobile();
+                    dokterMobile.setIdDokter(item.getIdDokter());
+                    dokterMobile.setNamaDokter(item.getNamaDokter());
+                    dokterMobile.setIdPelayanan(item.getIdPelayanan());
+                    dokterMobile.setNamaPelayanan(item.getNamaPelayanan());
+                    dokterMobile.setKuota(item.getKuota());
+                    dokterMobile.setKuotaTele(item.getKuotaTele());
+                    dokterMobile.setFlagTele(item.getFlagTele());
+                    dokterMobile.setLat(item.getLat());
+                    dokterMobile.setLon(item.getLon());
+
+                    listOfDokter.add(dokterMobile);
+                }
+            }
+
         }
 
         logger.info("[DokterController.create] end process POST / <<<");

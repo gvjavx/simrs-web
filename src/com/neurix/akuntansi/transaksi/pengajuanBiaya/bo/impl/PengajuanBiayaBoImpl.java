@@ -413,12 +413,29 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
             }
 
             List<User> userList = new ArrayList<>();
+            List<ImPosition> positionList ;
 
             ImPosition position = positionDao.getById("positionId",bean.getDivisiId());
             String[] koderingPosisi = position.getKodering().split("\\.");
 
-            //jika bukan kanpus
-            List<ImPosition> positionList = positionDao.getListPositionKoderingNKelompokPosition(koderingPosisi[0]+"."+koderingPosisi[1]+"%",CommonConstant.KELOMPOK_ID_PEJABAT_MUDA);
+            try {
+                positionList = positionDao.getListPositionKoderingNKelompokPosition(koderingPosisi[0]+"."+koderingPosisi[1]+"%",CommonConstant.KELOMPOK_ID_PEJABAT_MUDA);
+
+                //jika pejabat muda kosong langsung ke pejabat madya
+                if (positionList.size()==0){
+                    positionList = positionDao.getListPositionKoderingNKelompokPosition(koderingPosisi[0]+"."+koderingPosisi[1]+"%",CommonConstant.KELOMPOK_ID_PEJABAT_MUDA);
+                }
+
+                //jika pejabat madya kosong maka langsung ke pejabat utama
+                if (positionList.size()==0){
+                    positionList = positionDao.getListPositionKoderingNKelompokPosition(koderingPosisi[0]+"."+koderingPosisi[1]+"%",CommonConstant.KELOMPOK_ID_PEJABAT_MUDA);
+                }
+
+            } catch (HibernateException e) {
+                String status = "ERROR : Tidak ada jabatan sampai ke Pejabat Utama";
+                logger.error("[PengajuanBiayaBoImpl.saveAddPengajuan]"+status);
+                throw new GeneralBOException(status);
+            }
 
             for (ImPosition imPosition : positionList ){
                 userList=userDao.getUserByBranchAndPositionAndRole(bean.getBranchId(),imPosition.getPositionId(),CommonConstant.ROLE_ID_KARYAWAN);
