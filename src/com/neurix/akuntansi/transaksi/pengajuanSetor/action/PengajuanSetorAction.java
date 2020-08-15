@@ -1401,6 +1401,12 @@ public class PengajuanSetorAction extends BaseMasterAction {
             return ERROR;
         }
         perhitunganPpnKd=search;
+
+        String branchId = CommonUtil.userBranchLogin();
+        PengajuanSetor data = new PengajuanSetor();
+        data.setBranchId(branchId);
+        setPengajuanSetor(data);
+
         logger.info("[PengajuanSetorAction.searchProsesPpnKd] stop process >>>");
         return "success_search_proses_ppn";
     }
