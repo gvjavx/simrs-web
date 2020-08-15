@@ -1446,7 +1446,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         String reportId="RPT07";
         String tipeAging ="";
         String unit = "";
-        if (("KP").equalsIgnoreCase(dataLaporan.getUnit())){
+        if ((CommonConstant.ID_KANPUS).equalsIgnoreCase(dataLaporan.getUnit())){
             List<Branch> branchList = new ArrayList<>();
             branchList = branchBo.getAll();
             int i = 1;

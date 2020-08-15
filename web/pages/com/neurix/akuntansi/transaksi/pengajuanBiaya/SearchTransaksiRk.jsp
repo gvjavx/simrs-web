@@ -83,7 +83,6 @@
                             <tr>
                                 <td align="center">
                                     <s:form id="pengajuanBiayaForm" method="post"  theme="simple" namespace="/pengajuanBiaya" action="search_pengajuanBiaya.action" cssClass="form-horizontal">
-                                        <s:hidden name="pengajuanBiaya.tipePembayaran" value="KK" />
                                         <table>
                                             <tr>
                                                 <td width="10%" align="center">
@@ -99,10 +98,17 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                                        <s:select list="#initComboBranch.listOfComboBranch" id="branchIdView" name="pengajuanBiaya.branchId" disabled="true"
-                                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                                        <s:hidden id="branchId" name="pengajuanBiaya.branchId" />
+                                                        <s:if test='pengajuanBiaya.branchId == "KP"'>
+                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranchSelainKp_branch"/>
+                                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pengajuanBiaya.branchId"
+                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchIdView" name="pengajuanBiaya.branchId" disabled="true"
+                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                            <s:hidden id="branchId" name="pengajuanBiaya.branchId" />
+                                                        </s:else>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -112,9 +118,9 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'PDU':'Swift Kas Unit ke Pusat','SMK':'Setoran Modal Kerja ke Unit'}"
+                                                        <s:select list="#{'SMK':'Setoran Modal Kerja ke Unit'}"
                                                                   id="transaksi" name="pengajuanBiaya.transaksi"
-                                                                  headerKey="" headerValue="[Select One]" cssClass="form-control" />
+                                                                  headerKey="PDU" headerValue="Swift Kas Unit ke Pusat" cssClass="form-control" />
                                                     </table>
                                                 </td>
                                             </tr>
@@ -180,9 +186,11 @@
                                                             Search
                                                         </sj:submit>
                                                     </td>
+                                                    <s:if test='pengajuanBiaya.branchId == "KP"'>
                                                     <td>
                                                         <a href="add_pengajuanBiaya.action" class="btn btn-success" ><i class="fa fa-plus"></i> Add Transaksi RK</a>
                                                     </td>
+                                                    </s:if>
                                                     <td>
                                                         <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_pengajuanBiaya"/>'">
                                                             <i class="fa fa-refresh"></i> Reset
@@ -200,7 +208,7 @@
                                                     <td align="center">
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
                                                                    height="500" width="600" autoOpen="false"
-                                                                   title="Pembayaran Hutang Piutang ">
+                                                                   title="Transaksi RK ">
                                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                         </sj:dialog>
 

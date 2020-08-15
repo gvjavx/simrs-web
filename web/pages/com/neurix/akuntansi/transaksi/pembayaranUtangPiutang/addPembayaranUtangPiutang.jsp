@@ -1266,8 +1266,8 @@
                 var nilaiPembayaran = parseInt(nilaijumlahPembayaran);
                 var nilaiPpn = parseInt(jumlah_ppn.replace(/[,]/g, ""));
                 var nilaiPph = parseInt(jumlah_pph.replace(/[,]/g, ""));
-                if (nilaiPengajuan-(nilaiPembayaran+nilaiPpn-nilaiPph)<0){
-                    alert("jumlah Pembayaran + PPN - PPH lebih dari jumlah pengajuan");
+                if (nilaiPengajuan-(nilaiPembayaran+nilaiPph-nilaiPpn)<0){
+                    alert("jumlah Pembayaran + PPH - PPN lebih dari jumlah pengajuan");
                 }else if (nilaiPengajuan >= nilaiPembayaran && tglRealisasi <= currentTime) {
                     PembayaranUtangPiutangAction.saveDetailPembayaran(kodeVendor, namaVendor, "", jumlahPembayaran, rekeningId, divisiId,
                         divisiName, tipePengajuanBiaya, pengajuanBiayaDetailId, noBudgeting,jumlah_ppn,

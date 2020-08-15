@@ -299,21 +299,11 @@
         var branchId=document.getElementById("modBranchId").value;
         var keterangan=document.getElementById("modKeterangan").value;
 
-        var tipeTransaksi ="";
-
-        switch(transaksi) {
-            case "SMK":
-                tipeTransaksi="60";
-                break;
-            case "PDU":
-                tipeTransaksi = "61";
-                break;
-        }
 
         if (coaBank!=""&&keterangan!=""){
             if (confirm('Are you sure you want to save this Record?')) {
                 dwr.engine.setAsync(false);
-                PengajuanBiayaAction.saveApprove(id,"Y",who,coaBank,coaRk,jumlah,tipeTransaksi,branchId,keterangan, function(listdata) {
+                PengajuanBiayaAction.saveApprove(id,"Y",who,coaBank,coaRk,jumlah,transaksi,branchId,keterangan, function(listdata) {
                     alert('Data Successfully Updated');
                     $('#modal-edit').modal('hide');
                     $('#myForm')[0].reset();

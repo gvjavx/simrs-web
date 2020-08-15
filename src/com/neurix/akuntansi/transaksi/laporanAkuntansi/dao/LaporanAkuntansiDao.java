@@ -130,6 +130,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "                       and tipe_laporan='"+tipeLaporan+"'" +
                 "                       and flag='Y'"+
                 "            )\n" +
+                "   and namamaster is not null\n "+
                 tipeWhere +
                 "order by \n" +
                 "  -- mastergrp, \n" +
