@@ -2171,6 +2171,7 @@
         listSelectTindakanKategori();
         hitungCoverBiaya();
         listICD9();
+        getListRekamMedis('igd', tipePelayanan, idDetailCheckup);
 
         $('#img_ktp').on('click', function (e) {
             e.preventDefault();

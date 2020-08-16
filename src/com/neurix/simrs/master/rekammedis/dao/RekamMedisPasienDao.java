@@ -58,10 +58,11 @@ public class RekamMedisPasienDao extends GenericDao<ImSimrsRekamMedisPasienEntit
             String SQL = "";
             List<Object[]> results = new ArrayList<>();
             if ("rawat_jalan".equalsIgnoreCase(tipePelayanan)) {
-                if(jenis != null){
+                if (jenis != null) {
                     SQL = "SELECT \n" +
                             "a.*,  \n" +
-                            "b.is_pengisian, \n" +
+                            "b.jumlah_kategori as terisi,\n" +
+                            "b.is_pengisian,\n" +
                             "b.created_date FROM ( \n" +
                             "\tSELECT  \n" +
                             "\ta.id_rekam_medis_pasien, \n" +
@@ -71,7 +72,10 @@ public class RekamMedisPasienDao extends GenericDao<ImSimrsRekamMedisPasienEntit
                             "\ta.nama_rm, \n" +
                             "\tb.urutan, \n" +
                             "\tb.tipe_pelayanan, \n" +
-                            "\ta.function \n" +
+                            "\ta.function,\n" +
+                            "\ta.jumlah_kategori,\n" +
+                            "\ta.parameter, \n" +
+                            "\tb.flag\n" +
                             "\tFROM im_simrs_rekam_medis_pasien a \n" +
                             "\tINNER JOIN im_simrs_rekam_medis_pelayanan b \n" +
                             "\tON a.id_rekam_medis_pasien = b.id_rekam_medis_pasien \n" +
@@ -86,7 +90,10 @@ public class RekamMedisPasienDao extends GenericDao<ImSimrsRekamMedisPasienEntit
                             "\ta.nama_rm, \n" +
                             "\tb.urutan, \n" +
                             "\tb.tipe_pelayanan, \n" +
-                            "\ta.function \n" +
+                            "\ta.function,\n" +
+                            "\ta.jumlah_kategori,\n" +
+                            "\ta.parameter, \n" +
+                            "\tb.flag\n" +
                             "\tFROM im_simrs_rekam_medis_pasien a \n" +
                             "\tINNER JOIN im_simrs_rekam_medis_pelayanan b \n" +
                             "\tON a.id_rekam_medis_pasien = b.id_rekam_medis_pasien \n" +
@@ -101,7 +108,28 @@ public class RekamMedisPasienDao extends GenericDao<ImSimrsRekamMedisPasienEntit
                             "\ta.nama_rm, \n" +
                             "\tb.urutan, \n" +
                             "\tb.tipe_pelayanan, \n" +
-                            "\ta.function \n" +
+                            "\ta.function,\n" +
+                            "\ta.jumlah_kategori,\n" +
+                            "\ta.parameter, \n" +
+                            "\tb.flag\n" +
+                            "\tFROM im_simrs_rekam_medis_pasien a \n" +
+                            "\tINNER JOIN im_simrs_rekam_medis_pelayanan b \n" +
+                            "\tON a.id_rekam_medis_pasien = b.id_rekam_medis_pasien \n" +
+                            "\tWHERE b.tipe_pelayanan = :tipePelayanan \n" +
+                            "\tAND a.jenis = 'keperawatan_rawat_jalan' \n" +
+                            "\tUNION ALL \n" +
+                            "\tSELECT  \n" +
+                            "\ta.id_rekam_medis_pasien, \n" +
+                            "\ta.kode_rm, \n" +
+                            "\ta.jenis, \n" +
+                            "\ta.keterangan,\n" +
+                            "\ta.nama_rm, \n" +
+                            "\tb.urutan, \n" +
+                            "\tb.tipe_pelayanan, \n" +
+                            "\ta.function,\n" +
+                            "\ta.jumlah_kategori,\n" +
+                            "\ta.parameter, \n" +
+                            "\tb.flag\n" +
                             "\tFROM im_simrs_rekam_medis_pasien a \n" +
                             "\tINNER JOIN im_simrs_rekam_medis_pelayanan b \n" +
                             "\tON a.id_rekam_medis_pasien = b.id_rekam_medis_pasien \n" +
@@ -114,12 +142,80 @@ public class RekamMedisPasienDao extends GenericDao<ImSimrsRekamMedisPasienEntit
                             "id_rekam_medis_pasien,\n" +
                             "is_pengisian, \n" +
                             "created_date,\n" +
+                            "jumlah_kategori,\n" +
                             "rank() OVER (PARTITION BY id_rekam_medis_pasien ORDER BY created_date DESC)\n" +
                             "FROM it_simrs_status_pengisian_rekam_medis\n" +
                             "WHERE id_detail_checkup = :id\n" +
                             ") bb WHERE bb.rank = 1\n" +
                             ") b\n" +
-                            "ON a.id_rekam_medis_pasien = b.id_rekam_medis_pasien";
+                            "ON a.id_rekam_medis_pasien = b.id_rekam_medis_pasien\n" +
+                            "WHERE a.flag = 'Y'\n" +
+                            "ORDER BY CAST(urutan AS INTEGER) ASC";
+
+                    results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                            .setParameter("tipePelayanan", tipePelayanan)
+                            .setParameter("jenis", jenis)
+                            .setParameter("id", id)
+                            .list();
+                }
+            } else if ("igd".equalsIgnoreCase(tipePelayanan)) {
+                if (jenis != null) {
+                    SQL = "SELECT \n" +
+                            "a.*,  \n" +
+                            "b.jumlah_kategori as terisi,\n" +
+                            "b.is_pengisian,\n" +
+                            "b.created_date FROM ( \n" +
+                            "\tSELECT  \n" +
+                            "\ta.id_rekam_medis_pasien, \n" +
+                            "\ta.kode_rm, \n" +
+                            "\ta.jenis, \n" +
+                            "\ta.keterangan,\n" +
+                            "\ta.nama_rm, \n" +
+                            "\tb.urutan, \n" +
+                            "\tb.tipe_pelayanan, \n" +
+                            "\ta.function,\n" +
+                            "\ta.jumlah_kategori,\n" +
+                            "\ta.parameter, \n" +
+                            "\tb.flag\n" +
+                            "\tFROM im_simrs_rekam_medis_pasien a \n" +
+                            "\tINNER JOIN im_simrs_rekam_medis_pelayanan b \n" +
+                            "\tON a.id_rekam_medis_pasien = b.id_rekam_medis_pasien \n" +
+                            "\tWHERE b.tipe_pelayanan = :tipePelayanan\n" +
+                            "\tAND a.jenis = :jenis\n" +
+                            "\tUNION ALL\n" +
+                            "\tSELECT  \n" +
+                            "\ta.id_rekam_medis_pasien, \n" +
+                            "\ta.kode_rm, \n" +
+                            "\ta.jenis, \n" +
+                            "\ta.keterangan,\n" +
+                            "\ta.nama_rm, \n" +
+                            "\tb.urutan, \n" +
+                            "\tb.tipe_pelayanan, \n" +
+                            "\ta.function,\n" +
+                            "\ta.jumlah_kategori,\n" +
+                            "\ta.parameter, \n" +
+                            "\tb.flag\n" +
+                            "\tFROM im_simrs_rekam_medis_pasien a \n" +
+                            "\tINNER JOIN im_simrs_rekam_medis_pelayanan b \n" +
+                            "\tON a.id_rekam_medis_pasien = b.id_rekam_medis_pasien \n" +
+                            "\tWHERE b.tipe_pelayanan = :tipePelayanan\n" +
+                            "\tAND a.keterangan = 'surat'\n" +
+                            ")a \n" +
+                            "LEFT JOIN (\n" +
+                            "SELECT * FROM (\n" +
+                            "SELECT\n" +
+                            "id_rekam_medis_pasien,\n" +
+                            "is_pengisian, \n" +
+                            "created_date,\n" +
+                            "jumlah_kategori,\n" +
+                            "rank() OVER (PARTITION BY id_rekam_medis_pasien ORDER BY created_date DESC)\n" +
+                            "FROM it_simrs_status_pengisian_rekam_medis\n" +
+                            "WHERE id_detail_checkup = :id\n" +
+                            ") bb WHERE bb.rank = 1\n" +
+                            ") b\n" +
+                            "ON a.id_rekam_medis_pasien = b.id_rekam_medis_pasien\n" +
+                            "\tWHERE a.flag = 'Y'\n" +
+                            "ORDER BY CAST(urutan AS INTEGER) ASC";
 
                     results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                             .setParameter("tipePelayanan", tipePelayanan)
@@ -130,7 +226,8 @@ public class RekamMedisPasienDao extends GenericDao<ImSimrsRekamMedisPasienEntit
             } else {
                 SQL = "SELECT \n" +
                         "a.*,  \n" +
-                        "b.is_pengisian, \n" +
+                        "b.jumlah_kategori as terisi,\n" +
+                        "b.is_pengisian,\n" +
                         "b.created_date FROM ( \n" +
                         "\tSELECT  \n" +
                         "\ta.id_rekam_medis_pasien, \n" +
@@ -140,27 +237,14 @@ public class RekamMedisPasienDao extends GenericDao<ImSimrsRekamMedisPasienEntit
                         "\ta.nama_rm, \n" +
                         "\tb.urutan, \n" +
                         "\tb.tipe_pelayanan, \n" +
-                        "\ta.function \n" +
+                        "\ta.function,\n" +
+                        "\ta.jumlah_kategori,\n" +
+                        "\ta.parameter, \n" +
+                        "\tb.flag\n" +
                         "\tFROM im_simrs_rekam_medis_pasien a \n" +
                         "\tINNER JOIN im_simrs_rekam_medis_pelayanan b \n" +
                         "\tON a.id_rekam_medis_pasien = b.id_rekam_medis_pasien \n" +
                         "\tWHERE b.tipe_pelayanan = :tipePelayanan\n" +
-                        "\tAND a.keterangan = 'form'\n" +
-                        "\tUNION ALL \n" +
-                        "\tSELECT  \n" +
-                        "\ta.id_rekam_medis_pasien, \n" +
-                        "\ta.kode_rm, \n" +
-                        "\ta.jenis, \n" +
-                        "\ta.keterangan,\n" +
-                        "\ta.nama_rm, \n" +
-                        "\tb.urutan, \n" +
-                        "\tb.tipe_pelayanan, \n" +
-                        "\ta.function \n" +
-                        "\tFROM im_simrs_rekam_medis_pasien a \n" +
-                        "\tINNER JOIN im_simrs_rekam_medis_pelayanan b \n" +
-                        "\tON a.id_rekam_medis_pasien = b.id_rekam_medis_pasien \n" +
-                        "\tWHERE b.tipe_pelayanan = :tipePelayanan\n" +
-                        "\tAND a.keterangan = 'surat'\n" +
                         ")a \n" +
                         "LEFT JOIN (\n" +
                         "SELECT * FROM (\n" +
@@ -168,12 +252,15 @@ public class RekamMedisPasienDao extends GenericDao<ImSimrsRekamMedisPasienEntit
                         "id_rekam_medis_pasien,\n" +
                         "is_pengisian, \n" +
                         "created_date,\n" +
+                        "jumlah_kategori,\n" +
                         "rank() OVER (PARTITION BY id_rekam_medis_pasien ORDER BY created_date DESC)\n" +
                         "FROM it_simrs_status_pengisian_rekam_medis\n" +
                         "WHERE id_detail_checkup = :id\n" +
                         ") bb WHERE bb.rank = 1\n" +
                         ") b\n" +
-                        "ON a.id_rekam_medis_pasien = b.id_rekam_medis_pasien";
+                        "ON a.id_rekam_medis_pasien = b.id_rekam_medis_pasien\n" +
+                        "\tWHERE a.flag = 'Y'\n" +
+                        "ORDER BY CAST(urutan AS INTEGER) ASC";
 
                 results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                         .setParameter("tipePelayanan", tipePelayanan)
@@ -190,8 +277,11 @@ public class RekamMedisPasienDao extends GenericDao<ImSimrsRekamMedisPasienEntit
                     rekamMedisPasien.setKeterangan(obj[3] != null ? obj[3].toString() : "");
                     rekamMedisPasien.setNamaRm(obj[4] != null ? obj[4].toString() : "");
                     rekamMedisPasien.setFunction(obj[7] != null ? obj[7].toString() : "");
-                    rekamMedisPasien.setIsPengisian(obj[8] != null ? obj[8].toString() : "");
-                    rekamMedisPasien.setCreatedDate(obj[9] != null ? (Timestamp)obj[9] : null);
+                    rekamMedisPasien.setJumlahKategori(obj[8] != null ? obj[8].toString() : "");
+                    rekamMedisPasien.setParameter(obj[9] != null ? obj[9].toString() : "");
+                    rekamMedisPasien.setTerisi(obj[11] != null ? obj[11].toString() : "");
+                    rekamMedisPasien.setIsPengisian(obj[12] != null ? obj[12].toString() : "");
+                    rekamMedisPasien.setCreatedDate(obj[13] != null ? (Timestamp) obj[13] : null);
                     res.add(rekamMedisPasien);
                 }
             }

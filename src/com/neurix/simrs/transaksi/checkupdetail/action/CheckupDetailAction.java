@@ -147,6 +147,7 @@ public class CheckupDetailAction extends BaseMasterAction {
     private EklaimBo eklaimBoProxy;
     private BranchBo branchBoProxy;
     private BillingSystemBo billingSystemBoProxy;
+    private TeamDokterBo teamDokterBoProxy;
 
     private File fileUpload;
     private String fileUploadFileName;
@@ -444,6 +445,9 @@ public class CheckupDetailAction extends BaseMasterAction {
         this.listOfComboDiagnosa = listOfComboDiagnosa;
     }
 
+    public void setTeamDokterBoProxy(TeamDokterBo teamDokterBoProxy) {
+        this.teamDokterBoProxy = teamDokterBoProxy;
+    }
 
     public void setDiagnosaBoProxy(DiagnosaBo diagnosaBoProxy) {
         this.diagnosaBoProxy = diagnosaBoProxy;
@@ -559,7 +563,9 @@ public class CheckupDetailAction extends BaseMasterAction {
             detailCheckup.setNamaAsuransi(checkup.getNamaAsuransi());
             detailCheckup.setCoverBiaya(checkup.getCoverBiaya());
             detailCheckup.setIsLaka(checkup.getIsLaka());
-            detailCheckup.setAnamnese(checkup.getAnamnese());
+            detailCheckup.setAnamnese("Autoanamnesis : "+checkup.getAutoanamnesis()+", Heteroanamnesis : "+checkup.getHeteroanamnesis());
+            detailCheckup.setAutoanamnesis(checkup.getAutoanamnesis());
+            detailCheckup.setHeteroanamnesis(checkup.getHeteroanamnesis());
             detailCheckup.setNamaDiagnosa(checkup.getNamaDiagnosa());
             detailCheckup.setAlergi(checkup.getAlergi());
             detailCheckup.setPenunjangMedis(checkup.getPenunjangMedis());
@@ -4660,6 +4666,9 @@ public class CheckupDetailAction extends BaseMasterAction {
         String branchName = CommonUtil.userBranchNameLogin();
         String logo = "";
         Branch branches = new Branch();
+        long millis = System.currentTimeMillis();
+        java.util.Date date = new java.util.Date(millis);
+        String tglToday = new SimpleDateFormat("dd-MM-yyyy").format(date);
 
         try {
             branches = branchBoProxy.getBranchById(branch, "Y");
@@ -4708,6 +4717,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             reportParams.put("area", CommonUtil.userAreaName());
             reportParams.put("unit", branchName);
             reportParams.put("unitKota", branches.getBranchAddress());
+            reportParams.put("tglDibawah", branches.getBranchAddress()+", "+tglToday);
             reportParams.put("idPasien", checkup.getIdPasien());
             reportParams.put("logo", logo);
             reportParams.put("nik", checkup.getNoKtp());
@@ -4734,6 +4744,8 @@ public class CheckupDetailAction extends BaseMasterAction {
             reportParams.put("namaPelayanan", checkup.getNamaPelayanan());
             reportParams.put("rawatInapId", checkup.getIdRawatInap());
             reportParams.put("noBpjs", checkup.getNoBpjs());
+            reportParams.put("auto", "Autoanamnesis : "+checkup.getAutoanamnesis());
+            reportParams.put("hetero", "Heteroanamnesis : "+checkup.getHeteroanamnesis());
             if (checkup.getTglLahir() != null) {
                 String tahun = calculateAge(checkup.getTglLahir(), false);
                 String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
@@ -4790,6 +4802,23 @@ public class CheckupDetailAction extends BaseMasterAction {
 
             reportParams.put("data1", content1);
             reportParams.put("data2", content2);
+
+            if("SP15".equalsIgnoreCase(tipe)){
+                String penunjang = checkupBoProxy.getPenunjangMedis(checkup.getIdDetailCheckup());
+                String terapi = checkupBoProxy.getResepPasien(checkup.getIdDetailCheckup());
+                String diagnosaPrimer = checkupBoProxy.getDiagnosaPrimer(checkup.getIdDetailCheckup());
+                String diagnosaSekunder = checkupBoProxy.getDiagnosaSekunder(checkup.getIdDetailCheckup());
+                String tindakanIcd9 = checkupBoProxy.getTindakanRawatICD9(checkup.getIdDetailCheckup());
+                reportParams.put("penunjang", penunjang);
+                reportParams.put("diagnosaPrimer", diagnosaPrimer);
+                reportParams.put("diagnosaSekunder", diagnosaSekunder);
+                reportParams.put("terapi", terapi);
+                reportParams.put("tindakan", tindakanIcd9);
+                reportParams.put("keterangan", checkup.getCatatan());
+                DokterTeam dokterTeam = teamDokterBoProxy.getNamaDokter(checkup.getIdDetailCheckup());
+                reportParams.put("dokter", dokterTeam.getNamaDokter());
+                reportParams.put("sip", dokterTeam.getSip());
+            }
         }
 
         if (pasien.getIdPasien() != null) {
@@ -4854,7 +4883,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             RekamMedikBo rekamMedikBo = (RekamMedikBo) ctx.getBean("rekamMedikBoProxy");
 
-            if(idRm != null && !"".equalsIgnoreCase(idRm)){
+            if(idRm != null && !"".equalsIgnoreCase(idRm) && !"undefined".equalsIgnoreCase(idRm)){
                 StatusPengisianRekamMedis status = new StatusPengisianRekamMedis();
                 status.setNoCheckup(checkup.getNoCheckup());
                 status.setIdDetailCheckup(checkup.getIdDetailCheckup());
@@ -4912,6 +4941,10 @@ public class CheckupDetailAction extends BaseMasterAction {
                     "SP14".equalsIgnoreCase(tipe)) {
 
                 return "print_pernyataan_gagal_sep";
+            }
+
+            if("SP15".equalsIgnoreCase(tipe)){
+                return "print_resume_medis_rawat_jalan";
             }
 
             if ("SK01".equalsIgnoreCase(tipe)) {

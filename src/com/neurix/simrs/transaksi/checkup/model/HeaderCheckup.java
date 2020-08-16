@@ -144,6 +144,42 @@ public class HeaderCheckup {
     private String lastIdDetailCheckup;
     private String isStay;
 
+    private String penunjangMedis;
+    private String keluhanUtama;
+    private String suhu;
+    private String tensi;
+    private String nadi;
+    private String pernafasan;
+    private String kategoriPelayanan;
+
+    private String autoanamnesis;
+    private String heteroanamnesis;
+    private String catatan;
+
+    public String getCatatan() {
+        return catatan;
+    }
+
+    public void setCatatan(String catatan) {
+        this.catatan = catatan;
+    }
+
+    public String getAutoanamnesis() {
+        return autoanamnesis;
+    }
+
+    public void setAutoanamnesis(String autoanamnesis) {
+        this.autoanamnesis = autoanamnesis;
+    }
+
+    public String getHeteroanamnesis() {
+        return heteroanamnesis;
+    }
+
+    public void setHeteroanamnesis(String heteroanamnesis) {
+        this.heteroanamnesis = heteroanamnesis;
+    }
+
     public String getIsStay() {
         return isStay;
     }
@@ -200,16 +236,6 @@ public class HeaderCheckup {
         this.idAntrianOnline = idAntrianOnline;
     }
 
-    private String anamnese;
-    private String penunjangMedis;
-    private String keluhanUtama;
-    private String suhu;
-    private String tensi;
-    private String nadi;
-    private String pernafasan;
-
-    private String kategoriPelayanan;
-
     public String getKategoriPelayanan() {
         return kategoriPelayanan;
     }
@@ -264,14 +290,6 @@ public class HeaderCheckup {
 
     public void setPernafasan(String pernafasan) {
         this.pernafasan = pernafasan;
-    }
-
-    public String getAnamnese() {
-        return anamnese;
-    }
-
-    public void setAnamnese(String anamnese) {
-        this.anamnese = anamnese;
     }
 
     public String getIdDetailTindakan() {

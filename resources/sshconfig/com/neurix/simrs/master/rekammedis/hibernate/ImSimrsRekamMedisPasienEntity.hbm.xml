@@ -20,6 +20,9 @@
             <basic name="jenis">
                 <column name="jenis"/>
             </basic>
+            <basic name="parameter">
+                <column name="parameter"/>
+            </basic>
             <basic name="flag">
                 <column name="flag"/>
             </basic>
@@ -40,6 +43,9 @@
             </basic>
             <basic name="function">
                 <column name="function"/>
+            </basic>
+            <basic name="jumlahKategori">
+                <column name="jumlah_kategori"/>
             </basic>
         </attributes>
     </entity>

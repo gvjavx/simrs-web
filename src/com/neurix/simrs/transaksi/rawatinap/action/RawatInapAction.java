@@ -354,7 +354,7 @@ public class RawatInapAction extends BaseMasterAction {
                 rawatInap.setTinggi(checkup.getTinggi());
                 rawatInap.setBerat(checkup.getBerat());
                 rawatInap.setPenunjangMedis(checkup.getPenunjangMedis());
-                rawatInap.setAnamnese(checkup.getAnamnese());
+                rawatInap.setAnamnese("Autoanamnesis : "+checkup.getAutoanamnesis()+", Heteroanamnesis : "+checkup.getHeteroanamnesis());
                 rawatInap.setAlamatLengkap(checkup.getNamaDesa()+", "+checkup.getNamaKecamatan()+", "+checkup.getNamaKota());
                 rawatInap.setIsStay(checkup.getIsStay());
                 rawatInap.setIdKelas(checkup.getKelasPasien());

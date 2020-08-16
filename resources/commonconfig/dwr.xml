@@ -617,6 +617,7 @@
           <param name="class" value="com.neurix.simrs.transaksi.hemodialisa.action.HemodialisaAction"/>
       </create>
       <convert converter="bean" match="com.neurix.simrs.transaksi.hemodialisa.model.Hemodialisa"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.hemodialisa.model.ObservasiTindakanHd"/>
 
       <create creator="new">
           <param name="class" value="com.neurix.simrs.transaksi.hemodialisa.action.MonitoringTransfusiDarahAction"/>
@@ -771,6 +772,11 @@
       <create creator="new">
           <param name="class" value="com.neurix.simrs.master.pelayanan.action.PelayananAction"/>
       </create>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.asesmenrawatjalan.action.KeperawatanRawatJalanAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.asesmenrawatjalan.model.KeperawatanRawatJalan"/>
 
   </allow>
 

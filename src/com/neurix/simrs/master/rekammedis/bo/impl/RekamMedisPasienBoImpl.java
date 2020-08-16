@@ -60,6 +60,7 @@ public class RekamMedisPasienBoImpl implements RekamMedisPasienBo {
                     rekamMedisPasien.setLastUpdate(entity.getLastUpdate());
                     rekamMedisPasien.setLastUpdateWho(entity.getLastUpdateWho());
                     rekamMedisPasien.setFunction(entity.getFunction());
+                    rekamMedisPasien.setJumlahKategori(entity.getJumlahKategori());
                     list.add(rekamMedisPasien);
                 }
             }

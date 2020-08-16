@@ -3431,12 +3431,13 @@ public class CheckupAction extends BaseMasterAction {
         return checkupList;
     }
 
-    public CrudResponse saveAnamnese(String anamnese, String noCheckup, String idDetailCheckup, String tensi, String suhu, String nadi, String rr) {
+    public CrudResponse saveAnamnese(String auto, String hetero, String noCheckup, String idDetailCheckup, String tensi, String suhu, String nadi, String rr) {
         logger.info("[CheckupAction.savePenunjangPasien] start process >>>");
         CrudResponse response = new CrudResponse();
         HeaderCheckup headerCheckup = new HeaderCheckup();
         headerCheckup.setNoCheckup(noCheckup);
-        headerCheckup.setAnamnese(anamnese);
+        headerCheckup.setAutoanamnesis(auto);
+        headerCheckup.setHeteroanamnesis(hetero);
         headerCheckup.setTensi(tensi);
         headerCheckup.setSuhu(suhu);
         headerCheckup.setNadi(nadi);
@@ -3455,7 +3456,7 @@ public class CheckupAction extends BaseMasterAction {
         }
 
         if("success".equalsIgnoreCase(response.getStatus())){
-            insertProfilRJ(idDetailCheckup, anamnese);
+            insertProfilRJ(idDetailCheckup, "Autoanamnesis : "+auto+", Heteroanamnesis : "+hetero);
         }
 
         logger.info("[CheckupAction.savePenunjangPasien] end process <<<");

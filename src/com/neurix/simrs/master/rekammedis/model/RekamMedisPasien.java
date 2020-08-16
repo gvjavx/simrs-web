@@ -8,6 +8,7 @@ public class RekamMedisPasien {
     private String kodeRm;
     private String namaRm;
     private String keterangan;
+    private String parameter;
     private String jenis;
     private String flag;
     private String action;
@@ -18,6 +19,32 @@ public class RekamMedisPasien {
     private String tipe;
     private String isPengisian;
     private String function;
+    private String jumlahKategori;
+    private String terisi;
+
+    public String getParameter() {
+        return parameter;
+    }
+
+    public void setParameter(String parameter) {
+        this.parameter = parameter;
+    }
+
+    public String getTerisi() {
+        return terisi;
+    }
+
+    public void setTerisi(String terisi) {
+        this.terisi = terisi;
+    }
+
+    public String getJumlahKategori() {
+        return jumlahKategori;
+    }
+
+    public void setJumlahKategori(String jumlahKategori) {
+        this.jumlahKategori = jumlahKategori;
+    }
 
     public String getFunction() {
         return function;

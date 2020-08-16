@@ -80,6 +80,12 @@ public class AsesmenSpesialisAction {
             }else{
                 asesmenSpesialis.setJawaban(obj.getString("jawaban"));
             }
+            if(obj.has("nama_terang")){
+                asesmenSpesialis.setNamaTerang(obj.getString("nama_terang"));
+            }
+            if(obj.has("sip")){
+                asesmenSpesialis.setSip(obj.getString("sip"));
+            }
             asesmenSpesialis.setAction("C");
             asesmenSpesialis.setFlag("Y");
             asesmenSpesialis.setCreatedWho(userLogin);

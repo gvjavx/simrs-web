@@ -444,7 +444,14 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <s:textarea id="fisik_anamnesa" name="headerDetailCheckup.anamnese" cssClass="form-control" rows="4" placeholder="Keterangan Anamnese"></s:textarea>
+                                        <span>Autoanamnesis</span>
+                                        <s:textarea id="fisik_auto" name="headerDetailCheckup.autoanamnesis" cssClass="form-control" rows="3" placeholder="Keterangan Autoanamnesis"></s:textarea>
+                                    </div>
+                                </div>
+                                <div class="row jarak">
+                                    <div class="col-md-12">
+                                        <span>Heteroanamnesis</span>
+                                        <s:textarea id="fisik_hetero" name="headerDetailCheckup.heteroanamnesis" cssClass="form-control" rows="3" placeholder="Keterangan HeteroAnamnesis"></s:textarea>
                                     </div>
                                 </div>
                                 <div class="row jarak">
@@ -483,31 +490,32 @@
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
-                                    <%--id="asesmen_rj"--%>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <s:if test='headerDetailCheckup.kategoriPelayanan == "hemodialisa"'>
-                                            <li><a style="cursor: pointer" onclick="showModalHD('monitoring_hd')"><i class="fa fa-file-o"></i>Monitoring HD</a></li>
-                                            <li><a style="cursor: pointer" onclick="showModalHD('perencanaan_hemodialisa')"><i class="fa fa-file-o"></i>Perencanaan HD</a></li>
-                                            <li><a style="cursor: pointer" onclick="showModalHD('asesmen_hd')"><i class="fa fa-file-o"></i>Asesmen Awal HD</a></li>
-                                            <li><a style="cursor: pointer" onclick="showModalHD('tranfusi_hd')"><i class="fa fa-file-o"></i>Tindakan Medis Transfusi Darah</a></li>
-                                            <li><a style="cursor: pointer" onclick="showModalHD('catatan_tranfusi_darah')"><i class="fa fa-file-o"></i>Catatan Pemantauan Tranfusi Darah</a></li>
-                                            <li><a style="cursor: pointer" onclick="showModalHD('persetujuan_hd')"><i class="fa fa-file-o"></i>Persetujuan HD</a></li>
-                                            <li><a style="cursor: pointer" onclick="showModalHD('travelling')"><i class="fa fa-file-o"></i>Travelling Dialysis</a></li>
-                                        </s:if>
-                                        <s:elseif test='headerDetailCheckup.kategoriPelayanan == "fisioterapi"'>
-                                            <li><a style="cursor: pointer" onclick="pengkajianFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-file-o"></i>Pengkajian Pasien Fisioterapi</a></li>
-                                            <li><a style="cursor: pointer" onclick="addMonitoringFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-file-o"></i>Kunjungan Fisioterapi</a></li>
-                                        </s:elseif>
-                                        <s:else>
-                                            <li><a style="cursor: pointer" onclick="showModalSPS('<s:property value="headerDetailCheckup.kategoriPelayanan"/>')"><i class="fa fa-file-o"></i><s:property value="headerDetailCheckup.asesmenLabel"/></a></li>
-                                        </s:else>
-                                        <li><a style="cursor: pointer" onclick="showModalRj('ringkasan_rj')"><i class="fa fa-file-o"></i>Profil Rekam Medis Rawat Jalan</a></li>
-                                        <li><a style="cursor: pointer" onclick="printPernyataan('SP03')"><i class="fa fa-print"></i>Surat Penolakan Tindakan</a></li>
-                                        <li><a style="cursor: pointer" onclick="printPernyataan('SP06')"><i class="fa fa-print"></i>Surat Pernyataan Non Bpjs / Asuransi</a></li>
-                                        <li><a style="cursor: pointer" onclick="printPernyataan('SK01')"><i class="fa fa-print"></i>Surat Keterangan Dokter</a></li>
-                                        <li><a style="cursor: pointer" onclick="printPernyataan('SK05')"><i class="fa fa-print"></i>Surat Rekomendasi DPJP</a></li>
-                                        <li><a style="cursor: pointer" onclick="printPernyataan('SK03')"><i class="fa fa-print"></i>Surat Keterangan Sehat</a></li>
-                                        <li><a style="cursor: pointer" onclick="printPernyataan('RI01')"><i class="fa fa-print"></i>Surat Permintaan Rawat Inap</a></li>
+                                    <ul class="dropdown-menu" role="menu" id="asesmen_rj">
+                                        <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('keperawatan_rawat_jalan')" onclick="showModalRJ('keperawatan_rawat_jalan')"><i class="fa fa-file-o"></i>Asesmen Keperawatan Rawat Jalan</a></li>--%>
+                                        <%--<s:if test='headerDetailCheckup.kategoriPelayanan == "hemodialisa"'>--%>
+                                            <%--<li><a style="cursor: pointer" onclick="showModalHD('monitoring_hd')"><i class="fa fa-file-o"></i>Monitoring HD</a></li>--%>
+                                            <%--<li><a style="cursor: pointer" onclick="showModalHD('perencanaan_hemodialisa')"><i class="fa fa-file-o"></i>Perencanaan HD</a></li>--%>
+                                            <%--<li><a style="cursor: pointer" onclick="showModalHD('asesmen_hd')"><i class="fa fa-file-o"></i>Asesmen Awal HD</a></li>--%>
+                                            <%--<li><a style="cursor: pointer" onclick="showModalHD('tranfusi_hd')"><i class="fa fa-file-o"></i>Tindakan Medis Transfusi Darah</a></li>--%>
+                                            <%--<li><a style="cursor: pointer" onclick="showModalHD('catatan_tranfusi_darah')"><i class="fa fa-file-o"></i>Catatan Pemantauan Tranfusi Darah</a></li>--%>
+                                            <%--<li><a style="cursor: pointer" onclick="showModalHD('persetujuan_hd')"><i class="fa fa-file-o"></i>Persetujuan HD</a></li>--%>
+                                            <%--<li><a style="cursor: pointer" onclick="showModalHD('travelling')"><i class="fa fa-file-o"></i>Travelling Dialysis</a></li>--%>
+                                        <%--</s:if>--%>
+                                        <%--<s:elseif test='headerDetailCheckup.kategoriPelayanan == "fisioterapi"'>--%>
+                                            <%--<li><a style="cursor: pointer" onclick="pengkajianFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-file-o"></i>Pengkajian Pasien Fisioterapi</a></li>--%>
+                                            <%--<li><a style="cursor: pointer" onclick="addMonitoringFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-file-o"></i>Kunjungan Fisioterapi</a></li>--%>
+                                        <%--</s:elseif>--%>
+                                        <%--<s:else>--%>
+                                            <%--<li><a style="cursor: pointer" onclick="showModalSPS('<s:property value="headerDetailCheckup.kategoriPelayanan"/>')"><i class="fa fa-file-o"></i><s:property value="headerDetailCheckup.asesmenLabel"/></a></li>--%>
+                                        <%--</s:else>--%>
+                                        <%--<li><a style="cursor: pointer" onclick="showModalRj('ringkasan_rj')"><i class="fa fa-file-o"></i>Profil Rekam Medis Rawat Jalan</a></li>--%>
+                                        <%--<li><a style="cursor: pointer" onclick="printPernyataan('SP03')"><i class="fa fa-print"></i>Surat Penolakan Tindakan</a></li>--%>
+                                        <%--<li><a style="cursor: pointer" onclick="printPernyataan('SP06')"><i class="fa fa-print"></i>Surat Pernyataan Non Bpjs / Asuransi</a></li>--%>
+                                        <%--<li><a style="cursor: pointer" onclick="printPernyataan('SK01')"><i class="fa fa-print"></i>Surat Keterangan Dokter</a></li>--%>
+                                        <%--<li><a style="cursor: pointer" onclick="printPernyataan('SK05')"><i class="fa fa-print"></i>Surat Rekomendasi DPJP</a></li>--%>
+                                        <%--<li><a style="cursor: pointer" onclick="printPernyataan('SK03')"><i class="fa fa-print"></i>Surat Keterangan Sehat</a></li>--%>
+                                        <%--<li><a style="cursor: pointer" onclick="printPernyataan('RI01')"><i class="fa fa-print"></i>Surat Permintaan Rawat Inap</a></li>--%>
+                                        <%--<li><a style="cursor: pointer" onclick="printPernyataan('SP15')"><i class="fa fa-print"></i>Resume Medis Rawat Jalan</a></li>--%>
                                     </ul>
                                 </div>
                                 <%----%>
@@ -2207,6 +2215,8 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/RekamMedisRawatJalanAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/MonitoringTransfusiDarahAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenSpesialisAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/KeperawatanRawatJalanAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/CatatanTerintegrasiAction.js"/>'></script>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/datapasien.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/fisioterapi.js"/>'></script>
@@ -2216,6 +2226,10 @@
 <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/spesialis.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/nyeri.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenrawatjalan.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/resikojatuh.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/cppt.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/tindakan_medis.js"/>'></script>
 
 <script type='text/javascript'>
 
@@ -2385,11 +2399,11 @@
     });
 
     function loadModalRM(jenis) {
-        var context = "";
+        var context = contextPath + '/pages/modal/modal-default.jsp';
         if (jenis != "") {
             context = contextPath + '/pages/modal/modal-'+jenis+'.jsp';
         }
-        $('#modal-temp').load(context, function (res) {
+        $('#modal-temp').load(context, function (res, status, xhr) {
         });
     }
 

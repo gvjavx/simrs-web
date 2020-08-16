@@ -154,6 +154,20 @@ function removePaint(id){
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(img, 0, 0);
         }
+    }else if("area_nyeri" == id){
+        const context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        var url = contextPath+'/pages/images/scala-nyeri-number-2.jpg';
+
+        var ctx = canvas.getContext('2d');
+        var img = new Image();
+        img.src = url;
+        img.onload = function (ev) {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0);
+        }
     }else {
         const context = canvas.getContext('2d');
         context.clearRect(0, 0, canvas.width, canvas.height);
@@ -166,4 +180,17 @@ function cekItemIsNull(item) {
         res = item;
     }
     return res;
+}
+
+function setLabelPx(val, id){
+    $('#'+id).html(val+" px");
+}
+
+function convertToDataURL(id){
+    var ttd = "";
+    if(id != ''){
+        ttd = id.toDataURL("image/png"),
+        ttd = ttd.replace(/^data:image\/(png|jpg);base64,/, "");
+    }
+    return ttd;
 }

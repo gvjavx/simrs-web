@@ -1,4 +1,7 @@
-function pengkajianFisioterapi(idDetailCheckup) {
+function pengkajianFisioterapi(jenis, idRM, isSetIdRM) {
+    if(isSetIdRM == "Y"){
+        tempidRm = idRM;
+    }
     if(isReadRM){
         $('.btn-hide').hide();
     }else{
@@ -18,6 +21,14 @@ function addFisioterapi(jenis) {
 function saveFisio(jenis){
     var data = [];
     var cek = false;
+    var dataPasien = "";
+
+    dataPasien = {
+        'no_checkup' : noCheckup,
+        'id_detail_checkup' : idDetailCheckup,
+        'id_pasien' : idPasien,
+        'id_rm' : tempidRm
+    }
 
     if("keadaan_umum" == jenis){
         var darah = $('#f_darah').val();
@@ -135,20 +146,21 @@ function saveFisio(jenis){
         }
     }
 
-    var result = JSON.stringify(data);
-
     if(cek){
-
+        var result = JSON.stringify(data);
+        var pasienData = JSON.stringify(dataPasien);
         $('#save_'+jenis).hide();
         $('#load_'+jenis).show();
         dwr.engine.setAsync(true);
-        FisioterapiAction.saveFisio(result, {callback: function (res) {
+        FisioterapiAction.saveFisio(result, pasienData, {
+            callback: function (res) {
             if(res.status == "success"){
                 $('#save_'+jenis).show();
                 $('#load_'+jenis).hide();
                 $('#modal-fisio-' + jenis).modal('hide');
                 $('#warning_pengkajian_pengkajian').show().fadeOut(5000);
                 $('#msg_pengkajian_pengkajian').text("Berhasil menambahkan data fisioterapi...");
+                getListRekamMedis('rawat_jalan', tipePelayanan, idDetailCheckup);
             }else{
                 $('#save_'+jenis).show();
                 $('#load_'+jenis).hide();

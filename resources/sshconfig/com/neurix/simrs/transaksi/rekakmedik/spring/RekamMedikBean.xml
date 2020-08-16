@@ -15,6 +15,7 @@
     <bean id="rekamMedikBo" class="com.neurix.simrs.transaksi.rekammedik.bo.impl.RekamMedikBoImpl"
           p:checkupDetailDao-ref="checkupDetailDao"
           p:statusPengisianRekamMedisDao-ref="statusPengisianRekamMedisDao"
+          p:rekamMedisPasienDao-ref="rekamMedisPasienDao"
     />
 
     <bean id="rekamMedikBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

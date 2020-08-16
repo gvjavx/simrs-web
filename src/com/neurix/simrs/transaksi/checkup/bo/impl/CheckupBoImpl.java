@@ -2622,7 +2622,8 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         try {
             chekupEntity = headerCheckupDao.getById("noCheckup", bean.getNoCheckup());
             if (chekupEntity.getNoCheckup() != null) {
-                chekupEntity.setAnamnese(bean.getAnamnese());
+                chekupEntity.setAutoanamnesis(bean.getAutoanamnesis());
+                chekupEntity.setHeteroanamnesis(bean.getHeteroanamnesis());
                 chekupEntity.setTensi(bean.getTensi());
                 chekupEntity.setSuhu(bean.getSuhu());
                 chekupEntity.setNadi(bean.getNadi());
@@ -2653,6 +2654,21 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     @Override
     public String getTindakanRawat(String idDetailCheckup) throws GeneralBOException {
         return headerCheckupDao.getTindakanRawat(idDetailCheckup);
+    }
+
+    @Override
+    public String getTindakanRawatICD9(String idDetailCheckup) throws GeneralBOException {
+        return headerCheckupDao.getTindakanRawatIC9(idDetailCheckup);
+    }
+
+    @Override
+    public String getDiagnosaPrimer(String idDetailCheckup) throws GeneralBOException {
+        return headerCheckupDao.getDiagnosaPrimer(idDetailCheckup);
+    }
+
+    @Override
+    public String getDiagnosaSekunder(String idDetailCheckup) throws GeneralBOException {
+        return headerCheckupDao.getDiagnosaSekunder(idDetailCheckup);
     }
 
     @Override

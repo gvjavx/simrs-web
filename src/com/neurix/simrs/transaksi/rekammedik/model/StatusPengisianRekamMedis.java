@@ -17,6 +17,15 @@ public class StatusPengisianRekamMedis {
     private Timestamp createdDate;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String jumlahKategori;
+
+    public String getJumlahKategori() {
+        return jumlahKategori;
+    }
+
+    public void setJumlahKategori(String jumlahKategori) {
+        this.jumlahKategori = jumlahKategori;
+    }
 
     public String getNoCheckup() {
         return noCheckup;

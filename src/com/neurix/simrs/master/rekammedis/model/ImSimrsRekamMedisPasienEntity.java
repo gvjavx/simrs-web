@@ -8,6 +8,7 @@ public class ImSimrsRekamMedisPasienEntity {
     private String kodeRm;
     private String namaRm;
     private String keterangan;
+    private String parameter;
     private String jenis;
     private String flag;
     private String action;
@@ -16,6 +17,23 @@ public class ImSimrsRekamMedisPasienEntity {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String function;
+    private String jumlahKategori;
+
+    public String getParameter() {
+        return parameter;
+    }
+
+    public void setParameter(String parameter) {
+        this.parameter = parameter;
+    }
+
+    public String getJumlahKategori() {
+        return jumlahKategori;
+    }
+
+    public void setJumlahKategori(String jumlahKategori) {
+        this.jumlahKategori = jumlahKategori;
+    }
 
     public String getIdRekamMedisPasien() {
         return idRekamMedisPasien;

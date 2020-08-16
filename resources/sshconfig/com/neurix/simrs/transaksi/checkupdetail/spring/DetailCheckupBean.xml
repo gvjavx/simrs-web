@@ -16,6 +16,7 @@
           p:branchBoProxy-ref="branchBoProxy"
           p:billingSystemBoProxy-ref="billingSystemBoProxy"
           p:periksaLabBoProxy-ref="periksaLabBoProxy"
+          p:teamDokterBoProxy-ref="teamDokterBoProxy"
     />
 
     <bean id="checkupDetailBo" class="com.neurix.simrs.transaksi.checkupdetail.bo.impl.CheckupDetailBoImpl"

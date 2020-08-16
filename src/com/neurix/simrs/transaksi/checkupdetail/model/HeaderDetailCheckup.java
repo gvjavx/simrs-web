@@ -176,6 +176,25 @@ public class HeaderDetailCheckup extends BaseModel{
     private String flagTppri;
     private String isStay;
 
+    private String autoanamnesis;
+    private String heteroanamnesis;
+
+    public String getAutoanamnesis() {
+        return autoanamnesis;
+    }
+
+    public void setAutoanamnesis(String autoanamnesis) {
+        this.autoanamnesis = autoanamnesis;
+    }
+
+    public String getHeteroanamnesis() {
+        return heteroanamnesis;
+    }
+
+    public void setHeteroanamnesis(String heteroanamnesis) {
+        this.heteroanamnesis = heteroanamnesis;
+    }
+
     public String getIsStay() {
         return isStay;
     }

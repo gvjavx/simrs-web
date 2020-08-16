@@ -280,6 +280,11 @@ function saveSPS(jenis, ket) {
         var ttd2 = document.getElementById("et5");
         var cekTtd1 = isCanvasBlank(ttd1);
         var cekTtd2 = isCanvasBlank(ttd2);
+        var nama1 = $('#nama_terang_pasien').val();
+        var nama2 = $('#nama_terang_dokter').val();
+        var sip2 = $('#sip_dokter').val();
+        var sip2 = $('#sip_dokter').val();
+        var isiEdukasi = $('#isi_edukasi').val();
 
         if(va1 == "Pasien"){
             temp = label+va1;
@@ -293,7 +298,7 @@ function saveSPS(jenis, ket) {
             }
         }
 
-        if (temp != '' && !cekTtd1 && !cekTtd2) {
+        if (temp && isiEdukasi != '' && !cekTtd1 && !cekTtd2) {
             var canv1 = ttd1.toDataURL("image/png"),
                 canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");
 
@@ -306,6 +311,15 @@ function saveSPS(jenis, ket) {
                 'keterangan': jenis,
                 'jenis': ket,
                 'tipe': 'ttd',
+                'nama_terang': nama1,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Isi Edukasi',
+                'jawaban': isiEdukasi,
+                'keterangan': jenis,
+                'jenis': ket,
+                'tipe': 'ttd',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -314,6 +328,8 @@ function saveSPS(jenis, ket) {
                 'keterangan': jenis,
                 'jenis': ket,
                 'tipe': 'ttd',
+                'nama_terang': nama2,
+                'sip': sip2,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
@@ -2281,7 +2297,10 @@ function detailSPS(jenis) {
                     if ("ttd" == item.tipe) {
                         body += '<tr>' +
                             '<td width="60%">' + item.parameter + '</td>' +
-                            '<td>' + '<img src="' + jwb + '" style="width: 100px">' + '</td>' +
+                            '<td>' + '<img src="' + jwb + '" style="width: 100px">' +
+                            '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>'+
+                            '<p style="margin-top: -7px">'+cekItemIsNull(item.sip)+'</p>'+
+                            '</td>' +
                             '</tr>';
                     }else if("tht_tht" == item.keterangan){
                         var tht = jwb.split("=");

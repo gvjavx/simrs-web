@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.teamdokter.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -76,6 +77,30 @@ public class DokterTeamDao extends GenericDao<ItSimrsDokterTeamEntity, String> {
             }
         }
 
+        return res;
+    }
+
+    public DokterTeam getNamaDokter(String idDetailCheckup) {
+        DokterTeam res = new DokterTeam();
+        if(!"".equalsIgnoreCase(idDetailCheckup) && idDetailCheckup != null){
+            String SQL = "SELECT \n" +
+                    "a.id_dokter,\n" +
+                    "b.nama_dokter,\n" +
+                    "b.sip\n" +
+                    "FROM it_simrs_dokter_team a\n" +
+                    "INNER JOIN im_simrs_dokter b ON a.id_dokter = b.id_dokter\n" +
+                    "WHERE a.id_detail_checkup = :id\n";
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", idDetailCheckup)
+                    .list();
+            if(result.size() > 0){
+                Object[] obj = result.get(0);
+                res.setIdDokter(obj[0] == null ? "" : obj[0].toString());
+                res.setNamaDokter(obj[1] == null ? "" : obj[1].toString());
+                res.setSip(obj[2] == null ? "" : obj[2].toString());
+            }
+        }
         return res;
     }
 }
