@@ -1,5 +1,6 @@
 package com.neurix.akuntansi.transaksi.budgetingperhitungan.model;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 
@@ -20,6 +21,60 @@ public class PerhitunganBudgeting {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private BigDecimal harga;
+    private BigDecimal hargaDiskon;
+    private BigDecimal qty;
+    private BigDecimal totalHarga;
+    private BigDecimal totalHargaDiskon;
+    private String namaTindakan;
+
+    public BigDecimal getHargaDiskon() {
+        return hargaDiskon;
+    }
+
+    public void setHargaDiskon(BigDecimal hargaDiskon) {
+        this.hargaDiskon = hargaDiskon;
+    }
+
+    public BigDecimal getHarga() {
+        return harga;
+    }
+
+    public void setHarga(BigDecimal harga) {
+        this.harga = harga;
+    }
+
+    public BigDecimal getQty() {
+        return qty;
+    }
+
+    public void setQty(BigDecimal qty) {
+        this.qty = qty;
+    }
+
+    public BigDecimal getTotalHarga() {
+        return totalHarga;
+    }
+
+    public void setTotalHarga(BigDecimal totalHarga) {
+        this.totalHarga = totalHarga;
+    }
+
+    public BigDecimal getTotalHargaDiskon() {
+        return totalHargaDiskon;
+    }
+
+    public void setTotalHargaDiskon(BigDecimal totalHargaDiskon) {
+        this.totalHargaDiskon = totalHargaDiskon;
+    }
+
+    public String getNamaTindakan() {
+        return namaTindakan;
+    }
+
+    public void setNamaTindakan(String namaTindakan) {
+        this.namaTindakan = namaTindakan;
+    }
 
     public String getTahun() {
         return tahun;
