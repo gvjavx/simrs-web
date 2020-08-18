@@ -14,5 +14,7 @@ import java.util.List;
 public interface BudgetingPerhitunganBo {
     public List<ImAkunParameterBudgetingEntity> getListParameterBudgetingEntity(ParameterBudgeting bean) throws GeneralBOException;
     public List<ItAkunPerhitunganBudgetingEntity> getListPerhitunganBudgetingEntity(PerhitunganBudgeting bean) throws GeneralBOException;
+    public List<PerhitunganBudgeting> getListPendapatanTindakan(String branchId, String bulan, String tahun) throws GeneralBOException;
+    public List<PerhitunganBudgeting> getListPendapatanObat(String branchId, String bulan, String tahun) throws GeneralBOException;
 
 }

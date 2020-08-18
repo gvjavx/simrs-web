@@ -569,6 +569,7 @@
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ImAkunParameterBudgetingEntity"/>
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ItAkunPerhitunganBudgetingEntity"/>
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgetingnilaidasar.model.BudgetingNilaiDasar"/>
+      <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgetingperhitungan.model.PerhitunganBudgeting"/>
 
       <!--Master Hcm-->
       <create creator="new">

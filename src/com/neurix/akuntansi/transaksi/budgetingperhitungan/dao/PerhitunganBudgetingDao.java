@@ -68,6 +68,7 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
                 "\tINNER JOIN it_simrs_tindakan_rawat td ON td.id_tindakan = mt.id_tindakan\n" +
                 "\tINNER JOIN it_simrs_header_detail_checkup dc ON dc.id_detail_checkup = td.id_detail_checkup\n" +
                 "\tINNER JOIN it_akun_jurnal jd ON jd.no_jurnal = dc.no_jurnal\n" +
+                "\tINNER JOIN (SELECT * FROM im_simrs_kategori_tindakan WHERE id_kategori_tindakan NOT IN ('KAT00000001','KAT00000002','KAT00000003','KAT00000041')) kt ON kt.id_kategori_tindakan = mt.id_kategori_tindakan\n" +
                 "\tWHERE qty > 0\n" +
                 "\tAND td.approve_flag = 'Y'\n" +
                 "\tAND dc.branch_id = :unit \n" +
@@ -82,8 +83,8 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("unit", branchId)
-                .setParameter("tahun", tahun)
-                .setParameter("bulan", bulan)
+                .setParameter("tahun", new Double(tahun))
+                .setParameter("bulan", new Double(bulan))
                 .list();
 
         List<PerhitunganBudgeting> perhitunganBudgetings = new ArrayList<>();
@@ -94,9 +95,185 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
                 perhitunganBudgeting.setNamaTindakan(obj[0].toString());
                 perhitunganBudgeting.setHarga(obj[1] == null ? new BigDecimal(0) : (BigDecimal) obj[1]);
                 perhitunganBudgeting.setHargaDiskon(obj[2] == null ? new BigDecimal(0) : (BigDecimal) obj[2]);
-                perhitunganBudgeting.setQty(obj[3] == null ? new BigDecimal(0) : (BigDecimal) obj[3]);
+                perhitunganBudgeting.setQty(obj[3] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[3]);
                 perhitunganBudgeting.setTotalHarga(obj[4] == null ? new BigDecimal(4) : (BigDecimal) obj[4]);
                 perhitunganBudgeting.setTotalHargaDiskon(obj[5] == null ? new BigDecimal(0) : (BigDecimal) obj[5]);
+                perhitunganBudgetings.add(perhitunganBudgeting);
+            }
+        }
+        return perhitunganBudgetings;
+    }
+
+    public List<PerhitunganBudgeting> getListPerhitunganPendapatanTindakanRi(String branchId, String tahun, String bulan){
+
+        String SQL = "SELECT \n" +
+                "a.*,\n" +
+                "a.standard_cost * a.qty as total,\n" +
+                "a.harga_diskon * a.qty as total_diskon\n" +
+                "FROM (\n" +
+                "\tSELECT \n" +
+                "\tht.nama_tindakan,\n" +
+                "\tht.standard_cost,\n" +
+                "\tht.harga_diskon, \n" +
+                "\tCOUNT (td.id_tindakan_rawat) as qty\n" +
+                "\tFROM im_simrs_header_tindakan ht\n" +
+                "\tINNER JOIN im_simrs_tindakan mt ON mt.id_header_tindakan = ht.id\n" +
+                "\tINNER JOIN it_simrs_tindakan_rawat td ON td.id_tindakan = mt.id_tindakan\n" +
+                "\tINNER JOIN it_simrs_header_detail_checkup dc ON dc.id_detail_checkup = td.id_detail_checkup\n" +
+                "\tINNER JOIN it_akun_jurnal jd ON jd.no_jurnal = dc.no_jurnal\n" +
+                "\tINNER JOIN (SELECT * FROM im_simrs_kategori_tindakan WHERE id_kategori_tindakan IN ('KAT00000001','KAT00000002','KAT00000003','KAT00000041')) kt ON kt.id_kategori_tindakan = mt.id_kategori_tindakan\n" +
+                "\tWHERE qty > 0\n" +
+                "\tAND td.approve_flag = 'Y'\n" +
+                "\tAND dc.branch_id = :unit \n" +
+                "\tAND EXTRACT(YEAR from jd.tanggal_jurnal) = :tahun \n" +
+                "\tAND EXTRACT(MONTH from jd.tanggal_jurnal) <= :bulan \n" +
+                "\tGROUP BY \n" +
+                "\tht.nama_tindakan,\n" +
+                "\tht.standard_cost,\n" +
+                "\tht.harga_diskon\n" +
+                "\tORDER BY qty DESC\n" +
+                ")a\n";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("unit", branchId)
+                .setParameter("tahun", new Double(tahun))
+                .setParameter("bulan", new Double(bulan))
+                .list();
+
+        List<PerhitunganBudgeting> perhitunganBudgetings = new ArrayList<>();
+        if (results.size() > 0){
+            PerhitunganBudgeting perhitunganBudgeting;
+            for (Object[] obj : results){
+                perhitunganBudgeting = new PerhitunganBudgeting();
+                perhitunganBudgeting.setNamaTindakan(obj[0].toString());
+                perhitunganBudgeting.setHarga(obj[1] == null ? new BigDecimal(0) : (BigDecimal) obj[1]);
+                perhitunganBudgeting.setHargaDiskon(obj[2] == null ? new BigDecimal(0) : (BigDecimal) obj[2]);
+                perhitunganBudgeting.setQty(obj[3] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[3]);
+                perhitunganBudgeting.setTotalHarga(obj[4] == null ? new BigDecimal(4) : (BigDecimal) obj[4]);
+                perhitunganBudgeting.setTotalHargaDiskon(obj[5] == null ? new BigDecimal(0) : (BigDecimal) obj[5]);
+                perhitunganBudgetings.add(perhitunganBudgeting);
+            }
+        }
+        return perhitunganBudgetings;
+    }
+
+
+    public List<PerhitunganBudgeting> getListPendapatanObatPeriksa(String branchId, String tahun, String bulan){
+
+        String SQL = "SELECT\n" +
+                "a.nama_obat, \n" +
+                "a.harga_net,\n" +
+                "SUM (a.qty) as qty,\n" +
+                "SUM (a.total) as total\n" +
+                "FROM \n" +
+                "(\n" +
+                "\tSELECT\n" +
+                "\tho.nama_obat, \n" +
+                "\tho.harga_net,\n" +
+                "\todb.qty,\n" +
+                "\tho.harga_net * odb.qty AS total\n" +
+                "\tFROM mt_simrs_harga_obat ho\n" +
+                "\tINNER JOIN mt_simrs_transaksi_obat_detail od On od.id_obat = ho.id_obat\n" +
+                "\tINNER JOIN \n" +
+                "\t(\n" +
+                "\t\tSELECT \n" +
+                "\t\tid_transaksi_obat_detail,\n" +
+                "\t\tSUM(qty_approve) as QTY\n" +
+                "\t\tFROM mt_simrs_transaksi_obat_detail_batch \n" +
+                "\t\tWHERE\n" +
+                "\t\tapprove_flag = 'Y'\n" +
+                "\t\tGROUP BY\n" +
+                "\t\tid_transaksi_obat_detail\n" +
+                "\t) odb ON odb.id_transaksi_obat_detail = od.id_transaksi_obat_detail\n" +
+                "\tINNER JOIN mt_simrs_approval_transaksi_obat ap ON ap.id_approval_obat = od.id_approval_obat\n" +
+                "\tINNER JOIN mt_simrs_permintaan_resep pr ON pr.id_approval_obat = od.id_approval_obat\n" +
+                "\tINNER JOIN it_simrs_header_detail_checkup hdc ON hdc.id_detail_checkup = pr.id_detail_checkup\n" +
+                "\tINNER JOIN it_akun_jurnal jd ON jd.no_jurnal = hdc.no_jurnal\n" +
+                "\tINNER JOIN (SELECT * FROM im_simrs_pelayanan WHERE tipe_pelayanan = 'apotek') ml ON ml.id_pelayanan = pr.tujuan_pelayanan\n" +
+                "\tWHERE hdc.branch_id = :unit\n" +
+                "\tAND EXTRACT(YEAR from jd.tanggal_jurnal) = :tahun\n" +
+                "\tAND EXTRACT(MONTH from jd.tanggal_jurnal) <= ':bulan\n" +
+                ")a\n" +
+                "GROUP BY\n" +
+                "a.nama_obat, \n" +
+                "a.harga_net;";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("unit", branchId)
+                .setParameter("tahun", new Double(tahun))
+                .setParameter("bulan", new Double(bulan))
+                .list();
+
+        List<PerhitunganBudgeting> perhitunganBudgetings = new ArrayList<>();
+        if (results.size() > 0){
+            PerhitunganBudgeting perhitunganBudgeting;
+            for (Object[] obj : results){
+                perhitunganBudgeting = new PerhitunganBudgeting();
+                perhitunganBudgeting.setNamaTindakan(obj[0].toString());
+                perhitunganBudgeting.setHarga(obj[1] == null ? new BigDecimal(0) : (BigDecimal) obj[1]);
+                perhitunganBudgeting.setQty(obj[2] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[2]);
+                perhitunganBudgeting.setTotalHarga(obj[3] == null ? new BigDecimal(0) : (BigDecimal) obj[3]);
+                perhitunganBudgetings.add(perhitunganBudgeting);
+            }
+        }
+        return perhitunganBudgetings;
+    }
+
+    public List<PerhitunganBudgeting> getListPendapatanObatPeriksaRi(String branchId, String tahun, String bulan){
+
+        String SQL = "SELECT\n" +
+                "a.nama_obat, \n" +
+                "a.harga_net,\n" +
+                "SUM (a.qty) as qty,\n" +
+                "SUM (a.total) as total\n" +
+                "FROM \n" +
+                "(\n" +
+                "\tSELECT\n" +
+                "\tho.nama_obat, \n" +
+                "\tho.harga_net,\n" +
+                "\todb.qty,\n" +
+                "\tho.harga_net * odb.qty AS total\n" +
+                "\tFROM mt_simrs_harga_obat ho\n" +
+                "\tINNER JOIN mt_simrs_transaksi_obat_detail od On od.id_obat = ho.id_obat\n" +
+                "\tINNER JOIN \n" +
+                "\t(\n" +
+                "\t\tSELECT \n" +
+                "\t\tid_transaksi_obat_detail,\n" +
+                "\t\tSUM(qty_approve) as QTY\n" +
+                "\t\tFROM mt_simrs_transaksi_obat_detail_batch \n" +
+                "\t\tWHERE\n" +
+                "\t\tapprove_flag = 'Y'\n" +
+                "\t\tGROUP BY\n" +
+                "\t\tid_transaksi_obat_detail\n" +
+                "\t) odb ON odb.id_transaksi_obat_detail = od.id_transaksi_obat_detail\n" +
+                "\tINNER JOIN mt_simrs_approval_transaksi_obat ap ON ap.id_approval_obat = od.id_approval_obat\n" +
+                "\tINNER JOIN mt_simrs_permintaan_resep pr ON pr.id_approval_obat = od.id_approval_obat\n" +
+                "\tINNER JOIN it_simrs_header_detail_checkup hdc ON hdc.id_detail_checkup = pr.id_detail_checkup\n" +
+                "\tINNER JOIN it_akun_jurnal jd ON jd.no_jurnal = hdc.no_jurnal\n" +
+                "\tINNER JOIN (SELECT * FROM im_simrs_pelayanan WHERE tipe_pelayanan = 'apotek_ri') ml ON ml.id_pelayanan = pr.tujuan_pelayanan\n" +
+                "\tWHERE hdc.branch_id = :unit\n" +
+                "\tAND EXTRACT(YEAR from jd.tanggal_jurnal) = :tahun\n" +
+                "\tAND EXTRACT(MONTH from jd.tanggal_jurnal) <= ':bulan\n" +
+                ")a\n" +
+                "GROUP BY\n" +
+                "a.nama_obat, \n" +
+                "a.harga_net;";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("unit", branchId)
+                .setParameter("tahun", new Double(tahun))
+                .setParameter("bulan", new Double(bulan))
+                .list();
+
+        List<PerhitunganBudgeting> perhitunganBudgetings = new ArrayList<>();
+        if (results.size() > 0){
+            PerhitunganBudgeting perhitunganBudgeting;
+            for (Object[] obj : results){
+                perhitunganBudgeting = new PerhitunganBudgeting();
+                perhitunganBudgeting.setNamaTindakan(obj[0].toString());
+                perhitunganBudgeting.setHarga(obj[1] == null ? new BigDecimal(0) : (BigDecimal) obj[1]);
+                perhitunganBudgeting.setQty(obj[2] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[2]);
+                perhitunganBudgeting.setTotalHarga(obj[3] == null ? new BigDecimal(0) : (BigDecimal) obj[3]);
                 perhitunganBudgetings.add(perhitunganBudgeting);
             }
         }

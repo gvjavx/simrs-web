@@ -88,4 +88,16 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
         logger.info("[BudgetingPerhitunganBoImpl.getListPerhitunganBudgetingEntity] END <<<");
         return perhitunganBudgetingEntities;
     }
+
+    @Override
+    public List<PerhitunganBudgeting> getListPendapatanTindakan(String branchId, String bulan, String tahun) throws GeneralBOException {
+        logger.info("[BudgetingPerhitunganBoImpl.getListPendapatanTindakan] START >>>");
+        return perhitunganBudgetingDao.getListPerhitunganPendapatanTindakan(branchId, tahun, bulan);
+    }
+
+    @Override
+    public List<PerhitunganBudgeting> getListPendapatanObat(String branchId, String bulan, String tahun) throws GeneralBOException {
+        logger.info("[BudgetingPerhitunganBoImpl.getListPendapatanObat] START >>>");
+        return perhitunganBudgetingDao.getListPendapatanObatPeriksa(branchId, tahun, bulan);
+    }
 }

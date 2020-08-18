@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 public class PerhitunganBudgeting {
     private String id;
     private String idParameterBudgeting;
-    private BigInteger nilai;
+    private BigDecimal nilai;
     private String operator;
     private String branchId;
     private String tahun;
@@ -23,7 +23,7 @@ public class PerhitunganBudgeting {
     private String lastUpdateWho;
     private BigDecimal harga;
     private BigDecimal hargaDiskon;
-    private BigDecimal qty;
+    private BigInteger qty;
     private BigDecimal totalHarga;
     private BigDecimal totalHargaDiskon;
     private String namaTindakan;
@@ -44,11 +44,11 @@ public class PerhitunganBudgeting {
         this.harga = harga;
     }
 
-    public BigDecimal getQty() {
+    public BigInteger getQty() {
         return qty;
     }
 
-    public void setQty(BigDecimal qty) {
+    public void setQty(BigInteger qty) {
         this.qty = qty;
     }
 
@@ -100,11 +100,11 @@ public class PerhitunganBudgeting {
         this.idParameterBudgeting = idParameterBudgeting;
     }
 
-    public BigInteger getNilai() {
+    public BigDecimal getNilai() {
         return nilai;
     }
 
-    public void setNilai(BigInteger nilai) {
+    public void setNilai(BigDecimal nilai) {
         this.nilai = nilai;
     }
 

@@ -7,6 +7,7 @@ import com.neurix.akuntansi.transaksi.budgeting.model.*;
 import com.neurix.akuntansi.transaksi.budgetingperhitungan.bo.BudgetingPerhitunganBo;
 import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ImAkunParameterBudgetingEntity;
 import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ParameterBudgeting;
+import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.PerhitunganBudgeting;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.common.constant.CommonConstant;
@@ -20,6 +21,7 @@ import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -383,5 +385,27 @@ public class BgPendapatanAction {
         parameterBudgeting.setIdJenisBudgeting(idJenis);
         return budgetingPerhitunganBo.getListParameterBudgetingEntity(parameterBudgeting);
 
+    }
+
+    public List<PerhitunganBudgeting> getListPendapatanTindakan(String branchId, String tahun){
+        logger.info("[BgPendapatanAction.getListParameterBudgeting] START >>>");
+        String bulan = CommonUtil.getDateParted(new Date(System.currentTimeMillis()), "MONTH");
+        Integer intBulanLalu = Integer.valueOf(bulan) - 1;
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
+
+        return budgetingPerhitunganBo.getListPendapatanTindakan(branchId, intBulanLalu.toString(), tahun);
+    }
+
+    public List<PerhitunganBudgeting> getListPendapatanObat(String branchId, String tahun){
+        logger.info("[BgPendapatanAction.getListPendapatanObat] START >>>");
+        String bulan = CommonUtil.getDateParted(new Date(System.currentTimeMillis()), "MONTH");
+        Integer intBulanLalu = Integer.valueOf(bulan) - 1;
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
+
+        return budgetingPerhitunganBo.getListPendapatanTindakan(branchId, intBulanLalu.toString(), tahun);
     }
 }
