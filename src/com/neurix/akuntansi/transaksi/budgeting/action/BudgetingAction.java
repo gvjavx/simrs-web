@@ -27,9 +27,6 @@ import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static com.neurix.akuntansi.transaksi.budgeting.action.BudgetingAction.StatusBudgeting.*;
-
 /**
  * Created by reza on 29/04/20.
  */
@@ -83,40 +80,8 @@ public class BudgetingAction {
         this.budgeting = budgeting;
     }
 
-    ////=== CLASS STATUS BUDGETING START ===////
-    class StatusBudgeting{
-
-        String statusDetail;
-        String status;
-        Integer idx;
-
-        public String getStatusDetail() {
-            return statusDetail;
-        }
-
-        public void setStatusDetail(String statusDetail) {
-            this.statusDetail = statusDetail;
-        }
-
-        public String getStatus() {
-            return status;
-        }
-
-        public void setStatus(String status) {
-            this.status = status;
-        }
-
-        public Integer getIdx() {
-            return idx;
-        }
-
-        public void setIdx(Integer idx) {
-            this.idx = idx;
-        }
-    }
-
     // sorting status budgeting acending
-    class SortByIdxAsc implements Comparator<StatusBudgeting>
+    public class SortByIdxAsc implements Comparator<StatusBudgeting>
     {
         // Used for sorting in ascending order of
         // roll number
@@ -127,7 +92,7 @@ public class BudgetingAction {
     }
 
     // sorting status budgeting decending
-    class SortByIdxDesc implements Comparator<StatusBudgeting>
+    public class SortByIdxDesc implements Comparator<StatusBudgeting>
     {
         // Used for sorting in decending order of
         // roll number
@@ -136,10 +101,9 @@ public class BudgetingAction {
             return b.getIdx() - a.getIdx();
         }
     }
-    ////=== CLASS STATUS BUDGETING END ===////
 
     ////=== LIST STATUS BIDGETING SORTING BY IDX START ===////
-    private List<StatusBudgeting> listOfStatusBudgeting(){
+    public List<StatusBudgeting> listOfStatusBudgeting(){
 
         StatusBudgeting statusBudgeting;
         List<StatusBudgeting> statusBudgetingList = new ArrayList<>();
@@ -1241,6 +1205,15 @@ public class BudgetingAction {
         return kodeRekeningBo.getListKodeRekeningByLevel(coa, level);
     }
 
+    public List<ImKodeRekeningEntity> getListKodeRekeningByLevel(String coa, String tipeBudgeting){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        KodeRekeningBo kodeRekeningBo = (KodeRekeningBo) ctx.getBean("kodeRekeningBoProxy");
+        BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
+
+        Long level = budgetingBo.getlastLevelKodeRekening();
+        return kodeRekeningBo.getListKodeRekeningByLevelAndTipeBudgeting(coa, level, tipeBudgeting);
+    }
+
     public CrudResponse saveAddPengadaan(String strJson, String namaPengadaan, String rekeningId, String tipe) throws JSONException{
         CrudResponse response = new CrudResponse();
 
@@ -1394,12 +1367,15 @@ public class BudgetingAction {
         return budgeting;
     }
 
-    public Budgeting checkTransaksiBudgeting(String branch, String tahun){
+    public Budgeting checkTransaksiBudgeting(String branch, String tahun, String tipeBudgeting){
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
 
-        return budgetingBo.checkBudgeting(branch, tahun);
+        if (tipeBudgeting != null && !"".equalsIgnoreCase(tipeBudgeting))
+            return budgetingBo.checkBudgetingByTipe(branch, tahun, tipeBudgeting);
+        else
+            return budgetingBo.checkBudgeting(branch, tahun);
     }
 
     public List<Budgeting> getListOfCoaBudgetingSession(){
@@ -1677,8 +1653,8 @@ public class BudgetingAction {
         return data;
     }
 
-    public String getBudgetInvestasiSaatIni(String branchId,String divisiId,String tanggal,String idPengadaan){
-        String budgetSaatIni ;
+    public Budgeting getBudgetInvestasiSaatIni(String branchId,String divisiId,String tanggal,String idPengadaan){
+        Budgeting data = new Budgeting();
         String[] arrTanggal = tanggal.split("-");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -1689,9 +1665,9 @@ public class BudgetingAction {
         budgetingStatus.setBranchId(branchId);
         budgetingStatus.setTahun(arrTanggal[0]);
 
-        budgetSaatIni = budgetingBo.getBudgetBiayaInvestasiSaatIni(budgetingStatus);
+        data = budgetingBo.getBudgetBiayaInvestasiSaatIni(budgetingStatus);
 
-        return budgetSaatIni;
+        return data;
     }
 
     public List<Budgeting> getNoBudgetByDivisi(String branchId,String divisiId,String tanggal){
@@ -1772,7 +1748,21 @@ public class BudgetingAction {
         return budgetingList;
     }
 
+    public List<BudgetingPengadaan> getTerminPembayaran(String pengadaanId) {
+        List<BudgetingPengadaan> budgetingList = new ArrayList<>();
 
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
+
+        budgetingList = budgetingBo.getTerminPembayaran(pengadaanId);
+        return budgetingList;
+    }
+
+    public String checkNilaiDasarByTahun(String tahun){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
+        return budgetingBo.checkNilaiDasarByTahun(tahun);
+    }
 
     public void setBudgetingBoProxy(BudgetingBo budgetingBoProxy) {
         this.budgetingBoProxy = budgetingBoProxy;

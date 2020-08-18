@@ -1,11 +1,9 @@
 package com.neurix.akuntansi.transaksi.budgeting.dao;
 
 import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
-import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.transaksi.budgeting.model.Budgeting;
 import com.neurix.akuntansi.transaksi.budgeting.model.ItAkunBudgetingEntity;
 import com.neurix.akuntansi.transaksi.saldoakhir.model.SaldoAkhir;
-import com.neurix.akuntansi.transaksi.tutupperiod.model.TutupPeriod;
 import com.neurix.common.dao.GenericDao;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -56,6 +54,9 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
             criteria.add(Restrictions.eq("status", mapCriteria.get("status").toString()));
         }
 
+        if (mapCriteria.get("rekening_id_list") != null){
+            criteria.add(Restrictions.in("rekeningId", (List<String>) mapCriteria.get("rekening_id_list")));
+        }
 
         List<ItAkunBudgetingEntity> akunBudgetingEntities = criteria.list();
         return akunBudgetingEntities;
@@ -163,6 +164,56 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
 
         return budgeting;
     }
+
+    public Budgeting getCheckTransaksiWithTipeBudgeting(String branchId, String tahun, String tipeBudgeting){
+
+        String SQL = "SELECT branch_id, tahun, status, a.last_update, a.last_update_who FROM it_akun_budgeting a\n" +
+                "INNER JOIN im_akun_kode_rekening b ON b.rekening_id = a.rekening_id\n" +
+                "WHERE branch_id = :unit \n" +
+                "AND a.tahun = :tahun \n" +
+                "AND b.tipe_budgeting = :tipe \n" +
+                "ORDER BY a.last_update DESC\n" +
+                "LIMIT 1";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("unit", branchId)
+                .setParameter("tahun", tahun)
+                .setParameter("tipe", tipeBudgeting)
+                .list();
+
+        Budgeting budgeting = new Budgeting();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                budgeting.setBranchId(obj[0].toString());
+                budgeting.setTahun(obj[1].toString());
+                budgeting.setStatus(obj[2].toString());
+                budgeting.setLastUpdate((Timestamp) obj[3]);
+                budgeting.setLastUpdateWho(obj[4].toString());
+            }
+        }
+
+        return budgeting;
+    }
+
+    public String checkNilaiDasarByTahun(String tahun){
+
+        String SQL = "SELECT id FROM it_akun_budgeting_nilai_dasar\n" +
+                "    WHERE tahun = :tahun \n" +
+                "    AND flag = 'Y'\n" +
+                "    ORDER BY created_date DESC LIMIT 1";
+
+        List<Object> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("tahun", tahun)
+                .list();
+
+        Budgeting budgeting = new Budgeting();
+        if (results.size() > 0){
+            return "Y";
+        }
+        return "N";
+    }
+
+
 
     public String getNoSebelumnya(String tahun, String branchId, String rekeningId, String status){
         String SQL = "SELECT no_budgeting, status, rekening_id\n" +

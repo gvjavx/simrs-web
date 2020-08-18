@@ -222,7 +222,7 @@
 				<reportElement x="0" y="69" width="381" height="36" uuid="4b0e3c60-9e84-42a5-8a4c-1d10dc26cc51"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Yang bertanda tangan dibawah ini, Dokter PT. NUSANTARA MEDIKA UTAMA "+$P{reportParams.unit}+" "+$V{unitKota}+ ", dengan mengingat sumpah jabatannya dengan sebenarnya bahwa :"]]></textFieldExpression>
 			</textField>

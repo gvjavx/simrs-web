@@ -1207,7 +1207,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         return transaksiObatDetailList;
     }
 
-    public List<HeaderCheckup> getListHistoryPasien(String idPasien) {
+    public List<HeaderCheckup> getListHistoryPasien(String idPasien, String branchId) {
         List<HeaderCheckup> checkupList = new ArrayList<>();
         if (idPasien != null) {
             String SQL = "SELECT \n" +
@@ -1242,7 +1242,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
             List<Object[]> results = new ArrayList<>();
             results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("id", idPasien)
-                    .setParameter("branchId", CommonUtil.userBranchLogin())
+                    .setParameter("branchId", branchId == null || branchId.equalsIgnoreCase("") ?  CommonUtil.userBranchLogin() : branchId)
                     .list();
 
             if (results.size() > 0) {

@@ -91,25 +91,37 @@
                                                 </td>
                                             </tr>
 
+                                            <%--<tr>--%>
+                                                <%--<td>--%>
+                                                    <%--<label class="control-label"><small>Jabatan :</small></label>--%>
+                                                <%--</td>--%>
+                                                <%--<td>--%>
+                                                    <%--<table>--%>
+                                                        <%--<s:action id="comboPosition" namespace="/admin/position"--%>
+                                                                  <%--name="searchPosition_position"/>--%>
+                                                        <%--<s:select list="#comboPosition.listOfComboPosition" id="positionId"--%>
+                                                                  <%--name="payrollTunjanganStrategis.positionId"--%>
+                                                                  <%--listKey="positionId" listValue="positionName" headerKey=""--%>
+                                                                  <%--headerValue="[Select one]" cssClass="form-control"/>--%>
+                                                    <%--</table>--%>
+                                                <%--</td>--%>
+                                            <%--</tr>--%>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Jabatan :</small></label>
+                                                    <label class="control-label"><small>Profesi :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:action id="comboPosition" namespace="/admin/position"
-                                                                  name="searchPosition_position"/>
-                                                        <s:select list="#comboPosition.listOfComboPosition" id="positionId"
-                                                                  name="payrollTunjanganStrategis.positionId"
-                                                                  listKey="positionId" listValue="positionName" headerKey=""
-                                                                  headerValue="[Select one]" cssClass="form-control"/>
+                                                        <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
+                                                        <s:select list="#comboProfesi.listComboProfesi" id="profesiId" name="payrollTunjanganStrategis.profesiId"
+                                                                  listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
                                                     </table>
                                                 </td>
                                             </tr>
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Golongan :</small></label>
+                                                    <label class="control-label"><small>Level :</small></label>
                                                 </td>
                                                 <td id="golongan1Group">
                                                     <table>
@@ -215,9 +227,9 @@
                                                                 </s:if>
                                                             </display:column>
                                                             <display:column property="tunjStrategisId" sortable="true" title="T. Jab. Fungsional ID" />
-                                                            <display:column property="positionName" sortable="true" title="Jabatan"  />
+                                                            <display:column property="profesiName" sortable="true" title="Profesi"  />
                                                             <display:column property="stNilai" sortable="true" title="Nilai"  />
-                                                            <display:column property="golonganName" sortable="true" title="Golongan"  />
+                                                            <display:column property="golonganName" sortable="true" title="Level"  />
                                                             <display:column property="flag" sortable="true" title="flag"  />
                                                             <display:column property="action" sortable="true" title="action"  />
                                                             <display:column property="createdDate" sortable="true" title="Created date"  />

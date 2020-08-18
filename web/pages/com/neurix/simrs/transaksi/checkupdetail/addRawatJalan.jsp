@@ -1796,6 +1796,7 @@
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_rep_obat"><i class="fa fa-check"></i> correct</p>
                             <p style="margin-top: 17px; display: none; margin-left: -20px" id="label-kronis"><label class="label label-warning" >Obat Kronis</label></p>
+                            <button class="btn btn-sm btn-primary" style="display: none;" id="btn-reset-combo-obat" onclick="resetComboObat()"><i class="fa fa-edit"></i></button>
                             <input type="hidden" id="val-kronis"/>
                         </div>
                     </div>
@@ -1822,6 +1823,42 @@
                         </div>
                         <input type="hidden" id="h-qty-default"/>
                     </div>
+                </div>
+                <div class="row">
+                    <div id="obat-serupa" style="display: none; background-color: #fff4f0; height: 150px;padding-top: 10px;">
+                        <h5 align="center">Obat Kandungan Serupa : </h5>
+                        <input type="hidden" value="N" id="flag-obat-serupa">
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
+                            <div class="col-md-7">
+                                <select class="form-control select2" style="margin-top: 7px; width: 100%"
+                                        id="resep_nama_obat_serupa">
+                                    <option value="">[select one]</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                                   id="war_rep_obat_serupa"><i class="fa fa-times"></i> required</p>
+                                <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                                   id="cor_rep_obat_serupa"><i class="fa fa-check"></i> correct</p>
+                                <p style="margin-top: 17px; display: none; margin-left: -20px" id="label-kronis-serupa"><label class="label label-warning" >Obat Kronis</label></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Stok Obat (Biji)</label>
+                            <div class="col-md-7">
+                                <%--<label style="margin-top: 7px">Stok (Biji)</label>--%>
+                                <div class="input-group" style="margin-top: 7px; width: 40%">
+                                    <input class="form-control" type="number" min="1" id="resep_stok_biji_serupa" readonly>
+                                    <div class="input-group-addon">
+                                        Biji
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Jenis Satuan</label>
                         <div class="col-md-7">

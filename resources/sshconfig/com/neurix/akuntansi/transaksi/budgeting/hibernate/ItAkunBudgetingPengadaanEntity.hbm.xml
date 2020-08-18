@@ -21,6 +21,13 @@
         <property name="namPengadaan">
             <column name="nama_pengadaan" sql-type="varchar" length="100" not-null="false" />
         </property>
+
+        <property name="pembayaran">
+            <column name="pembayaran" sql-type="varchar" length="10" not-null="false" />
+        </property>
+        <property name="namaKontrak">
+            <column name="nama_kontrak" sql-type="varchar" length="10" not-null="false" />
+        </property>
         <property name="nilai">
             <column name="nilai" sql-type="numeric" not-null="false" />
         </property>
@@ -60,6 +67,29 @@
         <property name="noPengadaan">
             <column name="no_pengadaan" sql-type="varchar" not-null="false" />
         </property>
-
+        <property name="realisasiKontrak">
+            <column name="realisasi_kontrak" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="sisaNilaiKontrak">
+            <column name="sisa_nilai_kontrak" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="noKontrakAdendum1">
+            <column name="no_kontrak_adendum_1" sql-type="varchar" not-null="false" />
+        </property>
+        <property name="nilaiAdendum1">
+            <column name="nilai_adendum_1" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="noKontrakAdendum2">
+            <column name="no_kontrak_adendum_2" sql-type="varchar" not-null="false" />
+        </property>
+        <property name="nilaiAdendum2">
+            <column name="nilai_adendum_2" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="noKontrakAdendum3">
+            <column name="no_kontrak_adendum_3" sql-type="varchar" not-null="false" />
+        </property>
+        <property name="nilaiAdendum3">
+            <column name="nilai_adendum_3" sql-type="numeric" not-null="false" />
+        </property>
     </class>
 </hibernate-mapping>

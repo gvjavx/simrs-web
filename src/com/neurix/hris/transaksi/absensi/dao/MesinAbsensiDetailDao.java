@@ -52,9 +52,9 @@ public class MesinAbsensiDetailDao extends GenericDao<MesinAbsensiDetailEntity, 
             if (mapCriteria.get("work_code")!=null) {
                 criteria.add(Restrictions.eq("workCode", (String) mapCriteria.get("work_code")));
             }
-//            if (mapCriteria.get("scan_date")!=null) {
-//                criteria.add(Restrictions.eq("scanDate",mapCriteria.get("scan_date")));
-//            }
+            if (mapCriteria.get("scan_date")!=null) {
+                criteria.add(Restrictions.eq("scanDate",mapCriteria.get("scan_date")));
+            }
             if (mapCriteria.get("tanggal_dari")!=null && mapCriteria.get("tanggal_selesai")!=null) {
                 criteria.add(Restrictions.between("scanDate",mapCriteria.get("tanggal_dari"),mapCriteria.get("tanggal_selesai")));
             }

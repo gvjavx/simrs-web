@@ -59,6 +59,161 @@ public class AntrianTelemedic {
     private String noSep;
     private String idDiagnosa;
     private String ketDiagnosa;
+    private String flagBelumBayar;
+    private String flagApproveConfirm;
+    private BigDecimal dibayarPasien;
+    private String urlFotoStruk;
+    private String labelStatusAsuransi;
+    private String flagBatalDokter;
+    private String idBatalDokterTelemedic;
+    private String alasanBatal;
+    private String alasan;
+    private String flagDanaDikembaLikan;
+    private String isMobile;
+    private String idRekening;
+
+    public String getIdRekening() {
+        return idRekening;
+    }
+
+    public void setIdRekening(String idRekening) {
+        this.idRekening = idRekening;
+    }
+    private String flagViewApproveConfirm;
+
+    public String getFlagViewApproveConfirm() {
+        return flagViewApproveConfirm;
+    }
+
+    public void setFlagViewApproveConfirm(String flagViewApproveConfirm) {
+        this.flagViewApproveConfirm = flagViewApproveConfirm;
+    }
+
+    public String getIsMobile() {
+        return isMobile;
+    }
+
+    public void setIsMobile(String isMobile) {
+        this.isMobile = isMobile;
+    }
+
+    public String getFlagDanaDikembaLikan() {
+        return flagDanaDikembaLikan;
+    }
+
+    public void setFlagDanaDikembaLikan(String flagDanaDikembaLikan) {
+        this.flagDanaDikembaLikan = flagDanaDikembaLikan;
+    }
+
+    public String getAlasanBatal() {
+        return alasanBatal;
+    }
+
+    public void setAlasanBatal(String alasanBatal) {
+        this.alasanBatal = alasanBatal;
+    }
+
+    public String getAlasan() {
+        return alasan;
+    }
+
+    public void setAlasan(String alasan) {
+        this.alasan = alasan;
+    }
+
+    public String getIdBatalDokterTelemedic() {
+        return idBatalDokterTelemedic;
+    }
+
+    public void setIdBatalDokterTelemedic(String idBatalDokterTelemedic) {
+        this.idBatalDokterTelemedic = idBatalDokterTelemedic;
+    }
+
+    public String getFlagBatalDokter() {
+        return flagBatalDokter;
+    }
+
+    public void setFlagBatalDokter(String flagBatalDokter) {
+        this.flagBatalDokter = flagBatalDokter;
+    }
+
+    private String stCreatedDate;
+
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
+
+    public String getLabelStatusAsuransi() {
+        return labelStatusAsuransi;
+    }
+
+    public void setLabelStatusAsuransi(String labelStatusAsuransi) {
+        this.labelStatusAsuransi = labelStatusAsuransi;
+    }
+
+    public String getUrlFotoStruk() {
+        return urlFotoStruk;
+    }
+
+    public void setUrlFotoStruk(String urlFotoStruk) {
+        this.urlFotoStruk = urlFotoStruk;
+    }
+
+    public BigDecimal getDibayarPasien() {
+        return dibayarPasien;
+    }
+
+    public void setDibayarPasien(BigDecimal dibayarPasien) {
+        this.dibayarPasien = dibayarPasien;
+    }
+
+    public String getFlagApproveConfirm() {
+        return flagApproveConfirm;
+    }
+
+    public void setFlagApproveConfirm(String flagApproveConfirm) {
+        this.flagApproveConfirm = flagApproveConfirm;
+    }
+
+    public String getFlagBelumBayar() {
+        return flagBelumBayar;
+    }
+
+    public void setFlagBelumBayar(String flagBelumBayar) {
+        this.flagBelumBayar = flagBelumBayar;
+    }
+
+    private String idPembayaran;
+    private BigDecimal nominal;
+    private String approvedFlag;
+
+    public String getApprovedFlag() {
+        return approvedFlag;
+    }
+
+    public void setApprovedFlag(String approvedFlag) {
+        this.approvedFlag = approvedFlag;
+    }
+
+    public String getIdPembayaran() {
+        return idPembayaran;
+    }
+
+    public void setIdPembayaran(String idPembayaran) {
+        this.idPembayaran = idPembayaran;
+    }
+
+    public BigDecimal getNominal() {
+        return nominal;
+    }
+
+    public void setNominal(BigDecimal nominal) {
+        this.nominal = nominal;
+    }
 
     public String getIdDiagnosa() {
         return idDiagnosa;

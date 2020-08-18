@@ -96,6 +96,15 @@ public class CutiPegawai extends BaseModel {
     private Boolean pengajuanBatal;
 
     private String roleId;
+    private String nipUserLogin;
+
+    public String getNipUserLogin() {
+        return nipUserLogin;
+    }
+
+    public void setNipUserLogin(String nipUserLogin) {
+        this.nipUserLogin = nipUserLogin;
+    }
 
     public String getProfesiId() {
         return profesiId;

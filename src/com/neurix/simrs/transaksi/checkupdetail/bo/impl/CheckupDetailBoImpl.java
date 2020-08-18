@@ -374,6 +374,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             detailCheckup.setMetodePembayaran(entity.getMetodePembayaran());
             detailCheckup.setPerujuk(entity.getRujuk());
             detailCheckup.setSuratRujukan(entity.getUrlDocRujuk());
+            detailCheckup.setDibayarPasien(entity.getDibayarPasien() != null ? CommonUtil.numbericFormat(entity.getDibayarPasien(), "###,###") : "0");
 
             if (detailCheckup.getStatusPeriksa() != null && !"".equalsIgnoreCase(detailCheckup.getStatusPeriksa())) {
                 StatusPasien statusPasien = new StatusPasien();

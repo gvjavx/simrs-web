@@ -2,6 +2,7 @@ package com.neurix.hris.master.biodata.model;
 
 import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.hris.master.golongan.model.ImGolonganEntity;
+import com.neurix.hris.master.golonganPkwt.model.ImGolonganPkwtEntity;
 import com.neurix.hris.master.payrollDanaPensiun.model.ImPayrollDanaPensiunEntity;
 import com.neurix.hris.master.provinsi.model.ImDesaEntity;
 import com.neurix.hris.master.provinsi.model.ImKecamatanEntity;
@@ -347,6 +348,16 @@ public class ImBiodataEntity implements Serializable {
     private ImDesaEntity imDesaEntity ;
     private ImGolonganEntity imGolonganEntity;
     private ItPersonilPositionEntity itPersonilPositionEntity;
+
+    private ImGolonganPkwtEntity imGolonganPkwtEntity;
+
+    public ImGolonganPkwtEntity getImGolonganPkwtEntity() {
+        return imGolonganPkwtEntity;
+    }
+
+    public void setImGolonganPkwtEntity(ImGolonganPkwtEntity imGolonganPkwtEntity) {
+        this.imGolonganPkwtEntity = imGolonganPkwtEntity;
+    }
 
     public String getShift() {
         return shift;

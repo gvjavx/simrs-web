@@ -164,6 +164,15 @@ public class HeaderDetailCheckup extends BaseModel{
     private String asesmenLabel;
     private String kategoriPelayanan;
     private String pemeriksaanTerakhir;
+    private String dibayarPasien;
+
+    public String getDibayarPasien() {
+        return dibayarPasien;
+    }
+
+    public void setDibayarPasien(String dibayarPasien) {
+        this.dibayarPasien = dibayarPasien;
+    }
 
     private String idPelayananDokter;
     private String noCheckupUlang;

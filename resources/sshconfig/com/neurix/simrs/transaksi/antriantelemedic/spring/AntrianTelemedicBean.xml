@@ -18,12 +18,28 @@
           p:kurirDao-ref="kurirDao"
           p:branchDao-ref="branchDao"
           p:asuransiDao-ref="asuransiDao"
+          p:strukAsuransiDao-ref="strukAsuransiDao"
+          p:batalDokterTelemedicDao-ref="batalDokterTelemedicDao"
+          p:batalTelemedicDao-ref="batalTelemedicDao"
+          p:headerCheckupDao-ref="headerCheckupDao"
+          p:checkupDetailDao-ref="checkupDetailDao"
+          p:notifikasiAdminTelemedicDao-ref="notifikasiAdminTelemedicDao"
     />
 
     <bean id="telemedicineController" class="com.neurix.simrs.mobileapi.TelemedicineController"
           p:telemedicBoProxy-ref="telemedicBoProxy"/>
 
+    <bean id="tesTelemedicController" class="com.neurix.hris.mobileapi.TesTelemedicController"
+          p:telemedicBoProxy-ref="telemedicBoProxy"
+          p:verifikatorPembayaranBoProxy-ref="verifikatorPembayaranBoProxy"
+          p:pelayananBoProxy-ref="pelayananBoProxy"
+          p:pasienBoProxy-ref="pasienBoProxy"
+    />
+
     <bean id="pengirimanObatController" class="com.neurix.simrs.mobileapi.PengirimanObatController"
+          p:telemedicBoProxy-ref="telemedicBoProxy"/>
+
+    <bean id="dokterController" class="com.neurix.simrs.mobileapi.DokterController"
           p:telemedicBoProxy-ref="telemedicBoProxy"/>
 
     <bean id="telemedicBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -44,6 +60,7 @@
                 <prop key="getSearchByCriteria">readOnly</prop>
                 <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
                 <prop key="saveEdit">PROPAGATION_REQUIRED</prop>
+                <prop key="processBatalDokter">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>
@@ -57,5 +74,9 @@
     <bean id="kurirDao" class="com.neurix.simrs.master.kurir.dao.KurirDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="branchDao" class="com.neurix.authorization.company.dao.BranchDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="batalDokterTelemedicDao" class="com.neurix.simrs.transaksi.bataltelemedic.dao.BatalDokterTelemedicDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="batalTelemedicDao" class="com.neurix.simrs.transaksi.bataltelemedic.dao.BatalTelemedicDao"
           p:sessionFactory-ref="sessionFactory" />
 </beans>

@@ -10,6 +10,8 @@ import java.io.Serializable;
 public class TipeLibur extends BaseModel implements Serializable {
     private String tipeLiburId;
     private String tipeLiburName;
+    private String stCreatedDate;
+    private String stLastUpdate;
 
     public String getTipeLiburId() {
         return tipeLiburId;
@@ -25,5 +27,23 @@ public class TipeLibur extends BaseModel implements Serializable {
 
     public void setTipeLiburName(String tipeLiburName) {
         this.tipeLiburName = tipeLiburName;
+    }
+
+    @Override
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
+
+    @Override
+    public String getStLastUpdate() {
+        return stLastUpdate;
+    }
+
+    public void setStLastUpdate(String stLastUpdate) {
+        this.stLastUpdate = stLastUpdate;
     }
 }

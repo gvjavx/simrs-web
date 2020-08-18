@@ -326,6 +326,7 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
             dokter.setIdDokter(entity.getIdDokter());
             dokter.setNamaDokter(entity.getNamaDokter());
             dokter.setKuota(entity.getKuota());
+            dokter.setKuotaTele(entity.getKuotaTele());
             dokter.setFlag(entity.getFlag());
             dokter.setAction(entity.getAction());
             dokter.setCreatedDate(entity.getCreatedDate());
@@ -336,6 +337,7 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
             dokter.setLon(entity.getLon());
             dokter.setKodeDpjp(entity.getKodeDpjp());
             dokter.setFlagCall(entity.getFlagCall());
+            dokter.setFlagTele(entity.getFlagTele());
             results.add(dokter);
         }
 
@@ -393,7 +395,7 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
     }
 
     @Override
-    public boolean editKuota(String idDokter, String kuota) throws GeneralBOException {
+    public boolean editKuota(String idDokter, String kuota, String kuotaTele) throws GeneralBOException {
         logger.info("[DokterBoImpl.editKuota] Start <<<<<<<<");
 
         ImSimrsDokterEntity dokter = null;
@@ -407,6 +409,7 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
 
         if (dokter != null) {
             dokter.setKuota(kuota);
+            dokter.setKuotaTele(kuotaTele);
             try {
                 dokterDao.updateAndSave(dokter);
                 isSuccess = true;
@@ -513,6 +516,20 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
     }
 
     @Override
+    public List<Dokter> getDokterById(String idDokter) throws GeneralBOException {
+        List<Dokter> dokterList = new ArrayList<>();
+
+        if (idDokter != null && !"".equalsIgnoreCase(idDokter)) {
+            try {
+                dokterList = dokterDao.getListDokterById(idDokter);
+            } catch (HibernateException e) {
+                logger.error("Found Error when search " + e.getMessage());
+            }
+        }
+        return dokterList;
+    }
+
+    @Override
     public List<Dokter> getSearchByCriteria(Dokter bean) throws GeneralBOException {
         List<Dokter> dokterList = new ArrayList<>();
         if(bean != null){
@@ -563,6 +580,10 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
                     dokter.setKuota(entity.getKuota());
                     dokter.setKodeDpjp(entity.getKodeDpjp());
                     dokter.setKodering(entity.getKodering());
+                    dokter.setKuotaTele(entity.getKuotaTele());
+                    dokter.setFlagTele(entity.getFlagTele());
+                    dokter.setLat(entity.getLat());
+                    dokter.setLon(entity.getLon());
 
                     if (entity.getIdPelayanan() != null){
                         ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();

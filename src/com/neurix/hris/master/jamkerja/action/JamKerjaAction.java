@@ -316,11 +316,11 @@ public class JamKerjaAction extends BaseMasterAction {
     public String search() {
         logger.info("[JamKerjaAction.search] start process >>>");
 
-        JamKerja jamKerja = getJamKerja();
+        JamKerja jamKerja1 = getJamKerja();
         List<JamKerja> listOfSearchJamKerja = new ArrayList();
 
         try {
-            listOfSearchJamKerja = jamKerjaBoProxy.getByCriteria(jamKerja);
+            listOfSearchJamKerja = jamKerjaBoProxy.getByCriteria(jamKerja1);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -334,6 +334,16 @@ public class JamKerjaAction extends BaseMasterAction {
             return ERROR;
         }
 
+        String branchId = CommonUtil.userBranchLogin();
+        JamKerja data = new JamKerja();
+        if (branchId != null){
+            data.setBranchId(branchId);
+        }else {
+            data.setBranchId("");
+        }
+
+        jamKerja = data;
+
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listOfSearchJamKerja);
@@ -346,6 +356,16 @@ public class JamKerjaAction extends BaseMasterAction {
     public String initForm() {
         logger.info("[JamKerjaAction.initForm] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
+
+        String branchId = CommonUtil.userBranchLogin();
+        JamKerja data = new JamKerja();
+        if (branchId != null){
+            data.setBranchId(branchId);
+        }else {
+            data.setBranchId("");
+        }
+
+        jamKerja = data;
 
         session.removeAttribute("listOfResult");
         logger.info("[JamKerjaAction.initForm] end process >>>");

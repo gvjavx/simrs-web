@@ -6,6 +6,7 @@ import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Toshiba on 12/11/2019.
@@ -22,4 +23,5 @@ public interface PelayananBo extends BaseMasterBo<Pelayanan> {
     public List<Pelayanan> getListPelayananFarmasi(String branchId) throws GeneralBOException;
 
     public List<Pelayanan> getListPelayananWithLab() throws GeneralBOException;
+    public List<ImSimrsPelayananEntity> getByCriteria(Map criteria) throws GeneralBOException;
 }

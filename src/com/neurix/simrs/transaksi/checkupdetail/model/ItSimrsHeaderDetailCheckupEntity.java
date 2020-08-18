@@ -153,6 +153,15 @@ public class ItSimrsHeaderDetailCheckupEntity implements Serializable{
     public void setNoCheckupUlang(String noCheckupUlang) {
         this.noCheckupUlang = noCheckupUlang;
     }
+    private BigDecimal dibayarPasien;
+
+    public BigDecimal getDibayarPasien() {
+        return dibayarPasien;
+    }
+
+    public void setDibayarPasien(BigDecimal dibayarPasien) {
+        this.dibayarPasien = dibayarPasien;
+    }
 
     public String getIdTransaksiOnline() {
         return idTransaksiOnline;

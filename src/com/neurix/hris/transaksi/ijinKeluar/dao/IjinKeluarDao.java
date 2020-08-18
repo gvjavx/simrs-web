@@ -270,7 +270,11 @@ public class IjinKeluarDao extends GenericDao<IjinKeluarEntity, String> {
                 .add(Restrictions.eq("nip", nip))
                 .add(Restrictions.eq("approvalFlag", "Y"))
 //                .add(Restrictions.eq("approvalSdmFlag", "Y"))
-                .add(Restrictions.ne("cancelFlag","Y"))
+//                .add(Restrictions.ne("cancelFlag","Y"))
+                .add(Restrictions.or(
+                        Restrictions.isNull("cancelFlag"),
+                        Restrictions.ne("cancelFlag", "Y")
+                ))
                 .add(Restrictions.ne("ijinId","IJ001"))
                 .add(Restrictions.le("tanggalAwal",tanggal))
                 .add(Restrictions.ge("tanggalAkhir",tanggal))
@@ -441,5 +445,15 @@ public class IjinKeluarDao extends GenericDao<IjinKeluarEntity, String> {
             result="tidak";
         }
         return result;
+    }
+
+    public List<IjinKeluarEntity> getListCekIjinKeluar(String nip) throws HibernateException {
+        List<IjinKeluarEntity> results = this.sessionFactory.getCurrentSession().createCriteria(IjinKeluarEntity.class)
+                .add(Restrictions.eq("nip", nip))
+                .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.isNull("approvalFlag"))
+                .add(Restrictions.ne("cancelFlag", "Y"))
+                .list();
+        return results;
     }
 }

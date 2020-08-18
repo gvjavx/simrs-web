@@ -8,6 +8,7 @@ import com.neurix.hris.mobileapi.model.PengajuanCuti;
 import com.neurix.hris.mobileapi.model.PengajuanLembur;
 import com.neurix.hris.transaksi.cutiPegawai.bo.CutiPegawaiBo;
 import com.neurix.hris.transaksi.cutiPegawai.model.CutiPegawai;
+import com.neurix.hris.transaksi.cutiPegawai.model.ItCutiPegawaiEntity;
 import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
 import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import com.opensymphony.xwork2.ModelDriven;
@@ -126,7 +127,15 @@ public class CutiFormPegawaiController implements ModelDriven<Object> {
             }
 
             model.setMessage(result);
-        } else {
+        } else if (action.equalsIgnoreCase("validate")){
+            String result = "";
+            try{
+                result = cutiPegawaiBoProxy.cekPengajuanCuti(nip);
+            }catch (GeneralBOException e){
+                logger.error("[CutiFormPegawaiController.created] Error when search by criteria,",e);
+            }
+            model.setMessage(result);
+        }else {
             com.neurix.hris.master.biodata.model.Biodata modelBiodata = null;
             try {
                 modelBiodata = biodataBoProxy.detailBiodataSys(nip);
@@ -206,8 +215,16 @@ public class CutiFormPegawaiController implements ModelDriven<Object> {
         logger.info("[CutiFormPegawaiController.update] end process POST /pengajuancuti/{id} <<<");
         PengajuanCuti result = new PengajuanCuti();
         result.setActionError("");
+//        List<CutiPegawai> listOfCuti = new ArrayList();
 
         try {
+//            String nip = model.getNip();
+//            listOfCuti = cutiPegawaiBoProxy.getListCekNipCuti(nip);
+//            if (listOfCuti.size() != 0){
+//
+//            }else {
+//
+//            }
 
             CutiPegawai cutiPegawai = new CutiPegawai();
             cutiPegawai.setNip(model.getNip());
@@ -273,7 +290,8 @@ public class CutiFormPegawaiController implements ModelDriven<Object> {
         List<com.neurix.hris.transaksi.cutiPegawai.model.CutiPegawai> listOfCuti = null;
 
         try {
-            listOfCuti = cutiPegawaiBoProxy.getByCriteria(cutiPegawai);
+//            listOfCuti = cutiPegawaiBoProxy.getByCriteria(cutiPegawai);
+            listOfCuti = cutiPegawaiBoProxy.searchApprovalByCriteria(cutiPegawai);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {

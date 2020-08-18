@@ -674,7 +674,8 @@ function showModal(select) {
         $('#load_resep_head').hide();
         $('#desti_apotek').html('');
         $('#resep_apotek').attr("onchange", "var warn =$('#war_rep_apotek').is(':visible'); if (warn){$('#cor_rep_apotek').show().fadeOut(3000);$('#war_rep_apotek').hide()}; setObatPoli(this)");
-        $('#resep_nama_obat').attr("onchange", "var warn =$('#war_rep_obat').is(':visible'); if (warn){$('#cor_rep_obat').show().fadeOut(3000);$('#war_rep_obat').hide()}; setStokObatApotek(this)");
+        $('#resep_nama_obat').attr("onchange", "var warn =$('#war_rep_obat').is(':visible'); if (warn){$('#cor_rep_obat').show().fadeOut(3000);$('#war_rep_obat').hide()}; setStokObatApotek(this,\'\')");
+        $('#resep_nama_obat_serupa').attr("onchange", "var warn =$('#war_rep_obat_serupa').is(':visible'); if (warn){$('#cor_rep_obat_serupa').show().fadeOut(3000);$('#war_rep_obat_serupa').hide()}; setStokObatApotek(this, \'serupa\')");
         $('#body_detail').html('');
         $('#modal-resep-head').modal({show:true,backdrop:'static'});
     } else if (select == 8){
@@ -1761,8 +1762,16 @@ function showFormCekup(select){
 
 function addObatToList() {
 
+    var obat = null;
+    var flagSerupa = $("#flag-obat-serupa").val();
+    if (flagSerupa == "Y"){
+        obat = $("#resep_nama_obat_serupa").val();
+    } else {
+        obat = $('#resep_nama_obat').val();
+    }
+
     var apotek = $('#resep_apotek').val();
-    var obat = $('#resep_nama_obat').val();
+    //var obat = $('#resep_nama_obat').val();
     var qty = $('#resep_qty').val();
     var jenisSatuan = $('#resep_jenis_satuan').val();
     var stokBox = $('#resep_stok_box').val();
@@ -2202,7 +2211,7 @@ function setObatPoli(select) {
     }
 }
 
-function setStokObatApotek(select) {
+function setStokObatApotek(select, tipe) {
 
     var id = "";
     var nama = "";
@@ -2252,17 +2261,49 @@ function setStokObatApotek(select) {
                 labelKronis(flagKronis);
                 $("#form-hari").hide();
             }
+
+            if (tipe == "serupa"){
+                $('#resep_stok_biji_serupa').val(total);
+            } else {
+                $('#resep_stok_biji').val(total);
+            }
+
             //$('#resep_stok_box').val(qtyBox);
             //$('#resep_stok_lembar').val(qtyLembar);
-            $('#resep_stok_biji').val(total);
+            //$('#resep_stok_biji').val(total);
             $("#h-qty-default").val(bijiPerLembar);
             $('#resep_qty').val(parseInt(bijiPerLembar));
 
             $('#resep_keterangan').val('');
             $('#resep_qty').val(bijiPerLembar);
             $('#resep_jenis_satuan').val('biji').trigger('change');
+
+            if (tipe != "serupa"){
+                console.log("showObatSerupaBiji = " + total);
+                if (parseInt(total) == 0){
+                    $("#obat-serupa").show();
+                    $("#flag-obat-serupa").val("Y");
+                    $("#resep_nama_obat").prop("disabled",'disabled');
+                    $("#btn-reset-combo-obat").show();
+                    setObatPoliSerupa();
+                } else {
+                    $("#obat-serupa").hide();
+                    $("#flag-obat-serupa").val("N")
+                }
+            }
         }
     }
+}
+
+function resetAll() {
+    $('#resep_apotek').val('').trigger('change').attr('disabled', false);
+    $('#resep_nama_obat, #resep_jenis_satuan').val('').trigger('change');
+    $('#resep_keterangan').val('');
+    $('#resep_qty').val('');
+    $('#resep_stok_box, #resep_stok_lembar, #resep_stok_biji').val('');
+    $('#body_detail').html('');
+    $('#desti_apotek').html('');
+    resetComboObat();
 }
 
 function labelKronis(flag){
@@ -2528,6 +2569,23 @@ function getListNamaDokter(){
     });
 }
 
+function setObatPoliSerupa() {
+    var jenisPasien = $('#jenis_pasien').val();
+    var selObat = $("#resep_nama_obat").val();
+    var selPelayanan = $("#resep_apotek").val();
+    var idObat = selObat.split('|')[0];
+    var idPelayanan = selPelayanan.split('|')[0];
+    var option = "<option value=''>[Select One]</option>";
+    ObatPoliAction.getSelectOptionObatByPoliKandunganSerupa(idPelayanan, jenisPasien, idObat, function (response) {
+        if (response != null) {
+            $.each(response, function (i, item) {
+                option += "<option value='" + item.idObat + "|" + item.namaObat + "|" + item.qtyBox + "|" + item.qtyLembar + "|" + item.qtyBiji + "|" + item.lembarPerBox + "|" + item.bijiPerLembar + "|" + item.flagKronis + "|" + item.harga + "'>" + item.namaObat + "</option>";
+            });
+            $('#resep_nama_obat_serupa').html(option);
+        }
+    });
+}
+
 function isPemeriksaan(id) {
     var cek = $('#' + id).is(':checked');
     if (cek) {
@@ -2757,4 +2815,12 @@ function savePemeriksaanPasien() {
         $('#warning_ket').show().fadeOut(5000);
         $('#warning_msg').text("Silahkan cek kembali data inputan anda..!");
     }
+}
+
+function resetComboObat(){
+    $("#resep_nama_obat").removeAttr("disabled");
+    $("#btn-reset-combo-obat").hide();
+    $("#obat-serupa").hide();
+    $("#flag-obat-serupa").val("N");
+    $("#resep_stok_biji_serupa").val("");
 }

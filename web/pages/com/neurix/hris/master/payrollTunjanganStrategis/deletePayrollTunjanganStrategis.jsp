@@ -17,10 +17,10 @@
 
         $.subscribe('beforeProcessSave', function (event, data) {
             var id = document.getElementById("tunjStrategisId3").value;
-            var jabatan = document.getElementById("positionId3").value;
+            var profesi = document.getElementById("profesiId3").value;
             var nilai = document.getElementById("nilai3").value;
             var golongan = document.getElementById("golonganId3").value;
-            if (jabatan != '' && nilai !='' && golongan !='') {
+            if (profesi != '' && nilai !='' && golongan !='') {
                 if(isNaN(nilai) == false){
                     if (confirm('Do you want to save this record?')) {
                         event.originalEvent.options.submit = true;
@@ -44,8 +44,8 @@
             } else {
                 event.originalEvent.options.submit = false;
                 var msg = "";
-                if (jabatan == '') {
-                    msg += 'Field <strong>Jabatan</strong> is required.' + '<br/>';
+                if (profesi == '') {
+                    msg += 'Field <strong>Profesi</strong> is required.' + '<br/>';
                 }
 
                 if (nilai == '') {
@@ -118,18 +118,31 @@
                         </td>
                     </tr>
 
+                    <%--<tr>--%>
+                        <%--<td>--%>
+                            <%--<label class="control-label"><small>Jabatan :</small></label>--%>
+                        <%--</td>--%>
+                        <%--<td>--%>
+                            <%--<table>--%>
+                                <%--<s:action id="comboPosition" namespace="/admin/position"--%>
+                                          <%--name="searchPosition_position"/>--%>
+                                <%--<s:select disabled="true" list="#comboPosition.listOfComboPosition" id="positionId3"--%>
+                                          <%--name="payrollTunjanganStrategis.positionId"--%>
+                                          <%--listKey="positionId" listValue="positionName" headerKey=""--%>
+                                          <%--headerValue="[Select one]" cssClass="form-control"/>--%>
+                            <%--</table>--%>
+                        <%--</td>--%>
+                    <%--</tr>--%>
+
                     <tr>
                         <td>
-                            <label class="control-label"><small>Jabatan :</small></label>
+                            <label class="control-label"><small>Profesi :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:action id="comboPosition" namespace="/admin/position"
-                                          name="searchPosition_position"/>
-                                <s:select disabled="true" list="#comboPosition.listOfComboPosition" id="positionId3"
-                                          name="payrollTunjanganStrategis.positionId"
-                                          listKey="positionId" listValue="positionName" headerKey=""
-                                          headerValue="[Select one]" cssClass="form-control"/>
+                                <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
+                                <s:select list="#comboProfesi.listComboProfesi" id="profesiId3" name="payrollTunjanganStrategis.profesiId" disabled="true"
+                                          listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
                             </table>
                         </td>
                     </tr>
@@ -147,7 +160,7 @@
 
                     <tr>
                         <td>
-                            <label class="control-label"><small>Golongan :</small></label>
+                            <label class="control-label"><small>Level :</small></label>
                         </td>
                         <td id="golongan1Group">
                             <table>

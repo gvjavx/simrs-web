@@ -546,4 +546,8 @@ public class PelayananBoImpl implements PelayananBo{
     public List<Pelayanan> getListPelayananWithLab() throws GeneralBOException {
         return pelayananDao.getListPelayananWithLab();
     }
+    @Override
+    public List<ImSimrsPelayananEntity> getByCriteria(Map criteria) throws GeneralBOException {
+        return pelayananDao.getByCriteria(criteria);
+    }
 }

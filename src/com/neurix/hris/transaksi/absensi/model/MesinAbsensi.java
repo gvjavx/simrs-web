@@ -36,6 +36,12 @@ public class MesinAbsensi extends BaseModel {
     private String shift;
     private String lembur;
 
+    private String mesinId;
+    private String mesinAddress;
+    private String mesinSn;
+    private String stCreatedDate;
+    private String stLastUpdate;
+
     public String getLembur() {
         return lembur;
     }
@@ -193,5 +199,47 @@ public class MesinAbsensi extends BaseModel {
 
     public void setFlagAbsensi(String flagAbsensi) {
         this.flagAbsensi = flagAbsensi;
+    }
+
+    public String getMesinAddress() {
+        return mesinAddress;
+    }
+
+    public void setMesinAddress(String mesinAddress) {
+        this.mesinAddress = mesinAddress;
+    }
+
+    public String getMesinId() {
+        return mesinId;
+    }
+
+    public void setMesinId(String mesinId) {
+        this.mesinId = mesinId;
+    }
+
+    public String getMesinSn() {
+        return mesinSn;
+    }
+
+    public void setMesinSn(String mesinSn) {
+        this.mesinSn = mesinSn;
+    }
+
+    @Override
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
+
+    @Override
+    public String getStLastUpdate() {
+        return stLastUpdate;
+    }
+
+    public void setStLastUpdate(String stLastUpdate) {
+        this.stLastUpdate = stLastUpdate;
     }
 }

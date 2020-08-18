@@ -827,10 +827,12 @@ function showModal(select) {
         $('#load_resep_head').hide();
         $('#desti_apotek').html('');
         $('#resep_apotek').attr("onchange", "var warn =$('#war_rep_apotek').is(':visible'); if (warn){$('#cor_rep_apotek').show().fadeOut(3000);$('#war_rep_apotek').hide()}; setObatPoli(this)");
-        $('#resep_nama_obat').attr("onchange", "var warn =$('#war_rep_obat').is(':visible'); if (warn){$('#cor_rep_obat').show().fadeOut(3000);$('#war_rep_obat').hide()}; setStokObatApotek(this)");
+        $('#resep_nama_obat').attr("onchange", "var warn =$('#war_rep_obat').is(':visible'); if (warn){$('#cor_rep_obat').show().fadeOut(3000);$('#war_rep_obat').hide()}; setStokObatApotek(this, \'\')");
+        $('#resep_nama_obat_serupa').attr("onchange", "var warn =$('#war_rep_obat_serupa').is(':visible'); if (warn){$('#cor_rep_obat_serupa').show().fadeOut(3000);$('#war_rep_obat_serupa').hide()}; setStokObatApotek(this, \'serupa\')");
         $('#body_detail').html('');
         $('#modal-resep-head').modal({show: true, backdrop: 'static'});
         getJenisResep();
+        resetComboObat();
     } else if (select == 8) {
         $('#alergi').val('');
         $('#load_alergi').hide();
@@ -1688,8 +1690,16 @@ function showFormCekup(idKet) {
 
 function addObatToList() {
 
+    var obat = null;
+    var flagSerupa = $("#flag-obat-serupa").val();
+    if (flagSerupa == "Y"){
+        obat = $("#resep_nama_obat_serupa").val();
+    } else {
+        obat = $('#resep_nama_obat').val();
+    }
+
     var apotek = $('#resep_apotek').val();
-    var obat = $('#resep_nama_obat').val();
+    // var obat = $('#resep_nama_obat').val();
     var qty = $('#resep_qty').val();
     var jenisSatuan = $('#resep_jenis_satuan').val();
     var stokBox = $('#resep_stok_box').val();
@@ -2070,7 +2080,7 @@ function saveDetailResep(id, idObat, idApp) {
     }
 }
 
-function setStokObatApotek(select) {
+function setStokObatApotek(select, tipe) {
 
     var id = "";
     var nama = "";
@@ -2121,12 +2131,31 @@ function setStokObatApotek(select) {
                 $("#form-hari").hide();
             }
 
-            $('#resep_stok_biji').val(total);
+            if (tipe == "serupa"){
+                $('#resep_stok_biji_serupa').val(total);
+            } else {
+                $('#resep_stok_biji').val(total);
+            }
+
             $("#h-qty-default").val(bijiPerLembar);
 
             $('#resep_keterangan').val('');
             $('#resep_qty').val(bijiPerLembar);
             $('#resep_jenis_satuan').val('biji').trigger('change');
+
+            if (tipe != "serupa"){
+                console.log("showObatSerupaBiji = " + total);
+                if (parseInt(total) == 0){
+                    $("#obat-serupa").show();
+                    $("#flag-obat-serupa").val("Y");
+                    $("#resep_nama_obat").prop("disabled",'disabled');
+                    $("#btn-reset-combo-obat").show();
+                    setObatPoliSerupa();
+                } else {
+                    $("#obat-serupa").hide();
+                    $("#flag-obat-serupa").val("N")
+                }
+            }
         }
     }
 }
@@ -2165,6 +2194,7 @@ function resetAll() {
     $('#resep_stok_box, #resep_stok_lembar, #resep_stok_biji').val('');
     $('#body_detail').html('');
     $('#desti_apotek').html('');
+    resetComboObat();
 }
 
 function setObatPoli(select) {
@@ -2189,8 +2219,25 @@ function setObatPoli(select) {
     }
 }
 
-function labelKronis(flag) {
-    if (flag == "Y") {
+function setObatPoliSerupa() {
+    var jenisPasien = $('#jenis_pasien').val();
+    var selObat = $("#resep_nama_obat").val();
+    var selPelayanan = $("#resep_apotek").val();
+    var idObat = selObat.split('|')[0];
+    var idPelayanan = selPelayanan.split('|')[0];
+    var option = "<option value=''>[Select One]</option>";
+    ObatPoliAction.getSelectOptionObatByPoliKandunganSerupa(idPelayanan, jenisPasien, idObat, function (response) {
+        if (response != null) {
+            $.each(response, function (i, item) {
+                option += "<option value='" + item.idObat + "|" + item.namaObat + "|" + item.qtyBox + "|" + item.qtyLembar + "|" + item.qtyBiji + "|" + item.lembarPerBox + "|" + item.bijiPerLembar + "|" + item.flagKronis + "|" + item.harga + "'>" + item.namaObat + "</option>";
+            });
+            $('#resep_nama_obat_serupa').html(option);
+        }
+    });
+}
+
+function labelKronis(flag){
+    if (flag == "Y"){
         $("#label-kronis").show();
         $("#val-kronis").val(flag);
         return 'Obat Kronis';
@@ -2734,8 +2781,16 @@ function printPernyataan(kode, idRm, flag, namaRm) {
 }
 
 function printPernyataanRM(kode, idRM){
-    window.open(contextPath+'/rekammedik/printSuratPernyataan_rekammedik?id=' + idDetailCheckup + '&tipe=' + kode+'&ids='+idRM, '_blank');
-    $('#modal-confirm-rm').modal('hide');
-    $('#info_dialog').dialog('open');
-    $('#close_pos').val(12);
+        window.open(contextPath + '/rekammedik/printSuratPernyataan_rekammedik?id=' + idDetailCheckup + '&tipe=' + kode + '&ids=' + idRM, '_blank');
+        $('#modal-confirm-rm').modal('hide');
+        $('#info_dialog').dialog('open');
+        $('#close_pos').val(12);
+}
+
+function resetComboObat(){
+    $("#resep_nama_obat").removeAttr("disabled");
+    $("#btn-reset-combo-obat").hide();
+    $("#obat-serupa").hide();
+    $("#flag-obat-serupa").val("N");
+    $("#resep_stok_biji_serupa").val("");
 }

@@ -4,6 +4,7 @@ import com.neurix.akuntansi.master.master.model.ImMasterEntity;
 import com.neurix.akuntansi.master.pembayaran.model.ImAkunPembayaranEntity;
 import com.neurix.akuntansi.master.pembayaran.model.Pembayaran;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.authorization.position.bo.PositionBo;
@@ -739,7 +740,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 catatan = catatan + " No. Kartu " + noRekening;
             }
 
-            String noJurnal = billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan, "Y");
+            Jurnal jurnal = billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan, "Y");
 
             UangMuka uangMuka = new UangMuka();
             uangMuka.setNoNota(noNota);
@@ -747,7 +748,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             uangMuka.setDibayar(new BigInteger(jumlahDibayar));
             uangMuka.setLastUpdate(new Timestamp(System.currentTimeMillis()));
             uangMuka.setLastUpdateWho(CommonUtil.userLogin());
-            uangMuka.setNoJurnal(noJurnal);
+            uangMuka.setNoJurnal(jurnal.getNoJurnal());
 
             kasirRawatJalanBo.updateNotaUangMukaById(uangMuka);
 
@@ -1281,13 +1282,13 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 }
 
                 //** creat Jurnal **//
-                String noJurnal = billingSystemBo.createJurnal(transId, mapJurnal, branchId, catatan, "Y");
+                Jurnal jurnal = billingSystemBo.createJurnal(transId, mapJurnal, branchId, catatan, "Y");
 
                 HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
                 detailCheckup.setIdDetailCheckup(idDetailCheckup);
                 detailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
                 detailCheckup.setLastUpdateWho(CommonUtil.userLogin());
-                detailCheckup.setNoJurnal(noJurnal);
+                detailCheckup.setNoJurnal(jurnal.getNoJurnal());
 
                 checkupDetailBo.updateStatusBayarDetailCheckup(detailCheckup);
                 response.setStatus("success");
@@ -1608,7 +1609,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             String catatan = "Pembayaran Piutang BPJS Bank " + bank + " No. FPK " + fpkId + " No. Referensi " + noSlip;
             try {
 
-                noJurnal = billingSystemBo.createJurnal("10", mapJurnal, branchId, catatan, "Y");
+                Jurnal jurnal = billingSystemBo.createJurnal("10", mapJurnal, branchId, catatan, "Y");
+                noJurnal = jurnal.getNoJurnal();
                 if (!"".equalsIgnoreCase(noJurnal)) {
                     for (Fpk fpk : fpkList) {
                         HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
@@ -1702,7 +1704,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         String noJurnal = "";
         try {
-            noJurnal = billingSystemBo.createJurnal("34", mapJurnal, CommonUtil.userBranchLogin(), catatan, "Y" );
+            Jurnal jurnal = billingSystemBo.createJurnal("34", mapJurnal, CommonUtil.userBranchLogin(), catatan, "Y" );
+            noJurnal = jurnal.getNoJurnal();
         } catch (GeneralBOException e){
             response.setStatus("error");
             response.setMessage("[KasirRawatJalanAction.saveRefund] ERROR. " + e.getMessage());

@@ -2583,12 +2583,12 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     }
 
     @Override
-    public List<HeaderCheckup> getHistoryPasien(String idPasien) throws GeneralBOException {
+    public List<HeaderCheckup> getHistoryPasien(String idPasien, String branchId) throws GeneralBOException {
         List<HeaderCheckup> headerCheckupList = new ArrayList<>();
-        try {
-            headerCheckupList = headerCheckupDao.getListHistoryPasien(idPasien);
-        } catch (HibernateException e) {
-            logger.error("Found error " + e.getMessage());
+        try{
+            headerCheckupList = headerCheckupDao.getListHistoryPasien(idPasien, branchId);
+        }catch (HibernateException e){
+            logger.error("Found error "+e.getMessage());
         }
         return headerCheckupList;
     }

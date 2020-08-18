@@ -68,6 +68,15 @@ public class PermintaanResep{
     private String lon;
     private String jenisPengambilan;
     private String flagEresep;
+    private String flagDelayAsuransi;
+
+    public String getFlagDelayAsuransi() {
+        return flagDelayAsuransi;
+    }
+
+    public void setFlagDelayAsuransi(String flagDelayAsuransi) {
+        this.flagDelayAsuransi = flagDelayAsuransi;
+    }
 
     public String getFlagEresep() {
         return flagEresep;

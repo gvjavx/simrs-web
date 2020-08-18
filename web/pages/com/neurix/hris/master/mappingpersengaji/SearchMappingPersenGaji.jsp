@@ -84,7 +84,7 @@
                                                             <%--<s:select list="#{'igd':'IGD', 'rawat_jalan' : 'Rawat Jalan', 'apotek' : 'Apotek',--%>
                                                             <%--'rawat_inap' : 'Rawat Inap', 'radiologi' : 'Radiologi', 'lab' : 'LAB'}" id="tipePelayanan" name="pelayanan.tipePelayanan"--%>
                                                             <%--listKey="positionId" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
-                                                        <s:select list="#{'plt':'PLT', 'pjs' : 'PJS', 'percobaan' : 'Percobaan'}"
+                                                        <s:select list="#{'plt':'PLT', 'pjs' : 'PJS', 'percobaan' : 'Percobaan', 'pegawai_baru' : 'Pegawai Baru'}"
                                                                   id="namaMappingPersenGaji" name="mappingPersenGaji.namaMappingPersenGaji"
                                                                   headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                     </table>

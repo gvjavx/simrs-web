@@ -166,6 +166,9 @@
         <property name="idTransaksiOnline">
             <column name="id_transaksi_online" sql-type="varchar"/>
         </property>
+        <property name="dibayarPasien">
+            <column name="dibayar_pasien" sql-type="numeric"/>
+        </property>
 
         <property name="noCheckupUlang">
             <column name="no_checkup_ulang" sql-type="varchar"/>

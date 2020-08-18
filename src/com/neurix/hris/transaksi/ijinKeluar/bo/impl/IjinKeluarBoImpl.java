@@ -287,35 +287,36 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
                 imIjinKeluarEntity.setCancelPerson(bean.getCancelPerson());
                 imIjinKeluarEntity.setCancelNote(bean.getCancelNote());
 
-                if ("IJ013".equalsIgnoreCase(bean.getIjinId())){
-                    SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-                    try {
-                        //tglMelahirkan
-                        java.util.Date date = format.parse(bean.getStTglMelahirkan().toString());
-                        Date tglMelahirkan = new Date(date.getTime());
-                        imIjinKeluarEntity.setTglMelahirkan(tglMelahirkan);
+                if (!"Y".equalsIgnoreCase(bean.getCancelFlag())){
+                    if ("IJ013".equalsIgnoreCase(bean.getIjinId())){
+                        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+                        try {
+                            //tglMelahirkan
+                            java.util.Date date = format.parse(bean.getStTglMelahirkan().toString());
+                            Date tglMelahirkan = new Date(date.getTime());
+                            imIjinKeluarEntity.setTglMelahirkan(tglMelahirkan);
 
-                        //tglAkhirOld
-                        java.util.Date date1 = format.parse(bean.getStTanggalAkhir().toString());
-                        Date tglAkhirOld = new Date(date1.getTime());
-                        imIjinKeluarEntity.setTanggalAkhirOld(tglAkhirOld);
+                            //tglAkhirOld
+                            java.util.Date date1 = format.parse(bean.getStTanggalAkhir().toString());
+                            Date tglAkhirOld = new Date(date1.getTime());
+                            imIjinKeluarEntity.setTanggalAkhirOld(tglAkhirOld);
 
-                        //tglAkhirNew
+                            //tglAkhirNew
 //                    java.util.Date date2 = format.parse(bean.getTanggalAkhirBaru().toString());
 //                    Date tglAkhirNew = new Date(date2.getTime());
 //                    imIjinKeluarEntity.setTanggalAkhir(tglAkhirNew);
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(tglMelahirkan);
-                        calendar.add(Calendar.DAY_OF_MONTH, 45);
-                        Date tglAkhirNew = new Date(calendar.getTimeInMillis());
-                        imIjinKeluarEntity.setTanggalAkhir(tglAkhirNew);
-                    } catch (ParseException e) {
-                        logger.error("[IjinKeluarBoImpl.saveEdit] Error, " + e.getMessage());
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setTime(tglMelahirkan);
+                            calendar.add(Calendar.DAY_OF_MONTH, 45);
+                            Date tglAkhirNew = new Date(calendar.getTimeInMillis());
+                            imIjinKeluarEntity.setTanggalAkhir(tglAkhirNew);
+                        } catch (ParseException e) {
+                            logger.error("[IjinKeluarBoImpl.saveEdit] Error, " + e.getMessage());
+                        }
+
+                        imIjinKeluarEntity.setLamaIjin(bean.getLamaIjinBaru());
                     }
-
-                    imIjinKeluarEntity.setLamaIjin(bean.getLamaIjinBaru());
                 }
-
 
 
                 imIjinKeluarEntity.setFlag(bean.getFlag());
@@ -1502,6 +1503,7 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
 //                                    returnIjinKeluar.setUploadFile(ijinKeluarEntity.getSuratDokter());
 //                                    returnIjinKeluar.setStTanggalAkhir(df.format(ijinKeluarEntity.getTanggalAkhir()));
                                     if (ijinKeluarEntity.getTglMelahirkan() != null){
+                                        returnIjinKeluar.setCetakSurat(true);
                                         returnIjinKeluar.setLamaIjin(ijinKeluarEntity.getLamaIjinOld());
                                         returnIjinKeluar.setLamaIjinBaru(ijinKeluarEntity.getLamaIjin());
                                         returnIjinKeluar.setTanggalAkhir(ijinKeluarEntity.getTanggalAkhirOld());
@@ -1511,8 +1513,14 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
 //                                        if (ijinKeluarEntity.getTglMelahirkan() != null)
                                         returnIjinKeluar.setStTglMelahirkan(df.format(ijinKeluarEntity.getTglMelahirkan()));
                                     }
+
                                     returnIjinKeluar.setDispenLahir(true);
-                                    returnIjinKeluar.setUploadFile(ijinKeluarEntity.getSuratDokter());
+                                    if ("".equalsIgnoreCase(ijinKeluarEntity.getSuratDokter())){
+                                        returnIjinKeluar.setSuratDokter(false);
+                                    }else{
+                                        returnIjinKeluar.setUploadFile(ijinKeluarEntity.getSuratDokter());
+                                        returnIjinKeluar.setSuratDokter(true);
+                                    }
                                 }
 //                                else {
 //                                    returnIjinKeluar.setStTanggalAkhir(df.format(ijinKeluarEntity.getTanggalAkhir()));
@@ -1612,6 +1620,23 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
                                     }else {
                                         returnIjinKeluar.setPengajuanBatal(false);
                                         returnIjinKeluar.setCanCancel(true);
+                                    }
+                                }
+
+                                if (ijinKeluarEntity.getApprovalFlag() != null){
+                                    if(ijinKeluarEntity.getApprovalFlag().equals("Y") && !searchBean.getRoleId().equalsIgnoreCase("1")){
+                                        returnIjinKeluar.setCanCancel(false);
+                                        returnIjinKeluar.setPengajuanBatal(true);
+                                    }else {
+                                        if (ijinKeluarEntity.getFlagPengajuanBatal() != null) {
+                                            if (searchBean.getRoleId().equalsIgnoreCase("1") && ijinKeluarEntity.getFlagPengajuanBatal().equalsIgnoreCase("Y")) {
+                                                returnIjinKeluar.setCanCancel(true);
+                                                returnIjinKeluar.setPengajuanBatal(false);
+                                            } else {
+                                                returnIjinKeluar.setCanCancel(false);
+                                                returnIjinKeluar.setPengajuanBatal(false);
+                                            }
+                                        }
                                     }
                                 }
 
@@ -1817,7 +1842,8 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
                     notifSelf.setNip(itIjinKeluarEntity.getNip());
                     notifSelf.setNoRequest(bean.getIjinKeluarId());
                     notifSelf.setTipeNotifId("umum");
-                    notifSelf.setTipeNotifName((tipeNotifName));
+//                    notifSelf.setTipeNotifName((tipeNotifName));
+                    notifSelf.setTipeNotifName(("Pemberitahuan"));
                     notifSelf.setNote(tipeNotifName+" anda pada tanggal "+CommonUtil.convertDateToString(itIjinKeluarEntity.getTanggalAwal())+" di approve oleh atasan anda");
                     notifSelf.setCreatedWho(itIjinKeluarEntity.getNip());
                     notifSelf.setTo("self");
@@ -1826,16 +1852,19 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
 
                     Notifikasi notifAtasan = new Notifikasi();
                     if (bean.isMobile())
-                        notifAtasan.setNip(bean.getNip());
+//                        notifAtasan.setNip(bean.getNip());
+                        notifAtasan.setNip(bean.getNipUserLogin());
                     else
                         notifAtasan.setNip(CommonUtil.userIdLogin());
 
                     notifAtasan.setNoRequest(bean.getIjinKeluarId());
                     notifAtasan.setTipeNotifId("umum");
-                    notifAtasan.setTipeNotifName(("Ijin Keluar Pegawai"));
+//                    notifAtasan.setTipeNotifName(("Ijin Keluar Pegawai"));
+                    notifAtasan.setTipeNotifName(("Pemberitahuan"));
                     notifAtasan.setNote(imBiodataEntity.getNamaPegawai() + " mengajukan dispensasi pada tanggal " +CommonUtil.convertDateToString(itIjinKeluarEntity.getTanggalAwal()) + " sampai dengan tanggal " + CommonUtil.convertDateToString(itIjinKeluarEntity.getTanggalAkhir()));
                     if (bean.isMobile())
-                        notifAtasan.setNip(bean.getNip());
+//                        notifAtasan.setNip(bean.getNip());
+                        notifAtasan.setNip(bean.getNipUserLogin());
                     else
                         notifAtasan.setNip(CommonUtil.userIdLogin());
 
@@ -1867,7 +1896,8 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
                     notifSelf.setNip(itIjinKeluarEntity.getNip());
                     notifSelf.setNoRequest(bean.getIjinKeluarId());
                     notifSelf.setTipeNotifId("umum");
-                    notifSelf.setTipeNotifName(tipeNotifName);
+//                    notifSelf.setTipeNotifName(tipeNotifName);
+                    notifSelf.setTipeNotifName(("Pemberitahuan"));
                     notifSelf.setNote(tipeNotifName+" anda pada tanggal "+CommonUtil.convertDateToString(itIjinKeluarEntity.getTanggalAwal())+" tidak di approve oleh atasan "+msg);
                     notifSelf.setCreatedWho(itIjinKeluarEntity.getNip());
                     notifSelf.setTo("self");
@@ -2151,6 +2181,56 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
             logger.error("[TrainingAction.printSuratJaminan] Error when downloading ,", e1);
         }
         return status;
+    }
+
+    @Override
+    public String cekPengajuanIjinKeluar(String nip) {
+        logger.info("[IjinKeluarBoImpl.cekPengajuanCuti] start process >>>");
+        String status = "";
+        List<IjinKeluarEntity> listIjinKeluar = null;
+        try {
+            listIjinKeluar = ijinKeluarDao.getListCekIjinKeluar(nip);
+        } catch (HibernateException e) {
+            logger.error("[IjinKeluarBoImpl.cekPengajuanCuti] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
+        }
+
+        if (listIjinKeluar != null){
+            if (listIjinKeluar.size() > 0){
+                status = "exist";
+            }else {
+                status = "notExist";
+            }
+        }else {
+            status = "notExist";
+        }
+
+        return status;
+    }
+
+    @Override
+    public List<IjinKeluar> getListCekNipIjinKeluar(String nip) throws GeneralBOException {
+        logger.info("[IjinKeluarBoimpl.getListCekNipIjinKeluar] start process >>>");
+
+        List<IjinKeluar> listComboIjinKeluar = new ArrayList();
+
+        List<IjinKeluarEntity> listIjinKeluar = null;
+        try {
+            listIjinKeluar = ijinKeluarDao.getListCekIjinKeluar(nip);
+        } catch (HibernateException e) {
+            logger.error("[IjinKeluarBoImpl.getListCekNipIjinKeluar] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
+        }
+
+        if (listIjinKeluar != null) {
+            for (IjinKeluarEntity entity : listIjinKeluar) {
+                IjinKeluar ijinKeluar = new IjinKeluar();
+                ijinKeluar.setNip(entity.getNip());
+                listComboIjinKeluar.add(ijinKeluar);
+            }
+        }
+        logger.info("[IjinKeluarBoImpl.getListCekNipIjinKeluar] end process <<<");
+        return listComboIjinKeluar;
     }
 
     public String cekStatus(String nip, Date tglAwal, Date tglAkhir){

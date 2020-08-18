@@ -29,7 +29,7 @@
             var from = $('#loginTimestampFrom').val();
             var to = $('#loginTimestampTo').val();
             //alert(id + ' ' + from + ' ' + to);
-            var url = "searchCount_usersessionlog?userName="+id+"&stLoginTimestampFrom="+from+"&stLoginTimestampTo="+to ;
+            var url = "searchCount_usersessionlog.action?userName="+id+"&stLoginTimestampFrom="+from+"&stLoginTimestampTo="+to ;
             //alert(url);
             location.href = url;
         }
@@ -207,7 +207,11 @@
 
                                             <s:set name="listOfUserSessionLog" value="#session.listOfResult" scope="request"/>
                                             <display:table name="listOfUserSessionLog" class="table table-condensed table-striped table-hover"
-                                                           requestURI="paging_displaytag.action" id="row" pagesize="30" export="true" style="font-size:11">
+                                                           requestURI="paging_displaytag.action" id="row" pagesize="15" export="true" style="font-size:10">
+
+                                            <%--<display:table name="listOfsearchPelayanan" class="table table-condensed table-striped table-hover"--%>
+                                                           <%--requestURI="paging_displaytag_pelayanan.action" export="true" id="row" pagesize="14" style="font-size:10">    --%>
+
 
                                                 <display:column media="html" title="<small>Kill Session</small>" style="text-align:center;font-size:11">
                                                     <s:if test = "%{#attr.row.enabledKill}" >

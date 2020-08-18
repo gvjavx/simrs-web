@@ -54,6 +54,15 @@ public class PembayaranDao extends GenericDao<ImAkunPembayaranEntity, String> {
         return results;
     }
 
+    public List<ImAkunPembayaranEntity> getDataAkunPembayaranByCoa(String coa) throws HibernateException {
+        List<ImAkunPembayaranEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImAkunPembayaranEntity.class)
+                .add(Restrictions.eq("coa", coa))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+
+        return results;
+    }
+
     public String getNextLabDetailId() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_akun_pembayaran')");
         Iterator<BigInteger> iter=query.list().iterator();

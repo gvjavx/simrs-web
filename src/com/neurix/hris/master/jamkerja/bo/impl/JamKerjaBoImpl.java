@@ -1,5 +1,7 @@
 package com.neurix.hris.master.jamkerja.bo.impl;
 
+import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.authorization.company.model.Branch;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.master.group.bo.GroupBo;
 import com.neurix.hris.master.group.dao.GroupDao;
@@ -9,10 +11,15 @@ import com.neurix.hris.master.group.model.ImHrisGroupHistory;
 import com.neurix.hris.master.jamkerja.bo.JamKerjaBo;
 import com.neurix.hris.master.jamkerja.dao.JamKerjaDao;
 import com.neurix.hris.master.jamkerja.model.ImHrisJamKerja;
+import com.neurix.hris.master.jamkerja.model.ImHrisJamKerjaHistory;
 import com.neurix.hris.master.jamkerja.model.JamKerja;
+import com.neurix.hris.master.tipepegawai.bo.TipePegawaiBo;
+import com.neurix.hris.master.tipepegawai.model.TipePegawai;
 import com.neurix.hris.master.tunjangan.model.ImHrisTunjangan;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,29 +62,62 @@ public class JamKerjaBoImpl implements JamKerjaBo {
         boolean saved = false;
 
         if (bean!=null) {
-            ImHrisJamKerja entityData = new ImHrisJamKerja();
-            entityData.setJamKerjaId(bean.getJamKerjaId());
-            entityData.setStatusGiling(bean.getStatusGiling());
-            entityData.setTipePegawaiId(bean.getTipePegawaiId());
-            entityData.setHariKerja(bean.getHariKerja());
-            entityData.setJamAwalKerja(bean.getJamAwalKerja());
-            entityData.setJamAkhirKerja(bean.getJamAkhirKerja());
-            entityData.setIstirahatAwal(bean.getIstirahatAwal());
-            entityData.setIstirahatAkhir(bean.getIstirahatAkhir());
-            entityData.setFlag(bean.getFlag());
-            entityData.setBranchId(bean.getBranchId());
-            entityData.setAction(bean.getAction());
-            entityData.setCreateDateWho(bean.getCreatedWho());
-            entityData.setLastUpdateWho(bean.getLastUpdateWho());
-            entityData.setCreatedDate(bean.getCreatedDate());
-            entityData.setLastUpdate(bean.getLastUpdate());
+            String jamKerjaId = bean.getJamKerjaId();
+            ImHrisJamKerja entityData = null;
+            ImHrisJamKerjaHistory jamKerjaHistory = new ImHrisJamKerjaHistory();
+            String jamKerjaHistoryId = "";
 
             try {
-                jamKerjaDao.updateAndSave(entityData);
-                saved = true;
+                // Get data from database by ID
+                entityData = jamKerjaDao.getById("jamKerjaId", jamKerjaId);
+                jamKerjaHistoryId = jamKerjaDao.getNextJamKerjaHistoryId();
             } catch (HibernateException e) {
-                logger.error("[ShiftBoImpl.saveEdit] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
+                logger.error("[AlatBoImpl.saveEdit] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
+            }
+
+
+            if (entityData != null){
+                jamKerjaHistory.setJamKerjaIdHistory(jamKerjaHistoryId);
+                jamKerjaHistory.setJamKerjaId(entityData.getJamKerjaId());
+                jamKerjaHistory.setTipePegawaiId(entityData.getTipePegawaiId());
+                jamKerjaHistory.setHariKerja(entityData.getHariKerja());
+                jamKerjaHistory.setJamAwalKerja(entityData.getJamAwalKerja());
+                jamKerjaHistory.setJamAkhirKerja(entityData.getJamAkhirKerja());
+                jamKerjaHistory.setBranchId(entityData.getBranchId());
+                jamKerjaHistory.setIstirahatAwal(entityData.getIstirahatAwal());
+                jamKerjaHistory.setIstirahatAkhir(entityData.getIstirahatAkhir());
+                jamKerjaHistory.setCreatedDate(entityData.getCreatedDate());
+                jamKerjaHistory.setCreateDateWho(entityData.getCreateDateWho());
+                jamKerjaHistory.setLastUpdate(entityData.getLastUpdate());
+                jamKerjaHistory.setLastUpdateWho(entityData.getLastUpdateWho());
+                jamKerjaHistory.setFlag(entityData.getFlag());
+                jamKerjaHistory.setAction(entityData.getAction());
+
+                entityData.setJamKerjaId(bean.getJamKerjaId());
+                entityData.setStatusGiling(bean.getStatusGiling());
+                entityData.setTipePegawaiId(bean.getTipePegawaiId());
+                entityData.setHariKerja(bean.getHariKerja());
+                entityData.setJamAwalKerja(bean.getJamAwalKerja());
+                entityData.setJamAkhirKerja(bean.getJamAkhirKerja());
+                entityData.setIstirahatAwal(bean.getIstirahatAwal());
+                entityData.setIstirahatAkhir(bean.getIstirahatAkhir());
+                entityData.setFlag(bean.getFlag());
+                entityData.setBranchId(bean.getBranchId());
+                entityData.setAction(bean.getAction());
+                entityData.setCreateDateWho(bean.getCreatedWho());
+                entityData.setLastUpdateWho(bean.getLastUpdateWho());
+                entityData.setCreatedDate(bean.getCreatedDate());
+                entityData.setLastUpdate(bean.getLastUpdate());
+
+                try {
+                    jamKerjaDao.updateAndSave(entityData);
+                    jamKerjaDao.addAndSaveHistory(jamKerjaHistory);
+                    saved = true;
+                } catch (HibernateException e) {
+                    logger.error("[ShiftBoImpl.saveEdit] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
+                }
             }
         }
         logger.info("[ShiftBoImpl.saveEdit] end process <<<");
@@ -204,6 +244,32 @@ public class JamKerjaBoImpl implements JamKerjaBo {
                     }
                     returnData.setJamAwalKerja(listEntity.getJamAwalKerja());
                     returnData.setBranchId(listEntity.getBranchId());
+                    ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
+                    if (listEntity.getBranchId() != null){
+                        Branch branch = new Branch();
+                        BranchBo branchBo = (BranchBo) context.getBean("branchBoProxy");
+                        branch.setBranchId(listEntity.getBranchId());
+                        branch.setFlag("Y");
+                        List<Branch> branches = branchBo.getByCriteria(branch);
+                        String branchName = branches.get(0).getBranchName();
+                        returnData.setBranchName(branchName);
+                    }
+                    if (listEntity.getTipePegawaiId() != null){
+                        if (!"".equalsIgnoreCase(listEntity.getTipePegawaiId())){
+                            TipePegawai tipePegawai = new TipePegawai();
+                            TipePegawaiBo tipePegawaiBo = (TipePegawaiBo) context.getBean("tipePegawaiBoProxy");
+                            tipePegawai.setTipePegawaiId(listEntity.getTipePegawaiId());
+                            tipePegawai.setFlag("Y");
+                            List<TipePegawai> tipePegawaiList = tipePegawaiBo.getByCriteria(tipePegawai);
+                            String tipePegawaiName = tipePegawaiList.get(0).getTipePegawaiName();
+                            returnData.setTipePegawaiName(tipePegawaiName);
+                        }else {
+                            returnData.setTipePegawaiName("");
+                        }
+                    }else {
+                        returnData.setTipePegawaiName("");
+                    }
+
                     returnData.setJamAkhirKerja(listEntity.getJamAkhirKerja());
                     returnData.setCreatedDate(listEntity.getCreatedDate());
                     returnData.setCreatedWho(listEntity.getCreateDateWho());
@@ -213,6 +279,9 @@ public class JamKerjaBoImpl implements JamKerjaBo {
                     returnData.setLastUpdateWho(listEntity.getLastUpdateWho());
                     returnData.setFlag(listEntity.getFlag());
                     returnData.setAction(listEntity.getAction());
+
+                    returnData.setStCreatedDate(listEntity.getCreatedDate().toString());
+                    returnData.setStLastUpdate(listEntity.getLastUpdate().toString());
                     listOfResult.add(returnData);
                 }
             }

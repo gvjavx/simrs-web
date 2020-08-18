@@ -206,9 +206,28 @@ public class UserSessionLogAction extends BaseMasterAction {
             }
 
         } else {
-            logger.error("[UserSessionLogAction.save] Error when killing user session, Found problem when updating user session, cause no found this session active, please inform to your admin.");
-            addActionError("Error, Found problem when updating user session, cause no found this session active, please inform to your admin.\n");
-            return ERROR;
+//            logger.error("[UserSessionLogAction.save] Error when killing user session, Found problem when updating user session, cause no found this session active, please inform to your admin.");
+//            addActionError("Error, Found problem when updating user session, cause no found this session active, please inform to your admin.\n");
+//            return ERROR;
+            try {
+
+                userBoProxy.updateUserSessionLog(killUserSession.getSessionId());
+
+            } catch (UsernameNotFoundException e) {
+                logger.error("[UserSessionLogAction.save] Error when killing user session,", e);
+                addActionError("Error, " + e.getMessage());
+                return ERROR;
+            } catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = userBoProxy.saveErrorMessage(e.getMessage(), "UserBO.updateUserSessionLog");
+                } catch (GeneralBOException e1) {
+                    logger.error("[UserSessionLogAction.save] Error when saving error,", e1);
+                }
+                logger.error("[UserSessionLogAction.save] Error when killing user session," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
+                return ERROR;
+            }
         }
 
 

@@ -67,8 +67,7 @@ FROM
           and y.registered_flag = 'Y'
           and y.branch_id IN ($P!{branch_id})
       ) a ON a.rekening_id = rk.rekening_id
-  ) a
-]]>
+  ) a]]>
 	</queryString>
 	<field name="debit" class="java.math.BigDecimal"/>
 	<field name="kredit" class="java.math.BigDecimal"/>

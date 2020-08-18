@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.permintaanvendor.action;
 
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.authorization.position.bo.PositionBo;
@@ -843,7 +844,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
                 mapHutangVendor.put("bukti", noDo);
                 mapHutangVendor.put("nilai", hutangUsaha);
                 mapHutangVendor.put("master_id", requestVendor.getIdVendor());
-                mapHutangVendor.put("nidivisi_id", divisiId);
+                mapHutangVendor.put("divisi_id", divisiId);
 
                 jurnalMap.put("persediaan_gudang", listMapPersediaan);
                 jurnalMap.put("hutang_farmasi_vendor", mapHutangVendor);
@@ -855,7 +856,8 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
             String noJurnal = "";
             try {
-                noJurnal = billingSystemBo.createJurnal(transId, jurnalMap, CommonUtil.userBranchLogin(), catatan, "Y");
+                Jurnal jurnal = billingSystemBo.createJurnal(transId, jurnalMap, CommonUtil.userBranchLogin(), catatan, "Y");
+                noJurnal = jurnal.getNoJurnal();
             } catch (GeneralBOException e) {
                 logger.error("Found Error when search permintaan vendor " + e.getMessage());
                 checkObatResponse.setMessage("Found Error when search permintaan vendor " + e.getMessage());
@@ -1300,7 +1302,8 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
             String noJurnal = "";
             try {
-                noJurnal = billingSystemBo.createJurnal("13", jurnalMap, CommonUtil.userBranchLogin(), catatan, "Y");
+                Jurnal jurnal = billingSystemBo.createJurnal("13", jurnalMap, CommonUtil.userBranchLogin(), catatan, "Y");
+                noJurnal = jurnal.getNoJurnal();
                 response.setStatus("success");
             } catch (GeneralBOException e) {
                 logger.error("Found Error when search permintaan vendor " + e.getMessage());

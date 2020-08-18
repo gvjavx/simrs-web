@@ -30,6 +30,15 @@ public class KodeRekening extends BaseModel {
     private boolean bisaCek=false;
     private String flagMaster;
     private String flagDivisi;
+    private String tipeBudgeting;
+
+    public String getTipeBudgeting() {
+        return tipeBudgeting;
+    }
+
+    public void setTipeBudgeting(String tipeBudgeting) {
+        this.tipeBudgeting = tipeBudgeting;
+    }
 
     public String getTampilanCoa() {
         return tampilanCoa;

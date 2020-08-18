@@ -2,6 +2,7 @@ package com.neurix.hris.master.payrollSkalaGajiBod.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.hris.master.payrollSkalaGajiBod.model.ImPayrollSkalaGajiBodEntity;
+import com.neurix.hris.master.payrollSkalaGajiBod.model.ImPayrollSkalaGajiBodHistoryEntity;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -39,8 +40,10 @@ public class PayrollSkalaGajiBodDao extends GenericDao<ImPayrollSkalaGajiBodEnti
             if (mapCriteria.get("position_id")!=null) {
                 criteria.add(Restrictions.eq("positionId", (String) mapCriteria.get("position_id")));
             }
-
-            criteria.add(Restrictions.eq("flag", "Y"));
+            if (mapCriteria.get("tahun")!=null) {
+                criteria.add(Restrictions.eq("tahun", (String) mapCriteria.get("tahun")));
+            }
+            criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
         }
         // Order by
         criteria.addOrder(Order.desc("payrollSkalaGajiBodId"));
@@ -57,6 +60,13 @@ public class PayrollSkalaGajiBodDao extends GenericDao<ImPayrollSkalaGajiBodEnti
         return "SGB"+sId;
     }
 
+    public String getNextSkalaGajiBodHistory() throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_payroll_skala_gaji_bod_history')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%05d", iter.next());
+        return "SH"+sId;
+    }
+
     public List<ImPayrollSkalaGajiBodEntity> getSkalaGajiBod(String positionId,String tahun) throws HibernateException {
         List<ImPayrollSkalaGajiBodEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImPayrollSkalaGajiBodEntity.class)
                 .add(Restrictions.eq("positionId", positionId))
@@ -64,5 +74,9 @@ public class PayrollSkalaGajiBodDao extends GenericDao<ImPayrollSkalaGajiBodEnti
                 .add(Restrictions.eq("flag", "Y"))
                 .list();
         return results;
+    }
+
+    public void addAndSaveHistory(ImPayrollSkalaGajiBodHistoryEntity entity) throws HibernateException {
+        this.sessionFactory.getCurrentSession().save(entity);
     }
 }

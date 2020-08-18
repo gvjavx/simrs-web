@@ -101,7 +101,6 @@
     <section class="content-header">
         <h1>
             Edit Jadwal Shift Kerja
-            <small>e-HEALTH</small>
         </h1>
     </section>
     <!-- Main content -->

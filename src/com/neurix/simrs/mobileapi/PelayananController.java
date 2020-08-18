@@ -1,15 +1,20 @@
 package com.neurix.simrs.mobileapi;
 
+import com.neurix.authorization.user.bo.UserBo;
+import com.neurix.authorization.user.model.User;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.transaksi.jadwalShiftKerja.bo.JadwalShiftKerjaBo;
 import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalPelayananDTO;
 import com.neurix.simrs.master.dokter.bo.DokterBo;
 import com.neurix.simrs.master.dokter.model.Dokter;
+import com.neurix.simrs.master.jenisobat.bo.JenisObatBo;
+import com.neurix.simrs.master.jenisobat.model.JenisObat;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
+import com.neurix.simrs.mobileapi.model.JenisObatMobile;
 import com.neurix.simrs.mobileapi.model.JenisPeriksaMobile;
 import com.neurix.simrs.mobileapi.model.PelayananMobile;
 import com.neurix.simrs.transaksi.antrianonline.bo.AntrianOnlineBo;
@@ -34,9 +39,12 @@ public class PelayananController implements ModelDriven<Object> {
     private AntrianOnlineBo antrianOnlineBoProxy;
     private DokterBo dokterBoProxy;
     private JadwalShiftKerjaBo jadwalShiftKerjaBoProxy;
+    private JenisObatBo jenisObatBoProxy;
+    private UserBo userBoProxy;
     private JenisPriksaPasienBo jenisPriksaPasienBoProxy;
     private Collection<PelayananMobile> listOfPelayanan = new ArrayList<>();
     private Collection<JenisPeriksaMobile> listOfJenisPeriksa = new ArrayList<>();
+    private Collection<JenisObatMobile> listOfJenisObat = new ArrayList<>();
 
     private String tglCheckup;
     private String idPelayanan;
@@ -47,6 +55,30 @@ public class PelayananController implements ModelDriven<Object> {
     private String nip;
     private String channelId;
     private String tipePelayanan;
+
+    public UserBo getUserBoProxy() {
+        return userBoProxy;
+    }
+
+    public void setUserBoProxy(UserBo userBoProxy) {
+        this.userBoProxy = userBoProxy;
+    }
+
+    public JenisObatBo getJenisObatBoProxy() {
+        return jenisObatBoProxy;
+    }
+
+    public void setJenisObatBoProxy(JenisObatBo jenisObatBoProxy) {
+        this.jenisObatBoProxy = jenisObatBoProxy;
+    }
+
+    public Collection<JenisObatMobile> getListOfJenisObat() {
+        return listOfJenisObat;
+    }
+
+    public void setListOfJenisObat(Collection<JenisObatMobile> listOfJenisObat) {
+        this.listOfJenisObat = listOfJenisObat;
+    }
 
     public Collection<JenisPeriksaMobile> getListOfJenisPerika() {
         return listOfJenisPeriksa;
@@ -196,6 +228,8 @@ public class PelayananController implements ModelDriven<Object> {
                return listOfPelayanan;
            case "getJenisPeriksaPasien" :
                return listOfJenisPeriksa;
+           case "getJenisObat" :
+               return listOfJenisObat;
            default:
                return model;
        }
@@ -319,6 +353,20 @@ public class PelayananController implements ModelDriven<Object> {
             }
         }
 
+        if  (action.equalsIgnoreCase("getUsername")) {
+
+            User user = new User();
+
+            try {
+               user = userBoProxy.getUserByIdPelayanan(idPelayanan);
+            } catch (GeneralBOException e){
+                logger.error("Pelayanan.create] Error when get list pelayanan",e);
+            }
+
+            model.setUsername(user.getUsername());
+            model.setUserId(user.getUserId());
+        }
+
         if  (action.equalsIgnoreCase("getListApotek")) {
 
             List<Pelayanan> result = new ArrayList<>();
@@ -336,6 +384,26 @@ public class PelayananController implements ModelDriven<Object> {
                 pelayananMobile.setIdPelayanan(item.getIdPelayanan());
 
                 listOfPelayanan.add(pelayananMobile);
+            }
+        }
+
+        if (action.equalsIgnoreCase("getJenisObat")) {
+
+            List<JenisObat> result = new ArrayList<>();
+            JenisObat bean = new JenisObat();
+
+            try {
+                result = jenisObatBoProxy.getByCriteria(bean);
+            } catch (GeneralBOException e) {
+                logger.error("Pelayanan.create] Error when get list apotek",e);
+            }
+
+            for (JenisObat item : result){
+                JenisObatMobile jenisObatMobile = new JenisObatMobile();
+                jenisObatMobile.setIdJenisObat(item.getIdJenisObat());
+                jenisObatMobile.setNamaJenisObat(item.getNamaJenisObat());
+
+                listOfJenisObat.add(jenisObatMobile);
             }
         }
 

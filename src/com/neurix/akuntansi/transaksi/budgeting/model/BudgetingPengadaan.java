@@ -27,9 +27,102 @@ public class BudgetingPengadaan{
     private String idBudgetingDetail;
     private String noKontrak;
     private BigDecimal nilaiKontrak;
+    private String namaKontrak;
     private BigDecimal selisih;
     private BigDecimal realisasi;
     private String noPengadaan;
+
+    private String pembayaran;
+    private BigDecimal realisasiKontrak;
+    private BigDecimal sisaNilaiKontrak;
+
+    private BigDecimal nilaiAdendum1;
+    private BigDecimal nilaiAdendum2;
+    private BigDecimal nilaiAdendum3;
+
+    private String noKontrakAdendum1;
+    private String noKontrakAdendum2;
+    private String noKontrakAdendum3;
+
+    public BigDecimal getNilaiAdendum1() {
+        return nilaiAdendum1;
+    }
+
+    public void setNilaiAdendum1(BigDecimal nilaiAdendum1) {
+        this.nilaiAdendum1 = nilaiAdendum1;
+    }
+
+    public BigDecimal getNilaiAdendum2() {
+        return nilaiAdendum2;
+    }
+
+    public void setNilaiAdendum2(BigDecimal nilaiAdendum2) {
+        this.nilaiAdendum2 = nilaiAdendum2;
+    }
+
+    public BigDecimal getNilaiAdendum3() {
+        return nilaiAdendum3;
+    }
+
+    public void setNilaiAdendum3(BigDecimal nilaiAdendum3) {
+        this.nilaiAdendum3 = nilaiAdendum3;
+    }
+
+    public String getNoKontrakAdendum1() {
+        return noKontrakAdendum1;
+    }
+
+    public void setNoKontrakAdendum1(String noKontrakAdendum1) {
+        this.noKontrakAdendum1 = noKontrakAdendum1;
+    }
+
+    public String getNoKontrakAdendum2() {
+        return noKontrakAdendum2;
+    }
+
+    public void setNoKontrakAdendum2(String noKontrakAdendum2) {
+        this.noKontrakAdendum2 = noKontrakAdendum2;
+    }
+
+    public String getNoKontrakAdendum3() {
+        return noKontrakAdendum3;
+    }
+
+    public void setNoKontrakAdendum3(String noKontrakAdendum3) {
+        this.noKontrakAdendum3 = noKontrakAdendum3;
+    }
+
+    public BigDecimal getRealisasiKontrak() {
+        return realisasiKontrak;
+    }
+
+    public void setRealisasiKontrak(BigDecimal realisasiKontrak) {
+        this.realisasiKontrak = realisasiKontrak;
+    }
+
+    public BigDecimal getSisaNilaiKontrak() {
+        return sisaNilaiKontrak;
+    }
+
+    public void setSisaNilaiKontrak(BigDecimal sisaNilaiKontrak) {
+        this.sisaNilaiKontrak = sisaNilaiKontrak;
+    }
+
+    public String getNamaKontrak() {
+        return namaKontrak;
+    }
+
+    public void setNamaKontrak(String namaKontrak) {
+        this.namaKontrak = namaKontrak;
+    }
+
+    public String getPembayaran() {
+        return pembayaran;
+    }
+
+    public void setPembayaran(String pembayaran) {
+        this.pembayaran = pembayaran;
+    }
 
     public String getNoPengadaan() {
         return noPengadaan;

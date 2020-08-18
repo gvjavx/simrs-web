@@ -62,6 +62,7 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
                  kodeRekeningEntity.setTipeRekeningId(bean.getTipeRekeningId());
                  kodeRekeningEntity.setFlagDivisi(bean.getFlagDivisi());
                  kodeRekeningEntity.setFlagMaster(bean.getFlagMaster());
+                 kodeRekeningEntity.setTipeBudgeting(bean.getTipeBudgeting());
 
                     String[] coa = bean.getKodeRekening().split("\\.");
                     if (coa.length==1){
@@ -192,6 +193,7 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
                     returnKodeRekening.setLastUpdate(kodeRekeningEntity.getLastUpdate());
                     returnKodeRekening.setAction(kodeRekeningEntity.getAction());
                     returnKodeRekening.setFlag(kodeRekeningEntity.getFlag());
+                    returnKodeRekening.setTipeBudgeting(kodeRekeningEntity.getTipeBudgeting());
                     listOfResult.add(returnKodeRekening);
                 }
             }
@@ -245,6 +247,7 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
             imKodeRekeningEntity.setLastUpdateWho(bean.getLastUpdateWho());
             imKodeRekeningEntity.setCreatedDate(bean.getCreatedDate());
             imKodeRekeningEntity.setLastUpdate(bean.getLastUpdate());
+            imKodeRekeningEntity.setTipeBudgeting(bean.getTipeBudgeting());
 
             try {
                 // insert into database
@@ -289,6 +292,8 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
                 returnKodeRekening.setLastUpdate(kodeRekeningEntity.getLastUpdate());
                 returnKodeRekening.setAction(kodeRekeningEntity.getAction());
                 returnKodeRekening.setFlag(kodeRekeningEntity.getFlag());
+                returnKodeRekening.setFlagDivisi(kodeRekeningEntity.getFlagDivisi());
+                returnKodeRekening.setFlagMaster(kodeRekeningEntity.getFlagMaster());
                 listOfResult.add(returnKodeRekening);
             }
         }
@@ -347,6 +352,11 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
     }
 
     @Override
+    public List<ImKodeRekeningEntity> getListKodeRekeningByLevelAndTipeBudgeting(String coa, Long level, String tipeBudgeting) throws GeneralBOException {
+        return kodeRekeningDao.getKodeRekeningListByLevelAndTipeBudgeting(coa, level, tipeBudgeting);
+    }
+
+    @Override
     public List<KodeRekening> getAll() throws GeneralBOException {
         return null;
     }
@@ -377,6 +387,13 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
         logger.info("[KodeRekeningBoImpl.getKodeRekeningLawanByTransId] end process <<<");
 
         return listOfResult;
+    }
+
+    @Override
+    public List<String> getListRekeningIdsByTipeBudgeting(String tipeBudgeting) throws GeneralBOException {
+        logger.info("[KodeRekeningBoImpl.getListKodeRekeningIdsByTipeBudgeting] start process >>>");
+        logger.info("[KodeRekeningBoImpl.getListKodeRekeningIdsByTipeBudgeting] end process <<<");
+        return kodeRekeningDao.getListRekeningIdsByTipeBudgeting(tipeBudgeting);
     }
 
     public static Logger getLogger() {

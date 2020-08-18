@@ -1,71 +1,5 @@
--- 2020-05-22
-    ALTER TABLE it_simrs_transaksi_stok
-    ADD COLUMN qty_lalu bigint,
-    ADD COLUMN total_lalu numeric,
-    ADD COLUMN sub_total_lalu numeric
-
--- 2020-05-23
-    ALTER TABLE mt_simrs_item_paket_periksa
-    ADD COLUMN harga bigint
-
--- 2020-05-28
-    ALTER TABLE it_simrs_periksa_lab_detail
-    ADD COLUMN harga numeric;
-
-    ALTER TABLE it_simrs_periksa_radiologi
-    ADD COLUMN harga numeric;
-
-
--- 2020-05-30
-    INSERT INTO im_akun_trans
-    (trans_id, trans_name, flag, action, created_who, last_update_who, created_date, last_update, flag_sumber_baru)
-    VALUES
-    (
-        '61',
-        'Closing Paket Periksa Tanpa Obat',
-        'Y',
-        'C',
-        'Admin',
-        'Admin',
-        now(),
-        now(),
-        'Y'
-    );
-
-    INSERT INTO im_akun_trans
-    (trans_id, trans_name, flag, action, created_who, last_update_who, created_date, last_update, flag_sumber_baru)
-    VALUES
-    (
-        '62',
-        'Closing Paket Periksa Dengan Obat',
-        'Y',
-        'C',
-        'Admin',
-        'Admin',
-        now(),
-        now(),
-        'Y'
-    );
-
-
--- 2020-05-31
-
-    DELETE FROM im_akun_tipe_rekening WHERE tipe_rekening_id::integer > 4;
-    DELETE FROM im_akun_tipe_rekening WHERE tipe_rekening_id = '00';
-    UPDATE im_akun_tipe_rekening SET tipe_rekening_name = 'KAS' WHERE tipe_rekening_id = '01';
-    UPDATE im_akun_tipe_rekening SET tipe_rekening_name = 'PENDAPATAN' WHERE tipe_rekening_id = '02';
-    UPDATE im_akun_tipe_rekening SET tipe_rekening_name = 'BIAYA' WHERE tipe_rekening_id = '03';
-    UPDATE im_akun_tipe_rekening SET tipe_rekening_name = 'INVESTASI' WHERE tipe_rekening_id = '04';
-    SELECT * FROM im_akun_tipe_rekening
-
--- 2020-06-03
-    ALTER TABLE it_akun_budgeting_pengadaan
-      ADD COLUMN no_kontrak CHARACTER VARYING(100),
-      ADD COLUMN nilai_kontrak NUMERIC,
-      ADD COLUMN no_pengadaan CHARACTER VARYING(100);
-
-
--- 2020-06-08
+// 2020-06-08 >>>
+>>>>>>> sigit/dev
 
     CREATE SEQUENCE sq_antrian_telemedic;
 
@@ -271,6 +205,14 @@
 
     --// ===================================
 
+    # function :
+    - search verifikasi online		/onlinepaymentverif/search_onlinepaymentverif.action
+    - init form online verifikasi	/onlinepaymentverif/initForm_onlinepaymentverif.action
+    - Verifikasi Pembayaran			/onlinepaymentverif/initForm_onlinepaymentverif.action (Menu)
+
+    # role :
+    - VERIFIKATOR PEMBAYARAN ONLINE
+
     -- Table: public.it_simrs_pemesanan_resep_online
 
     -- DROP TABLE public.it_simrs_pemesanan_resep_online;
@@ -299,10 +241,10 @@
     ALTER TABLE public.it_simrs_pemesanan_resep_online
         OWNER to postgres;
 
-
     ALTER TABLE it_simrs_antrian_telemedic
     ADD COLUMN flag_eresep VARCHAR(1),
     ADD COLUMN url_foto_resep text;
+<<<<<<< HEAD
 
 
 -- 2020-06-26
@@ -318,6 +260,20 @@
 
 -- 2020-06-30
 
+=======
+<<< //
+
+// 2020-06-26 >>>
+    ALTER TABLE it_simrs_antrian_telemedic ADD COLUMN jumlah_cover NUMERIC;
+<<< //
+
+// 2020-06-29 >>>
+    ALTER TABLE it_simrs_antrian_telemedic
+    ADD COLUMN no_jurnal VARCHAR(30);
+<<< //
+
+// 2020-06-30 >>>
+>>>>>>> sigit/dev
     ALTER TABLE it_simrs_antrian_telemedic
     ADD COLUMN no_sep VARCHAR(50);
 
@@ -327,3 +283,403 @@
 
     ALTER TABLE it_simrs_pengiriman_obat
     ADD COLUMN flag_terkirim VARCHAR(1);
+<<<<<<< HEAD
+=======
+<<< ///
+
+// 2020-07-08 >>>
+    CREATE SEQUENCE seq_kandungan_obat;
+    CREATE SEQUENCE seq_kandungan_obat_detail;
+
+    CREATE TABLE public.im_simrs_kandungan_obat
+    (
+        id_kandungan character varying(30) COLLATE pg_catalog."default" NOT NULL,
+        kandungan character varying(100) COLLATE pg_catalog."default",
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        CONSTRAINT pk_kandungan_obat PRIMARY KEY (id_kandungan)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.im_simrs_kandungan_obat
+        OWNER to postgres;
+
+
+    CREATE TABLE public.im_simrs_kandungan_obat_detail
+    (
+        id character varying(50) COLLATE pg_catalog."default" NOT NULL,
+        id_obat character varying(30) COLLATE pg_catalog."default",
+        id_kandungan character varying(30) COLLATE pg_catalog."default",
+        bentuk character varying(30) COLLATE pg_catalog."default",
+        sediaan numeric,
+        satuan_sediaan character varying(30) COLLATE pg_catalog."default",
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        CONSTRAINT pk_kandungan_obat_detail PRIMARY KEY (id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.im_simrs_kandungan_obat_detail
+        OWNER to postgres;
+<<< ///
+
+// 2020-07-16 >>>
+    -- Table: public.im_simrs_setting_harga_pengiriman
+
+    -- DROP TABLE public.im_simrs_setting_harga_pengiriman;
+
+    CREATE TABLE public.im_simrs_setting_harga_pengiriman
+    (
+        id character varying(30) COLLATE pg_catalog."default" NOT NULL,
+        tipe character varying(50) COLLATE pg_catalog."default",
+        branch_id character varying(5) COLLATE pg_catalog."default",
+        harga numeric,
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        CONSTRAINT im_simrs_setting_harga_pengiriman_pkey PRIMARY KEY (id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.im_simrs_setting_harga_pengiriman
+        OWNER to postgres;
+
+    CREATE SEQUENCE seq_setting_harga_pengiriman;
+<<< //
+
+// 2020-07-17 >>>
+    ALTER TABLE it_simrs_header_detail_checkup
+    ADD COLUMN cover_diatanggung numeric;
+
+    -- Table: public.it_simrs_struk_asuransi
+
+    -- DROP TABLE public.it_simrs_struk_asuransi;
+
+    CREATE TABLE public.it_simrs_struk_asuransi
+    (
+        id character varying(30) COLLATE pg_catalog."default" NOT NULL,
+        id_detail_checkup character varying(50) COLLATE pg_catalog."default",
+        jenis character varying(50) COLLATE pg_catalog."default",
+        url_foto_struk text COLLATE pg_catalog."default",
+        approve_flag character varying(1) COLLATE pg_catalog."default",
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        approve_who character varying(100) COLLATE pg_catalog."default",
+        CONSTRAINT it_simrs_struk_asuransi_pkey PRIMARY KEY (id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.it_simrs_struk_asuransi
+        OWNER to postgres;
+
+    ALTER TABLE it_simrs_struk_asuransi ADD COLUMN branch_id VARCHAR(10);
+    CREATE SEQUENCE seq_struk_asuransi;
+
+    ALTER TABLE it_simrs_struk_asuransi
+        ADD COLUMN id_antrian_telemedic VARCHAR(50);
+<<< //
+
+// >>> 2020-07-20
+    ALTER TABLE it_simrs_header_detail_checkup
+        ADD COLUMN dibayar_pasien NUMERIC;
+<<< //
+
+// >>> 2020-07-23
+    -- Table: public.it_simrs_batal_dokter_telemedic
+
+    -- DROP TABLE public.it_simrs_batal_dokter_telemedic;
+
+    CREATE TABLE public.it_simrs_batal_dokter_telemedic
+    (
+        id character varying(30) COLLATE pg_catalog."default" NOT NULL,
+        id_dokter character varying(50) COLLATE pg_catalog."default",
+        id_pelayanan character varying(30) COLLATE pg_catalog."default",
+        alasan text COLLATE pg_catalog."default",
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        CONSTRAINT it_simrs_dokter_batal_telemedic_pkey PRIMARY KEY (id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.it_simrs_batal_dokter_telemedic
+        OWNER to postgres;
+
+    -- Table: public.it_simrs_batal_telemedic
+
+    -- DROP TABLE public.it_simrs_batal_telemedic;
+
+    CREATE TABLE public.it_simrs_batal_telemedic
+    (
+        id character varying(30) COLLATE pg_catalog."default" NOT NULL,
+        id_antrian_telemedic character varying(30) COLLATE pg_catalog."default",
+        id_dokter_batal character varying(30) COLLATE pg_catalog."default",
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        no_jurnal character varying(100) COLLATE pg_catalog."default",
+        CONSTRAINT it_simrs_telemedic_batal_pkey PRIMARY KEY (id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.it_simrs_batal_telemedic
+        OWNER to postgres;
+
+    CREATE SEQUENCE seq_batal_dokter_telemedic;
+    CREATE SEQUENCE seq_batal_telemedic;
+
+    ALTER TABLE it_simrs_batal_dokter_telemedic ADD COLUMN batal_date DATE;
+<<< //
+
+// >>> 2020-07-24
+    ALTER TABLE it_simrs_batal_telemedic ADD COLUMN kembali_konsultasi NUMERIC;
+    ALTER TABLE it_simrs_batal_telemedic ADD COLUMN flag_kembali_konsultasi VARCHAR(1);
+    ALTER TABLE it_simrs_batal_telemedic ADD COLUMN kembali_resep NUMERIC;
+    ALTER TABLE it_simrs_batal_telemedic ADD COLUMN flag_kembali_resep VARCHAR(1);
+<<< //
+
+// >>> 2020-08-05
+    ALTER TABLE im_akun_kode_rekening
+    ADD COLUMN tipe_budgeting VARCHAR(50);
+<<< //
+
+// >>> 2020-08-06
+    -- Table: public.it_notifikasi_admin_telemedic
+
+    -- DROP TABLE public.it_notifikasi_admin_telemedic;
+
+    CREATE TABLE public.it_notifikasi_admin_telemedic
+    (
+        id character varying(50) COLLATE pg_catalog."default" NOT NULL,
+        id_item character varying(50) COLLATE pg_catalog."default",
+        keterangan text COLLATE pg_catalog."default",
+        user_id character varying(50) COLLATE pg_catalog."default",
+        role_id character varying(50) COLLATE pg_catalog."default",
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        branch_id character varying(10) COLLATE pg_catalog."default",
+        CONSTRAINT it_notifikasi_admin_telemedic_pkey PRIMARY KEY (id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.it_notifikasi_admin_telemedic
+        OWNER to postgres;
+
+    CREATE SEQUENCE seq_notifikasi_admin_telemedic;
+//>>>
+
+// >>> 2020-08-07
+    -- Table: public.im_akun_budgeting_nilai_dasar
+
+    -- DROP TABLE public.im_akun_budgeting_nilai_dasar;
+
+    CREATE TABLE public.im_akun_budgeting_nilai_dasar
+    (
+        id character varying(50) COLLATE pg_catalog."default" NOT NULL,
+        nama_nilai_dasar text COLLATE pg_catalog."default",
+        nilai_dasar numeric,
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        CONSTRAINT im_akun_budgeting_nilai_dasar_pkey PRIMARY KEY (id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ================================================================================
+
+    ALTER TABLE public.im_akun_budgeting_nilai_dasar
+        OWNER to postgres;
+
+    -- Table: public.it_akun_budgeting_nilai_dasar
+
+    -- DROP TABLE public.it_akun_budgeting_nilai_dasar;
+
+    CREATE TABLE public.it_akun_budgeting_nilai_dasar
+    (
+        id character varying(50) COLLATE pg_catalog."default" NOT NULL,
+        id_nilai_dasar character varying(50) COLLATE pg_catalog."default",
+        tahun character varying(10) COLLATE pg_catalog."default",
+        branch_id character varying(5) COLLATE pg_catalog."default",
+        nilai numeric,
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_who character varying(100) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        CONSTRAINT it_akun_budgeting_nilai_dasar_pkey PRIMARY KEY (id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.it_akun_budgeting_nilai_dasar
+        OWNER to postgres;
+
+    ================================================================================
+    CREATE SEQUENCE seq_budgeting_nilai_dasar;
+    CREATE SEQUENCE seq_trans_budgeting_nilai_dasar;
+// <<<
+
+// >>> 2020-08-10
+    ALTER TABLE im_akun_budgeting_nilai_dasar ADD COLUMN urutan INTEGER;
+// <<<
+
+// >>> 2020-08-13
+    -- Table: public.im_simrs_header_tindakan
+
+    -- DROP TABLE public.im_simrs_header_tindakan;
+
+    CREATE TABLE public.im_simrs_header_tindakan
+    (
+        id character varying(30) COLLATE pg_catalog."default" NOT NULL,
+        nama_tindakan text COLLATE pg_catalog."default",
+        id_kategori_tindakan character varying(30) COLLATE pg_catalog."default",
+        standard_cost numeric,
+        diskon numeric,
+        harga_diskon numeric,
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        CONSTRAINT im_simrs_header_tindakan_pkey PRIMARY KEY (id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.im_simrs_header_tindakan
+        OWNER to postgres;
+
+    ALTER TABLE im_simrs_tindakan ADD id_header_tindakan VARCHAR(30);
+    CREATE SEQUENCE seq_header_tindakan;
+<<< //
+
+// >>> 2020-08-14
+    CREATE TABLE public.im_akun_jenis_budgeting
+    (
+        id character varying(50) COLLATE pg_catalog."default" NOT NULL,
+        nama_jenis text COLLATE pg_catalog."default",
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        CONSTRAINT im_akun_jenis_budgeting_pkey PRIMARY KEY (id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.im_akun_jenis_budgeting
+        OWNER to postgres;
+=================================================================================================
+    CREATE TABLE public.im_akun_parameter_budgeting
+    (
+        id character varying(30) COLLATE pg_catalog."default" NOT NULL,
+        nama text COLLATE pg_catalog."default",
+        rekening_id character varying(50) COLLATE pg_catalog."default",
+        id_jenis_budgeting character varying(50) COLLATE pg_catalog."default",
+        tipe character varying(50) COLLATE pg_catalog."default",
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        CONSTRAINT im_akun_parameter_budgeting_pkey PRIMARY KEY (id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.im_akun_parameter_budgeting
+        OWNER to postgres;
+=================================================================================================
+    CREATE TABLE public.it_akun_perhitungan_budgeting
+    (
+        id character varying(50) COLLATE pg_catalog."default" NOT NULL,
+        id_parameter_budgeting character varying(30) COLLATE pg_catalog."default",
+        nilai numeric,
+        operator character varying(1) COLLATE pg_catalog."default",
+        branch_id character varying(55) COLLATE pg_catalog."default",
+        tahun character varying(10) COLLATE pg_catalog."default",
+        urutan integer,
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        CONSTRAINT it_akun_perhitungan_budgeting_pkey PRIMARY KEY (id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.it_akun_perhitungan_budgeting
+        OWNER to postgres;
+
+    CREATE SEQUENCE seq_perhitungan_budgeting;
+<<< //
+>>>>>>> sigit/dev

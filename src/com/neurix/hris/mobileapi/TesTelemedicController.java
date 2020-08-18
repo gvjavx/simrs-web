@@ -6,21 +6,31 @@ import com.neurix.simrs.master.kurir.bo.KurirBo;
 import com.neurix.simrs.master.kurir.model.Kurir;
 import com.neurix.simrs.master.pasien.bo.PasienBo;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
+import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
+import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
+import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
 import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
+import com.neurix.simrs.transaksi.notifikasiadmin.bo.NotifikasiAdminBo;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.reseponline.model.ItSimrsResepOnlineEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
+import com.neurix.simrs.transaksi.verifikatorpembayaran.action.VerifikatorPembayaranAction;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.bo.VerifikatorPembayaranBo;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.model.ItSimrsPembayaranOnlineEntity;
 import com.opensymphony.xwork2.ModelDriven;
 import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by reza on 11/06/20.
@@ -33,10 +43,71 @@ public class TesTelemedicController implements ModelDriven<Object> {
     private String result;
     private String id;
     private String obat;
+    private BigDecimal tindakan;
+    private BigDecimal resep;
+    private BigDecimal pasien;
+
     private TelemedicBo telemedicBoProxy;
     private KurirBo kurirBoProxy;
     private VerifikatorPembayaranBo verifikatorPembayaranBoProxy;
     private PasienBo pasienBoProxy;
+    private PelayananBo pelayananBoProxy;
+
+    public static Logger getLogger() {
+        return logger;
+    }
+
+    public static void setLogger(Logger logger) {
+        TesTelemedicController.logger = logger;
+    }
+
+    public BigDecimal getTindakan() {
+        return tindakan;
+    }
+
+    public void setTindakan(BigDecimal tindakan) {
+        this.tindakan = tindakan;
+    }
+
+    public BigDecimal getResep() {
+        return resep;
+    }
+
+    public void setResep(BigDecimal resep) {
+        this.resep = resep;
+    }
+
+    public BigDecimal getPasien() {
+        return pasien;
+    }
+
+    public void setPasien(BigDecimal pasien) {
+        this.pasien = pasien;
+    }
+
+    public TelemedicBo getTelemedicBoProxy() {
+        return telemedicBoProxy;
+    }
+
+    public KurirBo getKurirBoProxy() {
+        return kurirBoProxy;
+    }
+
+    public VerifikatorPembayaranBo getVerifikatorPembayaranBoProxy() {
+        return verifikatorPembayaranBoProxy;
+    }
+
+    public PasienBo getPasienBoProxy() {
+        return pasienBoProxy;
+    }
+
+    public PelayananBo getPelayananBoProxy() {
+        return pelayananBoProxy;
+    }
+
+    public void setPelayananBoProxy(PelayananBo pelayananBoProxy) {
+        this.pelayananBoProxy = pelayananBoProxy;
+    }
 
     public void setPasienBoProxy(PasienBo pasienBoProxy) {
         this.pasienBoProxy = pasienBoProxy;
@@ -123,10 +194,25 @@ public class TesTelemedicController implements ModelDriven<Object> {
                 break;
             case "create-invoice-e-resep":
                 createPembayaranResep(this.id, this.obat);
+                break;
             case "bayar-resep-telemedic":
                 bayar(this.id, "resep");
+                break;
             case "bayar-konsultasi-telemedic":
                 bayar(this.id, "konsultasi");
+                break;
+            case "pelayanan-telemedic":
+                printLogTesListPelayananMedic();
+                break;
+            case "generate-num":
+                generateRandom();
+                break;
+            case "batal-dokter":
+                saveBatalDokter(this.id);
+                break;
+            case "hitung":
+                hitiungselisi(this.tindakan, this.resep, this.pasien);
+                break;
             default:
                 logger.info("==========NO ONE CARE============");
         }
@@ -179,6 +265,9 @@ public class TesTelemedicController implements ModelDriven<Object> {
             throw new GeneralBOException("[TesTelemedicController.insertDataTelemedic] ERROR. ", e);
         }
 
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        NotifikasiAdminBo notifikasiAdminBo = (NotifikasiAdminBo) ctx.getBean("notifikasiAdminBoProxy");
+
         logger.info("[TesTelemedicController.insertDataTelemedic] END <<<");
     }
 
@@ -226,6 +315,9 @@ public class TesTelemedicController implements ModelDriven<Object> {
 
         Timestamp time = CommonUtil.getCurrentDateTimes();
 
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
+
         AntrianTelemedic antrianTelemedic = new AntrianTelemedic();
         antrianTelemedic.setId(idAntrianTelemedic);
         if ("resep".equalsIgnoreCase(jenis)){
@@ -243,6 +335,25 @@ public class TesTelemedicController implements ModelDriven<Object> {
             logger.error("[TesTelemedicController.bayarResep] ERROR. ",e);
             throw new GeneralBOException("[TesTelemedicController.bayarResep] ERROR. ", e);
         }
+
+        ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = verifikatorPembayaranBo.getPembayaranOnlineEntityByIdAntrianAndJenis(idAntrianTelemedic, jenis);
+        if (pembayaranOnlineEntity != null){
+
+            pembayaranOnlineEntity.setUrlFotoBukti("bukti.png");
+            pembayaranOnlineEntity.setKodeBank("1.1.01.02.01");
+
+            try {
+                verifikatorPembayaranBo.saveEdit(pembayaranOnlineEntity);
+            } catch (GeneralBOException e){
+                logger.error("[TesTelemedicController.bayarResep] Update Pembayaran Online ERROR. ",e);
+                throw new GeneralBOException("[TesTelemedicController.bayarResep] Update Pembayaran Online ERROR. ", e);
+            }
+
+        } else {
+            logger.error("[TesTelemedicController.bayarResep] Tidak ditemukan data. ");
+            throw new GeneralBOException("[TesTelemedicController.bayarResep] Tidak ditemukan data. ");
+        }
+
 
         logger.info("[TesTelemedicController.bayarResep] END <<<");
     }
@@ -338,5 +449,89 @@ public class TesTelemedicController implements ModelDriven<Object> {
             }
         }
         logger.info("[TesTelemedicController.insertObat] END <<<");
+    }
+
+    private void printLogTesListPelayananMedic(){
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("branch_id", "RS01");
+        hsCriteria.put("in_pelayanan_medic", "Y");
+        hsCriteria.put("flag", "Y");
+        List<ImSimrsPelayananEntity> pelayananEntities = pelayananBoProxy.getByCriteria(hsCriteria);
+        logger.info(pelayananEntities);
+    }
+
+    private void generateRandom() {
+        int min = 1;
+        int max = 1000;
+        //Generate random double value from 50 to 100
+        logger.info("Random value in double from "+min+" to "+max+ ":");
+        double random_double = Math.random() * (max - min + 1) + min;
+        logger.info(random_double);
+
+        //Generate random int value from 50 to 100
+        logger.info("Random value in int from "+min+" to "+max+ ":");
+        int random_int = (int)(Math.random() * (max - min + 1) + min);
+        logger.info(random_int);
+    }
+
+    private void saveBatalDokter(String jenis){
+
+        AntrianTelemedic antrianTelemedic = new AntrianTelemedic();
+        antrianTelemedic.setIdPelayanan("PYN00000002");
+        antrianTelemedic.setIdDokter("DKR00000012");
+        antrianTelemedic.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+        antrianTelemedic.setLastUpdateWho("admin");
+        //antrianTelemedic.setIdJenisPeriksaPasien(jenis);
+
+        try {
+            telemedicBoProxy.processBatalDokter(antrianTelemedic, "Ada Keperluan Mendadak");
+        } catch (GeneralBOException e){
+            logger.error("[TesTelemedicController.insertObat] saveBatalDokter. ",e);
+            throw new GeneralBOException("[TesTelemedicController.insertObat] saveBatalDokter. ", e);
+        }
+    }
+
+    private void hitiungselisi(BigDecimal biayaTindakan, BigDecimal biayaResep, BigDecimal dibayarPasien){
+
+        BigDecimal total = biayaTindakan.add(biayaResep);
+        System.out.println("Biaya Tindakan : " + biayaTindakan);
+        System.out.println("Biaya Resep : "+ biayaResep);
+        System.out.println("Total Biaya : "+ total);
+        System.out.println("================================");
+        BigDecimal totalDiCover = total.subtract(dibayarPasien);
+        System.out.println("Dicover Asuransi : "+ totalDiCover);
+        System.out.println("Dibayar Pasien : "+ dibayarPasien);
+//        BigDecimal persenDibayar = total.divide((dibayarPasien.multiply(new BigDecimal(100))), BigDecimal.ROUND_HALF_UP, 2);
+        BigDecimal persenDibayar = dibayarPasien.divide(total, BigDecimal.ROUND_HALF_UP, 2).multiply(new BigDecimal(100));
+        System.out.println("Persen dibayar Pasien dari Cover : " + persenDibayar);
+        System.out.println("================================");
+        BigDecimal dibayarDariTindakan = biayaTindakan.multiply(persenDibayar.divide(new BigDecimal(100), BigDecimal.ROUND_HALF_UP, 2));
+        System.out.println("Tindakan dibayar Pasien dari Cover : " + dibayarDariTindakan);
+        BigDecimal dibayarDariResep = biayaResep.multiply(persenDibayar.divide(new BigDecimal(100), BigDecimal.ROUND_HALF_UP, 2));
+        System.out.println("Resep dibayar Pasien dari Cover : " + dibayarDariTindakan);
+
+        BigDecimal selisih = new BigDecimal(0);
+        BigDecimal totalHasilBagi = dibayarDariTindakan.add(dibayarDariResep);
+
+        System.out.println("================================");
+
+        // jika di olah
+        if (dibayarPasien.compareTo(totalHasilBagi) == 1){
+            selisih = dibayarPasien.subtract(totalHasilBagi);
+            selisih = selisih.divide(new BigDecimal(2), BigDecimal.ROUND_HALF_UP, 2);
+            dibayarDariTindakan = dibayarDariTindakan.add(selisih);
+            dibayarDariResep = dibayarDariResep.add(selisih);
+            System.out.println("Tindakan dibayar Pasien Dari Cover setelah Diolah (+) : " + dibayarDariTindakan);
+            System.out.println("Resep dibayar Pasien Dari Cover setelah Diolah (+) : " + dibayarDariResep);
+        }  else {
+            selisih = totalHasilBagi.subtract(dibayarPasien);
+            selisih = selisih.divide(new BigDecimal(2), BigDecimal.ROUND_HALF_UP, 2);
+            dibayarDariTindakan = dibayarDariTindakan.subtract(selisih);
+            dibayarDariResep = dibayarDariResep.subtract(selisih);
+            System.out.println("Tindakan dibayar Pasien Dari Cover setelah Diolah (-) : " + dibayarDariTindakan);
+            System.out.println("Resep dibayar Pasien Dari Cover setelah Diolah (-) : " + dibayarDariResep);
+        }
+        System.out.println("Total dibayar Pasien : " + dibayarDariTindakan.add(dibayarDariResep));
+
     }
 }

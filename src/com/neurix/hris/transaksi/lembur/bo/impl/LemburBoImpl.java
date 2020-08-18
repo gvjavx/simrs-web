@@ -76,7 +76,8 @@ public class LemburBoImpl implements LemburBo {
     private LiburDao liburDao;
     private JamKerjaDao jamKerjaDao;
     private NotifikasiFcmDao notifikasiFcmDao;
-    private String ACTION_CLICK = "TASK_LEMBUR";
+//    private String ACTION_CLICK = "TASK_LEMBUR";
+    private String ACTION_CLICK = null;
 
     public void setNotifikasiFcmDao(NotifikasiFcmDao notifikasiFcmDao) {
         this.notifikasiFcmDao = notifikasiFcmDao;
@@ -703,7 +704,7 @@ public class LemburBoImpl implements LemburBo {
 
             for (ItNotifikasiFcmEntity entity : notifikasiFcm){
                 if(entity.getUserId().equals(atasanNip)){
-                    FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), noteMobile, ACTION_CLICK, bean.getOs());
+                    FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), noteMobile, ACTION_CLICK, bean.getOs(), null);
                     break;
                 }
             }
@@ -932,11 +933,7 @@ public class LemburBoImpl implements LemburBo {
     @Override
     public List<Notifikasi> saveApprove(Lembur bean) throws GeneralBOException {
         logger.info("[LemburBoImpl.saveApprove] start process >>>");
-        List<ImStrukturJabatanEntity> atasan;
         List<Notifikasi> notifikasiList = new ArrayList<>();
-        String atasanName;
-        Map hsCriteria = new HashMap();
-        String atasanNip = null;
 
         if (bean!=null) {
             String LemburId = bean.getLemburId();
@@ -961,6 +958,19 @@ public class LemburBoImpl implements LemburBo {
                     }
                     itLemburEntity.setTanggalAwalSetuju(bean.getTanggalAwalSetuju());
                     itLemburEntity.setTanggalAkhirSetuju(bean.getTanggalAkhirSetuju());
+
+                    if (!bean.getJamAwal().equalsIgnoreCase(itLemburEntity.getJamAwal()) || !bean.getJamAkhir().equalsIgnoreCase(itLemburEntity.getJamAkhir())){
+                        itLemburEntity.setFlagDirubahAtasan("Y");
+                        itLemburEntity.setJamAwalLama(itLemburEntity.getJamAwal());
+                        itLemburEntity.setJamAkhirLama(itLemburEntity.getJamAkhir());
+                        itLemburEntity.setLamaJamLama(itLemburEntity.getLamaJam());
+                    }else {
+                        itLemburEntity.setFlagDirubahAtasan("N");
+                    }
+
+                    itLemburEntity.setJamAwal(bean.getJamAwal());
+                    itLemburEntity.setJamAkhir(bean.getJamAkhir());
+
                     itLemburEntity.setLamaJam(bean.getLamaJam());
                     itLemburEntity.setApprovalId(bean.getApprovalId());
                     itLemburEntity.setApprovalName(bean.getApprovalName());
@@ -990,7 +1000,8 @@ public class LemburBoImpl implements LemburBo {
                     notifSelf.setNip(itLemburEntity.getNip());
                     notifSelf.setNoRequest(bean.getLemburId());
                     notifSelf.setTipeNotifId("umum");
-                    notifSelf.setTipeNotifName(("Lembur"));
+//                    notifSelf.setTipeNotifName(("Lembur"));
+                    notifSelf.setTipeNotifName(("Pemberitahuan"));
                     notifSelf.setNote("Lembur anda pada tanggal "+CommonUtil.convertDateToString(bean.getTanggalAwalSetuju())+" sampai dengan tanggal "+CommonUtil.convertDateToString(bean.getTanggalAkhirSetuju())+" di approve oleh atasan anda");
                     notifSelf.setCreatedWho(itLemburEntity.getNip());
                     notifSelf.setTo("self");
@@ -1000,17 +1011,20 @@ public class LemburBoImpl implements LemburBo {
                     Notifikasi notifAtasan = new Notifikasi();
 
                     if (bean.getMobile())
-                        notifAtasan.setNip(bean.getNip());
+//                        notifAtasan.setNip(bean.getNip());
+                        notifAtasan.setNip(bean.getNipUserLogin());
                     else
                         notifAtasan.setNip(CommonUtil.userIdLogin());
 
                     notifAtasan.setNoRequest(bean.getLemburId());
                     notifAtasan.setTipeNotifId("umum");
-                    notifAtasan.setTipeNotifName(("Lembur Pegawai"));
+//                    notifAtasan.setTipeNotifName(("Lembur Pegawai"));
+                    notifAtasan.setTipeNotifName(("Pemberitahuan"));
                     notifAtasan.setNote(imBiodataEntity.getNamaPegawai() + " mengajukan lembur pada tanggal " +CommonUtil.convertDateToString(itLemburEntity.getTanggalAwal()) + " sampai dengan tanggal " + CommonUtil.convertDateToString(itLemburEntity.getTanggalAkhir()));
 
                     if (bean.getMobile())
-                        notifAtasan.setNip(bean.getNip());
+//                        notifAtasan.setNip(bean.getNip());
+                        notifAtasan.setNip(bean.getNipUserLogin());
                     else
                         notifAtasan.setNip(CommonUtil.userIdLogin());
 
@@ -1027,7 +1041,8 @@ public class LemburBoImpl implements LemburBo {
                     notifSelf.setNip(itLemburEntity.getNip());
                     notifSelf.setNoRequest(bean.getLemburId());
                     notifSelf.setTipeNotifId("umum");
-                    notifSelf.setTipeNotifName(("Lembur"));
+//                    notifSelf.setTipeNotifName(("Lembur"));
+                    notifSelf.setTipeNotifName(("Pemberitahuan"));
                     notifSelf.setNote("Lembur anda pada tanggal "+bean.getTanggalAwalSetuju()+" sampai dengan tanggal "+bean.getTanggalAkhirSetuju()+" tidak di approve oleh atasan "+msg);
                     notifSelf.setCreatedWho(itLemburEntity.getNip());
                     notifSelf.setTo("self");
@@ -1194,6 +1209,7 @@ public class LemburBoImpl implements LemburBo {
         }
         for (LemburEntity lemburEntity : lemburEntityList){
             hasil.setLemburId(lemburEntity.getLemburId());
+            hasil.setLamaJam(lemburEntity.getLamaJam());
             result.add(hasil);
         }
         return result;

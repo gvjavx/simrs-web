@@ -210,9 +210,14 @@
                                     <td><s:property value="alamat"/></td>
                                     <td align="center">
                                         <s:if test='#row.jenisPengambilan == "kirim"'>
-                                            <img border="0" class="hvr-grow" onclick="viewAssign('<s:property value="idPasien"/>','<s:property value="idPelayanan"/>','<s:property value="idPermintaanResep"/>')"
-                                                 src="<s:url value="/pages/images/icons8-create-25.png"/>"
-                                                 style="cursor: pointer;">
+                                            <s:if test='#row.flagDelayAsuransi == "Y"'>
+                                                <label class="label label-danger">Waiting Confirmation</label>
+                                            </s:if>
+                                            <s:else>
+                                                <img border="0" class="hvr-grow" onclick="viewAssign('<s:property value="idPasien"/>','<s:property value="idPelayanan"/>','<s:property value="idPermintaanResep"/>')"
+                                                     src="<s:url value="/pages/images/icons8-create-25.png"/>"
+                                                     style="cursor: pointer;">
+                                            </s:else>
                                         </s:if>
                                     </td>
                                 </tr>

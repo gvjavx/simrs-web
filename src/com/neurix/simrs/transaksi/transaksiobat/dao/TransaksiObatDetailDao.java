@@ -652,8 +652,8 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                     "INNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
                     "INNER JOIN (SELECT id_transaksi_obat_detail, SUM(qty_approve) as qty FROM mt_simrs_transaksi_obat_detail_batch WHERE approve_flag = 'Y'  GROUP BY id_transaksi_obat_detail)c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail\n" +
                     "INNER JOIN mt_simrs_harga_obat d ON b.id_obat = d.id_obat\n" +
-                    "INNER JOIN it_simrs_header_detail_checkup e ON a.id_detail_checkup = e.id_detail_checkup\n" +
-                    "INNER JOIN it_simrs_header_checkup f ON e.no_checkup = f.no_checkup\n" +
+                    "LEFT JOIN it_simrs_header_detail_checkup e ON a.id_detail_checkup = e.id_detail_checkup\n" +
+                    "LEFT JOIN it_simrs_header_checkup f ON e.no_checkup = f.no_checkup\n" +
                     "INNER JOIN (SELECT id_obat, nama_obat FROM im_simrs_obat GROUP BY id_obat, nama_obat) g ON b.id_obat = g.id_obat\n" +
                     "WHERE a.id_approval_obat = :idApp \n";
 

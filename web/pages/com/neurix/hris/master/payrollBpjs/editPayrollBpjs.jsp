@@ -17,29 +17,34 @@
 
         $.subscribe('beforeProcessSave', function (event, data) {
             var unit = document.getElementById("branchId1").value;
-            var minBpjsKs = document.getElementById("minBpjsKs1").value;
-            var maxBpjsKs = document.getElementById("maxBpjsKs1").value;
-            var minBpjsTk = document.getElementById("minBpjsTk1").value;
-            var maxBpjsTk = document.getElementById("maxBpjsTk1").value;
+            var minBpjsKs = parseInt(document.getElementById("minBpjsKs1").value);
+            var maxBpjsKs = parseInt(document.getElementById("maxBpjsKs1").value);
+            var minBpjsTk = parseInt(document.getElementById("minBpjsTk1").value);
+            var maxBpjsTk = parseInt(document.getElementById("maxBpjsTk1").value);
 
-            var percentBpjsKsKary = document.getElementById("percentBpjsKsKary1").value;
-            var percentBpjsKsPers = document.getElementById("percentBpjsKsPers1").value;
-            var percentBpjsTkKary = document.getElementById("percentBpjsTkKary1").value;
-            var percentBpjsTkPers = document.getElementById("percentBpjsTkPers1").value;
-
-
-            var iuranKaryawan = document.getElementById("iuranKaryawan1").value;
-             var jpkKaryawan = document.getElementById("jpkKaryawan1").value;
+            var percentBpjsKsKary = parseInt(document.getElementById("percentBpjsKsKary1").value);
+            var percentBpjsKsPers = parseInt(document.getElementById("percentBpjsKsPers1").value);
+            var percentBpjsTkKary = parseInt(document.getElementById("percentBpjsTkKary1").value);
+            var percentBpjsTkPers = parseInt(document.getElementById("percentBpjsTkPers1").value);
 
 
-             var jkkPers = document.getElementById("jkkPers1").value;
-             var jhtPers = document.getElementById("jhtPers1").value;
-             var jkmPers = document.getElementById("jkmPers1").value;
-             var iurPers = document.getElementById("iurPers1").value;
-             var jpkPers = document.getElementById("jpkPers1").value;
+            var iuranKaryawan = parseInt(document.getElementById("iuranKaryawan1").value);
+             var jpkKaryawan = parseInt(document.getElementById("jpkKaryawan1").value);
 
 
+             var jkkPers = parseFloat(document.getElementById("jkkPers1").value);
+             var jhtPers = parseFloat(document.getElementById("jhtPers1").value);
+             var jkmPers = parseFloat(document.getElementById("jkmPers1").value);
+             var iurPers = parseFloat(document.getElementById("iurPers1").value);
+             var jpkPers = parseFloat(document.getElementById("jpkPers1").value);
 
+            console.log('')
+
+            console.log('jkk '+jkkPers);
+            console.log('jht '+jhtPers);
+            console.log('jkm '+jkmPers);
+            console.log('iur '+iurPers);
+            console.log('jpk '+jpkPers);
 
             if (unit != ''&& minBpjsKs != '' && maxBpjsKs != '' && minBpjsTk != '' && maxBpjsTk != ''
                     && percentBpjsKsKary != '' && percentBpjsKsPers != '' && percentBpjsTkKary != ''
@@ -49,7 +54,7 @@
                     if (percentBpjsKsKary <= 100 && percentBpjsKsPers <= 100 && percentBpjsTkKary <= 100 && percentBpjsTkPers <= 100
                             && iuranKaryawan <= 100 && jpkKaryawan <= 100 && iurPers <= 100 && jkkPers <= 100 && jhtPers <= 100 && jkmPers <= 100
                             && jpkPers <= 100){
-                        if (minBpjsKs < maxBpjsKs && minBpjsTk < maxBpjsTk){
+                        if (minBpjsKs <= maxBpjsKs && minBpjsTk <= maxBpjsTk){
                             if (confirm('Do you want to save this record?')) {
                                 event.originalEvent.options.submit = true;
                                 $.publish('showDialog');
@@ -365,7 +370,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield type="number" id="jkkPers1" name="payrollBpjs.jkkPers" required="true" cssClass="form-control" onchange="setiuranTkPers()"/>
+                                <s:textfield type="number" step="any" id="jkkPers1" name="payrollBpjs.jkkPers" required="true" cssClass="form-control" onchange="setiuranTkPers()"/>
                             </table>
                         </td>
                     </tr>
@@ -375,7 +380,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield type="number" id="jhtPers1" name="payrollBpjs.jhtPers" required="true" cssClass="form-control" onchange="setiuranTkPers()"/>
+                                <s:textfield type="number" step="any" id="jhtPers1" name="payrollBpjs.jhtPers" required="true" cssClass="form-control" onchange="setiuranTkPers()"/>
                             </table>
                         </td>
                     </tr>
@@ -385,7 +390,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield type="number" id="jkmPers1" name="payrollBpjs.jkmPers" required="true" cssClass="form-control" onchange="setiuranTkPers()"/>
+                                <s:textfield type="number" step="any" id="jkmPers1" name="payrollBpjs.jkmPers" required="true" cssClass="form-control" onchange="setiuranTkPers()"/>
                             </table>
                         </td>
                     </tr>
@@ -395,7 +400,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield readonly="true" id="iurPers1" name="payrollBpjs.iuranPers" required="true" cssClass="form-control"/>
+                                <s:textfield type="number" step="any" readonly="true" id="iurPers1" name="payrollBpjs.iuranPers" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -405,7 +410,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield type="number" id="jpkPers1" name="payrollBpjs.jpkPers" required="true" cssClass="form-control" onchange="setPersenTkPers()"/>
+                                <s:textfield type="number" step="any" id="jpkPers1" name="payrollBpjs.jpkPers" required="true" cssClass="form-control" onchange="setPersenTkPers()"/>
                             </table>
                         </td>
                     </tr>
@@ -415,7 +420,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield readonly="true" id="percentBpjsTkPers1" name="payrollBpjs.iuranBpjsTkPersPersen" required="true" cssClass="form-control"/>
+                                <s:textfield type="number" step="any" readonly="true" id="percentBpjsTkPers1" name="payrollBpjs.iuranBpjsTkPersPersen" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>

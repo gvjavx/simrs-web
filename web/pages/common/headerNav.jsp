@@ -6,6 +6,7 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/CutiPegawaiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/UserAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/TransaksiObatAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/NotifikasiAdminAction.js"/>'></script>
 <script type="text/javascript">
 
     function loadDataLogin() {
@@ -147,17 +148,11 @@
         $("#count3").html(tmp_jml_pemberitahuan);
     }
     function loadUser () {
-        var data="";
         NotifikasiAction.searchUser(function(data){
             if (data=="1"){
                 $(".orangPensiun").show();
-            }else{
-                $(".orangPensiun").hide();
             }
-
             if (data=="39"){
-                $(".pengajuanBiaya").show();
-            }else{
                 $(".pengajuanBiaya").show();
             }
         });
@@ -229,21 +224,20 @@
         $("#count7").html(tmp_jml_panjang);
     }
 
-    /*function loadPengajuanBiaya(){
+    function loadPengajuanBiaya(){
         var tmp_data_pengajuan= "";
         var tmp_jml_pengajuan="";
         var data = [];
         dwr.engine.setAsync(false);
         NotifikasiAction.searchPengajuanBiayaMenggantung(function(listData){
             data = listData;
-            console.log(data);
             $.each(data, function(i, item){
                 if(tmp_jml_pengajuan == ""){
                     tmp_jml_pengajuan = item.jmlApproval;
                 }
                 tmp_data_pengajuan += "<li class='pengajuanBiaya' data-id='"+item.pengajuanBiayaDetailId+"'>"+
                     "<a>"+
-                    "<span class='label label-info'>"+item.stTanggalRealisasi+"</span> "+item.pengajuanBiayaDetailId+
+                    "<span class='label label-info'>"+item.stTanggalRealisasi+"</span> "+item.keperluan+
                     "</a>"+
                     "</li>";
             })
@@ -255,12 +249,19 @@
         $("#count8").html(total);
         $("#inner8").html(tmp_data_pengajuan);
         $("#count9").html(tmp_jml_pengajuan);
-    }*/
+    }
 
     function pushNotifResep(){
         cekNotifResep();
         setInterval(function () {
             cekNotifResep();
+        }, 5000);
+    }
+
+    function pushNotifTele(){
+        cekNotifTele();
+        setInterval(function () {
+            cekNotifTele();
         }, 5000);
     }
 
@@ -296,20 +297,57 @@
         });
     }
 
+    function cekNotifTele(){
+        NotifikasiAdminAction.getUnReadNotifAdminEntity("tele", function (res) {
+            var listResep = "";
+            var cekCount = $('#count2').text();
+            if(cekCount == ''){
+                cekCount = 0;
+            }
+            if(res.length > 0){
+                $.each(res, function (i, item) {
+                    listResep += '<li>' +
+                        '<a href="<%= request.getContextPath() %>/onlinepaymentverif/search_onlinepaymentverif.action?id='+item.idItem+'&tipe=notif&notifid='+item.id+'">' +
+                        '<i class="fa fa-info-circle text-green"></i> <small style="margin-left: -8px">'+' ['+item.createdWho +']'+' '+item.keterangan+'</small><br>' +
+                        '</a>' +
+                        '</li>';
+                });
+                $('#inner2').html(listResep);
+                $('#count2').html(res.length);
+                $('#count3').html(res.length);
+                if(res.length > parseInt(cekCount)){
+                    $('#notif_sound').get(0).autoplay = true;
+                    $('#notif_sound').get(0).load();
+                    // $('#notif_sound').get(0).muted = false;
+                    // console.log($('#notif_sound').get(0).preload);
+                }
+            }else{
+                $('#inner2').html(listResep);
+                $('#count2').html('');
+                $('#count3').html('');
+            }
+        });
+    }
+
     function cekRole(){
         TransaksiObatAction.cekRole(function (res) {
             if(res == "ADMIN APOTEK"){
                 pushNotifResep();
             }
+            if(res == "VERIFIKATOR PEMBAYARAN ONLINE"){
+                pushNotifTele();
+            }
         })
     }
 
     $(document).ready(function() {
+        $(".orangPensiun").hide();
+        $(".pengajuanBiaya").hide();
         loadDataLogin();
         loadUser();
         loadNotif();
         loadPegawaiCuti();
-        // loadPengajuanBiaya();
+        loadPengajuanBiaya();
         cekRole();
 
         $('.pemberitahuan').on('click', function() {
@@ -459,7 +497,7 @@
                         <span class="label label-warning "></span>
                     </a>
                 </li>--%>
-                <%--<li class="dropdown notifications-menu pengajuanBiaya">
+                <li class="dropdown notifications-menu pengajuanBiaya">
                     <!-- Menu toggle button -->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-money"></i>
@@ -473,9 +511,9 @@
                                 <!-- end notification -->
                             </ul>
                         </li>
-                        &lt;%&ndash;<li class="footer"><a href="#">View all</a></li>&ndash;%&gt;
+                        <%--<li class="footer"><a href="#">View all</a></li>--%>
                     </ul>
-                </li>--%>
+                </li>
                 <li class="dropdown notifications-menu orangPensiun">
                     <!-- Menu toggle button -->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">

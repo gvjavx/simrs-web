@@ -492,6 +492,15 @@ public class JurnalAction extends BaseMasterAction {
         return data;
     }
 
+    public JurnalDetail getBudgetInvestasiTerpakai(String branchId,String divisiId,String tanggal,String idInvestasi,String budget,String budgetSdBulanIni){
+        JurnalDetail data = new JurnalDetail();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        JurnalBo jurnalBo = (JurnalBo) ctx.getBean("jurnalBoProxy");
+        String[] arrTanggal = tanggal.split("-");
+        data = jurnalBo.getBudgetInvestasiTerpakai(branchId,divisiId,arrTanggal[0],arrTanggal[1],idInvestasi,budget,budgetSdBulanIni);
+
+        return data;
+    }
 
     public String paging(){
         return SUCCESS;

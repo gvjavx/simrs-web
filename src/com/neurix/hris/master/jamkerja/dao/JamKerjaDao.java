@@ -4,6 +4,7 @@ import com.neurix.common.dao.GenericDao;
 import com.neurix.hris.master.group.model.ImHrisGroupEntity;
 import com.neurix.hris.master.group.model.ImHrisGroupHistory;
 import com.neurix.hris.master.jamkerja.model.ImHrisJamKerja;
+import com.neurix.hris.master.jamkerja.model.ImHrisJamKerjaHistory;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -21,7 +22,7 @@ import java.util.Map;
 public class JamKerjaDao extends GenericDao<ImHrisJamKerja,String> {
     @Override
     protected Class<ImHrisJamKerja> getEntityClass() {
-        return null;
+        return ImHrisJamKerja.class;
     }
 
     @Override
@@ -67,14 +68,15 @@ public class JamKerjaDao extends GenericDao<ImHrisJamKerja,String> {
     }
 
     // Generate surrogate id from postgre
-    public String getNextGoupHistoryId() throws HibernateException {
+    public String getNextJamKerjaHistoryId() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_jam_kerja_history')");
         Iterator<BigInteger> iter=query.list().iterator();
-        return String.valueOf(iter.next().longValue());
+        String id = String.format("%03d", iter.next());
+        return id;
     }
 
 
-    public void addAndSaveHistory(ImHrisGroupHistory entity) throws HibernateException {
+    public void addAndSaveHistory(ImHrisJamKerjaHistory entity) throws HibernateException {
         this.sessionFactory.getCurrentSession().save(entity);
     }
 }

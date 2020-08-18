@@ -1456,6 +1456,16 @@ public class RekruitmenAction extends BaseMasterAction{
         listOfComboPeriode.addAll(listOfPeriode);
     }
 
+    public void initComboPeriodeTahunKeatas5() {
+
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        int batas=5;
+        List listOfPeriode = new ArrayList();
+        for (int i=0;i<batas;i++){
+            listOfPeriode.add(year+i);
+        }
+        listOfComboPeriode.addAll(listOfPeriode);
+    }
 
     @Override
     public String search() {
@@ -2040,6 +2050,7 @@ public class RekruitmenAction extends BaseMasterAction{
 
         return "print_report_per_status_rekruitmen";
     }
+
     private String pendidikanTerakhir ( List<StudyCalonPegawai> studyCalonPegawaiList ){
         String pendidikanTerakhir = "";
         int no = 0;

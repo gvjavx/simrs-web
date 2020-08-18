@@ -393,13 +393,15 @@
                                                                 <s:if test="#attr.row.cancel">
                                                                 </s:if>
                                                                 <s:elseif test="#attr.row.finish">
-                                                                    <s:url var="urlCetakSuratIjinTidakMasuk" namespace="/ijinKeluar" action="cetakSuratIjinTidakMasuk_ijinKeluar" escapeAmp="false">
-                                                                        <s:param name="id"><s:property value="#attr.row.ijinKeluarId" /></s:param>
-                                                                        <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                                    </s:url>
-                                                                    <s:a href="%{urlCetakSuratIjinTidakMasuk}">
-                                                                        <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_edit">
-                                                                    </s:a>
+                                                                    <s:if test="#attr.row.cetakSurat">
+                                                                        <s:url var="urlCetakSuratIjinTidakMasuk" namespace="/ijinKeluar" action="cetakSuratIjinTidakMasuk_ijinKeluar" escapeAmp="false">
+                                                                            <s:param name="id"><s:property value="#attr.row.ijinKeluarId" /></s:param>
+                                                                            <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                                        </s:url>
+                                                                        <s:a href="%{urlCetakSuratIjinTidakMasuk}">
+                                                                            <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_edit">
+                                                                        </s:a>
+                                                                    </s:if>
                                                                 </s:elseif>
                                                             </display:column>
 
@@ -431,9 +433,11 @@
 
                                                             <display:column style="text-align:center;" media="html" title="Surat Dokter">
                                                                 <s:if test="#attr.row.dispenLahir">
-                                                                    <a href="javascript:;" data="<s:property value="%{#attr.row.uploadFile}"/>" class="item-surat">
-                                                                        <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">
-                                                                    </a>
+                                                                    <s:if test="#attr.row.suratDokter">
+                                                                        <a href="javascript:;" data="<s:property value="%{#attr.row.uploadFile}"/>" class="item-surat">
+                                                                            <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">
+                                                                        </a>
+                                                                    </s:if>
                                                                 </s:if>
                                                             </display:column>
                                                             <display:column property="ijinKeluarId" sortable="true" title="Id" />
