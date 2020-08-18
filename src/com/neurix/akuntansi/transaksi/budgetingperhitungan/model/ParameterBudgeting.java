@@ -1,5 +1,6 @@
 package com.neurix.akuntansi.transaksi.budgetingperhitungan.model;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
@@ -17,6 +18,15 @@ public class ParameterBudgeting {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private BigDecimal nilaiTotalBudgeting;
+
+    public BigDecimal getNilaiTotalBudgeting() {
+        return nilaiTotalBudgeting;
+    }
+
+    public void setNilaiTotalBudgeting(BigDecimal nilaiTotalBudgeting) {
+        this.nilaiTotalBudgeting = nilaiTotalBudgeting;
+    }
 
     public String getId() {
         return id;

@@ -14,6 +14,8 @@ import com.neurix.common.exception.GeneralBOException;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -99,5 +101,77 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
     public List<PerhitunganBudgeting> getListPendapatanObat(String branchId, String bulan, String tahun) throws GeneralBOException {
         logger.info("[BudgetingPerhitunganBoImpl.getListPendapatanObat] START >>>");
         return perhitunganBudgetingDao.getListPendapatanObatPeriksa(branchId, tahun, bulan);
+    }
+
+    @Override
+    public List<ParameterBudgeting> getSearchListParameterBudgeting(ParameterBudgeting bean) throws GeneralBOException {
+
+        List<ParameterBudgeting> parameterBudgetings = new ArrayList<>();
+        List<ImAkunParameterBudgetingEntity> parameterBudgetingEntityList = getListParameterBudgetingEntity(bean);
+        if (parameterBudgetingEntityList.size() > 0){
+
+            for (ImAkunParameterBudgetingEntity paramEntity : parameterBudgetingEntityList){
+                ParameterBudgeting parameterBudgeting = new ParameterBudgeting();
+                parameterBudgeting.setId(paramEntity.getId());
+                parameterBudgeting.setNama(paramEntity.getNama());
+                parameterBudgeting.setRekeningId(paramEntity.getRekeningId());
+                parameterBudgeting.setTipe(paramEntity.getTipe());
+                parameterBudgeting.setIdJenisBudgeting(paramEntity.getIdJenisBudgeting());
+                parameterBudgeting.setFlag(paramEntity.getFlag());
+                parameterBudgeting.setAction(paramEntity.getAction());
+                parameterBudgeting.setCreatedDate(paramEntity.getCreatedDate());
+                parameterBudgeting.setCreatedWho(paramEntity.getCreatedWho());
+                parameterBudgeting.setLastUpdate(paramEntity.getLastUpdate());
+                parameterBudgeting.setLastUpdateWho(paramEntity.getLastUpdateWho());
+
+                PerhitunganBudgeting perhitunganBudgeting = new PerhitunganBudgeting();
+                perhitunganBudgeting.setIdParameterBudgeting(paramEntity.getId());
+                List<ItAkunPerhitunganBudgetingEntity> perhitunganBudgetingEntities = getListPerhitunganBudgetingEntity(perhitunganBudgeting);
+                if (perhitunganBudgetingEntities.size() > 0){
+                    BigDecimal nilaiBudgeting = hitungNilaiBudgeting(perhitunganBudgetingEntities);
+                    parameterBudgeting.setNilaiTotalBudgeting(nilaiBudgeting);
+                }
+                parameterBudgetings.add(parameterBudgeting);
+            }
+        }
+
+        return parameterBudgetings;
+    }
+
+    @Override
+    public BigDecimal hitungNilaiBudgeting(List<ItAkunPerhitunganBudgetingEntity> beans) throws GeneralBOException {
+
+        BigDecimal nilai = new BigDecimal(0);
+        String opr = "";
+
+        for (ItAkunPerhitunganBudgetingEntity perhitunganEntity : beans){
+            if ("".equalsIgnoreCase(opr)){
+                nilai = perhitunganEntity.getNilai();
+                opr = perhitunganEntity.getOperator();
+            } else {
+                if ("=".equalsIgnoreCase(perhitunganEntity.getOperator())){
+                    break;
+                } else {
+                    nilai = hitung(nilai, opr, perhitunganEntity.getNilai());
+                    opr = perhitunganEntity.getOperator();
+                }
+            }
+        }
+
+        return nilai;
+    }
+
+    private BigDecimal hitung(BigDecimal n1, String opr, BigDecimal n2){
+
+        MathContext m = new MathContext(3);
+        if ("+".equalsIgnoreCase(opr))
+            return n1.add(n2);
+        if ("-".equalsIgnoreCase(opr))
+            return n1.subtract(n2);
+        if ("*".equalsIgnoreCase(opr))
+            return n1.multiply(n2);
+        if ("/".equalsIgnoreCase(opr))
+            return n1.divide(n2, BigDecimal.ROUND_HALF_UP, 2).round(m);
+        return new BigDecimal(0);
     }
 }

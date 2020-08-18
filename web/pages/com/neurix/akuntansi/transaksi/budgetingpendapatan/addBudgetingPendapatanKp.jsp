@@ -153,6 +153,7 @@
                                     <tr bgcolor="#90ee90">
                                         <%--<td style="width: 20%">COA</td>--%>
                                         <td align="">Parameter Budgeting</td>
+                                        <td align="">Nilai</td>
                                         <td align="center">Action</td>
                                         <%--<td align="center">Action</td>--%>
                                     </tr>
@@ -395,6 +396,7 @@
             $.each(list, function (i, item) {
                 str += "<tr>" +
                         "<td>"+item.nama+"</td>" +
+                        "<td>"+item.nilai+"</td>" +
                         "<td align='center'>" +
                         "<button class='btn btn-sm btn-primary' onclick=\"edit(\'"+item.id+"\',\'"+branch+"\',\'"+tahun+"\')\"><i class='fa fa-edit'></i></button> " +
                         "<button class='btn btn-sm btn-success'><i class='fa fa-search'></i></button>" +

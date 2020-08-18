@@ -1,5 +1,6 @@
 package com.neurix.akuntansi.transaksi.budgetingperhitungan.model;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 
@@ -9,7 +10,7 @@ import java.sql.Timestamp;
 public class ItAkunPerhitunganBudgetingEntity {
     private String id;
     private String idParameterBudgeting;
-    private BigInteger nilai;
+    private BigDecimal nilai;
     private String operator;
     private String branchId;
     private String tahun;
@@ -45,11 +46,11 @@ public class ItAkunPerhitunganBudgetingEntity {
         this.idParameterBudgeting = idParameterBudgeting;
     }
 
-    public BigInteger getNilai() {
+    public BigDecimal getNilai() {
         return nilai;
     }
 
-    public void setNilai(BigInteger nilai) {
+    public void setNilai(BigDecimal nilai) {
         this.nilai = nilai;
     }
 

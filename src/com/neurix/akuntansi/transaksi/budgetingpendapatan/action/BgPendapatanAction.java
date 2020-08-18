@@ -88,6 +88,7 @@ public class BgPendapatanAction {
         session.removeAttribute("listOfCoa");
         session.removeAttribute("listOfDetail");
         session.removeAttribute("listOfPengadaan");
+        session.removeAttribute("listOfParam");
         return "search";
     }
 
@@ -375,15 +376,38 @@ public class BgPendapatanAction {
         }
     }
 
-    public List<ImAkunParameterBudgetingEntity> getListParameterBudgeting(String idJenis){
+    public List<ParameterBudgeting> getListParameterBudgeting(String idJenis){
         logger.info("[BgPendapatanAction.getListParametersBudgeting] START >>>");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
 
-        ParameterBudgeting parameterBudgeting = new ParameterBudgeting();
-        parameterBudgeting.setIdJenisBudgeting(idJenis);
-        return budgetingPerhitunganBo.getListParameterBudgetingEntity(parameterBudgeting);
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<ParameterBudgeting> parameterBudgetings = (List<ParameterBudgeting>) session.getAttribute("listOfParam");
+        List<ParameterBudgeting> listParamBudgeting = new ArrayList<>();
+
+        if (parameterBudgetings != null){
+            // jika session ada
+            listParamBudgeting = parameterBudgetings;
+        } else {
+
+            // jika session kosong;
+            // cari data dri table;
+            ParameterBudgeting parameterBudgeting = new ParameterBudgeting();
+            parameterBudgeting.setIdJenisBudgeting(idJenis);
+            try {
+                listParamBudgeting = budgetingPerhitunganBo.getSearchListParameterBudgeting(parameterBudgeting);
+            } catch (GeneralBOException e){
+                logger.error("[BgPendapatanAction.getListParametersBudgeting] ERROR", e);
+            }
+
+            // set Session
+            parameterBudgetings = new ArrayList<>();
+            parameterBudgetings.addAll(listParamBudgeting);
+        }
+
+        logger.info("[BgPendapatanAction.getListParametersBudgeting] END <<<N");
+        return listParamBudgeting;
 
     }
 

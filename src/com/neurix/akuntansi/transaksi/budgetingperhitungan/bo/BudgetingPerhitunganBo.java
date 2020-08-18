@@ -6,6 +6,7 @@ import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ParameterBudget
 import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.PerhitunganBudgeting;
 import com.neurix.common.exception.GeneralBOException;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -16,5 +17,7 @@ public interface BudgetingPerhitunganBo {
     public List<ItAkunPerhitunganBudgetingEntity> getListPerhitunganBudgetingEntity(PerhitunganBudgeting bean) throws GeneralBOException;
     public List<PerhitunganBudgeting> getListPendapatanTindakan(String branchId, String bulan, String tahun) throws GeneralBOException;
     public List<PerhitunganBudgeting> getListPendapatanObat(String branchId, String bulan, String tahun) throws GeneralBOException;
+    public List<ParameterBudgeting> getSearchListParameterBudgeting(ParameterBudgeting bean) throws GeneralBOException;
+    public BigDecimal hitungNilaiBudgeting(List<ItAkunPerhitunganBudgetingEntity> beans) throws GeneralBOException;
 
 }
