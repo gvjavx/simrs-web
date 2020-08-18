@@ -1,4 +1,4 @@
-<div class="modal fade" id="modal-asesmen-ugd">
+<div class="modal fade" id="modal-aud_asesmen-ugd">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
@@ -9,9 +9,9 @@
             </div>
             <div class="modal-body">
                 <div class="box-body btn-hide">
-                    <div class="alert alert-success alert-dismissible" style="display: none" id="warning_asesmen-ugd">
+                    <div class="alert alert-success alert-dismissible" style="display: none" id="warning_aud_asesmen-ugd">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
-                        <p id="msg_asesmen-ugd"></p>
+                        <p id="msg_aud_asesmen-ugd"></p>
                     </div>
                     <div class="btn-group">
                         <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
@@ -332,7 +332,7 @@
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                <button id="save_aud_keluhan_utama" class="btn btn-success pull-right" onclick="saveAsesmenUgd('keluhan_utama')"><i class="fa fa-check"></i> Save
+                <button id="save_aud_keluhan_utama" class="btn btn-success pull-right" onclick="saveAsesmenUgd('keluhan_utama','asesmen-ugd')"><i class="fa fa-check"></i> Save
                 </button>
                 <button id="load_aud_keluhan_utama" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -721,7 +721,7 @@
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                <button id="save_aud_pre_hospital" class="btn btn-success pull-right" onclick="saveAsesmenUgd('pre_hospital')"><i class="fa fa-check"></i> Save
+                <button id="save_aud_pre_hospital" class="btn btn-success pull-right" onclick="saveAsesmenUgd('pre_hospital','asesmen-ugd')"><i class="fa fa-check"></i> Save
                 </button>
                 <button id="load_aud_pre_hospital" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -975,7 +975,7 @@
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                <button id="save_aud_keperawatan" class="btn btn-success pull-right" onclick="saveAsesmenUgd('keperawatan')"><i class="fa fa-check"></i> Save
+                <button id="save_aud_keperawatan" class="btn btn-success pull-right" onclick="saveAsesmenUgd('keperawatan','asesmen-ugd')"><i class="fa fa-check"></i> Save
                 </button>
                 <button id="load_aud_keperawatan" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1091,7 +1091,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_aud_nyeri" class="btn btn-success pull-right" onclick="saveAsesmenUgd('nyeri')"><i class="fa fa-check"></i> Save
+                <button id="save_aud_nyeri" class="btn btn-success pull-right" onclick="saveAsesmenUgd('nyeri','asesmen-ugd')"><i class="fa fa-check"></i> Save
                 </button>
                 <button id="load_aud_nyeri" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1199,7 +1199,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_aud_nutrisional" class="btn btn-success pull-right" onclick="saveAsesmenUgd('nutrisional')"><i class="fa fa-check"></i> Save
+                <button id="save_aud_nutrisional" class="btn btn-success pull-right" onclick="saveAsesmenUgd('nutrisional','asesmen-ugd')"><i class="fa fa-check"></i> Save
                 </button>
                 <button id="load_aud_nutrisional" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1365,7 +1365,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_aud_jatuh" class="btn btn-success pull-right" onclick="saveAsesmenUgd('jatuh')"><i class="fa fa-check"></i> Save
+                <button id="save_aud_jatuh" class="btn btn-success pull-right" onclick="saveAsesmenUgd('jatuh','asesmen-ugd')"><i class="fa fa-check"></i> Save
                 </button>
                 <button id="load_aud_jatuh" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1524,7 +1524,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_aud_status" class="btn btn-success pull-right" onclick="saveAsesmenUgd('status')"><i class="fa fa-check"></i> Save
+                <button id="save_aud_status" class="btn btn-success pull-right" onclick="saveAsesmenUgd('status','asesmen-ugd')"><i class="fa fa-check"></i> Save
                 </button>
                 <button id="load_aud_status" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1701,7 +1701,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_aud_kebutuhan" class="btn btn-success pull-right" onclick="saveAsesmenUgd('kebutuhan')"><i class="fa fa-check"></i> Save
+                <button id="save_aud_kebutuhan" class="btn btn-success pull-right" onclick="saveAsesmenUgd('kebutuhan','asesmen-ugd')"><i class="fa fa-check"></i> Save
                 </button>
                 <button id="load_aud_kebutuhan" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1841,7 +1841,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_aud_diagnosis" class="btn btn-success pull-right" onclick="saveAsesmenUgd('diagnosis')"><i class="fa fa-check"></i> Save
+                <button id="save_aud_diagnosis" class="btn btn-success pull-right" onclick="saveAsesmenUgd('diagnosis','asesmen-ugd')"><i class="fa fa-check"></i> Save
                 </button>
                 <button id="load_aud_diagnosis" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1957,7 +1957,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_aud_asuhan" class="btn btn-success pull-right" onclick="saveAsesmenUgd('asuhan')"><i class="fa fa-check"></i> Save
+                <button id="save_aud_asuhan" class="btn btn-success pull-right" onclick="saveAsesmenUgd('asuhan','asesmen-ugd')"><i class="fa fa-check"></i> Save
                 </button>
                 <button id="load_aud_asuhan" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -2120,7 +2120,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_aud_anamnesa" class="btn btn-success pull-right" onclick="saveAsesmenUgd('anamnesa')"><i class="fa fa-check"></i> Save
+                <button id="save_aud_anamnesa" class="btn btn-success pull-right" onclick="saveAsesmenUgd('anamnesa','asesmen-ugd')"><i class="fa fa-check"></i> Save
                 </button>
                 <button id="load_aud_anamnesa" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -2204,7 +2204,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_aud_asuhan_medis" class="btn btn-success pull-right" onclick="saveAsesmenUgd('asuhan_medis')"><i class="fa fa-check"></i> Save
+                <button id="save_aud_asuhan_medis" class="btn btn-success pull-right" onclick="saveAsesmenUgd('asuhan_medis','asesmen-ugd')"><i class="fa fa-check"></i> Save
                 </button>
                 <button id="load_aud_asuhan_medis" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -2293,7 +2293,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_aud_kondisi_pasien" class="btn btn-success pull-right" onclick="saveAsesmenUgd('kondisi_pasien')"><i class="fa fa-check"></i> Save
+                <button id="save_aud_kondisi_pasien" class="btn btn-success pull-right" onclick="saveAsesmenUgd('kondisi_pasien','asesmen-ugd')"><i class="fa fa-check"></i> Save
                 </button>
                 <button id="load_aud_kondisi_pasien" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -2446,12 +2446,16 @@
                             <div class="col-md-6">
                                 <label style="margin-top: 7px">Perawat</label>
                                 <canvas width="250" style="margin-left: -1px;" onmouseover="paintTtd('ki10')" class="paint-canvas-ttd" id="ki10"></canvas>
+                                <input class="form-control" id="nama_terang_ki10" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control" id="sip_ki10" placeholder="SIP">
                                 <button style="margin-top: -5px; margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('ki10')"><i class="fa fa-trash"></i> Clear
                                 </button>
                             </div>
                             <div class="col-md-6">
                                 <label style="margin-top: 7px">Dokter</label>
                                 <canvas width="250" style="margin-left: -1px;" onmouseover="paintTtd('ki11')" class="paint-canvas-ttd" id="ki11"></canvas>
+                                <input class="form-control" id="nama_terang_ki11" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control" id="sip_ki11" placeholder="SIP">
                                 <button style="margin-top: -5px; margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('ki11')"><i class="fa fa-trash"></i> Clear
                                 </button>
                             </div>
@@ -2462,7 +2466,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_aud_keluar_igd" class="btn btn-success pull-right" onclick="saveAsesmenUgd('keluar_igd')"><i class="fa fa-check"></i> Save
+                <button id="save_aud_keluar_igd" class="btn btn-success pull-right" onclick="saveAsesmenUgd('keluar_igd','asesmen-ugd')"><i class="fa fa-check"></i> Save
                 </button>
                 <button id="load_aud_keluar_igd" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...

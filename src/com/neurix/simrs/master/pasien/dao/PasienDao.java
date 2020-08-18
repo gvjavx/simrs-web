@@ -7,6 +7,7 @@ import com.neurix.simrs.master.pasien.model.Pasien;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.security.access.method.P;
@@ -65,7 +66,9 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
     public List<ImSimrsPasienEntity> getListPasienByTmp(String tmp) {
 
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsPasienEntity.class);
-        criteria.add(Restrictions.ilike("nama", tmp));
+        Criterion nama= Restrictions.ilike("nama", tmp);
+        Criterion idPasien = Restrictions.ilike("idPasien", tmp);
+        criteria.add(Restrictions.or(nama, idPasien));
         criteria.add(Restrictions.eq("flag", "Y"));
 
         List<ImSimrsPasienEntity> listOfResult = criteria.list();
@@ -151,7 +154,7 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
                 "FROM im_simrs_pasien a\n" +
                 "INNER JOIN it_simrs_paket_pasien b ON a.id_pasien = b.id_pasien\n" +
                 "INNER JOIN mt_simrs_paket c ON b.id_paket = c.id_paket\n" +
-                "WHERE a.nama ILIKE :search AND b.flag = 'Y'";
+                "WHERE b.flag = 'Y' AND a.nama ILIKE :search OR a.id_pasien ILIKE :search";
 
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)

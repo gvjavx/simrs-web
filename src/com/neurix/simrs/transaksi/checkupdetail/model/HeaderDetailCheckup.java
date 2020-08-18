@@ -178,6 +178,33 @@ public class HeaderDetailCheckup extends BaseModel{
 
     private String autoanamnesis;
     private String heteroanamnesis;
+    private String flagCover;
+    private String isCover;
+    private BigDecimal pasienBayar;
+
+    public BigDecimal getPasienBayar() {
+        return pasienBayar;
+    }
+
+    public void setPasienBayar(BigDecimal pasienBayar) {
+        this.pasienBayar = pasienBayar;
+    }
+
+    public void setFlagCover(String flagCover) {
+        this.flagCover = flagCover;
+    }
+
+    public String getIsCover() {
+        return isCover;
+    }
+
+    public void setIsCover(String isCover) {
+        this.isCover = isCover;
+    }
+
+    public String getFlagCover() {
+        return flagCover;
+    }
 
     public String getAutoanamnesis() {
         return autoanamnesis;

@@ -2455,7 +2455,7 @@ function searchICD9(id) {
 function getListRekamMedis(tipePelayanan, jenis, id) {
     var li = "";
     var jenisRm = "";
-    if(urlPage == "igd"){
+    if(jenis == "igd"){
         if(umur >= 0 && umur <= 17){
             jenisRm = 'ugd_anak';
         }else if(umur >= 18 && umur <= 55){
@@ -2468,6 +2468,7 @@ function getListRekamMedis(tipePelayanan, jenis, id) {
     }
     CheckupAction.getListRekammedisPasien(tipePelayanan, jenisRm, id, function (res) {
         if (res.length > 0) {
+            console.log(res);
             $.each(res, function (i, item) {
                 var cek = "";
                 var tgl = "";
@@ -2477,12 +2478,15 @@ function getListRekamMedis(tipePelayanan, jenis, id) {
                 var labelTerisi = "";
                 var constan = 0;
                 var terIsi = 0;
+                var labelPrint = "";
+                var terIsiPrint = "";
 
                 if(item.jumlahKategori != null){
                     constan = item.jumlahKategori;
                 }
                 if(item.terisi != null && item.terisi !=''){
                     terIsi = item.terisi;
+                    terIsiPrint = item.terisi;
                 }
 
                 if (constan == terIsi || parseInt(terIsi) > parseInt(constan)) {
@@ -2494,10 +2498,11 @@ function getListRekamMedis(tipePelayanan, jenis, id) {
                     }
                     icons = '<i class="fa fa-check" style="color: #449d44"></i>';
                     // cek = '<i class="fa fa-check" style="color: #449d44"></i>';
-                    // icons2 = '<i class="fa fa-print" style="color: #449d44"></i>';
+                    icons2 = '<i class="fa fa-check" style="color: #449d44"></i>';
                 }
 
-                labelTerisi = '<span style="color: #367fa9">'+constan+'/'+terIsi+'</span>';
+                labelTerisi = '<span style="color: #367fa9; font-weight: bold">'+constan+'/'+terIsi+'</span>';
+                labelPrint = '<span style="color: #367fa9; font-weight: bold">'+terIsiPrint+'</span>';
 
                 if (item.jenis == 'ringkasan_rj') {
                     li += '<li><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '"><i class="fa fa-file-o"></i>' + item.namaRm + '</a></li>'
@@ -2505,7 +2510,7 @@ function getListRekamMedis(tipePelayanan, jenis, id) {
                     if (item.keterangan == 'form') {
                         li += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')"><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '">' + icons + item.namaRm + ' ' +labelTerisi +'</a></li>'
                     } else if (item.keterangan == "surat") {
-                        li += '<li><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\',\'' + item.namaRm + '\')' + '">' + icons2 + item.namaRm + ' ' + '</a></li>'
+                        li += '<li><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\',\'' + item.namaRm + '\')' + '">' + icons2 + item.namaRm + ' '+ labelPrint + '</a></li>'
                     }
                 }
             });
@@ -2720,4 +2725,17 @@ function savePemeriksaanPasien() {
         $('#warning_ket').show().fadeOut(5000);
         $('#warning_msg').text("Silahkan cek kembali data inputan anda..!");
     }
+}
+
+function printPernyataan(kode, idRm, flag, namaRm) {
+    $('#print_form').text(namaRm);
+    $('#save_con_rm').attr('onclick','printPernyataanRM(\''+kode+'\', \''+idRm+'\')');
+    $('#modal-confirm-rm').modal('show');
+}
+
+function printPernyataanRM(kode, idRM){
+    window.open(contextPath+'/rekammedik/printSuratPernyataan_rekammedik?id=' + idDetailCheckup + '&tipe=' + kode+'&ids='+idRM, '_blank');
+    $('#modal-confirm-rm').modal('hide');
+    $('#info_dialog').dialog('open');
+    $('#close_pos').val(12);
 }

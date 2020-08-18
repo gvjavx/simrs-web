@@ -294,6 +294,21 @@ ALTER TABLE public.it_simrs_observasi_tindakan_hd
 
 CREATE SEQUENCE seq_observasi_hd;
 
+-- 16-08-2020
+ALTER TABLE it_simrs_asesmen_ugd
+ADD COLUMN nama_terang VARCHAR(100),
+ADD COLUMN sip VARCHAR(100);
+
+-- 17-08-2020
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN flag_cover VARCHAR(1);
+
+-- tambah function
+/verifikasicover/initVerif_verifikasicover.action
+/verifikasicover/initVerif_verifikasicover.action
+/verifikasicover/searchVerifCover_verifikasicover.action
+
+
 
 
 

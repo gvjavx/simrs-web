@@ -438,6 +438,8 @@
                                 <label style="margin-left: 8px">TTD</label>
                                 <canvas class="paint-canvas-ttd" id="gg013" width="220"
                                         onmouseover="paintTtd('gg013')"></canvas>
+                                <input class="form-control" id="nama_terang_gg013" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control" id="sip_gg013" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('gg013')"><i
                                         class="fa fa-trash"></i> Clear

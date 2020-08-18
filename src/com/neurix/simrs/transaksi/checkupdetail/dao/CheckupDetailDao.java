@@ -2301,6 +2301,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             String branchId = "";
             String tipePelayanan = "";
             String isNull = "";
+            String idJenisPeriksaPasien = "";
 
             if(detailCheckup.getIdPasien() != null && !"".equalsIgnoreCase(detailCheckup.getIdPasien())){
                 idPasien = "AND a.id_pasien LIKE '%"+detailCheckup.getIdPasien()+"%' \n";
@@ -2314,10 +2315,21 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             if(detailCheckup.getIdDetailCheckup() != null && !"".equalsIgnoreCase(detailCheckup.getIdDetailCheckup())){
                 idDetailCheckup = "AND b.id_detail_checkup LIKE '%"+detailCheckup.getIdDetailCheckup()+"%' \n";
             }
-            if(detailCheckup.getFlagCloseTraksaksi() != null && !"".equalsIgnoreCase(detailCheckup.getFlagCloseTraksaksi())){
-                flagCloseTransaksi = "AND b.flag_close_traksaksi IS NOT NULL \n";
+
+            if("Y".equalsIgnoreCase(detailCheckup.getIsCover())){
+                idJenisPeriksaPasien = "AND b.id_jenis_periksa_pasien = 'asuransi' \n";
+                if(detailCheckup.getFlagCover() != null && !"".equalsIgnoreCase(detailCheckup.getFlagCover())){
+                    flagCloseTransaksi = "AND b.flag_cover IS NOT NULL \n";
+                }else{
+                    flagCloseTransaksi = "AND b.flag_cover IS NULL \n";
+                }
             }else{
-                flagCloseTransaksi = "AND b.flag_close_traksaksi IS NULL \n";
+                idJenisPeriksaPasien = "AND b.id_jenis_periksa_pasien NOT IN ('bpjs', 'ptpn')\n";
+                if(detailCheckup.getFlagCloseTraksaksi() != null && !"".equalsIgnoreCase(detailCheckup.getFlagCloseTraksaksi())){
+                    flagCloseTransaksi = "AND b.flag_close_traksaksi IS NOT NULL \n";
+                }else{
+                    flagCloseTransaksi = "AND b.flag_close_traksaksi IS NULL \n";
+                }
             }
 
             if(detailCheckup.getTipePelayanan().equalsIgnoreCase("rawat_jalan")){
@@ -2349,14 +2361,16 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "c.keterangan,\n" +
                     "b.flag_close_traksaksi, \n" +
                     "b.metode_pembayaran, \n" +
-                    "b.id_jenis_periksa_pasien\n" +
+                    "b.id_jenis_periksa_pasien,\n" +
+                    "b.flag_cover\n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_jenis_periksa_pasien c ON b.id_jenis_periksa_pasien = c.id_jenis_periksa_pasien\n"
                      + tipePelayanan +
-                    "WHERE b.status_periksa = '3' \n" +
-                    "AND b.id_jenis_periksa_pasien NOT IN ('bpjs', 'ptpn')\n"
-                    + isNull + idPasien + idPelayanan + nama + idDetailCheckup + flagCloseTransaksi + branchId;
+                    "WHERE b.status_periksa = '3' \n" + idJenisPeriksaPasien
+                    + isNull + idPasien + idPelayanan +
+                    nama + idDetailCheckup +
+                    flagCloseTransaksi + branchId;
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .list();
@@ -2374,6 +2388,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     detail.setFlagCloseTraksaksi(obj[9] == null ? null : obj[9].toString());
                     detail.setMetodePembayaran(obj[10] == null ? null : obj[10].toString());
                     detail.setIdJenisPeriksaPasien(obj[11] == null ? null : obj[11].toString());
+                    detail.setFlagCover(obj[12] == null ? null : obj[12].toString());
                     response.add(detail);
                 }
             }

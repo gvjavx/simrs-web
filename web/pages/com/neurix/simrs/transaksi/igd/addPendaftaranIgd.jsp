@@ -307,7 +307,8 @@
                 }
 
                 if(tipe == "asuransi"){
-                    if(asuransi != '' && coverBiaya != ''){
+                    // if(asuransi != '' && coverBiaya != ''){
+                    if(asuransi != ''){
 
                         if(isLaka == "Y"){
                             $('#confirm_dialog').dialog('open');
@@ -1227,23 +1228,24 @@
                                         </div>
 
                                         <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="col-md-4" style="margin-top: 10px">Jumlah Cover</label>
-                                                <div class="col-md-8">
-                                                    <div class="input-group" style="margin-top: 7px">
-                                                        <div class="input-group-addon">
-                                                            Rp.
-                                                        </div>
-                                                        <s:hidden name="headerCheckup.coverBiaya" id="cover_biaya"></s:hidden>
-                                                        <s:textfield type="text" id="nominal_cover_biaya" cssClass="form-control"
-                                                                     onkeypress="var warn =$('#war_jml_cover').is(':visible'); if (warn){$('#con_jml_cover').show().fadeOut(3000);$('#war_jml_cover').hide()}"/>
-                                                    </div>
-                                                    <span style="color: red; display: none" id="war_jml_cover"><i
-                                                            class="fa fa-times"></i> required</span>
-                                                    <span style="color: green; display: none" id="con_jml_cover"><i
-                                                            class="fa fa-check"></i> correct</span>
-                                                </div>
-                                            </div>
+                                            <%--<div class="form-group">--%>
+                                                <%--<label class="col-md-4" style="margin-top: 10px">Jumlah Cover</label>--%>
+                                                <%--<div class="col-md-8">--%>
+                                                    <%--<div class="input-group" style="margin-top: 7px">--%>
+                                                        <%--<div class="input-group-addon">--%>
+                                                            <%--Rp.--%>
+                                                        <%--</div>--%>
+                                                        <%----%>
+                                                        <%--<s:textfield type="text" id="nominal_cover_biaya" cssClass="form-control"--%>
+                                                                     <%--onkeypress="var warn =$('#war_jml_cover').is(':visible'); if (warn){$('#con_jml_cover').show().fadeOut(3000);$('#war_jml_cover').hide()}"/>--%>
+                                                    <%--</div>--%>
+                                                    <%--<span style="color: red; display: none" id="war_jml_cover"><i--%>
+                                                            <%--class="fa fa-times"></i> required</span>--%>
+                                                    <%--<span style="color: green; display: none" id="con_jml_cover"><i--%>
+                                                            <%--class="fa fa-check"></i> correct</span>--%>
+                                                <%--</div>--%>
+                                            <%--</div>--%>
+                                            <s:hidden name="headerCheckup.coverBiaya" id="cover_biaya"></s:hidden>
                                             <div id="form_jasaraharja_2" style="display: none">
                                                 <div class="form-group">
                                                     <label class="col-md-4" style="margin-top: 10px">Tanggal Kejadian</label>
@@ -2042,7 +2044,7 @@
         });
 
         var nominal = document.getElementById('uang_muka');
-        var coverBiaya = document.getElementById("nominal_cover_biaya");
+        // var coverBiaya = document.getElementById("nominal_cover_biaya");
         if(nominal != null && nominal != ''){
             nominal.addEventListener('keyup', function (e) {
                 nominal.value = formatRupiah2(this.value);
@@ -2056,17 +2058,17 @@
             });
         }
 
-        if(coverBiaya != null && coverBiaya != ''){
-            coverBiaya.addEventListener('keyup', function (e) {
-                coverBiaya.value = formatRupiah2(this.value);
-                var valCover = coverBiaya.value.replace(/[.]/g, '');
-                if(valCover != ''){
-                    $('#cover_biaya').val(valCover);
-                }else{
-                    $('#cover_biaya').val('');
-                }
-            });
-        }
+        // if(coverBiaya != null && coverBiaya != ''){
+        //     coverBiaya.addEventListener('keyup', function (e) {
+        //         coverBiaya.value = formatRupiah2(this.value);
+        //         var valCover = coverBiaya.value.replace(/[.]/g, '');
+        //         if(valCover != ''){
+        //             $('#cover_biaya').val(valCover);
+        //         }else{
+        //             $('#cover_biaya').val('');
+        //         }
+        //     });
+        // }
     });
 
     function setFormAdmisi() {

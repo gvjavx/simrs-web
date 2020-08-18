@@ -314,7 +314,8 @@
                 }
 
                 if(tipe == "asuransi"){
-                    if(asuransi != '' && coverBiaya != ''){
+                    // if(asuransi != '' && coverBiaya != ''){
+                    if(asuransi != ''){
 
                         if(isLaka == "Y"){
                             $('#confirm_dialog').dialog('open');
@@ -647,7 +648,7 @@
                                                                         var labelItem = "";
 
                                                                         if (item.noBpjs != '' && item.noBpjs != null) {
-                                                                            labelItem = item.noBpjs + "-" + item.noKtp + "-" + item.nama;
+                                                                            labelItem = item.idPasien + "-" + item.noBpjs  + "-" + item.nama;
                                                                         } else {
                                                                             labelItem = item.noBpjs + "-" + item.nama;
                                                                         }
@@ -711,6 +712,7 @@
                                                                 $('#kabupaten11').val(selectedObj.idKota);
                                                                 $('#kecamatan11').val(selectedObj.idKec);
                                                                 $('#desa11').val(selectedObj.idDesa);
+                                                                $('#no_telp').val(selectedObj.notelp);
                                                                 if (selectedObj.isLama) {
                                                                     $('#kunjungan').val("Lama").attr('disabled', true);
                                                                     $('#kunjungan_val').val("Lama");
@@ -758,9 +760,9 @@
                                                             var labelItem = "";
 
                                                             if (item.noBpjs != '' && item.noBpjs != null) {
-                                                                labelItem = item.noKtp + "-" + item.noBpjs + "-" + item.nama;
+                                                                labelItem = item.idPasien + "-" + item.noBpjs + "-" + item.nama;
                                                             } else {
-                                                                labelItem = item.noKtp + "-" + item.nama;
+                                                                labelItem = item.idPasien + "-" + item.nama;
                                                             }
                                                             mapped[labelItem] = {
                                                                 id: item.idPasien,
@@ -828,6 +830,7 @@
                                                         $('#kabupaten11').val(selectedObj.idKota);
                                                         $('#kecamatan11').val(selectedObj.idKec);
                                                         $('#desa11').val(selectedObj.idDesa);
+                                                        $('#no_telp').val(selectedObj.notelp);
                                                         if (selectedObj.isLama) {
                                                             $('#kunjungan').val("Lama").attr('disabled', true);
                                                             $('#kunjungan_val').val("Lama");
@@ -1100,9 +1103,7 @@
                                             <label class="col-md-4" style="margin-top: 7px">No Telp.</label>
                                             <div class="col-md-8">
                                                 <s:textfield id="no_telp" name="headerCheckup.noTelp"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px"
-                                                             data-inputmask="'mask': ['+62 999-9999-9999']"
-                                                             data-mask=""/>
+                                                             cssClass="form-control" cssStyle="margin-top: 7px"/>
                                             </div>
                                         </div>
                                     </div>
@@ -1356,23 +1357,23 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 10px">Jumlah Cover</label>
-                                            <div class="col-md-8">
-                                                <div class="input-group" style="margin-top: 7px">
-                                                    <div class="input-group-addon">
-                                                        Rp.
-                                                    </div>
-                                                    <s:hidden name="headerCheckup.coverBiaya" id="cover_biaya"></s:hidden>
-                                                    <s:textfield type="text" id="nominal_cover_biaya" cssClass="form-control"
-                                                                 onkeypress="var warn =$('#war_jml_cover').is(':visible'); if (warn){$('#con_jml_cover').show().fadeOut(3000);$('#war_jml_cover').hide()}"/>
-                                                </div>
-                                                <span style="color: red; display: none" id="war_jml_cover"><i
-                                                        class="fa fa-times"></i> required</span>
-                                                <span style="color: green; display: none" id="con_jml_cover"><i
-                                                        class="fa fa-check"></i> correct</span>
-                                            </div>
-                                        </div>
+                                        <%--<div class="form-group">--%>
+                                            <%--<label class="col-md-4" style="margin-top: 10px">Jumlah Cover</label>--%>
+                                            <%--<div class="col-md-8">--%>
+                                                <%--<div class="input-group" style="margin-top: 7px">--%>
+                                                    <%--<div class="input-group-addon">--%>
+                                                        <%--Rp.--%>
+                                                    <%--</div>--%>
+                                                    <%--<s:textfield type="text" id="nominal_cover_biaya" cssClass="form-control"--%>
+                                                                 <%--onkeypress="var warn =$('#war_jml_cover').is(':visible'); if (warn){$('#con_jml_cover').show().fadeOut(3000);$('#war_jml_cover').hide()}"/>--%>
+                                                <%--</div>--%>
+                                                <%--<span style="color: red; display: none" id="war_jml_cover"><i--%>
+                                                        <%--class="fa fa-times"></i> required</span>--%>
+                                                <%--<span style="color: green; display: none" id="con_jml_cover"><i--%>
+                                                        <%--class="fa fa-check"></i> correct</span>--%>
+                                            <%--</div>--%>
+                                        <%--</div>--%>
+                                        <s:hidden name="headerCheckup.coverBiaya" id="cover_biaya"></s:hidden>
                                         <div id="form_jasaraharja_2" style="display: none">
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 10px">Tanggal Kejadian</label>
@@ -1549,24 +1550,24 @@
                             </div>
                             </s:if>
 
-                            <div class="box-header with-border"></div>
-                            <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-user"></i> Form Inputan</h3>
-                            </div>
-                            <div class="box-body">
-                                <s:textfield type="hidden" id="data_admisi" name="headerCheckup.admisi"></s:textfield>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                    <div class="form-group">
-                                        <a class="btn btn-primary" id="btn-admisi" onclick="setFormAdmisi()"><i class="fa fa-edit"></i> Form Pre-Admisi</a>
-                                    </div>
-                                    <div class="form-group" style="margin-top: 20px">
-                                        <i class="fa fa-square" style="color: #286090"></i> Belum diisi
-                                        <i class="fa fa-square" style="color: #ec971f"></i> Sudah diisi
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <%--<div class="box-header with-border"></div>--%>
+                            <%--<div class="box-header with-border">--%>
+                                <%--<h3 class="box-title"><i class="fa fa-user"></i> Form Inputan</h3>--%>
+                            <%--</div>--%>
+                            <%--<div class="box-body">--%>
+                                <%--<s:textfield type="hidden" id="data_admisi" name="headerCheckup.admisi"></s:textfield>--%>
+                                <%--<div class="row">--%>
+                                    <%--<div class="col-md-12">--%>
+                                    <%--<div class="form-group">--%>
+                                        <%--<a class="btn btn-primary" id="btn-admisi" onclick="setFormAdmisi()"><i class="fa fa-edit"></i> Form Pre-Admisi</a>--%>
+                                    <%--</div>--%>
+                                    <%--<div class="form-group" style="margin-top: 20px">--%>
+                                        <%--<i class="fa fa-square" style="color: #286090"></i> Belum diisi--%>
+                                        <%--<i class="fa fa-square" style="color: #ec971f"></i> Sudah diisi--%>
+                                    <%--</div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
 
                             <%--from bpjs--%>
                             <s:hidden name="headerCheckup.kelasPasien" id="kelas_pasien"></s:hidden>

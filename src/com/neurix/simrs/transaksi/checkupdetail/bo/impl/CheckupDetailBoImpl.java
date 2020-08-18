@@ -295,6 +295,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 if(bean.getFlagTppri() != null){
                     entity.setFlagTppri(bean.getFlagTppri());
                 }
+                if(!"asuransi".equalsIgnoreCase(entity.getIdJenisPeriksaPasien())){
+                    entity.setFlagCover("Y");
+                }
 
                 entity.setLastUpdateWho(bean.getLastUpdateWho());
                 entity.setLastUpdate(bean.getLastUpdate());

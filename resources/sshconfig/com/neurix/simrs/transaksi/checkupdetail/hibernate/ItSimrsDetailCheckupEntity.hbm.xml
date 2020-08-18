@@ -192,6 +192,9 @@
         <property name="isStay">
             <column name="is_stay"/>
         </property>
+        <property name="flagCover">
+            <column name="flag_cover"/>
+        </property>
 
     </class>
 </hibernate-mapping>

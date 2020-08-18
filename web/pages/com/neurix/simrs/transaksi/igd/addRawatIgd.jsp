@@ -285,7 +285,21 @@
                                         <td><b>Jenis Pasien</b></td>
                                         <td>
                                             <table>
-                                                <span style="background-color: #286090; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "asuransi"'>
+                                                <span style="background-color: #ffff00; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                </s:if>
+                                                <s:elseif test='headerDetailCheckup.idJenisPeriksaPasien == "umum"'>
+                                                    <span style="background-color: #4d4dff; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                </s:elseif>
+                                                <s:elseif test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs"'>
+                                                    <span style="background-color: #00b300; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                </s:elseif>
+                                                <s:elseif test='headerDetailCheckup.idJenisPeriksaPasien == "ptpn"'>
+                                                    <span style="background-color: #66ff33; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                </s:elseif>
+                                                <s:else>
+                                                    <span style="background-color: #cc3399; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                </s:else>
                                                     <s:property value="headerDetailCheckup.jenisPeriksaPasien"></s:property>
                                                 </span>
                                             </table>
@@ -441,7 +455,14 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <s:textarea id="fisik_anamnesa" name="headerDetailCheckup.anamnese" cssClass="form-control" rows="4" placeholder="Keterangan Anamnese"></s:textarea>
+                                        <span>Autoanamnesis</span>
+                                        <s:textarea id="fisik_auto" name="headerDetailCheckup.autoanamnesis" cssClass="form-control" rows="3" placeholder="Keterangan Autoanamnesis"></s:textarea>
+                                    </div>
+                                </div>
+                                <div class="row jarak">
+                                    <div class="col-md-12">
+                                        <span>Heteroanamnesis</span>
+                                        <s:textarea id="fisik_hetero" name="headerDetailCheckup.heteroanamnesis" cssClass="form-control" rows="3" placeholder="Keterangan HeteroAnamnesis"></s:textarea>
                                     </div>
                                 </div>
                                 <div class="row jarak">
@@ -474,20 +495,20 @@
                                 <div class="btn-group dropdown">
                                     <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Asesmen
                                     </button>
-                                    <button onclick="loadModalRM('ugd')" type="button" class="btn btn-primary dropdown-toggle"
+                                    <button type="button" class="btn btn-primary dropdown-toggle"
                                             data-toggle="dropdown" style="height: 34px">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a style="cursor: pointer" onclick="showAsesmenUgd()"><i class="fa fa-file-o"></i> <span id="li_title"></span></a></li>
-                                        <li><a style="cursor: pointer" onclick="printPernyataan('SP03')"><i class="fa fa-print"></i>Surat Penolakan Tindakan</a></li>
-                                        <li><a style="cursor: pointer" onclick="printPernyataan('SP06')"><i class="fa fa-print"></i>Surat Pernyataan Non Bpjs / Asuransi</a></li>
-                                        <li><a style="cursor: pointer" onclick="printPernyataan('SK01')"><i class="fa fa-print"></i>Surat Keterangan Dokter</a></li>
-                                        <li><a style="cursor: pointer" onclick="printPernyataan('SP05')"><i class="fa fa-print"></i>Surat Pengantar Jenazah</a></li>
-                                        <li><a style="cursor: pointer" onclick="printPernyataan('SK03')"><i class="fa fa-print"></i>Surat Keterangan Sehat</a></li>
-                                        <li><a style="cursor: pointer" onclick="printPernyataan('SP07')"><i class="fa fa-print"></i>Surat Pernyataan Kronologi</a></li>
-                                        <li><a style="cursor: pointer" onclick="printPernyataan('SP04')"><i class="fa fa-print"></i>Surat Pernyataan Kematian</a></li>
+                                    <ul class="dropdown-menu" role="menu" id="asesmen_rj">
+                                        <%--<li><a style="cursor: pointer" onclick="showAsesmenUgd()"><i class="fa fa-file-o"></i> <span id="li_title"></span></a></li>--%>
+                                        <%--<li><a style="cursor: pointer" onclick="printPernyataan('SP03')"><i class="fa fa-print"></i>Surat Penolakan Tindakan</a></li>--%>
+                                        <%--<li><a style="cursor: pointer" onclick="printPernyataan('SP06')"><i class="fa fa-print"></i>Surat Pernyataan Non Bpjs / Asuransi</a></li>--%>
+                                        <%--<li><a style="cursor: pointer" onclick="printPernyataan('SK01')"><i class="fa fa-print"></i>Surat Keterangan Dokter</a></li>--%>
+                                        <%--<li><a style="cursor: pointer" onclick="printPernyataan('SP05')"><i class="fa fa-print"></i>Surat Pengantar Jenazah</a></li>--%>
+                                        <%--<li><a style="cursor: pointer" onclick="printPernyataan('SK03')"><i class="fa fa-print"></i>Surat Keterangan Sehat</a></li>--%>
+                                        <%--<li><a style="cursor: pointer" onclick="printPernyataan('SP07')"><i class="fa fa-print"></i>Surat Pernyataan Kronologi</a></li>--%>
+                                        <%--<li><a style="cursor: pointer" onclick="printPernyataan('SP04')"><i class="fa fa-print"></i>Surat Pernyataan Kematian</a></li>--%>
                                     </ul>
                                 </div>
                             </div>
@@ -2110,12 +2131,14 @@
 <!-- /.content-wrapper -->
 
 <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenUgdAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/CatatanTerintegrasiAction.js"/>'></script>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/datapasien.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenUgd.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/addrawatjalan.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/nyeri.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/cppt.js"/>'></script>
 
 <script type='text/javascript'>
 
@@ -2155,6 +2178,7 @@
     var tempBerat = "";
     var tempTinggi = "";
     var tempAnmnesa = "";
+    var tempidRm = "";
 
     $(document).ready(function () {
         $('#igd').addClass('active');
@@ -2171,7 +2195,7 @@
         listSelectTindakanKategori();
         hitungCoverBiaya();
         listICD9();
-        getListRekamMedis('igd', tipePelayanan, idDetailCheckup);
+        getListRekamMedis('igd', 'igd', idDetailCheckup);
 
         $('#img_ktp').on('click', function (e) {
             e.preventDefault();
@@ -2243,34 +2267,6 @@
         paintCanvas.addEventListener("mouseup", stopDrawing);
         paintCanvas.addEventListener("mouseout", stopDrawing);
 
-        // var nominal = document.getElementById('uang_muka');
-        // if(nominal != ''){
-        //     nominal.addEventListener('keyup', function (e) {
-        //         nominal.value = formatRupiah2(this.value);
-        //         var valBayar = nominal.value.replace(/[.]/g, '');
-        //
-        //         if(valBayar != ''){
-        //             $('#uang_muka_val').val(valBayar);
-        //         }else{
-        //             $('#uang_muka_val').val('');
-        //         }
-        //     });
-        // }
-        //
-        // var cover = document.getElementById('rj_cover_biaya');
-        // if(cover != ''){
-        //     cover.addEventListener('keyup', function (e) {
-        //         cover.value = formatRupiah2(this.value);
-        //         var valCover = cover.value.replace(/[.]/g, '');
-        //
-        //         if(valCover != ''){
-        //             $('#rj_cover_biaya_val').val(valCover);
-        //         }else{
-        //             $('#rj_cover_biaya_val').val('');
-        //         }
-        //     });
-        // }
-
         $(document).on('change', '.btn-file :file', function () {
             var input = $(this),
                 label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
@@ -2313,34 +2309,18 @@
 
     function loadModalRM(jenis){
         var context = "";
-        if(jenis == "ugd"){
-
-            var um      = '<s:property value="headerDetailCheckup.umur"/>';
-            var umur    = parseInt(um);
-            var jenis   = "";
-
-            if(umur >= 0 && umur <= 17){
+        if(jenis != ''){
+            if(jenis == 'ugd_anak'){
                 title = "Asesmen Awal Gawat Darurat Anak";
-                jenis = 'anak';
-            }else if(umur >= 18 && umur <= 55){
+            }else if(jenis == 'ugd_dewasa'){
                 title = "Asesmen Awal Gawat Darurat Dewasa";
-                jenis = 'dewasa';
-            }else if(umur > 56){
+            }else if(jenis == 'ugd_geriatri'){
                 title = "Asesmen Awal Gawat Darurat Geriatri";
-                jenis = 'dewasa';
             }
-
-            if(jenis != ''){
-                context = contextPath+'/pages/modal/modal-ugd_'+jenis+'.jsp';
-            }
-            $('#li_title').text(title);
+            context = contextPath+'/pages/modal/modal-'+jenis+'.jsp';
         }
         $('#modal-temp').load(context, function (res) {
         });
-    }
-
-    function printPernyataan(kode) {
-        window.open(contextPath+'/rekammedik/printSuratPernyataan_rekammedik?id=' + idDetailCheckup + '&tipe=' + kode, '_blank');
     }
 
 </script>

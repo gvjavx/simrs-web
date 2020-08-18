@@ -35,7 +35,10 @@ function showKetIntruksi(val){
     }
 }
 
-function showAsesmenUgd(jenis) {
+function showAsesmenUgd(jenis, idRM, isSetIdRM) {
+    if(isSetIdRM == "Y"){
+        tempidRm = idRM;
+    }
     if(isReadRM){
         $('#title').text(jenis);
         $('.btn-hide').hide();
@@ -43,7 +46,7 @@ function showAsesmenUgd(jenis) {
         $('#title').text(title);
         $('.btn-hide').show();
     }
-    $('#modal-asesmen-ugd').modal({show: true, backdrop: 'static'});
+    $('#modal-aud_asesmen-ugd').modal({show: true, backdrop: 'static'});
 }
 
 function addAsesmenUgd(jenis) {
@@ -69,11 +72,19 @@ function addAsesmenUgd(jenis) {
     }
 }
 
-function saveAsesmenUgd(jenis) {
+function saveAsesmenUgd(jenis, keterangan) {
     if (jenis != '') {
 
         var data = [];
         var cek = false;
+        var dataPasien = "";
+
+        dataPasien = {
+            'no_checkup' : noCheckup,
+            'id_detail_checkup' : idDetailCheckup,
+            'id_pasien' : idPasien,
+            'id_rm' : tempidRm
+        }
 
         if ("keluhan_utama" == jenis) {
             var triase = $('[name=radio_triase]:checked').val();
@@ -89,49 +100,49 @@ function saveAsesmenUgd(jenis) {
                     'parameter': 'Triase',
                     'jawaban': triase,
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'Keadaan Umum',
                     'jawaban': keadaanUmum,
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'Pernafasan',
                     'jawaban': napas,
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'Nadi',
                     'jawaban': nadi,
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'Akral',
                     'jawaban': akral,
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'CRT',
                     'jawaban': crt,
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'Keadaan Awal',
                     'jawaban': keaddAwal,
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 cek = true;
@@ -183,49 +194,49 @@ function saveAsesmenUgd(jenis) {
                     'parameter': 'Cara tiba ke RS',
                     'jawaban': cara,
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'Rujukan',
                     'jawaban': rjk,
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'Tindakan',
                     'jawaban': tdk,
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'Tekanan Darah',
                     'jawaban': tkn + ' mmHg',
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'Nadi',
                     'jawaban': nadi1 + ' x/menit',
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'RR',
                     'jawaban': rr1 + ' x/menit',
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'Suhu',
                     'jawaban': suhu + ' C',
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
@@ -419,35 +430,35 @@ function saveAsesmenUgd(jenis) {
                     'parameter': 'Tekanan Darah',
                     'jawaban': tkn + ' mmHg',
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'Nadi',
                     'jawaban': nadi1 + ' x/menit',
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'RR',
                     'jawaban': rr1 + ' x/menit',
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'Suhu',
                     'jawaban': suhu + ' C',
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'Berat Badan',
                     'jawaban': bb + ' Kg',
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
@@ -556,31 +567,30 @@ function saveAsesmenUgd(jenis) {
                     'parameter': 'Apakah terdapat keluhan nyeri',
                     'jawaban': nyeri,
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'Lokasi',
                     'jawaban': lokasi,
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'Jenis',
                     'jawaban': skala,
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'Skala',
                     'jawaban': skal,
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
-                console.log(data);
                 cek = true;
             }
         }
@@ -1194,6 +1204,10 @@ function saveAsesmenUgd(jenis) {
             var ttd2 = document.getElementById("ki11");
             var cekTtd1 = isCanvasBlank(ttd1);
             var cekTtd2 = isCanvasBlank(ttd2);
+            var nama1 = $('#nama_terang_ki10').val();
+            var sip1 = $('#sip_ki10').val();
+            var nama2 = $('#nama_terang_ki11').val();
+            var sip2 = $('#sip_ki11').val();
 
             if (va1 && va2 && va3 && va4 && va5 && va6 &&
                 va7 && va8 && va9 != '' && !cekTtd1 && !cekTtd2) {
@@ -1257,6 +1271,8 @@ function saveAsesmenUgd(jenis) {
                     'jawaban': ttdA,
                     'tipe': 'ttd',
                     'keterangan': jenis,
+                    'nama_terang': nama1,
+                    'sip':sip1,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
@@ -1264,6 +1280,8 @@ function saveAsesmenUgd(jenis) {
                     'jawaban': ttdB,
                     'tipe': 'ttd',
                     'keterangan': jenis,
+                    'nama_terang': nama2,
+                    'sip':sip2,
                     'id_detail_checkup': idDetailCheckup
                 });
 
@@ -1479,19 +1497,22 @@ function saveAsesmenUgd(jenis) {
             }
         }
 
-        var result = JSON.stringify(data);
         if (cek) {
+            var result = JSON.stringify(data);
+            var pasienData = JSON.stringify(dataPasien);
+
             $('#save_aud_'+jenis).hide();
             $('#load_aud_'+jenis).show();
             dwr.engine.setAsync(true);
-            AsesmenUgdAction.saveAsesmenUgd(result, {callback: function (res) {
+            AsesmenUgdAction.saveAsesmenUgd(result, pasienData, {
+                callback: function (res) {
                 if(res.status == "success"){
                     $('#save_aud_'+jenis).show();
                     $('#load_aud_'+jenis).hide();
                     $('#modal-aud-' + jenis).modal('hide');
-                    $('#warning_asesmen_ugd-dewasa').show().fadeOut(5000);
-                    $('#msg_asesmen_ugd-dewasa').text("Berhasil menambahkan data asesmen UGD...");
-                    $("#modal-asesmen-ugd-dewasa").scrollTop(0);
+                    $('#warning_aud_'+keterangan).show().fadeOut(5000);
+                    $('#msg_aud_'+keterangan).text("Berhasil menambahkan data asesmen UGD...");
+                    $("#modal-aud_"+keterangan).scrollTop(0);
                 }else{
                     $('#save_aud_'+jenis).show();
                     $('#load_aud_'+jenis).hide();
@@ -1536,7 +1557,10 @@ function detailAud(jenis) {
                     }else if ("ttd" == item.tipe) {
                         body += '<tr>' +
                             '<td width="60%">' + item.parameter + '</td>' +
-                            '<td>' + '<img src="' + item.jawaban + '" style="width: 100px">' + '</td>' +
+                            '<td>' + '<img src="' + item.jawaban + '" style="width: 100px">' +
+                            '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>'+
+                            '<p style="margin-top: -7px">'+cekItemIsNull(item.sip)+'</p>'+
+                            '</td>' +
                             '</tr>';
                     }else if("gambar" == item.tipe){
                         body += '<tr>' +

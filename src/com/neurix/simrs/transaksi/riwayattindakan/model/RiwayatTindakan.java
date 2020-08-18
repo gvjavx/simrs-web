@@ -43,6 +43,15 @@ public class RiwayatTindakan extends BaseModel {
 
     private String isPendingTindakan;
     private String msg;
+    private String pasienBayar;
+
+    public String getPasienBayar() {
+        return pasienBayar;
+    }
+
+    public void setPasienBayar(String pasienBayar) {
+        this.pasienBayar = pasienBayar;
+    }
 
     public String getMsg() {
         return msg;

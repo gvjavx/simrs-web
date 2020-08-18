@@ -288,7 +288,21 @@
                                         <td><b>Jenis Pasien</b></td>
                                         <td>
                                             <table>
-                                                <span style="background-color: #286090; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "asuransi"'>
+                                                    <span style="background-color: #ffff00; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                </s:if>
+                                                <s:elseif test='headerDetailCheckup.idJenisPeriksaPasien == "umum"'>
+                                                    <span style="background-color: #4d4dff; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                </s:elseif>
+                                                <s:elseif test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs"'>
+                                                    <span style="background-color: #00b300; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                </s:elseif>
+                                                <s:elseif test='headerDetailCheckup.idJenisPeriksaPasien == "ptpn"'>
+                                                    <span style="background-color: #66ff33; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                </s:elseif>
+                                                <s:else>
+                                                    <span style="background-color: #cc3399; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                </s:else>
                                                     <s:property value="headerDetailCheckup.jenisPeriksaPasien"></s:property>
                                                 </span>
                                             </table>
@@ -2405,19 +2419,6 @@
         }
         $('#modal-temp').load(context, function (res, status, xhr) {
         });
-    }
-
-    function printPernyataan(kode, idRm, flag, namaRm) {
-        $('#print_form').text(namaRm);
-        $('#save_con_rm').attr('onclick','printPernyataanRM(\''+kode+'\', \''+idRm+'\')');
-        $('#modal-confirm-rm').modal('show');
-    }
-
-    function printPernyataanRM(kode, idRM){
-        window.open(contextPath+'/rekammedik/printSuratPernyataan_rekammedik?id=' + idDetailCheckup + '&tipe=' + kode+'&ids='+idRM, '_blank');
-        $('#modal-confirm-rm').modal('hide');
-        $('#info_dialog').dialog('open');
-        $('#close_pos').val(12);
     }
 
     function convertRp(id, val) {

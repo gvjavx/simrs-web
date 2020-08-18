@@ -2122,6 +2122,8 @@ function saveSPS(jenis, ket) {
         var ttd = document.getElementById("gg013");
         var gigiImg = document.getElementById("area_gigi2");
         var canvasCek = document.getElementById('area_cek');
+        var namaTerang = $('#nama_terang_gg013').val();
+        var sip = $('#sip_gg013').val();
 
         var gigi = "Y";
         if(gigiImg.toDataURL() == canvasCek.toDataURL()){
@@ -2238,6 +2240,8 @@ function saveSPS(jenis, ket) {
                 'tipe': 'ttd',
                 'keterangan': jenis,
                 'jenis': ket,
+                'nama_terang':namaTerang,
+                'sip':sip,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;

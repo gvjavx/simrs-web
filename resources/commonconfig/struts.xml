@@ -226,6 +226,7 @@
     <include file="sshconfig/com/neurix/simrs/transaksi/rawatinap/struts/RawatIsolasiAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/rawatinap/struts/RawatOperasiAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/rawatinap/struts/RawatBersalinAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/verifikator/struts/VerifikasiCoverAction.xml"/>
 
     <!--AKUNTANSI-->
     <!--MASTER -->

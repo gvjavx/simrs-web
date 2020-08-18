@@ -82,32 +82,42 @@ public class KeperawatanRawatJalanBoImpl implements KeperawatanRawatJalanBo {
     public CrudResponse saveAdd(List<KeperawatanRawatJalan> list) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
         if (list.size() > 0) {
-            for (KeperawatanRawatJalan bean : list) {
-                ItSimrsAsesmenKeperawatanRawatJalanEntity keperawatanRawatJalanEntity = new ItSimrsAsesmenKeperawatanRawatJalanEntity();
-                keperawatanRawatJalanEntity.setIdKeperawatanRawatJalan("KRJ" + keperawatanRawatJalanDao.getNextSeq());
-                keperawatanRawatJalanEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
-                keperawatanRawatJalanEntity.setParameter(bean.getParameter());
-                keperawatanRawatJalanEntity.setJawaban(bean.getJawaban());
-                keperawatanRawatJalanEntity.setKeterangan(bean.getKeterangan());
-                keperawatanRawatJalanEntity.setJenis(bean.getJenis());
-                keperawatanRawatJalanEntity.setScore(bean.getScore());
-                keperawatanRawatJalanEntity.setAction(bean.getAction());
-                keperawatanRawatJalanEntity.setFlag(bean.getFlag());
-                keperawatanRawatJalanEntity.setCreatedDate(bean.getCreatedDate());
-                keperawatanRawatJalanEntity.setCreatedWho(bean.getCreatedWho());
-                keperawatanRawatJalanEntity.setLastUpdate(bean.getLastUpdate());
-                keperawatanRawatJalanEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                keperawatanRawatJalanEntity.setTipe(bean.getTipe());
-                keperawatanRawatJalanEntity.setNamaTerang(bean.getNamaTerang());
+            KeperawatanRawatJalan keperawatanRawatJalan = list.get(0);
+            KeperawatanRawatJalan kp = new KeperawatanRawatJalan();
+            kp.setIdDetailCheckup(keperawatanRawatJalan.getIdDetailCheckup());
+            kp.setKeterangan(keperawatanRawatJalan.getKeterangan());
+            List<KeperawatanRawatJalan> keperawatanRawatJalanList = getByCriteria(kp);
+            if (keperawatanRawatJalanList.size() > 0) {
+                response.setStatus("error");
+                response.setMsg("Found Error, Data yang anda masukan sudah ada...!");
+            } else {
+                for (KeperawatanRawatJalan bean : list) {
+                    ItSimrsAsesmenKeperawatanRawatJalanEntity keperawatanRawatJalanEntity = new ItSimrsAsesmenKeperawatanRawatJalanEntity();
+                    keperawatanRawatJalanEntity.setIdKeperawatanRawatJalan("KRJ" + keperawatanRawatJalanDao.getNextSeq());
+                    keperawatanRawatJalanEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
+                    keperawatanRawatJalanEntity.setParameter(bean.getParameter());
+                    keperawatanRawatJalanEntity.setJawaban(bean.getJawaban());
+                    keperawatanRawatJalanEntity.setKeterangan(bean.getKeterangan());
+                    keperawatanRawatJalanEntity.setJenis(bean.getJenis());
+                    keperawatanRawatJalanEntity.setScore(bean.getScore());
+                    keperawatanRawatJalanEntity.setAction(bean.getAction());
+                    keperawatanRawatJalanEntity.setFlag(bean.getFlag());
+                    keperawatanRawatJalanEntity.setCreatedDate(bean.getCreatedDate());
+                    keperawatanRawatJalanEntity.setCreatedWho(bean.getCreatedWho());
+                    keperawatanRawatJalanEntity.setLastUpdate(bean.getLastUpdate());
+                    keperawatanRawatJalanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    keperawatanRawatJalanEntity.setTipe(bean.getTipe());
+                    keperawatanRawatJalanEntity.setNamaTerang(bean.getNamaTerang());
 
-                try {
-                    keperawatanRawatJalanDao.addAndSave(keperawatanRawatJalanEntity);
-                    response.setStatus("success");
-                    response.setMsg("Berhasil");
-                } catch (HibernateException e) {
-                    response.setStatus("error");
-                    response.setMsg("Found Error " + e.getMessage());
-                    logger.error(e.getMessage());
+                    try {
+                        keperawatanRawatJalanDao.addAndSave(keperawatanRawatJalanEntity);
+                        response.setStatus("success");
+                        response.setMsg("Berhasil");
+                    } catch (HibernateException e) {
+                        response.setStatus("error");
+                        response.setMsg("Found Error " + e.getMessage());
+                        logger.error(e.getMessage());
+                    }
                 }
             }
         }
