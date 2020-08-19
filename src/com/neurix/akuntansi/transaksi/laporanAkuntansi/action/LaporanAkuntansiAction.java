@@ -975,7 +975,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         reportParams.put("alamatSurat",branch.getAlamatSurat());
         reportParams.put("jurnalType",data.getTipeJurnalId());
         reportParams.put("areaId",CommonUtil.userAreaName());
-        System.out.println(CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
+//        System.out.println(CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
         try {
             preDownload();
         } catch (SQLException e) {
@@ -1446,7 +1446,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         String reportId="RPT07";
         String tipeAging ="";
         String unit = "";
-        if (("KP").equalsIgnoreCase(dataLaporan.getUnit())){
+        if ((CommonConstant.ID_KANPUS).equalsIgnoreCase(dataLaporan.getUnit())){
             List<Branch> branchList = new ArrayList<>();
             branchList = branchBo.getAll();
             int i = 1;

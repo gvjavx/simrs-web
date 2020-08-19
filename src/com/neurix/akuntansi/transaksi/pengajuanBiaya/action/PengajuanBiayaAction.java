@@ -188,7 +188,7 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         logger.info("[PengajuanBiayaAction.add] start process >>>");
         PengajuanBiaya addPengajuanBiaya = new PengajuanBiaya();
         String branchId = CommonUtil.userBranchLogin();
-        addPengajuanBiaya.setBranchIdKanpus("KP");
+        addPengajuanBiaya.setBranchIdKanpus(CommonConstant.ID_KANPUS);
         if (branchId!=null){
             addPengajuanBiaya.setBranchId(branchId);
         }else{
@@ -492,10 +492,13 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         pengajuanBiaya.setFlag("Y");
 
         String branchId = "";
+        String transId= "";
         if (("SMK").equalsIgnoreCase(pengajuanBiaya.getTransaksi())){
             branchId = CommonConstant.ID_KANPUS;
+            transId = CommonConstant.TRANSAKSI_ID_KIRIM_RK;
         }else if (("PDU").equalsIgnoreCase(pengajuanBiaya.getTransaksi())){
             branchId = CommonConstant.ID_KANPUS;
+            transId = CommonConstant.TRANSAKSI_ID_PENERIMAAN_PENDAPATAN_DARI_UNIT;
         }
 
         //membuat mapping
@@ -512,7 +515,7 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         dataMap.put("metode_bayar",giro);
 
         try {
-            Jurnal jurnal = billingSystemBoProxy.createJurnal(pengajuanBiaya.getTipeTransaksi(),dataMap,branchId,pengajuanBiaya.getKeterangan(),"Y");
+            Jurnal jurnal = billingSystemBoProxy.createJurnal(transId,dataMap,branchId,pengajuanBiaya.getKeterangan(),"Y");
             noJurnal = jurnal.getNoJurnal();
             pengajuanBiaya.setNoJurnal(noJurnal);
             List<Notifikasi> notif = pengajuanBiayaBoProxy.saveAddPengajuanBiaya(pengajuanBiaya);
@@ -547,10 +550,12 @@ public class PengajuanBiayaAction extends BaseMasterAction {
 
         PengajuanBiaya pengajuanBiaya = getPengajuanBiaya();
         String userLogin = CommonUtil.userLogin();
+        String userIdLogin = CommonUtil.userIdLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
         BigDecimal total = BigDecimal.valueOf(Double.valueOf(pengajuanBiaya.getStTotalBiaya().replace(".","").replace(",","")));
         pengajuanBiaya.setTotalBiaya(total);
         pengajuanBiaya.setCreatedWho(userLogin);
+        pengajuanBiaya.setAprovalId(userIdLogin);
         pengajuanBiaya.setLastUpdate(updateTime);
         pengajuanBiaya.setCreatedDate(updateTime);
         pengajuanBiaya.setLastUpdateWho(userLogin);
@@ -735,7 +740,7 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         logger.info("[PengajuanBiayaAction.approveAtasan] end process >>>");
         return pengajuanBiayaList;
     }
-    public String saveApprove(String id, String statusApprove, String who,String coaBank,String coaRk,String jumlah,String tipeTransaksi,String branchId,String keterangan){
+    public String saveApprove(String id, String statusApprove, String who,String coaBank,String coaRk,String jumlah,String transaksi,String branchId,String keterangan){
         logger.info("[PengajuanBiayaAction.saveApprove] start process >>>");
         PengajuanBiaya editPengajuanBiaya = new PengajuanBiaya();
         List<Notifikasi> notifikasiList = new ArrayList<>();
@@ -744,6 +749,13 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         PengajuanBiayaBo pengajuanBiayaBo= (PengajuanBiayaBo) ctx.getBean("pengajuanBiayaBoProxy");
         KodeRekeningBo kodeRekeningBo= (KodeRekeningBo) ctx.getBean("kodeRekeningBoProxy");
         BillingSystemBo billingSystemBo= (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+
+        String tipeTransaksi = "";
+        if (("SMK").equalsIgnoreCase(transaksi)){
+            tipeTransaksi = CommonConstant.TRANSAKSI_ID_TERIMA_RK;
+        }else if (("PDU").equalsIgnoreCase(transaksi)){
+            tipeTransaksi = CommonConstant.TRANSAKSI_ID_PENGIRIMAN_PENDAPATAN_KE_PUSAT;
+        }
 
         editPengajuanBiaya.setPengajuanBiayaId(id);
         if(who.equals("atasan")){

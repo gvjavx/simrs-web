@@ -203,6 +203,7 @@
         <property name="approvalUnitName">
             <column name="approval_unit_name" sql-type="varchar" length="100" not-null="false" />
         </property>
+
         <property name="approvalSdmFlag">
             <column name="approval_sdm_flag" sql-type="varchar" length="1" not-null="false" />
         </property>
@@ -214,6 +215,19 @@
         </property>
         <property name="approvalSdmName">
             <column name="approval_sdm_name" sql-type="varchar" length="100" not-null="false" />
+        </property>
+
+        <property name="approvalAksFlag">
+            <column name="approval_aks_flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="approvalAksDate">
+            <column name="approval_aks_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="approvalAksId">
+            <column name="approval_aks_id" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="approvalAksName">
+            <column name="approval_aks_name" sql-type="varchar" length="100" not-null="false" />
         </property>
 
         <property name="flagPayroll">

@@ -167,7 +167,7 @@ public class NotifikasiController implements ModelDriven<Object> {
                         pegawai.setJamAwal(obj[7].toString());
                         pegawai.setJamSelesai(obj[8].toString());
                     }
-                    pegawai.setCutiPegawaiId(obj[0].toString() != null ? obj[0].toString() : "");
+                    pegawai.setCutiPegawaiId(obj[0] != null ? obj[0].toString() : "");
                     pegawai.setNip(obj[1].toString());
                     pegawai.setNamaPegawai(obj[2].toString());
                     if (obj[3] != null)

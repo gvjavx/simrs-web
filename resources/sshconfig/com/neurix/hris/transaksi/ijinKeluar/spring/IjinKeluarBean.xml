@@ -11,6 +11,9 @@
     <bean id="ijinKeluarAction" class="com.neurix.hris.transaksi.ijinKeluar.action.IjinKeluarAction"
           p:ijinKeluarBoProxy-ref="ijinKeluarBoProxy" />
 
+    <bean id="historyPegawaiController" class="com.neurix.hris.mobileapi.HistoryPegawaiController"
+          p:ijinKeluarBoProxy-ref="ijinKeluarBoProxy" />
+
     <bean id="ijinKeluarController" class="com.neurix.hris.mobileapi.IjinKeluarController"
           p:ijinKeluarBoProxy-ref="ijinKeluarBoProxy"
           p:userBoProxy-ref="userBoProxy"

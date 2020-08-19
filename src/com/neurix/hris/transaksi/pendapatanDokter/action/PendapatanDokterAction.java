@@ -2,6 +2,7 @@ package com.neurix.hris.transaksi.pendapatanDokter.action;
 
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.common.action.BaseMasterAction;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.transaksi.pendapatanDokter.bo.PendapatanDokterBo;
@@ -116,7 +117,7 @@ public class PendapatanDokterAction extends BaseMasterAction {
 
             //menyimpan ke billing
             for (PendapatanDokter billing :savePendapatan){
-                billingSystemBoProxy.createJurnal("44",billing.getDataBilling(),billing.getBranchId(),billing.getKeteranganBilling(),"Y");
+                billingSystemBoProxy.createJurnal(CommonConstant.TRANSAKSI_ID_PERHITUNGAN_PENDAPATAN_DOKTER,billing.getDataBilling(),billing.getBranchId(),billing.getKeteranganBilling(),"Y");
             }
 
         }catch (GeneralBOException e){

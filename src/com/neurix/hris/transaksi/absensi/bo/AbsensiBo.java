@@ -71,4 +71,6 @@ public interface AbsensiBo extends BaseMasterBo<AbsensiPegawai> {
     List<AbsensiTriwulanDTO> searchBiodataForTriwulan(String branchId, String nip, String stTanggalAwal, String stTanggalAkhir, String bagian);
 
     AbsensiPegawai getJadwalShiftKerja(String nip, Date tanggal);
+
+    List<AbsensiPegawai> getHistoryAbsensiByMonth(String nip, String branchId, Date date) throws GeneralBOException;
 }

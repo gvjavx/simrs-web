@@ -569,7 +569,7 @@
                             <input type="text" readonly class="form-control" id="mod_tipe_keuangan_kp">
                         </div>
                     </div>
-                    <div class="form-group" id="view_no_kontrak_keuangan">
+                    <div class="form-group" id="view_no_kontrak_keuangan_kp">
                         <label class="control-label col-sm-4" >No. Kontrak: </label>
                         <div class="col-sm-6">
                             <input type="text" readonly class="form-control" id="mod_no_kontrak_keuangan_kp">
@@ -940,6 +940,8 @@
                     approvalGM = approval;
                 }else if (item.statusApproval=="KE"&&item.statusUserApproval=="KE"){
                     approvalKE = approvalKeuangan;
+                }else if (item.statusApproval=="KE"&&item.statusUserApproval=="KEKP"){
+                    approvalKE = approvalKeuangan;
                 }else if (item.statusApproval=="KEKP"&&item.statusUserApproval=="KEKP"){
                     approvalKEKP = approvalKeuanganKp;
                 }else if (item.statusApproval=="TKE"&&item.statusUserApproval=="TKE"){
@@ -1188,6 +1190,12 @@
             tipeName="Rutin";
         }
 
+        var branchId = $(this).attr('unit');
+
+        if (branchId=="KP") {
+            var option = '<option value="A">Kantor Pusat</option>';
+            $('#mod_status_keuangan').html(option);
+        }
         $('#mod_jumlah_keuangan').val(jumlah);
         $('#modPengajuanBiayaDetailId').val($(this).attr('data'));
         $('#mod_status_approve').val($(this).attr('status'));

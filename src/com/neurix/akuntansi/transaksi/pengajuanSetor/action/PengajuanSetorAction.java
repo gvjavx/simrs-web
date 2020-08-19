@@ -697,7 +697,7 @@ public class PengajuanSetorAction extends BaseMasterAction {
 
             Map dataPostingJurnal = pengajuanSetorBo.getBillingForPosting(pengajuanSetorId);
             //disini untuk posting jurnal untuk mendapat nojurnal
-            Jurnal jurnal = billingSystemBo.createJurnal("65",dataPostingJurnal,pengajuanSetor.getBranchId(),pengajuanSetor.getKeterangan(),"Y");
+            Jurnal jurnal = billingSystemBo.createJurnal(CommonConstant.TRANSAKSI_ID_PENGAJUAN_SETOR_PPH21,dataPostingJurnal,pengajuanSetor.getBranchId(),pengajuanSetor.getKeterangan(),"Y");
             data.setPengajuanSetorId(pengajuanSetorId);
             data.setApprovalDate(updateTime);
             data.setApprovalFlag("Y");
@@ -1401,6 +1401,12 @@ public class PengajuanSetorAction extends BaseMasterAction {
             return ERROR;
         }
         perhitunganPpnKd=search;
+
+        String branchId = CommonUtil.userBranchLogin();
+        PengajuanSetor data = new PengajuanSetor();
+        data.setBranchId(branchId);
+        setPengajuanSetor(data);
+
         logger.info("[PengajuanSetorAction.searchProsesPpnKd] stop process >>>");
         return "success_search_proses_ppn";
     }

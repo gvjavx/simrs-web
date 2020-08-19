@@ -368,6 +368,7 @@
                                                         id: item.pengajuanBiayaDetailId,
                                                         keperluan: item.keperluan,
                                                         tanggalRealisasi: item.stTanggalRealisasi,
+                                                        tipePengajuan: item.transaksi,
                                                         noBudgeting: item.noBudgeting,
                                                         divisiId: item.divisiId,
                                                         divisiName: item.divisiName,
@@ -385,6 +386,7 @@
                                             updater: function (item) {
                                                 var selectedObj = mapped[item];
                                                 $('#mod_tanggal_realisasi').val(selectedObj.tanggalRealisasi);
+                                                $('#mod_tipe_pengajuan').val(selectedObj.tipePengajuan);
                                                 $('#mod_jumlah_pengajuan').val(selectedObj.jumlah);
                                                 $('#mod_no_budgetting').val(selectedObj.noBudgeting);
                                                 $('#mod_keperluan').val(selectedObj.keperluan);
@@ -429,6 +431,13 @@
                                                  cssClass="form-control modal_pengajuan" cssStyle="margin-top: 7px" />
                                 </div>
                             </div>
+                            <div class="form-group" id="tipe_pengajuan_view">
+                                <label class="col-md-4" style="margin-top: 7px">Tipe Pengajuan</label>
+                                <div class="col-md-8">
+                                    <s:select list="#{'R':'Rutin','I':'Investasi'}" cssStyle="margin-top: 7px" disabled="true"
+                                              id="mod_tipe_pengajuan" headerKey="" headerValue="" cssClass="form-control modal_pengajuan" />
+                                </div>
+                            </div>
                             <div class="form-group" id="no_budgetting_view">
                                 <label class="col-md-4" style="margin-top: 7px">No. Budgeting</label>
                                 <div class="col-md-8">
@@ -462,15 +471,15 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4" style="margin-top: 7px">PPH (RP)</label>
-                                <div class="col-md-8">
-                                    <s:textfield id="mod_total_pph" cssClass="form-control modal_pengajuan" cssStyle="margin-top: 7px;" onkeyup="formatRupiah2(this)" placeholder="0"/>
-                                </div>
-                            </div>
-                            <div class="form-group">
                                 <label class="col-md-4" style="margin-top: 7px">PPN (RP)</label>
                                 <div class="col-md-8">
                                     <s:textfield id="mod_total_ppn" cssClass="form-control modal_pengajuan" cssStyle="margin-top: 7px" placeholder="0" onkeyup="formatRupiah2(this)" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">PPH (RP)</label>
+                                <div class="col-md-8">
+                                    <s:textfield id="mod_total_pph" cssClass="form-control modal_pengajuan" cssStyle="margin-top: 7px;" onkeyup="formatRupiah2(this)" placeholder="0"/>
                                 </div>
                             </div>
                             <div class="form-group" id="kode_vendor_view_pengajuan">
@@ -1214,6 +1223,7 @@
         $('#mod_btnSaveDetailPembayaran').click(function () {
             $('#tipePengajuan').val("Y");
             var tanggalRealisasi = $('#mod_tanggal_realisasi').val();
+            var tipePengajuan = $('#mod_tipe_pengajuan').val();
             var jumlahPengajuan = $('#mod_jumlah_pengajuan').val();
             var jumlahPembayaran = $('#mod_jumlah_pembayaran').val();
             var jumlah_ppn = $('#mod_total_ppn').val();
@@ -1236,17 +1246,28 @@
             var cekCanvas = $('#namaFile').val();
             var dataURL = canvas.toDataURL("image/png"),
                 dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
-            console.log(cekCanvas);
 
-            if (tanggalRealisasi!=""&&jumlahPengajuan!=""&&jumlahPembayaran!=""&&cekCanvas!=""&&noFakturPajak!=""&&kodeVendor!=""&&namaVendor!="") {
+            var msg = "";
+
+            if (tipePengajuan=="I"&&noFakturPajak!=""&&cekCanvas!="") {}
+            else if (tipePengajuan="R"){}
+            else {
+                if (noFakturPajak=="") {
+                    msg += "No. Faktur Pajak Masih Kosong \n";
+                }
+                if (cekCanvas=="") {
+                    msg += "Belum Upload Faktur Pajak \n";
+                }
+            }
+            if (tanggalRealisasi!=""&&jumlahPengajuan!=""&&jumlahPembayaran!=""&&msg==""&&kodeVendor!=""&&namaVendor!="") {
                 jumlahPengajuan = jumlahPengajuan.replace(/[,]/g, "");
                 var nilaijumlahPembayaran = jumlahPembayaran.replace(/[.]/g, "");
                 var nilaiPengajuan = parseInt(jumlahPengajuan);
                 var nilaiPembayaran = parseInt(nilaijumlahPembayaran);
                 var nilaiPpn = parseInt(jumlah_ppn.replace(/[,]/g, ""));
                 var nilaiPph = parseInt(jumlah_pph.replace(/[,]/g, ""));
-                if (nilaiPengajuan-(nilaiPembayaran+nilaiPph+nilaiPpn)<0){
-                    alert("jumlah Pembayaran + PPN + PPH lebih dari jumlah pengajuan");
+                if (nilaiPengajuan-(nilaiPembayaran+nilaiPph-nilaiPpn)<0){
+                    alert("jumlah Pembayaran + PPH - PPN lebih dari jumlah pengajuan");
                 }else if (nilaiPengajuan >= nilaiPembayaran && tglRealisasi <= currentTime) {
                     PembayaranUtangPiutangAction.saveDetailPembayaran(kodeVendor, namaVendor, "", jumlahPembayaran, rekeningId, divisiId,
                         divisiName, tipePengajuanBiaya, pengajuanBiayaDetailId, noBudgeting,jumlah_ppn,
@@ -1286,7 +1307,6 @@
                     alert(msg);
                 }
             }else{
-                var msg = "";
                 if (tanggalRealisasi=="") {
                     msg += "Tanggal Realisasi Masih Kosong \n";
                 }
@@ -1295,12 +1315,6 @@
                 }
                 if (jumlahPembayaran=="") {
                     msg += "Jumlah Pembayaran Masih Kosong \n";
-                }
-                if (noFakturPajak=="") {
-                    msg += "No. Faktur Pajak Masih Kosong \n";
-                }
-                if (cekCanvas=="") {
-                    msg += "Belum Upload Faktur Pajak \n";
                 }
                 if (kodeVendor=="") {
                     msg += "Kode Vendor Masih Kosong \n";

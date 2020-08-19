@@ -139,10 +139,12 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:action id="comboTrans" namespace="/trans" name="initComboTransPembayaran_trans"/>
+                                                        <s:action id="comboTrans" namespace="/trans" name="initComboTransPembayaran_trans">
+                                                            <s:param name="tipe">KM</s:param>
+                                                        </s:action>
                                                         <s:select list="#comboTrans.listOfComboTrans" id="tipe_transaksi" name="pembayaranUtangPiutang.tipeTransaksi"
-                                                                  onchange="$(this).css('border','')"
                                                                   listKey="transId" listValue="transName" headerKey="" headerValue="[ Select One ]" cssClass="form-control" />
+
                                                     </table>
                                                 </td>
                                             </tr>
@@ -226,7 +228,7 @@
                                                             <display:column property="stTanggal" sortable="true" title="Tanggal"  />
                                                             <display:column property="metodePembayaran" sortable="true" title="COA Kas"  />
                                                             <display:column property="metodePembayaranName" sortable="true" title="Kas"  />
-                                                            <display:column property="bayar" sortable="true" title="Total Bayar"  />
+                                                            <display:column property="stBayar" style="text-align:right" sortable="true" title="Total Bayar"  />
                                                             <display:column property="keterangan" sortable="true" title="Keterangan"  />
                                                             <display:column property="noSlipBank" sortable="true" title="No. Referensi"  />
                                                             <display:column media="html" title="Posting"  style="text-align:center">
@@ -323,7 +325,7 @@
                             <div class="form-group">
                                 <label class="col-md-4">Total Bayar</label>
                                 <div class="col-md-6">
-                                    <s:textfield id="mod_total_bayar" onkeypress="$(this).css('border','')" readonly="true"
+                                    <s:textfield id="mod_total_bayar" onkeypress="$(this).css('border','')" readonly="true" cssStyle="text-align: right"
                                                  cssClass="form-control"/>
                                     <br>
                                 </div>
@@ -441,7 +443,7 @@
                     '<td align="center">' + (i + 1) + '</td>' +
                     '<td align="center">' + item.pembayaranUtangPiutangDetailId + '</td>' +
                     '<td align="center">' + item.masterId + '</td>' +
-                    '<td align="center">' + item.divisiId + '</td>' +
+                    '<td align="center">' + item.divisiName + '</td>' +
                     '<td align="center">' + item.noNota + '</td>' +
                     '<td align="center">' + item.stJumlahPembayaran + '</td>' +
                     "</tr>";

@@ -100,6 +100,7 @@ public class BiodataController implements ModelDriven<Object> {
             model.setTipePegawaiId(biodata.getTipePegawai());
             model.setTipePegawai(biodata.getTipePegawaiName());
             model.setNipLama(biodata.getNipLama());
+            model.setAgama(biodata.getAgama());
         }
 
         logger.info("[BiodataController.find] end process POST /biodata/{id}/find <<<");

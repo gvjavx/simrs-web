@@ -343,7 +343,7 @@ ALTER TABLE it_akun_pembayaran_utang_piutang_detail ALTER COLUMN no_nota type ch
 
 -- 02-08-2020
 --jika ingin mencoba proses PPN
--- insert into it_akun_pengajuan_setor values ('PSC001','KP','09','Y','admin','2020-08-02 00:00:00','2020-08-02 00:00:00','admin','2020-08-02 00:00:00','admin','U','Y',null,null,null,60000,'2020-08-02','2020',null,'N',null,null,'PPN',null,20000,20000,20000,null,'N',null,null);
+--insert into it_akun_pengajuan_setor values ('PSC001','KP','09','Y','admin','2020-08-02 00:00:00','2020-08-02 00:00:00','admin','2020-08-02 00:00:00','admin','U','Y',null,null,null,60000,'2020-08-02','2020',null,'N',null,null,'PPN',null,20000,20000,20000,null,'N',null,null);
 
 -- jika ingin clear data untuk akuntansi
 -- delete from it_hris_payroll;
@@ -372,3 +372,18 @@ ALTER TABLE it_akun_pembayaran_utang_piutang_detail ADD COLUMN url_faktur_image 
 UPDATE im_simrs_dokter_kso SET flag='Y', action='C';
 INSERT INTO im_akun_mapping_jurnal VALUES ('IJ0062','JKR','2.1.03.00.02','K','Y','C','admin','admin','2020-08-03 00:00:00','2020-08-03 00:00:00','Y','Y','44','N','pph_dokter','N');
 INSERT INTO im_akun_mapping_jurnal VALUES ('IJ0063','JKR','2.1.03.00.99','K','Y','C','admin','admin','2020-08-03 00:00:00','2020-08-03 00:00:00','Y','Y','44','N','pot_ks','N');
+
+-- 12-08-2020
+ALTER TABLE it_hris_payroll
+ADD COLUMN approval_aks_flag character varying (1),
+ADD COLUMN approval_aks_date timestamp without time zone,
+ADD COLUMN approval_aks_id VARCHAR (100),
+ADD COLUMN approval_aks_name VARCHAR (100);
+
+update im_branches set coa_rk='2.1.11.01.01' where branch_id='RS01';
+update im_branches set coa_rk='2.1.11.01.02' where branch_id='RS02';
+update im_branches set coa_rk='2.1.11.01.03' where branch_id='RS03';
+
+update im_akun_mapping_jurnal set kirim_list='N' where mapping_jurnal_id='MPJ0000233';
+
+ALTER TABLE im_company ADD COLUMN param_dapen numeric (10,5);

@@ -2160,7 +2160,7 @@
                             <s:action id="initComboBranch2" namespace="/admin/branch"
                                       name="initComboBranch2_branch"/>
                             <s:select list="#initComboBranch2.listOfComboBranch" id="branchIdRiwayatKerja"
-                                      name="biodata.branchId" onchange="listDivisiHistory();cekPerusahaanLain()"
+                                      name="biodata.branchId" onchange="listDivisiHistory(),cekPerusahaanLain();"
                                       listKey="branchId" listValue="branchName" headerKey=""
                                       headerValue="[Select one]" cssClass="form-control"/>
                         </div>
