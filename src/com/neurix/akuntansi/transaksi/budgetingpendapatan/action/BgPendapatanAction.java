@@ -1,11 +1,13 @@
 package com.neurix.akuntansi.transaksi.budgetingpendapatan.action;
 
 import com.neurix.akuntansi.master.kodeRekening.bo.KodeRekeningBo;
+import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
 import com.neurix.akuntansi.transaksi.budgeting.action.BudgetingAction;
 import com.neurix.akuntansi.transaksi.budgeting.bo.BudgetingBo;
 import com.neurix.akuntansi.transaksi.budgeting.model.*;
 import com.neurix.akuntansi.transaksi.budgetingperhitungan.bo.BudgetingPerhitunganBo;
 import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ImAkunParameterBudgetingEntity;
+import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ItAkunPerhitunganBudgetingEntity;
 import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ParameterBudgeting;
 import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.PerhitunganBudgeting;
 import com.neurix.authorization.company.bo.BranchBo;
@@ -16,13 +18,20 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.CrudResponse;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.HibernateException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -83,13 +92,17 @@ public class BgPendapatanAction {
         budgeting.setFlagKp(userBranchId.equalsIgnoreCase(CommonConstant.ID_KANPUS) ? "Y" : "N");
         budgeting.setBranchId(userBranchId);
         setBudgeting(budgeting);
+        eraseAllSession();
+        return "search";
+    }
 
+    private void eraseAllSession(){
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfCoa");
         session.removeAttribute("listOfDetail");
         session.removeAttribute("listOfPengadaan");
         session.removeAttribute("listOfParam");
-        return "search";
+        session.removeAttribute("listOfPerhitungan");
     }
 
     public CrudResponse getSearchListBudgeting(String tahun, String unit){
@@ -186,6 +199,7 @@ public class BgPendapatanAction {
             session.removeAttribute("listOfCoa");
             session.setAttribute("listOfCoa", new ArrayList<>());
             if ("Y".equalsIgnoreCase(budgetingNew.getFlagKp())){
+                eraseAllSession();
                 return "add_kp";
             } else {
                 return "add";
@@ -383,12 +397,12 @@ public class BgPendapatanAction {
         BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
 
         HttpSession session = ServletActionContext.getRequest().getSession();
-        List<ParameterBudgeting> parameterBudgetings = (List<ParameterBudgeting>) session.getAttribute("listOfParam");
+        List<ParameterBudgeting> sessionParam = (List<ParameterBudgeting>) session.getAttribute("listOfParam");
         List<ParameterBudgeting> listParamBudgeting = new ArrayList<>();
 
-        if (parameterBudgetings != null){
+        if (sessionParam != null){
             // jika session ada
-            listParamBudgeting = parameterBudgetings;
+            listParamBudgeting = sessionParam;
         } else {
 
             // jika session kosong;
@@ -402,8 +416,9 @@ public class BgPendapatanAction {
             }
 
             // set Session
-            parameterBudgetings = new ArrayList<>();
-            parameterBudgetings.addAll(listParamBudgeting);
+            sessionParam = new ArrayList<>();
+            sessionParam.addAll(listParamBudgeting);
+            session.setAttribute("listOfParam", sessionParam);
         }
 
         logger.info("[BgPendapatanAction.getListParametersBudgeting] END <<<N");
@@ -411,7 +426,7 @@ public class BgPendapatanAction {
 
     }
 
-    public List<PerhitunganBudgeting> getListPendapatanTindakan(String branchId, String tahun){
+    public List<PerhitunganBudgeting> getListPendapatanTindakan(String branchId, String tahun, String tipe){
         logger.info("[BgPendapatanAction.getListParameterBudgeting] START >>>");
         String bulan = CommonUtil.getDateParted(new Date(System.currentTimeMillis()), "MONTH");
         Integer intBulanLalu = Integer.valueOf(bulan) - 1;
@@ -419,10 +434,10 @@ public class BgPendapatanAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
 
-        return budgetingPerhitunganBo.getListPendapatanTindakan(branchId, intBulanLalu.toString(), tahun);
+        return budgetingPerhitunganBo.getListPendapatanTindakan(branchId, intBulanLalu.toString(), tahun, tipe);
     }
 
-    public List<PerhitunganBudgeting> getListPendapatanObat(String branchId, String tahun){
+    public List<PerhitunganBudgeting> getListPendapatanObat(String branchId, String tahun, String tipe){
         logger.info("[BgPendapatanAction.getListPendapatanObat] START >>>");
         String bulan = CommonUtil.getDateParted(new Date(System.currentTimeMillis()), "MONTH");
         Integer intBulanLalu = Integer.valueOf(bulan) - 1;
@@ -430,6 +445,161 @@ public class BgPendapatanAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
 
-        return budgetingPerhitunganBo.getListPendapatanTindakan(branchId, intBulanLalu.toString(), tahun);
+        return budgetingPerhitunganBo.getListPendapatanObat(branchId, intBulanLalu.toString(), tahun, tipe);
     }
+
+    public CrudResponse setPerhitunganToSession(String idParam, String stPerhitungan) throws JSONException{
+        logger.info("[BgPendapatanAction.setPerhitunganToSession] START >>>");
+
+        CrudResponse response = new CrudResponse();
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<ParameterBudgeting> sessionParam = (List<ParameterBudgeting>) session.getAttribute("listOfParam");
+        List<ItAkunPerhitunganBudgetingEntity> sessionPerhitungan = (List<ItAkunPerhitunganBudgetingEntity>) session.getAttribute("listOfPerhitungan");
+
+        // hitung perhitungan budgeting
+        if (sessionPerhitungan != null){
+            // dari lambda, jika ada hapus dahulu inputkan nilai baru;
+            List<ItAkunPerhitunganBudgetingEntity> listPerhitungan = sessionPerhitungan.stream().filter(p->p.getIdParameterBudgeting().equalsIgnoreCase(idParam)).collect(Collectors.toList());
+            if (listPerhitungan.size() > 0 ){
+                for (ItAkunPerhitunganBudgetingEntity perhitungan : listPerhitungan){
+                    sessionPerhitungan.remove(perhitungan);
+                }
+            }
+        } else {
+            // jika tidak ada set list baru;
+            sessionPerhitungan = new ArrayList<>();
+        }
+
+        // inputkan nilai baru dari st JSON;
+        JSONArray json = new JSONArray(stPerhitungan);
+        for (int i = 0; i < json.length(); i++) {
+            JSONObject obj = json.getJSONObject(i);
+            ItAkunPerhitunganBudgetingEntity perhitungan = new ItAkunPerhitunganBudgetingEntity();
+            if (!"".equalsIgnoreCase(obj.get("nilai").toString())){
+                perhitungan.setNilai(obj.get("nilai") == null ? new BigDecimal(0) : new BigDecimal(obj.get("nilai").toString()) );
+            }
+            if (!"".equalsIgnoreCase(obj.get("opr").toString())){
+                perhitungan.setOperator(obj.get("opr").toString());
+            }
+            perhitungan.setUrutan(i);
+            perhitungan.setIdParameterBudgeting(idParam);
+
+            // tambahkan ke session perhitungan
+            sessionPerhitungan.add(perhitungan);
+        }
+
+        // hitung dari list filter berdasarkan id Params;
+        // hasil perhitungan untuk nilai pada parameter budgeting;
+        List<ItAkunPerhitunganBudgetingEntity> listPerhitungan = sessionPerhitungan.stream().filter(p->p.getIdParameterBudgeting().equalsIgnoreCase(idParam)).collect(Collectors.toList());
+        if (listPerhitungan.size() > 0){
+
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
+            BigDecimal nilaiBudgeting = budgetingPerhitunganBo.hitungNilaiBudgeting(listPerhitungan);
+
+            // set nilai ke session Params
+            if (sessionParam != null){
+                for (ParameterBudgeting parameterBudgeting : sessionParam){
+                    if (idParam.equalsIgnoreCase(parameterBudgeting.getId())){
+                        parameterBudgeting.setNilaiTotalBudgeting(nilaiBudgeting);
+                        break;
+                    }
+                }
+            }
+        }
+
+        session.removeAttribute("listOfParam");
+        session.removeAttribute("listOfPerhitungan");
+        session.setAttribute("listOfParam", sessionParam);
+        session.setAttribute("listOfPerhitungan", sessionPerhitungan);
+
+        logger.info("[BgPendapatanAction.setPerhitunganToSession] END <<<");
+        response.setStatus("success");
+        return response;
+    }
+
+    public CrudResponse saveAdd(String unit, String tahun){
+
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = CommonUtil.getCurrentDateTimes();
+
+        CrudResponse response = new CrudResponse();
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<ParameterBudgeting> sessionParam = (List<ParameterBudgeting>) session.getAttribute("listOfParam");
+        List<ItAkunPerhitunganBudgetingEntity> sessionPerhitungan = (List<ItAkunPerhitunganBudgetingEntity>) session.getAttribute("listOfPerhitungan");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
+
+        // insert to perhitungan budgeting;
+        try {
+            budgetingPerhitunganBo.saveAddPerhitunganBudgeting(sessionPerhitungan);
+            response.setStatus("success");
+        } catch (GeneralBOException e){
+            logger.info("[BgPendapatanAction.saveAdd] ERROR ", e);
+            response.setStatus("error");
+            response.setMsg("[BgPendapatanAction.saveAdd] ERROR " + e);
+        }
+
+        // convert ke list budgeting dan insert ke table budgeting
+        // set status draft dan nilainya
+        List<Budgeting> budgetingList = convertParamToListBudgeting(sessionParam, tahun, unit);
+        Budgeting budgeting = new Budgeting();
+        budgeting.setBranchId(unit);
+        budgeting.setTahun(tahun);
+        budgeting.setFlag("Y");
+        budgeting.setAction("C");
+        budgeting.setCreatedDate(time);
+        budgeting.setCreatedWho(userLogin);
+        budgeting.setLastUpdate(time);
+        budgeting.setLastUpdateWho(userLogin);
+        BudgetingAction budgetingAction = new BudgetingAction();
+
+        return response;
+    }
+
+    private List<Budgeting> convertParamToListBudgeting(List<ParameterBudgeting> listParam, String tahun, String unit){
+        List<Budgeting> budgetingList = new ArrayList<>();
+        if (listParam != null && listParam.size() > 0){
+            for (ParameterBudgeting param : listParam){
+                Budgeting budgeting = new Budgeting();
+                if (budgetingList.size() == 0){
+                    budgeting.setKodeRekening(getKodeRekeningById(param.getRekeningId()).getKodeRekening());
+                    budgeting.setTahun(tahun);
+                    budgeting.setBranchId(unit);
+                    budgeting.setRekeningId(param.getRekeningId());
+                    budgeting.setTipe("tahunan");
+                    budgeting.setNilaiTotal(param.getNilaiTotalBudgeting());
+                    budgetingList.add(budgeting);
+                } else {
+                    boolean notFound = true;
+                    for (Budgeting bg : budgetingList){
+                        if (param.getRekeningId().equalsIgnoreCase(bg.getRekeningId())){
+                            bg.setNilaiTotal(bg.getNilaiTotal().add(param.getNilaiTotalBudgeting()));
+                            notFound = false;
+                            break;
+                        }
+                    }
+                    if (notFound){
+                        budgeting.setKodeRekening(getKodeRekeningById(param.getRekeningId()).getKodeRekening());
+                        budgeting.setTahun(tahun);
+                        budgeting.setBranchId(unit);
+                        budgeting.setRekeningId(param.getRekeningId());
+                        budgeting.setTipe("tahunan");
+                        budgeting.setNilaiTotal(param.getNilaiTotalBudgeting());
+                        budgetingList.add(budgeting);
+                    }
+                }
+            }
+        }
+        return budgetingList;
+    }
+
+    private ImKodeRekeningEntity getKodeRekeningById(String id){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        KodeRekeningBo kodeRekeningBo = (KodeRekeningBo) ctx.getBean("kodeRekeningBoProxy");
+        return kodeRekeningBo.getKodeRekeningById(id);
+    }
+
+
 }

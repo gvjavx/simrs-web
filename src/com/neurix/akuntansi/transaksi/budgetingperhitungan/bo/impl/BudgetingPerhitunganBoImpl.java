@@ -42,8 +42,8 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
         this.jenisBudgetingDao = jenisBudgetingDao;
     }
 
-    private String getNextIdPerhitungan(String branchId, String idParameter){
-        return branchId + idParameter + perhitunganBudgetingDao.getNextId();
+    private String getNextIdPerhitungan(String branchId, String idParameter, String tahun){
+        return branchId + tahun + idParameter + perhitunganBudgetingDao.getNextId();
     }
 
     @Override
@@ -92,15 +92,23 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
     }
 
     @Override
-    public List<PerhitunganBudgeting> getListPendapatanTindakan(String branchId, String bulan, String tahun) throws GeneralBOException {
+    public List<PerhitunganBudgeting> getListPendapatanTindakan(String branchId, String bulan, String tahun, String tipe) throws GeneralBOException {
         logger.info("[BudgetingPerhitunganBoImpl.getListPendapatanTindakan] START >>>");
-        return perhitunganBudgetingDao.getListPerhitunganPendapatanTindakan(branchId, tahun, bulan);
+        if ("RJ".equalsIgnoreCase(tipe)){
+            return perhitunganBudgetingDao.getListPerhitunganPendapatanTindakan(branchId, tahun, bulan);
+        } else {
+            return perhitunganBudgetingDao.getListPerhitunganPendapatanTindakanRi(branchId, tahun, bulan);
+        }
     }
 
     @Override
-    public List<PerhitunganBudgeting> getListPendapatanObat(String branchId, String bulan, String tahun) throws GeneralBOException {
+    public List<PerhitunganBudgeting> getListPendapatanObat(String branchId, String bulan, String tahun, String tipe) throws GeneralBOException {
         logger.info("[BudgetingPerhitunganBoImpl.getListPendapatanObat] START >>>");
-        return perhitunganBudgetingDao.getListPendapatanObatPeriksa(branchId, tahun, bulan);
+        if ("RJ".equalsIgnoreCase(tipe)){
+            return perhitunganBudgetingDao.getListPendapatanObatPeriksa(branchId, tahun, bulan);
+        } else {
+            return perhitunganBudgetingDao.getListPendapatanObatPeriksaRi(branchId, tahun, bulan);
+        }
     }
 
     @Override
@@ -173,5 +181,12 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
         if ("/".equalsIgnoreCase(opr))
             return n1.divide(n2, BigDecimal.ROUND_HALF_UP, 2).round(m);
         return new BigDecimal(0);
+    }
+
+    @Override
+    public void saveAddPerhitunganBudgeting(List<ItAkunPerhitunganBudgetingEntity> beans) throws GeneralBOException {
+
+
+
     }
 }

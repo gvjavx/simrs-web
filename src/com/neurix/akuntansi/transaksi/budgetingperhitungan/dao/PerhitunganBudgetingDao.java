@@ -47,7 +47,7 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
     public String getNextId() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_perhitungan_budgeting')");
         Iterator<BigInteger> iter = query.list().iterator();
-        String sId = String.format("%08d", iter.next());
+        String sId = String.format("%05d", iter.next());
         return sId;
     }
 
@@ -163,7 +163,7 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
         String SQL = "SELECT\n" +
                 "a.nama_obat, \n" +
                 "a.harga_net,\n" +
-                "SUM (a.qty) as qty,\n" +
+                "CAST (SUM (a.qty) AS bigint) as qty,\n" +
                 "SUM (a.total) as total\n" +
                 "FROM \n" +
                 "(\n" +
@@ -192,7 +192,7 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
                 "\tINNER JOIN (SELECT * FROM im_simrs_pelayanan WHERE tipe_pelayanan = 'apotek') ml ON ml.id_pelayanan = pr.tujuan_pelayanan\n" +
                 "\tWHERE hdc.branch_id = :unit\n" +
                 "\tAND EXTRACT(YEAR from jd.tanggal_jurnal) = :tahun\n" +
-                "\tAND EXTRACT(MONTH from jd.tanggal_jurnal) <= ':bulan\n" +
+                "\tAND EXTRACT(MONTH from jd.tanggal_jurnal) <= :bulan\n" +
                 ")a\n" +
                 "GROUP BY\n" +
                 "a.nama_obat, \n" +
@@ -224,7 +224,7 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
         String SQL = "SELECT\n" +
                 "a.nama_obat, \n" +
                 "a.harga_net,\n" +
-                "SUM (a.qty) as qty,\n" +
+                "CAST (SUM (a.qty) AS bigint) as qty,\n" +
                 "SUM (a.total) as total\n" +
                 "FROM \n" +
                 "(\n" +
@@ -253,7 +253,7 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
                 "\tINNER JOIN (SELECT * FROM im_simrs_pelayanan WHERE tipe_pelayanan = 'apotek_ri') ml ON ml.id_pelayanan = pr.tujuan_pelayanan\n" +
                 "\tWHERE hdc.branch_id = :unit\n" +
                 "\tAND EXTRACT(YEAR from jd.tanggal_jurnal) = :tahun\n" +
-                "\tAND EXTRACT(MONTH from jd.tanggal_jurnal) <= ':bulan\n" +
+                "\tAND EXTRACT(MONTH from jd.tanggal_jurnal) <= :bulan\n" +
                 ")a\n" +
                 "GROUP BY\n" +
                 "a.nama_obat, \n" +
