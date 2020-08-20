@@ -22,7 +22,8 @@ public interface BudgetingBo {
     public void saveAddBudgeting(List<Budgeting> budgetingList, List<BudgetingDetail> budgetingDetails, List<BudgetingPengadaan> budgetingPengadaans, String type, Budgeting bean) throws GeneralBOException;
     public void saveEditBudgeting(List<Budgeting> budgetingList, List<BudgetingDetail> budgetingDetails, List<BudgetingPengadaan> budgetingPengadaans, String statusTrans, String typeTrans, Budgeting bean) throws GeneralBOException;
     public Long getlastLevelKodeRekening();
-    public Boolean foundWithSameStatus(String tahun, String branchId, String status);
+    public Boolean foundWithSameStatus(String tahun, String branchId, String status, String tipe);
+
     public String generateBudgetingDetailId();
     public String generateBudgetingPengadaan();
     public String checkLastTipeBudgeting();
@@ -42,4 +43,5 @@ public interface BudgetingBo {
     Budgeting getBudgetBiayaInvestasiSaatIni(Budgeting bean);
 
     List<BudgetingPengadaan> getTerminPembayaran(String pengadaanId);
+    public List<Budgeting> getListLabaRugi(String tahun, String unit, String status);
 }

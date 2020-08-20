@@ -43,6 +43,7 @@ public class BgEksploitasiAction {
     private String tipe;
     private String id;
     private String trans;
+    private String tipeBudgeting = "eksploitasi";
 
     public String getStatus() {
         return status;
@@ -113,12 +114,12 @@ public class BgEksploitasiAction {
         Budgeting budgeting = new Budgeting();
         budgeting.setTahun(tahun);
         budgeting.setBranchId(unit);
-        budgeting.setRekeningIdList(kodeRekeningBo.getListRekeningIdsByTipeBudgeting("eksploitasi"));
+        budgeting.setRekeningIdList(kodeRekeningBo.getListRekeningIdsByTipeBudgeting(this.tipeBudgeting));
 
         BudgetingAction budgetingAction = new BudgetingAction();
 
         // get last Status
-        Budgeting budgetingStatus = budgetingAction.findLastStatus(budgeting.getBranchId(), budgeting.getTahun());
+        Budgeting budgetingStatus = budgetingAction.findLastStatus(budgeting.getBranchId(), budgeting.getTahun(), this.tipeBudgeting);
         if (budgetingStatus != null){
             budgeting.setStatus(budgetingStatus.getStatus());
         }
@@ -154,7 +155,7 @@ public class BgEksploitasiAction {
 
         Budgeting budgeting = getBudgeting();
         Budgeting budgetingNew = new Budgeting();
-        budgetingNew.setTipeBudgeting("investasi");
+        budgetingNew.setTipeBudgeting(this.tipeBudgeting);
         if (budgeting != null){
             budgetingNew.setTahun(budgeting.getTahun());
             budgetingNew.setBranchId(budgeting.getBranchId());
@@ -211,6 +212,7 @@ public class BgEksploitasiAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        KodeRekeningBo kodeRekeningBo = (KodeRekeningBo) ctx.getBean("kodeRekeningBoProxy");
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<Budgeting> budgetingSessionList = (List<Budgeting>) session.getAttribute("listOfCoa");
@@ -302,6 +304,7 @@ public class BgEksploitasiAction {
                         searchBudgeting.setTahun(budgeting.getTahun());
                         searchBudgeting.setBranchId(budgeting.getBranchId());
                         searchBudgeting.setStatus(statusBudgeting.getStatusDetail());
+                        searchBudgeting.setRekeningIdList(kodeRekeningBo.getListRekeningIdsByTipeBudgeting(this.tipeBudgeting));
 
                         List<Budgeting> budgetingList = budgetingBo.getSearchByCriteria(searchBudgeting);
                         if (budgetingList.size() > 0){

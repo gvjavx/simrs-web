@@ -378,7 +378,7 @@
         console.log(unit);
 
         if (unit != null || unit != ""){
-            BudgetingAction.findLastStatus(unit, tahun, function(response){
+            BudgetingAction.findLastStatus(unit, tahun, "pendapatan", function(response){
                 var str = "";
                 if (response.status != ""){
                     if ("ADJUST_REVISI" == response.status){

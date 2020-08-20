@@ -82,7 +82,7 @@ public class BudgetingBoImpl implements BudgetingBo {
                 budgeting.setStatus(budgetingEntity.getStatus());
 
                 boolean withNilaiTotal = !"APPROVE_DRAFT".equalsIgnoreCase(budgetingEntity.getStatus()) && !"ADJUST_DRAFT".equalsIgnoreCase(budgetingEntity.getStatus());
-                if (withNilaiTotal){
+                if (withNilaiTotal || "investasi".equalsIgnoreCase(bean.getTipeBudgeting())){
                     budgeting.setNilaiTotal(nullEscape(budgetingEntity.getNilaiTotal()));
                 } else {
                     budgeting.setFlagNilaiTotal("Y");
@@ -304,7 +304,11 @@ public class BudgetingBoImpl implements BudgetingBo {
     }
 
     @Override
-    public Boolean foundWithSameStatus(String tahun, String branchId, String status) {
+    public Boolean foundWithSameStatus(String tahun, String branchId, String status, String tipe) {
+
+        if (tipe != null && !"".equalsIgnoreCase(tipe)){
+            return budgetingDao.checkIfSameStatusAndTipe(branchId, tahun, status, tipe);
+        }
         return budgetingDao.checkIfSameStatus(branchId, tahun, status);
     }
 
@@ -1519,5 +1523,11 @@ public class BudgetingBoImpl implements BudgetingBo {
         budgetingList.add(budgetingPengadaan);
         logger.info("[BudgetingBoImpl.getTerminPembayaran] END <<<<");
         return  budgetingList;
+    }
+
+    @Override
+    public List<Budgeting> getListLabaRugi(String tahun, String unit, String status) {
+        logger.info("[BudgetingBoImpl.getListLabaRugi] START >>>");
+        return budgetingDao.getListLabaRugi(tahun, unit, status);
     }
 }

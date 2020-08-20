@@ -381,7 +381,7 @@
         var unit = $("#sel-unit").val();
         var tipe = $("#sel-tipe").val();
 
-        BudgetingAction.checkTransaksiBudgeting(unit, tahun, function(response){
+        BudgetingAction.checkTransaksiBudgeting(unit, tahun, "investasi", function(response){
 
             if (response.branchId == null && response.tahun == null){
 

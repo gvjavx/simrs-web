@@ -39,6 +39,7 @@ public class BgInvestasiAction {
     private String tipe;
     private String id;
     private String trans;
+    private String tipeBudgeting = "investasi";
 
     public String getId() {
         return id;
@@ -104,12 +105,13 @@ public class BgInvestasiAction {
         Budgeting budgeting = new Budgeting();
         budgeting.setTahun(tahun);
         budgeting.setBranchId(unit);
-        budgeting.setRekeningIdList(kodeRekeningBo.getListRekeningIdsByTipeBudgeting("investasi"));
+        budgeting.setTipeBudgeting(this.tipeBudgeting);
+        budgeting.setRekeningIdList(kodeRekeningBo.getListRekeningIdsByTipeBudgeting(this.tipeBudgeting));
 
         BudgetingAction budgetingAction = new BudgetingAction();
 
         // get last Status
-        Budgeting budgetingStatus = budgetingAction.findLastStatus(budgeting.getBranchId(), budgeting.getTahun());
+        Budgeting budgetingStatus = budgetingAction.findLastStatus(budgeting.getBranchId(), budgeting.getTahun(), this.tipeBudgeting);
         if (budgetingStatus != null){
             budgeting.setStatus(budgetingStatus.getStatus());
         }
@@ -145,7 +147,7 @@ public class BgInvestasiAction {
 
         Budgeting budgeting = getBudgeting();
         Budgeting budgetingNew = new Budgeting();
-        budgetingNew.setTipeBudgeting("investasi");
+        budgetingNew.setTipeBudgeting(this.tipeBudgeting);
         if (budgeting != null){
             budgetingNew.setTahun(budgeting.getTahun());
             budgetingNew.setBranchId(budgeting.getBranchId());
@@ -197,6 +199,7 @@ public class BgInvestasiAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        KodeRekeningBo kodeRekeningBo = (KodeRekeningBo) ctx.getBean("kodeRekeningBoProxy");
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<Budgeting> budgetingSessionList = (List<Budgeting>) session.getAttribute("listOfCoa");
@@ -288,6 +291,8 @@ public class BgInvestasiAction {
                         searchBudgeting.setTahun(budgeting.getTahun());
                         searchBudgeting.setBranchId(budgeting.getBranchId());
                         searchBudgeting.setStatus(statusBudgeting.getStatusDetail());
+                        searchBudgeting.setTipeBudgeting(this.tipeBudgeting);
+                        searchBudgeting.setRekeningIdList(kodeRekeningBo.getListRekeningIdsByTipeBudgeting(this.tipeBudgeting));
 
                         List<Budgeting> budgetingList = budgetingBo.getSearchByCriteria(searchBudgeting);
                         if (budgetingList.size() > 0){

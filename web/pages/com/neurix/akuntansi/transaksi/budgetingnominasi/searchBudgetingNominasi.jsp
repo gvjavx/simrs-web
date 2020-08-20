@@ -374,7 +374,7 @@
             unit = var1;
         console.log(unit);
 
-        BudgetingAction.findLastStatus(unit, tahun, function(response){
+        BudgetingAction.findLastStatus(unit, tahun, "nominasi", function(response){
             var str = "";
             if (response.status != ""){
                 if ("ADJUST_REVISI" == response.status){

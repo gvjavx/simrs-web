@@ -45,6 +45,7 @@ public class BgPendapatanAction {
     private String tipe;
     private String id;
     private String trans;
+    private String tipeBudgeting = "pendapatan";
 
     public String getStatus() {
         return status;
@@ -115,12 +116,12 @@ public class BgPendapatanAction {
         Budgeting budgeting = new Budgeting();
         budgeting.setTahun(tahun);
         budgeting.setBranchId(unit);
-        budgeting.setRekeningIdList(kodeRekeningBo.getListRekeningIdsByTipeBudgeting("pendapatan"));
+        budgeting.setRekeningIdList(kodeRekeningBo.getListRekeningIdsByTipeBudgeting(this.tipeBudgeting));
 
         BudgetingAction budgetingAction = new BudgetingAction();
 
         // get last Status
-        Budgeting budgetingStatus = budgetingAction.findLastStatus(budgeting.getBranchId(), budgeting.getTahun());
+        Budgeting budgetingStatus = budgetingAction.findLastStatus(budgeting.getBranchId(), budgeting.getTahun(), "pendapatan");
         if (budgetingStatus != null){
             budgeting.setStatus(budgetingStatus.getStatus());
         }
@@ -156,7 +157,7 @@ public class BgPendapatanAction {
 
         Budgeting budgeting = getBudgeting();
         Budgeting budgetingNew = new Budgeting();
-        budgetingNew.setTipeBudgeting("pendapatan");
+        budgetingNew.setTipeBudgeting(this.tipeBudgeting);
         if (budgeting != null){
             budgetingNew.setTahun(budgeting.getTahun());
             budgetingNew.setBranchId(budgeting.getBranchId());
@@ -213,6 +214,7 @@ public class BgPendapatanAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        KodeRekeningBo kodeRekeningBo = (KodeRekeningBo) ctx.getBean("kodeRekeningBoProxy");
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<Budgeting> budgetingSessionList = (List<Budgeting>) session.getAttribute("listOfCoa");
@@ -304,6 +306,7 @@ public class BgPendapatanAction {
                         searchBudgeting.setTahun(budgeting.getTahun());
                         searchBudgeting.setBranchId(budgeting.getBranchId());
                         searchBudgeting.setStatus(statusBudgeting.getStatusDetail());
+                        searchBudgeting.setRekeningIdList(kodeRekeningBo.getListRekeningIdsByTipeBudgeting(this.tipeBudgeting));
 
                         List<Budgeting> budgetingList = budgetingBo.getSearchByCriteria(searchBudgeting);
                         if (budgetingList.size() > 0){

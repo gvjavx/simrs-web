@@ -33,14 +33,14 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/TutuPeriodAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/BudgetingAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/KodeRekeningAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/BranchAction.js"/>'></script>
     <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.bootstrap3.js"/>"></script>
     <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.js"/>"></script>
     <script src="<s:url value="/pages/plugins/tree/lodash.js"/>"></script>
     <script type='text/javascript'>
 
         $( document ).ready(function() {
-            $('#bayar_rawat_jalan, #pembayaran_active').addClass('active');
-            $('#pembayaran_open').addClass('menu-open');
+
         });
 
     </script>
@@ -69,7 +69,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Budgeting </h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Dashboard Laba Rugi</h3>
                     </div>
                     <div class="box-body">
                         <%--<s:form id="kasirjalanForm" method="post" namespace="/kasirjalan" action="search_kasirjalan.action" theme="simple" cssClass="form-horizontal">--%>
@@ -92,58 +92,22 @@
                                             <div class="col-sm-2">
                                                 <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                                 <s:select list="#initComboBranch.listOfComboBranch" id="sel-unit" name="budgeting.branchId"
-                                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select Value]" cssClass="form-control" onchange="changeAction(this.value)"/>
+                                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="All Unit" cssClass="form-control" onchange="changeAction(this.value)"/>
                                             </div>
                                         </div>
-                                        <%--<div class="row">--%>
-                                            <%--<label class="control-label col-sm-2">Status</label>--%>
-                                            <%--<div class="col-sm-2">--%>
-                                                <%--<select class="form-control" id="sel-status">--%>
-                                                    <%--<option value="#">[Select One]</option>--%>
-                                                    <%--<option value="DRAFT">DRAFT</option>--%>
-                                                    <%--<option value="FINAL">FINAL</option>--%>
-                                                    <%--<option value="REVISI">REVISI</option>--%>
-                                                <%--</select>--%>  <%--<div class="row">--%>
-                                        <%--<label class="control-label col-sm-2">Coa</label>--%>
-                                        <%--<div class="col-sm-2">--%>
-                                        <%--<input type="text" class="form-control" id="coa">--%>
-                                        <%--<script>--%>
-                                        <%--$(document).ready(function() {--%>
-                                        <%--var functions, mapped;--%>
-                                        <%--$('#coa').typeahead({--%>
-                                        <%--minLength: 1,--%>
-                                        <%--source: function (query, process) {--%>
-                                        <%--functions = [];--%>
-                                        <%--mapped = {};--%>
-                                        <%--var data = [];--%>
-                                        <%--dwr.engine.setAsync(false);--%>
-                                        <%--KodeRekeningAction.initTypeaheadKodeRekening(query,function (listdata) {--%>
-                                        <%--data = listdata;--%>
-                                        <%--});--%>
-                                        <%--$.each(data, function (i, item) {--%>
-                                        <%--var labelItem = item.kodeRekening + " | " + item.namaKodeRekening;--%>
-                                        <%--mapped[labelItem] = {--%>
-                                        <%--id: item.rekeningId,--%>
-                                        <%--nama: item.namaKodeRekening,--%>
-                                        <%--kode : item.kodeRekening,--%>
-                                        <%--parent :item.parentId--%>
-                                        <%--};--%>
-                                        <%--functions.push(labelItem);--%>
-                                        <%--});--%>
-                                        <%--process(functions);--%>
-                                        <%--},--%>
-                                        <%--updater: function (item) {--%>
-                                        <%--var selectedObj = mapped[item];--%>
-                                        <%--$('#rekeningid').val(selectedObj.id);--%>
-                                        <%--return selectedObj.kode;--%>
-                                        <%--}--%>
-                                        <%--});--%>
-                                        <%--});--%>
-                                        <%--</script>--%>
-                                        <%--</div>--%>
-                                        <%--</div>
-                                            <%--</div>--%>
-                                        <%--</div>--%>
+                                        <div class="row">
+                                            <label class="control-label col-sm-2">Status</label>
+                                            <div class="col-sm-2">
+                                                <select class="form-control" id="sel-status">
+                                                    <option value="APPROVE_DRAFT">APPROVE DRAFT</option>
+                                                    <option value="ADJUST_DRAFT">ADJUST DRAFT</option>
+                                                    <option value="APPROVE_FINAL">APPROVE FINAL</option>
+                                                    <option value="ADJUST_FINAL">ADJUST FINAL</option>
+                                                    <option value="APPROVE_REVISI">APPROVE REVISI</option>
+                                                    <option value="ADJUST_REVISI">ADJUST REVISI</option>
+                                                </select>  <div class="row">
+                                            </div>
+                                        </div>
 
                                         <input type="hidden" id="rekeningid">
 
@@ -151,19 +115,9 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-md-6 col-md-offset-4" style="margin-top: 10px">
+                                    <div class="col-md-6 col-md-offset-5" style="margin-top: 10px">
                                         <button class="btn btn-success" onclick="search()"><i class="fa fa-search"></i> Search</button>
                                         <%--<button class="btn btn-primary" onclick="add()" id="btn-add"><i class="fa fa-plus"></i> Add</button>--%>
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Action</button>
-                                            <button type="button" class="btn btn-primary dropdown-toggle"
-                                                    data-toggle="dropdown" style="height: 34px">
-                                                <span class="caret"></span>
-                                                <span class="sr-only">Toggle Dropdown</span>
-                                            </button>
-                                            <ul class="dropdown-menu" role="menu" id="action-menu">
-                                            </ul>
-                                        </div>
                                         <button class="btn btn-danger" onclick="reset()"><i class="fa fa-refresh"></i> Reset</button>
                                     </div>
                                 </div>
@@ -180,6 +134,8 @@
                     </div>
                     <div class="box-body">
 
+
+
                         <%--<div class="alert alert-info alert-dismissable" id="alert-info">--%>
                         <%--<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>--%>
                         <%--<strong>Info!</strong> Pilih Priode Kemudian Choose--%>
@@ -195,29 +151,42 @@
                             <strong>Error!</strong><span id="error-msg"></span>
                         </div>
 
+
                         <div class="row">
-                            <div class="col-md-12">
-                                <table class="tree table table-bordered table-striped">
-                                    <thead id="head-budgeting">
-                                        <tr bgcolor="#90ee90">
-                                            <td style="width: 20%">COA</td>
-                                            <td align="">Keterangan</td>
-                                            <td align="center">Nilai Draf</td>
-                                            <td align="center">Nilai Final</td>
-                                            <td align="center">Nilai Revisi</td>
-                                            <td align="">No. Budgeting</td>
-                                            <td>Action</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="body-budgeting" style="font-size: 13px">
-                                    </tbody>
-                                    <%--<input type="hidden" id="index-period"/>--%>
-                                    <%--<input type="hidden" id="index-branch"/>--%>
-                                    <%--<input type="hidden" id="bulan"/>--%>
-                                    <%--<input type="hidden" id="tahun"/>--%>
-                                </table>
+                            <div class="col-md-4 col-md-offset-4">
+                                <h3 align="center">Seluruh NMU</h3>
+                                <div id="donut-all"></div>
+                                <div id="legend-all" class="donut-legend"></div>
                             </div>
+
                         </div>
+
+                            <br>
+                        <div id="list-donut" class="row">
+
+                        </div>
+
+
+
+                        <%--<div class="row">--%>
+                            <%--<div class="col-md-12">--%>
+                                <%--<table class="tree table table-bordered table-striped">--%>
+                                    <%--<thead id="head-budgeting">--%>
+                                        <%--<tr bgcolor="#90ee90">--%>
+                                            <%--<td style="width: 20%">COA</td>--%>
+                                            <%--<td align="">Keterangan</td>--%>
+                                            <%--<td align="center">Nilai Draf</td>--%>
+                                            <%--<td align="center">Nilai Final</td>--%>
+                                            <%--<td align="center">Nilai Revisi</td>--%>
+                                            <%--<td align="">No. Budgeting</td>--%>
+                                            <%--<td>Action</td>--%>
+                                        <%--</tr>--%>
+                                    <%--</thead>--%>
+                                    <%--<tbody id="body-budgeting" style="font-size: 13px">--%>
+                                    <%--</tbody>--%>
+                                <%--</table>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
 
                         <%--<div class="form-group">--%>
                             <%--<div class="col-md-4 col-md-offset-5">--%>
@@ -352,246 +321,40 @@
 
 <script type='text/javascript'>
 
-    function changeAction(var1){
 
-        var tahun = $("#sel-tahun").val();
-        var unit = var1;
 
-        BudgetingAction.findLastStatus(unit, tahun, function(response){
-            var str = "";
-            if (response.status != ""){
-                if ("ADJUST_REVISI" == response.status){
-                    str += "<li>"+
-                        "<a href=\"#\" onclick=\"action('ADJUST_REVISI')\">"+
-                        "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
-                        "</li><hr>";
+    $( document ).ready(function() {
+//        donutChart();
+    });
 
-                } else if ("APPROVE_REVISI" == response.status){
 
-                    str += "<li>"+
-                        "<a href=\"#\" onclick=\"action('ADJUST_REVISI')\">"+
-                        "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
-                        "</li><hr>";
-
-                } else if ("EDIT_REVISI" == response.status){
-                    str += "<li>"+
-                        "<a href=\"#\" onclick=\"action('EDIT_REVISI')\">"+
-                        "<i class=\"fa fa-edit\"></i>Edit Revisi</a>"+
-                        "</li>";
-
-                    str += "<li>"+
-                        "<a href=\"#\" onclick=\"action('APPROVE_REVISI')\">"+
-                        "<i class=\"fa fa-edit\"></i>Approve Revisi</a>"+
-                        "</li>";
-
-                    str += "<li>"+
-                        "<a href=\"#\" onclick=\"action('ADJUST_REVISI')\">"+
-                        "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
-                        "</li><hr>";
-                } else {
-                    if ("ADJUST_FINAL" ==  response.status){
-                        str += "<li>"+
-                            "<a href=\"#\" onclick=\"action('ADJUST_FINAL')\">"+
-                            "<i class=\"fa fa-edit\"></i>Adjust Final</a>"+
-                            "</li><hr>";
-
-                        str += "<li>"+
-                            "<a href=\"#\" onclick=\"action('EDIT_REVISI')\">"+
-                            "<i class=\"fa fa-edit\"></i>Edit Revisi</a>"+
-                            "</li>";
-
-                        str += "<li>"+
-                            "<a href=\"#\" onclick=\"action('APPROVE_REVISI')\">"+
-                            "<i class=\"fa fa-edit\"></i>Approve Revisi</a>"+
-                            "</li>";
-
-                        str += "<li>"+
-                            "<a href=\"#\" onclick=\"action('ADJUST_REVISI')\">"+
-                            "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
-                            "</li><hr>";
-
-                    } else if ("APPROVE_FINAL" ==  response.status){
-                        str += "<li>"+
-                            "<a href=\"#\" onclick=\"action('ADJUST_FINAL')\">"+
-                            "<i class=\"fa fa-edit\"></i>Adjust Final</a>"+
-                            "</li><hr>";
-
-                        str += "<li>"+
-                            "<a href=\"#\" onclick=\"action('EDIT_REVISI')\">"+
-                            "<i class=\"fa fa-edit\"></i>Edit Revisi</a>"+
-                            "</li>";
-
-                        str += "<li>"+
-                            "<a href=\"#\" onclick=\"action('APPROVE_REVISI')\">"+
-                            "<i class=\"fa fa-edit\"></i>Approve Revisi</a>"+
-                            "</li>";
-
-                        str += "<li>"+
-                            "<a href=\"#\" onclick=\"action('ADJUST_REVISI')\">"+
-                            "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
-                            "</li><hr>";
-
-                    } else if ("EDIT_FINAL" ==  response.status){
-                        str += "<li>"+
-                            "<a href=\"#\" onclick=\"action('EDIT_FINAL')\">"+
-                            "<i class=\"fa fa-edit\"></i>Edit Final</a>"+
-                            "</li>";
-
-                        str += "<li>"+
-                            "<a href=\"#\" onclick=\"action('APPROVE_FINAL')\">"+
-                            "<i class=\"fa fa-edit\"></i>Approve Final</a>"+
-                            "</li>";
-
-                        str += "<li>"+
-                            "<a href=\"#\" onclick=\"action('ADJUST_FINAL')\">"+
-                            "<i class=\"fa fa-edit\"></i>Adjust Final</a>"+
-                            "</li><hr>";
-
-                        str += "<li>"+
-                            "<a href=\"#\" onclick=\"action('EDIT_REVISI')\">"+
-                            "<i class=\"fa fa-edit\"></i>Edit Revisi</a>"+
-                            "</li>";
-
-                        str += "<li>"+
-                            "<a href=\"#\" onclick=\"action('APPROVE_REVISI')\">"+
-                            "<i class=\"fa fa-edit\"></i>Approve Revisi</a>"+
-                            "</li>";
-
-                        str += "<li>"+
-                            "<a href=\"#\" onclick=\"action('ADJUST_REVISI')\">"+
-                            "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
-                            "</li><hr>";
-                    } else {
-                        if ("ADJUST_DRAFT" == response.status){
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('ADJUST_DRAFT')\">"+
-                                "<i class=\"fa fa-edit\"></i>Adjust Draft</a>"+
-                                "</li><hr>";
-
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('EDIT_FINAL')\">"+
-                                "<i class=\"fa fa-edit\"></i>Edit Final</a>"+
-                                "</li>";
-
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('APPROVE_FINAL')\">"+
-                                "<i class=\"fa fa-edit\"></i>Approve Final</a>"+
-                                "</li>";
-
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('ADJUST_FINAL')\">"+
-                                "<i class=\"fa fa-edit\"></i>Adjust Final</a>"+
-                                "</li><hr>";
-
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('EDIT_REVISI')\">"+
-                                "<i class=\"fa fa-edit\"></i>Edit Revisi</a>"+
-                                "</li>";
-
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('APPROVE_REVISI')\">"+
-                                "<i class=\"fa fa-edit\"></i>Approve Revisi</a>"+
-                                "</li>";
-
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('ADJUST_REVISI')\">"+
-                                "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
-                                "</li><hr>";
-                        } else if("APPROVE_DRAFT" == response.status){
-
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('ADJUST_DRAFT')\">"+
-                                "<i class=\"fa fa-edit\"></i>Adjust Draft</a>"+
-                                "</li><hr>";
-
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('EDIT_FINAL')\">"+
-                                "<i class=\"fa fa-edit\"></i>Edit Final</a>"+
-                                "</li>";
-
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('APPROVE_FINAL')\">"+
-                                "<i class=\"fa fa-edit\"></i>Approve Final</a>"+
-                                "</li>";
-
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('ADJUST_FINAL')\">"+
-                                "<i class=\"fa fa-edit\"></i>Adjust Final</a>"+
-                                "</li><hr>";
-
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('EDIT_REVISI')\">"+
-                                "<i class=\"fa fa-edit\"></i>Edit Revisi</a>"+
-                                "</li>";
-
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('APPROVE_REVISI')\">"+
-                                "<i class=\"fa fa-edit\"></i>Approve Revisi</a>"+
-                                "</li>";
-
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('ADJUST_REVISI')\">"+
-                                "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
-                                "</li><hr>";
-                        } else {
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('EDIT_DRAFT')\">"+
-                                "<i class=\"fa fa-edit\"></i>Edit Draft</a>"+
-                                "</li>";
-
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('APPROVE_DRAFT')\">"+
-                                "<i class=\"fa fa-edit\"></i>Approve Draft</a>"+
-                                "</li>";
-
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('ADJUST_DRAFT')\">"+
-                                "<i class=\"fa fa-edit\"></i>Adjust Draft</a>"+
-                                "</li><hr>";
-
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('EDIT_FINAL')\">"+
-                                "<i class=\"fa fa-edit\"></i>Edit Final</a>"+
-                                "</li>";
-
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('APPROVE_FINAL')\">"+
-                                "<i class=\"fa fa-edit\"></i>Approve Final</a>"+
-                                "</li>";
-
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('ADJUST_FINAL')\">"+
-                                "<i class=\"fa fa-edit\"></i>Adjust Final</a>"+
-                                "</li><hr>";
-
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('EDIT_REVISI')\">"+
-                                "<i class=\"fa fa-edit\"></i>Edit Revisi</a>"+
-                                "</li>";
-
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('APPROVE_REVISI')\">"+
-                                "<i class=\"fa fa-edit\"></i>Approve Revisi</a>"+
-                                "</li>";
-
-                            str += "<li>"+
-                                "<a href=\"#\" onclick=\"action('ADJUST_REVISI')\">"+
-                                "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
-                                "</li><hr>";
-                        }
-                    }
-                }
-            } else {
-                str = "";
-                str += "<li>"+
-                    "<span>"+
-                    "<i class=\"fa fa-info\"></i>Please Add</span>"+
-                    "</li><hr>";
+    function donutChart(Data, branch, total) {
+//        var Data= [
+//            {label: "Download Sales", value: 12},
+//            {label: "In-Store Sales", value: 30},
+//            {label: "Mail-Order Sales", value: 20}
+//        ];
+        console.log("branch -> "+branch);
+        console.log(Data);
+        var browsersChart = Morris.Donut({
+            element: 'donut-'+ branch + '',
+            data: Data,
+            formatter: function (value, data) {
+                return Math.floor(value/total*100) + '%';
             }
+        });
 
-            $("#action-menu").html(str);
+        browsersChart.options.data.forEach(function(label, i) {
+            var legendItem = $('<span></span>').text( label['label'] + " ( " + formatRupiah(label['value']) + " )" ).prepend('<br><span>&nbsp;</span>');
+            legendItem.find('span')
+                .css('backgroundColor', browsersChart.options.colors[i])
+                .css('width', '20px')
+                .css('display', 'inline-block')
+                .css('margin', '5px');
+            $('#legend-'+ branch +'').append(legendItem)
         });
     }
+
 
     // exemple : post('/contact/', {name: 'Johnny Bravo'});
     function post(path, params) {
@@ -671,114 +434,100 @@
         post(host);
     }
 
-    $('.tree').treegrid({
-        expanderExpandedClass: 'glyphicon glyphicon-minus',
-        expanderCollapsedClass: 'glyphicon glyphicon-plus'
-    });
 
     function search() {
         var tahun = $("#sel-tahun").val();
         var unit = $("#sel-unit").val();
-        var unitName = $("#sel-unit :selected").text();
+        var unitName = "Seluruh NMU";
         var status = $("#sel-status").val();
-        var rekeningid = $("#rekeningid").val();
-        var data = [];
-        var data2 = [];
 
         $("#alert-success").show();
         $("#label-unit").text(unitName);
         $("#label-tahun").text(tahun);
 
-        if (unit != ""){
-            var arr = [];
-            arr.push({
-                "tahun":tahun,
-                "unit":unit,
-                "status":"",
-                "coa":rekeningid
-            });
+        $("#donut-all").html("");
+        $("#legend-all").html("");
+        dwr.engine.setAsync(true);
+        BudgetingAction.getListLabaRugi(tahun, "", status, function (response) {
+            dwr.engine.setAsync(false);
+            $("#alert-success").hide();
+            if (response.status == "error"){
+                $("#alert-error").show().fadeOut(5000);
+                $("#error-msg").text(response.msg);
+            } else {
+                var data = [];
+                var total = 0;
+                $.each(response.list, function (i, item) {
+                    data.push({label : item.tipeBudgeting, value : item.nilaiTotal});
+                    total += item.nilaiTotal;
+                })
 
-            var strJson = JSON.stringify(arr);
-            dwr.engine.setAsync(true);
-            BudgetingAction.getSearchListBudgeting(strJson, function (response) {
+                donutChart(data, "all", total);
+            }
+        });
+
+        if (unit != ""){
+            unitName = $("#sel-unit :selected").text();
+            var str = '<div class="col-md-4 col-md-offset-4">' +
+                '<h3 align="center">'+unitName+'</h3>\n' +
+                '<div id="donut-'+unit+'"></div>\n' +
+                '<div id="legend-'+unit+'" class="donut-legend"></div>' +
+                '</div>';
+
+            $("#list-donut").html(str);
+            BudgetingAction.getListLabaRugi(tahun, unit, status, function (response) {
                 dwr.engine.setAsync(false);
                 $("#alert-success").hide();
                 if (response.status == "error"){
                     $("#alert-error").show().fadeOut(5000);
                     $("#error-msg").text(response.msg);
                 } else {
-
-                    data = response.list;
-                    data2 = new Array();
-                    $.each(data, function(i,item){
-                        console.log(item.rekeningId);
-                        data2.push({_id : item.rekeningId, level : item.level,  nama : item.namaKodeRekening, parent : item.parentId, coa : item.kodeRekening,
-                            nilaiDraf : item.nilaiDraf, nilaiFinal : item.nilaiFinal, nilaiRevisi : item.nilaiRevisi, noBudgeting : item.noBudgeting,
-                            idBudgeting : item.idBudgeting});
-
-                    });
-                    function hierarhySort(hashArr, key, result) {
-                        if (hashArr[key] == undefined){
-                            //level--;
-                            return;
-                        }else{
-                            var arr = [] ;
-                            arr  = hashArr[key];
-                        }
-                        for (var i=0; i<arr.length; i++) {
-                            result.push(arr[i]);
-                            hierarhySort(hashArr, arr[i]._id, result);
-                        }
-                        return result;
-                    }
-                    var hashArr = {};
-                    for (var i=0; i<data2.length; i++) {
-                        if (hashArr[data2[i].parent] == undefined) {
-                            hashArr[data2[i].parent] = [];
-                        }
-                        hashArr[data2[i].parent].push(data2[i]);
-                    }
-
-                    console.log("loop")
-                    var strList = "";
-                    for(i = 0 ; i < data2.length ; i++){
-                        if(data2[i].parent == "-"){
-                            strList += '<tr style="font-size: 12px;" class=" treegrid-' + data2[i]._id+ '">' +
-                                '<td >' + data2[i].coa + '</td>' +
-                                '<td >' + data2[i].nama + '</td>' +
-                                "<td align='right'>"+formatRupiah(data2[i].nilaiDraf)+"</td>"+
-                                "<td align='right'>"+formatRupiah(data2[i].nilaiFinal)+"</td>"+
-                                "<td align='right'>"+formatRupiah(data2[i].nilaiRevisi)+"</td>"+
-                                "<td>"+data2[i].noBudgeting+"</td>";
-                                "<td align='center'>"+actionView(data2[i].idBudgeting, data2[i].level)+"</td>"+
-                                "</tr>";
-                        } else {
-                            strList += '<tr style="font-size: 12px" class=" treegrid-' + data2[i]._id + ' treegrid-parent-' + data2[i].parent + '">' +
-                                + '<td style="border: 2px solid black;">' +
-                                '<td >' + data2[i].coa + '</td>' +
-                                '<td >' + data2[i].nama + '</td>' +
-                                "<td align='right'>"+formatRupiah(data2[i].nilaiDraf)+"</td>"+
-                                "<td align='right'>"+formatRupiah(data2[i].nilaiFinal)+"</td>"+
-                                "<td align='right'>"+formatRupiah(data2[i].nilaiRevisi)+"</td>"+
-                                "<td>"+data2[i].noBudgeting+"</td>"+
-                                "<td align='center'>"+actionView(data2[i].idBudgeting, data2[i].level)+"</td>"+
-                                "</tr>";
-                        }
-                    }
+                    data = [];
+                    var total = 0;
+                    $.each(response.list, function (i, item) {
+                        data.push({label : item.tipeBudgeting, value : item.nilaiTotal});
+                        total += item.nilaiTotal;
+                    })
+                    donutChart(data, unit, total);
                 }
-//                $('.tree').append(strList);
-                $(".tree .ceknull:contains('null')").html("-");
-                $("#body-budgeting").html(strList);
-                $('.tree').treegrid({
-                    expanderExpandedClass: 'glyphicon glyphicon-minus',
-                    expanderCollapsedClass: 'glyphicon glyphicon-plus'
-                });
             });
         } else {
-            $("#alert-success").hide();
-            $("#body-budgeting").html("");
-            alert("Pilih Unit Terlebih Dahulu");
+            dwr.engine.setAsync(false);
+            BranchAction.getDataBranch(function (list) {
+                var str = "";
+                $.each(list, function (i, br) {
+                    str += '<div class="col-md-3">' +
+                        '<h3 align="center">'+br.branchName+'</h3>\n' +
+                        '<div id="donut-'+br.branchId+'"></div>\n' +
+                        '<div id="legend-'+br.branchId+'" class="donut-legend"></div>' +
+                        '</div>';
+                });
+
+                $("#list-donut").html(str);
+            });
+
+            BranchAction.getDataBranch(function (list) {
+
+                $.each(list, function (i, br) {
+                    BudgetingAction.getListLabaRugi(tahun, br.branchId, status, function (response) {
+                        $("#alert-success").hide();
+                        if (response.status == "error"){
+                            $("#alert-error").show().fadeOut(5000);
+                            $("#error-msg").text(response.msg);
+                        } else {
+                            data = [];
+                            var total = 0;
+                            $.each(response.list, function (i, item) {
+                                data.push({label : item.tipeBudgeting, value : item.nilaiTotal});
+                                total += item.nilaiTotal;
+                            })
+                            donutChart(data, br.branchId, total);
+                        }
+                    });
+                });
+            });
         }
+
     }
 
     function actionView(var1, var2) {
