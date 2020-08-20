@@ -156,7 +156,7 @@ public class BgPendapatanAction {
 
         Budgeting budgeting = getBudgeting();
         Budgeting budgetingNew = new Budgeting();
-        budgetingNew.setTipeBudgeting("investasi");
+        budgetingNew.setTipeBudgeting("pendapatan");
         if (budgeting != null){
             budgetingNew.setTahun(budgeting.getTahun());
             budgetingNew.setBranchId(budgeting.getBranchId());
@@ -518,7 +518,8 @@ public class BgPendapatanAction {
         return response;
     }
 
-    public CrudResponse saveAdd(String unit, String tahun){
+    public CrudResponse saveAdd(String unit, String tahun, String tipe){
+        logger.info("[BgPendapatanAction.saveAdd] START >>>");
 
         String userLogin = CommonUtil.userLogin();
         Timestamp time = CommonUtil.getCurrentDateTimes();
@@ -530,10 +531,21 @@ public class BgPendapatanAction {
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
+        BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
 
         // insert to perhitungan budgeting;
+        PerhitunganBudgeting perhitunganBudgeting = new PerhitunganBudgeting();
+        perhitunganBudgeting.setCreatedDate(time);
+        perhitunganBudgeting.setCreatedWho(userLogin);
+        perhitunganBudgeting.setLastUpdate(time);
+        perhitunganBudgeting.setLastUpdateWho(userLogin);
+        perhitunganBudgeting.setFlag("Y");
+        perhitunganBudgeting.setAction("C");
+        perhitunganBudgeting.setTahun(tahun);
+        perhitunganBudgeting.setBranchId(unit);
+
         try {
-            budgetingPerhitunganBo.saveAddPerhitunganBudgeting(sessionPerhitungan);
+            budgetingPerhitunganBo.saveAddPerhitunganBudgeting(sessionPerhitungan, perhitunganBudgeting);
             response.setStatus("success");
         } catch (GeneralBOException e){
             logger.info("[BgPendapatanAction.saveAdd] ERROR ", e);
@@ -547,22 +559,36 @@ public class BgPendapatanAction {
         Budgeting budgeting = new Budgeting();
         budgeting.setBranchId(unit);
         budgeting.setTahun(tahun);
+        budgeting.setStatus("ADD_DRAFT");
+        budgeting.setTipe(tipe);
         budgeting.setFlag("Y");
         budgeting.setAction("C");
         budgeting.setCreatedDate(time);
         budgeting.setCreatedWho(userLogin);
         budgeting.setLastUpdate(time);
         budgeting.setLastUpdateWho(userLogin);
-        BudgetingAction budgetingAction = new BudgetingAction();
 
+        try {
+            budgetingBo.saveAddBudgeting(budgetingList, new ArrayList<>(), new ArrayList<>(), "DRAFT", budgeting);
+            response.setStatus("success");
+        } catch (GeneralBOException e){
+            logger.info("[BgPendapatanAction.saveAdd] ERROR ", e);
+            response.setStatus("error");
+            response.setMsg("[BgPendapatanAction.saveAdd] ERROR " + e);
+        }
+        logger.info("[BgPendapatanAction.saveAdd] END <<<");
         return response;
     }
 
     private List<Budgeting> convertParamToListBudgeting(List<ParameterBudgeting> listParam, String tahun, String unit){
+        BudgetingAction budgetingAction = new BudgetingAction();
         List<Budgeting> budgetingList = new ArrayList<>();
         if (listParam != null && listParam.size() > 0){
             for (ParameterBudgeting param : listParam){
+                // membuat object budgeting baru;
+                // convert null to 0 masing - masing nilai
                 Budgeting budgeting = new Budgeting();
+                budgeting = budgetingAction.kosongkanNilaiBudgeting(budgeting);
                 if (budgetingList.size() == 0){
                     budgeting.setKodeRekening(getKodeRekeningById(param.getRekeningId()).getKodeRekening());
                     budgeting.setTahun(tahun);

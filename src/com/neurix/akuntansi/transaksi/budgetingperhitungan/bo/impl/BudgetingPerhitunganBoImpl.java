@@ -131,6 +131,7 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
                 parameterBudgeting.setCreatedWho(paramEntity.getCreatedWho());
                 parameterBudgeting.setLastUpdate(paramEntity.getLastUpdate());
                 parameterBudgeting.setLastUpdateWho(paramEntity.getLastUpdateWho());
+                parameterBudgeting.setNilaiTotalBudgeting(new BigDecimal(0));
 
                 PerhitunganBudgeting perhitunganBudgeting = new PerhitunganBudgeting();
                 perhitunganBudgeting.setIdParameterBudgeting(paramEntity.getId());
@@ -184,9 +185,30 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
     }
 
     @Override
-    public void saveAddPerhitunganBudgeting(List<ItAkunPerhitunganBudgetingEntity> beans) throws GeneralBOException {
+    public void saveAddPerhitunganBudgeting(List<ItAkunPerhitunganBudgetingEntity> beans, PerhitunganBudgeting bean) throws GeneralBOException {
+        logger.info("[BudgetingPerhitunganBoImpl.saveAddPerhitunganBudgeting] START >>> ");
+        if (beans.size() > 0){
+            int i = 1;
+            for (ItAkunPerhitunganBudgetingEntity perhitunganEntity : beans){
+                perhitunganEntity.setId(getNextIdPerhitungan(bean.getBranchId(), bean.getIdParameterBudgeting(), bean.getTahun()));
+                perhitunganEntity.setCreatedDate(bean.getCreatedDate());
+                perhitunganEntity.setCreatedWho(bean.getCreatedWho());
+                perhitunganEntity.setLastUpdate(bean.getLastUpdate());
+                perhitunganEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                perhitunganEntity.setFlag(bean.getFlag());
+                perhitunganEntity.setAction(bean.getAction());
+                perhitunganEntity.setTahun(bean.getTahun());
+                perhitunganEntity.setBranchId(bean.getBranchId());
+                perhitunganEntity.setUrutan(i++);
 
-
-
+                try {
+                    perhitunganBudgetingDao.addAndSave(perhitunganEntity);
+                } catch (HibernateException e){
+                    logger.error("[BudgetingPerhitunganBoImpl.saveAddPerhitunganBudgeting] ERROR. ", e);
+                    throw new GeneralBOException("[BudgetingPerhitunganBoImpl.saveAddPerhitunganBudgeting] ERROR. ", e);
+                }
+            }
+        }
+        logger.info("[BudgetingPerhitunganBoImpl.saveAddPerhitunganBudgeting] END <<< ");
     }
 }

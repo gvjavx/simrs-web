@@ -84,6 +84,15 @@ public class Budgeting {
     private String tipeBudgeting;
     private List<String> rekeningIdList;
     private String flagKp;
+    private String flagNilaiTotal = "N";
+
+    public String getFlagNilaiTotal() {
+        return flagNilaiTotal;
+    }
+
+    public void setFlagNilaiTotal(String flagNilaiTotal) {
+        this.flagNilaiTotal = flagNilaiTotal;
+    }
 
     public String getFlagKp() {
         return flagKp;

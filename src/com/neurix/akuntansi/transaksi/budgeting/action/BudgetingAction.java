@@ -1343,7 +1343,7 @@ public class BudgetingAction {
     }
 
     // untuk mengosongkan nilai budgeting, digunakan untuk parent
-    private Budgeting kosongkanNilaiBudgeting(Budgeting budgeting){
+    public Budgeting kosongkanNilaiBudgeting(Budgeting budgeting){
         BigDecimal nol = new BigDecimal(0);
         budgeting.setNilaiTotal(nol);
         budgeting.setSemester1(nol);

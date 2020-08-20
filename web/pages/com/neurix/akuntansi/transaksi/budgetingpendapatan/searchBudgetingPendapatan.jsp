@@ -33,7 +33,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/TutuPeriodAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/BudgetingAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/KodeRekeningAction.js"/>'></script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/BgInvestasiAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/BgPendapatanAction.js"/>'></script>
     <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.bootstrap3.js"/>"></script>
     <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.js"/>"></script>
     <script src="<s:url value="/pages/plugins/tree/lodash.js"/>"></script>
@@ -722,7 +722,7 @@
 
 //            var strJson = JSON.stringify(arr);
             dwr.engine.setAsync(true);
-            BgInvestasiAction.getSearchListBudgeting(tahun, unit, function (response) {
+            BgPendapatanAction.getSearchListBudgeting(tahun, unit, function (response) {
                 dwr.engine.setAsync(false);
                 $("#alert-success").hide();
                 if (response.status == "error"){
@@ -936,44 +936,6 @@
 
     }
 
-    function saveTutup(unit, tahun, bulan) {
-
-        dwr.engine.setAsync(true);
-
-        $("#btn-tutup-"+unit).hide();
-        $("#btn-lock-"+unit).hide();
-        $("#load-save-"+unit).text("Processing Tutup Period ... ");
-
-        TutuPeriodAction.saveTutupPeriod(unit, tahun, bulan, function(response){
-            dwr.engine.setAsync(false);
-            if (response.status == "error"){
-               searchPeriod();
-               $("#alert-error").show().fadeOut(5000);
-               $("#error-msg").text(response.msg);
-           } else {
-               searchPeriod();
-               $("#btn-tutup-"+unit).show();
-               $("#btn-lock-"+unit).show();
-               $("#alert-error").hide();
-               $("#alert-success").show().fadeOut(5000);
-
-           }
-       });
-    }
-
-    function saveLock(unit, tahun, bulan){
-        TutuPeriodAction.saveLockPeriod(unit, tahun, bulan, function(response){
-            if (response.status == "error"){
-                $("#alert-error").show().fadeOut(5000);
-                $("#error-msg").text(response.msg);
-            } else {
-                $("#alert-error").hide();
-                $("#alert-success").show().fadeOut(5000);
-
-                searchPeriod();
-            }
-        });
-    }
 
     function setNullToString(params){
         if (params == null){

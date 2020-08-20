@@ -80,7 +80,14 @@ public class BudgetingBoImpl implements BudgetingBo {
                 budgeting.setBranchId(budgetingEntity.getBranchId());
                 budgeting.setRekeningId(budgetingEntity.getRekeningId());
                 budgeting.setStatus(budgetingEntity.getStatus());
-                budgeting.setNilaiTotal(nullEscape(budgetingEntity.getNilaiTotal()));
+
+                boolean withNilaiTotal = !"APPROVE_DRAFT".equalsIgnoreCase(budgetingEntity.getStatus()) && !"ADJUST_DRAFT".equalsIgnoreCase(budgetingEntity.getStatus());
+                if (withNilaiTotal){
+                    budgeting.setNilaiTotal(nullEscape(budgetingEntity.getNilaiTotal()));
+                } else {
+                    budgeting.setFlagNilaiTotal("Y");
+                    budgeting.setNilaiTotal(new BigDecimal(0));
+                }
                 budgeting.setNilaiAwal(nullEscape(budgetingEntity.getNilaiTotal()));
                 budgeting.setTipe(budgetingEntity.getTipe());
                 budgeting.setSemester1(nullEscape(budgetingEntity.getSemester1()));

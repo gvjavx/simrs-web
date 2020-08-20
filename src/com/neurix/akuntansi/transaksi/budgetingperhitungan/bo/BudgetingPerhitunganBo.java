@@ -19,6 +19,6 @@ public interface BudgetingPerhitunganBo {
     public List<PerhitunganBudgeting> getListPendapatanObat(String branchId, String bulan, String tahun, String tipe) throws GeneralBOException;
     public List<ParameterBudgeting> getSearchListParameterBudgeting(ParameterBudgeting bean) throws GeneralBOException;
     public BigDecimal hitungNilaiBudgeting(List<ItAkunPerhitunganBudgetingEntity> beans) throws GeneralBOException;
-    public void saveAddPerhitunganBudgeting(List<ItAkunPerhitunganBudgetingEntity> beans) throws GeneralBOException;
+    public void saveAddPerhitunganBudgeting(List<ItAkunPerhitunganBudgetingEntity> beans, PerhitunganBudgeting bean) throws GeneralBOException;
 
 }

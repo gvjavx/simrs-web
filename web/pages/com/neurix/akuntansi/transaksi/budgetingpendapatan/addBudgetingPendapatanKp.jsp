@@ -187,6 +187,18 @@
                                 </table>
                             </div>
                         </div>
+
+                        <div class="row">
+                            <label class="control-label col-md-1 col-md-offset-4">Tipe Budgeting</label>
+                            <div class="col-sm-2">
+                                <select class="form-control" id="sel-tipe">
+                                    <option value="tahunan">Tahunan</option>
+                                    <option value="bulanan">Bulanan</option>
+                                    <option value="semester">Semester</option>
+                                    <option value="quartal">Quartal</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-group" style="margin-top: 10px">
                             <div class="col-md-4 col-md-offset-5">
                                 <button class="btn btn-warning" onclick="initForm()"><i class="fa fa-arrow-left"></i> Back</button>
@@ -855,16 +867,27 @@
         var unit = $("#sel-unit").val();
         var tipe = $("#sel-tipe").val();
 
-        BudgetingAction.checkTransaksiBudgeting(unit, tahun, function(response){
 
+        BudgetingAction.checkTransaksiBudgeting(unit, tahun, function(response){
             if (response.branchId == null && response.tahun == null){
 
                 BudgetingAction.checkNilaiDasarByTahun(tahun, function(flag){
 
                     if (flag == "Y"){
-                        var form = { "budgeting.tahun":tahun, "budgeting.branchId":unit, "budgeting.tipe":tipe };
-                        var host = firstpath()+"/bgpendapatan/add_bgpendapatan.action?status=add&tipe=detail&trans=ADD_DRAFT";
-                        post(host, form);
+                        showDialog('loading');
+                        dwr.engine.setAsync(true);
+                        BgPendapatanAction.saveAdd(unit, tahun, tipe, function (res) {
+                            dwr.engine.setAsync(false);
+                            if (res.status == "success"){
+                               showDialog('success');
+                               $('#ok_con').on('click', function () {
+                                   refreshAdd();
+                               });
+                           } else {
+                               showDialog('error');
+                               $("#msg_fin_error_waiting").text(res.msg);
+                           }
+                        });
                     } else {
                         alert("Belum Ada Nilai Dasar untuk Tahun "+ tahun);
                     }
