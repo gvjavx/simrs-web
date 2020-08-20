@@ -15,7 +15,7 @@
                         <p id="msg_ina_asuhan"></p>
                     </div>
                     <div class="btn-group">
-                        <button type="button" onclick="showModalAsesmenRawatInap('asuhan_keperawatan')" class="btn btn-success"><i class="fa fa-plus"></i> Asuhan Keperawatan
+                        <button type="button" onclick="showModalAsesmenRawatInap('asuhan_keperawatan_ina')" class="btn btn-success"><i class="fa fa-plus"></i> Asuhan Keperawatan
                         </button>
                     </div>
                 </div>
@@ -45,7 +45,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-ina-asuhan_keperawatan">
+<div class="modal fade" id="modal-ina-asuhan_keperawatan_ina">
     <div class="modal-dialog" style="width: 80%">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
@@ -56,9 +56,9 @@
             </div>
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none"
-                     id="warning_ina_asuhan_keperawatan">
+                     id="warning_ina_asuhan_keperawatan_ina">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    <p id="msg_ina_asuhan_keperawatan"></p>
+                    <p id="msg_ina_asuhan_keperawatan_ina"></p>
                 </div>
                 <div class="box-body">
                     <div class="row">
@@ -117,11 +117,11 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_ina_asuhan_keperawatan" class="btn btn-success pull-right"
-                        onclick="saveAsuhanKeperawatan('asuhan_keperawatan','asuhan')"><i class="fa fa-check"></i>
+                <button id="save_ina_asuhan_keperawatan_ina" class="btn btn-success pull-right"
+                        onclick="saveAsuhanKeperawatan('asuhan_keperawatan_ina','asuhan')"><i class="fa fa-check"></i>
                     Save
                 </button>
-                <button id="load_ina_asuhan_keperawatan" style="display: none; cursor: no-drop" type="button"
+                <button id="load_ina_asuhan_keperawatan_ina" style="display: none; cursor: no-drop" type="button"
                         class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>

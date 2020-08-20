@@ -97,6 +97,7 @@ apply the skin class to the body tag so the changes take effect.
 <script type="text/javascript" src="<s:url value="/pages/bootstraplte/js/jquery-ui.js"/>"></script>
 <script src="<s:url value="/pages/plugins/morris/morris.min.js"/>"></script>
 <script src="<s:url value="/pages/plugins/morris/raphael.min.js"/>"></script>
+<script src="<s:url value="/pages/dist/js/spinner.js"/>"></script>
 <%--<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>--%>
 <%--<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>--%>
 <%--<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>--%>
@@ -377,6 +378,8 @@ apply the skin class to the body tag so the changes take effect.
 
 </style>
 <script>
+
+    var contextPathHeader = '<%= request.getContextPath() %>';
 
     $(window).load(function() {
         // Animate loader off screen

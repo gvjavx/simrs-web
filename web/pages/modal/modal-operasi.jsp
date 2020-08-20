@@ -591,6 +591,7 @@
                                 <label style="margin-left: 8px">TTD Perawat Pengirim</label>
                                 <canvas class="paint-canvas-ttd" id="ttd_pengirim" width="220"
                                         onmouseover="paintTtd('ttd_pengirim')"></canvas>
+                                <input class="form-control" id="nama_terang_pengirim" placeholder="Nama Terang">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ttd_pengirim')"><i
                                         class="fa fa-trash"></i> Clear
@@ -600,6 +601,7 @@
                                 <label style="margin-left: 8px">TTD Perawat Operasi</label>
                                 <canvas class="paint-canvas-ttd" id="ttd_perawat" width="220"
                                         onmouseover="paintTtd('ttd_perawat')"></canvas>
+                                <input class="form-control" id="nama_terang_perawat" placeholder="Nama Terang">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ttd_perawat')"><i
                                         class="fa fa-trash"></i> Clear
@@ -714,7 +716,7 @@
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg_op_ttd-penandaan"></p>
                 </div>
-                <div class="row">
+                <div class="row" style="display: none">
                     <div class="col-md-12">
                         <div class="col-md-7">
                             <div class="form-group" style="padding-top: 10px; padding-bottom: 10px">
@@ -736,12 +738,15 @@
                         <div class="col-md-6">
                             <b style="margin-left: 8px">Tanda Tangan Pasien</b>
                             <canvas onmouseover="paintTtd('op_ttd_pasien')" class="paint-canvas-ttd" id="op_ttd_pasien" width="380" height="300"></canvas>
+                            <input class="form-control" id="nama_terang_pasien" placeholder="Nama Terang">
                             <button style="margin-left: 8px" type="button" class="btn btn-danger" onclick="removePaint('op_ttd_pasien')"><i class="fa fa-trash"></i> Clear
                             </button>
                         </div>
                         <div class="col-md-6">
                             <b style="margin-left: 8px">Tanda Tangan Dokter</b>
                             <canvas onmouseover="paintTtd('op_ttd_dokter')" class="paint-canvas-ttd" id="op_ttd_dokter" width="380" height="300"></canvas>
+                            <input class="form-control" id="nama_terang_dokter" placeholder="Nama Terang">
+                            <input style="margin-top: 3px" class="form-control" id="sip_dokter" placeholder="SIP">
                             <button style="margin-left: 8px" type="button" class="btn btn-danger" onclick="removePaint('op_ttd_dokter')"><i class="fa fa-trash"></i> Clear
                             </button>
                         </div>
@@ -1438,6 +1443,8 @@
                                 <label style="margin-left: 8px">TTD Dokter Spesialis Anestesi</label>
                                 <canvas class="paint-canvas-ttd" id="ttd_spesialis" width="220"
                                         onmouseover="paintTtd('ttd_spesialis')"></canvas>
+                                <input class="form-control" id="nama_terang_spesialis" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control" id="sip_spesialis" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ttd_spesialis')"><i
                                         class="fa fa-trash"></i> Clear
@@ -2410,9 +2417,118 @@
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-4">Urutan Operasi</label>
+                            <label class="col-md-12"><b>Urutan Operasi</b></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4 label_op">Persiapan Operasi</label>
                             <div class="col-md-8">
-                                <textarea rows="10" class="form-control" id="lap19"></textarea>
+                                <textarea class="form-control urutan_op"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4 label_op">Persiapan Operasi</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control urutan_op"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4 label_op">Persiapan Operasi</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control urutan_op"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4 label_op">Persiapan Operasi</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control urutan_op"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4 label_op">Persiapan Operasi</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control urutan_op"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4 label_op">Persiapan Operasi</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control urutan_op"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4 label_op">Persiapan Operasi</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control urutan_op"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4 label_op">Persiapan Operasi</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control urutan_op"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4 label_op">Persiapan Operasi</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control urutan_op"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4 label_op">Persiapan Operasi</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control urutan_op"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4 label_op">Persiapan Operasi</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control urutan_op"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4 label_op">Persiapan Operasi</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control urutan_op"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4 label_op">Persiapan Operasi</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control urutan_op"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4 label_op">Persiapan Operasi</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control urutan_op"></textarea>
                             </div>
                         </div>
                     </div>
@@ -2423,6 +2539,8 @@
                                 <label style="margin-left: 8px">TTD Dokter Operator</label>
                                 <canvas class="paint-canvas-ttd" id="ttd_lap_dokter" width="220"
                                         onmouseover="paintTtd('ttd_lap_dokter')"></canvas>
+                                <input class="form-control" id="nama_terang_sps" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control" id="sip_sps" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ttd_lap_dokter')"><i
                                         class="fa fa-trash"></i> Clear

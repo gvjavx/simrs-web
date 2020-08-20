@@ -79,6 +79,7 @@ function saveCPPT(jenis, ket, tipe) {
                     $('#warning_'+tipe+'_' + ket).show().fadeOut(5000);
                     $('#msg_'+tipe+'_' + ket).text("Berhasil menambahkan data ....");
                     $('#modal-'+tipe+'-' + jenis).scrollTop(0);
+
                 } else {
                     $('#save_'+tipe+'_' + jenis).show();
                     $('#load_'+tipe+'_' + jenis).hide();

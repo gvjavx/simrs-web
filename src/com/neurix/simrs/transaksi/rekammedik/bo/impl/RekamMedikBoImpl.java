@@ -50,7 +50,8 @@ public class RekamMedikBoImpl implements RekamMedikBo {
     @Override
     public CrudResponse saveAdd(StatusPengisianRekamMedis bean) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
-        if (bean.getIdDetailCheckup() != null && bean.getIdRekamMedisPasien() != null) {
+        if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup()) &&
+            bean.getIdRekamMedisPasien() != null && !"".equalsIgnoreCase(bean.getIdRekamMedisPasien())) {
 
             List<ItSimrsStatusPengisianRekamMedisEntity> entityList = new ArrayList<>();
             Map hsCriteria = new HashMap();

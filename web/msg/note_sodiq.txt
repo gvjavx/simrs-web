@@ -308,6 +308,24 @@ ADD COLUMN flag_cover VARCHAR(1);
 /verifikasicover/initVerif_verifikasicover.action
 /verifikasicover/searchVerifCover_verifikasicover.action
 
+-- 19-08-2020
+ALTER TABLE it_simrs_asesmen_keperawatan_rawat_inap
+ADD COLUMN nama_terang VARCHAR(100),
+ADD COLUMN sip VARCHAR(100);
+
+-- 20-08-2020
+ALTER TABLE it_simrs_rencana_asuhan_keperawatan
+ADD COLUMN nama_terang character varying(100);
+
+ALTER TABLE it_simrs_catatan_pemberian_obat
+ADD COLUMN nama_terang_dokter character varying(100),
+ADD COLUMN sip_dokter character varying(100),
+ADD COLUMN nama_terang_perawat character varying(100);
+
+ALTER TABLE it_simrs_asesmen_operasi
+ADD COLUMN nama_terang character varying(100),
+ADD COLUMN sip character varying(100);
+
 
 
 

@@ -2515,7 +2515,6 @@ function getListRekamMedis(tipePelayanan, jenis, id) {
     }
     CheckupAction.getListRekammedisPasien(tipePelayanan, jenisRm, id, function (res) {
         if (res.length > 0) {
-            console.log(res);
             $.each(res, function (i, item) {
                 var cek = "";
                 var tgl = "";
@@ -2760,7 +2759,7 @@ function savePemeriksaanPasien() {
                 if (res.status == "success") {
                     $('#waiting_dialog').dialog('close');
                     $('#info_dialog').dialog('open');
-                    $('#close_pos').val(13);
+                    $('#close_pos').val(6);
                 } else {
                     $('#waiting_dialog').dialog('close');
                     $('#error_dialog').dialog('open');

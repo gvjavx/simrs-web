@@ -582,6 +582,8 @@ function toContent() {
         desti = '#pos_icd9';
     }else if (back == 11){
         desti = '#pos_selesai';
+    }else if (back == 12){
+        window.location.reload(true);
     }
 
     $('html, body').animate({
@@ -750,7 +752,7 @@ function listDokter() {
     var dokter = "";
     CheckupAction.getListDokterByIdDetailCheckup(idDetailCheckup, katRuang, function (response) {
         data = response;
-        if (data != null) {
+        if (data.length > 0) {
             $.each(data, function (i, item) {
                 table += "<tr>" +
                     "<td>" + item.idDokter + '<input value="'+item.idDokter+'" type="hidden" id="dokter'+i+'">'+ "</td>" +
@@ -2279,7 +2281,6 @@ function setStokObatApotek(select, tipe) {
             $('#resep_jenis_satuan').val('biji').trigger('change');
 
             if (tipe != "serupa"){
-                console.log("showObatSerupaBiji = " + total);
                 if (parseInt(total) == 0){
                     $("#obat-serupa").show();
                     $("#flag-obat-serupa").val("Y");
@@ -2803,7 +2804,7 @@ function savePemeriksaanPasien() {
                 if (res.status == "success") {
                     $('#waiting_dialog').dialog('close');
                     $('#info_dialog').dialog('open');
-                    $('#close_pos').val(11);
+                    $('#close_pos').val(8);
                 } else {
                     $('#waiting_dialog').dialog('close');
                     $('#error_dialog').dialog('open');
@@ -2823,4 +2824,66 @@ function resetComboObat(){
     $("#obat-serupa").hide();
     $("#flag-obat-serupa").val("N");
     $("#resep_stok_biji_serupa").val("");
+}
+
+function getListRekamMedis(tipePelayanan, jenis, id) {
+    var li = "";
+    CheckupAction.getListRekammedisPasien(tipePelayanan, jenis, id, function (res) {
+        if (res.length > 0) {
+            $.each(res, function (i, item) {
+                var cek = "";
+                var tgl = "";
+                var icons = '<i class="fa fa-file-o"></i>';
+                var icons2 = '<i class="fa fa-print"></i>';
+                var tol = "";
+                var labelTerisi = "";
+                var constan = 0;
+                var terIsi = 0;
+                var labelPrint = "";
+                var terIsiPrint = "";
+
+                if(item.jumlahKategori != null){
+                    constan = item.jumlahKategori;
+                }
+                if(item.terisi != null && item.terisi !=''){
+                    terIsi = item.terisi;
+                    terIsiPrint = item.terisi;
+                }
+
+                if (constan == terIsi || parseInt(terIsi) > parseInt(constan)) {
+                    var conver = "";
+                    if (item.createdDate != null) {
+                        conver = converterDate(new Date(item.createdDate));
+                        tgl = '<label class="label label-success">' + conver + '</label>';
+                        tol = 'title="Mengisi tanggal ' + conver + '"';
+                    }
+                    icons = '<i class="fa fa-check" style="color: #449d44"></i>';
+                    icons2 = '<i class="fa fa-check" style="color: #449d44"></i>';
+                }
+
+                labelTerisi = '<span style="color: #367fa9; font-weight: bold">'+constan+'/'+terIsi+'</span>';
+                labelPrint = '<span style="color: #367fa9; font-weight: bold">'+terIsiPrint+'</span>';
+
+                if (item.keterangan == 'form') {
+                    li += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')"><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '">' + icons + item.namaRm + ' ' +labelTerisi +'</a></li>'
+                } else if (item.keterangan == "surat") {
+                    li += '<li><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\',\'' + item.namaRm + '\')' + '">' + icons2 + item.namaRm + ' '+ labelPrint + '</a></li>'
+                }
+            });
+            $('#asesmen_ri').html(li);
+        }
+    });
+}
+
+function printPernyataan(kode, idRm, flag, namaRm) {
+    $('#print_form').text(namaRm);
+    $('#save_con_rm').attr('onclick','printPernyataanRM(\''+kode+'\', \''+idRm+'\')');
+    $('#modal-confirm-rm').modal('show');
+}
+
+function printPernyataanRM(kode, idRM){
+    window.open(contextPath + '/rekammedik/printSuratPernyataan_rekammedik?id=' + idDetailCheckup + '&tipe=' + kode + '&ids=' + idRM, '_blank');
+    $('#modal-confirm-rm').modal('hide');
+    $('#info_dialog').dialog('open');
+    $('#close_pos').val(12);
 }

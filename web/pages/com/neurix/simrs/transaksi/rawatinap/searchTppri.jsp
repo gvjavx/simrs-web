@@ -22,11 +22,11 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/radio_checkbox.css"/>">
     <script type='text/javascript'>
 
         $( document ).ready(function() {
             $('#tppri').addClass('active');
-
         });
 
     </script>
@@ -221,7 +221,7 @@
                                     <td><s:property value="jenisPeriksaPasien"/></td>
                                     <td><s:property value="keteranganSelesai"/></td>
                                     <td align="center">
-                                        <img id="t_<s:property value="noCheckup"/>" onclick="detail('<s:property value="noCheckup"/>','<s:property value="idDetailCheckup"/>','<s:property value="tindakLanjut"/>','<s:property value="keteranganSelesai"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>" style="cursor: pointer;">
+                                        <img id="t_<s:property value="idDetailCheckup"/>" onclick="detail('<s:property value="noCheckup"/>','<s:property value="idDetailCheckup"/>','<s:property value="tindakLanjut"/>','<s:property value="keteranganSelesai"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>" style="cursor: pointer;">
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -282,6 +282,22 @@
                                 <tr style="display: none" id="kelas_bpjs">
                                     <td><b>Kelas Kamar BPJS</b></td>
                                     <td><span id="id_kelas"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Rekam Medis</td>
+                                    <td>
+                                        <div class="btn-group dropdown">
+                                            <button onclick="getListRekamMedis('tppri', '', $('#h_id_detail_pasien').val())" type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Asesmen
+                                            </button>
+                                            <button onclick="getListRekamMedis('tppri', '', $('#h_id_detail_pasien').val())" type="button" class="btn btn-primary dropdown-toggle"
+                                                    data-toggle="dropdown" style="height: 34px">
+                                                <span class="caret"></span>
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu" id="asesmen_rj">
+                                            </ul>
+                                        </div>
+                                    </td>
                                 </tr>
                             </table>
                         </div>
@@ -437,104 +453,139 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-confirm-rm">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h5 class="text-center">Do you want print this?</h5>
+                <h5 class="text-center" id="print_form"></h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
+                </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con_rm"><i class="fa fa-arrow-right"></i> Yes            </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal-temp"></div>
+<script type='text/javascript' src='<s:url value="/dwr/interface/RingkasanPasienAction.js"/>'></script>
+<script type="text/javascript" src="<s:url value="/pages/dist/js/ringkasanpasien.js"/>"></script>
+
 <script type='text/javascript'>
+
+    var isReadRM = false;
+    var contextPath = '<%= request.getContextPath() %>';
+    var tempidRm = "";
+
     function convertRp(id, val) {
         $('#'+id).val(formatRupiahAtas2(val));
     }
     function detail(noCheckup, idDetailCheckup, tindakLanjut, keteranganSelesai) {
-        CheckupAction.listDataPasien(idDetailCheckup, function (res) {
-            if(res.idPasien != null){
-                $('#kelas_kamar').html('');
-                $('#kamar').html('');
-                getDokterDpjp('dokter_dpjp_1', null);
-                if(res.idJenisPeriksaPasien == "umum"){
-                    $('#form-metode_pembayaran').show();
-                    $('#form-uang_muka').show();
-                }else{
-                    $('#form-metode_pembayaran').hide();
-                    $('#form-uang_muka').hide();
-                }
+        startSpinner('t_', idDetailCheckup);
+        dwr.engine.setAsync(true);
+        CheckupAction.listDataPasien(idDetailCheckup,
+            {callback:function (res) {
+                    if (res.idPasien != null) {
+                        stopSpinner('t_', idDetailCheckup);
+                        $('#kelas_kamar').html('');
+                        $('#kamar').html('');
+                        getDokterDpjp('dokter_dpjp_1', null);
+                        if (res.idJenisPeriksaPasien == "umum") {
+                            $('#form-metode_pembayaran').show();
+                            $('#form-uang_muka').show();
+                        } else {
+                            $('#form-metode_pembayaran').hide();
+                            $('#form-uang_muka').hide();
+                        }
 
-                if(tindakLanjut == "rawat_inap"){
-                    getKelasKamar('rawat_inap');
-                    $('#kelas_kamar').attr('onchange', 'getKamar(this.value, \'rawat_inap\')');
-                    $('#label_kamar').text('Kamar');
-                    $('#form-kelas_kamar').show();
-                    $('#form-kamar').show();
-                    $('#h_kategori').val('rawat_inap');
-                }else if(tindakLanjut == "rawat_intensif"){
-                    getKamar(null, 'rawat_intensif');
-                    getKelasKamar('rawat_intensif');
-                    $('#label_kamar').text('Kamar Intensif');
-                    $('#form-kamar').show();
-                    $('#form-kelas_kamar').show();
-                    $('#h_kategori').val('rawat_intensif');
-                }else if(tindakLanjut == "rawat_isolasi"){
-                    getKamar(null, 'rawat_isolasi');
-                    getKelasKamar('rawat_isolasi');
-                    $('#label_kamar').text('Kamar Isolasi');
-                    $('#form-kamar').show();
-                    $('#form-kelas_kamar').show();
-                    $('#h_kategori').val('rawat_isolasi');
-                }else if(tindakLanjut == "kamar_operasi"){
-                    getKamar(null, 'kamar_operasi');
-                    getKelasKamar('kamar_operasi');
-                    $('#label_kamar').text('Kamar Operasi');
-                    $('#form-kamar').show();
-                    $('#form-kelas_kamar').show();
-                    $('#h_kategori').val('kamar_operasi');
-                }else if(tindakLanjut == "ruang_bersalin"){
-                    getKamar(null, 'ruang_bersalin');
-                    getKelasKamar('ruang_bersalin');
-                    $('#label_kamar').text('Kamar Bersalin');
-                    $('#form-kamar').show();
-                    $('#form-kelas_kamar').show();
-                    $('#h_kategori').val('ruang_bersalin');
-                }else{
-                    $('#form-kamar').hide();
-                    $('#form-kelas_kamar').hide();
-                }
+                        if (tindakLanjut == "rawat_inap") {
+                            getKelasKamar('rawat_inap');
+                            $('#kelas_kamar').attr('onchange', 'getKamar(this.value, \'rawat_inap\')');
+                            $('#label_kamar').text('Kamar');
+                            $('#form-kelas_kamar').show();
+                            $('#form-kamar').show();
+                            $('#h_kategori').val('rawat_inap');
+                        } else if (tindakLanjut == "rawat_intensif") {
+                            getKamar(null, 'rawat_intensif');
+                            getKelasKamar('rawat_intensif');
+                            $('#label_kamar').text('Kamar Intensif');
+                            $('#form-kamar').show();
+                            $('#form-kelas_kamar').show();
+                            $('#h_kategori').val('rawat_intensif');
+                        } else if (tindakLanjut == "rawat_isolasi") {
+                            getKamar(null, 'rawat_isolasi');
+                            getKelasKamar('rawat_isolasi');
+                            $('#label_kamar').text('Kamar Isolasi');
+                            $('#form-kamar').show();
+                            $('#form-kelas_kamar').show();
+                            $('#h_kategori').val('rawat_isolasi');
+                        } else if (tindakLanjut == "kamar_operasi") {
+                            getKamar(null, 'kamar_operasi');
+                            getKelasKamar('kamar_operasi');
+                            $('#label_kamar').text('Kamar Operasi');
+                            $('#form-kamar').show();
+                            $('#form-kelas_kamar').show();
+                            $('#h_kategori').val('kamar_operasi');
+                        } else if (tindakLanjut == "ruang_bersalin") {
+                            getKamar(null, 'ruang_bersalin');
+                            getKelasKamar('ruang_bersalin');
+                            $('#label_kamar').text('Kamar Bersalin');
+                            $('#form-kamar').show();
+                            $('#form-kelas_kamar').show();
+                            $('#h_kategori').val('ruang_bersalin');
+                        } else {
+                            $('#form-kamar').hide();
+                            $('#form-kelas_kamar').hide();
+                        }
 
-                var jk = "";
-                var alamat = res.namaDesa +", "+res.namaKecamatan+", "+res.namaKota;
-                var diagnosa = res.diagnosa+"-"+res.namaDiagnosa;
-                if(res.jenisKelamin == "L"){
-                    jk = "Laki-Laki";
-                }else{
-                    jk = "Perempuan";
-                }
+                        var jk = "";
+                        var alamat = res.namaDesa + ", " + res.namaKecamatan + ", " + res.namaKota;
+                        var diagnosa = res.diagnosa + "-" + res.namaDiagnosa;
+                        if (res.jenisKelamin == "L") {
+                            jk = "Laki-Laki";
+                        } else {
+                            jk = "Perempuan";
+                        }
 
-                if(res.idJenisPeriksaPasien == "ptpn" || res.idJenisPeriksaPasien == "bpjs"){
-                    $('#form-id_kelas').show();
-                    $('#hak_kamar').text(res.kelasPasien);
-                }else{
-                    $('#form-id_kelas').hide();
-                }
+                        if (res.idJenisPeriksaPasien == "ptpn" || res.idJenisPeriksaPasien == "bpjs") {
+                            $('#form-id_kelas').show();
+                            $('#hak_kamar').text(res.kelasPasien);
+                        } else {
+                            $('#form-id_kelas').hide();
+                        }
 
-                $('#no_rm').html(res.idPasien);
-                $('#no_detail_checkup').html(noCheckup);
-                $('#nik').html(res.noKtp);
-                $('#nama').html(res.nama);
-                $('#jenis_kelamin').html(jk);
-                $('#tgl').html(res.tempatLahir+", "+converterDate(new Date(res.tglLahir)));
-                $('#alamat').html(alamat);
-                $('#poli').html(res.namaPelayanan);
-                $('#jenis_pasien').html(res.statusPeriksaName);
-                $('#diagnosa').html(diagnosa);
-                $('#h_id_pasien').val(res.idPasien);
-                $('#h_id_detail_pasien').val(res.idDetailCheckup);
-                $('#h_id_pelayanan').val(res.idPelayanan);
-                $('#h_jenis_pasien').val(res.idJenisPeriksaPasien);
-                $('#h_no_checkup').val(res.noCheckup);
-                $('#h_tindak_lanjut').val(tindakLanjut);
-                $('#tindak_lanjut').html(keteranganSelesai);
-                $('#save_fin').show();
-                $('#load_fin').hide();
-                $('#dokter_dpjp_1').removeAttr('disabled');
-                $('#kelas_kamar').removeAttr('disabled');
-                $('#msg_dpjp').hide();
-                $('#modal-detail').modal({show: true, backdrop: 'static'});
-            }
+                        $('#no_rm').html(res.idPasien);
+                        $('#no_detail_checkup').html(noCheckup);
+                        $('#nik').html(res.noKtp);
+                        $('#nama').html(res.nama);
+                        $('#jenis_kelamin').html(jk);
+                        $('#tgl').html(res.tempatLahir + ", " + converterDate(new Date(res.tglLahir)));
+                        $('#alamat').html(alamat);
+                        $('#poli').html(res.namaPelayanan);
+                        $('#jenis_pasien').html(res.statusPeriksaName);
+                        $('#diagnosa').html(diagnosa);
+                        $('#h_id_pasien').val(res.idPasien);
+                        $('#h_id_detail_pasien').val(res.idDetailCheckup);
+                        $('#h_id_pelayanan').val(res.idPelayanan);
+                        $('#h_jenis_pasien').val(res.idJenisPeriksaPasien);
+                        $('#h_no_checkup').val(res.noCheckup);
+                        $('#h_tindak_lanjut').val(tindakLanjut);
+                        $('#tindak_lanjut').html(keteranganSelesai);
+                        $('#save_fin').show();
+                        $('#load_fin').hide();
+                        $('#dokter_dpjp_1').removeAttr('disabled');
+                        $('#kelas_kamar').removeAttr('disabled');
+                        $('#msg_dpjp').hide();
+                        $('#modal-detail').modal({show: true, backdrop: 'static'});
+                    }
+                }
         });
     }
 
@@ -763,6 +814,82 @@
                     $('#msg_war').text(response.msg);
                 }
             }
+        });
+    }
+
+    function printPernyataan(kode, idRm, flag, namaRm) {
+        $('#print_form').text(namaRm);
+        $('#save_con_rm').attr('onclick','printPernyataanRM(\''+kode+'\', \''+idRm+'\')');
+        $('#modal-confirm-rm').modal('show');
+    }
+
+    function printPernyataanRM(kode, idRM){
+        var idDetailCheckup = $('#h_id_detail_pasien').val();
+        window.open(contextPathHeader + '/rekammedik/printSuratPernyataan_rekammedik?id=' + idDetailCheckup + '&tipe=' + kode + '&ids=' + idRM, '_blank');
+        $('#modal-confirm-rm').modal('hide');
+    }
+
+    function getListRekamMedis(tipePelayanan, jenis, id) {
+        console.log(id);
+        var li = "";
+        CheckupAction.getListRekammedisPasien(tipePelayanan, jenis, id, function (res) {
+            if (res.length > 0) {
+                $.each(res, function (i, item) {
+                    var cek = "";
+                    var tgl = "";
+                    var icons = '<i class="fa fa-file-o"></i>';
+                    var icons2 = '<i class="fa fa-print"></i>';
+                    var tol = "";
+                    var labelTerisi = "";
+                    var constan = 0;
+                    var terIsi = 0;
+                    var labelPrint = "";
+                    var terIsiPrint = "";
+
+                    if(item.jumlahKategori != null){
+                        constan = item.jumlahKategori;
+                    }
+                    if(item.terisi != null && item.terisi !=''){
+                        terIsi = item.terisi;
+                        terIsiPrint = item.terisi;
+                    }
+
+                    if (constan == terIsi || parseInt(terIsi) > parseInt(constan)) {
+                        var conver = "";
+                        if (item.createdDate != null) {
+                            conver = converterDate(new Date(item.createdDate));
+                            tgl = '<label class="label label-success">' + conver + '</label>';
+                            tol = 'title="Mengisi tanggal ' + conver + '"';
+                        }
+                        icons = '<i class="fa fa-check" style="color: #449d44"></i>';
+                        // cek = '<i class="fa fa-check" style="color: #449d44"></i>';
+                        icons2 = '<i class="fa fa-check" style="color: #449d44"></i>';
+                    }
+
+                    labelTerisi = '<span style="color: #367fa9; font-weight: bold">'+constan+'/'+terIsi+'</span>';
+                    labelPrint = '<span style="color: #367fa9; font-weight: bold">'+terIsiPrint+'</span>';
+
+                    if (item.jenis == 'ringkasan_rj') {
+                        li += '<li><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '"><i class="fa fa-file-o"></i>' + item.namaRm + '</a></li>'
+                    } else {
+                        if (item.keterangan == 'form') {
+                            li += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')"><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '">' + icons + item.namaRm + ' ' +labelTerisi +'</a></li>'
+                        } else if (item.keterangan == "surat") {
+                            li += '<li><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\',\'' + item.namaRm + '\')' + '">' + icons2 + item.namaRm + ' '+ labelPrint + '</a></li>'
+                        }
+                    }
+                });
+                $('#asesmen_rj').html(li);
+            }
+        });
+    }
+
+    function loadModalRM(jenis) {
+        var context = contextPath + '/pages/modal/modal-default.jsp';
+        if (jenis != "") {
+            context = contextPath + '/pages/modal/modal-'+jenis+'.jsp';
+        }
+        $('#modal-temp').load(context, function (res, status, xhr) {
         });
     }
 </script>

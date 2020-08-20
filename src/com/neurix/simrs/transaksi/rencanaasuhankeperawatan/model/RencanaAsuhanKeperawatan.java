@@ -22,6 +22,15 @@ public class RencanaAsuhanKeperawatan extends BaseModel {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String namaTerang;
+
+    public String getNamaTerang() {
+        return namaTerang;
+    }
+
+    public void setNamaTerang(String namaTerang) {
+        this.namaTerang = namaTerang;
+    }
 
     public String getIdRencanaAsuhanKeperawatan() {
         return idRencanaAsuhanKeperawatan;

@@ -2083,55 +2083,6 @@
         initlistPenjamin();
         initListDokter();
 
-        $('[name=pre01],[name=pre02],[name=pre03],[name=pre04],[name=pre05],[name=pre06]').click(function(){
-
-            var check1 = $('[name=pre01]:checked').val();
-
-            if(check1 == "Ada"){
-                $('#pre_keyakinan').show();
-            }else{
-                $('#pre_keyakinan').hide();
-            }
-
-            var check2 = $('[name=pre02]:checked').val();
-            if(check2 == "Ya"){
-                $('#pre_penerjemah').show();
-            }else{
-                $('#pre_penerjemah').hide();
-            }
-
-            var check3 = $('[name=pre03]:checked').val();
-            if(check3 == "Ya"){
-                $('#pre_indra').show();
-            }else{
-                $('#pre_indra').hide();
-            }
-
-            var check4 = $('[name=pre04]:checked').val();
-            if(check4 == "Tidak"){
-                $('#pre_kontak').show();
-            }else{
-                $('#pre_kontak').hide();
-            }
-
-            var check5 = $('[name=pre05]:checked').val();
-            if(check5 == "Ya"){
-                $('#pre_alat_bantu').show();
-            }else{
-                $('#pre_alat_bantu').hide();
-            }
-
-            var check6 = $('[name=pre06]:checked').val();
-            if(check6 == "Ya"){
-                $('#pre_alergi').show();
-                $('#pre_ket_alergi').show();
-            }else{
-                $('#pre_alergi').hide();
-                $('#pre_ket_alergi').hide();
-            }
-
-        });
-
         $(document).on('change', '.btn-file :file', function () {
             var input = $(this),
                     label = input.val().replace(/\\/g, '/').replace(/.*\//, '');

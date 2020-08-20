@@ -62,6 +62,7 @@ public class RencanaAsuhanKeperawatanBoImpl implements RencanaAsuhanKeperawatanB
                     asuhan.setCreatedWho(entity.getCreatedWho());
                     asuhan.setLastUpdate(entity.getLastUpdate());
                     asuhan.setLastUpdateWho(entity.getLastUpdateWho());
+                    asuhan.setNamaTerang(entity.getNamaTerang());
                     list.add(asuhan);
                 }
             }
@@ -92,6 +93,7 @@ public class RencanaAsuhanKeperawatanBoImpl implements RencanaAsuhanKeperawatanB
             asuhanKeperawatanEntity.setCreatedWho(bean.getCreatedWho());
             asuhanKeperawatanEntity.setLastUpdate(bean.getLastUpdate());
             asuhanKeperawatanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            asuhanKeperawatanEntity.setNamaTerang(bean.getNamaTerang());
 
             try {
                 rencanaAsuhanKeperawatanDao.addAndSave(asuhanKeperawatanEntity);

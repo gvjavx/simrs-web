@@ -80,73 +80,33 @@ function saveAsesmenUgd(jenis, keterangan) {
         var dataPasien = "";
 
         dataPasien = {
-            'no_checkup' : noCheckup,
-            'id_detail_checkup' : idDetailCheckup,
-            'id_pasien' : idPasien,
-            'id_rm' : tempidRm
+            'no_checkup': noCheckup,
+            'id_detail_checkup': idDetailCheckup,
+            'id_pasien': idPasien,
+            'id_rm': tempidRm
         }
 
         if ("keluhan_utama" == jenis) {
-            var triase = $('[name=radio_triase]:checked').val();
-            var keadaanUmum = $('[name=radio_keadaan]:checked').val();
-            var napas = $('[name=radio_napas]:checked').val();
-            var nadi = $('[name=radio_nadi]:checked').val();
-            var akral = $('[name=radio_akral]:checked').val();
-            var crt = $('[name=radio_crt]:checked').val();
-            var keaddAwal = $('[name=radio_ka]:checked').val();
-
-            if (triase && keadaanUmum && napas && nadi && akral && crt && keaddAwal != undefined) {
-                data.push({
-                    'parameter': 'Triase',
-                    'jawaban': triase,
-                    'keterangan': jenis,
-                    'jenis': keterangan,
-                    'id_detail_checkup': idDetailCheckup
-                });
-                data.push({
-                    'parameter': 'Keadaan Umum',
-                    'jawaban': keadaanUmum,
-                    'keterangan': jenis,
-                    'jenis': keterangan,
-                    'id_detail_checkup': idDetailCheckup
-                });
-                data.push({
-                    'parameter': 'Pernafasan',
-                    'jawaban': napas,
-                    'keterangan': jenis,
-                    'jenis': keterangan,
-                    'id_detail_checkup': idDetailCheckup
-                });
-                data.push({
-                    'parameter': 'Nadi',
-                    'jawaban': nadi,
-                    'keterangan': jenis,
-                    'jenis': keterangan,
-                    'id_detail_checkup': idDetailCheckup
-                });
-                data.push({
-                    'parameter': 'Akral',
-                    'jawaban': akral,
-                    'keterangan': jenis,
-                    'jenis': keterangan,
-                    'id_detail_checkup': idDetailCheckup
-                });
-                data.push({
-                    'parameter': 'CRT',
-                    'jawaban': crt,
-                    'keterangan': jenis,
-                    'jenis': keterangan,
-                    'id_detail_checkup': idDetailCheckup
-                });
-                data.push({
-                    'parameter': 'Keadaan Awal',
-                    'jawaban': keaddAwal,
-                    'keterangan': jenis,
-                    'jenis': keterangan,
-                    'id_detail_checkup': idDetailCheckup
+            var triase = $('.triase_ugd');
+            if (triase.length > 0) {
+                $.each(triase, function (idx, itemx) {
+                    var label = $('#label_trias_'+idx).text();
+                    var isi = $('[name=trias_'+idx+']:checked').val();
+                    console.log(label);
+                    console.log(isi);
+                    if(isi != undefined && isi != ''){
+                        data.push({
+                            'parameter': label,
+                            'jawaban': isi,
+                            'keterangan': jenis,
+                            'jenis': keterangan,
+                            'id_detail_checkup': idDetailCheckup
+                        });
+                    }
                 });
                 cek = true;
             }
+            console.log(data);
         }
 
         if ("pre_hospital" == jenis) {
@@ -1719,5 +1679,145 @@ function loadImgToCanvas(url, id){
         canvasCek.height = imgCek.height;
         ctxCek.clearRect(0, 0, canvasCek.width, canvasCek.height);
         ctxCek.drawImage(imgCek, 0, 0);
+    }
+}
+
+function dataTriase(jenis){
+    var data = [];
+    var dataCari = [];
+
+    data.push({
+        'jenis': 'Merah',
+        'isi': 'gelisah/koma',
+        'label': 'Keadaan Umum'
+    });
+    data.push({
+        'jenis': 'Merah',
+        'isi': '< 12 / > 30x/m',
+        'label': 'Pernafasan'
+    });
+    data.push({
+        'jenis': 'Merah',
+        'isi': '< 50 / > 150x/m',
+        'label': 'Nadi'
+    });
+    data.push({
+        'jenis': 'Merah',
+        'isi': 'Dingin',
+        'label': 'Akral'
+    });
+    data.push({
+        'jenis': 'Merah',
+        'isi': '> 2 detik',
+        'label': 'CRT'
+    });
+
+    data.push({
+        'jenis': 'Kuning',
+        'isi': 'Lemah/kesakitan',
+        'label': 'Keadaan Umum'
+    });
+    data.push({
+        'jenis': 'Kuning',
+        'isi': '21-30x/m',
+        'label': 'Pernafasan'
+    });
+    data.push({
+        'jenis': 'Kuning',
+        'isi': '101-150x/m',
+        'label': 'Nadi'
+    });
+    data.push({
+        'jenis': 'Kuning',
+        'isi': 'Dingin',
+        'label': 'Akral'
+    });
+    data.push({
+        'jenis': 'Kuning',
+        'isi': '< 2 detik',
+        'label': 'CRT'
+    });
+
+    data.push({
+        'jenis': 'Hijau',
+        'isi': 'Cukup',
+        'label': 'Keadaan Umum'
+    });
+    data.push({
+        'jenis': 'Hijau',
+        'isi': '12-20x/m',
+        'label': 'Pernafasan'
+    });
+    data.push({
+        'jenis': 'Hijau',
+        'isi': '50-100x/m',
+        'label': 'Nadi'
+    });
+    data.push({
+        'jenis': 'Hijau',
+        'isi': 'Hangat',
+        'label': 'Akral'
+    });
+    data.push({
+        'jenis': 'Hijau',
+        'isi': '< 2 detik',
+        'label': 'CRT'
+    });
+
+    data.push({
+        'jenis': 'Hitam',
+        'isi': 'Meninggal',
+        'label': 'Keadaan Umum'
+    });
+    data.push({
+        'jenis': 'Hitam',
+        'isi': 'Kaku Mayat',
+        'label': 'Pernafasan'
+    });
+    data.push({
+        'jenis': 'Hitam',
+        'isi': 'Lebam Mayat',
+        'label': 'Nadi'
+    });
+    data.push({
+        'jenis': 'Hitam',
+        'isi': 'Refleks Kornea (-)',
+        'label': 'Akral'
+    });
+
+    if(jenis != ''){
+        $.each(data, function (i, item) {
+            if(jenis == item.jenis){
+                dataCari.push({
+                    'jenis': item.jenis,
+                    'isi': item.isi,
+                    'label': item.label
+                });
+            }
+        });
+    }
+    return dataCari;
+}
+
+function setDataTriase(val){
+    if(val != ''){
+        var traise = "";
+        $.each(dataTriase(val), function (i, item) {
+            traise += '<hr class="garis">\n' +
+                '<div class="row">\n' +
+                '    <div class="form-group">\n' +
+                '        <label class="col-md-offset-3 col-md-3 triase_ugd" id="label_trias_'+i+'">'+item.label+'</label>\n' +
+                '        <div class="col-md-6">\n' +
+                '            <div class="form-check">\n' +
+                '                <input type="checkbox" name="trias_'+i+'" id="tria_'+i+'" value="'+item.isi+'">\n' +
+                '                <label for="tria_'+i+'"></label>'+item.isi+' \n' +
+                '            </div>\n' +
+                '        </div>\n' +
+                '    </div>\n' +
+                '</div>';
+        });
+        $('#set_triase').html(traise);
+    }else{
+       $('#set_triase').html('');
     }
 }

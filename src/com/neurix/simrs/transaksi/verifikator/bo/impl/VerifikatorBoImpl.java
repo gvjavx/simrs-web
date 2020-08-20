@@ -305,6 +305,7 @@ public class VerifikatorBoImpl implements VerifikatorBo {
                 detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
                 detailCheckupEntity.setInvoice(bean.getInvoice());
                 detailCheckupEntity.setFlagCover(bean.getFlagCover());
+                detailCheckupEntity.setDibayarPasien(bean.getPasienBayar());
                 try {
                     checkupDetailDao.updateAndSave(detailCheckupEntity);
                     response.setStatus("success");
