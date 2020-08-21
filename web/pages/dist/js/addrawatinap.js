@@ -2861,7 +2861,7 @@ function getListRekamMedis(tipePelayanan, jenis, id) {
                     icons2 = '<i class="fa fa-check" style="color: #449d44"></i>';
                 }
 
-                labelTerisi = '<span style="color: #367fa9; font-weight: bold">'+constan+'/'+terIsi+'</span>';
+                labelTerisi = '<span style="color: #367fa9; font-weight: bold">'+terIsi+'/'+constan+'</span>';
                 labelPrint = '<span style="color: #367fa9; font-weight: bold">'+terIsiPrint+'</span>';
 
                 if (item.keterangan == 'form') {

@@ -319,7 +319,6 @@ function saveSPS(jenis, ket) {
                 'jawaban': isiEdukasi,
                 'keterangan': jenis,
                 'jenis': ket,
-                'tipe': 'ttd',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
