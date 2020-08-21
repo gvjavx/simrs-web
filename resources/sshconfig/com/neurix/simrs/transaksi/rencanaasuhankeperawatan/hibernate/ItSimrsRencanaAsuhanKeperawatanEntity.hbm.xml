@@ -59,6 +59,15 @@
         <property name="namaTerang">
             <column name="nama_terang"/>
         </property>
+        <property name="ttdDokter">
+            <column name="ttd_dokter"/>
+        </property>
+        <property name="namaDokter">
+            <column name="nama_dokter"/>
+        </property>
+        <property name="sip">
+            <column name="sip"/>
+        </property>
 
     </class>
 </hibernate-mapping>

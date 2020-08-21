@@ -1,4 +1,4 @@
-<div class="modal fade" id="modal-rb-asuhan_keperawatan_rb">
+<div class="modal fade" id="modal-rb-asuhan_kebidanan_rb">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
@@ -10,17 +10,17 @@
             <div class="modal-body">
                 <div class="box-body btn-hide">
                     <div class="alert alert-success alert-dismissible" style="display: none"
-                         id="warning_rb_asuhan_keperawatan_rb">
+                         id="warning_rb_asuhan_kebidanan_rb">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
-                        <p id="msg_rb_asuhan_keperawatan_rb"></p>
+                        <p id="msg_rb_asuhan_kebidanan_rb"></p>
                     </div>
                     <div class="btn-group">
-                        <button type="button" onclick="showModalRB('add_asuhan_keperawatan_rb')" class="btn btn-success"><i class="fa fa-plus"></i> Asuhan Kebidanan
+                        <button type="button" onclick="showModalRB('add_asuhan_kebidanan_rb')" class="btn btn-success"><i class="fa fa-plus"></i> Asuhan Kebidanan
                         </button>
                     </div>
                 </div>
                 <div class="box-body">
-                    <table style="font-size: 12px" class="table table-striped table-bordered" id="tabel_rb_asuhan_keperawatan_rb">
+                    <table style="font-size: 12px" class="table table-striped table-bordered" id="tabel_rb_asuhan_kebidanan_rb">
                         <thead>
                         <tr>
                             <td width="10%" style="vertical-align: middle" align="center">Tanggal Jam</td>
@@ -45,7 +45,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-rb-add_asuhan_keperawatan_rb">
+<div class="modal fade" id="modal-rb-add_asuhan_kebidanan_rb">
     <div class="modal-dialog" style="width: 80%">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
@@ -56,9 +56,9 @@
             </div>
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none"
-                     id="warning_rb_add_asuhan_keperawatan_rb">
+                     id="warning_rb_add_asuhan_kebidanan_rb">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    <p id="msg_rb_add_asuhan_keperawatan_rb"></p>
+                    <p id="msg_rb_add_asuhan_kebidanan_rb"></p>
                 </div>
                 <div class="box-body">
                     <div class="row">
@@ -117,11 +117,11 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_rb_add_asuhan_keperawatan_rb" class="btn btn-success pull-right"
-                        onclick="saveAsuhanKeperawatanRB('add_asuhan_keperawatan_rb','asuhan_keperawatan_rb')"><i class="fa fa-check"></i>
+                <button id="save_rb_add_asuhan_kebidanan_rb" class="btn btn-success pull-right"
+                        onclick="saveAsuhanKeperawatanRB('add_asuhan_kebidanan_rb','asuhan_kebidanan_rb')"><i class="fa fa-check"></i>
                     Save
                 </button>
-                <button id="load_rb_add_asuhan_keperawatan_rb" style="display: none; cursor: no-drop" type="button"
+                <button id="load_rb_add_asuhan_kebidanan_rb" style="display: none; cursor: no-drop" type="button"
                         class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>

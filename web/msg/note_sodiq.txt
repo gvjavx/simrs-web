@@ -326,6 +326,21 @@ ALTER TABLE it_simrs_asesmen_operasi
 ADD COLUMN nama_terang character varying(100),
 ADD COLUMN sip character varying(100);
 
+-- 21-08-2020
+ALTER TABLE it_simrs_asesmen_icu
+ADD COLUMN nama_terang character varying(100),
+ADD COLUMN sip character varying(100);
+
+ALTER TABLE it_simrs_rencana_asuhan_keperawatan
+ADD COLUMN nama_dokter character varying(100),
+ADD COLUMN sip character varying(100);
+
+ALTER TABLE it_simrs_rencana_asuhan_keperawatan
+ADD COLUMN ttd_dokter VARCHAR(100);
+
+ALTER TABLE it_simrs_asesmen_kandungan
+ADD COLUMN nama_terang VARCHAR(100),
+ADD COLUMN sip VARCHAR(100);
 
 
 

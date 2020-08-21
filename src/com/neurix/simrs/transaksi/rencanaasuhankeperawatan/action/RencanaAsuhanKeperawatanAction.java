@@ -39,6 +39,8 @@ public class RencanaAsuhanKeperawatanAction {
         Timestamp time = new Timestamp(System.currentTimeMillis());
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RencanaAsuhanKeperawatanBo rencanaAsuhanKeperawatanBo = (RencanaAsuhanKeperawatanBo) ctx.getBean("rencanaAsuhanKeperawatanBoProxy");
+        String ttdDokter = "";
+
         try {
             if (data != null) {
                 JSONObject obj = new JSONObject(data);
@@ -51,21 +53,30 @@ public class RencanaAsuhanKeperawatanAction {
                 catatan.setImplementasi(obj.getString("implementasi"));
                 catatan.setEvaluasi(obj.getString("evaluasi"));
                 catatan.setKeterangan(obj.getString("keterangan"));
-                catatan.setNamaTerang(obj.getString("nama_terang"));
+                if(obj.has("nama_terang")){
+                    catatan.setNamaTerang(obj.getString("nama_terang"));
+                }
+                if(obj.has("ttd_dpjp")){
+                    if(!"".equalsIgnoreCase(obj.getString("ttd_dpjp")) && obj.getString("ttd_dpjp") != null){
+                        ttdDokter = obj.getString("ttd_dpjp");
+                    }
+                }
+                if(obj.has("nama_dokter")){
+                    catatan.setNamaDokter(obj.getString("nama_dokter"));
+                }
+                if(obj.has("sip")){
+                    catatan.setSip(obj.getString("sip"));
+                }
                 if (obj.has("ttd_perawat")) {
                     if (!"".equalsIgnoreCase(obj.getString("ttd_perawat"))) {
                         try {
                             BASE64Decoder decoder = new BASE64Decoder();
                             byte[] decodedBytes1 = decoder.decodeBuffer(obj.getString("ttd_perawat"));
-
                             String wkt = time.toString();
                             String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
-
                             String fileName1 = obj.getString("id_detail_checkup") + "-" + "ttd_perawat" + "-" + patten + ".png";
                             String uploadFile1 = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName1;
-
                             BufferedImage image1 = ImageIO.read(new ByteArrayInputStream(decodedBytes1));
-
                             if (image1 == null) {
                                 logger.error("Buffered Image is null");
                                 response.setStatus("error");
@@ -76,6 +87,22 @@ public class RencanaAsuhanKeperawatanAction {
                                 ImageIO.write(image1, "png", f1);
 
                                 catatan.setTtdPerawat(fileName1);
+                            }
+                            if(!"".equalsIgnoreCase(ttdDokter)){
+                                BASE64Decoder decoder2 = new BASE64Decoder();
+                                byte[] decodedBytes2 = decoder2.decodeBuffer(ttdDokter);
+                                String fileName2 = obj.getString("id_detail_checkup") + "-" + "ttd_dpjp" + "-" + patten + ".png";
+                                String uploadFile2 = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName2;
+                                BufferedImage image2 = ImageIO.read(new ByteArrayInputStream(decodedBytes2));
+                                if (image2 == null) {
+                                    logger.error("Buffered Image is null");
+                                    response.setStatus("error");
+                                    response.setMsg("Buffered Image is null");
+                                } else {
+                                    File f2 = new File(uploadFile2);
+                                    ImageIO.write(image2, "png", f2);
+                                    catatan.setTtdDokter(fileName2);
+                                }
                             }
                         }catch (IOException e){
                             response.setStatus("error");

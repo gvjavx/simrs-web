@@ -28,11 +28,20 @@
                             <li><a onclick="showModalICU('decobitus')" style="cursor: pointer"><i class="fa fa-plus"></i> Derajat Decobitus</a></li>
                             <li><a onclick="showModalICU('nyeri')" style="cursor: pointer"><i class="fa fa-plus"></i> Skala Nyeri</a></li>
                             <li><a onclick="showModalICU('gcs')" style="cursor: pointer"><i class="fa fa-plus"></i> Glasgow Coma Scale</a></li>
-                            <li><a onclick="showModalICU('checklist_kriteria')" style="cursor: pointer"><i class="fa fa-plus"></i> Check List Kriteria Pasien</a></li>
-                            <li><a onclick="showModalICU('pengkajian_medik')" style="cursor: pointer"><i class="fa fa-plus"></i> Pengkajian Medis</a></li>
-                            <li><a onclick="showModalICU('pengkajian_keperawatan')" style="cursor: pointer"><i class="fa fa-plus"></i> Pengkajian Keperawatan</a></li>
-                            <li><a onclick="showModalICU('catatan_integrasi_pasien')" style="cursor: pointer"><i class="fa fa-plus"></i> Catatan Perkembangan Pasien</a></li>
-                            <li><a onclick="showModalICU('terminal')" style="cursor: pointer"><i class="fa fa-plus"></i> Asesmen Tahap Terminal</a></li>
+                            <li><a onclick="showModalICU('hemodinamika_icu')" style="cursor: pointer"><i class="fa fa-plus"></i> Hemodinamika</a></li>
+                            <li><a onclick="showModalICU('respirasi_icu')" style="cursor: pointer"><i class="fa fa-plus"></i> Respirasi</a></li>
+                            <li><a onclick="showModalICU('keseimbangan_icu')" style="cursor: pointer"><i class="fa fa-plus"></i> Keseimbangan</a></li>
+                            <li><a onclick="showModalICU('injeksi_icu')" style="cursor: pointer"><i
+                                    class="fa fa-plus"></i> Ijeksi</a></li>
+                            <li><a onclick="showModalICU('oral_icu')" style="cursor: pointer"><i
+                                    class="fa fa-plus"></i> Oral</a></li>
+                            <li><a onclick="showModalICU('lain_icu')" style="cursor: pointer"><i
+                                    class="fa fa-plus"></i> Lain-Lain</a></li>
+                            <li><a onclick="showModalICU('intakea_icu')" style="cursor: pointer"><i
+                                    class="fa fa-plus"></i> Intakea</a></li>
+                            <li><a onclick="showModalICU('output_icu')" style="cursor: pointer"><i
+                                    class="fa fa-plus"></i> Output</a></li>
+                            <li><a onclick="showModalICU('asuhan_keperawatan_icu')" style="cursor: pointer"><i class="fa fa-plus"></i> Rencana Asuhan Keperawatan</a></li>
                         </ul>
                     </div>
                 </div>
@@ -75,28 +84,58 @@
                                 <img id="btn_icu_gcs" class="hvr-grow" onclick="detailICU('gcs')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
-                        <tr id="row_icu_pengkajian_medik">
-                            <td>Pengkajian Pasien Tahap Akhir Kehidupan (Pengkajian Medis)</td>
+                        <tr id="row_icu_hemodinamika_icu">
+                            <td>Hemodinamika</td>
                             <td width="20%" align="center">
-                                <img id="btn_icu_pengkajian_medik" class="hvr-grow" onclick="detailICU('pengkajian_medik')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="btn_icu_hemodinamika_icu" class="hvr-grow" onclick="listHemodinamika('hemodinamika_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
-                        <tr id="row_icu_pengkajian_keperawatan">
-                            <td>Pengkajian Pasien Tahap Akhir Kehidupan (Pengkajian keperawatan)</td>
+                        <tr id="row_icu_respirasi_icu">
+                            <td>Respirasi</td>
                             <td width="20%" align="center">
-                                <img id="btn_icu_pengkajian_keperawatan" class="hvr-grow" onclick="detailICU('pengkajian_keperawatan')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="btn_icu_respirasi_icu" class="hvr-grow" onclick="listRespirasi('respirasi_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
-                        <tr id="row_icu_catatan_integrasi_pasien">
-                            <td>Catatan Perkembangan Pasien</td>
+                        <tr id="row_icu_keseimbangan_icu">
+                            <td>Keseimbangan</td>
                             <td width="20%" align="center">
-                                <img id="btn_icu_catatan_integrasi_pasien" class="hvr-grow" onclick="listCatatanTerintegrasiICU('catatan_integrasi_pasien')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="btn_icu_keseimbangan_icu" class="hvr-grow" onclick="listInputan('keseimbangan_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
-                        <tr id="row_icu_terminal">
-                            <td>Asesmen Pasien Tahap Terminal</td>
+                        <tr id="row_icu_injeksi_icu">
+                            <td>Injeksi ICU</td>
                             <td width="20%" align="center">
-                                <img id="btn_icu_terminal" class="hvr-grow" onclick="detailICU('terminal')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="btn_icu_injeksi_icu" class="hvr-grow" onclick="listInputan('injeksi_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                            </td>
+                        </tr>
+                        <tr id="row_icu_oral_icu">
+                            <td>Oral</td>
+                            <td width="20%" align="center">
+                                <img id="btn_icu_oral_icu" class="hvr-grow" onclick="listInputan('oral_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                            </td>
+                        </tr>
+                        <tr id="row_icu_lain_icu">
+                            <td>Lain-Lain</td>
+                            <td width="20%" align="center">
+                                <img id="btn_icu_lain_icu" class="hvr-grow" onclick="listInputan('lain_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                            </td>
+                        </tr>
+                        <tr id="row_icu_intakea_icu">
+                            <td>Intakea ICU</td>
+                            <td width="20%" align="center">
+                                <img id="btn_icu_intakea_icu" class="hvr-grow" onclick="listInputan('intakea_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                            </td>
+                        </tr>
+                        <tr id="row_icu_output_icu">
+                            <td>Output ICU</td>
+                            <td width="20%" align="center">
+                                <img id="btn_icu_output_icu" class="hvr-grow" onclick="listInputan('output_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                            </td>
+                        </tr>
+                        <tr id="row_icu_asuhan_keperawatan_icu">
+                            <td>Rencana Asuhan Keperawatan</td>
+                            <td width="20%" align="center">
+                                <img id="btn_icu_asuhan_keperawatan_icu" class="hvr-grow" onclick="listAsuhanKeperawatanICU('asuhan_keperawatan_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         </tbody>
@@ -723,960 +762,274 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-icu-pengkajian_medik">
-    <div class="modal-dialog" style="width: 55%">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a; color: white">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Pengakajian Medis
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div class="box-body">
-                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_icu_pengkajian_medik">
-                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
-                        <p id="msg_icu_pengkajian_medik"></p>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-3">Tanggal Pengkajian</label>
-                            <div class="col-md-4">
-                                <div class="input-group">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-calendar"></i>
-                                    </div>
-                                    <input class="form-control tgl" id="tgl_pengkajian_medik">
-                                </div>
-                            </div>
-                            <label class="col-md-1">Jam</label>
-                            <div class="col-md-4">
-                                <div class="input-group">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-clock-o"></i>
-                                    </div>
-                                    <input class="form-control jam" id="jam_pengkajian_medik">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">Kelas</label>
-                            <div class="col-md-9">
-                                <input class="form-control" id="01pm">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">Diagnosa Medik</label>
-                            <div class="col-md-9">
-                                <textarea class="form-control diagnosa-pasien" id="02pm"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">DPJP</label>
-                            <div class="col-md-9">
-                                <input class="form-control" id="03pm">
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="garis">
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-12"><b>1. Gejala - Gejala</b></label>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <div class="col-md-6">
-                                <div class="row">
-                                    <label class="col-md-12">a. Kegawatan Pernafasan</label>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-check">
-                                            <input type="checkbox" name="pm1" id="pm11" value="Dypsnue">
-                                            <label for="pm11"></label> Dypsnue
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-check">
-                                            <input type="checkbox" name="pm1" id="pm12" value="Nafas cepat dan dangkal">
-                                            <label for="pm12"></label> Nafas cepat dan dangkal
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-check" >
-                                            <input type="checkbox" name="pm1" id="pm13" value="Nafas lambat">
-                                            <label for="pm13"></label> Nafas lambat
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-check">
-                                            <input type="checkbox" name="pm2" id="pm14" value="Nafas tidak beraturan">
-                                            <label for="pm14"></label> Nafas tidak beraturan
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-check">
-                                            <input type="checkbox" name="pm1" id="pm15" value="Nafas melalui mulut">
-                                            <label for="pm15"></label> Nafas melalui mulut
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-check">
-                                            <input type="checkbox" name="pm1" id="pm16" value="Mukosa oral kering">
-                                            <label for="pm16"></label> Mukosa oral kering
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-check" >
-                                            <input type="checkbox" name="pm1" id="pm17" value="Ada secret">
-                                            <label for="pm17"></label> Ada secret
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-check">
-                                            <input type="checkbox" name="pm2" id="pm18" value="SpO2 < normal">
-                                            <label for="pm18"></label> SpO2 < normal
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-check">
-                                            <input type="checkbox" name="pm1" id="pm19" value="Tidak ada kelainan">
-                                            <label for="pm19"></label> Tidak ada kelainan
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row jarak">
-                                    <div class="col-md-12">
-                                        <label>c. Nyeri</label>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-check">
-                                            <input onclick="checkSelect(this.id, 'pm32', this.value)" type="checkbox" name="pm3" id="pm31" value="Tidak">
-                                            <label for="pm31"></label> Tidak
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <div class="form-check">
-                                            <input onclick="checkSelect(this.id, 'pm31', this.value)" type="checkbox" name="pm3" id="pm32" value="Ya">
-                                            <label for="pm32"></label> Ya
-                                        </div>
-                                    </div>
-                                    <div class="col-md-9">
-                                        <input class="form-control" id="ket_pm3" oninput="$('#pm32').val('Ya, '+this.value)">
-                                    </div>
-                                </div>
-                                <div class="row jarak">
-                                    <div class="col-md-12">
-                                        <label>e. Pencernaan</label>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-check">
-                                            <input type="checkbox" name="pm5" id="pm51" value="Mual">
-                                            <label for="pm51"></label> Mual
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-check">
-                                            <input type="checkbox" name="pm5" id="pm52" value="Muntah">
-                                            <label for="pm52"></label> Muntah
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-check">
-                                            <input type="checkbox" name="pm5" id="pm53" value="Intoleransi">
-                                            <label for="pm53"></label> Intoleransi
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-check">
-                                            <input type="checkbox" name="pm5" id="pm54" value="NGT">
-                                            <label for="pm54"></label> NGT
-                                        </div>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input class="form-control" id="ket_pm54" oninput="$('#pm54').val('NGT, '+this.value)">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-check">
-                                            <input type="checkbox" name="pm5" id="pm55" value="Lain-Lain">
-                                            <label for="pm55"></label> Lain-lain
-                                        </div>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input class="form-control" id="ket_pm55" oninput="$('#pm55').val('Lain-Lain, '+this.value)">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="row">
-                                    <label class="col-md-12">b. Kehilangan otot tonus</label>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-check">
-                                            <input type="checkbox" name="pm2" id="pm21" value="Mual">
-                                            <label for="pm21"></label> Mual
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-check">
-                                            <input type="checkbox" name="pm2" id="pm22" value="Penurunan pergerakan tubuh">
-                                            <label for="pm22"></label> Penurunan pergerakan tubuh
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-check" >
-                                            <input type="checkbox" name="pm2" id="pm23" value="Sulit bicara">
-                                            <label for="pm23"></label> Sulit bicara
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-check">
-                                            <input type="checkbox" name="pm2" id="pm24" value="Sulit menelan">
-                                            <label for="pm24"></label> Sulit menelan
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-check">
-                                            <input type="checkbox" name="pm2" id="pm25" value="Distensi abdomen">
-                                            <label for="pm25"></label> Distensi abdomen
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-check">
-                                            <input type="checkbox" name="pm2" id="pm26" value="Inkontinensia urine">
-                                            <label for="pm26"></label> Inkontinensia urine
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-check" >
-                                            <input type="checkbox" name="pm2" id="pm27" value="Inkontinensia feces">
-                                            <label for="pm27"></label> Inkontinensia feces
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-check">
-                                            <input type="checkbox" name="pm2" id="pm28" value="Tidak ada kelainan">
-                                            <label for="pm28"></label> Tidak ada kelainan
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row jarak">
-                                    <div class="col-md-12">
-                                        <label>d. Pelambatan sirkulasi</label>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-check">
-                                            <input type="checkbox" name="pm4" id="pm41" value="Bercak dan sianosis pada ekstremitas">
-                                            <label for="pm41"></label> Bercak dan sianosis pada ekstremitas
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-check">
-                                            <input type="checkbox" name="pm4" id="pm42" value="Gelisah">
-                                            <label for="pm42"></label> Gelisah
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-check">
-                                            <input type="checkbox" name="pm4" id="pm43" value="Gelisah">
-                                            <label for="pm43"></label> Lemas
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-check">
-                                            <input type="checkbox" name="pm4" id="pm44" value="Kulit dengin dan berkeringat">
-                                            <label for="pm44"></label> Kulit dengin dan berkeringat
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-check">
-                                            <input type="checkbox" name="pm4" id="pm45" value="Tekanan darah menurun">
-                                            <label for="pm45"></label> Tekanan darah menurun
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-check">
-                                            <input type="checkbox" name="pm4" id="pm46" value="Nadi lambat dan lemah">
-                                            <label for="pm46"></label> Nadi lambat dan lemah
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-12"><b>2. Faktor-faktor yang ,meningkatkan gejala fisik</b></label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-check">
-                                <input type="checkbox" name="pm6" id="pm61" value="Melakukan aktifitas fisik">
-                                <label for="pm61"></label> Melakukan aktifitas fisik
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-check">
-                                <input type="checkbox" name="pm6" id="pm62" value="Pindah posisi">
-                                <label for="pm62"></label> Pindah posisi
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-check">
-                                <input type="checkbox" name="pm6" id="pm63" value="Lainnya">
-                                <label for="pm63"></label> Lainnya
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <div class="col-md-offset-8 col-md-4">
-                                <input class="form-control" oninput="$('#pm63').val('Lainnya, '+this.value)" placeholder="Keterangan">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-12"><b>3. Asesment</b></label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <textarea class="form-control" id="pm7"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-12"><b>4. Perencanaan</b></label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <textarea class="form-control" id="pm8"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="garis">
-                    <div class="row text-center">
-                        <div class="col-md-6">
-                            <label >TTD Dokter</label>
-                            <canvas class="paint-canvas-ttd" id="ttd_dokter"
-                                    onmouseover="paintTtd('ttd_dokter')"></canvas>
-                            <button style="margin-left: 8px" type="button" class="btn btn-danger"
-                                    onclick="removePaint('ttd_dokter')"><i class="fa fa-trash"></i>
-                                Clear
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                <button id="save_icu_pengkajian_medik" class="btn btn-success pull-right" onclick="saveICU('pengkajian_medik', 'asesmen_icu')"><i class="fa fa-check"></i> Save
-                </button>
-                <button id="load_icu_pengkajian_medik" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
-                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modal-icu-pengkajian_keperawatan">
-    <div class="modal-dialog" style="width: 55%">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a; color: white">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Pengkajian Keperawatan
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div class="box-body">
-                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_icu_pengkajian_keperawatan">
-                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
-                        <p id="msg_icu_pengkajian_keperawatan"></p>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-3">Tanggal</label>
-                            <div class="col-md-4">
-                                <div class="input-group">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-calendar"></i>
-                                    </div>
-                                    <input class="form-control tgl" id="tgl_pengkajian_keperawatan">
-                                </div>
-                            </div>
-                            <label class="col-md-1">Jam</label>
-                            <div class="col-md-4">
-                                <div class="input-group">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-clock-o"></i>
-                                    </div>
-                                    <input class="form-control jam" id="jam_pengkajian_keperawatan">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="garis">
-                    <div class="row jarak">
-                        <div class="col-md-12">
-                            <label><b>1. Orental spiritual pasien dan keluarga</b></label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-5">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <label>Apakah perlu pelayanan spiritual</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-check">
-                                <input onclick="checkSelect(this.id, 'pk12', this.value)" type="checkbox" name="pk1" id="pk11" value="Ya">
-                                <label for="pk11"></label> Ya
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-check">
-                                <input onclick="checkSelect(this.id, 'pk11', this.value)" type="checkbox" name="pk1" id="pk12" value="Tidak">
-                                <label for="pk12"></label> Tidak
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row" style="display: none" id="icu_pk11">
-                        <div class="form-group">
-                            <div class="col-md-offset-5 col-md-5">
-                                <input class="form-control" id="ket_pk11">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="col-md-12">
-                            <label><b>2. Urusan dan kebutuhan spiritual dan keluarga seperti putus asa, penderitaan, rasa bersalah atau pengampunan</b></label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-5">
-                            <div class="form-check">
-                                <input type="checkbox" name="pk02" id="pk21" value="Perlu didoakan">
-                                <label for="pk21"></label> Perlu didoakan
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-check">
-                                <input onclick="checkSelect(this.id, 'pk23', this.value)" type="checkbox" name="pk2" id="pk22" value="Ya">
-                                <label for="pk22"></label> Ya
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-check">
-                                <input onclick="checkSelect(this.id, 'pk22', this.value)" type="checkbox" name="pk2" id="pk23" value="Tidak">
-                                <label for="pk23"></label> Tidak
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row" style="display: none" id="icu_pk22">
-                        <div class="form-group">
-                            <div class="col-md-offset-5 col-md-5">
-                                <input class="form-control" id="ket_pk22">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="col-md-5">
-                            <div class="form-check">
-                                <input type="checkbox" name="pk03" id="pk31" value="Perlu didoakan">
-                                <label for="pk31"></label> Perlu bimbingan rohani
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-check">
-                                <input onclick="checkSelect(this.id, 'pk33', this.value)" type="checkbox" name="pk3" id="pk32" value="Ya">
-                                <label for="pk32"></label> Ya
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-check">
-                                <input onclick="checkSelect(this.id, 'pk32', this.value)" type="checkbox" name="pk3" id="pk33" value="Tidak">
-                                <label for="pk33"></label> Tidak
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row" style="display: none" id="icu_pk32">
-                        <div class="form-group">
-                            <div class="col-md-offset-5 col-md-5">
-                                <input class="form-control" id="ket_pk32">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="col-md-5">
-                            <div class="form-check">
-                                <input type="checkbox" name="pk04" id="pk41" value="Perlu didoakan">
-                                <label for="pk41"></label> Pelu pendamping rohani
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-check">
-                                <input onclick="checkSelect(this.id, 'pk43', this.value)" type="checkbox" name="pk4" id="pk42" value="Ya">
-                                <label for="pk42"></label> Ya
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-check">
-                                <input onclick="checkSelect(this.id, 'pk42', this.value)" type="checkbox" name="pk4" id="pk43" value="Tidak">
-                                <label for="pk43"></label> Tidak
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row" style="display: none" id="icu_pk42">
-                        <div class="form-group">
-                            <div class="col-md-offset-5 col-md-5">
-                                <input class="form-control" id="ket_pk42">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="col-md-12">
-                            <label><b>3. Status psikososial pasien dan keluarga</b></label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-5">
-                            <label><b>a. Apakah ada orang yang ingin dihubungi saat ini?</b></label>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-check">
-                                <input onclick="checkSelect(this.id, 'pk52', this.value)" type="checkbox" name="pk5" id="pk51" value="Ya">
-                                <label for="pk51"></label> Ya
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-check">
-                                <input onclick="checkSelect(this.id, 'pk51', this.value)" type="checkbox" name="pk5" id="pk52" value="Tidak">
-                                <label for="pk52"></label> Tidak
-                            </div>
-                        </div>
-                    </div>
-                    <div id="icu_pk51" style="display: none">
-                        <div class="row">
-                            <div class="form-group">
-                                <div class="col-md-offset-5 col-md-5">
-                                    <input class="form-control" id="ket_pk51" placeholder="Nama">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row jarak">
-                            <div class="form-group">
-                                <div class="col-md-offset-5 col-md-5">
-                                    <input class="form-control" id="ket_pk52" placeholder="Dimana">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row jarak">
-                            <div class="form-group">
-                                <div class="col-md-offset-5 col-md-5">
-                                    <input class="form-control" id="ket_pk53" placeholder="Hubungan">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row jarak">
-                            <div class="form-group">
-                                <div class="col-md-offset-5 col-md-5">
-                                    <input class="form-control" id="ket_pk54" placeholder="No Telepon/HP">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="col-md-5">
-                            <label><b>b. Bagaimana rencana keperawatan selajutnya?</b></label>
-                        </div>
-                        <div class="col-md-7">
-                            <div class="form-check">
-                                <input onclick="checkSelect(this.id, 'pk62', this.value)" type="checkbox" name="pk6" id="pk61" value="Tetap dirawat dirumah sakit Gatoel">
-                                <label for="pk61"></label> Tetap dirawat dirumah sakit Gatoel
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <div class="col-md-offset-5 col-md-7">
-                                <div class="form-check">
-                                    <input onclick="checkSelect(this.id, 'pk61', this.value)" type="checkbox" name="pk6" id="pk62" value="Dirawat dirumah">
-                                    <label for="pk62"></label> Dirawat dirumah
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="icu_pk62" style="display: none">
-                        <div class="row jarak">
-                            <div class="col-md-5">
-                                <label>Apakah lingkungan rumah sudah disiapkan</label>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-check">
-                                    <input onclick="checkSelect(this.id, 'pk72', this.value)" type="checkbox" name="pk7" id="pk71" value="Ya">
-                                    <label for="pk71"></label> Ya
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-check">
-                                    <input onclick="checkSelect(this.id, 'pk71', this.value)" type="checkbox" name="pk7" id="pk72" value="Tidak">
-                                    <label for="pk72"></label> Tidak
-                                </div>
-                            </div>
-                        </div>
-                    <div class="row">
-                        <div class="col-md-5">
-                            <label>Jika ya, apakah anda mampu merawat pasien dirumah</label>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-check">
-                                <input onclick="checkSelect(this.id, 'pk82', this.value)" type="checkbox" name="pk8" id="pk81" value="Ya">
-                                <label for="pk81"></label> Ya
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-check">
-                                <input onclick="checkSelect(this.id, 'pk81', this.value)" type="checkbox" name="pk8" id="pk82" value="Tidak">
-                                <label for="pk82"></label> Tidak
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-5">
-                            <label>Jika tidak, apakah perlu difasilitasi oleh rumah sakit</label>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-check">
-                                <input onclick="checkSelect(this.id, 'pk92', this.value)" type="checkbox" name="pk9" id="pk91" value="Ya">
-                                <label for="pk91"></label> Ya
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-check">
-                                <input onclick="checkSelect(this.id, 'pk91', this.value)" type="checkbox" name="pk9" id="pk92" value="Tidak">
-                                <label for="pk92"></label> Tidak
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="col-md-5">
-                            <label><b>c. Reaksi pasien atas penyakitnya?</b></label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="form-check">
-                                <input type="checkbox" name="pk10" id="pk101" value="Menyangkal">
-                                <label for="pk101"></label> Menyangkal
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-check">
-                                <input type="checkbox" name="pk10" id="pk102" value="Sedih/Menangis">
-                                <label for="pk102"></label> Sedih/Menangis
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-check">
-                                <input type="checkbox" name="pk10" id="pk103" value="Rasa bersalah">
-                                <label for="pk103"></label> Rasa bersalah
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-check">
-                                <input type="checkbox" name="pk10" id="pk104" value="Tidak ada relasi">
-                                <label for="pk104"></label> Tidak ada relasi
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="form-check">
-                                <input type="checkbox" name="pk10" id="pk105" value="Marah">
-                                <label for="pk105"></label> Marah
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-check">
-                                <input type="checkbox" name="pk10" id="pk106" value="Takut">
-                                <label for="pk106"></label> Takut
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-check">
-                                <input type="checkbox" name="pk10" id="pk107" value="Ketidakberdayaan">
-                                <label for="pk107"></label> Ketidakberdaya
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-check">
-                                <input type="checkbox" name="pk10" id="pk108" value="Tidak ada kontak">
-                                <label for="pk108"></label> Tidak ada kontak
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="col-md-5">
-                            <label><b>d. Reaksi keluarga atas penyakitnya?</b></label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="form-check">
-                                <input type="checkbox" name="pk11" id="pk111" value="Menyangkal">
-                                <label for="pk111"></label> Marah
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-check">
-                                <input type="checkbox" name="pk11" id="pk112" value="Sedih/Menangis">
-                                <label for="pk112"></label> Letih/lelah
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-check">
-                                <input type="checkbox" name="pk11" id="pk113" value="Rasa bersalah">
-                                <label for="pk113"></label> Rasa bersalah
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-check">
-                                <input type="checkbox" name="pk11" id="pk114" value="Tidak ada relasi">
-                                <label for="pk114"></label> Sedih/menangis
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-check">
-                                <input type="checkbox" name="pk11" id="pk115" value="Keluarga kurang berpartisipasi membuat keputusan dalam perawatan pasien">
-                                <label for="pk115"></label> Keluarga kurang berpartisipasi membuat keputusan dalam perawatan pasien
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="garis">
-                    <div class="row text-center">
-                        <div class="col-md-6">
-                            <label >TTD</label>
-                            <canvas class="paint-canvas-ttd" id="ttd_perawat"
-                                    onmouseover="paintTtd('ttd_perawat')"></canvas>
-                            <button style="margin-left: 8px" type="button" class="btn btn-danger"
-                                    onclick="removePaint('ttd_perawat')"><i class="fa fa-trash"></i>
-                                Clear
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                <button id="save_icu_pengkajian_keperawatan" class="btn btn-success pull-right" onclick="saveICU('pengkajian_keperawatan', 'asesmen_icu')"><i class="fa fa-check"></i> Save
-                </button>
-                <button id="load_icu_pengkajian_keperawatan" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
-                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modal-icu-catatan_integrasi_pasien">
+<div class="modal fade" id="modal-icu-hemodinamika_icu">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Catatan Perkembangan Pasien Terintegrasi
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Tambah Data Hemodinamika
                 </h4>
             </div>
             <div class="modal-body">
-                <div class="alert alert-danger alert-dismissible" style="display: none"
-                     id="warning_icu_catatan_integrasi_pasien">
-                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    <p id="msg_icu_catatan_integrasi_pasien"></p>
-                </div>
                 <div class="box-body">
-                    <div class="form-group" style="display: none">
-                        <div class="col-md-1">
-                            <input type="color" style="margin-left: -6px; margin-top: -8px"
-                                   class="js-color-picker  color-picker pull-left">
-                        </div>
-                        <div class="col-md-9">
-                            <input type="range" style="margin-top: -8px" class="js-line-range" min="1" max="72"
-                                   value="1">
-                        </div>
-                        <div class="col-md-2">
-                            <div style="margin-top: -8px;" class="js-range-value">1 px</div>
-                        </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_icu_hemodinamika_icu">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_icu_hemodinamika_icu"></p>
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Tanggal</label>
-                            <div class="col-md-4">
-                                <div class="input-group" style="margin-top: 7px">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-calendar"></i>
-                                    </div>
-                                    <input class="form-control tgl" id="cp1">
-                                </div>
-                            </div>
-                            <label class="col-md-1" style="margin-top: 7px">Jam</label>
-                            <div class="col-md-3">
-                                <div class="input-group" style="margin-top: 7px">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-clock-o"></i>
-                                    </div>
-                                    <input class="form-control jam" id="cp2">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">PPA</label>
-                            <div class="col-md-8">
-                                <select class="form-control" id="cp3" style="margin-top: 7px">
+                            <label class="col-md-2" style="margin-top: 7px">Waktu</label>
+                            <div class="col-md-9">
+                                <select class="form-control select2" id="hemo1" style="width: 100%">
                                     <option value="">[Select One]</option>
-                                    <option value="Dokter">Dokter</option>
-                                    <option value="Perawat">Perawat</option>
-                                    <option value="Apoteker">Apoteker</option>
-                                    <option value="Gizi">Gizi</option>
-                                    <option value="Bidan">Bidan</option>
+                                    <option value="07:00">07:00</option>
+                                    <option value="07:15">07:15</option>
+                                    <option value="07:30">07:30</option>
+                                    <option value="07:45">07:45</option>
+                                    <option value="08:00">08:00</option>
+                                    <option value="08:15">08:15</option>
+                                    <option value="08:30">08:30</option>
+                                    <option value="08:45">08:45</option>
+                                    <option value="09:00">09:00</option>
+                                    <option value="09:15">09:15</option>
+                                    <option value="09:30">09:30</option>
+                                    <option value="09:45">09:45</option>
+                                    <option value="10:00">10:00</option>
+                                    <option value="10:15">10:15</option>
+                                    <option value="10:30">10:30</option>
+                                    <option value="10:45">10:45</option>
+                                    <option value="11:00">11:00</option>
+                                    <option value="11:15">11:15</option>
+                                    <option value="11:30">11:30</option>
+                                    <option value="11:45">11:45</option>
+                                    <option value="12:00">12:00</option>
+                                    <option value="12:15">12:15</option>
+                                    <option value="12:30">12:30</option>
+                                    <option value="12:45">12:45</option>
+                                    <option value="13:00">13:00</option>
+                                    <option value="13:15">13:15</option>
+                                    <option value="13:30">13:30</option>
+                                    <option value="13:45">13:45</option>
+                                    <option value="14:00">14:00</option>
+                                    <option value="14:15">14:15</option>
+                                    <option value="14:30">14:30</option>
+                                    <option value="14:45">14:45</option>
+                                    <option value="15:00">15:00</option>
+                                    <option value="15:15">15:15</option>
+                                    <option value="15:30">15:30</option>
+                                    <option value="15:45">15:45</option>
+                                    <option value="16:00">16:00</option>
+                                    <option value="16:15">16:15</option>
+                                    <option value="16:30">16:30</option>
+                                    <option value="16:45">16:45</option>
+                                    <option value="17:00">17:00</option>
+                                    <option value="17:15">17:15</option>
+                                    <option value="17:30">17:30</option>
+                                    <option value="17:45">17:45</option>
+                                    <option value="18:00">18:00</option>
+                                    <option value="18:15">18:15</option>
+                                    <option value="18:30">18:30</option>
+                                    <option value="18:45">18:45</option>
+                                    <option value="19:00">19:00</option>
+                                    <option value="19:15">19:15</option>
+                                    <option value="19:30">19:30</option>
+                                    <option value="19:45">19:45</option>
+                                    <option value="20:00">20:00</option>
+                                    <option value="20:15">20:15</option>
+                                    <option value="20:30">20:30</option>
+                                    <option value="20:45">20:45</option>
+                                    <option value="21:00">21:00</option>
+                                    <option value="21:15">21:15</option>
+                                    <option value="21:30">21:30</option>
+                                    <option value="21:45">21:45</option>
+                                    <option value="22:00">22:00</option>
+                                    <option value="22:15">22:15</option>
+                                    <option value="22:30">22:30</option>
+                                    <option value="22:45">22:45</option>
+                                    <option value="23:00">23:00</option>
+                                    <option value="23:15">23:15</option>
+                                    <option value="23:30">23:30</option>
+                                    <option value="23:45">23:45</option>
+                                    <option value="24:00">24:00</option>
+                                    <option value="24:15">24:15</option>
+                                    <option value="24:30">24:30</option>
+                                    <option value="24:45">24:45</option>
+                                    <option value="01:00">01:00</option>
+                                    <option value="01:15">01:15</option>
+                                    <option value="01:30">01:30</option>
+                                    <option value="01:45">01:45</option>
+                                    <option value="02:00">02:00</option>
+                                    <option value="02:15">02:15</option>
+                                    <option value="02:30">02:30</option>
+                                    <option value="02:45">02:45</option>
+                                    <option value="03:00">03:00</option>
+                                    <option value="03:15">03:15</option>
+                                    <option value="03:30">03:30</option>
+                                    <option value="03:45">03:45</option>
+                                    <option value="04:00">04:00</option>
+                                    <option value="04:15">04:15</option>
+                                    <option value="04:30">04:30</option>
+                                    <option value="04:45">04:45</option>
+                                    <option value="05:00">05:00</option>
+                                    <option value="05:15">05:15</option>
+                                    <option value="05:30">05:30</option>
+                                    <option value="05:45">05:45</option>
+                                    <option value="06:00">06:00</option>
+                                    <option value="06:15">06:15</option>
+                                    <option value="06:30">06:30</option>
+                                    <option value="06:45">06:45</option>
                                 </select>
                             </div>
                         </div>
                     </div>
-                    <%--<div class="row">--%>
-                    <%--<div class="form-group">--%>
-                    <%--<label class="col-md-3" style="margin-top: 7px">Jenis</label>--%>
-                    <%--<div class="col-md-8">--%>
-                    <%--<select class="form-control" id="cp4" style="margin-top: 7px">--%>
-                    <%--<option value="">[Select One]</option>--%>
-                    <%--<option value="Subyektif">Subyektif</option>--%>
-                    <%--<option value="Obyektif">Obyektif</option>--%>
-                    <%--<option value="Asesmen">Asesmen</option>--%>
-                    <%--<option value="Planning">Planning</option>--%>
-                    <%--</select>--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Instruksi</label>
-                            <div class="col-md-8">
-                                <textarea style="margin-top: 7px" rows="4" class="form-control" id="cp5"></textarea>
+                            <label class="col-md-2 jarak">Tensi</label>
+                            <div class="col-md-4">
+                                <select class="form-control select2" id="hemo2" style="width: 100%">
+                                    <option value="">[Select One]</option>
+                                    <option value="41">41</option>
+                                    <option value="40">40</option>
+                                    <option value="39">39</option>
+                                    <option value="38">38</option>
+                                    <option value="37">37</option>
+                                    <option value="36">36</option>
+                                    <option value="35">35</option>
+                                    <option value="34">34</option>
+                                    <option value="33">33</option>
+                                    <option value="32">32</option>
+                                    <option value="31">31</option>
+                                </select>
+                            </div>
+                            <label class="col-md-1 jarak">BP</label>
+                            <div class="col-md-4">
+                                <select class="form-control select2" id="hemo3" style="width: 100%">
+                                    <option value="">[Select One]</option>
+                                    <option value="200">200</option>
+                                    <option value="180">180</option>
+                                    <option value="160">160</option>
+                                    <option value="140">140</option>
+                                    <option value="120">120</option>
+                                    <option value="100">100</option>
+                                    <option value="80">80</option>
+                                    <option value="60">60</option>
+                                    <option value="40">40</option>
+                                    <option value="20">20</option>
+                                    <option value="0">0</option>
+                                </select>
                             </div>
                         </div>
                     </div>
-                    <hr class="garis">
                     <div class="row">
                         <div class="form-group">
-                            <div class="col-md-6 text-center">
-                                <label>TTD Petugas</label>
-                                <canvas class="paint-canvas-ttd" id="cp6" width="220"
-                                        onmouseover="paintTtd('cp6')"></canvas>
-                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
-                                        onclick="clearConvas('cp6')"><i
-                                        class="fa fa-trash"></i> Clear
-                                </button>
+                            <label class="col-md-2 jarak">HI</label>
+                            <div class="col-md-4">
+                                <select class="form-control select2" id="hemo4" style="width: 100%">
+                                    <option value="">[Select One]</option>
+                                    <option value="200">200</option>
+                                    <option value="180">180</option>
+                                    <option value="160">160</option>
+                                    <option value="140">140</option>
+                                    <option value="120">120</option>
+                                    <option value="100">100</option>
+                                    <option value="80">80</option>
+                                    <option value="60">60</option>
+                                    <option value="40">40</option>
+                                    <option value="20">20</option>
+                                    <option value="0">0</option>
+                                </select>
                             </div>
-                            <div class="col-md-6 text-center">
-                                <label>TTD DPJP</label>
-                                <canvas class="paint-canvas-ttd" id="cp7" width="220"
-                                        onmouseover="paintTtd('cp7')"></canvas>
-                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
-                                        onclick="clearConvas('cp7')"><i
-                                        class="fa fa-trash"></i> Clear
-                                </button>
+                            <label class="col-md-1 jarak">RR</label>
+                            <div class="col-md-4">
+                                <select class="form-control select2" id="hemo5" style="width: 100%">
+                                    <option value="">[Select One]</option>
+                                    <option value="100">100</option>
+                                    <option value="90">90</option>
+                                    <option value="80">80</option>
+                                    <option value="70">70</option>
+                                    <option value="60">60</option>
+                                    <option value="50">50</option>
+                                    <option value="40">40</option>
+                                    <option value="30">30</option>
+                                    <option value="20">20</option>
+                                    <option value="10">10</option>
+                                    <option value="0">0</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-2">EKG</label>
+                            <div class="col-md-9">
+                                <input class="form-control" id="hemo6" type="number">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-2 jarak">ICP</label>
+                            <div class="col-md-4">
+                                <select class="form-control select2" id="hemo7" style="width: 100%">
+                                    <option value="">[Select One]</option>
+                                    <option value="50">50</option>
+                                    <option value="40">40</option>
+                                    <option value="30">30</option>
+                                    <option value="20">20</option>
+                                    <option value="10">10</option>
+                                    <option value="0">0</option>
+                                </select>
+                            </div>
+                            <label class="col-md-1 jarak">IBP</label>
+                            <div class="col-md-4">
+                                <select class="form-control select2" id="hemo8" style="width: 100%">
+                                    <option value="">[Select One]</option>
+                                    <option value="250">250</option>
+                                    <option value="200">200</option>
+                                    <option value="150">150</option>
+                                    <option value="100">100</option>
+                                    <option value="50">50</option>
+                                    <option value="0">0</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-2 jarak">CVP</label>
+                            <div class="col-md-4">
+                                <select class="form-control select2" id="hemo9" style="width: 100%">
+                                    <option value="">[Select One]</option>
+                                    <option value="25">25</option>
+                                    <option value="20">20</option>
+                                    <option value="15">15</option>
+                                    <option value="10">10</option>
+                                    <option value="5">5</option>
+                                    <option value="0">0</option>
+                                </select>
+                            </div>
+                            <label class="col-md-1 jarak">MAP</label>
+                            <div class="col-md-4">
+                                <select class="form-control select2" id="hemo10" style="width: 100%">
+                                    <option value="">[Select One]</option>
+                                    <option value="140">140</option>
+                                    <option value="120">120</option>
+                                    <option value="100">100</option>
+                                    <option value="80">80</option>
+                                    <option value="60">60</option>
+                                    <option value="40">40</option>
+                                </select>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                <button id="save_icu_hemodinamika_icu" class="btn btn-success pull-right" onclick="saveHemodinamika('hemodinamika_icu', 'asesmen_icu')"><i class="fa fa-check"></i> Save
                 </button>
-                <button id="save_icu_catatan_integrasi_pasien" class="btn btn-success pull-right"
-                        onclick="saveCatatanTerintegrasiICU('catatan_integrasi_pasien','asesmen_icu')"><i class="fa fa-check"></i>
-                    Save
-                </button>
-                <button id="load_icu_catatan_integrasi_pasien" style="display: none; cursor: no-drop" type="button"
-                        class="btn btn-success"><i
+                <button id="load_icu_hemodinamika_icu" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>
@@ -1684,487 +1037,882 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-icu-terminal">
+<div class="modal fade" id="modal-icu-chart_hemodinamika">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Chart Hemodinamika Tanggal <span id="tanggal_data"></span>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_icu_chart_hemodinamika">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_icu_chart_hemodinamika"></p>
+                    </div>
+                    <div class="box-body chart-responsive">
+                        <div class="chart" id="line-chart_hemodinamika" style="height: 300px; width: 100%"></div>
+                        <hr class="garis">
+                        <div class="row" style="font-size: 12px">
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-1">
+                                    <i class="fa fa-circle" style="color: #ff0000"></i> T
+                                </div>
+                                <div class="col-md-1">
+                                    <i class="fa fa-circle" style="color: #0000ff"></i> BP
+                                </div>
+                                <div class="col-md-1">
+                                    <i class="fa fa-circle" style="color: #00cc00"></i> HI
+                                </div>
+                                <div class="col-md-1">
+                                    <i class="fa fa-circle" style="color: #ff9933"></i> RR
+                                </div>
+                                <div class="col-md-1">
+                                    <i class="fa fa-circle" style="color: #cc6600"></i> ICP
+                                </div>
+                                <div class="col-md-1">
+                                    <i class="fa fa-circle" style="color: #ffff66"></i> IBP
+                                </div>
+                                <div class="col-md-1">
+                                    <i class="fa fa-circle" style="color: #cc6699"></i> CVP
+                                </div>
+                                <div class="col-md-1">
+                                    <i class="fa fa-circle" style="color: #666633"></i> MAP
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="box-body">
+                            <table class="table table-bordered table-striped" style="font-size: 12px">
+                                <tbody id="body_ekg"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-icu-respirasi_icu">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Asesmen Pasien Tahap Terminal
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Tambah Data Respirasi
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_icu_respirasi_icu">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_icu_respirasi_icu"></p>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Waktu</label>
+                            <div class="col-md-9">
+                                <select class="form-control select2" id="res1" style="width: 100%">
+                                    <option value="">[Select One]</option>
+                                    <option value="07:00">07:00</option>
+                                    <option value="08:00">08:00</option>
+                                    <option value="09:00">09:00</option>
+                                    <option value="10:00">10:00</option>
+                                    <option value="11:00">11:00</option>
+                                    <option value="12:00">12:00</option>
+                                    <option value="13:00">13:00</option>
+                                    <option value="14:00">14:00</option>
+                                    <option value="15:00">15:00</option>
+                                    <option value="16:00">16:00</option>
+                                    <option value="17:00">17:00</option>
+                                    <option value="18:00">18:00</option>
+                                    <option value="19:00">19:00</option>
+                                    <option value="20:00">20:00</option>
+                                    <option value="21:00">21:00</option>
+                                    <option value="22:00">22:00</option>
+                                    <option value="23:00">23:00</option>
+                                    <option value="24:00">24:00</option>
+                                    <option value="01:00">01:00</option>
+                                    <option value="02:00">02:00</option>
+                                    <option value="03:00">03:00</option>
+                                    <option value="04:00">04:00</option>
+                                    <option value="05:00">05:00</option>
+                                    <option value="06:00">06:00</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3 jarak">GCS (EVM)</label>
+                            <div class="col-md-9">
+                                <select class="form-control select2" style="width: 100%" id="res2">
+                                    <option value="">[Select One E]</option>
+                                    <option value="4">Spontan</option>
+                                    <option value="3">Dengan Panggilan</option>
+                                    <option value="2">Dengan rangsangan nyeri</option>
+                                    <option value="1">Tidak ada respon</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-9">
+                                <select class="form-control select2" style="width: 100%" id="res3">
+                                    <option value="">[Select One V]</option>
+                                    <option value="5">Orientasi</option>
+                                    <option value="4">Apatis</option>
+                                    <option value="3">Disorientasi</option>
+                                    <option value="2">Mengarang</option>
+                                    <option value="1">Tidak ada</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-9">
+                                <select class="form-control select2" style="width: 100%" id="res4">
+                                    <option value="">[Select One M]</option>
+                                    <option value="6">Spontan</option>
+                                    <option value="5">Terlokalisir</option>
+                                    <option value="4">Fleksi</option>
+                                    <option value="3">Deserebrasi</option>
+                                    <option value="2">Dekortasi</option>
+                                    <option value="1">Tak ada respon</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3 jarak">Diameter Pupil KA</label>
+                            <div class="col-md-3">
+                                <select class="form-control select2" id="res5" style="width: 100%">
+                                    <option value="">[Select]</option>
+                                    <option value="8">8</option>
+                                    <option value="7">7</option>
+                                    <option value="6">6</option>
+                                    <option value="5">5</option>
+                                    <option value="4">4</option>
+                                    <option value="3">3</option>
+                                    <option value="2">2</option>
+                                    <option value="1">1</option>
+                                </select>
+                            </div>
+                            <label class="col-md-3 jarak">Diameter Pupil KI</label>
+                            <div class="col-md-3">
+                                <select class="form-control select2" id="res6" style="width: 100%">
+                                    <option value="">[Select]</option>
+                                    <option value="8">8</option>
+                                    <option value="7">7</option>
+                                    <option value="6">6</option>
+                                    <option value="5">5</option>
+                                    <option value="4">4</option>
+                                    <option value="3">3</option>
+                                    <option value="2">2</option>
+                                    <option value="1">1</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3 jarak">Reflek Cahaya KA</label>
+                            <div class="col-md-3">
+                                <select class="form-control select2" id="res7" style="width: 100%">
+                                    <option value="">[Select]</option>
+                                    <option value="+">+</option>
+                                    <option value="-">-</option>
+                                </select>
+                            </div>
+                            <label class="col-md-3 jarak">Reflek Cahaya KI</label>
+                            <div class="col-md-3">
+                                <select class="form-control select2" id="res8" style="width: 100%">
+                                    <option value="">[Select]</option>
+                                    <option value="+">+</option>
+                                    <option value="-">-</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3">TKA</label>
+                            <div class="col-md-3">
+                                <input class="form-control" type="number" id="res9">
+                            </div>
+                            <label class="col-md-3">TKI</label>
+                            <div class="col-md-3">
+                                <input class="form-control" type="number" id="res10">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3">KKA</label>
+                            <div class="col-md-3">
+                                <input class="form-control" type="number" id="res11">
+                            </div>
+                            <label class="col-md-3">KKI</label>
+                            <div class="col-md-3">
+                                <input class="form-control" type="number" id="res12">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <select class="form-control select2" id="res13" style="width: 100%">
+                                    <option value="">[Select]</option>
+                                    <option value="NK">NK</option>
+                                    <option value="RM">RM</option>
+                                    <option value="NRM">NRM</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <input class="form-control jarak" type="number" id="res014">
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-control select2" id="res14" style="width: 100%">
+                                    <option value="">[Select]</option>
+                                    <option value="TPiece">TPiece</option>
+                                    <option value="JRise">JRise</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <input class="form-control jarak" type="number" id="res15">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3 jarak">Tipe Ventilasi</label>
+                            <div class="col-md-3">
+                                <input class="form-control jarak" type="number" id="res16">
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-control select2" id="res17" style="width: 100%">
+                                    <option value="">[Select]</option>
+                                    <option value="PEEP">PEEP</option>
+                                    <option value="CPAP">CPAP</option>
+                                    <option value="ET C02">ET C02</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <input class="form-control jarak" type="number" id="res18">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3">Frekwensi/ Freweksi Total</label>
+                            <div class="col-md-3">
+                                <input class="form-control" type="number" id="res19">
+                            </div>
+                            <label class="col-md-3 jarak">TV (I) TV(E)</label>
+                            <div class="col-md-3">
+                                <input class="form-control" type="number" id="res20">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3 jarak">MV (I) MV (I)</label>
+                            <div class="col-md-3">
+                                <input class="form-control jarak" type="number" id="res21">
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-control select2" id="res22" style="width: 100%">
+                                    <option value="">[Select]</option>
+                                    <option value="PSupport">PSupport</option>
+                                    <option value="PASB">PASB</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <input class="form-control jarak" type="number" id="res23">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <select class="form-control select2" id="res24" style="width: 100%">
+                                    <option value="">[Select]</option>
+                                    <option value="PInspirasi">PInspirasi</option>
+                                    <option value="PControl">PControl</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <input class="form-control jarak" type="number" id="res25">
+                            </div>
+                            <label class="col-md-3 jarak">Triger</label>
+                            <div class="col-md-3">
+                                <input class="form-control jarak" type="number" id="res26">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3 jarak">Inspirasi Time</label>
+                            <div class="col-md-3">
+                                <input class="form-control jarak" type="number" id="res27">
+                            </div>
+                            <label class="col-md-3 jarak">Flow</label>
+                            <div class="col-md-3">
+                                <input class="form-control jarak" type="number" id="res28">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <select class="form-control select2" id="res29" style="width: 100%">
+                                    <option value="">[Select]</option>
+                                    <option value="FIO 2">FIO 2</option>
+                                    <option value="Konsentrasi O2">Konsentrasi O2</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <input class="form-control jarak" type="number" id="res30">
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-control select2" id="res31" style="width: 100%">
+                                    <option value="">[Select]</option>
+                                    <option value="Ukuran ETT">Ukuran ETT</option>
+                                    <option value="Kedalaman ETT">Kedalaman ETT</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <input class="form-control jarak" type="number" id="res32">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3 jarak"> SPO2</label>
+                            <div class="col-md-3">
+                                <input class="form-control jarak" type="number" id="res33">
+                            </div>
+                            <label class="col-md-3 jarak"> Secret/ Sputum</label>
+                            <div class="col-md-3">
+                                <input class="form-control jarak" type="number" id="res34">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                <button id="save_icu_respirasi_icu" class="btn btn-success pull-right" onclick="saveRespirasi('respirasi_icu', 'asesmen_icu')"><i class="fa fa-check"></i> Save
+                </button>
+                <button id="load_icu_respirasi_icu" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-icu-keseimbangan_icu">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Tambah Data Keseimbangan
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_icu_keseimbangan_icu">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_icu_keseimbangan_icu"></p>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Waktu</label>
+                            <div class="col-md-9">
+                                <select class="form-control select2 " id="waktu_keseimbangan_icu" style="width: 100%">
+                                    <option value="">[Select One]</option>
+                                    <option value="07:00">07:00</option>
+                                    <option value="08:00">08:00</option>
+                                    <option value="09:00">09:00</option>
+                                    <option value="10:00">10:00</option>
+                                    <option value="11:00">11:00</option>
+                                    <option value="12:00">12:00</option>
+                                    <option value="13:00">13:00</option>
+                                    <option value="14:00">14:00</option>
+                                    <option value="15:00">15:00</option>
+                                    <option value="16:00">16:00</option>
+                                    <option value="17:00">17:00</option>
+                                    <option value="18:00">18:00</option>
+                                    <option value="19:00">19:00</option>
+                                    <option value="20:00">20:00</option>
+                                    <option value="21:00">21:00</option>
+                                    <option value="22:00">22:00</option>
+                                    <option value="23:00">23:00</option>
+                                    <option value="24:00">24:00</option>
+                                    <option value="01:00">01:00</option>
+                                    <option value="02:00">02:00</option>
+                                    <option value="03:00">03:00</option>
+                                    <option value="04:00">04:00</option>
+                                    <option value="05:00">05:00</option>
+                                    <option value="06:00">06:00</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="select_isi"></div>
+                    <div id="resus"></div>
+                    <div id="darah"></div>
+                    <div id="infus"></div>
+                    <div id="inpt_keseimbangan_icu"></div>
+                    <input type="hidden" id="is_new">
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                <button id="save_icu_keseimbangan_icu" class="btn btn-success pull-right" onclick="saveInputan('keseimbangan_icu', 'asesmen_icu')"><i class="fa fa-check"></i> Save
+                </button>
+                <button id="load_icu_keseimbangan_icu" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-icu-injeksi_icu">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Tambah Data Injeksi
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_icu_injeksi_icu">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_icu_injeksi_icu"></p>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Waktu</label>
+                            <div class="col-md-9">
+                                <select class="form-control select2 waktu" id="waktu_injeksi_icu" style="width: 100%">
+                                    <option value="">[Select One]</option>
+                                    <option value="07:00">07:00</option>
+                                    <option value="08:00">08:00</option>
+                                    <option value="09:00">09:00</option>
+                                    <option value="10:00">10:00</option>
+                                    <option value="11:00">11:00</option>
+                                    <option value="12:00">12:00</option>
+                                    <option value="13:00">13:00</option>
+                                    <option value="14:00">14:00</option>
+                                    <option value="15:00">15:00</option>
+                                    <option value="16:00">16:00</option>
+                                    <option value="17:00">17:00</option>
+                                    <option value="18:00">18:00</option>
+                                    <option value="19:00">19:00</option>
+                                    <option value="20:00">20:00</option>
+                                    <option value="21:00">21:00</option>
+                                    <option value="22:00">22:00</option>
+                                    <option value="23:00">23:00</option>
+                                    <option value="24:00">24:00</option>
+                                    <option value="01:00">01:00</option>
+                                    <option value="02:00">02:00</option>
+                                    <option value="03:00">03:00</option>
+                                    <option value="04:00">04:00</option>
+                                    <option value="05:00">05:00</option>
+                                    <option value="06:00">06:00</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="injeksi_icu"></div>
+                    <div id="inpt_injeksi_icu"></div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                <button id="save_icu_injeksi_icu" class="btn btn-success pull-right" onclick="saveInputan('injeksi_icu', 'asesmen_icu')"><i class="fa fa-check"></i> Save
+                </button>
+                <button id="load_icu_injeksi_icu" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-icu-oral_icu">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Tambah Data Oral
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_icu_oral_icu">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_icu_oral_icu"></p>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Waktu</label>
+                            <div class="col-md-9">
+                                <select class="form-control select2" id="waktu_oral_icu" style="width: 100%">
+                                    <option value="">[Select One]</option>
+                                    <option value="07:00">07:00</option>
+                                    <option value="08:00">08:00</option>
+                                    <option value="09:00">09:00</option>
+                                    <option value="10:00">10:00</option>
+                                    <option value="11:00">11:00</option>
+                                    <option value="12:00">12:00</option>
+                                    <option value="13:00">13:00</option>
+                                    <option value="14:00">14:00</option>
+                                    <option value="15:00">15:00</option>
+                                    <option value="16:00">16:00</option>
+                                    <option value="17:00">17:00</option>
+                                    <option value="18:00">18:00</option>
+                                    <option value="19:00">19:00</option>
+                                    <option value="20:00">20:00</option>
+                                    <option value="21:00">21:00</option>
+                                    <option value="22:00">22:00</option>
+                                    <option value="23:00">23:00</option>
+                                    <option value="24:00">24:00</option>
+                                    <option value="01:00">01:00</option>
+                                    <option value="02:00">02:00</option>
+                                    <option value="03:00">03:00</option>
+                                    <option value="04:00">04:00</option>
+                                    <option value="05:00">05:00</option>
+                                    <option value="06:00">06:00</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="oral_icu"></div>
+                    <div id="inpt_oral_icu"></div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                <button id="save_icu_oral_icu" class="btn btn-success pull-right" onclick="saveInputan('oral_icu', 'asesmen_icu')"><i class="fa fa-check"></i> Save
+                </button>
+                <button id="load_icu_oral_icu" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-icu-lain_icu">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Tambah Data Lain-Lain
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_icu_lain_icu">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_icu_lain_icu"></p>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Waktu</label>
+                            <div class="col-md-9">
+                                <select class="form-control select2" id="waktu_lain_icu" style="width: 100%">
+                                    <option value="">[Select One]</option>
+                                    <option value="07:00">07:00</option>
+                                    <option value="08:00">08:00</option>
+                                    <option value="09:00">09:00</option>
+                                    <option value="10:00">10:00</option>
+                                    <option value="11:00">11:00</option>
+                                    <option value="12:00">12:00</option>
+                                    <option value="13:00">13:00</option>
+                                    <option value="14:00">14:00</option>
+                                    <option value="15:00">15:00</option>
+                                    <option value="16:00">16:00</option>
+                                    <option value="17:00">17:00</option>
+                                    <option value="18:00">18:00</option>
+                                    <option value="19:00">19:00</option>
+                                    <option value="20:00">20:00</option>
+                                    <option value="21:00">21:00</option>
+                                    <option value="22:00">22:00</option>
+                                    <option value="23:00">23:00</option>
+                                    <option value="24:00">24:00</option>
+                                    <option value="01:00">01:00</option>
+                                    <option value="02:00">02:00</option>
+                                    <option value="03:00">03:00</option>
+                                    <option value="04:00">04:00</option>
+                                    <option value="05:00">05:00</option>
+                                    <option value="06:00">06:00</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="lain_icu"></div>
+                    <div id="inpt_lain_icu"></div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                <button id="save_icu_lain_icu" class="btn btn-success pull-right" onclick="saveInputan('lain_icu', 'asesmen_icu')"><i class="fa fa-check"></i> Save
+                </button>
+                <button id="load_icu_lain_icu" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-icu-intakea_icu">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Tambah Data Intakea
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_icu_intakea_icu">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_icu_intakea_icu"></p>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Waktu</label>
+                            <div class="col-md-9">
+                                <select class="form-control select2" id="waktu_intakea_icu" style="width: 100%">
+                                    <option value="">[Select One]</option>
+                                    <option value="07:00">07:00</option>
+                                    <option value="08:00">08:00</option>
+                                    <option value="09:00">09:00</option>
+                                    <option value="10:00">10:00</option>
+                                    <option value="11:00">11:00</option>
+                                    <option value="12:00">12:00</option>
+                                    <option value="13:00">13:00</option>
+                                    <option value="14:00">14:00</option>
+                                    <option value="15:00">15:00</option>
+                                    <option value="16:00">16:00</option>
+                                    <option value="17:00">17:00</option>
+                                    <option value="18:00">18:00</option>
+                                    <option value="19:00">19:00</option>
+                                    <option value="20:00">20:00</option>
+                                    <option value="21:00">21:00</option>
+                                    <option value="22:00">22:00</option>
+                                    <option value="23:00">23:00</option>
+                                    <option value="24:00">24:00</option>
+                                    <option value="01:00">01:00</option>
+                                    <option value="02:00">02:00</option>
+                                    <option value="03:00">03:00</option>
+                                    <option value="04:00">04:00</option>
+                                    <option value="05:00">05:00</option>
+                                    <option value="06:00">06:00</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="intakea_icu"></div>
+                    <div id="inpt_intakea_icu"></div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                <button id="save_icu_intakea_icu" class="btn btn-success pull-right" onclick="saveInputan('intakea_icu', 'asesmen_icu')"><i class="fa fa-check"></i> Save
+                </button>
+                <button id="load_icu_intakea_icu" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-icu-output_icu">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Tambah Data Output
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_icu_output_icu">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_icu_output_icu"></p>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Waktu</label>
+                            <div class="col-md-9">
+                                <select class="form-control select2" id="waktu_output_icu" style="width: 100%">
+                                    <option value="">[Select One]</option>
+                                    <option value="07:00">07:00</option>
+                                    <option value="08:00">08:00</option>
+                                    <option value="09:00">09:00</option>
+                                    <option value="10:00">10:00</option>
+                                    <option value="11:00">11:00</option>
+                                    <option value="12:00">12:00</option>
+                                    <option value="13:00">13:00</option>
+                                    <option value="14:00">14:00</option>
+                                    <option value="15:00">15:00</option>
+                                    <option value="16:00">16:00</option>
+                                    <option value="17:00">17:00</option>
+                                    <option value="18:00">18:00</option>
+                                    <option value="19:00">19:00</option>
+                                    <option value="20:00">20:00</option>
+                                    <option value="21:00">21:00</option>
+                                    <option value="22:00">22:00</option>
+                                    <option value="23:00">23:00</option>
+                                    <option value="24:00">24:00</option>
+                                    <option value="01:00">01:00</option>
+                                    <option value="02:00">02:00</option>
+                                    <option value="03:00">03:00</option>
+                                    <option value="04:00">04:00</option>
+                                    <option value="05:00">05:00</option>
+                                    <option value="06:00">06:00</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="output_icu"></div>
+                    <div id="inpt_output_icu"></div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                <button id="save_icu_output_icu" class="btn btn-success pull-right" onclick="saveInputan('output_icu', 'asesmen_icu')"><i class="fa fa-check"></i> Save
+                </button>
+                <button id="load_icu_output_icu" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-icu-asuhan_keperawatan_icu">
+    <div class="modal-dialog" style="width: 80%">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Asuhan Keperawatan
                 </h4>
             </div>
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none"
-                     id="warning_icu_terminal">
+                     id="warning_icu_asuhan_keperawatan_icu">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    <p id="msg_icu_terminal"></p>
+                    <p id="msg_icu_asuhan_keperawatan_icu"></p>
                 </div>
                 <div class="box-body">
-                    <div class="form-group" style="display: none">
-                        <div class="col-md-1">
-                            <input type="color" style="margin-left: -6px; margin-top: -8px"
-                                   class="js-color-picker  color-picker pull-left">
-                        </div>
-                        <div class="col-md-9">
-                            <input type="range" style="margin-top: -8px" class="js-line-range" min="1" max="72"
-                                   value="1">
-                        </div>
-                        <div class="col-md-2">
-                            <div style="margin-top: -8px;" class="js-range-value">1 px</div>
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-3">Keluarga Terdekat</label>
-                            <div class="col-md-9">
-                                <input class="form-control" id="ter1">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">Hubungan</label>
-                            <div class="col-md-9">
-                                <input class="form-control" id="ter2">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                    <div class="form-group">
-                        <label class="col-md-3">No Telp</label>
-                        <div class="col-md-9">
-                            <input class="form-control" id="ter3">
-                        </div>
-                    </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">Gelang Identifikasi</label>
-                            <div class="col-md-2">
-                                <div class="custom02">
-                                    <input type="radio" value="Ada" id="ter41"
-                                           name="ter4"/><label for="ter41">Ada</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02">
-                                    <input type="radio" value="Tidak ada" id="ter42"
-                                           name="ter4"/><label for="ter42">Tidak ada</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">Persetujuan Umum</label>
-                            <div class="col-md-2">
-                                <div class="custom02">
-                                    <input type="radio" value="Ada" id="ter51"
-                                           name="ter5"/><label for="ter51">Ada</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02">
-                                    <input type="radio" value="Tidak ada" id="ter52"
-                                           name="ter5"/><label for="ter52">Tidak ada</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">Indikasi Pasien</label>
-                            <div class="col-md-9">
-                                <input class="form-control" id="ter06">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">Alergi Pasien</label>
-                            <div class="col-md-9">
-                                <input class="form-control alergi-pasien" id="ter07">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <input class="form-control" id="ter08" placeholder="Tensi">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <input class="form-control" id="ter09" placeholder="Nadi">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <input class="form-control" id="ter010" placeholder="Suhu">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <input class="form-control" id="ter011" placeholder="RR">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <input class="form-control" id="ter012" placeholder="BB">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <input class="form-control" id="ter013" placeholder="TB">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <input class="form-control" id="ter014" placeholder="GCS">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">Anamnesa</label>
-                            <div class="col-md-9">
-                                <textarea class="form-control anamnese" id="ter015"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <label class="col-md-12">Alat Bantu yang digunakan</label>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">Oksigen</label>
-                            <div class="col-md-2">
-                                <div class="custom02">
-                                    <input type="radio" value="Ada" id="ter61"
-                                           name="ter6"/><label for="ter61">Ada</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02">
-                                    <input type="radio" value="Tidak ada" id="ter62"
-                                           name="ter6"/><label for="ter62">Tidak ada</label>
-                                </div>
-                            </div>
+                            <label class="col-md-2">Tanggal</label>
                             <div class="col-md-4">
-                               <input class="form-control" placeholder="Keterangan" id="ket_ter6" oninput="$('#ter61').val('Ada, '+this.value)">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">Ventilator</label>
-                            <div class="col-md-2">
-                                <div class="custom02">
-                                    <input type="radio" value="Ada" id="ter71"
-                                           name="ter7"/><label for="ter71">Ada</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02">
-                                    <input type="radio" value="Tidak ada" id="ter72"
-                                           name="ter7"/><label for="ter72">Tidak ada</label>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <input class="form-control" placeholder="Keterangan" id="ket_ter7" oninput="$('#ter71').val('Ada, '+this.value)">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">Monitor Pasien</label>
-                            <div class="col-md-2">
-                                <div class="custom02">
-                                    <input type="radio" value="Ada" id="ter81"
-                                           name="ter8"/><label for="ter81">Ada</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02">
-                                    <input type="radio" value="Tidak ada" id="ter82"
-                                           name="ter8"/><label for="ter82">Tidak ada</label>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <input class="form-control" placeholder="Keterangan" id="ket_ter8" oninput="$('#ter81').val('Ada, '+this.value)">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">Alat bantu yang lain</label>
-                            <div class="col-md-2">
-                                <div class="custom02">
-                                    <input type="radio" value="Ada" id="ter91"
-                                           name="ter9"/><label for="ter91">Ada</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02">
-                                    <input type="radio" value="Tidak ada" id="ter92"
-                                           name="ter9"/><label for="ter92">Tidak ada</label>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <input class="form-control" placeholder="Keterangan" id="ket_ter9" oninput="$('#ter91').val('Ada, '+this.value)">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <label class="col-md-12">Asesmen Neurologi</label>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">Relaksasi Otot</label>
-                            <div class="col-md-2">
-                                <div class="custom02">
-                                    <input type="radio" value="Menurun" id="ter101"
-                                           name="ter10"/><label for="ter101">Menurun</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02">
-                                    <input type="radio" value="Normal" id="ter102"
-                                           name="ter10"/><label for="ter102">Normal</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">Mata / Refrek cahaya</label>
-                            <div class="col-md-2">
-                                <div class="custom02">
-                                    <input type="radio" value="Menurun" id="ter111"
-                                           name="ter11"/><label for="ter111">Menurun</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02">
-                                    <input type="radio" value="Normal" id="ter112"
-                                           name="ter11"/><label for="ter112">Normal</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">Berbicara</label>
-                            <div class="col-md-2">
-                                <div class="custom02">
-                                    <input type="radio" value="Normal" id="ter121"
-                                           name="ter12"/><label for="ter121">Normal</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02">
-                                    <input type="radio" value="Tidak Normal" id="ter122"
-                                           name="ter12"/><label for="ter122">Tidak Normal</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">Kenjang</label>
-                            <div class="col-md-2">
-                                <div class="custom02">
-                                    <input type="radio" value="Spasme" id="ter131"
-                                           name="ter13"/><label for="ter131">Spasme</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02">
-                                    <input type="radio" value="Kaku Sendi" id="ter132"
-                                           name="ter13"/><label for="ter132">Kaku Sendi</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">Gastrointestinal</label>
-                            <div class="col-md-3">
-                                <div class="form-check">
-                                    <input type="checkbox" name="ter14" id="ter141" value="Mual">
-                                    <label for="ter141"></label> Mual
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-check">
-                                    <input type="checkbox" name="ter14" id="ter142" value="Muntah">
-                                    <label for="ter142"></label> Muntah
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-offset-3 col-md-3">
-                            <div class="form-check">
-                                <input type="checkbox" name="ter14" id="ter143" value="Kembung">
-                                <label for="ter143"></label> Kembung
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-check">
-                                <input type="checkbox" name="ter14" id="ter144" value="Obstipasi">
-                                <label for="ter144"></label> Obstipasi
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <label class="col-md-12">Kardio Vaskuler</label>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">Nadi</label>
-                            <div class="col-md-2">
-                                <div class="custom02">
-                                    <input type="radio" value="Cepat" id="ter0141"
-                                           name="ter014"/><label for="ter0141">Cepat</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02">
-                                    <input type="radio" value="Kecil" id="ter0142"
-                                           name="ter014"/><label for="ter0142">Kecil</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">Ritme</label>
-                            <div class="col-md-2">
-                                <div class="custom02">
-                                    <input type="radio" value="Lemah" id="ter151"
-                                           name="ter15"/><label for="ter151">Lemah</label>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="custom02">
-                                    <input type="radio" value="Kuat" id="ter152"
-                                           name="ter15"/><label for="ter152">Kuat</label>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="custom02">
-                                    <input type="radio" value="Dingin" id="ter153"
-                                           name="ter15"/><label for="ter153">Dingin</label>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="custom02">
-                                    <input type="radio" value="Hangat" id="ter154"
-                                           name="ter15"/><label for="ter154">Hangat</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">Respirasi</label>
-                            <div class="col-md-2">
-                                <div class="custom02">
-                                    <input type="radio" value="Sesak" id="ter161"
-                                           name="ter16"/><label for="ter161">Sesak</label>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="custom02">
-                                    <input type="radio" value="Ngorok" id="ter162"
-                                           name="ter16"/><label for="ter162">Ngorok</label>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="custom02">
-                                    <input type="radio" value="Cepat" id="ter163"
-                                           name="ter16"/><label for="ter163">Cepat</label>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="custom02">
-                                    <input type="radio" value="Sonisis" id="ter164"
-                                           name="ter16"/><label for="ter164">Sonisis</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">Akral</label>
-                            <div class="col-md-4">
-                                <div class="custom02">
-                                    <input type="radio" value="Cepet Dangkal" id="ter171"
-                                           name="ter17"/><label for="ter171">Cepet Dangkal</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02">
-                                    <input type="radio" value="Cheyne stoke" id="ter172"
-                                           name="ter17"/><label for="ter172">Cheyne stoke</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">Saluran Kencing</label>
-                            <div class="col-md-3">
-                                <div class="custom02">
-                                    <input type="radio" value="Inkontennesnsia" id="ter181"
-                                           name="ter18"/><label for="ter181">Inkontennesnsia</label>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="custom02">
-                                    <input type="radio" value="Retensi" id="ter182"
-                                           name="ter18"/><label for="ter182">Retensi</label>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="custom02">
-                                    <input type="radio" value="Hematuria" id="ter183"
-                                           name="ter18"/><label for="ter183">Hematuria</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">Tipe Kateter</label>
-                            <div class="col-md-9">
-                                <input id="ter19" class="form-control"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">Tanggal Kateter</label>
-                            <div class="col-md-9">
                                 <div class="input-group">
-                                    <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                    <input id="ter20" class="form-control tgl"/>
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input class="form-control tgl" id="ake1">
                                 </div>
+                            </div>
+                            <label class="col-md-1">Jam</label>
+                            <div class="col-md-3">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input class="form-control jam" id="ake2">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-2">Diagnosa</label>
+                            <div class="col-md-8">
+                                <input class="form-control" id="diagnosa_askep_icu" oninput="searchDiagnosaAskep(this.id, 'icu')">
                             </div>
                         </div>
                     </div>
                     <hr class="garis">
+                    <table class="table table-striped table-bordered" style="font-size: 12px">
+                        <thead>
+                        <tr style="font-weight: bold">
+                            <td width="20%">Diagnosis</td>
+                            <td width="20%">Rencana</td>
+                            <td width="20%">Tindakan</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <div id="dia"></div>
+                            </td>
+                            <td><div id="rec"></div></td>
+                            <td><select id="tin" class="form-control select2" multiple style="width: 100%"></select></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <hr class="garis">
                     <div class="row">
                         <div class="form-group">
-                            <div class="col-md-6 text-center">
-                                <label>TTD Petugas</label>
-                                <canvas class="paint-canvas-ttd" id="ter21" width="220"
-                                        onmouseover="paintTtd('ter21')"></canvas>
+                            <div class="col-md-4">
+                                <label>Data Subjektif</label>
+                                <select class="form-control select2" id="askep_subjek" onchange="setSubjektif(this.value)" style="width: 100%"> </select>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div id="temp_subjektif"></div>
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <label>TTD Perawat</label>
+                                <canvas class="paint-canvas-ttd" id="asuhan_perawat" width="220"
+                                        onmouseover="paintTtd('asuhan_perawat')"></canvas>
+                                <input class="form-control" id="nama_asuhan_perawat" placeholder="Nama Terang">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
-                                        onclick="removePaint('ter21')"><i
+                                        onclick="removePaint('asuhan_perawat')"><i
+                                        class="fa fa-trash"></i> Clear
+                                </button>
+                            </div>
+                            <div class="col-md-6">
+                                <label>TTD DPJP</label>
+                                <canvas class="paint-canvas-ttd" id="asuhan_dpjp" width="220"
+                                        onmouseover="paintTtd('asuhan_dpjp')"></canvas>
+                                <input class="form-control" id="nama_asuhan_dpjp" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control" id="sip_asuhan_dpjp" placeholder="SIP">
+                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('asuhan_dpjp')"><i
                                         class="fa fa-trash"></i> Clear
                                 </button>
                             </div>
@@ -2175,11 +1923,11 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_icu_terminal" class="btn btn-success pull-right"
-                        onclick="saveICU('terminal','asesmen_icu')"><i class="fa fa-check"></i>
+                <button id="save_icu_asuhan_keperawatan_icu" class="btn btn-success pull-right"
+                        onclick="saveAsuhanKeperawatanICU('asuhan_keperawatan_icu','asesmen_icu')"><i class="fa fa-check"></i>
                     Save
                 </button>
-                <button id="load_icu_terminal" style="display: none; cursor: no-drop" type="button"
+                <button id="load_icu_asuhan_keperawatan_icu" style="display: none; cursor: no-drop" type="button"
                         class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>

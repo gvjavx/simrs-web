@@ -71,7 +71,7 @@
                             <canvas class="paint-canvas-ttd" id="ttd_dpjp"
                                     onmouseover="paintTtd('ttd_dpjp')"></canvas>
                             <input class="form-control" id="nama_terang_dokter" placeholder="Nama Terang">
-                            <input class="form-control" id="sip_dokter" placeholder="SIP">
+                            <input style="margin-top: 3px" class="form-control" id="sip_dokter" placeholder="SIP">
                             <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                     onclick="removePaint('ttd_dpjp')"><i class="fa fa-trash"></i>
                                 Clear

@@ -3756,27 +3756,27 @@
         if(kategoriRuangan == 'rawat_inap'){
             $('#title-pages').text("Rawat Inap Pasien");
             $('#rawat_inap').addClass('active');
-            urlPages = 'rawat_inap';
+            urlPages = 'rawatinap';
         }
         if(kategoriRuangan == 'rawat_intensif'){
             $('#title-pages').text("Rawat Intensif Pasien");
             $('#rawat_intensif').addClass('active');
-            urlPages = 'rawat_intensif';
+            urlPages = 'rawatintensif';
         }
         if(kategoriRuangan == 'rawat_isolasi'){
             $('#title-pages').text("Rawat Isolasi Pasien");
             $('#rawat_isolasi').addClass('active');
-            urlPages = 'rawat_isolasi';
+            urlPages = 'rawatisolasi';
         }
         if(kategoriRuangan == 'kamar_operasi'){
             $('#title-pages').text("Rawat Operasi Pasien");
             $('#rawat_operasi').addClass('active');
-            urlPages = 'rawat_operasi';
+            urlPages = 'rawatoperasi';
         }
         if(kategoriRuangan == 'ruang_bersalin'){
             $('#title-pages').text("Rawat Bersalin Pasien");
             $('#rawat_bersalin').addClass('active');
-            urlPages = 'rawat_bersalin';
+            urlPages = 'rawatbersalin';
         }
 
         $('#img_ktp').on('click', function(e){
