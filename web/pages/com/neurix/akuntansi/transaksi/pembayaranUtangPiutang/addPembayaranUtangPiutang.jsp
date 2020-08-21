@@ -1249,25 +1249,15 @@
 
             var msg = "";
 
-            if (tipePengajuan=="I"&&noFakturPajak!=""&&cekCanvas!="") {}
-            else if (tipePengajuan="R"){}
-            else {
-                if (noFakturPajak=="") {
-                    msg += "No. Faktur Pajak Masih Kosong \n";
-                }
-                if (cekCanvas=="") {
-                    msg += "Belum Upload Faktur Pajak \n";
-                }
-            }
-            if (tanggalRealisasi!=""&&jumlahPengajuan!=""&&jumlahPembayaran!=""&&msg==""&&kodeVendor!=""&&namaVendor!="") {
+            if (tanggalRealisasi!=""&&jumlahPengajuan!=""&&jumlahPembayaran!=""&&msg==""&&kodeVendor!=""&&namaVendor!=""&&noFakturPajak!=""&&cekCanvas!="") {
                 jumlahPengajuan = jumlahPengajuan.replace(/[,]/g, "");
                 var nilaijumlahPembayaran = jumlahPembayaran.replace(/[.]/g, "");
                 var nilaiPengajuan = parseInt(jumlahPengajuan);
                 var nilaiPembayaran = parseInt(nilaijumlahPembayaran);
                 var nilaiPpn = parseInt(jumlah_ppn.replace(/[,]/g, ""));
                 var nilaiPph = parseInt(jumlah_pph.replace(/[,]/g, ""));
-                if (nilaiPengajuan-(nilaiPembayaran+nilaiPpn-nilaiPph)<0){
-                    alert("jumlah Pembayaran + PPN - PPH lebih dari jumlah pengajuan");
+                if (nilaiPengajuan-(nilaiPembayaran+nilaiPph-nilaiPpn)<0){
+                    alert("jumlah Pembayaran + PPH - PPN lebih dari jumlah pengajuan");
                 }else if (nilaiPengajuan >= nilaiPembayaran && tglRealisasi <= currentTime) {
                     PembayaranUtangPiutangAction.saveDetailPembayaran(kodeVendor, namaVendor, "", jumlahPembayaran, rekeningId, divisiId,
                         divisiName, tipePengajuanBiaya, pengajuanBiayaDetailId, noBudgeting,jumlah_ppn,
@@ -1321,6 +1311,12 @@
                 }
                 if (namaVendor=="") {
                     msg += "Kode Vendor tidak valid atau vendor tidak ditemukan \n";
+                }
+                if (noFakturPajak=="") {
+                    msg += "No. Faktur Pajak Masih Kosong \n";
+                }
+                if (cekCanvas=="") {
+                    msg += "Belum Upload Faktur Pajak \n";
                 }
                 alert(msg);
             }
@@ -1652,6 +1648,7 @@
                 totalBayar = intTotalBayar+intBayar;
                 var strTotalBayar = String(totalBayar);
                 $('#bayar').val(formatRupiahAngka(strTotalBayar));
+                $('#modal-add-vendor').modal('hide');
             } else{
                 alert(result);
             }
@@ -1684,6 +1681,8 @@
                 totalBayar = intTotalBayar+intBayar;
                 var strTotalBayar = String(totalBayar);
                 $('#bayar').val(formatRupiahAngka(strTotalBayar));
+
+                $('#modal-add-dokter').modal('hide');
             } else{
                 alert(result);
             }
@@ -1716,6 +1715,7 @@
                 totalBayar = intTotalBayar+intBayar;
                 var strTotalBayar = String(totalBayar);
                 $('#bayar').val(formatRupiahAngka(strTotalBayar));
+                $('#modal-add-lain').modal('hide');
             } else{
                 alert(result);
             }

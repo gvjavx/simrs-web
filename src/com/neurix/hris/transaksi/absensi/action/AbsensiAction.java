@@ -3310,8 +3310,12 @@ public class AbsensiAction extends BaseMasterAction {
         String status="00";
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        MesinAbsensi mesinAbsensi = new MesinAbsensi();
+        mesinAbsensi.setCreatedWho(CommonUtil.userIdLogin());
+        mesinAbsensi.setLastUpdate(updateTime);
         try {
-            absensiBo.getDataFromMesin();
+            absensiBo.getDataFromMesin(mesinAbsensi);
         } catch (GeneralBOException e) {
             Long logId = null;
             status="fail";
@@ -3325,13 +3329,18 @@ public class AbsensiAction extends BaseMasterAction {
         }
         return status;
     }
+
     public String getAllDataFromMesin() throws Exception {
         logger.info("[AbsensiAction.getDataFromMesin] start process >>>");
         String status="00";
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        MesinAbsensi mesinAbsensi = new MesinAbsensi();
+        mesinAbsensi.setCreatedWho(CommonUtil.userIdLogin());
+        mesinAbsensi.setLastUpdate(updateTime);
         try {
-            absensiBo.getAllDataFromMesin();
+            absensiBo.getAllDataFromMesin(mesinAbsensi);
         } catch (GeneralBOException e) {
             Long logId = null;
             status="fail";

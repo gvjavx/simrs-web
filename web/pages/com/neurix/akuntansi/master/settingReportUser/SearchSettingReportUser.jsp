@@ -47,7 +47,6 @@
     <section class="content-header">
         <h1>
             Setting User Report
-            <small>e-HEALTH</small>
         </h1>
     </section>
     <!-- Main content -->

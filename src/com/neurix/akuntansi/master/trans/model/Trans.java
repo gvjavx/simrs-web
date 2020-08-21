@@ -14,7 +14,6 @@ public class Trans extends BaseModel {
     private String transName;
     private String tipePembayaran;
     private String tipePembayaranName;
-    private String flagSumberBaru;
 //    private String master;
     private String masterName;
 
@@ -65,14 +64,6 @@ public class Trans extends BaseModel {
 
     public void setMaster(String master) {
         this.master = master;
-    }
-
-    public String getFlagSumberBaru() {
-        return flagSumberBaru;
-    }
-
-    public void setFlagSumberBaru(String flagSumberBaru) {
-        this.flagSumberBaru = flagSumberBaru;
     }
 
     public String getTipePembayaran() {

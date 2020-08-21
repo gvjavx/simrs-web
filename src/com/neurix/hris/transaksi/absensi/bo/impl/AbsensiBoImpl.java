@@ -2449,17 +2449,14 @@ public class AbsensiBoImpl implements AbsensiBo {
     }
 
     @Override
-    public List getDataFromMesin() throws Exception {
-        String urlParameters = "";
-        String url = "";
-
+    public List getDataFromMesin(MesinAbsensi bean) throws Exception {
         Map hsCriteriaMesin = new HashMap();
         hsCriteriaMesin.put("flag", "Y");
         List<ImMesinAbsensiEntity> imMesinAbsensiEntityList = new ArrayList<>();
         imMesinAbsensiEntityList = mesinDao.getByCriteria(hsCriteriaMesin);
         for (ImMesinAbsensiEntity mesin : imMesinAbsensiEntityList) {
-            urlParameters = mesin.getMesinSn();
-            url = mesin.getMesinName();
+            String urlParameters = mesin.getMesinSn();
+            String url = "http://"+mesin.getMesinName()+"/scanlog/all/paging";
 
             // CODING ASLI //
             String inputLine;
@@ -2519,7 +2516,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                     mesinAbsensiDetailEntity.setPin(mesinAbsensiDetail.getPin());
                     mesinAbsensiDetailEntity.setWorkCode(mesinAbsensiDetail.getWorkCode());
 
-                    String userLogin = CommonUtil.userLogin();
+                    String userLogin = bean.getCreatedWho();
                     Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
                     mesinAbsensiDetailEntity.setAction("C");
                     mesinAbsensiDetailEntity.setFlag("Y");
@@ -2531,6 +2528,11 @@ public class AbsensiBoImpl implements AbsensiBo {
                     mesinAbsensiDetailDao.addAndSave(mesinAbsensiDetailEntity);
                 }
             }
+
+            //jika berhasil maka akan ditaruh di last get
+            ImMesinAbsensiEntity mesinAbsensiEntity = mesinDao.getById("mesinId",mesin.getMesinId());
+            mesinAbsensiEntity.setLastGet(bean.getLastUpdate());
+            mesinDao.updateAndSave(mesinAbsensiEntity);
         }
         // END OF CODING ASLI //
 
@@ -2604,9 +2606,7 @@ public class AbsensiBoImpl implements AbsensiBo {
     }
 
     @Override
-    public List getAllDataFromMesin() throws Exception {
-        String urlParameters = "";
-        String url = "";
+    public List getAllDataFromMesin(MesinAbsensi bean) throws Exception {
 
         Map hsCriteriaMesin = new HashMap();
         hsCriteriaMesin.put("flag", "Y");
@@ -2614,265 +2614,105 @@ public class AbsensiBoImpl implements AbsensiBo {
         List<ImMesinAbsensiEntity> imMesinAbsensiEntityList = new ArrayList<>();
         imMesinAbsensiEntityList = mesinDao.getByCriteria(hsCriteriaMesin);
         for (ImMesinAbsensiEntity mesin : imMesinAbsensiEntityList) {
-            urlParameters = mesin.getMesinSn();
-            url = mesin.getMesinName();
-        }
-        // CODING ASLI //
-        boolean isSession;
-        String inputLine;
-        StringBuffer response = new StringBuffer();
-        List<MesinAbsensiDetail> mesinAbsensiDetailList = new ArrayList<>();
-        do {
-            byte[] postData = urlParameters.getBytes( StandardCharsets.UTF_8 );
-            int postDataLength = postData.length;
-            URL obj = new URL(url);
-            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-            // optional default is GET
-            con.setRequestMethod("POST");
-            con.setDoOutput( true );
-            con.setRequestProperty("Content-Length", Integer.toString(postDataLength));
-            //add request header
-            con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            try( DataOutputStream wr = new DataOutputStream( con.getOutputStream())) {
-                wr.write( postData );
-            }
-            int responseCode = con.getResponseCode();
-            System.out.println("\nSending 'POST' request to URL : " + url);
-            System.out.println("Response Code : " + responseCode);
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            StringBuffer responseTemp = new StringBuffer();
-            while ((inputLine = in.readLine()) != null) {
-                responseTemp.append(inputLine);
-            }
-            in.close();
-            JSONObject myResponseCheck = new JSONObject(responseTemp.toString());
-            isSession = myResponseCheck.getBoolean("IsSession");
-            JSONArray ja_data = myResponseCheck.getJSONArray("Data");
-            int length = ja_data.length();
-            for(int i=0; i<length; i++) {
-                JSONObject jObj = ja_data.getJSONObject(i);
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh.mm.ss");
-                String stScanDate = jObj.getString("ScanDate");
-                java.util.Date parsedDate = dateFormat.parse(stScanDate);
-                Timestamp scanDate = new Timestamp(parsedDate.getTime());
+            String urlParameters = mesin.getMesinSn();
+            String url = "http://"+mesin.getMesinName()+"/scanlog/all/paging";
 
-                MesinAbsensiDetail mesinAbsensiDetail = new MesinAbsensiDetail();
-                mesinAbsensiDetail.setPin(jObj.getString("PIN"));
-                mesinAbsensiDetail.setStatus(String.valueOf(jObj.getInt("IOMode")));
-                mesinAbsensiDetail.setScanDate(scanDate);
-                mesinAbsensiDetail.setVerifyMode(String.valueOf(jObj.getInt("VerifyMode")));
-                mesinAbsensiDetail.setWorkCode(String.valueOf(jObj.getInt("WorkCode")));
-                mesinAbsensiDetailList.add(mesinAbsensiDetail);
-            }
-            response.append(responseTemp);
-        }
-        while (isSession);
+            // CODING ASLI //
+            boolean isSession;
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+            List<MesinAbsensiDetail> mesinAbsensiDetailList = new ArrayList<>();
+            do {
+                byte[] postData = urlParameters.getBytes( StandardCharsets.UTF_8 );
+                int postDataLength = postData.length;
+                URL obj = new URL(url);
+                HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+                // optional default is GET
+                con.setRequestMethod("POST");
+                con.setDoOutput( true );
+                con.setRequestProperty("Content-Length", Integer.toString(postDataLength));
+                //add request header
+                con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                try( DataOutputStream wr = new DataOutputStream( con.getOutputStream())) {
+                    wr.write( postData );
+                }
+                int responseCode = con.getResponseCode();
+                System.out.println("\nSending 'POST' request to URL : " + url);
+                System.out.println("Response Code : " + responseCode);
+                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                StringBuffer responseTemp = new StringBuffer();
+                while ((inputLine = in.readLine()) != null) {
+                    responseTemp.append(inputLine);
+                }
+                in.close();
+                JSONObject myResponseCheck = new JSONObject(responseTemp.toString());
+                isSession = myResponseCheck.getBoolean("IsSession");
+                JSONArray ja_data = myResponseCheck.getJSONArray("Data");
+                int length = ja_data.length();
+                for(int i=0; i<length; i++) {
+                    JSONObject jObj = ja_data.getJSONObject(i);
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh.mm.ss");
+                    String stScanDate = jObj.getString("ScanDate");
+                    java.util.Date parsedDate = dateFormat.parse(stScanDate);
+                    Timestamp scanDate = new Timestamp(parsedDate.getTime());
 
-        //Save To mesin Absensi Detail List
-        for (MesinAbsensiDetail mesinAbsensiDetail : mesinAbsensiDetailList) {
-            List<MesinAbsensiDetailEntity> mesinAbsensiDetailEntityList = new ArrayList<>();
-            Map hsCriteria = new HashMap();
-            hsCriteria.put("pin", mesinAbsensiDetail.getPin());
-            hsCriteria.put("status", mesinAbsensiDetail.getStatus());
-            hsCriteria.put("scan_date", mesinAbsensiDetail.getScanDate());
-            hsCriteria.put("verify_mode", mesinAbsensiDetail.getVerifyMode());
-            hsCriteria.put("work_code", mesinAbsensiDetail.getWorkCode());
-            hsCriteria.put("flag", "Y");
-            mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getByCriteria(hsCriteria);
-            if (mesinAbsensiDetailEntityList.size() == 0) {
-                MesinAbsensiDetailEntity mesinAbsensiDetailEntity = new MesinAbsensiDetailEntity();
-                String mesinAbsensiDetailId = mesinAbsensiDetailDao.getNextMesinAbsensiDetailId();
-                String userLogin = CommonUtil.userLogin();
-                Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-                mesinAbsensiDetailEntity.setMesinAbsensiDetailId(mesinAbsensiDetailId);
-                mesinAbsensiDetailEntity.setPin(mesinAbsensiDetail.getPin());
-                mesinAbsensiDetailEntity.setStatus(mesinAbsensiDetail.getStatus());
-                mesinAbsensiDetailEntity.setScanDate(mesinAbsensiDetail.getScanDate());
-                mesinAbsensiDetailEntity.setVerifyMode(mesinAbsensiDetail.getVerifyMode());
-                mesinAbsensiDetailEntity.setWorkCode(mesinAbsensiDetail.getWorkCode());
-                mesinAbsensiDetailEntity.setAction("C");
-                mesinAbsensiDetailEntity.setFlag("Y");
-                mesinAbsensiDetailEntity.setLastUpdate(updateTime);
-                mesinAbsensiDetailEntity.setCreatedDate(updateTime);
-                mesinAbsensiDetailEntity.setLastUpdateWho(userLogin);
-                mesinAbsensiDetailEntity.setCreatedWho(userLogin);
-                mesinAbsensiDetailDao.addAndSave(mesinAbsensiDetailEntity);
+                    MesinAbsensiDetail mesinAbsensiDetail = new MesinAbsensiDetail();
+                    mesinAbsensiDetail.setPin(jObj.getString("PIN"));
+                    mesinAbsensiDetail.setStatus(String.valueOf(jObj.getInt("IOMode")));
+                    mesinAbsensiDetail.setScanDate(scanDate);
+                    mesinAbsensiDetail.setVerifyMode(String.valueOf(jObj.getInt("VerifyMode")));
+                    mesinAbsensiDetail.setWorkCode(String.valueOf(jObj.getInt("WorkCode")));
+                    mesinAbsensiDetailList.add(mesinAbsensiDetail);
+                }
+                response.append(responseTemp);
             }
+            while (isSession);
+
+            //Save To mesin Absensi Detail List
+            for (MesinAbsensiDetail mesinAbsensiDetail : mesinAbsensiDetailList) {
+                List<MesinAbsensiDetailEntity> mesinAbsensiDetailEntityList = new ArrayList<>();
+                Map hsCriteria = new HashMap();
+                hsCriteria.put("pin", mesinAbsensiDetail.getPin());
+                hsCriteria.put("status", mesinAbsensiDetail.getStatus());
+                hsCriteria.put("scan_date", mesinAbsensiDetail.getScanDate());
+                hsCriteria.put("verify_mode", mesinAbsensiDetail.getVerifyMode());
+                hsCriteria.put("work_code", mesinAbsensiDetail.getWorkCode());
+                hsCriteria.put("flag", "Y");
+                mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getByCriteria(hsCriteria);
+                if (mesinAbsensiDetailEntityList.size() == 0) {
+                    MesinAbsensiDetailEntity mesinAbsensiDetailEntity = new MesinAbsensiDetailEntity();
+                    String mesinAbsensiDetailId = mesinAbsensiDetailDao.getNextMesinAbsensiDetailId();
+                    String userLogin = bean.getCreatedWho();
+                    Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+                    mesinAbsensiDetailEntity.setMesinAbsensiDetailId(mesinAbsensiDetailId);
+                    mesinAbsensiDetailEntity.setPin(mesinAbsensiDetail.getPin());
+                    mesinAbsensiDetailEntity.setStatus(mesinAbsensiDetail.getStatus());
+                    mesinAbsensiDetailEntity.setScanDate(mesinAbsensiDetail.getScanDate());
+                    mesinAbsensiDetailEntity.setVerifyMode(mesinAbsensiDetail.getVerifyMode());
+                    mesinAbsensiDetailEntity.setWorkCode(mesinAbsensiDetail.getWorkCode());
+                    mesinAbsensiDetailEntity.setAction("C");
+                    mesinAbsensiDetailEntity.setFlag("Y");
+                    mesinAbsensiDetailEntity.setLastUpdate(updateTime);
+                    mesinAbsensiDetailEntity.setCreatedDate(updateTime);
+                    mesinAbsensiDetailEntity.setLastUpdateWho(userLogin);
+                    mesinAbsensiDetailEntity.setCreatedWho(userLogin);
+                    mesinAbsensiDetailDao.addAndSave(mesinAbsensiDetailEntity);
+                }
+            }
+            //jika berhasil maka akan ditaruh di last get
+            ImMesinAbsensiEntity mesinAbsensiEntity = mesinDao.getById("mesinId",mesin.getMesinId());
+            mesinAbsensiEntity.setLastGet(bean.getLastUpdate());
+            mesinDao.updateAndSave(mesinAbsensiEntity);
         }
+
         // END OF CODING ASLI //
         return null;
     }
 
-    public void getDataFingerForCronJob() throws Exception{
-        String urlParameters = "";
-        String url = "";
-
-        Map hsCriteriaMesin = new HashMap();
-        hsCriteriaMesin.put("flag", "Y");
-
-        List<ImMesinAbsensiEntity> imMesinAbsensiEntityList = new ArrayList<>();
-        imMesinAbsensiEntityList = mesinDao.getByCriteria(hsCriteriaMesin);
-        for (ImMesinAbsensiEntity mesin : imMesinAbsensiEntityList) {
-            urlParameters = mesin.getMesinSn();
-            url = mesin.getMesinName();
-        }
-        // CODING ASLI //
-        String inputLine;
-        StringBuffer response = new StringBuffer();
-
-        List<MesinAbsensiDetail> mesinAbsensiDetailList = new ArrayList<>();
-        byte[] postData = urlParameters.getBytes( StandardCharsets.UTF_8 );
-        int postDataLength = postData.length;
-        URL obj = new URL(url);
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-        // optional default is GET
-        con.setRequestMethod("POST");
-        con.setDoOutput( true );
-        con.setRequestProperty("Content-Length", Integer.toString(postDataLength));
-        //add request header
-        con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-        try( DataOutputStream wr = new DataOutputStream( con.getOutputStream())) {
-            wr.write( postData );
-        }
-        int responseCode = con.getResponseCode();
-        System.out.println("\nSending 'POST' request to URL : " + url);
-        System.out.println("Response Code : " + responseCode);
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        StringBuffer responseTemp = new StringBuffer();
-        while ((inputLine = in.readLine()) != null) {
-            responseTemp.append(inputLine);
-        }
-        in.close();
-        JSONObject myResponseCheck = new JSONObject(responseTemp.toString());
-        JSONArray ja_data = myResponseCheck.getJSONArray("Data");
-        int length = ja_data.length();
-        for(int i=0; i<length; i++) {
-            JSONObject jObj = ja_data.getJSONObject(i);
-            MesinAbsensiDetail mesinAbsensiDetail = new MesinAbsensiDetail();
-            mesinAbsensiDetail.setPin(jObj.getString("PIN"));
-            mesinAbsensiDetail.setStatus(String.valueOf(jObj.getInt("IOMode")));
-            mesinAbsensiDetail.setScanDate(Timestamp.valueOf(jObj.getString("ScanDate")));
-            mesinAbsensiDetail.setVerifyMode(String.valueOf(jObj.getInt("VerifyMode")));
-            mesinAbsensiDetail.setWorkCode(String.valueOf(jObj.getInt("WorkCode")));
-            mesinAbsensiDetailList.add(mesinAbsensiDetail);
-        }
-
-        //Save To mesin Absensi Detail List
-        for (MesinAbsensiDetail mesinAbsensiDetail : mesinAbsensiDetailList) {
-            List<MesinAbsensiDetailEntity> mesinAbsensiDetailEntityList = new ArrayList<>();
-            Map hsCriteria = new HashMap();
-            hsCriteria.put("pin", mesinAbsensiDetail.getPin());
-            hsCriteria.put("status", mesinAbsensiDetail.getStatus());
-            hsCriteria.put("scan_date", mesinAbsensiDetail.getScanDate());
-            hsCriteria.put("verify_mode", mesinAbsensiDetail.getVerifyMode());
-            hsCriteria.put("work_code", mesinAbsensiDetail.getWorkCode());
-            hsCriteria.put("flag", "Y");
-            mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getByCriteria(hsCriteria);
-            if (mesinAbsensiDetailEntityList.size() == 0) {
-                MesinAbsensiDetailEntity mesinAbsensiDetailEntity = new MesinAbsensiDetailEntity();
-                String mesinAbsensiDetailId = mesinAbsensiDetailDao.getNextMesinAbsensiDetailId();
-                String userLogin = CommonUtil.userLogin();
-                Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-                mesinAbsensiDetailEntity.setMesinAbsensiDetailId(mesinAbsensiDetailId);
-                mesinAbsensiDetailEntity.setPin(mesinAbsensiDetail.getPin());
-                mesinAbsensiDetailEntity.setStatus(mesinAbsensiDetail.getStatus());
-                mesinAbsensiDetailEntity.setScanDate(mesinAbsensiDetail.getScanDate());
-                mesinAbsensiDetailEntity.setVerifyMode(mesinAbsensiDetail.getVerifyMode());
-                mesinAbsensiDetailEntity.setWorkCode(mesinAbsensiDetail.getWorkCode());
-                mesinAbsensiDetailEntity.setAction("C");
-                mesinAbsensiDetailEntity.setFlag("Y");
-                mesinAbsensiDetailEntity.setLastUpdate(updateTime);
-                mesinAbsensiDetailEntity.setCreatedDate(updateTime);
-                mesinAbsensiDetailEntity.setLastUpdateWho(userLogin);
-                mesinAbsensiDetailEntity.setCreatedWho(userLogin);
-
-                mesinAbsensiDetailEntity.setAction("C");
-                mesinAbsensiDetailEntity.setFlag("Y");
-                mesinAbsensiDetailEntity.setLastUpdate(updateTime);
-                mesinAbsensiDetailEntity.setCreatedDate(updateTime);
-                mesinAbsensiDetailEntity.setLastUpdateWho(userLogin);
-                mesinAbsensiDetailEntity.setCreatedWho(userLogin);
-
-                // Save mesin Absensi
-                mesinAbsensiDetailDao.addAndSave(mesinAbsensiDetailEntity);
-            }
-
-        }
-        response=responseTemp;
-
-        /*//PERCOBAAN DATA DUMMY
-        List<MesinAbsensiDetail> mesinAbsensiDetailList = new ArrayList<>();
-        URL obj = new URL(url);
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-        // optional default is GET
-        con.setRequestMethod("POST");
-        con.setDoOutput(true);
-        //add request header
-        con.setRequestProperty("Content-Type", "application/json");
-        int responseCode = con.getResponseCode();
-        System.out.println("\nSending 'GET' request to URL : " + url);
-        System.out.println("Response Code : " + responseCode);
-        BufferedReader in = new BufferedReader(
-        new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuffer response = new StringBuffer();
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
-        }
-        in.close();
-        JSONObject myResponse = new JSONObject(response.toString());
-        JSONArray ja_data = myResponse.getJSONArray("Data");
-
-        int length = ja_data.length();
-        for (int i = 0; i < length; i++) {
-            JSONObject jObj = ja_data.getJSONObject(i);
-            MesinAbsensiDetail mesinAbsensiDetail = new MesinAbsensiDetail();
-            mesinAbsensiDetail.setPin(jObj.getString("PIN"));
-            mesinAbsensiDetail.setStatus(String.valueOf(jObj.getInt("IOMode")));
-            mesinAbsensiDetail.setScanDate(Timestamp.valueOf(jObj.getString("ScanDate")));
-            mesinAbsensiDetail.setVerifyMode(String.valueOf(jObj.getInt("VerifyMode")));
-            mesinAbsensiDetail.setWorkCode(String.valueOf(jObj.getInt("WorkCode")));
-            mesinAbsensiDetailList.add(mesinAbsensiDetail);
-        }
-        //Save To mesin Absensi Detail List
-        for (MesinAbsensiDetail mesinAbsensiDetail : mesinAbsensiDetailList) {
-            List<MesinAbsensiDetailEntity> mesinAbsensiDetailEntityList = new ArrayList<>();
-            Map hsCriteria = new HashMap();
-            hsCriteria.put("pin", mesinAbsensiDetail.getPin());
-            hsCriteria.put("status", mesinAbsensiDetail.getStatus());
-            hsCriteria.put("scan_date", mesinAbsensiDetail.getScanDate());
-            hsCriteria.put("verify_mode", mesinAbsensiDetail.getVerifyMode());
-            hsCriteria.put("work_code", mesinAbsensiDetail.getWorkCode());
-            hsCriteria.put("flag", "Y");
-            mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getByCriteria(hsCriteria);
-            if (mesinAbsensiDetailEntityList.size() == 0) {
-                MesinAbsensiDetailEntity mesinAbsensiDetailEntity = new MesinAbsensiDetailEntity();
-                String mesinAbsensiDetailId = mesinAbsensiDetailDao.getNextMesinAbsensiDetailId();
-                mesinAbsensiDetailEntity.setMesinAbsensiDetailId(mesinAbsensiDetailId);
-                mesinAbsensiDetailEntity.setVerifyMode(mesinAbsensiDetail.getVerifyMode());
-                mesinAbsensiDetailEntity.setScanDate(mesinAbsensiDetail.getScanDate());
-                mesinAbsensiDetailEntity.setStatus(mesinAbsensiDetail.getStatus());
-                mesinAbsensiDetailEntity.setPin(mesinAbsensiDetail.getPin());
-                mesinAbsensiDetailEntity.setWorkCode(mesinAbsensiDetail.getWorkCode());
-
-                String userLogin = CommonUtil.userLogin();
-                Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-                mesinAbsensiDetailEntity.setAction("C");
-                mesinAbsensiDetailEntity.setFlag("Y");
-                mesinAbsensiDetailEntity.setLastUpdate(updateTime);
-                mesinAbsensiDetailEntity.setCreatedDate(updateTime);
-                mesinAbsensiDetailEntity.setLastUpdateWho(userLogin);
-                mesinAbsensiDetailEntity.setCreatedWho(userLogin);
-
-                mesinAbsensiDetailDao.addAndSave(mesinAbsensiDetailEntity);
-            }
-        }
-        // END OF PERCOBAAN DATA DUMMY*/
-    }
-
-
     public void getDataInquiryForCronJob() throws Exception{
-        getDataFromMesin();
+        MesinAbsensi mesinAbsensi = new MesinAbsensi();
+        mesinAbsensi.setCreatedWho("Cron");
+        getDataFromMesin(mesinAbsensi);
 
         java.util.Date date = new java.util.Date();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -3874,7 +3714,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                                 if (hasilInquiry.getJamMasuk()==null||hasilInquiry.getJamKeluar()==null ){
                                     hasil = Double.parseDouble("0");
                                 }else {
-                                    hasil = SubtractJamAwalDanJamAkhir(hasilInquiry.getJamMasuk(),hasilInquiry.getJamKeluar(),"Positif");
+                                    hasil = CommonUtil.SubtractJamAwalDanJamAkhir(hasilInquiry.getJamMasuk(),hasilInquiry.getJamKeluar(),"Positif");
                                 }
                                 hasilInquiry.setRealisasiJamLembur(hasil);
                             }else{
@@ -4884,44 +4724,7 @@ public class AbsensiBoImpl implements AbsensiBo {
         }
         return listAbsensi;
     }
-    public Double SubtractJamAwalDanJamAkhir (String jamAwal,String jamAkhir,String status) throws ParseException {
-        java.text.DateFormat df = new java.text.SimpleDateFormat("dd:MM:yyyy HH:mm");
-        java.util.Date date1 = df.parse("01:01:2000 "+jamAwal);
-        java.util.Date date2 = df.parse("01:01:2000 "+jamAkhir);
-        long diff = date2.getTime() - date1.getTime();
-        if (diff<0&&status.equalsIgnoreCase("positif")){
-            date2 = df.parse("02:01:2000 "+jamAkhir);
-            diff = date2.getTime() - date1.getTime();
-        }
-        int timeInSeconds = (int) (diff / 1000);
-        int hours, minutes;
-        hours = timeInSeconds / 3600;
-        timeInSeconds = timeInSeconds - (hours * 3600);
-        minutes = timeInSeconds / 60;
-        double hasil=hours;
-        if (minutes<15){hasil=hasil+0;}
-        else if (minutes<30){hasil=hasil+0.25;}
-        else if (minutes<45){hasil=hasil+0.50;}
-        else if (minutes<60){hasil=hasil+0.75;}
-        return hasil;
-    }
-    public Double SubtractJam (String jamAwal,String jamAkhir) throws ParseException {
-        java.text.DateFormat df = new java.text.SimpleDateFormat("dd:MM:yyyy HH:mm");
-        java.util.Date date1 = df.parse("01:01:2000 "+jamAwal);
-        java.util.Date date2 = df.parse("01:01:2000 "+jamAkhir);
-        long diff = date2.getTime() - date1.getTime();
-        int timeInSeconds = (int) (diff / 1000);
-        int hours, minutes;
-        hours = timeInSeconds / 3600;
-        timeInSeconds = timeInSeconds - (hours * 3600);
-        minutes = timeInSeconds / 60;
-        double hasil=hours;
-        if (minutes<15){hasil=hasil+0;}
-        else if (minutes<30){hasil=hasil+0.25;}
-        else if (minutes<45){hasil=hasil+0.50;}
-        else if (minutes<60){hasil=hasil+0.75;}
-        return hasil;
-    }
+
     public List <StrukturJabatan> getPerBagianSys() throws GeneralBOException {
         List<ImStrukturJabatanEntity> imStrukturJabatanEntities  = strukturJabatanDao.getPerBagianDao();
         List<StrukturJabatan> strukturJabatans  = new ArrayList<>();
@@ -5345,19 +5148,19 @@ public class AbsensiBoImpl implements AbsensiBo {
                 break;
             }
             if (iJamAwalKerja<iJamAwalDb){
-                hasil=hasil+SubtractJamAwalDanJamAkhir (jamAwal,sJamKerjaAwalDb,"positif");
+                hasil=hasil+CommonUtil.SubtractJamAwalDanJamAkhir (jamAwal,sJamKerjaAwalDb,"positif");
                 if (iJamAkhirKerja>iJamAkhirDb){
-                    hasil=hasil+SubtractJamAwalDanJamAkhir (sJamKerjaAkhirDb,jamAkhir,"positif");
+                    hasil=hasil+CommonUtil.SubtractJamAwalDanJamAkhir (sJamKerjaAkhirDb,jamAkhir,"positif");
                 }
             }
             if (iJamAkhirKerja<iJamAkhirDb&&iJamAkhirKerja>iJamAwalDb){
                 hasil= (double) 0;
             }
             else if (iJamAwalKerja>=iJamAkhirDb){
-                hasil=hasil+SubtractJamAwalDanJamAkhir (jamAwal,jamAkhir,"positif");
+                hasil=hasil+CommonUtil.SubtractJamAwalDanJamAkhir (jamAwal,jamAkhir,"positif");
             }
         }else{
-            hasil=SubtractJamAwalDanJamAkhir (jamAwal,jamAkhir,"positif");
+            hasil=CommonUtil.SubtractJamAwalDanJamAkhir (jamAwal,jamAkhir,"positif");
         }
         return hasil;
     }
@@ -5375,16 +5178,16 @@ public class AbsensiBoImpl implements AbsensiBo {
             iJamAkhirDb=Integer.parseInt(sJamKerjaAkhirDb.replace(":",""));
 
             if (iJamAwalKerja<iJamAwalDb){
-                hasil=hasil+SubtractJamAwalDanJamAkhir (jamAwal,sJamKerjaAwalDb,"positif");
+                hasil=hasil+CommonUtil.SubtractJamAwalDanJamAkhir (jamAwal,sJamKerjaAwalDb,"positif");
                 if (iJamAkhirKerja>iJamAkhirDb){
-                    hasil=hasil+SubtractJamAwalDanJamAkhir (sJamKerjaAkhirDb,jamAkhir,"positif");
+                    hasil=hasil+CommonUtil.SubtractJamAwalDanJamAkhir (sJamKerjaAkhirDb,jamAkhir,"positif");
                 }
             }
             if (iJamAwalKerja>=iJamAkhirDb){
-                hasil=hasil+SubtractJamAwalDanJamAkhir (jamAwal,jamAkhir,"positif");
+                hasil=hasil+CommonUtil.SubtractJamAwalDanJamAkhir (jamAwal,jamAkhir,"positif");
             }
         }else{
-            hasil=SubtractJamAwalDanJamAkhir (jamAwal,jamAkhir,"positif");
+            hasil=CommonUtil.SubtractJamAwalDanJamAkhir (jamAwal,jamAkhir,"positif");
         }
         return hasil;
     }
@@ -5467,7 +5270,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                             jamMasukDB= jamKerja.getJamAwalKerja();
                         }
                         try {
-                            selisih = SubtractJam(jamMasukDB,hasilAbsensi.getJamMasuk());
+                            selisih = CommonUtil.SubtractJam(jamMasukDB,hasilAbsensi.getJamMasuk());
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
