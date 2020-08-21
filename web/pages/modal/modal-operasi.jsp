@@ -2422,111 +2422,111 @@
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-4 label_op">Persiapan Operasi</label>
+                            <label class="col-md-4" id="label_op_1">1. Persiapan Operasi</label>
                             <div class="col-md-8">
                                 <textarea class="form-control urutan_op"></textarea>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-4 label_op">Persiapan Operasi</label>
+                            <label class="col-md-4" id="label_op_2">2. Posisi Pasien</label>
                             <div class="col-md-8">
                                 <textarea class="form-control urutan_op"></textarea>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-4 label_op">Persiapan Operasi</label>
+                            <label class="col-md-4" id="label_op_3">3. Desinfektan</label>
                             <div class="col-md-8">
                                 <textarea class="form-control urutan_op"></textarea>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-4 label_op">Persiapan Operasi</label>
+                            <label class="col-md-4" id="label_op_4">4. Insisi kulit dan pembukaan lapangan operasi</label>
                             <div class="col-md-8">
                                 <textarea class="form-control urutan_op"></textarea>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-4 label_op">Persiapan Operasi</label>
+                            <label class="col-md-4" id="label_op_5">5. Pendapatan lapangan operasi dan kulit</label>
                             <div class="col-md-8">
                                 <textarea class="form-control urutan_op"></textarea>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-4 label_op">Persiapan Operasi</label>
+                            <label class="col-md-4" id="label_op_6">6. Apa yang dilakukan</label>
                             <div class="col-md-8">
                                 <textarea class="form-control urutan_op"></textarea>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-4 label_op">Persiapan Operasi</label>
+                            <label class="col-md-4" id="label_op_7">7. Penutupan lapangan Operasi</label>
                             <div class="col-md-8">
                                 <textarea class="form-control urutan_op"></textarea>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-4 label_op">Persiapan Operasi</label>
+                            <label class="col-md-4" id="label_op_8">8. Komplikasi Operasi</label>
                             <div class="col-md-8">
                                 <textarea class="form-control urutan_op"></textarea>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-4 label_op">Persiapan Operasi</label>
+                            <label class="col-md-4" id="label_op_9">9. Hasil Operasi</label>
                             <div class="col-md-8">
                                 <textarea class="form-control urutan_op"></textarea>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-4 label_op">Persiapan Operasi</label>
+                            <label class="col-md-4" id="label_op_10">10. Diskripsi jaringan yang diambil</label>
                             <div class="col-md-8">
                                 <textarea class="form-control urutan_op"></textarea>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-4 label_op">Persiapan Operasi</label>
+                            <label class="col-md-4" id="label_op_11">11. Lain-Lain yang perlu</label>
                             <div class="col-md-8">
                                 <textarea class="form-control urutan_op"></textarea>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-4 label_op">Persiapan Operasi</label>
+                            <label class="col-md-4" id="label_op_12">12. Kesimpulan</label>
                             <div class="col-md-8">
                                 <textarea class="form-control urutan_op"></textarea>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-4 label_op">Persiapan Operasi</label>
+                            <label class="col-md-4" id="label_op_13">13. Jumlah Perdarahan</label>
                             <div class="col-md-8">
                                 <textarea class="form-control urutan_op"></textarea>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-4 label_op">Persiapan Operasi</label>
+                            <label class="col-md-4" id="label_op_14">14. Kode implan (jika terpasang)</label>
                             <div class="col-md-8">
                                 <textarea class="form-control urutan_op"></textarea>
                             </div>

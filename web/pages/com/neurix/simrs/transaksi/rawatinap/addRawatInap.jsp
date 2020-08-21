@@ -3715,6 +3715,7 @@
     var kategoriRuangan = '<s:property value="rawatInap.kategoriRuangan"/>';
     var kelasPasienBpjs = '<s:property value="rawatInap.idKelas"/>';
     var tempidRm = "";
+    var urlPages = "";
 
     if (month.length < 2) {
         month = "0"+month;
@@ -3755,22 +3756,27 @@
         if(kategoriRuangan == 'rawat_inap'){
             $('#title-pages').text("Rawat Inap Pasien");
             $('#rawat_inap').addClass('active');
+            urlPages = 'rawat_inap';
         }
         if(kategoriRuangan == 'rawat_intensif'){
             $('#title-pages').text("Rawat Intensif Pasien");
             $('#rawat_intensif').addClass('active');
+            urlPages = 'rawat_intensif';
         }
         if(kategoriRuangan == 'rawat_isolasi'){
             $('#title-pages').text("Rawat Isolasi Pasien");
             $('#rawat_isolasi').addClass('active');
+            urlPages = 'rawat_isolasi';
         }
         if(kategoriRuangan == 'kamar_operasi'){
             $('#title-pages').text("Rawat Operasi Pasien");
             $('#rawat_operasi').addClass('active');
+            urlPages = 'rawat_operasi';
         }
         if(kategoriRuangan == 'ruang_bersalin'){
             $('#title-pages').text("Rawat Bersalin Pasien");
             $('#rawat_bersalin').addClass('active');
+            urlPages = 'rawat_bersalin';
         }
 
         $('#img_ktp').on('click', function(e){

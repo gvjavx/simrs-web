@@ -1119,12 +1119,23 @@ function saveDataOperasi(jenis, ket) {
         var va19 = $('#lap19').val();
         var nama = $('#nama_terang_sps').val();
         var sip = $('#sip_sps').val();
+        var dataTemp = [];
+
+        var isi = $('.urutan_op');
+
+        $.each(isi, function (i, item) {
+            if(item.value != ''){
+                dataTemp.push({
+                    'cek_data': item.value
+                });
+            }
+        });
 
         var ttd1 = document.getElementById("ttd_lap_dokter");
 
         var cekTtd1 = isCanvasBlank(ttd1);
 
-        if (!cekTtd1) {
+        if (!cekTtd1 && isi.length == dataTemp.length) {
 
             var canv1 = ttd1.toDataURL("image/png"),
                 canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");
@@ -1250,10 +1261,24 @@ function saveDataOperasi(jenis, ket) {
             });
             data.push({
                 'parameter': 'Urutan Operasi',
-                'jawaban1': va19,
+                'jawaban1': '',
                 'keterangan': ket,
                 'jenis': jenis,
+                'tipe': 'penyataan',
                 'id_detail_checkup': idDetailCheckup
+            });
+            $.each(isi, function (i, item) {
+                var count = i+1;
+                var label = $('#label_op_'+count).text();
+                if(item.value != ''){
+                    data.push({
+                        'parameter': label,
+                        'jawaban1': item.value,
+                        'keterangan': ket,
+                        'jenis': jenis,
+                        'id_detail_checkup': idDetailCheckup
+                    });
+                }
             });
             data.push({
                 'parameter': 'TTD Dokter Operator',
@@ -1617,6 +1642,11 @@ function saveDataOperasi(jenis, ket) {
         var va32 = $('[name=kes32]');
         var va33 = $('#kes33').val();
 
+        var nama1 = $('#nama_terang_anestesi').val();
+        var nama2 = $('#nama_terang_aperator').val();
+        var nama3 = $('#nama_terang_sirkuler').val();
+        var sip = $('#sip_aperator').val();
+
         var v27 = "";
         var v30 = "";
         var v32 = "";
@@ -1920,6 +1950,7 @@ function saveDataOperasi(jenis, ket) {
                 'keterangan': jenis,
                 'jenis': ket,
                 'tipe': 'ttd',
+                'nama_terang': nama1,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -1928,6 +1959,8 @@ function saveDataOperasi(jenis, ket) {
                 'keterangan': jenis,
                 'jenis': ket,
                 'tipe': 'ttd',
+                'nama_terang': nama2,
+                'sip': sip,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -1936,6 +1969,7 @@ function saveDataOperasi(jenis, ket) {
                 'keterangan': jenis,
                 'jenis': ket,
                 'tipe': 'ttd',
+                'nama_terang': nama3,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;

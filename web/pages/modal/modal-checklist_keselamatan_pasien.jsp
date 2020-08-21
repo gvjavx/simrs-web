@@ -278,6 +278,18 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row jarak">
+                        <div class="col-md-6">
+                            <label style="margin-left: 8px">TTD Anestesi</label>
+                            <canvas class="paint-canvas-ttd" id="ttd_anestesi" width="220"
+                                    onmouseover="paintTtd('ttd_anestesi')"></canvas>
+                            <input class="form-control" id="nama_terang_anestesi" placeholder="Nama Terang">
+                            <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                    onclick="removePaint('ttd_anestesi')"><i
+                                    class="fa fa-trash"></i> Clear
+                            </button>
+                        </div>
+                    </div>
                     <hr class="garis">
                     <div class="row">
                         <label class="col-md-12"><b>Sebelum Incisi (Fase Time Out)</b></label>
@@ -394,6 +406,19 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row jarak">
+                        <div class="col-md-6">
+                            <label style="margin-left: 8px">TTD Operator</label>
+                            <canvas class="paint-canvas-ttd" id="ttd_aperator" width="220"
+                                    onmouseover="paintTtd('ttd_aperator')"></canvas>
+                            <input class="form-control" id="nama_terang_aperator" placeholder="SIP">
+                            <input style="margin-top: 3px" class="form-control" id="sip_aperator" placeholder="SIP">
+                            <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                    onclick="removePaint('ttd_aperator')"><i
+                                    class="fa fa-trash"></i> Clear
+                            </button>
+                        </div>
+                    </div>
                     <hr class="garis">
                     <div class="row">
                         <label class="col-md-12"><b>Sebelum Check Out Kamar Operasi (Fase Sign Out)</b></label>
@@ -469,40 +494,16 @@
                             </div>
                         </div>
                     </div>
-                    <hr class="garis">
-                    <div class="row">
-                        <div class="form-group">
-                            <div class="col-md-6">
-                                <label style="margin-left: 8px">TTD Anestesi</label>
-                                <canvas class="paint-canvas-ttd" id="ttd_anestesi" width="220"
-                                        onmouseover="paintTtd('ttd_anestesi')"></canvas>
-                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
-                                        onclick="removePaint('ttd_anestesi')"><i
-                                        class="fa fa-trash"></i> Clear
-                                </button>
-                            </div>
-                            <div class="col-md-6">
-                                <label style="margin-left: 8px">TTD Operator</label>
-                                <canvas class="paint-canvas-ttd" id="ttd_aperator" width="220"
-                                        onmouseover="paintTtd('ttd_aperator')"></canvas>
-                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
-                                        onclick="removePaint('ttd_aperator')"><i
-                                        class="fa fa-trash"></i> Clear
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <div class="col-md-offset-3 col-md-6">
-                                <label style="margin-left: 8px">TTD Perawat Sirkuler</label>
-                                <canvas class="paint-canvas-ttd" id="ttd_sirkuler" width="220"
-                                        onmouseover="paintTtd('ttd_sirkuler')"></canvas>
-                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
-                                        onclick="removePaint('ttd_sirkuler')"><i
-                                        class="fa fa-trash"></i> Clear
-                                </button>
-                            </div>
+                    <div class="row jarak">
+                        <div class="col-md-6">
+                            <label style="margin-left: 8px">TTD Perawat Sirkuler</label>
+                            <canvas class="paint-canvas-ttd" id="ttd_sirkuler" width="220"
+                                    onmouseover="paintTtd('ttd_sirkuler')"></canvas>
+                            <input class="form-control" id="nama_terang_sirkuler" placeholder="SIP">
+                            <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                    onclick="removePaint('ttd_sirkuler')"><i
+                                    class="fa fa-trash"></i> Clear
+                            </button>
                         </div>
                     </div>
                 </div>
