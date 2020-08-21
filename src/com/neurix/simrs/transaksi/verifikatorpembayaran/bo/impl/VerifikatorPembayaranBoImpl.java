@@ -299,14 +299,18 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
             throw new GeneralBOException("[VerifikatorPembayaranBoImpl.updateBuktiTransfer] ERROR. ", e);
         }
 
-        resultPembayaran.get(0).setUrlFotoBukti(pathBukti);
+        for (ItSimrsPembayaranOnlineEntity item : resultPembayaran) {
+            item.setUrlFotoBukti(pathBukti);
 
-        try {
-            verifikatorPembayaranDao.updateAndSave(resultPembayaran.get(0));
-        } catch (HibernateException e){
-            logger.error("[VerifikatorPembayaranBoImpl.updateBuktiTransfer] ERROR. ", e);
-            throw new GeneralBOException("[VerifikatorPembayaranBoImpl.updateBuktiTransfer] ERROR. ", e);
+            try {
+                verifikatorPembayaranDao.updateAndSave(resultPembayaran.get(0));
+            } catch (HibernateException e){
+                logger.error("[VerifikatorPembayaranBoImpl.updateBuktiTransfer] ERROR. ", e);
+                throw new GeneralBOException("[VerifikatorPembayaranBoImpl.updateBuktiTransfer] ERROR. ", e);
+            }
         }
+
+//        resultPembayaran.get(0).setUrlFotoBukti(pathBukti);
 
         Map hsCriteria2 = new HashMap();
         hsCriteria2.put("id", idTele);
@@ -322,7 +326,10 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
 
         if(keterangan.equalsIgnoreCase("konsultasi")) {
             resultTelemedic.get(0).setFlagBayarKonsultasi("Y");
-        } else resultTelemedic.get(0).setFlagBayarResep("Y");
+        }
+        if (keterangan.equalsIgnoreCase("resep")) {
+            resultTelemedic.get(0).setFlagResep("Y");
+        }
 
         try {
             telemedicDao.updateAndSave(resultTelemedic.get(0));
