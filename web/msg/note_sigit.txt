@@ -670,3 +670,22 @@
 
     CREATE SEQUENCE seq_perhitungan_budgeting;
 <<< //
+
+// >>> 2020-08-21
+
+UPDATE im_akun_kode_rekening SET tipe_budgeting = null;
+UPDATE im_akun_kode_rekening SET tipe_budgeting = 'biaya'
+WHERE kode_rekening LIKE '5%';
+UPDATE im_akun_kode_rekening SET tipe_budgeting = 'pendapatan'
+WHERE kode_rekening LIKE '4%';
+UPDATE im_akun_kode_rekening SET tipe_budgeting = 'investasi'
+WHERE kode_rekening LIKE '1%';
+
+UPDATE im_akun_kode_rekening SET tipe_coa = '04'
+WHERE kode_rekening LIKE '1%';
+UPDATE im_akun_kode_rekening SET tipe_coa = '03', flag_divisi = 'Y'
+WHERE kode_rekening LIKE '5%';
+UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master = 'Y'
+WHERE kode_rekening LIKE '4%';
+
+<<< //
