@@ -195,8 +195,6 @@ public class BgEksploitasiAction {
             return "add";
         } else {
             setBudgeting(budgetingNew);
-            session.removeAttribute("listOfCoa");
-            session.setAttribute("listOfCoa", new ArrayList<>());
             if ("Y".equalsIgnoreCase(budgetingNew.getFlagKp())){
                 eraseAllSession();
                 return "add_kp";
@@ -391,7 +389,7 @@ public class BgEksploitasiAction {
         }
     }
 
-    public List<ParameterBudgeting> getListParameterBudgeting(String idJenis){
+    public List<ParameterBudgeting> getListParameterBudgeting(String idJenis, String tahun, String branchId, String tipe){
         logger.info("[BgEksploitasiAction.getListParametersBudgeting] START >>>");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -401,7 +399,7 @@ public class BgEksploitasiAction {
         List<ParameterBudgeting> sessionParam = (List<ParameterBudgeting>) session.getAttribute("listOfParam");
         List<ParameterBudgeting> listParamBudgeting = new ArrayList<>();
 
-        if (sessionParam != null){
+        if (sessionParam != null && !"new".equalsIgnoreCase(tipe)){
             // jika session ada
             listParamBudgeting = sessionParam;
         } else {
@@ -410,6 +408,8 @@ public class BgEksploitasiAction {
             // cari data dri table;
             ParameterBudgeting parameterBudgeting = new ParameterBudgeting();
             parameterBudgeting.setIdJenisBudgeting(idJenis);
+            parameterBudgeting.setBranchId(branchId);
+            parameterBudgeting.setTahun(tahun);
             try {
                 listParamBudgeting = budgetingPerhitunganBo.getSearchListParameterBudgeting(parameterBudgeting);
             } catch (GeneralBOException e){

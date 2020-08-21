@@ -425,61 +425,17 @@
 
         showDialog('loading');
         dwr.engine.setAsync(true);
-        BgNominasiAction.getListParameterBudgeting("PDT", function (list) {
+        BgEksploitasiAction.getListParameterBudgeting("NMS", tahun, branch, "new", function (list) {
             dwr.engine.setAsync(false);
             showDialog('close');
 
             var str = "";
             $.each(list, function (i, item) {
                 str += "<tr>" +
-                        "<td>"+item.nama+"</td>" +
-                        "<td align='right'>"+ formatRupiah(nullEscape(item.nilaiTotalBudgeting)) +"</td>" +
-                        "<td align='center'>" +
-                        "<button class='btn btn-sm btn-primary' onclick=\"edit(\'"+item.id+"\',\'"+branch+"\',\'"+tahun+"\',\'"+ item.nama +"\')\"><i class='fa fa-edit'></i></button> " +
-                        "<button class='btn btn-sm btn-success'><i class='fa fa-search'></i></button>" +
-                        "</td>" +
-                        "</tr>";
-            });
-            $("#body-budgeting").html(str);
-            $("#label-tahun").text(tahun);
-            $("#label-branch").text(labelBranch);
-//            $('#ok_con').on('click', function () {
-//                showDialog('close');
-//            });
-        });
-
-        BudgetingNilaiDasarAction.getListNilaiDasarEdit(tahun, function (list) {
-            var str = "";
-            $.each(list, function (i, item) {
-                str += "<div class=\"row\">"+
-                    "<label class=\"control-label col-sm-4\" style=\"text-align: right\">"+item.keterangan+"</label>" +
-                    "<div class=\"col-sm-4\">" +
-                    "<input type=\"number\" class=\"form-control\" id=\"edit_"+item.idNilaiDasar+"\" value=\""+item.nilai+"\" align='right' readonly/>" +
-                    "</div>" +
-                    "</div>";
-            });
-            $("#body-nilai-dasar").html(str);
-            //console.log(str);
-            //console.log(listOfId);
-        });
-
-    }
-
-    function search() {
-        var tahun = $("#sel-tahun").val();
-        var branch = $("#sel-unit").val();
-        var labelBranch = $("#sel-unit option:selected").text();
-
-        dwr.engine.setAsync(true);
-        BgNominasiAction.getListParameterBudgeting("PDT", function (list) {
-            dwr.engine.setAsync(false);
-            var str = "";
-            $.each(list, function (i, item) {
-                str += "<tr>" +
                     "<td>"+item.nama+"</td>" +
                     "<td align='right'>"+ formatRupiah(nullEscape(item.nilaiTotalBudgeting)) +"</td>" +
                     "<td align='center'>" +
-                    "<button class='btn btn-sm btn-primary' onclick=\"edit(\'"+item.id+"\',\'"+branch+"\',\'"+tahun+"\')\"><i class='fa fa-edit'></i></button> " +
+                    "<button class='btn btn-sm btn-primary' onclick=\"edit(\'"+item.id+"\',\'"+branch+"\',\'"+tahun+"\',\'"+ item.nama +"\')\"><i class='fa fa-edit'></i></button> " +
                     "<button class='btn btn-sm btn-success'><i class='fa fa-search'></i></button>" +
                     "</td>" +
                     "</tr>";
@@ -487,9 +443,6 @@
             $("#body-budgeting").html(str);
             $("#label-tahun").text(tahun);
             $("#label-branch").text(labelBranch);
-//            $('#ok_con').on('click', function () {
-//                showDialog('close');
-//            });
         });
 
         BudgetingNilaiDasarAction.getListNilaiDasarEdit(tahun, function (list) {
@@ -503,8 +456,47 @@
                     "</div>";
             });
             $("#body-nilai-dasar").html(str);
-            //console.log(str);
-            //console.log(listOfId);
+        });
+    }
+
+    function search() {
+        var tahun = $("#sel-tahun").val();
+        var branch = $("#sel-unit").val();
+        var labelBranch = $("#sel-unit option:selected").text();
+
+        showDialog('loading');
+        dwr.engine.setAsync(true);
+        BgEksploitasiAction.getListParameterBudgeting("NMS", tahun, branch, "", function (list) {
+            dwr.engine.setAsync(false);
+            showDialog('close');
+
+            var str = "";
+            $.each(list, function (i, item) {
+                str += "<tr>" +
+                    "<td>"+item.nama+"</td>" +
+                    "<td align='right'>"+ formatRupiah(nullEscape(item.nilaiTotalBudgeting)) +"</td>" +
+                    "<td align='center'>" +
+                    "<button class='btn btn-sm btn-primary' onclick=\"edit(\'"+item.id+"\',\'"+branch+"\',\'"+tahun+"\',\'"+ item.nama +"\')\"><i class='fa fa-edit'></i></button> " +
+                    "<button class='btn btn-sm btn-success'><i class='fa fa-search'></i></button>" +
+                    "</td>" +
+                    "</tr>";
+            });
+            $("#body-budgeting").html(str);
+            $("#label-tahun").text(tahun);
+            $("#label-branch").text(labelBranch);
+        });
+
+        BudgetingNilaiDasarAction.getListNilaiDasarEdit(tahun, function (list) {
+            var str = "";
+            $.each(list, function (i, item) {
+                str += "<div class=\"row\">"+
+                    "<label class=\"control-label col-sm-4\" style=\"text-align: right\">"+item.keterangan+"</label>" +
+                    "<div class=\"col-sm-4\">" +
+                    "<input type=\"number\" class=\"form-control\" id=\"edit_"+item.idNilaiDasar+"\" value=\""+item.nilai+"\" align='right' readonly/>" +
+                    "</div>" +
+                    "</div>";
+            });
+            $("#body-nilai-dasar").html(str);
         });
 
     }

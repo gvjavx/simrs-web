@@ -425,7 +425,7 @@
 
         showDialog('loading');
         dwr.engine.setAsync(true);
-        BgEksploitasiAction.getListParameterBudgeting("PDT", function (list) {
+        BgEksploitasiAction.getListParameterBudgeting("EKS", tahun, branch, "new", function (list) {
             dwr.engine.setAsync(false);
             showDialog('close');
 
@@ -443,9 +443,6 @@
             $("#body-budgeting").html(str);
             $("#label-tahun").text(tahun);
             $("#label-branch").text(labelBranch);
-//            $('#ok_con').on('click', function () {
-//                showDialog('close');
-//            });
         });
 
         BudgetingNilaiDasarAction.getListNilaiDasarEdit(tahun, function (list) {
@@ -459,8 +456,6 @@
                     "</div>";
             });
             $("#body-nilai-dasar").html(str);
-            //console.log(str);
-            //console.log(listOfId);
         });
 
     }
@@ -470,16 +465,19 @@
         var branch = $("#sel-unit").val();
         var labelBranch = $("#sel-unit option:selected").text();
 
+        showDialog('loading');
         dwr.engine.setAsync(true);
-        BgEksploitasiAction.getListParameterBudgeting("PDT", function (list) {
+        BgEksploitasiAction.getListParameterBudgeting("EKS", tahun, branch, "", function (list) {
             dwr.engine.setAsync(false);
+            showDialog('close');
+
             var str = "";
             $.each(list, function (i, item) {
                 str += "<tr>" +
                     "<td>"+item.nama+"</td>" +
                     "<td align='right'>"+ formatRupiah(nullEscape(item.nilaiTotalBudgeting)) +"</td>" +
                     "<td align='center'>" +
-                    "<button class='btn btn-sm btn-primary' onclick=\"edit(\'"+item.id+"\',\'"+branch+"\',\'"+tahun+"\')\"><i class='fa fa-edit'></i></button> " +
+                    "<button class='btn btn-sm btn-primary' onclick=\"edit(\'"+item.id+"\',\'"+branch+"\',\'"+tahun+"\',\'"+ item.nama +"\')\"><i class='fa fa-edit'></i></button> " +
                     "<button class='btn btn-sm btn-success'><i class='fa fa-search'></i></button>" +
                     "</td>" +
                     "</tr>";
@@ -487,9 +485,6 @@
             $("#body-budgeting").html(str);
             $("#label-tahun").text(tahun);
             $("#label-branch").text(labelBranch);
-//            $('#ok_con').on('click', function () {
-//                showDialog('close');
-//            });
         });
 
         BudgetingNilaiDasarAction.getListNilaiDasarEdit(tahun, function (list) {
@@ -503,10 +498,7 @@
                     "</div>";
             });
             $("#body-nilai-dasar").html(str);
-            //console.log(str);
-            //console.log(listOfId);
         });
-
     }
 
 

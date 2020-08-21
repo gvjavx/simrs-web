@@ -19,6 +19,24 @@ public class ParameterBudgeting {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private BigDecimal nilaiTotalBudgeting;
+    private String tahun;
+    private String branchId;
+
+    public String getTahun() {
+        return tahun;
+    }
+
+    public void setTahun(String tahun) {
+        this.tahun = tahun;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
 
     public BigDecimal getNilaiTotalBudgeting() {
         return nilaiTotalBudgeting;

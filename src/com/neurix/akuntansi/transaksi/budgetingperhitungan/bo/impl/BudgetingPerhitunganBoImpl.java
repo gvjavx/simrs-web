@@ -135,6 +135,8 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
 
                 PerhitunganBudgeting perhitunganBudgeting = new PerhitunganBudgeting();
                 perhitunganBudgeting.setIdParameterBudgeting(paramEntity.getId());
+                perhitunganBudgeting.setBranchId(bean.getBranchId());
+                perhitunganBudgeting.setTahun(bean.getTahun());
                 List<ItAkunPerhitunganBudgetingEntity> perhitunganBudgetingEntities = getListPerhitunganBudgetingEntity(perhitunganBudgeting);
                 if (perhitunganBudgetingEntities.size() > 0){
                     BigDecimal nilaiBudgeting = hitungNilaiBudgeting(perhitunganBudgetingEntities);

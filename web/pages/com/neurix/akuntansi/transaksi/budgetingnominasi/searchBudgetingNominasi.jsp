@@ -165,7 +165,9 @@
                                 <div class="row">
                                     <div class="col-md-6 col-md-offset-4" style="margin-top: 10px">
                                         <button class="btn btn-success" onclick="search()"><i class="fa fa-search"></i> Search</button>
-                                        <button class="btn btn-primary" onclick="add()" id="btn-add"><i class="fa fa-plus"></i> Add</button>
+                                        <s:if test='budgeting.flagKp == "Y"'>
+                                            <button class="btn btn-primary" onclick="add()" id="btn-add"><i class="fa fa-plus"></i> Add</button>
+                                        </s:if>
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Action</button>
                                             <button type="button" class="btn btn-primary dropdown-toggle"
