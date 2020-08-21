@@ -19,7 +19,9 @@ import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.EfakturDTO;
 import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutang;
 import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutangDetail;
 import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.authorization.company.bo.CompanyBo;
 import com.neurix.authorization.company.model.Branch;
+import com.neurix.authorization.company.model.Company;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
@@ -1341,6 +1343,13 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
                 efakturDTO.setStatusApproval(err.getElementsByTagName("statusApproval").item(0).getTextContent());
                 efakturDTO.setStatusFaktur(err.getElementsByTagName("statusFaktur").item(0).getTextContent());
                 efakturDTO.setReferensi(err.getElementsByTagName("referensi").item(0).getTextContent());
+
+                //mengambil data company
+                ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+                CompanyBo companyBo= (CompanyBo) ctx.getBean("companyBoProxy");
+                String companyId = CommonUtil.companyIdLogin();
+                Company company = companyBo.getById(companyId);
+                efakturDTO.setNpwpPerusahaan(company.getNpwp());
             } else {
                 // success
             }
