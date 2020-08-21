@@ -16,7 +16,7 @@
     <script type='text/javascript' src='<s:url value="/pages/dist/js/akuntansi.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PositionAction.js"/>'></script>
     <script type='text/javascript'>
-        function confirm() {
+        function confirmJkk() {
             var tipeTransaksi = $('#tipe_transaksi').val();
             var tanggal = $('#tanggal').val();
             var metodeBayar = $('#coa_asal').val();
@@ -244,7 +244,7 @@
                                     <%--<div class="col-md-6">--%>
                                 <div class="form-group" style="display: inline;">
                                         <%--<div class="col-sm-10 col-md-offset-4" style="margin-top: 7px">--%>
-                                    <button type="button" class="btn btn-success" onclick="confirm()"><i
+                                    <button type="button" class="btn btn-success" onclick="confirmJkk()"><i
                                             class="fa fa-arrow-right"></i> Save
                                     </button>
                                     <button type="button" class="btn btn-danger" onclick="resetField()">
@@ -542,10 +542,15 @@
                                 </div>
                                 <script>
                                     $('#btnScanFaktur').click(function () {
-                                        $('.mod_scan_faktur').val('');
-                                        $('#no_faktur_view').text("Scan QR disini");
-                                        $("#mod_scan_faktur").prop('readonly', false);
-                                        $('#modal-scan-faktur').modal('show');
+                                        var namaVendor = $('#mod_nama_vendor_pengajuan').val();
+                                        if (namaVendor==""){
+                                            alert("Masukkan vendor terlebih dahulu");
+                                        } else{
+                                            $('.mod_scan_faktur').val('');
+                                            $('#no_faktur_view').text("Scan QR disini");
+                                            $("#mod_scan_faktur").prop('readonly', false);
+                                            $('#modal-scan-faktur').modal('show');
+                                        }
                                     })
                                 </script>
                             </div>
@@ -607,14 +612,21 @@
                             <label class="col-md-4" style="margin-top: 7px">Jumlah DPP</label>
                             <div class="col-md-8">
                                 <s:textfield id="mod_jumlah_dpp" onkeypress="$(this).css('border','')" readonly="true"
-                                             cssClass="form-control mod_scan_faktur" cssStyle="margin-top: 7px" />
+                                             cssClass="form-control mod_scan_faktur" cssStyle="margin-top: 7px;text-align: right" />
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Jumlah PPN</label>
                             <div class="col-md-8">
                                 <s:textfield id="mod_jumlah_ppn" onkeypress="$(this).css('border','')" readonly="true"
-                                             cssClass="form-control mod_scan_faktur" cssStyle="margin-top: 7px" />
+                                             cssClass="form-control mod_scan_faktur" cssStyle="margin-top: 7px;text-align: right" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Jumlah PPN BM</label>
+                            <div class="col-md-8">
+                                <s:textfield id="mod_jumlah_ppn_bm" onkeypress="$(this).css('border','')" readonly="true"
+                                             cssClass="form-control mod_scan_faktur" cssStyle="margin-top: 7px;text-align: right" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -638,21 +650,58 @@
                                              cssClass="form-control mod_scan_faktur" cssStyle="margin-top: 7px" />
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">NPWP Penjual</label>
+                            <div class="col-md-8">
+                                <s:textfield id="mod_npwp_penjual" onkeypress="$(this).css('border','')" readonly="true"
+                                             cssClass="form-control mod_scan_faktur" cssStyle="margin-top: 7px" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Nama Penjual</label>
+                            <div class="col-md-8">
+                                <s:textfield id="mod_nama_penjual" onkeypress="$(this).css('border','')" readonly="true"
+                                             cssClass="form-control mod_scan_faktur" cssStyle="margin-top: 7px" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Alamat Penjual</label>
+                            <div class="col-md-8">
+                                <s:textarea id="mod_alamat_penjual" onkeypress="$(this).css('border','')" readonly="true" rows="3"
+                                             cssClass="form-control mod_scan_faktur" cssStyle="margin-top: 7px" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">NPWP Perusahaan</label>
+                            <div class="col-md-8">
+                                <s:textfield id="mod_npwp_perusahaan" onkeypress="$(this).css('border','')" readonly="true"
+                                             cssClass="form-control mod_scan_faktur" cssStyle="margin-top: 7px" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">NPWP Lawan</label>
+                            <div class="col-md-8">
+                                <s:textfield id="mod_npwp_lawan_transaksi" onkeypress="$(this).css('border','')" readonly="true"
+                                             cssClass="form-control mod_scan_faktur" cssStyle="margin-top: 7px" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Nama Lawan</label>
+                            <div class="col-md-8">
+                                <s:textfield id="mod_nama_lawan_transaksi" onkeypress="$(this).css('border','')" readonly="true"
+                                             cssClass="form-control mod_scan_faktur" cssStyle="margin-top: 7px" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Alamat Lawan</label>
+                            <div class="col-md-8">
+                                <s:textarea id="mod_alamat_lawan_transaksi" onkeypress="$(this).css('border','')" readonly="true" rows="3"
+                                            cssClass="form-control mod_scan_faktur" cssStyle="margin-top: 7px" />
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
+                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <a id="btnAddNoFaktur" type="button" class="btn btn-default btn-success"><i class="fa fa-plus"></i> Add</a>
@@ -663,17 +712,33 @@
                         var currentDate = new Date();
                         currentDate.setMonth(currentDate.getMonth()-3);
                         var dateParts = stTanggalFaktur.split("/");
+                        var vendorFaktur = $('#mod_nama_penjual').val();
+                        var vendor = $('#mod_nama_vendor_pengajuan').val();
+                        var npwpLawan = $('#mod_npwp_lawan_transaksi').val();
+                        var npwpPerusahaan = $('#mod_npwp_perusahaan').val();
                         var tanggalFaktur = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
                         if (statusFaktur!=""){
                             if (tanggalFaktur < currentDate){
                                 alert("Tanggal Faktur sudah tidak valid , silahkan membuat faktur baru");
                                 $('.mod_scan_faktur').val('');
-                                $('#no_faktur_view').text("Scan QR disini");
-                                $("#mod_scan_faktur").prop('readonly', false);
-                            }{
-                                alert("Berhasil menambahkan No. Faktur");
-                                $('#mod_no_faktur').val($('#mod_scan_faktur').val());
                                 $('#modal-scan-faktur').modal('hide');
+                            }else{
+                                if (vendor==vendorFaktur){
+                                    alert("Berhasil menambahkan No. Faktur");
+                                    $('#mod_no_faktur').val($('#mod_scan_faktur').val());
+                                    $('#modal-scan-faktur').modal('hide');
+                                } else{
+                                    if (confirm("Nama vendor tidak sama , apakah anda tetap ingin menambahkan ? ")){
+                                        if (npwpLawan==npwpPerusahaan){
+                                            alert("Berhasil menambahkan No. Faktur");
+                                            $('#mod_no_faktur').val($('#mod_scan_faktur').val());
+                                            $('#modal-scan-faktur').modal('hide');
+                                        } else{
+                                            alert("NPWP Lawan yang berada di faktur tidak sama dengan NPWP perusahaan");
+                                        }
+                                    }
+                                }
+
                             }
                         } else{
                             alert("QR atau faktur tidak valid ");
@@ -978,6 +1043,44 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-lampiran">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Daftar Lampiran</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                    <br>
+                    <br>
+                    <div class="row">
+                        <label class="control-label col-sm-4">Lampiran (PDF/JPEG/PNG) : </label>
+                        <div class="col-sm-8">
+                            <input type="file" id="file" class="form-control" name="fileUpload"/>
+                            <input type="text" id="cpiddoc" class="form-control" accept="application/pdf,image/jpeg/png"
+                                   name="study.uploadFile" readonly />
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table style="width: 100%;" class="tabelLampiran table table-bordered">
+                            </table>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modal-search-nota">
     <div class="modal-dialog modal-flat">
         <div class="modal-content">
@@ -1022,11 +1125,19 @@
             $("#mod_scan_faktur").prop('readonly', true);
             $('#mod_tgl_faktur').val(result.tanggalFaktur);
             $('#mod_scan_faktur').val(result.nomorFaktur);
-            $('#mod_jumlah_dpp').val(result.jumlahDpp);
-            $('#mod_jumlah_ppn').val(result.jumlahPpn);
+            $('#mod_jumlah_dpp').val(formatRupiahAngka(result.jumlahDpp));
+            $('#mod_jumlah_ppn').val(formatRupiahAngka(result.jumlahPpn));
+            $('#mod_jumlah_ppn_bm').val(formatRupiahAngka(result.jumlahPpnBm));
             $('#mod_status_approval').val(result.statusApproval);
             $('#mod_status_faktur').val(result.statusFaktur);
             $('#mod_referensi').val(result.referensi);
+            $('#mod_npwp_penjual').val(result.npwpPenjual);
+            $('#mod_nama_penjual').val(result.namaPenjual);
+            $('#mod_alamat_penjual').val(result.alamatPenjual);
+            $('#mod_npwp_lawan_transaksi').val(result.npwpLawanTransaksi);
+            $('#mod_npwp_perusahaan').val(result.npwpPerusahaan);
+            $('#mod_nama_lawan_transaksi').val(result.namaLawanTransaksi);
+            $('#mod_alamat_lawan_transaksi').val(result.alamatLawanTransaksi);
         })
     };
 
@@ -1223,7 +1334,6 @@
         $('#mod_btnSaveDetailPembayaran').click(function () {
             $('#tipePengajuan').val("Y");
             var tanggalRealisasi = $('#mod_tanggal_realisasi').val();
-            var tipePengajuan = $('#mod_tipe_pengajuan').val();
             var jumlahPengajuan = $('#mod_jumlah_pengajuan').val();
             var jumlahPembayaran = $('#mod_jumlah_pembayaran').val();
             var jumlah_ppn = $('#mod_total_ppn').val();
@@ -1262,27 +1372,27 @@
                     PembayaranUtangPiutangAction.saveDetailPembayaran(kodeVendor, namaVendor, "", jumlahPembayaran, rekeningId, divisiId,
                         divisiName, tipePengajuanBiaya, pengajuanBiayaDetailId, noBudgeting,jumlah_ppn,
                         jumlah_pph,noFakturPajak,dataURL, function (result) {
-                        if (result == "") {
-                            loadDetailPembayaran();
-                            //dihitung totalbayarnya
-                            var totalBayar = $('#bayar').val();
-                            totalBayar = totalBayar.replace(/[.]/g, "");
-                            var strBayar = jumlahPembayaran.replace(/[.]/g, "");
-                            var intTotalBayar = 0;
-                            if (totalBayar != '') {
-                                intTotalBayar = parseInt(totalBayar);
+                            if (result == "") {
+                                loadDetailPembayaran();
+                                //dihitung totalbayarnya
+                                var totalBayar = $('#bayar').val();
+                                totalBayar = totalBayar.replace(/[.]/g, "");
+                                var strBayar = jumlahPembayaran.replace(/[.]/g, "");
+                                var intTotalBayar = 0;
+                                if (totalBayar != '') {
+                                    intTotalBayar = parseInt(totalBayar);
+                                }
+                                var intBayar = parseInt(strBayar);
+                                totalBayar = intTotalBayar + intBayar;
+                                var strTotalBayar = String(totalBayar);
+                                $('#bayar').val(formatRupiahAngka(strTotalBayar));
+                                $('#keperluan').val($('#mod_nama_kontrak').val());
+                                isiKeteterangan();
+                                $('#modal-add-pengajuan').modal('hide');
+                            } else {
+                                alert(result);
                             }
-                            var intBayar = parseInt(strBayar);
-                            totalBayar = intTotalBayar + intBayar;
-                            var strTotalBayar = String(totalBayar);
-                            $('#bayar').val(formatRupiahAngka(strTotalBayar));
-                            $('#keperluan').val($('#mod_nama_kontrak').val());
-                            isiKeteterangan();
-                            $('#modal-add-pengajuan').modal('hide');
-                        } else {
-                            alert(result);
-                        }
-                    });
+                        });
                 } else {
                     var msg = "";
                     if (nilaiPengajuan < nilaiPembayaran) {
@@ -1625,10 +1735,7 @@
         var kodeVendor=$('#mod_id_vendor').val();
         var namaVendor=$('#mod_nama_vendor').val();
         var noNota=$('#mod_no_nota_vendor').val();
-        var rekeningId=$('#mod_rekening_id_vendor').val();
-        if (rekeningId==""){
-            rekeningId=$('#mod_coa_lawan_vendor').val();
-        }
+        var rekeningId=$('#mod_coa_lawan_vendor').val();
         var jumlahPembayaran=$('#mod_jumlah_pembayaran_vendor').val();
 
         var tipePengajuanBiaya =$('#tipePengajuan').val();
@@ -1658,10 +1765,7 @@
         var kodeVendor=$('#mod_id_dokter').val();
         var namaVendor=$('#mod_nama_dokter').val();
         var noNota=$('#mod_no_nota_dokter').val();
-        var rekeningId=$('#mod_rekening_id_dokter').val();
-        if (rekeningId==""){
-            rekeningId=$('#mod_coa_lawan_dokter').val();
-        }
+        var rekeningId=$('#mod_coa_lawan_dokter').val();
         var jumlahPembayaran=$('#mod_jumlah_pembayaran_dokter').val();
 
         var tipePengajuanBiaya =$('#tipePengajuan').val();
@@ -1692,10 +1796,7 @@
         var idDivisi=$('#mod_id_lain').val();
         var namaDivisi=$('#mod_nama_divisi_lain').val();
         var noNota=$('#mod_no_nota_lain').val();
-        var rekeningId=$('#mod_rekening_id_lain').val();
-        if (rekeningId==""){
-            rekeningId=$('#mod_coa_lawan_lain').val();
-        }
+        var rekeningId=$('#mod_coa_lawan_lain').val();
         var jumlahPembayaran=$('#mod_jumlah_pembayaran_lain').val();
 
         var tipePengajuanBiaya =$('#tipePengajuan').val();
