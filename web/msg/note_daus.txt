@@ -343,7 +343,7 @@ ALTER TABLE it_akun_pembayaran_utang_piutang_detail ALTER COLUMN no_nota type ch
 
 -- 02-08-2020
 --jika ingin mencoba proses PPN
---insert into it_akun_pengajuan_setor values ('PSC001','KP','09','Y','admin','2020-08-02 00:00:00','2020-08-02 00:00:00','admin','2020-08-02 00:00:00','admin','U','Y',null,null,null,60000,'2020-08-02','2020',null,'N',null,null,'PPN',null,20000,20000,20000,null,'N',null,null);
+--insert into it_akun_pengajuan_setor values ('PSC001','KP','09','Y','admin','2020-08-02 00:00:00','2020-08-02 00:00:00','admin','2020-08-02 00:00:00','admin','U','Y',null,null,null,60000,'2020-08-02','2020',null,'N',null,null,'PPN',null,20000,50000,20000,null,'N',null,null);
 
 -- jika ingin clear data untuk akuntansi
 -- delete from it_hris_payroll;
@@ -387,3 +387,11 @@ update im_branches set coa_rk='2.1.11.01.03' where branch_id='RS03';
 update im_akun_mapping_jurnal set kirim_list='N' where mapping_jurnal_id='MPJ0000233';
 
 ALTER TABLE im_company ADD COLUMN param_dapen numeric (10,5);
+
+-- 18-08-2020
+update im_akun_trans set tipe_pembayaran=null where trans_id IN ('69','70','68','67','66');
+
+-- 21-08-2020
+update im_mesin_absensi set mesin_address='10.88.70.232:8080',branch_id='KP';
+ALTER TABLE im_mesin_absensi ADD COLUMN last_get timestamp without time zone;
+ALTER TABLE im_mesin_absensi ADD COLUMN branch_id character varying (10);

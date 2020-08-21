@@ -50,7 +50,6 @@
     <section class="content-header">
         <h1>
             Tipe Transaksi
-            <small>e-HEALTH</small>
         </h1>
     </section>
     <!-- Main content -->
@@ -139,7 +138,7 @@
                                         <br>
                                         <br>
                                         <center>
-                                            <table id="showdata" width="60%">
+                                            <table id="showdata" width="80%">
                                                 <tr>
                                                     <td align="center">
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
@@ -186,7 +185,6 @@
                                                             </display:column>
                                                             <display:column property="transId" sortable="true" title="Transaksi ID" />
                                                             <display:column property="transName" sortable="true" title="Nama Transaksi"  />
-                                                            <display:column property="flagSumberBaru" sortable="true" title="Sumber Baru ?"  />
                                                             <display:column property="masterName" sortable="true" title="Master" />
                                                             <display:column property="tipePembayaranName" sortable="true" title="Tipe Pembayaran" />
                                                             <display:column property="flag" sortable="true" title="Flag" />

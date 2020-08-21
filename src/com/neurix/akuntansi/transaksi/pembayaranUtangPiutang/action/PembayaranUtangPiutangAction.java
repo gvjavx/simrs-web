@@ -6,6 +6,7 @@ import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.master.mappingJurnal.bo.MappingJurnalBo;
 import com.neurix.akuntansi.master.mappingJurnal.model.MappingJurnal;
 import com.neurix.akuntansi.master.tipeJurnal.bo.TipeJurnalBo;
+import com.neurix.akuntansi.master.trans.bo.TransBo;
 import com.neurix.akuntansi.master.trans.model.ImTransEntity;
 import com.neurix.akuntansi.master.trans.model.Trans;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
@@ -1148,19 +1149,6 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         return masterId;
     }
 
-    public String getTipePengajuan(String transaksiId) {
-        logger.info("[PembayaranUtangPiutangAction.getTipePengajuan] start process >>>");
-        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        PembayaranUtangPiutangBo pembayaranUtangPiutangBo = (PembayaranUtangPiutangBo) ctx.getBean("pembayaranUtangPiutangBoProxy");
-
-        String tipePengajuan="";
-        ImTransEntity transEntity = pembayaranUtangPiutangBo.getTipeMaster(transaksiId);
-        tipePengajuan=transEntity.getFlagPengajuanBiaya();
-
-        logger.info("[PembayaranUtangPiutangAction.getTipePengajuan] end process >>>");
-        return tipePengajuan;
-    }
-
     public String postingJurnal(String pembayaranId){
         logger.info("[PembayaranUtangPiutangAction.postingJurnal] start process >>>");
         try {
@@ -1195,6 +1183,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
 
         return "Sukses Posting Jurnal";
     }
+
 
     public String printReportBuktiPosting(){
         logger.info("[PembayaranUtangPiutangAction.printReportBuktiPosting] start process >>>");
@@ -1263,6 +1252,8 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         logger.info("[PembayaranUtangPiutangAction.printReportBuktiPosting] end process <<<");
         if ("KR".equalsIgnoreCase(tipeTransaksi)){
             return "print_report_bukti_posting_koreksi";
+        }else if ("KM".equalsIgnoreCase(tipeTransaksi)){
+            return "print_report_bukti_posting_masuk";
         }else{
             return "print_report_bukti_posting";
         }

@@ -164,8 +164,8 @@
                                                 <display:column property="noJurnal" sortable="true" title="No. Jurnal" />
                                                 <display:column property="keterangan" sortable="true" title="Keterangan" />
                                                 <display:column property="stTotalBiaya" sortable="true" title="Total Biaya" />
-                                                <display:column property="coaAjuan" sortable="true" title="Coa Ajuan" />
-                                                <display:column property="coaTarget" sortable="true" title="Coa Target" />
+                                                <display:column property="coaAjuan" sortable="true" title="RK" />
+                                                <display:column property="coaTarget" sortable="true" title="Rekening Kas" />
                                             </display:table>
                                         </td>
                                     </tr>
@@ -211,9 +211,21 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="control-label col-sm-3" >Nama Rekening RK : </label>
+                        <div class="col-sm-8">
+                            <input type="text" readonly class="form-control" id="modCoaRkView">
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="control-label col-sm-3" >Kode Rekening Giro : </label>
                         <div class="col-sm-8">
                             <input type="text" readonly class="form-control" id="modCoaGiro">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Nama Rekening Giro : </label>
+                        <div class="col-sm-8">
+                            <input type="text" readonly class="form-control" id="modCoaGiroView">
                         </div>
                     </div>
                     <div class="form-group">
@@ -225,13 +237,15 @@
                     <div class="form-group">
                         <label class="control-label col-sm-3" >Transaksi : </label>
                         <div class="col-sm-8">
-                            <input type="text" readonly class="form-control" id="modTransaksi">
+                            <input type="text" readonly class="form-control" id="modTransaksiView">
+                            <input type="hidden" readonly class="form-control" id="modTransaksi">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-3" >Unit : </label>
                         <div class="col-sm-8">
-                            <input type="text" readonly class="form-control" id="modBranchId">
+                            <input type="hidden" readonly class="form-control" id="modBranchId">
+                            <input type="text" readonly class="form-control" id="modBranchIdView">
                         </div>
                     </div>
                     <div class="form-group">
@@ -243,7 +257,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <a id="btnApprove" type="button" class="btn btn-default btn-primary"><i class="fa fa-check"></i> Approve</a>
+                <a id="btnApprove" type="button" class="btn btn-default btn-primary"><i class="fa fa-check"></i> Approve & Posting</a>
                 <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
             </div>
         </div>
@@ -330,15 +344,23 @@
                 console.log(item);
                 $('#modCoaRk').val(item.coaAjuan);
                 $('#modCoaGiro').val(item.coaTarget);
+                $('#modCoaRkView').val(item.coaAjuanName);
+                $('#modCoaGiroView').val(item.coaTargetName);
                 $('#modStJumlah').val(item.stTotalBiaya);
                 $('#modTipeTransaksi').val(item.tipeTransaksi);
                 $('#modTransaksi').val(item.transaksi);
                 $('#modBranchId').val(item.branchId);
+                $('#modBranchIdView').val(item.branchName);
                 $('#modKeterangan').val(item.keterangan);
                 if(item.approvePengajuanBiaya == true){
                     $('#btnApprove').hide();
                 }else{
                     $('#btnApprove').show();
+                }
+                if (item.transaksi=="SMK"){
+                    $('#modTransaksiView').val("Setoran Modal Kerja Ke Unit");
+                }else{
+                    $('#modTransaksiView').val("Swift Kas Unit Ke Pusat");
                 }
             });
         });

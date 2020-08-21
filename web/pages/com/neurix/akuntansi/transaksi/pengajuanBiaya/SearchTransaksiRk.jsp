@@ -215,18 +215,28 @@
                                                         <s:set name="listOfPengajuanBiaya" value="#session.listOfResult" scope="request" />
                                                         <display:table name="listOfPengajuanBiaya" class="table table-condensed table-striped table-hover tablePengajuanBiaya"
                                                                        requestURI="paging_displaytag_pengajuanBiaya.action" export="true" id="row" pagesize="20" style="font-size:10">
-                                                            <display:column media="html" title="View">
-                                                                <a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanBiayaId}"/>" class="item-view">
-                                                                    <img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_view">
-                                                                </a>
-                                                            </display:column>
+                                                            <%--<display:column media="html" title="View">--%>
+                                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanBiayaId}"/>" class="item-view">--%>
+                                                                    <%--<img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_view">--%>
+                                                                <%--</a>--%>
+                                                            <%--</display:column>--%>
                                                             <display:column property="pengajuanBiayaId" sortable="true" title="Transaksi RK ID" />
                                                             <display:column property="tanggal" sortable="true" title="Tanggal" />
                                                             <display:column property="noJurnal" sortable="true" title="No. Jurnal" />
                                                             <display:column property="keterangan" sortable="true" title="Keterangan" />
                                                             <display:column property="stTotalBiaya" sortable="true" title="Total Biaya" />
-                                                            <display:column property="coaAjuan" sortable="true" title="Coa Ajuan" />
-                                                            <display:column property="coaTarget" sortable="true" title="Coa Target" />
+                                                            <display:column property="coaAjuanName" sortable="true" title="Nama RK" />
+                                                            <display:column property="coaTargetName" sortable="true" title="Nama Rekening Kas" />
+                                                            <display:column media="html" title="Posting"  style="text-align:center">
+                                                                <s:if test="#attr.row.flagPosting">
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
+                                                                </s:if>
+                                                                <s:else>
+                                                                    <a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanBiayaId}"/>" class="item-posting">
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_closed.ico"/>" name="icon_edit" style="width: 30px">
+                                                                    </a>
+                                                                </s:else>
+                                                            </display:column>
                                                         </display:table>
                                                     </td>
                                                 </tr>
@@ -367,21 +377,12 @@
 
         $('.tablePengajuanBiaya').on('click', '.item-posting', function() {
             var pembayaranId = $(this).attr('data');
-            $('#mod_pembayaran_id').val(pembayaranId);
-            PengajuanBiayaAction.getForModalPopUp(pembayaranId,function (data) {
-                $('#mod_no_jurnal').val(data.noJurnal);
-                $('#mod_tipe_transaksi').val(data.stTipeTransaksi);
-                $('#mod_tanggal').val(data.stTanggal);
-                $('#mod_metode_bayar').val(data.metodePembayaranName);
-                $('#mod_no_slip_bank').val(data.noSlipBank);
-                $('#mod_keterangan').val(data.keterangan);
-                $('#mod_total_bayar').val(data.stBayar);
-            });
-            loadPembayaran();
-            $("#modal-posting-jurnal").find('.modal-title').text('Posting Jurnal');
-            $("#modal-posting-jurnal").modal('show');
-            $("#btnPostingJurnal").show();
-
+            if (confirm("apakah anda ingin memposting pengeluaran dengan pembayaran id "+pembayaranId +" ?")){
+                PengajuanBiayaAction.postingJurnal(pembayaranId,function (listdata) {
+                    alert(listdata);
+                    window.location.reload();
+                })
+            }
         });
         $('.tablePengajuanBiaya').on('click', '.item-cetak-bukti', function() {
             var noJurnal = $(this).attr('data');

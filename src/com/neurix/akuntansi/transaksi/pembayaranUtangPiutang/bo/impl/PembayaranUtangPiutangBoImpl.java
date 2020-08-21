@@ -630,17 +630,25 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
 
                 List<ImPosition> positionList = positionDao.getListPositionKodering(pembayaranUtangPiutangDetail.getDivisiId());
                 if (positionList.size()!=0){
-                    returnPembayaranUtangPiutangDetail.setDivisiName("");
-                }else{
                     for (ImPosition position : positionList){
                         returnPembayaranUtangPiutangDetail.setDivisiName(position.getPositionName());
                     }
+                }else{
+                    returnPembayaranUtangPiutangDetail.setDivisiName("");
                 }
 
                 returnPembayaranUtangPiutangDetail.setRekeningId(pembayaranUtangPiutangDetail.getRekeningId());
                 returnPembayaranUtangPiutangDetail.setNoNota(pembayaranUtangPiutangDetail.getNoNota());
                 returnPembayaranUtangPiutangDetail.setPosisiCoa(pembayaranUtangPiutangDetail.getPosisiCoa());
                 returnPembayaranUtangPiutangDetail.setStJumlahPembayaran(CommonUtil.numbericFormat(pembayaranUtangPiutangDetail.getJumlahPembayaran(),"###,###"));
+
+                if (pembayaranUtangPiutangDetail.getPph()!=null){
+                    returnPembayaranUtangPiutangDetail.setStPph(CommonUtil.numbericFormat(pembayaranUtangPiutangDetail.getPph(),"###,###"));
+                }
+                if (pembayaranUtangPiutangDetail.getPpn()!=null){
+                    returnPembayaranUtangPiutangDetail.setStPpn(CommonUtil.numbericFormat(pembayaranUtangPiutangDetail.getPpn(),"###,###"));
+                }
+
                 if (pembayaranUtangPiutangDetail.getNoFakturPajak()!=null){
                     returnPembayaranUtangPiutangDetail.setNoFakturPajak(pembayaranUtangPiutangDetail.getNoFakturPajak());
                     returnPembayaranUtangPiutangDetail.setUrlFakturImage(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_FAKTUR_PAJAK+pembayaranUtangPiutangDetail.getUrlFakturImage());

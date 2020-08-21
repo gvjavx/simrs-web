@@ -1136,7 +1136,14 @@ public class PengajuanSetorAction extends BaseMasterAction {
         session.setAttribute("listOfResultPencarianDataKeluaran",pengajuanSetorDetailListKeluaran);
         session.setAttribute("listOfResultPengajuanSetor",pengajuanSetor);
 
+
+        if (pengajuanSetor.getJumlahPpnMasukanB2().compareTo(pengajuanSetor.getJumlahPpnKeluaran())>0){
+            String status ="ERROR : PPN Masukan B2 tidak boleh melebihi PPN Keluaran";
+            logger.error("[PengajuanSetorAction.saveAddPengajuanSetorPpn] Error when save : "+status);
+            throw new GeneralBOException(status);
+        }
         logger.info("[PengajuanSetorAction.saveAddTmpPengajuanSetorPpn] stop process >>>");
+
         return "success_save_tmp_pengajuan_setor_ppn";
     }
 

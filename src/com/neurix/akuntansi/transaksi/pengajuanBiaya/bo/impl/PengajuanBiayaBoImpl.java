@@ -238,6 +238,40 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
     }
 
     @Override
+    public void postingJurnal(PengajuanBiaya bean) throws GeneralBOException {
+        logger.info("[PengajuanBiayaBoImpl.saveEdit] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        if (bean!=null) {
+            ImPengajuanBiayaEntity imPengajuanBiayaEntity = null;
+            try {
+                // Get data from database by ID
+                imPengajuanBiayaEntity = pengajuanBiayaDao.getById("pengajuanBiayaId", bean.getPengajuanBiayaId());
+            } catch (HibernateException e) {
+                logger.error("[PengajuanBiayaBoImpl.saveEdit] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data PengajuanBiaya by Kode PengajuanBiaya, please inform to your admin...," + e.getMessage());
+            }
+            if (imPengajuanBiayaEntity != null) {
+                imPengajuanBiayaEntity.setNoJurnal(bean.getNoJurnal());
+                imPengajuanBiayaEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                imPengajuanBiayaEntity.setLastUpdate(bean.getLastUpdate());
+                imPengajuanBiayaEntity.setAction(bean.getAction());
+                try {
+                    // Update into database
+                    pengajuanBiayaDao.updateAndSave(imPengajuanBiayaEntity);
+                } catch (HibernateException e) {
+                    logger.error("[PengajuanBiayaBoImpl.saveEdit] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving update data PengajuanBiaya, please info to your admin..." + e.getMessage());
+                }
+            } else {
+                logger.error("[PengajuanBiayaBoImpl.saveEdit] Error, not found data PengajuanBiaya with request id, please check again your data ...");
+                throw new GeneralBOException("Error, not found data PengajuanBiaya with request id, please check again your data ...");
+            }
+        }
+        logger.info("[PengajuanBiayaBoImpl.saveEdit] end process <<<");
+    }
+
+    @Override
     public PengajuanBiaya saveAdd(PengajuanBiaya bean) throws GeneralBOException {
         return null;
     }
@@ -275,35 +309,32 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                 throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
             }
 
-            List<User> userList = new ArrayList<>();
-            switch (bean.getTransaksi()){
-                case "SMK":
-                    userList=userDao.getUserByBranchAndRole(bean.getBranchId(),CommonConstant.ROLE_ID_ADMIN_AKS);
-                    break;
-                case "PDU":
-                    userList=userDao.getUserByBranchAndRole(bean.getBranchId(),CommonConstant.ROLE_ID_ADMIN_AKS);
-                    break;
-            }
-
-            for (User user : userList){
-                //Send notif ke nip tertentu
-                Notifikasi notif= new Notifikasi();
-                notif.setNip(user.getUserId());
-                notif.setNoRequest(id);
-                notif.setTipeNotifId("TN01");
-                notif.setTipeNotifName(("Keuangan"));
-                notif.setNote(bean.getKeterangan());
-                notif.setCreatedWho(bean.getCreatedWho());
-                notif.setTo("ditentukan");
-
-                notifikasiList.add(notif);
-            }
-
         }
         logger.info("[PengajuanBiayaBoImpl.saveAddPengajuanBiaya] end process <<<");
         return notifikasiList;
     }
 
+    @Override
+    public List<Notifikasi> sendNotifikasiKeAdminAks(String branchId, String id, String keterangan, String createdWho){
+        List<User> userList = new ArrayList<>();
+        List<Notifikasi> notifikasiList = new ArrayList<>();
+
+        userList=userDao.getUserByBranchAndRole(branchId,CommonConstant.ROLE_ID_ADMIN_AKS);
+        for (User user : userList){
+            //Send notif ke nip tertentu
+            Notifikasi notif= new Notifikasi();
+            notif.setNip(user.getUserId());
+            notif.setNoRequest(id);
+            notif.setTipeNotifId("TN01");
+            notif.setTipeNotifName(("Keuangan"));
+            notif.setNote(keterangan);
+            notif.setCreatedWho(createdWho);
+            notif.setTo("ditentukan");
+
+            notifikasiList.add(notif);
+        }
+        return notifikasiList;
+    }
 
     @Override
     public  List<Notifikasi> saveAddPengajuan(PengajuanBiaya bean, List<PengajuanBiayaDetail> pengajuanBiayaDetailList) throws GeneralBOException {
@@ -561,6 +592,19 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                     if (pengajuanBiayaEntity.getTotalBiaya()!=null){
                         returnPengajuanBiaya.setStTotalBiaya(CommonUtil.numbericFormat(pengajuanBiayaEntity.getTotalBiaya(),"###,###"));
                     }
+
+                    if (pengajuanBiayaEntity.getCoaAjuan()!=null){
+                        if (!"".equalsIgnoreCase(pengajuanBiayaEntity.getCoaAjuan())){
+                            returnPengajuanBiaya.setCoaAjuanName(kodeRekeningDao.getNamaRekeningByCoa(pengajuanBiayaEntity.getCoaAjuan()));
+                        }
+                    }
+
+                    if (pengajuanBiayaEntity.getCoaTarget()!=null){
+                        if (!"".equalsIgnoreCase(pengajuanBiayaEntity.getCoaTarget())){
+                            returnPengajuanBiaya.setCoaTargetName(kodeRekeningDao.getNamaRekeningByCoa(pengajuanBiayaEntity.getCoaTarget()));
+                        }
+                    }
+
                     returnPengajuanBiaya.setTanggal(pengajuanBiayaEntity.getTanggal());
                     returnPengajuanBiaya.setStTanggal(CommonUtil.convertDateToString(pengajuanBiayaEntity.getTanggal()));
                     returnPengajuanBiaya.setAprovalId(pengajuanBiayaEntity.getAprovalId());
@@ -595,6 +639,12 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                         returnPengajuanBiaya.setStatusSaatIni("Dibatalkan");
                     }else{
                         returnPengajuanBiaya.setStatusSaatIni("Belum Close");
+                    }
+
+                    if (pengajuanBiayaEntity.getNoJurnal()!=null){
+                        if (!"".equalsIgnoreCase(pengajuanBiayaEntity.getNoJurnal())){
+                            returnPengajuanBiaya.setFlagPosting(true);
+                        }
                     }
 
                     returnPengajuanBiaya.setCreatedWho(pengajuanBiayaEntity.getCreatedWho());

@@ -1249,17 +1249,7 @@
 
             var msg = "";
 
-            if (tipePengajuan=="I"&&noFakturPajak!=""&&cekCanvas!="") {}
-            else if (tipePengajuan="R"){}
-            else {
-                if (noFakturPajak=="") {
-                    msg += "No. Faktur Pajak Masih Kosong \n";
-                }
-                if (cekCanvas=="") {
-                    msg += "Belum Upload Faktur Pajak \n";
-                }
-            }
-            if (tanggalRealisasi!=""&&jumlahPengajuan!=""&&jumlahPembayaran!=""&&msg==""&&kodeVendor!=""&&namaVendor!="") {
+            if (tanggalRealisasi!=""&&jumlahPengajuan!=""&&jumlahPembayaran!=""&&msg==""&&kodeVendor!=""&&namaVendor!=""&&noFakturPajak!=""&&cekCanvas!="") {
                 jumlahPengajuan = jumlahPengajuan.replace(/[,]/g, "");
                 var nilaijumlahPembayaran = jumlahPembayaran.replace(/[.]/g, "");
                 var nilaiPengajuan = parseInt(jumlahPengajuan);
@@ -1321,6 +1311,12 @@
                 }
                 if (namaVendor=="") {
                     msg += "Kode Vendor tidak valid atau vendor tidak ditemukan \n";
+                }
+                if (noFakturPajak=="") {
+                    msg += "No. Faktur Pajak Masih Kosong \n";
+                }
+                if (cekCanvas=="") {
+                    msg += "Belum Upload Faktur Pajak \n";
                 }
                 alert(msg);
             }
@@ -1652,6 +1648,7 @@
                 totalBayar = intTotalBayar+intBayar;
                 var strTotalBayar = String(totalBayar);
                 $('#bayar').val(formatRupiahAngka(strTotalBayar));
+                $('#modal-add-vendor').modal('hide');
             } else{
                 alert(result);
             }
@@ -1684,6 +1681,8 @@
                 totalBayar = intTotalBayar+intBayar;
                 var strTotalBayar = String(totalBayar);
                 $('#bayar').val(formatRupiahAngka(strTotalBayar));
+
+                $('#modal-add-dokter').modal('hide');
             } else{
                 alert(result);
             }
@@ -1716,6 +1715,7 @@
                 totalBayar = intTotalBayar+intBayar;
                 var strTotalBayar = String(totalBayar);
                 $('#bayar').val(formatRupiahAngka(strTotalBayar));
+                $('#modal-add-lain').modal('hide');
             } else{
                 alert(result);
             }

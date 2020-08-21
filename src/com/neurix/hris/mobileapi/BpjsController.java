@@ -5,6 +5,8 @@ import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.mobileapi.model.FingerPrintResponse;
 import com.neurix.hris.mobileapi.model.simrs.Poli;
+import com.neurix.hris.transaksi.absensi.bo.AbsensiBo;
+import com.neurix.hris.transaksi.absensi.model.MesinAbsensi;
 import com.neurix.simrs.bpjs.eklaim.bo.EklaimBo;
 import com.neurix.simrs.bpjs.eklaim.model.DataPerKlaimResponse;
 import com.neurix.simrs.bpjs.eklaim.model.KlaimRequest;
@@ -21,11 +23,8 @@ import org.springframework.http.ResponseEntity;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.Timestamp;
+import java.util.*;
 
 
 /**
@@ -63,6 +62,15 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
     private BpjsBo bpjsBoProxy;
     private EklaimBo eklaimBoProxy;
     private BillingSystemBo billingSystemBoProxy;
+    private AbsensiBo absensiBoProxy;
+
+    public AbsensiBo getAbsensiBoProxy() {
+        return absensiBoProxy;
+    }
+
+    public void setAbsensiBoProxy(AbsensiBo absensiBoProxy) {
+        this.absensiBoProxy = absensiBoProxy;
+    }
 
     public BillingSystemBo getBillingSystemBoProxy() {
         return billingSystemBoProxy;
@@ -210,6 +218,9 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
                 break;
             case "create-jurnal-bpjs-7":
                 createJurnalBillingCase7();
+                break;
+            case "cron-mesin-absensi":
+                cronJobMesinAbsensi();
                 break;
             default:
                 logger.info("==========NO ONE CARE============");
@@ -631,24 +642,28 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
         }
     }
 
-    //case 4
-    // untuk Pembuatan Hutang Usaha
-    public void createJurnalBillingCase8 (){
-        Map piutangPasienBpjs = new HashMap();
-        piutangPasienBpjs.put("bukti","INVHU000001");
-        piutangPasienBpjs.put("nilai",new BigDecimal(10000000));
+    public void cronJobMesinAbsensi (){
+        String metode = CommonConstant.METODE_MESIN_ABSENSI;
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
-        Map data = new HashMap();
-        data.put("pasien_id","RS0103200013");
-        data.put("piutang_pasien_bpjs",piutangPasienBpjs);
-        data.put("pendapatan_rawat_jalan_bpjs", new BigDecimal(10000000));
-        data.put("metode_bayar", "transfer");
-        data.put("bank", "mandiri");
+        MesinAbsensi mesinAbsensi = new MesinAbsensi();
+        mesinAbsensi.setCreatedWho("cron");
+        mesinAbsensi.setLastUpdate(updateTime);
 
-        try {
-            billingSystemBoProxy.createJurnal("04",data,"RS01","TEST 7 : Pembayaran uang muka","Y");
-        }catch (Exception e){
-            logger.error("[BpjsController.createJurnalBillingCase3] Error : " + "[" + e + "]");
+        if ("all".equalsIgnoreCase(metode)){
+            try {
+                absensiBoProxy.getAllDataFromMesin(mesinAbsensi);
+            }catch (Exception e){
+                logger.error("ERROR WHEN GET MESIN : " + "[" + e + "]");
+                logger.error("[BpjsController.cronJobMesinAbsensi] Error : " + "[" + e + "]");
+            }
+        }else {
+            try {
+                absensiBoProxy.getDataFromMesin(mesinAbsensi);
+            }catch (Exception e){
+                logger.error("ERROR WHEN GET MESIN : " + "[" + e + "]");
+                logger.error("[BpjsController.createJurnalBillingCase3] Error : " + "[" + e + "]");
+            }
         }
     }
 
@@ -679,6 +694,27 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
 
         try {
             billingSystemBoProxy.createJurnal("23",data,"RS01","TEST 6 : Untuk Pembayaran Piutang BPJS","Y");
+        }catch (Exception e){
+            logger.error("[BpjsController.createJurnalBillingCase3] Error : " + "[" + e + "]");
+        }
+    }
+
+    //case 4
+    // untuk Pembuatan Hutang Usaha
+    public void createJurnalBillingCase8 (){
+        Map piutangPasienBpjs = new HashMap();
+        piutangPasienBpjs.put("bukti","INVHU000001");
+        piutangPasienBpjs.put("nilai",new BigDecimal(10000000));
+
+        Map data = new HashMap();
+        data.put("pasien_id","RS0103200013");
+        data.put("piutang_pasien_bpjs",piutangPasienBpjs);
+        data.put("pendapatan_rawat_jalan_bpjs", new BigDecimal(10000000));
+        data.put("metode_bayar", "transfer");
+        data.put("bank", "mandiri");
+
+        try {
+            billingSystemBoProxy.createJurnal("04",data,"RS01","TEST 7 : Pembayaran uang muka","Y");
         }catch (Exception e){
             logger.error("[BpjsController.createJurnalBillingCase3] Error : " + "[" + e + "]");
         }

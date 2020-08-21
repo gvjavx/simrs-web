@@ -187,7 +187,6 @@ public class CommonConstant {
     public final static String KODERING_FARMASI_RJ = "02.01.01";
     public final static String REKENING_ID_PENDAPATAN_RI ="00304";
     public final static String REKENING_ID_PENDAPATAN_RJ ="00303";
-    public final static String JUNK_MASTER_PIUTANG_PPN = "JNK";
 
     public final static String CUTI_ID_DILUAR_TANGGUNJAWAB = CommonUtil.getPropertyParams("cuti.id.diluar.tanggungjawab");
 
@@ -210,5 +209,9 @@ public class CommonConstant {
     public final static String TRANSAKSI_ID_PENGIRIMAN_PENDAPATAN_KE_PUSAT =CommonUtil.getPropertyParams("transaksi.id.pengiriman.pendapatan.ke.pusat");
     public final static String TRANSAKSI_ID_PENERIMAAN_PENDAPATAN_DARI_UNIT =CommonUtil.getPropertyParams("transaksi.id.penerimaan.pendapatan.dari.unit");
     public final static String TRANSAKSI_ID_PERHITUNGAN_PENDAPATAN_DOKTER =CommonUtil.getPropertyParams("transaksi.id.perhitungan.pendapatan.dokter");
+    public final static String JUNK_MASTER_PIUTANG_PPN =CommonUtil.getPropertyParams("junk.master.piutang.ppn");
+
+    //CONSTANT HCM
+    public final static String METODE_MESIN_ABSENSI = CommonUtil.getPropertyParams("metode.mesin.absensi");
 
 }

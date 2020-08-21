@@ -295,7 +295,7 @@ public class PengajuanSetorDao extends GenericDao<ItPengajuanSetorEntity, String
                 "  AND j.tanggal_jurnal < '"+search.getStTanggalSelesai()+"' \n" +
                 "  AND jd.rekening_id = '"+CommonConstant.REKENING_ID_PPN_MASUKAN+"' \n" +
                 "  AND (\n" +
-                "    s.cancel_flag = 'Y' \n" +
+                "    ( s.cancel_flag = 'Y' AND s.tipe_pengajuan_setor<>'PPH21' ) \n" +
                 "    OR sd.pengajuan_setor_detail_id IS NULL\n" +
                 "  )\n";
         results = this.sessionFactory.getCurrentSession()
