@@ -243,7 +243,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-info"></i> Data Pendapatan </h4>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Data Refrensi </h4>
             </div>
             <div class="modal-body">
                 <span id="label-tipe"></span> <span id="label-periode"></span>
@@ -425,7 +425,7 @@
 
         showDialog('loading');
         dwr.engine.setAsync(true);
-        BgEksploitasiAction.getListParameterBudgeting("NMS", tahun, branch, "new", function (list) {
+        BgNominasiAction.getListParameterBudgeting("NMS", tahun, branch, "new", function (list) {
             dwr.engine.setAsync(false);
             showDialog('close');
 
@@ -436,7 +436,7 @@
                     "<td align='right'>"+ formatRupiah(nullEscape(item.nilaiTotalBudgeting)) +"</td>" +
                     "<td align='center'>" +
                     "<button class='btn btn-sm btn-primary' onclick=\"edit(\'"+item.id+"\',\'"+branch+"\',\'"+tahun+"\',\'"+ item.nama +"\')\"><i class='fa fa-edit'></i></button> " +
-                    "<button class='btn btn-sm btn-success'><i class='fa fa-search'></i></button>" +
+//                    "<button class='btn btn-sm btn-success'><i class='fa fa-search'></i></button>" +
                     "</td>" +
                     "</tr>";
             });
@@ -466,7 +466,7 @@
 
         showDialog('loading');
         dwr.engine.setAsync(true);
-        BgEksploitasiAction.getListParameterBudgeting("NMS", tahun, branch, "", function (list) {
+        BgNominasiAction.getListParameterBudgeting("NMS", tahun, branch, "", function (list) {
             dwr.engine.setAsync(false);
             showDialog('close');
 
@@ -477,7 +477,7 @@
                     "<td align='right'>"+ formatRupiah(nullEscape(item.nilaiTotalBudgeting)) +"</td>" +
                     "<td align='center'>" +
                     "<button class='btn btn-sm btn-primary' onclick=\"edit(\'"+item.id+"\',\'"+branch+"\',\'"+tahun+"\',\'"+ item.nama +"\')\"><i class='fa fa-edit'></i></button> " +
-                    "<button class='btn btn-sm btn-success'><i class='fa fa-search'></i></button>" +
+//                    "<button class='btn btn-sm btn-success'><i class='fa fa-search'></i></button>" +
                     "</td>" +
                     "</tr>";
             });
@@ -515,78 +515,18 @@
         $("#ed-tahun").val(tahun);
         $("#ed-id-param").val(idParam);
 
-        var str = "";
-        if (idParam == "PDTRJTDN"){
-            str = "<div class=\"row\">" +
-                "<label class=\"col-md-3\">Nilai Pendapatan</label>" +
-                "<div class=\"col-md-6\">" +
-                "<input type=\"number\" class=\"form-control\" id=\"total-"+idParam+"\" />" +
-                "</div>" +
-                "<div class=\"col-md-3\">"+
-                "<button class=\"btn btn-sm btn-info\" onclick=\"showDetail()\"><i class=\"fa fa-info\"></i></button>" +
-                "</div>" +
-                "</div>";
+        var str = "<div class=\"row\">" +
+            "<label class=\"col-md-3\">Nilai Biaya</label>" +
+            "<div class=\"col-md-6\">" +
+            "<input type=\"number\" class=\"form-control\" id=\"total-"+idParam+"\" />" +
+            "</div>" +
+            "<div class=\"col-md-3\">"+
+            "<button class=\"btn btn-sm btn-info\" onclick=\"showDetail()\"><i class=\"fa fa-info\"></i></button>" +
+            "</div>" +
+            "</div>";
 
-            listOfParam.push({"id":"total-"+idParam, "opr":"="});
-        }
-        if (idParam == "PDTRITDN"){
+        listOfParam.push({"id":"total-"+idParam, "opr":"="});
 
-            var tt = $("#edit_tt").val();
-            var bor = $("#edit_bor").val();
-
-            str = "<div class=\"row\">" +
-                "<label class=\"col-md-3\">Nilai Pendapatan</label>" +
-                "<div class=\"col-md-6\">" +
-                "<input type=\"number\" class=\"form-control\" id=\"total-"+idParam+"\" />" +
-                "</div>" +
-                "<div class=\"col-md-3\">"+
-                "<button class=\"btn btn-sm btn-info\" onclick=\"showDetail()\"><i class=\"fa fa-info\"></i></button>" +
-                "</div>" +
-                "</div>" +
-                "<input type='hidden' value='"+tt+"' id='tt-"+idParam+"'>" +
-                "<input type='hidden' value='"+bor+"' id='bor-"+idParam+"'>";
-
-            listOfParam.push(
-                {"id":"total-"+idParam, "opr":"*"},
-                {"id":"tt-"+idParam, "opr":"*"},
-                {"id":"bor-"+idParam, "opr":"="}
-                );
-        }
-        if (idParam == "PDTRIKMR"){
-
-        }
-        if (idParam == "PDTRJOBT"){
-            str = "<div class=\"row\">" +
-                "<label class=\"col-md-3\">Nilai Pendapatan Farmasi</label>" +
-                "<div class=\"col-md-6\">" +
-                "<input type=\"number\" class=\"form-control\" id=\"total-"+idParam+"\" />" +
-                "</div>" +
-                "<div class=\"col-md-3\">"+
-                "<button class=\"btn btn-sm btn-info\" onclick=\"showDetail()\"><i class=\"fa fa-info\"></i></button>" +
-                "</div>" +
-                "</div>";
-
-            listOfParam.push({"id":"total-"+idParam, "opr":"="});
-        }
-        if (idParam == "PDTRIOBT"){
-            str = "<div class=\"row\">" +
-                "<label class=\"col-md-3\">Nilai Pendapatan Farmasi</label>" +
-                "<div class=\"col-md-6\">" +
-                "<input type=\"number\" class=\"form-control\" id=\"total-"+idParam+"\" />" +
-                "</div>" +
-                "<div class=\"col-md-3\">"+
-                "<button class=\"btn btn-sm btn-info\" onclick=\"showDetail()\"><i class=\"fa fa-info\"></i></button>" +
-                "</div>" +
-                "</div>";
-
-            listOfParam.push({"id":"total-"+idParam, "opr":"="});
-        }
-        if (idParam == "PDTPNJLAB"){
-
-        }
-        if (idParam == "PDTPNJRGI"){
-
-        }
         $("#body-edit").html(str);
         $("#modal-edit").modal('show');
     }
@@ -613,152 +553,40 @@
         var str = "";
         var total = "";
         var totalDiskon = "";
-        if (idParam == "PDTRJTDN"){
-            head = "<td>Nama</td>" +
-                    "<td>Harga</td>"+
-                    "<td>Harga Diskon</td>"+
-                    "<td>Qty</td>" +
-                    "<td>Total</td>"+
-                    "<td>Total Diskon</td>";
-
-            BgNominasiAction.getListPendapatanTindakan(unit, tahun, "RJ", function (list) {
-                $.each(list, function (i, item) {
-                    str += "<tr>" +
-                            "<td>"+item.namaTindakan+"</td>" +
-                            "<td align='right'>"+ formatRupiah(item.harga)+"</td>" +
-                            "<td align='right'>"+ formatRupiah(item.hargaDiskon)+"</td>" +
-                            "<td>"+item.qty+"</td>" +
-                            "<td align='right'>"+ formatRupiah(item.totalHarga)+"</td>" +
-                            "<td align='right'>"+ formatRupiah(item.totalHargaDiskon)+"</td>" +
-                            "</tr>";
-
-                    total += parseInt(item.totalHarga);
-                    totalDiskon += parseInt(nullEscape(item.totalHargaDiskon));
-                });
-                str += "<tr>" +
-                    "<td align='right' colspan='4'>Total : </td>" +
-                    "<td align='right'>"+ total +"</td>" +
-                    "<td align='right'>"+ totalDiskon +"</td>" +
-                    "</tr>";
-
-                $("#head-list-pendapatan").html(head);
-                $("#body-list-pendapatan").html(str);
-                $("#label-tipe").text(label);
-                $("#label-periode").text("Periode Januari Hingga " + stBulan(getDateParted('MONTH') - 1) + " " + tahun);
-            });
-        }
-        if (idParam == "PDTRITDN"){
-            head = "<td>Nama</td>" +
-                "<td>Harga</td>"+
-                "<td>Harga Diskon</td>"+
-                "<td>Qty</td>" +
-                "<td>Total</td>"+
-                "<td>Total Diskon</td>";
-
-            BgNominasiAction.getListPendapatanTindakan(unit, tahun, "RI", function (list) {
-                $.each(list, function (i, item) {
-                    str += "<tr>" +
-                        "<td>"+item.namaTindakan+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.harga)+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.hargaDiskon)+"</td>" +
-                        "<td>"+item.qty+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.totalHarga)+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.totalHargaDiskon)+"</td>" +
-                        "</tr>";
-
-                    total += parseInt(item.totalHarga);
-                    totalDiskon += parseInt(nullEscape(item.totalHargaDiskon));
-                });
-                str += "<tr>" +
-                    "<td align='right' colspan='4'>Total : </td>" +
-                    "<td align='right'>"+ total +"</td>" +
-                    "<td align='right'>"+ totalDiskon +"</td>" +
-                    "</tr>";
-
-                $("#head-list-pendapatan").html(head);
-                $("#body-list-pendapatan").html(str);
-                $("#label-tipe").text(label);
-                $("#label-periode").text("Periode Januari Hingga " + stBulan(getDateParted('MONTH') - 1) + " " + tahun);
-            });
-        }
-        if (idParam == "PDTRIKMR"){
-
-        }
-        if (idParam == "PDTRJOBT"){
-            head = "<td>Nama</td>" +
-                "<td>Harga</td>"+
-                "<td>Harga Diskon</td>"+
-                "<td>Qty</td>" +
-                "<td>Total</td>"+
-                "<td>Total Diskon</td>";
-
-            BgNominasiAction.getListPendapatanObat(unit, tahun, "RJ", function (list) {
-                $.each(list, function (i, item) {
-                    str += "<tr>" +
-                        "<td>"+item.namaTindakan+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.harga)+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.hargaDiskon)+"</td>" +
-                        "<td>"+item.qty+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.totalHarga)+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.totalHargaDiskon)+"</td>" +
-                        "</tr>";
-
-                    total += parseInt(item.totalHarga);
-                    totalDiskon += parseInt(nullEscape(item.totalHargaDiskon));
-                });
-                str += "<tr>" +
-                    "<td align='right' colspan='4'>Total : </td>" +
-                    "<td align='right'>"+ total +"</td>" +
-                    "<td align='right'>"+ totalDiskon +"</td>" +
-                    "</tr>";
-
-                $("#head-list-pendapatan").html(head);
-                $("#body-list-pendapatan").html(str);
-                $("#label-tipe").text(label);
-                $("#label-periode").text("Periode Januari Hingga " + stBulan(getDateParted('MONTH') - 1) + " " + tahun);
-            });
-        }
-        if (idParam == "PDTRIOBT"){
-            head = "<td>Nama</td>" +
-                "<td>Harga</td>"+
-                "<td>Harga Diskon</td>"+
-                "<td>Qty</td>" +
-                "<td>Total</td>"+
-                "<td>Total Diskon</td>";
-
-            BgNominasiAction.getListPendapatanObat(unit, tahun, "RI", function (list) {
-                $.each(list, function (i, item) {
-                    str += "<tr>" +
-                        "<td>"+item.namaTindakan+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.harga)+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.hargaDiskon)+"</td>" +
-                        "<td>"+item.qty+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.totalHarga)+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.totalHargaDiskon)+"</td>" +
-                        "</tr>";
-
-                    total += parseInt(item.totalHarga);
-                    totalDiskon += parseInt(nullEscape(item.totalHargaDiskon));
-                });
-                str += "<tr>" +
-                    "<td align='right' colspan='4'>Total : </td>" +
-                    "<td align='right'>"+ total +"</td>" +
-                    "<td align='right'>"+ totalDiskon +"</td>" +
-                    "</tr>";
-
-                $("#head-list-pendapatan").html(head);
-                $("#body-list-pendapatan").html(str);
-                $("#label-tipe").text(label);
-                $("#label-periode").text("Periode Januari Hingga " + stBulan(getDateParted('MONTH') - 1) + " " + tahun);
-            });
-
-        }
-        if (idParam == "PDTPNJLAB"){
-
-        }
-        if (idParam == "PDTPNJRGI"){
-
-        }
+//        if (idParam == "PDTRJTDN"){
+//            head = "<td>Nama</td>" +
+//                    "<td>Harga</td>"+
+//                    "<td>Harga Diskon</td>"+
+//                    "<td>Qty</td>" +
+//                    "<td>Total</td>"+
+//                    "<td>Total Diskon</td>";
+//
+//            BgNominasiAction.getListPendapatanTindakan(unit, tahun, "RJ", function (list) {
+//                $.each(list, function (i, item) {
+//                    str += "<tr>" +
+//                            "<td>"+item.namaTindakan+"</td>" +
+//                            "<td align='right'>"+ formatRupiah(item.harga)+"</td>" +
+//                            "<td align='right'>"+ formatRupiah(item.hargaDiskon)+"</td>" +
+//                            "<td>"+item.qty+"</td>" +
+//                            "<td align='right'>"+ formatRupiah(item.totalHarga)+"</td>" +
+//                            "<td align='right'>"+ formatRupiah(item.totalHargaDiskon)+"</td>" +
+//                            "</tr>";
+//
+//                    total += parseInt(item.totalHarga);
+//                    totalDiskon += parseInt(nullEscape(item.totalHargaDiskon));
+//                });
+//                str += "<tr>" +
+//                    "<td align='right' colspan='4'>Total : </td>" +
+//                    "<td align='right'>"+ total +"</td>" +
+//                    "<td align='right'>"+ totalDiskon +"</td>" +
+//                    "</tr>";
+//
+//                $("#head-list-pendapatan").html(head);
+//                $("#body-list-pendapatan").html(str);
+//                $("#label-tipe").text(label);
+//                $("#label-periode").text("Periode Januari Hingga " + stBulan(getDateParted('MONTH') - 1) + " " + tahun);
+//            });
+//        }
     }
 
     function stBulan(bulan) {
@@ -843,7 +671,7 @@
                     var branch = $("#ed-unit").val();
                     $("#sel-tahun").val(tahun);
                     $("#sel-unit").val(branch);
-                    choose();
+                    search();
                 });
             }
         });

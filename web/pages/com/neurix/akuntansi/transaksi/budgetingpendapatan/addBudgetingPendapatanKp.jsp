@@ -436,7 +436,7 @@
                         "<td align='right'>"+ formatRupiah(nullEscape(item.nilaiTotalBudgeting)) +"</td>" +
                         "<td align='center'>" +
                         "<button class='btn btn-sm btn-primary' onclick=\"edit(\'"+item.id+"\',\'"+branch+"\',\'"+tahun+"\',\'"+ item.nama +"\')\"><i class='fa fa-edit'></i></button> " +
-                        "<button class='btn btn-sm btn-success'><i class='fa fa-search'></i></button>" +
+//                        "<button class='btn btn-sm btn-success'><i class='fa fa-search'></i></button>" +
                         "</td>" +
                         "</tr>";
             });
@@ -562,7 +562,17 @@
                 );
         }
         if (idParam == "PDTRIKMR"){
+            str = "<div class=\"row\">" +
+                "<label class=\"col-md-3\">Nilai Pendapatan</label>" +
+                "<div class=\"col-md-6\">" +
+                "<input type=\"number\" class=\"form-control\" id=\"total-"+idParam+"\" />" +
+                "</div>" +
+                "<div class=\"col-md-3\">"+
+                "<button class=\"btn btn-sm btn-info\" onclick=\"showDetail()\"><i class=\"fa fa-info\"></i></button>" +
+                "</div>" +
+                "</div>";
 
+            listOfParam.push({"id":"total-"+idParam, "opr":"="});
         }
         if (idParam == "PDTRJOBT"){
             str = "<div class=\"row\">" +
@@ -590,11 +600,58 @@
 
             listOfParam.push({"id":"total-"+idParam, "opr":"="});
         }
-        if (idParam == "PDTPNJLAB"){
+        if (idParam == "PDTRJLAB"){
 
+            str = "<div class=\"row\">" +
+                "<label class=\"col-md-3\">Nilai Pendapatan</label>" +
+                "<div class=\"col-md-6\">" +
+                "<input type=\"number\" class=\"form-control\" id=\"total-"+idParam+"\" />" +
+                "</div>" +
+                "<div class=\"col-md-3\">"+
+                "<button class=\"btn btn-sm btn-info\" onclick=\"showDetail()\"><i class=\"fa fa-info\"></i></button>" +
+                "</div>" +
+                "</div>";
+
+            listOfParam.push({"id":"total-"+idParam, "opr":"="});
         }
-        if (idParam == "PDTPNJRGI"){
+        if (idParam == "PDTRJRGI"){
+            str = "<div class=\"row\">" +
+                "<label class=\"col-md-3\">Nilai Pendapatan</label>" +
+                "<div class=\"col-md-6\">" +
+                "<input type=\"number\" class=\"form-control\" id=\"total-"+idParam+"\" />" +
+                "</div>" +
+                "<div class=\"col-md-3\">"+
+                "<button class=\"btn btn-sm btn-info\" onclick=\"showDetail()\"><i class=\"fa fa-info\"></i></button>" +
+                "</div>" +
+                "</div>";
 
+            listOfParam.push({"id":"total-"+idParam, "opr":"="});
+        }
+        if (idParam == "PDTRILAB"){
+            str = "<div class=\"row\">" +
+                "<label class=\"col-md-3\">Nilai Pendapatan</label>" +
+                "<div class=\"col-md-6\">" +
+                "<input type=\"number\" class=\"form-control\" id=\"total-"+idParam+"\" />" +
+                "</div>" +
+                "<div class=\"col-md-3\">"+
+                "<button class=\"btn btn-sm btn-info\" onclick=\"showDetail()\"><i class=\"fa fa-info\"></i></button>" +
+                "</div>" +
+                "</div>";
+
+            listOfParam.push({"id":"total-"+idParam, "opr":"="});
+        }
+        if (idParam == "PDTRIRGI"){
+            str = "<div class=\"row\">" +
+                "<label class=\"col-md-3\">Nilai Pendapatan</label>" +
+                "<div class=\"col-md-6\">" +
+                "<input type=\"number\" class=\"form-control\" id=\"total-"+idParam+"\" />" +
+                "</div>" +
+                "<div class=\"col-md-3\">"+
+                "<button class=\"btn btn-sm btn-info\" onclick=\"showDetail()\"><i class=\"fa fa-info\"></i></button>" +
+                "</div>" +
+                "</div>";
+
+            listOfParam.push({"id":"total-"+idParam, "opr":"="});
         }
         $("#body-edit").html(str);
         $("#modal-edit").modal('show');
@@ -762,10 +819,16 @@
             });
 
         }
-        if (idParam == "PDTPNJLAB"){
+        if (idParam == "PDTRJLAB"){
 
         }
-        if (idParam == "PDTPNJRGI"){
+        if (idParam == "PDTRJRGI"){
+
+        }
+        if (idParam == "PDTRILAB"){
+
+        }
+        if (idParam == "PDTRIRGI"){
 
         }
     }
