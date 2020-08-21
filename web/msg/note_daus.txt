@@ -395,3 +395,6 @@ update im_akun_trans set tipe_pembayaran=null where trans_id IN ('69','70','68',
 update im_mesin_absensi set mesin_address='10.88.70.232:8080',branch_id='KP';
 ALTER TABLE im_mesin_absensi ADD COLUMN last_get timestamp without time zone;
 ALTER TABLE im_mesin_absensi ADD COLUMN branch_id character varying (10);
+
+update im_functions set func_name='Kas/Bank Masuk' where func_name='Kas Masuk';
+update im_functions set func_name='Kas/Bank Keluar' where func_name='Kas Keluar';

@@ -18,6 +18,17 @@ public class EfakturDTO {
     private String statusFaktur;
     private String referensi;
 
+    //info perusahaan
+    private String npwpPerusahaan;
+
+    public String getNpwpPerusahaan() {
+        return npwpPerusahaan;
+    }
+
+    public void setNpwpPerusahaan(String npwpPerusahaan) {
+        this.npwpPerusahaan = npwpPerusahaan;
+    }
+
     public String getKdJenisTransaksi() {
         return kdJenisTransaksi;
     }
