@@ -2,30 +2,16 @@ package com.neurix.akuntansi.transaksi.budgetingperhitungan.model;
 
 import java.sql.Timestamp;
 
-/**
- * Created by reza on 14/08/20.
- */
-public class ImAkunParameterBudgetingEntity {
+public class ImAkunKategoriParameterBudgetingEntity {
     private String id;
     private String nama;
-    private String rekeningId;
     private String idJenisBudgeting;
-    private String tipe;
     private String flag;
     private String action;
     private Timestamp createdDate;
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
-    private String idKategoriBudgeting;
-
-    public String getIdKategoriBudgeting() {
-        return idKategoriBudgeting;
-    }
-
-    public void setIdKategoriBudgeting(String idKategoriBudgeting) {
-        this.idKategoriBudgeting = idKategoriBudgeting;
-    }
 
     public String getId() {
         return id;
@@ -43,28 +29,12 @@ public class ImAkunParameterBudgetingEntity {
         this.nama = nama;
     }
 
-    public String getRekeningId() {
-        return rekeningId;
-    }
-
-    public void setRekeningId(String rekeningId) {
-        this.rekeningId = rekeningId;
-    }
-
     public String getIdJenisBudgeting() {
         return idJenisBudgeting;
     }
 
     public void setIdJenisBudgeting(String idJenisBudgeting) {
         this.idJenisBudgeting = idJenisBudgeting;
-    }
-
-    public String getTipe() {
-        return tipe;
-    }
-
-    public void setTipe(String tipe) {
-        this.tipe = tipe;
     }
 
     public String getFlag() {
@@ -120,14 +90,12 @@ public class ImAkunParameterBudgetingEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ImAkunParameterBudgetingEntity that = (ImAkunParameterBudgetingEntity) o;
+        ImAkunKategoriParameterBudgetingEntity that = (ImAkunKategoriParameterBudgetingEntity) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (nama != null ? !nama.equals(that.nama) : that.nama != null) return false;
-        if (rekeningId != null ? !rekeningId.equals(that.rekeningId) : that.rekeningId != null) return false;
         if (idJenisBudgeting != null ? !idJenisBudgeting.equals(that.idJenisBudgeting) : that.idJenisBudgeting != null)
             return false;
-        if (tipe != null ? !tipe.equals(that.tipe) : that.tipe != null) return false;
         if (flag != null ? !flag.equals(that.flag) : that.flag != null) return false;
         if (action != null ? !action.equals(that.action) : that.action != null) return false;
         if (createdDate != null ? !createdDate.equals(that.createdDate) : that.createdDate != null) return false;
@@ -143,9 +111,7 @@ public class ImAkunParameterBudgetingEntity {
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (nama != null ? nama.hashCode() : 0);
-        result = 31 * result + (rekeningId != null ? rekeningId.hashCode() : 0);
         result = 31 * result + (idJenisBudgeting != null ? idJenisBudgeting.hashCode() : 0);
-        result = 31 * result + (tipe != null ? tipe.hashCode() : 0);
         result = 31 * result + (flag != null ? flag.hashCode() : 0);
         result = 31 * result + (action != null ? action.hashCode() : 0);
         result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
