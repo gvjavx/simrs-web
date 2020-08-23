@@ -574,7 +574,7 @@ public class UserBoImpl implements UserBo {
                     }else if (menuName.equalsIgnoreCase("Pembayaran Hutang Piutang")) {
                         menuNameString = "<li id=\"pembayaran_hutang_piutang1\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-money\"></i><span> " + menuName + "</span></a></li>";
                     }else {
-                        menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-files-o\"></i><span> " + menuName + "</span></a></li>";
+                        menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
                     }
 
                     if(i < listdownMenu.size() - 1){
@@ -595,7 +595,7 @@ public class UserBoImpl implements UserBo {
                                 menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-bar-chart\"></i><span> " + menuName + "</span></a></li>";
                         }else if (menuName.equalsIgnoreCase("Pendaftaran Rawat Jalan")) {
                             menuNameString = "<li id=\"pendaftaran\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-user-md\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Rawat Jalan")) {
+                        }else if (menuName.equalsIgnoreCase("Pel. Rawat Jalan")) {
                             menuNameString = "<li id=\"rawat_jalan\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-stethoscope\"></i><span> " + menuName + "</span></a></li>";
                         }else if (menuName.equalsIgnoreCase("Rawat Inap")) {
                             menuNameString = "<li id=\"rawat_inap\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-medkit\"></i><span> " + menuName + "</span></a></li>";
@@ -694,18 +694,32 @@ public class UserBoImpl implements UserBo {
                             idLi = "pembayaran_active";
                             openLu = "pembayaran_open";
                         }else if (("Verifikasi BPJS / PTPN").equalsIgnoreCase(menuName)){
-                            icon="<i class=\"fa fa fa-gavel\"></i>";
+                            icon="<i class=\"fa fa-gavel\"></i>";
                             idLi = "verif_bpjs_active";
                             openLu = "verif_bpjs_open";
                         }else if (("Verifikasi Umum").equalsIgnoreCase(menuName)){
-                            icon="<i class=\"fa fa fa-gavel\"></i>";
+                            icon="<i class=\"fa fa-gavel\"></i>";
                             idLi = "verif_umum_active";
                             openLu = "verif_umum_open";
                         }else if (("Verifikasi Asuransi").equalsIgnoreCase(menuName)){
-                            icon="<i class=\"fa fa fa-gavel\"></i>";
+                            icon="<i class=\"fa fa-gavel\"></i>";
                             idLi = "verif_asuransi_active";
                             openLu = "verif_asuransi_open";
+                        }else if (("Pendaftaran").equalsIgnoreCase(menuName)){
+                            icon="<i class=\"fa fa-user-md\"></i>";
+                            idLi = "pendaftaran_active";
+                            openLu = "pendaftaran_open";
+                        }else if (("Pel. Rawat Inap").equalsIgnoreCase(menuName)){
+                            icon="<i class=\"fa fa-medkit\"></i>";
+                            idLi = "pel_ri_active";
+                            openLu = "pel_ri_open";
+                        }else if (("Penunjang Medis").equalsIgnoreCase(menuName)){
+                            icon="<i class=\"fa fa-heartbeat\"></i>";
+                            idLi = "penunjang_active";
+                            openLu = "penunjang_open";
                         }
+
+
 
                         menuNameString +=
                                 "<li class=\"treeview\" id="+idLi+"> " +
