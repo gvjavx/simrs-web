@@ -2223,7 +2223,7 @@ public class VerifikatorAction extends BaseMasterAction {
         return "search";
     }
 
-    public String searchVerifCover() {
+    public String searchVerifAs() {
         logger.info("[VerifikatorAction.searchVerifCover] START process >>>");
 
         HeaderDetailCheckup headerDetailCheckup = getHeaderDetailCheckup();

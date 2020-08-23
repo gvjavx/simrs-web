@@ -2405,19 +2405,19 @@
                     icon = "fa-info";
                     title = "Info!";
                     warnClass = "alert-success";
-                    msg = "No Bpjs berhasil diverifikasi dengan status AKTIF!";
+                    msg = "No BPJS berhasil diverifikasi dengan status AKTIF!";
                 } else if (response.keteranganStatusPeserta == "TIDAK AKTIF") {
                     val = "tidak aktif";
                     icon = "fa-warning";
                     title = "Warning!";
                     warnClass = "alert-warning";
-                    msg = "No Bpjs berhasil diverifikasi dengan status TIDAK AKTIF!";
+                    msg = "No BPJS berhasil diverifikasi dengan status TIDAK AKTIF!";
                 } else {
                     val = "tidak ditemukan";
                     icon = "fa-warning";
                     title = "Warning!";
-                    warnClass = "alert-warning";
-                    msg = "No Bpjs tidak ditemukan!";
+                    warnClass = "alert-danger";
+                    msg = "No BPJS tidak ditemukan atau periksa kembali koneksi internet anda...!";
                 }
 
                 var warning = '<div class="alert ' + warnClass + ' alert-dismissible">' +

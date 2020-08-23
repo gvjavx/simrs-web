@@ -17,7 +17,8 @@
     <script type='text/javascript'>
 
         $( document ).ready(function() {
-            $('#verifikasi_transaksi_pasien').addClass('active');
+            $('#bayar_rawat_inap, #verif_umum_active').addClass('active');
+            $('#verif_umum_open').addClass('menu-open');
         });
 
 
@@ -35,7 +36,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Verifikasi Transaksi Pasien
+            Verifikasi Transaksi Pasien Umum Rawat Inap
         </h1>
     </section>
 
@@ -50,16 +51,17 @@
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <s:form id="verifForm" method="post" namespace="/veriftransaksi" action="searchVerif_veriftransaksi.action" theme="simple" cssClass="form-horizontal">
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Tipe Pelayanan</label>
-                                    <div class="col-sm-4">
-                                        <s:select list="#{'rawat_inap':'Rawat Inap'}" cssStyle="margin-top: 7px"
-                                                  name="headerDetailCheckup.tipePelayanan"
-                                                  headerKey="rawat_jalan" headerValue="Rawat Jalan"
-                                                  cssClass="form-control select2"/>
-                                    </div>
-                                </div>
+                            <s:form id="verifForm" method="post" namespace="/verifumumri" action="searchVerif_verifumumri.action" theme="simple" cssClass="form-horizontal">
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="control-label col-sm-4">Tipe Pelayanan</label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<s:select list="#{'rawat_inap':'Rawat Inap'}" cssStyle="margin-top: 7px"--%>
+                                                  <%--name="headerDetailCheckup.tipePelayanan"--%>
+                                                  <%--headerKey="rawat_jalan" headerValue="Rawat Jalan"--%>
+                                                  <%--cssClass="form-control select2"/>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                                <s:hidden name="headerDetailCheckup.tipePelayanan" value="rawat_inap"></s:hidden>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">No RM</label>
                                     <div class="col-sm-4">
@@ -76,19 +78,19 @@
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
                                 </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-4">Pelayanan</label>
-                                        <div class="col-sm-4">
-                                            <s:action id="initComboPoli" namespace="/checkup"
-                                                      name="getComboPelayanan_checkup"/>
-                                            <s:select cssStyle="margin-top: 7px; width: 100%"
-                                                      list="#initComboPoli.listOfPelayanan"
-                                                      name="headerDetailCheckup.idPelayanan" listKey="idPelayanan"
-                                                      listValue="namaPelayanan"
-                                                      headerKey="" headerValue="[Select one]"
-                                                      cssClass="form-control select2" theme="simple"/>
-                                        </div>
-                                    </div>
+                                    <%--<div class="form-group">--%>
+                                        <%--<label class="control-label col-sm-4">Pelayanan</label>--%>
+                                        <%--<div class="col-sm-4">--%>
+                                            <%--<s:action id="initComboPoli" namespace="/checkup"--%>
+                                                      <%--name="getComboPelayanan_checkup"/>--%>
+                                            <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
+                                                      <%--list="#initComboPoli.listOfPelayanan"--%>
+                                                      <%--name="headerDetailCheckup.idPelayanan" listKey="idPelayanan"--%>
+                                                      <%--listValue="namaPelayanan"--%>
+                                                      <%--headerKey="" headerValue="[Select one]"--%>
+                                                      <%--cssClass="form-control select2" theme="simple"/>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Status</label>
                                     <div class="col-sm-4">
@@ -128,7 +130,7 @@
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-                                        <a type="button" class="btn btn-danger" href="initVerif_veriftransaksi.action">
+                                        <a type="button" class="btn btn-danger" href="initVerif_verifumumri.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
                                     </div>
@@ -209,7 +211,7 @@
                                             <img src="<s:url value="/pages/images/icon_success.ico"/>">
                                         </s:if>
                                         <s:else>
-                                            <img id="t_<s:property value="noCheckup"/>" onclick="detail('<s:property value="noCheckup"/>','<s:property value="idDetailCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>" style="cursor: pointer;">
+                                            <img id="t_<s:property value="idDetailCheckup"/>" onclick="detail('<s:property value="noCheckup"/>','<s:property value="idDetailCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>" style="cursor: pointer;">
                                         </s:else>
                                     </td>
                                 </tr>
@@ -414,38 +416,44 @@
     }
 
     function detail(noCheckup, idDetailCheckup) {
-        CheckupAction.listDataPasien(idDetailCheckup, function (res) {
-            if(res.idPasien != null){
-                listTindakan(idDetailCheckup);
-                listResepPasien(idDetailCheckup);
-                listLab(idDetailCheckup);
-                var jk = "";
-                var alamat = res.namaDesa +", "+res.namaKecamatan+", "+res.namaKota;
-                var diagnosa = res.diagnosa+", "+res.namaDiagnosa;
-                if(res.jenisKelamin == "L"){
-                    jk = "Laki-Laki";
-                }else{
-                    jk = "Perempuan";
-                }
+        startSpinner('t_', idDetailCheckup);
+        dwr.engine.setAsync(true);
+        CheckupAction.listDataPasien(idDetailCheckup, {callback: function (res) {
+                if (res.idPasien != null) {
+                    stopSpinner('t_', idDetailCheckup);
+                    dwr.engine.setAsync(false);
+                    listTindakan(idDetailCheckup);
+                    listResepPasien(idDetailCheckup);
+                    listLab(idDetailCheckup);
+                    var jk = "";
+                    var alamat = res.namaDesa + ", " + res.namaKecamatan + ", " + res.namaKota;
+                    var diagnosa = res.diagnosa + ", " + res.namaDiagnosa;
+                    if (res.jenisKelamin == "L") {
+                        jk = "Laki-Laki";
+                    } else {
+                        jk = "Perempuan";
+                    }
 
-                $('#no_rm').html(res.idPasien);
-                $('#no_detail_checkup').html(idDetailCheckup);
-                $('#nik').html(res.noKtp);
-                $('#nama').html(res.nama);
-                $('#jenis_kelamin').html(jk);
-                $('#tgl').html(res.tempatLahir+", "+converterDate(new Date(res.tglLahir)));
-                $('#alamat').html(alamat);
-                $('#poli').html(res.namaPelayanan);
-                $('#jenis_pasien').html(res.statusPeriksaName);
-                $('#diagnosa').html(diagnosa);
-                $('#h_id_pasien').val(res.idPasien);
-                $('#h_id_detail_pasien').val(res.idDetailCheckup);
-                $('#h_id_pelayanan').val(res.idPelayanan);
-                $('#h_metode_bayar').val(res.metodePembayaran);
-                $('#h_jenis_pasien').val(res.idJenisPeriksaPasien);
-                $('#save_fin').show();
-                $('#load_fin').hide();
-                $('#modal-detail').modal({show: true, backdrop: 'static'});
+                    $('#no_rm').html(res.idPasien);
+                    $('#no_detail_checkup').html(idDetailCheckup);
+                    $('#nik').html(res.noKtp);
+                    $('#nama').html(res.nama);
+                    $('#jenis_kelamin').html(jk);
+                    $('#tgl').html(res.tempatLahir + ", " + converterDate(new Date(res.tglLahir)));
+                    $('#alamat').html(alamat);
+                    $('#poli').html(res.namaPelayanan);
+                    $('#jenis_pasien').html(res.statusPeriksaName);
+                    $('#diagnosa').html(diagnosa);
+                    $('#h_id_pasien').val(res.idPasien);
+                    $('#h_id_detail_pasien').val(res.idDetailCheckup);
+                    $('#h_id_pelayanan').val(res.idPelayanan);
+                    $('#h_metode_bayar').val(res.metodePembayaran);
+                    $('#h_jenis_pasien').val(res.idJenisPeriksaPasien);
+                    setLabelJenisPasien('jenis_pasien', res.idJenisPeriksaPasien);
+                    $('#save_fin').show();
+                    $('#load_fin').hide();
+                    $('#modal-detail').modal({show: true, backdrop: 'static'});
+                }
             }
         });
     }

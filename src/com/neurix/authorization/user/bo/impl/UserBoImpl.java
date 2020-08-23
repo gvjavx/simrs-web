@@ -420,7 +420,6 @@ public class UserBoImpl implements UserBo {
 
                             //itemMenu="[\"" +  func.getFunctName() + "\",\"\", , , , , \"0\", \"0\", , ]";
                         } else {
-
                             itemMenu = addToList(func.getFuncName(), func.getUrl() != null ? contextPath + func.getUrl() : null, func.getFuncLevel() + "", null, null, null, "0", null, null, null);
 
                             //itemMenu="[\"" +  func.getFunctName() + "\",\"\", , , , , \"0\", , , ]";
@@ -441,17 +440,19 @@ public class UserBoImpl implements UserBo {
 
         List itemMenu;
         List itemMenuTmp;
-        String menuName, menuNameString = "";
+        String menuName, menuNameString= "";
 
         for (int i = 0; i < listdownMenu.size(); i++) {
 
             itemMenu = (List) listdownMenu.get(i);
             menuName = (String) itemMenu.get(0);
             menuName = menuName.substring(menuName.lastIndexOf('|')+1); //get menu name
+            String menuId   = (String) itemMenu.get(9);
 
             if (itemMenu.size()>1) { //get url
 
                 if (itemMenu.get(2).equals("2")) {
+
                     if (menuName.equalsIgnoreCase("Project Manajemen")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-book\"></i><span> " + menuName + "</span></a></li>";
                     } else if (menuName.equalsIgnoreCase("Alat")) {
@@ -675,6 +676,7 @@ public class UserBoImpl implements UserBo {
                         String icon ="";
                         String idLi = "";
                         String openLu ="";
+
                         if (("Transaksi").equalsIgnoreCase(menuName)){
                             icon="<i class=\"fa fa-folder-open\"></i>";
                         } else if (("Master").equalsIgnoreCase(menuName)){
@@ -687,11 +689,22 @@ public class UserBoImpl implements UserBo {
                             icon="<i class=\"fa fa-medkit\"></i>";
                             idLi = "obat_poli_active";
                             openLu = "obat_poli_open";
-                        }
-                        else if (("Pembayaran").equalsIgnoreCase(menuName)){
+                        } else if (("Pembayaran").equalsIgnoreCase(menuName)){
                             icon="<i class=\"fa fa-money\"></i>";
                             idLi = "pembayaran_active";
                             openLu = "pembayaran_open";
+                        }else if (("Verifikasi BPJS / PTPN").equalsIgnoreCase(menuName)){
+                            icon="<i class=\"fa fa fa-gavel\"></i>";
+                            idLi = "verif_bpjs_active";
+                            openLu = "verif_bpjs_open";
+                        }else if (("Verifikasi Umum").equalsIgnoreCase(menuName)){
+                            icon="<i class=\"fa fa fa-gavel\"></i>";
+                            idLi = "verif_umum_active";
+                            openLu = "verif_umum_open";
+                        }else if (("Verifikasi Asuransi").equalsIgnoreCase(menuName)){
+                            icon="<i class=\"fa fa fa-gavel\"></i>";
+                            idLi = "verif_asuransi_active";
+                            openLu = "verif_asuransi_open";
                         }
 
                         menuNameString +=

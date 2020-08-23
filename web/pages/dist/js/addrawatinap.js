@@ -588,7 +588,7 @@ function toContent() {
 
     $('html, body').animate({
         scrollTop: $(desti).offset().top
-    }, 2000);
+    }, 0);
 }
 
 function showModal(select) {

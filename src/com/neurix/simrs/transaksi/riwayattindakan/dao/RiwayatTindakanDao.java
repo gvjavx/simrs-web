@@ -108,9 +108,21 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
                 idDetail = bean.getIdDetailCheckup();
             }
 
-            String SQL = "SELECT a.no_checkup, b.id_detail_checkup, c.id_riwayat_tindakan, \n" +
-                    "c.id_tindakan, c.nama_tindakan, c.keterangan, c.jenis_pasien, c.total_tarif, c.kategori_tindakan_bpjs, \n" +
-                    "c.approve_bpjs_flag, c.tanggal_tindakan, d.kategori_ina_bpjs FROM it_simrs_header_checkup a\n" +
+            String SQL = "SELECT " +
+                    "a.no_checkup," +
+                    "b.id_detail_checkup, " +
+                    "c.id_riwayat_tindakan, \n" +
+                    "c.id_tindakan, " +
+                    "c.nama_tindakan, " +
+                    "c.keterangan, " +
+                    "c.jenis_pasien, " +
+                    "c.total_tarif, " +
+                    "c.kategori_tindakan_bpjs, \n" +
+                    "c.approve_bpjs_flag," +
+                    "c.tanggal_tindakan," +
+                    "d.kategori_ina_bpjs," +
+                    "c.flag_update_klaim "+
+                    "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN it_simrs_riwayat_tindakan c ON b.id_detail_checkup = c.id_detail_checkup\n" +
                     "LEFT JOIN im_simrs_tindakan d ON d.id_tindakan = c.id_tindakan\n" +
@@ -147,7 +159,7 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
                         tindakan.setStTglTindakan(formatDate);
                     }
                     tindakan.setKategoriInaBpjs(obj[11] == null ? "" : obj[11].toString());
-
+                    tindakan.setFlagUpdateKlaim((obj[12] == null ? "" : obj[12].toString()));
                     riwayatTindakanList.add(tindakan);
                 }
             }

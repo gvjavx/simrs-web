@@ -5,7 +5,7 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
-    <package name="verifikasicover" namespace="/verifikasicover" extends="struts-default, jasperreports-default, json-default">
+    <package name="verifumumrj" namespace="/verifumumrj" extends="struts-default, jasperreports-default, json-default">
 
         <result-types>
             <result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult" default="false" />
@@ -69,11 +69,11 @@
             <exception-mapping exception="java.lang.RuntimeException" result="global_error" />
         </global-exception-mappings>
 
-        <action name="*_verifikasicover"
+        <action name="*_verifumumrj"
                 class="com.neurix.simrs.transaksi.verifikator.action.VerifikatorAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
 
-            <result name="search">/pages/com/neurix/simrs/transaksi/verifikator/searchVerifikasiCover.jsp</result>
+            <result name="search">/pages/com/neurix/simrs/transaksi/verifikator/searchVerifUmumRj.jsp</result>
 
         </action>
 

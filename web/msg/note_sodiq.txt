@@ -303,11 +303,6 @@ ADD COLUMN sip VARCHAR(100);
 ALTER TABLE it_simrs_header_detail_checkup
 ADD COLUMN flag_cover VARCHAR(1);
 
--- tambah function
-/verifikasicover/initVerif_verifikasicover.action
-/verifikasicover/initVerif_verifikasicover.action
-/verifikasicover/searchVerifCover_verifikasicover.action
-
 -- 19-08-2020
 ALTER TABLE it_simrs_asesmen_keperawatan_rawat_inap
 ADD COLUMN nama_terang VARCHAR(100),
@@ -341,6 +336,30 @@ ADD COLUMN ttd_dokter VARCHAR(100);
 ALTER TABLE it_simrs_asesmen_kandungan
 ADD COLUMN nama_terang VARCHAR(100),
 ADD COLUMN sip VARCHAR(100);
+
+-- 23-08-2020
+-- tambah function
+Verif Umum
+    Rawat Jalan
+    /verifumumrj/initVerif_verifumumrj.action
+    /verifumumrj/initVerif_verifumumrj.action
+    /verifumumrj/searchVerif_verifumumrj.action
+
+    Rawat Inap
+    /verifumumri/initVerif_verifumumri.action
+    /verifumumri/initVerif_verifumumri.action
+    /verifumumri/searchVerif_verifumumrji.action
+
+Verif Asuransi
+    Rawat Jalan
+    /verifasrj/initVerif_verifasrj.action
+    /verifasrj/initVerif_verifasrj.action
+    /verifasrj/searchVerifAns_verifasrj.action
+
+    Rawat Inap
+    /verifasri/initVerif_verifasri.action
+    /verifasri/initVerif_verifasri.action
+    /verifasri/searchVerifAns_verifasrj.action
 
 
 

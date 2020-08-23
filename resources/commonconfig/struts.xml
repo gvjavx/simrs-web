@@ -222,12 +222,15 @@
     <include file="sshconfig/com/neurix/hris/transaksi/pendapatanDokter/struts/PendapatanDokterAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/verifikatorpembayaran/struts/VerifikatorPembayaranAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/reseponline/struts/ResepOnlineAction.xml"/>
-    <include file="sshconfig/com/neurix/simrs/transaksi/verifikator/struts/VerifTransaksiAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/rawatinap/struts/RawatIntensifAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/rawatinap/struts/RawatIsolasiAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/rawatinap/struts/RawatOperasiAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/rawatinap/struts/RawatBersalinAction.xml"/>
-    <include file="sshconfig/com/neurix/simrs/transaksi/verifikator/struts/VerifikasiCoverAction.xml"/>
+
+    <include file="sshconfig/com/neurix/simrs/transaksi/verifikator/struts/VerifAsuransiRi.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/verifikator/struts/VerifAsuransiRj.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/verifikator/struts/VerifUmumRi.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/verifikator/struts/VerifUmumRj.xml"/>
 
     <!--AKUNTANSI-->
     <!--MASTER -->

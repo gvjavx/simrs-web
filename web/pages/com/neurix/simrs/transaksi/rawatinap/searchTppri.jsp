@@ -34,6 +34,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/RawatInapAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/spinner.js"/>'></script>
 
 </head>
 
@@ -583,6 +584,7 @@
                         $('#dokter_dpjp_1').removeAttr('disabled');
                         $('#kelas_kamar').removeAttr('disabled');
                         $('#msg_dpjp').hide();
+                        setLabelJenisPasien('jenis_pasien' ,res.idJenisPeriksaPasien);
                         $('#modal-detail').modal({show: true, backdrop: 'static'});
                     }
                 }
