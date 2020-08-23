@@ -548,7 +548,7 @@ public class BgPendapatanAction {
         perhitunganBudgeting.setBranchId(unit);
 
         try {
-            budgetingPerhitunganBo.saveAddPerhitunganBudgeting(sessionPerhitungan, perhitunganBudgeting);
+            budgetingPerhitunganBo.saveAddPerhitunganBudgeting( new ArrayList<>(),sessionPerhitungan, perhitunganBudgeting);
             response.setStatus("success");
         } catch (GeneralBOException e){
             logger.info("[BgPendapatanAction.saveAdd] ERROR ", e);

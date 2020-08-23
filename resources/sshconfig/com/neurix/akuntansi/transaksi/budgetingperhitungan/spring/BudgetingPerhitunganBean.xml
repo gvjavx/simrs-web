@@ -12,6 +12,8 @@
           p:jenisBudgetingDao-ref="jenisBudgetingDao"
           p:parameterBudgetingDao-ref="parameterBudgetingDao"
           p:perhitunganBudgetingDao-ref="perhitunganBudgetingDao"
+          p:kategoriParameterBudgetingDao-ref="kategoriParameterBudgetingDao"
+          p:nilaiParameterDao-ref="nilaiParameterDao"
     />
 
     <bean id="budgetingPerhitunganBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -30,8 +32,7 @@
         <property name="transactionAttributes">
             <props>
                 <prop key="getByCriteria">readOnly</prop>
-                <prop key="saveAddBudgeting">PROPAGATION_REQUIRED</prop>
-                <prop key="saveEditBudgeting">PROPAGATION_REQUIRED</prop>
+                <prop key="saveAddPerhitunganBudgeting">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>
@@ -42,6 +43,10 @@
     <bean id="parameterBudgetingDao" class="com.neurix.akuntansi.transaksi.budgetingperhitungan.dao.ParameterBudgetingDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="perhitunganBudgetingDao" class="com.neurix.akuntansi.transaksi.budgetingperhitungan.dao.PerhitunganBudgetingDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="kategoriParameterBudgetingDao" class="com.neurix.akuntansi.transaksi.budgetingperhitungan.dao.KategoriParameterBudgetingDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="nilaiParameterDao" class="com.neurix.akuntansi.transaksi.budgetingperhitungan.dao.NilaiParameterDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

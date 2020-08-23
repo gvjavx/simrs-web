@@ -21,6 +21,15 @@ public class ItAkunPerhitunganBudgetingEntity {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String idNilaiParameter;
+
+    public String getIdNilaiParameter() {
+        return idNilaiParameter;
+    }
+
+    public void setIdNilaiParameter(String idNilaiParameter) {
+        this.idNilaiParameter = idNilaiParameter;
+    }
 
     public String getTahun() {
         return tahun;

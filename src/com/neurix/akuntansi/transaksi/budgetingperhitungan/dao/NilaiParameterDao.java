@@ -43,7 +43,7 @@ public class NilaiParameterDao extends GenericDao<ItAkunNilaiParameterBudgetingE
     public String getNextSeq() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_nilai_budgeting')");
         Iterator<BigInteger> iter = query.list().iterator();
-        String sId = String.format("%08d", iter.next());
+        String sId = String.format("%05d", iter.next());
         return sId;
     }
 }

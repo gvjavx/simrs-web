@@ -2,13 +2,8 @@ package com.neurix.akuntansi.transaksi.budgetingperhitungan.bo.impl;
 
 import com.neurix.akuntansi.transaksi.budgetingnilaidasar.model.ImAkunBudgetingNilaiDasarEntity;
 import com.neurix.akuntansi.transaksi.budgetingperhitungan.bo.BudgetingPerhitunganBo;
-import com.neurix.akuntansi.transaksi.budgetingperhitungan.dao.JenisBudgetingDao;
-import com.neurix.akuntansi.transaksi.budgetingperhitungan.dao.ParameterBudgetingDao;
-import com.neurix.akuntansi.transaksi.budgetingperhitungan.dao.PerhitunganBudgetingDao;
-import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ImAkunParameterBudgetingEntity;
-import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ItAkunPerhitunganBudgetingEntity;
-import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ParameterBudgeting;
-import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.PerhitunganBudgeting;
+import com.neurix.akuntansi.transaksi.budgetingperhitungan.dao.*;
+import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.*;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.common.exception.GeneralBOException;
 import org.apache.log4j.Logger;
@@ -20,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by reza on 14/08/20.
@@ -29,6 +25,16 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
     private PerhitunganBudgetingDao perhitunganBudgetingDao;
     private ParameterBudgetingDao parameterBudgetingDao;
     private JenisBudgetingDao jenisBudgetingDao;
+    private KategoriParameterBudgetingDao kategoriParameterBudgetingDao;
+    private NilaiParameterDao nilaiParameterDao;
+
+    public void setKategoriParameterBudgetingDao(KategoriParameterBudgetingDao kategoriParameterBudgetingDao) {
+        this.kategoriParameterBudgetingDao = kategoriParameterBudgetingDao;
+    }
+
+    public void setNilaiParameterDao(NilaiParameterDao nilaiParameterDao) {
+        this.nilaiParameterDao = nilaiParameterDao;
+    }
 
     public void setPerhitunganBudgetingDao(PerhitunganBudgetingDao perhitunganBudgetingDao) {
         this.perhitunganBudgetingDao = perhitunganBudgetingDao;
@@ -187,11 +193,54 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
     }
 
     @Override
-    public void saveAddPerhitunganBudgeting(List<ItAkunPerhitunganBudgetingEntity> beans, PerhitunganBudgeting bean) throws GeneralBOException {
+    public void saveAddPerhitunganBudgeting(List<ItAkunNilaiParameterBudgetingEntity> nilaiParameters,  List<ItAkunPerhitunganBudgetingEntity> listPerhitungan, PerhitunganBudgeting bean) throws GeneralBOException {
         logger.info("[BudgetingPerhitunganBoImpl.saveAddPerhitunganBudgeting] START >>> ");
-        if (beans.size() > 0){
+
+        for (ItAkunNilaiParameterBudgetingEntity nilaiParameterEntity : nilaiParameters){
+
+            nilaiParameterEntity.setFlag(bean.getFlag());
+            nilaiParameterEntity.setAction(bean.getAction());
+            nilaiParameterEntity.setCreatedDate(bean.getCreatedDate());
+            nilaiParameterEntity.setCreatedWho(bean.getCreatedWho());
+            nilaiParameterEntity.setLastUpdate(bean.getLastUpdate());
+            nilaiParameterEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+            try {
+                nilaiParameterDao.addAndSave(nilaiParameterEntity);
+            } catch (HibernateException e){
+                logger.error("[BudgetingPerhitunganBoImpl.saveAddPerhitunganBudgeting] ERROR when save nilai parameter. ", e);
+                throw new GeneralBOException("[BudgetingPerhitunganBoImpl.saveAddPerhitunganBudgeting] ERROR when save nilai parameter. ", e);
+            }
+
+            List<ItAkunPerhitunganBudgetingEntity> filterListPerhitungan = listPerhitungan.stream().filter(p->p.getIdNilaiParameter().equalsIgnoreCase(nilaiParameterEntity.getId())).collect(Collectors.toList());
+            if (filterListPerhitungan.size() > 0){
+                int i = 1;
+                for (ItAkunPerhitunganBudgetingEntity perhitunganEntity : filterListPerhitungan){
+                    perhitunganEntity.setId(getNextIdPerhitungan(bean.getBranchId(), bean.getIdParameterBudgeting(), bean.getTahun()));
+                    perhitunganEntity.setCreatedDate(bean.getCreatedDate());
+                    perhitunganEntity.setCreatedWho(bean.getCreatedWho());
+                    perhitunganEntity.setLastUpdate(bean.getLastUpdate());
+                    perhitunganEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    perhitunganEntity.setFlag(bean.getFlag());
+                    perhitunganEntity.setAction(bean.getAction());
+                    perhitunganEntity.setTahun(bean.getTahun());
+                    perhitunganEntity.setBranchId(bean.getBranchId());
+                    perhitunganEntity.setUrutan(i++);
+
+                    try {
+                        perhitunganBudgetingDao.addAndSave(perhitunganEntity);
+                    } catch (HibernateException e){
+                        logger.error("[BudgetingPerhitunganBoImpl.saveAddPerhitunganBudgeting] ERROR when save perhitungan. ", e);
+                        throw new GeneralBOException("[BudgetingPerhitunganBoImpl.saveAddPerhitunganBudgeting] ERROR when save perhitungan. ", e);
+                    }
+                }
+            }
+
+        }
+
+        if (listPerhitungan.size() > 0){
             int i = 1;
-            for (ItAkunPerhitunganBudgetingEntity perhitunganEntity : beans){
+            for (ItAkunPerhitunganBudgetingEntity perhitunganEntity : listPerhitungan){
                 perhitunganEntity.setId(getNextIdPerhitungan(bean.getBranchId(), bean.getIdParameterBudgeting(), bean.getTahun()));
                 perhitunganEntity.setCreatedDate(bean.getCreatedDate());
                 perhitunganEntity.setCreatedWho(bean.getCreatedWho());
@@ -212,5 +261,11 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
             }
         }
         logger.info("[BudgetingPerhitunganBoImpl.saveAddPerhitunganBudgeting] END <<< ");
+    }
+
+    @Override
+    public String getNextIdNilaiParameter(String branchId, String tahun, String idNilai) throws GeneralBOException {
+        logger.info("[BudgetingPerhitunganBoImpl.getNextIdNilaiParameter] START >>> ");
+        return idNilai + branchId + tahun + nilaiParameterDao.getNextSeq();
     }
 }

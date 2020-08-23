@@ -743,6 +743,9 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     ALTER TABLE im_akun_parameter_budgeting
     ADD COLUMN id_kategori_budgeting VARCHAR(30);
 
+    ALTER TABLE	it_akun_perhitungan_budgeting
+    ADD COLUMN id_nilai_parameter VARCHAR(50);
+
     CREATE SEQUENCE seq_nilai_budgeting;
 
 <<< //
