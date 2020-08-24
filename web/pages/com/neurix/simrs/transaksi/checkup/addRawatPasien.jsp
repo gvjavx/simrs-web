@@ -2483,12 +2483,10 @@
     }
 
     function initListDokter() {
-        console.log(idPelayanan);
         if(idPelayanan != ''){
             var option = "";
             CheckupAction.listOfDokter(idPelayanan, function (response) {
                 option = "<option value=''>[Select One]</option>";
-                console.log(response);
                 if (response != null) {
                     $.each(response, function (i, item) {
                         option += "<option value='" + item.idDokter + "'>" + item.namaDokter + "</option>";
@@ -2499,6 +2497,7 @@
                     option = option;
                 }
             });
+            $('#poli').val(idPelayanan).trigger('change');
         }
 
         var idDokter = '<s:property value="headerCheckup.idDokter"></s:property>';
