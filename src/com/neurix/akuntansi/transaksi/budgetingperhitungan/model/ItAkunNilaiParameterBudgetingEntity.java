@@ -1,12 +1,13 @@
 package com.neurix.akuntansi.transaksi.budgetingperhitungan.model;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 
 public class ItAkunNilaiParameterBudgetingEntity {
     private String id;
     private String idParameter;
-    private BigInteger nilaiTotal;
+    private BigDecimal nilaiTotal;
     private String masterId;
     private String divisiId;
     private String branchId;
@@ -34,11 +35,11 @@ public class ItAkunNilaiParameterBudgetingEntity {
         this.idParameter = idParameter;
     }
 
-    public BigInteger getNilaiTotal() {
+    public BigDecimal getNilaiTotal() {
         return nilaiTotal;
     }
 
-    public void setNilaiTotal(BigInteger nilaiTotal) {
+    public void setNilaiTotal(BigDecimal nilaiTotal) {
         this.nilaiTotal = nilaiTotal;
     }
 

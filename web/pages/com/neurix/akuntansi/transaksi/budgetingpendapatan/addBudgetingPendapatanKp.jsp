@@ -150,7 +150,7 @@
                     </div>
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-th-list"></i>
-                            List Parameter Budgeting Pendapatan <strong><span id="label-tahun"></span> - <span id="label-branch"></span></strong>
+                            List kategori Budgeting Pendapatan <strong><span id="label-tahun"></span> - <span id="label-branch"></span></strong>
                         </h3>
                     </div>
                     <div class="box-body">
@@ -176,7 +176,7 @@
                                     <thead id="head-budgeting">
                                     <tr bgcolor="#90ee90">
                                         <%--<td style="width: 20%">COA</td>--%>
-                                        <td align="">Parameter Budgeting</td>
+                                        <td align="">Kategori Pendapatan</td>
                                         <td align="">Nilai</td>
                                         <td align="center">Action</td>
                                         <%--<td align="center">Action</td>--%>
@@ -425,17 +425,17 @@
 
         showDialog('loading');
         dwr.engine.setAsync(true);
-        BgPendapatanAction.getListParameterBudgeting("PDT", tahun, branch, "new", function (list) {
+        BgPendapatanAction.getListKategoriParameter("PDT", tahun, branch, function (res) {
             dwr.engine.setAsync(false);
             showDialog('close');
             $("#body-budgeting").html("");
             var str = "";
-            $.each(list, function (i, item) {
+            $.each(res.list, function (i, item) {
                 str += "<tr>" +
                         "<td>"+item.nama+"</td>" +
-                        "<td align='right'>"+ formatRupiah(nullEscape(item.nilaiTotalBudgeting)) +"</td>" +
+                        "<td align='right'>"+ formatRupiah(nullEscape(item.nilaiTotal)) +"</td>" +
                         "<td align='center'>" +
-                        "<button class='btn btn-sm btn-primary' onclick=\"edit(\'"+item.id+"\',\'"+branch+"\',\'"+tahun+"\',\'"+ item.nama +"\')\"><i class='fa fa-edit'></i></button> " +
+                        "<button class='btn btn-sm btn-primary' onclick=\"add(\'"+item.id+"\',\'"+branch+"\',\'"+tahun+"\',\'"+ item.nama +"\')\"><i class='fa fa-edit'></i></button> " +
 //                        "<button class='btn btn-sm btn-success'><i class='fa fa-search'></i></button>" +
                         "</td>" +
                         "</tr>";
@@ -482,7 +482,7 @@
                     "<td>"+item.nama+"</td>" +
                     "<td align='right'>"+ formatRupiah(nullEscape(item.nilaiTotalBudgeting)) +"</td>" +
                     "<td align='center'>" +
-                    "<button class='btn btn-sm btn-primary' onclick=\"edit(\'"+item.id+"\',\'"+branch+"\',\'"+tahun+"\',\'"+ item.nama +"\')\"><i class='fa fa-edit'></i></button> " +
+                    "<button class='btn btn-sm btn-primary' onclick=\"add(\'"+item.id+"\',\'"+branch+"\',\'"+tahun+"\',\'"+ item.nama +"\')\"><i class='fa fa-edit'></i></button> " +
                     "<button class='btn btn-sm btn-success'><i class='fa fa-search'></i></button>" +
                     "</td>" +
                     "</tr>";
@@ -885,11 +885,10 @@
         post(host);
     }
 
-    function add() {
-        $("#modal-add-coa").modal('show');
-        $("#rekeningid").val("");
-        $("#coa").val("");
-        $("#namacoa").val("");
+    function add(idKategori, branch, tahun, nama) {
+        var form = { "budgeting.tahun":tahun, "budgeting.branchId":branch, "budgeting.idKategoriBudgeting":idKategori, "budgeting.namaKategori":nama};
+        var host = firstpath()+"/bgpendapatan/add_bgpendapatan.action";
+        post(host, form);
     }
 
     function addCoa() {

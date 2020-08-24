@@ -571,6 +571,7 @@
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgetingnilaidasar.model.BudgetingNilaiDasar"/>
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgetingperhitungan.model.PerhitunganBudgeting"/>
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ParameterBudgeting"/>
+      <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgetingperhitungan.model.KategoriParameter"/>
 
       <!--Master Hcm-->
       <create creator="new">
@@ -733,7 +734,7 @@
       <convert converter="bean" match="com.neurix.hris.master.dokterKso.model.ImSimrsDokterKso"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity"/>
       <convert converter="bean" match="com.neurix.hris.master.dokterKsoTindakan.model.DokterKsoTindakan"/>
-      <convert converter="bean" match="com.neurix.hris.master.dokterKsoTindakan.model.ImSimrsDokterKsoTindakan"/>
+      <convert converter="bean" match="com.neurix.hris.master.dokterKsoTindakan.model.ImSimrsDokterKsoTindakan"/>f
 
       <create creator="new">
           <param name="class" value="com.neurix.simrs.transaksi.asesmenspesialis.action.AsesmenSpesialisAction"/>

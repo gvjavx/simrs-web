@@ -504,7 +504,7 @@ public class BgNominasiAction {
             if (sessionParam != null){
                 for (ParameterBudgeting parameterBudgeting : sessionParam){
                     if (idParam.equalsIgnoreCase(parameterBudgeting.getId())){
-                        parameterBudgeting.setNilaiTotalBudgeting(nilaiBudgeting);
+                        parameterBudgeting.setNilaiTotal(nilaiBudgeting);
                         break;
                     }
                 }
@@ -548,7 +548,7 @@ public class BgNominasiAction {
         perhitunganBudgeting.setBranchId(unit);
 
         try {
-            budgetingPerhitunganBo.saveAddPerhitunganBudgeting(sessionPerhitungan, perhitunganBudgeting);
+            budgetingPerhitunganBo.saveAddPerhitunganBudgeting(new ArrayList<>(), sessionPerhitungan, perhitunganBudgeting);
             response.setStatus("success");
         } catch (GeneralBOException e){
             logger.info("[BgNominasiAction.saveAdd] ERROR ", e);
@@ -598,13 +598,13 @@ public class BgNominasiAction {
                     budgeting.setBranchId(unit);
                     budgeting.setRekeningId(param.getRekeningId());
                     budgeting.setTipe("tahunan");
-                    budgeting.setNilaiTotal(param.getNilaiTotalBudgeting());
+                    budgeting.setNilaiTotal(param.getNilaiTotal());
                     budgetingList.add(budgeting);
                 } else {
                     boolean notFound = true;
                     for (Budgeting bg : budgetingList){
                         if (param.getRekeningId().equalsIgnoreCase(bg.getRekeningId())){
-                            bg.setNilaiTotal(bg.getNilaiTotal().add(param.getNilaiTotalBudgeting()));
+                            bg.setNilaiTotal(bg.getNilaiTotal().add(param.getNilaiTotal()));
                             notFound = false;
                             break;
                         }
@@ -615,7 +615,7 @@ public class BgNominasiAction {
                         budgeting.setBranchId(unit);
                         budgeting.setRekeningId(param.getRekeningId());
                         budgeting.setTipe("tahunan");
-                        budgeting.setNilaiTotal(param.getNilaiTotalBudgeting());
+                        budgeting.setNilaiTotal(param.getNilaiTotal());
                         budgetingList.add(budgeting);
                     }
                 }

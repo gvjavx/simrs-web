@@ -26,8 +26,14 @@ public class NilaiParameterDao extends GenericDao<ItAkunNilaiParameterBudgetingE
         if (mapCriteria.get("id") != null){
             criteria.add(Restrictions.eq("id", mapCriteria.get("id").toString()));
         }
-        if (mapCriteria.get("idKategoriBudgeting") != null){
-            criteria.add(Restrictions.eq("idKategoriBudgeting", mapCriteria.get("id_parameter_budgeting").toString()));
+        if (mapCriteria.get("id_parameter") != null){
+            criteria.add(Restrictions.eq("idParameter", mapCriteria.get("id_parameter").toString()));
+        }
+        if (mapCriteria.get("master_id") != null){
+            criteria.add(Restrictions.eq("masterId", mapCriteria.get("master_id").toString()));
+        }
+        if (mapCriteria.get("divisi_id") != null){
+            criteria.add(Restrictions.eq("divisiId", mapCriteria.get("divisi_id").toString()));
         }
         if (mapCriteria.get("branch_id") != null){
             criteria.add(Restrictions.eq("branchId", mapCriteria.get("branch_id").toString()));
@@ -36,7 +42,7 @@ public class NilaiParameterDao extends GenericDao<ItAkunNilaiParameterBudgetingE
             criteria.add(Restrictions.eq("tahun", mapCriteria.get("tahun").toString()));
         }
 
-        criteria.addOrder(Order.asc("urutan"));
+//        criteria.addOrder(Order.asc("urutan"));
         return criteria.list();
     }
 

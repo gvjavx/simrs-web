@@ -26,13 +26,29 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/BranchAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/BudgetingAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/KodeRekeningAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/BudgetingNilaiDasarAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/BgPendapatanAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/MasterAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PositionAction.js"/>'></script>
     <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.bootstrap3.js"/>"></script>
     <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.js"/>"></script>
     <script src="<s:url value="/pages/plugins/tree/lodash.js"/>"></script>
 
     <script type='text/javascript'>
-
-
+        function formatRupiah(angka) {
+            if(angka != null && angka != ''){
+                var reverse = angka.toString().split('').reverse().join(''),
+                    ribuan = reverse.match(/\d{1,3}/g);
+                ribuan = ribuan.join('.').split('').reverse().join('');
+                if (angka < 0){
+                    return "-"+ribuan;
+                } else {
+                    return ribuan;
+                }
+            }else{
+                return 0;
+            }
+        }
     </script>
 </head>
 
@@ -65,58 +81,73 @@
                         <%--<s:form id="kasirjalanForm" method="post" namespace="/kasirjalan" action="search_kasirjalan.action" theme="simple" cssClass="form-horizontal">--%>
                         <div class="form-group form-horizontal">
                             <div class="row">
-                                <div class="col-md-12 col-md-offset-3">
-                                    <div class="row">
-                                        <label class="control-label col-sm-2">Tahun</label>
-                                        <div class="col-sm-2">
-                                            <select class="form-control" id="sel-tahun">
-                                                <option value="2020">2020</option>
-                                                <option value="2021">2021</option>
-                                                <option value="2022">2022</option>
-                                                <option value="2023">2023</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <label class="control-label col-sm-2">Unit</label>
-                                        <div class="col-sm-2">
-                                            <s:if test='budgeting.flagKp == "Y"'>
-                                                <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                                <s:select list="#initComboBranch.listOfComboBranch" id="sel-unit" name="budgeting.branchId"
-                                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select Value]" cssClass="form-control" onchange="changeAction(this.value)"/>
-
-                                            </s:if>
-                                            <s:else>
-                                                <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                                <s:select list="#initComboBranch.listOfComboBranch" name="budgeting.branchId"
-                                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select Value]" cssClass="form-control" onchange="changeAction(this.value)" disabled="true"/>
-                                                <%--<input type="hidden" id="sel-unit" name="budgeting.branchId"/>--%>
-                                                <s:hidden id="sel-unit" name="budgeting.branchId"/>
-                                            </s:else>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <label class="control-label col-sm-2">Tipe Budgeting</label>
-                                        <div class="col-sm-2">
-                                            <select class="form-control" id="sel-tipe">
-                                                <option value="tahunan">Tahunan</option>
-                                                <option value="bulanan">Bulanan</option>
-                                                <option value="semester">Semester</option>
-                                                <option value="quartal">Quartal</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <input type="hidden" id="add-coa-tipe" value="investasi" name="budgeting.tipeBudgeting"/>
-
+                                <div class="col-md-12">
+                                    <h4>
+                                        <s:property value="budgeting.namaKategori"/> - <s:property value="budgeting.branchName"/> <s:property value="budgeting.tahun"/>
+                                    </h4>
                                 </div>
+                                <%--<div class="col-md-12 col-md-offset-3">--%>
+                                    <%--<div class="row">--%>
+                                        <%--<label class="control-label col-sm-2">Tahun</label>--%>
+                                        <%--<div class="col-sm-2">--%>
+                                            <%--<select class="form-control" id="sel-tahun">--%>
+                                                <%--<option value="2020">2020</option>--%>
+                                                <%--<option value="2021">2021</option>--%>
+                                                <%--<option value="2022">2022</option>--%>
+                                                <%--<option value="2023">2023</option>--%>
+                                            <%--</select>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                    <%--<div class="row">--%>
+                                        <%--<label class="control-label col-sm-2">Unit</label>--%>
+                                        <%--<div class="col-sm-2">--%>
+                                            <%--<s:if test='budgeting.flagKp == "Y"'>--%>
+                                                <%--<s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>--%>
+                                                <%--<s:select list="#initComboBranch.listOfComboBranch" id="sel-unit" name="budgeting.branchId"--%>
+                                                          <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select Value]" cssClass="form-control" onchange="changeAction(this.value)"/>--%>
+
+                                            <%--</s:if>--%>
+                                            <%--<s:else>--%>
+                                                <%--<s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>--%>
+                                                <%--<s:select list="#initComboBranch.listOfComboBranch" name="budgeting.branchId"--%>
+                                                          <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select Value]" cssClass="form-control" onchange="changeAction(this.value)" disabled="true"/>--%>
+                                                <%--&lt;%&ndash;<input type="hidden" id="sel-unit" name="budgeting.branchId"/>&ndash;%&gt;--%>
+                                                <%--<s:hidden id="sel-unit" name="budgeting.branchId"/>--%>
+                                            <%--</s:else>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+
+                                    <%--<div class="row">--%>
+                                        <%--<label class="control-label col-sm-2">Tipe Budgeting</label>--%>
+                                        <%--<div class="col-sm-2">--%>
+                                            <%--<select class="form-control" id="sel-tipe">--%>
+                                                <%--<option value="tahunan">Tahunan</option>--%>
+                                                <%--<option value="bulanan">Bulanan</option>--%>
+                                                <%--<option value="semester">Semester</option>--%>
+                                                <%--<option value="quartal">Quartal</option>--%>
+                                            <%--</select>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                    <%--<input type="hidden" id="add-coa-tipe" value="investasi" name="budgeting.tipeBudgeting"/>--%>
+
+                                <%--</div>--%>
                             </div>
 
                             <div class="row">
-                                <div class="col-md-6 col-md-offset-6" style="margin-top: 10px">
-                                    <button class="btn btn-primary" onclick="add()"><i class="fa fa-plus"></i> Add</button>
+                                <div class="col-md-6 col-md-offset-3">
+                                    <h4>Nilai Dasar : </h4>
+                                    <table class="table table-bordered table-striped">
+                                        <tbody id="body-nilai-dasar">
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
+
+                            <%--<div class="row">--%>
+                                <%--<div class="col-md-6 col-md-offset-6" style="margin-top: 10px">--%>
+                                    <%--<button class="btn btn-primary" onclick="add()"><i class="fa fa-plus"></i> Add</button>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
                         </div>
 
                         <%--</s:form>--%>
@@ -145,27 +176,24 @@
                             <strong>Error!</strong><span id="error-msg"></span>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-8 col-md-offset-2">
-                                <table class="table table-bordered table-striped tree">
-                                    <thead id="head-budgeting">
-                                    <tr bgcolor="#90ee90">
-                                        <%--<td style="width: 20%">COA</td>--%>
-                                        <td align="center">Keterangan</td>
+                        <div id="list-body-budgeting"></div>
+                        <%--<div class="row">--%>
+                            <%--<div class="col-md-8 col-md-offset-2">--%>
+                                <%--<h4>Nama Parameter</h4>--%>
+                                <%--<table class="table table-bordered table-striped tree">--%>
+                                    <%--<thead id="head-budgeting">--%>
+                                    <%--<tr bgcolor="#90ee90">--%>
+                                        <%--<td>Master</td>--%>
+                                        <%--<td>Divisi</td>--%>
+                                        <%--<td>Nilai</td>--%>
                                         <%--<td align="center">Action</td>--%>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="body-budgeting">
-                                    <s:iterator value="#session.listOfCoa" status="listOfCoa" var="row">
-                                        <tr>
-                                            <%--<td><s:property value="kodeRekening"/></td>--%>
-                                            <td><s:property value="namaKodeRekening"/></td>
-                                        </tr>
-                                    </s:iterator>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                                    <%--</tr>--%>
+                                    <%--</thead>--%>
+                                    <%--<tbody id="body-budgeting">--%>
+                                    <%--</tbody>--%>
+                                <%--</table>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
                         <div class="form-group" style="margin-top: 10px">
                             <div class="col-md-4 col-md-offset-5">
                                 <button class="btn btn-warning" onclick="initForm()"><i class="fa fa-arrow-left"></i> Back</button>
@@ -253,15 +281,203 @@
     </div>
 </div>
 
+
+<div class="modal fade" id="modal-add">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-plus"></i> Add
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-3">
+                            <div id="form-master">
+                                <strong>Master</strong> <hr style="width: 80%;">
+                                <div class="row">
+                                    <label class="control-label col-sm-4">Master Id</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="masterid"/>
+                                        <script>
+                                            $(document).ready(function() {
+                                                var functions, mapped;
+                                                $('#masterid').typeahead({
+                                                    minLength: 1,
+                                                    source: function (query, process) {
+                                                        functions = [];
+                                                        mapped = {};
+                                                        var data = [];
+                                                        dwr.engine.setAsync(false);
+                                                        MasterAction.initTypeaheadMaster(query,function (listdata) {
+                                                            data = listdata;
+                                                        });
+                                                        $.each(data, function (i, item) {
+                                                            var labelItem = item.nomorVendor + " | " + item.nama;
+                                                            mapped[labelItem] = {
+                                                                name :item.nama,
+                                                                id : item.nomorVendor
+                                                            };
+                                                            functions.push(labelItem);
+                                                        });
+                                                        process(functions);
+                                                    },
+                                                    updater: function (item) {
+                                                        var selectedObj = mapped[item];
+                                                        $("#namamaster").val(selectedObj.name);
+                                                        return selectedObj.id;
+                                                    }
+                                                });
+                                            });
+                                        </script>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label class="control-label col-sm-4">Nama Master</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="namamaster" readonly/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br>
+                            <div id="form-divisi">
+                                <strong>Divisi</strong> <hr style="width: 80%;">
+                                <div class="row">
+                                    <label class="control-label col-sm-4">Divisi Id</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="divisiid"/>
+
+                                        <script>
+                                            $(document).ready(function() {
+                                                var functions, mapped;
+                                                $('#divisiid').typeahead({
+                                                    minLength: 1,
+                                                    source: function (query, process) {
+                                                        functions = [];
+                                                        mapped = {};
+                                                        var data = [];
+                                                        dwr.engine.setAsync(false);
+                                                        PositionAction.typeAheadPosition(query,function (listdata) {
+                                                            data = listdata;
+                                                        });
+                                                        $.each(data, function (i, item) {
+                                                            var labelItem = item.kodering + " | " + item.positionName;
+                                                            mapped[labelItem] = {
+                                                                kode : item.kodering,
+                                                                name :item.positionName,
+                                                                id : item.positionId
+                                                            };
+                                                            functions.push(labelItem);
+                                                        });
+                                                        process(functions);
+                                                    },
+                                                    updater: function (item) {
+                                                        var selectedObj = mapped[item];
+                                                        $("#namadivisi").val(selectedObj.name);
+                                                        $("#positionid").val(selectedObj.id);
+                                                        return selectedObj.kode;
+                                                    }
+                                                });
+                                            });
+                                        </script>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label class="control-label col-sm-4">Nama Divisi</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="namadivisi" readonly/>
+                                        <input type="hidden" class="form-control" id="positionid" readonly/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br>
+                            <div id="form-periode">
+                                <strong>Nilai</strong><hr style="width: 80%;">
+                                <div id="body-nilai">
+                                    <%--<div class="row">--%>
+                                        <%--<label class="control-label col-sm-4">Nilai Pendapatan</label>--%>
+                                        <%--<div class="col-sm-6">--%>
+                                            <%--<input type="number" value="0" class="form-control" id="total-pendapatan" onchange="hitungSubTotal('divisi')"/>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="id-param"/>
+                        <input type="hidden" id="ed-unit"/>
+                        <input type="hidden" id="ed-tahun"/>
+
+                        <%--<label class="col-md-2 col-md-offset-1">Jenis Investasi</label>--%>
+                        <%--<div class="col-md-6">--%>
+                        <%--</div>--%>
+                    </div>
+
+                    <div class="alert alert-warning alert-dismissable" id="alert-error-modal" style="display: none">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <strong>Error!</strong><span id="error-msg-modal">Gagal Menambahkan No. Rekening : No. Rekening Sudah Ada</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="save_con" onclick="addCoa()"><i class="fa fa-check"></i> Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-view-pendapatan">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Data Pendapatan </h4>
+            </div>
+            <div class="modal-body">
+                <span id="label-tipe"></span> <span id="label-periode"></span>
+                <br>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-bordered table-striped tree" style="font-size: 13px; margin-top: 7px;">
+                                <thead>
+                                <tr bgcolor="#90ee90" id="head-list-pendapatan">
+
+                                </tr>
+                                </thead>
+                                <tbody id="body-list-pendapatan">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type='text/javascript'>
 
     var listOfCoa = [];
     $( document ).ready(function() {
         chekTipe();
+        nilaiDasar();
+        showListParameter();
     });
 
-    var tipe = '<s:property value="budgeting.tipe"/>';
+    var listOfParam = [];
+    var tipe        = '<s:property value="budgeting.tipe"/>';
     var flagDisable = '<s:property value="budgeting.flagDisable"/>';
+    var idKategori  = '<s:property value="budgeting.idKategoriBudgeting"/>';
+    var tahun       = '<s:property value="budgeting.tahun"/>';
+    var unit        = '<s:property value="budgeting.branchId"/>';
 
     function chekTipe() {
         if ("Y" == flagDisable){
@@ -269,6 +485,392 @@
             $("#sel-tipe").val(tipe);
         }
     }
+
+    function nilaiDasar() {
+        BudgetingNilaiDasarAction.getListNilaiDasarEdit(tahun, function (list) {
+
+            var str = "";
+            $.each(list, function (i, item) {
+                str += "<tr>" +
+                        "<td>" + item.keterangan + "</td>" +
+                        "<td align='right'>" + item.nilai + "</td>" +
+                    "</tr>";
+            });
+
+            $("#body-nilai-dasar").html(str);
+            console.log(str);
+        });
+    }
+
+    function showListParameter() {
+        BgPendapatanAction.getListParameterByIdKategori(idKategori, function (list) {
+            var str = "";
+            $.each(list, function (i, item) {
+                str += '<div class="row">' +
+                    '<div class="col-md-8 col-md-offset-2">' +
+                    '<h4>' + item.nama +'</h4>' +
+                    '<button class="btn btn-sm btn-primary" style="float: right;" onclick="showAdd(\''+item.id+'\')"><i class="fa fa-plus"></i> Tambah</button>' +
+                    '<table class="table table-bordered table-striped tree">' +
+                    '<thead id="head-budgeting">' +
+                    '<tr bgcolor="#90ee90">' +
+                    '<td>Master</td>' +
+                    '<td>Divisi</td>' +
+                    '<td>Nilai</td>' +
+                    '<td align="center">Action</td>' +
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody id="body-budgeting-'+ item.id +'">' +
+                    '</tbody>' +
+                    '</table>' +
+                    '</div>' +
+                    '</div>' +
+                    '<br/>' ;
+            });
+
+            $("#list-body-budgeting").html(str);
+        });
+    }
+
+    function showAdd(idParam) {
+        $("#modal-add").modal('show');
+        $("#id-param").val(idParam);
+        listOfParam = [];
+
+        var str = "";
+        if (idParam == "PDTRJTDN"){
+            str = "<div class=\"row\">" +
+                "<label class=\"col-md-4\">Nilai Pendapatan</label>" +
+                "<div class=\"col-md-6\">" +
+                "<input type=\"number\" class=\"form-control\" id=\"total-"+idParam+"\" />" +
+                "</div>" +
+                "<div class=\"col-md-2\">"+
+                "<button class=\"btn btn-sm btn-info\" onclick=\"showDetail()\"><i class=\"fa fa-info\"></i></button>" +
+                "</div>" +
+                "</div>";
+
+            listOfParam.push({"id":"total-"+idParam, "opr":"="});
+        }
+        if (idParam == "PDTRITDN"){
+
+            var tt = $("#edit_tt").val();
+            var bor = $("#edit_bor").val();
+
+            str = "<div class=\"row\">" +
+                "<label class=\"col-md-4\">Nilai Pendapatan</label>" +
+                "<div class=\"col-md-6\">" +
+                "<input type=\"number\" class=\"form-control\" id=\"total-"+idParam+"\" />" +
+                "</div>" +
+                "<div class=\"col-md-2\">"+
+                "<button class=\"btn btn-sm btn-info\" onclick=\"showDetail()\"><i class=\"fa fa-info\"></i></button>" +
+                "</div>" +
+                "</div>" +
+                "<input type='hidden' value='"+tt+"' id='tt-"+idParam+"'>" +
+                "<input type='hidden' value='"+bor+"' id='bor-"+idParam+"'>";
+
+            listOfParam.push(
+                {"id":"total-"+idParam, "opr":"*"},
+                {"id":"tt-"+idParam, "opr":"*"},
+                {"id":"bor-"+idParam, "opr":"="}
+            );
+        }
+        if (idParam == "PDTRIKMR"){
+            str = "<div class=\"row\">" +
+                "<label class=\"col-md-4\">Nilai Pendapatan</label>" +
+                "<div class=\"col-md-6\">" +
+                "<input type=\"number\" class=\"form-control\" id=\"total-"+idParam+"\" />" +
+                "</div>" +
+                "<div class=\"col-md-2\">"+
+                "<button class=\"btn btn-sm btn-info\" onclick=\"showDetail()\"><i class=\"fa fa-info\"></i></button>" +
+                "</div>" +
+                "</div>";
+
+            listOfParam.push({"id":"total-"+idParam, "opr":"="});
+        }
+        if (idParam == "PDTRJOBT"){
+            str = "<div class=\"row\">" +
+                "<label class=\"col-md-4\">Nilai Pendapatan Farmasi</label>" +
+                "<div class=\"col-md-6\">" +
+                "<input type=\"number\" class=\"form-control\" id=\"total-"+idParam+"\" />" +
+                "</div>" +
+                "<div class=\"col-md-2\">"+
+                "<button class=\"btn btn-sm btn-info\" onclick=\"showDetail()\"><i class=\"fa fa-info\"></i></button>" +
+                "</div>" +
+                "</div>";
+
+            listOfParam.push({"id":"total-"+idParam, "opr":"="});
+        }
+        if (idParam == "PDTRIOBT"){
+            str = "<div class=\"row\">" +
+                "<label class=\"col-md-4\">Nilai Pendapatan Farmasi</label>" +
+                "<div class=\"col-md-6\">" +
+                "<input type=\"number\" class=\"form-control\" id=\"total-"+idParam+"\" />" +
+                "</div>" +
+                "<div class=\"col-md-2\">"+
+                "<button class=\"btn btn-sm btn-info\" onclick=\"showDetail()\"><i class=\"fa fa-info\"></i></button>" +
+                "</div>" +
+                "</div>";
+
+            listOfParam.push({"id":"total-"+idParam, "opr":"="});
+        }
+        if (idParam == "PDTRJLAB"){
+
+            str = "<div class=\"row\">" +
+                "<label class=\"col-md-4\">Nilai Pendapatan</label>" +
+                "<div class=\"col-md-6\">" +
+                "<input type=\"number\" class=\"form-control\" id=\"total-"+idParam+"\" />" +
+                "</div>" +
+                "<div class=\"col-md-2\">"+
+                "<button class=\"btn btn-sm btn-info\" onclick=\"showDetail()\"><i class=\"fa fa-info\"></i></button>" +
+                "</div>" +
+                "</div>";
+
+            listOfParam.push({"id":"total-"+idParam, "opr":"="});
+        }
+        if (idParam == "PDTRJRGI"){
+            str = "<div class=\"row\">" +
+                "<label class=\"col-md-4\">Nilai Pendapatan</label>" +
+                "<div class=\"col-md-6\">" +
+                "<input type=\"number\" class=\"form-control\" id=\"total-"+idParam+"\" />" +
+                "</div>" +
+                "<div class=\"col-md-2\">"+
+                "<button class=\"btn btn-sm btn-info\" onclick=\"showDetail()\"><i class=\"fa fa-info\"></i></button>" +
+                "</div>" +
+                "</div>";
+
+            listOfParam.push({"id":"total-"+idParam, "opr":"="});
+        }
+        if (idParam == "PDTRILAB"){
+            str = "<div class=\"row\">" +
+                "<label class=\"col-md-4\">Nilai Pendapatan</label>" +
+                "<div class=\"col-md-6\">" +
+                "<input type=\"number\" class=\"form-control\" id=\"total-"+idParam+"\" />" +
+                "</div>" +
+                "<div class=\"col-md-2\">"+
+                "<button class=\"btn btn-sm btn-info\" onclick=\"showDetail()\"><i class=\"fa fa-info\"></i></button>" +
+                "</div>" +
+                "</div>";
+
+            listOfParam.push({"id":"total-"+idParam, "opr":"="});
+        }
+        if (idParam == "PDTRIRGI"){
+            str = "<div class=\"row\">" +
+                "<label class=\"col-md-4\">Nilai Pendapatan</label>" +
+                "<div class=\"col-md-6\">" +
+                "<input type=\"number\" class=\"form-control\" id=\"total-"+idParam+"\" />" +
+                "</div>" +
+                "<div class=\"col-md-2\">"+
+                "<button class=\"btn btn-sm btn-info\" onclick=\"showDetail()\"><i class=\"fa fa-info\"></i></button>" +
+                "</div>" +
+                "</div>";
+
+            listOfParam.push({"id":"total-"+idParam, "opr":"="});
+        }
+
+        $("#id-param").val(idParam);
+        $("#body-nilai").html(str);
+    }
+
+    function showDetail() {
+
+        var idParam = $("#id-param").val();
+        var label = $("#label-edit").text();
+
+        $("#modal-view-pendapatan").modal('show');
+        var head = "";
+        var str = "";
+        var total = "";
+        var totalDiskon = "";
+        if (idParam == "PDTRJTDN"){
+            head = "<td>Nama</td>" +
+                "<td>Harga</td>"+
+                "<td>Harga Diskon</td>"+
+                "<td>Qty</td>" +
+                "<td>Total</td>"+
+                "<td>Total Diskon</td>";
+
+            BgPendapatanAction.getListPendapatanTindakan(unit, tahun, "RJ", function (list) {
+                $.each(list, function (i, item) {
+                    str += "<tr>" +
+                        "<td>"+item.namaTindakan+"</td>" +
+                        "<td align='right'>"+ formatRupiah(item.harga)+"</td>" +
+                        "<td align='right'>"+ formatRupiah(item.hargaDiskon)+"</td>" +
+                        "<td>"+item.qty+"</td>" +
+                        "<td align='right'>"+ formatRupiah(item.totalHarga)+"</td>" +
+                        "<td align='right'>"+ formatRupiah(item.totalHargaDiskon)+"</td>" +
+                        "</tr>";
+
+                    total += parseInt(item.totalHarga);
+                    totalDiskon += parseInt(nullEscape(item.totalHargaDiskon));
+                });
+                str += "<tr>" +
+                    "<td align='right' colspan='4'>Total : </td>" +
+                    "<td align='right'>"+ total +"</td>" +
+                    "<td align='right'>"+ totalDiskon +"</td>" +
+                    "</tr>";
+
+                $("#head-list-pendapatan").html(head);
+                $("#body-list-pendapatan").html(str);
+//                $("#label-tipe").text(label);
+                $("#label-periode").text("Periode Januari Hingga " + stBulan(getDateParted('MONTH') - 1) + " " + tahun);
+            });
+        }
+        if (idParam == "PDTRITDN"){
+            head = "<td>Nama</td>" +
+                "<td>Harga</td>"+
+                "<td>Harga Diskon</td>"+
+                "<td>Qty</td>" +
+                "<td>Total</td>"+
+                "<td>Total Diskon</td>";
+
+            BgPendapatanAction.getListPendapatanTindakan(unit, tahun, "RI", function (list) {
+                $.each(list, function (i, item) {
+                    str += "<tr>" +
+                        "<td>"+item.namaTindakan+"</td>" +
+                        "<td align='right'>"+ formatRupiah(item.harga)+"</td>" +
+                        "<td align='right'>"+ formatRupiah(item.hargaDiskon)+"</td>" +
+                        "<td>"+item.qty+"</td>" +
+                        "<td align='right'>"+ formatRupiah(item.totalHarga)+"</td>" +
+                        "<td align='right'>"+ formatRupiah(item.totalHargaDiskon)+"</td>" +
+                        "</tr>";
+
+                    total += parseInt(item.totalHarga);
+                    totalDiskon += parseInt(nullEscape(item.totalHargaDiskon));
+                });
+                str += "<tr>" +
+                    "<td align='right' colspan='4'>Total : </td>" +
+                    "<td align='right'>"+ total +"</td>" +
+                    "<td align='right'>"+ totalDiskon +"</td>" +
+                    "</tr>";
+
+                $("#head-list-pendapatan").html(head);
+                $("#body-list-pendapatan").html(str);
+//                $("#label-tipe").text(label);
+                $("#label-periode").text("Periode Januari Hingga " + stBulan(getDateParted('MONTH') - 1) + " " + tahun);
+            });
+        }
+        if (idParam == "PDTRIKMR"){
+
+        }
+        if (idParam == "PDTRJOBT"){
+            head = "<td>Nama</td>" +
+                "<td>Harga</td>"+
+                "<td>Harga Diskon</td>"+
+                "<td>Qty</td>" +
+                "<td>Total</td>"+
+                "<td>Total Diskon</td>";
+
+            BgPendapatanAction.getListPendapatanObat(unit, tahun, "RJ", function (list) {
+                $.each(list, function (i, item) {
+                    str += "<tr>" +
+                        "<td>"+item.namaTindakan+"</td>" +
+                        "<td align='right'>"+ formatRupiah(item.harga)+"</td>" +
+                        "<td align='right'>"+ formatRupiah(item.hargaDiskon)+"</td>" +
+                        "<td>"+item.qty+"</td>" +
+                        "<td align='right'>"+ formatRupiah(item.totalHarga)+"</td>" +
+                        "<td align='right'>"+ formatRupiah(item.totalHargaDiskon)+"</td>" +
+                        "</tr>";
+
+                    total += parseInt(item.totalHarga);
+                    totalDiskon += parseInt(nullEscape(item.totalHargaDiskon));
+                });
+                str += "<tr>" +
+                    "<td align='right' colspan='4'>Total : </td>" +
+                    "<td align='right'>"+ total +"</td>" +
+                    "<td align='right'>"+ totalDiskon +"</td>" +
+                    "</tr>";
+
+                $("#head-list-pendapatan").html(head);
+                $("#body-list-pendapatan").html(str);
+//                $("#label-tipe").text(label);
+                $("#label-periode").text("Periode Januari Hingga " + stBulan(getDateParted('MONTH') - 1) + " " + tahun);
+            });
+        }
+        if (idParam == "PDTRIOBT"){
+            head = "<td>Nama</td>" +
+                "<td>Harga</td>"+
+                "<td>Harga Diskon</td>"+
+                "<td>Qty</td>" +
+                "<td>Total</td>"+
+                "<td>Total Diskon</td>";
+
+            BgPendapatanAction.getListPendapatanObat(unit, tahun, "RI", function (list) {
+                $.each(list, function (i, item) {
+                    str += "<tr>" +
+                        "<td>"+item.namaTindakan+"</td>" +
+                        "<td align='right'>"+ formatRupiah(item.harga)+"</td>" +
+                        "<td align='right'>"+ formatRupiah(item.hargaDiskon)+"</td>" +
+                        "<td>"+item.qty+"</td>" +
+                        "<td align='right'>"+ formatRupiah(item.totalHarga)+"</td>" +
+                        "<td align='right'>"+ formatRupiah(item.totalHargaDiskon)+"</td>" +
+                        "</tr>";
+
+                    total += parseInt(item.totalHarga);
+                    totalDiskon += parseInt(nullEscape(item.totalHargaDiskon));
+                });
+                str += "<tr>" +
+                    "<td align='right' colspan='4'>Total : </td>" +
+                    "<td align='right'>"+ total +"</td>" +
+                    "<td align='right'>"+ totalDiskon +"</td>" +
+                    "</tr>";
+
+                $("#head-list-pendapatan").html(head);
+                $("#body-list-pendapatan").html(str);
+//                $("#label-tipe").text(label);
+                $("#label-periode").text("Periode Januari Hingga " + stBulan(getDateParted('MONTH') - 1) + " " + tahun);
+            });
+
+        }
+        if (idParam == "PDTRJLAB"){
+
+        }
+        if (idParam == "PDTRJRGI"){
+
+        }
+        if (idParam == "PDTRILAB"){
+
+        }
+        if (idParam == "PDTRIRGI"){
+
+        }
+    }
+
+    function stBulan(bulan) {
+        if (bulan == "1")
+            return "Januari";
+        if (bulan == "2")
+            return "Februari";
+        if (bulan == "3")
+            return "Maret";
+        if (bulan == "4")
+            return "April";
+        if (bulan == "5")
+            return "Mei";
+        if (bulan == "6")
+            return "Juni";
+        if (bulan == "7")
+            return "Juli";
+        if (bulan == "8")
+            return "Agustus";
+        if (bulan == "9")
+            return "September";
+        if (bulan == "10")
+            return "Oktober";
+        if (bulan == "11")
+            return "November";
+        if (bulan == "12")
+            return "Desember";
+    }
+
+    function getDateParted(tipe) {
+        var d = new Date();
+        if (tipe == "YEAR")
+            return d.getFullYear();
+        if (tipe == "MONTH")
+            return d.getMonth() + 1;
+        if (tipe == "DATE")
+            return d.getDate();
+    }
+
 
     // exemple : post('/contact/', {name: 'Johnny Bravo'});
     function post(path, params) {
@@ -403,6 +1005,24 @@
 //        var form = { "budgeting.tahun":tahun, "budgeting.branchId":unit, "budgeting.tipe":tipe };
 //        var host = firstpath()+"/budgeting/add_budgeting.action?status=add&tipe=detail&trans=ADD_DRAFT";
 //        post(host, form);
+    }
+
+    function hitungSubTotal(var1) {
+        var total = 0;
+        if ("divisi" == var1){
+
+            var qty = $("#qty").val();
+            var nilai = $("#nilai").val();
+
+            total = qty*nilai;
+            $("#total-divisi").val(total);
+        }
+    }
+
+    function nullEscape(n) {
+        if (n == null)
+            return 0;
+        return n;
     }
 
 </script>

@@ -85,6 +85,24 @@ public class Budgeting {
     private List<String> rekeningIdList;
     private String flagKp;
     private String flagNilaiTotal = "N";
+    private String idKategoriBudgeting;
+    private String namaKategori;
+
+    public String getNamaKategori() {
+        return namaKategori;
+    }
+
+    public void setNamaKategori(String namaKategori) {
+        this.namaKategori = namaKategori;
+    }
+
+    public String getIdKategoriBudgeting() {
+        return idKategoriBudgeting;
+    }
+
+    public void setIdKategoriBudgeting(String idKategoriBudgeting) {
+        this.idKategoriBudgeting = idKategoriBudgeting;
+    }
 
     public String getFlagNilaiTotal() {
         return flagNilaiTotal;

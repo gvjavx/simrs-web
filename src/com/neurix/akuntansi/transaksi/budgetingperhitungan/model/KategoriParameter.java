@@ -4,14 +4,12 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
- * Created by reza on 14/08/20.
+ * Created by reza on 24/08/20.
  */
-public class ParameterBudgeting {
+public class KategoriParameter {
     private String id;
     private String nama;
-    private String rekeningId;
     private String idJenisBudgeting;
-    private String tipe;
     private String flag;
     private String action;
     private Timestamp createdDate;
@@ -21,50 +19,6 @@ public class ParameterBudgeting {
     private BigDecimal nilaiTotal;
     private String tahun;
     private String branchId;
-    private String idParameter;
-    private String masterId;
-    private String divisiId;
-    private String idKategoriBudgeting;
-
-    public String getIdKategoriBudgeting() {
-        return idKategoriBudgeting;
-    }
-
-    public void setIdKategoriBudgeting(String idKategoriBudgeting) {
-        this.idKategoriBudgeting = idKategoriBudgeting;
-    }
-
-    public BigDecimal getNilaiTotal() {
-        return nilaiTotal;
-    }
-
-    public void setNilaiTotal(BigDecimal nilaiTotal) {
-        this.nilaiTotal = nilaiTotal;
-    }
-
-    public String getIdParameter() {
-        return idParameter;
-    }
-
-    public void setIdParameter(String idParameter) {
-        this.idParameter = idParameter;
-    }
-
-    public String getMasterId() {
-        return masterId;
-    }
-
-    public void setMasterId(String masterId) {
-        this.masterId = masterId;
-    }
-
-    public String getDivisiId() {
-        return divisiId;
-    }
-
-    public void setDivisiId(String divisiId) {
-        this.divisiId = divisiId;
-    }
 
     public String getTahun() {
         return tahun;
@@ -82,7 +36,6 @@ public class ParameterBudgeting {
         this.branchId = branchId;
     }
 
-
     public String getId() {
         return id;
     }
@@ -99,28 +52,12 @@ public class ParameterBudgeting {
         this.nama = nama;
     }
 
-    public String getRekeningId() {
-        return rekeningId;
-    }
-
-    public void setRekeningId(String rekeningId) {
-        this.rekeningId = rekeningId;
-    }
-
     public String getIdJenisBudgeting() {
         return idJenisBudgeting;
     }
 
     public void setIdJenisBudgeting(String idJenisBudgeting) {
         this.idJenisBudgeting = idJenisBudgeting;
-    }
-
-    public String getTipe() {
-        return tipe;
-    }
-
-    public void setTipe(String tipe) {
-        this.tipe = tipe;
     }
 
     public String getFlag() {
@@ -169,5 +106,13 @@ public class ParameterBudgeting {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public BigDecimal getNilaiTotal() {
+        return nilaiTotal;
+    }
+
+    public void setNilaiTotal(BigDecimal nilaiTotal) {
+        this.nilaiTotal = nilaiTotal;
     }
 }

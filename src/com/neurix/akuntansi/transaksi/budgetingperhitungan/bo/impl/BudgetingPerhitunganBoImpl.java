@@ -1,6 +1,7 @@
 package com.neurix.akuntansi.transaksi.budgetingperhitungan.bo.impl;
 
 import com.neurix.akuntansi.transaksi.budgetingnilaidasar.model.ImAkunBudgetingNilaiDasarEntity;
+import com.neurix.akuntansi.transaksi.budgetingnilaidasar.model.ItAkunBudgetingNilaiDasarEntity;
 import com.neurix.akuntansi.transaksi.budgetingperhitungan.bo.BudgetingPerhitunganBo;
 import com.neurix.akuntansi.transaksi.budgetingperhitungan.dao.*;
 import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.*;
@@ -61,6 +62,8 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
             hsCriteria.put("id", bean.getId());
         if (bean.getIdJenisBudgeting() != null)
             hsCriteria.put("id_jenis_budgeting", bean.getIdJenisBudgeting());
+        if (bean.getIdKategoriBudgeting() != null)
+            hsCriteria.put("id_kategori_budgeting", bean.getIdKategoriBudgeting());
 
         List<ImAkunParameterBudgetingEntity> parameterBudgetingEntities = new ArrayList<>();
         try {
@@ -137,7 +140,7 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
                 parameterBudgeting.setCreatedWho(paramEntity.getCreatedWho());
                 parameterBudgeting.setLastUpdate(paramEntity.getLastUpdate());
                 parameterBudgeting.setLastUpdateWho(paramEntity.getLastUpdateWho());
-                parameterBudgeting.setNilaiTotalBudgeting(new BigDecimal(0));
+                parameterBudgeting.setNilaiTotal(new BigDecimal(0));
 
                 PerhitunganBudgeting perhitunganBudgeting = new PerhitunganBudgeting();
                 perhitunganBudgeting.setIdParameterBudgeting(paramEntity.getId());
@@ -146,7 +149,7 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
                 List<ItAkunPerhitunganBudgetingEntity> perhitunganBudgetingEntities = getListPerhitunganBudgetingEntity(perhitunganBudgeting);
                 if (perhitunganBudgetingEntities.size() > 0){
                     BigDecimal nilaiBudgeting = hitungNilaiBudgeting(perhitunganBudgetingEntities);
-                    parameterBudgeting.setNilaiTotalBudgeting(nilaiBudgeting);
+                    parameterBudgeting.setNilaiTotal(nilaiBudgeting);
                 }
                 parameterBudgetings.add(parameterBudgeting);
             }
@@ -267,5 +270,116 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
     public String getNextIdNilaiParameter(String branchId, String tahun, String idNilai) throws GeneralBOException {
         logger.info("[BudgetingPerhitunganBoImpl.getNextIdNilaiParameter] START >>> ");
         return idNilai + branchId + tahun + nilaiParameterDao.getNextSeq();
+    }
+
+    @Override
+    public List<KategoriParameter> getListKategoriParameter(KategoriParameter bean) throws GeneralBOException {
+
+        List<KategoriParameter> kategoriParameters = new ArrayList<>();
+        List<ImAkunKategoriParameterBudgetingEntity> kategoriEntityList = getListEntityKategoriParameter(bean);
+        if (kategoriEntityList.size() > 0){
+
+            for (ImAkunKategoriParameterBudgetingEntity entity : kategoriEntityList){
+                KategoriParameter kategoriParameter = new KategoriParameter();
+                kategoriParameter.setId(entity.getId());
+                kategoriParameter.setNama(entity.getNama());
+                kategoriParameter.setIdJenisBudgeting(entity.getIdJenisBudgeting());
+                kategoriParameter.setNilaiTotal(getNilaiTotalKategori(entity.getId(), bean.getTahun(), bean.getBranchId()));
+                kategoriParameter.setFlag(entity.getFlag());
+                kategoriParameter.setAction(entity.getAction());
+                kategoriParameter.setCreatedDate(entity.getCreatedDate());
+                kategoriParameter.setCreatedWho(entity.getCreatedWho());
+                kategoriParameter.setLastUpdate(entity.getLastUpdate());
+                kategoriParameter.setLastUpdateWho(entity.getLastUpdateWho());
+                kategoriParameters.add(kategoriParameter);
+            }
+        }
+
+        return kategoriParameters;
+    }
+    private List<ImAkunKategoriParameterBudgetingEntity> getListEntityKategoriParameter(KategoriParameter bean) throws GeneralBOException{
+        logger.info("[BudgetingPerhitunganBoImpl.getListEntityKategoriParameter] START >>> ");
+
+        Map hsCriteria = new HashMap();
+        if (bean.getId() != null)
+            hsCriteria.put("id", bean.getId());
+        if (bean.getIdJenisBudgeting() != null)
+            hsCriteria.put("id_jenis_budgeting", bean.getIdJenisBudgeting());
+        if (bean.getFlag() != null)
+            hsCriteria.put("flag", bean.getFlag());
+
+        List<ImAkunKategoriParameterBudgetingEntity> results = new ArrayList<>();
+        try {
+            results = kategoriParameterBudgetingDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[BudgetingPerhitunganBoImpl.getListEntityKategoriParameter] ERROR. ", e);
+            throw new GeneralBOException("[BudgetingPerhitunganBoImpl.getListEntityKategoriParameter] ERROR. ", e);
+        }
+        logger.info("[BudgetingPerhitunganBoImpl.getListEntityKategoriParameter] END <<< ");
+        return results;
+    }
+
+    private BigDecimal getNilaiTotalKategori(String idKategori, String tahun, String branchId){
+
+        BigDecimal jumlah = new BigDecimal(0);
+        if (idKategori != null && !"".equalsIgnoreCase(idKategori)){
+
+            ParameterBudgeting parameterBudgeting = new ParameterBudgeting();
+            parameterBudgeting.setIdKategoriBudgeting(idKategori);
+            List<ImAkunParameterBudgetingEntity> parameters = getListParameterBudgetingEntity(parameterBudgeting);
+            if (parameters.size() > 0){
+                for (ImAkunParameterBudgetingEntity parameterBudgetingEntity : parameters){
+
+                    parameterBudgeting = new ParameterBudgeting();
+                    parameterBudgeting.setIdParameter(parameterBudgetingEntity.getId());
+                    parameterBudgeting.setTahun(tahun);
+                    parameterBudgeting.setBranchId(branchId);
+
+                    List<ItAkunNilaiParameterBudgetingEntity> nilaiParams = getListEntityNilaiParam(parameterBudgeting);
+                    if (nilaiParams.size() > 0){
+                        for (ItAkunNilaiParameterBudgetingEntity nilaiParam : nilaiParams){
+                            jumlah = jumlah.add(nullEscape(nilaiParam.getNilaiTotal()));
+                        }
+                    }
+                }
+            }
+        }
+        return jumlah;
+    }
+
+    private List<ItAkunNilaiParameterBudgetingEntity> getListEntityNilaiParam(ParameterBudgeting bean) throws GeneralBOException{
+        logger.info("[BudgetingPerhitunganBoImpl.getListEntityNilaiParam] START >>> ");
+
+        Map hsCriteria = new HashMap();
+        if (bean.getId() != null)
+            hsCriteria.put("id", bean.getId());
+        if (bean.getIdParameter() != null)
+            hsCriteria.put("id_parameter", bean.getIdParameter());
+        if (bean.getMasterId() != null)
+            hsCriteria.put("master_id", bean.getMasterId());
+        if (bean.getDivisiId() != null)
+            hsCriteria.put("divisi_id", bean.getDivisiId());
+        if (bean.getBranchId() != null)
+            hsCriteria.put("branch_id", bean.getBranchId());
+        if (bean.getTahun() != null)
+            hsCriteria.put("tahun", bean.getTahun());
+        if (bean.getFlag() != null)
+            hsCriteria.put("flag", bean.getFlag());
+
+        List<ItAkunNilaiParameterBudgetingEntity> results = new ArrayList<>();
+        try {
+            results = nilaiParameterDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[BudgetingPerhitunganBoImpl.getListEntityNilaiParam] ERROR. ", e);
+            throw new GeneralBOException("[BudgetingPerhitunganBoImpl.getListEntityNilaiParam] ERROR. ", e);
+        }
+        logger.info("[BudgetingPerhitunganBoImpl.getListEntityNilaiParam] END <<< ");
+        return results;
+    }
+
+    private BigDecimal nullEscape(BigDecimal nilai){
+        if (nilai == null)
+            return new BigDecimal(0);
+        return nilai;
     }
 }
