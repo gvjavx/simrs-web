@@ -303,7 +303,7 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
             item.setUrlFotoBukti(pathBukti);
 
             try {
-                verifikatorPembayaranDao.updateAndSave(resultPembayaran.get(0));
+                verifikatorPembayaranDao.updateAndSave(item);
             } catch (HibernateException e){
                 logger.error("[VerifikatorPembayaranBoImpl.updateBuktiTransfer] ERROR. ", e);
                 throw new GeneralBOException("[VerifikatorPembayaranBoImpl.updateBuktiTransfer] ERROR. ", e);
@@ -324,11 +324,32 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
             throw new GeneralBOException("[VerifikatorPembayaranBoImpl.updateBuktiTransfer] ERROR. ", e);
         }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         if(keterangan.equalsIgnoreCase("konsultasi")) {
             resultTelemedic.get(0).setFlagBayarKonsultasi("Y");
         }
         if (keterangan.equalsIgnoreCase("resep")) {
-            resultTelemedic.get(0).setFlagResep("Y");
+            resultTelemedic.get(0).setFlagBayarResep("Y");
         }
 
         try {
