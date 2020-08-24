@@ -131,7 +131,8 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                     "c.nama,\n" +
                     "lab.nama_lab,\n" +
                     "pl.created_date,\n" +
-                    "pl.approve_flag\n" +
+                    "pl.approve_flag,\n" +
+                    "pl.keterangan\n" +
                     "FROM it_simrs_periksa_lab pl\n" +
                     "INNER JOIN it_simrs_header_detail_checkup dc ON dc.id_detail_checkup = pl.id_detail_checkup\n" +
                     "INNER JOIN it_simrs_header_checkup c ON c.no_checkup = dc.no_checkup\n" +
@@ -191,6 +192,7 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                     String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(dataLab.getCreatedDate());
                     dataLab.setStCreatedDate(formatDate);
                     dataLab.setApproveFlag(obj[7] == null ? "" : obj[7].toString());
+                    dataLab.setKeterangan(obj[8] == null ? "" : obj[8].toString());
                     checkupList.add(dataLab);
                 }
             }
@@ -368,7 +370,8 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                     "a.ttd_dokter,\n" +
                     "a.ttd_petugas,\n" +
                     "a.id_pemeriksa,\n" +
-                    "d.user_name\n" +
+                    "d.user_name,\n" +
+                    "a.id_lab \n"+
                     "FROM it_simrs_periksa_lab a\n" +
                     "INNER JOIN im_simrs_lab b ON a.id_lab = b.id_lab\n" +
                     "LEFT JOIN im_simrs_dokter c ON a.id_dokter = c.id_dokter\n" +
@@ -388,6 +391,7 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                 lab.setTtdPetugas(objects[5] == null ? "" : CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_PETUGAS+objects[5].toString());
                 lab.setIdPemeriksa(objects[6] == null ? "" : objects[6].toString());
                 lab.setNamaPetugas(objects[7] == null ? "" : objects[7].toString());
+                lab.setIdLab(objects[8] == null ? "" : objects[8].toString());
             }
         }
         return lab;

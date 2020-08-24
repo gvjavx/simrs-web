@@ -16,6 +16,7 @@ import com.neurix.simrs.master.pasien.model.*;
 import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
+import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.paketperiksa.model.ItSimrsPaketPasienEntity;
 import com.neurix.simrs.transaksi.paketperiksa.model.PaketPasien;
 import org.apache.log4j.Logger;
@@ -180,6 +181,19 @@ public class PasienBoImpl implements PasienBo {
 
                 //cek finger data
                 pasien.setDisabledFingerData(cekFingerData(pasien.getIdPasien()));
+
+                HeaderDetailCheckup detailCheckup = pasienDao.getLastCheckup(data.getIdPasien());
+                if(detailCheckup.getIdDetailCheckup() != null){
+                    pasien.setIdPelayanan(detailCheckup.getIdPelayanan());
+                    pasien.setNoCheckuoUlang(detailCheckup.getNoCheckupUlang());
+                    pasien.setIdLastDetailCheckup(detailCheckup.getIdDetailCheckup());
+                    pasien.setIsOrderLab(detailCheckup.getIsOrderLab());
+                    if(detailCheckup.getTglCekup() != null){
+                        String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(detailCheckup.getTglCekup());
+                        pasien.setTglCheckup(formatDate);
+                        pasien.setIsCheckupUlang("Y");
+                    }
+                }
 
             }
 

@@ -2,17 +2,20 @@
 <entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
         version="2.0">
 
-    <entity class="com.neurix.akuntansi.transaksi.budgetingnilaidasar.model.ImAkunBudgetingNilaiDasarEntity">
-        <table name="im_akun_budgeting_nilai_dasar" schema="public"/>
+    <entity class="com.neurix.simrs.master.rekammedis.model.ImSimrsRekamMedisPelayananEntity">
+        <table name="im_simrs_rekam_medis_pelayanan" schema="public"/>
         <attributes>
-            <id name="id">
-                <column name="id"/>
+            <id name="idRekamMedisPelayanan">
+                <column name="id_rekam_medis_pelayanan"/>
             </id>
-            <basic name="namaNilaiDasar">
-                <column name="nama_nilai_dasar"/>
+            <basic name="idRekamMedisPasien">
+                <column name="id_rekam_medis_pasien"/>
             </basic>
-            <basic name="nilaiDasar">
-                <column name="nilai_dasar"/>
+            <basic name="tipePelayanan">
+                <column name="tipe_pelayanan"/>
+            </basic>
+            <basic name="urutan">
+                <column name="urutan"/>
             </basic>
             <basic name="flag">
                 <column name="flag"/>
@@ -20,11 +23,11 @@
             <basic name="action">
                 <column name="action"/>
             </basic>
-            <basic name="createdDate">
-                <column name="created_date"/>
-            </basic>
             <basic name="createdWho">
                 <column name="created_who"/>
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date"/>
             </basic>
             <basic name="lastUpdate">
                 <column name="last_update"/>

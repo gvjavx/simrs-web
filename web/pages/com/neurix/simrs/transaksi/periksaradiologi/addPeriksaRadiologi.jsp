@@ -14,6 +14,8 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PeriksaRadiologiAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PeriksaLabAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/LabDetailAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
 
     <script type='text/javascript'>
 
@@ -187,6 +189,25 @@
                                     Record has been saved successfully.
                                 </sj:dialog>
 
+                                <sj:dialog id="waiting_dialog" openTopics="showDialogLoading"
+                                           closeTopics="closeDialog" modal="true"
+                                           resizable="false"
+                                           height="250" width="600" autoOpen="false"
+                                           title="Saving ...">
+                                    Please don't close this window, server is processing your request ...
+                                    <br>
+                                    <center>
+                                        <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                             src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                             name="image_indicator_write">
+                                        <br>
+                                        <img class="spin" border="0"
+                                             style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                             src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                             name="image_indicator_write">
+                                    </center>
+                                </sj:dialog>
+
                                 <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
                                            height="250" width="600" autoOpen="false" title="Error Dialog"
                                            buttons="{
@@ -212,50 +233,11 @@
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-hospital-o"></i> Catatan Pemeriksaan</h3>
                     </div>
+                    <div class="box-body" id="btn-add-parameter" style="display: none">
+                        <button class="btn btn-success btn-outline" onclick="showModal(1)"><i class="fa fa-plus"></i> Tambah Parameter
+                        </button>
+                    </div>
                     <div class="box-body">
-                        <%--<div class="alert alert-danger alert-dismissible" style="display: none" id="warning_radiologi">--%>
-                        <%--<h4><i class="icon fa fa-ban"></i> Warning!</h4>--%>
-                        <%--<p id="isi_eror"></p>--%>
-                        <%--</div>--%>
-                        <%--<div class="alert alert-success alert-dismissible" style="display: none" id="info_radiologi">--%>
-                            <%--<h4><i class="icon fa fa-info"></i> Info!</h4>--%>
-                            <%--Data Berhasil Disimpan!--%>
-                        <%--</div>--%>
-                        <%--<div class="form-group">--%>
-                            <%--<div class="row">--%>
-                                <%--<div class="col-md-4">--%>
-                                    <%--<div class="form-group">--%>
-                                        <%--<label style="margin-bottom: -2px">Dokter Radiologi</label>--%>
-                                        <%--<select class="form-control select2" id="id_dokter" style="width: 100%"--%>
-                                                <%--onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()};">--%>
-                                            <%--<option value=''>[Select One]</option>--%>
-                                        <%--</select>--%>
-                                    <%--</div>--%>
-                                    <%--<input type="hidden" id="id_radiologi">--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                            <%--<div class="row">--%>
-                                <%--<div class="col-md-7">--%>
-                                    <%--<div class="form-group">--%>
-                                        <%--<label style="margin-top: 7px">Kesimpulan Periksa</label>--%>
-                                        <%--<textarea class="form-control" rows="4" id="kesimpulan"></textarea>--%>
-                                    <%--</div>--%>
-                                    <%--<div class="form-group">--%>
-                                        <%--<button class="btn btn-success" style="margin-top: 15px;" id="save_ket" onclick="saveRadiologi()"><i--%>
-                                                <%--class="fa fa-arrow-right"></i> Save--%>
-                                        <%--</button>--%>
-                                        <%--<button style="display: none; cursor: no-drop; margin-top: 15px;" type="button"--%>
-                                                <%--class="btn btn-success" id="load_ket"><i class="fa fa-spinner fa-spin"></i>--%>
-                                            <%--Sedang Menyimpan...--%>
-                                        <%--</button>--%>
-                                        <%--<a href="initForm_radiologi.action" class="btn btn-warning" onclick=""--%>
-                                           <%--style="margin-top: 15px;" id="back_ket"><i--%>
-                                                <%--class="fa fa-arrow-left"></i> Back--%>
-                                        <%--</a>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
                             <table class="table table-bordered table-striped" id="tabel_radiologi">
                                 <thead>
                                 <tr bgcolor="#90ee90">
@@ -313,9 +295,9 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3">Hasil</label>
-                        <div class="col-md-7">
-                            <input type="text" class="form-control" id="par_hasil" oninput="var warn =$('#war_hasil').is(':visible'); if (warn){$('#cor_hasil').show().fadeOut(3000);$('#war_hasil').hide()}">
+                        <label class="col-md-2">Hasil</label>
+                        <div class="col-md-8">
+                            <textarea rows="8" type="text" class="form-control" id="par_hasil" oninput="var warn =$('#war_hasil').is(':visible'); if (warn){$('#cor_hasil').show().fadeOut(3000);$('#war_hasil').hide()}"></textarea>
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -334,6 +316,48 @@
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_par"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-lab">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Tambah Pemeriksaan</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_lab">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_lab"></p>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Parameter</label>
+                        <div class="col-md-7">
+                            <select class="form-control select2" multiple style="margin-top: 7px; width: 100%" id="lab_parameter" onchange="var warn =$('#war_param').is(':visible'); if (warn){$('#cor_param').show().fadeOut(3000);$('#war_param').hide()}">
+                                <option value=''>[Select One]</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_param"><i
+                                    class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_param">
+                                <i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_lab" onclick="saveLab()"><i class="fa fa-arrow-right"></i> Save</button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_lab">
+                    <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>
         </div>
@@ -420,10 +444,16 @@
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
-    var idDetailCheckup     = $('#no_detail_checkup').val();
-    var idPoli              = $('#id_palayanan').val();
-    var idPeriksaLab        = $('#id_periksa_lab').val();
     var idPeriksaRadiologi  = "";
+    var noCheckup = $('#no_checkup').val();
+    var idDetailCheckup = $('#no_detail_checkup').val();
+    var idPoli          = $('#id_palayanan').val();
+    var idPasien        = '<s:property value="periksaLab.idPasien"/>';
+    var idPeriksaLab    = $('#id_periksa_lab').val();
+    var idLabPemeriksaan = '<s:property value="periksaLab.idLab"/>';
+    var jenisPasien     = '<s:property value="periksaLab.idJenisPeriksa"/>';
+    var metodePembayaran = '<s:property value="periksaLab.metodePembayaran"/>';
+    var keterangan       = '<s:property value="periksaLab.keterangan"/>';
 
     $(document).ready(function () {
         $('#periksa_radiologi').addClass('active');
@@ -448,7 +478,24 @@
             }
 
         });
+
+        if(keterangan == "just_lab"){
+            $('#btn-add-parameter').show();
+        }else{
+            $('#btn-add-parameter').hide();
+        }
     });
+
+    function showModal(select) {
+        if (select == 1) {
+            $('#lab_kategori, #lab_lab, #lab_parameter').val('').trigger('change');
+            $('#save_lab').show();
+            $('#load_lab, #warning_lab').hide();
+            $('#lab_kategori, #lab_lab').css('border', '');
+            listSelectParameter(idLabPemeriksaan);
+            $('#modal-lab').modal({show:true, backdrop:'static'});
+        }
+    }
 
     function toContent(){
         var ref = $('#close_pos').val();
@@ -462,19 +509,27 @@
         }
     }
 
+    function listSelectParameter(idLab) {
+        var option = "";
+        if (idLab != '') {
+            LabDetailAction.listLabDetail(idLab, function (response) {
+                if (response != null) {
+                    $.each(response, function (i, item) {
+                        option += "<option value='" + item.idLabDetail + "'>" + item.namaDetailPeriksa + "</option>";
+                    });
+                } else {
+                    option = option;
+                }
+            });
+        } else {
+            option = option;
+        }
+
+        $('#lab_parameter').html(option);
+    }
+
     function listSelectDokter() {
         var option = "<option value=''>[Select One]</option>";
-        // PeriksaLabAction.getListDokterTeamByNoDetail(idDetailCheckup, function (response) {
-        //     option = "<option value=''>[Select One]</option>";
-        //     if (response != null) {
-        //         $.each(response, function (i, item) {
-        //             option += "<option value='" + item.idDokter + "'>" + item.namaDokter + "</option>";
-        //         });
-        //     } else {
-        //         option = option;
-        //     }
-        // });
-        // $('#id_dokter').html(option);
         PeriksaLabAction.getListDokterLabRadiologi("radiologi", function (response) {
             if (response != null) {
                 $.each(response, function (i, item) {
@@ -521,6 +576,39 @@
             $('#warning_par').show().fadeOut(5000);
             $('#msg_par').text("Silahkan cek kembali data inputan!");
             $('#war_hasil').show();
+        }
+    }
+
+
+    function saveLab() {
+        var idParameter = $('#lab_parameter').val();
+        if (idDetailCheckup != '' && idPeriksaLab != '' && idParameter != null) {
+            $('#save_lab').hide();
+            $('#load_lab').show();
+            dwr.engine.setAsync(true);
+            PeriksaLabAction.saveUpdatePemeriksaan(idPeriksaLab, idParameter, "radiologi",{
+                callback: function (response) {
+                    if (response.status == "success") {
+                        dwr.engine.setAsync(false);
+                        getIdRadiologi();
+                        $('#modal-lab').modal('hide');
+                        $('#info_dialog').dialog('open');
+                        $('#close_pos').val(2);
+                        $('body').scrollTop(0);
+                    } else {
+                        $('#save_lab').show();
+                        $('#load_lab').hide();
+                        $('#warning_lab').show().fadeOut(5000);
+                        $('#msg_lab').text(response.msg);
+                    }
+                }
+            });
+        } else {
+            $('#msg_lab').text("Silahkan cek kembali inputan anda..!");
+            $('#warning_lab').show().fadeOut(5000);
+            if (idParameter == '' || idParameter == null) {
+                $('#war_param').show();
+            }
         }
     }
 
@@ -576,15 +664,41 @@
     function savePeriksaLab(idDokter){
         $('#modal-confirm-dialog').modal('hide');
         var idPeriksaLab = '<s:property value="periksaLab.idPeriksaLab"/>';
+        $('#waiting_dialog').dialog('open');
         dwr.engine.setAsync(true);
         PeriksaRadiologiAction.saveDokterRadiologi(idPeriksaLab, idDokter, {
             callback:function (res) {
                 if(res.status == "success"){
-                    $('#save_ket').show();
-                    $('#load_ket').hide();
-                    $('#info_dialog').dialog('open');
-                    $('#close_pos').val(1);
-                    $('body').scrollTop(0);
+                    if("just_lab" == keterangan){
+                        CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, "selesai", "", "", "", "", "Pemeriksaan Radiologi", "", "", jenisPasien, "", "", "", idPasien, "", "", metodePembayaran, "lab", "", {callback : function (response) {
+                            console.log(keterangan);
+                            if(response.status == "success"){
+                                console.log("success");
+                                console.log(response);
+                                $('#waiting_dialog').dialog('close');
+                                $('#save_ket').show();
+                                $('#load_ket').hide();
+                                $('#info_dialog').dialog('open');
+                                $('#close_pos').val(1);
+                                $('body').scrollTop(0);
+                            }else{
+                                console.log("error");
+                                $('#waiting_dialog').dialog('close');
+                                $('#error_dialog').dailog('open');
+                                $('#errorMessage').text(response.msg);
+                                $('#save_ket').hide();
+                                $('#load_ket').show();
+                            }
+                        }});
+                    }else{
+                        console.log("masuk sini");
+                        $('#waiting_dialog').dialog('close');
+                        $('#save_ket').show();
+                        $('#load_ket').hide();
+                        $('#info_dialog').dialog('open');
+                        $('#close_pos').val(1);
+                        $('body').scrollTop(0);
+                    }
                 }else{
                     $('#warning_rad').show().fadeOut(5000);
                     $('#msg_rad').text(res.message);

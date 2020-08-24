@@ -72,6 +72,8 @@ public class HemodialisaBoImpl implements HemodialisaBo {
                     hemodialisa.setLastUpdate(entity.getLastUpdate());
                     hemodialisa.setLastUpdateWho(entity.getLastUpdateWho());
                     hemodialisa.setIsTtd(entity.getIsTtd());
+                    hemodialisa.setNamaTerang(entity.getNamaTerang());
+                    hemodialisa.setSip(entity.getSip());
                     list.add(hemodialisa);
                 }
             }
@@ -84,34 +86,79 @@ public class HemodialisaBoImpl implements HemodialisaBo {
     public CrudResponse saveAdd(List<Hemodialisa> list) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
         if(list.size() > 0){
-            for (Hemodialisa bean: list){
-                ItSimrsHemodialisaEntity hemodialisaEntity = new ItSimrsHemodialisaEntity();
-                hemodialisaEntity.setIdHemodialisa("HDL"+hemodialisaDao.getNextSeq());
-                hemodialisaEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
-                hemodialisaEntity.setParameter(bean.getParameter());
-                hemodialisaEntity.setJawaban1(bean.getJawaban1());
-                hemodialisaEntity.setJawaban2(bean.getJawaban2());
-                hemodialisaEntity.setKeterangan(bean.getKeterangan());
-                hemodialisaEntity.setJenis(bean.getJenis());
-                hemodialisaEntity.setSkor(bean.getSkor());
-                hemodialisaEntity.setAction(bean.getAction());
-                hemodialisaEntity.setFlag(bean.getFlag());
-                hemodialisaEntity.setCreatedDate(bean.getCreatedDate());
-                hemodialisaEntity.setCreatedWho(bean.getCreatedWho());
-                hemodialisaEntity.setLastUpdate(bean.getLastUpdate());
-                hemodialisaEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                hemodialisaEntity.setIsTtd(bean.getIsTtd());
+            Hemodialisa hemodialisa = list.get(0);
+            Hemodialisa hd = new Hemodialisa();
+            hd.setIdDetailCheckup(hemodialisa.getIdDetailCheckup());
+            hd.setKeterangan(hemodialisa.getKeterangan());
+            List<Hemodialisa> hemodialisaList = getByCriteria(hd);
+            if(hemodialisaList.size()  > 0){
+                response.setStatus("error");
+                response.setMsg("Found Error, Data yang anda masukkan sudah tersedia...!");
+            }else{
+                for (Hemodialisa bean: list){
+                    ItSimrsHemodialisaEntity hemodialisaEntity = new ItSimrsHemodialisaEntity();
+                    hemodialisaEntity.setIdHemodialisa("HDL"+hemodialisaDao.getNextSeq());
+                    hemodialisaEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
+                    hemodialisaEntity.setParameter(bean.getParameter());
+                    hemodialisaEntity.setJawaban1(bean.getJawaban1());
+                    hemodialisaEntity.setJawaban2(bean.getJawaban2());
+                    hemodialisaEntity.setKeterangan(bean.getKeterangan());
+                    hemodialisaEntity.setJenis(bean.getJenis());
+                    hemodialisaEntity.setSkor(bean.getSkor());
+                    hemodialisaEntity.setAction(bean.getAction());
+                    hemodialisaEntity.setFlag(bean.getFlag());
+                    hemodialisaEntity.setCreatedDate(bean.getCreatedDate());
+                    hemodialisaEntity.setCreatedWho(bean.getCreatedWho());
+                    hemodialisaEntity.setLastUpdate(bean.getLastUpdate());
+                    hemodialisaEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    hemodialisaEntity.setIsTtd(bean.getIsTtd());
+                    hemodialisaEntity.setNamaTerang(bean.getNamaTerang());
+                    hemodialisaEntity.setSip(bean.getSip());
 
-                try {
-                    hemodialisaDao.addAndSave(hemodialisaEntity);
-                    response.setStatus("success");
-                    response.setMsg("Berhasil");
-                }catch (HibernateException e){
-                    response.setStatus("error");
-                    response.setMsg("Found Error "+e.getMessage());
-                    logger.error(e.getMessage());
+                    try {
+                        hemodialisaDao.addAndSave(hemodialisaEntity);
+                        response.setStatus("success");
+                        response.setMsg("Berhasil");
+                    }catch (HibernateException e){
+                        response.setStatus("error");
+                        response.setMsg("Found Error "+e.getMessage());
+                        logger.error(e.getMessage());
+                    }
                 }
             }
+        }
+        return response;
+    }
+
+    @Override
+    public CrudResponse saveDetele(Hemodialisa bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+        hsCriteria.put("keterangan", bean.getKeterangan());
+        List<ItSimrsHemodialisaEntity> entityList = new ArrayList<>();
+        try {
+            entityList = hemodialisaDao.getByCriteria(hsCriteria);
+        }catch (HibernateException e){
+            response.setStatus("error");
+            response.setMsg("Found Error, Data yang dicari tidak ditemukan...!");
+            logger.error(e.getMessage());
+        }
+        if(entityList.size() > 0){
+            ItSimrsHemodialisaEntity entity = entityList.get(0);
+            entity.setFlag("N");
+            entity.setLastUpdate(bean.getLastUpdate());
+            entity.setLastUpdateWho(bean.getLastUpdateWho());
+            try {
+                hemodialisaDao.updateAndSave(entity);
+            }catch (HibernateException e){
+                response.setStatus("error");
+                response.setMsg("Found Error, "+e.getMessage());
+                logger.error(e.getMessage());
+            }
+        }else{
+            response.setStatus("error");
+            response.setMsg("Found Error, Data yang dicari tidak ditemukan...!");
         }
         return response;
     }

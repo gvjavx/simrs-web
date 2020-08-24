@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.verifikator.bo;
 
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.kategoritindakanina.model.ImSimrsKategoriTindakanInaEntity;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
@@ -21,4 +22,8 @@ public interface VerifikatorBo {
 
     public List<RiwayatTindakan> getListTindakanApprove(String idDetail) throws GeneralBOException;
     public List<ImSimrsKategoriTindakanInaEntity> getAllKatTindakanInaList() throws GeneralBOException;
+
+    public List<HeaderDetailCheckup> getListVerifTransaksi(HeaderDetailCheckup detailCheckup) throws GeneralBOException;
+    public CrudResponse updateCoverAsuransi(List<RiwayatTindakan> list, HeaderDetailCheckup bean) throws GeneralBOException;
+    public CrudResponse updateInvoice(HeaderDetailCheckup bean) throws GeneralBOException;
 }

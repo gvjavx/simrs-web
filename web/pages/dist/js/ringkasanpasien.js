@@ -1,4 +1,7 @@
-function showModalRingkasanPasien(jenis) {
+function showModalRingkasanPasien(jenis, idRM, isSetIdRM) {
+    if(isSetIdRM == "Y"){
+        tempidRm = idRM;
+    }
     if (isReadRM) {
         $('.btn-hide').hide();
     } else {
@@ -38,6 +41,7 @@ function showModalRingkasanPasien(jenis) {
 function saveRingkasanPasien(jenis, ket) {
     var data = [];
     var cek = false;
+    var dataPasien = "";
 
     if ("ringkasan_pulang_pasien" == jenis) {
         var pe1 = $('#rps1').val();
@@ -472,6 +476,13 @@ function saveRingkasanPasien(jenis, ket) {
     }
 
     if ("ringkasan_keluar_pasien" == jenis) {
+        var idDetailCheckup = $('#h_id_detail_pasien').val();
+        dataPasien = {
+            'no_checkup': $('#h_no_checkup').val(),
+            'id_detail_checkup': idDetailCheckup,
+            'id_pasien': $('#h_id_pasien').val(),
+            'id_rm': tempidRm
+        }
         var pe1 = $('[name=rkp1]:checked').val();
         var pe2 = "";
         var p2 = $('[name=rkp2]:checked').val();
@@ -513,7 +524,6 @@ function saveRingkasanPasien(jenis, ket) {
         }
 
         if (pe1 && pe11 && pe12 != undefined && pe3 && pe4 && pe5 && pe6 && pe7 && pe8 && pe9 && pe10 && pe2 && pe13 != '') {
-
             data.push({
                 'parameter': 'MRS Melalui',
                 'jawaban': pe1,
@@ -562,7 +572,7 @@ function saveRingkasanPasien(jenis, ket) {
                     }
                 }
             });
-            if(ope != ''){
+            if (ope != '') {
                 data.push({
                     'parameter': 'Operasi/Tindakan',
                     'jawaban': ope,
@@ -626,12 +636,119 @@ function saveRingkasanPasien(jenis, ket) {
         }
     }
 
+    if ("pre_admisi" == jenis) {
+        var idDetailCheckup = $('#h_id_detail_pasien').val();
+        dataPasien = {
+            'no_checkup': $('#h_no_checkup').val(),
+            'id_detail_checkup': idDetailCheckup,
+            'id_pasien': $('#h_id_pasien').val(),
+            'id_rm': tempidRm
+        }
+        var check1 = $('[name=pre01]:checked').val();
+        var check2 = $('[name=pre02]:checked').val();
+        var check3 = $('[name=pre03]:checked').val();
+        var check4 = $('[name=pre04]:checked').val();
+        var check5 = $('[name=pre05]:checked').val();
+        var check6 = $('[name=pre06]:checked').val();
+
+        var keyakinan = $('#form-ring-pre_keyakinan').val();
+        var penerjemah = $('#form-ring-pre_penerjemah').val();
+        var indra = $('#form-ring-pre_indra').val();
+        var kontak = $('#form-ring-pre_kontak').val();
+        var alatBantu = $('#form-ring-pre_alat_bantu').val();
+        var alergi = $('#form-ring-pre_alergi').val();
+        var ketAlergi = $('#form-ring-pre_ket_alergi').val();
+
+        var hslAlergi = "";
+
+        if (alergi != '' && ketAlergi != '') {
+            hslAlergi = alergi + ', ' + ketAlergi;
+        } else {
+            if (alergi != '') {
+                hslAlergi = alergi;
+            }
+        }
+
+        if(check1 && check2 && check3 && check4 && check5 && check6 != undefined){
+            var va1 = check1;
+            var va2 = check2;
+            var va3 = check3;
+            var va4 = check4;
+            var va5 = check5;
+            var va6 = check6;
+
+            if(keyakinan != ''){
+                va1 = check1+', '+keyakinan;
+            }
+            if(penerjemah != ''){
+                va2 = check2+', '+penerjemah;
+            }
+            if(indra != ''){
+                va3 = check3+', '+indra;
+            }
+            if(kontak != ''){
+                va4 = check4+', '+kontak;
+            }
+            if(alatBantu != ''){
+                va5 = check5+', '+alatBantu;
+            }
+            if(hslAlergi != ''){
+                va6 = check6+', '+hslAlergi;
+            }
+
+            data.push({
+                'parameter': 'Adakah hal yang berkaitan dengan keyakinan anda yang perlu kami ketahui ?',
+                'jawaban': va1,
+                'keterangan': jenis,
+                'jenis': 'admisi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Apakah anda membutuhkan penerjemah bahasa ?',
+                'jawaban': va2,
+                'keterangan': jenis,
+                'jenis': 'admisi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Apakah anda memiliki masalah dalam berbicara, pendengaran, penglihatan ?',
+                'jawaban': va3,
+                'keterangan': jenis,
+                'jenis': 'admisi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Apakah kontak yang diisi sudah benar ?',
+                'jawaban': va4,
+                'keterangan': jenis,
+                'jenis': 'admisi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Apakah anda membutuhkan alat bantu khusus ?',
+                'jawaban': va5,
+                'keterangan': jenis,
+                'jenis': 'admisi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Apakah anda mempunyai riwayat alergi ?',
+                'jawaban': va6,
+                'keterangan': jenis,
+                'jenis': 'admisi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            cek = true;
+        }
+    }
+
     if (cek) {
-        var result = JSON.stringify(data);
+        var result1 = JSON.stringify(data);
+        var result2 = JSON.stringify(dataPasien);
         $('#save_ring_' + jenis).hide();
         $('#load_ring_' + jenis).show();
         dwr.engine.setAsync(true);
-        RingkasanPasienAction.save(result, {
+        RingkasanPasienAction.save(result1, result2, {
             callback: function (res) {
                 if (res.status == "success") {
                     $('#save_ring_' + jenis).show();
@@ -657,6 +774,7 @@ function saveRingkasanPasien(jenis, ket) {
 }
 
 function detailRingkasanPasien(jenis) {
+    var idDetailCheckup = $('#h_id_detail_pasien').val();
     if (jenis != '') {
         var head = "";
         var body = "";
@@ -747,7 +865,7 @@ function detailRingkasanPasien(jenis) {
                                 '<td>' + jwb + '</td>' +
                                 '</tr>';
                         }
-                    } else if ("ringkasan_keluar_pasien" == item.keterangan){
+                    } else if ("ringkasan_keluar_pasien" == item.keterangan) {
                         if ("Operasi/Tindakan" == item.parameter) {
                             var table = "";
                             if (jwb != '') {
@@ -769,7 +887,7 @@ function detailRingkasanPasien(jenis) {
                                         temp1 = '<tr>' + temp2 + '</tr>';
                                     }
                                 });
-                                table = '<label>'+item.parameter+'</label>' +
+                                table = '<label>' + item.parameter + '</label>' +
                                     '<table class="table table-bordered table-striped" style="font-size: 12px">' +
                                     '<thead>' +
                                     '<tr>' +
@@ -961,11 +1079,28 @@ function deleteOpp(id) {
 }
 
 function showKetRing(value, ket) {
-    if (value == "Meninggal dunia, sebab kematian" || value == "Rujuk" ||
-        value == "Puskesmas" || value == "Polisi" || value == "Dirujuk" ||
-        value == "Permintaan Sendiri" || value == "Lain-Lain") {
-        $('#form-ring-' + ket).show();
-    } else {
-        $('#form-ring-' + ket).hide();
+    if(ket == "pre_kontak"){
+        if (value == "Tidak") {
+            $('#form-ring-' + ket).show();
+        } else {
+            $('#form-ring-' + ket).hide();
+        }
+    }else if(ket == "pre_alergi"){
+        if (value == "Ya") {
+            $('#form-ring-' + ket).show();
+            $('#pre_ket_alergi').show();
+        } else {
+            $('#form-ring-' + ket).hide();
+            $('#pre_ket_alergi').hide();
+        }
+    }else{
+        if (value == "Meninggal dunia, sebab kematian" || value == "Rujuk" ||
+            value == "Puskesmas" || value == "Polisi" || value == "Dirujuk" ||
+            value == "Permintaan Sendiri" || value == "Lain-Lain" ||
+            value == "Ada" || value == "Ya") {
+            $('#form-ring-' + ket).show();
+        } else {
+            $('#form-ring-' + ket).hide();
+        }
     }
 }

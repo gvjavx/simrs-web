@@ -62,4 +62,7 @@ public interface CheckupDetailBo {
     public boolean editVideoRm(String idDetailCheckup, String path) throws GeneralBOException;
     public boolean editFlagCall(String idDetailCheckup, String flagCall) throws GeneralBOException;
     public ItSimrsHeaderDetailCheckupEntity getEntityDetailCheckupByIdTransaksi(String id) throws GeneralBOException;
+
+    public List<HeaderDetailCheckup> getListVerifTransaksi(HeaderDetailCheckup detailCheckup) throws GeneralBOException;
+    public CrudResponse updateDetailCheckup(HeaderDetailCheckup bean) throws GeneralBOException;
 }

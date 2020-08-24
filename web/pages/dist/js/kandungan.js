@@ -1,12 +1,14 @@
-function showModalRB(jenis) {
+function showModalRB(jenis, idRM, isSetIdRM) {
+    if (isSetIdRM == "Y") {
+        tempidRm = idRM;
+    }
     if (isReadRM) {
         $('.btn-hide').hide();
     } else {
         $('.btn-hide').show();
     }
-
     setDataPasien();
-    if("asuhan_keperawatan_rb" == jenis){
+    if("asuhan_kebidanan_rb" == jenis){
         listAsuhanKeperawatanRB(jenis);
     }
     $('#modal-rb-' + jenis).modal({show: true, backdrop: 'static'});
@@ -16,6 +18,14 @@ function saveRB(jenis, ket) {
 
     var data = [];
     var cek = false;
+    var dataPasien = "";
+
+    dataPasien = {
+        'no_checkup': noCheckup,
+        'id_detail_checkup': idDetailCheckup,
+        'id_pasien': idPasien,
+        'id_rm': tempidRm
+    }
 
     if ("identifikasi_bayi_lahir" == jenis) {
 
@@ -44,6 +54,15 @@ function saveRB(jenis, ket) {
         var cekTtd2 = isCanvasBlank(ttd2);
         var cekTtd3 = isCanvasBlank(ttd3);
         var cekTtd4 = isCanvasBlank(ttd4);
+
+        var nama1 = $('#nama_terang_ttd1').val();
+        var nama2 = $('#nama_terang_ttd2').val();
+        var nama3 = $('#nama_terang_ttd3').val();
+        var nama4 = $('#nama_terang_ttd4').val();
+        var sip1 = $('#sip_ttd1').val();
+        var sip2 = $('#sip_ttd2').val();
+        var sip3 = $('#sip_ttd3').val();
+        var sip4 = $('#sip_ttd4').val();
 
         if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 &&
             va11 && va12 && va13 && va14 && va15 != '' && !cekTtd1 && !cekTtd2 && !cekTtd3 && !cekTtd4) {
@@ -156,6 +175,8 @@ function saveRB(jenis, ket) {
                 'keterangan': jenis,
                 'jenis': ket,
                 'tipe': 'ttd',
+                'nama_terang': nama1,
+                'sip': sip1,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -164,6 +185,8 @@ function saveRB(jenis, ket) {
                 'keterangan': jenis,
                 'jenis': ket,
                 'tipe': 'ttd',
+                'nama_terang': nama2,
+                'sip': sip2,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -172,6 +195,8 @@ function saveRB(jenis, ket) {
                 'keterangan': jenis,
                 'jenis': ket,
                 'tipe': 'ttd',
+                'nama_terang': nama3,
+                'sip': sip3,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -180,6 +205,8 @@ function saveRB(jenis, ket) {
                 'keterangan': jenis,
                 'jenis': ket,
                 'tipe': 'ttd',
+                'nama_terang': nama4,
+                'sip': sip4,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
@@ -193,6 +220,9 @@ function saveRB(jenis, ket) {
         var ttd2 = document.getElementById("ttd2_" + jenis);
         var cekTtd1 = isCanvasBlank(ttd1);
         var cekTtd2 = isCanvasBlank(ttd2);
+        var nama1 = $('#nama_terang_ttd11').val();
+        var nama2 = $('#nama_terang_ttd22').val();
+        var sip1 = $('#sip_ttd11').val();
 
         if (va1 != '' && !cekTtd1 && !cekTtd2) {
 
@@ -221,6 +251,8 @@ function saveRB(jenis, ket) {
                 'keterangan': jenis,
                 'jenis': ket,
                 'tipe': 'ttd',
+                'nama_terang': nama1,
+                'sip': sip1,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -229,6 +261,7 @@ function saveRB(jenis, ket) {
                 'keterangan': jenis,
                 'jenis': ket,
                 'tipe': 'ttd',
+                'nama_terang': nama2,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
@@ -283,6 +316,12 @@ function saveRB(jenis, ket) {
         var cekTtd1 = isCanvasBlank(ttd1);
         var cekTtd2 = isCanvasBlank(ttd2);
         var cekTtd3 = isCanvasBlank(ttd3);
+
+        var nama1 = $('#nama_terang_ttd1').val();
+        var nama2 = $('#nama_terang_ttd2').val();
+        var nama3 = $('#nama_terang_ttd3').val();
+        var sip1 = $('#sip_ttd1').val();
+        var sip2 = $('#sip_ttd2').val();
 
         if (!cekTtd1 && !cekTtd2 && !cekTtd3) {
 
@@ -503,6 +542,8 @@ function saveRB(jenis, ket) {
                 'keterangan': jenis,
                 'jenis': ket,
                 'tipe': 'ttd',
+                'nama_terang': nama1,
+                'sip': sip1,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -511,6 +552,8 @@ function saveRB(jenis, ket) {
                 'keterangan': jenis,
                 'jenis': ket,
                 'tipe': 'ttd',
+                'nama_terang': nama2,
+                'sip': sip2,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -519,6 +562,7 @@ function saveRB(jenis, ket) {
                 'keterangan': jenis,
                 'jenis': ket,
                 'tipe': 'ttd',
+                'nama_terang': nama3,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
@@ -541,6 +585,8 @@ function saveRB(jenis, ket) {
         var v7 = $('[name=rb7]');
         var v8 = $('[name=rb8]');
         var v9 = $('[name=rb9]');
+        var nama1 = $('#nama_terang_ttd1').val();
+        var sip1 = $('#sip_ttd1').val();
 
         $.each(v5, function (i, item) {
             if (item.type = "checkbox") {
@@ -765,6 +811,8 @@ function saveRB(jenis, ket) {
                 'keterangan': jenis,
                 'jenis': ket,
                 'tipe': 'ttd',
+                'nama_terang': nama1,
+                'sip': sip1,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
@@ -921,6 +969,8 @@ function saveRB(jenis, ket) {
         var ttd1 = document.getElementById("ttd1_" + jenis);
 
         var cekTtd1 = isCanvasBlank(ttd1);
+        var nama1 = $('#nama_terang_ttd1').val();
+        var sip1 = $('#sip_ttd1').val();
 
         if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 &&
             va11 && va12 != '' && !cekTtd1) {
@@ -1018,6 +1068,8 @@ function saveRB(jenis, ket) {
                 'keterangan': jenis,
                 'jenis': ket,
                 'tipe': 'ttd',
+                'nama_terang': nama1,
+                'sip': sip1,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
@@ -1100,6 +1152,8 @@ function saveRB(jenis, ket) {
         var ttd1 = document.getElementById("ttd1_" + jenis);
 
         var cekTtd1 = isCanvasBlank(ttd1);
+        var nama1 = $('#nama_terang_ttd1').val();
+        var sip1 = $('#sip_ttd1').val();
 
         if (va1 && va2 && va3 && va4 != '' && !cekTtd1) {
 
@@ -1141,6 +1195,8 @@ function saveRB(jenis, ket) {
                 'keterangan': jenis,
                 'jenis': ket,
                 'tipe': 'ttd',
+                'nama_terang': nama1,
+                'sip': sip1,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
@@ -1364,10 +1420,11 @@ function saveRB(jenis, ket) {
 
     if (cek) {
         var result = JSON.stringify(data);
+        var pasienData = JSON.stringify(dataPasien);
         $('#save_rb_' + jenis).hide();
         $('#load_rb_' + jenis).show();
         dwr.engine.setAsync(true);
-        KandunganAction.save(result, {
+        KandunganAction.save(result, pasienData, {
             callback: function (res) {
                 if (res.status == "success") {
                     $('#save_rb_' + jenis).show();
@@ -1617,7 +1674,7 @@ function tindakanRB(jenis) {
     data.push({
         'jenis': 'Kurretage',
         'parameter': 'Dasar Diagnosis',
-        'informasi': 'USG|Pendarahan',
+        'informasi': 'Pemeriksaan Fisik|Anamnesa|Pemeriksaan Penunjang',
         'keterangan': 'r'
     });
     data.push({
@@ -1677,7 +1734,7 @@ function tindakanRB(jenis) {
     data.push({
         'jenis': 'Sectio Caesaria',
         'parameter': 'Dasar Diagnosis',
-        'informasi': 'USG|Klinis',
+        'informasi': 'Pemeriksaan Fisik|Anamnesa|Pemeriksaan Penunjang',
         'keterangan': 'r'
     });
     data.push({
@@ -1807,7 +1864,14 @@ function tindakanRB(jenis) {
 function saveAsuhanKeperawatanRB(jenis, ket) {
 
     var data = [];
+    var dataPasien = "";
 
+    dataPasien = {
+        'no_checkup': noCheckup,
+        'id_detail_checkup': idDetailCheckup,
+        'id_pasien': idPasien,
+        'id_rm': tempidRm
+    }
     var diagnosis = $('[name=diag]');
     var hasil = $('[name=hasil]');
     var inter = $('[name=inter]');
@@ -1948,11 +2012,12 @@ function saveAsuhanKeperawatanRB(jenis, ket) {
         }
 
         var result = JSON.stringify(data);
+        var pasienData = JSON.stringify(dataPasien);
 
         $('#save_rb_' + jenis).hide();
         $('#load_rb_' + jenis).show();
         dwr.engine.setAsync(true);
-        RencanaAsuhanKeperawatanAction.save(result, {
+        RencanaAsuhanKeperawatanAction.save(result, pasienData, {
             callback: function (res) {
                 if (res.status == "success") {
                     $('#save_rb_' + jenis).show();

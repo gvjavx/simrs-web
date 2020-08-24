@@ -88,7 +88,7 @@ public class TeamDokterAction extends BaseMasterAction {
         return null;
     }
 
-    public String saveDokter(String idDetailCheckup, String idDokter){
+    public String saveDokter(String idDetailCheckup, String idDokter, String pelayanan){
         logger.info("[TeamDokterAction.saveTindakanRawat] start process >>>");
         try {
             String userLogin = CommonUtil.userLogin();
@@ -103,6 +103,7 @@ public class TeamDokterAction extends BaseMasterAction {
             dokterTeam.setLastUpdateWho(userLogin);
             dokterTeam.setAction("C");
             dokterTeam.setFlag("Y");
+            dokterTeam.setIdPelayanan(pelayanan);
 
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             TeamDokterBo dokterBo = (TeamDokterBo) ctx.getBean("teamDokterBoProxy");
@@ -143,7 +144,7 @@ public class TeamDokterAction extends BaseMasterAction {
             return null;
         }
     }
-    public String editDokter(String idTeamDokter, String idDoKter){
+    public String editDokter(String idTeamDokter, String idDoKter, String pelayanan){
         logger.info("[TeamDokterAction.editDokter] start process >>>");
         try {
             String userLogin = CommonUtil.userLogin();
@@ -155,6 +156,7 @@ public class TeamDokterAction extends BaseMasterAction {
             dokterTeam.setLastUpdate(updateTime);
             dokterTeam.setLastUpdateWho(userLogin);
             dokterTeam.setAction("U");
+            dokterTeam.setIdPelayanan(pelayanan);
 
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             TeamDokterBo dokterBo = (TeamDokterBo) ctx.getBean("teamDokterBoProxy");

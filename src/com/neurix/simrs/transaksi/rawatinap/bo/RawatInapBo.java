@@ -48,4 +48,10 @@ public interface RawatInapBo {
     public MonCairan getMonCairanById(String id) throws GeneralBOException;
     public MonPemberianObat getMonPemberianObatById(String id) throws GeneralBOException;
     public RawatInap getLastUsedRoom(String id) throws GeneralBOException;
+
+    public List<RawatInap> getListTppri(RawatInap bean) throws GeneralBOException;
+    public CrudResponse saveAdd(RawatInap bean) throws GeneralBOException;
+
+    public List<RawatInap> getRuanganRawatInap(RawatInap bean) throws GeneralBOException;
+    public CrudResponse updateRiwayatKamar(RawatInap bean) throws GeneralBOException;
 }

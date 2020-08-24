@@ -99,7 +99,7 @@
                             <div class="form-group">
                                 <label>Tekanan Darah</label>
                                 <div class="input-group">
-                                    <input class="form-control tensi-pasien" type="number" id="f_darah">
+                                    <input class="form-control tensi-pasien" id="f_darah">
                                     <div class="input-group-addon" style="width: 30%">
                                         mmHg
                                     </div>

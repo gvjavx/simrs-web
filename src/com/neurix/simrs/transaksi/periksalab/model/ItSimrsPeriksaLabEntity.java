@@ -23,6 +23,16 @@ public class ItSimrsPeriksaLabEntity implements Serializable {
     private String lastUpdateWho;
     private String statusPeriksa;
     private String approveFlag;
+    private String keterangan;
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
 
     public String getApproveFlag() {
         return approveFlag;

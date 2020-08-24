@@ -2290,4 +2290,110 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         }
         return total;
     }
+
+    public List<HeaderDetailCheckup> getListVerifTransaksi(HeaderDetailCheckup detailCheckup){
+        List<HeaderDetailCheckup> response = new ArrayList<>();
+        if(detailCheckup != null){
+            String idPasien = "";
+            String idPelayanan = "";
+            String nama = "";
+            String idDetailCheckup = "";
+            String flagCloseTransaksi = "";
+            String branchId = "";
+            String tipePelayanan = "";
+            String isNull = "";
+            String idJenisPeriksaPasien = "";
+
+            if(detailCheckup.getIdPasien() != null && !"".equalsIgnoreCase(detailCheckup.getIdPasien())){
+                idPasien = "AND a.id_pasien LIKE '%"+detailCheckup.getIdPasien()+"%' \n";
+            }
+            if(detailCheckup.getIdPelayanan() != null && !"".equalsIgnoreCase(detailCheckup.getIdPelayanan())){
+                idPelayanan = "AND b.id_pelayanan = "+detailCheckup.getIdPelayanan()+" \n";
+            }
+            if(detailCheckup.getNamaPasien() != null && !"".equalsIgnoreCase(detailCheckup.getNamaPasien())){
+                nama = "AND a.nama ILIKE '%"+detailCheckup.getNamaPasien()+"%' \n";
+            }
+            if(detailCheckup.getIdDetailCheckup() != null && !"".equalsIgnoreCase(detailCheckup.getIdDetailCheckup())){
+                idDetailCheckup = "AND b.id_detail_checkup LIKE '%"+detailCheckup.getIdDetailCheckup()+"%' \n";
+            }
+
+            if("Y".equalsIgnoreCase(detailCheckup.getIsCover())){
+                idJenisPeriksaPasien = "AND b.id_jenis_periksa_pasien = 'asuransi' \n";
+                if(detailCheckup.getFlagCover() != null && !"".equalsIgnoreCase(detailCheckup.getFlagCover())){
+                    flagCloseTransaksi = "AND b.flag_close_traksaksi IS NOT NULL AND b.flag_cover IS NOT NULL \n";
+                }else{
+                    flagCloseTransaksi = "AND b.flag_close_traksaksi IS NULL AND b.flag_cover IS NULL \n";
+                }
+            }else{
+                idJenisPeriksaPasien = "AND b.id_jenis_periksa_pasien NOT IN ('bpjs', 'ptpn','asuransi')\n";
+                if(detailCheckup.getFlagCloseTraksaksi() != null && !"".equalsIgnoreCase(detailCheckup.getFlagCloseTraksaksi())){
+                    flagCloseTransaksi = "AND b.flag_close_traksaksi IS NOT NULL \n";
+                }else{
+                    flagCloseTransaksi = "AND b.flag_close_traksaksi IS NULL \n";
+                }
+            }
+
+            if(detailCheckup.getTipePelayanan().equalsIgnoreCase("rawat_jalan")){
+                tipePelayanan = "LEFT JOIN it_simrs_rawat_inap d ON b.id_detail_checkup = d.id_detail_checkup \n";
+                isNull = "AND d.id_detail_checkup IS NULL \n";
+            }else{
+                tipePelayanan = "INNER JOIN " +
+                        "(SELECT * FROM (SELECT *, \n" +
+                        "rank() OVER (PARTITION BY id_detail_checkup ORDER BY created_date ASC) \n" +
+                        "FROM it_simrs_rawat_inap\n" +
+                        ") a WHERE a.rank = 1) d ON b.id_detail_checkup = d.id_detail_checkup \n";
+            }
+
+            if(detailCheckup.getBranchId() != null && !"".equalsIgnoreCase(detailCheckup.getBranchId())){
+                branchId = "AND a.branch_id LIKE '"+detailCheckup.getBranchId()+"'";
+            }else{
+                branchId = "AND a.branch_id LIKE '%'";
+            }
+
+            String SQL = "SELECT\n" +
+                    "a.no_checkup,\n" +
+                    "a.id_pasien,\n" +
+                    "a.nama,\n" +
+                    "b.Id_detail_checkup,\n" +
+                    "b.keterangan_selesai,\n" +
+                    "b.tindak_lanjut,\n" +
+                    "b.catatan,\n" +
+                    "a.tgl_keluar,\n" +
+                    "c.keterangan,\n" +
+                    "b.flag_close_traksaksi, \n" +
+                    "b.metode_pembayaran, \n" +
+                    "b.id_jenis_periksa_pasien,\n" +
+                    "b.flag_cover\n" +
+                    "FROM it_simrs_header_checkup a\n" +
+                    "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                    "INNER JOIN im_simrs_jenis_periksa_pasien c ON b.id_jenis_periksa_pasien = c.id_jenis_periksa_pasien\n"
+                     + tipePelayanan +
+                    "WHERE b.status_periksa = '3' \n" + idJenisPeriksaPasien
+                    + isNull + idPasien + idPelayanan +
+                    nama + idDetailCheckup +
+                    flagCloseTransaksi + branchId;
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .list();
+            if(result.size() > 0){
+                for (Object[] obj: result){
+                    HeaderDetailCheckup detail = new HeaderDetailCheckup();
+                    detail.setNoCheckup(obj[0] == null ? null : obj[0].toString());
+                    detail.setIdPasien(obj[1] == null ? null : obj[1].toString());
+                    detail.setNamaPasien(obj[2] == null ? null : obj[2].toString());
+                    detail.setIdDetailCheckup(obj[3] == null ? null : obj[3].toString());
+                    detail.setKeteranganSelesai(obj[4] == null ? null : obj[4].toString());
+                    detail.setTindakLanjut(obj[5] == null ? null : obj[5].toString());
+                    detail.setCatatan(obj[6] == null ? null : obj[6].toString());
+                    detail.setJenisPeriksaPasien(obj[8] == null ? null : obj[8].toString());
+                    detail.setFlagCloseTraksaksi(obj[9] == null ? null : obj[9].toString());
+                    detail.setMetodePembayaran(obj[10] == null ? null : obj[10].toString());
+                    detail.setIdJenisPeriksaPasien(obj[11] == null ? null : obj[11].toString());
+                    detail.setFlagCover(obj[12] == null ? null : obj[12].toString());
+                    response.add(detail);
+                }
+            }
+        }
+        return response;
+    }
 }

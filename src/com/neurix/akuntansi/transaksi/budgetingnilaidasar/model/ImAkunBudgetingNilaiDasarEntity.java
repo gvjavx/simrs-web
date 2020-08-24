@@ -16,6 +16,15 @@ public class ImAkunBudgetingNilaiDasarEntity {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private Integer urutan;
+
+    public Integer getUrutan() {
+        return urutan;
+    }
+
+    public void setUrutan(Integer urutan) {
+        this.urutan = urutan;
+    }
 
     public String getId() {
         return id;

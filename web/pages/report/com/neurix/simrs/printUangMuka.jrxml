@@ -83,14 +83,14 @@
 			<staticText>
 				<reportElement x="247" y="41" width="59" height="19" uuid="f1001fbb-6e3b-4ec3-920b-036db1549a87"/>
 				<textElement>
-					<font fontName="Calibri" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[Printed date : ]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy HH.mm.ss">
 				<reportElement x="306" y="41" width="75" height="19" uuid="ebe6dc6c-3839-45b7-81d1-f7cab1e78acc"/>
 				<textElement>
-					<font fontName="Calibri" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
