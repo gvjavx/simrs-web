@@ -1951,8 +1951,10 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
         }
 
         Map mapPiutangPpn = new HashMap();
+        BigDecimal jumlahPerhitunganKembali =totalPpnMasukan.subtract(totalPpnKeluaran).abs();
+
         mapPiutangPpn.put("master_id",CommonConstant.JUNK_MASTER_PIUTANG_PPN);
-        mapPiutangPpn.put("nilai",totalPpnMasukan.subtract(totalPpnKeluaran));
+        mapPiutangPpn.put("nilai",jumlahPerhitunganKembali);
 
         dataBilling.put("ppn_masukan",ppnMasukanList);
         dataBilling.put("ppn_keluaran",ppnKeluaranList);

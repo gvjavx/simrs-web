@@ -433,11 +433,11 @@
                     '<td align="center">' + stKredit+ '</td>' +
                     "</tr>";
             });
-            tmp_table += '<tr style="font-size: 12px;" ">' +
-                '<td align="center" colspan="5"> Jumlah </td>' +
-                '<td align="center">' + formatRupiahAtas(totalDebit)+ '</td>' +
-                '<td align="center">' + formatRupiahAtas(totalKredit)+ '</td>' +
-                "</tr>";
+            // tmp_table += '<tr style="font-size: 12px;" ">' +
+            //     '<td align="center" colspan="5"> Jumlah </td>' +
+            //     '<td align="center">' + formatRupiahAtas(totalDebit)+ '</td>' +
+            //     '<td align="center">' + formatRupiahAtas(totalKredit)+ '</td>' +
+            //     "</tr>";
             $('.pembayaranTable').append(tmp_table);
         });
     };

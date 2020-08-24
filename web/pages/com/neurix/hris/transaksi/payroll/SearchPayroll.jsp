@@ -313,21 +313,9 @@
                                                                     <s:param name="branchId"><s:property value="#attr.row.branchId"/></s:param>
                                                                     <s:param name="tipe"><s:property value="#attr.row.tipe"/></s:param>
                                                                 </s:url>
-                                                                <s:if test='#attr.row.statusApprove=="K"'>
-                                                                    <s:a href="%{urlEdit}">
-                                                                        <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" >
-                                                                    </s:a>
-                                                                </s:if>
-                                                                <s:elseif test='#attr.row.statusApprove=="D"'>
-                                                                    <s:a href="%{urlEdit}">
-                                                                        <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" >
-                                                                    </s:a>
-                                                                </s:elseif>
-                                                                <s:elseif test='#attr.row.statusApprove=="S"'>
-                                                                    <s:a href="%{urlEdit}">
-                                                                        <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" >
-                                                                    </s:a>
-                                                                </s:elseif>
+                                                                <s:a href="%{urlEdit}">
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" >
+                                                                </s:a>
                                                             </display:column>
                                                             <display:column media="html" title="Edit">
                                                                 <s:url var="urlEdit" namespace="/payroll" action="edit_payroll" escapeAmp="false">
@@ -576,8 +564,85 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modal-loading-dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Saving ...
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div id="waiting-content" style="text-align: center">
+                    <h4>Please don't close this window, server is processing your request ...</h4>
+                    <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                         src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                         name="image_indicator_write">
+                    <br>
+                    <img class="spin" border="0"
+                         style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                         src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                         name="image_indicator_write">
+                </div>
+
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin_waiting">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_fin_error_waiting"></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <%--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No--%>
+                <%--</button>--%>
+                <%--<button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes--%>
+                <%--</button>--%>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-success-dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Success
+                </h4>
+            </div>
+            <div class="modal-body" style="text-align: center">
+                <img border="0" src="<s:url value="/pages/images/icon_success.png"/>"
+                     name="icon_success">
+                Record has been saved successfully.
+            </div>
+            <div class="modal-footer">
+                <%--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No--%>
+                <%--</button>--%>
+                <button type="button" class="btn btn-sm btn-success" id="ok_con"><i class="fa fa-check"></i> Ok
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).ready(function() {
+        function showDialog(tipe) {
+            if (tipe == "loading"){
+                $("#modal-loading-dialog").modal('show');
+            }
+            if (tipe == "error"){
+                $("#modal-loading-dialog").modal('show');
+                $("#waiting-content").hide();
+                $("#warning_fin_waiting").show();
+//            $("#msg_fin_error_waiting").text("Error. perbaikan");
+            }
+            if (tipe == "success"){
+                $("#modal-loading-dialog").modal('hide');
+                $("#modal-success-dialog").modal('show');
+            }
+        }
+
         var tipe = document.getElementById("tipe").value;
         if(tipe != "PR" || tipe != "T" || tipe != "PD"){
             $('#printSlip').hide;
@@ -592,15 +657,19 @@
                 var tahun = document.getElementById("approveTahun").value;
                 var tipe = document.getElementById("tipeId2").value;
                 var statusApprove = "Y";
-
+                showDialog("loading");
+                dwr.engine.setAsync(true);
                 PayrollAction.approvePayroll(branchId, bulan, tahun, statusApprove, tipe, function(listdata){
-                    alert('Payroll Berhasil Disetujui');
+                    dwr.engine.setAsync(false);
                     $('#modal-approve').modal('hide');
-                    $('#myForm')[0].reset();
-                    window.location.href="<s:url action='initForm_payroll.action'/>";
+                    showDialog("success");
                 });
             }
         });
+
+        $('#ok_con').click(function () {
+            window.location.href="<s:url action='initForm_payroll.action'/>";
+        })
 
         $('#btnApproveKeuUnit').click(function(){
             if (confirm('Apakah Anda ingin Mesetujui Data Payroll?')) {
@@ -609,12 +678,12 @@
                 var tahun = document.getElementById("approveTahunKeuUnit").value;
                 var tipe = document.getElementById("tipeId2KeuUnit").value;
                 var statusApprove = "Y";
-
+                showDialog("loading");
+                dwr.engine.setAsync(true);
                 PayrollAction.approvePayrollAksUnit(branchId, bulan, tahun, statusApprove, tipe, function(listdata){
-                    alert('Payroll Berhasil Disetujui');
+                    dwr.engine.setAsync(false);
                     $('#modal-approve-keu-unit').modal('hide');
-                    $('#myForm')[0].reset();
-                    window.location.href="<s:url action='initForm_payroll.action'/>";
+                    showDialog("success");
                 });
             }
         });
@@ -628,10 +697,9 @@
                 var statusApprove = "Y";
 
                 PayrollAction.approvePayrollUnit(branchId, bulan, tahun, statusApprove, tipe, function(listdata){
-                    alert('Payroll Berhasil Disetujui');
+                    dwr.engine.setAsync(false);
                     $('#modal-approve').modal('hide');
-                    $('#myForm')[0].reset();
-                    window.location.href="<s:url action='initForm_payroll.action'/>";
+                    showDialog("success");
                 });
             }
         });
@@ -643,12 +711,12 @@
                 var tahun = document.getElementById("approveTahunSdm").value;
                 var tipe = document.getElementById("tipeId2Sdm").value;
                 var statusApprove = "Y";
-
+                showDialog("loading");
+                dwr.engine.setAsync(true);
                 PayrollAction.approvePayrollSdm(branchId, bulan, tahun, statusApprove, tipe, function(listdata){
-                    alert('Payroll Berhasil Disetujui');
+                    dwr.engine.setAsync(false);
+                    showDialog("success");
                     $('#modal-approve').modal('hide');
-                    $('#myForm')[0].reset();
-                    window.location.href="<s:url action='initForm_payroll.action'/>";
                 });
             }
         });

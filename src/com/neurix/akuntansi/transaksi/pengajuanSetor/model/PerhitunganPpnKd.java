@@ -64,6 +64,16 @@ public class PerhitunganPpnKd extends BaseModel {
     private String tipe;
     private String statusB2;
 
+    private String branchId;
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
     public String getStatusB2() {
         return statusB2;
     }

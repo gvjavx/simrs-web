@@ -324,6 +324,13 @@ public class TransAction extends BaseMasterAction {
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
+            if ("".equalsIgnoreCase(trans.getMaster())){
+                trans.setMaster(null);
+            }
+            if ("".equalsIgnoreCase(trans.getTipePembayaran())){
+                trans.setTipePembayaran(null);
+            }
+
             trans.setCreatedWho(userLogin);
             trans.setLastUpdate(updateTime);
             trans.setCreatedDate(updateTime);

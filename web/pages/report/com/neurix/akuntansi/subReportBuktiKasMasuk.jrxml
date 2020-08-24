@@ -23,8 +23,8 @@ from
 	im_akun_kode_rekening b ON a.rekening_id=b.rekening_id LEFT JOIN
 	( select DISTINCT nomor_master,nama from im_akun_master) c ON c.nomor_master=a.master_id
 where
-	no_jurnal=$P{noJurnal}
-	and jumlah_debit <>0
+	no_jurnal=$P{noJurnal} AND
+	jumlah_kredit <> 0
 ORDER BY jumlah_debit DESC]]>
 	</queryString>
 	<field name="no_jurnal" class="java.lang.String"/>

@@ -62,7 +62,6 @@
     <import resource="sshconfig/com/neurix/hris/transaksi/mutasi/spring/MutasiBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/transaksi/ijinKeluar/spring/IjinKeluarBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/transaksi/cutiPegawai/spring/CutiPegawaiBean.xml"/>
-    <import resource="sshconfig/com/neurix/hris/master/belajar/spring/BelajarBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/master/smkBudget/spring/SmkBudgetBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/master/tipeAspek/spring/TipeAspekBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/master/statusRekruitment/spring/StatusRekruitmentBean.xml"/>

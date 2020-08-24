@@ -26,7 +26,6 @@
           p:password="postgres"/>
 
 
-
     <!--<bean id="dataSource"-->
           <!--class="org.springframework.jdbc.datasource.DriverManagerDataSource"-->
           <!--p:driverClassName="org.postgresql.Driver"-->
@@ -44,7 +43,8 @@
     <!--<bean id="dataSource"-->
           <!--class="org.springframework.jdbc.datasource.DriverManagerDataSource"-->
           <!--p:driverClassName="org.postgresql.Driver"-->
-          <!--p:url="jdbc:postgresql://localhost:5432/simrs_prod"-->
-          <!--p:username="postgres"-->
-          <!--p:password="postgres"/>-->
+          <!--p:url="jdbc:postgresql://db.gomedsys.local:5432/gomedsys_nmu"-->
+          <!--p:username="root"-->
+          <!--p:password="123456"/>-->
+
 </beans>

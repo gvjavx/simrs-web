@@ -69,7 +69,6 @@
     <section class="content-header">
         <h1>
             Tipe Jurnal
-            <small>e-HEALTH</small>
         </h1>
     </section>
     <!-- Main content -->
