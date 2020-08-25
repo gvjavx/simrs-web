@@ -140,11 +140,6 @@ ALTER TABLE it_simrs_header_detail_checkup
 ADD COLUMN flag_tppri character varying(1);
 
 -- Membuat Function
-Verifikasi Transaksi
-/veriftransaksi/initVerif_veriftransaksi.action
-/veriftransaksi/initVerif_veriftransaksi.action
-/veriftransaksi/searchVerif_veriftransaksi.action
-
 Pendaftaran Rawat Inap
 /rawatinap/initTppri_rawatinap.action
 /rawatinap/initTppri_rawatinap.action

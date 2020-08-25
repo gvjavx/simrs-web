@@ -28,11 +28,11 @@ import java.util.List;
 public class KandunganAction {
 
     public static transient Logger logger = Logger.getLogger(KandunganAction.class);
+    private String userLogin = CommonUtil.userLogin();
+    private Timestamp time = new Timestamp(System.currentTimeMillis());
 
     public CrudResponse save(String data, String dataPasien) {
         CrudResponse response = new CrudResponse();
-        String userLogin = CommonUtil.userLogin();
-        Timestamp time = new Timestamp(System.currentTimeMillis());
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         KandunganBo kandunganBo = (KandunganBo) ctx.getBean("kandunganBoProxy");
         try {
@@ -159,6 +159,25 @@ public class KandunganAction {
             }
         }
         return list;
+    }
+
+    public CrudResponse delete(String idDetailCheckup, String keterangan) {
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        KandunganBo kandunganBo = (KandunganBo) ctx.getBean("kandunganBoProxy");
+        if (!"".equalsIgnoreCase(idDetailCheckup) && !"".equalsIgnoreCase(keterangan)) {
+            try {
+                Kandungan kandungan = new Kandungan();
+                kandungan.setIdDetailCheckup(idDetailCheckup);
+                kandungan.setKeterangan(keterangan);
+                kandungan.setLastUpdate(time);
+                kandungan.setLastUpdateWho(userLogin);
+                response = kandunganBo.saveDelete(kandungan);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error" + e.getMessage());
+            }
+        }
+        return response;
     }
 
     public static Logger getLogger() {

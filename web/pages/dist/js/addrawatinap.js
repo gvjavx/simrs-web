@@ -2841,6 +2841,7 @@ function getListRekamMedis(tipePelayanan, jenis, id) {
                 var terIsi = 0;
                 var labelPrint = "";
                 var terIsiPrint = "";
+                var tolText = "";
 
                 if(item.jumlahKategori != null){
                     constan = item.jumlahKategori;
@@ -2855,7 +2856,8 @@ function getListRekamMedis(tipePelayanan, jenis, id) {
                     if (item.createdDate != null) {
                         conver = converterDate(new Date(item.createdDate));
                         tgl = '<label class="label label-success">' + conver + '</label>';
-                        tol = 'title="Mengisi tanggal ' + conver + '"';
+                        tol = 'class="box-rm"';
+                        tolText = '<span class="box-rmtext">Tanggal mengisi '+conver+'</span>';
                     }
                     icons = '<i class="fa fa-check" style="color: #449d44"></i>';
                     icons2 = '<i class="fa fa-check" style="color: #449d44"></i>';
@@ -2865,7 +2867,7 @@ function getListRekamMedis(tipePelayanan, jenis, id) {
                 labelPrint = '<span style="color: #367fa9; font-weight: bold">'+terIsiPrint+'</span>';
 
                 if (item.keterangan == 'form') {
-                    li += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')"><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '">' + icons + item.namaRm + ' ' +labelTerisi +'</a></li>'
+                    li += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')"><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '">' + icons + item.namaRm + ' ' +labelTerisi + tolText+ '</a></li>'
                 } else if (item.keterangan == "surat") {
                     li += '<li><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\',\'' + item.namaRm + '\')' + '">' + icons2 + item.namaRm + ' '+ labelPrint + '</a></li>'
                 }

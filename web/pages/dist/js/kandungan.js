@@ -1418,6 +1418,586 @@ function saveRB(jenis, ket) {
         }
     }
 
+    if("awal_kandungan_rb" == jenis){
+        var va1 = $('#rb1').val();
+        var va2 = $('#rb2').val();
+        var va3 = $('#rb3').val();
+        var va4 = $('#rb4').val();
+        var va5 = $('#rb5').val();
+        var va6 = $('#rb6').val();
+        var va7 = $('#rb7').val();
+        var va8 = $('[name=rb8]:checked').val();
+        var va9 = $('#rb9').val();
+        var va10 = $('#rb10').val();
+        var va11 = $('#rb11').val();
+        var va12 = $('#rb12').val();
+        var va13 = $('#rb13').val();
+        var va14 = $('#rb14').val();
+        var va15 = $('#rb15').val();
+        var va16 = $('#rb16').val();
+        var va17 = $('#rb17').val();
+        var va18 = $('#rb18').val();
+        var va19 = $('#rb19').val();
+        var va20 = $('#rb20').val();
+        var va21 = $('#rb21').val();
+        var va22 = $('#rb22').val();
+        var va23 = $('#rb23').val();
+        var va24 = $('#rb24').val();
+        var va25 = $('#rb25').val();
+        var va26 = $('#rb26').val();
+        var va27 = $('#rb27').val();
+        var va28 = $('#rb28').val();
+        var va29 = $('#rb29').val();
+        var va30 = $('#rb30').val();
+        var va31 = $('#rb31').val();
+        var va32 = $('#rb32').val();
+        var va33 = $('#rb33').val();
+        var va34 = $('#rb34').val();
+        var va35 = $('#rb35').val();
+        var va36 = $('#rb36').val();
+        var va37 = $('#rb37').val();
+        var va38 = $('#rb38').val();
+        var va39 = $('#rb39').val();
+        var va40 = $('#rb40').val();
+        var va41 = $('#rb41').val();
+        var va42 = $('#rb42').val();
+        var va43 = $('#rb43').val();
+        var va44 = $('#rb44').val();
+        var va45 = $('#rb45').val();
+        var va46 = $('#rb46').val();
+        var va47 = $('#rb47').val();
+        var va48 = $('#rb48').val();
+        var va49 = $('#rb49').val();
+        var va50 = $('#rb50').val();
+        var va51= $('[name=rb51]:checked').val();
+
+        var tahun = $('.tahun');
+        var hamil = $('.hamil');
+        var persalinan = $('.persalinan');
+        var oleh = $('.oleh');
+        var jen = $('.jenis');
+        var berat = $('.berat');
+        var hidupMati = $('.hidup_mati');
+        var pendarahan = $('.pendarahan');
+        var nifas = $('.nifas');
+
+        var ttd = document.getElementById('rb50');
+        var cekTtd = isCanvasBlank(ttd);
+        var nama = $('#nama_terang_rb50').val();
+        var sip = $('#sip_rb50').val();
+
+        if(va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 &&
+           va11 && va12 && va13 && va14 && va15 && va16 && va17 && va18 && va19 && va20 &&
+           va21 && va22 && va23 && va24 && va25 && va26 && va27 && va28 && va29 && va30 &&
+           va31 && va32 && va33 && va34 && va35 && va36 && va37 && va38 && va39 && va40 &&
+           va41 && va42 && va43 && va44 && va45 && va46 && va47 && va48 && va49 &&
+           nama && sip != '' && !cekTtd && va8 && va51 != undefined){
+
+            data.push({
+                'parameter': 'Tanggal & Jam',
+                'jawaban': va1+' '+va2,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '1. Kawin',
+                'jawaban': va3+' Kali, dengan Suami sekarang '+va4+' tahun',
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Kawin 1 pada umur',
+                'jawaban': va5+' tahun',
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '2. Haid Manarche',
+                'jawaban': va6+' tahun,  Cyclus '+va7+' hari, '+va8+', '+va51+', Lama '+va9+' hari',
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Darah beku/encer : HT yang biasa',
+                'jawaban': va10+' HPL '+va11,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '3. Darah Putih',
+                'jawaban': va12+' Banyaknya '+va13+', Lamanya '+va14+', Warnanya '+va15,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Baunya',
+                'jawaban': va16+', Contact Bleeding '+va17,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '4. Kehamilan dan Persalinan dulu',
+                'jawaban': va18+'P , '+va19+' G, '+va20+' Ab, '+va21+', Ah',
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+
+            $.each(tahun, function (i, item) {
+                if (item.value != ''){
+                    data.push({
+                        'parameter': 'Riwayat',
+                        'jawaban':
+                            item.value+'|'+hamil[i].value+'|'+persalinan[i].value+'|'+oleh[i].value+'|'+jen[i].value+'|'+
+                            berat[i].value+'|'+hidupMati[i].value+'|'+pendarahan[i].value+'|'+nifas[i].value,
+                        'keterangan': jenis,
+                        'jenis': ket,
+                        'tipe': 'riwayat_kandungan',
+                        'id_detail_checkup': idDetailCheckup
+                    });
+                }
+            });
+
+            data.push({
+                'parameter': '5. Keluhan',
+                'jawaban': va22,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Nafsu Makan',
+                'jawaban': va23+', batuk '+va24+', sesak '+va25,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Kencing',
+                'jawaban': va26+', buang air besar '+va27,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Pemakaian obat',
+                'jawaban': va28,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Obat yang tidak tahan',
+                'jawaban': va29,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Riwayat penyakit',
+                'jawaban': va30,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Malaria',
+                'jawaban': va31+', sakit perut '+va32+', perna dirawat '+va33,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Operasi',
+                'jawaban': va34+' paru-paru '+va35+', sesak'+va36+', kelamin '+va37,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Riwayat penyakit keluarga',
+                'jawaban': va38,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Diabetes',
+                'jawaban': va39+', hipertensi '+va40+', paru-paru '+va41,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Gameli',
+                'jawaban': va42+', orang/anak cacat '+va43,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Pemeriksaan Tanggal',
+                'jawaban': va44,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Keadaan Umum',
+                'jawaban': va45,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Riwayat Alergi',
+                'jawaban': va46,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '6. Diagnosa',
+                'jawaban': va47,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '7. Indikasi Rawat Inap',
+                'jawaban': va48,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '8. Terapi',
+                'jawaban': va49,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+
+            var cvs = convertToDataURL(ttd);
+            data.push({
+                'parameter': 'TTD DPJP',
+                'jawaban': cvs,
+                'keterangan': jenis,
+                'jenis': ket,
+                'tipe':'ttd',
+                'nama_terang': nama,
+                'sip': sip,
+                'id_detail_checkup': idDetailCheckup
+            });
+
+            cek = true;
+        }
+    }
+
+    if("awal_kebidanan_rb" == jenis){
+        var va1 = $('#rb1').val();
+        var va2 = $('#rb2').val();
+        var va3 = $('#rb3').val();
+        var va4 = $('#rb4').val();
+        var va5 = $('#rb5').val();
+        var va6 = $('#rb6').val();
+        var va7 = $('#rb7').val();
+        var va8 = $('[name=rb8]:checked').val();
+        var va9 = $('#rb9').val();
+        var va10 = $('[name=rb10]:checked').val();
+        var va11 = $('#rb11').val();
+        var va12 = $('#rb12').val();
+        var va13 = $('#rb13').val();
+        var va14 = $('#rb14').val();
+        var va15 = $('#rb15').val();
+        var va16 = $('#rb16').val();
+        var va17 = $('#rb17').val();
+        var va18 = $('#rb18').val();
+        var va19 = $('#rb19').val();
+        var va20 = $('#rb20').val();
+        var va21 = $('#rb21').val();
+        var va22 = $('#rb22').val();
+        var va23 = $('#rb23').val();
+        var va24 = $('#rb24').val();
+        var va25 = $('#rb25').val();
+        var va26 = $('#rb26').val();
+        var va27 = $('#rb27').val();
+        var va28 = $('#rb28').val();
+        var va29 = $('#rb29').val();
+        var va30 = $('#rb30').val();
+        var va31 = $('#rb31').val();
+        var va32 = $('#rb32').val();
+        var va33 = $('#rb33').val();
+        var va34 = $('#rb34').val();
+        var va35 = $('#rb35').val();
+        var va36 = $('#rb36').val();
+        var va37 = $('#rb37').val();
+        var va38 = $('#rb38').val();
+        var va39 = $('#rb39').val();
+        var va40 = $('#rb40').val();
+        var va41 = $('#rb41').val();
+        var va42 = $('#rb42').val();
+        var va43 = $('#rb43').val();
+        var va44 = $('#rb44').val();
+        var va45 = $('#rb45').val();
+        var va46 = $('#rb46').val();
+        var va47 = $('#rb47').val();
+        var va48 = $('#rb48').val();
+        var va49 = $('#rb49').val();
+        var va50 = $('#rb50').val();
+        var va51 = $('#rb51').val();
+        var va52 = $('#rb52').val();
+
+        var tahun = $('.tahun');
+        var tempat = $('.tempat');
+        var umur = $('.umur');
+        var jen = $('.jenis');
+        var penolong = $('.penolong');
+        var penyulit = $('.penyulit');
+        var jk = $('.jk');
+        var pendarahan = $('.pendarahan');
+        var hidupMati = $('.hidup_mati');
+
+        var ttd = document.getElementById('rb53');
+        var cekTtd = isCanvasBlank(ttd);
+        var nama = $('#nama_terang_rb53').val();
+        var sip = $('#sip_rb53').val();
+
+        if( va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va11 && va12 &&
+            va13 && va14 && va15 && va16 && va17 && va18 && va19 && va20 && va21 && va22 &&
+            va23 && va24 && va25 && va26 && va27 && va28 && va29 && va30 && va31 && va32 &&
+            va33 && va34 && va35 && va36 && va37 && va38 && va39 && va40 && va41 && va42 &&
+            va43 && va44 && va45 && va46 && va47 && va48 && va49 && va50 && va51 && va52 &&
+            nama && sip != '' && !cekTtd && va8 && va10 != undefined){
+
+            data.push({
+                'parameter': 'Tanggal & Jam',
+                'jawaban': va1+' '+va2,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '1. Kawin',
+                'jawaban': va3+' Kali, dengan Suami sekarang '+va4+' tahun',
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Kawin 1 pada umur',
+                'jawaban': va5+' tahun',
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '2. Haid Manarche',
+                'jawaban': va6+' tahun,  Cyclus '+va7+' hari, '+va8+', '+va9+', Lama '+va10+' hari',
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'HPHT',
+                'jawaban': va11+' HPL '+va12,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '3. Darah Putih',
+                'jawaban': va13+' Banyaknya '+va14+', Lamanya '+va15+', Warnanya '+va16,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Baunya',
+                'jawaban': va17+', Contact Bleeding '+va18,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '4. Kehamilan dan Persalinan dulu',
+                'jawaban': 'G '+va19+', P , '+va20+' A '+va21,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+
+            $.each(tahun, function (i, item) {
+                if (item.value != ''){
+                    data.push({
+                        'parameter': 'Riwayat',
+                        'jawaban':
+                            item.value+'|'+tempat[i].value+'|'+umur[i].value+'|'+jen[i].value+'|'+penolong[i].value+'|'+
+                            penyulit[i].value+'|'+jk[i].value+'|'+pendarahan[i].value+'|'+hidupMati[i].value,
+                        'keterangan': jenis,
+                        'jenis': ket,
+                        'tipe': 'riwayat_kebidanan',
+                        'id_detail_checkup': idDetailCheckup
+                    });
+                }
+            });
+
+            data.push({
+                'parameter': '5. Keluhan',
+                'jawaban': va22,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Nafsu Makan',
+                'jawaban': va23,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Kencing',
+                'jawaban': va24+', buang air besar '+va25,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '6. Riwayat Penyakit Pasien',
+                'jawaban': va26,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Riwayat Operasi',
+                'jawaban': va27+', sakit keras '+va28+', pernah dirawat '+va29,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '7. Riwayat penyakit Keluarga',
+                'jawaban': va30,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Diabetes',
+                'jawaban': va31+', paru-paru '+va32,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Hipertensi',
+                'jawaban': va33+' orang/anak cacat '+va34,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '8. Riwayat Gynekologi',
+                'jawaban': va35,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '9. Riwayat KB',
+                'jawaban': va36,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '10. Riwayat Alergi',
+                'jawaban': va37,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '11. Pemeriksaan Tanggal',
+                'jawaban': va38,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Keadaan Umum',
+                'jawaban': va39,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Kesadaran',
+                'jawaban': va40+', Tingi Badan '+va41 +' Cm',
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'BB sebelum hamil',
+                'jawaban': va42+', BB setelah hamil '+va43,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Vital Sign',
+                'jawaban': 'Tensi '+va44+' mmHg, Nadi '+va45+' x/menit, Suhu '+va46+' C, RR '+va47+' x/menit, TFU '+va48+' cm, DJJ '+va49+' x/menit',
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '12. Diagnosa',
+                'jawaban': va50,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '13. Indikasi Rawat Inap',
+                'jawaban': va51,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '14. Terapi',
+                'jawaban': va52,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+
+            var cvs = convertToDataURL(ttd);
+            data.push({
+                'parameter': 'TTD DPJP',
+                'jawaban': cvs,
+                'keterangan': jenis,
+                'jenis': ket,
+                'tipe':'ttd',
+                'nama_terang': nama,
+                'sip': sip,
+                'id_detail_checkup': idDetailCheckup
+            });
+            cek = true;
+        }
+    }
+
     if (cek) {
         var result = JSON.stringify(data);
         var pasienData = JSON.stringify(dataPasien);
@@ -2131,4 +2711,65 @@ function listAsuhanKeperawatanRB(jenis) {
             $('#body_asuhan_rb').html(table);
         }
     });
+}
+
+function setRiwayatHamil(jenis){
+    var temp = "";
+    var count = $('.tahun').length;
+    var jml = count + 1;
+    var id = "set_"+jml;
+
+    if(jenis == 'kandungan'){
+        temp ='<div id="'+id+'">' +
+            '<div class="row jarak">\n' +
+            '<div class="form-group">\n' +
+            '    <div class="col-md-3">\n' +
+            '        <input class="form-control tahun" placeholder="Tahun">\n' +
+            '    </div>\n' +
+            '    <div class="col-md-3">\n' +
+            '        <input class="form-control hamil" placeholder="Kehamilan">\n' +
+            '    </div>\n' +
+            '    <div class="col-md-3">\n' +
+            '        <input class="form-control persalinan" placeholder="Persalinan">\n' +
+            '    </div>\n' +
+            '    <div class="col-md-3">\n' +
+            '        <input class="form-control oleh" placeholder="Oleh">\n' +
+            '    </div>\n' +
+            '</div>\n' +
+            '</div>\n' +
+            '<div class="row jarak">\n' +
+            '<div class="form-group">\n' +
+            '    <div class="col-md-3">\n' +
+            '        <input class="form-control jenis" placeholder="Jenis">\n' +
+            '    </div>\n' +
+            '    <div class="col-md-3">\n' +
+            '        <input class="form-control berat" placeholder="Berat">\n' +
+            '    </div>\n' +
+            '    <div class="col-md-3">\n' +
+            '        <input class="form-control hidup_mati" placeholder="Hidup/Mati">\n' +
+            '    </div>\n' +
+            '    <div class="col-md-3">\n' +
+            '        <input class="form-control pendarahan" placeholder="Pendarahan">\n' +
+            '    </div>\n' +
+            '</div>\n' +
+            '</div>\n' +
+            '<div class="row jarak">\n' +
+            '<div class="form-group">\n' +
+            '    <div class="col-md-3">\n' +
+            '        <input class="form-control nifas" placeholder="Nifas">\n' +
+            '    </div>\n' +
+            '    <div class="col-md-1">\n' +
+            '        <button class="btn btn-danger" onclick="delRiwayatHamil(\''+id+'\')"><i class="fa fa-trash"></i></button>\n' +
+            '    </div>\n' +
+            '</div>\n' +
+            '</div>' +
+            '</div>\n';
+    }
+    if(temp != ''){
+        $('#set_riwayat_hamil').append(temp);
+    }
+}
+
+function delRiwayatHamil(id){
+    $('#'+id).remove();
 }

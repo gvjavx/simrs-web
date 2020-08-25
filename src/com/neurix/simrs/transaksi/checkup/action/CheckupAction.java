@@ -581,6 +581,7 @@ public class CheckupAction extends BaseMasterAction {
 
                         if (pasien != null) {
                             checkup.setUrlKtp(pasien.getUrlKtp());
+                            checkup.setNoBpjs(pasien.getNoBpjs());
                         }
                     }
 

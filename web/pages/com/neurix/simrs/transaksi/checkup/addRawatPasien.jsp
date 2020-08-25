@@ -2073,7 +2073,7 @@
 <script type='text/javascript' src='<s:url value="/pages/dist/js/rekammedic.js"/>'></script>
 <script type='text/javascript'>
 
-    var idPelayanan = $('#poli').val();
+    var idPelayanan = $('#id_pelayanan_poli').val();
     var isOnline = '<s:property value="headerCheckup.isOnlne"/>';
     var contextPath = '<%= request.getContextPath() %>';
 
