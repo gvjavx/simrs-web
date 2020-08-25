@@ -1,10 +1,14 @@
 package com.neurix.akuntansi.transaksi.budgetingperhitungan.bo.impl;
 
+import com.neurix.akuntansi.master.master.dao.MasterDao;
+import com.neurix.akuntansi.master.master.model.ImMasterEntity;
 import com.neurix.akuntansi.transaksi.budgetingnilaidasar.model.ImAkunBudgetingNilaiDasarEntity;
 import com.neurix.akuntansi.transaksi.budgetingnilaidasar.model.ItAkunBudgetingNilaiDasarEntity;
 import com.neurix.akuntansi.transaksi.budgetingperhitungan.bo.BudgetingPerhitunganBo;
 import com.neurix.akuntansi.transaksi.budgetingperhitungan.dao.*;
 import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.*;
+import com.neurix.authorization.position.dao.PositionDao;
+import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.common.exception.GeneralBOException;
 import org.apache.log4j.Logger;
@@ -28,6 +32,16 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
     private JenisBudgetingDao jenisBudgetingDao;
     private KategoriParameterBudgetingDao kategoriParameterBudgetingDao;
     private NilaiParameterDao nilaiParameterDao;
+    private PositionDao positionDao;
+    private MasterDao masterDao;
+
+    public void setPositionDao(PositionDao positionDao) {
+        this.positionDao = positionDao;
+    }
+
+    public void setMasterDao(MasterDao masterDao) {
+        this.masterDao = masterDao;
+    }
 
     public void setKategoriParameterBudgetingDao(KategoriParameterBudgetingDao kategoriParameterBudgetingDao) {
         this.kategoriParameterBudgetingDao = kategoriParameterBudgetingDao;
@@ -170,6 +184,7 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
                 opr = perhitunganEntity.getOperator();
             } else {
                 if ("=".equalsIgnoreCase(perhitunganEntity.getOperator())){
+                    nilai = hitung(nilai, opr, perhitunganEntity.getNilai());
                     break;
                 } else {
                     nilai = hitung(nilai, opr, perhitunganEntity.getNilai());
@@ -381,5 +396,15 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
         if (nilai == null)
             return new BigDecimal(0);
         return nilai;
+    }
+
+    @Override
+    public ImPosition getPositionByKodering(String id) throws GeneralBOException {
+        return positionDao.getById("kodering", id);
+    }
+
+    @Override
+    public ImMasterEntity getMasterByKodering(String id) throws GeneralBOException {
+        return masterDao.getById("primaryKey.nomorMaster", id);
     }
 }

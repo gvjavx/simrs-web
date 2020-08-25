@@ -14,6 +14,8 @@
           p:perhitunganBudgetingDao-ref="perhitunganBudgetingDao"
           p:kategoriParameterBudgetingDao-ref="kategoriParameterBudgetingDao"
           p:nilaiParameterDao-ref="nilaiParameterDao"
+          p:masterDao-ref="masterDao"
+          p:positionDao-ref="positionDao"
     />
 
     <bean id="budgetingPerhitunganBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

@@ -99,7 +99,7 @@
                                             <s:if test='budgeting.flagKp == "Y"'>
                                                 <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                                 <s:select list="#initComboBranch.listOfComboBranch" id="sel-unit" name="budgeting.branchId"
-                                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select Value]" cssClass="form-control" onchange="changeAction(this.value)"/>
+                                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select Value]" cssClass="form-control" onchange="changeAction(this.value)" disabled="true"/>
 
                                             </s:if>
                                             <s:else>
@@ -123,17 +123,17 @@
                                             <%--</select>--%>
                                         <%--</div>--%>
                                     <%--</div>--%>
-                                    <input type="hidden" id="add-coa-tipe" value="investasi" name="budgeting.tipeBudgeting"/>
+                                    <%--<input type="hidden" id="add-coa-tipe" value="pendapatan" name="budgeting.tipeBudgeting"/>--%>
 
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-md-6 col-md-offset-5" style="margin-top: 10px">
-                                    <button class="btn btn-primary" onclick="choose()"><i class="fa fa-arrow-right"></i> Choose</button>
-                                    <button class="btn btn-danger" onclick="refreshAdd()"><i class="fa fa-refresh"></i> Reset</button>
-                                </div>
-                            </div>
+                            <%--<div class="row">--%>
+                                <%--<div class="col-md-6 col-md-offset-5" style="margin-top: 10px">--%>
+                                    <%--<button class="btn btn-primary" onclick="choose()"><i class="fa fa-arrow-right"></i> Choose</button>--%>
+                                    <%--<button class="btn btn-danger" onclick="refreshAdd()"><i class="fa fa-refresh"></i> Reset</button>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
                         </div>
 
                         <%--</s:form>--%>
@@ -148,63 +148,63 @@
                             </div>
                         </div>
                     </div>
-                    <%--<div class="box-header with-border">--%>
-                        <%--<h3 class="box-title"><i class="fa fa-th-list"></i>--%>
-                            <%--List kategori Budgeting Pendapatan <strong><span id="label-tahun"></span> - <span id="label-branch"></span></strong>--%>
-                        <%--</h3>--%>
-                    <%--</div>--%>
-                    <%--<div class="box-body">--%>
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-th-list"></i>
+                            List kategori Budgeting Pendapatan <strong><span id="label-tahun"></span> - <span id="label-branch"></span></strong>
+                        </h3>
+                    </div>
+                    <div class="box-body">
 
-                        <%--&lt;%&ndash;<div class="alert alert-info alert-dismissable" id="alert-info">&ndash;%&gt;--%>
-                        <%--&lt;%&ndash;<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>&ndash;%&gt;--%>
-                        <%--&lt;%&ndash;<strong>Info!</strong> Pilih Priode Kemudian Choose&ndash;%&gt;--%>
-                        <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
-
-                        <%--<div class="alert alert-success alert-dismissable" id="alert-success" style="display: none">--%>
-                            <%--<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>--%>
-                            <%--<strong>Success!</strong> Berhasil Menyimpan data--%>
+                        <%--<div class="alert alert-info alert-dismissable" id="alert-info">--%>
+                        <%--<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>--%>
+                        <%--<strong>Info!</strong> Pilih Priode Kemudian Choose--%>
                         <%--</div>--%>
 
-                        <%--<div class="alert alert-warning alert-dismissable" id="alert-error" style="display: none">--%>
-                            <%--<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>--%>
-                            <%--<strong>Error!</strong><span id="error-msg"></span>--%>
-                        <%--</div>--%>
+                        <div class="alert alert-success alert-dismissable" id="alert-success" style="display: none">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <strong>Success!</strong> Berhasil Menyimpan data
+                        </div>
 
-                        <%--<div class="row">--%>
-                            <%--<div class="col-md-8 col-md-offset-2">--%>
-                                <%--<table class="table table-bordered table-striped tree">--%>
-                                    <%--<thead id="head-budgeting">--%>
-                                    <%--<tr bgcolor="#90ee90">--%>
-                                        <%--&lt;%&ndash;<td style="width: 20%">COA</td>&ndash;%&gt;--%>
-                                        <%--<td align="">Kategori Pendapatan</td>--%>
-                                        <%--<td align="">Nilai</td>--%>
+                        <div class="alert alert-warning alert-dismissable" id="alert-error" style="display: none">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <strong>Error!</strong><span id="error-msg"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2">
+                                <table class="table table-bordered table-striped tree">
+                                    <thead id="head-budgeting">
+                                    <tr bgcolor="#90ee90">
+                                        <%--<td style="width: 20%">COA</td>--%>
+                                        <td align="">Kategori Pendapatan</td>
+                                        <td align="">Nilai</td>
+                                        <td align="center">Action</td>
                                         <%--<td align="center">Action</td>--%>
-                                        <%--&lt;%&ndash;<td align="center">Action</td>&ndash;%&gt;--%>
-                                    <%--</tr>--%>
-                                    <%--</thead>--%>
-                                    <%--<tbody id="body-budgeting">--%>
-                                    <%--</tbody>--%>
-                                <%--</table>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="body-budgeting">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
 
-                        <%--<div class="row">--%>
-                            <%--<label class="control-label col-md-1 col-md-offset-4">Tipe Budgeting</label>--%>
-                            <%--<div class="col-sm-2">--%>
-                                <%--<select class="form-control" id="sel-tipe">--%>
-                                    <%--<option value="tahunan">Tahunan</option>--%>
-                                    <%--<option value="bulanan">Bulanan</option>--%>
-                                    <%--<option value="semester">Semester</option>--%>
-                                    <%--<option value="quartal">Quartal</option>--%>
-                                <%--</select>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                        <%--<div class="form-group" style="margin-top: 10px">--%>
-                            <%--<div class="col-md-4 col-md-offset-5">--%>
-                                <%--<button class="btn btn-warning" onclick="initForm()"><i class="fa fa-arrow-left"></i> Back</button>--%>
-                                <%--<button class="btn btn-success" id="btn-save" onclick="saveAdd()"><i class="fa fa-check"></i> Save </button>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
+                        <div class="row">
+                            <label class="control-label col-md-1 col-md-offset-4">Tipe Budgeting</label>
+                            <div class="col-sm-2">
+                                <select class="form-control" id="sel-tipe">
+                                    <option value="tahunan">Tahunan</option>
+                                    <option value="bulanan">Bulanan</option>
+                                    <option value="semester">Semester</option>
+                                    <option value="quartal">Quartal</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top: 10px">
+                            <div class="col-md-4 col-md-offset-5">
+                                <button class="btn btn-warning" onclick="initForm()"><i class="fa fa-arrow-left"></i> Back</button>
+                                <button class="btn btn-success" id="btn-save" onclick="saveAdd()"><i class="fa fa-check"></i> Save </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -361,10 +361,13 @@
     var listOfCoa = [];
     $( document ).ready(function() {
         chekTipe();
+        choose();
     });
 
     var tipe = '<s:property value="budgeting.tipe"/>';
     var flagDisable = '<s:property value="budgeting.flagDisable"/>';
+    var unit = '<s:property value="budgeting.branchId"/>';
+    var tahun = '<s:property value="budgeting.tahun"/>';
     var listOfParam = [];
 
     function chekTipe() {
@@ -423,49 +426,41 @@
         var branch = $("#sel-unit").val();
         var labelBranch = $("#sel-unit option:selected").text();
 
-        var form = { "budgeting.tahun":tahun, "budgeting.branchId":branch, "budgeting.jenis":"add"};
-        var host = firstpath()+"/bgpendapatan/add_bgpendapatan.action";
-        post(host, form);
 
-//        showDialog('loading');
-//        dwr.engine.setAsync(true);
-//        BgPendapatanAction.getListKategoriParameter("PDT", tahun, branch, function (res) {
-//            dwr.engine.setAsync(false);
-//            showDialog('close');
-//            $("#body-budgeting").html("");
-//            var str = "";
-//            $.each(res.list, function (i, item) {
-//                str += "<tr>" +
-//                        "<td>"+item.nama+"</td>" +
-//                        "<td align='right'>"+ formatRupiah(nullEscape(item.nilaiTotal)) +"</td>" +
-//                        "<td align='center'>" +
-//                        "<button class='btn btn-sm btn-primary' onclick=\"add(\'"+item.id+"\',\'"+branch+"\',\'"+tahun+"\',\'"+ item.nama +"\')\"><i class='fa fa-edit'></i></button> " +
-////                        "<button class='btn btn-sm btn-success'><i class='fa fa-search'></i></button>" +
-//                        "</td>" +
-//                        "</tr>";
+        BgPendapatanAction.getListKategoriParameter("PDT", tahun, unit, function (res) {
+            var str = "";
+            $.each(res.list, function (i, item) {
+                str += "<tr>" +
+                        "<td>"+item.nama+"</td>" +
+                        "<td align='right'>"+ formatRupiah(nullEscape(item.nilaiTotal)) +"</td>" +
+                        "<td align='center'>" +
+                        "<button class='btn btn-sm btn-primary' onclick=\"add(\'"+item.id+"\',\'"+branch+"\',\'"+tahun+"\',\'"+ item.nama +"\')\"><i class='fa fa-edit'></i></button> " +
+//                        "<button class='btn btn-sm btn-success'><i class='fa fa-search'></i></button>" +
+                        "</td>" +
+                        "</tr>";
+            });
+            $("#body-budgeting").html(str);
+            $("#label-tahun").text(tahun);
+            $("#label-branch").text(labelBranch);
+//            $('#ok_con').on('click', function () {
+//                showDialog('close');
 //            });
-//            $("#body-budgeting").html(str);
-//            $("#label-tahun").text(tahun);
-//            $("#label-branch").text(labelBranch);
-////            $('#ok_con').on('click', function () {
-////                showDialog('close');
-////            });
-//        });
-//
-//        BudgetingNilaiDasarAction.getListNilaiDasarEdit(tahun, function (list) {
-//            var str = "";
-//            $.each(list, function (i, item) {
-//                str += "<div class=\"row\">"+
-//                    "<label class=\"control-label col-sm-4\" style=\"text-align: right\">"+item.keterangan+"</label>" +
-//                    "<div class=\"col-sm-4\">" +
-//                    "<input type=\"number\" class=\"form-control\" id=\"edit_"+item.idNilaiDasar+"\" value=\""+item.nilai+"\" align='right' readonly/>" +
-//                    "</div>" +
-//                    "</div>";
-//            });
-//            $("#body-nilai-dasar").html(str);
-//            //console.log(str);
-//            //console.log(listOfId);
-//        });
+        });
+
+        BudgetingNilaiDasarAction.getListNilaiDasarEdit(tahun, function (list) {
+            var str = "";
+            $.each(list, function (i, item) {
+                str += "<div class=\"row\">"+
+                    "<label class=\"control-label col-sm-4\" style=\"text-align: right\">"+item.keterangan+"</label>" +
+                    "<div class=\"col-sm-4\">" +
+                    "<input type=\"number\" class=\"form-control\" id=\"edit_"+item.idNilaiDasar+"\" value=\""+item.nilai+"\" align='right' readonly/>" +
+                    "</div>" +
+                    "</div>";
+            });
+            $("#body-nilai-dasar").html(str);
+            //console.log(str);
+            //console.log(listOfId);
+        });
 
     }
 
@@ -780,7 +775,7 @@
     }
 
     function add(idKategori, branch, tahun, nama) {
-        var form = { "budgeting.tahun":tahun, "budgeting.branchId":branch, "budgeting.idKategoriBudgeting":idKategori, "budgeting.namaKategori":nama, "budgeting.tipe":"add"};
+        var form = { "budgeting.tahun":tahun, "budgeting.branchId":branch, "budgeting.idKategoriBudgeting":idKategori, "budgeting.namaKategori":nama};
         var host = firstpath()+"/bgpendapatan/add_bgpendapatan.action";
         post(host, form);
     }

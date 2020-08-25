@@ -87,6 +87,15 @@ public class Budgeting {
     private String flagNilaiTotal = "N";
     private String idKategoriBudgeting;
     private String namaKategori;
+    private String jenis;
+
+    public String getJenis() {
+        return jenis;
+    }
+
+    public void setJenis(String jenis) {
+        this.jenis = jenis;
+    }
 
     public String getNamaKategori() {
         return namaKategori;

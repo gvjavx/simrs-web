@@ -25,6 +25,33 @@ public class ParameterBudgeting {
     private String masterId;
     private String divisiId;
     private String idKategoriBudgeting;
+    private String namaMaster;
+    private String namaDivisi;
+    private String idNilaiParameter;
+
+    public String getIdNilaiParameter() {
+        return idNilaiParameter;
+    }
+
+    public void setIdNilaiParameter(String idNilaiParameter) {
+        this.idNilaiParameter = idNilaiParameter;
+    }
+
+    public String getNamaMaster() {
+        return namaMaster;
+    }
+
+    public void setNamaMaster(String namaMaster) {
+        this.namaMaster = namaMaster;
+    }
+
+    public String getNamaDivisi() {
+        return namaDivisi;
+    }
+
+    public void setNamaDivisi(String namaDivisi) {
+        this.namaDivisi = namaDivisi;
+    }
 
     public String getIdKategoriBudgeting() {
         return idKategoriBudgeting;

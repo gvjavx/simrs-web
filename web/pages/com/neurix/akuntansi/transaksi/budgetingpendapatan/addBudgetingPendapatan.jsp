@@ -75,7 +75,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Budgeting </h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Budgeting Pendapatan</h3>
                     </div>
                     <div class="box-body">
                         <%--<s:form id="kasirjalanForm" method="post" namespace="/kasirjalan" action="search_kasirjalan.action" theme="simple" cssClass="form-horizontal">--%>
@@ -86,51 +86,6 @@
                                         <s:property value="budgeting.namaKategori"/> - <s:property value="budgeting.branchName"/> <s:property value="budgeting.tahun"/>
                                     </h4>
                                 </div>
-                                <%--<div class="col-md-12 col-md-offset-3">--%>
-                                    <%--<div class="row">--%>
-                                        <%--<label class="control-label col-sm-2">Tahun</label>--%>
-                                        <%--<div class="col-sm-2">--%>
-                                            <%--<select class="form-control" id="sel-tahun">--%>
-                                                <%--<option value="2020">2020</option>--%>
-                                                <%--<option value="2021">2021</option>--%>
-                                                <%--<option value="2022">2022</option>--%>
-                                                <%--<option value="2023">2023</option>--%>
-                                            <%--</select>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                    <%--<div class="row">--%>
-                                        <%--<label class="control-label col-sm-2">Unit</label>--%>
-                                        <%--<div class="col-sm-2">--%>
-                                            <%--<s:if test='budgeting.flagKp == "Y"'>--%>
-                                                <%--<s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>--%>
-                                                <%--<s:select list="#initComboBranch.listOfComboBranch" id="sel-unit" name="budgeting.branchId"--%>
-                                                          <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select Value]" cssClass="form-control" onchange="changeAction(this.value)"/>--%>
-
-                                            <%--</s:if>--%>
-                                            <%--<s:else>--%>
-                                                <%--<s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>--%>
-                                                <%--<s:select list="#initComboBranch.listOfComboBranch" name="budgeting.branchId"--%>
-                                                          <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select Value]" cssClass="form-control" onchange="changeAction(this.value)" disabled="true"/>--%>
-                                                <%--&lt;%&ndash;<input type="hidden" id="sel-unit" name="budgeting.branchId"/>&ndash;%&gt;--%>
-                                                <%--<s:hidden id="sel-unit" name="budgeting.branchId"/>--%>
-                                            <%--</s:else>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-
-                                    <%--<div class="row">--%>
-                                        <%--<label class="control-label col-sm-2">Tipe Budgeting</label>--%>
-                                        <%--<div class="col-sm-2">--%>
-                                            <%--<select class="form-control" id="sel-tipe">--%>
-                                                <%--<option value="tahunan">Tahunan</option>--%>
-                                                <%--<option value="bulanan">Bulanan</option>--%>
-                                                <%--<option value="semester">Semester</option>--%>
-                                                <%--<option value="quartal">Quartal</option>--%>
-                                            <%--</select>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                    <%--<input type="hidden" id="add-coa-tipe" value="investasi" name="budgeting.tipeBudgeting"/>--%>
-
-                                <%--</div>--%>
                             </div>
 
                             <div class="row">
@@ -196,8 +151,8 @@
                         <%--</div>--%>
                         <div class="form-group" style="margin-top: 10px">
                             <div class="col-md-4 col-md-offset-5">
-                                <button class="btn btn-warning" onclick="initForm()"><i class="fa fa-arrow-left"></i> Back</button>
-                                <button class="btn btn-success" id="btn-save" onclick="saveAdd()"><i class="fa fa-arrow-right"></i> Next </button>
+                                <button class="btn btn-warning" onclick="back()"><i class="fa fa-arrow-left"></i> Back</button>
+                                <%--<button class="btn btn-success" id="btn-save" onclick="saveAdd()"><i class="fa fa-arrow-right"></i> Save </button>--%>
                             </div>
                         </div>
                     </div>
@@ -283,12 +238,12 @@
 
 
 <div class="modal fade" id="modal-add">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-plus"></i> Add
+                <h4 class="modal-title"><i class="fa fa-plus"></i> <span id="label-edit"></span>
                 </h4>
             </div>
             <div class="modal-body">
@@ -396,7 +351,15 @@
 
                             <br>
                             <div id="form-periode">
+
                                 <strong>Nilai</strong><hr style="width: 80%;">
+                                <div class="row">
+                                    <div class="col-md-12" align="right">
+                                        <button class="btn btn-sm btn-info" onclick="showDetail()"><i class="fa fa-info"></i></button>
+                                        <button class="btn btn-sm btn-warning" onclick="addPerhitungan()"><i class="fa fa-plus"></i></button>
+                                    </div>
+                                </div>
+                                <br>
                                 <div id="body-nilai">
                                     <%--<div class="row">--%>
                                         <%--<label class="control-label col-sm-4">Nilai Pendapatan</label>--%>
@@ -463,6 +426,29 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-add-hitung">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Add Perhitungan </h4>
+            </div>
+            <div class="modal-body">
+                <br>
+                <div class="form-group">
+                    <div class="row" id="body-hitung">
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="save-hotung" onclick="addHitung()"><i class="fa fa-check"></i> Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type='text/javascript'>
 
     var listOfCoa = [];
@@ -472,12 +458,14 @@
         showListParameter();
     });
 
-    var listOfParam = [];
-    var tipe        = '<s:property value="budgeting.tipe"/>';
-    var flagDisable = '<s:property value="budgeting.flagDisable"/>';
-    var idKategori  = '<s:property value="budgeting.idKategoriBudgeting"/>';
-    var tahun       = '<s:property value="budgeting.tahun"/>';
-    var unit        = '<s:property value="budgeting.branchId"/>';
+    var listOfParam     = [];
+    var n               = 0;
+    var tipe            = '<s:property value="budgeting.tipe"/>';
+    var flagDisable     = '<s:property value="budgeting.flagDisable"/>';
+    var idKategori      = '<s:property value="budgeting.idKategoriBudgeting"/>';
+    var namaKategori    = '<s:property value="budgeting.namaKategori"/>';
+    var tahun           = '<s:property value="budgeting.tahun"/>';
+    var unit            = '<s:property value="budgeting.branchId"/>';
 
     function chekTipe() {
         if ("Y" == flagDisable){
@@ -508,7 +496,7 @@
             $.each(list, function (i, item) {
                 str += '<div class="row">' +
                     '<div class="col-md-8 col-md-offset-2">' +
-                    '<h4>' + item.nama +'</h4>' +
+                    '<h4 id="label-head-'+item.id+'">' + item.nama +'</h4>' +
                     '<button class="btn btn-sm btn-primary" style="float: right;" onclick="showAdd(\''+item.id+'\')"><i class="fa fa-plus"></i> Tambah</button>' +
                     '<table class="table table-bordered table-striped tree">' +
                     '<thead id="head-budgeting">' +
@@ -516,157 +504,110 @@
                     '<td>Master</td>' +
                     '<td>Divisi</td>' +
                     '<td>Nilai</td>' +
-                    '<td align="center">Action</td>' +
+//                    '<td align="center">Action</td>' +
                     '</tr>' +
                     '</thead>' +
-                    '<tbody id="body-budgeting-'+ item.id +'">' +
-                    '</tbody>' +
+                    '<tbody id="body-budgeting-'+ item.id +'">';
+
+                BgPendapatanAction.getListDataParam(item.id, function (listDatas) {
+
+                    $.each(listDatas, function (n, data) {
+                        str += '<tr>' +
+                            '<td>'+data.namaMaster+'</td>' +
+                            '<td>'+data.namaDivisi+'</td>' +
+                            '<td align="right">'+ formatRupiah( data.nilaiTotal )+'</td>' +
+                            '</tr>';
+                    });
+                });
+
+
+                str += '</tbody>' +
                     '</table>' +
                     '</div>' +
                     '</div>' +
                     '<br/>' ;
             });
-
             $("#list-body-budgeting").html(str);
+
         });
+    }
+
+    function addPerhitungan() {
+//        $("#modal-add-hitung").modal('show');
+        var idParam = $("#id-param").val();
+        var str = "<div class='row'>" +
+                "<div class='col-md-4'></div>" +
+                "<div class=\"col-md-6\">" +
+                "<select class='form-control' id='total-" + n + "-"+ idParam +"'>";
+
+            BudgetingNilaiDasarAction.getListNilaiDasarEdit(tahun, function (list) {
+                $.each(list, function (i, item) {
+                    str += "<option value='"+item.nilai+"' >"+item.keterangan+"</option>";
+                });
+            });
+
+        str += "</select>" +
+            "</div>" +
+            "<div class=\"col-md-2\">"+
+                "<select id='opr-"+ n +"-"+ idParam +"' class='form-control'>" +
+                    "<option value='='>(=) Sama Dengan</option>" +
+                    "<option value='*'>(X) Kali</option>" +
+                    "<option value='+'>(+) Tambah</option>" +
+                    "<option value='-'>(-) Kurangi</option>" +
+                    "<option value='/'>(/) Bagi</option>" +
+                "</select>" +
+            "</div>" +
+            "</div>";
+
+        n = n + 1;
+        var i = n - 1;
+        str += "<div id='hitung-"+ n +"'></div>";
+        $("#hitung-" + i ).html(str);
+        console.log("n = " + i);
     }
 
     function showAdd(idParam) {
         $("#modal-add").modal('show');
         $("#id-param").val(idParam);
         listOfParam = [];
+        n = 0;
 
-        var str = "";
-        if (idParam == "PDTRJTDN"){
-            str = "<div class=\"row\">" +
-                "<label class=\"col-md-4\">Nilai Pendapatan</label>" +
-                "<div class=\"col-md-6\">" +
-                "<input type=\"number\" class=\"form-control\" id=\"total-"+idParam+"\" />" +
-                "</div>" +
-                "<div class=\"col-md-2\">"+
-                "<button class=\"btn btn-sm btn-info\" onclick=\"showDetail()\"><i class=\"fa fa-info\"></i></button>" +
-                "</div>" +
-                "</div>";
 
-            listOfParam.push({"id":"total-"+idParam, "opr":"="});
-        }
-        if (idParam == "PDTRITDN"){
+        var label = $("#label-head-"+idParam).text();
 
-            var tt = $("#edit_tt").val();
-            var bor = $("#edit_bor").val();
+        var str = "<div class=\"row\">" +
+            "<label class=\"col-md-4\">Nilai Pendapatan</label>" +
+            "<div class=\"col-md-6\">" +
+            "<input type=\"number\" class=\"form-control\" id=\"total-"+n+"-"+idParam+"\" />" +
+            "</div>" +
+            "<div class=\"col-md-2\">"+
+//            "<div class=\"col-md-4\">"+
+            "<select id='opr-"+ n +"-"+ idParam +"' class='form-control'>" +
+            "<option value='='>(=) Sama Dengan</option>" +
+            "<option value='*'>(X) Kali</option>" +
+            "<option value='+'>(+) Tambah</option>" +
+            "<option value='-'>(-) Kurangi</option>" +
+            "<option value='/'>(/) Bagi</option>" +
+            "<option value='='>(=) Sama Dengan</option>" +
+            "</select>" +
+            "</div>" +
+            "</div>";
 
-            str = "<div class=\"row\">" +
-                "<label class=\"col-md-4\">Nilai Pendapatan</label>" +
-                "<div class=\"col-md-6\">" +
-                "<input type=\"number\" class=\"form-control\" id=\"total-"+idParam+"\" />" +
-                "</div>" +
-                "<div class=\"col-md-2\">"+
-                "<button class=\"btn btn-sm btn-info\" onclick=\"showDetail()\"><i class=\"fa fa-info\"></i></button>" +
-                "</div>" +
-                "</div>" +
-                "<input type='hidden' value='"+tt+"' id='tt-"+idParam+"'>" +
-                "<input type='hidden' value='"+bor+"' id='bor-"+idParam+"'>";
+            n = n + 1;
 
-            listOfParam.push(
-                {"id":"total-"+idParam, "opr":"*"},
-                {"id":"tt-"+idParam, "opr":"*"},
-                {"id":"bor-"+idParam, "opr":"="}
-            );
-        }
-        if (idParam == "PDTRIKMR"){
-            str = "<div class=\"row\">" +
-                "<label class=\"col-md-4\">Nilai Pendapatan</label>" +
-                "<div class=\"col-md-6\">" +
-                "<input type=\"number\" class=\"form-control\" id=\"total-"+idParam+"\" />" +
-                "</div>" +
-                "<div class=\"col-md-2\">"+
-                "<button class=\"btn btn-sm btn-info\" onclick=\"showDetail()\"><i class=\"fa fa-info\"></i></button>" +
-                "</div>" +
-                "</div>";
+            str += "<div id='hitung-"+ n +"'></div>";
 
-            listOfParam.push({"id":"total-"+idParam, "opr":"="});
-        }
-        if (idParam == "PDTRJOBT"){
-            str = "<div class=\"row\">" +
-                "<label class=\"col-md-4\">Nilai Pendapatan Farmasi</label>" +
-                "<div class=\"col-md-6\">" +
-                "<input type=\"number\" class=\"form-control\" id=\"total-"+idParam+"\" />" +
-                "</div>" +
-                "<div class=\"col-md-2\">"+
-                "<button class=\"btn btn-sm btn-info\" onclick=\"showDetail()\"><i class=\"fa fa-info\"></i></button>" +
-                "</div>" +
-                "</div>";
+        listOfParam.push({"id":"total-"+idParam, "opr":"="});
 
-            listOfParam.push({"id":"total-"+idParam, "opr":"="});
-        }
-        if (idParam == "PDTRIOBT"){
-            str = "<div class=\"row\">" +
-                "<label class=\"col-md-4\">Nilai Pendapatan Farmasi</label>" +
-                "<div class=\"col-md-6\">" +
-                "<input type=\"number\" class=\"form-control\" id=\"total-"+idParam+"\" />" +
-                "</div>" +
-                "<div class=\"col-md-2\">"+
-                "<button class=\"btn btn-sm btn-info\" onclick=\"showDetail()\"><i class=\"fa fa-info\"></i></button>" +
-                "</div>" +
-                "</div>";
+//        listOfParam.push(
+//            {"id":"total-"+idParam, "opr":"*"},
+//            {"id":"tt-"+idParam, "opr":"*"},
+//            {"id":"bor-"+idParam, "opr":"="}
+//        );
 
-            listOfParam.push({"id":"total-"+idParam, "opr":"="});
-        }
-        if (idParam == "PDTRJLAB"){
-
-            str = "<div class=\"row\">" +
-                "<label class=\"col-md-4\">Nilai Pendapatan</label>" +
-                "<div class=\"col-md-6\">" +
-                "<input type=\"number\" class=\"form-control\" id=\"total-"+idParam+"\" />" +
-                "</div>" +
-                "<div class=\"col-md-2\">"+
-                "<button class=\"btn btn-sm btn-info\" onclick=\"showDetail()\"><i class=\"fa fa-info\"></i></button>" +
-                "</div>" +
-                "</div>";
-
-            listOfParam.push({"id":"total-"+idParam, "opr":"="});
-        }
-        if (idParam == "PDTRJRGI"){
-            str = "<div class=\"row\">" +
-                "<label class=\"col-md-4\">Nilai Pendapatan</label>" +
-                "<div class=\"col-md-6\">" +
-                "<input type=\"number\" class=\"form-control\" id=\"total-"+idParam+"\" />" +
-                "</div>" +
-                "<div class=\"col-md-2\">"+
-                "<button class=\"btn btn-sm btn-info\" onclick=\"showDetail()\"><i class=\"fa fa-info\"></i></button>" +
-                "</div>" +
-                "</div>";
-
-            listOfParam.push({"id":"total-"+idParam, "opr":"="});
-        }
-        if (idParam == "PDTRILAB"){
-            str = "<div class=\"row\">" +
-                "<label class=\"col-md-4\">Nilai Pendapatan</label>" +
-                "<div class=\"col-md-6\">" +
-                "<input type=\"number\" class=\"form-control\" id=\"total-"+idParam+"\" />" +
-                "</div>" +
-                "<div class=\"col-md-2\">"+
-                "<button class=\"btn btn-sm btn-info\" onclick=\"showDetail()\"><i class=\"fa fa-info\"></i></button>" +
-                "</div>" +
-                "</div>";
-
-            listOfParam.push({"id":"total-"+idParam, "opr":"="});
-        }
-        if (idParam == "PDTRIRGI"){
-            str = "<div class=\"row\">" +
-                "<label class=\"col-md-4\">Nilai Pendapatan</label>" +
-                "<div class=\"col-md-6\">" +
-                "<input type=\"number\" class=\"form-control\" id=\"total-"+idParam+"\" />" +
-                "</div>" +
-                "<div class=\"col-md-2\">"+
-                "<button class=\"btn btn-sm btn-info\" onclick=\"showDetail()\"><i class=\"fa fa-info\"></i></button>" +
-                "</div>" +
-                "</div>";
-
-            listOfParam.push({"id":"total-"+idParam, "opr":"="});
-        }
 
         $("#id-param").val(idParam);
+        $("#label-edit").text(label);
         $("#body-nilai").html(str);
     }
 
@@ -674,6 +615,8 @@
 
         var idParam = $("#id-param").val();
         var label = $("#label-edit").text();
+        $("#label-tipe").text(label);
+        $("#label-periode").text("Periode Januari Hingga " + stBulan(getDateParted('MONTH') - 1) + " " + tahun);
 
         $("#modal-view-pendapatan").modal('show');
         var head = "";
@@ -710,8 +653,6 @@
 
                 $("#head-list-pendapatan").html(head);
                 $("#body-list-pendapatan").html(str);
-//                $("#label-tipe").text(label);
-                $("#label-periode").text("Periode Januari Hingga " + stBulan(getDateParted('MONTH') - 1) + " " + tahun);
             });
         }
         if (idParam == "PDTRITDN"){
@@ -744,8 +685,6 @@
 
                 $("#head-list-pendapatan").html(head);
                 $("#body-list-pendapatan").html(str);
-//                $("#label-tipe").text(label);
-                $("#label-periode").text("Periode Januari Hingga " + stBulan(getDateParted('MONTH') - 1) + " " + tahun);
             });
         }
         if (idParam == "PDTRIKMR"){
@@ -781,8 +720,6 @@
 
                 $("#head-list-pendapatan").html(head);
                 $("#body-list-pendapatan").html(str);
-//                $("#label-tipe").text(label);
-                $("#label-periode").text("Periode Januari Hingga " + stBulan(getDateParted('MONTH') - 1) + " " + tahun);
             });
         }
         if (idParam == "PDTRIOBT"){
@@ -815,8 +752,6 @@
 
                 $("#head-list-pendapatan").html(head);
                 $("#body-list-pendapatan").html(str);
-//                $("#label-tipe").text(label);
-                $("#label-periode").text("Periode Januari Hingga " + stBulan(getDateParted('MONTH') - 1) + " " + tahun);
             });
 
         }
@@ -932,50 +867,34 @@
     }
 
     function addCoa() {
-        var rekeningId = $("#rekeningid").val();
-        var coa = $("#coa").val();
-        var namacoa = $("#namacoa").val();
-        var parent = $("#parentid").val();
+        var listData    = [];
+        var idParam     = $("#id-param").val();
+        var divisiId    = $("#divisiid").val();
+        var masterId    = $("#masterid").val();
 
-
-        if (rekeningId != ""){
-
-            var arrCoa = [];
-            arrCoa.push({kode:coa, nama:namacoa, id:rekeningId, parent:parent});
-            var jsonString = JSON.stringify(arrCoa);
-
-            BudgetingAction.setToSessionCoa(jsonString, function (response) {
-                if(response.status == "success"){
-                    refreshAdd();
-                    $("#btn-save").show();
-                } else {
-                    $("#alert-error-modal").show().fadeOut(5000);
-                    $("#error-msg-modal").text(response.msg);
-                }
-            });
-
-//            listOfCoa.push({kode:coa, nama:namacoa, id:rekeningId, parent:parent});
-//
-//
-//            var strBody = "";
-//            $.each(listOfCoa, function (i, item) {
-//                strBody += "<tr>" +
-//                        "<td>"+item.kode+"</td>"+
-//                        "<td>"+item.nama+"</td>"+
-//                        "</tr>";
-//            });
-//            console.log(listOfCoa);
-//            $("#body-budgeting").html(strBody);
-//            $("#modal-add-coa").modal('hide');
-//            $("#btn-save").show();
-        } else {
-            alert("COA Harus Diisi !");
+        for (i=0; i<n;i++){
+            var nilai   = $("#total-" + i + "-" + idParam).val();
+            var opr     = $("#opr-" + i + "-" + idParam).val();
+            listData.push({"nilai":nilai, "opr":opr});
         }
+
+        var stJson = JSON.stringify(listData);
+//        dwr.engine.setAsync(true);
+        BgPendapatanAction.setPerhitunganToSession(idParam, stJson, masterId, divisiId, tahun, unit, idKategori, function (res) {
+//            dwr.engine.setAsync(false);
+            if (res.status == "success"){
+                refreshAdd();
+            } else {
+
+            }
+        });
+
     }
 
     function refreshAdd() {
-        var host = firstpath()+"/bginvestasi/add_bginvestasi.action?status=add";
-        post(host);
+        var form = { "budgeting.tahun":tahun, "budgeting.branchId":unit, "budgeting.idKategoriBudgeting":idKategori, "budgeting.namaKategori":namaKategori};
+        var host = firstpath()+"/bgpendapatan/add_bgpendapatan.action";
+        post(host, form);
     }
 
     function saveAdd() {
@@ -1023,6 +942,12 @@
         if (n == null)
             return 0;
         return n;
+    }
+
+    function back(){
+        var form = { "budgeting.tahun":tahun, "budgeting.branchId":unit, "budgeting.jenis":"add" };
+        var host = firstpath()+"/bgpendapatan/add_bgpendapatan.action";
+        post(host, form);;
     }
 
 </script>

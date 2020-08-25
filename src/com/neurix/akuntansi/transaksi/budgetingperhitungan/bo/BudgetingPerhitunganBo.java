@@ -1,6 +1,8 @@
 package com.neurix.akuntansi.transaksi.budgetingperhitungan.bo;
 
+import com.neurix.akuntansi.master.master.model.ImMasterEntity;
 import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.*;
+import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.exception.GeneralBOException;
 
 import java.math.BigDecimal;
@@ -19,4 +21,6 @@ public interface BudgetingPerhitunganBo {
     public void saveAddPerhitunganBudgeting(List<ItAkunNilaiParameterBudgetingEntity> nilaiParameters, List<ItAkunPerhitunganBudgetingEntity> listPerhitungan, PerhitunganBudgeting bean) throws GeneralBOException;
     public String getNextIdNilaiParameter(String branchId, String tahun, String idNilai) throws GeneralBOException;
     public List<KategoriParameter> getListKategoriParameter(KategoriParameter bean) throws GeneralBOException;
+    public ImPosition getPositionByKodering(String id) throws GeneralBOException;
+    public ImMasterEntity getMasterByKodering(String id) throws GeneralBOException;
 }
