@@ -139,26 +139,26 @@
                         <%--</s:form>--%>
                     </div>
 
-                    <div class="box-header with-border">
-                        <div class="row">
-                            <div class="col-md-8 col-md-offset-2">
-                                <div id="body-nilai-dasar">
+                    <%--<div class="box-header with-border">--%>
+                        <%--<div class="row">--%>
+                            <%--<div class="col-md-8 col-md-offset-2">--%>
+                                <%--<div id="body-nilai-dasar">--%>
 
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                     <%--<div class="box-header with-border">--%>
                         <%--<h3 class="box-title"><i class="fa fa-th-list"></i>--%>
                             <%--List kategori Budgeting Pendapatan <strong><span id="label-tahun"></span> - <span id="label-branch"></span></strong>--%>
                         <%--</h3>--%>
                     <%--</div>--%>
-                    <%--<div class="box-body">--%>
+                    <div class="box-body">
 
-                        <%--&lt;%&ndash;<div class="alert alert-info alert-dismissable" id="alert-info">&ndash;%&gt;--%>
-                        <%--&lt;%&ndash;<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>&ndash;%&gt;--%>
-                        <%--&lt;%&ndash;<strong>Info!</strong> Pilih Priode Kemudian Choose&ndash;%&gt;--%>
-                        <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
+                        <%--<div class="alert alert-info alert-dismissable" id="alert-info">--%>
+                        <%--<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>--%>
+                        <%--<strong>Info!</strong> Pilih Priode Kemudian Choose--%>
+                        <%--</div>--%>
 
                         <%--<div class="alert alert-success alert-dismissable" id="alert-success" style="display: none">--%>
                             <%--<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>--%>

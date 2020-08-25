@@ -356,6 +356,8 @@
 </div>
 
 
+
+
 <script type='text/javascript'>
 
     var listOfCoa = [];
@@ -815,39 +817,54 @@
     }
 
     function saveAdd() {
-        var tahun = $("#sel-tahun").val();
-        var unit = $("#sel-unit").val();
-        var tipe = $("#sel-tipe").val();
+//        var tahun = $("#sel-tahun").val();
+//        var unit = $("#sel-unit").val();
+//        var tipe = $("#sel-tipe").val();
 
-
-        BudgetingAction.checkTransaksiBudgeting(unit, tahun, function(response){
-            if (response.branchId == null && response.tahun == null){
-
-                BudgetingAction.checkNilaiDasarByTahun(tahun, function(flag){
-
-                    if (flag == "Y"){
-                        showDialog('loading');
-                        dwr.engine.setAsync(true);
-                        BgPendapatanAction.saveAdd(unit, tahun, tipe, function (res) {
-                            dwr.engine.setAsync(false);
-                            if (res.status == "success"){
-                               showDialog('success');
-                               $('#ok_con').on('click', function () {
-                                   refreshAdd();
-                               });
-                           } else {
-                               showDialog('error');
-                               $("#msg_fin_error_waiting").text(res.msg);
-                           }
-                        });
-                    } else {
-                        alert("Belum Ada Nilai Dasar untuk Tahun "+ tahun);
-                    }
+        showDialog('loading');
+        dwr.engine.setAsync(true);
+        BgPendapatanAction.saveAdd(unit, tahun, "", function (res) {
+            dwr.engine.setAsync(false);
+            if (res.status == "success"){
+                showDialog('success');
+                $('#ok_con').on('click', function () {
+                    initForm();
                 });
             } else {
-                alert("Data Sudah Ada. di tahun "+response.tahun);
+                showDialog('error');
+                $("#msg_fin_error_waiting").text(res.msg);
             }
         });
+
+
+//        BudgetingAction.checkTransaksiBudgeting(unit, tahun, function(response){
+//            if (response.branchId == null && response.tahun == null){
+//
+//                BudgetingAction.checkNilaiDasarByTahun(tahun, function(flag){
+//
+//                    if (flag == "Y"){
+//                        showDialog('loading');
+//                        dwr.engine.setAsync(true);
+//                        BgPendapatanAction.saveAdd(unit, tahun, tipe, function (res) {
+//                            dwr.engine.setAsync(false);
+//                            if (res.status == "success"){
+//                               showDialog('success');
+//                               $('#ok_con').on('click', function () {
+//                                   refreshAdd();
+//                               });
+//                           } else {
+//                               showDialog('error');
+//                               $("#msg_fin_error_waiting").text(res.msg);
+//                           }
+//                        });
+//                    } else {
+//                        alert("Belum Ada Nilai Dasar untuk Tahun "+ tahun);
+//                    }
+//                });
+//            } else {
+//                alert("Data Sudah Ada. di tahun "+response.tahun);
+//            }
+//        });
 
 //        var form = { "budgeting.tahun":tahun, "budgeting.branchId":unit, "budgeting.tipe":tipe };
 //        var host = firstpath()+"/budgeting/add_budgeting.action?status=add&tipe=detail&trans=ADD_DRAFT";

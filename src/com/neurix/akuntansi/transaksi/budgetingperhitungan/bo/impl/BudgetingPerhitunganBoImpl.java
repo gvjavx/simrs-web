@@ -63,8 +63,8 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
         this.jenisBudgetingDao = jenisBudgetingDao;
     }
 
-    private String getNextIdPerhitungan(String branchId, String idParameter, String tahun){
-        return branchId + tahun + idParameter + perhitunganBudgetingDao.getNextId();
+    private String getNextIdPerhitungan(String idParameter){
+        return idParameter + perhitunganBudgetingDao.getNextId();
     }
 
     @Override
@@ -216,6 +216,8 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
 
         for (ItAkunNilaiParameterBudgetingEntity nilaiParameterEntity : nilaiParameters){
 
+            nilaiParameterEntity.setTahun(bean.getTahun());
+            nilaiParameterEntity.setBranchId(bean.getBranchId());
             nilaiParameterEntity.setFlag(bean.getFlag());
             nilaiParameterEntity.setAction(bean.getAction());
             nilaiParameterEntity.setCreatedDate(bean.getCreatedDate());
@@ -234,7 +236,7 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
             if (filterListPerhitungan.size() > 0){
                 int i = 1;
                 for (ItAkunPerhitunganBudgetingEntity perhitunganEntity : filterListPerhitungan){
-                    perhitunganEntity.setId(getNextIdPerhitungan(bean.getBranchId(), bean.getIdParameterBudgeting(), bean.getTahun()));
+                    perhitunganEntity.setId(getNextIdPerhitungan(nilaiParameterEntity.getId()));
                     perhitunganEntity.setCreatedDate(bean.getCreatedDate());
                     perhitunganEntity.setCreatedWho(bean.getCreatedWho());
                     perhitunganEntity.setLastUpdate(bean.getLastUpdate());
@@ -255,30 +257,6 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
             }
 
         }
-
-        if (listPerhitungan.size() > 0){
-            int i = 1;
-            for (ItAkunPerhitunganBudgetingEntity perhitunganEntity : listPerhitungan){
-                perhitunganEntity.setId(getNextIdPerhitungan(bean.getBranchId(), bean.getIdParameterBudgeting(), bean.getTahun()));
-                perhitunganEntity.setCreatedDate(bean.getCreatedDate());
-                perhitunganEntity.setCreatedWho(bean.getCreatedWho());
-                perhitunganEntity.setLastUpdate(bean.getLastUpdate());
-                perhitunganEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                perhitunganEntity.setFlag(bean.getFlag());
-                perhitunganEntity.setAction(bean.getAction());
-                perhitunganEntity.setTahun(bean.getTahun());
-                perhitunganEntity.setBranchId(bean.getBranchId());
-                perhitunganEntity.setUrutan(i++);
-
-                try {
-                    perhitunganBudgetingDao.addAndSave(perhitunganEntity);
-                } catch (HibernateException e){
-                    logger.error("[BudgetingPerhitunganBoImpl.saveAddPerhitunganBudgeting] ERROR. ", e);
-                    throw new GeneralBOException("[BudgetingPerhitunganBoImpl.saveAddPerhitunganBudgeting] ERROR. ", e);
-                }
-            }
-        }
-        logger.info("[BudgetingPerhitunganBoImpl.saveAddPerhitunganBudgeting] END <<< ");
     }
 
     @Override

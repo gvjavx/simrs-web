@@ -91,7 +91,7 @@ public class BgPendapatanAction {
         budgeting.setBranchId(userBranchId);
         setBudgeting(budgeting);
         eraseAllSession();
-        return "search";
+        return "add_kp";
     }
 
     private void eraseAllSession(){
@@ -663,7 +663,7 @@ public class BgPendapatanAction {
         perhitunganBudgeting.setBranchId(unit);
 
         try {
-            budgetingPerhitunganBo.saveAddPerhitunganBudgeting( new ArrayList<>(),sessionPerhitungan, perhitunganBudgeting);
+            budgetingPerhitunganBo.saveAddPerhitunganBudgeting( convertNilaiParameterToEntity(sessionNilaiParam) ,sessionPerhitungan, perhitunganBudgeting);
             response.setStatus("success");
         } catch (GeneralBOException e){
             logger.info("[BgPendapatanAction.saveAdd] ERROR ", e);
@@ -696,6 +696,22 @@ public class BgPendapatanAction {
 //        }
         logger.info("[BgPendapatanAction.saveAdd] END <<<");
         return response;
+    }
+
+    private List<ItAkunNilaiParameterBudgetingEntity> convertNilaiParameterToEntity(List<ParameterBudgeting> parameterBudgetings){
+
+        List<ItAkunNilaiParameterBudgetingEntity> entities = new ArrayList<>();
+        for (ParameterBudgeting parameterBudgeting : parameterBudgetings){
+            ItAkunNilaiParameterBudgetingEntity budgetingEntity = new ItAkunNilaiParameterBudgetingEntity();
+            budgetingEntity.setId(parameterBudgeting.getIdNilaiParameter());
+            budgetingEntity.setIdParameter(parameterBudgeting.getIdParameter());
+            budgetingEntity.setDivisiId(parameterBudgeting.getDivisiId());
+            budgetingEntity.setMasterId(parameterBudgeting.getMasterId());
+            budgetingEntity.setNilaiTotal(parameterBudgeting.getNilaiTotal());
+            entities.add(budgetingEntity);
+        }
+
+        return entities;
     }
 
     private List<Budgeting> convertParamToListBudgeting(List<ParameterBudgeting> listParam, String tahun, String unit){
