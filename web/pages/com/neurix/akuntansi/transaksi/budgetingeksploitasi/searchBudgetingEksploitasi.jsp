@@ -903,6 +903,17 @@
         }
     }
 
+    function saveApprove() {
+        var tahun = $("#sel-tahun").val();
+        BgEksploitasiAction.approveFinal(tahun, function (res) {
+            if (res.status == "success"){
+                alert("success");
+            } else {
+                alert(res.msg);
+            }
+        });
+    }
+
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>

@@ -223,14 +223,10 @@
                     </div>
                     </div>
 
-                    <div class="alert alert-warning alert-dismissable" id="alert-error-modal" style="display: none">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        <strong>Error!</strong><span id="error-msg-modal">Gagal Menambahkan No. Rekening : No. Rekening Sudah Ada</span>
-                    </div>
+
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" id="save_con" onclick="addCoa()"><i class="fa fa-check"></i> Save</button>
             </div>
         </div>
     </div>
@@ -351,23 +347,44 @@
 
                             <br>
                             <div id="form-periode">
-
-                                <strong>Nilai</strong><hr style="width: 80%;">
+                                <strong>Periode</strong> <hr style="width: 80%;">
                                 <div class="row">
-                                    <div class="col-md-12" align="right">
-                                        <button class="btn btn-sm btn-info" onclick="showDetail()"><i class="fa fa-info"></i></button>
-                                        <button class="btn btn-sm btn-warning" onclick="addPerhitungan()"><i class="fa fa-plus"></i></button>
+                                    <label class="control-label col-sm-4">Periode</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="sel-periode">
+                                            <option value="januari">Januari</option>
+                                            <option value="februari">Februari</option>
+                                            <option value="maret">Maret</option>
+                                            <option value="april">April</option>
+                                            <option value="mei">Mei</option>
+                                            <option value="juni">Juni</option>
+                                            <option value="juli">Juli</option>
+                                            <option value="agustus">Agustus</option>
+                                            <option value="september">September</option>
+                                            <option value="oktober">Oktober</option>
+                                            <option value="november">November</option>
+                                            <option value="desember">Desember</option>
+                                        </select>
                                     </div>
                                 </div>
-                                <br>
-                                <div id="body-nilai">
-                                    <%--<div class="row">--%>
-                                        <%--<label class="control-label col-sm-4">Nilai Pendapatan</label>--%>
-                                        <%--<div class="col-sm-6">--%>
-                                            <%--<input type="number" value="0" class="form-control" id="total-pendapatan" onchange="hitungSubTotal('divisi')"/>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
+                            </div>
+
+                            <br>
+                            <strong>Nilai</strong><hr style="width: 80%;">
+                            <div class="row">
+                                <div class="col-md-12" align="right">
+                                    <button class="btn btn-sm btn-info" onclick="showDetail()"><i class="fa fa-info"></i></button>
+                                    <button class="btn btn-sm btn-warning" onclick="addPerhitungan()"><i class="fa fa-plus"></i></button>
                                 </div>
+                            </div>
+                            <br>
+                            <div id="body-nilai">
+                                <%--<div class="row">--%>
+                                <%--<label class="control-label col-sm-4">Nilai Pendapatan</label>--%>
+                                <%--<div class="col-sm-6">--%>
+                                <%--<input type="number" value="0" class="form-control" id="total-pendapatan" onchange="hitungSubTotal('divisi')"/>--%>
+                                <%--</div>--%>
+                                <%--</div>--%>
                             </div>
                         </div>
                         <input type="hidden" id="id-param"/>
@@ -501,6 +518,7 @@
                     '<table class="table table-bordered table-striped tree">' +
                     '<thead id="head-budgeting">' +
                     '<tr bgcolor="#90ee90">' +
+                    '<td>Periode</td>' +
                     '<td>Master</td>' +
                     '<td>Divisi</td>' +
                     '<td>Nilai</td>' +
@@ -513,6 +531,7 @@
 
                     $.each(listDatas, function (n, data) {
                         str += '<tr>' +
+                            '<td>'+data.periode+'</td>' +
                             '<td>'+data.namaMaster+'</td>' +
                             '<td>'+data.namaDivisi+'</td>' +
                             '<td align="right">'+ formatRupiah( data.nilaiTotal )+'</td>' +
@@ -871,6 +890,7 @@
         var idParam     = $("#id-param").val();
         var divisiId    = $("#divisiid").val();
         var masterId    = $("#masterid").val();
+        var periode     = $("#sel-periode").val();
 
         for (i=0; i<n;i++){
             var nilai   = $("#total-" + i + "-" + idParam).val();
@@ -880,7 +900,7 @@
 
         var stJson = JSON.stringify(listData);
 //        dwr.engine.setAsync(true);
-        BgPendapatanAction.setPerhitunganToSession(idParam, stJson, masterId, divisiId, tahun, unit, idKategori, function (res) {
+        BgPendapatanAction.setPerhitunganToSession(idParam, stJson, masterId, divisiId, tahun, unit, idKategori, periode, function (res) {
 //            dwr.engine.setAsync(false);
             if (res.status == "success"){
                 refreshAdd();

@@ -27,6 +27,15 @@ public class PerhitunganBudgeting {
     private BigDecimal totalHarga;
     private BigDecimal totalHargaDiskon;
     private String namaTindakan;
+    private String tipe;
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
 
     public BigDecimal getHargaDiskon() {
         return hargaDiskon;

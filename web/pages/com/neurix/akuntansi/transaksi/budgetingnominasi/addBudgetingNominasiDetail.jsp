@@ -75,7 +75,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Budgeting Nominasi</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Budgeting Biaya</h3>
                     </div>
                     <div class="box-body">
                         <%--<s:form id="kasirjalanForm" method="post" namespace="/kasirjalan" action="search_kasirjalan.action" theme="simple" cssClass="form-horizontal">--%>
@@ -85,12 +85,8 @@
                                     <div class="row">
                                         <label class="control-label col-sm-2">Tahun</label>
                                         <div class="col-sm-2">
-                                            <select class="form-control" id="sel-tahun">
-                                                <option value="2020">2020</option>
-                                                <option value="2021">2021</option>
-                                                <option value="2022">2022</option>
-                                                <option value="2023">2023</option>
-                                            </select>
+                                            <%--<s:property value="budgeting.tahun"/>--%>
+                                           <input type="text" id="sel-tahun" class="form-control" value="<s:property value="budgeting.tahun"/>" readonly/>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -99,7 +95,7 @@
                                             <s:if test='budgeting.flagKp == "Y"'>
                                                 <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                                 <s:select list="#initComboBranch.listOfComboBranch" id="sel-unit" name="budgeting.branchId"
-                                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select Value]" cssClass="form-control" onchange="changeAction(this.value)"/>
+                                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select Value]" cssClass="form-control" onchange="changeAction(this.value)" disabled="true"/>
 
                                             </s:if>
                                             <s:else>
@@ -123,36 +119,36 @@
                                             <%--</select>--%>
                                         <%--</div>--%>
                                     <%--</div>--%>
-                                    <input type="hidden" id="add-coa-tipe" value="investasi" name="budgeting.tipeBudgeting"/>
+                                    <%--<input type="hidden" id="add-coa-tipe" value="pendapatan" name="budgeting.tipeBudgeting"/>--%>
 
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-md-6 col-md-offset-5" style="margin-top: 10px">
-                                    <button class="btn btn-primary" onclick="choose()"><i class="fa fa-arrow-right"></i> Choose</button>
-                                    <button class="btn btn-danger" onclick="refreshAdd()"><i class="fa fa-refresh"></i> Reset</button>
-                                </div>
-                            </div>
+                            <%--<div class="row">--%>
+                                <%--<div class="col-md-6 col-md-offset-5" style="margin-top: 10px">--%>
+                                    <%--<button class="btn btn-primary" onclick="choose()"><i class="fa fa-arrow-right"></i> Choose</button>--%>
+                                    <%--<button class="btn btn-danger" onclick="refreshAdd()"><i class="fa fa-refresh"></i> Reset</button>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
                         </div>
 
                         <%--</s:form>--%>
                     </div>
 
-                    <%--<div class="box-header with-border">--%>
-                        <%--<div class="row">--%>
-                            <%--<div class="col-md-8 col-md-offset-2">--%>
-                                <%--<div id="body-nilai-dasar">--%>
+                    <div class="box-header with-border">
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2">
+                                <div id="body-nilai-dasar">
 
-                                <%--</div>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                    <%--<div class="box-header with-border">--%>
-                        <%--<h3 class="box-title"><i class="fa fa-th-list"></i>--%>
-                            <%--List kategori Budgeting Pendapatan <strong><span id="label-tahun"></span> - <span id="label-branch"></span></strong>--%>
-                        <%--</h3>--%>
-                    <%--</div>--%>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-th-list"></i>
+                            List kategori Budgeting Biaya <strong><span id="label-tahun"></span> - <span id="label-branch"></span></strong>
+                        </h3>
+                    </div>
                     <div class="box-body">
 
                         <%--<div class="alert alert-info alert-dismissable" id="alert-info">--%>
@@ -160,51 +156,51 @@
                         <%--<strong>Info!</strong> Pilih Priode Kemudian Choose--%>
                         <%--</div>--%>
 
-                        <%--<div class="alert alert-success alert-dismissable" id="alert-success" style="display: none">--%>
-                            <%--<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>--%>
-                            <%--<strong>Success!</strong> Berhasil Menyimpan data--%>
-                        <%--</div>--%>
+                        <div class="alert alert-success alert-dismissable" id="alert-success" style="display: none">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <strong>Success!</strong> Berhasil Menyimpan data
+                        </div>
 
-                        <%--<div class="alert alert-warning alert-dismissable" id="alert-error" style="display: none">--%>
-                            <%--<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>--%>
-                            <%--<strong>Error!</strong><span id="error-msg"></span>--%>
-                        <%--</div>--%>
+                        <div class="alert alert-warning alert-dismissable" id="alert-error" style="display: none">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <strong>Error!</strong><span id="error-msg"></span>
+                        </div>
 
-                        <%--<div class="row">--%>
-                            <%--<div class="col-md-8 col-md-offset-2">--%>
-                                <%--<table class="table table-bordered table-striped tree">--%>
-                                    <%--<thead id="head-budgeting">--%>
-                                    <%--<tr bgcolor="#90ee90">--%>
-                                        <%--&lt;%&ndash;<td style="width: 20%">COA</td>&ndash;%&gt;--%>
-                                        <%--<td align="">Kategori Pendapatan</td>--%>
-                                        <%--<td align="">Nilai</td>--%>
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2">
+                                <table class="table table-bordered table-striped tree">
+                                    <thead id="head-budgeting">
+                                    <tr bgcolor="#90ee90">
+                                        <%--<td style="width: 20%">COA</td>--%>
+                                        <td align="">Kategori Biaya</td>
+                                        <td align="">Nilai</td>
+                                        <td align="center">Action</td>
                                         <%--<td align="center">Action</td>--%>
-                                        <%--&lt;%&ndash;<td align="center">Action</td>&ndash;%&gt;--%>
-                                    <%--</tr>--%>
-                                    <%--</thead>--%>
-                                    <%--<tbody id="body-budgeting">--%>
-                                    <%--</tbody>--%>
-                                <%--</table>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="body-budgeting">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
 
-                        <%--<div class="row">--%>
-                            <%--<label class="control-label col-md-1 col-md-offset-4">Tipe Budgeting</label>--%>
-                            <%--<div class="col-sm-2">--%>
-                                <%--<select class="form-control" id="sel-tipe">--%>
+                        <div class="row">
+                            <label class="control-label col-md-1 col-md-offset-4">Tipe Budgeting</label>
+                            <div class="col-sm-2">
+                                <select class="form-control" id="sel-tipe">
                                     <%--<option value="tahunan">Tahunan</option>--%>
-                                    <%--<option value="bulanan">Bulanan</option>--%>
+                                    <option value="bulanan">Bulanan</option>
                                     <%--<option value="semester">Semester</option>--%>
                                     <%--<option value="quartal">Quartal</option>--%>
-                                <%--</select>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                        <%--<div class="form-group" style="margin-top: 10px">--%>
-                            <%--<div class="col-md-4 col-md-offset-5">--%>
-                                <%--<button class="btn btn-warning" onclick="initForm()"><i class="fa fa-arrow-left"></i> Back</button>--%>
-                                <%--<button class="btn btn-success" id="btn-save" onclick="saveAdd()"><i class="fa fa-check"></i> Save </button>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top: 10px">
+                            <div class="col-md-4 col-md-offset-5">
+                                <button class="btn btn-warning" onclick="initForm()"><i class="fa fa-arrow-left"></i> Back</button>
+                                <button class="btn btn-success" id="btn-save" onclick="saveAdd()"><i class="fa fa-check"></i> Save </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -243,7 +239,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-info"></i> Data Refrensi </h4>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Data Pendapatan </h4>
             </div>
             <div class="modal-body">
                 <span id="label-tipe"></span> <span id="label-periode"></span>
@@ -356,21 +352,26 @@
 </div>
 
 
+
+
 <script type='text/javascript'>
 
     var listOfCoa = [];
     $( document ).ready(function() {
         chekTipe();
+        choose();
     });
 
-    var tipe = '<s:property value="budgeting.tipe"/>';
+    var tipe        = '<s:property value="budgeting.tipe"/>';
     var flagDisable = '<s:property value="budgeting.flagDisable"/>';
+    var unit        = '<s:property value="budgeting.branchId"/>';
+    var tahun       = '<s:property value="budgeting.tahun"/>';
     var listOfParam = [];
 
     function chekTipe() {
         if ("Y" == flagDisable){
             $("#sel-tipe").attr('readonly',true);
-            $("#sel-tipe").val(tipe);
+//            $("#sel-tipe").val(tipe);
         }
     }
 
@@ -419,64 +420,50 @@
     }
 
     function choose() {
-        var tahun = $("#sel-tahun").val();
-        var branch = $("#sel-unit").val();
         var labelBranch = $("#sel-unit option:selected").text();
-
-        var form = { "budgeting.tahun":tahun, "budgeting.branchId":branch, "budgeting.jenis":"add"};
-        var host = firstpath()+"/bgnominasi/add_bgnominasi.action";
-        post(host, form);
-
-//        showDialog('loading');
-//        dwr.engine.setAsync(true);
-//        BgPendapatanAction.getListKategoriParameter("PDT", tahun, branch, function (res) {
-//            dwr.engine.setAsync(false);
-//            showDialog('close');
-//            $("#body-budgeting").html("");
-//            var str = "";
-//            $.each(res.list, function (i, item) {
-//                str += "<tr>" +
-//                        "<td>"+item.nama+"</td>" +
-//                        "<td align='right'>"+ formatRupiah(nullEscape(item.nilaiTotal)) +"</td>" +
-//                        "<td align='center'>" +
-//                        "<button class='btn btn-sm btn-primary' onclick=\"add(\'"+item.id+"\',\'"+branch+"\',\'"+tahun+"\',\'"+ item.nama +"\')\"><i class='fa fa-edit'></i></button> " +
-////                        "<button class='btn btn-sm btn-success'><i class='fa fa-search'></i></button>" +
-//                        "</td>" +
-//                        "</tr>";
+        BgNominasiAction.getListKategoriParameter("BYA", tahun, unit, function (res) {
+            var str = "";
+            $.each(res.list, function (i, item) {
+                str += "<tr>" +
+                        "<td>"+item.nama+"</td>" +
+                        "<td align='right'>"+ formatRupiah(nullEscape(item.nilaiTotal)) +"</td>" +
+                        "<td align='center'>" +
+                        "<button class='btn btn-sm btn-primary' onclick=\"add(\'"+item.id+"\',\'"+unit+"\',\'"+tahun+"\',\'"+ item.nama +"\')\"><i class='fa fa-edit'></i></button> " +
+//                        "<button class='btn btn-sm btn-success'><i class='fa fa-search'></i></button>" +
+                        "</td>" +
+                        "</tr>";
+            });
+            $("#body-budgeting").html(str);
+            $("#label-tahun").text(tahun);
+            $("#label-branch").text(labelBranch);
+//            $('#ok_con').on('click', function () {
+//                showDialog('close');
 //            });
-//            $("#body-budgeting").html(str);
-//            $("#label-tahun").text(tahun);
-//            $("#label-branch").text(labelBranch);
-////            $('#ok_con').on('click', function () {
-////                showDialog('close');
-////            });
-//        });
-//
-//        BudgetingNilaiDasarAction.getListNilaiDasarEdit(tahun, function (list) {
-//            var str = "";
-//            $.each(list, function (i, item) {
-//                str += "<div class=\"row\">"+
-//                    "<label class=\"control-label col-sm-4\" style=\"text-align: right\">"+item.keterangan+"</label>" +
-//                    "<div class=\"col-sm-4\">" +
-//                    "<input type=\"number\" class=\"form-control\" id=\"edit_"+item.idNilaiDasar+"\" value=\""+item.nilai+"\" align='right' readonly/>" +
-//                    "</div>" +
-//                    "</div>";
-//            });
-//            $("#body-nilai-dasar").html(str);
-//            //console.log(str);
-//            //console.log(listOfId);
-//        });
+        });
+
+        BudgetingNilaiDasarAction.getListNilaiDasarEdit(tahun, function (list) {
+            var str = "";
+            $.each(list, function (i, item) {
+                str += "<div class=\"row\">"+
+                    "<label class=\"control-label col-sm-4\" style=\"text-align: right\">"+item.keterangan+"</label>" +
+                    "<div class=\"col-sm-4\">" +
+                    "<input type=\"number\" class=\"form-control\" id=\"edit_"+item.idNilaiDasar+"\" value=\""+item.nilai+"\" align='right' readonly/>" +
+                    "</div>" +
+                    "</div>";
+            });
+            $("#body-nilai-dasar").html(str);
+            //console.log(str);
+            //console.log(listOfId);
+        });
 
     }
 
     function search() {
-        var tahun = $("#sel-tahun").val();
-        var branch = $("#sel-unit").val();
         var labelBranch = $("#sel-unit option:selected").text();
 
         showDialog('loading');
         dwr.engine.setAsync(true);
-        BgNominasiAction.getListParameterBudgeting("NMS", tahun, branch, "", function (list) {
+        BgNominasiAction.getListParameterBudgeting("PDT", tahun, unit, "", function (list) {
             dwr.engine.setAsync(false);
             showDialog('close');
             $("#body-budgeting").html("");
@@ -486,8 +473,8 @@
                     "<td>"+item.nama+"</td>" +
                     "<td align='right'>"+ formatRupiah(nullEscape(item.nilaiTotalBudgeting)) +"</td>" +
                     "<td align='center'>" +
-                    "<button class='btn btn-sm btn-primary' onclick=\"edit(\'"+item.id+"\',\'"+branch+"\',\'"+tahun+"\',\'"+ item.nama +"\')\"><i class='fa fa-edit'></i></button> " +
-//                    "<button class='btn btn-sm btn-success'><i class='fa fa-search'></i></button>" +
+                    "<button class='btn btn-sm btn-primary' onclick=\"add(\'"+item.id+"\',\'"+branch+"\',\'"+tahun+"\',\'"+ item.nama +"\')\"><i class='fa fa-edit'></i></button> " +
+                    "<button class='btn btn-sm btn-success'><i class='fa fa-search'></i></button>" +
                     "</td>" +
                     "</tr>";
             });
@@ -508,6 +495,8 @@
                     "</div>";
             });
             $("#body-nilai-dasar").html(str);
+            //console.log(str);
+            //console.log(listOfId);
         });
 
     }
@@ -527,14 +516,14 @@
         $("#ed-id-param").val(idParam);
 
         var str = "<div class=\"row\">" +
-            "<label class=\"col-md-3\">Nilai Biaya</label>" +
-            "<div class=\"col-md-6\">" +
-            "<input type=\"number\" class=\"form-control\" id=\"total-"+idParam+"\" />" +
-            "</div>" +
-            "<div class=\"col-md-3\">"+
-            "<button class=\"btn btn-sm btn-info\" onclick=\"showDetail()\"><i class=\"fa fa-info\"></i></button>" +
-            "</div>" +
-            "</div>";
+                "<label class=\"col-md-3\">Nilai Pendapatan</label>" +
+                "<div class=\"col-md-6\">" +
+                "<input type=\"number\" class=\"form-control\" id=\"total-"+idParam+"\" />" +
+                "</div>" +
+                "<div class=\"col-md-3\">"+
+                "<button class=\"btn btn-sm btn-info\" onclick=\"showDetail()\"><i class=\"fa fa-info\"></i></button>" +
+                "</div>" +
+                "</div>";
 
         listOfParam.push({"id":"total-"+idParam, "opr":"="});
 
@@ -559,171 +548,6 @@
             return d.getDate();
     }
 
-    function showDetail() {
-
-        var unit = $("#ed-unit").val();
-        var tahun = $("#ed-tahun").val();
-        var idParam = $("#ed-id-param").val();
-        var label = $("#label-edit").text();
-
-        $("#modal-view-pendapatan").modal('show');
-        var head = "";
-        var str = "";
-        var total = "";
-        var totalDiskon = "";
-        if (idParam == "PDTRJTDN"){
-            head = "<td>Nama</td>" +
-                    "<td>Harga</td>"+
-                    "<td>Harga Diskon</td>"+
-                    "<td>Qty</td>" +
-                    "<td>Total</td>"+
-                    "<td>Total Diskon</td>";
-
-            BgNominasiAction.getListPendapatanTindakan(unit, tahun, "RJ", function (list) {
-                $.each(list, function (i, item) {
-                    str += "<tr>" +
-                            "<td>"+item.namaTindakan+"</td>" +
-                            "<td align='right'>"+ formatRupiah(item.harga)+"</td>" +
-                            "<td align='right'>"+ formatRupiah(item.hargaDiskon)+"</td>" +
-                            "<td>"+item.qty+"</td>" +
-                            "<td align='right'>"+ formatRupiah(item.totalHarga)+"</td>" +
-                            "<td align='right'>"+ formatRupiah(item.totalHargaDiskon)+"</td>" +
-                            "</tr>";
-
-                    total += parseInt(item.totalHarga);
-                    totalDiskon += parseInt(nullEscape(item.totalHargaDiskon));
-                });
-                str += "<tr>" +
-                    "<td align='right' colspan='4'>Total : </td>" +
-                    "<td align='right'>"+ total +"</td>" +
-                    "<td align='right'>"+ totalDiskon +"</td>" +
-                    "</tr>";
-
-                $("#head-list-pendapatan").html(head);
-                $("#body-list-pendapatan").html(str);
-                $("#label-tipe").text(label);
-                $("#label-periode").text("Periode Januari Hingga " + stBulan(getDateParted('MONTH') - 1) + " " + tahun);
-            });
-        }
-        if (idParam == "PDTRITDN"){
-            head = "<td>Nama</td>" +
-                "<td>Harga</td>"+
-                "<td>Harga Diskon</td>"+
-                "<td>Qty</td>" +
-                "<td>Total</td>"+
-                "<td>Total Diskon</td>";
-
-            BgNominasiAction.getListPendapatanTindakan(unit, tahun, "RI", function (list) {
-                $.each(list, function (i, item) {
-                    str += "<tr>" +
-                        "<td>"+item.namaTindakan+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.harga)+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.hargaDiskon)+"</td>" +
-                        "<td>"+item.qty+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.totalHarga)+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.totalHargaDiskon)+"</td>" +
-                        "</tr>";
-
-                    total += parseInt(item.totalHarga);
-                    totalDiskon += parseInt(nullEscape(item.totalHargaDiskon));
-                });
-                str += "<tr>" +
-                    "<td align='right' colspan='4'>Total : </td>" +
-                    "<td align='right'>"+ total +"</td>" +
-                    "<td align='right'>"+ totalDiskon +"</td>" +
-                    "</tr>";
-
-                $("#head-list-pendapatan").html(head);
-                $("#body-list-pendapatan").html(str);
-                $("#label-tipe").text(label);
-                $("#label-periode").text("Periode Januari Hingga " + stBulan(getDateParted('MONTH') - 1) + " " + tahun);
-            });
-        }
-        if (idParam == "PDTRIKMR"){
-
-        }
-        if (idParam == "PDTRJOBT"){
-            head = "<td>Nama</td>" +
-                "<td>Harga</td>"+
-                "<td>Harga Diskon</td>"+
-                "<td>Qty</td>" +
-                "<td>Total</td>"+
-                "<td>Total Diskon</td>";
-
-            BgNominasiAction.getListPendapatanObat(unit, tahun, "RJ", function (list) {
-                $.each(list, function (i, item) {
-                    str += "<tr>" +
-                        "<td>"+item.namaTindakan+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.harga)+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.hargaDiskon)+"</td>" +
-                        "<td>"+item.qty+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.totalHarga)+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.totalHargaDiskon)+"</td>" +
-                        "</tr>";
-
-                    total += parseInt(item.totalHarga);
-                    totalDiskon += parseInt(nullEscape(item.totalHargaDiskon));
-                });
-                str += "<tr>" +
-                    "<td align='right' colspan='4'>Total : </td>" +
-                    "<td align='right'>"+ total +"</td>" +
-                    "<td align='right'>"+ totalDiskon +"</td>" +
-                    "</tr>";
-
-                $("#head-list-pendapatan").html(head);
-                $("#body-list-pendapatan").html(str);
-                $("#label-tipe").text(label);
-                $("#label-periode").text("Periode Januari Hingga " + stBulan(getDateParted('MONTH') - 1) + " " + tahun);
-            });
-        }
-        if (idParam == "PDTRIOBT"){
-            head = "<td>Nama</td>" +
-                "<td>Harga</td>"+
-                "<td>Harga Diskon</td>"+
-                "<td>Qty</td>" +
-                "<td>Total</td>"+
-                "<td>Total Diskon</td>";
-
-            BgNominasiAction.getListPendapatanObat(unit, tahun, "RI", function (list) {
-                $.each(list, function (i, item) {
-                    str += "<tr>" +
-                        "<td>"+item.namaTindakan+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.harga)+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.hargaDiskon)+"</td>" +
-                        "<td>"+item.qty+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.totalHarga)+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.totalHargaDiskon)+"</td>" +
-                        "</tr>";
-
-                    total += parseInt(item.totalHarga);
-                    totalDiskon += parseInt(nullEscape(item.totalHargaDiskon));
-                });
-                str += "<tr>" +
-                    "<td align='right' colspan='4'>Total : </td>" +
-                    "<td align='right'>"+ total +"</td>" +
-                    "<td align='right'>"+ totalDiskon +"</td>" +
-                    "</tr>";
-
-                $("#head-list-pendapatan").html(head);
-                $("#body-list-pendapatan").html(str);
-                $("#label-tipe").text(label);
-                $("#label-periode").text("Periode Januari Hingga " + stBulan(getDateParted('MONTH') - 1) + " " + tahun);
-            });
-
-        }
-        if (idParam == "PDTRJLAB"){
-
-        }
-        if (idParam == "PDTRJRGI"){
-
-        }
-        if (idParam == "PDTRILAB"){
-
-        }
-        if (idParam == "PDTRIRGI"){
-
-        }
-    }
 
     function stBulan(bulan) {
         if (bulan == "1")
@@ -773,12 +597,12 @@
     }
 
     function initForm() {
-        var host = firstpath()+"/bgnominasi/initForm_bgnominasi.action";
+        var host = firstpath()+"/bgpendapatan/initForm_bgpendapatan.action";
         post(host);
     }
 
     function add(idKategori, branch, tahun, nama) {
-        var form = { "budgeting.tahun":tahun, "budgeting.branchId":branch, "budgeting.idKategoriBudgeting":idKategori, "budgeting.namaKategori":nama, "budgeting.tipe":"add"};
+        var form = { "budgeting.tahun":tahun, "budgeting.branchId":branch, "budgeting.idKategoriBudgeting":idKategori, "budgeting.namaKategori":nama};
         var host = firstpath()+"/bgnominasi/add_bgnominasi.action";
         post(host, form);
     }
@@ -818,39 +642,54 @@
     }
 
     function saveAdd() {
-        var tahun = $("#sel-tahun").val();
-        var unit = $("#sel-unit").val();
-        var tipe = $("#sel-tipe").val();
+//        var tahun = $("#sel-tahun").val();
+//        var unit = $("#sel-unit").val();
+//        var tipe = $("#sel-tipe").val();
 
-
-        BudgetingAction.checkTransaksiBudgeting(unit, tahun, function(response){
-            if (response.branchId == null && response.tahun == null){
-
-                BudgetingAction.checkNilaiDasarByTahun(tahun, function(flag){
-
-                    if (flag == "Y"){
-                        showDialog('loading');
-                        dwr.engine.setAsync(true);
-                        BgNominasiAction.saveAdd(unit, tahun, tipe, function (res) {
-                            dwr.engine.setAsync(false);
-                            if (res.status == "success"){
-                               showDialog('success');
-                               $('#ok_con').on('click', function () {
-                                   refreshAdd();
-                               });
-                           } else {
-                               showDialog('error');
-                               $("#msg_fin_error_waiting").text(res.msg);
-                           }
-                        });
-                    } else {
-                        alert("Belum Ada Nilai Dasar untuk Tahun "+ tahun);
-                    }
+        showDialog('loading');
+        dwr.engine.setAsync(true);
+        BgNominasiAction.saveAdd(unit, tahun, "", function (res) {
+            dwr.engine.setAsync(false);
+            if (res.status == "success"){
+                showDialog('success');
+                $('#ok_con').on('click', function () {
+                    initForm();
                 });
             } else {
-                alert("Data Sudah Ada. di tahun "+response.tahun);
+                showDialog('error');
+                $("#msg_fin_error_waiting").text(res.msg);
             }
         });
+
+
+//        BudgetingAction.checkTransaksiBudgeting(unit, tahun, function(response){
+//            if (response.branchId == null && response.tahun == null){
+//
+//                BudgetingAction.checkNilaiDasarByTahun(tahun, function(flag){
+//
+//                    if (flag == "Y"){
+//                        showDialog('loading');
+//                        dwr.engine.setAsync(true);
+//                        BgPendapatanAction.saveAdd(unit, tahun, tipe, function (res) {
+//                            dwr.engine.setAsync(false);
+//                            if (res.status == "success"){
+//                               showDialog('success');
+//                               $('#ok_con').on('click', function () {
+//                                   refreshAdd();
+//                               });
+//                           } else {
+//                               showDialog('error');
+//                               $("#msg_fin_error_waiting").text(res.msg);
+//                           }
+//                        });
+//                    } else {
+//                        alert("Belum Ada Nilai Dasar untuk Tahun "+ tahun);
+//                    }
+//                });
+//            } else {
+//                alert("Data Sudah Ada. di tahun "+response.tahun);
+//            }
+//        });
 
 //        var form = { "budgeting.tahun":tahun, "budgeting.branchId":unit, "budgeting.tipe":tipe };
 //        var host = firstpath()+"/budgeting/add_budgeting.action?status=add&tipe=detail&trans=ADD_DRAFT";

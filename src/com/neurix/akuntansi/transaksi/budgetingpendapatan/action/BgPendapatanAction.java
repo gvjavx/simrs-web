@@ -510,7 +510,7 @@ public class BgPendapatanAction {
         return budgetingPerhitunganBo.getListPendapatanObat(branchId, intBulanLalu.toString(), tahun, tipe);
     }
 
-    public CrudResponse setPerhitunganToSession(String idParam, String stPerhitungan, String masterId, String divisiId, String tahun, String unit, String idKategori) throws JSONException{
+    public CrudResponse setPerhitunganToSession(String idParam, String stPerhitungan, String masterId, String divisiId, String tahun, String unit, String idKategori, String periode) throws JSONException{
         logger.info("[BgPendapatanAction.setPerhitunganToSession] START >>>");
 
         CrudResponse response = new CrudResponse();
@@ -529,7 +529,8 @@ public class BgPendapatanAction {
                     p->
                             p.getIdParameter().equalsIgnoreCase(idParam) &&
                             p.getMasterId().equalsIgnoreCase(masterId) &&
-                            p.getDivisiId().equalsIgnoreCase(divisiId)
+                            p.getDivisiId().equalsIgnoreCase(divisiId) &&
+                            p.getPeriode().equalsIgnoreCase(periode)
                     ).collect(Collectors.toList());
 
             isNew = nilaiParamsFilter.size() == 0;
@@ -609,6 +610,7 @@ public class BgPendapatanAction {
                     parameterNilaiBudgeting.setMasterId(masterId);
                     parameterNilaiBudgeting.setNamaMaster(budgetingPerhitunganBo.getMasterByKodering(masterId).getNama());
                     parameterNilaiBudgeting.setIdKategoriBudgeting(idKategori);
+                    parameterNilaiBudgeting.setPeriode(periode);
                     break;
                 }
             }
@@ -622,6 +624,7 @@ public class BgPendapatanAction {
             parameterNilaiBudgeting.setMasterId(masterId);
             parameterNilaiBudgeting.setNamaMaster(budgetingPerhitunganBo.getMasterByKodering(masterId).getNama());
             parameterNilaiBudgeting.setIdKategoriBudgeting(idKategori);
+            parameterNilaiBudgeting.setPeriode(periode);
             sessionNilaiParam.add(parameterNilaiBudgeting);
         }
 
@@ -661,6 +664,7 @@ public class BgPendapatanAction {
         perhitunganBudgeting.setAction("C");
         perhitunganBudgeting.setTahun(tahun);
         perhitunganBudgeting.setBranchId(unit);
+        perhitunganBudgeting.setTipe(tipe);
 
         try {
             budgetingPerhitunganBo.saveAddPerhitunganBudgeting( convertNilaiParameterToEntity(sessionNilaiParam) ,sessionPerhitungan, perhitunganBudgeting);
@@ -708,6 +712,7 @@ public class BgPendapatanAction {
             budgetingEntity.setDivisiId(parameterBudgeting.getDivisiId());
             budgetingEntity.setMasterId(parameterBudgeting.getMasterId());
             budgetingEntity.setNilaiTotal(parameterBudgeting.getNilaiTotal());
+            budgetingEntity.setPeriode(parameterBudgeting.getPeriode());
             entities.add(budgetingEntity);
         }
 

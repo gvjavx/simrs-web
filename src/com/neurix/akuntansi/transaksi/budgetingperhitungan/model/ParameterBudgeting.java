@@ -28,6 +28,15 @@ public class ParameterBudgeting {
     private String namaMaster;
     private String namaDivisi;
     private String idNilaiParameter;
+    private String periode;
+
+    public String getPeriode() {
+        return periode;
+    }
+
+    public void setPeriode(String periode) {
+        this.periode = periode;
+    }
 
     public String getIdNilaiParameter() {
         return idNilaiParameter;

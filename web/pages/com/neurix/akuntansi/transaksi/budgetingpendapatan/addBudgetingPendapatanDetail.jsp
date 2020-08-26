@@ -85,12 +85,8 @@
                                     <div class="row">
                                         <label class="control-label col-sm-2">Tahun</label>
                                         <div class="col-sm-2">
-                                            <select class="form-control" id="sel-tahun">
-                                                <option value="2020">2020</option>
-                                                <option value="2021">2021</option>
-                                                <option value="2022">2022</option>
-                                                <option value="2023">2023</option>
-                                            </select>
+                                            <%--<s:property value="budgeting.tahun"/>--%>
+                                           <input type="text" id="sel-tahun" class="form-control" value="<s:property value="budgeting.tahun"/>" readonly/>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -192,10 +188,10 @@
                             <label class="control-label col-md-1 col-md-offset-4">Tipe Budgeting</label>
                             <div class="col-sm-2">
                                 <select class="form-control" id="sel-tipe">
-                                    <option value="tahunan">Tahunan</option>
+                                    <%--<option value="tahunan">Tahunan</option>--%>
                                     <option value="bulanan">Bulanan</option>
-                                    <option value="semester">Semester</option>
-                                    <option value="quartal">Quartal</option>
+                                    <%--<option value="semester">Semester</option>--%>
+                                    <%--<option value="quartal">Quartal</option>--%>
                                 </select>
                             </div>
                         </div>
@@ -375,7 +371,7 @@
     function chekTipe() {
         if ("Y" == flagDisable){
             $("#sel-tipe").attr('readonly',true);
-            $("#sel-tipe").val(tipe);
+//            $("#sel-tipe").val(tipe);
         }
     }
 
@@ -819,11 +815,11 @@
     function saveAdd() {
 //        var tahun = $("#sel-tahun").val();
 //        var unit = $("#sel-unit").val();
-//        var tipe = $("#sel-tipe").val();
+        var tipe = $("#sel-tipe").val();
 
         showDialog('loading');
         dwr.engine.setAsync(true);
-        BgPendapatanAction.saveAdd(unit, tahun, "", function (res) {
+        BgPendapatanAction.saveAdd(unit, tahun, tipe, function (res) {
             dwr.engine.setAsync(false);
             if (res.status == "success"){
                 showDialog('success');

@@ -1,5 +1,7 @@
 package com.neurix.akuntansi.transaksi.budgetingperhitungan.bo.impl;
 
+import com.neurix.akuntansi.master.kodeRekening.dao.KodeRekeningDao;
+import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
 import com.neurix.akuntansi.master.master.dao.MasterDao;
 import com.neurix.akuntansi.master.master.model.ImMasterEntity;
 import com.neurix.akuntansi.transaksi.budgeting.model.Budgeting;
@@ -35,6 +37,7 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
     private NilaiParameterDao nilaiParameterDao;
     private PositionDao positionDao;
     private MasterDao masterDao;
+    private KodeRekeningDao kodeRekeningDao;
 
     public void setPositionDao(PositionDao positionDao) {
         this.positionDao = positionDao;
@@ -217,6 +220,7 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
 
         for (ItAkunNilaiParameterBudgetingEntity nilaiParameterEntity : nilaiParameters){
 
+            nilaiParameterEntity.setTipe(bean.getTipe());
             nilaiParameterEntity.setTahun(bean.getTahun());
             nilaiParameterEntity.setBranchId(bean.getBranchId());
             nilaiParameterEntity.setFlag(bean.getFlag());
@@ -359,6 +363,10 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
             hsCriteria.put("tahun", bean.getTahun());
         if (bean.getFlag() != null)
             hsCriteria.put("flag", bean.getFlag());
+        if (bean.getPeriode() != null)
+            hsCriteria.put("periode", bean.getPeriode());
+        if (bean.getTipe() != null)
+            hsCriteria.put("tipe", bean.getTipe());
 
         List<ItAkunNilaiParameterBudgetingEntity> results = new ArrayList<>();
         try {
@@ -390,5 +398,35 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
     @Override
     public List<Budgeting> getBranchBudgeting(String tahun) throws GeneralBOException {
         return perhitunganBudgetingDao.getSumNilaiBudgeting(tahun);
+    }
+
+    @Override
+    public List<ParameterBudgeting> getNilaiParameterByNilaiParam(ParameterBudgeting bean) throws GeneralBOException {
+
+        List<ParameterBudgeting> parameterBudgetings = new ArrayList<>();
+        List<ItAkunNilaiParameterBudgetingEntity> nilaiParams = getListEntityNilaiParam(bean);
+        if (nilaiParams.size() > 0){
+            for (ItAkunNilaiParameterBudgetingEntity  nilaiParam : nilaiParams){
+                ParameterBudgeting parameterBudgeting = new ParameterBudgeting();
+                parameterBudgeting.setIdNilaiParameter(nilaiParam.getId());
+                parameterBudgeting.setBranchId(nilaiParam.getBranchId());
+                parameterBudgeting.setTahun(nilaiParam.getTahun());
+                parameterBudgeting.setNilaiTotal(nilaiParam.getNilaiTotal());
+                parameterBudgeting.setPeriode(nilaiParam.getPeriode());
+                parameterBudgeting.setTipe(nilaiParam.getTipe());
+                parameterBudgeting.setIdParameter(nilaiParam.getIdParameter());
+                parameterBudgeting.setMasterId(nilaiParam.getMasterId());
+                parameterBudgeting.setDivisiId(nilaiParam.getDivisiId());
+                ImAkunParameterBudgetingEntity parameterBudgetingEntity = parameterBudgetingDao.getById("id", nilaiParam.getIdParameter());
+                if (parameterBudgetingEntity != null){
+                    parameterBudgeting.setRekeningId(parameterBudgetingEntity.getRekeningId());
+                }
+                parameterBudgeting.setFlag(nilaiParam.getFlag());
+                parameterBudgeting.setAction(nilaiParam.getAction());
+                parameterBudgetings.add(parameterBudgeting);
+
+            }
+        }
+        return parameterBudgetings;
     }
 }

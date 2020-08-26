@@ -41,6 +41,12 @@ public class NilaiParameterDao extends GenericDao<ItAkunNilaiParameterBudgetingE
         if (mapCriteria.get("tahun") != null){
             criteria.add(Restrictions.eq("tahun", mapCriteria.get("tahun").toString()));
         }
+        if (mapCriteria.get("periode") != null){
+            criteria.add(Restrictions.eq("periode", mapCriteria.get("periode").toString()));
+        }
+        if (mapCriteria.get("tipe") != null){
+            criteria.add(Restrictions.eq("tipe", mapCriteria.get("tipe").toString()));
+        }
 
 //        criteria.addOrder(Order.asc("urutan"));
         return criteria.list();

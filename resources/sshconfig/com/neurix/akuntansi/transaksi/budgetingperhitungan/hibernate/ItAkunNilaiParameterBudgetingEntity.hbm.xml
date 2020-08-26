@@ -44,6 +44,12 @@
             <basic name="lastUpdateWho">
                 <column name="last_update_who"/>
             </basic>
+            <basic name="periode">
+                <column name="periode"/>
+            </basic>
+            <basic name="tipe">
+                <column name="tipe_budgeting"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

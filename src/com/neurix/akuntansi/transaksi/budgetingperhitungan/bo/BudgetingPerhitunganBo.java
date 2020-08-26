@@ -25,4 +25,5 @@ public interface BudgetingPerhitunganBo {
     public ImPosition getPositionByKodering(String id) throws GeneralBOException;
     public ImMasterEntity getMasterByKodering(String id) throws GeneralBOException;
     public List<Budgeting> getBranchBudgeting(String tahun) throws GeneralBOException;
+    public List<ParameterBudgeting> getNilaiParameterByNilaiParam(ParameterBudgeting bean) throws GeneralBOException;
 }
