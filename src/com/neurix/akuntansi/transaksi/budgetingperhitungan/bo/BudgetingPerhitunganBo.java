@@ -1,6 +1,7 @@
 package com.neurix.akuntansi.transaksi.budgetingperhitungan.bo;
 
 import com.neurix.akuntansi.master.master.model.ImMasterEntity;
+import com.neurix.akuntansi.transaksi.budgeting.model.Budgeting;
 import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.*;
 import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.exception.GeneralBOException;
@@ -23,4 +24,5 @@ public interface BudgetingPerhitunganBo {
     public List<KategoriParameter> getListKategoriParameter(KategoriParameter bean) throws GeneralBOException;
     public ImPosition getPositionByKodering(String id) throws GeneralBOException;
     public ImMasterEntity getMasterByKodering(String id) throws GeneralBOException;
+    public List<Budgeting> getBranchBudgeting(String tahun) throws GeneralBOException;
 }

@@ -1,5 +1,6 @@
 package com.neurix.akuntansi.transaksi.budgetingperhitungan.dao;
 
+import com.neurix.akuntansi.transaksi.budgeting.model.Budgeting;
 import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ItAkunPerhitunganBudgetingEntity;
 import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.PerhitunganBudgeting;
 import com.neurix.common.dao.GenericDao;
@@ -278,6 +279,57 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
             }
         }
         return perhitunganBudgetings;
+    }
+
+    public List<Budgeting> getSumNilaiBudgeting(String tahun){
+
+        String SQL = "SELECT\n" +
+                "br.branch_id,\n" +
+                "br.branch_name,\n" +
+                "SUM(np.nilai_total) as nilai_total\n" +
+                "FROM im_branches br\n" +
+                "LEFT JOIN (SELECT * FROM it_akun_nilai_parameter_budgeting WHERE tahun = :tahun ) np ON np.branch_id = br.branch_id\n" +
+                "WHERE br.branch_id LIKE '%'\n" +
+                "AND br.flag = 'Y'\n" +
+                "GROUP BY \n" +
+                "br.branch_id,\n" +
+                "br.branch_name";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("tahun" , tahun)
+                .list();
+
+        List<Budgeting> budgetings = new ArrayList<>();
+        for (Object[] obj : results){
+            Budgeting budgeting = new Budgeting();
+            budgeting.setBranchId(obj[0].toString());
+            budgeting.setBranchName(obj[1].toString());
+            budgeting.setNilaiTotal(obj[2] == null ? new BigDecimal(0) : (BigDecimal) obj[2]);
+            budgeting.setTahun(tahun);
+            budgeting.setFlagDisable(disableByFoundBudgeting(budgeting.getBranchId(), tahun));
+            budgetings.add(budgeting);
+        }
+
+        return budgetings;
+    }
+
+    public String disableByFoundBudgeting(String branchId, String tahun){
+
+        String SQL = "SELECT no_budgeting, branch_id, tahun\n" +
+                "FROM it_akun_budgeting \n" +
+                "WHERE branch_id = :unit \n" +
+                "AND tahun = :tahun \n" +
+                "ORDER BY last_update DESC LIMIT 1";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("tahun", tahun)
+                .setParameter("unit", branchId)
+                .list();
+
+        if (results.size() > 0){
+            return "Y";
+        }
+        return "N";
     }
 
 }

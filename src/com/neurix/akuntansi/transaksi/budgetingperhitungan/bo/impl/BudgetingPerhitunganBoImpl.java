@@ -2,6 +2,7 @@ package com.neurix.akuntansi.transaksi.budgetingperhitungan.bo.impl;
 
 import com.neurix.akuntansi.master.master.dao.MasterDao;
 import com.neurix.akuntansi.master.master.model.ImMasterEntity;
+import com.neurix.akuntansi.transaksi.budgeting.model.Budgeting;
 import com.neurix.akuntansi.transaksi.budgetingnilaidasar.model.ImAkunBudgetingNilaiDasarEntity;
 import com.neurix.akuntansi.transaksi.budgetingnilaidasar.model.ItAkunBudgetingNilaiDasarEntity;
 import com.neurix.akuntansi.transaksi.budgetingperhitungan.bo.BudgetingPerhitunganBo;
@@ -384,5 +385,10 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
     @Override
     public ImMasterEntity getMasterByKodering(String id) throws GeneralBOException {
         return masterDao.getById("primaryKey.nomorMaster", id);
+    }
+
+    @Override
+    public List<Budgeting> getBranchBudgeting(String tahun) throws GeneralBOException {
+        return perhitunganBudgetingDao.getSumNilaiBudgeting(tahun);
     }
 }
