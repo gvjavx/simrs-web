@@ -99,12 +99,13 @@
                                             <label class="control-label col-sm-2">Status</label>
                                             <div class="col-sm-2">
                                                 <select class="form-control" id="sel-status">
-                                                    <option value="APPROVE_DRAFT">APPROVE DRAFT</option>
-                                                    <option value="ADJUST_DRAFT">ADJUST DRAFT</option>
+                                                    <%--<option value="APPROVE_DRAFT">APPROVE DRAFT</option>--%>
+                                                    <%--<option value="ADJUST_DRAFT">ADJUST DRAFT</option>--%>
                                                     <option value="APPROVE_FINAL">APPROVE FINAL</option>
-                                                    <option value="ADJUST_FINAL">ADJUST FINAL</option>
+                                                    <%--<option value="ADJUST_FINAL">ADJUST FINAL</option>--%>
+                                                    <%--<option value="EDIT_REVISI">EDIT REVISI</option>--%>
                                                     <option value="APPROVE_REVISI">APPROVE REVISI</option>
-                                                    <option value="ADJUST_REVISI">ADJUST REVISI</option>
+                                                    <%--<option value="ADJUST_REVISI">ADJUST REVISI</option>--%>
                                                 </select>  <div class="row">
                                             </div>
                                         </div>

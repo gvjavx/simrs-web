@@ -1787,6 +1787,19 @@ public class BudgetingAction {
         return response;
     }
 
+    public String initLabaRugi(){
+        logger.info("[BudgetingAction.initLabaRugi] START >>>");
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfCoa");
+        session.removeAttribute("listOfDetail");
+        session.removeAttribute("listOfPengadaan");
+        setBudgeting(new Budgeting());
+
+        logger.info("[BudgetingAction.initLabaRugi] END <<<");
+        return "search_laba_rugi";
+    }
+
     public void setBudgetingBoProxy(BudgetingBo budgetingBoProxy) {
         this.budgetingBoProxy = budgetingBoProxy;
     }

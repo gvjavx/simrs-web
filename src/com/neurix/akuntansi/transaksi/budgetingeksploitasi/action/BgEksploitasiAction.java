@@ -130,29 +130,29 @@ public class BgEksploitasiAction {
                     budgeting.setRekeningId(param.getRekeningId());
                     budgeting.setTipe("bulanan");
                     budgeting.setNilaiTotal(param.getNilaiTotal());
-                    if ("januari".equalsIgnoreCase(param.getTipe()))
+                    if ("januari".equalsIgnoreCase(param.getPeriode()))
                         budgeting.setJanuari(param.getNilaiTotal());
-                    if ("februari".equalsIgnoreCase(param.getTipe()))
+                    if ("februari".equalsIgnoreCase(param.getPeriode()))
                         budgeting.setFebruari(param.getNilaiTotal());
-                    if ("maret".equalsIgnoreCase(param.getTipe()))
+                    if ("maret".equalsIgnoreCase(param.getPeriode()))
                         budgeting.setMaret(param.getNilaiTotal());
-                    if ("april".equalsIgnoreCase(param.getTipe()))
+                    if ("april".equalsIgnoreCase(param.getPeriode()))
                         budgeting.setApril(param.getNilaiTotal());
-                    if ("mei".equalsIgnoreCase(param.getTipe()))
+                    if ("mei".equalsIgnoreCase(param.getPeriode()))
                         budgeting.setMei(param.getNilaiTotal());
-                    if ("juni".equalsIgnoreCase(param.getTipe()))
+                    if ("juni".equalsIgnoreCase(param.getPeriode()))
                         budgeting.setJuni(param.getNilaiTotal());
-                    if ("juli".equalsIgnoreCase(param.getTipe()))
+                    if ("juli".equalsIgnoreCase(param.getPeriode()))
                         budgeting.setJuli(param.getNilaiTotal());
-                    if ("agustus".equalsIgnoreCase(param.getTipe()))
+                    if ("agustus".equalsIgnoreCase(param.getPeriode()))
                         budgeting.setAgustus(param.getNilaiTotal());
-                    if ("september".equalsIgnoreCase(param.getTipe()))
+                    if ("september".equalsIgnoreCase(param.getPeriode()))
                         budgeting.setSeptember(param.getNilaiTotal());
-                    if ("oktober".equalsIgnoreCase(param.getTipe()))
+                    if ("oktober".equalsIgnoreCase(param.getPeriode()))
                         budgeting.setOktober(param.getNilaiTotal());
-                    if ("november".equalsIgnoreCase(param.getTipe()))
+                    if ("november".equalsIgnoreCase(param.getPeriode()))
                         budgeting.setNovember(param.getNilaiTotal());
-                    if ("desember".equalsIgnoreCase(param.getTipe()))
+                    if ("desember".equalsIgnoreCase(param.getPeriode()))
                         budgeting.setDesember(param.getNilaiTotal());
                     budgetingList.add(budgeting);
                 } else {
@@ -160,29 +160,29 @@ public class BgEksploitasiAction {
                     for (Budgeting bg : budgetingList){
                         if (param.getRekeningId().equalsIgnoreCase(bg.getRekeningId())){
                             bg.setNilaiTotal(bg.getNilaiTotal().add(param.getNilaiTotal()));
-                            if ("januari".equalsIgnoreCase(param.getTipe()))
+                            if ("januari".equalsIgnoreCase(param.getPeriode()))
                                 bg.setJanuari(bg.getJanuari().add(param.getNilaiTotal()));
-                            if ("februari".equalsIgnoreCase(param.getTipe()))
+                            if ("februari".equalsIgnoreCase(param.getPeriode()))
                                 bg.setFebruari(bg.getFebruari().add(param.getNilaiTotal()));
-                            if ("maret".equalsIgnoreCase(param.getTipe()))
+                            if ("maret".equalsIgnoreCase(param.getPeriode()))
                                 bg.setMaret(bg.getMaret().add(param.getNilaiTotal()));
-                            if ("april".equalsIgnoreCase(param.getTipe()))
+                            if ("april".equalsIgnoreCase(param.getPeriode()))
                                 bg.setApril(bg.getApril().add(param.getNilaiTotal()));
-                            if ("mei".equalsIgnoreCase(param.getTipe()))
+                            if ("mei".equalsIgnoreCase(param.getPeriode()))
                                 bg.setMei(bg.getMei().add(param.getNilaiTotal()));
-                            if ("juni".equalsIgnoreCase(param.getTipe()))
+                            if ("juni".equalsIgnoreCase(param.getPeriode()))
                                 bg.setJuni(bg.getJuni().add(param.getNilaiTotal()));
-                            if ("juli".equalsIgnoreCase(param.getTipe()))
+                            if ("juli".equalsIgnoreCase(param.getPeriode()))
                                 bg.setJuli(bg.getJuli().add(param.getNilaiTotal()));
-                            if ("agustus".equalsIgnoreCase(param.getTipe()))
+                            if ("agustus".equalsIgnoreCase(param.getPeriode()))
                                 bg.setAgustus(bg.getAgustus().add(param.getNilaiTotal()));
-                            if ("september".equalsIgnoreCase(param.getTipe()))
+                            if ("september".equalsIgnoreCase(param.getPeriode()))
                                 bg.setSeptember(bg.getSeptember().add(param.getNilaiTotal()));
-                            if ("oktober".equalsIgnoreCase(param.getTipe()))
+                            if ("oktober".equalsIgnoreCase(param.getPeriode()))
                                 bg.setOktober(bg.getOktober().add(param.getNilaiTotal()));
-                            if ("november".equalsIgnoreCase(param.getTipe()))
+                            if ("november".equalsIgnoreCase(param.getPeriode()))
                                 bg.setNovember(bg.getNovember().add(param.getNilaiTotal()));
-                            if ("desember".equalsIgnoreCase(param.getTipe()))
+                            if ("desember".equalsIgnoreCase(param.getPeriode()))
                                 bg.setDesember(bg.getDesember().add(param.getNilaiTotal()));
                             notFound = false;
                             break;
@@ -195,29 +195,29 @@ public class BgEksploitasiAction {
                         budgeting.setRekeningId(param.getRekeningId());
                         budgeting.setTipe("bulanan");
                         budgeting.setNilaiTotal(param.getNilaiTotal());
-                        if ("januari".equalsIgnoreCase(param.getTipe()))
+                        if ("januari".equalsIgnoreCase(param.getPeriode()))
                             budgeting.setJanuari(param.getNilaiTotal());
-                        if ("februari".equalsIgnoreCase(param.getTipe()))
+                        if ("februari".equalsIgnoreCase(param.getPeriode()))
                             budgeting.setFebruari(param.getNilaiTotal());
-                        if ("maret".equalsIgnoreCase(param.getTipe()))
+                        if ("maret".equalsIgnoreCase(param.getPeriode()))
                             budgeting.setMaret(param.getNilaiTotal());
-                        if ("april".equalsIgnoreCase(param.getTipe()))
+                        if ("april".equalsIgnoreCase(param.getPeriode()))
                             budgeting.setApril(param.getNilaiTotal());
-                        if ("mei".equalsIgnoreCase(param.getTipe()))
+                        if ("mei".equalsIgnoreCase(param.getPeriode()))
                             budgeting.setMei(param.getNilaiTotal());
-                        if ("juni".equalsIgnoreCase(param.getTipe()))
+                        if ("juni".equalsIgnoreCase(param.getPeriode()))
                             budgeting.setJuni(param.getNilaiTotal());
-                        if ("juli".equalsIgnoreCase(param.getTipe()))
+                        if ("juli".equalsIgnoreCase(param.getPeriode()))
                             budgeting.setJuli(param.getNilaiTotal());
-                        if ("agustus".equalsIgnoreCase(param.getTipe()))
+                        if ("agustus".equalsIgnoreCase(param.getPeriode()))
                             budgeting.setAgustus(param.getNilaiTotal());
-                        if ("september".equalsIgnoreCase(param.getTipe()))
+                        if ("september".equalsIgnoreCase(param.getPeriode()))
                             budgeting.setSeptember(param.getNilaiTotal());
-                        if ("oktober".equalsIgnoreCase(param.getTipe()))
+                        if ("oktober".equalsIgnoreCase(param.getPeriode()))
                             budgeting.setOktober(param.getNilaiTotal());
-                        if ("november".equalsIgnoreCase(param.getTipe()))
+                        if ("november".equalsIgnoreCase(param.getPeriode()))
                             budgeting.setNovember(param.getNilaiTotal());
-                        if ("desember".equalsIgnoreCase(param.getTipe()))
+                        if ("desember".equalsIgnoreCase(param.getPeriode()))
                             budgeting.setDesember(param.getNilaiTotal());
                         budgetingList.add(budgeting);
                     }
@@ -239,7 +239,7 @@ public class BgEksploitasiAction {
                 budgetingDetail.setQty(new BigInteger(String.valueOf(1)));
                 budgetingDetail.setNilai(param.getNilaiTotal());
                 budgetingDetail.setSubTotal(param.getNilaiTotal().multiply(new BigDecimal(budgetingDetail.getQty())));
-                budgetingDetail.setTipe(param.getTipe());
+                budgetingDetail.setTipe(param.getPeriode());
                 budgetingDetail.setRekeningId(param.getRekeningId());
                 budgetingList.add(budgetingDetail);
             }
