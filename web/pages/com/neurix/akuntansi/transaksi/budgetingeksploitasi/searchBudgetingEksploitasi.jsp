@@ -219,11 +219,11 @@
                             </div>
                         </div>
 
-                        <%--<div class="form-group">--%>
-                            <%--<div class="col-md-4 col-md-offset-5">--%>
-                                <%--<button class="btn btn-success" style="display: none" id="btn-save" onclick="saveBatasPeriod()"><i class="fa fa-check"></i> Save </button>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
+                        <div class="form-group">
+                            <div class="col-md-12" align="center">
+                                <button class="btn btn-success" style="display: none" id="btn-save" onclick="saveApprove()"><i class="fa fa-check"></i> Approve </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -692,10 +692,12 @@
                 str += '<tr>' +
                     '<td>'+item.branchName+'</td>' +
                     '<td align="right">' + formatRupiah(item.nilaiTotal) + '</td>' +
-                    '<td><button class="btn btn-succes"><i class="fa fa-check"></i> Approve</budtton></td>' +
+                    '<td align="center"><button class="btn btn-success"><i class="fa fa-search"></i> View</budtton></td>' +
+//                    '<td align="center"><button class="btn btn-success"><i class="fa fa-check"></i> Approve</budtton></td>' +
                     '</tr>';
             });
 
+            $("#btn-save").show();
             $("#body-budgeting").html(str);
         })
     }
