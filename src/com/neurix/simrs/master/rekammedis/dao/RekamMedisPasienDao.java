@@ -160,6 +160,15 @@ public class RekamMedisPasienDao extends GenericDao<ImSimrsRekamMedisPasienEntit
                 }
             } else if ("igd".equalsIgnoreCase(tipePelayanan)) {
                 if (jenis != null) {
+                    String notIn = "";
+                    if("ugd_anak".equalsIgnoreCase(jenis)){
+                        notIn = "('ugd_dewasa', 'ugd_geriatri')";
+                    }else if("ugd_dewasa".equalsIgnoreCase(jenis)){
+                        notIn = "('ugd_anak', 'ugd_geriatri')";
+                    }else if("ugd_geriatri".equalsIgnoreCase(jenis)){
+                        notIn = "('ugd_dewasa', 'ugd_anak')";
+                    }
+
                     SQL = "SELECT \n" +
                             "a.*,  \n" +
                             "b.jumlah_kategori as terisi,\n" +
@@ -181,7 +190,7 @@ public class RekamMedisPasienDao extends GenericDao<ImSimrsRekamMedisPasienEntit
                             "\tINNER JOIN im_simrs_rekam_medis_pelayanan b \n" +
                             "\tON a.id_rekam_medis_pasien = b.id_rekam_medis_pasien \n" +
                             "\tWHERE b.tipe_pelayanan = :tipePelayanan\n" +
-                            "\tAND a.jenis = :jenis\n" +
+                            "\tAND a.jenis NOT IN " + notIn+"\n"+
                             "\tUNION ALL\n" +
                             "\tSELECT  \n" +
                             "\ta.id_rekam_medis_pasien, \n" +
@@ -219,7 +228,6 @@ public class RekamMedisPasienDao extends GenericDao<ImSimrsRekamMedisPasienEntit
 
                     results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                             .setParameter("tipePelayanan", tipePelayanan)
-                            .setParameter("jenis", jenis)
                             .setParameter("id", id)
                             .list();
                 }

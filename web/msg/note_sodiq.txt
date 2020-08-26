@@ -349,12 +349,49 @@ Verif Asuransi
     Rawat Jalan
     /verifasrj/initVerif_verifasrj.action
     /verifasrj/initVerif_verifasrj.action
-    /verifasrj/searchVerifAns_verifasrj.action
+    /verifasrj/searchVerifAs_verifasrj.action
 
     Rawat Inap
     /verifasri/initVerif_verifasri.action
     /verifasri/initVerif_verifasri.action
-    /verifasri/searchVerifAns_verifasrj.action
+    /verifasri/searchVerifAs_verifasri.action
+
+-- 26-08-2020
+CREATE TABLE public.it_simrs_partograf
+(
+  id_partograf character varying(30) NOT NULL,
+  id_detail_checkup character varying(30),
+  waktu character varying(100),
+  djj character varying(100),
+  air_ketuban character varying(100),
+  molase character varying(100),
+  pembukaan character varying(100),
+  kontraksi character varying(100),
+  oksitosin character varying(100),
+  tetes character varying(100),
+  obat_cairan character varying(100),
+  nadi character varying(100),
+  tensi character varying(100),
+  suhu character varying(100),
+  rr character varying(100),
+  flag character varying(1),
+  action character varying(1),
+  created_who character varying(100),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  nama_terang character varying(100),
+  sip character varying(100),
+  ttd character varying(100),
+  CONSTRAINT pk_id_partograf PRIMARY KEY (id_partograf)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_partograf
+  OWNER TO postgres;
+
+CREATE SEQUENCE seq_partograf;
 
 
 

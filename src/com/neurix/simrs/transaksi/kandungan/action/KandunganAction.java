@@ -5,7 +5,9 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.kandungan.bo.KandunganBo;
+import com.neurix.simrs.transaksi.kandungan.bo.PartografBo;
 import com.neurix.simrs.transaksi.kandungan.model.Kandungan;
+import com.neurix.simrs.transaksi.kandungan.model.Partograf;
 import com.neurix.simrs.transaksi.rekammedik.bo.RekamMedikBo;
 import com.neurix.simrs.transaksi.rekammedik.model.StatusPengisianRekamMedis;
 import org.apache.log4j.Logger;
@@ -46,25 +48,25 @@ public class KandunganAction {
                 kandungan.setParameter(obj.getString("parameter"));
                 kandungan.setIdDetailCheckup(obj.getString("id_detail_checkup"));
                 kandungan.setKeterangan(obj.getString("keterangan"));
-                if(obj.has("jenis")){
+                if (obj.has("jenis")) {
                     kandungan.setJenis(obj.getString("jenis"));
                 }
-                if(obj.has("skor")){
+                if (obj.has("skor")) {
                     kandungan.setScore(Integer.valueOf(obj.getString("skor")));
                 }
-                if(obj.has("nama_terang")){
+                if (obj.has("nama_terang")) {
                     kandungan.setNamaTerang(obj.getString("nama_terang"));
                 }
-                if(obj.has("sip")){
+                if (obj.has("sip")) {
                     kandungan.setSip(obj.getString("sip"));
                 }
-                if(obj.has("informasi")){
-                    if(!"".equalsIgnoreCase(obj.getString("informasi"))){
+                if (obj.has("informasi")) {
+                    if (!"".equalsIgnoreCase(obj.getString("informasi"))) {
                         kandungan.setInformasi(obj.getString("informasi"));
                     }
                 }
-                if(obj.has("tipe")){
-                    if("ttd".equalsIgnoreCase(obj.getString("tipe")) || "gambar".equalsIgnoreCase(obj.getString("tipe"))){
+                if (obj.has("tipe")) {
+                    if ("ttd".equalsIgnoreCase(obj.getString("tipe")) || "gambar".equalsIgnoreCase(obj.getString("tipe"))) {
                         try {
                             BASE64Decoder decoder = new BASE64Decoder();
                             byte[] decodedBytes = decoder.decodeBuffer(obj.getString("jawaban"));
@@ -72,12 +74,12 @@ public class KandunganAction {
                             String wkt = time.toString();
                             String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
                             logger.info("PATTERN :" + patten);
-                            String fileName = obj.getString("id_detail_checkup") + "-"+i+"-" + patten + ".png";
+                            String fileName = obj.getString("id_detail_checkup") + "-" + i + "-" + patten + ".png";
                             String uploadFile = "";
-                            if("gambar".equalsIgnoreCase(obj.getString("tipe"))){
-                                uploadFile =  CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_IMG_RM + fileName;
-                            }else{
-                                uploadFile =  CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
+                            if ("gambar".equalsIgnoreCase(obj.getString("tipe"))) {
+                                uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_IMG_RM + fileName;
+                            } else {
+                                uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
                             }
                             BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
 
@@ -91,15 +93,15 @@ public class KandunganAction {
                                 ImageIO.write(image, "png", f);
                                 kandungan.setJawaban(fileName);
                             }
-                        }catch (IOException e){
+                        } catch (IOException e) {
                             response.setStatus("error");
-                            response.setMsg("Error when IO Images, "+e.getMessage());
+                            response.setMsg("Error when IO Images, " + e.getMessage());
                         }
-                    }else{
+                    } else {
                         kandungan.setJawaban(obj.getString("jawaban"));
                     }
                     kandungan.setTipe(obj.getString("tipe"));
-                }else{
+                } else {
                     kandungan.setJawaban(obj.getString("jawaban"));
                 }
 
@@ -113,10 +115,10 @@ public class KandunganAction {
             }
             try {
                 response = kandunganBo.saveAdd(icuList);
-                if("success".equalsIgnoreCase(response.getStatus())){
+                if ("success".equalsIgnoreCase(response.getStatus())) {
                     RekamMedikBo rekamMedikBo = (RekamMedikBo) ctx.getBean("rekamMedikBoProxy");
                     JSONObject obj = new JSONObject(dataPasien);
-                    if(obj != null){
+                    if (obj != null) {
                         StatusPengisianRekamMedis status = new StatusPengisianRekamMedis();
                         status.setNoCheckup(obj.getString("no_checkup"));
                         status.setIdDetailCheckup(obj.getString("id_detail_checkup"));
@@ -137,9 +139,9 @@ public class KandunganAction {
                 response.setMsg("Found Error " + e.getMessage());
                 return response;
             }
-        }catch (JSONException e){
+        } catch (JSONException e) {
             response.setStatus("error");
-            response.setMsg("Error when JSON parse, "+e.getMessage());
+            response.setMsg("Error when JSON parse, " + e.getMessage());
         }
         return response;
     }
@@ -174,6 +176,165 @@ public class KandunganAction {
                 kandungan.setLastUpdateWho(userLogin);
                 response = kandunganBo.saveDelete(kandungan);
             } catch (GeneralBOException e) {
+                response.setStatus("error");
+                response.setMsg("Found Error, "+e.getMessage());
+                logger.error("Found Error" + e.getMessage());
+            }
+        }
+        return response;
+    }
+
+    public CrudResponse savePartograf(String data, String dataPasien) {
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PartografBo partografBo = (PartografBo) ctx.getBean("partografBoProxy");
+        try {
+            JSONObject obj = new JSONObject(data);
+            if (obj != null) {
+                Partograf partograf = new Partograf();
+                partograf.setIdDetailCheckup(obj.getString("id_detail_checkup"));
+                if(obj.has("waktu")){
+                    partograf.setWaktu(obj.getString("jenis"));
+                }
+                if(obj.has("djj")){
+                    partograf.setDjj(obj.getString("skor"));
+                }
+                if(obj.has("air_ketuban")){
+                    partograf.setAirKetuban(obj.getString("nama_terang"));
+                }
+                if(obj.has("molase")){
+                    partograf.setMolase(obj.getString("molase"));
+                }
+                if(obj.has("pembukaan")){
+                    partograf.setPembukaan(obj.getString("pembukaan"));
+                }
+                if(obj.has("kontraksi")){
+                    partograf.setKontraksi(obj.getString("kontraksi"));
+                }
+                if(obj.has("oksitosin")){
+                    partograf.setOksitosin(obj.getString("oksitosin"));
+                }
+                if(obj.has("tetes")){
+                    partograf.setTetes(obj.getString("tetes"));
+                }
+                if(obj.has("obat_cairan")){
+                    partograf.setObatCairan(obj.getString("obat_cairan"));
+                }
+                if(obj.has("nadi")){
+                    partograf.setNadi(obj.getString("nadi"));
+                }
+                if(obj.has("tensi")){
+                    partograf.setTensi(obj.getString("tensi"));
+                }
+                if(obj.has("suhu")){
+                    partograf.setSuhu(obj.getString("suhu"));
+                }
+                if(obj.has("rr")){
+                    partograf.setRr(obj.getString("rr"));
+                }
+
+                if(obj.has("ttd")){
+                    if(!"".equalsIgnoreCase(obj.getString("ttd"))){
+                        try {
+                            BASE64Decoder decoder = new BASE64Decoder();
+                            byte[] decodedBytes = decoder.decodeBuffer(obj.getString("jawaban"));
+                            logger.info("Decoded upload data : " + decodedBytes.length);
+                            String wkt = time.toString();
+                            String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                            logger.info("PATTERN :" + patten);
+                            String fileName = obj.getString("id_detail_checkup") + "-" + patten + ".png";
+                            String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
+                            BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+                            if (image == null) {
+                                logger.error("Buffered Image is null");
+                                response.setStatus("error");
+                                response.setMsg("Buffered Image is null");
+                            } else {
+                                File f = new File(uploadFile);
+                                // write the image
+                                ImageIO.write(image, "png", f);
+                                partograf.setTtd(fileName);
+                            }
+                        }catch (IOException e){
+                            response.setStatus("error");
+                            response.setMsg("Error when IO Images, "+e.getMessage());
+                        }
+                    }
+                }
+
+                partograf.setAction("C");
+                partograf.setFlag("Y");
+                partograf.setCreatedWho(userLogin);
+                partograf.setCreatedDate(time);
+                partograf.setLastUpdateWho(userLogin);
+                partograf.setLastUpdate(time);
+
+                try {
+                    response = partografBo.saveAdd(partograf);
+                    if("success".equalsIgnoreCase(response.getStatus())){
+                        RekamMedikBo rekamMedikBo = (RekamMedikBo) ctx.getBean("rekamMedikBoProxy");
+                        JSONObject objt = new JSONObject(dataPasien);
+                        if(objt != null){
+                            StatusPengisianRekamMedis status = new StatusPengisianRekamMedis();
+                            status.setNoCheckup(objt.getString("no_checkup"));
+                            status.setIdDetailCheckup(objt.getString("id_detail_checkup"));
+                            status.setIdPasien(objt.getString("id_pasien"));
+                            status.setIdRekamMedisPasien(objt.getString("id_rm"));
+                            status.setIsPengisian("Y");
+                            status.setAction("C");
+                            status.setFlag("Y");
+                            status.setCreatedWho(userLogin);
+                            status.setCreatedDate(time);
+                            status.setLastUpdateWho(userLogin);
+                            status.setLastUpdate(time);
+                            response = rekamMedikBo.saveAdd(status);
+                        }
+                    }
+                } catch (GeneralBOException e) {
+                    response.setStatus("Error");
+                    response.setMsg("Found Error " + e.getMessage());
+                    return response;
+                }
+
+            }
+        } catch (JSONException e) {
+            response.setStatus("error");
+            response.setMsg("Error when JSON parse, " + e.getMessage());
+        }
+        return response;
+    }
+
+    public List<Partograf> getListDetailPartograf(String idDetailCheckup) {
+        List<Partograf> list = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PartografBo partografBo = (PartografBo) ctx.getBean("partografBoProxy");
+        if (!"".equalsIgnoreCase(idDetailCheckup)) {
+            try {
+                Partograf partograf = new Partograf();
+                partograf.setIdDetailCheckup(idDetailCheckup);
+                list = partografBo.getByCriteria(partograf);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error" + e.getMessage());
+            }
+        }
+        return list;
+    }
+
+    public CrudResponse deletePartograf(String idDetailCheckup) {
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PartografBo partografBo = (PartografBo) ctx.getBean("partografBoProxy");
+        if (!"".equalsIgnoreCase(idDetailCheckup)) {
+            try {
+                Partograf partograf = new Partograf();
+                partograf.setIdDetailCheckup(idDetailCheckup);
+                partograf.setLastUpdate(time);
+                partograf.setLastUpdateWho(userLogin);
+                response = partografBo.saveDelete(partograf);
+            } catch (GeneralBOException e) {
+                response.setStatus("error");
+                response.setMsg("Found Error, "+e.getMessage());
                 logger.error("Found Error" + e.getMessage());
             }
         }

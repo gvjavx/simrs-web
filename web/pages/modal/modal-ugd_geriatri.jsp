@@ -160,7 +160,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="custom02" style="margin-left: -20px">
-                                    <input type="radio" value="Merah" id="triase1" name="radio_triase" /><label for="triase1" >Merah</label>
+                                    <input onclick="setDataTriase(this.value)" type="radio" value="Merah" id="triase1" name="radio_triase" /><label for="triase1" >Merah</label>
                                 </div>
                             </div>
                             <div class="col-md-1">
@@ -168,7 +168,7 @@
                             </div>
                             <div class="col-md-2">
                                 <div class="custom02" style="margin-left: -20px">
-                                    <input type="radio" value="Kuning" id="triase2" name="radio_triase" /><label for="triase2">Kuning</label>
+                                    <input onclick="setDataTriase(this.value)" type="radio" value="Kuning" id="triase2" name="radio_triase" /><label for="triase2">Kuning</label>
                                 </div>
                             </div>
                         </div>
@@ -180,7 +180,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="custom02" style="margin-left: -20px">
-                                    <input type="radio" value="Hijau" id="triase3" name="radio_triase" /><label for="triase3">Hijau</label>
+                                    <input onclick="setDataTriase(this.value)" type="radio" value="Hijau" id="triase3" name="radio_triase" /><label for="triase3">Hijau</label>
                                 </div>
                             </div>
                             <div class="col-md-1">
@@ -188,146 +188,12 @@
                             </div>
                             <div class="col-md-2">
                                 <div class="custom02" style="margin-left: -20px">
-                                    <input type="radio" value="Hitam" id="triase4" name="radio_triase" /><label for="triase4">Hitam</label>
+                                    <input onclick="setDataTriase(this.value)" type="radio" value="Hitam" id="triase4" name="radio_triase" /><label for="triase4">Hitam</label>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <hr class="garis">
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-3" >Keadaan Umum</label>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="Gelisah/Koma" id="keadaan1" name="radio_keadaan" /><label for="keadaan1">Gelisah/Koma</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="Lemah/Kesakitan" id="keadaan2" name="radio_keadaan" /><label for="keadaan2">Lemah/Kesakitan</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="Cukup" id="keadaan3" name="radio_keadaan" /><label for="keadaan3">Cukup</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="garis">
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-3" >Pernafasan</label>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="< 12 / > 30x/m" id="napas1" name="radio_napas" /><label for="napas1">< 12 / > 30x/m</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="21-30x/m" id="napas2" name="radio_napas" /><label for="napas2">21-30x/m</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="12-20x/m" id="napas3" name="radio_napas" /><label for="napas3">12-20x/m</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="garis">
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-3" >Nadi</label>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="< 50 / > 150x/m" id="nadi1" name="radio_nadi" /><label for="nadi1"><50/>150x/m</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="101-150x/m" id="nadi2" name="radio_nadi" /><label for="nadi2">101-150x/m</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="50-100x/m" id="nadi3" name="radio_nadi" /><label for="nadi3">50-100x/m</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="garis">
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-3" >Akral</label>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="< 12 / > 30x/m" id="akral1" name="radio_akral" /><label for="akral1">Dingin</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="21-30x/m" id="akral2" name="radio_akral" /><label for="akral2">Dingin</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="12-20x/m" id="akral3" name="radio_akral" /><label for="akral3">Hangat</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="garis">
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-3" >CRT</label>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="> 2 detik" id="crt1" name="radio_crt" /><label for="crt1">> 2 detik</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="< 2 detik" id="crt2" name="radio_crt" /><label for="crt2">< 2 detik</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="< 2 detik" id="crt3" name="radio_crt" /><label for="crt3">< 2 detik</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="garis">
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-3" >Keadaan Awal</label>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="Meninggal" id="ka1" name="radio_ka" /><label for="ka1">Meninggal</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="Kaku Mayat" id="ka2" name="radio_ka" /><label for="ka2">Kaku Mayat</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="Lebam Mayat" id="ka3" name="radio_ka" /><label for="ka3">Lebam Mayat</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <div class="col-md-offset-3 col-md-4">
-                                <div class="custom02" >
-                                    <input type="radio" value="Refleks Kornea (-)" id="ka4" name="radio_ka" /><label for="ka4">Refleks Kornea (-)</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div id="set_triase"></div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">

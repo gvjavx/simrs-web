@@ -2159,6 +2159,7 @@
 
 <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenUgdAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/CatatanTerintegrasiAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/MppAction.js"/>'></script>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/datapasien.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenUgd.js"/>'></script>
@@ -2166,6 +2167,7 @@
 <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/nyeri.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/cppt.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/mpp.js"/>'></script>
 
 <script type='text/javascript'>
 
