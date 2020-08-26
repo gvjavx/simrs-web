@@ -557,15 +557,22 @@
         var str = "<div class='row'>" +
                 "<div class='col-md-4'></div>" +
                 "<div class=\"col-md-6\">" +
-                "<select class='form-control' id='total-" + n + "-"+ idParam +"'>";
+                "<div id='body-total-"+ n + "-"+ idParam +"'>" +
+//                "<select class='form-control' id='total-" + n + "-"+ idParam +"'>";
+                "<select class='form-control' id='total-" + n + "-"+ idParam +"' onchange=\"changeInput(\'total-" + n + "-" + idParam + "\', this.value)\">";
 
-            BudgetingNilaiDasarAction.getListNilaiDasarEdit(tahun, function (list) {
-                $.each(list, function (i, item) {
-                    str += "<option value='"+item.nilai+"' >"+item.keterangan+"</option>";
-                });
-            });
+        str += "<option value=''>[Select One]</option>" +
+            "<option value='combo'>Combo Nilai Dasar</option>"+
+            "<option value='input'>Input Manual</option>";
+
+//            BudgetingNilaiDasarAction.getListNilaiDasarEdit(tahun, function (list) {
+//                $.each(list, function (i, item) {
+//                    str += "<option value='"+item.nilai+"' >"+item.keterangan+"</option>";
+//                });
+//            });
 
         str += "</select>" +
+            "</div>" +
             "</div>" +
             "<div class=\"col-md-2\">"+
                 "<select id='opr-"+ n +"-"+ idParam +"' class='form-control'>" +
@@ -583,6 +590,22 @@
         str += "<div id='hitung-"+ n +"'></div>";
         $("#hitung-" + i ).html(str);
         console.log("n = " + i);
+    }
+
+    function changeInput(id, value) {
+        var str = "";
+        if (value == "combo"){
+            BudgetingNilaiDasarAction.getListNilaiDasarEdit(tahun, function (list) {
+                $.each(list, function (i, item) {
+                    str += "<option value='"+item.nilai+"' >"+item.keterangan+"</option>";
+                });
+                $("#"+id).html(str);
+                $("#"+id).removeAttr('onchange');
+            });
+        } else {
+            str += "<input type=\"number\" class=\"form-control\" id=\""+id+"\" />";
+            $("#body-"+id).html(str);
+        }
     }
 
     function showAdd(idParam) {
