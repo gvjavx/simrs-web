@@ -2,6 +2,7 @@ package com.neurix.akuntansi.transaksi.budgetingperhitungan.dao;
 
 import com.neurix.akuntansi.transaksi.budgeting.model.Budgeting;
 import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ItAkunPerhitunganBudgetingEntity;
+import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ParameterBudgeting;
 import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.PerhitunganBudgeting;
 import com.neurix.common.dao.GenericDao;
 import org.hibernate.Criteria;
@@ -330,6 +331,57 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
             return "Y";
         }
         return "N";
+    }
+
+    public List<ParameterBudgeting> getListMasterByIdKategori(String idKategori){
+
+        String SQL = "SELECT a.master_id, b.nama\n" +
+                "FROM im_akun_parameter_budgeting a\n" +
+                "INNER JOIN im_akun_master b ON b.nomor_master = a.master_id\n" +
+                "WHERE a.id_kategori_budgeting = :idKategori \n" +
+                "GROUP BY a.master_id, b.nama";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idKategori", idKategori)
+                .list();
+
+        List<ParameterBudgeting> budgetingList = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                ParameterBudgeting bg = new ParameterBudgeting();
+                bg.setMasterId(obj[0].toString());
+                bg.setNamaMaster(obj[1].toString());
+                budgetingList.add(bg);
+            }
+        }
+
+        return budgetingList;
+    }
+
+    public List<ParameterBudgeting> getListDivisiByIdKategoriAndMaster(String idKategori, String masterId){
+
+        String SQL = "SELECT a.divisi_id, b.position_name\n" +
+                "FROM im_akun_parameter_budgeting a\n" +
+                "INNER JOIN im_position b ON b.kodering = a.divisi_id\n" +
+                "WHERE a.id_kategori_budgeting = :kategori \n" +
+                "AND a.master_id = :master \n" +
+                "GROUP BY a.divisi_id, b.position_name";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("kategori", idKategori)
+                .setParameter("master", masterId)
+                .list();
+
+        List<ParameterBudgeting> budgetingList = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                ParameterBudgeting bg = new ParameterBudgeting();
+                bg.setMasterId(obj[0].toString());
+                bg.setNamaMaster(obj[1].toString());
+                budgetingList.add(bg);
+            }
+        }
+        return budgetingList;
     }
 
 }

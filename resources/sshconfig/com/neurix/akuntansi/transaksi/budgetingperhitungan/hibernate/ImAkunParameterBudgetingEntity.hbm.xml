@@ -41,6 +41,12 @@
             <basic name="idKategoriBudgeting">
                 <column name="id_kategori_budgeting"/>
             </basic>
+            <basic name="masterId">
+                <column name="master_id"/>
+            </basic>
+            <basic name="divisiId">
+                <column name="divisi_id"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>
