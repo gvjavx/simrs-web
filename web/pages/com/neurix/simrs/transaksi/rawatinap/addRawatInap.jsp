@@ -3670,6 +3670,7 @@
 <script type='text/javascript' src='<s:url value="/pages/dist/js/cppt.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/resikojatuh.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/tindakan_medis.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/custome_form.js"/>'></script>
 
 
 <script type='text/javascript'>

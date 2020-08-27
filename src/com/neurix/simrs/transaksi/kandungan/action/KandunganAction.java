@@ -321,6 +321,20 @@ public class KandunganAction {
         return list;
     }
 
+    public List<Partograf> getListDetailByDate(String idDetailCheckup, String tanggal) {
+        List<Partograf> list = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PartografBo partografBo = (PartografBo) ctx.getBean("partografBoProxy");
+        if (!"".equalsIgnoreCase(idDetailCheckup) && !"".equalsIgnoreCase(tanggal)) {
+            try {
+                list = partografBo.getListByDate(idDetailCheckup, tanggal);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error" + e.getMessage());
+            }
+        }
+        return list;
+    }
+
     public CrudResponse deletePartograf(String idPatograf) {
         CrudResponse response = new CrudResponse();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();

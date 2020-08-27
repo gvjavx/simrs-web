@@ -78,6 +78,487 @@ function tindakanMedis(id) {
     var dataCari = [];
 
     data.push({
+        'id': '08',
+        'parameter': 'Pengertian',
+        'informasi': 'Pemberian alat bantu nafas (mekanik) yang memberikan bantuan nafas dengan cara mebantu sebagian atau mengambil alih semua fungsi ventilasi',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '08',
+        'parameter': 'Dasar Diagnosis',
+        'informasi': 'Cedera otak berat, Post operasi trepanasi, Potensial terjadi gangguan airway dan breathing, Hypoxia (Sesak, RR > 35, Nafas Cuping hidung, Adanya gerak nafas tambahan retraksi kalau berat tampak cyanosis)',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '08',
+        'parameter': 'Tindakan Medis',
+        'informasi': 'Intubasi, Ventilator(Setting mode)',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '08',
+        'parameter': 'Tata Cara',
+        'informasi': 'Setting mode ventilator, koneksikan tubing ventilator ke ETT',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '08',
+        'parameter': 'Tujuan',
+        'informasi': 'Pemenuhan kebutuhan Oksigen (oksigenasi)',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '08',
+        'parameter': 'Resiko',
+        'informasi': 'Pneumo thoraks, Hypotensi',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '08',
+        'parameter': 'Komplikasi',
+        'informasi': 'VAP, pneumothorax, barrotrauma',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '08',
+        'parameter': 'Prognosa',
+        'informasi': 'Ad Bonam',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '08',
+        'parameter': 'Tindakan Alternatif',
+        'informasi': '',
+        'keterangan': 'i'
+    });
+    data.push({
+        'id': '08',
+        'parameter': 'Biaya*',
+        'informasi': '',
+        'keterangan': 'i'
+    });
+
+    data.push({
+        'id': '01',
+        'parameter': 'Diagnosa',
+        'informasi': 'Hernia Inguinalis Lateralis|Hernia Inguinalis Medialis|Hernia',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '01',
+        'parameter': 'Dasar Diagnosis',
+        'informasi': 'Benjolan di daerah inguinal hilang timbul',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '01',
+        'parameter': 'Tindakan kedokteran',
+        'informasi': 'Herniotomy & Hernioraphy|Ligasi tinggi',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '01',
+        'parameter': 'Indikasi Tindakan',
+        'informasi': 'Mencegah terjadinya cedera organ dalam dinding perut karena masuk dan terjepit oleh kantong/ cincin hernia',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '01',
+        'parameter': 'Tujuan',
+        'informasi': 'Menutup kantong hernia agar organ dalam rongga perut tidak masuk ke kantong dan mengalami cidera',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '01',
+        'parameter': 'Resiko',
+        'informasi': 'Perdarahan, cidera usus, cidera kandung kemih',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '01',
+        'parameter': 'Komplikasi',
+        'informasi': 'Infeksi luka operasi, infeksi dalam rongga perut',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '01',
+        'parameter': 'Prognosa',
+        'informasi': 'Ad Bonam',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '01',
+        'parameter': 'Alternatif',
+        'informasi': '',
+        'keterangan': 'i'
+    });
+
+    data.push({
+        'id': '02',
+        'parameter': 'Diagnosa',
+        'informasi': 'G|P',
+        'keterangan': 'i'
+    });
+    data.push({
+        'id': '02',
+        'parameter': 'Dasar Diagnosis',
+        'informasi': 'USG|Klinis',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '02',
+        'parameter': 'Tindakan Kedokteran',
+        'informasi': 'Low Segment Caesarean Section (LSCS)',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '02',
+        'parameter': 'Indikasi Tindakan',
+        'informasi': 'Ibu|Janin',
+        'keterangan': 'i'
+    });
+    data.push({
+        'id': '02',
+        'parameter': 'Tata cara',
+        'informasi': 'Incisi laparatomy, incisi segmen bawah rahim, prosedur melahirkan janin.',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '02',
+        'parameter': 'Tujuan',
+        'informasi': 'Evakuasi/ melahirkan bayi melalui insisi perut',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '02',
+        'parameter': 'Resiko',
+        'informasi': 'Perdarahan > 1 liter, robekan rahim, cedera usus, cedera kandung kemih, perawatan ICU, Angkat rahim, kematian ibu',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '02',
+        'parameter': 'Komplikasi',
+        'informasi': 'Infeksi luka operasi, infeksi organ dalam rongga perut',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '02',
+        'parameter': 'Prognosa',
+        'informasi': 'Ad Bonam',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '02',
+        'parameter': 'Alternatif',
+        'informasi': '',
+        'keterangan': 'i'
+    });
+
+    data.push({
+        'id': '03',
+        'parameter': 'Diagnosa',
+        'informasi': 'Appendicitis Acut',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '03',
+        'parameter': 'Dasar Diagnosis',
+        'informasi': 'Nyeri area McBurney|Rovsing`s Sign|Blumberg Sign|Demam|Leucositosis',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '03',
+        'parameter': 'Tindakan Kedokteran',
+        'informasi': 'Appendictomy|Explorasi Laparatomy',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '03',
+        'parameter': 'Indikasi Tindakan',
+        'informasi': 'Appendicitis Acut|Peri Appendiculair Infiltrat|Appendix Perforasi',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '03',
+        'parameter': 'Tata cara',
+        'informasi': 'Incisi daerah abdomen, identifikasi, memotong dan menutup appendiks, merawat perdarahan',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '03',
+        'parameter': 'Tujuan',
+        'informasi': 'Membuang organ yang terinfeksi agar infeksi tidak menyebar ke organ lain',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '03',
+        'parameter': 'Resiko',
+        'informasi': 'Perdarahan, cidera usus, cidera kandung kemih',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '03',
+        'parameter': 'Komplikasi',
+        'informasi': 'Infeksi luka operasi, infeksi dalam rongga perut',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '03',
+        'parameter': 'Prognosa',
+        'informasi': 'Ad Bonam',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '03',
+        'parameter': 'Alternatif',
+        'informasi': '',
+        'keterangan': 'i'
+    });
+
+    data.push({
+        'id': '04',
+        'parameter': 'Diagnosa',
+        'informasi': 'Soft Tissue Tumor',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '04',
+        'parameter': 'Dasar Diagnosis',
+        'informasi': 'Benjolan abnormal, pembesaran lambat',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '04',
+        'parameter': 'Tindakan Kedokteran',
+        'informasi': 'Ekstirpasi|Eksisi',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '04',
+        'parameter': 'Indikasi Tindakan',
+        'informasi': 'Benjolan mengganggu rasa nyaman, menimbulkan nyeri, menekan jaringan/ organ di sekitarnya misalnya syaraf, pembuluh darah dll.',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '04',
+        'parameter': 'Tata cara',
+        'informasi': 'Incisi di permukaan kulit pada benjolan, identifikasi dan mengangkat tumor, jahit kembali',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '04',
+        'parameter': 'Tujuan',
+        'informasi': 'Membuang benjolan abnormal, menghilangkan penekanan pada jaringan sekitar',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '04',
+        'parameter': 'Resiko',
+        'informasi': 'Perdarahan, syaraf perifer dan tendon putus',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '04',
+        'parameter': 'Komplikasi',
+        'informasi': 'Infeksi luka operasi',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '04',
+        'parameter': 'Prognosa',
+        'informasi': 'Ad Bonam',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '04',
+        'parameter': 'Alternatif',
+        'informasi': '',
+        'keterangan': 'i'
+    });
+
+    data.push({
+        'id': '05',
+        'parameter': 'Diagnosa',
+        'informasi': 'Blighted Ovum|Menometrorargia|Abortus Incomplet|DUB|Sisa Kehamilan',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '05',
+        'parameter': 'Dasar Diagnosis',
+        'informasi': 'USG|Pendarahan',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '05',
+        'parameter': 'Tindakan Kedokteran',
+        'informasi': 'Delatasi|Kurretage',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '05',
+        'parameter': 'Indikasi Tindakan',
+        'informasi': '',
+        'keterangan': 'i'
+    });
+    data.push({
+        'id': '05',
+        'parameter': 'Tata cara',
+        'informasi': 'Mengeluarkan jaringan abnormal/ sisa kehamilan  dalam rongga rahim, menggunakan instrumen kurretage',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '05',
+        'parameter': 'Tujuan',
+        'informasi': 'Mengeluarkan isi uterus (jaringan abnormal)',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '05',
+        'parameter': 'Resiko',
+        'informasi': 'Perdarahan, perforasi uterus, cidera usus, cidera kandung kemih',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '05',
+        'parameter': 'Komplikasi',
+        'informasi': 'Infeksi luka operasi, infeksi dalam rongga perut',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '05',
+        'parameter': 'Prognosa',
+        'informasi': 'Ad Bonam',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '05',
+        'parameter': 'Alternatif',
+        'informasi': '',
+        'keterangan': 'i'
+    });
+
+    data.push({
+        'id': '06',
+        'parameter': 'Diagnosa',
+        'informasi': '',
+        'keterangan': 'i'
+    });
+    data.push({
+        'id': '06',
+        'parameter': 'Dasar Diagnosis',
+        'informasi': 'Klinis : Deformitas, krepitasi|X Foto',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '06',
+        'parameter': 'Tindakan Kedokteran',
+        'informasi': 'DEBRIDEMENT|ORIF|CRIF',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '06',
+        'parameter': 'Indikasi Tindakan',
+        'informasi': 'Nyeri',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '06',
+        'parameter': 'Tata cara',
+        'informasi': 'Incisi di permukaan kulit, identifikasi tulang, reposisi, pasang fixasi, jahit kembali',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '06',
+        'parameter': 'Tujuan',
+        'informasi': 'Menyambungkan tulang yang patah',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '06',
+        'parameter': 'Resiko',
+        'informasi': 'Perdarahan, syaraf dan tendon putus',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '06',
+        'parameter': 'Komplikasi',
+        'informasi': 'Infeksi luka operasi, osteomyelitis, reaksi alergi implant',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '06',
+        'parameter': 'Prognosa',
+        'informasi': 'Ad Bonam',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '06',
+        'parameter': 'Alternatif',
+        'informasi': '',
+        'keterangan': 'i'
+    });
+
+    data.push({
+        'id': '07',
+        'parameter': 'Diagnosa',
+        'informasi': '',
+        'keterangan': 'i'
+    });
+    data.push({
+        'id': '07',
+        'parameter': 'Dasar Diagnosis',
+        'informasi': 'USG|Anamnese',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '07',
+        'parameter': 'Tindakan Kedokteran',
+        'informasi': 'Laparatomy',
+        'keterangan': 'i'
+    });
+    data.push({
+        'id': '07',
+        'parameter': 'Indikasi Tindakan',
+        'informasi': '',
+        'keterangan': 'i'
+    });
+    data.push({
+        'id': '07',
+        'parameter': 'Tata cara',
+        'informasi': 'Incisi laparatomy, identifikasi, pengangkatan tumor/ jaringan infeksi',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '07',
+        'parameter': 'Tujuan',
+        'informasi': 'Evakuasi tumor',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '07',
+        'parameter': 'Resiko',
+        'informasi': 'Perdarahan, infertilisasi, Pengangkatan rahim, cidera usus, kematian',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '07',
+        'parameter': 'Komplikasi',
+        'informasi': 'Infeksi luka operasi, infeksi organ dalam rongga perut',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '07',
+        'parameter': 'Prognosa',
+        'informasi': 'Ad Bonam',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '07',
+        'parameter': 'Alternatif',
+        'informasi': '',
+        'keterangan': 'i'
+    });
+    data.push({
         'id': '02',
         'parameter': 'Diagnosa',
         'informasi': 'G|P',
@@ -383,6 +864,72 @@ function tindakanMedis(id) {
         'keterangan': 'i'
     });
 
+    data.push({
+        'id': '09',
+        'parameter': 'Diagnosis (WD dan DD)',
+        'informasi': '',
+        'keterangan': 'i'
+    });
+    data.push({
+        'id': '09',
+        'parameter': 'Dasar Diagnosis',
+        'informasi': 'Wawancara riwayat penyakit, pemeriksaan fisik, pemeriksaan laboratorium',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '09',
+        'parameter': 'Tindakan Kedokteran',
+        'informasi': 'Tranfusi Darah',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '09',
+        'parameter': 'Indikasi Tindakan',
+        'informasi': 'Untuk perbaiakan keadaan umum pada kondisi anemia',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '09',
+        'parameter': 'Tata Cara',
+        'informasi': 'Memasukkan darah/produk darah melalui jalur intravena sesua prosedur yang dijelaskan secara lisan',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '09',
+        'parameter': 'Tujuan',
+        'informasi': 'Meningkatkan kadar produk sarah yang dibutuhkan sesuai target',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '09',
+        'parameter': 'Resiko',
+        'informasi': 'Reaksi tranfusi ringan sampai syok (termasuk berbagai kemungkinan yang tidak diprediksi sebelumnya)',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '09',
+        'parameter': 'Komplikasi',
+        'informasi': 'Reaksi tranfusi ringan sampai syok (termasuk berbagai kemungkinan yang tidak diprediksi sebelumnya)',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '09',
+        'parameter': 'Prognosis',
+        'informasi': '',
+        'keterangan': 'i'
+    });
+    data.push({
+        'id': '09',
+        'parameter': 'Alternattif',
+        'informasi': 'CAPD, Cangkok ginjal',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '09',
+        'parameter': 'Perkiraan Biaya',
+        'informasi': '',
+        'keterangan': 'i'
+    });
 
     if (id != '') {
         $.each(data, function (i, item) {

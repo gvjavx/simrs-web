@@ -152,6 +152,11 @@ public class PartografBoImpl implements PartografBo {
         return response;
     }
 
+    @Override
+    public List<Partograf> getListByDate(String idDetailCheckup, String tanggal) throws GeneralBOException {
+        return partografDao.getListByDate(idDetailCheckup, tanggal);
+    }
+
     public static Logger getLogger() {
         return logger;
     }

@@ -11,6 +11,12 @@ function showModalRB(jenis, idRM, isSetIdRM) {
     if ("asuhan_kebidanan_rb" == jenis) {
         listAsuhanKeperawatanRB(jenis);
     }
+    if("catatan_persalinan" == jenis){
+        setForm('temp_'+jenis, 'catatan');
+    }
+    if("kala1" == jenis){
+        setForm('temp_'+jenis, 'kala1');
+    }
     $('#modal-rb-' + jenis).modal({show: true, backdrop: 'static'});
 }
 
@@ -2106,6 +2112,84 @@ function saveRB(jenis, ket) {
         }
     }
 
+    if("catatan_persalinan" == jenis){
+        var jml = $('.form-set');
+        var isIsi = 0;
+
+        $.each(jml, function (i, item) {
+            var label = $('#parameter'+i).text();
+            var jawaban = $('[name=jawaban'+i+']');
+            var cekType = jawaban[0].type;
+            if("text" == cekType){
+                if(jawaban[0].value != ''){
+                    data.push({
+                        'parameter': label,
+                        'jawaban': jawaban[0].value,
+                        'keterangan': jenis,
+                        'jenis': ket,
+                        'id_detail_checkup': idDetailCheckup
+                    });
+                    isIsi = parseInt(isIsi) + 1;
+                }
+            }
+            if("checkbox" == cekType){
+                var temp = "";
+                $.each(jawaban, function (ic, itemc) {
+                    if(itemc.checked){
+                        if(temp != ''){
+                            temp = temp+'|'+itemc.value;
+                        }else{
+                            temp = itemc.value;
+                        }
+                    }
+                });
+                if(temp != ''){
+                    data.push({
+                        'parameter': label,
+                        'jawaban': temp,
+                        'keterangan': jenis,
+                        'jenis': ket,
+                        'id_detail_checkup': idDetailCheckup
+                    });
+                    isIsi = parseInt(isIsi) + 1;
+                }
+            }
+            if("radio" == cekType){
+                var temp = "";
+                $.each(jawaban, function (ir, itemr) {
+                    if(itemr.checked){
+                        temp = itemr.value;
+                    }
+                });
+                if(temp != ''){
+                    data.push({
+                        'parameter': label,
+                        'jawaban': temp,
+                        'keterangan': jenis,
+                        'jenis': ket,
+                        'id_detail_checkup': idDetailCheckup
+                    });
+                    isIsi = parseInt(isIsi) + 1;
+                }
+            }
+            if("textarea" == cekType){
+                if(jawaban[0].value != ''){
+                    data.push({
+                        'parameter': label,
+                        'jawaban': jawaban[0].value,
+                        'keterangan': jenis,
+                        'jenis': ket,
+                        'id_detail_checkup': idDetailCheckup
+                    });
+                    isIsi = parseInt(isIsi) + 1;
+                }
+            }
+        });
+        if(jml.length == isIsi){
+            cek = true;
+        }
+    }
+
     if (cek) {
         var result = JSON.stringify(data);
         var pasienData = JSON.stringify(dataPasien);
@@ -2181,11 +2265,15 @@ function detailRB(jenis) {
                     $.each(res, function (i, item) {
                         var tanggal = converterDate(new Date(item.createdDate));
                         var tempTgl = "";
-                        var btn = "";
+                        var btn1 = "";
+                        var btn2 = "";
+                        var btn3 = "";
 
                         if (i == 0) {
                             tempTgl = tanggal;
-                            btn = '<i class="fa fa-line-chart" style="cursor: pointer; color: #1ab7ea" onclick="showChartHemodinamika(\'' + jenis + '\', \'' + item.createdDate + '\')"></i>';
+                            btn1 = '<i class="fa fa-line-chart hvr-grow" style="cursor: pointer; color: #1aff1a" onclick="showChart(\'janin\', \'' + tanggal + '\')"></i>';
+                            btn2 = '<i class="fa fa-line-chart hvr-grow" style="cursor: pointer; color: #ff751a; margin-left: 8px" onclick="showChart(\'kemajuan\', \'' + tanggal + '\')"></i>';
+                            btn3 = '<i class="fa fa-line-chart hvr-grow" style="cursor: pointer; color: #0066ff; margin-left: 8px" onclick="showChart(\'ibu\', \'' + tanggal + '\')"></i>';
                         } else {
                             var tgl = res[i - 1]["createdDate"];
                             var tglB = converterDate(new Date(tgl));
@@ -2193,24 +2281,28 @@ function detailRB(jenis) {
                                 tempTgl = "";
                             } else {
                                 tempTgl = tanggal;
-                                btn = '<i class="fa fa-line-chart" style="cursor: pointer; color: #1ab7ea" onclick="showChartHemodinamika(\'' + jenis + '\', \'' + item.createdDate + '\')"></i>';
+                                btn1 = '<i class="fa fa-line-chart hvr-grow" style="cursor: pointer; color: #1aff1a" onclick="showChart(\'janin\', \'' + tanggal + '\')"></i>';
+                                btn2 = '<i class="fa fa-line-chart hvr-grow" style="cursor: pointer; color: #ff751a; margin-left: 8px" onclick="showChart(\'kemajuan\', \'' + tanggal + '\')"></i>';
+                                btn3 = '<i class="fa fa-line-chart hvr-grow" style="cursor: pointer; color: #0066ff; margin-left: 8px" onclick="showChart(\'ibu\', \'' + tanggal + '\')"></i>';
                             }
                         }
 
                         body += '<tr>' +
-                            '<td>' + tanggal+' '+item.waktu +'</td>' +
-                            '<td>' + cekItemIsNull(item.djj) + '</td>' +
-                            '<td>' + cekItemIsNull(item.airKetuban) + '</td>' +
-                            '<td>' + cekItemIsNull(item.molase) + '</td>' +
-                            '<td>' + cekItemIsNull(item.pembukaan) + '</td>' +
-                            '<td>' + cekItemIsNull(item.kontraksi) + '</td>' +
-                            '<td>' + cekItemIsNull(item.oksitosin) + '</td>' +
-                            '<td>' + cekItemIsNull(item.tetes) + '</td>' +
-                            '<td>' + cekItemIsNull(item.obatCairan) + '</td>' +
-                            '<td>' + cekItemIsNull(item.nadi) + '</td>' +
-                            '<td>' + cekItemIsNull(item.tensi) + '</td>' +
-                            '<td>' + cekItemIsNull(item.suhu) + '</td>' +
-                            '<td>' + cekItemIsNull(item.rr) + '</td>' +
+                            '<td align="center">' + btn1 + '&nbsp;' + btn2 + '&nbsp;' + btn3 + '</td>' +
+                            '<td>' + tempTgl + ' ' + '<span class="pull-right">' + item.waktu + '</span></td>' +
+                            '<td align="center">' + cekItemIsNull(item.djj) + '</td>' +
+                            '<td align="center">' + cekItemIsNull(item.airKetuban) + '</td>' +
+                            '<td align="center">' + cekIconsIsNotNull(item.molase) + '</td>' +
+                            '<td align="center">' + cekItemIsNull(item.pembukaan) + '</td>' +
+                            '<td align="center">' + cekItemIsNull(item.kontraksi) + '</td>' +
+                            '<td align="center">' + cekIconsIsNotNull(item.oksitosin) + '</td>' +
+                            '<td align="center">' + cekItemIsNull(item.tetes) + '</td>' +
+                            '<td align="center">' + cekItemIsNull(item.obatCairan) + '</td>' +
+                            '<td align="center">' + cekItemIsNull(item.nadi) + '</td>' +
+                            '<td align="center">' + cekItemIsNull(item.tensi) + '</td>' +
+                            '<td align="center">' + cekItemIsNull(item.suhu) + '</td>' +
+                            '<td align="center">' + cekItemIsNull(item.rr) + '</td>' +
+                            '<td align="center">' + '<i class="fa fa-trash hvr-grow" style="color: red"></i>' + '</td>' +
                             '</tr>';
                         cekData = true;
                     });
@@ -2220,14 +2312,16 @@ function detailRB(jenis) {
                         '</tr>';
                 }
 
-                if(cekData){
-                    head = '<tr>' +
-                        '<td rowspan="2">Waktu</td>' +
-                        '<td colspan="3">Kondisi Janin</td>' +
-                        '<td colspan="2">Kemajuan Persalinan</td>' +
-                        '<td colspan="7">Kondisi Ibu</td>' +
+                if (cekData) {
+                    head = '<tr style="font-weight: bold">' +
+                        '<td width="10%" rowspan="2" align="center" style="vertical-align: middle">Grafik</td>' +
+                        '<td width="15%" rowspan="2" align="center" style="vertical-align: middle">Waktu</td>' +
+                        '<td colspan="3" align="center" style="vertical-align: middle">Kondisi Janin</td>' +
+                        '<td colspan="2" align="center" style="vertical-align: middle">Kemajuan Persalinan</td>' +
+                        '<td colspan="7" align="center" style="vertical-align: middle">Kondisi Ibu</td>' +
+                        '<td rowspan="2" align="center" style="vertical-align: middle">Action</td>' +
                         '</tr>' +
-                        '<tr>' +
+                        '<tr style="font-weight: bold">' +
                         '<td>DJJ</td>' +
                         '<td>AKT</td>' +
                         '<td>MOL</td>' +
@@ -2236,16 +2330,44 @@ function detailRB(jenis) {
                         '<td>OKS</td>' +
                         '<td>TTS</td>' +
                         '<td>ODC</td>' +
-                        '<td>NAD</td>' +
-                        '<td>TEN</td>' +
-                        '<td>SUHU</td>' +
+                        '<td>Nadi</td>' +
+                        '<td>Tensi</td>' +
+                        '<td>Suhu</td>' +
                         '<td>RR</td>' +
                         '</tr>';
                 }
                 var table = '<table style="font-size: 12px" class="table table-bordered">' +
                     '<thead>' + head + '</thead>' +
                     '<tbody>' + first + body + last + kesimpulan + forTTD + '</tbody>' +
-                    '</table>';
+                    '</table>' +
+                    '<div class="row">' +
+                    '<label class="col-md-12" style="font-size: 12">Keterangan</label>' +
+                    '<div class="form-group" style="font-size: 12px">' +
+                    '<div class="col-md-4">' +
+                    '<ul style="margin-left: 15px">' +
+                    '<li>DJJ (Detak Jantung Janin)</li>' +
+                    '<li>AKT (Air Kebutan)</li>' +
+                    '<li>MOL (Molase)</li>' +
+                    '<li>PEM (Pembukaan serviks)</li>' +
+                    '</ul>' +
+                    '</div>' +
+                    '<div class="col-md-4">' +
+                    '<ul>' +
+                    '<li>KON (Kontrkasi)</li>' +
+                    '<li>OKS (Oksitosin)</li>' +
+                    '<li>TTS (Tetes/menit)</li>' +
+                    '<li>ODC (Obat dan cairan infus)</li>' +
+                    '</ul>' +
+                    '</div>' +
+                    '<div class="col-md-4">' +
+                    '<ul class="fa-ul">' +
+                    '<li><span class="fa-li"><i class="fa fa-line-chart" style="color: #1aff1a"></i></span> Kondisi Janin</li>' +
+                    '<li><span class="fa-li"><i class="fa fa-line-chart" style="color: #ff751a"></i></span> Kemajuan Persalinan</li>' +
+                    '<li><span class="fa-li"><i class="fa fa-line-chart" style="color: #0066ff"></i></span> Kondisi Ibu</li>' +
+                    '</ul>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
 
                 var newRow = $('<tr id="del_rb_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
                 newRow.insertAfter($('table').find('#row_rb_' + jenis));
@@ -2981,4 +3103,146 @@ function setRiwayatHamil(jenis) {
 
 function delRiwayatHamil(id) {
     $('#' + id).remove();
+}
+
+function del(jenis, ket) {
+
+}
+
+function showChart(jenis, tanggal) {
+    var title = "";
+    var data = [];
+    var xKey = "";
+    var label = "";
+    var warna = "";
+    var table = [];
+    $('#label_janin').hide();
+    $('#label_kemajuan').hide();
+    $('#label_ibu').hide();
+
+    if ("janin" == jenis) {
+        title = "Chart Kondisi Janin Pada Tanggal " + tanggal;
+        $('#label_janin').show();
+    }
+    if ("kemajuan" == jenis) {
+        title = "Chart Kemajuan Persalinan Pada Tanggal " + tanggal;
+        $('#label_kemajuan').show();
+    }
+    if ("ibu" == jenis) {
+        title = "Chart Kondisi Ibu Pada Tanggal " + tanggal;
+        $('#label_ibu').show();
+    }
+    $('#title_chart').html(title);
+    $('#modal-rb-chart_partograf').modal({show: true, backdrop: 'static'});
+    $('#modal-rb-chart_partograf').on('shown.bs.modal', function (event) {
+        $('#line-chart_partograf').empty();
+    });
+    $('#loading_page').show();
+    dwr.engine.setAsync(true);
+    KandunganAction.getListDetailByDate(idDetailCheckup, tanggal, {
+        callback: function (res) {
+            if (res.length > 0) {
+                dwr.engine.setAsync(false);
+                $('#loading_page').hide();
+                $.each(res, function (i, item) {
+                    if ("janin" == jenis) {
+                        data.push({
+                            y: item.waktu,
+                            a: item.djj
+                        });
+                        xKey = ['a'];
+                        label = ['DJJ'];
+                        warna = ['#ff0000'];
+                        table.push({
+                            'jam': item.waktu,
+                            'ketuban': item.airKetuban,
+                            'molase': item.molase
+                        });
+                    }
+                    if ("kemajuan" == jenis) {
+                        data.push({
+                            y: item.waktu,
+                            a: item.pembukaan,
+                            b: item.kontraksi
+                        });
+                        xKey = ['a', 'b'];
+                        label = ['Pembukaan', 'Kontraksi'];
+                        warna = ['#ff0000', '#0000ff'];
+                    }
+                    if ("ibu" == jenis) {
+                        data.push({
+                            y: item.waktu,
+                            a: item.tensi,
+                            b: item.nadi,
+                            c: item.suhu,
+                            d: item.rr
+                        });
+                        xKey = ['a', 'b', 'c', 'd'];
+                        label = ['Tensi', 'Nadi', 'Suhu', 'RR'];
+                        warna = ['#ff0000', '#0000ff', '#00cc00', '#ff9933'];
+                        table.push({
+                            'jam': item.waktu,
+                            'oksitosin': item.oksitosin,
+                            'tetes': item.tetes,
+                            'obat': item.obatCairan
+                        });
+                    }
+                });
+
+                $('#modal-rb-chart_partograf').on('shown.bs.modal', function (event) {
+                    var line = new Morris.Line({
+                        element: 'line-chart_partograf',
+                        resize: true,
+                        data: data,
+                        xkey: 'y',
+                        ykeys: xKey,
+                        labels: label,
+                        lineColors: warna,
+                        hideHover: 'auto',
+                        parseTime: false,
+                        lineWidth: 1
+                    });
+                });
+                var jam = "<td>Jam</td>";
+                var th1 = "";
+                var th2 = "";
+                var th3 = "";
+                var th4 = "";
+                var setTable = "";
+
+                if(table != ''){
+                    if("janin" == jenis){
+                        th1 = '<td>Air Ketuban</td>';
+                        th2 = '<td>Molase</td>';
+                        $.each(table, function (i, item) {
+                            jam += '<td>'+item.jam+'</td>';
+                            th1 += '<td>'+cekItemIsNull(item.ketuban)+'</td>';
+                            th2 += '<td>'+cekIconsIsNotNull(item.molase)+'</td>';
+                        });
+
+                        setTable =  '<tr style="font-weight: bold">'+jam+'</tr>' +
+                                    '<tr>'+th1+'</tr>'+
+                                    '<tr>'+th2+'</tr>';
+                    }
+                    if("ibu" == jenis){
+                        th1 = '<td>Oksitosin</td>';
+                        th2 = '<td>Tetes/menit</td>';
+                        th3 = '<td>Obat dan Cairan</td>';
+                        $.each(table, function (i, item) {
+                            jam += '<td>'+item.jam+'</td>';
+                            th1 += '<td>'+cekIconsIsNotNull(item.oksitosin)+'</td>';
+                            th2 += '<td>'+cekItemIsNull(item.tetes)+'</td>';
+                            th3 += '<td>'+cekItemIsNull(item.obat)+'</td>';
+                        });
+
+                        setTable =  '<tr style="font-weight: bold">'+jam+'</tr>' +
+                                    '<tr>'+th1+'</tr>'+
+                                    '<tr>'+th2+'</tr>'+
+                                    '<tr>'+th3+'</tr>';
+                    }
+                    $('#body_temp').html(setTable);
+                }
+            }
+        }
+    });
 }

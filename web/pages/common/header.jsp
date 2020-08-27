@@ -561,6 +561,14 @@ apply the skin class to the body tag so the changes take effect.
         return fa;
     }
 
+    function cekIconsIsNotNull(val) {
+        var fa = "";
+        if (val == "Ya") {
+            fa = '<i class="fa fa-check"></i>'
+        }
+        return fa;
+    }
+
     function converterDateYmd(dateTime) {
 
         var today = "";

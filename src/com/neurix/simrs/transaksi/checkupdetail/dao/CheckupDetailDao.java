@@ -198,10 +198,12 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 jenisPasien = bean.getIdJenisPeriksaPasien();
             }
 
-            if (bean.getStatusBayar() != null && !"".equalsIgnoreCase(bean.getStatusBayar())) {
-                statusBayar = "\n AND dt.status_bayar = '" + bean.getStatusBayar() + "'\n";
-            } else {
-                statusBayar = "\n AND dt.status_bayar is null \n";
+            if("kasir".equalsIgnoreCase(bean.getTypeTransaction())){
+                if (bean.getStatusBayar() != null && !"".equalsIgnoreCase(bean.getStatusBayar())) {
+                    statusBayar = "\n AND dt.status_bayar = '" + bean.getStatusBayar() + "'\n";
+                } else {
+                    statusBayar = "\n AND dt.status_bayar is null AND dt.flag_close_traksaksi 'Y' AND dt.flag_cover = 'Y'\n";
+                }
             }
 
             String forRekanan = "";

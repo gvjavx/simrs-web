@@ -41,6 +41,7 @@
                             <td>Data Partograf</td>
                             <td width="20%" align="center">
                                 <img id="btn_rb_data_partograf" class="hvr-grow" onclick="detailRB('data_partograf')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img class="hvr-grow" onclick="detailRB('data_partograf')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_rb_janin_ibu_persalinan">
@@ -53,36 +54,42 @@
                             <td>Catatan Persalinan</td>
                             <td width="20%" align="center">
                                 <img id="btn_rb_catatan_persalinan" class="hvr-grow" onclick="detailRB('catatan_persalinan')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img class="hvr-grow" onclick="detailRB('catatan_persalinan')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_rb_kala1">
                             <td>Kala I</td>
                             <td width="20%" align="center">
                                 <img id="btn_rb_kala1" class="hvr-grow" onclick="detailRB('kala1')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img class="hvr-grow" onclick="detailRB('kala1')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_rb_kala2">
                             <td>Kala II</td>
                             <td width="20%" align="center">
                                 <img id="btn_rb_kala2" class="hvr-grow" onclick="detailRB('kala2')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img class="hvr-grow" onclick="detailRB('kala2')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_rb_kala3">
                             <td>Kala III</td>
                             <td width="20%" align="center">
                                 <img id="btn_rb_kala3" class="hvr-grow" onclick="detailRB('kala3')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img class="hvr-grow" onclick="detailRB('kala3')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_rb_kala4">
                             <td>Kala IV</td>
                             <td width="20%" align="center">
                                 <img id="btn_rb_kala4" class="hvr-grow" onclick="detailRB('kala4')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img class="hvr-grow" onclick="detailRB('kala4')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_rb_bayi_baru_lahir">
                             <td>Bayi Bayu Lahir</td>
                             <td width="20%" align="center">
                                 <img id="btn_rb_bayi_baru_lahir" class="hvr-grow" onclick="detailRB('bayi_baru_lahir')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img class="hvr-grow" onclick="detailRB('bayi_baru_lahir')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_rb_pemantauan_kalan4">
@@ -403,6 +410,311 @@
                     Save
                 </button>
                 <button id="load_rb_janin_ibu_persalinan" style="display: none; cursor: no-drop" type="button"
+                        class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-rb-chart_partograf">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-line-chart"></i> <span id="title_chart"></span>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <p id="loading_page" style="color: #0F9E5E; display: none"><img style="width: 50px; height: 50px" src="<%= request.getContextPath() %>/pages/images/spinner.gif"><b>Sedang mencari data traksaksi...</b></p>
+                    <div class="box-body chart-responsive">
+                        <div class="chart" id="line-chart_partograf" style="height: 300px; width: 100%"></div>
+                        <hr class="garis">
+                        <div class="row" style="font-size: 12px; display: none" id="label_janin">
+                            <div class="form-group">
+                                <div class="col-md-offset-5 col-md-2">
+                                    <i class="fa fa-circle" style="color: #ff0000"></i> DJJ
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="font-size: 12px; display: none" id="label_kemajuan">
+                            <div class="form-group">
+                                <div class="col-md-offset-3 col-md-3">
+                                    <i class="fa fa-circle" style="color: #ff0000"></i> Pembukaan
+                                </div>
+                                <div class="col-md-3">
+                                    <i class="fa fa-circle" style="color: #0000ff"></i> Kontraksi
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="font-size: 12px; display: none" id="label_ibu">
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-2">
+                                    <i class="fa fa-circle" style="color: #ff0000"></i> Tensi
+                                </div>
+                                <div class="col-md-2">
+                                    <i class="fa fa-circle" style="color: #0000ff"></i> Nadi
+                                </div>
+                                <div class="col-md-2">
+                                    <i class="fa fa-circle" style="color: #00cc00"></i> Suhu
+                                </div>
+                                <div class="col-md-2">
+                                    <i class="fa fa-circle" style="color: #ff9933"></i> RR
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="box-body">
+                            <table class="table table-bordered table-striped" style="font-size: 12px">
+                                <tbody id="body_temp"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-rb-catatan_persalinan">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Catatan Persalinan
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none"
+                     id="warning_rb_catatan_persalinan">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_rb_catatan_persalinan"></p>
+                </div>
+                <div class="box-body">
+                    <div id="temp_catatan_persalinan"></div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_rb_catatan_persalinan" class="btn btn-success pull-right"
+                        onclick="saveRB('catatan_persalinan','partograf')"><i class="fa fa-check"></i>
+                    Save
+                </button>
+                <button id="load_rb_catatan_persalinan" style="display: none; cursor: no-drop" type="button"
+                        class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-rb-kala1">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Kala I
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none"
+                     id="warning_rb_kala1">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_rb_kala1"></p>
+                </div>
+                <div class="box-body">
+                    <div id="temp_kala1"></div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_rb_kala1" class="btn btn-success pull-right"
+                        onclick="saveRB('kala1','partograf')"><i class="fa fa-check"></i>
+                    Save
+                </button>
+                <button id="load_rb_kala1" style="display: none; cursor: no-drop" type="button"
+                        class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-rb-kala2">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Kala II
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none"
+                     id="warning_rb_kala2">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_rb_kala2"></p>
+                </div>
+                <div class="box-body">
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_rb_kala2" class="btn btn-success pull-right"
+                        onclick="saveRB('kala2','partograf')"><i class="fa fa-check"></i>
+                    Save
+                </button>
+                <button id="load_rb_kala2" style="display: none; cursor: no-drop" type="button"
+                        class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-rb-kala3">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Kala III
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none"
+                     id="warning_rb_kala3">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_rb_kala3"></p>
+                </div>
+                <div class="box-body">
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_rb_kala3" class="btn btn-success pull-right"
+                        onclick="saveRB('kala3','partograf')"><i class="fa fa-check"></i>
+                    Save
+                </button>
+                <button id="load_rb_kala3" style="display: none; cursor: no-drop" type="button"
+                        class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-rb-kala4">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Kala IV
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none"
+                     id="warning_rb_kala4">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_rb_kala4"></p>
+                </div>
+                <div class="box-body">
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_rb_kala4" class="btn btn-success pull-right"
+                        onclick="saveRB('kala4','partograf')"><i class="fa fa-check"></i>
+                    Save
+                </button>
+                <button id="load_rb_kala4" style="display: none; cursor: no-drop" type="button"
+                        class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-rb-bayi_baru_lahir">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Bayi Baru Lahir
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none"
+                     id="warning_rb_bayi_baru_lahir">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_rb_bayi_baru_lahir"></p>
+                </div>
+                <div class="box-body">
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_rb_bayi_baru_lahir" class="btn btn-success pull-right"
+                        onclick="saveRB('bayi_baru_lahir','partograf')"><i class="fa fa-check"></i>
+                    Save
+                </button>
+                <button id="load_rb_bayi_baru_lahir" style="display: none; cursor: no-drop" type="button"
+                        class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-rb-pemantauan_kalan4">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Pemantauan Kala IV
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none"
+                     id="warning_rb_pemantauan_kalan4">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_rb_pemantauan_kalan4"></p>
+                </div>
+                <div class="box-body">
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_rb_pemantauan_kalan4" class="btn btn-success pull-right"
+                        onclick="saveRB('pemantauan_kalan4','partograf')"><i class="fa fa-check"></i>
+                    Save
+                </button>
+                <button id="load_rb_pemantauan_kalan4" style="display: none; cursor: no-drop" type="button"
                         class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>

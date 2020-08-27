@@ -1227,7 +1227,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN it_simrs_riwayat_tindakan c ON b.id_detail_checkup = c.id_detail_checkup\n" +
                     "INNER JOIN im_simrs_pelayanan d ON b.id_pelayanan = d.id_pelayanan\n" +
-                    "INNER JOIN (\n" +
+                    "LEFT JOIN (\n" +
                     "SELECT * FROM(\n" +
                     "SELECT *, \n" +
                     "rank() OVER (PARTITION BY id_detail_checkup ORDER BY created_date DESC)\n" +

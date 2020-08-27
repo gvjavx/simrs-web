@@ -10,4 +10,5 @@ public interface PartografBo {
     public List<Partograf> getByCriteria(Partograf bean) throws GeneralBOException;
     public CrudResponse saveAdd(Partograf bean) throws GeneralBOException;
     public CrudResponse saveDelete(Partograf bean) throws GeneralBOException;
+    public List<Partograf> getListByDate(String idDetailCheckup, String tanggal) throws GeneralBOException;
 }

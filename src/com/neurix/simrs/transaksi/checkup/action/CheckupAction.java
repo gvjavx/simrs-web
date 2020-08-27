@@ -3394,9 +3394,10 @@ public class CheckupAction extends BaseMasterAction {
         List<HeaderCheckup> checkupList = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        String branchId = CommonUtil.userBranchLogin();
         if(idPasien != null){
             try {
-                checkupList = checkupBo.getHistoryPasien(idPasien, "");
+                checkupList = checkupBo.getHistoryPasien(idPasien, branchId);
             }catch (HibernateException e){
                 logger.error("Found Error "+e.getMessage());
             }
