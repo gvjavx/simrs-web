@@ -8,7 +8,7 @@ function showModalRB(jenis, idRM, isSetIdRM) {
         $('.btn-hide').show();
     }
     setDataPasien();
-    if("asuhan_kebidanan_rb" == jenis){
+    if ("asuhan_kebidanan_rb" == jenis) {
         listAsuhanKeperawatanRB(jenis);
     }
     $('#modal-rb-' + jenis).modal({show: true, backdrop: 'static'});
@@ -19,6 +19,7 @@ function saveRB(jenis, ket) {
     var data = [];
     var cek = false;
     var dataPasien = "";
+    var dataTemp = "";
 
     dataPasien = {
         'no_checkup': noCheckup,
@@ -1203,7 +1204,7 @@ function saveRB(jenis, ket) {
         }
     }
 
-    if("add_tindakan_rb" == jenis){
+    if ("add_tindakan_rb" == jenis) {
         var va1 = $('#rb1').val();
         var va2 = $('#rb2').val();
         var va3 = $('#rb3').val();
@@ -1213,7 +1214,7 @@ function saveRB(jenis, ket) {
         var va7 = $('#rb7').val();
         var va8 = $('#rb8').val();
         var va9 = $('#rb9').val();
-        var va10= $('#rb10').val();
+        var va10 = $('#rb10').val();
         var va11 = $('#rb11').val();
 
         var tindakan = $('#tindakan_rb').val();
@@ -1236,10 +1237,10 @@ function saveRB(jenis, ket) {
 
             data.push({
                 'parameter': 'pernyataan',
-                'jawaban': 'Pemberian Informasi dan Persetujuan Tindakan Kedokteran '+tindakan,
+                'jawaban': 'Pemberian Informasi dan Persetujuan Tindakan Kedokteran ' + tindakan,
                 'keterangan': ket,
                 'jenis': tindakan,
-                'tipe':'colspan',
+                'tipe': 'colspan',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -1277,47 +1278,47 @@ function saveRB(jenis, ket) {
                 'jawaban': 'Check Informasi',
                 'keterangan': ket,
                 'jenis': tindakan,
-                'tipe':'bold',
+                'tipe': 'bold',
                 'id_detail_checkup': idDetailCheckup
             });
 
             $.each(parameter, function (i, item) {
-                var informasi = $('[name=informasi'+i+']');
+                var informasi = $('[name=informasi' + i + ']');
                 var info = "";
                 $.each(informasi, function (idx, itemx) {
                     console.log(itemx.type);
-                    if(itemx.type == 'checkbox'){
-                        if(itemx.checked){
-                            if(info != ''){
-                                info = info +', '+itemx.value;
-                            }else{
+                    if (itemx.type == 'checkbox') {
+                        if (itemx.checked) {
+                            if (info != '') {
+                                info = info + ', ' + itemx.value;
+                            } else {
                                 info = itemx.value;
                             }
                         }
                     }
-                    if(itemx.type == 'radio'){
-                        if(itemx.checked){
-                            if(info != ''){
-                                info = info +', '+itemx.value;
-                            }else{
+                    if (itemx.type == 'radio') {
+                        if (itemx.checked) {
+                            if (info != '') {
+                                info = info + ', ' + itemx.value;
+                            } else {
                                 info = itemx.value;
                             }
                         }
                     }
-                    if(itemx.type == 'text'){
-                        if(itemx.value != ''){
-                            if(info != ''){
-                                info = info +', '+itemx.value;
-                            }else{
+                    if (itemx.type == 'text') {
+                        if (itemx.value != '') {
+                            if (info != '') {
+                                info = info + ', ' + itemx.value;
+                            } else {
                                 info = itemx.value;
                             }
                         }
                     }
-                    if(itemx.type == 'hidden'){
-                        if(itemx.value != ''){
-                            if(info != ''){
-                                info = info +', '+itemx.value;
-                            }else{
+                    if (itemx.type == 'hidden') {
+                        if (itemx.value != '') {
+                            if (info != '') {
+                                info = info + ', ' + itemx.value;
+                            } else {
                                 info = itemx.value;
                             }
                         }
@@ -1325,7 +1326,7 @@ function saveRB(jenis, ket) {
                 });
 
                 var tdn = "";
-                if(tanda[i].checked){
+                if (tanda[i].checked) {
                     tdn = tanda[i].value;
                 }
 
@@ -1335,7 +1336,7 @@ function saveRB(jenis, ket) {
                     'jawaban': tdn,
                     'keterangan': ket,
                     'jenis': tindakan,
-                    'tipe':'info',
+                    'tipe': 'info',
                     'id_detail_checkup': idDetailCheckup
                 });
             });
@@ -1373,21 +1374,21 @@ function saveRB(jenis, ket) {
                 'jawaban': 'Persetujuan Tindakan Medis',
                 'keterangan': ket,
                 'jenis': tindakan,
-                'tipe':'colspan',
+                'tipe': 'colspan',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'penyataan',
-                'jawaban': 'Yang bertanda tangan dibawah ini, Saya '+va5+' ' +
-                    'tanggal lahir '+va6+', '+va7+' dengan ini menyatakan persetujuan untuk dilakukan tindakan '+va8+' ' +
-                    'terhadap pasien Bernama '+va9+' tanggal lahir '+va10+', Alamat '+va11+'.' +
+                'jawaban': 'Yang bertanda tangan dibawah ini, Saya ' + va5 + ' ' +
+                    'tanggal lahir ' + va6 + ', ' + va7 + ' dengan ini menyatakan persetujuan untuk dilakukan tindakan ' + va8 + ' ' +
+                    'terhadap pasien Bernama ' + va9 + ' tanggal lahir ' + va10 + ', Alamat ' + va11 + '.' +
                     'Saya memahami perlunya dan manfaat tindakan tersebut sebagaimana telah dijelaskan seperti diatas ' +
                     'kepada saya termasuk resiko dan komplikasi yang timbul ' +
                     'Saya juga menyadari bahwa oleh karena itu ilmu kedokteran bukan ilmu pasti, maka keberhasilan tindakan ' +
-                    'kedokteran bukan keniscayaan, tetapi tergantung kepada izin Tuhan Yang maha Esa. Tanggal '+converterDate(new Date)+', Jam '+converterTime(new Date()),
+                    'kedokteran bukan keniscayaan, tetapi tergantung kepada izin Tuhan Yang maha Esa. Tanggal ' + converterDate(new Date) + ', Jam ' + converterTime(new Date()),
                 'keterangan': ket,
                 'jenis': tindakan,
-                'tipe':'colspan',
+                'tipe': 'colspan',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -1395,7 +1396,7 @@ function saveRB(jenis, ket) {
                 'jawaban': canv3,
                 'keterangan': ket,
                 'jenis': tindakan,
-                'tipe':'ttd',
+                'tipe': 'ttd',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -1403,7 +1404,7 @@ function saveRB(jenis, ket) {
                 'jawaban': canv4,
                 'keterangan': ket,
                 'jenis': tindakan,
-                'tipe':'ttd',
+                'tipe': 'ttd',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -1411,14 +1412,14 @@ function saveRB(jenis, ket) {
                 'jawaban': canv5,
                 'keterangan': ket,
                 'jenis': tindakan,
-                'tipe':'ttd',
+                'tipe': 'ttd',
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
         }
     }
 
-    if("awal_kandungan_rb" == jenis){
+    if ("awal_kandungan_rb" == jenis) {
         var va1 = $('#rb1').val();
         var va2 = $('#rb2').val();
         var va3 = $('#rb3').val();
@@ -1469,7 +1470,7 @@ function saveRB(jenis, ket) {
         var va48 = $('#rb48').val();
         var va49 = $('#rb49').val();
         var va50 = $('#rb50').val();
-        var va51= $('[name=rb51]:checked').val();
+        var va51 = $('[name=rb51]:checked').val();
 
         var tahun = $('.tahun');
         var hamil = $('.hamil');
@@ -1486,77 +1487,77 @@ function saveRB(jenis, ket) {
         var nama = $('#nama_terang_rb50').val();
         var sip = $('#sip_rb50').val();
 
-        if(va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 &&
-           va11 && va12 && va13 && va14 && va15 && va16 && va17 && va18 && va19 && va20 &&
-           va21 && va22 && va23 && va24 && va25 && va26 && va27 && va28 && va29 && va30 &&
-           va31 && va32 && va33 && va34 && va35 && va36 && va37 && va38 && va39 && va40 &&
-           va41 && va42 && va43 && va44 && va45 && va46 && va47 && va48 && va49 &&
-           nama && sip != '' && !cekTtd && va8 && va51 != undefined){
+        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 &&
+            va11 && va12 && va13 && va14 && va15 && va16 && va17 && va18 && va19 && va20 &&
+            va21 && va22 && va23 && va24 && va25 && va26 && va27 && va28 && va29 && va30 &&
+            va31 && va32 && va33 && va34 && va35 && va36 && va37 && va38 && va39 && va40 &&
+            va41 && va42 && va43 && va44 && va45 && va46 && va47 && va48 && va49 &&
+            nama && sip != '' && !cekTtd && va8 && va51 != undefined) {
 
             data.push({
                 'parameter': 'Tanggal & Jam',
-                'jawaban': va1+' '+va2,
+                'jawaban': va1 + ' ' + va2,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': '1. Kawin',
-                'jawaban': va3+' Kali, dengan Suami sekarang '+va4+' tahun',
+                'jawaban': va3 + ' Kali, dengan Suami sekarang ' + va4 + ' tahun',
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Kawin 1 pada umur',
-                'jawaban': va5+' tahun',
+                'jawaban': va5 + ' tahun',
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': '2. Haid Manarche',
-                'jawaban': va6+' tahun,  Cyclus '+va7+' hari, '+va8+', '+va51+', Lama '+va9+' hari',
+                'jawaban': va6 + ' tahun,  Cyclus ' + va7 + ' hari, ' + va8 + ', ' + va51 + ', Lama ' + va9 + ' hari',
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Darah beku/encer : HT yang biasa',
-                'jawaban': va10+' HPL '+va11,
+                'jawaban': va10 + ' HPL ' + va11,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': '3. Darah Putih',
-                'jawaban': va12+' Banyaknya '+va13+', Lamanya '+va14+', Warnanya '+va15,
+                'jawaban': va12 + ' Banyaknya ' + va13 + ', Lamanya ' + va14 + ', Warnanya ' + va15,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Baunya',
-                'jawaban': va16+', Contact Bleeding '+va17,
+                'jawaban': va16 + ', Contact Bleeding ' + va17,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': '4. Kehamilan dan Persalinan dulu',
-                'jawaban': va18+'P , '+va19+' G, '+va20+' Ab, '+va21+', Ah',
+                'jawaban': va18 + 'P , ' + va19 + ' G, ' + va20 + ' Ab, ' + va21 + ', Ah',
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
 
             $.each(tahun, function (i, item) {
-                if (item.value != ''){
+                if (item.value != '') {
                     data.push({
                         'parameter': 'Riwayat',
                         'jawaban':
-                            item.value+'|'+hamil[i].value+'|'+persalinan[i].value+'|'+oleh[i].value+'|'+jen[i].value+'|'+
-                            berat[i].value+'|'+hidupMati[i].value+'|'+pendarahan[i].value+'|'+nifas[i].value,
+                            item.value + '|' + hamil[i].value + '|' + persalinan[i].value + '|' + oleh[i].value + '|' + jen[i].value + '|' +
+                            berat[i].value + '|' + hidupMati[i].value + '|' + pendarahan[i].value + '|' + nifas[i].value,
                         'keterangan': jenis,
                         'jenis': ket,
                         'tipe': 'riwayat_kandungan',
@@ -1574,14 +1575,14 @@ function saveRB(jenis, ket) {
             });
             data.push({
                 'parameter': 'Nafsu Makan',
-                'jawaban': va23+', batuk '+va24+', sesak '+va25,
+                'jawaban': va23 + ', batuk ' + va24 + ', sesak ' + va25,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Kencing',
-                'jawaban': va26+', buang air besar '+va27,
+                'jawaban': va26 + ', buang air besar ' + va27,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
@@ -1609,14 +1610,14 @@ function saveRB(jenis, ket) {
             });
             data.push({
                 'parameter': 'Malaria',
-                'jawaban': va31+', sakit perut '+va32+', perna dirawat '+va33,
+                'jawaban': va31 + ', sakit perut ' + va32 + ', perna dirawat ' + va33,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Operasi',
-                'jawaban': va34+' paru-paru '+va35+', sesak'+va36+', kelamin '+va37,
+                'jawaban': va34 + ' paru-paru ' + va35 + ', sesak' + va36 + ', kelamin ' + va37,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
@@ -1630,14 +1631,14 @@ function saveRB(jenis, ket) {
             });
             data.push({
                 'parameter': 'Diabetes',
-                'jawaban': va39+', hipertensi '+va40+', paru-paru '+va41,
+                'jawaban': va39 + ', hipertensi ' + va40 + ', paru-paru ' + va41,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Gameli',
-                'jawaban': va42+', orang/anak cacat '+va43,
+                'jawaban': va42 + ', orang/anak cacat ' + va43,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
@@ -1691,7 +1692,7 @@ function saveRB(jenis, ket) {
                 'jawaban': cvs,
                 'keterangan': jenis,
                 'jenis': ket,
-                'tipe':'ttd',
+                'tipe': 'ttd',
                 'nama_terang': nama,
                 'sip': sip,
                 'id_detail_checkup': idDetailCheckup
@@ -1701,7 +1702,7 @@ function saveRB(jenis, ket) {
         }
     }
 
-    if("awal_kebidanan_rb" == jenis){
+    if ("awal_kebidanan_rb" == jenis) {
         var va1 = $('#rb1').val();
         var va2 = $('#rb2').val();
         var va3 = $('#rb3').val();
@@ -1770,77 +1771,77 @@ function saveRB(jenis, ket) {
         var nama = $('#nama_terang_rb53').val();
         var sip = $('#sip_rb53').val();
 
-        if( va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va11 && va12 &&
+        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va11 && va12 &&
             va13 && va14 && va15 && va16 && va17 && va18 && va19 && va20 && va21 && va22 &&
             va23 && va24 && va25 && va26 && va27 && va28 && va29 && va30 && va31 && va32 &&
             va33 && va34 && va35 && va36 && va37 && va38 && va39 && va40 && va41 && va42 &&
             va43 && va44 && va45 && va46 && va47 && va48 && va49 && va50 && va51 && va52 &&
-            nama && sip != '' && !cekTtd && va8 && va10 != undefined){
+            nama && sip != '' && !cekTtd && va8 && va10 != undefined) {
 
             data.push({
                 'parameter': 'Tanggal & Jam',
-                'jawaban': va1+' '+va2,
+                'jawaban': va1 + ' ' + va2,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': '1. Kawin',
-                'jawaban': va3+' Kali, dengan Suami sekarang '+va4+' tahun',
+                'jawaban': va3 + ' Kali, dengan Suami sekarang ' + va4 + ' tahun',
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Kawin 1 pada umur',
-                'jawaban': va5+' tahun',
+                'jawaban': va5 + ' tahun',
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': '2. Haid Manarche',
-                'jawaban': va6+' tahun,  Cyclus '+va7+' hari, '+va8+', '+va9+', Lama '+va10+' hari',
+                'jawaban': va6 + ' tahun,  Cyclus ' + va7 + ' hari, ' + va8 + ', ' + va9 + ', Lama ' + va10 + ' hari',
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'HPHT',
-                'jawaban': va11+' HPL '+va12,
+                'jawaban': va11 + ' HPL ' + va12,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': '3. Darah Putih',
-                'jawaban': va13+' Banyaknya '+va14+', Lamanya '+va15+', Warnanya '+va16,
+                'jawaban': va13 + ' Banyaknya ' + va14 + ', Lamanya ' + va15 + ', Warnanya ' + va16,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Baunya',
-                'jawaban': va17+', Contact Bleeding '+va18,
+                'jawaban': va17 + ', Contact Bleeding ' + va18,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': '4. Kehamilan dan Persalinan dulu',
-                'jawaban': 'G '+va19+', P , '+va20+' A '+va21,
+                'jawaban': 'G ' + va19 + ', P , ' + va20 + ' A ' + va21,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
 
             $.each(tahun, function (i, item) {
-                if (item.value != ''){
+                if (item.value != '') {
                     data.push({
                         'parameter': 'Riwayat',
                         'jawaban':
-                            item.value+'|'+tempat[i].value+'|'+umur[i].value+'|'+jen[i].value+'|'+penolong[i].value+'|'+
-                            penyulit[i].value+'|'+jk[i].value+'|'+pendarahan[i].value+'|'+hidupMati[i].value,
+                            item.value + '|' + tempat[i].value + '|' + umur[i].value + '|' + jen[i].value + '|' + penolong[i].value + '|' +
+                            penyulit[i].value + '|' + jk[i].value + '|' + pendarahan[i].value + '|' + hidupMati[i].value,
                         'keterangan': jenis,
                         'jenis': ket,
                         'tipe': 'riwayat_kebidanan',
@@ -1865,7 +1866,7 @@ function saveRB(jenis, ket) {
             });
             data.push({
                 'parameter': 'Kencing',
-                'jawaban': va24+', buang air besar '+va25,
+                'jawaban': va24 + ', buang air besar ' + va25,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
@@ -1879,7 +1880,7 @@ function saveRB(jenis, ket) {
             });
             data.push({
                 'parameter': 'Riwayat Operasi',
-                'jawaban': va27+', sakit keras '+va28+', pernah dirawat '+va29,
+                'jawaban': va27 + ', sakit keras ' + va28 + ', pernah dirawat ' + va29,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
@@ -1893,14 +1894,14 @@ function saveRB(jenis, ket) {
             });
             data.push({
                 'parameter': 'Diabetes',
-                'jawaban': va31+', paru-paru '+va32,
+                'jawaban': va31 + ', paru-paru ' + va32,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Hipertensi',
-                'jawaban': va33+' orang/anak cacat '+va34,
+                'jawaban': va33 + ' orang/anak cacat ' + va34,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
@@ -1942,21 +1943,21 @@ function saveRB(jenis, ket) {
             });
             data.push({
                 'parameter': 'Kesadaran',
-                'jawaban': va40+', Tingi Badan '+va41 +' Cm',
+                'jawaban': va40 + ', Tingi Badan ' + va41 + ' Cm',
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'BB sebelum hamil',
-                'jawaban': va42+', BB setelah hamil '+va43,
+                'jawaban': va42 + ', BB setelah hamil ' + va43,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Vital Sign',
-                'jawaban': 'Tensi '+va44+' mmHg, Nadi '+va45+' x/menit, Suhu '+va46+' C, RR '+va47+' x/menit, TFU '+va48+' cm, DJJ '+va49+' x/menit',
+                'jawaban': 'Tensi ' + va44 + ' mmHg, Nadi ' + va45 + ' x/menit, Suhu ' + va46 + ' C, RR ' + va47 + ' x/menit, TFU ' + va48 + ' cm, DJJ ' + va49 + ' x/menit',
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
@@ -1989,11 +1990,118 @@ function saveRB(jenis, ket) {
                 'jawaban': cvs,
                 'keterangan': jenis,
                 'jenis': ket,
-                'tipe':'ttd',
+                'tipe': 'ttd',
                 'nama_terang': nama,
                 'sip': sip,
                 'id_detail_checkup': idDetailCheckup
             });
+            cek = true;
+        }
+    }
+
+    if ("data_partograf" == jenis) {
+        var va1 = $('#dp1').val();
+        var va2 = $('#dp2').val();
+        var va3 = $('#dp3').val();
+        var va4 = $('#dp4').val();
+        var va5 = $('#dp5').val();
+        var va6 = $('#dp6').val();
+        var va7 = $('#dp7').val();
+        var va8 = $('#dp8').val();
+
+        if (va1 && va2 && va3 && va4 && va5 && va6 & va7 && va8 != '') {
+            data.push({
+                'parameter': 'Nama',
+                'jawaban': va1,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Gravida',
+                'jawaban': va2,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Para',
+                'jawaban': va3,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Abortus',
+                'jawaban': va4,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'No. Registrasi',
+                'jawaban': va5,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Waktu Saat Masuk',
+                'jawaban': va6,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Waktu Mulai Mulas',
+                'jawaban': va7,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Waktu Kebutuban Pecah',
+                'jawaban': va8,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            cek = true;
+        }
+    }
+
+    if ("janin_ibu_persalinan" == jenis) {
+        var va1 = $('#ji1').val();
+        var va2 = $('#ji2').val();
+        var va3 = $('#ji3').val();
+        var va4 = $('[name=ji4]:checked').val();
+        var va5 = $('#ji5').val();
+        var va6 = $('#ji6').val();
+        var va7 = $('[name=ji7]:checked').val();
+        var va8 = $('#ji8').val();
+        var va9 = $('#ji9').val();
+        var va10 = $('#ji10').val();
+        var va11 = $('#ji11').val();
+        var va12 = $('#ji12').val();
+        var va13 = $('#ji13').val();
+
+        if (va1 != '') {
+            dataTemp = {
+                'id_detail_checkup': idDetailCheckup,
+                'waktu': va1,
+                'djj': va2,
+                'air_ketuban': va3,
+                'molase': va4,
+                'pembukaan': va5,
+                'kontraksi': va6,
+                'oksitosin': va7,
+                'tetes': va8,
+                'obat_cairan': va9,
+                'nadi': va10,
+                'tensi': va11,
+                'suhu': va12,
+                'rr': va13
+            }
             cek = true;
         }
     }
@@ -2004,24 +2112,46 @@ function saveRB(jenis, ket) {
         $('#save_rb_' + jenis).hide();
         $('#load_rb_' + jenis).show();
         dwr.engine.setAsync(true);
-        KandunganAction.save(result, pasienData, {
-            callback: function (res) {
-                if (res.status == "success") {
-                    $('#save_rb_' + jenis).show();
-                    $('#load_rb_' + jenis).hide();
-                    $('#modal-rb-' + jenis).modal('hide');
-                    $('#warning_rb_' + ket).show().fadeOut(5000);
-                    $('#msg_rb_' + ket).text("Berhasil menambahkan data...");
-                    $('#modal-rb-' + jenis).scrollTop(0);
-                } else {
-                    $('#save_rb_' + jenis).show();
-                    $('#load_rb_' + jenis).hide();
-                    $('#warning_rb_' + jenis).show().fadeOut(5000);
-                    $('#msg_rb_' + jenis).text(res.msg);
-                    $('#modal-rb-' + jenis).scrollTop(0);
+        if ("janin_ibu_persalinan" == jenis) {
+            var tempData = JSON.stringify(dataTemp);
+            KandunganAction.savePartograf(tempData, pasienData, {
+                callback: function (res) {
+                    if (res.status == "success") {
+                        $('#save_rb_' + jenis).show();
+                        $('#load_rb_' + jenis).hide();
+                        $('#modal-rb-' + jenis).modal('hide');
+                        $('#warning_rb_' + ket).show().fadeOut(5000);
+                        $('#msg_rb_' + ket).text("Berhasil menambahkan data...");
+                        $('#modal-rb-' + jenis).scrollTop(0);
+                    } else {
+                        $('#save_rb_' + jenis).show();
+                        $('#load_rb_' + jenis).hide();
+                        $('#warning_rb_' + jenis).show().fadeOut(5000);
+                        $('#msg_rb_' + jenis).text(res.msg);
+                        $('#modal-rb-' + jenis).scrollTop(0);
+                    }
                 }
-            }
-        })
+            });
+        } else {
+            KandunganAction.save(result, pasienData, {
+                callback: function (res) {
+                    if (res.status == "success") {
+                        $('#save_rb_' + jenis).show();
+                        $('#load_rb_' + jenis).hide();
+                        $('#modal-rb-' + jenis).modal('hide');
+                        $('#warning_rb_' + ket).show().fadeOut(5000);
+                        $('#msg_rb_' + ket).text("Berhasil menambahkan data...");
+                        $('#modal-rb-' + jenis).scrollTop(0);
+                    } else {
+                        $('#save_rb_' + jenis).show();
+                        $('#load_rb_' + jenis).hide();
+                        $('#warning_rb_' + jenis).show().fadeOut(5000);
+                        $('#msg_rb_' + jenis).text(res.msg);
+                        $('#modal-rb-' + jenis).scrollTop(0);
+                    }
+                }
+            });
+        }
     } else {
         $('#warning_rb_' + jenis).show().fadeOut(5000);
         $('#msg_rb_' + jenis).text("Silahkan cek kembali data inputan anda...!");
@@ -2045,115 +2175,194 @@ function detailRB(jenis) {
         var isKesimpulan = false;
         var forTTD = "";
 
-        KandunganAction.getListDetail(idDetailCheckup, jenis, function (res) {
+        if ("janin_ibu_persalinan" == jenis) {
+            KandunganAction.getListDetailPartograf(idDetailCheckup, function (res) {
+                if (res.length > 0) {
+                    $.each(res, function (i, item) {
+                        var tanggal = converterDate(new Date(item.createdDate));
+                        var tempTgl = "";
+                        var btn = "";
 
-            if (res.length > 0) {
-                $.each(res, function (i, item) {
-                    var jwb = "";
-                    if (item.jawaban != '') {
-                        jwb = item.jawaban;
-                    }
-                    if ("pernyataan_bayi_lahir" == jenis) {
-                        if ("colspan" == item.parameter) {
-                            body += '<tr>' +
-                                '<td colspan="2">' + jwb + '</td>' +
-                                '</tr>';
-                        } else if ("TTD Bidan/Perawat" == item.parameter) {
-                            body += '<tr>' +
-                                '<td colspan="2">' + '<p>' + item.parameter + '</p><img src="' + jwb + '" style="height: 80px">' + '</td>' +
-                                '</tr>';
-                        } else if ("TTD Ibu" == item.parameter) {
-                            body += '<tr>' +
-                                '<td colspan="2">' + '<div class="pull-right" style="margin-top: -122px"><p>' + item.parameter + '</p><img src="' + jwb + '" style="height: 80px"></div>' + '</td>' +
-                                '</tr>';
+                        if (i == 0) {
+                            tempTgl = tanggal;
+                            btn = '<i class="fa fa-line-chart" style="cursor: pointer; color: #1ab7ea" onclick="showChartHemodinamika(\'' + jenis + '\', \'' + item.createdDate + '\')"></i>';
                         } else {
-                            body += '<tr>' +
-                                '<td width="30%">' + item.parameter + '</td>' +
-                                '<td>' + jwb + '</td>' +
-                                '</tr>';
+                            var tgl = res[i - 1]["createdDate"];
+                            var tglB = converterDate(new Date(tgl));
+                            if (tanggal == tglB) {
+                                tempTgl = "";
+                            } else {
+                                tempTgl = tanggal;
+                                btn = '<i class="fa fa-line-chart" style="cursor: pointer; color: #1ab7ea" onclick="showChartHemodinamika(\'' + jenis + '\', \'' + item.createdDate + '\')"></i>';
+                            }
                         }
-                    }else if("tindakan_rb" == jenis){
-                        if ("colspan" == item.tipe) {
-                            body += '<tr>' +
-                                '<td colspan="3">' + jwb + '</td>' +
-                                '</tr>';
-                        } else if ("info" == item.tipe) {
-                            body += '<tr>' +
-                                '<td width="25%">' + item.parameter + '</td>' +
-                                '<td >' + item.informasi + '</td>' +
-                                '<td width="20%" align="center">' +cekIcons(jwb)+ '</td>' +
-                                '</tr>';
-                        } else if ("ttd" == item.tipe) {
-                            body += '<tr>' +
-                                '<td colspan="2">' + item.parameter + '</td>' +
-                                '<td>' + '<img src="' + item.jawaban + '" style="height: 80px">' + '</td>' +
-                                '</tr>';
-                        } else if("bold" == item.tipe){
-                            body += '<tr style="font-weight: bold">' +
-                                '<td width="25%">' + item.parameter + '</td>' +
-                                '<td >' + item.informasi + '</td>' +
-                                '<td width="20%" align="center">' +cekIcons(jwb)+ '</td>' +
-                                '</tr>';
-                        } else{
-                            body += '<tr>' +
-                                '<td width="30%">' + item.parameter + '</td>' +
-                                '<td colspan="2">' + jwb + '</td>' +
-                                '</tr>';
+
+                        body += '<tr>' +
+                            '<td>' + tanggal+' '+item.waktu +'</td>' +
+                            '<td>' + cekItemIsNull(item.djj) + '</td>' +
+                            '<td>' + cekItemIsNull(item.airKetuban) + '</td>' +
+                            '<td>' + cekItemIsNull(item.molase) + '</td>' +
+                            '<td>' + cekItemIsNull(item.pembukaan) + '</td>' +
+                            '<td>' + cekItemIsNull(item.kontraksi) + '</td>' +
+                            '<td>' + cekItemIsNull(item.oksitosin) + '</td>' +
+                            '<td>' + cekItemIsNull(item.tetes) + '</td>' +
+                            '<td>' + cekItemIsNull(item.obatCairan) + '</td>' +
+                            '<td>' + cekItemIsNull(item.nadi) + '</td>' +
+                            '<td>' + cekItemIsNull(item.tensi) + '</td>' +
+                            '<td>' + cekItemIsNull(item.suhu) + '</td>' +
+                            '<td>' + cekItemIsNull(item.rr) + '</td>' +
+                            '</tr>';
+                        cekData = true;
+                    });
+                } else {
+                    body = '<tr>' +
+                        '<td>Data belum ada</td>' +
+                        '</tr>';
+                }
+
+                if(cekData){
+                    head = '<tr>' +
+                        '<td rowspan="2">Waktu</td>' +
+                        '<td colspan="3">Kondisi Janin</td>' +
+                        '<td colspan="2">Kemajuan Persalinan</td>' +
+                        '<td colspan="7">Kondisi Ibu</td>' +
+                        '</tr>' +
+                        '<tr>' +
+                        '<td>DJJ</td>' +
+                        '<td>AKT</td>' +
+                        '<td>MOL</td>' +
+                        '<td>PEM</td>' +
+                        '<td>KON</td>' +
+                        '<td>OKS</td>' +
+                        '<td>TTS</td>' +
+                        '<td>ODC</td>' +
+                        '<td>NAD</td>' +
+                        '<td>TEN</td>' +
+                        '<td>SUHU</td>' +
+                        '<td>RR</td>' +
+                        '</tr>';
+                }
+                var table = '<table style="font-size: 12px" class="table table-bordered">' +
+                    '<thead>' + head + '</thead>' +
+                    '<tbody>' + first + body + last + kesimpulan + forTTD + '</tbody>' +
+                    '</table>';
+
+                var newRow = $('<tr id="del_rb_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
+                newRow.insertAfter($('table').find('#row_rb_' + jenis));
+                var url = contextPath + '/pages/images/minus-allnew.png';
+                $('#btn_rb_' + jenis).attr('src', url);
+                $('#btn_rb_' + jenis).attr('onclick', 'delRowRB(\'' + jenis + '\')');
+            });
+        } else {
+            KandunganAction.getListDetail(idDetailCheckup, jenis, function (res) {
+                if (res.length > 0) {
+                    $.each(res, function (i, item) {
+                        var jwb = "";
+                        if (item.jawaban != '') {
+                            jwb = item.jawaban;
                         }
-                    } else {
-                        if ("ttd" == item.tipe) {
-                            forTTD += '<tr>' +
-                                '<td width="40%">' + item.parameter + '</td>' +
-                                '<td colspan="2">' + '<img src="' + item.jawaban + '" style="height: 80px">' + '</td>' +
-                                '</tr>';
+                        if ("pernyataan_bayi_lahir" == jenis) {
+                            if ("colspan" == item.parameter) {
+                                body += '<tr>' +
+                                    '<td colspan="2">' + jwb + '</td>' +
+                                    '</tr>';
+                            } else if ("TTD Bidan/Perawat" == item.parameter) {
+                                body += '<tr>' +
+                                    '<td colspan="2">' + '<p>' + item.parameter + '</p><img src="' + jwb + '" style="height: 80px">' + '</td>' +
+                                    '</tr>';
+                            } else if ("TTD Ibu" == item.parameter) {
+                                body += '<tr>' +
+                                    '<td colspan="2">' + '<div class="pull-right" style="margin-top: -122px"><p>' + item.parameter + '</p><img src="' + jwb + '" style="height: 80px"></div>' + '</td>' +
+                                    '</tr>';
+                            } else {
+                                body += '<tr>' +
+                                    '<td width="30%">' + item.parameter + '</td>' +
+                                    '<td>' + jwb + '</td>' +
+                                    '</tr>';
+                            }
+                        } else if ("tindakan_rb" == jenis) {
+                            if ("colspan" == item.tipe) {
+                                body += '<tr>' +
+                                    '<td colspan="3">' + jwb + '</td>' +
+                                    '</tr>';
+                            } else if ("info" == item.tipe) {
+                                body += '<tr>' +
+                                    '<td width="25%">' + item.parameter + '</td>' +
+                                    '<td >' + item.informasi + '</td>' +
+                                    '<td width="20%" align="center">' + cekIcons(jwb) + '</td>' +
+                                    '</tr>';
+                            } else if ("ttd" == item.tipe) {
+                                body += '<tr>' +
+                                    '<td colspan="2">' + item.parameter + '</td>' +
+                                    '<td>' + '<img src="' + item.jawaban + '" style="height: 80px">' + '</td>' +
+                                    '</tr>';
+                            } else if ("bold" == item.tipe) {
+                                body += '<tr style="font-weight: bold">' +
+                                    '<td width="25%">' + item.parameter + '</td>' +
+                                    '<td >' + item.informasi + '</td>' +
+                                    '<td width="20%" align="center">' + cekIcons(jwb) + '</td>' +
+                                    '</tr>';
+                            } else {
+                                body += '<tr>' +
+                                    '<td width="30%">' + item.parameter + '</td>' +
+                                    '<td colspan="2">' + jwb + '</td>' +
+                                    '</tr>';
+                            }
                         } else {
-                            body += '<tr>' +
-                                '<td width="40%">' + item.parameter + '</td>' +
-                                '<td>' + jwb + '</td>' +
-                                '</tr>';
+                            if ("ttd" == item.tipe) {
+                                forTTD += '<tr>' +
+                                    '<td width="40%">' + item.parameter + '</td>' +
+                                    '<td colspan="2">' + '<img src="' + item.jawaban + '" style="height: 80px">' + '</td>' +
+                                    '</tr>';
+                            } else {
+                                body += '<tr>' +
+                                    '<td width="40%">' + item.parameter + '</td>' +
+                                    '<td>' + jwb + '</td>' +
+                                    '</tr>';
+                            }
                         }
-                    }
-                    cekData = true;
-                    tgl = item.createdDate;
-                    isKesimpulan = true;
-                });
-            } else {
-                body = '<tr>' +
-                    '<td>Data belum ada</td>' +
-                    '</tr>';
-            }
+                        cekData = true;
+                        tgl = item.createdDate;
+                        isKesimpulan = true;
+                    });
+                } else {
+                    body = '<tr>' +
+                        '<td>Data belum ada</td>' +
+                        '</tr>';
+                }
 
-            if (cekSkor) {
-                first = '<tr style="font-weight: bold"><td>Parameter</td><td>Jawaban</td><td align="center">Skor</td></tr>';
-                last = '<tr style="font-weight: bold"><td colspan="2">Total</td><td align="center">' + totalSkor + '</td></tr>'
+                if (cekSkor) {
+                    first = '<tr style="font-weight: bold"><td>Parameter</td><td>Jawaban</td><td align="center">Skor</td></tr>';
+                    last = '<tr style="font-weight: bold"><td colspan="2">Total</td><td align="center">' + totalSkor + '</td></tr>'
 
-                if ("resiko_jatuh" == jenis) {
-                    var jwb = "";
-                    if (totalSkor >= 0 && totalSkor <= 24) {
-                        jwb = "Rendah";
-                    } else if (totalSkor >= 25 && totalSkor <= 44) {
-                        jwb = "Sedang";
-                    } else if (totalSkor >= 45) {
-                        jwb = "Tinggi";
-                    }
+                    if ("resiko_jatuh" == jenis) {
+                        var jwb = "";
+                        if (totalSkor >= 0 && totalSkor <= 24) {
+                            jwb = "Rendah";
+                        } else if (totalSkor >= 25 && totalSkor <= 44) {
+                            jwb = "Sedang";
+                        } else if (totalSkor >= 45) {
+                            jwb = "Tinggi";
+                        }
 
-                    if (isKesimpulan) {
-                        kesimpulan = '<tr style="font-weight: bold" bgcolor="#ffebcd"><td colspan="2">Resiko Jatuh</td><td align="center">' + jwb + '</td></tr>';
+                        if (isKesimpulan) {
+                            kesimpulan = '<tr style="font-weight: bold" bgcolor="#ffebcd"><td colspan="2">Resiko Jatuh</td><td align="center">' + jwb + '</td></tr>';
+                        }
                     }
                 }
-            }
 
-            var table = '<table style="font-size: 12px" class="table table-bordered">' +
-                '<thead>' + head + '</thead>' +
-                '<tbody>' + first + body + last + kesimpulan + forTTD + '</tbody>' +
-                '</table>';
+                var table = '<table style="font-size: 12px" class="table table-bordered">' +
+                    '<thead>' + head + '</thead>' +
+                    '<tbody>' + first + body + last + kesimpulan + forTTD + '</tbody>' +
+                    '</table>';
 
-            var newRow = $('<tr id="del_rb_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
-            newRow.insertAfter($('table').find('#row_rb_' + jenis));
-            var url = contextPath + '/pages/images/minus-allnew.png';
-            $('#btn_rb_' + jenis).attr('src', url);
-            $('#btn_rb_' + jenis).attr('onclick', 'delRowRB(\'' + jenis + '\')');
-        });
+                var newRow = $('<tr id="del_rb_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
+                newRow.insertAfter($('table').find('#row_rb_' + jenis));
+                var url = contextPath + '/pages/images/minus-allnew.png';
+                $('#btn_rb_' + jenis).attr('src', url);
+                $('#btn_rb_' + jenis).attr('onclick', 'delRowRB(\'' + jenis + '\')');
+            });
+        }
     }
 }
 
@@ -2182,52 +2391,52 @@ function pilihTindakanRB(val) {
             var params = "";
             var informasi = "";
 
-            if("i" == item.keterangan ){
+            if ("i" == item.keterangan) {
                 var info = item.informasi.split("|");
                 $.each(info, function (idx, itemx) {
-                    if(itemx != ''){
-                        informasi += '<input class="form-control" name="informasi'+i+'" id="info'+i+'" placeholder="'+itemx+'" onchange="$(\'#info'+i+'\').val(\''+itemx+' '+'\'+this.value)">';
-                    }else{
-                        informasi += '<input class="form-control" name="informasi'+i+'" id="info'+i+'" placeholder="'+itemx+'">';
+                    if (itemx != '') {
+                        informasi += '<input class="form-control" name="informasi' + i + '" id="info' + i + '" placeholder="' + itemx + '" onchange="$(\'#info' + i + '\').val(\'' + itemx + ' ' + '\'+this.value)">';
+                    } else {
+                        informasi += '<input class="form-control" name="informasi' + i + '" id="info' + i + '" placeholder="' + itemx + '">';
                     }
                 });
             }
-            if("r" == item.keterangan ){
+            if ("r" == item.keterangan) {
                 var info = item.informasi.split("|");
                 $.each(info, function (idx, itemx) {
                     informasi += '<div class="row">' +
-                                '<div class="custom02" style="margin-left: 15px">\n' +
-                                '<input type="radio" value="'+itemx+'" id="informasi'+i+idx+'" name="informasi'+i+'"/><label for="informasi'+i+idx+'">' +itemx+'</label>\n' +
-                                '</div>'+
-                                '</div>';
-                });
-            }
-            if("c" == item.keterangan ){
-                var info = item.informasi.split("|");
-                $.each(info, function (idx, itemx) {
-                    informasi += '<div class="row">' +
-                        '<div class="form-check02">\n' +
-                        '<input type="checkbox" name="informasi'+i+'" id="informasi' + i + idx +'" value="' + itemx + '">\n' +
-                        '<label for="informasi' + i + idx+ '"></label> ' + itemx + '\n' +
+                        '<div class="custom02" style="margin-left: 15px">\n' +
+                        '<input type="radio" value="' + itemx + '" id="informasi' + i + idx + '" name="informasi' + i + '"/><label for="informasi' + i + idx + '">' + itemx + '</label>\n' +
                         '</div>' +
                         '</div>';
                 });
             }
-            if("l" == item.keterangan ){
-                informasi += item.informasi+'<input type="hidden" value="'+item.informasi+'" name="informasi'+i+'">';
+            if ("c" == item.keterangan) {
+                var info = item.informasi.split("|");
+                $.each(info, function (idx, itemx) {
+                    informasi += '<div class="row">' +
+                        '<div class="form-check02">\n' +
+                        '<input type="checkbox" name="informasi' + i + '" id="informasi' + i + idx + '" value="' + itemx + '">\n' +
+                        '<label for="informasi' + i + idx + '"></label> ' + itemx + '\n' +
+                        '</div>' +
+                        '</div>';
+                });
+            }
+            if ("l" == item.keterangan) {
+                informasi += item.informasi + '<input type="hidden" value="' + item.informasi + '" name="informasi' + i + '">';
             }
 
             var cekList = '<div class="row">' +
                 '<div class="form-check02">\n' +
-                '<input type="checkbox" name="tanda" id="tanda' + i +'" value="Ya">\n' +
-                '<label for="tanda' + i +'"></label>'+
+                '<input type="checkbox" name="tanda" id="tanda' + i + '" value="Ya">\n' +
+                '<label for="tanda' + i + '"></label>' +
                 '</div>' +
                 '</div>'
 
             body += '<tr>' +
-                '<td width="25%">'+item.parameter+'<input name="parameter" type="hidden" value="'+item.parameter+'"></td>' +
-                '<td>'+informasi+'</td>' +
-                '<td align="center" width="15%">'+cekList+'</td>' +
+                '<td width="25%">' + item.parameter + '<input name="parameter" type="hidden" value="' + item.parameter + '"></td>' +
+                '<td>' + informasi + '</td>' +
+                '<td align="center" width="15%">' + cekList + '</td>' +
                 '</tr>';
         });
 
@@ -2426,9 +2635,9 @@ function tindakanRB(jenis) {
         'keterangan': 'i'
     });
 
-    if(jenis != ''){
+    if (jenis != '') {
         $.each(data, function (i, item) {
-            if(jenis == item.jenis){
+            if (jenis == item.jenis) {
                 dataCari.push({
                     'jenis': item.jenis,
                     'parameter': item.parameter,
@@ -2627,7 +2836,7 @@ function saveAsuhanKeperawatanRB(jenis, ket) {
 
 function listAsuhanKeperawatanRB(jenis) {
     var table = "";
-    RencanaAsuhanKeperawatanAction.getListDetail(idDetailCheckup, jenis,  function (res) {
+    RencanaAsuhanKeperawatanAction.getListDetail(idDetailCheckup, jenis, function (res) {
         if (res.length > 0) {
             $.each(res, function (i, item) {
 
@@ -2713,14 +2922,14 @@ function listAsuhanKeperawatanRB(jenis) {
     });
 }
 
-function setRiwayatHamil(jenis){
+function setRiwayatHamil(jenis) {
     var temp = "";
     var count = $('.tahun').length;
     var jml = count + 1;
-    var id = "set_"+jml;
+    var id = "set_" + jml;
 
-    if(jenis == 'kandungan'){
-        temp ='<div id="'+id+'">' +
+    if (jenis == 'kandungan') {
+        temp = '<div id="' + id + '">' +
             '<div class="row jarak">\n' +
             '<div class="form-group">\n' +
             '    <div class="col-md-3">\n' +
@@ -2759,17 +2968,17 @@ function setRiwayatHamil(jenis){
             '        <input class="form-control nifas" placeholder="Nifas">\n' +
             '    </div>\n' +
             '    <div class="col-md-1">\n' +
-            '        <button class="btn btn-danger" onclick="delRiwayatHamil(\''+id+'\')"><i class="fa fa-trash"></i></button>\n' +
+            '        <button class="btn btn-danger" onclick="delRiwayatHamil(\'' + id + '\')"><i class="fa fa-trash"></i></button>\n' +
             '    </div>\n' +
             '</div>\n' +
             '</div>' +
             '</div>\n';
     }
-    if(temp != ''){
+    if (temp != '') {
         $('#set_riwayat_hamil').append(temp);
     }
 }
 
-function delRiwayatHamil(id){
-    $('#'+id).remove();
+function delRiwayatHamil(id) {
+    $('#' + id).remove();
 }

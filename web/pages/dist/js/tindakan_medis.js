@@ -2,73 +2,73 @@ function pilihTindakanMedis(val, id) {
     var namaTindakan = "";
     if (val != '') {
         $.each(kategoriTindakanMedis(''), function (idx, itemx) {
-            if(itemx.id_tindakan == val){
+            if (itemx.id_tindakan == val) {
                 namaTindakan = itemx.nama_tindakan;
             }
         });
-        $('#form-'+id).show();
-        $('#tindakan_medis_'+id).val(namaTindakan);
+        $('#form-' + id).show();
+        $('#tindakan_medis_' + id).val(namaTindakan);
         var body = "";
         $.each(tindakanMedis(val), function (i, item) {
 
             var params = "";
             var informasi = "";
 
-            if("i" == item.keterangan ){
+            if ("i" == item.keterangan) {
                 var info = item.informasi.split("|");
                 $.each(info, function (idx, itemx) {
-                    if(itemx != ''){
-                        informasi += '<input class="form-control" name="informasi'+i+'" id="info'+i+'" placeholder="'+itemx+'" onchange="$(\'#info'+i+'\').val(\''+itemx+' '+'\'+this.value)">';
-                    }else{
-                        informasi += '<input class="form-control" name="informasi'+i+'" id="info'+i+'" placeholder="'+itemx+'">';
+                    if (itemx != '') {
+                        informasi += '<input class="form-control" name="informasi' + i + '" id="info' + i + '" placeholder="' + itemx + '" onchange="$(\'#info' + i + '\').val(\'' + itemx + ' ' + '\'+this.value)">';
+                    } else {
+                        informasi += '<input class="form-control" name="informasi' + i + '" id="info' + i + '" placeholder="' + itemx + '">';
                     }
                 });
             }
-            if("r" == item.keterangan ){
+            if ("r" == item.keterangan) {
                 var info = item.informasi.split("|");
                 $.each(info, function (idx, itemx) {
                     informasi += '<div class="row">' +
                         '<div class="custom02" style="margin-left: 15px">\n' +
-                        '<input type="radio" value="'+itemx+'" id="informasi'+i+idx+'" name="informasi'+i+'"/><label for="informasi'+i+idx+'">' +itemx+'</label>\n' +
-                        '</div>'+
-                        '</div>';
-                });
-            }
-            if("c" == item.keterangan ){
-                var info = item.informasi.split("|");
-                $.each(info, function (idx, itemx) {
-                    informasi += '<div class="row">' +
-                        '<div class="form-check02">\n' +
-                        '<input type="checkbox" name="informasi'+i+'" id="informasi' + i + idx +'" value="' + itemx + '">\n' +
-                        '<label for="informasi' + i + idx+ '"></label> ' + itemx + '\n' +
+                        '<input type="radio" value="' + itemx + '" id="informasi' + i + idx + '" name="informasi' + i + '"/><label for="informasi' + i + idx + '">' + itemx + '</label>\n' +
                         '</div>' +
                         '</div>';
                 });
             }
-            if("l" == item.keterangan ){
-                informasi += item.informasi+'<input type="hidden" value="'+item.informasi+'" name="informasi'+i+'">';
+            if ("c" == item.keterangan) {
+                var info = item.informasi.split("|");
+                $.each(info, function (idx, itemx) {
+                    informasi += '<div class="row">' +
+                        '<div class="form-check02">\n' +
+                        '<input type="checkbox" name="informasi' + i + '" id="informasi' + i + idx + '" value="' + itemx + '">\n' +
+                        '<label for="informasi' + i + idx + '"></label> ' + itemx + '\n' +
+                        '</div>' +
+                        '</div>';
+                });
+            }
+            if ("l" == item.keterangan) {
+                informasi += item.informasi + '<input type="hidden" value="' + item.informasi + '" name="informasi' + i + '">';
             }
 
             var cekList = '<div class="row">' +
                 '<div class="form-check02">\n' +
-                '<input type="checkbox" name="tanda" id="tanda' + i +'" value="Ya">\n' +
-                '<label for="tanda' + i +'"></label>'+
+                '<input type="checkbox" name="tanda" id="tanda' + i + '" value="Ya">\n' +
+                '<label for="tanda' + i + '"></label>' +
                 '</div>' +
                 '</div>'
 
             body += '<tr>' +
-                '<td width="25%">'+item.parameter+'<input name="parameter" type="hidden" value="'+item.parameter+'"></td>' +
-                '<td>'+informasi+'</td>' +
-                '<td align="center" width="15%">'+cekList+'</td>' +
+                '<td width="25%">' + item.parameter + '<input name="parameter" type="hidden" value="' + item.parameter + '"></td>' +
+                '<td>' + informasi + '</td>' +
+                '<td align="center" width="15%">' + cekList + '</td>' +
                 '</tr>';
         });
 
-        $('#body_'+id).html(body);
+        $('#body_' + id).html(body);
 
     } else {
-        $('#form-'+id).hide();
-        $('#tindakan_medis_'+id).val('');
-        $('#body_'+id).html('');
+        $('#form-' + id).hide();
+        $('#tindakan_medis_' + id).val('');
+        $('#body_' + id).html('');
     }
 }
 
@@ -318,9 +318,75 @@ function tindakanMedis(id) {
         'keterangan': 'i'
     });
 
-    if(id != ''){
+    data.push({
+        'id': '10',
+        'parameter': 'Diagnosis (WD dan DD)',
+        'informasi': 'CKD V on HD',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '10',
+        'parameter': 'Dasar Diagnosis',
+        'informasi': 'Riwayat penyakit, pemeriksaan fisik, pemeriksaan penunjang',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '10',
+        'parameter': 'Tindakan Kedokteran',
+        'informasi': 'Hemodialisa',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '10',
+        'parameter': 'Indikasi Tindakan',
+        'informasi': 'CKD V, gangguan eletronik, produk sampah ginjal dalam kadar toksik, sindroma kelebihan cairan.' +
+            'Kegawatan dibidang nefrologi(hipertensi, oedema paru, encepalopati reumia,anuria / oliguria)',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '10',
+        'parameter': 'Tata Cara',
+        'informasi': 'Pembuluh darah arteri dan vena dihubungkan dengan mesin hemodialisa yang menganalisa ' +
+            'darah, lalu sampah dan cairan dipindahkan dari tubuh dan darah kembali ke tubuh',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '10',
+        'parameter': 'Tujuan',
+        'informasi': 'Mengatur keseimbangan eletronik, keseimbangan cairan dan membersihkan tubuh dari sampah ginjal',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '10',
+        'parameter': 'Resiko',
+        'informasi': 'Pendarahan, pembengkakan dan infeksi di tempat penusukan, mual-muntah, kontaminasi air' +
+            'yang digunakan hemodialisa, kram otot, penurunan tekanan darah, gejala' +
+            'ketidakseimbangan, irama jantung tidak teratur, reaksi cairan dialisat, kematian',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '10',
+        'parameter': 'Prognosis',
+        'informasi': 'Dubia ad malam',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '10',
+        'parameter': 'Alternattif',
+        'informasi': 'CAPD, Cangkok ginjal',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '10',
+        'parameter': 'Perkiraan Biaya',
+        'informasi': '',
+        'keterangan': 'i'
+    });
+
+
+    if (id != '') {
         $.each(data, function (i, item) {
-            if(id == item.id){
+            if (id == item.id) {
                 dataCari.push({
                     'id': item.id,
                     'parameter': item.parameter,
@@ -333,67 +399,67 @@ function tindakanMedis(id) {
     return dataCari;
 }
 
-function kategoriTindakanMedis(tipe){
+function kategoriTindakanMedis(tipe) {
     var data = [];
     var dataCari = [];
     data.push({
-        'tipe':'ina',
-        'id_tindakan':'01',
-        'nama_tindakan':'Hernia'
+        'tipe': 'ina',
+        'id_tindakan': '01',
+        'nama_tindakan': 'Hernia'
     });
     data.push({
-        'tipe':'ina',
-        'id_tindakan':'02',
-        'nama_tindakan':'Sectio Caesaria'
+        'tipe': 'ina',
+        'id_tindakan': '02',
+        'nama_tindakan': 'Sectio Caesaria'
     });
     data.push({
-        'tipe':'ina',
-        'id_tindakan':'03',
-        'nama_tindakan':'Appendictomy'
+        'tipe': 'ina',
+        'id_tindakan': '03',
+        'nama_tindakan': 'Appendictomy'
     });
     data.push({
-        'tipe':'ina',
-        'id_tindakan':'04',
-        'nama_tindakan':'Soft Tissue Tumor'
+        'tipe': 'ina',
+        'id_tindakan': '04',
+        'nama_tindakan': 'Soft Tissue Tumor'
     });
     data.push({
-        'tipe':'ina',
-        'id_tindakan':'05',
-        'nama_tindakan':'Kurretage'
+        'tipe': 'ina',
+        'id_tindakan': '05',
+        'nama_tindakan': 'Kurretage'
     });
     data.push({
-        'tipe':'ina',
-        'id_tindakan':'06',
-        'nama_tindakan':'Fraktur'
+        'tipe': 'ina',
+        'id_tindakan': '06',
+        'nama_tindakan': 'Fraktur'
     });
     data.push({
-        'tipe':'ina',
-        'id_tindakan':'07',
-        'nama_tindakan':'Laparatomy'
+        'tipe': 'ina',
+        'id_tindakan': '07',
+        'nama_tindakan': 'Laparatomy'
     });
     data.push({
-        'tipe':'ina',
-        'id_tindakan':'08',
-        'nama_tindakan':'Ventilator'
+        'tipe': 'ina',
+        'id_tindakan': '08',
+        'nama_tindakan': 'Ventilator'
     });
     data.push({
-        'tipe':'ina',
-        'id_tindakan':'09',
-        'nama_tindakan':'Transfusi Darah'
+        'tipe': 'ina',
+        'id_tindakan': '09',
+        'nama_tindakan': 'Transfusi Darah'
     });
     data.push({
-        'tipe':'hd',
-        'id_tindakan':'09',
-        'nama_tindakan':'Transfusi Darah'
+        'tipe': 'hd',
+        'id_tindakan': '09',
+        'nama_tindakan': 'Transfusi Darah'
     });
     data.push({
-        'tipe':'hd',
-        'id_tindakan':'10',
-        'nama_tindakan':'Hemodialisa'
+        'tipe': 'hd',
+        'id_tindakan': '10',
+        'nama_tindakan': 'Hemodialisa'
     });
-    if(tipe != ''){
+    if (tipe != '') {
         $.each(data, function (i, item) {
-            if(tipe == item.tipe){
+            if (tipe == item.tipe) {
                 dataCari.push({
                     'tipe': item.tipe,
                     'id_tindakan': item.id_tindakan,
@@ -401,7 +467,7 @@ function kategoriTindakanMedis(tipe){
                 });
             }
         });
-    }else{
+    } else {
         return data;
     }
     return dataCari;
@@ -410,7 +476,7 @@ function kategoriTindakanMedis(tipe){
 function selectOptionTM(tipe, id) {
     var option = '<option value="">[Select One]</option>';
     $.each(kategoriTindakanMedis(tipe), function (i, item) {
-        option += '<option value="'+item.id_tindakan+'">'+item.nama_tindakan+'</option>';
+        option += '<option value="' + item.id_tindakan + '">' + item.nama_tindakan + '</option>';
     });
-    $('#'+id).html(option);
+    $('#' + id).html(option);
 }

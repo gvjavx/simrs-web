@@ -9,9 +9,9 @@
             </div>
             <div class="modal-body">
                 <div class="box-body btn-hide">
-                    <div class="alert alert-success alert-dismissible" style="display: none" id="warning_aud_asesmen-ugd">
+                    <div class="alert alert-success alert-dismissible" style="display: none" id="warning_rb_partograf">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
-                        <p id="msg_aud_asesmen-ugd"></p>
+                        <p id="msg_rb_partograf"></p>
                     </div>
                     <div class="btn-group">
                         <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
@@ -189,7 +189,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button id="save_rb_data_partograf" class="btn btn-success pull-right"
-                        onclick="saveAsesmenUgd('data_partograf','partograf')"><i class="fa fa-check"></i>
+                        onclick="saveRB('data_partograf','partograf')"><i class="fa fa-check"></i>
                     Save
                 </button>
                 <button id="load_rb_data_partograf" style="display: none; cursor: no-drop" type="button"
@@ -286,7 +286,7 @@
                         <div class="form-group">
                             <label class="col-md-2">Pembukaan</label>
                             <div class="col-md-4">
-                                <select class="form-control" id="ji6">
+                                <select class="form-control" id="ji5">
                                     <option value="">[Select One]</option>
                                     <option value="0">0</option>
                                     <option value="1">1</option>
@@ -303,7 +303,7 @@
                             </div>
                             <label class="col-md-2">Kontraksi</label>
                             <div class="col-md-4">
-                                <select class="form-control" id="ji7">
+                                <select class="form-control" id="ji6">
                                     <option value="">[Select One]</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -321,17 +321,17 @@
                             <label class="col-md-3">Oksitosin UV</label>
                             <div class="col-md-1">
                                 <div class="custom02">
-                                    <input type="radio" value="Ya" id="ji81" name="ji8" /><label for="ji81" >Ya</label>
+                                    <input type="radio" value="Ya" id="ji71" name="ji7" /><label for="ji71" >Ya</label>
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="custom02">
-                                    <input type="radio" value="Tidak" id="ji82" name="ji8" /><label for="ji82" >Tidak</label>
+                                    <input type="radio" value="Tidak" id="ji72" name="ji7" /><label for="ji72" >Tidak</label>
                                 </div>
                             </div>
                             <label class="col-md-2">Tetes/menit</label>
                             <div class="col-md-4">
-                                <input class="form-control" type="number" id="ji9">
+                                <input class="form-control" type="number" id="ji8">
                             </div>
                         </div>
                     </div>
@@ -339,7 +339,7 @@
                         <div class="form-group">
                             <label class="col-md-4">Cairan dan cairan infus</label>
                             <div class="col-md-8">
-                                <textarea class="form-control" id="ji10"></textarea>
+                                <textarea class="form-control" id="ji9"></textarea>
                             </div>
                         </div>
                     </div>
@@ -347,7 +347,7 @@
                         <div class="form-group">
                             <label class="col-md-2">Nadi</label>
                             <div class="col-md-4">
-                                <select class="form-control" id="ji11">
+                                <select class="form-control" id="ji10">
                                     <option value="">[Select One]</option>
                                     <option value="80">80</option>
                                     <option value="90">90</option>
@@ -364,7 +364,7 @@
                             </div>
                             <label class="col-md-2">Tensi</label>
                             <div class="col-md-4">
-                                <select class="form-control" id="ji12">
+                                <select class="form-control" id="ji11">
                                     <option value="">[Select One]</option>
                                     <option value="80">80</option>
                                     <option value="90">90</option>
@@ -385,11 +385,11 @@
                         <div class="form-group">
                             <label class="col-md-2">Suhu</label>
                             <div class="col-md-4">
-                                <input class="form-control" id="ji13" type="number">
+                                <input class="form-control" id="ji12" type="number">
                             </div>
-                            <label class="col-md-2">Tensi</label>
+                            <label class="col-md-2">RR</label>
                             <div class="col-md-4">
-                               <input class="form-control" id="ji14" type="number">
+                               <input class="form-control" id="ji13" type="number">
                             </div>
                         </div>
                     </div>

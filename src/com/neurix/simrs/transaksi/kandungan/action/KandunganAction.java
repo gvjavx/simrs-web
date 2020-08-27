@@ -194,13 +194,13 @@ public class KandunganAction {
                 Partograf partograf = new Partograf();
                 partograf.setIdDetailCheckup(obj.getString("id_detail_checkup"));
                 if(obj.has("waktu")){
-                    partograf.setWaktu(obj.getString("jenis"));
+                    partograf.setWaktu(obj.getString("waktu"));
                 }
                 if(obj.has("djj")){
-                    partograf.setDjj(obj.getString("skor"));
+                    partograf.setDjj(obj.getString("djj"));
                 }
                 if(obj.has("air_ketuban")){
-                    partograf.setAirKetuban(obj.getString("nama_terang"));
+                    partograf.setAirKetuban(obj.getString("air_ketuban"));
                 }
                 if(obj.has("molase")){
                     partograf.setMolase(obj.getString("molase"));
@@ -321,14 +321,14 @@ public class KandunganAction {
         return list;
     }
 
-    public CrudResponse deletePartograf(String idDetailCheckup) {
+    public CrudResponse deletePartograf(String idPatograf) {
         CrudResponse response = new CrudResponse();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PartografBo partografBo = (PartografBo) ctx.getBean("partografBoProxy");
-        if (!"".equalsIgnoreCase(idDetailCheckup)) {
+        if (!"".equalsIgnoreCase(idPatograf)) {
             try {
                 Partograf partograf = new Partograf();
-                partograf.setIdDetailCheckup(idDetailCheckup);
+                partograf.setIdPartograf(idPatograf);
                 partograf.setLastUpdate(time);
                 partograf.setLastUpdateWho(userLogin);
                 response = partografBo.saveDelete(partograf);

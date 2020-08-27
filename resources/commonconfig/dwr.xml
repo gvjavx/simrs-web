@@ -804,6 +804,8 @@
       <param name="class" value="com.neurix.simrs.transaksi.kandungan.action.KandunganAction"/>
       </create>
       <convert converter="bean" match="com.neurix.simrs.transaksi.kandungan.model.Kandungan"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.kandungan.model.Partograf"/>
+
       <create creator="new">
           <param name="class" value="com.neurix.akuntansi.transaksi.penyewaanLahan.action.PenyewaanLahanAction"/>
       </create>
