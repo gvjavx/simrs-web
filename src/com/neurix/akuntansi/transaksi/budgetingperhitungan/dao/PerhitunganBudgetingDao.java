@@ -360,12 +360,12 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
 
     public List<ParameterBudgeting> getListDivisiByIdKategoriAndMaster(String idKategori, String masterId){
 
-        String SQL = "SELECT a.divisi_id, b.position_name\n" +
+        String SQL = "SELECT a.divisi_id, b.position_name, a.id\n" +
                 "FROM im_akun_parameter_budgeting a\n" +
                 "INNER JOIN im_position b ON b.kodering = a.divisi_id\n" +
                 "WHERE a.id_kategori_budgeting = :kategori \n" +
                 "AND a.master_id = :master \n" +
-                "GROUP BY a.divisi_id, b.position_name";
+                "GROUP BY a.divisi_id, b.position_name, a.id";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("kategori", idKategori)
@@ -376,8 +376,9 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
         if (results.size() > 0){
             for (Object[] obj : results){
                 ParameterBudgeting bg = new ParameterBudgeting();
-                bg.setMasterId(obj[0].toString());
-                bg.setNamaMaster(obj[1].toString());
+                bg.setDivisiId(obj[0].toString());
+                bg.setNamaDivisi(obj[1].toString());
+                bg.setId(obj[2].toString());
                 budgetingList.add(bg);
             }
         }

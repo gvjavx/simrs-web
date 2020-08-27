@@ -429,4 +429,14 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
         }
         return parameterBudgetings;
     }
+
+    @Override
+    public List<ParameterBudgeting> getListMasterParameterBudgetingByIdKategori(String idKategori) throws GeneralBOException {
+        return perhitunganBudgetingDao.getListMasterByIdKategori(idKategori);
+    }
+
+    @Override
+    public List<ParameterBudgeting> getListDivisiParameterBudgetingByKategororiAndMaster(String idKategori, String masterId) throws GeneralBOException {
+        return perhitunganBudgetingDao.getListDivisiByIdKategoriAndMaster(idKategori, masterId);
+    }
 }

@@ -806,5 +806,88 @@ public class BgPendapatanAction {
         return results;
     }
 
+    public List<ParameterBudgeting> getListMasterBudgeting(String idKategori, String branch, String tahun){
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<ParameterBudgeting> sessionNilaiParam = (List<ParameterBudgeting>) session.getAttribute("listOfNilaiParam");
+
+        List<ParameterBudgeting> listMaster = new ArrayList<>();
+
+        try {
+            listMaster = budgetingPerhitunganBo.getListMasterParameterBudgetingByIdKategori(idKategori);
+        } catch (GeneralBOException e){
+            logger.info("[BgPendapatanAction.getListMasterBudgeting] ERROR ", e);
+        }
+
+        // cari session dengan parameter master;
+        // hitung nilai total sesuai master;
+        if (listMaster.size() > 0){
+            for (ParameterBudgeting paramMaster : listMaster){
+                if (sessionNilaiParam != null){
+                    List<ParameterBudgeting> nilaiParamsFilter = sessionNilaiParam.stream().filter(
+                            p->
+                                    p.getMasterId().equalsIgnoreCase(paramMaster.getMasterId()) &&
+                                    p.getIdKategoriBudgeting().equalsIgnoreCase(idKategori)
+                    ).collect(Collectors.toList());
+                    if (nilaiParamsFilter.size() > 0){
+                        BigDecimal nilaiTotal = hitungNilaiTotalFromListParam(nilaiParamsFilter);
+                        paramMaster.setNilaiTotal(nilaiTotal);
+                    }
+                }
+            }
+        }
+
+        return listMaster;
+    }
+
+    private BigDecimal hitungNilaiTotalFromListParam(List<ParameterBudgeting> list){
+
+        BigDecimal nilaiTotal = new BigDecimal(0);
+        for (ParameterBudgeting param : list){
+            nilaiTotal = nilaiTotal.add(param.getNilaiTotal() == null ? new BigDecimal(0) : param.getNilaiTotal());
+        }
+        return nilaiTotal;
+    }
+
+    public List<ParameterBudgeting> getListDivisiBudgeting( String idKategori, String masterId, String branch, String tahun){
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<ParameterBudgeting> sessionNilaiParam = (List<ParameterBudgeting>) session.getAttribute("listOfNilaiParam");
+
+        List<ParameterBudgeting> listDivisi = new ArrayList<>();
+
+        try {
+            listDivisi = budgetingPerhitunganBo.getListDivisiParameterBudgetingByKategororiAndMaster(idKategori, masterId);
+        } catch (GeneralBOException e){
+            logger.info("[BgPendapatanAction.getListDivisiBudgeting] ERROR ", e);
+        }
+
+        // cari session dengan parameter master dan divisi;
+        // hitung nilai total sesuai master dan divisi;
+        if (listDivisi.size() > 0){
+            for (ParameterBudgeting paramDivisi : listDivisi){
+                if (sessionNilaiParam != null){
+                    List<ParameterBudgeting> nilaiParamsFilter = sessionNilaiParam.stream().filter(
+                            p->
+                                    p.getMasterId().equalsIgnoreCase(masterId) &&
+                                    p.getDivisiId().equalsIgnoreCase(paramDivisi.getDivisiId()) &&
+                                    p.getIdKategoriBudgeting().equalsIgnoreCase(idKategori)
+
+                    ).collect(Collectors.toList());
+                    if (nilaiParamsFilter.size() > 0){
+                        BigDecimal nilaiTotal = hitungNilaiTotalFromListParam(nilaiParamsFilter);
+                        paramDivisi.setNilaiTotal(nilaiTotal);
+                    }
+                }
+            }
+        }
+
+        return listDivisi;
+    }
+
 
 }
