@@ -16,6 +16,7 @@ import com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.LaporanAkuntansiBo;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.LaporanAkuntansi;
 import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.bo.PembayaranUtangPiutangBo;
 import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.EfakturDTO;
+import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.Lampiran;
 import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutang;
 import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutangDetail;
 import com.neurix.authorization.company.bo.BranchBo;
@@ -199,6 +200,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
+        session.removeAttribute("listOfResultLampiran");
         session.removeAttribute("listOfResultPembayaranDetail");
 
         logger.info("[PembayaranUtangPiutangAction.add] stop process >>>");
@@ -220,6 +222,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
+        session.removeAttribute("listOfResultLampiran");
         session.removeAttribute("listOfResultPembayaranDetail");
 
         logger.info("[PembayaranUtangPiutangAction.addPemasukan] stop process >>>");
@@ -241,6 +244,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
+        session.removeAttribute("listOfResultLampiran");
         session.removeAttribute("listOfResultPembayaranDetail");
 
         logger.info("[PembayaranUtangPiutangAction.addKoreksi] stop process >>>");
@@ -457,6 +461,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         logger.info("[PembayaranUtangPiutangAction.saveAdd] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<PembayaranUtangPiutangDetail> pembayaranUtangPiutangDetailList = (List<PembayaranUtangPiutangDetail>) session.getAttribute("listOfResultPembayaranDetail");
+        List<Lampiran> lampiranList= (List<Lampiran>) session.getAttribute("listOfResultLampiran");
 
         PembayaranUtangPiutang pembayaranUtangPiutang = getPembayaranUtangPiutang();
         String userLogin = CommonUtil.userLogin();
@@ -549,7 +554,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
                 pembayaranUtangPiutang.setFlag("Y");
                 pembayaranUtangPiutang.setNoJurnal(billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N").getNoJurnal());
 
-                pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList);
+                pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList,lampiranList);
             }catch (GeneralBOException e) {
                 Long logId = null;
                 try {
@@ -604,7 +609,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
                 pembayaranUtangPiutang.setFlag("Y");
                 pembayaranUtangPiutang.setNoJurnal(billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N").getNoJurnal());
 
-                pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList);
+                pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList,lampiranList);
             }catch (GeneralBOException e) {
                 Long logId = null;
                 try {
@@ -635,6 +640,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         String noJurnal="";
         List<PembayaranUtangPiutangDetail> pembayaranUtangPiutangDetailList = (List<PembayaranUtangPiutangDetail>) session.getAttribute("listOfResultPembayaranDetail");
+        List<Lampiran> lampiranList= (List<Lampiran>) session.getAttribute("listOfResultLampiran");
 
         PembayaranUtangPiutang pembayaranUtangPiutang = getPembayaranUtangPiutang();
         String userLogin = CommonUtil.userLogin();
@@ -682,7 +688,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
             Jurnal jurnal = billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N");
             noJurnal = jurnal.getNoJurnal();
             pembayaranUtangPiutang.setNoJurnal(noJurnal);
-            pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList);
+            pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList,lampiranList);
         }catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -1400,6 +1406,69 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         }else{
             return "Sukses Not Approve";
         }
+    }
+
+    public String saveSessionLampiran(String namaLampiran , String fileUpload) {
+        logger.info("[PembayaranUtangPiutangAction.saveSessionLampiran] start process >>>");
+        String status="";
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<Lampiran> lampiranList = (List<Lampiran>) session.getAttribute("listOfResultLampiran");
+
+        if (lampiranList==null){
+            lampiranList = new ArrayList<>();
+        }
+
+        Lampiran newData = new Lampiran();
+        newData.setNamaLampiran(namaLampiran);
+        newData.setUploadFile(fileUpload);
+        lampiranList.add(newData);
+        session.setAttribute("listOfResultLampiran",lampiranList);
+
+        logger.info("[PembayaranUtangPiutangAction.saveSessionLampiran] end process >>>");
+        return status;
+    }
+
+    public String deleteSessionLampiran(String namaLampiran){
+        logger.info("[PembayaranUtangPiutangAction.deleteSessionLampiran] start process >>>");
+        String status="";
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<Lampiran> lampiranList = (List<Lampiran>) session.getAttribute("listOfResultLampiran");
+        List<Lampiran> lampirans = new ArrayList<>();
+        for (Lampiran data : lampiranList){
+            if (!namaLampiran.equalsIgnoreCase(data.getNamaLampiran())){
+                lampirans.add(data);
+            }
+        }
+
+        session.setAttribute("listOfResultLampiran",lampirans);
+
+        logger.info("[PembayaranUtangPiutangAction.deleteSessionLampiran] end process >>>");
+        return status;
+    }
+
+    public String loadImageSessionLaporan(String namaLampiran){
+        logger.info("[PembayaranUtangPiutangAction.loadImageSessionLaporan] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<Lampiran> lampiranList = (List<Lampiran>) session.getAttribute("listOfResultLampiran");
+
+        String images="";
+        for (Lampiran lampiran : lampiranList){
+            if (namaLampiran.equalsIgnoreCase(lampiran.getNamaLampiran())){
+                images = lampiran.getUploadFile();
+            }
+        }
+
+        logger.info("[PembayaranUtangPiutangAction.loadImageSessionLaporan] end process >>>");
+        return images;
+    }
+
+    public List<Lampiran> loadSessionLampiran(){
+        logger.info("[PembayaranUtangPiutangAction.loadSessionLampiran] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<Lampiran> lampiranList = (List<Lampiran>) session.getAttribute("listOfResultLampiran");
+
+        logger.info("[PembayaranUtangPiutangAction.loadSessionLampiran] end process >>>");
+        return lampiranList;
     }
 
     private String dateFormater(String type) {

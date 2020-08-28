@@ -13,12 +13,10 @@ import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDetailDao;
 import com.neurix.akuntansi.transaksi.jurnal.model.ItJurnalDetailEntity;
 import com.neurix.akuntansi.transaksi.jurnal.model.ItJurnalEntity;
 import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.bo.PembayaranUtangPiutangBo;
+import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.dao.LampiranDao;
 import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.dao.PembayaranUtangPiutangDetailDao;
 import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.dao.PembayaranUtangPiutangDao;
-import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.ImPembayaranUtangPiutangDetailEntity;
-import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.ImPembayaranUtangPiutangEntity;
-import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutang;
-import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutangDetail;
+import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.*;
 import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.authorization.company.model.ImBranches;
@@ -35,10 +33,18 @@ import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
+import sun.misc.BASE64Decoder;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -64,6 +70,15 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
     private PositionDao positionDao;
     private MappingJurnalDao mappingJurnalDao;
     private UserDao userDao;
+    private LampiranDao lampiranDao;
+
+    public LampiranDao getLampiranDao() {
+        return lampiranDao;
+    }
+
+    public void setLampiranDao(LampiranDao lampiranDao) {
+        this.lampiranDao = lampiranDao;
+    }
 
     public UserDao getUserDao() {
         return userDao;
@@ -555,7 +570,7 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
     }
 
     @Override
-    public String saveAddPembayaran(PembayaranUtangPiutang bean, List<PembayaranUtangPiutangDetail> pembayaranUtangPiutangDetailList) throws GeneralBOException {
+    public String saveAddPembayaran(PembayaranUtangPiutang bean, List<PembayaranUtangPiutangDetail> pembayaranUtangPiutangDetailList, List<Lampiran> lampiranList) throws GeneralBOException {
         logger.info("[PembayaranUtangPiutangBoImpl.saveAdd] start process >>>");
 
         if (bean!=null) {
@@ -631,6 +646,51 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
                 try {
                     // insert into database
                     pembayaranUtangPiutangDetailDao.addAndSave(pembayaranUtangPiutangDetailEntity);
+                } catch (HibernateException e) {
+                    logger.error("[PembayaranUtangPiutangBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data PembayaranUtangPiutang, please info to your admin..." + e.getMessage());
+                }
+            }
+
+            for (Lampiran lampiran : lampiranList){
+                ItAkunLampiranEntity lampiranEntity = new ItAkunLampiranEntity();
+                try {
+                    BASE64Decoder decoder = new BASE64Decoder();
+                    byte[] decodedBytes = new byte[0];
+                    decodedBytes = decoder.decodeBuffer(lampiran.getUploadFile());
+                    logger.info("Decoded upload data : " + decodedBytes.length);
+                    String fileName = lampiran.getNamaLampiran().replace(" ","").substring(0,20)+dateFormater("MM")+dateFormater("yy")+".png";
+                    String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_LAMPIRAN+fileName;
+                    logger.info("File save path : " + uploadFile);
+                    BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+                    if (image == null) {
+                        logger.error("Buffered Image is null");
+                    }else{
+                        File f = new File(uploadFile);
+                        // write the image
+                        ImageIO.write(image, "png", f);
+                        lampiranEntity.setUrl(fileName);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                String lampiranId =lampiranDao.getNextLampiranId();
+                lampiranEntity.setLampiranId(lampiranId);
+                lampiranEntity.setNamaLaporan(lampiran.getNamaLampiran());
+                lampiranEntity.setTransaksiId(pembayaranUtangPiutangId);
+
+                lampiranEntity.setFlag(bean.getFlag());
+                lampiranEntity.setAction(bean.getAction());
+                lampiranEntity.setCreatedWho(bean.getCreatedWho());
+                lampiranEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                lampiranEntity.setCreatedDate(bean.getCreatedDate());
+                lampiranEntity.setLastUpdate(bean.getLastUpdate());
+
+                try {
+                    // insert into database
+                    lampiranDao.addAndSave(lampiranEntity);
                 } catch (HibernateException e) {
                     logger.error("[PembayaranUtangPiutangBoImpl.saveAdd] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when saving new data PembayaranUtangPiutang, please info to your admin..." + e.getMessage());
@@ -873,5 +933,11 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
         logger.info("[PembayaranUtangPiutangBoImpl.approvePembayaran] end process <<<");
 
         return notifikasiList;
+    }
+
+    private String dateFormater(String type) {
+        java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
+        DateFormat df = new SimpleDateFormat(type);
+        return df.format(date);
     }
 }

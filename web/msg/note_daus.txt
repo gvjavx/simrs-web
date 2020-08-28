@@ -438,3 +438,21 @@ ALTER TABLE im_company ADD COLUMN param_dapen_pegawai numeric (10,5);
 ALTER TABLE im_company ADD COLUMN param_biaya_jabatan numeric (20,0);
 
 update im_company set param_dapen_pegawai=6,param_biaya_jabatan=500000;
+
+CREATE TABLE public.it_akun_lampiran
+(
+    lampiran_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    nama_laporan character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    url character varying(100) COLLATE pg_catalog."default" NOT NULL,
+	transaksi_id character varying(30) COLLATE pg_catalog."default" NOT NULL,
+	flag character varying(1) COLLATE pg_catalog."default",
+    action character varying(1) COLLATE pg_catalog."default",
+    created_date timestamp without time zone,
+    last_update timestamp without time zone,
+    created_who character varying(100) COLLATE pg_catalog."default",
+    last_update_who character varying(100) COLLATE pg_catalog."default",
+    CONSTRAINT it_akun_lampiran_pkey PRIMARY KEY (lampiran_id)
+);
+CREATE SEQUENCE seq_lampiran INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 1;
+
+update im_hris_pegawai set golongan_id='APO' where golongan_id='APOAPO';
