@@ -1,8 +1,10 @@
 package com.neurix.simrs.transaksi.antriantelemedic.bo;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
+import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsVideoRmEntity;
 import com.neurix.simrs.transaksi.bataltelemedic.model.BatalTelemedic;
 import com.neurix.simrs.transaksi.bataltelemedic.model.ItSimrsBatalTelemedicEntity;
 import com.neurix.simrs.transaksi.reseponline.model.ItSimrsPengirimanObatEntity;
@@ -49,4 +51,9 @@ public interface TelemedicBo {
 
     public void updateBankCoa(String idTele, String bankCoa);
     public void createNotifikasiAdmin(String idItem, String roleId, String branchId, String userName, Timestamp createdDate, String keterangan) throws GeneralBOException;
+
+    public CrudResponse insertVideoRm(String idDetailCheckup, String path, String tipe);
+    public CrudResponse updateVideoRmOnDetailCheckup(String idDetailCheckup, String path);
+
+
 }
