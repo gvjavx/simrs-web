@@ -38,6 +38,15 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
     private PositionDao positionDao;
     private MasterDao masterDao;
     private KodeRekeningDao kodeRekeningDao;
+    private ParameterBudgetingRekeningDao parameterBudgetingRekeningDao;
+
+    public void setKodeRekeningDao(KodeRekeningDao kodeRekeningDao) {
+        this.kodeRekeningDao = kodeRekeningDao;
+    }
+
+    public void setParameterBudgetingRekeningDao(ParameterBudgetingRekeningDao parameterBudgetingRekeningDao) {
+        this.parameterBudgetingRekeningDao = parameterBudgetingRekeningDao;
+    }
 
     public void setPositionDao(PositionDao positionDao) {
         this.positionDao = positionDao;
@@ -438,5 +447,9 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
     @Override
     public List<ParameterBudgeting> getListDivisiParameterBudgetingByKategororiAndMaster(String idKategori, String masterId) throws GeneralBOException {
         return perhitunganBudgetingDao.getListDivisiByIdKategoriAndMaster(idKategori, masterId);
+    }
+
+    private String getNextIdParameterRekening(){
+        return "PBR" + parameterBudgetingRekeningDao.getNextSeq();
     }
 }

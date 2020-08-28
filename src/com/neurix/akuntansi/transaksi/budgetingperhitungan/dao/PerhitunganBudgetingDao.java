@@ -337,7 +337,7 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
 
         String SQL = "SELECT a.master_id, b.nama\n" +
                 "FROM im_akun_parameter_budgeting a\n" +
-                "INNER JOIN im_akun_master b ON b.nomor_master = a.master_id\n" +
+                "LEFT JOIN im_akun_master b ON b.nomor_master = a.master_id\n" +
                 "WHERE a.id_kategori_budgeting = :idKategori \n" +
                 "GROUP BY a.master_id, b.nama";
 
@@ -350,7 +350,7 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
             for (Object[] obj : results){
                 ParameterBudgeting bg = new ParameterBudgeting();
                 bg.setMasterId(obj[0].toString());
-                bg.setNamaMaster(obj[1].toString());
+                bg.setNamaMaster(obj[1].toString() == null ? "" : obj[1].toString());
                 budgetingList.add(bg);
             }
         }
