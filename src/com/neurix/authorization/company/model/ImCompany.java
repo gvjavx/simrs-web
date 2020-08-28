@@ -141,6 +141,24 @@ public class ImCompany implements Serializable {
 
     private String periodeGaji;
     private BigDecimal paramDapen;
+    private BigDecimal paramDapenPegawai;
+    private BigDecimal biayaJabatan;
+
+    public BigDecimal getParamDapenPegawai() {
+        return paramDapenPegawai;
+    }
+
+    public void setParamDapenPegawai(BigDecimal paramDapenPegawai) {
+        this.paramDapenPegawai = paramDapenPegawai;
+    }
+
+    public BigDecimal getBiayaJabatan() {
+        return biayaJabatan;
+    }
+
+    public void setBiayaJabatan(BigDecimal biayaJabatan) {
+        this.biayaJabatan = biayaJabatan;
+    }
 
     public BigDecimal getParamDapen() {
         return paramDapen;

@@ -231,9 +231,9 @@
                                                 <display:column property="stId" sortable="true" title="Id"/>
                                                 <display:column property="sessionId" sortable="true" title="Session.Id"/>
                                                 <display:column property="userName" sortable="true" title="User"/>
+                                                <display:column property="name" sortable="true" title="Nama"/>
                                                 <display:column property="companyName" sortable="true" title="Company"/>
                                                 <display:column property="branchName" sortable="true" title="Branch"/>
-                                                <display:column property="areaName" sortable="true" title="Area"/>
                                                 <display:column property="ipAddress" sortable="true" title="Ip.Address"/>
                                                 <display:column property="loginTimestamp" sortable="true" title="Login Time"
                                                                 decorator="com.neurix.common.displaytag.LongDateWrapper"/>

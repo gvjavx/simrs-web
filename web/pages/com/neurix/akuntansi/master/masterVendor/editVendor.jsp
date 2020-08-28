@@ -18,11 +18,13 @@
         $.subscribe('beforeProcessSave', function (event, data) {
             var vendorId = document.getElementById("vendorIdEdit").value;
             var vendorName    = document.getElementById("vendorNameEdit").value;
+            var tipeVendor = document.getElementById("tipeVendorEdit").value;
+            var noRekening = document.getElementById("noRekeningEdit").value;
             var alamat = document.getElementById("alamatEdit").value;
             var npwp = document.getElementById("npwpEdit").value;
             var email = document.getElementById("emailEdit").value;
             var notelp = document.getElementById("noTelpEdit").value;
-            if (vendorName != ''&&alamat!=''&&npwp!=''&&email!=''&&notelp!=''&&vendorId!='') {
+            if (vendorName != ''&&alamat!=''&&npwp!=''&&email!=''&&notelp!=''&&vendorId!=''&&tipeVendor!=''&&noRekening!='') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -51,6 +53,12 @@
                 }
                 if (notelp == '') {
                     msg += 'Field <strong>No. Telp.</strong> is required.' + '<br/>';
+                }
+                if (tipeVendor == '') {
+                    msg += 'Field <strong>Tipe Vendor</strong> is required.' + '<br/>';
+                }
+                if (noRekening == '') {
+                    msg += 'Field <strong>No. Rekening</strong> is required.' + '<br/>';
                 }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
@@ -108,6 +116,18 @@
                     </tr>
                     <tr>
                         <td>
+                            <label class="control-label"><small>Tipe Vendor :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:select list="#{'bpjs':'Perusahaan yg berelasi/kerjasama/mitra','lahan':'Penyewa Lahan','lain':'Lain - Lain'}" id="tipeVendorEdit" name="masterVendor.tipeVendor" disabled="true"
+                                          headerKey="umum" headerValue="Rekanan/Swasta/Vendor/Asuransi" cssClass="form-control" />
+                            </table>
+                        </td>
+                        <s:hidden name="masterVendor.tipeVendor" />
+                    </tr>
+                    <tr>
+                        <td>
                             <label class="control-label"><small>Nama Vendor :</small></label>
                         </td>
                         <td>
@@ -138,6 +158,16 @@
                     </tr>
                     <tr>
                         <td>
+                            <label class="control-label"><small>No. Rekening :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield type="number" id="noRekeningEdit" name="masterVendor.noRekening" required="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
                             <label class="control-label"><small>Email :</small></label>
                         </td>
                         <td>
@@ -152,7 +182,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="noTelpEdit" name="masterVendor.noTelp" required="true" disabled="false" cssClass="form-control"/>
+                                <s:textfield type="number" id="noTelpEdit" name="masterVendor.noTelp" required="true" disabled="false" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>

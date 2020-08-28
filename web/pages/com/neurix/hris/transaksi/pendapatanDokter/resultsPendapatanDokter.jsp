@@ -483,7 +483,7 @@
 </div>
 
 <div class="modal fade" id="modal-detail-pendapatan">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog" style="width: 1300px">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -518,7 +518,7 @@
                                 <td><b>Tahun</b></td>
                                 <td><span id="tahun"></span></td>
                             </tr>
-                            <tr>
+                            <tr style="display: none">
                                 <td><b>Bruto</b></td>
                                 <td align="right"><span id="bruto"></span></td>
                             </tr>
@@ -650,7 +650,7 @@
         }
     };
     window.loadPendapatan =  function(){
-        $('.absensiDetailTable').find('tr').remove();
+        $('.pendapatanTable').find('tr').remove();
         $('.pendapatanTable').find('tbody').remove();
         $('.pendapatanTable').find('thead').remove();
         dwr.engine.setAsync(false);
@@ -689,7 +689,7 @@
                             '<td style="text-align: center">' + item.kodeJabatan + '</td>' +
                             '<td style="text-align: center">' + item.bulan + '</td>' +
                             '<td align="center" class="ceknull">' + item.tahun + '</td>' +
-                            '<td align="right" class="ceknull">' + item.stTotalBruto + '</td>' +
+                            '<td align="right" class="ceknull">' + item.stTotalHrBruto + '</td>' +
                             '<td align="right" class="ceknull">' + item.stTotalPphDipungut + '</td>' +
                             '<td align="right" class="ceknull">' + item.stTotalPotKs + '</td>' +
                             '<td align="right" class="ceknull">' + item.stTotalGajiBersih + '</td>' +

@@ -86,6 +86,7 @@ public class JadwalShiftKerjaDetailDao extends GenericDao<ItJadwalShiftKerjaDeta
                 "\tLEFT JOIN im_hris_profesi_pegawai profesi ON profesi.profesi_id=position.profesi_id\n" +
                 "\tLEFT JOIN im_position position_pegawai ON posisi.position_id = position_pegawai.position_id\n" +
                 "WHERE\n" +
+                "\tpegawai.shift='Y' AND\n" +
                 "\tpegawai.flag='Y' AND\n" +
                 "\tposisi.flag='Y' AND\n" +
                 "\tpegawai.pin IS NOT NULL \n" +

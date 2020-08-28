@@ -118,6 +118,8 @@
             $('#asumsiJasprod').prop('readonly', false);
             $('#periodeGaji').prop('disabled', false);
             $('#paramDapen').prop('readonly', false);
+            $('#paramDapenPegawai').prop('readonly', false);
+            $('#biayaJabatan').prop('readonly', false);
 
             $('#maxBpjsTk').prop('readonly', false);
             $('#maxBpjsPensiun').prop('readonly', false);
@@ -145,6 +147,8 @@
             $('#kursDolar').prop('readonly', true);
             $('#periodeGaji').prop('disabled', true);
             $('#paramDapen').prop('readonly', true);
+            $('#paramDapenPegawai').prop('readonly', true);
+            $('#biayaJabatan').prop('readonly', true);
 
             $('#asumsiThr').prop('readonly', true);
             $('#asumsiPendidikan').prop('readonly', true);
@@ -266,12 +270,23 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-3" for="company.paramDapen">Parameter Dapen :</label>
+                                        <label class="control-label col-sm-3" for="company.paramDapen">% Dapen Perusahaan:</label>
                                         <div class="col-sm-8">
                                             <s:textfield id="paramDapen" name="company.paramDapen" type="number" required="true" cssClass="form-control"/>
                                         </div>
                                     </div>
-
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3" for="company.paramDapen">% Dapenbun Pegawai:</label>
+                                        <div class="col-sm-8">
+                                            <s:textfield id="paramDapenPegawai" name="company.paramDapenPegawai" type="number" required="true" cssClass="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3" for="company.paramDapen">Biaya Jabatan:</label>
+                                        <div class="col-sm-8">
+                                            <s:textfield id="biayaJabatan" name="company.biayaJabatan" type="number" required="true" cssClass="form-control"/>
+                                        </div>
+                                    </div>
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="company.defaultEmailSubject">Default Mail Subject :</label>
                                         <div class="col-sm-8">

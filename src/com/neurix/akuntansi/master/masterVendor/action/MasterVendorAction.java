@@ -23,10 +23,19 @@ public class MasterVendorAction extends BaseMasterAction {
     protected static transient Logger logger = Logger.getLogger(MasterVendorAction.class);
     private MasterVendorBo masterVendorBoProxy;
     private MasterVendor masterVendor;
+    private String tipe;
     private List<MasterVendor> listOfComboVendor = new ArrayList<MasterVendor>();
 
     public List<MasterVendor> getListOfComboVendor() {
         return listOfComboVendor;
+    }
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
     }
 
     public void setListOfComboVendor(List<MasterVendor> listOfComboVendor) {
@@ -64,6 +73,7 @@ public class MasterVendorAction extends BaseMasterAction {
         MasterVendor search = new MasterVendor();
         List<MasterVendor> vendorList = new ArrayList();
         search.setFlag("Y");
+        search.setTipeVendor(getTipe());
         try {
             vendorList = masterVendorBoProxy.getByCriteria(search);
         } catch (GeneralBOException e) {

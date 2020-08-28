@@ -278,4 +278,9 @@
     <import resource="sshconfig/com/neurix/akuntansi/transaksi/penyewaanLahan/spring/PenyewaanLahanBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/transaksi/budgetingnilaidasar/spring/BudgetingNilaiDasarBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/transaksi/budgetingperhitungan/spring/BudgetingPerhitunganBean.xml"/>
+
+    <import resource="sshconfig/com/neurix/hris/master/payrollPtkp/spring/PayrollPtkpBean.xml"/>
+    <import resource="sshconfig/com/neurix/akuntansi/master/tipeLaporan/spring/TipeLaporanBean.xml"/>
+    <import resource="sshconfig/com/neurix/hris/master/tipePayroll/spring/TipePayrollBean.xml"/>
+    <import resource="sshconfig/com/neurix/hris/master/statusAbsensi/spring/StatusAbsensiBean.xml"/>
 </beans>

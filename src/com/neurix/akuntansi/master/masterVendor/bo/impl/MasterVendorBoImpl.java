@@ -123,6 +123,8 @@ public class MasterVendorBoImpl implements MasterVendorBo {
                 imVendorEntity.setNpwp(bean.getNpwp());
                 imVendorEntity.setEmail(bean.getEmail());
                 imVendorEntity.setNoTelp(bean.getNoTelp());
+                imVendorEntity.setTipeVendor(bean.getTipeVendor());
+                imVendorEntity.setNoRekening(bean.getNoRekening());
                 imVendorEntity.setFlag(bean.getFlag());
                 imVendorEntity.setAction(bean.getAction());
                 imVendorEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -133,6 +135,26 @@ public class MasterVendorBoImpl implements MasterVendorBo {
                 } catch (HibernateException e) {
                     logger.error("[VendorBoImpl.saveEdit] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when saving update data Vendor, please info to your admin..." + e.getMessage());
+                }
+
+                if ("Y".equalsIgnoreCase(imVendorEntity.getVendorObat())){
+                    ImSimrsVendorEntity vendorEntity = vendorDao.getById("idVendor",bean.getNomorMaster());
+                    vendorEntity.setNamaVendor(bean.getNama());
+                    vendorEntity.setAlamat(bean.getAlamat());
+                    vendorEntity.setNpwp(bean.getNpwp());
+                    vendorEntity.setEmail(bean.getEmail());
+                    vendorEntity.setNoTelp(bean.getNoTelp());
+                    vendorEntity.setFlag(bean.getFlag());
+                    vendorEntity.setAction(bean.getAction());
+                    vendorEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    vendorEntity.setLastUpdate(bean.getLastUpdate());
+                    try {
+                        // Update into database
+                        vendorDao.updateAndSave(vendorEntity);
+                    } catch (HibernateException e) {
+                        logger.error("[VendorBoImpl.saveEdit] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data Vendor, please info to your admin..." + e.getMessage());
+                    }
                 }
             } else {
                 logger.error("[VendorBoImpl.saveEdit] Error, not found data Vendor with request id, please check again your data ...");
@@ -148,8 +170,24 @@ public class MasterVendorBoImpl implements MasterVendorBo {
         if (bean!=null) {
             String vendorId;
             try {
-                // Generating ID, get from postgre sequence
-                vendorId = masterVendorDao.getNextVendorId();
+                switch (bean.getTipeVendor()){
+                    case "umum":
+                        vendorId = masterVendorDao.getNextVendorUmumId();
+                        break;
+                    case "bpjs":
+                        vendorId = masterVendorDao.getNextVendorBpjsId();
+                        break;
+                    case "lahan":
+                        vendorId = masterVendorDao.getNextVendorSewaLahanId();
+                        break;
+                    case "lain":
+                        vendorId = masterVendorDao.getNextVendorLainId();
+                        break;
+                    default:
+                        String status = "ERROR : Tipe Vendor tidak ditemukan";
+                        logger.error("[VendorBoImpl.saveAdd]"+status);
+                        throw new GeneralBOException("Found problem when getting sequence vendorId id, please info to your admin..." + status);
+                }
             } catch (HibernateException e) {
                 logger.error("[VendorBoImpl.saveAdd] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when getting sequence vendorId id, please info to your admin..." + e.getMessage());
@@ -164,6 +202,8 @@ public class MasterVendorBoImpl implements MasterVendorBo {
             imVendorEntity.setNpwp(bean.getNpwp());
             imVendorEntity.setEmail(bean.getEmail());
             imVendorEntity.setNoTelp(bean.getNoTelp());
+            imVendorEntity.setTipeVendor(bean.getTipeVendor());
+            imVendorEntity.setNoRekening(bean.getNoRekening());
             imVendorEntity.setFlag(bean.getFlag());
             imVendorEntity.setAction(bean.getAction());
             imVendorEntity.setCreatedWho(bean.getCreatedWho());
@@ -229,7 +269,9 @@ public class MasterVendorBoImpl implements MasterVendorBo {
             if (searchBean.getNama() != null && !"".equalsIgnoreCase(searchBean.getNama())) {
                 hsCriteria.put("nama", searchBean.getNama());
             }
-
+            if (searchBean.getTipeVendor() != null && !"".equalsIgnoreCase(searchBean.getTipeVendor())) {
+                hsCriteria.put("tipe_vendor", searchBean.getTipeVendor());
+            }
             if (searchBean.getFlag() != null && !"".equalsIgnoreCase(searchBean.getFlag())) {
                 if ("N".equalsIgnoreCase(searchBean.getFlag())) {
                     hsCriteria.put("flag", "N");
@@ -261,6 +303,25 @@ public class MasterVendorBoImpl implements MasterVendorBo {
                     returnVendor.setEmail(vendorEntity.getEmail());
                     returnVendor.setNoTelp(vendorEntity.getNoTelp());
                     returnVendor.setVendorObat(vendorEntity.getVendorObat());
+                    returnVendor.setNoRekening(vendorEntity.getNoRekening());
+                    returnVendor.setTipeVendor(vendorEntity.getTipeVendor());
+
+                    switch (vendorEntity.getTipeVendor()){
+                        case "umum":
+                            returnVendor.setTipeVendorName("Rekanan/swasta/vendor/asuransi");
+                            break;
+                        case "bpjs":
+                            returnVendor.setTipeVendorName("Perusahaan yg berelasi/kerjasama/mitra");
+                            break;
+                        case "lahan":
+                            returnVendor.setTipeVendorName("Penyewa Lahan");
+                            break;
+                        case "lain":
+                            returnVendor.setTipeVendorName("Lain - Lain");
+                            break;
+                            default:
+                                returnVendor.setTipeVendorName("");
+                    }
 
                     returnVendor.setCreatedWho(vendorEntity.getCreatedWho());
                     returnVendor.setCreatedDate(vendorEntity.getCreatedDate());

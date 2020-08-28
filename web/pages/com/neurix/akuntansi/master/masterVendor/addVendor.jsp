@@ -16,12 +16,14 @@
 
         $.subscribe('beforeProcessSave', function (event, data) {
             var nameVendor = document.getElementById("vendorNameAdd").value;
+            var tipeVendor = document.getElementById("tipeVendorAdd").value;
+            var noRekening = document.getElementById("noRekeningAdd").value;
             var alamat = document.getElementById("alamatAdd").value;
             var npwp = document.getElementById("npwpAdd").value;
             var email = document.getElementById("emailAdd").value;
             var notelp = document.getElementById("noTelpAdd").value;
             dwr.engine.setAsync(false);
-            if (nameVendor != ''&&alamat!=''&&npwp!=''&&email!=''&&notelp!='') {
+            if (nameVendor != ''&&alamat!=''&&npwp!=''&&email!=''&&notelp!=''&&tipeVendor!=''&&noRekening!='') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -47,6 +49,12 @@
                 }
                 if (notelp == '') {
                     msg += 'Field <strong>No. Telp.</strong> is required.' + '<br/>';
+                }
+                if (tipeVendor == '') {
+                    msg += 'Field <strong>Tipe Vendor</strong> is required.' + '<br/>';
+                }
+                if (noRekening == '') {
+                    msg += 'Field <strong>No. Rekening.</strong> is required.' + '<br/>';
                 }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
@@ -89,7 +97,18 @@
                         </td>
                     </tr>
                 </table>
-                <table >
+                <table>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Tipe Vendor :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:select list="#{'bpjs':'Perusahaan yg berelasi/kerjasama/mitra','lahan':'Penyewa Lahan','lain':'Lain - Lain'}" id="tipeVendorAdd" name="masterVendor.tipeVendor"
+                                          headerKey="umum" headerValue="Rekanan/Swasta/Vendor/Asuransi" cssClass="form-control" />
+                            </table>
+                        </td>
+                    </tr>
                     <tr>
                         <td>
                             <label class="control-label"><small>Nama Vendor :</small></label>
@@ -122,6 +141,16 @@
                     </tr>
                     <tr>
                         <td>
+                            <label class="control-label"><small>No. Rekening :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield type="number" id="noRekeningAdd" name="masterVendor.noRekening" required="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
                             <label class="control-label"><small>Email :</small></label>
                         </td>
                         <td>
@@ -136,7 +165,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="noTelpAdd" name="masterVendor.noTelp" required="true" cssClass="form-control"/>
+                                <s:textfield type="number" id="noTelpAdd" name="masterVendor.noTelp" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>

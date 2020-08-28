@@ -215,6 +215,14 @@
                                                         }
                                                     })
                                                 </script>
+                                                <button type="button" class="btn btn-warning" id="btnLampiran"><i
+                                                        class="fa fa-file"></i> Lampiran
+                                                </button>
+                                                <script>
+                                                    $('#btnLampiran').click(function () {
+                                                        $('#modal-lampiran').modal('show');
+                                                    })
+                                                </script>
                                             </div>
                                         </div>
                                     </div>
@@ -1044,7 +1052,7 @@
 </div>
 
 <div class="modal fade" id="modal-lampiran">
-    <div class="modal-dialog modal-flat">
+    <div class="modal-dialog modal-flat modal-md">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1052,16 +1060,26 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Daftar Lampiran</h4>
             </div>
             <div class="modal-body">
-                <div class="box">
+                <center class="box">
                     <br>
                     <br>
                     <div class="row">
-                        <label class="control-label col-sm-4">Lampiran (PDF/JPEG/PNG) : </label>
+                        <label class="control-label col-sm-4">Nama Lampiran </label>
                         <div class="col-sm-8">
-                            <input type="file" id="file" class="form-control" name="fileUpload"/>
-                            <input type="text" id="cpiddoc" class="form-control" accept="application/pdf,image/jpeg/png"
-                                   name="study.uploadFile" readonly />
+                            <s:textfield id="mod_nama_lampiran" onkeypress="$(this).css('border','')" cssClass="form-control modal_lampiran"/>
                         </div>
+                    </div>
+                    <div class="row" style="margin-top: 7px">
+                        <label class="control-label col-sm-4">Lampiran (PDF/JPEG/PNG) </label>
+                        <div class="col-sm-8">
+                            <input type="file" id="file" class="form-control modal_lampiran" name="fileUpload" accept="application/pdf,image/jpeg,image/png">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row" style="margin-top: 7px">
+                        <center>
+                        <a id="btnAddLampiran" type="button" class="btn btn-default btn-success"><i class="fa fa-plus"></i> Tambah</a>
+                        </center>
                     </div>
                     <br>
                     <div class="row">
@@ -1071,11 +1089,12 @@
                             <br>
                         </div>
                     </div>
+                </center>
                 </div>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                </button>
+                <div class="modal-footer" style="background-color: #cacaca">
+                    <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                    </button>
+                </div>
             </div>
         </div>
     </div>

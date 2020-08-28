@@ -6,6 +6,8 @@ import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.akuntansi.transaksi.penyewaanLahan.bo.PenyewaanLahanBo;
 import com.neurix.akuntansi.transaksi.penyewaanLahan.model.ItAkunPenyewaanLahanEntity;
 import com.neurix.akuntansi.transaksi.penyewaanLahan.model.PenyewaanLahan;
+import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.authorization.company.model.Branch;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
@@ -14,10 +16,19 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
+import sun.misc.BASE64Decoder;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -253,7 +264,8 @@ public class PenyewaanLahanAction extends BaseMasterAction {
         return "success_save_delete";
     }
 
-    public void saveAdd(String branchId,String namaPenyewa,String stTanggal,String stNilai,String metodeBayar,String keterangan,String bank){
+    public void saveAdd(String branchId,String namaPenyewa,String stTanggal,String stNilai,String metodeBayar,
+                        String keterangan,String bank,String nilaiPpn,String nilaiPph,String nilaiNetto,String noFaktur,String fileUpload){
         logger.info("[PenyewaanLahanAction.saveAdd] start process >>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PenyewaanLahanBo penyewaanLahanBo= (PenyewaanLahanBo) ctx.getBean("penyewaanLahanBoProxy");
@@ -263,10 +275,32 @@ public class PenyewaanLahanAction extends BaseMasterAction {
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
+            //upload images
+            BASE64Decoder decoder = new BASE64Decoder();
+            byte[] decodedBytes = decoder.decodeBuffer(fileUpload);
+            logger.info("Decoded upload data : " + decodedBytes.length);
+            String fileName = noFaktur+"-"+dateFormater("MM")+dateFormater("yy")+".png";
+            String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_FAKTUR_PAJAK+fileName;
+            logger.info("File save path : " + uploadFile);
+            BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+            if (image == null) {
+                logger.error("Buffered Image is null");
+            }else{
+                File f = new File(uploadFile);
+                // write the image
+                ImageIO.write(image, "png", f);
+                penyewaanLahan.setUrlFakturImage(fileName);
+            }
+
+            penyewaanLahan.setNoFaktur(noFaktur);
             penyewaanLahan.setBranchId(branchId);
             penyewaanLahan.setNamaPenyewa(namaPenyewa);
             penyewaanLahan.setTanggalBayar(CommonUtil.convertStringToDate(stTanggal));
-            penyewaanLahan.setNilai(BigDecimal.valueOf(Double.valueOf(stNilai.replace(".",""))));
+            penyewaanLahan.setNilai(BigDecimal.valueOf(Double.valueOf(stNilai.replace(".","").replace(",",""))));
+            penyewaanLahan.setNilaiPpn(BigDecimal.valueOf(Double.valueOf(nilaiPpn.replace(".","").replace(",",""))));
+            penyewaanLahan.setNilaiPph(BigDecimal.valueOf(Double.valueOf(nilaiPph.replace(".","").replace(",",""))));
+            penyewaanLahan.setNilaiNetto(BigDecimal.valueOf(Double.valueOf(nilaiNetto.replace(".","").replace(",",""))));
             penyewaanLahan.setMetodeBayar(metodeBayar);
             penyewaanLahan.setBank(bank);
             penyewaanLahan.setKeterangan(keterangan);
@@ -288,6 +322,8 @@ public class PenyewaanLahanAction extends BaseMasterAction {
             }
             logger.error("[PenyewaanLahanAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
 
@@ -464,6 +500,66 @@ public class PenyewaanLahanAction extends BaseMasterAction {
         logger.info("[PenyewaanLahanAction.cancelPenyewaanLahan] end process <<<");
 
         return "Berhasil Membatalkan Penyewaan Lahan";
+    }
+
+    public String cetakBuktiPembayaran(){
+        logger.info("[PenyewaanLahanAction.cetakBuktiPembayaran] start process >>>");
+        List<PenyewaanLahan> penyewaanLahanList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PenyewaanLahanBo penyewaanLahanBo = (PenyewaanLahanBo) ctx.getBean("penyewaanLahanBoProxy");
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+
+        PenyewaanLahan data = getPenyewaanLahan();
+        Branch branch = new Branch();
+        PenyewaanLahan search = new PenyewaanLahan();
+        search.setPenyewaanLahanId(data.getPenyewaanLahanId());
+        search.setFlag("Y");
+        penyewaanLahanList=penyewaanLahanBo.getByCriteria(search);
+
+        for (PenyewaanLahan result : penyewaanLahanList){
+            reportParams.put("namaPenyewa", result.getNamaPenyewaName());
+            reportParams.put("jumlahTerbilang", CommonUtil.angkaToTerbilang(result.getNilai().longValue()));
+            reportParams.put("keterangan", result.getKeterangan());
+            reportParams.put("jumlah", result.getStNilai());
+            reportParams.put("tanggalBayar",result.getStTanggalBayar());
+            reportParams.put("namaPenerima",result.getCreatedWho());
+
+            branch = branchBo.getBranchById(result.getBranchId(),"Y");
+        }
+        String reportName ="BUKTI PEMBAYARAN SEWA LAHAN";
+
+        reportParams.put("reportTitle", reportName);
+        reportParams.put("reportName", reportName);
+        reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
+        reportParams.put("branchId", branch.getBranchId());
+        java.util.Date now = new java.util.Date();
+        reportParams.put("tanggal", CommonUtil.convertDateToString(now));
+        reportParams.put("kota",branch.getBranchName());
+        reportParams.put("alamatSurat",branch.getAlamatSurat());
+        reportParams.put("penyewaanLahanId",data.getPenyewaanLahanId());
+        reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
+        reportParams.put("areaId", CommonUtil.userAreaName());
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            Long logId = null;
+            try {
+                logId = penyewaanLahanBo.saveErrorMessage(e.getMessage(), "cetakBuktiPembayaran");
+            } catch (GeneralBOException e1) {
+                logger.error("[PenyewaanLahanAction.cetakBuktiPembayaran] Error when downloading ,", e1);
+            }
+            logger.error("[PenyewaanLahanAction.cetakBuktiPembayaran] Error when print report ," + "[" + logId + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
+        }
+        logger.info("[PenyewaanLahanAction.cetakBuktiPembayaran] end process <<<");
+
+        return "print_bukti_pembayaran";
+    }
+
+    private String dateFormater(String type) {
+        java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
+        DateFormat df = new SimpleDateFormat(type);
+        return df.format(date);
     }
 
     public String paging(){

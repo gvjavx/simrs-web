@@ -633,6 +633,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setFlag((String) row[29]);
             result.setAction((String) row[30]);
 
+            result.setShift((String)row[60]);
             result.setCreatedWho((String) row[31]);
             result.setLastUpdateWho((String) row[32]);
             result.setTanggalAktif((Date) row[33]);

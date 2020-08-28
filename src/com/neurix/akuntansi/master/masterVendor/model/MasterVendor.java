@@ -18,6 +18,33 @@ public class MasterVendor extends BaseModel {
     private String noTelp;
     private String vendorObat;
     private Boolean obat;
+    private String noRekening;
+    private String TipeVendor;
+    private String TipeVendorName;
+
+    public String getTipeVendorName() {
+        return TipeVendorName;
+    }
+
+    public void setTipeVendorName(String tipeVendorName) {
+        TipeVendorName = tipeVendorName;
+    }
+
+    public String getNoRekening() {
+        return noRekening;
+    }
+
+    public void setNoRekening(String noRekening) {
+        this.noRekening = noRekening;
+    }
+
+    public String getTipeVendor() {
+        return TipeVendor;
+    }
+
+    public void setTipeVendor(String tipeVendor) {
+        TipeVendor = tipeVendor;
+    }
 
     public Boolean getObat() {
         return obat;
