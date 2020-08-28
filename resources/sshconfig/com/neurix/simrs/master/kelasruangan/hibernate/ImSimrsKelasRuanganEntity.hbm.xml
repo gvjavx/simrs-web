@@ -39,7 +39,9 @@
         <property name="divisiId">
             <column name="divisi_id" sql-type="varchar" length="30" not-null="false" />
         </property>
-
+        <property name="kategori">
+            <column name="kategori"/>
+        </property>
 
     </class>
 </hibernate-mapping>

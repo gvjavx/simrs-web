@@ -7,6 +7,7 @@ import com.neurix.hris.master.provinsi.model.ImKecamatanEntity;
 import com.neurix.hris.master.provinsi.model.ImProvinsiEntity;
 import com.neurix.hris.master.provinsi.model.ImKotaEntity;
 
+import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -14,6 +15,9 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;

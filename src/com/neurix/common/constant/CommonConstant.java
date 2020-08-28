@@ -175,10 +175,9 @@ public class CommonConstant {
     public final static String ID_KANPUS = "KP";
     public final static String MASTER_PAJAK_OBAT = "03.00";
 
-//    public final static String posisiKabidKeuanganKp = "P042";
-//    public final static String posisiDirkeuKp = "P002";
-//    public final static String posisiKadivKeuanganUnit = "";
-//    public final static String posisiGmUnit = "";
+    public final static String REKENING_ID_PPN_MASUKAN = CommonUtil.getPropertyParams("rekening.id.ppn.masukan");
+    public final static String REKENING_ID_PPN_KELUARAN = CommonUtil.getPropertyParams("rekening.id.ppn.keluaran");
+
 
     public final static String REKENING_PPH21 = "00187";
     public final static String RESOURCE_PATH_FAKTUR_PAJAK = "/upload/faktur_pajak/";
@@ -188,7 +187,6 @@ public class CommonConstant {
     public final static String KODERING_FARMASI_RJ = "02.01.01";
     public final static String REKENING_ID_PENDAPATAN_RI ="00304";
     public final static String REKENING_ID_PENDAPATAN_RJ ="00303";
-    public final static String JUNK_MASTER_PIUTANG_PPN = "JNK";
 
     public final static String CUTI_ID_DILUAR_TANGGUNJAWAB = CommonUtil.getPropertyParams("cuti.id.diluar.tanggungjawab");
 
@@ -208,5 +206,12 @@ public class CommonConstant {
     public final static String TRANSAKSI_ID_PAYROLL =CommonUtil.getPropertyParams("transaksi.id.payroll");
     public final static String TRANSAKSI_ID_KIRIM_RK =CommonUtil.getPropertyParams("transaksi.id.kirim.rk");
     public final static String TRANSAKSI_ID_TERIMA_RK =CommonUtil.getPropertyParams("transaksi.id.terima.rk");
+    public final static String TRANSAKSI_ID_PENGIRIMAN_PENDAPATAN_KE_PUSAT =CommonUtil.getPropertyParams("transaksi.id.pengiriman.pendapatan.ke.pusat");
+    public final static String TRANSAKSI_ID_PENERIMAAN_PENDAPATAN_DARI_UNIT =CommonUtil.getPropertyParams("transaksi.id.penerimaan.pendapatan.dari.unit");
+    public final static String TRANSAKSI_ID_PERHITUNGAN_PENDAPATAN_DOKTER =CommonUtil.getPropertyParams("transaksi.id.perhitungan.pendapatan.dokter");
+    public final static String JUNK_MASTER_PIUTANG_PPN =CommonUtil.getPropertyParams("junk.master.piutang.ppn");
+
+    //CONSTANT HCM
+    public final static String METODE_MESIN_ABSENSI = CommonUtil.getPropertyParams("metode.mesin.absensi");
 
 }

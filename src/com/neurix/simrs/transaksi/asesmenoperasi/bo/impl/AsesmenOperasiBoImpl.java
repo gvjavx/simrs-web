@@ -72,6 +72,8 @@ public class AsesmenOperasiBoImpl implements AsesmenOperasiBo {
                     operasi.setLastUpdate(entity.getLastUpdate());
                     operasi.setLastUpdateWho(entity.getLastUpdateWho());
                     operasi.setTipe(entity.getTipe());
+                    operasi.setNamaterang(entity.getNamaterang());
+                    operasi.setSip(entity.getSip());
                     list.add(operasi);
                 }
             }
@@ -100,6 +102,8 @@ public class AsesmenOperasiBoImpl implements AsesmenOperasiBo {
                 operasi.setLastUpdate(bean.getLastUpdate());
                 operasi.setLastUpdateWho(bean.getLastUpdateWho());
                 operasi.setTipe(bean.getTipe());
+                operasi.setNamaterang(bean.getNamaterang());
+                operasi.setSip(bean.getSip());
 
                 try {
                     asesmenOperasiDao.addAndSave(operasi);

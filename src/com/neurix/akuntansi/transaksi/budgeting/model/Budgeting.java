@@ -81,6 +81,33 @@ public class Budgeting {
     private BigDecimal budgetSdSaatIni;
     private String stBudgetSaatIni;
     private String stBudgetSdSaatIni;
+    private String tipeBudgeting;
+    private List<String> rekeningIdList;
+    private String flagKp;
+
+    public String getFlagKp() {
+        return flagKp;
+    }
+
+    public void setFlagKp(String flagKp) {
+        this.flagKp = flagKp;
+    }
+
+    public List<String> getRekeningIdList() {
+        return rekeningIdList;
+    }
+
+    public void setRekeningIdList(List<String> rekeningIdList) {
+        this.rekeningIdList = rekeningIdList;
+    }
+
+    public String getTipeBudgeting() {
+        return tipeBudgeting;
+    }
+
+    public void setTipeBudgeting(String tipeBudgeting) {
+        this.tipeBudgeting = tipeBudgeting;
+    }
 
     public BigDecimal getBudgetSaatIni() {
         return budgetSaatIni;

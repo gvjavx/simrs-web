@@ -20,6 +20,24 @@ public class ItSimrsHemodialisaEntity implements Serializable {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String isTtd;
+    private String namaTerang;
+    private String sip;
+
+    public String getNamaTerang() {
+        return namaTerang;
+    }
+
+    public void setNamaTerang(String namaTerang) {
+        this.namaTerang = namaTerang;
+    }
+
+    public String getSip() {
+        return sip;
+    }
+
+    public void setSip(String sip) {
+        this.sip = sip;
+    }
 
     public String getIsTtd() {
         return isTtd;

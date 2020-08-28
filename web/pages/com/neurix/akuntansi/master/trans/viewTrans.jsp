@@ -60,8 +60,8 @@
                         </td>
                         <td>
                             <table>
-                                <s:select list="#{'dokter':'Dokter'}" id="masterView" name="trans.master" disabled="true"
-                                          headerKey="vendor" headerValue="Vendor" cssClass="form-control" />
+                                <s:select list="#{'vendor':'vendor','dokter':'Dokter','pasien':'Pasien','karyawan':'Karyawan','pengajuan_biaya':'Pengajuan Biaya'}" id="masterView" name="trans.master" disabled="true"
+                                          headerKey="" headerValue="" cssClass="form-control" />
                             </table>
                         </td>
                     </tr>
@@ -73,19 +73,7 @@
                             <table>
                                 <s:select list="#{'KM':'Kas Masuk', 'KK' : 'Kas Keluar', 'KR' : 'Koreksi'}" disabled="true"
                                           id="tipePembayaranView" name="trans.tipePembayaran"
-                                          headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Sumber Baru ?</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:select list="#{'N':'Tidak'}" id="flagSumberBaruView" name="trans.flagSumberBaru"
-                                          headerKey="Y" headerValue="Iya" cssClass="form-control" disabled="true" />
-                                <s:hidden name="trans.flagSumberBaru" />
+                                          headerKey="" headerValue="" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>

@@ -8,6 +8,8 @@ import com.neurix.simrs.transaksi.asesmenoperasi.bo.AsesmenOperasiBo;
 import com.neurix.simrs.transaksi.asesmenoperasi.bo.MonAnestesiBo;
 import com.neurix.simrs.transaksi.asesmenoperasi.model.AsesmenOperasi;
 import com.neurix.simrs.transaksi.asesmenoperasi.model.MonitoringAnestesi;
+import com.neurix.simrs.transaksi.rekammedik.bo.RekamMedikBo;
+import com.neurix.simrs.transaksi.rekammedik.model.StatusPengisianRekamMedis;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,63 +33,77 @@ public class AsesmenOperasiAction {
 
     public static transient Logger logger = Logger.getLogger(AsesmenOperasiAction.class);
 
-    public CrudResponse saveAsesmenOperasi(String data) throws JSONException, IOException {
+    public CrudResponse saveAsesmenOperasi(String data, String dataPasien){
         CrudResponse response = new CrudResponse();
         String userLogin = CommonUtil.userLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AsesmenOperasiBo asesmenOperasiBo = (AsesmenOperasiBo) ctx.getBean("asesmenOperasiBoProxy");
-        JSONArray json = new JSONArray(data);
-        List<AsesmenOperasi> operasiList = new ArrayList<>();
+        try {
+            JSONArray json = new JSONArray(data);
+            List<AsesmenOperasi> operasiList = new ArrayList<>();
 
-        for (int i = 0; i < json.length(); i++) {
+            for (int i = 0; i < json.length(); i++) {
 
-            JSONObject obj = json.getJSONObject(i);
-            AsesmenOperasi asesmenOperasi = new AsesmenOperasi();
-            asesmenOperasi.setParameter(obj.getString("parameter"));
-            asesmenOperasi.setIdDetailCheckup(obj.getString("id_detail_checkup"));
-            asesmenOperasi.setKeterangan(obj.getString("keterangan"));
+                JSONObject obj = json.getJSONObject(i);
+                AsesmenOperasi asesmenOperasi = new AsesmenOperasi();
+                asesmenOperasi.setParameter(obj.getString("parameter"));
+                asesmenOperasi.setIdDetailCheckup(obj.getString("id_detail_checkup"));
+                asesmenOperasi.setKeterangan(obj.getString("keterangan"));
 
-            if (obj.has("tipe")) {
-                if ("ttd".equalsIgnoreCase(obj.getString("tipe")) ||
-                        "penanda".equalsIgnoreCase(obj.getString("tipe")) ||
-                        "gambar".equalsIgnoreCase(obj.getString("tipe"))) {
+                if (obj.has("tipe")) {
+                    if ("ttd".equalsIgnoreCase(obj.getString("tipe")) ||
+                            "penanda".equalsIgnoreCase(obj.getString("tipe")) ||
+                            "gambar".equalsIgnoreCase(obj.getString("tipe"))) {
 
-                    String name = obj.getString("jawaban1");
-                    String nameFile1 = name.substring(name.length() - 13);
-                    String nameFile2 = nameFile1.replace("=", "a");
-                    BASE64Decoder decoder = new BASE64Decoder();
-                    byte[] decodedBytes = decoder.decodeBuffer(obj.getString("jawaban1"));
-                    logger.info("Decoded upload data : " + decodedBytes.length);
-                    String wkt = time.toString();
-                    String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
-                    logger.info("PATTERN :" + patten);
-                    String fileName = obj.getString("id_detail_checkup") + "-" + nameFile2 + i + "-" + patten + ".png";
-                    String uploadFile = "";
+                        try {
+                            String name = obj.getString("jawaban1");
+                            String nameFile1 = name.substring(name.length() - 13);
+                            String nameFile2 = nameFile1.replace("=", "a");
+                            BASE64Decoder decoder = new BASE64Decoder();
+                            byte[] decodedBytes = decoder.decodeBuffer(obj.getString("jawaban1"));
+                            logger.info("Decoded upload data : " + decodedBytes.length);
+                            String wkt = time.toString();
+                            String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                            logger.info("PATTERN :" + patten);
+                            String fileName = obj.getString("id_detail_checkup") + "-" + nameFile2 + i + "-" + patten + ".png";
+                            String uploadFile = "";
 
-                    if ("penanda".equalsIgnoreCase(obj.getString("tipe"))) {
-                        uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_AREA_OPERASI + fileName;
-                    }
-                    if ("ttd".equalsIgnoreCase(obj.getString("tipe"))) {
-                        uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
-                    }
-                    if ("gambar".equalsIgnoreCase(obj.getString("tipe"))) {
-                        uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_IMG_RM + fileName;
-                    }
+                            if ("penanda".equalsIgnoreCase(obj.getString("tipe"))) {
+                                uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_AREA_OPERASI + fileName;
+                            }
+                            if ("ttd".equalsIgnoreCase(obj.getString("tipe"))) {
+                                uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
+                            }
+                            if ("gambar".equalsIgnoreCase(obj.getString("tipe"))) {
+                                uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_IMG_RM + fileName;
+                            }
 
-                    logger.info("File save path : " + uploadFile);
-                    BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+                            logger.info("File save path : " + uploadFile);
+                            BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
 
-                    if (image == null) {
-                        logger.error("Buffered Image is null");
-                        response.setStatus("error");
-                        response.setMsg("Buffered Image is null");
+                            if (image == null) {
+                                logger.error("Buffered Image is null");
+                                response.setStatus("error");
+                                response.setMsg("Buffered Image is null");
+                            } else {
+                                File f = new File(uploadFile);
+                                // write the image
+                                ImageIO.write(image, "png", f);
+                                asesmenOperasi.setJawaban1(fileName);
+                            }
+                        }catch (IOException e){
+                            response.setStatus("error");
+                            response.setMsg("Error when parse IO Images "+e.getMessage());
+                        }
                     } else {
-                        File f = new File(uploadFile);
-                        // write the image
-                        ImageIO.write(image, "png", f);
-                        asesmenOperasi.setJawaban1(fileName);
+                        if (obj.has("jawaban1")) {
+                            if (!"".equalsIgnoreCase(obj.getString("jawaban1"))) {
+                                asesmenOperasi.setJawaban1(obj.getString("jawaban1"));
+                            }
+                        }
                     }
+                    asesmenOperasi.setTipe(obj.getString("tipe"));
                 } else {
                     if (obj.has("jawaban1")) {
                         if (!"".equalsIgnoreCase(obj.getString("jawaban1"))) {
@@ -95,47 +111,68 @@ public class AsesmenOperasiAction {
                         }
                     }
                 }
-                asesmenOperasi.setTipe(obj.getString("tipe"));
-            } else {
-                if (obj.has("jawaban1")) {
-                    if (!"".equalsIgnoreCase(obj.getString("jawaban1"))) {
-                        asesmenOperasi.setJawaban1(obj.getString("jawaban1"));
+
+                if (obj.has("jawaban2")) {
+                    if (!"".equalsIgnoreCase(obj.getString("jawaban2"))) {
+                        asesmenOperasi.setJawaban2(obj.getString("jawaban2"));
                     }
                 }
-            }
 
-            if (obj.has("jawaban2")) {
-                if (!"".equalsIgnoreCase(obj.getString("jawaban2"))) {
-                    asesmenOperasi.setJawaban2(obj.getString("jawaban2"));
+                if (obj.has("jenis")) {
+                    if (!"".equalsIgnoreCase(obj.getString("jenis"))) {
+                        asesmenOperasi.setJenis(obj.getString("jenis"));
+                    }
                 }
-            }
-
-            if (obj.has("jenis")) {
-                if (!"".equalsIgnoreCase(obj.getString("jenis"))) {
-                    asesmenOperasi.setJenis(obj.getString("jenis"));
+                if (obj.has("skor")) {
+                    if (!"".equalsIgnoreCase(obj.getString("skor"))) {
+                        asesmenOperasi.setSkor(Integer.valueOf(obj.getString("skor")));
+                    }
                 }
-            }
-            if (obj.has("skor")) {
-                if (!"".equalsIgnoreCase(obj.getString("skor"))) {
-                    asesmenOperasi.setSkor(Integer.valueOf(obj.getString("skor")));
+                if (obj.has("nama_terang")) {
+                    asesmenOperasi.setNamaterang(obj.getString("nama_terang"));
                 }
+                if (obj.has("sip")) {
+                    asesmenOperasi.setSip(obj.getString("sip"));
+                }
+
+                asesmenOperasi.setAction("C");
+                asesmenOperasi.setFlag("Y");
+                asesmenOperasi.setCreatedWho(userLogin);
+                asesmenOperasi.setCreatedDate(time);
+                asesmenOperasi.setLastUpdateWho(userLogin);
+                asesmenOperasi.setLastUpdate(time);
+                operasiList.add(asesmenOperasi);
             }
 
-            asesmenOperasi.setAction("C");
-            asesmenOperasi.setFlag("Y");
-            asesmenOperasi.setCreatedWho(userLogin);
-            asesmenOperasi.setCreatedDate(time);
-            asesmenOperasi.setLastUpdateWho(userLogin);
-            asesmenOperasi.setLastUpdate(time);
-            operasiList.add(asesmenOperasi);
-        }
-
-        try {
-            response = asesmenOperasiBo.saveAdd(operasiList);
-        } catch (GeneralBOException e) {
-            response.setStatus("Error");
-            response.setMsg("Found Error " + e.getMessage());
-            return response;
+            try {
+                response = asesmenOperasiBo.saveAdd(operasiList);
+                if("success".equalsIgnoreCase(response.getStatus())){
+                    RekamMedikBo rekamMedikBo = (RekamMedikBo) ctx.getBean("rekamMedikBoProxy");
+                    JSONObject objt = new JSONObject(dataPasien);
+                    if(objt != null){
+                        StatusPengisianRekamMedis status = new StatusPengisianRekamMedis();
+                        status.setNoCheckup(objt.getString("no_checkup"));
+                        status.setIdDetailCheckup(objt.getString("id_detail_checkup"));
+                        status.setIdPasien(objt.getString("id_pasien"));
+                        status.setIdRekamMedisPasien(objt.getString("id_rm"));
+                        status.setIsPengisian("Y");
+                        status.setAction("C");
+                        status.setFlag("Y");
+                        status.setCreatedWho(userLogin);
+                        status.setCreatedDate(time);
+                        status.setLastUpdateWho(userLogin);
+                        status.setLastUpdate(time);
+                        response = rekamMedikBo.saveAdd(status);
+                    }
+                }
+            } catch (GeneralBOException e) {
+                response.setStatus("Error");
+                response.setMsg("Found Error " + e.getMessage());
+                return response;
+            }
+        }catch (JSONException e){
+            response.setStatus("error");
+            response.setMsg("Error when parse JSON array, "+e.getMessage());
         }
         return response;
     }

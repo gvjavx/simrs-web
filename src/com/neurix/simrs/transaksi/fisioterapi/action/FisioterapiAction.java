@@ -8,6 +8,8 @@ import com.neurix.simrs.transaksi.fisioterapi.bo.FisioterapiBo;
 import com.neurix.simrs.transaksi.fisioterapi.bo.MonitoringFisioterapiBo;
 import com.neurix.simrs.transaksi.fisioterapi.model.Fisioterapi;
 import com.neurix.simrs.transaksi.fisioterapi.model.MonitoringFisioterapi;
+import com.neurix.simrs.transaksi.rekammedik.bo.RekamMedikBo;
+import com.neurix.simrs.transaksi.rekammedik.model.StatusPengisianRekamMedis;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,65 +31,93 @@ import java.util.List;
 public class FisioterapiAction {
 
     public static transient Logger logger = Logger.getLogger(FisioterapiAction.class);
+    private String userLogin = CommonUtil.userLogin();
+    private Timestamp time = new Timestamp(System.currentTimeMillis());
 
-    public CrudResponse saveFisio(String data) throws JSONException, IOException {
+    public CrudResponse saveFisio(String data, String dataPasien){
         CrudResponse response = new CrudResponse();
-        String userLogin = CommonUtil.userLogin();
-        Timestamp time = new Timestamp(System.currentTimeMillis());
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         FisioterapiBo fisioterapiBo = (FisioterapiBo) ctx.getBean("fisioterapiBoProxy");
-        JSONArray json = new JSONArray(data);
-        List<Fisioterapi> list = new ArrayList<>();
-        for (int i = 0; i < json.length(); i++) {
-
-            JSONObject obj = json.getJSONObject(i);
-            Fisioterapi fisioterapi = new Fisioterapi();
-            fisioterapi.setParameter(obj.getString("parameter"));
-
-            if("Scala Nyeri Paint".equalsIgnoreCase(obj.getString("parameter"))){
-                BASE64Decoder decoder = new BASE64Decoder();
-                byte[] decodedBytes = decoder.decodeBuffer(obj.getString("jawaban"));
-                logger.info("Decoded upload data : " + decodedBytes.length);
-                String wkt = time.toString();
-                String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
-                logger.info("PATTERN :" + patten);
-                String fileName = obj.getString("id_detail_checkup") + "-" + obj.getString("keterangan")+i+ "-" + patten + ".png";
-                String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_IMG_RM + fileName;
-
-                logger.info("File save path : " + uploadFile);
-                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
-
-                if (image == null) {
-                    logger.error("Buffered Image is null");
-                    response.setStatus("error");
-                    response.setMsg("Buffered Image is null");
-                } else {
-                    File f = new File(uploadFile);
-                    // write the image
-                    ImageIO.write(image, "png", f);
-                    fisioterapi.setJawaban(fileName);
-                }
-            }else{
-                fisioterapi.setJawaban(obj.getString("jawaban"));
-            }
-
-            fisioterapi.setIdDetailCheckup(obj.getString("id_detail_checkup"));
-            fisioterapi.setKeterangan(obj.getString("keterangan"));
-            fisioterapi.setAction("C");
-            fisioterapi.setFlag("Y");
-            fisioterapi.setCreatedWho(userLogin);
-            fisioterapi.setCreatedDate(time);
-            fisioterapi.setLastUpdateWho(userLogin);
-            fisioterapi.setLastUpdate(time);
-            list.add(fisioterapi);
-        }
-
         try {
-            response = fisioterapiBo.saveAdd(list);
-        } catch (GeneralBOException e) {
-            response.setStatus("Error");
-            response.setMsg("Found Error " + e.getMessage());
-            return response;
+            JSONArray json = new JSONArray(data);
+            List<Fisioterapi> list = new ArrayList<>();
+            for (int i = 0; i < json.length(); i++) {
+
+                JSONObject obj = json.getJSONObject(i);
+                Fisioterapi fisioterapi = new Fisioterapi();
+                fisioterapi.setParameter(obj.getString("parameter"));
+
+                if("Scala Nyeri Paint".equalsIgnoreCase(obj.getString("parameter"))){
+                    try {
+                        BASE64Decoder decoder = new BASE64Decoder();
+                        byte[] decodedBytes = decoder.decodeBuffer(obj.getString("jawaban"));
+                        logger.info("Decoded upload data : " + decodedBytes.length);
+                        String wkt = time.toString();
+                        String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                        logger.info("PATTERN :" + patten);
+                        String fileName = obj.getString("id_detail_checkup") + "-" + obj.getString("keterangan")+i+ "-" + patten + ".png";
+                        String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_IMG_RM + fileName;
+
+                        logger.info("File save path : " + uploadFile);
+                        BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+                        if (image == null) {
+                            logger.error("Buffered Image is null");
+                            response.setStatus("error");
+                            response.setMsg("Buffered Image is null");
+                        } else {
+                            File f = new File(uploadFile);
+                            // write the image
+                            ImageIO.write(image, "png", f);
+                            fisioterapi.setJawaban(fileName);
+                        }
+                    }catch (IOException e){
+                        response.setStatus("error");
+                        response.setMsg("Found Error, "+e.getMessage());
+                    }
+                }else{
+                    fisioterapi.setJawaban(obj.getString("jawaban"));
+                }
+
+                fisioterapi.setIdDetailCheckup(obj.getString("id_detail_checkup"));
+                fisioterapi.setKeterangan(obj.getString("keterangan"));
+                fisioterapi.setAction("C");
+                fisioterapi.setFlag("Y");
+                fisioterapi.setCreatedWho(userLogin);
+                fisioterapi.setCreatedDate(time);
+                fisioterapi.setLastUpdateWho(userLogin);
+                fisioterapi.setLastUpdate(time);
+                list.add(fisioterapi);
+            }
+            try {
+                response = fisioterapiBo.saveAdd(list);
+                if("success".equalsIgnoreCase(response.getStatus())){
+                    RekamMedikBo rekamMedikBo = (RekamMedikBo) ctx.getBean("rekamMedikBoProxy");
+                    JSONObject obj = new JSONObject(dataPasien);
+                    if(obj != null){
+                        StatusPengisianRekamMedis status = new StatusPengisianRekamMedis();
+                        status.setNoCheckup(obj.getString("no_checkup"));
+                        status.setIdDetailCheckup(obj.getString("id_detail_checkup"));
+                        status.setIdPasien(obj.getString("id_pasien"));
+                        status.setIdRekamMedisPasien(obj.getString("id_rm"));
+                        status.setIsPengisian("Y");
+                        status.setAction("C");
+                        status.setFlag("Y");
+                        status.setCreatedWho(userLogin);
+                        status.setCreatedDate(time);
+                        status.setLastUpdateWho(userLogin);
+                        status.setLastUpdate(time);
+                        response = rekamMedikBo.saveAdd(status);
+                    }
+                }
+            } catch (GeneralBOException e) {
+                response.setStatus("Error");
+                response.setMsg("Found Error " + e.getMessage());
+                return response;
+            }
+        }catch (JSONException e){
+            response.setStatus("error");
+            response.setMsg("Found Error, "+e.getMessage());
         }
         return response;
     }

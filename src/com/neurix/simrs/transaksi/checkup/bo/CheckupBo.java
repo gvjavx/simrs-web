@@ -97,10 +97,14 @@ public interface CheckupBo {
     public CrudResponse updateAnamnese(HeaderCheckup bean) throws GeneralBOException;
     public String getDiagnosaPasien(String idDetailCheckup) throws GeneralBOException;
     public String getTindakanRawat(String idDetailCheckup) throws GeneralBOException;
+    public String getTindakanRawatICD9(String idDetailCheckup) throws GeneralBOException;
+    public String getDiagnosaPrimer(String idDetailCheckup) throws GeneralBOException;
+    public String getDiagnosaSekunder(String idDetailCheckup) throws GeneralBOException;
     public String getPenunjangMedis(String idDetailCheckup) throws GeneralBOException;
     public String getResepPasien(String idDetailCheckup) throws GeneralBOException;
     public String getAlergi(String noCheckup) throws GeneralBOException;
 
     public HeaderCheckup getDataPemeriksaanFisik(String noCheckup) throws GeneralBOException;
+    public List<HeaderCheckup> getRiwayatPemeriksaan(String idPasien) throws GeneralBOException;
 
 }

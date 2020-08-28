@@ -6,6 +6,7 @@ import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.master.mappingJurnal.bo.MappingJurnalBo;
 import com.neurix.akuntansi.master.mappingJurnal.model.MappingJurnal;
 import com.neurix.akuntansi.master.tipeJurnal.bo.TipeJurnalBo;
+import com.neurix.akuntansi.master.trans.bo.TransBo;
 import com.neurix.akuntansi.master.trans.model.ImTransEntity;
 import com.neurix.akuntansi.master.trans.model.Trans;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
@@ -18,7 +19,9 @@ import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.EfakturDTO;
 import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutang;
 import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutangDetail;
 import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.authorization.company.bo.CompanyBo;
 import com.neurix.authorization.company.model.Branch;
+import com.neurix.authorization.company.model.Company;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
@@ -479,7 +482,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
                     BigDecimal jumlahPembayaran = new BigDecimal(pembayaranUtangPiutangDetail.getStJumlahPembayaran().replace(".",""));
                     BigDecimal ppn = new BigDecimal(pembayaranUtangPiutangDetail.getStPpn().replace(".",""));
                     BigDecimal pph = new BigDecimal(pembayaranUtangPiutangDetail.getStPph().replace(".",""));
-//                    jumlahPembayaran=jumlahPembayaran.add(pph);
+                    jumlahPembayaran=jumlahPembayaran.add(pph);
                     jumlahPembayaran=jumlahPembayaran.subtract(ppn);
                     Map hs = new HashMap();
                     hs.put("bukti",pembayaranUtangPiutangDetail.getNoNota());
@@ -570,8 +573,8 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
                 //Membuat Billing
                 List<Map> dataMap = new ArrayList<>();
                 for (PembayaranUtangPiutangDetail pembayaranUtangPiutangDetail : pembayaranUtangPiutangDetailList) {
-//                    String rekeningId = kodeRekeningBoProxy.getRekeningIdByKodeRekening(pembayaranUtangPiutangDetail.getRekeningId());
-                    String rekeningId = pembayaranUtangPiutangDetail.getRekeningId();
+                    String rekeningId = kodeRekeningBoProxy.getRekeningIdByKodeRekening(pembayaranUtangPiutangDetail.getRekeningId());
+//                    String rekeningId = pembayaranUtangPiutangDetail.getRekeningId();
                     BigDecimal jumlahPembayaran = new BigDecimal(pembayaranUtangPiutangDetail.getStJumlahPembayaran().replace(".", ""));
                     Map hs = new HashMap();
                     hs.put("bukti", pembayaranUtangPiutangDetail.getNoNota());
@@ -1148,19 +1151,6 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         return masterId;
     }
 
-    public String getTipePengajuan(String transaksiId) {
-        logger.info("[PembayaranUtangPiutangAction.getTipePengajuan] start process >>>");
-        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        PembayaranUtangPiutangBo pembayaranUtangPiutangBo = (PembayaranUtangPiutangBo) ctx.getBean("pembayaranUtangPiutangBoProxy");
-
-        String tipePengajuan="";
-        ImTransEntity transEntity = pembayaranUtangPiutangBo.getTipeMaster(transaksiId);
-        tipePengajuan=transEntity.getFlagPengajuanBiaya();
-
-        logger.info("[PembayaranUtangPiutangAction.getTipePengajuan] end process >>>");
-        return tipePengajuan;
-    }
-
     public String postingJurnal(String pembayaranId){
         logger.info("[PembayaranUtangPiutangAction.postingJurnal] start process >>>");
         try {
@@ -1195,6 +1185,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
 
         return "Sukses Posting Jurnal";
     }
+
 
     public String printReportBuktiPosting(){
         logger.info("[PembayaranUtangPiutangAction.printReportBuktiPosting] start process >>>");
@@ -1263,6 +1254,8 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         logger.info("[PembayaranUtangPiutangAction.printReportBuktiPosting] end process <<<");
         if ("KR".equalsIgnoreCase(tipeTransaksi)){
             return "print_report_bukti_posting_koreksi";
+        }else if ("KM".equalsIgnoreCase(tipeTransaksi)){
+            return "print_report_bukti_posting_masuk";
         }else{
             return "print_report_bukti_posting";
         }
@@ -1350,6 +1343,13 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
                 efakturDTO.setStatusApproval(err.getElementsByTagName("statusApproval").item(0).getTextContent());
                 efakturDTO.setStatusFaktur(err.getElementsByTagName("statusFaktur").item(0).getTextContent());
                 efakturDTO.setReferensi(err.getElementsByTagName("referensi").item(0).getTextContent());
+
+                //mengambil data company
+                ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+                CompanyBo companyBo= (CompanyBo) ctx.getBean("companyBoProxy");
+                String companyId = CommonUtil.companyIdLogin();
+                Company company = companyBo.getById(companyId);
+                efakturDTO.setNpwpPerusahaan(company.getNpwp());
             } else {
                 // success
             }

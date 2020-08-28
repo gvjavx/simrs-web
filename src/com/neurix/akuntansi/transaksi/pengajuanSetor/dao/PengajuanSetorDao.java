@@ -246,7 +246,7 @@ public class PengajuanSetorDao extends GenericDao<ItPengajuanSetorEntity, String
                 "  AND j.registered_flag = 'Y' \n" +
                 "  AND j.tanggal_jurnal >= '"+search.getStTanggalDari()+"' \n" +
                 "  AND j.tanggal_jurnal < '"+search.getStTanggalSelesai()+"' \n" +
-                "  AND jd.rekening_id = '00199' \n" +
+                "  AND jd.rekening_id = '"+CommonConstant.REKENING_ID_PPN_KELUARAN+"' \n" +
                 "  AND (\n" +
                 "    s.cancel_flag = 'Y' \n" +
                 "    OR sd.pengajuan_setor_detail_id IS NULL\n" +
@@ -293,9 +293,9 @@ public class PengajuanSetorDao extends GenericDao<ItPengajuanSetorEntity, String
                 "  AND j.registered_flag = 'Y' \n" +
                 "  AND j.tanggal_jurnal >= '"+search.getStTanggalDari()+"' \n" +
                 "  AND j.tanggal_jurnal < '"+search.getStTanggalSelesai()+"' \n" +
-                "  AND jd.rekening_id = '00198' \n" +
+                "  AND jd.rekening_id = '"+CommonConstant.REKENING_ID_PPN_MASUKAN+"' \n" +
                 "  AND (\n" +
-                "    s.cancel_flag = 'Y' \n" +
+                "    ( s.cancel_flag = 'Y' AND s.tipe_pengajuan_setor<>'PPH21' ) \n" +
                 "    OR sd.pengajuan_setor_detail_id IS NULL\n" +
                 "  )\n";
         results = this.sessionFactory.getCurrentSession()

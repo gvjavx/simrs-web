@@ -352,6 +352,11 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
     }
 
     @Override
+    public List<ImKodeRekeningEntity> getListKodeRekeningByLevelAndTipeBudgeting(String coa, Long level, String tipeBudgeting) throws GeneralBOException {
+        return kodeRekeningDao.getKodeRekeningListByLevelAndTipeBudgeting(coa, level, tipeBudgeting);
+    }
+
+    @Override
     public List<KodeRekening> getAll() throws GeneralBOException {
         return null;
     }
@@ -382,6 +387,13 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
         logger.info("[KodeRekeningBoImpl.getKodeRekeningLawanByTransId] end process <<<");
 
         return listOfResult;
+    }
+
+    @Override
+    public List<String> getListRekeningIdsByTipeBudgeting(String tipeBudgeting) throws GeneralBOException {
+        logger.info("[KodeRekeningBoImpl.getListKodeRekeningIdsByTipeBudgeting] start process >>>");
+        logger.info("[KodeRekeningBoImpl.getListKodeRekeningIdsByTipeBudgeting] end process <<<");
+        return kodeRekeningDao.getListRekeningIdsByTipeBudgeting(tipeBudgeting);
     }
 
     public static Logger getLogger() {

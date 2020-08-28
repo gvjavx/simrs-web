@@ -78,30 +78,40 @@ public class RingkasanPasienBoImpl implements RingkasanPasienBo {
     public CrudResponse saveAdd(List<RingkasanPasien> list) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
         if(list.size()> 0){
-            for (RingkasanPasien bean: list){
-                ItSimrsRingkasanPasienEntity ringkasanPasienEntity = new ItSimrsRingkasanPasienEntity();
-                ringkasanPasienEntity.setIdRingkasanPasien("RGP"+ringkasanPasienDao.getNextSeq());
-                ringkasanPasienEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
-                ringkasanPasienEntity.setParameter(bean.getParameter());
-                ringkasanPasienEntity.setJawaban(bean.getJawaban());
-                ringkasanPasienEntity.setKeterangan(bean.getKeterangan());
-                ringkasanPasienEntity.setJenis(bean.getJenis());
-                ringkasanPasienEntity.setJenis(bean.getJenis());
-                ringkasanPasienEntity.setAction(bean.getAction());
-                ringkasanPasienEntity.setFlag(bean.getFlag());
-                ringkasanPasienEntity.setCreatedDate(bean.getCreatedDate());
-                ringkasanPasienEntity.setCreatedWho(bean.getCreatedWho());
-                ringkasanPasienEntity.setLastUpdate(bean.getLastUpdate());
-                ringkasanPasienEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            RingkasanPasien ringkasanPasien = list.get(0);
+            RingkasanPasien ringkasan = new RingkasanPasien();
+            ringkasan.setIdDetailCheckup(ringkasanPasien.getIdDetailCheckup());
+            ringkasan.setKeterangan(ringkasanPasien.getKeterangan());
+            List<RingkasanPasien> ringkasanPasienList = getByCriteria(ringkasan);
+            if(ringkasanPasienList.size() > 0){
+                response.setStatus("error");
+                response.setMsg("Found Error, Data yang anda masukan sudah ada...!");
+            }else{
+                for (RingkasanPasien bean: list){
+                    ItSimrsRingkasanPasienEntity ringkasanPasienEntity = new ItSimrsRingkasanPasienEntity();
+                    ringkasanPasienEntity.setIdRingkasanPasien("RGP"+ringkasanPasienDao.getNextSeq());
+                    ringkasanPasienEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
+                    ringkasanPasienEntity.setParameter(bean.getParameter());
+                    ringkasanPasienEntity.setJawaban(bean.getJawaban());
+                    ringkasanPasienEntity.setKeterangan(bean.getKeterangan());
+                    ringkasanPasienEntity.setJenis(bean.getJenis());
+                    ringkasanPasienEntity.setJenis(bean.getJenis());
+                    ringkasanPasienEntity.setAction(bean.getAction());
+                    ringkasanPasienEntity.setFlag(bean.getFlag());
+                    ringkasanPasienEntity.setCreatedDate(bean.getCreatedDate());
+                    ringkasanPasienEntity.setCreatedWho(bean.getCreatedWho());
+                    ringkasanPasienEntity.setLastUpdate(bean.getLastUpdate());
+                    ringkasanPasienEntity.setLastUpdateWho(bean.getLastUpdateWho());
 
-                try {
-                    ringkasanPasienDao.addAndSave(ringkasanPasienEntity);
-                    response.setStatus("success");
-                    response.setMsg("Berhasil");
-                }catch (HibernateException e){
-                    response.setStatus("error");
-                    response.setMsg("Found Error "+e.getMessage());
-                    logger.error(e.getMessage());
+                    try {
+                        ringkasanPasienDao.addAndSave(ringkasanPasienEntity);
+                        response.setStatus("success");
+                        response.setMsg("Berhasil");
+                    }catch (HibernateException e){
+                        response.setStatus("error");
+                        response.setMsg("Found Error "+e.getMessage());
+                        logger.error(e.getMessage());
+                    }
                 }
             }
         }

@@ -50,6 +50,15 @@ public class PeriksaLabAction extends BaseMasterAction {
     private BranchBo branchBoProxy;
     private String id;
     private String lab;
+    private String ket;
+
+    public String getKet() {
+        return ket;
+    }
+
+    public void setKet(String ket) {
+        this.ket = ket;
+    }
 
     public void setBranchBoProxy(BranchBo branchBoProxy) {
         this.branchBoProxy = branchBoProxy;
@@ -112,6 +121,7 @@ public class PeriksaLabAction extends BaseMasterAction {
 
         String id = getId();
         String lab = getLab();
+        String keterangan = getKet();
         String jk = "";
         String userArea = CommonUtil.userBranchLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
@@ -156,6 +166,8 @@ public class PeriksaLabAction extends BaseMasterAction {
                 periksaLab.setUrlKtp(checkup.getUrlKtp());
                 periksaLab.setJenisPeriksaPasien(checkup.getStatusPeriksaName());
                 periksaLab.setIdPeriksaLab(lab);
+                periksaLab.setKeterangan(keterangan);
+                periksaLab.setMetodePembayaran(checkup.getMetodePembayaran());
 
                 PeriksaLab periksalb = new PeriksaLab();
                 try {
@@ -165,6 +177,7 @@ public class PeriksaLabAction extends BaseMasterAction {
                 }
                 if(periksalb.getIdPeriksaLab() != null){
                     periksaLab.setKategoriLabName(periksalb.getKategoriLabName());
+                    periksaLab.setIdLab(periksalb.getIdLab());
                 }
 
                 setPeriksaLab(periksaLab);
@@ -589,16 +602,17 @@ public class PeriksaLabAction extends BaseMasterAction {
         String branch = CommonUtil.userBranchLogin();
         String logo = "";
 
-        switch (branch) {
-            case CommonConstant.BRANCH_RS01:
-                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_RS01;
-                break;
-            case CommonConstant.BRANCH_RS02:
-                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_RS02;
-                break;
-            case CommonConstant.BRANCH_RS03:
-                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_RS03;
-                break;
+        String branchName = CommonUtil.userBranchNameLogin();
+        Branch branches = new Branch();
+
+        try {
+            branches = branchBoProxy.getBranchById(branch, "Y");
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when searhc branch logo");
+        }
+
+        if (branches != null) {
+            logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + branches.getLogoName();
         }
 
         HeaderCheckup headerCheckup = getHeaderCheckup(headerDetailCheckup.getNoCheckup());
@@ -717,5 +731,35 @@ public class PeriksaLabAction extends BaseMasterAction {
         }
 
         return "print_lab";
+    }
+
+    public CrudResponse saveUpdatePemeriksaan(String idLabPeriksa, List<String> idParameter, String ket) {
+        CrudResponse response = new CrudResponse();
+        logger.info("[PeriksaLabAction.saveOrderLab] start process >>>");
+        try {
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            PeriksaLab periksaLab = new PeriksaLab();
+            periksaLab.setIdPeriksaLab(idLabPeriksa);
+            periksaLab.setCreatedWho(userLogin);
+            periksaLab.setLastUpdate(updateTime);
+            periksaLab.setCreatedDate(updateTime);
+            periksaLab.setLastUpdateWho(userLogin);
+            periksaLab.setAction("C");
+            periksaLab.setFlag("Y");
+            periksaLab.setKeterangan(ket);
+
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
+
+            response = periksaLabBo.saveUpdateParameter(periksaLab, idParameter);
+
+        } catch (GeneralBOException e) {
+            response.setStatus("error");
+            response.setMsg("Found error");
+        }
+
+        logger.info("[PeriksaLabAction.saveOrderLab] End process >>>");
+        return response;
     }
 }

@@ -145,7 +145,7 @@
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Diagnosis Utama</label>
                             <div class="col-md-7">
-                                <textarea style="margin-top: 7px" class="form-control" rows="3" id="kdp5"></textarea>
+                                <textarea style="margin-top: 7px" class="form-control diagnosa-pasien" rows="3" id="kdp5"></textarea>
                             </div>
                         </div>
                     </div>

@@ -11,6 +11,7 @@ import com.neurix.simrs.master.labdetail.dao.LabDetailDao;
 import com.neurix.simrs.master.labdetail.model.ImSimrsLabDetailEntity;
 import com.neurix.simrs.master.statuspasien.dao.StatusPasienDao;
 import com.neurix.simrs.master.statuspasien.model.ImSimrsStatusPasienEntity;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.periksalab.bo.PeriksaLabBo;
 import com.neurix.simrs.transaksi.periksalab.dao.PeriksaLabDao;
@@ -893,5 +894,97 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
     @Override
     public PeriksaLab getNamaLab(String idPeriksa) throws GeneralBOException {
         return periksaLabDao.getNamaLab(idPeriksa);
+    }
+
+    @Override
+    public CrudResponse saveUpdateParameter(PeriksaLab bean, List<String> listParams) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        if (bean.getIdPeriksaLab() != null && !"".equalsIgnoreCase(bean.getIdPeriksaLab()) && !listParams.isEmpty() && listParams.size() > 0 && listParams != null) {
+            for (String labDetailId : listParams) {
+                if("lab".equalsIgnoreCase(bean.getKeterangan())){
+                    ItSimrsPeriksaLabDetailEntity detailEntity = new ItSimrsPeriksaLabDetailEntity();
+                    String id = getNextDetailLapId();
+                    detailEntity.setIdPeriksaLabDetail("DPL" + id);
+                    detailEntity.setIdPeriksaLab(bean.getIdPeriksaLab());
+                    detailEntity.setIdLabDetail(labDetailId);
+
+                    // get data from master lab detail
+                    ImSimrsLabDetailEntity labDetailEntity = new ImSimrsLabDetailEntity();
+                    if (labDetailId != null && !"".equalsIgnoreCase(labDetailId)) {
+                        labDetailEntity = getDataMasterLabDetailByIdLab(labDetailId);
+                        if (labDetailEntity != null) {
+                            detailEntity.setNamaDetailPeriksa(labDetailEntity.getNamaDetailPeriksa());
+                            detailEntity.setKeteranganAcuan(labDetailEntity.getKetentuanAcuan());
+                            detailEntity.setSatuan(labDetailEntity.getSatuan());
+                        }
+                    }
+
+                    detailEntity.setFlag(bean.getFlag());
+                    detailEntity.setAction(bean.getAction());
+                    detailEntity.setCreatedDate(bean.getCreatedDate());
+                    detailEntity.setCreatedWho(bean.getCreatedWho());
+                    detailEntity.setLastUpdate(bean.getLastUpdate());
+                    detailEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                    try {
+                        periksaLabDetailDao.addAndSave(detailEntity);
+                        response.setStatus("success");
+                        response.setMsg("Berhasil");
+                    } catch (HibernateException e) {
+                        response.setStatus("error");
+                        response.setMsg("Error when "+e.getMessage());
+                        logger.error("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data detail periksa lab " + e.getMessage());
+                        throw new GeneralBOException("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data detail periksa lab " + e.getMessage());
+                    }
+                }
+                if("radiologi".equalsIgnoreCase(bean.getKeterangan())){
+                    ItSimrsPeriksaRadiologiEntity radiologiEntity = new ItSimrsPeriksaRadiologiEntity();
+                    radiologiEntity.setIdPeriksaRadiologi("RLG" + periksaRadiologiDao.getNextId());
+                    radiologiEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
+                    radiologiEntity.setIdLab(bean.getIdLab());
+                    radiologiEntity.setStatusPeriksa("0");
+                    radiologiEntity.setIdPeriksaLab(bean.getIdPeriksaLab());
+                    radiologiEntity.setIdLabDetail(labDetailId);
+
+                    ImSimrsLabDetailEntity labDetailEntity = new ImSimrsLabDetailEntity();
+                    try {
+                        labDetailEntity = labDetailDao.getById("idLabDetail", labDetailId);
+                        response.setStatus("success");
+                        response.setMsg("Berhasil");
+                    } catch (HibernateException e) {
+                        response.setStatus("error");
+                        response.setMsg("Error when "+e.getMessage());
+                        logger.error("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data detail periksa lab " + e.getMessage());
+                        throw new GeneralBOException("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data detail periksa lab " + e.getMessage());
+                    }
+
+                    if (labDetailEntity != null) {
+                        radiologiEntity.setNamaDetailPeriksa(labDetailEntity.getNamaDetailPeriksa());
+                    }
+
+                    radiologiEntity.setFlag("Y");
+                    radiologiEntity.setAction("C");
+                    radiologiEntity.setCreatedDate(bean.getCreatedDate());
+                    radiologiEntity.setCreatedWho(bean.getCreatedWho());
+                    radiologiEntity.setLastUpdate(bean.getLastUpdate());
+                    radiologiEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                    try {
+                        periksaRadiologiDao.addAndSave(radiologiEntity);
+                        response.setStatus("success");
+                        response.setMsg("Berhasil");
+                    } catch (HibernateException e) {
+                        response.setStatus("error");
+                        response.setMsg("Error when "+e.getMessage());
+                        logger.error("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data periksa radiology " + e.getMessage());
+                        throw new GeneralBOException("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data periksa radiology " + e.getMessage());
+                    }
+                }
+            }
+        }else {
+            response.setStatus("error");
+            response.setMsg("Data tidak ada...");
+        }
+        return response;
     }
 }

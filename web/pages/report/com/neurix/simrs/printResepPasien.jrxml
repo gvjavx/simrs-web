@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printResepPasien" language="groovy" pageWidth="421" pageHeight="595" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="1.7715610000000144"/>
-	<property name="ireport.x" value="4"/>
-	<property name="ireport.y" value="282"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="reportParams.resepId" class="java.lang.String"/>
 	<parameter name="reportParams.logo" class="java.lang.String"/>
 	<parameter name="reportParams.nik" class="java.lang.String"/>
@@ -164,7 +164,7 @@ WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 			<staticText>
 				<reportElement x="248" y="39" width="59" height="19" uuid="3c3637e0-6fd2-4a08-b533-8300d9a210f7"/>
 				<textElement>
-					<font fontName="Calibri" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[Printed date : ]]></text>
 			</staticText>
@@ -179,7 +179,7 @@ WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 			<textField pattern="dd/MM/yyyy HH.mm.ss">
 				<reportElement x="306" y="39" width="75" height="19" uuid="e3b9414a-1edb-4492-833b-f989f0d441ae"/>
 				<textElement>
-					<font fontName="Calibri" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>

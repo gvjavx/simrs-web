@@ -778,7 +778,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         logger.info("[ObatPoliBoImpl.updateAddStockGudang] END <<<<<<<<<<");
     }
 
-    private void updateAddStockPoli(TransaksiObatDetail bean, String idPoli, String branchId) throws GeneralBOException {
+    private void updateAddStockPoli(TransaksiObatDetail bean, String idPoli) throws GeneralBOException {
         logger.info("[ObatPoliBoImpl.updateAddStockPoli] START >>>>>>>>>>");
 
         Obat obat = new Obat();
@@ -797,7 +797,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         obatPoli.setIdPelayanan(idPoli);
         obatPoli.setIdBarang(bean.getIdBarang());
 //        obatPoli.setIdObat(bean.getIdObat());
-        obatPoli.setBranchId(branchId);
+        obatPoli.setBranchId(bean.getBranchId());
         obatPoli.setFlag("Y");
 
         List<MtSimrsObatPoliEntity> obatPoliEntities = getListEntityObatPoli(obatPoli);
@@ -865,7 +865,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             newObatPoli.setPrimaryKey(pk);
             newObatPoli.setIdObat(bean.getIdObat());
             newObatPoli.setExpiredDate(bean.getExpDate());
-            newObatPoli.setBranchId(branchId);
+            newObatPoli.setBranchId(bean.getBranchId());
             newObatPoli.setLastUpdate(bean.getLastUpdate());
             newObatPoli.setLastUpdateWho(bean.getLastUpdateWho());
             newObatPoli.setCreatedDate(bean.getLastUpdate());
@@ -2179,7 +2179,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                                 detail.setBranchId(permintaanObatEntity.getBranchId());
 
                                 // update stok obat poli
-                                updateAddStockPoli(detail, bean.getIdPelayanan(), bean.getBranchId());
+                                updateAddStockPoli(detail, bean.getIdPelayanan());
 
                                 // SAVE TO STOCK TRANSAKSI
                                 saveTransaksiStokRequestObatPoli(detail);

@@ -1,31 +1,54 @@
 package com.neurix.simrs.mobileapi;
 
 import com.google.gson.Gson;
+import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
+import com.neurix.authorization.position.bo.PositionBo;
+import com.neurix.authorization.position.model.ImPosition;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.obat.bo.ObatBo;
+import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
+import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
+import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
+import com.neurix.simrs.master.vendor.bo.VendorBo;
+import com.neurix.simrs.master.vendor.model.ImSimrsVendorEntity;
 import com.neurix.simrs.mobileapi.model.BatchPermintaanObatMobile;
 import com.neurix.simrs.mobileapi.model.PurchaseOrderMobile;
 import com.neurix.simrs.mobileapi.model.TransaksiObatMobile;
 import com.neurix.simrs.transaksi.permintaanvendor.bo.PermintaanVendorBo;
 import com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat;
+import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 import com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor;
+import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
 import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import com.opensymphony.xwork2.ModelDriven;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
 import org.hibernate.HibernateException;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
+import sun.misc.BASE64Decoder;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @author gondok
@@ -66,6 +89,74 @@ public class PurchaseOrderController implements ModelDriven<Object> {
     private String diskon;
     private String bruto;
     private String netto;
+
+    private String noFaktur;
+    private String tglFaktur;
+    private String noInvoice;
+    private String noDo;
+
+    private File fotoDocPo;
+
+    private String idPelayanan;
+    private String jenis = "";
+
+
+
+    public File getFotoDocPo() {
+        return fotoDocPo;
+    }
+
+    public void setFotoDocPo(File fotoDocPo) {
+        this.fotoDocPo = fotoDocPo;
+    }
+
+    public String getJenis() {
+        return jenis;
+    }
+
+    public void setJenis(String jenis) {
+        this.jenis = jenis;
+    }
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
+
+    public String getNoFaktur() {
+        return noFaktur;
+    }
+
+    public void setNoFaktur(String noFaktur) {
+        this.noFaktur = noFaktur;
+    }
+
+    public String getTglFaktur() {
+        return tglFaktur;
+    }
+
+    public void setTglFaktur(String tglFaktur) {
+        this.tglFaktur = tglFaktur;
+    }
+
+    public String getNoInvoice() {
+        return noInvoice;
+    }
+
+    public void setNoInvoice(String noInvoice) {
+        this.noInvoice = noInvoice;
+    }
+
+    public String getNoDo() {
+        return noDo;
+    }
+
+    public void setNoDo(String noDo) {
+        this.noDo = noDo;
+    }
 
     public String getDiskon() {
         return diskon;
@@ -536,9 +627,9 @@ public class PurchaseOrderController implements ModelDriven<Object> {
                             transaksiObatMobile.setQtyApprove(item.getSumQtyApprove().toString());
                             transaksiObatMobile.setIsFullOfQty(item.getIsFullOfQty());
                             transaksiObatMobile.setSumQtyApprove(item.getSumQtyApprove().toString());
-//                        transaksiObatMobile.setQtyBox(item.getQtyBox().toString());
-//                        transaksiObatMobile.setQtyLembar(item.getQtyLembar().toString());
-//                        transaksiObatMobile.setQtyBiji(item.getQtyBiji().toString());
+    //                        transaksiObatMobile.setQtyBox(item.getQtyBox().toString());
+    //                        transaksiObatMobile.setQtyLembar(item.getQtyLembar().toString());
+    //                        transaksiObatMobile.setQtyBiji(item.getQtyBiji().toString());
 //                            transaksiObatMobile.setExpDate(item.getExpDate().toString());
 //                            transaksiObatMobile.setQtyApprove(item.getQtyApprove().toString());
                             transaksiObatMobile.setQty(item.getQty().toString());
@@ -666,7 +757,7 @@ public class PurchaseOrderController implements ModelDriven<Object> {
                             transaksiObatMobile.setIdApprovalObat(item.getIdApprovalObat());
                             transaksiObatMobile.setIdObat(item.getIdObat());
                             transaksiObatMobile.setKeterangan(item.getKeterangan());
-                            transaksiObatMobile.setQtyApprove(item.getSumQtyApprove().toString());
+                            transaksiObatMobile.setQtyApprove(item.getQtyApprove().toString());
                             transaksiObatMobile.setIsFullOfQty(item.getIsFullOfQty());
 //                        transaksiObatMobile.setQtyBox(item.getQtyBox().toString());
 //                        transaksiObatMobile.setQtyLembar(item.getQtyLembar().toString());
@@ -723,9 +814,212 @@ public class PurchaseOrderController implements ModelDriven<Object> {
                        throw new GeneralBOException("Found problem when retieving list purchase order, please info to your admin..." + e.getMessage());
                    }
                 }
+
+                if  (action.equalsIgnoreCase("konfirmasi")) {
+
+                    CheckObatResponse checkObatResponse = new CheckObatResponse();
+
+                    PermintaanVendor permintaanVendor = new PermintaanVendor();
+                    permintaanVendor.setIdPermintaanVendor(idPermintaanVendor);
+                    permintaanVendor.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+
+                    permintaanVendor.setLastUpdateWho(userId);
+
+                    ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+                    PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
+                    TransaksiObatBo transaksiObatBo = (TransaksiObatBo) ctx.getBean("transaksiObatBoProxy");
+                    ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+                    BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+                    PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+                    VendorBo vendorBo  = (VendorBo) ctx.getBean("vendorBoProxy");
+                    PositionBo positionBo  = (PositionBo) ctx.getBean("positionBoProxy");
+
+
+                    if  (fotoDocPo != null) {
+                        String fileNamePhoto = noFaktur + "-" + dateFormater("MM") + dateFormater("yy") + CommonConstant.IMAGE_TYPE;
+                        permintaanVendor.setUrlDoc(fileNamePhoto);
+                        File fileCreate = new File(CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_DOC_PO+ fileNamePhoto);
+                        try {
+                            FileUtils.copyFile(fotoDocPo, fileCreate);
+                        }catch (IOException e){
+                            e.printStackTrace();
+                            model.setMessage("error");
+                        }
+                    }
+
+
+                    permintaanVendor.setNoFaktur(noFaktur);
+                    permintaanVendor.setTanggalFaktur(CommonUtil.convertStringToDate(tglFaktur));
+                    permintaanVendor.setNoInvoice(noInvoice);
+                    permintaanVendor.setNoDo(noDo);
+                    permintaanVendor.setIdPelayanan(idPelayanan);
+
+                    List<PermintaanVendor> permintaanVendorList = new ArrayList<>();
+                    try {
+                        permintaanVendorList = permintaanVendorBo.getByCriteria(permintaanVendor);
+                    } catch (HibernateException e) {
+                        logger.error("[PermintaanVendorAction.saveApproveBatch] ERROR error when get searh obat. ", e);
+//                        addActionError("[PermintaanVendorAction.saveApproveBatch] ERROR error when get searh obat. " + e.getMessage());
+                        model.setMessage("error");
+
+                    }
+
+                    if (permintaanVendorList.size() > 0) {
+                        PermintaanVendor requestVendor = permintaanVendorList.get(0);
+
+                        // set permintaanVendor OBJECT idVendor Object;
+                        permintaanVendor.setIdVendor(requestVendor.getIdVendor());
+                        permintaanVendor.setBranchId(branchId);
+
+                        List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
+                        try {
+                            transaksiObatDetails = permintaanVendorBo.getListTransByBatchSorted(requestVendor.getListOfTransaksiObatDetail(), Integer.valueOf(noBatch), "Y");
+                        } catch (GeneralBOException e) {
+                            logger.error("[PermintaanVendorAction.saveApproveBatch] ERROR. ", e);
+//                            addActionError("[PermintaanVendorAction.saveApproveBatch] ERROR. " + e.getMessage());
+                            model.setMessage("error");
+                        }
+
+                        List<TransaksiObatDetail> transaksiObatDetailNew = new ArrayList<>();
+
+                        try {
+                            checkObatResponse = permintaanVendorBo.saveConfirm(permintaanVendor, transaksiObatDetails, transaksiObatDetailNew);
+                        } catch (GeneralBOException e) {
+                            logger.error("[PermintaanVendorAction.saveApproveBatch] Error when save data approve PO", e);
+//                            addActionError(" Error when save data approve PO" + e.getMessage());
+                            model.setMessage("error");
+
+                        }
+
+
+
+                        List<Map> listMapPersediaan = new ArrayList<>();
+                        BigDecimal hutangUsaha = new BigDecimal(0);
+                        BigDecimal ppn = new BigDecimal(0);
+                        if (transaksiObatDetails.size() > 0) {
+                            for (TransaksiObatDetail trans : transaksiObatDetails) {
+
+                                ImSimrsObatEntity obatEntity = obatBo.getObatByIdBarang(trans.getIdBarang());
+                                if (obatEntity == null){
+                                    logger.error("Found Error when search master obat is null");
+                                    checkObatResponse.setMessage("Found Error when search master obat is null");
+                                    checkObatResponse.setStatus("error");
+                                    model.setMessage(checkObatResponse.getStatus());
+                                }
+
+                                BigInteger cons = obatEntity.getLembarPerBox().multiply(obatEntity.getBijiPerLembar());
+
+                                // jika harga bukan pengembalian reture pakai harga terakhir;
+                                BigDecimal hargaRata = new BigDecimal(0);
+                                if (!"reture".equalsIgnoreCase(jenis)){
+                                    hargaRata = obatEntity.getHargaTerakhir().multiply(new BigDecimal(cons));
+                                } else {
+                                    if ("box".equalsIgnoreCase(trans.getJenisSatuan())){
+                                        hargaRata = hargaRata.add(obatEntity.getAverageHargaBox());
+                                    } if ("lembar".equalsIgnoreCase(trans.getJenisSatuan())){
+                                        hargaRata = hargaRata.add(obatEntity.getAverageHargaLembar());
+                                    } if ("biji".equalsIgnoreCase(trans.getJenisSatuan())){
+                                        hargaRata = hargaRata.add(obatEntity.getAverageHargaBiji());
+                                    }
+                                }
+
+                                BigDecimal hargaTotal = hargaRata.multiply(new BigDecimal(trans.getQtyApprove()));
+                                BigDecimal hargaPpn = new BigDecimal( 0);
+
+                                // hutang usaha
+                                hutangUsaha = hutangUsaha.add(hargaTotal);
+
+                                //ppn
+                                // jika bukan pengembalian reture maka pakai ppn
+                                if (!"reture".equalsIgnoreCase(jenis)){
+                                    hargaPpn = hargaTotal.multiply(new BigDecimal(0.1)).setScale(2, BigDecimal.ROUND_HALF_UP);
+                                    ppn = ppn.add(hargaPpn);
+                                }
+
+                                Map mapHutangUsaha = new HashMap();
+                                mapHutangUsaha.put("kd_barang", trans.getIdBarang());
+                                mapHutangUsaha.put("nilai", hargaTotal.subtract(hargaPpn));
+                                listMapPersediaan.add(mapHutangUsaha);
+                            }
+                        }
+
+                        String divisiId = "";
+                        String transId = "";
+                        String catatan = "";
+                        String namaVendor = "";
+
+                        namaVendor = "";
+                        ImSimrsVendorEntity vendorEntity = vendorBo.getEntityVendorById(requestVendor.getIdVendor());
+                        if (vendorEntity != null){
+                            namaVendor = vendorEntity.getNamaVendor();
+                        }
+
+                        Map jurnalMap = new HashMap();
+                        if ("reture".equalsIgnoreCase(jenis)){
+
+                            ImSimrsPelayananEntity pelayananEntity = pelayananEntity = pelayananBo.getPelayananById(idPelayanan);
+                            if (pelayananEntity != null){
+
+                                ImPosition position = positionBo.getPositionEntityById(pelayananEntity.getDivisiId());
+                                if (position != null){
+                                    divisiId = position.getKodering();
+                                }
+                            }
+
+                            Map mapBiaya = new HashMap();
+                            mapBiaya.put("divisi_id", divisiId);
+                            mapBiaya.put("nilai", hutangUsaha);
+
+                            jurnalMap.put("divisi_id", divisiId);
+                            jurnalMap.put("persediaan_gudang", listMapPersediaan);
+                            jurnalMap.put("biaya_persediaan_obat", mapBiaya);
+
+                            catatan = "Pengganti Barang No. Transaksi "+idPermintaanVendor+". Retur Vendor ke Gudang dari Vendor " + requestVendor.getIdVendor() + " - " + namaVendor;
+                            transId = "36";
+                        } else {
+
+                            Map mapPajakObat = new HashMap();
+                            mapPajakObat.put("bukti", noFaktur);
+                            mapPajakObat.put("nilai", ppn);
+                            mapPajakObat.put("master_id", requestVendor.getIdVendor());
+
+                            Map mapHutangVendor = new HashMap();
+                            mapHutangVendor.put("bukti", noDo);
+                            mapHutangVendor.put("nilai", hutangUsaha);
+                            mapHutangVendor.put("master_id", requestVendor.getIdVendor());
+                            mapHutangVendor.put("divisi_id", divisiId);
+
+                            jurnalMap.put("persediaan_gudang", listMapPersediaan);
+                            jurnalMap.put("hutang_farmasi_vendor", mapHutangVendor);
+                            jurnalMap.put("ppn_masukan", mapPajakObat);
+                            jurnalMap.put("user_id", userId);
+
+                            catatan = "Penerimaan Barang Gudang dari Vendor " + requestVendor.getIdVendor() + " - " + namaVendor;
+                            transId = "27";
+                        }
+
+                        String noJurnal = "";
+                        try {
+                            Jurnal jurnal = billingSystemBo.createJurnal(transId, jurnalMap, branchId, catatan, "Y");
+                            noJurnal = jurnal.getNoJurnal();
+                            model.setMessage("success");
+                        } catch (GeneralBOException e) {
+                            logger.error("Found Error when search permintaan vendor " + e.getMessage());
+                            checkObatResponse.setMessage("Found Error when search permintaan vendor " + e.getMessage());
+                            checkObatResponse.setStatus("error");
+//                            addActionError(" Error when save data approve PO" + e.getMessage());
+                            model.setMessage(checkObatResponse.getStatus());
+                        }
+                    }
+                }
             }
 
         logger.info("[PurchaseOrderContoller.create] end process POST / <<<");
         return new DefaultHttpHeaders("create").disableCaching();
+    }
+    private String dateFormater(String type) {
+        java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
+        DateFormat df = new SimpleDateFormat(type);
+        return df.format(date);
     }
 }

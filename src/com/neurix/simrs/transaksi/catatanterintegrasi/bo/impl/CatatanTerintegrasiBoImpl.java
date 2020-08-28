@@ -32,6 +32,9 @@ public class CatatanTerintegrasiBoImpl implements CatatanTerintegrasiBo {
             if(bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
                 hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
             }
+            if(bean.getKeterangan() != null && !"".equalsIgnoreCase(bean.getKeterangan())){
+                hsCriteria.put("keterangan", bean.getKeterangan());
+            }
 
             List<ItSimrsCatatanTerintegrasiEntity> entityList = new ArrayList<>();
             try {
@@ -47,7 +50,7 @@ public class CatatanTerintegrasiBoImpl implements CatatanTerintegrasiBo {
                     catatan.setIdDetailCheckup(entity.getIdDetailCheckup());
                     catatan.setWaktu(entity.getWaktu());
                     catatan.setPpa(entity.getPpa());
-                    catatan.setJenis(entity.getJenis());
+                    catatan.setSubjective(entity.getSubjective());
                     catatan.setIntruksi(entity.getIntruksi());
                     catatan.setTtdPetugas(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_RM+entity.getTtdPetugas());
                     catatan.setTtdDpjp(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_RM+entity.getTtdDpjp());
@@ -58,6 +61,17 @@ public class CatatanTerintegrasiBoImpl implements CatatanTerintegrasiBo {
                     catatan.setCreatedWho(entity.getCreatedWho());
                     catatan.setLastUpdate(entity.getLastUpdate());
                     catatan.setLastUpdateWho(entity.getLastUpdateWho());
+                    catatan.setNadi(entity.getNadi());
+                    catatan.setSuhu(entity.getSuhu());
+                    catatan.setRr(entity.getRr());
+                    catatan.setTensi(entity.getTensi());
+                    catatan.setObjective(entity.getObjective());
+                    catatan.setAssesment(entity.getAssesment());
+                    catatan.setPlanning(entity.getPlanning());
+                    catatan.setNamaDokter(entity.getNamaDokter());
+                    catatan.setNamaPetugas(entity.getNamaPetugas());
+                    catatan.setSipDokter(entity.getSipDokter());
+                    catatan.setSipPetugas(entity.getSipPetugas());
                     list.add(catatan);
                 }
             }
@@ -76,7 +90,7 @@ public class CatatanTerintegrasiBoImpl implements CatatanTerintegrasiBo {
             catatanTerintegrasiEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
             catatanTerintegrasiEntity.setWaktu(bean.getWaktu());
             catatanTerintegrasiEntity.setPpa(bean.getPpa());
-            catatanTerintegrasiEntity.setJenis(bean.getJenis());
+            catatanTerintegrasiEntity.setSubjective(bean.getSubjective());
             catatanTerintegrasiEntity.setIntruksi(bean.getIntruksi());
             catatanTerintegrasiEntity.setTtdPetugas(bean.getTtdPetugas());
             catatanTerintegrasiEntity.setTtdDpjp(bean.getTtdDpjp());
@@ -87,6 +101,17 @@ public class CatatanTerintegrasiBoImpl implements CatatanTerintegrasiBo {
             catatanTerintegrasiEntity.setCreatedWho(bean.getCreatedWho());
             catatanTerintegrasiEntity.setLastUpdate(bean.getLastUpdate());
             catatanTerintegrasiEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            catatanTerintegrasiEntity.setNadi(bean.getNadi());
+            catatanTerintegrasiEntity.setSuhu(bean.getSuhu());
+            catatanTerintegrasiEntity.setRr(bean.getRr());
+            catatanTerintegrasiEntity.setTensi(bean.getTensi());
+            catatanTerintegrasiEntity.setObjective(bean.getObjective());
+            catatanTerintegrasiEntity.setAssesment(bean.getAssesment());
+            catatanTerintegrasiEntity.setPlanning(bean.getPlanning());
+            catatanTerintegrasiEntity.setNamaDokter(bean.getNamaDokter());
+            catatanTerintegrasiEntity.setNamaPetugas(bean.getNamaPetugas());
+            catatanTerintegrasiEntity.setSipDokter(bean.getSipDokter());
+            catatanTerintegrasiEntity.setSipPetugas(bean.getSipPetugas());
 
             try {
                 catatanTerintegrasiDao.addAndSave(catatanTerintegrasiEntity);

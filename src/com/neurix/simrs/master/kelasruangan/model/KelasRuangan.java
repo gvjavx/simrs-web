@@ -19,6 +19,15 @@ public class KelasRuangan extends BaseModel {
     private Timestamp lastUpdate;
     private String stLastUpdate;
     private String lastUpdateWho;
+    private String kategori;
+
+    public String getKategori() {
+        return kategori;
+    }
+
+    public void setKategori(String kategori) {
+        this.kategori = kategori;
+    }
 
     public String getIdKelasRuangan() {
         return idKelasRuangan;

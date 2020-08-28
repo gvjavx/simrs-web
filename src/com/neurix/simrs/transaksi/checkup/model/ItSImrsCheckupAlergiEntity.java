@@ -18,6 +18,25 @@ public class ItSImrsCheckupAlergiEntity implements Serializable {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
 
+    private String jenis;
+    private String idPasien;
+
+    public String getJenis() {
+        return jenis;
+    }
+
+    public void setJenis(String jenis) {
+        this.jenis = jenis;
+    }
+
+    public String getIdPasien() {
+        return idPasien;
+    }
+
+    public void setIdPasien(String idPasien) {
+        this.idPasien = idPasien;
+    }
+
     public String getIdAlergi() {
         return idAlergi;
     }

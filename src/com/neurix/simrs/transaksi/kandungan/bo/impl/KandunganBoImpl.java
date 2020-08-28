@@ -75,6 +75,8 @@ public class KandunganBoImpl implements KandunganBo {
                     kandungan.setLastUpdateWho(entity.getLastUpdateWho());
                     kandungan.setTipe(entity.getTipe());
                     kandungan.setInformasi(entity.getInformasi());
+                    kandungan.setNamaTerang(entity.getNamaTerang());
+                    kandungan.setSip(entity.getSip());
                     list.add(kandungan);
                 }
             }
@@ -104,6 +106,8 @@ public class KandunganBoImpl implements KandunganBo {
                 kandunganEntity.setLastUpdateWho(bean.getLastUpdateWho());
                 kandunganEntity.setTipe(bean.getTipe());
                 kandunganEntity.setInformasi(bean.getInformasi());
+                kandunganEntity.setNamaTerang(bean.getNamaTerang());
+                kandunganEntity.setSip(bean.getSip());
 
                 try {
                     kandunganDao.addAndSave(kandunganEntity);

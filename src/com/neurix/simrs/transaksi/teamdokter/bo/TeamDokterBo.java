@@ -14,4 +14,6 @@ public interface TeamDokterBo {
     public List<ItSimrsDokterTeamEntity> getListEntityTeamDokter(DokterTeam bean) throws GeneralBOException;
     public void savaAdd(DokterTeam bean) throws GeneralBOException;
     public void saveEdit(DokterTeam bean) throws GeneralBOException;
+
+    public DokterTeam getNamaDokter(String idDetailCheckup) throws GeneralBOException;
 }

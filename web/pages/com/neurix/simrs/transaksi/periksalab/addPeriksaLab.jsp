@@ -15,6 +15,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/LabAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/LabDetailAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PeriksaLabAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
 
     <script type='text/javascript'>
 
@@ -201,8 +202,8 @@
                         <h3 class="box-title"><i class="fa fa-hospital-o"></i> Parameter Pemeriksaan</h3>
                     </div>
                     <div class="box-body">
-                        <%--<button class="btn btn-success btn-outline" onclick="showModal(1)" style="margin-bottom: 10px"><i class="fa fa-plus"></i> Tambah Parameter--%>
-                        <%--</button>--%>
+                        <button id="btn-add-parameter" class="btn btn-success btn-outline" onclick="showModal(1)" style="margin-bottom: 10px; display: none"><i class="fa fa-plus"></i> Tambah Parameter
+                        </button>
                         <table class="table table-bordered table-striped" id="tabel_lab">
                             <thead>
                             <tr bgcolor="#90ee90">
@@ -363,47 +364,47 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Order Lab</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Tambah Pemeriksaan</h4>
             </div>
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_lab">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    Silahkan cek kembali data inputan!
+                    <p id="msg_lab"></p>
                 </div>
                 <div class="row">
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Kategori Lab</label>
-                        <div class="col-md-7">
-                            <s:action id="comboLab" namespace="/kategorilab"
-                                      name="getListKategoriLab_kategorilab"/>
-                            <s:select cssStyle="margin-top: 7px; width: 100%" onchange="var warn =$('#war_kategori').is(':visible'); if (warn){$('#cor_kategori').show().fadeOut(3000);$('#war_kategori').hide()}; listSelectLab(this)"
-                                      list="#comboLab.listOfKategoriLab" id="lab_kategori"
-                                      listKey="idKategoriLab"
-                                      listValue="namaKategori"
-                                      headerKey="" headerValue="[Select one]"
-                                      cssClass="form-control select2"/>
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_kategori"><i
-                                    class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_kategori">
-                                <i class="fa fa-check"></i> correct</p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Lab</label>
-                        <div class="col-md-7">
-                            <select class="form-control select2" style="margin-top: 7px; width: 100%" id="lab_lab" onchange="var warn =$('#war_lab').is(':visible'); if (warn){$('#cor_lab').show().fadeOut(3000);$('#war_lab').hide()}; listSelectParameter(this);">
-                                <option value=''>[Select One]</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_lab"><i
-                                    class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_lab">
-                                <i class="fa fa-check"></i> correct</p>
-                        </div>
-                    </div>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="col-md-3" style="margin-top: 7px">Kategori Lab</label>--%>
+                        <%--<div class="col-md-7">--%>
+                            <%--<s:action id="comboLab" namespace="/kategorilab"--%>
+                                      <%--name="getListKategoriLab_kategorilab"/>--%>
+                            <%--<s:select cssStyle="margin-top: 7px; width: 100%" onchange="var warn =$('#war_kategori').is(':visible'); if (warn){$('#cor_kategori').show().fadeOut(3000);$('#war_kategori').hide()}; listSelectLab(this)"--%>
+                                      <%--list="#comboLab.listOfKategoriLab" id="lab_kategori"--%>
+                                      <%--listKey="idKategoriLab"--%>
+                                      <%--listValue="namaKategori"--%>
+                                      <%--headerKey="" headerValue="[Select one]"--%>
+                                      <%--cssClass="form-control select2"/>--%>
+                        <%--</div>--%>
+                        <%--<div class="col-md-2">--%>
+                            <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_kategori"><i--%>
+                                    <%--class="fa fa-times"></i> required</p>--%>
+                            <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_kategori">--%>
+                                <%--<i class="fa fa-check"></i> correct</p>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="col-md-3" style="margin-top: 7px">Lab</label>--%>
+                        <%--<div class="col-md-7">--%>
+                            <%--<select class="form-control select2" style="margin-top: 7px; width: 100%" id="lab_lab" onchange="var warn =$('#war_lab').is(':visible'); if (warn){$('#cor_lab').show().fadeOut(3000);$('#war_lab').hide()}; listSelectParameter(this);">--%>
+                                <%--<option value=''>[Select One]</option>--%>
+                            <%--</select>--%>
+                        <%--</div>--%>
+                        <%--<div class="col-md-2">--%>
+                            <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_lab"><i--%>
+                                    <%--class="fa fa-times"></i> required</p>--%>
+                            <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_lab">--%>
+                                <%--<i class="fa fa-check"></i> correct</p>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Parameter</label>
                         <div class="col-md-7">
@@ -457,9 +458,15 @@
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
+    var noCheckup = $('#no_checkup').val();
     var idDetailCheckup = $('#no_detail_checkup').val();
     var idPoli          = $('#id_palayanan').val();
+    var idPasien        = '<s:property value="periksaLab.idPasien"/>';
     var idPeriksaLab    = $('#id_periksa_lab').val();
+    var idLabPemeriksaan = '<s:property value="periksaLab.idLab"/>';
+    var jenisPasien     = '<s:property value="periksaLab.idJenisPeriksa"/>';
+    var metodePembayaran = '<s:property value="periksaLab.metodePembayaran"/>';
+    var keterangan       = '<s:property value="periksaLab.keterangan"/>';
 
     $(document).ready(function () {
         $('#periksa_lab').addClass('active');
@@ -485,20 +492,16 @@
                 });
             }
         });
+
+        if(keterangan == "just_lab"){
+            $('#btn-add-parameter').show();
+        }else{
+            $('#btn-add-parameter').hide();
+        }
     });
 
     function listSelectDokter() {
         var option = "<option value=''>[Select One]</option>";
-        // PeriksaLabAction.getListDokterTeamByNoDetail(idDetailCheckup, function (response) {
-        //     option = "<option value=''>[Select One]</option>";
-        //     if (response != null) {
-        //         $.each(response, function (i, item) {
-        //             option += "<option value='" + item.idDokter + "'>" + item.namaDokter + "</option>";
-        //         });
-        //     } else {
-        //         option = option;
-        //     }
-        // });
         PeriksaLabAction.getListDokterLabRadiologi("lab", function (response) {
             if (response != null) {
                 $.each(response, function (i, item) {
@@ -537,13 +540,30 @@
             PeriksaLabAction.saveEditDokterLab(idPeriksaLab, idDokter, {
                 callback: function (response) {
                     if (response.status == "success") {
-                        dwr.engine.setAsync(false);
-                        $('#success_dok').show().fadeOut(5000);
-                        $('#save_ket').show();
-                        $('#load_ket').hide();
-                        $('#info_dialog').dialog('open');
-                        $('#close_pos').val(2);
-                        $('body').scrollTop(0);
+                        if("just_lab" == keterangan){
+                            CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, "selesai", "", "", "", "", "Pemeriksaan Lab", "", "", jenisPasien, "", "", "", idPasien, "", "", metodePembayaran, "lab", "", function (response) {
+                                if(response.status == "success"){
+                                    $('#success_dok').show().fadeOut(5000);
+                                    $('#save_ket').show();
+                                    $('#load_ket').hide();
+                                    $('#info_dialog').dialog('open');
+                                    $('#close_pos').val(2);
+                                    $('body').scrollTop(0);
+                                }else{
+                                    $('#save_ket').show();
+                                    $('#load_ket').hide();
+                                    $('#warning_dok').show().fadeOut(5000);
+                                    $('#msg_dok').text(response.msg);
+                                }
+                            });
+                        }else{
+                            $('#success_dok').show().fadeOut(5000);
+                            $('#save_ket').show();
+                            $('#load_ket').hide();
+                            $('#info_dialog').dialog('open');
+                            $('#close_pos').val(2);
+                            $('body').scrollTop(0);
+                        }
                     } else {
                         $('#save_ket').show();
                         $('#load_ket').hide();
@@ -570,12 +590,12 @@
     }
 
     function showModal(select) {
-
         if (select == 1) {
             $('#lab_kategori, #lab_lab, #lab_parameter').val('').trigger('change');
             $('#save_lab').show();
             $('#load_lab, #warning_lab').hide();
             $('#lab_kategori, #lab_lab').css('border', '');
+            listSelectParameter(idLabPemeriksaan);
             $('#modal-lab').modal({show:true, backdrop:'static'});
         }
     }
@@ -625,41 +645,15 @@
         $('#lab_name').html(lab);
     }
 
-    function listSelectParameter(select){
-        var idx     = select.selectedIndex;
-        var idLab   = select.options[idx].value;
-
-        var option = "";
-        if(idLab != ''){
-            LabDetailAction.listLabDetail(idLab, function(response){
-                if (response != null){
-                    $.each(response, function (i, item) {
-                        option += "<option value='"+item.idLabDetail+"'>" +item.namaDetailPeriksa+ "</option>";
-                    });
-                }else{
-                    option = option;
-                }
-            });
-        }else{
-            option = option;
-        }
-
-        $('#lab_parameter').html(option);
-    }
-
     function saveLab() {
-
-        var idKategori  = $('#lab_kategori').val();
-        var idLab       = $('#lab_lab').val();
         var idParameter = $('#lab_parameter').val();
-
-        if (idDetailCheckup != '' && idKategori != '' && idLab != '') {
+        if (idDetailCheckup != '' && idPeriksaLab != '' && idParameter != null) {
             $('#save_lab').hide();
             $('#load_lab').show();
             dwr.engine.setAsync(true);
-            PeriksaLabAction.saveOrderLab(idDetailCheckup, idLab, idParameter, {
+            PeriksaLabAction.saveUpdatePemeriksaan(idPeriksaLab, idParameter, "lab", {
                 callback: function (response) {
-                    if (response == "success") {
+                    if (response.status == "success") {
                         dwr.engine.setAsync(false);
                         listParameter();
                         $('#modal-lab').modal('hide');
@@ -667,19 +661,17 @@
                         $('#close_pos').val(1);
                         $('body').scrollTop(0);
                     } else {
-
+                        $('#save_lab').show();
+                        $('#load_lab').hide();
+                        $('#warning_lab').show().fadeOut(5000);
+                        $('#msg_lab').text(response.msg);
                     }
                 }
-            })
+            });
         } else {
+            $('#msg_lab').text("Silahkan cek kembali inputan anda..!");
             $('#warning_lab').show().fadeOut(5000);
-            if (idKategori == '') {
-                $('#war_kategori').show();
-            }
-            if (idLab == '') {
-                $('#war_lab').show();
-            }
-            if (idLab == '') {
+            if (idParameter == '' || idParameter == null) {
                 $('#war_param').show();
             }
         }
@@ -774,7 +766,24 @@
         }
     }
 
+    function listSelectParameter(idLab) {
+        var option = "";
+        if (idLab != '') {
+            LabDetailAction.listLabDetail(idLab, function (response) {
+                if (response != null) {
+                    $.each(response, function (i, item) {
+                        option += "<option value='" + item.idLabDetail + "'>" + item.namaDetailPeriksa + "</option>";
+                    });
+                } else {
+                    option = option;
+                }
+            });
+        } else {
+            option = option;
+        }
 
+        $('#lab_parameter').html(option);
+    }
 
     function printPeriksaLab(){
         window.open('printPeriksaLab_periksalab.action?id='+idDetailCheckup, "_blank");

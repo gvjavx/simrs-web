@@ -73,6 +73,8 @@ public class AsesmenUgdBoImpl implements AsesmenUgdBo {
                     asesmenUgd.setLastUpdate(entity.getLastUpdate());
                     asesmenUgd.setLastUpdateWho(entity.getLastUpdateWho());
                     asesmenUgd.setTipe(entity.getTipe());
+                    asesmenUgd.setNamaTerang(entity.getNamaTerang());
+                    asesmenUgd.setSip(entity.getSip());
                     list.add(asesmenUgd);
                 }
             }
@@ -85,31 +87,43 @@ public class AsesmenUgdBoImpl implements AsesmenUgdBo {
     public CrudResponse saveAdd(List<AsesmenUgd> list) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
         if (list.size() > 0) {
-            for (AsesmenUgd bean : list) {
-                ItSimrsAsesmenUgdEntity asesmenUgdEntity = new ItSimrsAsesmenUgdEntity();
-                asesmenUgdEntity.setIdAsesmenUgd("AGD" + asesmenUgdDao.getNextSeq());
-                asesmenUgdEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
-                asesmenUgdEntity.setParameter(bean.getParameter());
-                asesmenUgdEntity.setJawaban(bean.getJawaban());
-                asesmenUgdEntity.setKeterangan(bean.getKeterangan());
-                asesmenUgdEntity.setJenis(bean.getJenis());
-                asesmenUgdEntity.setSkor(bean.getSkor());
-                asesmenUgdEntity.setAction(bean.getAction());
-                asesmenUgdEntity.setFlag(bean.getFlag());
-                asesmenUgdEntity.setCreatedDate(bean.getCreatedDate());
-                asesmenUgdEntity.setCreatedWho(bean.getCreatedWho());
-                asesmenUgdEntity.setLastUpdate(bean.getLastUpdate());
-                asesmenUgdEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                asesmenUgdEntity.setTipe(bean.getTipe());
+            AsesmenUgd asesmenUgd = list.get(0);
+            AsesmenUgd ugd = new AsesmenUgd();
+            ugd.setIdDetailCheckup(asesmenUgd.getIdDetailCheckup());
+            ugd.setKeterangan(asesmenUgd.getKeterangan());
+            List<AsesmenUgd> asesmenUgdList = getByCriteria(ugd);
+            if(asesmenUgdList.size() > 0){
+                response.setStatus("error");
+                response.setMsg("Found Error, Data yang anda masukan sudah ada...!");
+            }else{
+                for (AsesmenUgd bean : list) {
+                    ItSimrsAsesmenUgdEntity asesmenUgdEntity = new ItSimrsAsesmenUgdEntity();
+                    asesmenUgdEntity.setIdAsesmenUgd("AGD" + asesmenUgdDao.getNextSeq());
+                    asesmenUgdEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
+                    asesmenUgdEntity.setParameter(bean.getParameter());
+                    asesmenUgdEntity.setJawaban(bean.getJawaban());
+                    asesmenUgdEntity.setKeterangan(bean.getKeterangan());
+                    asesmenUgdEntity.setJenis(bean.getJenis());
+                    asesmenUgdEntity.setSkor(bean.getSkor());
+                    asesmenUgdEntity.setAction(bean.getAction());
+                    asesmenUgdEntity.setFlag(bean.getFlag());
+                    asesmenUgdEntity.setCreatedDate(bean.getCreatedDate());
+                    asesmenUgdEntity.setCreatedWho(bean.getCreatedWho());
+                    asesmenUgdEntity.setLastUpdate(bean.getLastUpdate());
+                    asesmenUgdEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    asesmenUgdEntity.setTipe(bean.getTipe());
+                    asesmenUgdEntity.setNamaTerang(bean.getNamaTerang());
+                    asesmenUgdEntity.setSip(bean.getSip());
 
-                try {
-                    asesmenUgdDao.addAndSave(asesmenUgdEntity);
-                    response.setStatus("success");
-                    response.setMsg("Berhasil");
-                } catch (HibernateException e) {
-                    response.setStatus("error");
-                    response.setMsg("Found Error " + e.getMessage());
-                    logger.error(e.getMessage());
+                    try {
+                        asesmenUgdDao.addAndSave(asesmenUgdEntity);
+                        response.setStatus("success");
+                        response.setMsg("Berhasil");
+                    } catch (HibernateException e) {
+                        response.setStatus("error");
+                        response.setMsg("Found Error " + e.getMessage());
+                        logger.error(e.getMessage());
+                    }
                 }
             }
         }

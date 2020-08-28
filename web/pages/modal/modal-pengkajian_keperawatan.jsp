@@ -172,22 +172,25 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Score</label>
-                            <div class="col-md-8">
-                                <input class="form-control" id="rj4" style="margin-top: 7px">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Tingkat Resiko</label>
-                            <div class="col-md-8">
-                                <input class="form-control" id="rj5" style="margin-top: 7px">
-                            </div>
-                        </div>
-                    </div>
+                    <hr class="garis">
+                    <input id="jenis_resiko" type="hidden">
+                    <div id="set_resiko_jatuh"></div>
+                    <%--<div class="row">--%>
+                        <%--<div class="form-group">--%>
+                            <%--<label class="col-md-3" style="margin-top: 7px">Score</label>--%>
+                            <%--<div class="col-md-8">--%>
+                                <%--<input class="form-control" id="rj4" style="margin-top: 7px">--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                    <%--<div class="row">--%>
+                        <%--<div class="form-group">--%>
+                            <%--<label class="col-md-3" style="margin-top: 7px">Tingkat Resiko</label>--%>
+                            <%--<div class="col-md-8">--%>
+                                <%--<input class="form-control" id="rj5" style="margin-top: 7px">--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">

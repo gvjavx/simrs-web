@@ -70,6 +70,8 @@ public class AsesmenRawatInapBoImpl implements AsesmenRawatInapBo {
                     asesmenRawatInap.setLastUpdateWho(entity.getLastUpdateWho());
                     asesmenRawatInap.setTipe(entity.getTipe());
                     asesmenRawatInap.setInformasi(entity.getInformasi());
+                    asesmenRawatInap.setNamaTerang(entity.getNamaTerang());
+                    asesmenRawatInap.setSip(entity.getSip());
                     list.add(asesmenRawatInap);
                 }
             }
@@ -82,35 +84,109 @@ public class AsesmenRawatInapBoImpl implements AsesmenRawatInapBo {
     public CrudResponse saveAdd(List<AsesmenRawatInap> list) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
         if (list.size() > 0) {
-            for (AsesmenRawatInap bean : list) {
-                ItSimrsAsesmenRawatInapEntity asesmenRawatInapEntity = new ItSimrsAsesmenRawatInapEntity();
-                asesmenRawatInapEntity.setIdAsesmenKeperawatanRawatInap("ARI" + asesmenRawatInapDao.getNextSeq());
-                asesmenRawatInapEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
-                asesmenRawatInapEntity.setParameter(bean.getParameter());
-                asesmenRawatInapEntity.setJawaban(bean.getJawaban());
-                asesmenRawatInapEntity.setKeterangan(bean.getKeterangan());
-                asesmenRawatInapEntity.setJenis(bean.getJenis());
-                asesmenRawatInapEntity.setSkor(bean.getSkor());
-                asesmenRawatInapEntity.setAction(bean.getAction());
-                asesmenRawatInapEntity.setFlag(bean.getFlag());
-                asesmenRawatInapEntity.setCreatedDate(bean.getCreatedDate());
-                asesmenRawatInapEntity.setCreatedWho(bean.getCreatedWho());
-                asesmenRawatInapEntity.setLastUpdate(bean.getLastUpdate());
-                asesmenRawatInapEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                asesmenRawatInapEntity.setTipe(bean.getTipe());
-                asesmenRawatInapEntity.setInformasi(bean.getInformasi());
+            AsesmenRawatInap inap = list.get(0);
+            AsesmenRawatInap rawatInap = new AsesmenRawatInap();
+            rawatInap.setIdDetailCheckup(inap.getIdDetailCheckup());
+            rawatInap.setKeterangan(inap.getKeterangan());
+            List<AsesmenRawatInap> rawatInapList = getByCriteria(rawatInap);
 
-                try {
-                    asesmenRawatInapDao.addAndSave(asesmenRawatInapEntity);
-                    response.setStatus("success");
-                    response.setMsg("Berhasil");
-                } catch (HibernateException e) {
+            if("hand_over".equalsIgnoreCase(inap.getJenis())){
+                AsesmenRawatInap rw = new AsesmenRawatInap();
+                rw.setIdDetailCheckup(inap.getIdDetailCheckup());
+                rw.setJawaban(inap.getJawaban());
+                rw.setJenis(inap.getJenis());
+                Boolean cekData = asesmenRawatInapDao.cekHandOver(rw);
+                if(cekData){
                     response.setStatus("error");
-                    response.setMsg("Found Error " + e.getMessage());
-                    logger.error(e.getMessage());
+                    response.setMsg("Found error, Data pada shift "+inap.getJawaban()+" sudah ada..!");
+                }else{
+                    response = saveAsesmen(list);
+                }
+            }else{
+                if(rawatInapList.size() > 0){
+                    response.setStatus("error");
+                    response.setMsg("Found error, Data yang anda masukan sudah ada...!");
+                }else{
+                    response = saveAsesmen(list);
                 }
             }
         }
+        return response;
+    }
+
+    private CrudResponse saveAsesmen(List<AsesmenRawatInap> list){
+        CrudResponse response = new CrudResponse();
+        for (AsesmenRawatInap bean : list) {
+            ItSimrsAsesmenRawatInapEntity asesmenRawatInapEntity = new ItSimrsAsesmenRawatInapEntity();
+            asesmenRawatInapEntity.setIdAsesmenKeperawatanRawatInap("ARI" + asesmenRawatInapDao.getNextSeq());
+            asesmenRawatInapEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
+            asesmenRawatInapEntity.setParameter(bean.getParameter());
+            asesmenRawatInapEntity.setJawaban(bean.getJawaban());
+            asesmenRawatInapEntity.setKeterangan(bean.getKeterangan());
+            asesmenRawatInapEntity.setJenis(bean.getJenis());
+            asesmenRawatInapEntity.setSkor(bean.getSkor());
+            asesmenRawatInapEntity.setAction(bean.getAction());
+            asesmenRawatInapEntity.setFlag(bean.getFlag());
+            asesmenRawatInapEntity.setCreatedDate(bean.getCreatedDate());
+            asesmenRawatInapEntity.setCreatedWho(bean.getCreatedWho());
+            asesmenRawatInapEntity.setLastUpdate(bean.getLastUpdate());
+            asesmenRawatInapEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            asesmenRawatInapEntity.setTipe(bean.getTipe());
+            asesmenRawatInapEntity.setInformasi(bean.getInformasi());
+            asesmenRawatInapEntity.setNamaTerang(bean.getNamaTerang());
+            asesmenRawatInapEntity.setSip(bean.getSip());
+
+            try {
+                asesmenRawatInapDao.addAndSave(asesmenRawatInapEntity);
+                response.setStatus("success");
+                response.setMsg("Berhasil");
+            } catch (HibernateException e) {
+                response.setStatus("error");
+                response.setMsg("Found Error " + e.getMessage());
+                logger.error(e.getMessage());
+                return response;
+            }
+        }
+        return response;
+    }
+
+    @Override
+    public CrudResponse saveDelete(AsesmenRawatInap bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        List<ItSimrsAsesmenRawatInapEntity> entityList = new ArrayList<>();
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+        hsCriteria.put("keterangan", bean.getKeterangan());
+        try {
+            entityList = asesmenRawatInapDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e) {
+            response.setStatus("error");
+            response.setMsg("Found Error, "+e.getMessage());
+            logger.error(e.getMessage());
+            return response;
+        }
+
+        if(entityList.size() > 0){
+            for (ItSimrsAsesmenRawatInapEntity inap: entityList){
+                inap.setLastUpdate(bean.getLastUpdate());
+                inap.setLastUpdateWho(bean.getLastUpdateWho());
+                inap.setFlag("N");
+                try {
+                    asesmenRawatInapDao.updateAndSave(inap);
+                    response.setStatus("success");
+                    response.setMsg("Berhasil");
+                }catch (HibernateException e){
+                    response.setStatus("error");
+                    response.setMsg("Found Error, "+e.getMessage());
+                    logger.error(e.getMessage());
+                    return response;
+                }
+            }
+        }else{
+            response.setStatus("error");
+            response.setMsg("Data yang anda delete tidak ditemukan");
+        }
+
         return response;
     }
 

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="com.neurix.simrs.transaksi.asesmenrawatjalan.model.ItSimrsAsesmenKeperawatanRawatJalanEntity">
+        <table name="it_simrs_asesmen_keperawatan_rawat_jalan" schema="public"/>
+        <attributes>
+            <id name="idKeperawatanRawatJalan">
+                <column name="id_keperawatan_rawat_jalan"/>
+            </id>
+            <basic name="idDetailCheckup">
+                <column name="id_detail_checkup"/>
+            </basic>
+            <basic name="parameter">
+                <column name="parameter"/>
+            </basic>
+            <basic name="jawaban">
+                <column name="jawaban"/>
+            </basic>
+            <basic name="keterangan">
+                <column name="keterangan"/>
+            </basic>
+            <basic name="jenis">
+                <column name="jenis"/>
+            </basic>
+            <basic name="score">
+                <column name="score"/>
+            </basic>
+            <basic name="flag">
+                <column name="flag"/>
+            </basic>
+            <basic name="action">
+                <column name="action"/>
+            </basic>
+            <basic name="createdWho">
+                <column name="created_who"/>
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date"/>
+            </basic>
+            <basic name="lastUpdate">
+                <column name="last_update"/>
+            </basic>
+            <basic name="lastUpdateWho">
+                <column name="last_update_who"/>
+            </basic>
+            <basic name="tipe">
+                <column name="tipe"/>
+            </basic>
+            <basic name="namaTerang">
+                <column name="nama_terang"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

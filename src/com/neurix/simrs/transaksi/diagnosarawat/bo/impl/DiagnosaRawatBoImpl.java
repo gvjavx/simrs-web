@@ -186,6 +186,9 @@ public class DiagnosaRawatBoImpl implements DiagnosaRawatBo {
         if (bean.getOrderLastUpdate() != null && !"".equalsIgnoreCase(bean.getOrderLastUpdate())){
             hsCriteria.put("order_last", bean.getOrderLastUpdate());
         }
+        if (bean.getOrderCreated() != null && !"".equalsIgnoreCase(bean.getOrderCreated())){
+            hsCriteria.put("order_created", bean.getOrderCreated());
+        }
 
         List<ItSimrsDiagnosaRawatEntity> entities = new ArrayList<>();
         try {

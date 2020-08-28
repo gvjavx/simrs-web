@@ -2243,6 +2243,13 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                             iuranDapenPensiunPeg = BigDecimal.valueOf(0);
                             iuranDapenPensiunPersh = BigDecimal.valueOf(0);
                         }
+
+                        //membulatkan iuran dapen
+                        iuranDapenPensiunPeg = iuranDapenPensiunPeg.setScale(0,BigDecimal.ROUND_HALF_UP);
+                        iuranDapenPensiunPersh = iuranDapenPensiunPersh.setScale(0,BigDecimal.ROUND_HALF_UP);
+                        iuranBpjsKsKary = iuranBpjsKsKary.setScale(0,BigDecimal.ROUND_HALF_UP);
+                        iuranBpjsTkPers = iuranBpjsTkPers.setScale(0,BigDecimal.ROUND_HALF_UP);
+
                         payroll.setGajiPensiun(CommonUtil.numbericFormat(gajiPensiun, "###,###"));
                         payroll.setGajiPensiunNilai(gajiPensiun);
 
@@ -2254,7 +2261,6 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                         }
 
                         //perhitungan pph gaji karyawan
-
                         payrollPph = kalkulasiGrossUpPphSimRs(payrollEntity.getNip(),bean.getBulan(), bean.getTahun(), payrollEntity.getBranchId(),
                                     gaji, santunanKhusus, tunjJabatanStruktural, tunjStruktural, tunjStrategis, tunjPeralihan,tunjLain, tunjTambahan, pemondokan, komunikasi,
                                     totalRlab, lembur, iuranDapenPensiunPersh, iuranBpjsTkPers, iuranBpjsKsPers, lainLain,
@@ -20463,11 +20469,14 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         }catch(GeneralBOException e){
 
         }
+
+        pphGaji = pphGaji.setScale(0, RoundingMode.HALF_UP); //Also tried with RoundingMode.UP
+
         payrollPph.setPphId(pphId);
         payrollPph.setPkp(CommonUtil.numbericFormat(pkp,"###,###"));
         payrollPph.setPkpNilai(pkp);
         int valuePph = pphGaji.compareTo(BigDecimal.valueOf(0));
-        if (valuePph ==1){
+        if (valuePph > 0){
             payrollPph.setPphGaji(CommonUtil.numbericFormat(pphGaji,"###,###"));
             payrollPph.setPphGajiNilai(pphGaji);
         }else{
