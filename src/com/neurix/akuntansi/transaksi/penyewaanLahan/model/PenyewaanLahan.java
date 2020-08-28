@@ -15,9 +15,11 @@ public class PenyewaanLahan extends BaseModel {
     private String stTanggalBayar;
     private BigDecimal nilai;
     private BigDecimal nilaiPpn;
+    private BigDecimal nilaiPph;
     private BigDecimal nilaiNetto;
     private String stNilai;
     private String stNilaiPpn;
+    private String stNilaiPph;
     private String stNilaiNetto;
 
     private String branchId;
@@ -35,6 +37,50 @@ public class PenyewaanLahan extends BaseModel {
 
     private String stTanggalDari;
     private String stTanggalSelesai;
+
+    private String namaPenyewaName;
+    private String noFaktur;
+    private String urlFakturImage;
+
+    public String getNoFaktur() {
+        return noFaktur;
+    }
+
+    public void setNoFaktur(String noFaktur) {
+        this.noFaktur = noFaktur;
+    }
+
+    public String getUrlFakturImage() {
+        return urlFakturImage;
+    }
+
+    public void setUrlFakturImage(String urlFakturImage) {
+        this.urlFakturImage = urlFakturImage;
+    }
+
+    public BigDecimal getNilaiPph() {
+        return nilaiPph;
+    }
+
+    public void setNilaiPph(BigDecimal nilaiPph) {
+        this.nilaiPph = nilaiPph;
+    }
+
+    public String getStNilaiPph() {
+        return stNilaiPph;
+    }
+
+    public void setStNilaiPph(String stNilaiPph) {
+        this.stNilaiPph = stNilaiPph;
+    }
+
+    public String getNamaPenyewaName() {
+        return namaPenyewaName;
+    }
+
+    public void setNamaPenyewaName(String namaPenyewaName) {
+        this.namaPenyewaName = namaPenyewaName;
+    }
 
     public String getNoJurnal() {
         return noJurnal;

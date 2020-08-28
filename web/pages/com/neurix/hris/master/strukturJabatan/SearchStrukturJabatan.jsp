@@ -580,7 +580,7 @@
                             <label class="control-label col-sm-4" for="strukturJabatan.branchId">Unit Id :</label>
                             <div class="col-sm-6">
                                 <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                <s:select disabled="true" list="#initComboBranch.listOfComboBranch" id="branchIdDelete" name="strukturJabatan.branchId" onchange="selectParent(this.value, 'Edit')"
+                                <s:select disabled="true" list="#initComboBranch.listOfComboBranch" id="branchIdDelete" name="strukturJabatan.branchId" onchange="selectParent(this.value, 'Delete')"
                                           listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                             </div>
                         </div>

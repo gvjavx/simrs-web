@@ -39,6 +39,9 @@ public class MasterVendorDao extends GenericDao<ImMasterVendorEntity, String> {
             if (mapCriteria.get("nama")!=null) {
                 criteria.add(Restrictions.ilike("nama", "%" + (String)mapCriteria.get("nama") + "%"));
             }
+            if (mapCriteria.get("tipe_vendor")!=null) {
+                criteria.add(Restrictions.eq("tipeVendor", (String) mapCriteria.get("tipe_vendor")));
+            }
         }
 
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
@@ -51,12 +54,36 @@ public class MasterVendorDao extends GenericDao<ImMasterVendorEntity, String> {
     }
 
     // Generate surrogate id from postgre
-    public String getNextVendorId() throws HibernateException {
+    public String getNextVendorUmumId() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_master')");
         Iterator<BigInteger> iter=query.list().iterator();
-        String sId = String.format("%05d", iter.next());
+        String sId = String.format("%03d", iter.next());
 
-        return "VN"+sId;
+        return "01."+sId;
+    }
+
+    public String getNextVendorBpjsId() throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_master_bpjs')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%03d", iter.next());
+
+        return "02."+sId;
+    }
+
+    public String getNextVendorSewaLahanId() throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_master_sewa')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%03d", iter.next());
+
+        return "04."+sId;
+    }
+
+    public String getNextVendorLainId() throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_master_lain')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%03d", iter.next());
+
+        return "99."+sId;
     }
 
     public Integer cekExistingJurnalDetail(String nomorVendor){

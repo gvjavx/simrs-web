@@ -12,6 +12,7 @@ public class ItAkunPenyewaanLahanEntity {
     private Date tanggalBayar;
     private BigDecimal nilai;
     private BigDecimal nilaiPpn;
+    private BigDecimal nilaiPph;
     private BigDecimal nilaiNetto;
     private String flag;
     private String action;
@@ -30,6 +31,32 @@ public class ItAkunPenyewaanLahanEntity {
     private String metodeBayar;
     private String bank;
     private String noJurnal;
+    private String noFaktur;
+    private String urlFakturImage;
+
+    public String getNoFaktur() {
+        return noFaktur;
+    }
+
+    public void setNoFaktur(String noFaktur) {
+        this.noFaktur = noFaktur;
+    }
+
+    public String getUrlFakturImage() {
+        return urlFakturImage;
+    }
+
+    public void setUrlFakturImage(String urlFakturImage) {
+        this.urlFakturImage = urlFakturImage;
+    }
+
+    public BigDecimal getNilaiPph() {
+        return nilaiPph;
+    }
+
+    public void setNilaiPph(BigDecimal nilaiPph) {
+        this.nilaiPph = nilaiPph;
+    }
 
     public String getNoJurnal() {
         return noJurnal;

@@ -4,6 +4,7 @@ import com.neurix.common.model.BaseModel;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * Created by IntelliJ IDEA.
@@ -42,6 +43,110 @@ public class PembayaranUtangPiutang extends BaseModel {
     private String noJurnalPpn;
     private String noJurnalPph;
     private String tipeMaster;
+
+    private String branchName;
+    private String jabatan;
+
+    private String branchIdUser;
+
+    //approval
+    private String approvalKeuanganFlag;
+    private String approvalKeuanganId;
+    private String approvalKeuanganName;
+    private Timestamp approvalKeuanganDate;
+
+    private String approvalKasubKeuanganFlag;
+    private String approvalKasubKeuanganId;
+    private String approvalKasubKeuanganName;
+    private Timestamp approvalKasubKeuanganDate;
+
+    public String getBranchIdUser() {
+        return branchIdUser;
+    }
+
+    public void setBranchIdUser(String branchIdUser) {
+        this.branchIdUser = branchIdUser;
+    }
+
+    public String getJabatan() {
+        return jabatan;
+    }
+
+    public void setJabatan(String jabatan) {
+        this.jabatan = jabatan;
+    }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
+    public String getApprovalKeuanganFlag() {
+        return approvalKeuanganFlag;
+    }
+
+    public void setApprovalKeuanganFlag(String approvalKeuanganFlag) {
+        this.approvalKeuanganFlag = approvalKeuanganFlag;
+    }
+
+    public String getApprovalKeuanganId() {
+        return approvalKeuanganId;
+    }
+
+    public void setApprovalKeuanganId(String approvalKeuanganId) {
+        this.approvalKeuanganId = approvalKeuanganId;
+    }
+
+    public String getApprovalKeuanganName() {
+        return approvalKeuanganName;
+    }
+
+    public void setApprovalKeuanganName(String approvalKeuanganName) {
+        this.approvalKeuanganName = approvalKeuanganName;
+    }
+
+    public Timestamp getApprovalKeuanganDate() {
+        return approvalKeuanganDate;
+    }
+
+    public void setApprovalKeuanganDate(Timestamp approvalKeuanganDate) {
+        this.approvalKeuanganDate = approvalKeuanganDate;
+    }
+
+    public String getApprovalKasubKeuanganFlag() {
+        return approvalKasubKeuanganFlag;
+    }
+
+    public void setApprovalKasubKeuanganFlag(String approvalKasubKeuanganFlag) {
+        this.approvalKasubKeuanganFlag = approvalKasubKeuanganFlag;
+    }
+
+    public String getApprovalKasubKeuanganId() {
+        return approvalKasubKeuanganId;
+    }
+
+    public void setApprovalKasubKeuanganId(String approvalKasubKeuanganId) {
+        this.approvalKasubKeuanganId = approvalKasubKeuanganId;
+    }
+
+    public String getApprovalKasubKeuanganName() {
+        return approvalKasubKeuanganName;
+    }
+
+    public void setApprovalKasubKeuanganName(String approvalKasubKeuanganName) {
+        this.approvalKasubKeuanganName = approvalKasubKeuanganName;
+    }
+
+    public Timestamp getApprovalKasubKeuanganDate() {
+        return approvalKasubKeuanganDate;
+    }
+
+    public void setApprovalKasubKeuanganDate(Timestamp approvalKasubKeuanganDate) {
+        this.approvalKasubKeuanganDate = approvalKasubKeuanganDate;
+    }
 
     public String getTipeMaster() {
         return tipeMaster;

@@ -170,6 +170,8 @@ public class CommonConstant {
     public final static String KELOMPOK_ID_BOC =CommonUtil.getPropertyParams("kelompok.id.boc");
     public final static String ROLE_ID_KARYAWAN = CommonUtil.getPropertyParams("role.id.karyawan");
     public final static String ROLE_ID_ADMIN_AKS = CommonUtil.getPropertyParams("role.id.admin.aks");
+    public final static String ROLE_ID_KASUB_KEU = CommonUtil.getPropertyParams("role.id.kasub.keu");
+    public final static String ROLE_ID_KA_KEU = CommonUtil.getPropertyParams("role.id.ka.keu");
     public final static String ROLE_ID_ADMIN_DIVISI = CommonUtil.getPropertyParams("role.id.admin.divisi");
     public final static String ROLE_ID_ADMIN = CommonUtil.getPropertyParams("role.id.admin");
     public final static String ID_KANPUS = "KP";
