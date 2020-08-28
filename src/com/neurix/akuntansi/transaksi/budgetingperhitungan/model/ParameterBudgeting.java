@@ -29,6 +29,15 @@ public class ParameterBudgeting {
     private String namaDivisi;
     private String idNilaiParameter;
     private String periode;
+    private String idParamRekening;
+
+    public String getIdParamRekening() {
+        return idParamRekening;
+    }
+
+    public void setIdParamRekening(String idParamRekening) {
+        this.idParamRekening = idParamRekening;
+    }
 
     public String getPeriode() {
         return periode;

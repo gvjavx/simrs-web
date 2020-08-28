@@ -47,6 +47,9 @@
             <basic name="divisiId">
                 <column name="divisi_id"/>
             </basic>
+            <basic name="idParamRekening">
+                <column name="id_param_rekening"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

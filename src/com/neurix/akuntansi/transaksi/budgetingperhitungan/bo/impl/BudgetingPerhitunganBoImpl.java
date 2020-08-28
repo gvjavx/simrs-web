@@ -428,7 +428,13 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
                 parameterBudgeting.setDivisiId(nilaiParam.getDivisiId());
                 ImAkunParameterBudgetingEntity parameterBudgetingEntity = parameterBudgetingDao.getById("id", nilaiParam.getIdParameter());
                 if (parameterBudgetingEntity != null){
-                    parameterBudgeting.setRekeningId(parameterBudgetingEntity.getRekeningId());
+
+                    ImAkunParameterBudgetingRekeningEntity parameterBudgetingRekeningEntity = parameterBudgetingRekeningDao.getById("id", parameterBudgetingEntity.getIdParamRekening());
+                    if (parameterBudgetingEntity != null){
+                        parameterBudgeting.setRekeningId(parameterBudgetingRekeningEntity.getRekeningId());
+                    } else {
+                        parameterBudgeting.setRekeningId(parameterBudgetingEntity.getRekeningId());
+                    }
                 }
                 parameterBudgeting.setFlag(nilaiParam.getFlag());
                 parameterBudgeting.setAction(nilaiParam.getAction());

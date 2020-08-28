@@ -800,4 +800,7 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
 
     CREATE SEQUENCE seq_parameter_budgeting_rekening;
 
+    ALTER TABLE im_akun_parameter_budgeting
+    ADD COLUMN id_param_rekening VARCHAR(30);
+
 <<< //

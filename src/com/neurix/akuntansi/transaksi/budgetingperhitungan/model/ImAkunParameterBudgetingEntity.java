@@ -20,6 +20,15 @@ public class ImAkunParameterBudgetingEntity {
     private String idKategoriBudgeting;
     private String masterId;
     private String divisiId;
+    private String idParamRekening;
+
+    public String getIdParamRekening() {
+        return idParamRekening;
+    }
+
+    public void setIdParamRekening(String idParamRekening) {
+        this.idParamRekening = idParamRekening;
+    }
 
     public String getMasterId() {
         return masterId;
