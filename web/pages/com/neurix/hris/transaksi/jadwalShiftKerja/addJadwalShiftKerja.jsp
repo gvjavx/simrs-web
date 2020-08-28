@@ -525,13 +525,19 @@
         var grup = $('#profesiId').find('option:selected').text();
         var shift = $('#ShiftId').find('option:selected').text();
         var shiftId = $('#ShiftId').find('option:selected').val();
+        var shiftIdKosong = $('#ShiftId').val();
         var grupId = $('#profesiId').find('option:selected').val();
-        dwr.engine.setAsync(false);
+        var pesan = "Shift is required";
+        if (shiftIdKosong == null) {
+            alert(pesan);
+        }else{
+            dwr.engine.setAsync(false);
 
-        JadwalShiftKerjaAction.savePegawaiShift(nip,nama,posisi,grup,grupId,shift,shiftId,function() {
-            resultPerson();
-            listPerson();
-        });
+            JadwalShiftKerjaAction.savePegawaiShift(nip,nama,posisi,grup,grupId,shift,shiftId,function() {
+                resultPerson();
+                listPerson();
+            });
+        }
     });
     $('.shiftTable').on('click', '.item-delete-shift', function () {
         if (confirm("Apakah data ini ingin dihapus ?")){

@@ -454,6 +454,12 @@ public class LemburBoImpl implements LemburBo {
 //                    if (CommonUtil.roleAsLogin().equalsIgnoreCase("ADMIN")){
 //                        returnLembur.setCekAdmin(true);
 //                    }
+
+                    if (returnLembur.getJamRealisasi()<returnLembur.getLamaJam()){
+                        returnLembur.setLamaHitungan(returnLembur.getJamRealisasi());
+                    }else{
+                        returnLembur.setLamaHitungan(returnLembur.getLamaJam());
+                    }
                     listOfResult.add(returnLembur);
                 }
             }

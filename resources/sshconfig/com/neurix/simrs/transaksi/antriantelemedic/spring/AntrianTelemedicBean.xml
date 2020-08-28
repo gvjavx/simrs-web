@@ -24,6 +24,7 @@
           p:headerCheckupDao-ref="headerCheckupDao"
           p:checkupDetailDao-ref="checkupDetailDao"
           p:notifikasiAdminTelemedicDao-ref="notifikasiAdminTelemedicDao"
+          p:videoRmDao-ref="videoRmDao"
     />
 
     <bean id="telemedicineController" class="com.neurix.simrs.mobileapi.TelemedicineController"
@@ -41,6 +42,10 @@
 
     <bean id="dokterController" class="com.neurix.simrs.mobileapi.DokterController"
           p:telemedicBoProxy-ref="telemedicBoProxy"/>
+
+    <bean id="antrianOnlineController" class="com.neurix.simrs.mobileapi.AntrianOnlineController"
+          p:telemedicBoProxy-ref="telemedicBoProxy"/>
+
 
     <bean id="telemedicBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="telemedicBo">
@@ -78,5 +83,7 @@
     <bean id="batalDokterTelemedicDao" class="com.neurix.simrs.transaksi.bataltelemedic.dao.BatalDokterTelemedicDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="batalTelemedicDao" class="com.neurix.simrs.transaksi.bataltelemedic.dao.BatalTelemedicDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="videoRmDao" class="com.neurix.simrs.transaksi.antriantelemedic.dao.VideoRmDao"
           p:sessionFactory-ref="sessionFactory" />
 </beans>

@@ -730,12 +730,8 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         session.removeAttribute("listPembayaranDetailModal");
         session.setAttribute("listOfResult", listOfsearchPembayaranUtangPiutang);
 
-        String branchId = CommonUtil.userBranchLogin();
-        if (branchId!=null){
-            searchPembayaranUtangPiutang.setBranchId(branchId);
-        }else{
-            searchPembayaranUtangPiutang.setBranchId("");
-        }
+        searchPembayaranUtangPiutang.setBranchIdUser(CommonUtil.userBranchLogin());
+
         setPembayaranUtangPiutang(searchPembayaranUtangPiutang);
         logger.info("[PembayaranUtangPiutangAction.search] end process <<<");
 
@@ -768,12 +764,8 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         session.removeAttribute("listPembayaranDetailModal");
         session.setAttribute("listOfResult", listOfsearchPembayaranUtangPiutang);
 
-        String branchId = CommonUtil.userBranchLogin();
-        if (branchId!=null){
-            searchPembayaranUtangPiutang.setBranchId(branchId);
-        }else{
-            searchPembayaranUtangPiutang.setBranchId("");
-        }
+        searchPembayaranUtangPiutang.setBranchIdUser(CommonUtil.userBranchLogin());
+
         setPembayaranUtangPiutang(searchPembayaranUtangPiutang);
         logger.info("[PembayaranUtangPiutangAction.searchPemasukan] end process <<<");
 
@@ -806,12 +798,8 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         session.removeAttribute("listPembayaranDetailModal");
         session.setAttribute("listOfResult", listOfsearchPembayaranUtangPiutang);
 
-        String branchId = CommonUtil.userBranchLogin();
-        if (branchId!=null){
-            searchPembayaranUtangPiutang.setBranchId(branchId);
-        }else{
-            searchPembayaranUtangPiutang.setBranchId("");
-        }
+        searchPembayaranUtangPiutang.setBranchIdUser(CommonUtil.userBranchLogin());
+
         setPembayaranUtangPiutang(searchPembayaranUtangPiutang);
         logger.info("[PembayaranUtangPiutangAction.searchKoreksi] end process <<<");
 
@@ -826,9 +814,12 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         PembayaranUtangPiutang data = new PembayaranUtangPiutang();
         if (branchId!=null){
             data.setBranchId(branchId);
+            data.setBranchIdUser(branchId);
         }else{
             data.setBranchId("");
         }
+
+
         setPembayaranUtangPiutang(data);
         session.removeAttribute("listOfResult");
         session.removeAttribute("listOfResultPembayaranDetail");
@@ -843,6 +834,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         PembayaranUtangPiutang data = new PembayaranUtangPiutang();
         if (branchId!=null){
             data.setBranchId(branchId);
+            data.setBranchIdUser(branchId);
         }else{
             data.setBranchId("");
         }
@@ -860,6 +852,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         PembayaranUtangPiutang data = new PembayaranUtangPiutang();
         if (branchId!=null){
             data.setBranchId(branchId);
+            data.setBranchIdUser(branchId);
         }else{
             data.setBranchId("");
         }
@@ -1357,6 +1350,56 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
             System.out.println(e);
         }
         return efakturDTO;
+    }
+
+    public String approvePembayaran(String pembayaranId,String who,String flag){
+        logger.info("[PembayaranUtangPiutangAction.approvePembayaran] start process >>>");
+        try {
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            PembayaranUtangPiutangBo pembayaranUtangPiutangBo = (PembayaranUtangPiutangBo) ctx.getBean("pembayaranUtangPiutangBoProxy");
+            PembayaranUtangPiutang data = new PembayaranUtangPiutang();
+            String userLogin = CommonUtil.userLogin();
+            String userIdLogin = CommonUtil.userIdLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            data.setPembayaranUtangPiutangId(pembayaranId);
+            data.setLastUpdateWho(userLogin);
+            data.setLastUpdate(updateTime);
+            data.setAction("U");
+
+            if ("keu".equalsIgnoreCase(who)){
+                data.setApprovalKeuanganFlag(flag);
+                data.setApprovalKeuanganId(userIdLogin);
+                data.setApprovalKeuanganName(userLogin);
+                data.setApprovalKeuanganDate(updateTime);
+            }else if ("kasub".equalsIgnoreCase(who)){
+                data.setApprovalKasubKeuanganFlag(flag);
+                data.setApprovalKasubKeuanganId(userIdLogin);
+                data.setApprovalKasubKeuanganName(userLogin);
+                data.setApprovalKasubKeuanganDate(updateTime);
+            }
+
+            pembayaranUtangPiutangBo.approvePembayaran(data);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = pembayaranUtangPiutangBoProxy.saveErrorMessage(e.getMessage(), "PembayaranUtangPiutangBO.approvePembayaran");
+            } catch (GeneralBOException e1) {
+                logger.error("[PembayaranUtangPiutangAction.approvePembayaran] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[PembayaranUtangPiutangAction.approvePembayaran] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        logger.info("[PembayaranUtangPiutangAction.approvePembayaran] end process <<<");
+
+        if ("Y".equalsIgnoreCase(flag)){
+            return "Sukses Approve";
+        }else{
+            return "Sukses Not Approve";
+        }
     }
 
     private String dateFormater(String type) {

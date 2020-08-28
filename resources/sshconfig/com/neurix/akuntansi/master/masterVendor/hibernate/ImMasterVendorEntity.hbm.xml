@@ -29,6 +29,13 @@
             <column name="vendor_obat" sql-type="varchar" length="1" not-null="false" />
         </property>
 
+        <property name="noRekening">
+            <column name="no_rekening" sql-type="varchar" not-null="false" />
+        </property>
+        <property name="tipeVendor">
+            <column name="tipe_vendor" sql-type="varchar" not-null="false" />
+        </property>
+
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
         </property>

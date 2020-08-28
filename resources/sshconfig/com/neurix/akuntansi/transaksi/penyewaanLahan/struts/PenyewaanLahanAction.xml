@@ -70,6 +70,13 @@
             <interceptor-ref name="ivelinStack" />
             <result name="input">/pages/com/neurix/akuntansi/transaksi/penyewaanLahan/SearchPenyewaanLahan.jsp</result>
             <result name="success">/pages/com/neurix/akuntansi/transaksi/penyewaanLahan/SearchPenyewaanLahan.jsp</result>
+
+            <result name="print_bukti_pembayaran" type="jasper">
+                <param name="location">/pages/report/com/neurix/akuntansi/buktiSewaLahan.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
         </action>
 
     </package>
