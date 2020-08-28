@@ -602,6 +602,7 @@ public class BiodataBoImpl implements BiodataBo {
                                 imBiodataEntity.setFlagBpjsTk(bean.getFlagBpjsTk());
                                 imBiodataEntity.setFlagPercobaan(bean.getFlagPercobaan());
                                 imBiodataEntity.setNipLama(bean.getNipLama());
+                                imBiodataEntity.setShift(bean.getShift());
 
 //                            if(itPersonilPositionEntity != null){
 //                                for(ItPersonilPositionEntity itPerson : itPersonilPositionEntity){
@@ -825,6 +826,7 @@ public class BiodataBoImpl implements BiodataBo {
                             imBiodataEntity.setFlagBpjsTk(bean.getFlagBpjsTk());
                             imBiodataEntity.setFlagPercobaan(bean.getFlagPercobaan());
                             imBiodataEntity.setNipLama(bean.getNipLama());
+                            imBiodataEntity.setShift(bean.getShift());
 
 //                        if(itPersonilPositionEntity != null){
 //                            for(ItPersonilPositionEntity itPerson : itPersonilPositionEntity){
@@ -1023,6 +1025,7 @@ public class BiodataBoImpl implements BiodataBo {
                 imBiodataEntity.setMasaKerjaGolongan(Integer.parseInt(bean.getStMasaKerjaGol()));
                 imBiodataEntity.setGolonganDapenId(bean.getGolonganDapenId());
                 imBiodataEntity.setTanggalPraPensiun(bean.getTanggalPraPensiun());
+                imBiodataEntity.setShift(bean.getShift());
 
                 //Tanggal Pensiun Lama
             /*DateTime tglLahir = new DateTime(bean.getTanggalLahir());
@@ -1772,6 +1775,7 @@ public class BiodataBoImpl implements BiodataBo {
                     returnBiodata.setMasaKerjaGolongan(personalEntity.getMasaKerjaGolongan());
                     returnBiodata.setGolonganDapenId(personalEntity.getGolonganDapenId());
                     returnBiodata.setProfesiId(personalEntity.getProfesiId());
+                    returnBiodata.setShift(personalEntity.getShift());
 
                     returnBiodata.setTanggalPraPensiun(personalEntity.getTanggalPraPensiun());
 

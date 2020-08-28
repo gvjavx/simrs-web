@@ -37,7 +37,7 @@
                 <prop key="hibernate.connection.username">root</prop>
                 <prop key="hibernate.connection.password">123456</prop>-->
 
-                <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs_payroll</prop>
+                <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs_payroll_3</prop>
                 <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
                 <prop key="hibernate.connection.username">postgres</prop>
                 <prop key="hibernate.connection.password">123456</prop>
@@ -538,6 +538,10 @@
 
                 <value>sshconfig/com/neurix/simrs/transaksi/asesmenoperasi/hibernate/ItSimrsMonitoringAnestesiEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/penyewaanLahan/hibernate/ItAkunPenyewaanLahanEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/payrollPtkp/hibernate/ImHrisPayrollPtkpEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/master/tipeLaporan/hibernate/ImAkunTipeLaporanEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/tipePayroll/hibernate/ImHrisTipePayrollEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/statusAbsensi/hibernate/ImHrisStatusAbsensiEntity.hbm.xml</value>
             </list>
         </property>
     </bean>
