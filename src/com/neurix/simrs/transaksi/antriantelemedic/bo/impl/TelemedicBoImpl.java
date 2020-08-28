@@ -1719,17 +1719,17 @@ public class TelemedicBoImpl implements TelemedicBo {
     }
 
     private String gabungVideo(List<ItSimrsVideoRmEntity> listVideoRm) {
-        CrudResponse crudResponse = new CrudResponse();
-        MovieCreator movieCreator = new MovieCreator();
 
         List<Movie> listMovie = new ArrayList<>();
 
         for (int i = 0; i < listVideoRm.size(); i++) {
             Movie movie = new Movie();
+            String path = listVideoRm.get(i).getPath();
             try {
-               movie = movieCreator.build(CommonUtil.getPropertyParams("upload.folder") + listVideoRm.get(i).getPath());
+               movie = MovieCreator.build(CommonUtil.getPropertyParams("upload.folder") + path);
             } catch (IOException e){
-                e.printStackTrace();
+                logger.error("[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+                throw new GeneralBOException("[[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
             }
 
             listMovie.add(movie);
@@ -1743,7 +1743,8 @@ public class TelemedicBoImpl implements TelemedicBo {
                try {
                    newMovie.addTrack(new AppendTrack(item, item));
                } catch (IOException e){
-                   e.printStackTrace();
+                   logger.error("[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+                   throw new GeneralBOException("[[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
                }
            }
        }
@@ -1758,17 +1759,20 @@ public class TelemedicBoImpl implements TelemedicBo {
                 try {
                     item.getBox(fos.getChannel());
                 } catch (IOException e){
-                    e.printStackTrace();
+                    logger.error("[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+                    throw new GeneralBOException("[[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
                 }
             }
 
             try {
                 fos.close();
             } catch (IOException e){
-                e.printStackTrace();
+                logger.error("[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+                throw new GeneralBOException("[[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            logger.error("[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+            throw new GeneralBOException("[[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
         }
         return path;
     }

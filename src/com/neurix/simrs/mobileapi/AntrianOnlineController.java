@@ -1,5 +1,6 @@
 package com.neurix.simrs.mobileapi;
 
+import com.neurix.common.bo.GeneralBo;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
@@ -1130,6 +1131,7 @@ public class AntrianOnlineController implements ModelDriven<Object> {
 
             @Override
             public void onUserOffline(long uid, int reason) {
+                CrudResponse crudResponse = new CrudResponse();
                 m_peers.remove(uid);
                 //PrintUsersInfo(m_peers);
                 SetVideoMixingLayout();
@@ -1142,10 +1144,8 @@ public class AntrianOnlineController implements ModelDriven<Object> {
 
                     String newPath = path.replace(CommonUtil.getPropertyParams("upload.folder"), "");
                     try {
-                       CrudResponse crudResponse = telemedicBoProxy.insertVideoRm(idDetailCheckup, newPath, "raw");
-                       if (crudResponse.getMsg().equalsIgnoreCase("Success")) {
-                           telemedicBoProxy.updateVideoRmOnDetailCheckup(idDetailCheckup, newPath);
-                       }
+                       crudResponse = telemedicBoProxy.insertVideoRm(idDetailCheckup, newPath, "raw");
+
                     } catch (GeneralBOException e) {
                         logger.error("[AntrianOnlineController.insertVideoRm] Error " + e.getMessage());
                         throw new GeneralBOException("[AntrianOnlineController.insertVideoRm] Error ");
@@ -1154,9 +1154,23 @@ public class AntrianOnlineController implements ModelDriven<Object> {
                     RecordingEngineProperties recordingEngineProperties = recordingSDK.getProperties();
                     boolean isLeave = recordingSDK.leaveChannel();
                     logger.info("Channel leave : " + isLeave);
-                    recordingSDK.unRegisterOberserver(this);
-                }
 
+                    if (crudResponse.getMsg().equalsIgnoreCase("Success")) {
+                        try {
+                           crudResponse = telemedicBoProxy.updateVideoRmOnDetailCheckup(idDetailCheckup, newPath);
+                           if (crudResponse.getMsg().equalsIgnoreCase("Success")) {
+                               recordingSDK.unRegisterOberserver(this);
+                           }
+                        } catch (GeneralBOException e) {
+                            logger.error("[AntrianOnlineController.insertVideoRm] Error " + e.getMessage());
+                            throw new GeneralBOException("[AntrianOnlineController.insertVideoRm] Error ");
+                        }
+                    } else recordingSDK.unRegisterOberserver(this);
+
+
+
+
+                }
             }
 
             @Override
