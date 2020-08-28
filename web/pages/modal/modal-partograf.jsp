@@ -569,6 +569,7 @@
                     <p id="msg_rb_kala2"></p>
                 </div>
                 <div class="box-body">
+                    <div id="temp_kala2"></div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -603,6 +604,7 @@
                     <p id="msg_rb_kala3"></p>
                 </div>
                 <div class="box-body">
+                    <div id="temp_kala3"></div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -637,6 +639,7 @@
                     <p id="msg_rb_kala4"></p>
                 </div>
                 <div class="box-body">
+                    <div id="temp_kala4"></div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -671,6 +674,7 @@
                     <p id="msg_rb_bayi_baru_lahir"></p>
                 </div>
                 <div class="box-body">
+                    <div id="temp_bayi_baru_lahir"></div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -705,6 +709,73 @@
                     <p id="msg_rb_pemantauan_kalan4"></p>
                 </div>
                 <div class="box-body">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3">Tanggal</label>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input class="form-control tgl" id="pk1">
+                                </div>
+                            </div>
+                            <label class="col-md-1">Jam</label>
+                            <div class="col-md-3">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input class="form-control jam" id="pk2">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3">Tensi</label>
+                            <div class="col-md-3">
+                                <input class="form-control" id="pk3" >
+                            </div>
+                            <label class="col-md-3">Nadi</label>
+                            <div class="col-md-3">
+                                <input class="form-control" id="pk4" >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3">Suhu</label>
+                            <div class="col-md-3">
+                                <input class="form-control" id="pk5" >
+                            </div>
+                            <label class="col-md-3">Tinggi Fundus</label>
+                            <div class="col-md-3">
+                                <input class="form-control" id="pk6" >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3">Kontraksi Uterus</label>
+                            <div class="col-md-3">
+                                <input class="form-control" id="pk7" >
+                            </div>
+                            <label class="col-md-3">Kandung Kemih</label>
+                            <div class="col-md-3">
+                                <input class="form-control" id="pk8" >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3">Darah Keluar</label>
+                            <div class="col-md-3">
+                                <input class="form-control" id="pk9" >
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">

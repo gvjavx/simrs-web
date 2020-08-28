@@ -94,39 +94,56 @@ public class KandunganBoImpl implements KandunganBo {
             kdn.setKeterangan(kandungan.getKeterangan());
             List<Kandungan> kandunganList = new ArrayList<>();
             kandunganList = getByCriteria(kdn);
-            if(kandunganList.size() > 0){
-                response.setStatus("error");
-                response.setMsg("Found Error, Data yang anda masukan sudah ada...!");
-            }else{
-                for (Kandungan bean : list) {
-                    ItSimrsAsesmenKandunganEntity kandunganEntity = new ItSimrsAsesmenKandunganEntity();
-                    kandunganEntity.setIdAsesmenKandungan("RBP" + kandunganDao.getNextSeq());
-                    kandunganEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
-                    kandunganEntity.setParameter(bean.getParameter());
-                    kandunganEntity.setJawaban(bean.getJawaban());
-                    kandunganEntity.setKeterangan(bean.getKeterangan());
-                    kandunganEntity.setJenis(bean.getJenis());
-                    kandunganEntity.setScore(bean.getScore());
-                    kandunganEntity.setAction(bean.getAction());
-                    kandunganEntity.setFlag(bean.getFlag());
-                    kandunganEntity.setCreatedDate(bean.getCreatedDate());
-                    kandunganEntity.setCreatedWho(bean.getCreatedWho());
-                    kandunganEntity.setLastUpdate(bean.getLastUpdate());
-                    kandunganEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                    kandunganEntity.setTipe(bean.getTipe());
-                    kandunganEntity.setInformasi(bean.getInformasi());
-                    kandunganEntity.setNamaTerang(bean.getNamaTerang());
-                    kandunganEntity.setSip(bean.getSip());
-                    try {
-                        kandunganDao.addAndSave(kandunganEntity);
-                        response.setStatus("success");
-                        response.setMsg("Berhasil");
-                    } catch (HibernateException e) {
-                        response.setStatus("error");
-                        response.setMsg("Found Error " + e.getMessage());
-                        logger.error(e.getMessage());
-                    }
+            if("pemantauan_kalan4".equalsIgnoreCase(kandungan.getKeterangan())){
+                Boolean cek = kandunganDao.cekData(kandungan.getIdDetailCheckup(), kandungan.getKeterangan(), kandungan.getJawaban());
+                if(cek){
+                    response.setStatus("error");
+                    response.setMsg("Found Error, Data pada waktu "+kandungan.getJawaban()+" sudah ada...!");
+                }else{
+                    response = insertAsesmen(list);
                 }
+            }else{
+                if(kandunganList.size() > 0){
+                    response.setStatus("error");
+                    response.setMsg("Found Error, Data yang anda masukan sudah ada...!");
+                }else{
+                    response = insertAsesmen(list);
+                }
+            }
+        }
+        return response;
+    }
+
+    private CrudResponse insertAsesmen(List<Kandungan> list){
+        CrudResponse response = new CrudResponse();
+        for (Kandungan bean : list) {
+            ItSimrsAsesmenKandunganEntity kandunganEntity = new ItSimrsAsesmenKandunganEntity();
+            kandunganEntity.setIdAsesmenKandungan("RBP" + kandunganDao.getNextSeq());
+            kandunganEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
+            kandunganEntity.setParameter(bean.getParameter());
+            kandunganEntity.setJawaban(bean.getJawaban());
+            kandunganEntity.setKeterangan(bean.getKeterangan());
+            kandunganEntity.setJenis(bean.getJenis());
+            kandunganEntity.setScore(bean.getScore());
+            kandunganEntity.setAction(bean.getAction());
+            kandunganEntity.setFlag(bean.getFlag());
+            kandunganEntity.setCreatedDate(bean.getCreatedDate());
+            kandunganEntity.setCreatedWho(bean.getCreatedWho());
+            kandunganEntity.setLastUpdate(bean.getLastUpdate());
+            kandunganEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            kandunganEntity.setTipe(bean.getTipe());
+            kandunganEntity.setInformasi(bean.getInformasi());
+            kandunganEntity.setNamaTerang(bean.getNamaTerang());
+            kandunganEntity.setSip(bean.getSip());
+            try {
+                kandunganDao.addAndSave(kandunganEntity);
+                response.setStatus("success");
+                response.setMsg("Berhasil");
+            } catch (HibernateException e) {
+                response.setStatus("error");
+                response.setMsg("Found Error " + e.getMessage());
+                logger.error(e.getMessage());
+                return response;
             }
         }
         return response;
