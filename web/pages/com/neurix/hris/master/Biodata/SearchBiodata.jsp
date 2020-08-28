@@ -727,11 +727,11 @@
                                                 <%--</s:if>--%>
                                             <%--</display:column>--%>
 
-                                            <display:column style="text-align:center;" media="html" title="Jabatan">
-                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-jabatan">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">
-                                                </a>
-                                            </display:column>
+                                            <%--<display:column style="text-align:center;" media="html" title="Jabatan">--%>
+                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-jabatan">--%>
+                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">--%>
+                                                <%--</a>--%>
+                                            <%--</display:column>--%>
 
                                             <display:column style="text-align:center;" media="html" title="Payroll">
                                                 <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-payroll">
@@ -739,11 +739,11 @@
                                                 </a>
                                             </display:column>
 
-                                            <display:column style="text-align:center;" media="html" title="Pendidikan">
-                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-pendidikan">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">
-                                                </a>
-                                            </display:column>
+                                            <%--<display:column style="text-align:center;" media="html" title="Pendidikan">--%>
+                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-pendidikan">--%>
+                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">--%>
+                                                <%--</a>--%>
+                                            <%--</display:column>--%>
 
                                             <display:column style="text-align:center;" media="html" title="Absensi">
                                                 <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-absensi">
@@ -757,7 +757,7 @@
                                                 </a>
                                             </display:column>--%>
 
-                                            <display:column style="text-align:center;" media="html" title="Cutitem-cutii">
+                                            <display:column style="text-align:center;" media="html" title="Cuti">
                                                 <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-cuti">
                                                     <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">
                                                 </a>
