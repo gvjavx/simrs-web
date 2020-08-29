@@ -862,7 +862,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         }
 
         try {
-            kategoriTindakanList = kategoriTindakanBoProxy.getListKategoriTindakan(pelayanan);
+            kategoriTindakanList = kategoriTindakanBoProxy.getListKategoriTindakan(pelayanan, null);
         } catch (GeneralBOException e) {
             logger.error("[CheckupDetailAction.getListComboKategoriTIndakan] Error when get kategori tindakan ," + "Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error Found problem when get kategori tindakan , please inform to your admin.\n" + e.getMessage());
@@ -898,7 +898,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         return tindakanList;
     }
 
-    public List<KategoriTindakan> getListComboTindakanKategori(String idPelayanan) {
+    public List<KategoriTindakan> getListComboTindakanKategori(String idPelayanan, String kategori) {
         logger.info("[CheckupDetailAction.listOfDokter] start process >>>");
 
         List<KategoriTindakan> kategoriTindakans = new ArrayList<>();
@@ -908,7 +908,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         if (idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)) {
             try {
-                kategoriTindakans = kategoriTindakanBo.getListKategoriTindakan(idPelayanan);
+                kategoriTindakans = kategoriTindakanBo.getListKategoriTindakan(idPelayanan, kategori);
             } catch (GeneralBOException e) {
                 logger.error("[CheckupDetailAction.listOfDokter] Error when searching data, Found problem when searching data, please inform to your admin.", e);
             }
@@ -3221,25 +3221,29 @@ public class CheckupDetailAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    public String saveUpdateRuangan(String idRuangan, String idDetailCheckup) {
+    public CrudResponse saveUpdateRuangan(String idRawatInap, String idRuangan, String idDetailCheckup) {
         logger.info("[CheckupDetailAction.saveUpdateRuangan] start process >>>");
-
-        if (idRuangan != null && !"".equalsIgnoreCase(idRuangan) && idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)) {
+        CrudResponse response = new CrudResponse();
+        if (idRawatInap != null && !"".equalsIgnoreCase(idRawatInap) &&
+                idRuangan != null && !"".equalsIgnoreCase(idRuangan) &&
+                idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)) {
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
 
             try {
-                checkupDetailBo.updateRuanganInap(idRuangan, idDetailCheckup);
+                response = checkupDetailBo.updateRuanganInap(idRawatInap, idRuangan, idDetailCheckup);
             } catch (GeneralBOException e) {
+                response.setStatus("error");
+                response.setMsg("Found Error, "+e.getMessage());
                 logger.error("[CheckupDetailAction.saveUpdateRuangan] Found problem when updating rawat inap, please inform to your admin.", e);
-                return "ERROR, " + e.getMessage();
             }
         } else {
-            return "ERROR, idRuangan OR idDetailCheckup Is NULL";
+            response.setStatus("error");
+            response.setMsg("Tidak ada data yang dikirim...!");
         }
 
         logger.info("[CheckupDetailAction.saveUpdateRuangan] end process >>>");
-        return "SUCCESS";
+        return response;
     }
 
     public List<RawatInap> getListRuangInapByIdDetailCheckup(String idDetailCheckup) {

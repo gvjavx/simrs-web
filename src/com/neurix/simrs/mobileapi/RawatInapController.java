@@ -890,7 +890,7 @@ public class RawatInapController implements ModelDriven<Object> {
             List<KategoriTindakan> result = new ArrayList<>();
 
             try {
-                result = kategoriTindakanBoProxy.getListKategoriTindakan(idPelayanan);
+                result = kategoriTindakanBoProxy.getListKategoriTindakan(idPelayanan, null);
             } catch (GeneralBOException e){
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }

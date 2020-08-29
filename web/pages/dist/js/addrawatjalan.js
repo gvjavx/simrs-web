@@ -727,7 +727,7 @@ function listSelectTindakan(idKategori) {
 
 function listSelectTindakanKategori() {
     var option = "<option value=''>[Select One]</option>";
-    CheckupDetailAction.getListComboTindakanKategori(idPoli, function (response) {
+    CheckupDetailAction.getListComboTindakanKategori(idPoli, null, function (response) {
         if (response != null) {
             $.each(response, function (i, item) {
                 option += "<option value='" + item.idKategoriTindakan + "'>" + item.kategoriTindakan + "</option>";

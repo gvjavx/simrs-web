@@ -999,16 +999,31 @@
                                             <select class="form-control select2" id="keterangan" style="width: 100%"
                                                     onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()}; selectKeterangan(this.value)">
                                                 <option value="">[Select One]</option>
-                                                <option value="selesai">Selesai</option>
-                                                <option value="pindah_poli">Pindah Poli</option>
-                                                <option value="rawat_inap">Rawat Inap</option>
-                                                <option value="rawat_intensif">Rawat Intensif</option>
-                                                <option value="rawat_isolasi">Rawat Isolasi</option>
-                                                <option value="kamar_operasi">Kamar Operasi</option>
-                                                <option value="ruang_bersalin">Ruang Bersalin</option>
-                                                <option value="rujuk_rs_lain">Dirujuk</option>
-                                                <option value="kontrol_ulang">Kontrol Ulang</option>
-                                                <option value="lanjut_biaya">Lanjut Biaya</option>
+                                                <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "umum" || headerDetailCheckup.idJenisPeriksaPasien == "ptpn"'>
+                                                    <option value="selesai">Selesai</option>
+                                                    <option value="pindah_poli">Pindah Poli</option>
+                                                    <option value="rawat_intensif">Rawat Intensif</option>
+                                                    <option value="rawat_isolasi">Rawat Isolasi</option>
+                                                    <option value="kamar_operasi">Kamar Operasi</option>
+                                                    <option value="ruang_bersalin">Ruang Bersalin</option>
+                                                    <option value="rujuk_rs_lain">Dirujuk</option>
+                                                    <option value="kontrol_ulang">Kontrol Ulang</option>
+                                                </s:if>
+                                                <s:elseif test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs" || headerDetailCheckup.idJenisPeriksaPasien == "asuransi"'>
+                                                    <option value="selesai">Selesai</option>
+                                                    <option value="pindah_poli">Pindah Poli</option>
+                                                    <option value="rawat_intensif">Rawat Intensif</option>
+                                                    <option value="rawat_isolasi">Rawat Isolasi</option>
+                                                    <option value="kamar_operasi">Kamar Operasi</option>
+                                                    <option value="ruang_bersalin">Ruang Bersalin</option>
+                                                    <option value="rujuk_rs_lain">Dirujuk</option>
+                                                    <option value="kontrol_ulang">Kontrol Ulang</option>
+                                                    <option value="lanjut_biaya">Lanjut Biaya</option>
+                                                </s:elseif>
+                                                <s:else>
+                                                    <option value="selesai">Selesai</option>
+                                                    <option value="kontrol_ulang">Kontrol Ulang</option>
+                                                </s:else>
                                             </select>
                                         </div>
                                     </div>

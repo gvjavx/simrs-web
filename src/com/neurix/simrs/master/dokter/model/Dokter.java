@@ -33,6 +33,15 @@ public class Dokter {
     private String flagCall;
     private String flagTele;
     private String kuotaTele;
+    private String idTeamDokter;
+
+    public String getIdTeamDokter() {
+        return idTeamDokter;
+    }
+
+    public void setIdTeamDokter(String idTeamDokter) {
+        this.idTeamDokter = idTeamDokter;
+    }
 
     public String getKode() {
         return kode;

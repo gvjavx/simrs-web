@@ -3604,7 +3604,7 @@ public class CheckupAction extends BaseMasterAction {
         return listRM;
     }
 
-    public List<Dokter> getListDokterByBranchId(String idDokter, String kategori) {
+    public List<Dokter> getListDokterByBranchId(String idDokter) {
 
         logger.info("[CheckupAction.getListDokterByBranchId] START process >>>");
 
@@ -3615,7 +3615,7 @@ public class CheckupAction extends BaseMasterAction {
 
         if(branchId != null && !"".equalsIgnoreCase(branchId)){
             try {
-                dokterList = dokterBo.getListDokterByBranchId(branchId, idDokter, kategori);
+                dokterList = dokterBo.getListDokterByBranchId(branchId, idDokter);
             }catch (GeneralBOException e){
                 logger.error("Found Error, "+e.getMessage());
             }
@@ -3625,7 +3625,7 @@ public class CheckupAction extends BaseMasterAction {
         return dokterList;
     }
 
-    public List<Dokter> getListDokterByIdDetailCheckup(String idDetailCheckup, String kategori) {
+    public List<Dokter> getListDokterByIdDetailCheckup(String idDetailCheckup) {
 
         logger.info("[CheckupAction.getListDokterByBranchId] START process >>>");
 
@@ -3635,7 +3635,7 @@ public class CheckupAction extends BaseMasterAction {
 
         if(idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)){
             try {
-                dokterList = dokterBo.getListDokterByIdDetailCheckup(idDetailCheckup, kategori);
+                dokterList = dokterBo.getListDokterByIdDetailCheckup(idDetailCheckup);
             }catch (GeneralBOException e){
                 logger.error("Found Error, "+e.getMessage());
             }

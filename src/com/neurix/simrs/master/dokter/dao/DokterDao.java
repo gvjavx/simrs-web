@@ -210,7 +210,7 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
         return results;
     }
 
-    public List<Dokter> getListDokterByBranchId(String branchId, String idDokter, String kategori){
+    public List<Dokter> getListDokterByBranchId(String branchId, String idDokter){
         List<Dokter> dokterList = new ArrayList<>();
         String notLike = "";
         if(branchId != null && !"".equalsIgnoreCase(branchId)){
@@ -228,14 +228,12 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
                     "FROM im_simrs_dokter a\n" +
                     "INNER JOIN im_simrs_dokter_pelayanan b ON a.id_dokter = b.id_dokter\n" +
                     "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
-                    "WHERE c.branch_id = :branchId\n" +
-                    "AND c.tipe_pelayanan = :kategori\n" + notLike +
+                    "WHERE c.branch_id = :branchId\n" + notLike +
                     "ORDER BY c.nama_pelayanan ASC";
 
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("branchId", branchId)
-                    .setParameter("kategori", kategori)
                     .list();
 
             if(result.size() > 0){
@@ -252,23 +250,23 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
         return dokterList;
     }
 
-    public List<Dokter> getListDokterByIdDetailCheckup(String idDetailCheckup, String kategori){
+    public List<Dokter> getListDokterByIdDetailCheckup(String idDetailCheckup){
         List<Dokter> dokterList = new ArrayList<>();
         if(idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)){
             String SQL = "SELECT \n" +
-                    "b.id_dokter,\n" +
-                    "b.nama_dokter,\n" +
-                    "c.id_pelayanan,\n" +
-                    "c.nama_pelayanan\n" +
+                    "b.id_dokter, \n" +
+                    "b.nama_dokter, \n" +
+                    "c.id_pelayanan, \n" +
+                    "c.nama_pelayanan, \n" +
+                    "a.id_team_dokter\n" +
                     "FROM it_simrs_dokter_team a\n" +
                     "INNER JOIN im_simrs_dokter b ON a.id_dokter = b.id_dokter\n" +
                     "INNER JOIN im_simrs_pelayanan c ON a.id_pelayanan = c.id_pelayanan\n" +
-                    "WHERE a.id_detail_checkup = :id AND c.tipe_pelayanan = :kat";
+                    "WHERE a.id_detail_checkup = :id";
 
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("id", idDetailCheckup)
-                    .setParameter("kat", kategori)
                     .list();
 
             if(result.size() > 0){
@@ -278,6 +276,7 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
                     dokter.setNamaDokter(obj[1] != null ? obj[1].toString() : "");
                     dokter.setIdPelayanan(obj[2] != null ? obj[2].toString() : "");
                     dokter.setNamaPelayanan(obj[3] != null ? obj[3].toString() : "");
+                    dokter.setIdTeamDokter(obj[4] != null ? obj[4].toString() : "");
                     dokterList.add(dokter);
                 }
             }
