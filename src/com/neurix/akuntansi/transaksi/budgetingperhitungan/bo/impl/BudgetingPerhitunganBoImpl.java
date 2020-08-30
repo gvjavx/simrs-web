@@ -465,6 +465,37 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
         return perhitunganBudgetingDao.getListParameterRekeningByDivisi(idKategori, divisiId);
     }
 
+    @Override
+    public List<ImAkunJenisBudgetingEntity> getListEntityJenisBudgetingByCriteria(ParameterBudgeting bean) throws GeneralBOException {
+
+        logger.info("[BudgetingPerhitunganBoImpl.getListEntityJenisBudgetingByCriteria] START >>> ");
+
+        Map hsCriteria = new HashMap();
+        if (bean.getId() != null)
+            hsCriteria.put("id", bean.getId());
+        if (bean.getFlag() != null)
+            hsCriteria.put("flag", bean.getFlag());
+
+        List<ImAkunJenisBudgetingEntity> results = new ArrayList<>();
+
+        try {
+            results = jenisBudgetingDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[BudgetingPerhitunganBoImpl.getListEntityJenisBudgetingByCriteria] ERROR. ", e);
+            throw new GeneralBOException("[BudgetingPerhitunganBoImpl.getListEntityJenisBudgetingByCriteria] ERROR. ", e);
+        }
+
+        logger.info("[BudgetingPerhitunganBoImpl.getListEntityJenisBudgetingByCriteria] END <<< ");
+        return results;
+    }
+
+    @Override
+    public List<ParameterBudgeting> getListSumOfKategoriBudgeting(String idJenisBudgeting, String tahun, String branchId) throws GeneralBOException {
+        if (idJenisBudgeting == null || "".equalsIgnoreCase(idJenisBudgeting))
+            idJenisBudgeting = "%";
+        return perhitunganBudgetingDao.getListSumBudgetingByKategori(tahun, branchId, idJenisBudgeting);
+    }
+
     private String getNextIdParameterRekening(){
         return "PBR" + parameterBudgetingRekeningDao.getNextSeq();
     }

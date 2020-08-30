@@ -71,7 +71,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Budgeting Eksploitasi </h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Approve Budgeting </h3>
                     </div>
                     <div class="box-body">
                         <%--<s:form id="kasirjalanForm" method="post" namespace="/kasirjalan" action="search_kasirjalan.action" theme="simple" cssClass="form-horizontal">--%>
@@ -179,7 +179,7 @@
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-th-list"></i> List Data Budgeting :
-                        <strong><span id="label-tahun"></span> - <span id="label-unit"></span></strong>
+                        <strong><span id="label-tahun"></span></strong>
                         </h3>
                     </div>
                     <div class="box-body">
@@ -199,25 +199,30 @@
                             <strong>Error!</strong><span id="error-msg"></span>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-8 col-md-offset-2">
-                                <table class="tree table table-bordered table-striped">
-                                    <thead id="head-budgeting">
-                                        <tr bgcolor="#90ee90">
-                                            <td align="">Branch</td>
-                                            <td align="center">Nilai Total</td>
-                                            <td>Action</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="body-budgeting" style="font-size: 13px">
-                                    </tbody>
-                                    <%--<input type="hidden" id="index-period"/>--%>
-                                    <%--<input type="hidden" id="index-branch"/>--%>
-                                    <%--<input type="hidden" id="bulan"/>--%>
-                                    <%--<input type="hidden" id="tahun"/>--%>
-                                </table>
-                            </div>
+
+                        <div id="body-budgeting">
+
                         </div>
+
+                        <%--<div class="row">--%>
+                            <%--<div class="col-md-8 col-md-offset-2">--%>
+                                <%--<table class="tree table table-bordered table-striped">--%>
+                                    <%--<thead id="head-budgeting">--%>
+                                        <%--<tr bgcolor="#90ee90">--%>
+                                            <%--<td align="">Branch</td>--%>
+                                            <%--<td align="center">Nilai Total</td>--%>
+                                            <%--<td>Action</td>--%>
+                                        <%--</tr>--%>
+                                    <%--</thead>--%>
+                                    <%--<tbody id="body-budgeting" style="font-size: 13px">--%>
+                                    <%--</tbody>--%>
+                                    <%--&lt;%&ndash;<input type="hidden" id="index-period"/>&ndash;%&gt;--%>
+                                    <%--&lt;%&ndash;<input type="hidden" id="index-branch"/>&ndash;%&gt;--%>
+                                    <%--&lt;%&ndash;<input type="hidden" id="bulan"/>&ndash;%&gt;--%>
+                                    <%--&lt;%&ndash;<input type="hidden" id="tahun"/>&ndash;%&gt;--%>
+                                <%--</table>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
 
                         <div class="form-group">
                             <div class="col-md-12" align="center">
@@ -626,11 +631,15 @@
     }
 
     function formatRupiah(angka) {
-        if(angka != null && angka != '' && angka > 0){
+        if(angka != null && angka != ''){
             var reverse = angka.toString().split('').reverse().join(''),
                 ribuan = reverse.match(/\d{1,3}/g);
             ribuan = ribuan.join('.').split('').reverse().join('');
-            return ribuan;
+            if (angka > 0){
+                return ribuan;
+            } else {
+                return '<span style="color: red"> - '+ribuan+'</span>';
+            }
         }else{
             return 0;
         }
@@ -678,28 +687,70 @@
         post(host);
     }
 
-    $('.tree').treegrid({
-        expanderExpandedClass: 'glyphicon glyphicon-minus',
-        expanderCollapsedClass: 'glyphicon glyphicon-plus'
-    });
 
     function search() {
         var tahun = $("#sel-tahun").val();
+        $("#label-tahun").text(tahun);
         BgEksploitasiAction.getListBranchBudgeting(tahun, function (list) {
 
             var str = '';
             $.each(list, function (i, item) {
-                str += '<tr>' +
-                    '<td>'+item.branchName+'</td>' +
-                    '<td align="right">' + formatRupiah(item.nilaiTotal) + '</td>' +
-                    '<td align="center"><button class="btn btn-success"><i class="fa fa-search"></i> View</budtton></td>' +
-//                    '<td align="center"><button class="btn btn-success"><i class="fa fa-check"></i> Approve</budtton></td>' +
-                    '</tr>';
+            str +=
+                    '<div class="row">' +
+                        '<div class="col-md-8 col-md-offset-2">' +
+                            '<h4>'+item.branchName+'</h4>' +
+                            '<table class="table table-bordered table-striped">' +
+                                '<thead id="head-budgeting">'+
+                                    '<tr bgcolor="#90ee90">'+
+                                    '<td align="">Jenis</td>'+
+                                    '<td align="center">Nilai Total</td>' +
+                                    '<td>Action</td>' +
+                                    '</tr>' +
+                                '</thead>' +
+                                '<tbody id="body-data-budgeting" style="font-size: 13px">';
+
+                                BgEksploitasiAction.getJenisBudgeting(tahun, item.branchId, function (datas) {
+
+                                    $.each(datas, function (n, data) {
+                                        str += '<tr>' +
+                                                '<td>'+ warnaLabel(data.idJenisBudgeting, data.nama) +'</td>' +
+                                                '<td align="right">'+ formatRupiah(data.nilaiTotal) +'</td>' +
+                                                '<td align="center">'+ showBtn(data.idJenisBudgeting) +'</td>' +
+                                                '</tr>';
+                                    });
+                                });
+
+                         str += '</tbody>' +
+                            '</table>' +
+                        '</div>' +
+                    '</div>'
+
+//                str += '<tr>' +
+//                    '<td>'+item.branchName+'</td>' +
+//                    '<td align="right">' + formatRupiah(item.nilaiTotal) + '</td>' +
+//                    '<td align="center"><button class="btn btn-success"><i class="fa fa-search"></i> View</budtton></td>' +
+////                    '<td align="center"><button class="btn btn-success"><i class="fa fa-check"></i> Approve</budtton></td>' +
+//                    '</tr>';
             });
 
             $("#btn-save").show();
             $("#body-budgeting").html(str);
         })
+    }
+
+    function warnaLabel(id, label){
+        if ("rugi" == id){
+            return '<span style="color: red;">'+label+'</span>';
+        } else {
+            return '<span>'+label+'</span>';
+        }
+    }
+
+    function showBtn(id){
+        if ("rugi" != id && "laba" != id){
+            return '<button class="btn btn-success" onclick="viewDetail(\''+id+'\')"><i class="fa fa-search"></i> View</budtton>';
+        }
+        return "";
     }
 
     function actionView(var1, var2) {

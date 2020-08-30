@@ -310,4 +310,74 @@ public class BgEksploitasiAction {
         return response;
     }
 
+    public List<ParameterBudgeting> getJenisBudgeting(String tahun, String branchId){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
+        ParameterBudgeting parameterBudgeting = new ParameterBudgeting();
+        parameterBudgeting.setFlag("Y");
+        List<ImAkunJenisBudgetingEntity> jenisBudgetingEntities =  budgetingPerhitunganBo.getListEntityJenisBudgetingByCriteria(parameterBudgeting);
+        List<ParameterBudgeting> results = new ArrayList<>();
+
+        if (jenisBudgetingEntities.size() > 0){
+            int i = 0;
+            BigDecimal jmlPendapatan = new BigDecimal(0);
+            BigDecimal jmlBiaya = new BigDecimal(0);
+            for (ImAkunJenisBudgetingEntity jenisBudgetingEntity : jenisBudgetingEntities){
+                ParameterBudgeting result = new ParameterBudgeting();
+                result.setIdJenisBudgeting(jenisBudgetingEntity.getId());
+                result.setNama(jenisBudgetingEntity.getNamaJenis());
+
+                List<ParameterBudgeting> listKategoriBudgeting = getListKategoriBudgeting(tahun, branchId, jenisBudgetingEntity.getId());
+                if (listKategoriBudgeting.size() > 0){
+                    BigDecimal nilaiTotal = hitungTotalFromListBudgeting(listKategoriBudgeting);
+                    if ("PDT".equalsIgnoreCase(jenisBudgetingEntity.getId())){
+                        jmlPendapatan = jmlPendapatan.add(nilaiTotal);
+                    } else {
+                        jmlBiaya = jmlBiaya.add(nilaiTotal);
+                    }
+                    result.setNilaiTotal(nilaiTotal);
+                }
+
+                results.add(result);
+                i++;
+
+                // tambahkan hasil perhitungan laba rugi
+                if (i == jenisBudgetingEntities.size()){
+                    result = new ParameterBudgeting();
+                    BigDecimal nilaiTotal = jmlPendapatan.subtract(jmlBiaya);
+                    if (nilaiTotal.compareTo(new BigDecimal(0)) == -1){
+                        result.setIdJenisBudgeting("rugi");
+                        result.setNama("Rugi");
+                        result.setNilaiTotal(nilaiTotal);
+                    } else {
+                        result.setIdJenisBudgeting("laba");
+                        result.setNama("Laba");
+                        result.setNilaiTotal(nilaiTotal);
+                    }
+                    results.add(result);
+                }
+                //
+
+
+            }
+        }
+
+        return results;
+    }
+
+
+    public List<ParameterBudgeting> getListKategoriBudgeting(String tahun, String branchId, String idJenisBudgeting){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
+        return budgetingPerhitunganBo.getListSumOfKategoriBudgeting(idJenisBudgeting, tahun, branchId);
+    }
+
+    private BigDecimal hitungTotalFromListBudgeting(List<ParameterBudgeting> params){
+        BigDecimal nilaiTotal = new BigDecimal(0);
+        for (ParameterBudgeting param : params){
+            nilaiTotal = nilaiTotal.add(param.getNilaiTotal());
+        }
+        return nilaiTotal;
+    }
+
 }

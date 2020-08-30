@@ -443,4 +443,47 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
         return budgetingList;
     }
 
+    public List<ParameterBudgeting> getListSumBudgetingByKategori(String tahun, String branchId, String idJenis){
+
+        String SQL = "SELECT \n" +
+                "a.id,\n" +
+                "a.nama,\n" +
+                "a.id_jenis_budgeting,\n" +
+                "CASE WHEN b.nilai_total is null THEN 0 ELSE b.nilai_total END AS nilai_total\n" +
+                "FROM im_akun_kategori_parameter_budgeting a\n" +
+                "LEFT JOIN \n" +
+                "(\n" +
+                "\tSELECT \n" +
+                "\tb.id_kategori_budgeting,\n" +
+                "\tSUM (c.nilai_total) as nilai_total\n" +
+                "\tFROM im_akun_parameter_budgeting b \n" +
+                "\tLEFT JOIN it_akun_nilai_parameter_budgeting c ON c.id_parameter = b.id\n" +
+                "\tWHERE c.branch_id = :unit\n" +
+                "\tAND c.tahun = :tahun\n" +
+                "\tGROUP BY b.id_kategori_budgeting\n" +
+                ") b ON b.id_kategori_budgeting = a.id\n" +
+                "WHERE a.id_jenis_budgeting LIKE :jenis\n";
+
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("unit", branchId)
+                .setParameter("tahun", tahun)
+                .setParameter("jenis", idJenis)
+                .list();
+
+        List<ParameterBudgeting> parameterBudgetings = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                ParameterBudgeting parameterBudgeting = new ParameterBudgeting();
+                parameterBudgeting.setIdKategoriBudgeting(obj[0].toString());
+                parameterBudgeting.setNama(obj[1].toString());
+                parameterBudgeting.setIdJenisBudgeting(obj[2].toString());
+                parameterBudgeting.setNilaiTotal((BigDecimal) obj[3]);
+                parameterBudgetings.add(parameterBudgeting);
+            }
+        }
+
+        return parameterBudgetings;
+    }
+
 }
