@@ -385,4 +385,62 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
         return budgetingList;
     }
 
+    public List<ParameterBudgeting> getListDivisiByIdKategoriAndMasterGroup(String idKategori, String masterId){
+
+        String SQL = "SELECT a.divisi_id, b.position_name\n" +
+                "FROM im_akun_parameter_budgeting a\n" +
+                "INNER JOIN im_position b ON b.kodering = a.divisi_id\n" +
+                "WHERE a.id_kategori_budgeting = :kategori \n" +
+                "AND a.master_id = :master \n" +
+                "GROUP BY a.divisi_id, b.position_name";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("kategori", idKategori)
+                .setParameter("master", masterId)
+                .list();
+
+        List<ParameterBudgeting> budgetingList = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                ParameterBudgeting bg = new ParameterBudgeting();
+                bg.setDivisiId(obj[0].toString());
+                bg.setNamaDivisi(obj[1].toString());
+                budgetingList.add(bg);
+            }
+        }
+        return budgetingList;
+    }
+
+    public List<ParameterBudgeting> getListParameterRekeningByDivisi(String kategoriId, String divisiId){
+
+        String SQL = "SELECT \n" +
+                "a.id,\n" +
+                "c.nama,\n" +
+                "d.position_name, \n" +
+                "a.divisi_id\n" +
+                "FROM im_akun_parameter_budgeting a \n" +
+                "INNER JOIN im_akun_parameter_budgeting_rekening c ON c.id = a.id_param_rekening \n" +
+                "INNER JOIN im_position d ON d.kodering = a.divisi_id \n" +
+                "WHERE a.divisi_id = :divisiId \n" +
+                "AND a.id_kategori_budgeting = :kategori";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("divisiId", divisiId)
+                .setParameter("kategori", kategoriId)
+                .list();
+
+        List<ParameterBudgeting> budgetingList = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                ParameterBudgeting bg = new ParameterBudgeting();
+                bg.setIdParameter(obj[0].toString());
+                bg.setNama(obj[1].toString());
+                bg.setNamaDivisi(obj[2].toString());
+                bg.setDivisiId(obj[3].toString());
+                budgetingList.add(bg);
+            }
+        }
+        return budgetingList;
+    }
+
 }

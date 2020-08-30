@@ -6,6 +6,7 @@ import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.*;
 import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.exception.GeneralBOException;
 
+import java.lang.reflect.Parameter;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -28,4 +29,6 @@ public interface BudgetingPerhitunganBo {
     public List<ParameterBudgeting> getNilaiParameterByNilaiParam(ParameterBudgeting bean) throws GeneralBOException;
     public List<ParameterBudgeting> getListMasterParameterBudgetingByIdKategori(String idKategori) throws GeneralBOException;
     public List<ParameterBudgeting> getListDivisiParameterBudgetingByKategororiAndMaster(String idKategori, String masterId) throws GeneralBOException;
+    public List<ParameterBudgeting> getListDivisiParameterBudgetingByKategororiAndMasterGroup(String idKategori, String masterId) throws GeneralBOException;
+    public List<ParameterBudgeting> getlistParameterRekeningByDivisi(String idKategori, String divisiId) throws GeneralBOException;
 }

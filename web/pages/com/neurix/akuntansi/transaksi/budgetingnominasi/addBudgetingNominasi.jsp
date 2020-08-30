@@ -136,7 +136,7 @@
                                     <table class="table table-bordered table-striped">
                                         <thead bgcolor="#90ee90">
                                             <tr>
-                                                <td>Master</td>
+                                                <td>Divisi</td>
                                                 <td align="center">Nilai</td>
                                                 <td align="center">Action</td>
                                             </tr>
@@ -488,7 +488,8 @@
         chekTipe();
         nilaiDasar();
 //        showListParameter();
-        showListMaster();
+//        showListMaster();
+        listDivisi();
     });
 
     var listOfParam     = [];
@@ -567,8 +568,28 @@
         });
     }
 
+    function listDivisi() {
+        BgNominasiAction.getListDivisiBudgeting(idKategori, "BYA", function (list) {
+            var str = "";
+            $.each(list, function (i, item) {
+                str += '<tr>' +
+                    '<td>' + item.namaDivisi + '</td>' +
+                    '<td align="right">' + formatRupiah(item.nilaiTotal) + '</td>' +
+                    '<td align="center" id="btn-span-' + i + '"><button class="btn btn-sm btn-primary" onclick="spanRow(\'' + i + '\', \'' + item.divisiId + '\')"><i class="fa fa-plus"></i></button></td>' +
+                    '</tr>' +
+                    '<tr style="display: none" id="row-master-' + i + '">' +
+                    '<td colspan="3" id="body-divisi-' + i + '">' +
+                    '</td>' +
+                    '</tr>';
+            });
+
+            $("#list-body-budgeting").html(str);
+        });
+    }
+
+
     function showListMaster() {
-        BgPendapatanAction.getListMasterBudgeting(idKategori, function (list) {
+        BgNominasiAction.getListMasterBudgeting(idKategori, function (list) {
             var str = "";
             $.each(list, function (i, item) {
                 str += '<tr>' +
@@ -586,30 +607,29 @@
         });
     }
 
-    function spanRow(i, master) {
+    function spanRow(i, divisiId) {
         $("#row-master-"+i).show();
-        var btn = '<button class="btn btn-sm btn-primary" onclick="unSpanRow(\''+i+'\', \''+master+'\')"><i class="fa fa-minus"></i></button>';
+        var btn = '<button class="btn btn-sm btn-primary" onclick="unSpanRow(\''+i+'\', \''+divisiId+'\')"><i class="fa fa-minus"></i></button>';
         $("#btn-span-"+i).html(btn);
-        listDivisi(i, master);
+//        listDivisi(i, master);
+        listRekening(i, divisiId);
     }
 
-    function unSpanRow(i, master) {
+    function unSpanRow(i, divisiId) {
         $("#row-master-"+i).hide();
-        var btn = '<button class="btn btn-sm btn-primary" onclick="spanRow(\''+i+'\', \''+master+'\')"><i class="fa fa-plus"></i></button>';
+        var btn = '<button class="btn btn-sm btn-primary" onclick="spanRow(\''+i+'\', \''+divisiId+'\')"><i class="fa fa-plus"></i></button>';
         $("#btn-span-"+i).html(btn);
     }
 
-    function listDivisi(i, masterid) {
-
-        BgPendapatanAction.getListDivisiBudgeting(idKategori, masterid, function (list) {
-
+    function listRekening(i, divisiId) {
+        BgNominasiAction.getListRekeningByDivisi(idKategori, divisiId, function (list) {
             var str = '';
             $.each(list, function (i, item) {
 
                 str += '<div class="row">' +
                     '<div class="col-md-8 col-md-offset-2">' +
-                    '<h4 id="label-head-'+item.id+'">' + item.namaDivisi +'</h4>' +
-                    '<button class="btn btn-sm btn-primary" style="float: right;" onclick="showAdd(\''+item.id+'\', \''+item.divisiId+'\', \''+masterid+'\')"><i class="fa fa-plus"></i> Tambah</button>' +
+                    '<h4 id="label-head-'+item.idParameter+'">' + item.nama +'</h4>' +
+                    '<button class="btn btn-sm btn-primary" style="float: right;" onclick="showAdd(\''+item.idParameter+'\', \''+item.divisiId+'\', \'BYA\')"><i class="fa fa-plus"></i> Tambah</button>' +
                     '<table class="table table-bordered table-striped">' +
                     '<thead id="head-budgeting">' +
                     '<tr bgcolor="#90ee90">' +
@@ -618,9 +638,9 @@
                     //                    '<td align="center">Action</td>' +
                     '</tr>' +
                     '</thead>' +
-                    '<tbody id="body-budgeting-data-'+ item.id +'">';
+                    '<tbody id="body-budgeting-data-'+ item.idParameter +'">';
 
-                BgPendapatanAction.getListDataParam(item.id, function (listDatas) {
+                BgNominasiAction.getListDataParam(item.idParameter, function (listDatas) {
 
                     $.each(listDatas, function (n, data) {
                         str += '<tr>' +

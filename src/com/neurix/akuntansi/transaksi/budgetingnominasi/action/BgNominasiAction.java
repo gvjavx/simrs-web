@@ -860,7 +860,7 @@ public class BgNominasiAction {
         List<ParameterBudgeting> listDivisi = new ArrayList<>();
 
         try {
-            listDivisi = budgetingPerhitunganBo.getListDivisiParameterBudgetingByKategororiAndMaster(idKategori, masterId);
+            listDivisi = budgetingPerhitunganBo.getListDivisiParameterBudgetingByKategororiAndMasterGroup(idKategori, masterId);
         } catch (GeneralBOException e){
             logger.info("[BgNominasiAction.getListDivisiBudgeting] ERROR ", e);
         }
@@ -875,6 +875,44 @@ public class BgNominasiAction {
                                     p.getMasterId().equalsIgnoreCase(masterId) &&
                                     p.getDivisiId().equalsIgnoreCase(paramDivisi.getDivisiId()) &&
                                     p.getIdKategoriBudgeting().equalsIgnoreCase(idKategori)
+
+                    ).collect(Collectors.toList());
+                    if (nilaiParamsFilter.size() > 0){
+                        BigDecimal nilaiTotal = hitungNilaiTotalFromListParam(nilaiParamsFilter);
+                        paramDivisi.setNilaiTotal(nilaiTotal);
+                    }
+                }
+            }
+        }
+
+        return listDivisi;
+    }
+
+    public List<ParameterBudgeting> getListRekeningByDivisi( String idKategori, String divisiId, String branch, String tahun){
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<ParameterBudgeting> sessionNilaiParam = (List<ParameterBudgeting>) session.getAttribute("listOfNilaiParam");
+
+        List<ParameterBudgeting> listDivisi = new ArrayList<>();
+
+        try {
+            listDivisi = budgetingPerhitunganBo.getlistParameterRekeningByDivisi(idKategori, divisiId);
+        } catch (GeneralBOException e){
+            logger.info("[BgNominasiAction.getListRekeningByDivisi] ERROR ", e);
+        }
+
+        // cari session dengan parameter master dan divisi;
+        // hitung nilai total sesuai master dan divisi;
+        if (listDivisi.size() > 0){
+            for (ParameterBudgeting paramDivisi : listDivisi){
+                if (sessionNilaiParam != null){
+                    List<ParameterBudgeting> nilaiParamsFilter = sessionNilaiParam.stream().filter(
+                            p->
+                                    p.getIdParameter().equalsIgnoreCase(paramDivisi.getIdParameter()) &&
+                                            p.getDivisiId().equalsIgnoreCase(paramDivisi.getDivisiId()) &&
+                                            p.getIdKategoriBudgeting().equalsIgnoreCase(idKategori)
 
                     ).collect(Collectors.toList());
                     if (nilaiParamsFilter.size() > 0){
