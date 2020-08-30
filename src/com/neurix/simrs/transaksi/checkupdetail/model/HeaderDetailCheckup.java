@@ -190,6 +190,15 @@ public class HeaderDetailCheckup extends BaseModel{
     private String flagCover;
     private String isCover;
     private BigDecimal pasienBayar;
+    private String isBayar;
+
+    public String getIsBayar() {
+        return isBayar;
+    }
+
+    public void setIsBayar(String isBayar) {
+        this.isBayar = isBayar;
+    }
 
     public BigDecimal getPasienBayar() {
         return pasienBayar;

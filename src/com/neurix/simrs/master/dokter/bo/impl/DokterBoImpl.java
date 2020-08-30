@@ -502,12 +502,12 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
     }
 
     @Override
-    public List<Dokter> getDokterByPelayanan(String idPelayanan) throws GeneralBOException {
+    public List<Dokter> getDokterByPelayanan(String idPelayanan, String notLike) throws GeneralBOException {
         List<Dokter> dokterList = new ArrayList<>();
 
         if (idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)) {
             try {
-                dokterList = dokterDao.getListDokterByPelayanan(idPelayanan);
+                dokterList = dokterDao.getListDokterByPelayanan(idPelayanan, notLike);
             } catch (HibernateException e) {
                 logger.error("Found Error when search " + e.getMessage());
             }

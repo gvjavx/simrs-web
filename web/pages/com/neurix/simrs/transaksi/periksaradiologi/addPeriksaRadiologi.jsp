@@ -115,7 +115,23 @@
                                         <td><b>Jenis Pasien</b></td>
                                         <td>
                                             <table>
-                                                <s:label name="periksaLab.jenisPeriksaPasien"></s:label>
+                                                <s:if test='periksaLab.idJenisPeriksa == "asuransi"'>
+                                                <span style="background-color: #ffff00; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                </s:if>
+                                                <s:elseif test='periksaLab.idJenisPeriksa == "umum"'>
+                                                    <span style="background-color: #4d4dff; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                </s:elseif>
+                                                <s:elseif test='periksaLab.idJenisPeriksa == "bpjs"'>
+                                                    <span style="background-color: #00b300; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                </s:elseif>
+                                                <s:elseif test='periksaLab.idJenisPeriksa == "ptpn"'>
+                                                    <span style="background-color: #66ff33; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                </s:elseif>
+                                                <s:else>
+                                                    <span style="background-color: #cc3399; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                </s:else>
+                                                    <s:property value="periksaLab.jenisPeriksaPasien"></s:property>
+                                                </span>
                                             </table>
                                         </td>
                                     </tr>
@@ -226,6 +242,22 @@
                         <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_rad">
                             <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                             <p id="msg_rad"></p>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <span class="btn btn-default btn-file">
+                                                 Browse… <input id="url_img" accept=".jpg" type="file">
+                                            </span>
+                                        </span>
+                                        <input type="text" class="form-control" readonly id="label_img">
+                                    </div>
+                                    <span style="color: red">* Upload hasil radiologi luar</span>
+                                    <canvas id="temp_canvas" style="display: none"></canvas>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="box-header with-border" id="pos_lab">
@@ -479,6 +511,40 @@
 
         });
 
+        $(document).on('change', '.btn-file :file', function () {
+            var input = $(this),
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [label]);
+        });
+
+        var canvas = document.getElementById('temp_canvas');
+        var ctx = canvas.getContext('2d');
+
+        $('.btn-file :file').on('fileselect', function (event, label) {
+
+            var input = $(this).parents('.input-group').find(':text'),
+                log = label;
+
+            if (input.length) {
+                input.val(log);
+                var reader = new FileReader();
+                reader.onload = function(event){
+                    var img = new Image();
+                    img.onload = function(){
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        ctx.clearRect(0,0,canvas.width,canvas.height);
+                        ctx.drawImage(img,0,0);
+                    }
+                    img.src = event.target.result;
+                }
+                reader.readAsDataURL(event.target.files[0]);
+            } else {
+                if (log) alert(log);
+            }
+
+        });
+
         if(keterangan == "just_lab"){
             $('#btn-add-parameter').show();
         }else{
@@ -645,6 +711,8 @@
     function conSavePeriksaLab(){
         var idDokter = $('#id_dokter').val();
         var data = $('#tabel_radiologi').tableToJSON();
+        var img = $('#url_img').val();
+
         var cek  = false;
         $.each(data, function (i, item) {
             var hasil = data[i]["Hasil"];
@@ -652,7 +720,7 @@
                 cek = true;
             }
         });
-        if(!cek && idDokter != ''){
+        if(!cek && idDokter != '' || img != '' && idDokter != ''){
             $('#modal-confirm-dialog').modal('show');
             $('#save_con').attr('onclick', 'savePeriksaLab(\''+idDokter+'\')');
         }else{
@@ -664,17 +732,18 @@
     function savePeriksaLab(idDokter){
         $('#modal-confirm-dialog').modal('hide');
         var idPeriksaLab = '<s:property value="periksaLab.idPeriksaLab"/>';
+        var url = document.getElementById("temp_canvas");
+        var hasil = url.toDataURL("image/png"),
+            hasil = hasil.replace(/^data:image\/(png|jpg);base64,/, "");
+
         $('#waiting_dialog').dialog('open');
         dwr.engine.setAsync(true);
-        PeriksaRadiologiAction.saveDokterRadiologi(idPeriksaLab, idDokter, {
+        PeriksaRadiologiAction.saveDokterRadiologi(idPeriksaLab, idDokter,  hasil, {
             callback:function (res) {
                 if(res.status == "success"){
                     if("just_lab" == keterangan){
                         CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, "selesai", "", "", "", "", "Pemeriksaan Radiologi", "", "", jenisPasien, "", "", "", idPasien, "", "", metodePembayaran, "lab", "", {callback : function (response) {
-                            console.log(keterangan);
                             if(response.status == "success"){
-                                console.log("success");
-                                console.log(response);
                                 $('#waiting_dialog').dialog('close');
                                 $('#save_ket').show();
                                 $('#load_ket').hide();
@@ -691,7 +760,6 @@
                             }
                         }});
                     }else{
-                        console.log("masuk sini");
                         $('#waiting_dialog').dialog('close');
                         $('#save_ket').show();
                         $('#load_ket').hide();

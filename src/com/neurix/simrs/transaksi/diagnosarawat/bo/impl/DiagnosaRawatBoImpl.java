@@ -173,6 +173,11 @@ public class DiagnosaRawatBoImpl implements DiagnosaRawatBo {
     }
 
     @Override
+    public Boolean cekDiagnosa(DiagnosaRawat bean) throws GeneralBOException {
+        return diagnosaRawatDao.cekDiagnosa(bean);
+    }
+
+    @Override
     public List<ItSimrsDiagnosaRawatEntity> getListEntityDiagnosaRawat(DiagnosaRawat bean) throws GeneralBOException{
         logger.info("[DiagnosaRawatBoImpl.getListEntityDiagnosaRawat] Start >>>>>>>>>");
 

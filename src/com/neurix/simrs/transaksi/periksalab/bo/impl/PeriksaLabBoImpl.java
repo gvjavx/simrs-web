@@ -551,6 +551,8 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
                 entity.setTanggalSelesaiPeriksa(bean.getLastUpdate());
                 entity.setStatusPeriksa("3");
                 entity.setApproveFlag("Y");
+                entity.setUrlImg(bean.getUrlImg());
+                entity.setIdPemeriksa(bean.getIdPemeriksa());
             }
 
             try {

@@ -22,8 +22,14 @@ import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
+import sun.misc.BASE64Decoder;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -335,7 +341,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
         return response;
     }
 
-    public CheckResponse saveDokterRadiologi(String idPeriksaLab, String idDokter) {
+    public CheckResponse saveDokterRadiologi(String idPeriksaLab, String idDokter, String urlImg) {
 
         logger.info("[PeriksaRadiologiAction.saveRadiologi] start process >>>");
         CheckResponse response = new CheckResponse();
@@ -343,6 +349,8 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
             String userLogin = CommonUtil.userLogin();
             String userArea = CommonUtil.userBranchLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            PeriksaRadiologiBo periksaRadiologiBo = (PeriksaRadiologiBo) ctx.getBean("periksaRadiologiBoProxy");
 
             PeriksaRadiologi periksaRadiologi = new PeriksaRadiologi();
             periksaRadiologi.setIdPeriksaLab(idPeriksaLab);
@@ -350,9 +358,33 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
             periksaRadiologi.setLastUpdate(updateTime);
             periksaRadiologi.setLastUpdateWho(userLogin);
             periksaRadiologi.setAction("U");
+            periksaRadiologi.setIdPemeriksa(userLogin);
 
-            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-            PeriksaRadiologiBo periksaRadiologiBo = (PeriksaRadiologiBo) ctx.getBean("periksaRadiologiBoProxy");
+            if(urlImg != null && !"".equalsIgnoreCase(urlImg)){
+                try {
+                    BASE64Decoder decoder = new BASE64Decoder();
+                    byte[] decodedBytes = decoder.decodeBuffer(urlImg);
+                    String patten = updateTime.toString().replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                    String fileName = idPeriksaLab+"-"+patten+".png";
+                    String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_IMG_RM + fileName;
+                    BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+                    if (image == null) {
+                        logger.error("Buffered Image is null");
+                        response.setStatus("error");
+                        response.setMessage("Buffered Image is null");
+                    } else {
+                        File f = new File(uploadFile);
+                        ImageIO.write(image, "png", f);
+                        periksaLab.setUrlImg(fileName);
+                    }
+                }catch (IOException e){
+                    response.setStatus("error");
+                    response.setMessage("IO Error"+e.getMessage());
+                    return response;
+                }
+            }
+
             response = periksaRadiologiBo.saveDokterRadiologi(periksaRadiologi);
 
         } catch (GeneralBOException e) {

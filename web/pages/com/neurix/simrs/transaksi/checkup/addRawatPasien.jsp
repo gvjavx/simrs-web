@@ -1155,45 +1155,7 @@
                                             </div>
                                             <s:hidden name="headerCheckup.idPelayanan" id="id_pelayanan_paket"></s:hidden>
                                         </s:if>
-                                        <%--<s:elseif test='tipe == "umum"'>--%>
-                                            <%--<div class="form-group">--%>
-                                                <%--<label class="col-md-4" style="margin-top: 10px">Pelayanan</label>--%>
-                                                <%--<div class="col-md-8">--%>
-                                                    <%--<s:action id="initComboPoli3" namespace="/checkup"--%>
-                                                              <%--name="getComboPelayananWithLab_checkup"/>--%>
-                                                    <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-                                                              <%--list="#initComboPoli3.listOfPelayananWithLab" id="poli_umum"--%>
-                                                              <%--name="headerCheckup.idPelayanan" listKey="idPelayanan"--%>
-                                                              <%--listValue="namaPelayanan"--%>
-                                                              <%--onchange="$(this).css('border',''); listDokter(this.value); var warn =$('#war_poli').is(':visible'); if (warn){$('#cor_poli').show().fadeOut(3000);$('#war_poli').hide()}"--%>
-                                                              <%--headerKey="" headerValue="[Select one]"--%>
-                                                              <%--cssClass="form-control select2"/>--%>
-                                                    <%--<span style="color: red; display: none" id="war_poli"><i--%>
-                                                            <%--class="fa fa-times"></i> required</span>--%>
-                                                    <%--<span style="color: green; display: none" id="con_poli"><i--%>
-                                                            <%--class="fa fa-check"></i> correct</span>--%>
-                                                <%--</div>--%>
-                                            <%--</div>--%>
-                                        <%--</s:elseif>--%>
                                         <s:else>
-                                            <%--<div class="form-group">--%>
-                                                <%--<label class="col-md-4" style="margin-top: 10px">Pelayanan</label>--%>
-                                                <%--<div class="col-md-8">--%>
-                                                    <%--<s:action id="initComboPoli2" namespace="/checkup"--%>
-                                                              <%--name="getComboPelayanan_checkup"/>--%>
-                                                    <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-                                                              <%--list="#initComboPoli2.listOfPelayanan" id="poli"--%>
-                                                              <%--name="headerCheckup.idPelayanan" listKey="idPelayanan"--%>
-                                                              <%--listValue="namaPelayanan"--%>
-                                                              <%--onchange="$(this).css('border',''); listDokter(this.value); var warn =$('#war_poli').is(':visible'); if (warn){$('#cor_poli').show().fadeOut(3000);$('#war_poli').hide()}"--%>
-                                                              <%--headerKey="" headerValue="[Select one]"--%>
-                                                              <%--cssClass="form-control select2"/>--%>
-                                                    <%--<span style="color: red; display: none" id="war_poli"><i--%>
-                                                            <%--class="fa fa-times"></i> required</span>--%>
-                                                    <%--<span style="color: green; display: none" id="con_poli"><i--%>
-                                                            <%--class="fa fa-check"></i> correct</span>--%>
-                                                <%--</div>--%>
-                                            <%--</div>--%>
                                             <div class="form-group">
                                                 <label class="col-md-4" style="margin-top: 10px">Pelayanan</label>
                                                 <div class="col-md-8">
@@ -2436,7 +2398,7 @@
     function listDokter(idPelayanan) {
         var option = "<option value=''>[Select One]</option>";
         if(idPelayanan != null && idPelayanan != ''){
-            CheckupAction.listOfDokter(idPelayanan, function (response) {
+            CheckupAction.listOfDokter(idPelayanan, null, function (response) {
                 if (response.length > 0) {
                     $.each(response, function (i, item) {
                         option += "<option value='" + item.idDokter + "'>" + item.namaDokter + "</option>";

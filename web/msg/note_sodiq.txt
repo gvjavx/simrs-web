@@ -393,6 +393,14 @@ ALTER TABLE public.it_simrs_partograf
 
 CREATE SEQUENCE seq_partograf;
 
+-- 30-08-2020
+ALTER TABLE it_simrs_tindakan_rawat
+ADD COLUMN id_pelayanan VARCHAR(100);
+
+ALTER TABLE it_simrs_periksa_lab
+ADD COLUMN url_img VARCHAR(100);
+
+
 
 
 

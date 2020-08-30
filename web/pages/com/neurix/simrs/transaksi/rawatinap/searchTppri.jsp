@@ -644,7 +644,7 @@
 
     function getDokterDpjp(id, idDpjp) {
         var option = '<option value="">[Select One]</option>';
-        CheckupAction.getListDokterByBranchId(idDpjp, "rawat_jalan", function (res) {
+        CheckupAction.getListDokterByBranchId(idDpjp, function (res) {
             if (res.length > 0) {
                 $.each(res, function (i, item) {
                     option += '<option value="' + item.idDokter + '|' + item.idPelayanan + '">' + item.namaDokter + ' - ' + item.namaPelayanan + '</option>';

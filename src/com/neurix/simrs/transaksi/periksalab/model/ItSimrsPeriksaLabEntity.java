@@ -24,6 +24,15 @@ public class ItSimrsPeriksaLabEntity implements Serializable {
     private String statusPeriksa;
     private String approveFlag;
     private String keterangan;
+    private String urlImg;
+
+    public String getUrlImg() {
+        return urlImg;
+    }
+
+    public void setUrlImg(String urlImg) {
+        this.urlImg = urlImg;
+    }
 
     public String getKeterangan() {
         return keterangan;

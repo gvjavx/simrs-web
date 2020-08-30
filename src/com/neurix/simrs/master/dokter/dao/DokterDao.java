@@ -93,12 +93,16 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
         return list;
     }
 
-    public List<Dokter> getListDokterByPelayanan(String idPelayanan){
+    public List<Dokter> getListDokterByPelayanan(String idPelayanan, String notLike){
 
         List<Dokter> list = new ArrayList<>();
+        String notLikeIdDokter = "";
 
         if (idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)){
 
+            if(!"".equalsIgnoreCase(notLike) && notLike != null){
+                notLikeIdDokter = "AND a.id_dokter NOT IN "+notLike;
+            }
             String SQL = "SELECT \n" +
                     "a.id_dokter, \n" +
                     "a.nama_dokter, \n" +
@@ -108,7 +112,7 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
                     "a.kuota_tele \n" +
                     "FROM im_simrs_dokter a\n" +
                     "INNER JOIN im_simrs_dokter_pelayanan b ON a.id_dokter = b.id_dokter\n" +
-                    "WHERE b.id_pelayanan = :id";
+                    "WHERE b.id_pelayanan = :id \n"+notLikeIdDokter;
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("id", idPelayanan)

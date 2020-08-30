@@ -2058,6 +2058,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                         DiagnosaRawat diagnosaRawat = new DiagnosaRawat();
                         diagnosaRawat.setIdDetailCheckup(detailCheckup.getIdDetailCheckup());
+                        diagnosaRawat.setOrderCreated("Y");
                         List<DiagnosaRawat> diagnosaRawatList = new ArrayList<>();
 
                         try {
@@ -2520,7 +2521,8 @@ public class CheckupDetailAction extends BaseMasterAction {
         return finalResponse;
     }
 
-    private CrudResponse rujukRawatInap(String noCheckup, String idDetailCheckup, String kelas, String kamar, String metodeBayar, String uangMuka, String idDokterDpjp, String idPoli) {
+    private CrudResponse
+    rujukRawatInap(String noCheckup, String idDetailCheckup, String kelas, String kamar, String metodeBayar, String uangMuka, String idDokterDpjp, String idPoli) {
         logger.info("[CheckupDetailAction.rujukRawatInap] start process >>>");
 
         CrudResponse finalResponse = new CrudResponse();
@@ -3268,13 +3270,13 @@ public class CheckupDetailAction extends BaseMasterAction {
         return rawatInaps;
     }
 
-    public List<RawatInap> getListRuanganByIdDetailCheckup(String idRawatInap) {
+    public List<RawatInap> getListRuanganByIdDetailCheckup(String idDetailCheckup) {
         logger.info("[CheckupDetailAction.getListRuangInapByIdDetailCheckup] start process >>>");
 
         List<RawatInap> rawatInaps = new ArrayList<>();
 
         RawatInap rawatInap = new RawatInap();
-        rawatInap.setIdRawatInap(idRawatInap);
+        rawatInap.setIdDetailCheckup(idDetailCheckup);
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");

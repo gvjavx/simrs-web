@@ -57,11 +57,12 @@
         <property name="approveFlag">
             <column name="approve_flag" sql-type="varchar" length="1" not-null="false" />
         </property>
-
         <property name="keterangan">
             <column name="keterangan" sql-type="varchar" length="100" not-null="false" />
         </property>
-
+        <property name="urlImg">
+            <column name="url_img"/>
+        </property>
 
     </class>
 </hibernate-mapping>

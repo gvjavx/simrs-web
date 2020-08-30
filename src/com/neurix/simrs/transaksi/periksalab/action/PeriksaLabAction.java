@@ -29,8 +29,14 @@ import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
+import sun.misc.BASE64Decoder;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Array;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -561,27 +567,50 @@ public class PeriksaLabAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    public CheckResponse saveEditDokterLab(String idPeriksaLab, String idDokter) {
+    public CheckResponse saveEditDokterLab(String idPeriksaLab, String idDokter, String urlImg) {
         logger.info("[PeriksaLabAction.saveEditDokterLab] start process >>>");
         CheckResponse response = new CheckResponse();
         try {
             String userLogin = CommonUtil.userLogin();
             String userArea = CommonUtil.userBranchLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-            PeriksaLab periksaLab = new PeriksaLab();
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
 
+            PeriksaLab periksaLab = new PeriksaLab();
             periksaLab.setIdPeriksaLab(idPeriksaLab);
             periksaLab.setIdDokter(idDokter);
             periksaLab.setLastUpdate(updateTime);
             periksaLab.setLastUpdateWho(userLogin);
             periksaLab.setAction("U");
+            periksaLab.setIdPemeriksa(userLogin);
 
-            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-            PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
+            if(urlImg != null && !"".equalsIgnoreCase(urlImg)){
+                try {
+                    BASE64Decoder decoder = new BASE64Decoder();
+                    byte[] decodedBytes = decoder.decodeBuffer(urlImg);
+                    String patten = updateTime.toString().replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                    String fileName = idPeriksaLab+"-"+patten+".png";
+                    String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_IMG_RM + fileName;
+                    BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
 
-            periksaLabBo.saveDokterLab(periksaLab);
-            response.setStatus("success");
-            response.setMessage("Berhasil");
+                    if (image == null) {
+                        logger.error("Buffered Image is null");
+                        response.setStatus("error");
+                        response.setMessage("Buffered Image is null");
+                    } else {
+                        File f = new File(uploadFile);
+                        ImageIO.write(image, "png", f);
+                        periksaLab.setUrlImg(fileName);
+                    }
+                }catch (IOException e){
+                    response.setStatus("error");
+                    response.setMessage("IO Error"+e.getMessage());
+                    return response;
+                }
+            }
+
+            response = periksaLabBo.saveDokterLab(periksaLab);
 
         } catch (GeneralBOException e) {
             response.setStatus("error");

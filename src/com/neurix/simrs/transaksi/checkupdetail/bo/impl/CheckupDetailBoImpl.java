@@ -945,7 +945,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 try {
                     ruanganDao.updateAndSave(ruanganEntity);
                     response.setStatus("success");
-                    response.setMsg("berhasil");
+                    response.setMsg(entity.getIdRawatInap());
                 } catch (HibernateException e) {
                     response.setStatus("error");
                     response.setMsg("Error When Saving data detail checkup " + e.getMessage());

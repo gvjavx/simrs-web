@@ -394,6 +394,7 @@
                                                                             }"
                                 >
                                     <s:hidden id="close_pos"></s:hidden>
+                                    <s:hidden id="h_id_href"></s:hidden>
                                     <img border="0" src="<s:url value="/pages/images/icon_success.png"/>"
                                          name="icon_success">
                                     Record has been saved successfully.
@@ -726,6 +727,7 @@
                             <tr bgcolor="#90ee90">
                                 <td>Tanggal</td>
                                 <td>Tindakan</td>
+                                <td>Dokter</td>
                                 <td align="center">Tarif (Rp.)</td>
                                 <td align="center">Qty</td>
                                 <td align="center">Total (Rp.)</td>
@@ -819,7 +821,7 @@
                     <div class="box-header with-border" id="pos_ruangan">
                     </div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-hospital-o"></i> Pindah Ruangan</h3>
+                        <h3 class="box-title"><i class="fa fa-hospital-o"></i> Ruangan</h3>
                     </div>
                     <div class="box-body">
                         <table class="table table-bordered table-striped">
@@ -828,6 +830,7 @@
                                 <td>No Ruangan</td>
                                 <td>Nama Ruangan</td>
                                 <td>Kelas</td>
+                                <td>Status</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -883,7 +886,7 @@
                                                     onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()}; selectKeterangan(this.value)">
                                                 <option value="">[Select One]</option>
                                                 <s:if test='rawatInap.kategoriRuangan == "rawat_inap"'>
-                                                    <s:if test='rawatInap.idJenisPeriksa == "umum" || rawatInap.idjenisPeriksa == "ptpn"'>
+                                                    <s:if test='rawatInap.idJenisPeriksa == "umum" || rawatInap.idJenisPeriksa == "ptpn"'>
                                                         <option value="selesai">Selesai</option>
                                                         <option value="rawat_intensif">Rawat Intensif</option>
                                                         <option value="rawat_isolasi">Rawat Isolasi</option>
@@ -892,7 +895,7 @@
                                                         <option value="rujuk_rs_lain">Dirujuk</option>
                                                         <option value="kontrol_ulang">Kontrol Ulang</option>
                                                     </s:if>
-                                                    <s:elseif test='rawatInap.idjenisPeriksa == "bpjs" || rawatInap.idjenisPeriksa == "asuransi"'>
+                                                    <s:elseif test='rawatInap.idJenisPeriksa == "bpjs" || rawatInap.idJenisPeriksa == "asuransi"'>
                                                         <option value="selesai">Selesai</option>
                                                         <option value="rawat_intensif">Rawat Intensif</option>
                                                         <option value="rawat_isolasi">Rawat Isolasi</option>
@@ -1224,7 +1227,7 @@
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_tindakan">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    Silahkan cek kembali data inputan dan jumlah harus lebih dari 0
+                    <p id="msg_tindakan"></p>
                 </div>
                 <div class="row">
                     <div class="form-group">
@@ -1347,7 +1350,8 @@
                                     onchange="var warn =$('#war_jenis_diagnosa').is(':visible'); if (warn){$('#cor_jenis_diagnosa').show().fadeOut(3000);$('#war_jenis_diagnosa').hide()}">
                                 <option value="">[select one]</option>
                                 <option value="diagnosa_awal">Diagnosa Awal</option>
-                                <option value="diagnosa_akhir">Diagnosa Akhir</option>
+                                <option value="diagnosa_utama">Diagnosa Utama</option>
+                                <option value="diagnosa_sekunder">Diagnosa Sekunder</option>
                             </select>
                         </div>
                         <div class="col-md-2">
@@ -3505,6 +3509,33 @@
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_nonpar"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-detail_lab">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Detail Penunjang Medis</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                        <td>Pemeriksaan</td>
+                        <td>Jenis Penunjang</td>
+                        <tbody id="body_detail_lab">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
             </div>
         </div>
