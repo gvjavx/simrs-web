@@ -804,3 +804,37 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     ADD COLUMN id_param_rekening VARCHAR(30);
 
 <<< //
+
+// >>> 2020-08-30
+
+    -- Table: public.it_akun_nilai_parameter_pengadaaan
+
+    -- DROP TABLE public.it_akun_nilai_parameter_pengadaaan;
+
+    CREATE TABLE public.it_akun_nilai_parameter_pengadaaan
+    (
+        id character varying(30) COLLATE pg_catalog."default" NOT NULL,
+        nama text COLLATE pg_catalog."default",
+        nilai numeric,
+        qty bigint,
+        nilai_total numeric,
+        id_nilai_param character varying(50) COLLATE pg_catalog."default",
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        CONSTRAINT it_akun_nilai_parameter_pengadaaan_pkey PRIMARY KEY (id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.it_akun_nilai_parameter_pengadaaan
+        OWNER to postgres;
+
+
+    CREATE SEQUENCE seq_nilai_pengadaan;
+<<< //

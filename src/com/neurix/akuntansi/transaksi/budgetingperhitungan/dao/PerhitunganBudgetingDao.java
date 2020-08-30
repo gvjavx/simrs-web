@@ -41,6 +41,9 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
         if (mapCriteria.get("tahun") != null){
             criteria.add(Restrictions.eq("tahun", mapCriteria.get("tahun").toString()));
         }
+        if (mapCriteria.get("id_nilai_param") != null){
+            criteria.add(Restrictions.eq("idNilaiParameter", mapCriteria.get("id_nilai_param").toString()));
+        }
 
         criteria.addOrder(Order.asc("urutan"));
         return criteria.list();
