@@ -593,7 +593,7 @@
                     </div>
 
                     <div class="box-header with-border"></div>
-                    <div class="box-header with-border">
+                    <div class="box-header with-border" id="pos_dok">
                         <div class="row">
                             <div class="col-md-6">
                                 <h3 class="box-title"><i class="fa fa-user"></i> Alergi</h3>
@@ -609,7 +609,7 @@
                                 <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
                                         onclick="showModal(8)"><i class="fa fa-plus"></i> Tambah Alergi
                                 </button>
-                                <table class="table table-bordered table-striped">
+                                <table class="table table-bordered table-striped" id="tabel_alergi">
                                     <thead>
                                     <tr bgcolor="#90ee90">
                                         <td>Alergi</td>
@@ -652,7 +652,7 @@
                         <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
                                 onclick="showModal(3)"><i class="fa fa-plus"></i> Tambah Diagnosa
                         </button>
-                        <table class="table table-bordered table-striped" id="tbl_diagnosa">
+                        <table class="table table-bordered table-striped" id="tabel_diagnosa">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>Tanggal</td>
@@ -773,7 +773,7 @@
                         <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
                                 onclick="showModal(9)"><i class="fa fa-plus"></i> Tambah ICD9
                         </button>
-                        <table class="table table-bordered table-striped">
+                        <table class="table table-bordered table-striped" id="tabel_icd9">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>Tanggal</td>
@@ -799,7 +799,7 @@
                         <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
                                 onclick="showModal(2)"><i class="fa fa-plus"></i> Tambah Tindakan
                         </button>
-                            <table class="table table-bordered table-striped">
+                            <table class="table table-bordered table-striped" id="tabel_tindakan">
                                 <thead>
                                 <tr bgcolor="#90ee90">
                                     <td>Tanggal</td>
@@ -820,7 +820,7 @@
                             <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
                                     onclick="showModal(2)"><i class="fa fa-plus"></i> Tambah Tindakan
                             </button>
-                            <table class="table table-bordered table-striped">
+                            <table class="table table-bordered table-striped" id="tabel_tindakan">
                                 <thead>
                                 <tr bgcolor="#90ee90">
                                     <td>Tanggal</td>
@@ -844,7 +844,7 @@
                                 onclick="showModal(4)"><i class="fa fa-plus"></i> Penunjang Medis
                         </button>
                         <%--</s:if>--%>
-                        <table class="table table-bordered table-striped">
+                        <table class="table table-bordered table-striped" id="tabel_penunjang_medis">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>Tanggal Order</td>
@@ -868,7 +868,7 @@
                         <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
                                 onclick="showModal(7)"><i class="fa fa-plus"></i> Tambah Resep
                         </button>
-                        <table class="table table-bordered table-striped">
+                        <table class="table table-bordered table-striped" >
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>Tanggal</td>
@@ -2124,29 +2124,29 @@
     </div>
 </div>
 
+<div id="modal-temp"></div>
+
 <div class="modal fade" id="modal-confirm-rm">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
+                <h4 class="modal-title"><i class="fa fa-info"></i> Konfirmasi
                 </h4>
             </div>
             <div class="modal-body">
-                <h5 class="text-center">Do you want print this?</h5>
-                <h5 class="text-center" id="print_form"></h5>
+                <h4 class="text-center" id="tanya"></h4>
+                <h4 class="text-center" id="print_form"></h4>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Tidak
                 </button>
-                <button type="button" class="btn btn-sm btn-default" id="save_con_rm"><i class="fa fa-arrow-right"></i> Yes            </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con_rm"><i class="fa fa-check"></i> Ya            </button>
             </div>
         </div>
     </div>
 </div>
-
-<div id="modal-temp"></div>
 <%@ include file="/pages/modal/modalRingkasanRawatJalan.jsp" %>
 
 <div class="mask"></div>

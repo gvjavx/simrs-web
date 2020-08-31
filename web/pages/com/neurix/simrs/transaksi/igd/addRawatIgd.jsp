@@ -815,7 +815,7 @@
                             <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
                                     onclick="showModal(2)"><i class="fa fa-plus"></i> Tambah Tindakan
                             </button>
-                            <table class="table table-bordered table-striped">
+                            <table class="table table-bordered table-striped" id="tabel_tindakan">
                                 <thead>
                                 <tr bgcolor="#90ee90">
                                     <td>Tanggal</td>

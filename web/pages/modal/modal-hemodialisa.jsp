@@ -14,6 +14,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_hd_monitoring_hd"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="modal_warning">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_warning"></p>
+                    </div>
                     <div class="btn-group">
                         <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
                         </button>
@@ -52,6 +56,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_pengkajian" class="hvr-grow" onclick="detailMonHD('pengkajian')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="del_monitoring_hd" class="hvr-grow" onclick="conHD('pengkajian', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_hd_resiko_jatuh">
@@ -59,6 +64,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_resiko_jatuh" class="hvr-grow" onclick="detailMonHD('resiko_jatuh')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="del_resiko_jatuh" class="hvr-grow" onclick="conHD('resiko_jatuh', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_hd_pemeriksaan">
@@ -66,6 +72,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_pemeriksaan" class="hvr-grow" onclick="detailMonHD('pemeriksaan')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="del_pemeriksaan" class="hvr-grow" onclick="conHD('pemeriksaan', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_hd_diagnosa">
@@ -73,6 +80,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_diagnosa" class="hvr-grow" onclick="detailMonHD('diagnosa')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="del_diagnosa" class="hvr-grow" onclick="conHD('diagnosa', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_hd_intervensi">
@@ -80,6 +88,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_intervensi" class="hvr-grow" onclick="detailMonHD('intervensi')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="del_intervensi" class="hvr-grow" onclick="conHD('intervensi', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_hd_terintegrasi">
@@ -94,6 +103,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_instruksi_medik" class="hvr-grow" onclick="detailMonHD('instruksi_medik')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="del_instruksi_medik" class="hvr-grow" onclick="conHD('instruksi_medik', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_hd_observasi_tindakan">
@@ -108,6 +118,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_penyulit_hd" class="hvr-grow" onclick="detailMonHD('penyulit_hd')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="del_penyulit_hd" class="hvr-grow" onclick="conHD('penyulit_hd', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

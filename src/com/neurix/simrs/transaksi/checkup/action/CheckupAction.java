@@ -3532,6 +3532,16 @@ public class CheckupAction extends BaseMasterAction {
         return response;
     }
 
+    public Dokter getDataDokterSip(String id, String key){
+        Dokter response = new Dokter();
+        if(id != null && !"".equalsIgnoreCase(id)){
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+            response = checkupBo.getNamaSipDokter(id, key);
+        }
+        return response;
+    }
+
     public HeaderCheckup getDataPemeriksaanFisik(String id){
         HeaderCheckup response = new HeaderCheckup();
         if(id != null && !"".equalsIgnoreCase(id)){

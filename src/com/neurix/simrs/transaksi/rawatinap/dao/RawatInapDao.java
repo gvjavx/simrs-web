@@ -162,7 +162,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "um.id, " +
                     "um.id_detail_checkup, \n" +
                     "f.kategori, \n" +
-                    "jenis.keterangan\n" +
+                    "jenis.keterangan as jenis_pasien\n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_jenis_periksa_pasien jenis ON b.id_jenis_periksa_pasien = jenis.id_jenis_periksa_pasien\n" +

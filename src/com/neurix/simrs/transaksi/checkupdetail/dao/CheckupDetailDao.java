@@ -202,7 +202,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 if (bean.getStatusBayar() != null && !"".equalsIgnoreCase(bean.getStatusBayar())) {
                     statusBayar = "\n AND dt.status_bayar = '" + bean.getStatusBayar() + "'\n";
                 } else {
-                    statusBayar = "\n AND dt.status_bayar is null AND dt.flag_close_traksaksi 'Y' AND dt.flag_cover = 'Y'\n";
+                    statusBayar = "\n AND dt.status_bayar IS NULL AND dt.flag_close_traksaksi = 'Y' AND dt.flag_cover = 'Y'\n";
                 }
             }
 

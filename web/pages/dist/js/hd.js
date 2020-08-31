@@ -2250,3 +2250,35 @@ function selectReaksi(val){
         $('#form_mengancam').hide();
     }
 }
+
+function conHD(jenis, ket){
+    $('#tanya').text("Yakin mengahapus data ini ?");
+    $('#modal-confirm-rm').modal({show:true, backdrop:'static'});
+    $('#save_con_rm').attr('onclick', 'delHD(\''+jenis+'\', \''+ket+'\')');
+}
+
+function delHD(jenis, ket) {
+    $('#modal-confirm-rm').modal('hide');
+    var dataPasien = {
+        'no_checkup': noCheckup,
+        'id_detail_checkup': idDetailCheckup,
+        'id_pasien': idPasien,
+        'id_rm': tempidRm
+    }
+    var result = JSON.stringify(dataPasien);
+    startSpin('del_'+jenis);
+    dwr.engine.setAsync(true);
+    HemodialisaAction.saveDelete(idDetailCheckup, jenis, result, {
+        callback: function (res) {
+            if (res.status == "success") {
+                stopSpin('del_'+jenis);
+                $('#warning_hd_' + ket).show().fadeOut(5000);
+                $('#msg_hd_' + ket).text("Berhasil menghapus data...");
+            } else {
+                stopSpin('del_'+jenis);
+                $('#modal_warning').show().fadeOut(5000);
+                $('#msg_warning').text(res.msg);
+            }
+        }
+    });
+}

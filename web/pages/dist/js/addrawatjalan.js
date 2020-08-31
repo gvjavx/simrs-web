@@ -1150,7 +1150,7 @@ function saveDiagnosa(id) {
     var idDiag = $('#nosa_id_diagnosa').val();
     var ketDiagnosa = $('#nosa_ket_diagnosa').val();
     var jenisPasien = $('#jenis_pasien').val();
-    var panjang = $('#tbl_diagnosa').tableToJSON();
+    var panjang = $('#tabel_diagnosa').tableToJSON();
     var jenisDiagnosa = "";
     if (id != '') {
         jenisDiagnosa = $('#val_jenis_diagnosa').val();
@@ -2601,6 +2601,7 @@ function getListRekamMedis(tipePelayanan, jenis, id) {
                 var icons = '<i class="fa fa-file-o"></i>';
                 var icons2 = '<i class="fa fa-print"></i>';
                 var tol = "";
+                var tolText = "";
                 var labelTerisi = "";
                 var constan = 0;
                 var terIsi = 0;
@@ -2620,7 +2621,8 @@ function getListRekamMedis(tipePelayanan, jenis, id) {
                     if (item.createdDate != null) {
                         conver = converterDate(new Date(item.createdDate));
                         tgl = '<label class="label label-success">' + conver + '</label>';
-                        tol = 'title="Mengisi tanggal ' + conver + '"';
+                        tol = 'class="box-rm"';
+                        tolText = '<span class="box-rmtext">Tanggal mengisi '+conver+'</span>';
                     }
                     icons = '<i class="fa fa-check" style="color: #449d44"></i>';
                     icons2 = '<i class="fa fa-check" style="color: #449d44"></i>';
@@ -2633,9 +2635,9 @@ function getListRekamMedis(tipePelayanan, jenis, id) {
                     li += '<li><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '"><i class="fa fa-file-o"></i>' + item.namaRm + '</a></li>'
                 } else {
                     if (item.keterangan == 'form') {
-                        li += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')"><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '">' + icons + item.namaRm + ' ' +labelTerisi +'</a></li>'
+                        li += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')"><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '">' + icons + item.namaRm + ' ' +labelTerisi +tolText+'</a></li>'
                     } else if (item.keterangan == "surat") {
-                        li += '<li><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\',\'' + item.namaRm + '\')' + '">' + icons2 + item.namaRm + ' '+ labelPrint + '</a></li>'
+                        li += '<li ' + tol + '><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\',\'' + item.namaRm + '\')' + '">' + icons2 + item.namaRm + ' '+ labelPrint + tolText +'</a></li>'
                     }
                 }
             });
@@ -2681,36 +2683,38 @@ function confirmPemeriksaanPasien() {
     var metodeBayar = $('#metode_bayar').val();
     var valUangMuka = $('#val_uang_muka').val();
     var cek = false;
+    var cekTindakan = $('#tabel_tindakan').tableToJSON();
 
-    if (tindakLanjut != '') {
+    if(cekTindakan.length > 0){
+        if (tindakLanjut != '') {
 
-        if (tindakLanjut == "rawat_inap") {
-            if(ketRawatInap != ''){
-                cek = true;
-            }
-        } else if(tindakLanjut == "pindah_poli"){
-            if(poliLain != '' && listDokter != ''){
-                if(jenisPasien == 'umum'){
-                    if(metodeBayar != '' && valUangMuka != ''){
-                        cek = true;
-                    }
-                }else{
+            if (tindakLanjut == "rawat_inap") {
+                if(ketRawatInap != ''){
                     cek = true;
                 }
-            }
-        }else if (tindakLanjut == "kontrol_ulang"){
-            if(tglKontrol != ''){
+            } else if(tindakLanjut == "pindah_poli"){
+                if(poliLain != '' && listDokter != ''){
+                    if(jenisPasien == 'umum'){
+                        if(metodeBayar != '' && valUangMuka != ''){
+                            cek = true;
+                        }
+                    }else{
+                        cek = true;
+                    }
+                }
+            }else if (tindakLanjut == "kontrol_ulang"){
+                if(tglKontrol != ''){
+                    cek = true;
+                }
+            }else if(tindakLanjut == "rujuk_rs_lain"){
+                if(rsRujukan != ''){
+                    cek = true;
+                }
+            }else{
                 cek = true;
             }
-        }else if(tindakLanjut == "rujuk_rs_lain"){
-            if(rsRujukan != ''){
-                cek = true;
-            }
-        }else{
-            cek = true;
         }
     }
-
     if(cek){
         $('#save_con').attr('onclick','savePemeriksaanPasien()');
         $('#modal-confirm-dialog').modal({show: true, backdrop: 'static'});

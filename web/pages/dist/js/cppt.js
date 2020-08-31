@@ -126,6 +126,7 @@ function detailCPPT(jenis, ket, tipe) {
                     '<p style="margin-top: -5px">'+cekNullCppt(item.namaPetugas)+'</p>'+
                     '<p style="margin-top: -10px">'+cekNullCppt(item.sipPetugas)+'</p>'+
                     '</td>' +
+                    '<td>'+'<img src="'+con+'">'+'</td>'
                     '</tr>';
                 cekData = true;
             });
@@ -145,6 +146,7 @@ function detailCPPT(jenis, ket, tipe) {
                 '<td>Intruksi</td>' +
                 '<td>TTD DPJP</td>' +
                 '<td>TTD Petugas</td>' +
+                '<td>Action</td>' +
                 '</tr>'
         }
 

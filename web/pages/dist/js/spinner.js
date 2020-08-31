@@ -26,3 +26,11 @@ function setLabelJenisPasien(id, jenis){
         $('#'+id).attr('style', 'background-color: #cc3399; color: white; border-radius: 5px; border: 1px solid black; padding: 5px');
     }
 }
+function startSpin(id){
+    var url = contextPathHeader+'/pages/images/spinner.gif';
+    $('#'+id).attr('src',url).css('width', '30px', 'height', '40px');
+}
+function stopSpin(id){
+    var url = contextPathHeader+'/pages/images/cancel-flat-new.png';
+    $('#'+id).attr('src',url).css('width', '', 'height', '');
+}

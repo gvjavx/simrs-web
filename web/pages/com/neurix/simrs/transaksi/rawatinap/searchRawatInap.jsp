@@ -176,7 +176,7 @@
                                 <td>Nama</td>
                                 <td>Desa</td>
                                 <td>Status</td>
-                                <td>Jenis Pasien</td>
+                                <td align="center">Jenis Pasien</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -188,7 +188,7 @@
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="desa"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
-                                    <td>
+                                    <td align="center">
                                         <s:if test='#row.idJenisPeriksa == "asuransi"'>
                                         <span style="background-color: #ffff00; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
                                                 </s:if>
@@ -209,7 +209,7 @@
                                     </td>
                                     <td align="center" style="vertical-align: middle">
                                         <s:if test='#row.idJenisPeriksa == "umum"'>
-                                            <s:if test='#row.idJenisPeriksa'>
+                                            <s:if test='#row.isBayar == "Y"'>
                                                 <s:url var="add_rawat_inap" namespace="/rawatinap" action="add_rawatinap" escapeAmp="false">
                                                     <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
                                                     <s:param name="idx"><s:property value="idRawatInap"/></s:param>
@@ -220,7 +220,7 @@
                                                 <img onclick="printGelangPasien('<s:property value="noCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
                                             </s:if>
                                             <s:else>
-                                                <label class="label label-primary">Uang muka belum bayar</label>
+                                                <label class="label label-warning">Uang muka belum bayar</label>
                                             </s:else>
                                         </s:if>
                                         <s:else>

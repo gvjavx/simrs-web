@@ -2696,6 +2696,11 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         return headerCheckupDao.getRiwayatPemeriksaan(idPasien);
     }
 
+    @Override
+    public Dokter getNamaSipDokter(String id, String tipe) throws GeneralBOException {
+        return headerCheckupDao.getNamaSipDokter(id, tipe);
+    }
+
     public ItSimrsHeaderChekupEntity getById(String columnName, String id) throws GeneralBOException {
         return headerCheckupDao.getById(columnName, id);
     }

@@ -155,6 +155,15 @@ public class HeaderCheckup {
     private String autoanamnesis;
     private String heteroanamnesis;
     private String catatan;
+    private String anamnese;
+
+    public String getAnamnese() {
+        return anamnese;
+    }
+
+    public void setAnamnese(String anamnese) {
+        this.anamnese = anamnese;
+    }
 
     public String getCatatan() {
         return catatan;

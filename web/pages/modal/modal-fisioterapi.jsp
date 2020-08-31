@@ -13,6 +13,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_pengkajian_pengkajian"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="modal_warning">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_warning"></p>
+                    </div>
                     <button onclick="addFisioterapi('keadaan_umum')" class="btn btn-success"><i class="fa fa-plus"></i>
                         Keadaan Umum
                     </button>
@@ -37,6 +41,7 @@
                             <td width="20%" align="center"><img id="btn_keadaan_umum" class="hvr-grow"
                                                                 onclick="detailFisio('keadaan_umum')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="del_keadaan_umum" class="hvr-grow" onclick="conFS('keadaan_umum', 'pengkajian-fisioterapi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_psikologis">
@@ -44,6 +49,7 @@
                             <td width="20%" align="center"><img id="btn_psikologis" class="hvr-grow"
                                                                 onclick="detailFisio('psikologis')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="del_psikologis" class="hvr-grow" onclick="conFS('psikologis', 'pengkajian-fisioterapi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_nyeri">
@@ -51,6 +57,7 @@
                             <td width="20%" align="center"><img id="btn_nyeri" class="hvr-grow"
                                                                 onclick="detailFisio('nyeri')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="nyeri" class="hvr-grow" onclick="conFS('nyeri', 'pengkajian-fisioterapi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_jatuh">
@@ -58,6 +65,7 @@
                             <td width="20%" align="center"><img id="btn_jatuh" class="hvr-grow"
                                                                 onclick="detailFisio('jatuh')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="del_jatuh" class="hvr-grow" onclick="conFS('jatuh', 'pengkajian-fisioterapi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_pengkajian">
@@ -65,6 +73,7 @@
                             <td width="20%" align="center"><img id="btn_pengkajian" class="hvr-grow"
                                                                 onclick="detailFisio('pengkajian')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="del_pengkajian" class="hvr-grow" onclick="conFS('pengkajian', 'pengkajian-fisioterapi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

@@ -2748,95 +2748,98 @@ function savePemeriksaanPasien() {
     var idRuangan = $('#kamar').val();
     var idRuanganLama = $('#id_ruangan_lama').val();
     var cek = false;
+    var cekTindakan = $('#tabel_tindakan').tableToJSON();
 
-    if (tindakLanjut != '') {
+    if(cekTindakan.length > 0){
+        if (tindakLanjut != '') {
 
-        if (tindakLanjut == "rawat_inap") {
-            if(ketRawatInap != ''){
-                data = {
-                    'id_detail_checkup': idDetailCheckup,
-                    'no_checkup':noCheckup,
-                    'id_rawat_inap': idRawatInap,
-                    'tindak_lanjut': tindakLanjut,
-                    'keterangan': 'Rawat Inap, '+ketRawatInap,
-                    'catatan': catatan,
-                    'id_ruangan': idRuangan,
-                    'jenis_pasien': jenisPeriksaPasien,
-                    'id_ruangan_lama': idRuanganLama
-                }
-                cek = true;
-            }
-        } else if(tindakLanjut == "rujuk_rs_lain") {
-            if(rsRujukan != ''){
-                data = {
-                    'id_detail_checkup': idDetailCheckup,
-                    'no_checkup':noCheckup,
-                    'id_rawat_inap': idRawatInap,
-                    'tindak_lanjut': tindakLanjut,
-                    'keterangan': 'Rujuk Ke RS '+rsRujukan,
-                    'catatan': catatan,
-                    'jenis_pasien': jenisPeriksaPasien,
-                    'rs_rujukan': rsRujukan,
-                    'id_ruangan_lama': idRuanganLama
-                }
-                cek = true;
-            }
-        }else if(tindakLanjut == "kontrol_ulang") {
-            if(tglKontrol != ''){
-                if(isPemeriksaan) {
-                    if(kategoriLab && unitLab && parameterLab != ''){
-                        data = {
-                            'id_detail_checkup': idDetailCheckup,
-                            'no_checkup':noCheckup,
-                            'id_rawat_inap': idRawatInap,
-                            'tindak_lanjut': tindakLanjut,
-                            'keterangan': 'Kontrol Ulang dengan Pemeriksaan Penunjang Medis',
-                            'catatan': catatan,
-                            'jenis_pasien': jenisPeriksaPasien,
-                            'tgl_kontrol': tglKontrol,
-                            'kategori_lab': kategoriLab,
-                            'unit_lab': unitLab,
-                            'parameter': parameterLab,
-                            'is_order_lab': 'Y',
-                            'id_ruangan_lama': idRuanganLama
-                        }
-                        cek = true;
-                    }
-                }else{
+            if (tindakLanjut == "rawat_inap") {
+                if(ketRawatInap != ''){
                     data = {
                         'id_detail_checkup': idDetailCheckup,
                         'no_checkup':noCheckup,
                         'id_rawat_inap': idRawatInap,
                         'tindak_lanjut': tindakLanjut,
-                        'keterangan': 'Kontrol Ulang',
+                        'keterangan': 'Rawat Inap, '+ketRawatInap,
                         'catatan': catatan,
+                        'id_ruangan': idRuangan,
                         'jenis_pasien': jenisPeriksaPasien,
-                        'tgl_kontrol': tglKontrol,
                         'id_ruangan_lama': idRuanganLama
                     }
                     cek = true;
                 }
+            } else if(tindakLanjut == "rujuk_rs_lain") {
+                if(rsRujukan != ''){
+                    data = {
+                        'id_detail_checkup': idDetailCheckup,
+                        'no_checkup':noCheckup,
+                        'id_rawat_inap': idRawatInap,
+                        'tindak_lanjut': tindakLanjut,
+                        'keterangan': 'Rujuk Ke RS '+rsRujukan,
+                        'catatan': catatan,
+                        'jenis_pasien': jenisPeriksaPasien,
+                        'rs_rujukan': rsRujukan,
+                        'id_ruangan_lama': idRuanganLama
+                    }
+                    cek = true;
+                }
+            }else if(tindakLanjut == "kontrol_ulang") {
+                if(tglKontrol != ''){
+                    if(isPemeriksaan) {
+                        if(kategoriLab && unitLab && parameterLab != ''){
+                            data = {
+                                'id_detail_checkup': idDetailCheckup,
+                                'no_checkup':noCheckup,
+                                'id_rawat_inap': idRawatInap,
+                                'tindak_lanjut': tindakLanjut,
+                                'keterangan': 'Kontrol Ulang dengan Pemeriksaan Penunjang Medis',
+                                'catatan': catatan,
+                                'jenis_pasien': jenisPeriksaPasien,
+                                'tgl_kontrol': tglKontrol,
+                                'kategori_lab': kategoriLab,
+                                'unit_lab': unitLab,
+                                'parameter': parameterLab,
+                                'is_order_lab': 'Y',
+                                'id_ruangan_lama': idRuanganLama
+                            }
+                            cek = true;
+                        }
+                    }else{
+                        data = {
+                            'id_detail_checkup': idDetailCheckup,
+                            'no_checkup':noCheckup,
+                            'id_rawat_inap': idRawatInap,
+                            'tindak_lanjut': tindakLanjut,
+                            'keterangan': 'Kontrol Ulang',
+                            'catatan': catatan,
+                            'jenis_pasien': jenisPeriksaPasien,
+                            'tgl_kontrol': tglKontrol,
+                            'id_ruangan_lama': idRuanganLama
+                        }
+                        cek = true;
+                    }
+                }
+            }else{
+                var stay = "N";
+                if(isStay){
+                    stay = "Y";
+                }
+                var ket = tindakLanjut.replace("_", " ");
+                var ktr = convertSentenceCaseUp(ket);
+                data = {
+                    'id_detail_checkup': idDetailCheckup,
+                    'no_checkup':noCheckup,
+                    'id_rawat_inap': idRawatInap,
+                    'tindak_lanjut': tindakLanjut,
+                    'keterangan': ktr,
+                    'catatan': catatan,
+                    'id_ruangan': idRuangan,
+                    'is_stay': stay,
+                    'jenis_pasien': jenisPeriksaPasien,
+                    'id_ruangan_lama': idRuanganLama
+                }
+                cek = true;
             }
-        }else{
-            var stay = "N";
-            if(isStay){
-                stay = "Y";
-            }
-            var ket = tindakLanjut.replace("_", " ");
-            var ktr = convertSentenceCaseUp(ket);
-            data = {
-                'id_detail_checkup': idDetailCheckup,
-                'no_checkup':noCheckup,
-                'id_rawat_inap': idRawatInap,
-                'tindak_lanjut': tindakLanjut,
-                'keterangan': ktr,
-                'catatan': catatan,
-                'id_ruangan': idRuangan,
-                'is_stay': stay,
-                'jenis_pasien': jenisPeriksaPasien,
-                'id_ruangan_lama': idRuanganLama
-            }
-            cek = true;
         }
     }
 
@@ -2914,7 +2917,7 @@ function getListRekamMedis(tipePelayanan, jenis, id) {
                 if (item.keterangan == 'form') {
                     li += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')"><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '">' + icons + item.namaRm + ' ' +labelTerisi + tolText+ '</a></li>'
                 } else if (item.keterangan == "surat") {
-                    li += '<li><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\',\'' + item.namaRm + '\')' + '">' + icons2 + item.namaRm + ' '+ labelPrint + '</a></li>'
+                    li += '<li '+tol+'><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\',\'' + item.namaRm + '\')' + '">' + icons2 + item.namaRm + ' '+ labelPrint + tolText +'</a></li>'
                 }
             });
             $('#asesmen_ri').html(li);

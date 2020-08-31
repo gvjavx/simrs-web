@@ -102,6 +102,37 @@ public class FisioterapiBoImpl implements FisioterapiBo {
         return response;
     }
 
+    @Override
+    public CrudResponse saveDelete(Fisioterapi bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+        hsCriteria.put("keterangan", bean.getKeterangan());
+        List<ItSimrsFisioterapiEntity> entityList = new ArrayList<>();
+        try {
+            entityList = fisioterapiDao.getByCriteria(hsCriteria);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        if(entityList.size() > 0){
+            for (ItSimrsFisioterapiEntity entity: entityList){
+                entity.setLastUpdate(bean.getLastUpdate());
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+                entity.setAction("D");
+                entity.setFlag("N");
+                try {
+                    fisioterapiDao.updateAndSave(entity);
+                    response.setStatus("success");
+                    response.setMsg("Berhasil");
+                }catch (HibernateException e){
+                    response.setStatus("error");
+                    response.setMsg(e.getMessage());
+                }
+            }
+        }
+        return response;
+    }
+
     public static Logger getLogger() {
         return logger;
     }

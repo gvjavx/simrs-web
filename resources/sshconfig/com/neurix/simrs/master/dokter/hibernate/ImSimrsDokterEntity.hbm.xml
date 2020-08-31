@@ -60,5 +60,9 @@
             <column name="kuota_tele" sql-type="varchar" length="5" not-null="false" />
         </property>
 
+        <property name="sip">
+            <column name="sip"/>
+        </property>
+
     </class>
 </hibernate-mapping>

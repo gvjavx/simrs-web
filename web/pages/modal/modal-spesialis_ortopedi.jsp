@@ -13,6 +13,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_sps_spesialis_ortopedi"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="modal_warning">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_warning"></p>
+                    </div>
                     <div class="btn-group btn-hide">
                         <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
                         </button>
@@ -39,6 +43,8 @@
                             <td width="20%" align="center"><img id="btn_sps_anamnesa_ortopedi" class="hvr-grow"
                                                                 onclick="detailSPS('anamnesa_ortopedi')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+
+                                <img id="del_anamnesa_ortopedi" class="hvr-grow" onclick="conSPS('anamnesa_ortopedi', 'spesialis_ortopedi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_sps_pemeriksaan_ortopedi">
@@ -46,6 +52,8 @@
                             <td width="20%" align="center"><img id="btn_sps_pemeriksaan_ortopedi" class="hvr-grow"
                                                                 onclick="detailSPS('pemeriksaan_ortopedi')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+
+                                <img id="del_pemeriksaan_ortopedi" class="hvr-grow" onclick="conSPS('pemeriksaan_ortopedi', 'spesialis_ortopedi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_sps_edukasi_ortopedi">
@@ -53,6 +61,8 @@
                             <td width="20%" align="center"><img id="btn_sps_edukasi_ortopedi" class="hvr-grow"
                                                                 onclick="detailSPS('edukasi_ortopedi')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+
+                                <img id="del_edukasi_ortopedi" class="hvr-grow" onclick="conSPS('edukasi_ortopedi', 'spesialis_ortopedi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -261,7 +271,7 @@
                     <div class="row jarak">
                         <label class="col-md-4">Terapi</label>
                         <div class="col-md-8">
-                            <textarea rows="2" class="form-control" id="pt15"></textarea>
+                            <textarea rows="2" class="form-control resep-pasien" id="pt15"></textarea>
                         </div>
                     </div>
                     <div class="row jarak">
@@ -370,8 +380,8 @@
                             <div class="col-md-6">
                                 <label>TTD Dokter</label>
                                 <canvas style="margin-left: -1px;" width="250" onmouseover="paintTtd('et5')" class="paint-canvas-ttd" id="et5"></canvas>
-                                <input class="form-control" id="nama_terang_dokter" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control" id="sip_dokter" placeholder="SIP">
+                                <input class="form-control nama_dokter" id="nama_terang_dokter" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control sip_dokter" id="sip_dokter" placeholder="SIP">
                                 <button style="margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('et5')"><i class="fa fa-trash"></i> Clear
                                 </button>
                             </div>

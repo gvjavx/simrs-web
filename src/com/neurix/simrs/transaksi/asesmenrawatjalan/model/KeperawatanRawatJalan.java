@@ -19,6 +19,15 @@ public class KeperawatanRawatJalan {
     private String lastUpdateWho;
     private String tipe;
     private String namaTerang;
+    private String sip;
+
+    public String getSip() {
+        return sip;
+    }
+
+    public void setSip(String sip) {
+        this.sip = sip;
+    }
 
     public String getNamaTerang() {
         return namaTerang;

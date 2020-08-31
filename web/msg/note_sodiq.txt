@@ -400,6 +400,10 @@ ADD COLUMN id_pelayanan VARCHAR(100);
 ALTER TABLE it_simrs_periksa_lab
 ADD COLUMN url_img VARCHAR(100);
 
+-- 31-08-2020
+ALTER TABLE it_simrs_asesmen_keperawatan_rawat_jalan
+ADD COLUMN sip VARCHAR(100);
+
 
 
 

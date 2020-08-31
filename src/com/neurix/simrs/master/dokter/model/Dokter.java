@@ -34,6 +34,15 @@ public class Dokter {
     private String flagTele;
     private String kuotaTele;
     private String idTeamDokter;
+    private String sip;
+
+    public String getSip() {
+        return sip;
+    }
+
+    public void setSip(String sip) {
+        this.sip = sip;
+    }
 
     public String getIdTeamDokter() {
         return idTeamDokter;
