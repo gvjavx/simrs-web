@@ -225,8 +225,7 @@
                         <%--</div>--%>
 
                         <div class="form-group">
-                            <div class="col-md-12" align="center">
-                                <button class="btn btn-success" style="display: none" id="btn-save" onclick="saveApprove()"><i class="fa fa-check"></i> Approve </button>
+                            <div class="col-md-12" align="center" id="body-btn-save">
                             </div>
                         </div>
                     </div>
@@ -733,7 +732,14 @@
 //                    '</tr>';
             });
 
-            $("#btn-save").show();
+            BgEksploitasiAction.checkIsAvaliable(tahun, function (flag) {
+                if ("N" == flag){
+                    $("#body-btn-save").html('<button class="btn btn-success" id="btn-save" onclick="saveApprove()"><i class="fa fa-check"></i> Approve </button>');
+                }
+                if ("Y" == flag){
+                    $("#body-btn-save").html('<div class="alert alert-success" align="center" style="width: 65%">Telah Diapprove <i class="fa fa-check"><i/></div>');
+                }
+            });
             $("#body-budgeting").html(str);
         })
     }
@@ -954,11 +960,17 @@
         }
     }
 
+    function initForm() {
+        var host = firstpath()+"/bgeksploitasi/initForm_bgeksploitasi.action";
+        post(host);
+    }
+
     function saveApprove() {
         var tahun = $("#sel-tahun").val();
         BgEksploitasiAction.approveFinal(tahun, function (res) {
             if (res.status == "success"){
                 alert("success");
+                initForm();
             } else {
                 alert(res.msg);
             }

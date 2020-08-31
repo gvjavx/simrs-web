@@ -25,7 +25,7 @@
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/BranchAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/BudgetingAction.js"/>'></script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/BgNominasiAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/BgInvestasiAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/KodeRekeningAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/BudgetingNilaiDasarAction.js"/>'></script>
     <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.bootstrap3.js"/>"></script>
@@ -75,7 +75,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Budgeting Biaya</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Budgeting Investasi</h3>
                     </div>
                     <div class="box-body">
                         <%--<s:form id="kasirjalanForm" method="post" namespace="/kasirjalan" action="search_kasirjalan.action" theme="simple" cssClass="form-horizontal">--%>
@@ -421,7 +421,7 @@
 
     function choose() {
         var labelBranch = $("#sel-unit option:selected").text();
-        BgNominasiAction.getListKategoriParameter("BYA", tahun, unit, function (res) {
+        BgInvestasiAction.getListKategoriParameter("INV", tahun, unit, function (res) {
             var str = "";
             $.each(res.list, function (i, item) {
                 str += "<tr>" +
@@ -463,7 +463,7 @@
 
         showDialog('loading');
         dwr.engine.setAsync(true);
-        BgNominasiAction.getListParameterBudgeting("PDT", tahun, unit, "", function (list) {
+        BgInvestasiAction.getListParameterBudgeting("PDT", tahun, unit, "", function (list) {
             dwr.engine.setAsync(false);
             showDialog('close');
             $("#body-budgeting").html("");
@@ -597,13 +597,13 @@
     }
 
     function initForm() {
-        var host = firstpath()+"/bgnominasi/initForm_bgnominasi.action";
+        var host = firstpath()+"/bginvestasi/initForm_bginvestasi.action";
         post(host);
     }
 
     function add(idKategori, branch, tahun, nama) {
         var form = { "budgeting.tahun":tahun, "budgeting.branchId":branch, "budgeting.idKategoriBudgeting":idKategori, "budgeting.namaKategori":nama};
-        var host = firstpath()+"/bgnominasi/add_bgnominasi.action";
+        var host = firstpath()+"/bginvestasi/add_bginvestasi.action";
         post(host, form);
     }
 
@@ -620,7 +620,7 @@
 
         var stJson = JSON.stringify(listData);
         dwr.engine.setAsync(true);
-        BgNominasiAction.setPerhitunganToSession(idParam, stJson, function (res) {
+        BgInvestasiAction.setPerhitunganToSession(idParam, stJson, function (res) {
             dwr.engine.setAsync(false);
             if (res.status == "success"){
                 showDialog('success');
@@ -637,7 +637,7 @@
     }
 
     function refreshAdd() {
-        var host = firstpath()+"/bgnominasi/add_bgnominasi.action";
+        var host = firstpath()+"/bginvestasi/add_bginvestasi.action";
         post(host);
     }
 
@@ -648,7 +648,7 @@
 
         showDialog('loading');
         dwr.engine.setAsync(true);
-        BgNominasiAction.saveAdd(unit, tahun, tipe, function (res) {
+        BgInvestasiAction.saveAdd(unit, tahun, tipe, function (res) {
             dwr.engine.setAsync(false);
             if (res.status == "success"){
                 showDialog('success');

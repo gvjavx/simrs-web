@@ -361,4 +361,17 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
 
         return budgetingList;
     }
+
+    public String checkAvailBudgetingByTahun(String tahun){
+        String SQL = "SELECT * FROM it_akun_budgeting WHERE tahun = :tahun LIMIT 1";
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("tahun", tahun)
+                .list();
+
+        if (results.size() > 0){
+            return "Y";
+        } else {
+            return "N";
+        }
+    }
 }

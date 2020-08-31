@@ -26,7 +26,7 @@ public class NilaiPengadaanDao extends GenericDao<ItAkunNilaiParameterPengadaaan
             criteria.add(Restrictions.eq("id", mapCriteria.get("id").toString()));
         }
         if (mapCriteria.get("id_nilai_param") != null){
-            criteria.add(Restrictions.eq("idNilaiParameter", mapCriteria.get("id_nilai_param").toString()));
+            criteria.add(Restrictions.eq("idNilaiParam", mapCriteria.get("id_nilai_param").toString()));
         }
         if (mapCriteria.get("flag") != null){
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));

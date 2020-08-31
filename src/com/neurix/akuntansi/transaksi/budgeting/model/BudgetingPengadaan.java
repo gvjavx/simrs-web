@@ -43,6 +43,15 @@ public class BudgetingPengadaan{
     private String noKontrakAdendum1;
     private String noKontrakAdendum2;
     private String noKontrakAdendum3;
+    private String idNilaiParam;
+
+    public String getIdNilaiParam() {
+        return idNilaiParam;
+    }
+
+    public void setIdNilaiParam(String idNilaiParam) {
+        this.idNilaiParam = idNilaiParam;
+    }
 
     public BigDecimal getNilaiAdendum1() {
         return nilaiAdendum1;

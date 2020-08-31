@@ -44,4 +44,5 @@ public interface BudgetingBo {
 
     List<BudgetingPengadaan> getTerminPembayaran(String pengadaanId);
     public List<Budgeting> getListLabaRugi(String tahun, String unit, String status);
+    public String ceckAvailBudgetingByTahun(String tahun);
 }

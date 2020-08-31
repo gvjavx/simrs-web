@@ -241,7 +241,44 @@ public class BgEksploitasiAction {
                 budgetingDetail.setSubTotal(param.getNilaiTotal().multiply(new BigDecimal(budgetingDetail.getQty())));
                 budgetingDetail.setTipe(param.getPeriode());
                 budgetingDetail.setRekeningId(param.getRekeningId());
+                budgetingDetail.setIdNilaiParam(param.getIdNilaiParameter());
                 budgetingList.add(budgetingDetail);
+            }
+        }
+        return budgetingList;
+    }
+
+    private List<BudgetingPengadaan> convertParamToBudgetingPengadaan(List<ParameterBudgeting> listParam, String tahun, String unit){
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
+
+        List<BudgetingPengadaan> budgetingList = new ArrayList<>();
+        if (listParam != null && listParam.size() > 0){
+            for (ParameterBudgeting param : listParam){
+
+                ParameterBudgeting parameterBudgeting = new ParameterBudgeting();
+                parameterBudgeting.setIdNilaiParameter(param.getIdNilaiParameter());
+                parameterBudgeting.setFlag("Y");
+
+                List<ItAkunNilaiParameterPengadaaanEntity> pengadaaanEntities = budgetingPerhitunganBo.getListEntityNilaiParameterPengadaan(parameterBudgeting);
+                if (pengadaaanEntities != null && pengadaaanEntities.size() > 0){
+
+                    for (ItAkunNilaiParameterPengadaaanEntity pengadaaanEntity : pengadaaanEntities){
+
+                        BudgetingPengadaan budgetingPengadaan = new BudgetingPengadaan();
+                        budgetingPengadaan.setNamPengadaan(pengadaaanEntity.getNama());
+                        budgetingPengadaan.setNilai(pengadaaanEntity.getNilai());
+                        budgetingPengadaan.setQty(pengadaaanEntity.getQty());
+                        budgetingPengadaan.setSubTotal(param.getNilaiTotal());
+                        budgetingPengadaan.setTipe(param.getTipe());
+                        budgetingPengadaan.setRekeningId(param.getRekeningId());
+                        budgetingPengadaan.setIdNilaiParam(param.getIdNilaiParameter());
+                        budgetingList.add(budgetingPengadaan);
+                    }
+                }
+                // membuat object budgeting baru;
+                // convert null to 0 masing - masing nilai
             }
         }
         return budgetingList;
@@ -280,6 +317,7 @@ public class BgEksploitasiAction {
 
                     List<Budgeting> budgetingList =  convertParamToListBudgeting(nilaParams, tahun, dataBranch.getBranchId());
                     List<BudgetingDetail> budgetingDetailList = convertParamToBudgetingDetail(nilaParams, tahun, dataBranch.getBranchId());
+                    List<BudgetingPengadaan> budgetingPengadaans = convertParamToBudgetingPengadaan(nilaParams, tahun, dataBranch.getBranchId());
 
                     Budgeting budgeting = new Budgeting();
                     budgeting.setBranchId(dataBranch.getBranchId());
@@ -292,9 +330,10 @@ public class BgEksploitasiAction {
                     budgeting.setCreatedWho(userLogin);
                     budgeting.setLastUpdate(time);
                     budgeting.setLastUpdateWho(userLogin);
+                    budgeting.setJenis("ADD");
 
                     try {
-                        budgetingBo.saveAddBudgeting(budgetingList, budgetingDetailList, new ArrayList<>(), "FINAL", budgeting);
+                        budgetingBo.saveAddBudgeting(budgetingList, budgetingDetailList, budgetingPengadaans, "FINAL", budgeting);
                     } catch (GeneralBOException e){
                         logger.info("[BgPendapatanAction.approveFinal] ERROR ", e);
                         response.setStatus("error");
@@ -378,6 +417,12 @@ public class BgEksploitasiAction {
             nilaiTotal = nilaiTotal.add(param.getNilaiTotal());
         }
         return nilaiTotal;
+    }
+
+    public String checkIsAvaliable(String tahun){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
+        return budgetingBo.ceckAvailBudgetingByTahun(tahun);
     }
 
 }

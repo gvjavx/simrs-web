@@ -518,8 +518,9 @@ public class BgInvestasiAction {
         BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<ParameterBudgeting> sessionParam = (List<ParameterBudgeting>) session.getAttribute("listOfParam");
-        List<ItAkunPerhitunganBudgetingEntity> sessionPerhitungan = (List<ItAkunPerhitunganBudgetingEntity>) session.getAttribute("listOfPerhitungan");
         List<ParameterBudgeting> sessionNilaiParam = (List<ParameterBudgeting>) session.getAttribute("listOfNilaiParam");
+        List<ItAkunNilaiParameterPengadaaanEntity> sessionPengadaan = (List<ItAkunNilaiParameterPengadaaanEntity>) session.getAttribute("listOfPengadaan");
+
 
         String idNilaiParam = "";
         boolean isNew = false;
@@ -536,12 +537,12 @@ public class BgInvestasiAction {
             isNew = nilaiParamsFilter.size() == 0;
             if (!isNew){
 
-                if (sessionPerhitungan != null){
+                if (sessionPengadaan != null){
                     // dari lambda, jika ada hapus dahulu inputkan nilai baru;
-                    List<ItAkunPerhitunganBudgetingEntity> listPerhitungan = sessionPerhitungan.stream().filter(p->p.getIdNilaiParameter().equalsIgnoreCase(nilaiParamsFilter.get(0).getIdNilaiParameter())).collect(Collectors.toList());
+                    List<ItAkunNilaiParameterPengadaaanEntity> listPerhitungan = sessionPengadaan.stream().filter(p->p.getIdNilaiParam().equalsIgnoreCase(nilaiParamsFilter.get(0).getIdNilaiParameter())).collect(Collectors.toList());
                     if (listPerhitungan.size() > 0 ){
-                        for (ItAkunPerhitunganBudgetingEntity perhitungan : listPerhitungan){
-                            sessionPerhitungan.remove(perhitungan);
+                        for (ItAkunNilaiParameterPengadaaanEntity perhitungan : listPerhitungan){
+                            sessionPengadaan.remove(perhitungan);
                         }
                     }
                 }
@@ -561,43 +562,45 @@ public class BgInvestasiAction {
             idNilaiParam = budgetingPerhitunganBo.getNextIdNilaiParameter(unit, tahun, idParam);
         }
 
-        if (sessionPerhitungan != null){
+        if (sessionPengadaan != null){
             // dari lambda, jika ada hapus dahulu inputkan nilai baru;
-            List<ItAkunPerhitunganBudgetingEntity> listPerhitungan = sessionPerhitungan.stream().filter(p->p.getIdParameterBudgeting().equalsIgnoreCase(idParam)).collect(Collectors.toList());
+            List<ItAkunNilaiParameterPengadaaanEntity> listPerhitungan = sessionPengadaan.stream().filter(p->p.getIdNilaiParam().equalsIgnoreCase(idParam)).collect(Collectors.toList());
             if (listPerhitungan.size() > 0 ){
-                for (ItAkunPerhitunganBudgetingEntity perhitungan : listPerhitungan){
-                    sessionPerhitungan.remove(perhitungan);
+                for (ItAkunNilaiParameterPengadaaanEntity perhitungan : listPerhitungan){
+                    sessionPengadaan.remove(perhitungan);
                 }
             }
         } else {
             // jika tidak ada set list baru;
-            sessionPerhitungan = new ArrayList<>();
+            sessionPengadaan = new ArrayList<>();
         }
 
         // inputkan nilai baru dari st JSON;
         JSONArray json = new JSONArray(stPerhitungan);
         for (int i = 0; i < json.length(); i++) {
             JSONObject obj = json.getJSONObject(i);
-            ItAkunPerhitunganBudgetingEntity perhitungan = new ItAkunPerhitunganBudgetingEntity();
+            ItAkunNilaiParameterPengadaaanEntity perhitungan = new ItAkunNilaiParameterPengadaaanEntity();
             if (!"".equalsIgnoreCase(obj.get("nilai").toString())){
                 perhitungan.setNilai(obj.get("nilai") == null ? new BigDecimal(0) : new BigDecimal(obj.get("nilai").toString()) );
             }
-            if (!"".equalsIgnoreCase(obj.get("opr").toString())){
-                perhitungan.setOperator(obj.get("opr").toString());
+            if (!"".equalsIgnoreCase(obj.get("qty").toString())){
+                perhitungan.setQty(obj.get("qty") == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj.get("qty").toString()) );
             }
-            perhitungan.setUrutan(i);
-            perhitungan.setIdParameterBudgeting(idParam);
-            perhitungan.setIdNilaiParameter(idNilaiParam);
+            if (!"".equalsIgnoreCase(obj.get("nama").toString())){
+                perhitungan.setNama(obj.get("nama").toString());
+            }
+            perhitungan.setNilaiTotal(perhitungan.getNilai().multiply(new BigDecimal(perhitungan.getQty())));
+            perhitungan.setIdNilaiParam(idNilaiParam);
 
             // tambahkan ke session perhitungan
-            sessionPerhitungan.add(perhitungan);
+            sessionPengadaan.add(perhitungan);
         }
 
         // hitung dari list filter berdasarkan id Params;
         // hasil perhitungan untuk nilai pada parameter budgeting;
         String finalIdNilaiParam = idNilaiParam;
-        List<ItAkunPerhitunganBudgetingEntity> listPerhitungan = sessionPerhitungan.stream().filter(p->p.getIdNilaiParameter().equalsIgnoreCase(finalIdNilaiParam)).collect(Collectors.toList());
-        BigDecimal nilaiBudgeting = budgetingPerhitunganBo.hitungNilaiBudgeting(listPerhitungan);
+        List<ItAkunNilaiParameterPengadaaanEntity> listPerhitungan = sessionPengadaan.stream().filter(p->p.getIdNilaiParam().equalsIgnoreCase(finalIdNilaiParam)).collect(Collectors.toList());
+        BigDecimal nilaiBudgeting = hitungTotalPengadaanFromListEntityNilaiPengadaan(listPerhitungan);
         if (listPerhitungan.size() > 0 && !isNew) {
 
             // set nilai ke session Params
@@ -629,12 +632,22 @@ public class BgInvestasiAction {
 
         session.removeAttribute("listOfNilaiParam");
         session.setAttribute("listOfNilaiParam", sessionNilaiParam);
-        session.removeAttribute("listOfPerhitungan");
-        session.setAttribute("listOfPerhitungan", sessionPerhitungan);
+        session.removeAttribute("listOfPengadaan");
+        session.setAttribute("listOfPengadaan", sessionPengadaan);
 
-        logger.info("[BgNominasiAction.setPerhitunganToSession] END <<<");
+        logger.info("[BgInvestasiAction.setPerhitunganToSession] END <<<");
         response.setStatus("success");
         return response;
+    }
+
+    private BigDecimal hitungTotalPengadaanFromListEntityNilaiPengadaan(List<ItAkunNilaiParameterPengadaaanEntity> list){
+        BigDecimal nilaiTotal = new BigDecimal(0);
+        if (list != null && list.size() > 0){
+            for (ItAkunNilaiParameterPengadaaanEntity pengadaaanEntity : list){
+                nilaiTotal = nilaiTotal.add(pengadaaanEntity.getNilaiTotal());
+            }
+        }
+        return nilaiTotal;
     }
 
     public CrudResponse saveAdd(String unit, String tahun, String tipe){
@@ -648,6 +661,7 @@ public class BgInvestasiAction {
         List<ParameterBudgeting> sessionParam = (List<ParameterBudgeting>) session.getAttribute("listOfParam");
         List<ItAkunPerhitunganBudgetingEntity> sessionPerhitungan = (List<ItAkunPerhitunganBudgetingEntity>) session.getAttribute("listOfPerhitungan");
         List<ParameterBudgeting> sessionNilaiParam = (List<ParameterBudgeting>) session.getAttribute("listOfNilaiParam");
+        List<ItAkunNilaiParameterPengadaaanEntity> sessionPengadaan = (List<ItAkunNilaiParameterPengadaaanEntity>) session.getAttribute("listOfPengadaan");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
@@ -666,7 +680,7 @@ public class BgInvestasiAction {
         perhitunganBudgeting.setTipe(tipe);
 
         try {
-            budgetingPerhitunganBo.saveAddPerhitunganBudgeting(convertNilaiParameterToEntity(sessionNilaiParam), sessionPerhitungan, new ArrayList<>(), perhitunganBudgeting);
+            budgetingPerhitunganBo.saveAddPerhitunganBudgeting(convertNilaiParameterToEntity(sessionNilaiParam), sessionPerhitungan, sessionPengadaan, perhitunganBudgeting);
             response.setStatus("success");
         } catch (GeneralBOException e){
             logger.info("[BgNominasiAction.saveAdd] ERROR ", e);
@@ -924,6 +938,16 @@ public class BgInvestasiAction {
         }
 
         return listDivisi;
+    }
+
+    public List<ItAkunNilaiParameterPengadaaanEntity> getListPengadaanByNilaiParam(String idNilaiParam){
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<ItAkunNilaiParameterPengadaaanEntity> sessionPengadaan = (List<ItAkunNilaiParameterPengadaaanEntity>) session.getAttribute("listOfPengadaan");
+        if (sessionPengadaan != null && sessionPengadaan.size() > 0){
+            List<ItAkunNilaiParameterPengadaaanEntity> filterPengadaan = sessionPengadaan.stream().filter(p->p.getIdNilaiParam().equalsIgnoreCase(idNilaiParam)).collect(Collectors.toList());
+            return filterPengadaan;
+        }
+        return new ArrayList<>();
     }
 
 
