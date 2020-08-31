@@ -458,6 +458,8 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
                 ImAkunParameterBudgetingEntity parameterBudgetingEntity = parameterBudgetingDao.getById("id", nilaiParam.getIdParameter());
                 if (parameterBudgetingEntity != null){
 
+                    parameterBudgeting.setIdKategoriBudgeting(parameterBudgetingEntity.getIdKategoriBudgeting());
+
                     ImAkunParameterBudgetingRekeningEntity parameterBudgetingRekeningEntity = parameterBudgetingRekeningDao.getById("id", parameterBudgetingEntity.getIdParamRekening());
                     if (parameterBudgetingEntity != null){
                         parameterBudgeting.setRekeningId(parameterBudgetingRekeningEntity.getRekeningId());

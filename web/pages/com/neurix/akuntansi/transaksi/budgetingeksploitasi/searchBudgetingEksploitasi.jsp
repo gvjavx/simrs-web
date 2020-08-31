@@ -178,7 +178,7 @@
 
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-th-list"></i> List Data Budgeting :
+                        <h3 class="box-title"><i class="fa fa-th-list"></i> List Data Draft Budgeting :
                         <strong><span id="label-tahun"></span></strong>
                         </h3>
                     </div>

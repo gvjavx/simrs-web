@@ -146,7 +146,7 @@
                     </div>
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-th-list"></i>
-                            List kategori Budgeting Biaya <strong><span id="label-tahun"></span> - <span id="label-branch"></span></strong>
+                            List kategori Budgeting Investasi <strong><span id="label-tahun"></span></strong>
                         </h3>
                     </div>
                     <div class="box-body">
@@ -440,21 +440,21 @@
 //                showDialog('close');
 //            });
         });
-
-        BudgetingNilaiDasarAction.getListNilaiDasarEdit(tahun, function (list) {
-            var str = "";
-            $.each(list, function (i, item) {
-                str += "<div class=\"row\">"+
-                    "<label class=\"control-label col-sm-4\" style=\"text-align: right\">"+item.keterangan+"</label>" +
-                    "<div class=\"col-sm-4\">" +
-                    "<input type=\"number\" class=\"form-control\" id=\"edit_"+item.idNilaiDasar+"\" value=\""+item.nilai+"\" align='right' readonly/>" +
-                    "</div>" +
-                    "</div>";
-            });
-            $("#body-nilai-dasar").html(str);
-            //console.log(str);
-            //console.log(listOfId);
-        });
+//
+//        BudgetingNilaiDasarAction.getListNilaiDasarEdit(tahun, function (list) {
+//            var str = "";
+//            $.each(list, function (i, item) {
+//                str += "<div class=\"row\">"+
+//                    "<label class=\"control-label col-sm-4\" style=\"text-align: right\">"+item.keterangan+"</label>" +
+//                    "<div class=\"col-sm-4\">" +
+//                    "<input type=\"number\" class=\"form-control\" id=\"edit_"+item.idNilaiDasar+"\" value=\""+item.nilai+"\" align='right' readonly/>" +
+//                    "</div>" +
+//                    "</div>";
+//            });
+//            $("#body-nilai-dasar").html(str);
+//            //console.log(str);
+//            //console.log(listOfId);
+//        });
 
     }
 
@@ -484,20 +484,20 @@
 
         });
 
-        BudgetingNilaiDasarAction.getListNilaiDasarEdit(tahun, function (list) {
-            var str = "";
-            $.each(list, function (i, item) {
-                str += "<div class=\"row\">"+
-                    "<label class=\"control-label col-sm-4\" style=\"text-align: right\">"+item.keterangan+"</label>" +
-                    "<div class=\"col-sm-4\">" +
-                    "<input type=\"number\" class=\"form-control\" id=\"edit_"+item.idNilaiDasar+"\" value=\""+item.nilai+"\" align='right' readonly/>" +
-                    "</div>" +
-                    "</div>";
-            });
-            $("#body-nilai-dasar").html(str);
-            //console.log(str);
-            //console.log(listOfId);
-        });
+//        BudgetingNilaiDasarAction.getListNilaiDasarEdit(tahun, function (list) {
+//            var str = "";
+//            $.each(list, function (i, item) {
+//                str += "<div class=\"row\">"+
+//                    "<label class=\"control-label col-sm-4\" style=\"text-align: right\">"+item.keterangan+"</label>" +
+//                    "<div class=\"col-sm-4\">" +
+//                    "<input type=\"number\" class=\"form-control\" id=\"edit_"+item.idNilaiDasar+"\" value=\""+item.nilai+"\" align='right' readonly/>" +
+//                    "</div>" +
+//                    "</div>";
+//            });
+//            $("#body-nilai-dasar").html(str);
+//            //console.log(str);
+//            //console.log(listOfId);
+//        });
 
     }
 

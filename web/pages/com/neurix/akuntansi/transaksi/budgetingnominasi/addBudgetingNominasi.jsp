@@ -492,6 +492,7 @@
         listDivisi();
     });
 
+    var flagNilaiDasar  = "";
     var listOfParam     = [];
     var n               = 0;
     var tipe            = '<s:property value="budgeting.tipe"/>';
@@ -517,10 +518,11 @@
                         "<td>" + item.keterangan + "</td>" +
                         "<td align='right'>" + item.nilai + "</td>" +
                     "</tr>";
+                flagNilaiDasar = "Y";
             });
 
             $("#body-nilai-dasar").html(str);
-            console.log(str);
+//            console.log(str);
         });
     }
 
@@ -569,7 +571,7 @@
     }
 
     function listDivisi() {
-        BgNominasiAction.getListDivisiBudgeting(idKategori, "BYA", function (list) {
+        BgNominasiAction.getListDivisiBudgeting(idKategori, "BYA", unit, tahun, function (list) {
             var str = "";
             $.each(list, function (i, item) {
                 str += '<tr>' +
@@ -727,7 +729,7 @@
         var label = $("#label-head-"+idParam).text();
 
         var str = "<div class=\"row\">" +
-            "<label class=\"col-md-4\">Nilai Pendapatan</label>" +
+            "<label class=\"col-md-4\">Nilai Biaya</label>" +
             "<div class=\"col-md-6\">" +
             "<input type=\"number\" class=\"form-control\" id=\"total-"+n+"-"+idParam+"\" />" +
             "</div>" +

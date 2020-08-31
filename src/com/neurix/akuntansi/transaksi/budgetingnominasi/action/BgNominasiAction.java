@@ -865,11 +865,30 @@ public class BgNominasiAction {
             logger.info("[BgNominasiAction.getListDivisiBudgeting] ERROR ", e);
         }
 
+        // cari ada di data base jika ada
+        if (sessionNilaiParam == null){
+            sessionNilaiParam = new ArrayList<>();
+            ParameterBudgeting parameterBudgeting = new ParameterBudgeting();
+            parameterBudgeting.setBranchId(branch);
+            parameterBudgeting.setTahun(tahun);
+            parameterBudgeting.setMasterId(masterId);
+            parameterBudgeting.setFlag("Y");
+
+            try {
+                sessionNilaiParam = budgetingPerhitunganBo.getNilaiParameterByNilaiParam(parameterBudgeting);
+            } catch (GeneralBOException e){
+                logger.info("[BgNominasiAction.getListDivisiBudgeting] ERROR ", e);
+            }
+
+            session.removeAttribute("listOfNilaiParam");
+            session.setAttribute("listOfNilaiParam", sessionNilaiParam);
+        }
+
         // cari session dengan parameter master dan divisi;
         // hitung nilai total sesuai master dan divisi;
         if (listDivisi.size() > 0){
             for (ParameterBudgeting paramDivisi : listDivisi){
-                if (sessionNilaiParam != null){
+                if (sessionNilaiParam != null && sessionNilaiParam.size() > 0){
                     List<ParameterBudgeting> nilaiParamsFilter = sessionNilaiParam.stream().filter(
                             p->
                                     p.getMasterId().equalsIgnoreCase(masterId) &&

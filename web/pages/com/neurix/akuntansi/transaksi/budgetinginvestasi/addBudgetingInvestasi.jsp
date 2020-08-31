@@ -90,7 +90,7 @@
 
                             <div class="row">
                                 <div class="col-md-6 col-md-offset-3">
-                                    <h4>Nilai Dasar : </h4>
+                                    <%--<h4>Nilai Dasar : </h4>--%>
                                     <table class="table table-bordered table-striped">
                                         <tbody id="body-nilai-dasar">
                                         </tbody>
@@ -492,6 +492,7 @@
         listDivisi();
     });
 
+    var flagNilaiDasar  = "";
     var listOfParam     = [];
     var n               = 0;
     var tipe            = '<s:property value="budgeting.tipe"/>';
@@ -517,10 +518,11 @@
                     "<td>" + item.keterangan + "</td>" +
                     "<td align='right'>" + item.nilai + "</td>" +
                     "</tr>";
+                flagNilaiDasar = "Y";
             });
 
-            $("#body-nilai-dasar").html(str);
-            console.log(str);
+//            $("#body-nilai-dasar").html(str);
+//            console.log(str);
         });
     }
 
@@ -569,7 +571,7 @@
     }
 
     function listDivisi() {
-        BgInvestasiAction.getListDivisiBudgeting(idKategori, "INV", function (list) {
+        BgInvestasiAction.getListDivisiBudgeting(idKategori, "INV", unit, tahun, function (list) {
             var str = "";
             $.each(list, function (i, item) {
                 str += '<tr>' +
@@ -698,52 +700,41 @@
     }
 
     function showAdd(idParam, divisi, master) {
-        $("#modal-add").modal('show');
-        $("#id-param").val(idParam);
-        listOfParam = [];
-        n = 0;
 
+        if ("Y" == flagNilaiDasar){
+            alert("Nilai Dasar Belum Ada untuk Tahun Tersebut.");
+        } else {
 
-        var label = $("#label-head-"+idParam).text();
+            $("#modal-add").modal('show');
+            $("#id-param").val(idParam);
+            listOfParam = [];
+            n = 0;
 
-        var str = "<div class=\"row\">" +
-            "<div class=\"col-md-5\"><input type='text' class=\"form-control\" id=\"nama-"+n+"-" +idParam+ "\" placeholder='nama'/></div>" +
-            "<div class=\"col-md-4\">" +
-            "<input type=\"number\" class=\"form-control\" id=\"total-"+n+"-"+idParam+"\" placeholder='nilai' />" +
-            "</div>" +
-            "<div class=\"col-md-3\">"+
-            "<input type=\"number\" class=\"form-control\" id=\"qty-"+n+"-"+idParam+"\" placeholder='qty' />" +
+            var label = $("#label-head-"+idParam).text();
 
-//            "<div class=\"col-md-4\">"+
-//            "<select id='opr-"+ n +"-"+ idParam +"' class='form-control'>" +
-//            "<option value='='>(=) Sama Dengan</option>" +
-//            "<option value='*'>(X) Kali</option>" +
-//            "<option value='+'>(+) Tambah</option>" +
-//            "<option value='-'>(-) Kurangi</option>" +
-//            "<option value='/'>(/) Bagi</option>" +
-//            "<option value='='>(=) Sama Dengan</option>" +
-//            "</select>" +
-            "</div>" +
-            "</div>";
+            var str = "<div class=\"row\">" +
+                "<div class=\"col-md-5\"><input type='text' class=\"form-control\" id=\"nama-"+n+"-" +idParam+ "\" placeholder='nama'/></div>" +
+                "<div class=\"col-md-4\">" +
+                "<input type=\"number\" class=\"form-control\" id=\"total-"+n+"-"+idParam+"\" placeholder='nilai' />" +
+                "</div>" +
+                "<div class=\"col-md-3\">"+
+                "<input type=\"number\" class=\"form-control\" id=\"qty-"+n+"-"+idParam+"\" placeholder='qty' />" +
+                "</div>" +
+                "</div>";
 
-        n = n + 1;
+            n = n + 1;
 
-        str += "<div id='hitung-"+ n +"'></div>";
+            str += "<div id='hitung-"+ n +"'></div>";
 
-        listOfParam.push({"id":"total-"+idParam, "opr":"="});
+            listOfParam.push({"id":"total-"+idParam, "opr":"="});
 
-//        listOfParam.push(
-//            {"id":"total-"+idParam, "opr":"*"},
-//            {"id":"tt-"+idParam, "opr":"*"},
-//            {"id":"bor-"+idParam, "opr":"="}
-//        );
+            $("#id-param").val(idParam);
+            $("#masterid").val(master);
+            $("#divisiid").val(divisi);
+            $("#label-edit").text(label);
+            $("#body-nilai").html(str);
+        }
 
-
-        $("#id-param").val(idParam);
-        $("#masterid").val(master);
-        $("#divisiid").val(divisi);
-        $("#label-edit").text(label);
-        $("#body-nilai").html(str);
     }
 
     function showDetail() {

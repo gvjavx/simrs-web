@@ -362,11 +362,12 @@
         choose();
     });
 
-    var tipe = '<s:property value="budgeting.tipe"/>';
-    var flagDisable = '<s:property value="budgeting.flagDisable"/>';
-    var unit = '<s:property value="budgeting.branchId"/>';
-    var tahun = '<s:property value="budgeting.tahun"/>';
-    var listOfParam = [];
+    var flagNilaiDasar  = "";
+    var tipe            = '<s:property value="budgeting.tipe"/>';
+    var flagDisable     = '<s:property value="budgeting.flagDisable"/>';
+    var unit            = '<s:property value="budgeting.branchId"/>';
+    var tahun           = '<s:property value="budgeting.tahun"/>';
+    var listOfParam     = [];
 
     function chekTipe() {
         if ("Y" == flagDisable){
@@ -454,6 +455,7 @@
                     "<input type=\"number\" class=\"form-control\" id=\"edit_"+item.idNilaiDasar+"\" value=\""+item.nilai+"\" align='right' readonly/>" +
                     "</div>" +
                     "</div>";
+                flagNilaiDasar = "Y";
             });
             $("#body-nilai-dasar").html(str);
             //console.log(str);

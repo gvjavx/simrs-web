@@ -637,6 +637,25 @@ public class BgPendapatanAction {
             logger.info("[BgPendapatanAction.getListMasterBudgeting] ERROR ", e);
         }
 
+        // cari ada di data base jika ada
+        if (sessionNilaiParam == null){
+            sessionNilaiParam = new ArrayList<>();
+            ParameterBudgeting parameterBudgeting = new ParameterBudgeting();
+            parameterBudgeting.setBranchId(branch);
+            parameterBudgeting.setTahun(tahun);
+//            parameterBudgeting.setMasterId(masterId);
+            parameterBudgeting.setFlag("Y");
+
+            try {
+                sessionNilaiParam = budgetingPerhitunganBo.getNilaiParameterByNilaiParam(parameterBudgeting);
+            } catch (GeneralBOException e){
+                logger.info("[BgPendapatanAction.getListMasterBudgeting] ERROR ", e);
+            }
+
+            session.removeAttribute("listOfNilaiParam");
+            session.setAttribute("listOfNilaiParam", sessionNilaiParam);
+        }
+
         // cari session dengan parameter master;
         // hitung nilai total sesuai master;
         if (listMaster.size() > 0){
@@ -680,6 +699,25 @@ public class BgPendapatanAction {
             listDivisi = budgetingPerhitunganBo.getListDivisiParameterBudgetingByKategororiAndMaster(idKategori, masterId);
         } catch (GeneralBOException e){
             logger.info("[BgPendapatanAction.getListDivisiBudgeting] ERROR ", e);
+        }
+
+        // cari ada di data base jika ada
+        if (sessionNilaiParam == null){
+            sessionNilaiParam = new ArrayList<>();
+            ParameterBudgeting parameterBudgeting = new ParameterBudgeting();
+            parameterBudgeting.setBranchId(branch);
+            parameterBudgeting.setTahun(tahun);
+            parameterBudgeting.setMasterId(masterId);
+            parameterBudgeting.setFlag("Y");
+
+            try {
+                sessionNilaiParam = budgetingPerhitunganBo.getNilaiParameterByNilaiParam(parameterBudgeting);
+            } catch (GeneralBOException e){
+                logger.info("[BgPendapatanAction.getListDivisiBudgeting] ERROR ", e);
+            }
+
+            session.removeAttribute("listOfNilaiParam");
+            session.setAttribute("listOfNilaiParam", sessionNilaiParam);
         }
 
         // cari session dengan parameter master dan divisi;
