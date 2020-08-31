@@ -401,6 +401,14 @@
                                 <%--</div>--%>
                                 <%--</div>--%>
                             </div>
+
+                            <br>
+                            <div class="row">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-6" id="display-hitung">
+
+                                </div>
+                            </div>
                         </div>
                         <input type="hidden" id="id-param"/>
                         <input type="hidden" id="ed-unit"/>
@@ -473,11 +481,7 @@
                     </div>
 
                 </div>
-                <div class="row">
-                    <div class="col-md-8 col-md-offset-2" id="display-hitung">
 
-                    </div>
-                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" id="save-hotung" onclick="addHitung()"><i class="fa fa-check"></i> Save</button>
@@ -690,20 +694,21 @@
     }
 
     function showPerhitungan(valop, idParam) {
-        var str = "";
+        var str = "<span>";
         var operator = "";
         var nilaiTotal = 0;
         if("=" == valop){
-            for (i = 0; i>n; i++){
+            for (i = 0; i<n; i++){
                 var nilai   = $("#total-" + i + "-" + idParam).val();
                 var opr     = $("#opr-" + i + "-" + idParam).val();
-                console.log("opr -> " + opr + "nilai -> "+ nilai);
-                str += '' + nilai + ' ' + opr + ' ';
+                console.log("i -> "+i);
+                console.log("opr -> " + opr + " nilai -> "+ nilai);
+                str += " " + nilai + " " + opr + " ";
                 if (operator == ""){
                     nilaiTotal = nilai;
                     operator = opr;
                 } else {
-                    nilaiTotal = hitung(nilaiTotal, operator, nilai)
+                    nilaiTotal = hitung(nilaiTotal, operator, nilai);
                     operator = opr;
                 }
 
@@ -711,8 +716,9 @@
                     str += nilaiTotal;
                 }
             }
+            str += "</span>";
             console.log("n -> "+n);
-            console.log("i -> "+i);
+//            console.log("i -> "+i);
             console.log("valop -> "+valop+", param -> "+idParam+", str -> " + str);
             $("#display-hitung").html(str);
         }
@@ -721,19 +727,19 @@
 
     function hitung(nilai1, opr, nilai2){
         if ("+" == opr){
-            return parseInt(nilai1) + parseInt(nilai2);
+            return parseInt(nilai1) + parseFloat(nilai2);
         }
         if ("-" == opr){
-            return parseInt(nilai1) - parseInt(nilai2);
+            return parseInt(nilai1) - parseFloat(nilai2);
         }
         if ("/" == opr){
-            return parseInt(nilai1) / parseInt(nilai2);
+            return parseInt(nilai1) / parseFloat(nilai2);
         }
         if ("*" == opr){
-            return parseInt(nilai1) * parseInt(nilai2);
+            return parseInt(nilai1) * parseFloat(nilai2);
         }
         if ("+" == opr){
-            return parseInt(nilai1) + parseInt(nilai2);
+            return parseInt(nilai1) + parseFloat(nilai2);
         }
     }
 
