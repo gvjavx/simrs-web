@@ -708,7 +708,7 @@
         if (value == "combo"){
             BudgetingNilaiDasarAction.getListNilaiDasarEdit(tahun, function (list) {
                 $.each(list, function (i, item) {
-                    str += "<option value='"+item.nilai+"' >"+item.keterangan+"</option>";
+                    str += "<option value='"+item.nilaiTotal+"' >"+item.keterangan+"</option>";
                 });
                 $("#"+id).html(str);
                 $("#"+id).removeAttr('onchange');

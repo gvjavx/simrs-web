@@ -473,6 +473,11 @@
                     </div>
 
                 </div>
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2" id="display-hitung">
+
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" id="save-hotung" onclick="addHitung()"><i class="fa fa-check"></i> Save</button>
@@ -570,7 +575,7 @@
     }
 
     function showListMaster() {
-        BgPendapatanAction.getListMasterBudgeting(idKategori, function (list) {
+        BgPendapatanAction.getListMasterBudgeting(idKategori, unit, tahun, function (list) {
             var str = "";
             $.each(list, function (i, item) {
                 str += '<tr>' +
@@ -666,7 +671,8 @@
             "</div>" +
             "</div>" +
             "<div class=\"col-md-2\">"+
-                "<select id='opr-"+ n +"-"+ idParam +"' class='form-control'>" +
+                "<select id='opr-"+ n +"-"+ idParam +"' class='form-control' onchange=\"showPerhitungan(this.value, \'"+idParam+"\')\">" +
+                    "<option value=''>[Select]</option>" +
                     "<option value='='>(=) Sama Dengan</option>" +
                     "<option value='*'>(X) Kali</option>" +
                     "<option value='+'>(+) Tambah</option>" +
@@ -681,6 +687,54 @@
         str += "<div id='hitung-"+ n +"'></div>";
         $("#hitung-" + i ).html(str);
         console.log("n = " + i);
+    }
+
+    function showPerhitungan(valop, idParam) {
+        var str = "";
+        var operator = "";
+        var nilaiTotal = 0;
+        if("=" == valop){
+            for (i = 0; i>n; i++){
+                var nilai   = $("#total-" + i + "-" + idParam).val();
+                var opr     = $("#opr-" + i + "-" + idParam).val();
+                console.log("opr -> " + opr + "nilai -> "+ nilai);
+                str += '' + nilai + ' ' + opr + ' ';
+                if (operator == ""){
+                    nilaiTotal = nilai;
+                    operator = opr;
+                } else {
+                    nilaiTotal = hitung(nilaiTotal, operator, nilai)
+                    operator = opr;
+                }
+
+                if (i == n-1){
+                    str += nilaiTotal;
+                }
+            }
+            console.log("n -> "+n);
+            console.log("i -> "+i);
+            console.log("valop -> "+valop+", param -> "+idParam+", str -> " + str);
+            $("#display-hitung").html(str);
+        }
+
+    }
+
+    function hitung(nilai1, opr, nilai2){
+        if ("+" == opr){
+            return parseInt(nilai1) + parseInt(nilai2);
+        }
+        if ("-" == opr){
+            return parseInt(nilai1) - parseInt(nilai2);
+        }
+        if ("/" == opr){
+            return parseInt(nilai1) / parseInt(nilai2);
+        }
+        if ("*" == opr){
+            return parseInt(nilai1) * parseInt(nilai2);
+        }
+        if ("+" == opr){
+            return parseInt(nilai1) + parseInt(nilai2);
+        }
     }
 
     function changeInput(id, value) {
@@ -701,8 +755,8 @@
 
     function showAdd(idParam, divisi, master) {
 
-        if ("Y" == flagNilaiDasar){
-            alert("Nilai Dasar Belum Ada untuk Tahun Tersebut.");
+        if ("Y" != flagNilaiDasar){
+            alert("Nilai Dasar Belum Ada untuk Tahun Tersebut");
         } else {
             $("#modal-add").modal('show');
             $("#id-param").val(idParam);
@@ -719,13 +773,13 @@
                 "</div>" +
                 "<div class=\"col-md-2\">"+
 //            "<div class=\"col-md-4\">"+
-                "<select id='opr-"+ n +"-"+ idParam +"' class='form-control'>" +
+                "<select id='opr-"+ n +"-"+ idParam +"' class='form-control' onchange=\"showPerhitungan(this.value, \'"+idParam+"\')\">" +
+                "<option value=''>[Select]</option>" +
                 "<option value='='>(=) Sama Dengan</option>" +
                 "<option value='*'>(X) Kali</option>" +
                 "<option value='+'>(+) Tambah</option>" +
                 "<option value='-'>(-) Kurangi</option>" +
                 "<option value='/'>(/) Bagi</option>" +
-                "<option value='='>(=) Sama Dengan</option>" +
                 "</select>" +
                 "</div>" +
                 "</div>";
