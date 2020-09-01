@@ -13,6 +13,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_mpp_evaluasi_awal"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_evaluasi_awal">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_evaluasi_awal"></p>
+                    </div>
                     <div class="btn-group">
                         <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
                         </button>
@@ -36,24 +40,28 @@
                             <td>Identifikasi / Skrining</td>
                             <td width="20%" align="center">
                                 <img id="btn_mpp_identifikasi" class="hvr-grow" onclick="detailFormMpp('identifikasi')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_identifikasi" class="hvr-grow" onclick="conMPP('identifikasi', 'evaluasi_awal')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_mpp_asesmen">
                             <td>Asesmen</td>
                             <td width="20%" align="center">
                                 <img id="btn_mpp_asesmen" class="hvr-grow" onclick="detailFormMpp('asesmen')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_asesmen" class="hvr-grow" onclick="conMPP('asesmen', 'evaluasi_awal')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_mpp_identifikasi_resiko">
                             <td>Identifikasi Masalah Resiko</td>
                             <td width="20%" align="center">
                                 <img id="btn_mpp_identifikasi_resiko" class="hvr-grow" onclick="detailFormMpp('identifikasi_resiko')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_identifikasi_resiko" class="hvr-grow" onclick="conMPP('identifikasi_resiko', 'evaluasi_awal')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_mpp_perencanaan_mpp">
                             <td>Perencanaan Manajemen Pelaksanaan Pasien (MPP)</td>
                             <td width="20%" align="center">
                                 <img id="btn_mpp_perencanaan_mpp" class="hvr-grow" onclick="detailFormMpp('perencanaan_mpp')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_perencanaan_mpp" class="hvr-grow" onclick="conMPP('perencanaan_mpp', 'evaluasi_awal')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

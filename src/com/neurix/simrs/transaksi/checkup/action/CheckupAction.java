@@ -3517,7 +3517,10 @@ public class CheckupAction extends BaseMasterAction {
                 response = checkupBo.getAlergi(id);
             }
             if("penunjang_medis".equalsIgnoreCase(key)){
-                response = checkupBo.getPenunjangMedis(id);
+                response = checkupBo.getPenunjangMedis(id, null);
+            }
+            if("lab".equalsIgnoreCase(key) || "radiologi".equalsIgnoreCase(key)){
+                response = checkupBo.getPenunjangMedis(id, key);
             }
             if("resep".equalsIgnoreCase(key)){
                 response = checkupBo.getResepPasien(id);

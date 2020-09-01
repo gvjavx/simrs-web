@@ -42,7 +42,7 @@
                                                                 onclick="detailSPS('anamnesa_pemeriksaan_jantung')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
 
-                                <img id="del_anamnesa_pemeriksaan_jantung" class="hvr-grow" onclick="conSPS('anamnesa_pemeriksaan_jantung', 'spesialis_jantung')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_anamnesa_pemeriksaan_jantung" class="hvr-grow" onclick="conSPS('anamnesa_pemeriksaan_jantung', 'spesialis_jantung')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_sps_edukasi_jantung">
@@ -51,7 +51,7 @@
                                                                 onclick="detailSPS('edukasi_jantung')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
 
-                                <img id="del_edukasi_jantung" class="hvr-grow" onclick="conSPS('edukasi_jantung', 'spesialis_jantung')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_edukasi_jantung" class="hvr-grow" onclick="conSPS('edukasi_jantung', 'spesialis_jantung')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

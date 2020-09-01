@@ -87,6 +87,7 @@ public class ObservasiTindakanHdBoImpl implements ObservasiTindakanHdBo {
                 observasiTindakanHdEntity.setIdObservasiTindakanHd("OBS"+observasiTindakanHdDao.getNextSeq());
                 observasiTindakanHdEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
                 observasiTindakanHdEntity.setWaktu(bean.getWaktu());
+                observasiTindakanHdEntity.setObservasi(bean.getObservasi());
                 observasiTindakanHdEntity.setQb(bean.getQb());
                 observasiTindakanHdEntity.setTensi(bean.getTensi());
                 observasiTindakanHdEntity.setNadi(bean.getNadi());
@@ -125,24 +126,23 @@ public class ObservasiTindakanHdBoImpl implements ObservasiTindakanHdBo {
     @Override
     public CrudResponse saveDetele(ObservasiTindakanHd bean) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
-        Map hsCriteria = new HashMap();
-        hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
-        hsCriteria.put("jenis", bean.getJenis());
-        List<ItSimrsObservasiTindakanHdEntity> entityList = new ArrayList<>();
+        ItSimrsObservasiTindakanHdEntity tindakanHdEntity = new ItSimrsObservasiTindakanHdEntity();
         try {
-            entityList = observasiTindakanHdDao.getByCriteria(hsCriteria);
+            tindakanHdEntity = observasiTindakanHdDao.getById("idObservasiTindakanHd", bean.getIdObservasiTindakanHd());
         }catch (HibernateException e){
             response.setStatus("error");
             response.setMsg("Found Error, Data yang dicari tidak ditemukan...!");
             logger.error(e.getMessage());
         }
-        if(entityList.size() > 0){
-            ItSimrsObservasiTindakanHdEntity entity = entityList.get(0);
-            entity.setFlag("N");
-            entity.setLastUpdate(bean.getLastUpdate());
-            entity.setLastUpdateWho(bean.getLastUpdateWho());
+        if(tindakanHdEntity != null){
+            tindakanHdEntity.setFlag("N");
+            tindakanHdEntity.setAction("D");
+            tindakanHdEntity.setLastUpdate(bean.getLastUpdate());
+            tindakanHdEntity.setLastUpdateWho(bean.getLastUpdateWho());
             try {
-                observasiTindakanHdDao.updateAndSave(entity);
+                observasiTindakanHdDao.updateAndSave(tindakanHdEntity);
+                response.setStatus("success");
+                response.setMsg("Berhasil");
             }catch (HibernateException e){
                 response.setStatus("error");
                 response.setMsg("Found Error, "+e.getMessage());

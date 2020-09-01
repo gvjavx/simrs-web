@@ -209,31 +209,59 @@
                                 <td>Nama</td>
                                 <td>Desa</td>
                                 <td>Status</td>
-                                <td>Keterangan</td>
+                                <td align="center">Jenis Pasien</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResult" status="listOfRawatJalan" id="listRawatjalan">
+                            <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
                                     <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="desa"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
-                                    <td><s:property value="keteranganSelesai"/></td>
                                     <td align="center">
-                                        <%-- <a href="#" onClick="showPemeriksaan('<s:property value="noCheckup"/>')">
-                                            <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icon-inspection.png"/>" style="cursor: pointer; height: 25px; width: 25px">
-                                        </a> --%>
-                                        <s:if test="#listRawatjalan.statusPeriksa == 0 || #listRawatjalan.statusPeriksa == 1">
+                                        <s:if test='#row.idJenisPeriksaPasien == "asuransi"'>
+                                        <span style="background-color: #ffff00; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                </s:if>
+                                                <s:elseif test='#row.idJenisPeriksaPasien == "umum"'>
+                                                    <span style="background-color: #4d4dff; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                </s:elseif>
+                                                <s:elseif test='#row.idJenisPeriksaPasien == "bpjs"'>
+                                                    <span style="background-color: #00b300; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                </s:elseif>
+                                                <s:elseif test='#row.idJenisPeriksaPasien == "ptpn"'>
+                                                    <span style="background-color: #66ff33; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                </s:elseif>
+                                                <s:else>
+                                                    <span style="background-color: #cc3399; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                </s:else>
+                                                    <s:property value="jenisPeriksaPasien"></s:property>
+                                                </span>
+                                    </td>
+                                    <td align="center">
+                                        <s:if test='#row.idJenisPeriksaPasien == "umum"'>
+                                            <s:if test='#row.isBayar == "Y"'>
+                                                <s:url var="add_rawat_jalan" namespace="/igd" action="add_igd" escapeAmp="false">
+                                                    <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
+                                                </s:url>
+                                                <s:a href="%{add_rawat_jalan}">
+                                                    <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
+                                                </s:a>
+                                            </s:if>
+                                            <s:else>
+                                                <label class="label label-warning">Uang muka belum bayar</label>
+                                            </s:else>
+                                        </s:if>
+                                        <s:else>
                                             <s:url var="add_rawat_jalan" namespace="/igd" action="add_igd" escapeAmp="false">
                                                 <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
                                             </s:url>
                                             <s:a href="%{add_rawat_jalan}">
                                                 <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                             </s:a>
-                                        </s:if>
+                                        </s:else>
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -246,44 +274,6 @@
     </section>
     <!-- /.content -->
 </div>
-
-<%-- <div class="modal fade" id="modal-pemeriksaan">
-    <div class="modal-dialog modal-flat">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Pemeriksaan Fisik</h4>
-            </div>
-            <div class="modal-body">
-                <div class="box">
-                    <table class="table table-striped table-bordered" id="tabel_rese_detail">
-                        <thead>
-                        <td>No RM</td>
-                        <td>Nama Pasien</td>
-                        <td>Diagnosa Terakhir</td>
-                        <td>Tanggal Keluar</td>
-                        </thead>
-                        <tbody id="body-rekam-medic">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                </button>
-            </div>
-        </div>
-    </div>
-</div> --%>
-
-
-<%-- <script>
-function showPemeriksaan(n){
-    $("#modal-pemeriksaan").modal("show");
-    // alert(n);
-}
-</script> --%>
 
 <%@ include file="/pages/common/footer.jsp" %>
 <%@ include file="/pages/common/lastScript.jsp" %>

@@ -10,5 +10,6 @@ public interface PengkajianUlangKeperawatanBo {
     public List<PengkajianUlangKeperawatan> getByCriteria(PengkajianUlangKeperawatan bean) throws GeneralBOException;
     public CrudResponse saveAdd(PengkajianUlangKeperawatan bean, List<PengkajianUlangKeperawatan> keperawatanList) throws GeneralBOException;
     public CrudResponse saveEdit(PengkajianUlangKeperawatan bean) throws GeneralBOException;
+    public CrudResponse saveDelete(PengkajianUlangKeperawatan bean) throws GeneralBOException;
     public Boolean cekPengkajianUlangKeperawatan(PengkajianUlangKeperawatan bean, String tipe) throws GeneralBOException;
 }

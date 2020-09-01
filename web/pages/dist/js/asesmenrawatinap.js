@@ -44,9 +44,9 @@ function showModalAsesmenRawatInap(jenis, idRM, isSetIdRM) {
         $('#imp').html('');
         $('#eva').html('');
     }
-    setDataPasien();
     radioEdukasiPasien(jenis);
     $('#modal-ina-' + jenis).modal({show: true, backdrop: 'static'});
+    setDataPasien();
 }
 
 function saveAsesmenRawatInap(jenis, ket) {
@@ -2867,12 +2867,14 @@ function saveAsesmenRawatInap(jenis, ket) {
         var ttd2 = document.getElementById('ho29');
         var nama1 = $('#nama_terang_ho28').val();
         var nama2 = $('#nama_terang_ho29').val();
+        var nip1 = $('#nip_ho28').val();
+        var nip2 = $('#nip_ho29').val();
         var cek1 = isCanvasBlank(ttd1);
         var cek2 = isCanvasBlank(ttd2);
 
         if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 &&
             va11 && va12 && va13 && va14 && va15 && va16 && va17 && va18 && va19 && va20 &&
-            va21 && va22 && va23 && va24 && va25 && va26 && va27 && nama1 && nama2 && waktu != '' && !cek1 && !cek2) {
+            va21 && va22 && va23 && va24 && va25 && va26 && va27 && nama1 && nama2 && waktu && nip1 && nip2  != '' && !cek1 && !cek2) {
 
             data.push({
                 'parameter': 'Waktu',
@@ -3052,6 +3054,7 @@ function saveAsesmenRawatInap(jenis, ket) {
                 'jenis': ket,
                 'tipe':'ttd',
                 'nama_terang':nama1,
+                'sip':nip1,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -3061,6 +3064,7 @@ function saveAsesmenRawatInap(jenis, ket) {
                 'jenis': ket,
                 'tipe':'ttd',
                 'nama_terang':nama2,
+                'sip':nip2,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
@@ -3382,24 +3386,31 @@ function detailAsesmenRawatInap(jenis) {
                                 '</tr>';
                         }
                     }else if("hand_over_jaga" == jenis){
-                        if("bold" == item.tipe){
+                        if("Waktu" == item.parameter){
                             body += '<tr style="font-weight: bold">' +
                                 '<td width="40%">' + item.parameter + '</td>' +
-                                '<td>' + jwb + '</td>' +
-                                '</tr>';
-                        }else if("ttd" == item.tipe){
-                            body += '<tr>' +
-                                '<td>' + item.parameter + '</td>' +
-                                '<td>' + '<img src="' + item.jawaban + '" style="width: 100px">' +
-                                '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>'+
-                                '<p style="margin-top: -7px">'+cekItemIsNull(item.sip)+'</p>'+
-                                '</td>' +
+                                '<td>' + jwb + '<span onclick="conRI(\''+jenis+'\',\'hand_over\', \''+item.idAsesmenKeperawatanRawatInap+'\')" class="pull-right"><i id="delete_'+item.idAsesmenKeperawatanRawatInap+'" class="fa fa-trash hvr-grow" style="color: red"></i></span>'+ '</td>' +
                                 '</tr>';
                         }else{
-                            body += '<tr>' +
-                                '<td width="40%">' + item.parameter + '</td>' +
-                                '<td>' + jwb + '</td>' +
-                                '</tr>';
+                            if("bold" == item.tipe){
+                                body += '<tr style="font-weight: bold">' +
+                                    '<td width="40%">' + item.parameter + '</td>' +
+                                    '<td>' + jwb + '</td>' +
+                                    '</tr>';
+                            }else if("ttd" == item.tipe){
+                                body += '<tr>' +
+                                    '<td>' + item.parameter + '</td>' +
+                                    '<td>' + '<img src="' + item.jawaban + '" style="width: 100px">' +
+                                    '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>'+
+                                    '<p style="margin-top: -7px">'+cekItemIsNull(item.sip)+'</p>'+
+                                    '</td>' +
+                                    '</tr>';
+                            }else{
+                                body += '<tr>' +
+                                    '<td width="40%">' + item.parameter + '</td>' +
+                                    '<td>' + jwb + '</td>' +
+                                    '</tr>';
+                            }
                         }
                     }else if("resiko_jatuh" == jenis || "skrining_nutrisi" == jenis){
                         if("total" == item.tipe){
@@ -3907,7 +3918,7 @@ function saveAsuhanKeperawatan(jenis, ket) {
 
 function listAsuhanKeperawatan(jenis) {
     var table = "";
-    RencanaAsuhanKeperawatanAction.getListDetail(idDetailCheckup, jenis+'_keperawatan',  function (res) {
+    RencanaAsuhanKeperawatanAction.getListDetail(idDetailCheckup, jenis+'_keperawatan_ina',  function (res) {
         if (res.length > 0) {
             $.each(res, function (i, item) {
 
@@ -5515,4 +5526,71 @@ function tindakanINA(jenis) {
         });
     }
     return dataCari;
+}
+
+
+function conRI(jenis, ket, idAsesmen){
+    $('#tanya').text("Yakin mengahapus data ini ?");
+    $('#modal-confirm-rm').modal({show:true, backdrop:'static'});
+    if(idAsesmen != undefined && idAsesmen != ''){
+        $('#save_con_rm').attr('onclick', 'delRIHand(\''+jenis+'\', \''+ket+'\', \''+idAsesmen+'\')');
+    }else{
+        $('#save_con_rm').attr('onclick', 'delRI(\''+jenis+'\', \''+ket+'\')');
+    }
+}
+
+function delRIHand(jenis, ket, idAsesmen) {
+    $('#modal-confirm-rm').modal('hide');
+    var dataPasien = {
+        'no_checkup': noCheckup,
+        'id_detail_checkup': idDetailCheckup,
+        'id_pasien': idPasien,
+        'id_rm': tempidRm
+    }
+    var result = JSON.stringify(dataPasien);
+    startIconSpin('delete_'+idAsesmen);
+    dwr.engine.setAsync(true);
+    AsesmenRawatInapAction.saveDelete(idDetailCheckup, jenis, idAsesmen, result, {
+        callback: function (res) {
+            if (res.status == "success") {
+                stopIconSpin('delete_'+idAsesmen);
+                $('#modal-ina-'+ket).scrollTop(0);
+                $('#warning_ina_' + ket).show().fadeOut(5000);
+                $('#msg_ina_' + ket).text("Berhasil menghapus data...");
+            } else {
+                stopIconSpin('delete_'+idAsesmen);
+                $('#modal-ina-'+ket).scrollTop(0);
+                $('#warn_'+ket).show().fadeOut(5000);
+                $('#msg_'+ket).text(res.msg);
+            }
+        }
+    });
+}
+
+function delRI(jenis, ket) {
+    $('#modal-confirm-rm').modal('hide');
+    var dataPasien = {
+        'no_checkup': noCheckup,
+        'id_detail_checkup': idDetailCheckup,
+        'id_pasien': idPasien,
+        'id_rm': tempidRm
+    }
+    var result = JSON.stringify(dataPasien);
+    startSpin('delete_'+jenis);
+    dwr.engine.setAsync(true);
+    AsesmenRawatInapAction.saveDelete(idDetailCheckup, jenis, null, result, {
+        callback: function (res) {
+            if (res.status == "success") {
+                stopSpin('delete_'+jenis);
+                $('#modal-ina-'+ket).scrollTop(0);
+                $('#warning_ina_' + ket).show().fadeOut(5000);
+                $('#msg_ina_' + ket).text("Berhasil menghapus data...");
+            } else {
+                stopSpin('delete_'+jenis);
+                $('#modal-ina-'+ket).scrollTop(0);
+                $('#warn_'+ket).show().fadeOut(5000);
+                $('#msg_'+ket).text(res.msg);
+            }
+        }
+    });
 }

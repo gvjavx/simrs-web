@@ -434,7 +434,7 @@
                     </div>
                     <div class="box-header with-border">
                     </div>
-                    <div class="box-header with-border">
+                    <div class="box-header with-border" id="pos_rm">
                         <div class="row">
                             <div class="col-md-6">
                                 <h3 class="box-title"><i class="fa fa-stethoscope"></i> Anamnesa & Pemeriksaan Fisik</h3>
@@ -668,7 +668,7 @@
                         <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
                                 onclick="showModal(3)"><i class="fa fa-plus"></i> Tambah Diagnosa
                         </button>
-                        <table class="table table-bordered table-striped" id="tbl_diagnosa">
+                        <table class="table table-bordered table-striped" id="tabel_diagnosa">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>Tanggal</td>
@@ -967,6 +967,7 @@
                                         <div class="col-md-8">
                                             <select class="form-control select2" id="keterangan" style="width: 100%"
                                                     onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()}; selectKeterangan(this.value)">
+                                                    <option value="">[Select One]</option>
                                                 <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "umum" || headerDetailCheckup.idJenisPeriksaPasien == "ptpn"'>
                                                     <option value="selesai">Selesai</option>
                                                     <option value="rawat_inap">Rawat Inap</option>
@@ -2096,6 +2097,28 @@
 </div>
 
 <div id="modal-temp"></div>
+
+<div class="modal fade" id="modal-confirm-rm">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Konfirmasi
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h4 class="text-center" id="tanya"></h4>
+                <h4 class="text-center" id="print_form"></h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Tidak
+                </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con_rm"><i class="fa fa-check"></i> Ya            </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="mask"></div>
 <!-- /.content-wrapper -->

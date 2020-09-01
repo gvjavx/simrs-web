@@ -14,6 +14,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_aud_asesmen_triase"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="modal_warning">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_warning"></p>
+                    </div>
                     <div class="btn-group">
                         <button type="button" onclick="addAsesmenUgd('triase')" class="btn btn-success"><i class="fa fa-plus"></i> Triase
                         </button>
@@ -26,6 +30,7 @@
                             <td>Asesmen Triase</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_triase" class="hvr-grow" onclick="detailAud('triase')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_triase" class="hvr-grow" onclick="conUGD('triase', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -110,19 +115,19 @@
                         <div class="form-group">
                             <div class="col-md-3">
                                 <span>Tensi <small>(mmHg)</small></span>
-                                <input class="form-control" id="tr3">
+                                <input class="form-control tensi-pasien" id="tr3">
                             </div>
                             <div class="col-md-3">
                                 <span>Nadi <small>(x/menit)</small></span>
-                                <input class="form-control" id="tr4">
+                                <input class="form-control nadi-pasien" id="tr4">
                             </div>
                             <div class="col-md-3">
                                 <span>Suhu <small>(C)</small></span>
-                                <input class="form-control" id="tr5">
+                                <input class="form-control suhu-pasien" id="tr5">
                             </div>
                             <div class="col-md-3">
                                 <span>RR <small>(x/menit)</small></span>
-                                <input class="form-control" id="tr6">
+                                <input class="form-control rr-pasien" id="tr6">
                             </div>
                         </div>
                     </div>
@@ -222,7 +227,7 @@
                         <div class="form-group">
                             <label class="col-md-3">Terapi</label>
                             <div class="col-md-9">
-                                <textarea class="form-control" id="tr11"></textarea>
+                                <textarea class="form-control resep-pasien" id="tr11"></textarea>
                             </div>
                         </div>
                     </div>
@@ -233,8 +238,8 @@
                                 <label>TTD Dokter IGD</label>
                                 <canvas class="paint-canvas-ttd" id="tr12" width="220"
                                         onmouseover="paintTtd('tr12')"></canvas>
-                                <input class="form-control" id="nama_terang_tr12" placeholder="Nama Terang">
-                                <input class="form-control" id="sip_tr12" placeholder="SIP">
+                                <input class="form-control nama_dokter" id="nama_terang_tr12" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control sip_dokter" id="sip_tr12" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('tr12')"><i
                                         class="fa fa-trash"></i> Clear

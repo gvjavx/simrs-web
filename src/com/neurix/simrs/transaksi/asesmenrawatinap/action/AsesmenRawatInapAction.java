@@ -164,7 +164,7 @@ public class AsesmenRawatInapAction {
         return list;
     }
 
-    public CrudResponse delete(String idDetailCheckup, String keterangan) {
+    public CrudResponse saveDelete(String idDetailCheckup, String keterangan, String idAsesmen, String dataPasien) {
         CrudResponse response = new CrudResponse();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AsesmenRawatInapBo asesmenRawatInapBo = (AsesmenRawatInapBo) ctx.getBean("asesmenRawatInapBoProxy");
@@ -174,7 +174,29 @@ public class AsesmenRawatInapAction {
             asesmenRawatInap.setKeterangan(keterangan);
             asesmenRawatInap.setLastUpdate(time);
             asesmenRawatInap.setLastUpdateWho(userLogin);
+            if(idAsesmen != null && !"".equalsIgnoreCase(idAsesmen)){
+                asesmenRawatInap.setIdAsesmenKeperawatanRawatInap(idAsesmen);
+            }
             response = asesmenRawatInapBo.saveDelete(asesmenRawatInap);
+            if("success".equalsIgnoreCase(response.getStatus())){
+                try {
+                    JSONObject obj = new JSONObject(dataPasien);
+                    RekamMedikBo rekamMedikBo = (RekamMedikBo) ctx.getBean("rekamMedikBoProxy");
+                    if (obj != null) {
+                        StatusPengisianRekamMedis status = new StatusPengisianRekamMedis();
+                        status.setNoCheckup(obj.getString("no_checkup"));
+                        status.setIdDetailCheckup(obj.getString("id_detail_checkup"));
+                        status.setIdPasien(obj.getString("id_pasien"));
+                        status.setIdRekamMedisPasien(obj.getString("id_rm"));
+                        status.setLastUpdateWho(userLogin);
+                        status.setLastUpdate(time);
+                        response = rekamMedikBo.saveEdit(status);
+                    }
+                }catch (JSONException e){
+                    response.setStatus("error");
+                    response.setMsg(e.getMessage());
+                }
+            }
         }else{
             response.setStatus("error");
             response.setMsg("ID detail Checkup tidak ditemukan...!");

@@ -44,7 +44,7 @@
                             <td width="20%" align="center"><img id="btn_sps_anamnesa_obstetri" class="hvr-grow"
                                                                 onclick="detailSPS('anamnesa_obstetri')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="del_anamnesa_obstetri" class="hvr-grow" onclick="conSPS('anamnesa_obstetri', 'spesialis_obstetri')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_anamnesa_obstetri" class="hvr-grow" onclick="conSPS('anamnesa_obstetri', 'spesialis_obstetri')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_sps_pemeriksaan_obstetri">
@@ -52,7 +52,7 @@
                             <td width="20%" align="center"><img id="btn_sps_pemeriksaan_obstetri" class="hvr-grow"
                                                                 onclick="detailSPS('pemeriksaan_obstetri')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="del_pemeriksaan_obstetri" class="hvr-grow" onclick="conSPS('pemeriksaan_obstetri', 'spesialis_obstetri')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_pemeriksaan_obstetri" class="hvr-grow" onclick="conSPS('pemeriksaan_obstetri', 'spesialis_obstetri')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_sps_edukasi_obstetri">
@@ -60,7 +60,7 @@
                             <td width="20%" align="center"><img id="btn_sps_edukasi_obstetri" class="hvr-grow"
                                                                 onclick="detailSPS('edukasi_obstetri')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="del_edukasi_obstetri" class="hvr-grow" onclick="conSPS('edukasi_obstetri', 'spesialis_obstetri')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_edukasi_obstetri" class="hvr-grow" onclick="conSPS('edukasi_obstetri', 'spesialis_obstetri')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

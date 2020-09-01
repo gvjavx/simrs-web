@@ -847,7 +847,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setSuhu(hdr.getSuhu());
                     checkup.setNadi(hdr.getNadi());
                     checkup.setPernafasan(hdr.getPernafasan());
-                    checkup.setPenunjangMedis(getPenunjangMendis(obj[15].toString()));
+                    checkup.setPenunjangMedis(getPenunjangMendis(obj[15].toString(), null));
                 }
             }
         }
@@ -904,23 +904,23 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
 
             if(result.size() > 0){
                 for (Object[] obj: result){
-                    if("Makanan".equalsIgnoreCase(obj[2].toString())){
+                    if("Makanan".equalsIgnoreCase(obj[3].toString())){
                         if(!"".equalsIgnoreCase(makanan)){
-                            makanan = makanan+","+obj[2].toString();
+                            makanan = makanan+", "+obj[2].toString();
                         }else{
                             makanan = obj[2].toString();
                         }
                     }
-                    if("Obat".equalsIgnoreCase(obj[2].toString())){
+                    if("Obat".equalsIgnoreCase(obj[3].toString())){
                         if(!"".equalsIgnoreCase(makanan)){
-                            obat = obat+","+obj[2].toString();
+                            obat = obat+", "+obj[2].toString();
                         }else{
                             obat = obj[2].toString();
                         }
                     }
-                    if("Lain-Lain".equalsIgnoreCase(obj[2].toString())){
+                    if("Lain-Lain".equalsIgnoreCase(obj[3].toString())){
                         if(!"".equalsIgnoreCase(makanan)){
-                            lainLain = lainLain+","+obj[2].toString();
+                            lainLain = lainLain+", "+obj[2].toString();
                         }else{
                             lainLain = obj[2].toString();
                         }
@@ -929,13 +929,13 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
             }
 
             if(!"".equalsIgnoreCase(makanan) && !"".equalsIgnoreCase(obat) && !"".equalsIgnoreCase(lainLain)){
-                alergi = "Makanan : "+makanan+", Obat-Obatan : "+obat+", Lain-Lain : "+lainLain;
+                alergi = "Makanan : "+makanan+". Obat-Obatan : "+obat+". Lain-Lain : "+lainLain;
             }else if(!"".equalsIgnoreCase(makanan) && !"".equalsIgnoreCase(obat)){
-                alergi = "Makanan : "+makanan+", Obat-Obatan : "+obat;
+                alergi = "Makanan : "+makanan+". Obat-Obatan : "+obat;
             }else if(!"".equalsIgnoreCase(makanan) && !"".equalsIgnoreCase(lainLain)){
-                alergi = "Makanan : "+makanan+", Lain-Lain : "+lainLain;
+                alergi = "Makanan : "+makanan+". Lain-Lain : "+lainLain;
             }else if(!"".equalsIgnoreCase(obat) && !"".equalsIgnoreCase(lainLain)){
-                alergi = "Obat-Obatan : "+obat+", Lain-Lain : "+lainLain;
+                alergi = "Obat-Obatan : "+obat+". Lain-Lain : "+lainLain;
             }else if(!"".equalsIgnoreCase(makanan)){
                 alergi = "Makanan : "+makanan;
             }else if(!"".equalsIgnoreCase(obat)){
@@ -947,26 +947,56 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         return alergi;
     }
 
-    public String getPenunjangMendis(String idDetailCheckup){
+    public String getPenunjangMendis(String idDetailCheckup, String tipe){
         String res = "";
-        String SQL = "SELECT \n" +
+        String kat = "";
+        if(tipe != null && !"".equalsIgnoreCase(tipe)){
+            kat = "AND c.kategori = '"+tipe+"' \n";
+        }
+        String SQL = "SELECT\n" +
                 "a.id_periksa_lab,\n" +
-                "b.nama_lab\n" +
+                "b.nama_lab,\n" +
+                "c.kategori\n" +
                 "FROM it_simrs_periksa_lab a\n" +
-                "INNER JOIN im_simrs_lab b ON a.id_lab = b.id_lab \n" +
-                "WHERE id_detail_checkup = :id";
+                "INNER JOIN im_simrs_lab b ON a.id_lab = b.id_lab\n" +
+                "INNER JOIN im_simrs_kategori_lab c ON b.id_kategori_lab = c.id_kategori_lab\n" +
+                "WHERE id_detail_checkup = :id \n"+ kat;
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("id", idDetailCheckup)
                 .list();
+        String lab = "";
+        String radiologi = "";
+
         if (result.size() > 0){
             for (Object[] obj: result){
-                if(obj[1] != null){
+                if("lab".equalsIgnoreCase(obj[2].toString())){
                     if("".equalsIgnoreCase(res)){
-                        res = obj[1].toString();
+                        lab = obj[1].toString();
                     }else{
-                        res = res +", "+obj[1].toString();
+                        lab = lab +", "+obj[1].toString();
                     }
+                }
+                if("radiologi".equalsIgnoreCase(obj[2].toString())){
+                    if("".equalsIgnoreCase(res)){
+                        radiologi = obj[1].toString();
+                    }else{
+                        radiologi = radiologi +", "+obj[1].toString();
+                    }
+                }
+            }
+
+            if("lab".equalsIgnoreCase(tipe)){
+                res = lab;
+            }else if("radiologi".equalsIgnoreCase(tipe)){
+                res = radiologi;
+            }else {
+                if(!"".equalsIgnoreCase(lab) && !"".equalsIgnoreCase(radiologi)){
+                    res = "Laboratorium : "+lab+", "+"Radiologi : "+radiologi;
+                }else if(!"".equalsIgnoreCase(lab)){
+                    res = "Laboratorium : "+lab;
+                }else if(!"".equalsIgnoreCase(radiologi)){
+                    res = "Radiologi : "+radiologi;
                 }
             }
         }

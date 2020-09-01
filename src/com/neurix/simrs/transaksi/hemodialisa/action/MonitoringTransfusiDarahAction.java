@@ -145,6 +145,26 @@ public class MonitoringTransfusiDarahAction {
         return list;
     }
 
+    public CrudResponse saveDelete(String idTransfusi) {
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        MonitoringTransfusiDarahBo monitoringTransfusiDarahBo = (MonitoringTransfusiDarahBo) ctx.getBean("monitoringTransfusiDarahBoProxy");
+        if (!"".equalsIgnoreCase(idTransfusi)) {
+            try {
+                MonitoringTransfusiDarah transfusiDarah = new MonitoringTransfusiDarah();
+                transfusiDarah.setIdMonitoringTransfusiDarah(idTransfusi);
+                transfusiDarah.setLastUpdate(time);
+                transfusiDarah.setLastUpdateWho(userLogin);
+                response = monitoringTransfusiDarahBo.saveDelete(transfusiDarah);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error" + e.getMessage());
+            }
+        }
+        return response;
+    }
+
     public static Logger getLogger() {
         return logger;
     }

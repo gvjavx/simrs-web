@@ -165,6 +165,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             String statusBayar = "";
 
             String notLike = "";
+            String tipePelayanan = "";
 
             if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())) {
                 idPasien = bean.getIdPasien();
@@ -211,6 +212,10 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 forRekanan = "\n AND dt.invoice is null OR dt.invoice = '' \n";
             }
 
+            if("rawat_jalan".equalsIgnoreCase(bean.getTipePelayanan())){
+                tipePelayanan = "AND ply.tipe_pelayanan = 'rawat_jalan' \n";
+            }
+
             String SQL = "\n" +
                     "SELECT \n" +
                     "dt.id_detail_checkup,\n" +
@@ -236,6 +241,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "INNER JOIN it_simrs_header_detail_checkup dt ON dt.no_checkup = hd.no_checkup\n" +
                     "INNER JOIN im_simrs_status_pasien st ON st.id_status_pasien = dt.status_periksa\n" +
                     "INNER JOIN im_simrs_jenis_periksa_pasien jp ON dt.id_jenis_periksa_pasien = jp.id_jenis_periksa_pasien \n"+
+                    "INNER JOIN im_simrs_pelayanan ply ON dt.id_pelayanan = ply.id_pelayanan \n"+
                     "LEFT JOIN it_simrs_rawat_inap ri ON ri.id_detail_checkup = dt.id_detail_checkup\n" +
                     "LEFT JOIN it_simrs_uang_muka_pendaftaran um ON um.id_detail_checkup = dt.id_detail_checkup\n" +
                     "WHERE ri.id_detail_checkup is null\n" +
@@ -246,7 +252,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "AND dt.id_jenis_periksa_pasien LIKE :jenisPasien \n" +
                     "AND dt.is_kronis IS NULL \n" +
                     "AND dt.id_transaksi_online IS NULL \n" +
-                    "AND dt.status_periksa LIKE :status " + statusBayar + forRekanan;
+                    "AND dt.status_periksa LIKE :status \n" + statusBayar + forRekanan + tipePelayanan;
 
 
             String order = "\n ORDER BY dt.tgl_antrian ASC";

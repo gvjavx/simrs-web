@@ -49,8 +49,12 @@ public class FisioterapiBoImpl implements FisioterapiBo {
                     fisioterapi.setIdFisioterapi(entity.getIdFisioterapi());
                     fisioterapi.setIdDetailCheckup(entity.getIdDetailCheckup());
                     fisioterapi.setParameter(entity.getParameter());
-                    if("Scala Nyeri Paint".equalsIgnoreCase(entity.getParameter())){
-                        fisioterapi.setJawaban(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_IMG_RM+entity.getJawaban());
+                    if("gambar".equalsIgnoreCase(entity.getTipe()) || "ttd".equalsIgnoreCase(entity.getTipe())){
+                        if("ttd".equalsIgnoreCase(entity.getTipe())){
+                            fisioterapi.setJawaban(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_RM+entity.getJawaban());
+                        }else{
+                            fisioterapi.setJawaban(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_IMG_RM+entity.getJawaban());
+                        }
                     }else{
                         fisioterapi.setJawaban(entity.getJawaban());
                     }
@@ -61,6 +65,8 @@ public class FisioterapiBoImpl implements FisioterapiBo {
                     fisioterapi.setCreatedWho(entity.getCreatedWho());
                     fisioterapi.setLastUpdate(entity.getLastUpdate());
                     fisioterapi.setLastUpdateWho(entity.getLastUpdateWho());
+                    fisioterapi.setSkor(entity.getSkor());
+                    fisioterapi.setTipe(entity.getTipe());
                     list.add(fisioterapi);
                 }
             }
@@ -86,6 +92,8 @@ public class FisioterapiBoImpl implements FisioterapiBo {
                 fisioterapi.setCreatedWho(bean.getCreatedWho());
                 fisioterapi.setLastUpdate(bean.getLastUpdate());
                 fisioterapi.setLastUpdateWho(bean.getLastUpdateWho());
+                fisioterapi.setSkor(bean.getSkor());
+                fisioterapi.setTipe(bean.getTipe());
 
                 try {
                     fisioterapiDao.addAndSave(fisioterapi);
@@ -129,6 +137,9 @@ public class FisioterapiBoImpl implements FisioterapiBo {
                     response.setMsg(e.getMessage());
                 }
             }
+        }else{
+            response.setStatus("error");
+            response.setMsg("Tidak ada data traksaksi...!");
         }
         return response;
     }

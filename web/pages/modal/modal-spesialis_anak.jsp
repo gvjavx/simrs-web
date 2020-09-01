@@ -43,7 +43,7 @@
                             <td width="20%" align="center"><img id="btn_sps_anamnesa_anak" class="hvr-grow"
                                                                 onclick="detailSPS('anamnesa_anak')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="del_anamnesa_anak" class="hvr-grow" onclick="conSPS('anamnesa_anak', 'spesialis_anak')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_anamnesa_anak" class="hvr-grow" onclick="conSPS('anamnesa_anak', 'spesialis_anak')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_sps_pemeriksaan_anak">
@@ -51,7 +51,7 @@
                             <td width="20%" align="center"><img id="btn_sps_pemeriksaan_anak" class="hvr-grow"
                                                                 onclick="detailSPS('pemeriksaan_anak')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="del_pemeriksaan_anak" class="hvr-grow" onclick="conSPS('pemeriksaan_anak', 'spesialis_anak')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_pemeriksaan_anak" class="hvr-grow" onclick="conSPS('pemeriksaan_anak', 'spesialis_anak')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_sps_edukasi_anak">
@@ -59,7 +59,7 @@
                             <td width="20%" align="center"><img id="btn_sps_edukasi_anak" class="hvr-grow"
                                                                 onclick="detailSPS('edukasi_anak')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="del_edukasi_anak" class="hvr-grow" onclick="conSPS('edukasi_anak', 'spesialis_anak')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_edukasi_anak" class="hvr-grow" onclick="conSPS('edukasi_anak', 'spesialis_anak')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

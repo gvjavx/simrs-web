@@ -733,24 +733,11 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         HeaderDetailCheckup headerDetailCheckup = getHeaderDetailCheckup();
         List<HeaderDetailCheckup> listOfsearchHeaderDetailCheckup = new ArrayList();
-
         headerDetailCheckup.setBranchId(CommonUtil.userBranchLogin());
-//        if ("".equalsIgnoreCase(headerDetailCheckup.getIdPelayanan()) && headerDetailCheckup.getIdPelayanan() == null){
-//            headerDetailCheckup.setIdPelayanan(CommonUtil.userPelayananIdLogin());
-//        }
-
-        try {
-            listOfsearchHeaderDetailCheckup = checkupDetailBoProxy.getSearchRawatJalan(headerDetailCheckup);
-        } catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[CheckupAction.save] Error when searching pasien by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
-            return ERROR;
-        }
-
         String userRoleLogin = CommonUtil.roleAsLogin();
         if (CommonConstant.ROLE_ADMIN_RS.equalsIgnoreCase(userRoleLogin)) {
             setEnabledPoli(true);
+            headerDetailCheckup.setTipePelayanan("rawat_jalan");
         }
 
         if (CommonConstant.ROLE_ADMIN_IGD.equalsIgnoreCase(userRoleLogin)) {
@@ -761,10 +748,19 @@ public class CheckupDetailAction extends BaseMasterAction {
             HeaderDetailCheckup headerDetailCheckup1 = new HeaderDetailCheckup();
             headerDetailCheckup1.setIdPelayanan(CommonUtil.userPelayananIdLogin());
             setHeaderDetailCheckup(headerDetailCheckup1);
+            headerDetailCheckup.setTipePelayanan("rawat_jalan");
+        }
+
+        try {
+            listOfsearchHeaderDetailCheckup = checkupDetailBoProxy.getSearchRawatJalan(headerDetailCheckup);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            logger.error("[CheckupAction.save] Error when searching pasien by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
+            return ERROR;
         }
 
         HttpSession session = ServletActionContext.getRequest().getSession();
-
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listOfsearchHeaderDetailCheckup);
 
@@ -4818,7 +4814,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             reportParams.put("data2", content2);
 
             if ("SP15".equalsIgnoreCase(tipe)) {
-                String penunjang = checkupBoProxy.getPenunjangMedis(checkup.getIdDetailCheckup());
+                String penunjang = checkupBoProxy.getPenunjangMedis(checkup.getIdDetailCheckup(), null);
                 String terapi = checkupBoProxy.getResepPasien(checkup.getIdDetailCheckup());
                 String diagnosaPrimer = checkupBoProxy.getDiagnosaPrimer(checkup.getIdDetailCheckup());
                 String diagnosaSekunder = checkupBoProxy.getDiagnosaSekunder(checkup.getIdDetailCheckup());

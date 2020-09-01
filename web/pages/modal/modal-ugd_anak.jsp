@@ -13,6 +13,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_aud_asesmen-ugd"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="modal_warning">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_warning"></p>
+                    </div>
                     <div class="btn-group">
                         <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
                         </button>
@@ -46,84 +50,98 @@
                             <td>Keluhan Utama</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_keluhan_utama" class="hvr-grow" onclick="detailAud('keluhan_utama')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_keluhan_utama" class="hvr-grow" onclick="conUGD('keluhan_utama', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_aud_pre_hospital">
                             <td>Data Pre Hospipal</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_pre_hospital" class="hvr-grow" onclick="detailAud('pre_hospital')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_pre_hospital" class="hvr-grow" onclick="conUGD('pre_hospital', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_aud_keperawatan">
                             <td>Keperawatan</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_keperawatan" class="hvr-grow" onclick="detailAud('keperawatan')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_keperawatan" class="hvr-grow" onclick="conUGD('keperawatan', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_aud_nyeri_anak">
                             <td>Asesmen Nyeri</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_nyeri_anak" class="hvr-grow" onclick="detailAud('nyeri_anak')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_nyeri_anak" class="hvr-grow" onclick="conUGD('nyeri_anak', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_aud_nutrisional_anak">
                             <td>Skrining Risiko Nutrisional</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_nutrisional_anak" class="hvr-grow" onclick="detailAud('nutrisional_anak')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_nutrisional_anak" class="hvr-grow" onclick="conUGD('nutrisional_anak', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_aud_jatuh_anak">
                             <td>Asesmen Resiko Jatuh</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_jatuh_anak" class="hvr-grow" onclick="detailAud('jatuh_anak')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_jatuh_anak" class="hvr-grow" onclick="conUGD('jatuh_anak', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_aud_status">
                             <td>Status Fungsional</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_status" class="hvr-grow" onclick="detailAud('status')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_status" class="hvr-grow" onclick="conUGD('status', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_aud_kebutuhan">
                             <td>Kebutuhan Edukasi</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_kebutuhan" class="hvr-grow" onclick="detailAud('kebutuhan')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_kebutuhan" class="hvr-grow" onclick="conUGD('kebutuhan', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_aud_diagnosis">
                             <td>Diagnosis Keperawatan</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_diagnosis" class="hvr-grow" onclick="detailAud('diagnosis')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_diagnosis" class="hvr-grow" onclick="conUGD('diagnosis', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_aud_asuhan">
                             <td>Rencanan Asuhan Keperawatan</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_asuhan" class="hvr-grow" onclick="detailAud('asuhan')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_asuhan" class="hvr-grow" onclick="conUGD('asuhan', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_aud_anamnesa">
                             <td>Anamnesa dan Pemeriksaan Fisik</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_anamnesa" class="hvr-grow" onclick="detailAud('anamnesa')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_anamnesa" class="hvr-grow" onclick="conUGD('anamnesa', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_aud_asuhan_medis">
                             <td>Rencana Asuhan Medis</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_asuhan_medis" class="hvr-grow" onclick="detailAud('asuhan_medis')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_asuhan_medis" class="hvr-grow" onclick="conUGD('asuhan_medis', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_aud_kondisi_pasien">
                             <td>Perkembangan Kondisi Pasien</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_kondisi_pasien" class="hvr-grow" onclick="detailAud('kondisi_pasien')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_kondisi_pasien" class="hvr-grow" onclick="conUGD('kondisi_pasien', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_aud_keluar_igd">
                             <td>Kondisi Saat Keluar IGD</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_keluar_igd" class="hvr-grow" onclick="detailAud('keluar_igd')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_keluar_igd" class="hvr-grow" onclick="conUGD('keluar_igd', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -2409,9 +2427,9 @@
                             <div class="col-md-6">
                                 <label style="margin-top: 7px">Dokter</label>
                                 <canvas width="250" style="margin-left: -1px;" onmouseover="paintTtd('ki11')" class="paint-canvas-ttd" id="ki11"></canvas>
-                                <input class="form-control" id="nama_terang_ki11" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control" id="sip_ki11" placeholder="SIP">
-                                <button style="margin-top: -5px; margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('ki11')"><i class="fa fa-trash"></i> Clear
+                                <input class="form-control nama_dokter" id="nama_terang_ki11" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control sip_dokter" id="sip_ki11" placeholder="SIP">
+                                <button style="margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('ki11')"><i class="fa fa-trash"></i> Clear
                                 </button>
                             </div>
                         </div>

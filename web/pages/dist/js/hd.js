@@ -2035,7 +2035,6 @@ function saveMonTransfusiDarah(jenis) {
                     $('#warning_hd_catatan_tranfusi_darah').show().fadeOut(5000);
                     $('#msg_hd_catatan_tranfusi_darah').text("Berhasil menambahkan data monitoring...");
                     getListMonTransfusiDarah();
-                    getListRekamMedis('rawat_jalan', tipePelayanan, idDetailCheckup);
                 } else {
                     $('#save_hd_catatan_tranfusi').show();
                     $('#load_hd_catatan_tranfusi').hide();
@@ -2085,16 +2084,16 @@ function saveObservasi(jenis, ket){
             data.push({
                 'waktu': va1+' '+va2,
                 'observasi': va3,
-                'qb': va3,
-                'tensi': va3,
-                'nadi': va4,
-                'suhu': va5,
-                'rr': va6,
-                'cairan_masuk': va7,
-                'makan_minum': va8,
-                'muntah': va9,
-                'uf': va10,
-                'keterangan': va11,
+                'qb': va4,
+                'tensi': va5,
+                'nadi': va6,
+                'suhu': va7,
+                'rr': va8,
+                'cairan_masuk': va9,
+                'makan_minum': va10,
+                'muntah': va11,
+                'uf': va12,
+                'keterangan': va13,
                 'jenis': jenis,
                 'ttd': ttd1,
                 'nama_terang':nama,
@@ -2148,7 +2147,6 @@ function detailObservasi(jenis){
         var cekData = false;
         HemodialisaAction.getListObservasi(idDetailCheckup, jenis, function (res) {
             if (res.length > 0) {
-                console.log(res);
                 $.each(res, function (i, item) {
                         body += '<tr>' +
                             '<td>' + item.waktu + '</td>' +
@@ -2164,9 +2162,10 @@ function detailObservasi(jenis){
                             '<td>' + item.uf + '</td>' +
                             '<td>' + item.keterangan + '</td>' +
                             '<td>' +'<img src="'+item.ttd+'" style="height: 60px;">' +
-                            '<p>'+cekDataNull(item.namaTerang)+'</p>'+
-                            '<p>'+cekDataNull(item.sip)+'</p>'+
+                            '<p>'+cekItemIsNull(item.namaTerang)+'</p>'+
+                            '<p>'+cekItemIsNull(item.sip)+'</p>'+
                             '</td>' +
+                            '<td align="center">'+'<i onclick="conObs(\''+jenis+'\', \''+item.idObservasiTindakanHd+'\')" class="fa fa-trash fa-2x hvr-grow" style="color: red"></i>'+'</td>'+
                             '</tr>';
                     cekData = true;
                     tgl = item.createdDate;
@@ -2189,7 +2188,9 @@ function detailObservasi(jenis){
                     '<td>MM</td>' +
                     '<td>M</td>' +
                     '<td>UF</td>' +
+                    '<td>Keterangan</td>' +
                     '<td width="15%">Paraf</td>' +
+                    '<td align="center">Action</td>' +
                     '</tr>';
             }
             var table = '<table style="font-size: 12px" class="table table-bordered">' +
@@ -2257,6 +2258,32 @@ function conHD(jenis, ket){
     $('#save_con_rm').attr('onclick', 'delHD(\''+jenis+'\', \''+ket+'\')');
 }
 
+function conObs(jenis, id){
+    $('#tanya').text("Yakin mengahapus data ini ?");
+    $('#modal-confirm-rm').modal({show:true, backdrop:'static'});
+    $('#save_con_rm').attr('onclick', 'delObs(\''+jenis+'\', \''+id+'\')');
+}
+
+function delObs(jenis, id) {
+    $('#modal-confirm-rm').modal('hide');
+    startSpin('del_'+jenis);
+    dwr.engine.setAsync(true);
+    HemodialisaAction.deleteObservasi(id, {
+        callback: function (res) {
+            if (res.status == "success") {
+                stopSpin('del_'+jenis);
+                $('#warning_hd_monitoring_hd').show().fadeOut(5000);
+                $('#msg_hd_monitoring_hd').text("Berhasil menghapus data...");
+            } else {
+                stopSpin('del_'+jenis);
+                $('#modal-hd-monitoring_hd').scrollTop(0);
+                $('#modal_warning').show().fadeOut(5000);
+                $('#msg_warning').text(res.msg);
+            }
+        }
+    });
+}
+
 function delHD(jenis, ket) {
     $('#modal-confirm-rm').modal('hide');
     var dataPasien = {
@@ -2266,18 +2293,20 @@ function delHD(jenis, ket) {
         'id_rm': tempidRm
     }
     var result = JSON.stringify(dataPasien);
-    startSpin('del_'+jenis);
+    startSpin('delete_'+jenis);
     dwr.engine.setAsync(true);
     HemodialisaAction.saveDelete(idDetailCheckup, jenis, result, {
         callback: function (res) {
             if (res.status == "success") {
-                stopSpin('del_'+jenis);
+                stopSpin('delete_'+jenis);
+                $('#modal-hd-'+ket).scrollTop(0);
                 $('#warning_hd_' + ket).show().fadeOut(5000);
                 $('#msg_hd_' + ket).text("Berhasil menghapus data...");
             } else {
-                stopSpin('del_'+jenis);
-                $('#modal_warning').show().fadeOut(5000);
-                $('#msg_warning').text(res.msg);
+                stopSpin('delete_'+jenis);
+                $('#modal-hd-'+ket).scrollTop(0);
+                $('#warn_'+ket).show().fadeOut(5000);
+                $('#msg_'+ket).text(res.msg);
             }
         }
     });

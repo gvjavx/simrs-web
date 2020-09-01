@@ -9,4 +9,5 @@ import java.util.List;
 public interface MonitoringTransfusiDarahBo {
     public List<MonitoringTransfusiDarah> getByCriteria(MonitoringTransfusiDarah bean) throws GeneralBOException;
     public CrudResponse saveAdd(MonitoringTransfusiDarah bean) throws GeneralBOException;
+    public CrudResponse saveDelete(MonitoringTransfusiDarah bean) throws GeneralBOException;
 }

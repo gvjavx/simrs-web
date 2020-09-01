@@ -8,7 +8,6 @@ function showModalRJ(jenis, idRM, isSetIdRM) {
         $('.btn-hide').show();
     }
 
-    setDataPasien();
     if("resiko_jatuh" == jenis){
         setResikoJatuh('set_'+jenis, umur);
     }
@@ -16,6 +15,7 @@ function showModalRJ(jenis, idRM, isSetIdRM) {
         setNyeri('set_'+jenis, umur);
     }
     $('#modal-rj-' + jenis).modal({show: true, backdrop: 'static'});
+    setDataPasien();
 }
 
 function saveRJ(jenis, ket) {

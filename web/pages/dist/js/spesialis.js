@@ -2420,16 +2420,16 @@ function delSPS(jenis, ket) {
         'id_rm': tempidRm
     }
     var result = JSON.stringify(dataPasien);
-    startSpin('del_'+jenis);
+    startSpin('delete_'+jenis);
     dwr.engine.setAsync(true);
     AsesmenSpesialisAction.saveDelete(idDetailCheckup, jenis, result, {
         callback: function (res) {
             if (res.status == "success") {
-                stopSpin('del_'+jenis);
+                stopSpin('delete_'+jenis);
                 $('#warning_sps_' + ket).show().fadeOut(5000);
                 $('#msg_sps_' + ket).text("Berhasil menghapus data...");
             } else {
-                stopSpin('del_'+jenis);
+                stopSpin('delete_'+jenis);
                 $('#modal_warning').show().fadeOut(5000);
                 $('#msg_warning').text(res.msg);
             }

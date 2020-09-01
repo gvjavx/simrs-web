@@ -34,3 +34,12 @@ function stopSpin(id){
     var url = contextPathHeader+'/pages/images/cancel-flat-new.png';
     $('#'+id).attr('src',url).css('width', '', 'height', '');
 }
+
+function startIconSpin(id){
+    $('#'+id).removeClass("fa fa fa-trash");
+    $('#'+id).addClass("fa fa-circle-o-notch fa-spin");
+}
+function stopIconSpin(id){
+    $('#'+id).removeClass("fa fa-circle-o-notch fa-spin");
+    $('#'+id).addClass("fa fa fa-trash");
+}

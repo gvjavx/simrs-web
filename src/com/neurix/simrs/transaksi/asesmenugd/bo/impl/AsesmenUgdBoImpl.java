@@ -54,10 +54,10 @@ public class AsesmenUgdBoImpl implements AsesmenUgdBo {
                     asesmenUgd.setParameter(entity.getParameter());
 
                     if ("gambar".equalsIgnoreCase(entity.getTipe()) || "ttd".equalsIgnoreCase(entity.getTipe())) {
-                        if ("gambar".equalsIgnoreCase(entity.getTipe())) {
-                            asesmenUgd.setJawaban(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_IMG_RM + entity.getJawaban());
-                        } else {
+                        if ("ttd".equalsIgnoreCase(entity.getTipe())) {
                             asesmenUgd.setJawaban(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getJawaban());
+                        } else {
+                            asesmenUgd.setJawaban(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_IMG_RM + entity.getJawaban());
                         }
                     } else {
                         asesmenUgd.setJawaban(entity.getJawaban());
@@ -126,6 +126,45 @@ public class AsesmenUgdBoImpl implements AsesmenUgdBo {
                     }
                 }
             }
+        }
+        return response;
+    }
+
+    @Override
+    public CrudResponse saveDelete(AsesmenUgd bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+        hsCriteria.put("keterangan", bean.getKeterangan());
+        List<ItSimrsAsesmenUgdEntity> entityList = new ArrayList<>();
+
+        try {
+            entityList = asesmenUgdDao.getByCriteria(hsCriteria);
+        }catch (HibernateException e){
+            response.setStatus("error");
+            response.setMsg("Found Error, Data yang dicari tidak ditemukan...!");
+            logger.error(e.getMessage());
+        }
+
+        if(entityList.size() > 0){
+            for (ItSimrsAsesmenUgdEntity entity : entityList){
+                entity.setFlag("N");
+                entity.setAction("D");
+                entity.setLastUpdate(bean.getLastUpdate());
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+                try {
+                    asesmenUgdDao.updateAndSave(entity);
+                    response.setStatus("success");
+                    response.setMsg("Berhasil");
+                }catch (HibernateException e){
+                    response.setStatus("error");
+                    response.setMsg("Found Error, "+e.getMessage());
+                    logger.error(e.getMessage());
+                }
+            }
+        }else{
+            response.setStatus("error");
+            response.setMsg("Found Error, Data yang dicari tidak ditemukan...!");
         }
         return response;
     }

@@ -341,7 +341,7 @@ public class PeriksaLabAction extends BaseMasterAction {
                 if (rekamMedisRawatJalanList.size() > 0) {
                     RekamMedisRawatJalan rawatJalan = new RekamMedisRawatJalan();
                     rawatJalan.setWaktu(new Timestamp(System.currentTimeMillis()));
-                    rawatJalan.setPemeriksaanFisik(checkupBo.getPenunjangMedis(idDetailCheckup));
+                    rawatJalan.setPemeriksaanFisik(checkupBo.getPenunjangMedis(idDetailCheckup, null));
                     rawatJalan.setDiagnosa(checkupBo.getDiagnosaPasien(idDetailCheckup));
                     rawatJalan.setLastUpdate(new Timestamp(System.currentTimeMillis()));
                     rawatJalan.setLastUpdateWho(CommonUtil.userLogin());
@@ -350,7 +350,7 @@ public class PeriksaLabAction extends BaseMasterAction {
                 } else {
                     RekamMedisRawatJalan rawatJalan = new RekamMedisRawatJalan();
                     rawatJalan.setWaktu(new Timestamp(System.currentTimeMillis()));
-                    rawatJalan.setPemeriksaanFisik(checkupBo.getPenunjangMedis(idDetailCheckup));
+                    rawatJalan.setPemeriksaanFisik(checkupBo.getPenunjangMedis(idDetailCheckup, null));
                     rawatJalan.setDiagnosa(checkupBo.getDiagnosaPasien(idDetailCheckup));
                     rawatJalan.setLastUpdate(new Timestamp(System.currentTimeMillis()));
                     rawatJalan.setLastUpdateWho(CommonUtil.userLogin());

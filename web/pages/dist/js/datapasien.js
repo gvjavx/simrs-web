@@ -27,6 +27,8 @@ function setDataPasien() {
     var tindakan = $('.tindakan-pasien').length;
     var sip = $('.sip_dokter').length;
     var namaDok = $('.nama_dokter').length;
+    var labPas = $('.lab-pasien').length;
+    var radioPas = $('.radiologi-pasien').length;
 
     if (tensi > 0 || gejala > 0 || bb > 0 || tb > 0) {
         dwr.engine.setAsync(true);
@@ -70,6 +72,26 @@ function setDataPasien() {
             callback: function (res) {
                 if (res != '') {
                     $('.penunjang-medis').val(res);
+                }
+            }
+        });
+    }
+    if (labPas > 0) {
+        dwr.engine.setAsync(true);
+        CheckupAction.getDataByKey(idDetailCheckup, "lab", {
+            callback: function (res) {
+                if (res != '') {
+                    $('.lab-pasien').val(res);
+                }
+            }
+        });
+    }
+    if (radioPas > 0) {
+        dwr.engine.setAsync(true);
+        CheckupAction.getDataByKey(idDetailCheckup, "radiologi", {
+            callback: function (res) {
+                if (res != '') {
+                    $('.radiologi-pasien').val(res);
                 }
             }
         });

@@ -404,6 +404,16 @@ ADD COLUMN url_img VARCHAR(100);
 ALTER TABLE it_simrs_asesmen_keperawatan_rawat_jalan
 ADD COLUMN sip VARCHAR(100);
 
+-- 01-09-2020
+ALTER TABLE it_simrs_fisioterapi
+ADD COLUMN skor VARCHAR (100),
+ADD COLUMN tipe VARCHAR (100);
+
+ALTER TABLE it_simrs_ringkasan_pasien
+ADD COLUMN tipe VARCHAR (100),
+ADD COLUMN nama_terang VARCHAR (100),
+ADD COLUMN sip VARCHAR (100);
+
 
 
 

@@ -54,11 +54,6 @@ function addAsesmenUgd(jenis, idRM, isSetIdRM) {
         if(isSetIdRM == "Y"){
             tempidRm = idRM;
         }
-        setDataPasien();
-        var selec = $('.select2').length;
-        if(selec > 0){
-            $('.select2').select2();
-        }
         if("anamnesa" == jenis){
             var url = "";
             if ("Laki-Laki" == jenisKelamin) {
@@ -75,6 +70,7 @@ function addAsesmenUgd(jenis, idRM, isSetIdRM) {
             setNyeri('set_nyeri', umur);
         }
         $('#modal-aud-' + jenis).modal({show: true, backdrop: 'static'});
+        setDataPasien();
     }
 }
 
@@ -98,8 +94,6 @@ function saveAsesmenUgd(jenis, keterangan) {
                 $.each(triase, function (idx, itemx) {
                     var label = $('#label_trias_'+idx).text();
                     var isi = $('[name=trias_'+idx+']:checked').val();
-                    console.log(label);
-                    console.log(isi);
                     if(isi != undefined && isi != ''){
                         data.push({
                             'parameter': label,
@@ -1958,4 +1952,36 @@ function setDataTriase(val){
     }else{
        $('#set_triase').html('');
     }
+}
+
+function conUGD(jenis, ket){
+    $('#tanya').text("Yakin mengahapus data ini ?");
+    $('#modal-confirm-rm').modal({show:true, backdrop:'static'});
+    $('#save_con_rm').attr('onclick', 'delUGD(\''+jenis+'\', \''+ket+'\')');
+}
+
+function delUGD(jenis, ket) {
+    $('#modal-confirm-rm').modal('hide');
+    var dataPasien = {
+        'no_checkup': noCheckup,
+        'id_detail_checkup': idDetailCheckup,
+        'id_pasien': idPasien,
+        'id_rm': tempidRm
+    }
+    var result = JSON.stringify(dataPasien);
+    startSpin('delete_'+jenis);
+    dwr.engine.setAsync(true);
+    AsesmenUgdAction.saveDelete(idDetailCheckup, jenis, result, {
+        callback: function (res) {
+            if (res.status == "success") {
+                stopSpin('delete_'+jenis);
+                $('#warning_aud_' + ket).show().fadeOut(5000);
+                $('#msg_aud_' + ket).text("Berhasil menghapus data...");
+            } else {
+                stopSpin('delete_'+jenis);
+                $('#modal_warning').show().fadeOut(5000);
+                $('#msg_warning').text(res.msg);
+            }
+        }
+    });
 }

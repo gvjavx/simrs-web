@@ -504,47 +504,48 @@
                         </div>
                     </div>
                     <div class="box-body">
-                        <div class="row">
-                            <s:if test='rawatInap.kategoriRuangan == "rawat_inap"'>
-                                <div class="col-md-6">
-                                    <button class="btn btn-primary" onclick="showModalPlan('<s:property value="rawatInap.idDetailCheckup"/>','','suster')">
-                                        <i class="fa fa-calendar"></i> Schedule Rawat
-                                    </button>
-                                    <div class="btn-group btn-hide dropdown">
-                                        <button type="button" class="btn btn-info"><i class="fa fa-edit"></i> Observasi dan Pemberian
-                                        </button>
-                                        <button type="button" class="btn btn-info dropdown-toggle"
-                                                data-toggle="dropdown" style="height: 34px">
-                                            <span class="caret"></span>
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu" role="menu">
-                                            <li><a onclick="showModalCairan('<s:property value="rawatInap.idDetailCheckup"/>')" style="cursor: pointer"><i
-                                                    class="fa fa-file-o"></i> Form Observasi Cairan</a></li>
-                                            <li><a onclick="showModalMonVitalSign('<s:property value="rawatInap.idDetailCheckup"/>')" style="cursor: pointer"><i
-                                                    class="fa fa-file-o"></i> Form Observasi Vital Sign</a></li>
-                                            <li><a onclick="showModalPemberianObat('<s:property value="rawatInap.idDetailCheckup"/>','parenteral')" style="cursor: pointer"><i
-                                                    class="fa fa-file-o"></i> Form Pemberian Obat Parenteral</a></li>
-                                            <li><a onclick="showModalPemberianObat('<s:property value="rawatInap.idDetailCheckup"/>','nonparenteral')" style="cursor: pointer"><i
-                                                    class="fa fa-file-o"></i> Form Pemberian Obat Non Parenteral</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </s:if>
-                            <div class="col-md-6">
-                                <div class="btn-group btn-hide dropdown">
-                                    <button onclick="setRekamMedis()" type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Asesmen
-                                    </button>
-                                    <button onclick="setRekamMedis()" type="button" class="btn btn-primary dropdown-toggle"
-                                            data-toggle="dropdown" style="height: 34px">
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu" id="asesmen_ri">
-                                    </ul>
-                                </div>
-                            </div>
-                            </div>
+                       <div class="row">
+                           <s:if test='rawatInap.kategoriRuangan == "rawat_inap"'>
+                               <div class="col-md-6">
+                                   <button class="btn btn-primary" onclick="showModalPlan('<s:property value="rawatInap.idDetailCheckup"/>','','suster')">
+                                       <i class="fa fa-calendar"></i> Schedule Rawat
+                                   </button>
+                                   <div class="btn-group btn-hide dropdown">
+                                       <button type="button" class="btn btn-info"><i class="fa fa-edit"></i> Observasi dan Pemberian
+                                       </button>
+                                       <button type="button" class="btn btn-info dropdown-toggle"
+                                               data-toggle="dropdown" style="height: 34px">
+                                           <span class="caret"></span>
+                                           <span class="sr-only">Toggle Dropdown</span>
+                                       </button>
+                                       <ul class="dropdown-menu" role="menu">
+                                           <li><a onclick="showModalCairan('<s:property value="rawatInap.idDetailCheckup"/>')" style="cursor: pointer"><i
+                                                   class="fa fa-file-o"></i> Form Observasi Cairan</a></li>
+                                           <li><a onclick="showModalMonVitalSign('<s:property value="rawatInap.idDetailCheckup"/>')" style="cursor: pointer"><i
+                                                   class="fa fa-file-o"></i> Form Observasi Vital Sign</a></li>
+                                           <li><a onclick="showModalPemberianObat('<s:property value="rawatInap.idDetailCheckup"/>','parenteral')" style="cursor: pointer"><i
+                                                   class="fa fa-file-o"></i> Form Pemberian Obat Parenteral</a></li>
+                                           <li><a onclick="showModalPemberianObat('<s:property value="rawatInap.idDetailCheckup"/>','nonparenteral')" style="cursor: pointer"><i
+                                                   class="fa fa-file-o"></i> Form Pemberian Obat Non Parenteral</a></li>
+                                       </ul>
+                                   </div>
+                               </div>
+                           </s:if>
+                           <div class="col-md-6">
+                               <div class="btn-group btn-hide dropdown">
+                                   <button onclick="setRekamMedis()" type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Asesmen
+                                   </button>
+                                   <button onclick="setRekamMedis()" type="button" class="btn btn-primary dropdown-toggle"
+                                           data-toggle="dropdown" style="height: 34px">
+                                       <span class="caret"></span>
+                                       <span class="sr-only">Toggle Dropdown</span>
+                                   </button>
+                                   <ul class="dropdown-menu" role="menu" id="asesmen_ri">
+                                   </ul>
+                               </div>
+                           </div>
+                       </div>
+                    </div>
                     <div class="box-header with-border" id="pos_dok">
                     </div>
                     <div class="box-header with-border">
@@ -3141,7 +3142,9 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> View Detail Rencana Rawat</h4>
             </div>
             <div class="modal-body" id="body-view-plan-detail">
-                <br>
+                <div class="text-center">
+                    <h4 id="empty_plan"></h4>
+                </div>
                 <div id="body-list-plan-pagi"></div>
                 <br>
                 <div id="body-list-plan-siang"></div>
@@ -3552,21 +3555,22 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
+                <h4 class="modal-title"><i class="fa fa-info"></i> Konfirmasi
                 </h4>
             </div>
             <div class="modal-body">
-                <h5 class="text-center">Do you want print this?</h5>
-                <h5 class="text-center" id="print_form"></h5>
+                <h4 class="text-center" id="tanya"></h4>
+                <h4 class="text-center" id="print_form"></h4>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Tidak
                 </button>
-                <button type="button" class="btn btn-sm btn-default" id="save_con_rm"><i class="fa fa-arrow-right"></i> Yes            </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con_rm"><i class="fa fa-check"></i> Ya            </button>
             </div>
         </div>
     </div>
 </div>
+
 
 <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenOperasiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/MppAction.js"/>'></script>
@@ -3606,6 +3610,7 @@
 <script type='text/javascript' src='<s:url value="/pages/dist/js/resikojatuh.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/tindakan_medis.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/custome_form.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/rencana_asuahan.js"/>'></script>
 
 
 <script type='text/javascript'>

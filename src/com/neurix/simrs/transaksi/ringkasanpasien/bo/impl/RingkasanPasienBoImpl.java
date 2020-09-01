@@ -52,8 +52,12 @@ public class RingkasanPasienBoImpl implements RingkasanPasienBo {
                     ringkasanPasien.setIdRingkasanPasien(entity.getIdRingkasanPasien());
                     ringkasanPasien.setIdDetailCheckup(entity.getIdDetailCheckup());
                     ringkasanPasien.setParameter(entity.getParameter());
-                    if("ttd".equalsIgnoreCase(entity.getJenis())){
-                        ringkasanPasien.setJawaban(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_RM+entity.getJawaban());
+                    if("gambar".equalsIgnoreCase(entity.getTipe()) || "ttd".equalsIgnoreCase(entity.getTipe())){
+                        if("ttd".equalsIgnoreCase(entity.getTipe())){
+                            ringkasanPasien.setJawaban(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_RM+entity.getJawaban());
+                        }else{
+                            ringkasanPasien.setJawaban(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_IMG_RM+entity.getJawaban());
+                        }
                     }else{
                         ringkasanPasien.setJawaban(entity.getJawaban());
                     }
@@ -66,6 +70,9 @@ public class RingkasanPasienBoImpl implements RingkasanPasienBo {
                     ringkasanPasien.setCreatedWho(entity.getCreatedWho());
                     ringkasanPasien.setLastUpdate(entity.getLastUpdate());
                     ringkasanPasien.setLastUpdateWho(entity.getLastUpdateWho());
+                    ringkasanPasien.setTipe(entity.getTipe());
+                    ringkasanPasien.setNamaTerang(entity.getNamaTerang());
+                    ringkasanPasien.setSip(entity.getSip());
                     list.add(ringkasanPasien);
                 }
             }
@@ -102,6 +109,9 @@ public class RingkasanPasienBoImpl implements RingkasanPasienBo {
                     ringkasanPasienEntity.setCreatedWho(bean.getCreatedWho());
                     ringkasanPasienEntity.setLastUpdate(bean.getLastUpdate());
                     ringkasanPasienEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    ringkasanPasienEntity.setNamaTerang(bean.getNamaTerang());
+                    ringkasanPasienEntity.setSip(bean.getSip());
+                    ringkasanPasienEntity.setTipe(bean.getTipe());
 
                     try {
                         ringkasanPasienDao.addAndSave(ringkasanPasienEntity);
@@ -114,6 +124,43 @@ public class RingkasanPasienBoImpl implements RingkasanPasienBo {
                     }
                 }
             }
+        }
+        return response;
+    }
+
+    @Override
+    public CrudResponse saveDelete(RingkasanPasien bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+        hsCriteria.put("keterangan", bean.getKeterangan());
+        List<ItSimrsRingkasanPasienEntity> entityList = new ArrayList<>();
+        try {
+            entityList = ringkasanPasienDao.getByCriteria(hsCriteria);
+        }catch (HibernateException e){
+            response.setStatus("error");
+            response.setMsg("Found Error, Data yang dicari tidak ditemukan...!");
+            logger.error(e.getMessage());
+        }
+        if(entityList.size() > 0){
+            for (ItSimrsRingkasanPasienEntity entity : entityList){
+                entity.setFlag("N");
+                entity.setAction("D");
+                entity.setLastUpdate(bean.getLastUpdate());
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+                try {
+                    ringkasanPasienDao.updateAndSave(entity);
+                    response.setStatus("success");
+                    response.setMsg("Berhasil");
+                }catch (HibernateException e){
+                    response.setStatus("error");
+                    response.setMsg("Found Error, "+e.getMessage());
+                    logger.error(e.getMessage());
+                }
+            }
+        }else{
+            response.setStatus("error");
+            response.setMsg("Found Error, Data yang dicari tidak ditemukan...!");
         }
         return response;
     }

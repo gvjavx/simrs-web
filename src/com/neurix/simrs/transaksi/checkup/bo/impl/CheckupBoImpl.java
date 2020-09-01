@@ -2672,8 +2672,8 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     }
 
     @Override
-    public String getPenunjangMedis(String idDetailCheckup) throws GeneralBOException {
-        return headerCheckupDao.getPenunjangMendis(idDetailCheckup);
+    public String getPenunjangMedis(String idDetailCheckup, String tipe) throws GeneralBOException {
+        return headerCheckupDao.getPenunjangMendis(idDetailCheckup, tipe);
     }
 
     @Override

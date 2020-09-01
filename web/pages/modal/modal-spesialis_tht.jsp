@@ -45,7 +45,7 @@
                             <td width="20%" align="center"><img id="btn_sps_keadaan_umum_tht" class="hvr-grow"
                                                                 onclick="detailSPS('keadaan_umum_tht')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="del_keadaan_umum_tht" class="hvr-grow" onclick="conSPS('keadaan_umum_tht', 'spesialis_tht')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_keadaan_umum_tht" class="hvr-grow" onclick="conSPS('keadaan_umum_tht', 'spesialis_tht')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_sps_tht_tht">
@@ -53,7 +53,7 @@
                             <td width="20%" align="center"><img id="btn_sps_tht_tht" class="hvr-grow"
                                                                 onclick="detailSPS('tht_tht')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="del_tht_tht" class="hvr-grow" onclick="conSPS('tht_tht', 'spesialis_tht')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_tht_tht" class="hvr-grow" onclick="conSPS('tht_tht', 'spesialis_tht')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_sps_pemeriksaan_tht">
@@ -61,7 +61,7 @@
                             <td width="20%" align="center"><img id="btn_sps_pemeriksaan_tht" class="hvr-grow"
                                                                 onclick="detailSPS('pemeriksaan_tht')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="del_pemeriksaan_tht" class="hvr-grow" onclick="conSPS('pemeriksaan_tht', 'spesialis_tht')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_pemeriksaan_tht" class="hvr-grow" onclick="conSPS('pemeriksaan_tht', 'spesialis_tht')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_sps_edukasi_tht">
@@ -69,7 +69,7 @@
                             <td width="20%" align="center"><img id="btn_sps_edukasi_tht" class="hvr-grow"
                                                                 onclick="detailSPS('edukasi_tht')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="del_edukasi_tht" class="hvr-grow" onclick="conSPS('edukasi_tht', 'spesialis_tht')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_edukasi_tht" class="hvr-grow" onclick="conSPS('edukasi_tht', 'spesialis_tht')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

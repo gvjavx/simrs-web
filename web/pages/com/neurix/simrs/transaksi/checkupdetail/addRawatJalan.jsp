@@ -437,7 +437,7 @@
                     </div>
                     <div class="box-header with-border">
                     </div>
-                    <div class="box-header with-border">
+                    <div class="box-header with-border" id="pos_rm">
                         <div class="row">
                             <div class="col-md-6">
                                 <h3 class="box-title"><i class="fa fa-stethoscope"></i> Anamnesa & Pemeriksaan Fisik</h3>
@@ -2147,6 +2147,7 @@
         </div>
     </div>
 </div>
+
 <%@ include file="/pages/modal/modalRingkasanRawatJalan.jsp" %>
 
 <div class="mask"></div>

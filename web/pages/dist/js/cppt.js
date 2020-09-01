@@ -126,7 +126,7 @@ function detailCPPT(jenis, ket, tipe) {
                     '<p style="margin-top: -5px">'+cekNullCppt(item.namaPetugas)+'</p>'+
                     '<p style="margin-top: -10px">'+cekNullCppt(item.sipPetugas)+'</p>'+
                     '</td>' +
-                    '<td>'+'<img src="'+con+'">'+'</td>'
+                    '<td align="center">'+'<i id="delete_'+item.idCatatanTerintegrasi+'" onclick="conCPT(\''+jenis+'\', \''+ket+'\', \''+tipe+'\', \''+item.idCatatanTerintegrasi+'\')" style="color: red" class="fa fa-trash fa-1x hvr-grow"></i>'+'</td>'
                     '</tr>';
                 cekData = true;
             });
@@ -146,7 +146,7 @@ function detailCPPT(jenis, ket, tipe) {
                 '<td>Intruksi</td>' +
                 '<td>TTD DPJP</td>' +
                 '<td>TTD Petugas</td>' +
-                '<td>Action</td>' +
+                '<td align="center">Action</td>' +
                 '</tr>'
         }
 
@@ -176,4 +176,36 @@ function cekNullCppt(item) {
         res = item;
     }
     return res;
+}
+
+function conCPT(jenis, ket, tipe, id){
+    $('#tanya').text("Yakin mengahapus data ini ?");
+    $('#modal-confirm-rm').modal({show:true, backdrop:'static'});
+    $('#save_con_rm').attr('onclick', 'delCPT(\''+jenis+'\', \''+ket+'\',\''+tipe+'\', \''+id+'\')');
+}
+
+function delCPT(jenis, ket, tipe, id) {
+    $('#modal-confirm-rm').modal('hide');
+    var dataPasien = {
+        'no_checkup': noCheckup,
+        'id_detail_checkup': idDetailCheckup,
+        'id_pasien': idPasien,
+        'id_rm': tempidRm
+    }
+    var result = JSON.stringify(dataPasien);
+    startIconSpin('delete_'+id);
+    dwr.engine.setAsync(true);
+    CatatanTerintegrasiAction.saveDelete(id, result, {
+        callback: function (res) {
+            if (res.status == "success") {
+                stopIconSpin('delete_'+id);
+                $('#warning_'+tipe+'_' + ket).show().fadeOut(5000);
+                $('#msg_'+tipe+'_' + ket).text("Berhasil menghapus data...");
+            } else {
+                stopSpin('delete_'+id);
+                $('#warn_'+ket).show().fadeOut(5000);
+                $('#msg_'+ket).text(res.msg);
+            }
+        }
+    });
 }

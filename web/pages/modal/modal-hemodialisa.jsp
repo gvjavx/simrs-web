@@ -14,9 +14,9 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_hd_monitoring_hd"></p>
                     </div>
-                    <div class="alert alert-danger alert-dismissible" style="display: none" id="modal_warning">
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_monitoring_hd">
                         <h4><i class="icon fa fa-warning"></i> Warning!</h4>
-                        <p id="msg_warning"></p>
+                        <p id="msg_monitoring_hd"></p>
                     </div>
                     <div class="btn-group">
                         <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
@@ -56,7 +56,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_pengkajian" class="hvr-grow" onclick="detailMonHD('pengkajian')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="del_monitoring_hd" class="hvr-grow" onclick="conHD('pengkajian', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_monitoring_hd" class="hvr-grow" onclick="conHD('pengkajian', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_hd_resiko_jatuh">
@@ -64,7 +64,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_resiko_jatuh" class="hvr-grow" onclick="detailMonHD('resiko_jatuh')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="del_resiko_jatuh" class="hvr-grow" onclick="conHD('resiko_jatuh', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_resiko_jatuh" class="hvr-grow" onclick="conHD('resiko_jatuh', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_hd_pemeriksaan">
@@ -72,7 +72,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_pemeriksaan" class="hvr-grow" onclick="detailMonHD('pemeriksaan')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="del_pemeriksaan" class="hvr-grow" onclick="conHD('pemeriksaan', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_pemeriksaan" class="hvr-grow" onclick="conHD('pemeriksaan', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_hd_diagnosa">
@@ -80,7 +80,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_diagnosa" class="hvr-grow" onclick="detailMonHD('diagnosa')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="del_diagnosa" class="hvr-grow" onclick="conHD('diagnosa', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_diagnosa" class="hvr-grow" onclick="conHD('diagnosa', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_hd_intervensi">
@@ -88,7 +88,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_intervensi" class="hvr-grow" onclick="detailMonHD('intervensi')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="del_intervensi" class="hvr-grow" onclick="conHD('intervensi', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_intervensi" class="hvr-grow" onclick="conHD('intervensi', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_hd_terintegrasi">
@@ -103,7 +103,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_instruksi_medik" class="hvr-grow" onclick="detailMonHD('instruksi_medik')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="del_instruksi_medik" class="hvr-grow" onclick="conHD('instruksi_medik', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_instruksi_medik" class="hvr-grow" onclick="conHD('instruksi_medik', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_hd_observasi_tindakan">
@@ -118,7 +118,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_penyulit_hd" class="hvr-grow" onclick="detailMonHD('penyulit_hd')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="del_penyulit_hd" class="hvr-grow" onclick="conHD('penyulit_hd', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_penyulit_hd" class="hvr-grow" onclick="conHD('penyulit_hd', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -1376,8 +1376,8 @@
                                 <label>TTD DPJP</label>
                                 <canvas class="paint-canvas-ttd" id="cppt10" width="220"
                                         onmouseover="paintTtd('cppt10')"></canvas>
-                                <input class="form-control" id="nama_dpjp" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control" id="sip_dpjp" placeholder="SIP">
+                                <input class="form-control nama_dokter" id="nama_dpjp" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control sip_dokter" id="sip_dpjp" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('cppt10')"><i
                                         class="fa fa-trash"></i> Clear
@@ -1794,8 +1794,8 @@
                                 <span>Paraf</span>
                                 <canvas class="paint-canvas-ttd" id="obs14" width="230"
                                         onmouseover="paintTtd('obs14')"></canvas>
-                                <input class="form-control" id="nama_terang_obs14" placeholder="Nama Terang">
-                                <input class="form-control" id="sip_obs14" placeholder="SIP" style="margin-top: 3px">
+                                <input class="form-control nama_dokter" id="nama_terang_obs14" placeholder="Nama Terang">
+                                <input class="form-control sip_dokter" id="sip_obs14" placeholder="SIP" style="margin-top: 3px">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('obs14')"><i class="fa fa-trash"></i>
                                     Clear
@@ -2063,8 +2063,8 @@
                                 <span>TTD Petugas</span>
                                 <canvas class="paint-canvas-ttd" id="phd10" width="230"
                                         onmouseover="paintTtd('phd10')"></canvas>
-                                <input class="form-control" id="nama_terang_phd10" placeholder="Nama Terang">
-                                <input class="form-control" id="sip_phd10" placeholder="SIP" style="margin-top: 3px">
+                                <input class="form-control nama_dokter" id="nama_terang_phd10" placeholder="Nama Terang">
+                                <input class="form-control sip_dokter" id="sip_phd10" placeholder="SIP" style="margin-top: 3px">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('phd10')"><i class="fa fa-trash"></i>
                                     Clear
@@ -2121,6 +2121,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_hd_asesmen_hd"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_asesmen_hd">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_asesmen_hd"></p>
+                    </div>
                     <button onclick="showModalHD('asesmen_awal')" class="btn btn-success"><i class="fa fa-plus"></i>
                         Asesmen Awal
                     </button>
@@ -2133,6 +2137,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_asesmen_awal" class="hvr-grow" onclick="detailMonHD('asesmen_awal')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_asesmen_awal" class="hvr-grow" onclick="conHD('asesmen_awal', 'asesmen_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -2298,8 +2303,8 @@
                             <div class="col-md-6">
                                 <canvas class="paint-canvas-ttd" id="asse22"
                                         onmouseover="paintTtd('asse22')"></canvas>
-                                <input class="form-control" id="nama_terang_asse22" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control" id="sip_asse22" placeholder="SIP">
+                                <input class="form-control nama_dokter" id="nama_terang_asse22" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control sip_dokter" id="sip_asse22" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('asse22')"><i class="fa fa-trash"></i>
                                     Clear
@@ -3053,6 +3058,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_hd_travelling"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_travelling">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_travelling"></p>
+                    </div>
                     <button class="btn btn-success" onclick="showModalHD('travelling_dialysis')"><i class="fa fa-plus"></i> Travelling Dialysis</button>
                 </div>
                 <div class="box-body">
@@ -3063,6 +3072,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_travelling_dialysis" class="hvr-grow" onclick="detailMonHD('travelling_dialysis')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_travelling_dialysis" class="hvr-grow" onclick="conHD('travelling_dialysis', 'travelling')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -3121,7 +3131,7 @@
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Terapi</label>
                             <div class="col-md-6">
-                                <textarea class="form-control" id="td5" style="margin-top: 7px"></textarea>
+                                <textarea class="form-control resep-pasien" id="td5" style="margin-top: 7px"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
@@ -3212,9 +3222,9 @@
                             <label class="col-md-4" style="margin-top: 7px">Tanda Tangan</label>
                             <div class="col-md-6">
                                 <canvas style="margin-left: -1px;" onmouseover="paintTtd('hd_ttd_dokter')" class="paint-canvas-ttd" id="hd_ttd_dokter"></canvas>
-                                <input class="form-control" id="nama_terang_hd_ttd_dokter" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control" id="sip_hd_ttd_dokter" placeholder="SIP">
-                                <button style="margin-top: -5px; margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('hd_ttd_dokter')"><i class="fa fa-trash"></i> Clear
+                                <input class="form-control nama_dokter" id="nama_terang_hd_ttd_dokter" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control sip_dokter" id="sip_hd_ttd_dokter" placeholder="SIP">
+                                <button style="margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('hd_ttd_dokter')"><i class="fa fa-trash"></i> Clear
                                 </button>
                             </div>
                         </div>
@@ -3252,6 +3262,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_hd_perencanaan_hemodialisa"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_perencanaan_hemodialisa">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_perencanaan_hemodialisa"></p>
+                    </div>
                     <button class="btn btn-success" onclick="showModalHD('perencanaan_hemodialisa_pasien')"><i class="fa fa-plus"></i> Perencanaan Hemodialisa</button>
                 </div>
                 <div class="box-body">
@@ -3262,6 +3276,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_perencanaan_hemodialisa_pasien" class="hvr-grow" onclick="detailMonHD('perencanaan_hemodialisa_pasien')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_perencanaan_hemodialisa_pasien" class="hvr-grow" onclick="conHD('perencanaan_hemodialisa_pasien', 'perencanaan_hemodialisa')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -3406,8 +3421,8 @@
                             <div class="col-md-6">
                                 <canvas class="paint-canvas-ttd" id="ph14"
                                         onmouseover="paintTtd('ph14')"></canvas>
-                                <input class="form-control" id="nama_terang_ph14" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control" id="sip_ph14" placeholder="SIP">
+                                <input class="form-control nama_dokter" id="nama_terang_ph14" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control sip_dokter" id="sip_ph14" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ph14')"><i class="fa fa-trash"></i>
                                     Clear

@@ -336,15 +336,14 @@ public class HemodialisaAction {
         return list;
     }
 
-    public CrudResponse deleteObservasi(String idDetailCheckup, String keterangan) {
+    public CrudResponse deleteObservasi(String idBservasi) {
         CrudResponse response = new CrudResponse();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         ObservasiTindakanHdBo observasiTindakanHdBo = (ObservasiTindakanHdBo) ctx.getBean("observasiTindakanHdBoProxy");
-        if (!"".equalsIgnoreCase(idDetailCheckup) && !"".equalsIgnoreCase(keterangan)) {
+        if (!"".equalsIgnoreCase(idBservasi)) {
             try {
                 ObservasiTindakanHd tindakanHd = new ObservasiTindakanHd();
-                tindakanHd.setIdDetailCheckup(idDetailCheckup);
-                tindakanHd.setKeterangan(keterangan);
+                tindakanHd.setIdObservasiTindakanHd(idBservasi);
                 tindakanHd.setLastUpdate(time);
                 tindakanHd.setLastUpdateWho(userLogin);
                 response = observasiTindakanHdBo.saveDetele(tindakanHd);

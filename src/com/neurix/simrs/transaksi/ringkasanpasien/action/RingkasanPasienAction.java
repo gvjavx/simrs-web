@@ -47,8 +47,8 @@ public class RingkasanPasienAction {
                 ringkasanPasien.setParameter(obj.getString("parameter"));
                 ringkasanPasien.setIdDetailCheckup(obj.getString("id_detail_checkup"));
                 ringkasanPasien.setKeterangan(obj.getString("keterangan"));
-                if (obj.has("jawaban")) {
-                    if ("ttd".equalsIgnoreCase(obj.getString("jenis"))) {
+                if (obj.has("tipe")) {
+                    if ("ttd".equalsIgnoreCase(obj.getString("tipe")) || "gambar".equalsIgnoreCase(obj.getString("tipe"))) {
                         try {
                             BASE64Decoder decoder = new BASE64Decoder();
                             byte[] decodedBytes = decoder.decodeBuffer(obj.getString("jawaban"));
@@ -78,10 +78,19 @@ public class RingkasanPasienAction {
                     } else {
                         ringkasanPasien.setJawaban(obj.getString("jawaban"));
                     }
+                    ringkasanPasien.setTipe(obj.getString("tipe"));
+                }else{
+                    ringkasanPasien.setJawaban(obj.getString("jawaban"));
                 }
 
                 if (obj.has("jenis")) {
                     ringkasanPasien.setJenis(obj.getString("jenis"));
+                }
+                if (obj.has("nama_terang")) {
+                    ringkasanPasien.setNamaTerang(obj.getString("nama_terang"));
+                }
+                if (obj.has("sip")) {
+                    ringkasanPasien.setSip(obj.getString("sip"));
                 }
                 ringkasanPasien.setAction("C");
                 ringkasanPasien.setFlag("Y");
@@ -141,6 +150,27 @@ public class RingkasanPasienAction {
             }
         }
         return list;
+    }
+
+    public CrudResponse saveDelete(String idDetailCheckup, String keterangan) {
+        CrudResponse response = new CrudResponse();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RingkasanPasienBo ringkasanPasienBo = (RingkasanPasienBo) ctx.getBean("ringkasanPasienBoProxy");
+        if (!"".equalsIgnoreCase(idDetailCheckup) && !"".equalsIgnoreCase(keterangan)) {
+            try {
+                RingkasanPasien ringkasanPasien = new RingkasanPasien();
+                ringkasanPasien.setIdDetailCheckup(idDetailCheckup);
+                ringkasanPasien.setKeterangan(keterangan);
+                ringkasanPasien.setLastUpdate(time);
+                ringkasanPasien.setLastUpdateWho(userLogin);
+                response = ringkasanPasienBo.saveDelete(ringkasanPasien);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error" + e.getMessage());
+            }
+        }
+        return response;
     }
 
     public static Logger getLogger() {

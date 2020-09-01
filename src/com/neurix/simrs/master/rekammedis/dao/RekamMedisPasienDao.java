@@ -191,6 +191,7 @@ public class RekamMedisPasienDao extends GenericDao<ImSimrsRekamMedisPasienEntit
                             "\tON a.id_rekam_medis_pasien = b.id_rekam_medis_pasien \n" +
                             "\tWHERE b.tipe_pelayanan = :tipePelayanan\n" +
                             "\tAND a.jenis NOT IN " + notIn+"\n"+
+                            "\tAND a.keterangan = 'form' \n"+
                             "\tUNION ALL\n" +
                             "\tSELECT  \n" +
                             "\ta.id_rekam_medis_pasien, \n" +
