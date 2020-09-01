@@ -669,8 +669,8 @@
                 "<select class='form-control' id='total-" + n + "-"+ idParam +"' onchange=\"changeInput(\'total-" + n + "-" + idParam + "\', this.value)\">";
 
         str += "<option value=''>[Select One]</option>" +
-            "<option value='combo'>Combo Nilai Dasar</option>"+
-            "<option value='input'>Input Manual</option>";
+                "<option value='combo'>Combo Nilai Dasar</option>"+
+                "<option value='input'>Input Manual</option>";
 
 //            BudgetingNilaiDasarAction.getListNilaiDasarEdit(tahun, function (list) {
 //                $.each(list, function (i, item) {
@@ -756,7 +756,7 @@
         if (value == "combo"){
             BudgetingNilaiDasarAction.getListNilaiDasarEdit(tahun, function (list) {
                 $.each(list, function (i, item) {
-                    str += "<option value='"+item.nilai+"' >"+item.keterangan+"</option>";
+                    str += "<option value='"+item.nilaiTotal+"' >"+item.keterangan+"</option>";
                 });
                 $("#"+id).html(str);
                 $("#"+id).removeAttr('onchange');
