@@ -385,10 +385,17 @@
                             </div>
 
                             <br>
+                            <strong>Refrensi</strong><hr style="width: 80%;">
+                            <div class="row">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-6" id="body-refrensi"></div>
+                            </div>
+
+                            <br>
                             <strong>Nilai</strong><hr style="width: 80%;">
                             <div class="row">
                                 <div class="col-md-12" align="right">
-                                    <button class="btn btn-sm btn-info" onclick="showDetail()"><i class="fa fa-info"></i></button>
+                                    <%--<button class="btn btn-sm btn-info" onclick="showDetail()"><i class="fa fa-info"></i></button>--%>
                                     <button class="btn btn-sm btn-warning" onclick="addPerhitungan()"><i class="fa fa-plus"></i></button>
                                 </div>
                             </div>
@@ -701,9 +708,10 @@
             for (i = 0; i<n; i++){
                 var nilai   = $("#total-" + i + "-" + idParam).val();
                 var opr     = $("#opr-" + i + "-" + idParam).val();
-                console.log("i -> "+i);
-                console.log("opr -> " + opr + " nilai -> "+ nilai);
-                str += " " + nilai + " " + opr + " ";
+                var namaNilai = $("#total-" + i + "-" + idParam + " option:selected").text();
+//                console.log("i -> "+i);
+//                console.log("opr -> " + opr + " nilai -> "+ nilai);
+                str += " " + nilai + (namaNilai == "" ? " " : " ("+namaNilai+") ")  + opr + " ";
                 if (operator == ""){
                     nilaiTotal = nilai;
                     operator = opr;
@@ -717,9 +725,9 @@
                 }
             }
             str += "</span>";
-            console.log("n -> "+n);
+//            console.log("n -> "+n);
 //            console.log("i -> "+i);
-            console.log("valop -> "+valop+", param -> "+idParam+", str -> " + str);
+//            console.log("valop -> "+valop+", param -> "+idParam+", str -> " + str);
             $("#display-hitung").html(str);
         }
 
@@ -764,6 +772,7 @@
         if ("Y" != flagNilaiDasar){
             alert("Nilai Dasar Belum Ada untuk Tahun Tersebut");
         } else {
+            $("#display-hitung").html("");
             $("#modal-add").modal('show');
             $("#id-param").val(idParam);
             listOfParam = [];
@@ -791,16 +800,36 @@
                 "</div>";
 
             n = n + 1;
-
             str += "<div id='hitung-"+ n +"'></div>";
-
             listOfParam.push({"id":"total-"+idParam, "opr":"="});
-
             $("#id-param").val(idParam);
             $("#masterid").val(master);
             $("#divisiid").val(divisi);
             $("#label-edit").text(label);
             $("#body-nilai").html(str);
+
+            BgPendapatanAction.getListPendapatanBudgeting(tahun, unit, idParam, divisi, master, function (list) {
+                var str1 = '<table class="table table-bordered table-striped" style="font-size: 13px;">' +
+                    '<thead>' +
+                    '<tr>' +
+                    '<td>Refrensi</td>' +
+                    '<td align="center">Nilai Total</td>' +
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody>';
+
+                $.each(list, function (i, item) {
+                    str1 += '<tr>' +
+                            '<td>'+item.nama+'</td>' +
+                            '<td align="right">'+ formatRupiah(item.nilaiTotal) +'</td>' +
+                            '</tr>';
+
+                });
+
+                str1 +=  '</tbody>' +
+                    '</table>';
+                $("#body-refrensi").html(str1);
+            })
         }
     }
 

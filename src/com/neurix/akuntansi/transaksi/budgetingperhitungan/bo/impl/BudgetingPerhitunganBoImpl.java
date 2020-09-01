@@ -559,4 +559,19 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
     private String getNextIdNilaiPengadaaan(String tahun){
         return "IVS" + tahun + nilaiPengadaanDao.getNextId();
     }
+
+    @Override
+    public List<ParameterBudgeting> getListRefrensiBiaya(String tahun, String branchId, String rekeningId, String divisiId, String master) {
+        return perhitunganBudgetingDao.getListBiayaParameter(tahun, branchId, "APPROVE_FINAL", rekeningId, divisiId, master);
+    }
+
+    @Override
+    public ImAkunParameterBudgetingEntity getParameterBudgetingEntityById(String id) throws GeneralBOException {
+        return parameterBudgetingDao.getById("id", id);
+    }
+
+    @Override
+    public ImAkunParameterBudgetingRekeningEntity getParameterBudgetingRekeningEntityById(String id) throws GeneralBOException {
+        return parameterBudgetingRekeningDao.getById("id", id);
+    }
 }

@@ -75,7 +75,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Budgeting </h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Budgeting Investasi </h3>
                     </div>
                     <div class="box-body">
                         <%--<s:form id="kasirjalanForm" method="post" namespace="/kasirjalan" action="search_kasirjalan.action" theme="simple" cssClass="form-horizontal">--%>
@@ -400,6 +400,14 @@
                                 <%--<input type="number" value="0" class="form-control" id="total-pendapatan" onchange="hitungSubTotal('divisi')"/>--%>
                                 <%--</div>--%>
                                 <%--</div>--%>
+                            </div>
+
+                            <br>
+                            <div class="row">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-6" id="display-hitung">
+
+                                </div>
                             </div>
                         </div>
                         <input type="hidden" id="id-param"/>

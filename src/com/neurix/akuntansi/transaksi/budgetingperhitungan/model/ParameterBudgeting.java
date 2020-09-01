@@ -30,6 +30,15 @@ public class ParameterBudgeting {
     private String idNilaiParameter;
     private String periode;
     private String idParamRekening;
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getIdParamRekening() {
         return idParamRekening;

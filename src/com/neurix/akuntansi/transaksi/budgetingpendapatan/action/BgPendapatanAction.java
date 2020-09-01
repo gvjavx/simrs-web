@@ -743,5 +743,26 @@ public class BgPendapatanAction {
         return listDivisi;
     }
 
+    public List<ParameterBudgeting> getListPendapatanBudgeting(String tahun, String branchId, String idParam, String divisiId, String master){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
+
+        String rekeningId = "";
+        ImAkunParameterBudgetingEntity parameterBudgetingEntity = budgetingPerhitunganBo.getParameterBudgetingEntityById(idParam);
+        if (parameterBudgetingEntity != null){
+            ImAkunParameterBudgetingRekeningEntity rekeningEntity = budgetingPerhitunganBo.getParameterBudgetingRekeningEntityById(parameterBudgetingEntity.getIdParamRekening());
+            if (rekeningEntity != null){
+                rekeningId = rekeningEntity.getRekeningId();
+            }
+        }
+
+        return budgetingPerhitunganBo.getListRefrensiBiaya(tahunLalu(tahun), branchId, rekeningId, divisiId, master);
+    }
+
+    private String tahunLalu(String tahun){
+        Integer intTahun = Integer.valueOf(tahun);
+        return String.valueOf(intTahun-1);
+    }
+
 
 }

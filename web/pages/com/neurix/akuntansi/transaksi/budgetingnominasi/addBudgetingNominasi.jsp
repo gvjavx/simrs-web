@@ -261,60 +261,61 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col-md-8 col-md-offset-3">
-                            <div id="form-master">
-                                <strong>Master</strong> <hr style="width: 80%;">
-                                <div class="row">
-                                    <label class="control-label col-sm-4">Master Id</label>
-                                    <div class="col-sm-6">
-                                        <input type="text" class="form-control" id="masterid" readonly/>
-                                        <%--<script>--%>
-                                            <%--$(document).ready(function() {--%>
-                                                <%--var functions, mapped;--%>
-                                                <%--$('#masterid').typeahead({--%>
-                                                    <%--minLength: 1,--%>
-                                                    <%--source: function (query, process) {--%>
-                                                        <%--functions = [];--%>
-                                                        <%--mapped = {};--%>
-                                                        <%--var data = [];--%>
-                                                        <%--dwr.engine.setAsync(false);--%>
-                                                        <%--MasterAction.initTypeaheadMaster(query,function (listdata) {--%>
-                                                            <%--data = listdata;--%>
-                                                        <%--});--%>
-                                                        <%--$.each(data, function (i, item) {--%>
-                                                            <%--var labelItem = item.nomorVendor + " | " + item.nama;--%>
-                                                            <%--mapped[labelItem] = {--%>
-                                                                <%--name :item.nama,--%>
-                                                                <%--id : item.nomorVendor--%>
-                                                            <%--};--%>
-                                                            <%--functions.push(labelItem);--%>
-                                                        <%--});--%>
-                                                        <%--process(functions);--%>
-                                                    <%--},--%>
-                                                    <%--updater: function (item) {--%>
-                                                        <%--var selectedObj = mapped[item];--%>
-                                                        <%--$("#namamaster").val(selectedObj.name);--%>
-                                                        <%--return selectedObj.id;--%>
-                                                    <%--}--%>
-                                                <%--});--%>
-                                            <%--});--%>
-                                        <%--</script>--%>
-                                    </div>
-                                </div>
+                            <%--<div id="form-master">--%>
+                                <%--<strong>Master</strong> <hr style="width: 80%;">--%>
                                 <%--<div class="row">--%>
-                                    <%--<label class="control-label col-sm-4">Nama Master</label>--%>
+                                    <%--<label class="control-label col-sm-4">Master Id</label>--%>
                                     <%--<div class="col-sm-6">--%>
-                                        <%--<input type="text" class="form-control" id="namamaster" readonly/>--%>
+                                        <%--<input type="hidden" class="form-control" id="masterid" readonly/>--%>
+                                        <%--&lt;%&ndash;<script>&ndash;%&gt;--%>
+                                            <%--&lt;%&ndash;$(document).ready(function() {&ndash;%&gt;--%>
+                                                <%--&lt;%&ndash;var functions, mapped;&ndash;%&gt;--%>
+                                                <%--&lt;%&ndash;$('#masterid').typeahead({&ndash;%&gt;--%>
+                                                    <%--&lt;%&ndash;minLength: 1,&ndash;%&gt;--%>
+                                                    <%--&lt;%&ndash;source: function (query, process) {&ndash;%&gt;--%>
+                                                        <%--&lt;%&ndash;functions = [];&ndash;%&gt;--%>
+                                                        <%--&lt;%&ndash;mapped = {};&ndash;%&gt;--%>
+                                                        <%--&lt;%&ndash;var data = [];&ndash;%&gt;--%>
+                                                        <%--&lt;%&ndash;dwr.engine.setAsync(false);&ndash;%&gt;--%>
+                                                        <%--&lt;%&ndash;MasterAction.initTypeaheadMaster(query,function (listdata) {&ndash;%&gt;--%>
+                                                            <%--&lt;%&ndash;data = listdata;&ndash;%&gt;--%>
+                                                        <%--&lt;%&ndash;});&ndash;%&gt;--%>
+                                                        <%--&lt;%&ndash;$.each(data, function (i, item) {&ndash;%&gt;--%>
+                                                            <%--&lt;%&ndash;var labelItem = item.nomorVendor + " | " + item.nama;&ndash;%&gt;--%>
+                                                            <%--&lt;%&ndash;mapped[labelItem] = {&ndash;%&gt;--%>
+                                                                <%--&lt;%&ndash;name :item.nama,&ndash;%&gt;--%>
+                                                                <%--&lt;%&ndash;id : item.nomorVendor&ndash;%&gt;--%>
+                                                            <%--&lt;%&ndash;};&ndash;%&gt;--%>
+                                                            <%--&lt;%&ndash;functions.push(labelItem);&ndash;%&gt;--%>
+                                                        <%--&lt;%&ndash;});&ndash;%&gt;--%>
+                                                        <%--&lt;%&ndash;process(functions);&ndash;%&gt;--%>
+                                                    <%--&lt;%&ndash;},&ndash;%&gt;--%>
+                                                    <%--&lt;%&ndash;updater: function (item) {&ndash;%&gt;--%>
+                                                        <%--&lt;%&ndash;var selectedObj = mapped[item];&ndash;%&gt;--%>
+                                                        <%--&lt;%&ndash;$("#namamaster").val(selectedObj.name);&ndash;%&gt;--%>
+                                                        <%--&lt;%&ndash;return selectedObj.id;&ndash;%&gt;--%>
+                                                    <%--&lt;%&ndash;}&ndash;%&gt;--%>
+                                                <%--&lt;%&ndash;});&ndash;%&gt;--%>
+                                            <%--&lt;%&ndash;});&ndash;%&gt;--%>
+                                        <%--&lt;%&ndash;</script>&ndash;%&gt;--%>
                                     <%--</div>--%>
                                 <%--</div>--%>
-                            </div>
-                            <input type="hidden" id="masterid" value="BYA"/>
+                                <%--&lt;%&ndash;<div class="row">&ndash;%&gt;--%>
+                                    <%--&lt;%&ndash;<label class="control-label col-sm-4">Nama Master</label>&ndash;%&gt;--%>
+                                    <%--&lt;%&ndash;<div class="col-sm-6">&ndash;%&gt;--%>
+                                        <%--&lt;%&ndash;<input type="text" class="form-control" id="namamaster" readonly/>&ndash;%&gt;--%>
+                                    <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
+                                <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
+                            <%--</div>--%>
+                            <input type="hidden" class="form-control" id="masterid" readonly/>
                                 <br>
                             <div id="form-divisi">
-                                <strong>Divisi</strong> <hr style="width: 80%;">
+                                <%--<strong>Divisi</strong> <hr style="width: 80%;">--%>
                                 <div class="row">
-                                    <label class="control-label col-sm-4">Divisi Id</label>
+                                    <label class="control-label col-sm-4"><strong>Divisi</strong></label>
                                     <div class="col-sm-6">
-                                        <input type="text" class="form-control" id="divisiid" readonly/>
+                                        <span id="divisi-name"></span>
+                                        <input type="hidden" class="form-control" id="divisiid"/>
 
                                         <%--<script>--%>
                                             <%--$(document).ready(function() {--%>
@@ -362,9 +363,9 @@
 
                             <br>
                             <div id="form-periode">
-                                <strong>Periode</strong> <hr style="width: 80%;">
+                                <%--<strong>Periode</strong> <hr style="width: 80%;">--%>
                                 <div class="row">
-                                    <label class="control-label col-sm-4">Periode</label>
+                                    <label class="control-label col-sm-4"><strong>Periode</strong></label>
                                     <div class="col-sm-6">
                                         <select class="form-control" id="sel-periode">
                                             <option value="januari">Januari</option>
@@ -385,10 +386,17 @@
                             </div>
 
                             <br>
+                            <strong>Refrensi</strong><hr style="width: 80%;">
+                            <div class="row">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-6" id="body-refrensi"></div>
+                            </div>
+
+                            <br>
                             <strong>Nilai</strong><hr style="width: 80%;">
                             <div class="row">
                                 <div class="col-md-12" align="right">
-                                    <button class="btn btn-sm btn-info" onclick="showDetail()"><i class="fa fa-info"></i></button>
+                                    <%--<button class="btn btn-sm btn-info" onclick="showDetail()"><i class="fa fa-info"></i></button>--%>
                                     <button class="btn btn-sm btn-warning" onclick="addPerhitungan()"><i class="fa fa-plus"></i></button>
                                 </div>
                             </div>
@@ -400,6 +408,14 @@
                                 <%--<input type="number" value="0" class="form-control" id="total-pendapatan" onchange="hitungSubTotal('divisi')"/>--%>
                                 <%--</div>--%>
                                 <%--</div>--%>
+                            </div>
+
+                            <br>
+                            <div class="row">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-6" id="display-hitung">
+
+                                </div>
                             </div>
                         </div>
                         <input type="hidden" id="id-param"/>
@@ -473,6 +489,7 @@
                     </div>
 
                 </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" id="save-hotung" onclick="addHitung()"><i class="fa fa-check"></i> Save</button>
@@ -575,7 +592,7 @@
             var str = "";
             $.each(list, function (i, item) {
                 str += '<tr>' +
-                    '<td>' + item.namaDivisi + '</td>' +
+                    '<td><span id="label-td-'+item.divisiId+'">' + item.namaDivisi + '</span></td>' +
                     '<td align="right">' + formatRupiah(item.nilaiTotal) + '</td>' +
                     '<td align="center" id="btn-span-' + i + '"><button class="btn btn-sm btn-primary" onclick="spanRow(\'' + i + '\', \'' + item.divisiId + '\')"><i class="fa fa-plus"></i></button></td>' +
                     '</tr>' +
@@ -686,7 +703,8 @@
             "</div>" +
             "</div>" +
             "<div class=\"col-md-2\">"+
-                "<select id='opr-"+ n +"-"+ idParam +"' class='form-control'>" +
+                "<select id='opr-"+ n +"-"+ idParam +"' class='form-control' onchange=\"showPerhitungan(this.value, \'"+idParam+"\')\">" +
+                    "<option value=''>[Select]</option>" +
                     "<option value='='>(=) Sama Dengan</option>" +
                     "<option value='*'>(X) Kali</option>" +
                     "<option value='+'>(+) Tambah</option>" +
@@ -701,6 +719,57 @@
         str += "<div id='hitung-"+ n +"'></div>";
         $("#hitung-" + i ).html(str);
         console.log("n = " + i);
+    }
+
+    function showPerhitungan(valop, idParam) {
+        var str = "<span>";
+        var operator = "";
+        var nilaiTotal = 0;
+        if("=" == valop){
+            for (i = 0; i<n; i++){
+                var nilai   = $("#total-" + i + "-" + idParam).val();
+                var opr     = $("#opr-" + i + "-" + idParam).val();
+                var namaNilai = $("#total-" + i + "-" + idParam + " option:selected").text();
+//                console.log("i -> "+i);
+//                console.log("opr -> " + opr + " nilai -> "+ nilai);
+                str += " " + nilai + (namaNilai == "" ? " " : " ("+namaNilai+") ")  + opr + " ";
+                if (operator == ""){
+                    nilaiTotal = nilai;
+                    operator = opr;
+                } else {
+                    nilaiTotal = hitung(nilaiTotal, operator, nilai);
+                    operator = opr;
+                }
+
+                if (i == n-1){
+                    str += nilaiTotal;
+                }
+            }
+            str += "</span>";
+//            console.log("n -> "+n);
+//            console.log("i -> "+i);
+//            console.log("valop -> "+valop+", param -> "+idParam+", str -> " + str);
+            $("#display-hitung").html(str);
+        }
+
+    }
+
+    function hitung(nilai1, opr, nilai2){
+        if ("+" == opr){
+            return parseInt(nilai1) + parseFloat(nilai2);
+        }
+        if ("-" == opr){
+            return parseInt(nilai1) - parseFloat(nilai2);
+        }
+        if ("/" == opr){
+            return parseInt(nilai1) / parseFloat(nilai2);
+        }
+        if ("*" == opr){
+            return parseInt(nilai1) * parseFloat(nilai2);
+        }
+        if ("+" == opr){
+            return parseInt(nilai1) + parseFloat(nilai2);
+        }
     }
 
     function changeInput(id, value) {
@@ -720,207 +789,70 @@
     }
 
     function showAdd(idParam, divisi, master) {
-        $("#modal-add").modal('show');
-        $("#id-param").val(idParam);
-        listOfParam = [];
-        n = 0;
 
+        if ("Y" != flagNilaiDasar) {
+            alert("Nilai Dasar Belum Ada untuk Tahun Tersebut");
+        } else {
+            $("#display-hitung").html("");
+            $("#modal-add").modal('show');
+            $("#id-param").val(idParam);
+            listOfParam = [];
+            n = 0;
+            var label = $("#label-head-" + idParam).text();
+            var divisiName = $("#label-td-"+divisi).text();
+            console.log("nama divisi " + divisiName);
+            console.log("id : label-td-" + divisi);
+            $("#divisi-name").text(divisiName);
 
-        var label = $("#label-head-"+idParam).text();
-
-        var str = "<div class=\"row\">" +
-            "<label class=\"col-md-4\">Nilai Biaya</label>" +
-            "<div class=\"col-md-6\">" +
-            "<input type=\"number\" class=\"form-control\" id=\"total-"+n+"-"+idParam+"\" />" +
-            "</div>" +
-            "<div class=\"col-md-2\">"+
+            var str = "<div class=\"row\">" +
+                "<label class=\"col-md-4\">Nilai Biaya</label>" +
+                "<div class=\"col-md-6\">" +
+                "<input type=\"number\" class=\"form-control\" id=\"total-" + n + "-" + idParam + "\" />" +
+                "</div>" +
+                "<div class=\"col-md-2\">" +
 //            "<div class=\"col-md-4\">"+
-            "<select id='opr-"+ n +"-"+ idParam +"' class='form-control'>" +
-            "<option value='='>(=) Sama Dengan</option>" +
-            "<option value='*'>(X) Kali</option>" +
-            "<option value='+'>(+) Tambah</option>" +
-            "<option value='-'>(-) Kurangi</option>" +
-            "<option value='/'>(/) Bagi</option>" +
-            "<option value='='>(=) Sama Dengan</option>" +
-            "</select>" +
-            "</div>" +
-            "</div>";
+                "<select id='opr-" + n + "-" + idParam + "' class='form-control' onchange=\"showPerhitungan(this.value, \'" + idParam + "\')\">" +
+                "<option value=''>[Select]</option>" +
+                "<option value='='>(=) Sama Dengan</option>" +
+                "<option value='*'>(X) Kali</option>" +
+                "<option value='+'>(+) Tambah</option>" +
+                "<option value='-'>(-) Kurangi</option>" +
+                "<option value='/'>(/) Bagi</option>" +
+                "</select>" +
+                "</div>" +
+                "</div>";
 
             n = n + 1;
+            str += "<div id='hitung-" + n + "'></div>";
+            listOfParam.push({"id": "total-" + idParam, "opr": "="});
+            $("#id-param").val(idParam);
+            $("#masterid").val(master);
+            $("#divisiid").val(divisi);
+            $("#label-edit").text(label);
+            $("#body-nilai").html(str);
 
-            str += "<div id='hitung-"+ n +"'></div>";
+            BgNominasiAction.getListBiayaBudgeting(tahun, unit, idParam, divisi, function (list) {
+                var str1 = '<table class="table table-bordered table-striped" style="font-size: 13px;">' +
+                    '<thead>' +
+                    '<tr>' +
+                    '<td>Refrensi</td>' +
+                    '<td align="center">Nilai Total</td>' +
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody>';
 
-        listOfParam.push({"id":"total-"+idParam, "opr":"="});
-
-//        listOfParam.push(
-//            {"id":"total-"+idParam, "opr":"*"},
-//            {"id":"tt-"+idParam, "opr":"*"},
-//            {"id":"bor-"+idParam, "opr":"="}
-//        );
-
-
-        $("#id-param").val(idParam);
-        $("#masterid").val(master);
-        $("#divisiid").val(divisi);
-        $("#label-edit").text(label);
-        $("#body-nilai").html(str);
-    }
-
-    function showDetail() {
-
-        var idParam = $("#id-param").val();
-        var label = $("#label-edit").text();
-        $("#label-tipe").text(label);
-        $("#label-periode").text("Periode Januari Hingga " + stBulan(getDateParted('MONTH') - 1) + " " + tahun);
-
-        $("#modal-view-pendapatan").modal('show');
-        var head = "";
-        var str = "";
-        var total = "";
-        var totalDiskon = "";
-        if (idParam == "PDTRJTDN"){
-            head = "<td>Nama</td>" +
-                "<td>Harga</td>"+
-                "<td>Harga Diskon</td>"+
-                "<td>Qty</td>" +
-                "<td>Total</td>"+
-                "<td>Total Diskon</td>";
-
-            BgNominasiAction.getListPendapatanTindakan(unit, tahun, "RJ", function (list) {
                 $.each(list, function (i, item) {
-                    str += "<tr>" +
-                        "<td>"+item.namaTindakan+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.harga)+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.hargaDiskon)+"</td>" +
-                        "<td>"+item.qty+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.totalHarga)+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.totalHargaDiskon)+"</td>" +
-                        "</tr>";
+                    str1 += '<tr>' +
+                            '<td>'+item.nama+'</td>' +
+                            '<td align="right">'+ formatRupiah(item.nilaiTotal) +'</td>' +
+                            '</tr>';
 
-                    total += parseInt(item.totalHarga);
-                    totalDiskon += parseInt(nullEscape(item.totalHargaDiskon));
                 });
-                str += "<tr>" +
-                    "<td align='right' colspan='4'>Total : </td>" +
-                    "<td align='right'>"+ total +"</td>" +
-                    "<td align='right'>"+ totalDiskon +"</td>" +
-                    "</tr>";
 
-                $("#head-list-pendapatan").html(head);
-                $("#body-list-pendapatan").html(str);
-            });
-        }
-        if (idParam == "PDTRITDN"){
-            head = "<td>Nama</td>" +
-                "<td>Harga</td>"+
-                "<td>Harga Diskon</td>"+
-                "<td>Qty</td>" +
-                "<td>Total</td>"+
-                "<td>Total Diskon</td>";
-
-            BgNominasiAction.getListPendapatanTindakan(unit, tahun, "RI", function (list) {
-                $.each(list, function (i, item) {
-                    str += "<tr>" +
-                        "<td>"+item.namaTindakan+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.harga)+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.hargaDiskon)+"</td>" +
-                        "<td>"+item.qty+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.totalHarga)+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.totalHargaDiskon)+"</td>" +
-                        "</tr>";
-
-                    total += parseInt(item.totalHarga);
-                    totalDiskon += parseInt(nullEscape(item.totalHargaDiskon));
-                });
-                str += "<tr>" +
-                    "<td align='right' colspan='4'>Total : </td>" +
-                    "<td align='right'>"+ total +"</td>" +
-                    "<td align='right'>"+ totalDiskon +"</td>" +
-                    "</tr>";
-
-                $("#head-list-pendapatan").html(head);
-                $("#body-list-pendapatan").html(str);
-            });
-        }
-        if (idParam == "PDTRIKMR"){
-
-        }
-        if (idParam == "PDTRJOBT"){
-            head = "<td>Nama</td>" +
-                "<td>Harga</td>"+
-                "<td>Harga Diskon</td>"+
-                "<td>Qty</td>" +
-                "<td>Total</td>"+
-                "<td>Total Diskon</td>";
-
-            BgNominasiAction.getListPendapatanObat(unit, tahun, "RJ", function (list) {
-                $.each(list, function (i, item) {
-                    str += "<tr>" +
-                        "<td>"+item.namaTindakan+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.harga)+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.hargaDiskon)+"</td>" +
-                        "<td>"+item.qty+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.totalHarga)+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.totalHargaDiskon)+"</td>" +
-                        "</tr>";
-
-                    total += parseInt(item.totalHarga);
-                    totalDiskon += parseInt(nullEscape(item.totalHargaDiskon));
-                });
-                str += "<tr>" +
-                    "<td align='right' colspan='4'>Total : </td>" +
-                    "<td align='right'>"+ total +"</td>" +
-                    "<td align='right'>"+ totalDiskon +"</td>" +
-                    "</tr>";
-
-                $("#head-list-pendapatan").html(head);
-                $("#body-list-pendapatan").html(str);
-            });
-        }
-        if (idParam == "PDTRIOBT"){
-            head = "<td>Nama</td>" +
-                "<td>Harga</td>"+
-                "<td>Harga Diskon</td>"+
-                "<td>Qty</td>" +
-                "<td>Total</td>"+
-                "<td>Total Diskon</td>";
-
-            BgNominasiAction.getListPendapatanObat(unit, tahun, "RI", function (list) {
-                $.each(list, function (i, item) {
-                    str += "<tr>" +
-                        "<td>"+item.namaTindakan+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.harga)+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.hargaDiskon)+"</td>" +
-                        "<td>"+item.qty+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.totalHarga)+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.totalHargaDiskon)+"</td>" +
-                        "</tr>";
-
-                    total += parseInt(item.totalHarga);
-                    totalDiskon += parseInt(nullEscape(item.totalHargaDiskon));
-                });
-                str += "<tr>" +
-                    "<td align='right' colspan='4'>Total : </td>" +
-                    "<td align='right'>"+ total +"</td>" +
-                    "<td align='right'>"+ totalDiskon +"</td>" +
-                    "</tr>";
-
-                $("#head-list-pendapatan").html(head);
-                $("#body-list-pendapatan").html(str);
-            });
-
-        }
-        if (idParam == "PDTRJLAB"){
-
-        }
-        if (idParam == "PDTRJRGI"){
-
-        }
-        if (idParam == "PDTRILAB"){
-
-        }
-        if (idParam == "PDTRIRGI"){
-
+                str1 +=  '</tbody>' +
+                    '</table>';
+                $("#body-refrensi").html(str1);
+            })
         }
     }
 

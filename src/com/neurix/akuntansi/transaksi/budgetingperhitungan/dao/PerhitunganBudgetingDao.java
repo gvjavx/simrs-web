@@ -489,4 +489,73 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
         return parameterBudgetings;
     }
 
+    public List<ParameterBudgeting> getListBiayaParameter(String tahun,
+                                                          String branchId,
+                                                          String status,
+                                                          String rekeningId,
+                                                          String divisiId,
+                                                          String masterId){
+
+        if (rekeningId == null || "".equalsIgnoreCase(rekeningId))
+            rekeningId = "%";
+        if (divisiId == null || "".equalsIgnoreCase(divisiId))
+            divisiId = "%";
+        if (masterId == null || "".equalsIgnoreCase(masterId))
+            masterId = "%";
+
+        String SQL = "SELECT\n" +
+                "c.divisi_id,\n" +
+                "c.master_id,\n" +
+                "a.rekening_id,\n" +
+                "SUM (c.sub_total) AS nilai_total,\n" +
+                "a.tahun,\n" +
+                "a.branch_id,\n" +
+                "a.status,\n" +
+                "b.nama_kode_rekening\n" +
+                "FROM it_akun_budgeting a\n" +
+                "INNER JOIN im_akun_kode_rekening b ON b.rekening_id = a.rekening_id\n" +
+                "INNER JOIN it_akun_budgeting_detail c ON c.id_budgeting = a.id_budgeting\n" +
+                "WHERE b.level = '5'\n" +
+                "AND a.tahun = :tahun\n" +
+                "AND a.branch_id = :unit\n" +
+                "AND a.rekening_id LIKE :rekening\n" +
+                "AND c.divisi_id LIKE :divisi\n" +
+                "AND c.master_id LIKE :master\n" +
+                "AND a.status = :status\n" +
+                "GROUP BY \n" +
+                "c.master_id, \n" +
+                "c.divisi_id, \n" +
+                "a.rekening_id,\n" +
+                "a.tahun,\n" +
+                "a.branch_id,\n" +
+                "a.status,\n" +
+                "b.nama_kode_rekening";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("tahun", tahun)
+                .setParameter("unit", branchId)
+                .setParameter("status", status)
+                .setParameter("divisi", divisiId)
+                .setParameter("master", masterId)
+                .setParameter("rekening", rekeningId)
+                .list();
+
+        List<ParameterBudgeting> params = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                ParameterBudgeting param = new ParameterBudgeting();
+                param.setDivisiId(obj[0] == null ? "" : obj[0].toString());
+                param.setMasterId(obj[1] == null ? "" : obj[1].toString());
+                param.setRekeningId(obj[2] == null ? "" : obj[2].toString());
+                param.setNilaiTotal(obj[3] == null ? new BigDecimal(0) : (BigDecimal) obj[3]);
+                param.setTahun(obj[4] == null ? "" : obj[4].toString());
+                param.setBranchId(obj[5] == null ? "" : obj[5].toString());
+                param.setStatus(obj[6] == null ? "" : obj[6].toString());
+                param.setNama(obj[7] == null ? "" : obj[7].toString());
+                params.add(param);
+            }
+        }
+        return params;
+    }
+
 }
