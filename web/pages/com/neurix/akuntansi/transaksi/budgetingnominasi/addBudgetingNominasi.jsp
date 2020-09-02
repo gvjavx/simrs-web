@@ -261,111 +261,23 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col-md-8 col-md-offset-3">
-                            <%--<div id="form-master">--%>
-                                <%--<strong>Master</strong> <hr style="width: 80%;">--%>
-                                <%--<div class="row">--%>
-                                    <%--<label class="control-label col-sm-4">Master Id</label>--%>
-                                    <%--<div class="col-sm-6">--%>
-                                        <%--<input type="hidden" class="form-control" id="masterid" readonly/>--%>
-                                        <%--&lt;%&ndash;<script>&ndash;%&gt;--%>
-                                            <%--&lt;%&ndash;$(document).ready(function() {&ndash;%&gt;--%>
-                                                <%--&lt;%&ndash;var functions, mapped;&ndash;%&gt;--%>
-                                                <%--&lt;%&ndash;$('#masterid').typeahead({&ndash;%&gt;--%>
-                                                    <%--&lt;%&ndash;minLength: 1,&ndash;%&gt;--%>
-                                                    <%--&lt;%&ndash;source: function (query, process) {&ndash;%&gt;--%>
-                                                        <%--&lt;%&ndash;functions = [];&ndash;%&gt;--%>
-                                                        <%--&lt;%&ndash;mapped = {};&ndash;%&gt;--%>
-                                                        <%--&lt;%&ndash;var data = [];&ndash;%&gt;--%>
-                                                        <%--&lt;%&ndash;dwr.engine.setAsync(false);&ndash;%&gt;--%>
-                                                        <%--&lt;%&ndash;MasterAction.initTypeaheadMaster(query,function (listdata) {&ndash;%&gt;--%>
-                                                            <%--&lt;%&ndash;data = listdata;&ndash;%&gt;--%>
-                                                        <%--&lt;%&ndash;});&ndash;%&gt;--%>
-                                                        <%--&lt;%&ndash;$.each(data, function (i, item) {&ndash;%&gt;--%>
-                                                            <%--&lt;%&ndash;var labelItem = item.nomorVendor + " | " + item.nama;&ndash;%&gt;--%>
-                                                            <%--&lt;%&ndash;mapped[labelItem] = {&ndash;%&gt;--%>
-                                                                <%--&lt;%&ndash;name :item.nama,&ndash;%&gt;--%>
-                                                                <%--&lt;%&ndash;id : item.nomorVendor&ndash;%&gt;--%>
-                                                            <%--&lt;%&ndash;};&ndash;%&gt;--%>
-                                                            <%--&lt;%&ndash;functions.push(labelItem);&ndash;%&gt;--%>
-                                                        <%--&lt;%&ndash;});&ndash;%&gt;--%>
-                                                        <%--&lt;%&ndash;process(functions);&ndash;%&gt;--%>
-                                                    <%--&lt;%&ndash;},&ndash;%&gt;--%>
-                                                    <%--&lt;%&ndash;updater: function (item) {&ndash;%&gt;--%>
-                                                        <%--&lt;%&ndash;var selectedObj = mapped[item];&ndash;%&gt;--%>
-                                                        <%--&lt;%&ndash;$("#namamaster").val(selectedObj.name);&ndash;%&gt;--%>
-                                                        <%--&lt;%&ndash;return selectedObj.id;&ndash;%&gt;--%>
-                                                    <%--&lt;%&ndash;}&ndash;%&gt;--%>
-                                                <%--&lt;%&ndash;});&ndash;%&gt;--%>
-                                            <%--&lt;%&ndash;});&ndash;%&gt;--%>
-                                        <%--&lt;%&ndash;</script>&ndash;%&gt;--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                                <%--&lt;%&ndash;<div class="row">&ndash;%&gt;--%>
-                                    <%--&lt;%&ndash;<label class="control-label col-sm-4">Nama Master</label>&ndash;%&gt;--%>
-                                    <%--&lt;%&ndash;<div class="col-sm-6">&ndash;%&gt;--%>
-                                        <%--&lt;%&ndash;<input type="text" class="form-control" id="namamaster" readonly/>&ndash;%&gt;--%>
-                                    <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
-                                <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
-                            <%--</div>--%>
                             <input type="hidden" class="form-control" id="masterid" readonly/>
-                                <br>
                             <div id="form-divisi">
                                 <%--<strong>Divisi</strong> <hr style="width: 80%;">--%>
                                 <div class="row">
-                                    <label class="control-label col-sm-4"><strong>Divisi</strong></label>
+                                    <label class="control-label col-sm-2"><strong>Divisi</strong></label>
                                     <div class="col-sm-6">
-                                        <span id="divisi-name"></span>
-                                        <input type="hidden" class="form-control" id="divisiid"/>
-
-                                        <%--<script>--%>
-                                            <%--$(document).ready(function() {--%>
-                                                <%--var functions, mapped;--%>
-                                                <%--$('#divisiid').typeahead({--%>
-                                                    <%--minLength: 1,--%>
-                                                    <%--source: function (query, process) {--%>
-                                                        <%--functions = [];--%>
-                                                        <%--mapped = {};--%>
-                                                        <%--var data = [];--%>
-                                                        <%--dwr.engine.setAsync(false);--%>
-                                                        <%--PositionAction.typeAheadPosition(query,function (listdata) {--%>
-                                                            <%--data = listdata;--%>
-                                                        <%--});--%>
-                                                        <%--$.each(data, function (i, item) {--%>
-                                                            <%--var labelItem = item.kodering + " | " + item.positionName;--%>
-                                                            <%--mapped[labelItem] = {--%>
-                                                                <%--kode : item.kodering,--%>
-                                                                <%--name :item.positionName,--%>
-                                                                <%--id : item.positionId--%>
-                                                            <%--};--%>
-                                                            <%--functions.push(labelItem);--%>
-                                                        <%--});--%>
-                                                        <%--process(functions);--%>
-                                                    <%--},--%>
-                                                    <%--updater: function (item) {--%>
-                                                        <%--var selectedObj = mapped[item];--%>
-                                                        <%--$("#namadivisi").val(selectedObj.name);--%>
-                                                        <%--$("#positionid").val(selectedObj.id);--%>
-                                                        <%--return selectedObj.kode;--%>
-                                                    <%--}--%>
-                                                <%--});--%>
-                                            <%--});--%>
-                                        <%--</script>--%>
+                                        <h5 id="divisi-name"></h5>
+                                        <input type="hidden" class="form-control" id="divisiid" readonly/>
                                     </div>
                                 </div>
-                                <%--<div class="row">--%>
-                                    <%--<label class="control-label col-sm-4">Nama Divisi</label>--%>
-                                    <%--<div class="col-sm-6">--%>
-                                        <%--<input type="text" class="form-control" id="namadivisi" readonly/>--%>
-                                        <%--<input type="hidden" class="form-control" id="positionid" readonly/>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
                             </div>
 
                             <br>
                             <div id="form-periode">
                                 <%--<strong>Periode</strong> <hr style="width: 80%;">--%>
                                 <div class="row">
-                                    <label class="control-label col-sm-4"><strong>Periode</strong></label>
+                                    <label class="control-label col-sm-2"><strong>Periode</strong></label>
                                     <div class="col-sm-6">
                                         <select class="form-control" id="sel-periode">
                                             <option value="januari">Januari</option>
@@ -388,19 +300,14 @@
                             <br>
                             <strong>Refrensi</strong><hr style="width: 80%;">
                             <div class="row">
-                                <div class="col-md-4"></div>
-                                <div class="col-md-6" id="body-refrensi"></div>
+                                <%--<div class="col-md-4"></div>--%>
+                                <div class="col-md-12" id="body-refrensi"></div>
                             </div>
 
                             <br>
-                            <strong>Nilai</strong><hr style="width: 80%;">
-                            <div class="row">
-                                <div class="col-md-12" align="right">
-                                    <%--<button class="btn btn-sm btn-info" onclick="showDetail()"><i class="fa fa-info"></i></button>--%>
-                                    <button class="btn btn-sm btn-warning" onclick="addPerhitungan()"><i class="fa fa-plus"></i></button>
-                                </div>
-                            </div>
-                            <br>
+                            <strong>Nilai</strong>
+                            <button class="btn btn-sm btn-warning" onclick="addPerhitungan()" style="float: right;"><i class="fa fa-plus"></i></button>
+                            <hr style="width: 100%;">
                             <div id="body-nilai">
                                 <%--<div class="row">--%>
                                 <%--<label class="control-label col-sm-4">Nilai Pendapatan</label>--%>
@@ -412,8 +319,8 @@
 
                             <br>
                             <div class="row">
-                                <div class="col-md-4"></div>
-                                <div class="col-md-6" id="display-hitung">
+                                <%--<div class="col-md-4"></div>--%>
+                                <div class="col-md-12" id="display-hitung">
 
                                 </div>
                             </div>
@@ -592,7 +499,7 @@
             var str = "";
             $.each(list, function (i, item) {
                 str += '<tr>' +
-                    '<td><span id="label-td-'+item.divisiId+'">' + item.namaDivisi + '</span></td>' +
+                    '<td><span id="label-divisi-'+item.divisiId+'">' + item.namaDivisi + '</span></td>' +
                     '<td align="right">' + formatRupiah(item.nilaiTotal) + '</td>' +
                     '<td align="center" id="btn-span-' + i + '"><button class="btn btn-sm btn-primary" onclick="spanRow(\'' + i + '\', \'' + item.divisiId + '\')"><i class="fa fa-plus"></i></button></td>' +
                     '</tr>' +
@@ -683,15 +590,15 @@
 //        $("#modal-add-hitung").modal('show');
         var idParam = $("#id-param").val();
         var str = "<div class='row'>" +
-                "<div class='col-md-4'></div>" +
+            "<div class=\"col-md-2\" id=\"label-"+n+"\" align='right' style='margin-top: 7px'>"+ hurufByIndex(n) +"</div>" +
                 "<div class=\"col-md-6\">" +
                 "<div id='body-total-"+ n + "-"+ idParam +"'>" +
 //                "<select class='form-control' id='total-" + n + "-"+ idParam +"'>";
                 "<select class='form-control' id='total-" + n + "-"+ idParam +"' onchange=\"changeInput(\'total-" + n + "-" + idParam + "\', this.value)\">";
 
         str += "<option value=''>[Select One]</option>" +
-            "<option value='combo'>Combo Nilai Dasar</option>"+
-            "<option value='input'>Input Manual</option>";
+                "<option value='combo'>Combo Nilai Dasar</option>"+
+                "<option value='input'>Input Manual</option>";
 
 //            BudgetingNilaiDasarAction.getListNilaiDasarEdit(tahun, function (list) {
 //                $.each(list, function (i, item) {
@@ -702,7 +609,7 @@
         str += "</select>" +
             "</div>" +
             "</div>" +
-            "<div class=\"col-md-2\">"+
+            "<div class=\"col-md-4\">"+
                 "<select id='opr-"+ n +"-"+ idParam +"' class='form-control' onchange=\"showPerhitungan(this.value, \'"+idParam+"\')\">" +
                     "<option value=''>[Select]</option>" +
                     "<option value='='>(=) Sama Dengan</option>" +
@@ -722,17 +629,29 @@
     }
 
     function showPerhitungan(valop, idParam) {
-        var str = "<span>";
+        var str = '<div class="row" >';
         var operator = "";
         var nilaiTotal = 0;
         if("=" == valop){
+            str += '<div class="col-md-2" align="right" style="margin-top: 7px"><strong>Formula : </strong></div>' +
+                    '<div class="col-md-10"><h4>';
+                    for (i = 0; i<n; i++){
+                        var label   = $("#label-"+i).text();
+                        var opr     = $("#opr-" + i + "-" + idParam).val();
+                        str += ' ' + label + ' ' + (opr == "=" ? "" : opr) + ' ';
+                    };
+            str += "</h4></div>";
+            str += "</div>";
+            str += "<div class='row'>";
+            str += '<div class="col-md-2"></div>';
+            str += '<div class="col-md-10"><h4>'
+
             for (i = 0; i<n; i++){
                 var nilai   = $("#total-" + i + "-" + idParam).val();
                 var opr     = $("#opr-" + i + "-" + idParam).val();
                 var namaNilai = $("#total-" + i + "-" + idParam + " option:selected").text();
-//                console.log("i -> "+i);
-//                console.log("opr -> " + opr + " nilai -> "+ nilai);
-                str += " " + nilai + (namaNilai == "" ? " " : " ("+namaNilai+") ")  + opr + " ";
+                str += " " + nilai + " "  + (opr == "=" ? "" : opr) + " ";
+
                 if (operator == ""){
                     nilaiTotal = nilai;
                     operator = opr;
@@ -741,17 +660,21 @@
                     operator = opr;
                 }
 
-                if (i == n-1){
-                    str += nilaiTotal;
-                }
+//                if (i == n-1){
+//                    str += nilaiTotal;
+//                }
             }
-            str += "</span>";
-//            console.log("n -> "+n);
-//            console.log("i -> "+i);
-//            console.log("valop -> "+valop+", param -> "+idParam+", str -> " + str);
+            str += "</h4></div>";
+            str += "</div>";
+            str += "<div class='row'>";
+            str += '<div class="col-md-2"></div>';
+            str += '<div class="col-md-10"><h4>';
+            str += "= " + nilaiTotal;
+            str += "</h4></div>";
+            str += "</div>";
+
             $("#display-hitung").html(str);
         }
-
     }
 
     function hitung(nilai1, opr, nilai2){
@@ -788,9 +711,32 @@
         }
     }
 
+    function generateAlphabets() {
+        var alphabets = [];
+        var start = 'a'.charCodeAt(0);
+        var last  = 'z'.charCodeAt(0);
+        var n = 0;
+        for (var i = start; i <= last; ++i) {
+            alphabets.push({"no":n, "huruf":String.fromCharCode(i)});
+            n++;
+        }
+        return alphabets;
+    }
+
+    function hurufByIndex(ind) {
+        var alphabets = generateAlphabets();
+        var str = "";
+        $.each(alphabets, function (i, item) {
+            if (ind == item.no){
+                str = item.huruf;
+            };
+        });
+        return str;
+    }
+
     function showAdd(idParam, divisi, master) {
 
-        if ("Y" != flagNilaiDasar) {
+        if ("Y" != flagNilaiDasar){
             alert("Nilai Dasar Belum Ada untuk Tahun Tersebut");
         } else {
             $("#display-hitung").html("");
@@ -799,19 +745,16 @@
             listOfParam = [];
             n = 0;
             var label = $("#label-head-" + idParam).text();
-            var divisiName = $("#label-td-"+divisi).text();
-            console.log("nama divisi " + divisiName);
-            console.log("id : label-td-" + divisi);
-            $("#divisi-name").text(divisiName);
+            var namaDivisi = divisi.replace(/\./g,'\\.');
+            namaDivisi = $("#label-divisi-"+namaDivisi).text();
 
             var str = "<div class=\"row\">" +
-                "<label class=\"col-md-4\">Nilai Biaya</label>" +
+                "<div class=\"col-md-2\" id=\"label-"+n+"\" align='right' style='margin-top: 7px'>"+ hurufByIndex(n) +"</div>" +
                 "<div class=\"col-md-6\">" +
-                "<input type=\"number\" class=\"form-control\" id=\"total-" + n + "-" + idParam + "\" />" +
+                "<input type=\"number\" class=\"form-control\" id=\"total-"+n+"-"+idParam+"\" />" +
                 "</div>" +
-                "<div class=\"col-md-2\">" +
-//            "<div class=\"col-md-4\">"+
-                "<select id='opr-" + n + "-" + idParam + "' class='form-control' onchange=\"showPerhitungan(this.value, \'" + idParam + "\')\">" +
+                "<div class=\"col-md-4\">"+
+                "<select id='opr-"+ n +"-"+ idParam +"' class='form-control' onchange=\"showPerhitungan(this.value, \'"+idParam+"\')\">" +
                 "<option value=''>[Select]</option>" +
                 "<option value='='>(=) Sama Dengan</option>" +
                 "<option value='*'>(X) Kali</option>" +
@@ -823,12 +766,13 @@
                 "</div>";
 
             n = n + 1;
-            str += "<div id='hitung-" + n + "'></div>";
-            listOfParam.push({"id": "total-" + idParam, "opr": "="});
+            str += "<div id='hitung-"+ n +"'></div>";
+            listOfParam.push({"id":"total-"+idParam, "opr":"="});
             $("#id-param").val(idParam);
             $("#masterid").val(master);
             $("#divisiid").val(divisi);
             $("#label-edit").text(label);
+            $("#divisi-name").text(namaDivisi);
             $("#body-nilai").html(str);
 
             BgNominasiAction.getListBiayaBudgeting(tahun, unit, idParam, divisi, function (list) {

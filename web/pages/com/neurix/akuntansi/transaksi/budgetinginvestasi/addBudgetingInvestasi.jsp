@@ -262,109 +262,33 @@
                     <div class="row">
                         <div class="col-md-8 col-md-offset-3">
                             <div id="form-master">
-                                <strong>Master</strong> <hr style="width: 80%;">
+                                <%--<strong>Master</strong> <hr style="width: 80%;">--%>
                                 <div class="row">
-                                    <label class="control-label col-sm-4">Master Id</label>
+                                    <%--<label class="control-label col-sm-2"> <strong>Master</strong> </label>--%>
                                     <div class="col-sm-6">
-                                        <input type="text" class="form-control" id="masterid" readonly/>
-                                        <%--<script>--%>
-                                        <%--$(document).ready(function() {--%>
-                                        <%--var functions, mapped;--%>
-                                        <%--$('#masterid').typeahead({--%>
-                                        <%--minLength: 1,--%>
-                                        <%--source: function (query, process) {--%>
-                                        <%--functions = [];--%>
-                                        <%--mapped = {};--%>
-                                        <%--var data = [];--%>
-                                        <%--dwr.engine.setAsync(false);--%>
-                                        <%--MasterAction.initTypeaheadMaster(query,function (listdata) {--%>
-                                        <%--data = listdata;--%>
-                                        <%--});--%>
-                                        <%--$.each(data, function (i, item) {--%>
-                                        <%--var labelItem = item.nomorVendor + " | " + item.nama;--%>
-                                        <%--mapped[labelItem] = {--%>
-                                        <%--name :item.nama,--%>
-                                        <%--id : item.nomorVendor--%>
-                                        <%--};--%>
-                                        <%--functions.push(labelItem);--%>
-                                        <%--});--%>
-                                        <%--process(functions);--%>
-                                        <%--},--%>
-                                        <%--updater: function (item) {--%>
-                                        <%--var selectedObj = mapped[item];--%>
-                                        <%--$("#namamaster").val(selectedObj.name);--%>
-                                        <%--return selectedObj.id;--%>
-                                        <%--}--%>
-                                        <%--});--%>
-                                        <%--});--%>
-                                        <%--</script>--%>
+                                        <h5 id="master-name"></h5>
+                                        <input type="hidden" class="form-control" id="masterid" readonly/>
                                     </div>
                                 </div>
-                                <%--<div class="row">--%>
-                                <%--<label class="control-label col-sm-4">Nama Master</label>--%>
-                                <%--<div class="col-sm-6">--%>
-                                <%--<input type="text" class="form-control" id="namamaster" readonly/>--%>
-                                <%--</div>--%>
-                                <%--</div>--%>
                             </div>
-                            <%--<input type="hidden" id="masterid" value="INV"/>--%>
+
                             <br>
                             <div id="form-divisi">
-                                <strong>Divisi</strong> <hr style="width: 80%;">
+                                <%--<strong>Divisi</strong> <hr style="width: 80%;">--%>
                                 <div class="row">
-                                    <label class="control-label col-sm-4">Divisi Id</label>
+                                    <label class="control-label col-sm-2"><strong>Divisi</strong></label>
                                     <div class="col-sm-6">
-                                        <input type="text" class="form-control" id="divisiid" readonly/>
-
-                                        <%--<script>--%>
-                                        <%--$(document).ready(function() {--%>
-                                        <%--var functions, mapped;--%>
-                                        <%--$('#divisiid').typeahead({--%>
-                                        <%--minLength: 1,--%>
-                                        <%--source: function (query, process) {--%>
-                                        <%--functions = [];--%>
-                                        <%--mapped = {};--%>
-                                        <%--var data = [];--%>
-                                        <%--dwr.engine.setAsync(false);--%>
-                                        <%--PositionAction.typeAheadPosition(query,function (listdata) {--%>
-                                        <%--data = listdata;--%>
-                                        <%--});--%>
-                                        <%--$.each(data, function (i, item) {--%>
-                                        <%--var labelItem = item.kodering + " | " + item.positionName;--%>
-                                        <%--mapped[labelItem] = {--%>
-                                        <%--kode : item.kodering,--%>
-                                        <%--name :item.positionName,--%>
-                                        <%--id : item.positionId--%>
-                                        <%--};--%>
-                                        <%--functions.push(labelItem);--%>
-                                        <%--});--%>
-                                        <%--process(functions);--%>
-                                        <%--},--%>
-                                        <%--updater: function (item) {--%>
-                                        <%--var selectedObj = mapped[item];--%>
-                                        <%--$("#namadivisi").val(selectedObj.name);--%>
-                                        <%--$("#positionid").val(selectedObj.id);--%>
-                                        <%--return selectedObj.kode;--%>
-                                        <%--}--%>
-                                        <%--});--%>
-                                        <%--});--%>
-                                        <%--</script>--%>
+                                        <h5 id="divisi-name"></h5>
+                                        <input type="hidden" class="form-control" id="divisiid" readonly/>
                                     </div>
                                 </div>
-                                <%--<div class="row">--%>
-                                <%--<label class="control-label col-sm-4">Nama Divisi</label>--%>
-                                <%--<div class="col-sm-6">--%>
-                                <%--<input type="text" class="form-control" id="namadivisi" readonly/>--%>
-                                <%--<input type="hidden" class="form-control" id="positionid" readonly/>--%>
-                                <%--</div>--%>
-                                <%--</div>--%>
                             </div>
 
                             <br>
                             <div id="form-periode">
-                                <strong>Periode</strong> <hr style="width: 80%;">
+                                <%--<strong>Periode</strong> <hr style="width: 80%;">--%>
                                 <div class="row">
-                                    <label class="control-label col-sm-4">Periode</label>
+                                    <label class="control-label col-sm-2"><strong>Periode</strong></label>
                                     <div class="col-sm-6">
                                         <select class="form-control" id="sel-periode">
                                             <option value="januari">Januari</option>
@@ -385,14 +309,9 @@
                             </div>
 
                             <br>
-                            <strong>Nilai</strong><hr style="width: 80%;">
-                            <div class="row">
-                                <div class="col-md-12" align="right">
-                                    <button class="btn btn-sm btn-info" onclick="showDetail()"><i class="fa fa-info"></i></button>
-                                    <button class="btn btn-sm btn-warning" onclick="addPerhitungan()"><i class="fa fa-plus"></i></button>
-                                </div>
-                            </div>
-                            <br>
+                            <strong>Nilai</strong>
+                            <button class="btn btn-sm btn-warning" onclick="addPerhitungan()" style="float: right;"><i class="fa fa-plus"></i></button>
+                            <hr style="width: 100%;">
                             <div id="body-nilai">
                                 <%--<div class="row">--%>
                                 <%--<label class="control-label col-sm-4">Nilai Pendapatan</label>--%>
@@ -404,8 +323,8 @@
 
                             <br>
                             <div class="row">
-                                <div class="col-md-4"></div>
-                                <div class="col-md-6" id="display-hitung">
+                                <%--<div class="col-md-4"></div>--%>
+                                <div class="col-md-12" id="display-hitung">
 
                                 </div>
                             </div>
@@ -583,7 +502,7 @@
             var str = "";
             $.each(list, function (i, item) {
                 str += '<tr>' +
-                    '<td>' + item.namaDivisi + '</td>' +
+                    '<td id="label-divisi-'+item.divisiId+'">' + item.namaDivisi + '</td>' +
                     '<td align="right">' + formatRupiah(item.nilaiTotal) + '</td>' +
                     '<td align="center" id="btn-span-' + i + '"><button class="btn btn-sm btn-primary" onclick="spanRow(\'' + i + '\', \'' + item.divisiId + '\')"><i class="fa fa-plus"></i></button></td>' +
                     '</tr>' +
@@ -677,10 +596,10 @@
         var str = "<div class='row'>" +
             "<div class=\"col-md-5\"><input type='text' class=\"form-control\" id=\"nama-"+n+"-" +idParam+ "\" placeholder='Nama'/></div>" +
             "<div class=\"col-md-4\">" +
-            "<input class='form-control' id='total-"+ n + "-"+ idParam +"' placeholder='nilai' />" +
+            "<input class='form-control' id='total-"+ n + "-"+ idParam +"' placeholder='Nilai' />" +
             "</div>" +
             "<div class=\"col-md-3\">"+
-            "<input type=\"number\" class=\"form-control\" id=\"qty-"+n+"-"+idParam+"\" placeholder='qty' />" +
+            "<input type=\"number\" class=\"form-control\" id=\"qty-"+n+"-"+idParam+"\" placeholder='Qty' />" +
             "</div>" +
             "</div>";
 
@@ -709,8 +628,8 @@
 
     function showAdd(idParam, divisi, master) {
 
-        if ("Y" == flagNilaiDasar){
-            alert("Nilai Dasar Belum Ada untuk Tahun Tersebut.");
+        if ("Y" != flagNilaiDasar){
+            alert("Nilai Dasar Belum Ada untuk Tahun Tersebut");
         } else {
 
             $("#modal-add").modal('show');
@@ -718,15 +637,19 @@
             listOfParam = [];
             n = 0;
 
+            var namaDivisi = divisi.replace(/\./g,'\\.');
+            namaDivisi = $("#label-divisi-"+namaDivisi).text();
+
+
             var label = $("#label-head-"+idParam).text();
 
             var str = "<div class=\"row\">" +
-                "<div class=\"col-md-5\"><input type='text' class=\"form-control\" id=\"nama-"+n+"-" +idParam+ "\" placeholder='nama'/></div>" +
+                "<div class=\"col-md-5\"><input type='text' class=\"form-control\" id=\"nama-"+n+"-" +idParam+ "\" placeholder='Nama'/></div>" +
                 "<div class=\"col-md-4\">" +
-                "<input type=\"number\" class=\"form-control\" id=\"total-"+n+"-"+idParam+"\" placeholder='nilai' />" +
+                "<input type=\"number\" class=\"form-control\" id=\"total-"+n+"-"+idParam+"\" placeholder='Nilai' />" +
                 "</div>" +
                 "<div class=\"col-md-3\">"+
-                "<input type=\"number\" class=\"form-control\" id=\"qty-"+n+"-"+idParam+"\" placeholder='qty' />" +
+                "<input type=\"number\" class=\"form-control\" id=\"qty-"+n+"-"+idParam+"\" placeholder='Qty' />" +
                 "</div>" +
                 "</div>";
 
@@ -739,6 +662,7 @@
             $("#id-param").val(idParam);
             $("#masterid").val(master);
             $("#divisiid").val(divisi);
+            $("#divisi-name").text(namaDivisi);
             $("#label-edit").text(label);
             $("#body-nilai").html(str);
         }

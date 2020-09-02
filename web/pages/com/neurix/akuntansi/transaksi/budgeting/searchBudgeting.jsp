@@ -33,14 +33,16 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/TutuPeriodAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/BudgetingAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/KodeRekeningAction.js"/>'></script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/BranchAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/BgEksploitasiAction.js"/>'></script>
     <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.bootstrap3.js"/>"></script>
     <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.js"/>"></script>
     <script src="<s:url value="/pages/plugins/tree/lodash.js"/>"></script>
     <script type='text/javascript'>
 
         $( document ).ready(function() {
-
+//            $('#bayar_rawat_jalan, #pembayaran_active').addClass('active');
+//            $('#pembayaran_open').addClass('menu-open');
+//            changeAction('');
         });
 
     </script>
@@ -69,73 +71,73 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Dashboard Laba Rugi</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Laba Rugi </h3>
                     </div>
                     <div class="box-body">
                         <%--<s:form id="kasirjalanForm" method="post" namespace="/kasirjalan" action="search_kasirjalan.action" theme="simple" cssClass="form-horizontal">--%>
-                            <div class="form-group form-horizontal">
-                                <div class="row">
-                                    <div class="col-md-12 col-md-offset-3">
-                                        <div class="row">
-                                            <label class="control-label col-sm-2">Tahun</label>
-                                            <div class="col-sm-2">
-                                                <select class="form-control" id="sel-tahun">
-                                                    <option value="2020">2020</option>
-                                                    <option value="2021">2021</option>
-                                                    <option value="2022">2022</option>
-                                                    <option value="2023">2023</option>
-                                                </select>
-                                            </div>
+                        <div class="form-group form-horizontal">
+                            <div class="row">
+                                <div class="col-md-12 col-md-offset-3">
+                                    <div class="row">
+                                        <label class="control-label col-sm-2">Tahun</label>
+                                        <div class="col-sm-2">
+                                            <select class="form-control" id="sel-tahun">
+                                                <option value="2020">2020</option>
+                                                <option value="2021">2021</option>
+                                                <option value="2022">2022</option>
+                                                <option value="2023">2023</option>
+                                            </select>
                                         </div>
-                                        <div class="row">
-                                            <label class="control-label col-sm-2">Unit</label>
-                                            <div class="col-sm-2">
-                                                <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                                <s:select list="#initComboBranch.listOfComboBranch" id="sel-unit" name="budgeting.branchId"
-                                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="All Unit" cssClass="form-control" onchange="changeAction(this.value)"/>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <label class="control-label col-sm-2">Status</label>
-                                            <div class="col-sm-2">
-                                                <select class="form-control" id="sel-status">
-                                                    <%--<option value="APPROVE_DRAFT">APPROVE DRAFT</option>--%>
-                                                    <%--<option value="ADJUST_DRAFT">ADJUST DRAFT</option>--%>
-                                                    <option value="APPROVE_FINAL">APPROVE FINAL</option>
-                                                    <%--<option value="ADJUST_FINAL">ADJUST FINAL</option>--%>
-                                                    <%--<option value="EDIT_REVISI">EDIT REVISI</option>--%>
-                                                    <option value="APPROVE_REVISI">APPROVE REVISI</option>
-                                                    <%--<option value="ADJUST_REVISI">ADJUST REVISI</option>--%>
-                                                </select>  <div class="row">
-                                            </div>
-                                        </div>
-
-                                        <input type="hidden" id="rekeningid">
-
                                     </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6 col-md-offset-5" style="margin-top: 10px">
-                                        <button class="btn btn-success" onclick="search()"><i class="fa fa-search"></i> Search</button>
-                                        <%--<button class="btn btn-primary" onclick="add()" id="btn-add"><i class="fa fa-plus"></i> Add</button>--%>
-                                        <button class="btn btn-danger" onclick="reset()"><i class="fa fa-refresh"></i> Reset</button>
-                                    </div>
+                                    <div class="row">
+                                        <label class="control-label col-sm-2">Status</label>
+                                        <div class="col-sm-2">
+                                            <select class="form-control" id="sel-status">
+                                                <%--<option value="APPROVE_DRAFT">APPROVE DRAFT</option>--%>
+                                                <%--<option value="ADJUST_DRAFT">ADJUST DRAFT</option>--%>
+                                                <option value="APPROVE_FINAL">APPROVE FINAL</option>
+                                                <%--<option value="ADJUST_FINAL">ADJUST FINAL</option>--%>
+                                                <%--<option value="EDIT_REVISI">EDIT REVISI</option>--%>
+                                                <option value="APPROVE_REVISI">APPROVE REVISI</option>
+                                                <%--<option value="ADJUST_REVISI">ADJUST REVISI</option>--%>
+                                            </select>  <div class="row">
+                                        </div>
+                                        </div>
+                                    <input type="hidden" id="rekeningid">
                                 </div>
                             </div>
+
+                            <div class="row">
+                                <div class="col-md-6 col-md-offset-5" style="margin-top: 10px">
+                                    <button class="btn btn-success" onclick="search()"><i class="fa fa-search"></i> Search</button>
+                                    <%--<s:if test='budgeting.flagKp == "Y"'>--%>
+                                    <%--<button class="btn btn-primary" onclick="add()" id="btn-add"><i class="fa fa-plus"></i> Add</button>--%>
+                                    <%--</s:if>--%>
+                                    <%--<div class="btn-group">--%>
+                                    <%--<button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Action</button>--%>
+                                    <%--<button type="button" class="btn btn-primary dropdown-toggle"--%>
+                                    <%--data-toggle="dropdown" style="height: 34px">--%>
+                                    <%--<span class="caret"></span>--%>
+                                    <%--<span class="sr-only">Toggle Dropdown</span>--%>
+                                    <%--</button>--%>
+                                    <%--<ul class="dropdown-menu" role="menu" id="action-menu">--%>
+                                    <%--</ul>--%>
+                                    <%--</div>--%>
+                                    <button class="btn btn-danger" onclick="reset()"><i class="fa fa-refresh"></i> Reset</button>
+                                </div>
+                            </div>
+                        </div>
 
                         <%--</s:form>--%>
                     </div>
 
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-th-list"></i> List Data Budgeting :
-                        <strong><span id="label-tahun"></span> - <span id="label-unit"></span></strong>
+                        <h3 class="box-title"><i class="fa fa-th-list"></i> List Budgeting :
+                            <strong><span id="label-tahun"></span></strong>
                         </h3>
                     </div>
                     <div class="box-body">
-
-
 
                         <%--<div class="alert alert-info alert-dismissable" id="alert-info">--%>
                         <%--<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>--%>
@@ -153,47 +155,34 @@
                         </div>
 
 
-                        <div class="row">
-                            <div class="col-md-4 col-md-offset-4">
-                                <h3 align="center">Seluruh NMU</h3>
-                                <div id="donut-all"></div>
-                                <div id="legend-all" class="donut-legend"></div>
-                            </div>
+                        <div id="body-budgeting">
 
                         </div>
-
-                            <br>
-                        <div id="list-donut" class="row">
-
-                        </div>
-
-
 
                         <%--<div class="row">--%>
-                            <%--<div class="col-md-12">--%>
-                                <%--<table class="tree table table-bordered table-striped">--%>
-                                    <%--<thead id="head-budgeting">--%>
-                                        <%--<tr bgcolor="#90ee90">--%>
-                                            <%--<td style="width: 20%">COA</td>--%>
-                                            <%--<td align="">Keterangan</td>--%>
-                                            <%--<td align="center">Nilai Draf</td>--%>
-                                            <%--<td align="center">Nilai Final</td>--%>
-                                            <%--<td align="center">Nilai Revisi</td>--%>
-                                            <%--<td align="">No. Budgeting</td>--%>
-                                            <%--<td>Action</td>--%>
-                                        <%--</tr>--%>
-                                    <%--</thead>--%>
-                                    <%--<tbody id="body-budgeting" style="font-size: 13px">--%>
-                                    <%--</tbody>--%>
-                                <%--</table>--%>
-                            <%--</div>--%>
+                        <%--<div class="col-md-8 col-md-offset-2">--%>
+                        <%--<table class="tree table table-bordered table-striped">--%>
+                        <%--<thead id="head-budgeting">--%>
+                        <%--<tr bgcolor="#90ee90">--%>
+                        <%--<td align="">Branch</td>--%>
+                        <%--<td align="center">Nilai Total</td>--%>
+                        <%--<td>Action</td>--%>
+                        <%--</tr>--%>
+                        <%--</thead>--%>
+                        <%--<tbody id="body-budgeting" style="font-size: 13px">--%>
+                        <%--</tbody>--%>
+                        <%--&lt;%&ndash;<input type="hidden" id="index-period"/>&ndash;%&gt;--%>
+                        <%--&lt;%&ndash;<input type="hidden" id="index-branch"/>&ndash;%&gt;--%>
+                        <%--&lt;%&ndash;<input type="hidden" id="bulan"/>&ndash;%&gt;--%>
+                        <%--&lt;%&ndash;<input type="hidden" id="tahun"/>&ndash;%&gt;--%>
+                        <%--</table>--%>
+                        <%--</div>--%>
                         <%--</div>--%>
 
-                        <%--<div class="form-group">--%>
-                            <%--<div class="col-md-4 col-md-offset-5">--%>
-                                <%--<button class="btn btn-success" style="display: none" id="btn-save" onclick="saveBatasPeriod()"><i class="fa fa-check"></i> Save </button>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
+                        <div class="form-group">
+                            <div class="col-md-12" align="center" id="body-btn-save">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -215,21 +204,21 @@
                 <input type="hidden" id="view-id">
                 <table style="font-size: 15px; margin-bottom: 10px;" class="table">
                     <tbody>
-                        <tr>
-                            <td width="20%">Tahun</td>
-                            <td>:</td>
-                            <td id="tahun-view"></td>
-                        </tr>
-                        <tr>
-                            <td>Unit</td>
-                            <td>:</td>
-                            <td id="unit-view"></td>
-                        </tr>
-                        <tr>
-                            <td>COA </td>
-                            <td>:</td>
-                            <td id="coa-view"></td>
-                        </tr>
+                    <tr>
+                        <td width="20%">Tahun</td>
+                        <td>:</td>
+                        <td id="tahun-view"></td>
+                    </tr>
+                    <tr>
+                        <td>Unit</td>
+                        <td>:</td>
+                        <td id="unit-view"></td>
+                    </tr>
+                    <tr>
+                        <td>COA </td>
+                        <td>:</td>
+                        <td id="coa-view"></td>
+                    </tr>
                     </tbody>
                 </table>
                 <table class="table table-bordered table-striped">
@@ -322,40 +311,253 @@
 
 <script type='text/javascript'>
 
+    function changeAction(var1){
 
+        var tahun = $("#sel-tahun").val();
+        var unit = "";
+        if (var1 == null || var1 == "")
+            unit = $("#sel-unit").val();
+        else
+            unit = var1;
+        console.log(unit);
 
-    $( document ).ready(function() {
-//        donutChart();
-    });
+        if (unit != null || unit != ""){
+            BudgetingAction.findLastStatus(unit, tahun, "eksploitasi", function(response){
+                var str = "";
+                if (response.status != ""){
+                    if ("ADJUST_REVISI" == response.status){
+                        str += "<li>"+
+                            "<a href=\"#\" onclick=\"action('ADJUST_REVISI')\">"+
+                            "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
+                            "</li><hr>";
 
+                    } else if ("APPROVE_REVISI" == response.status){
 
-    function donutChart(Data, branch, total) {
-//        var Data= [
-//            {label: "Download Sales", value: 12},
-//            {label: "In-Store Sales", value: 30},
-//            {label: "Mail-Order Sales", value: 20}
-//        ];
-        console.log("branch -> "+branch);
-        console.log(Data);
-        var browsersChart = Morris.Donut({
-            element: 'donut-'+ branch + '',
-            data: Data,
-            formatter: function (value, data) {
-                return Math.floor(value/total*100) + '%';
-            }
-        });
+                        str += "<li>"+
+                            "<a href=\"#\" onclick=\"action('ADJUST_REVISI')\">"+
+                            "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
+                            "</li><hr>";
 
-        browsersChart.options.data.forEach(function(label, i) {
-            var legendItem = $('<span></span>').text( label['label'] + " ( " + formatRupiah(label['value']) + " )" ).prepend('<br><span>&nbsp;</span>');
-            legendItem.find('span')
-                .css('backgroundColor', browsersChart.options.colors[i])
-                .css('width', '20px')
-                .css('display', 'inline-block')
-                .css('margin', '5px');
-            $('#legend-'+ branch +'').append(legendItem)
-        });
+                    } else if ("EDIT_REVISI" == response.status){
+                        str += "<li>"+
+                            "<a href=\"#\" onclick=\"action('EDIT_REVISI')\">"+
+                            "<i class=\"fa fa-edit\"></i>Edit Revisi</a>"+
+                            "</li>";
+
+                        str += "<li>"+
+                            "<a href=\"#\" onclick=\"action('APPROVE_REVISI')\">"+
+                            "<i class=\"fa fa-edit\"></i>Approve Revisi</a>"+
+                            "</li>";
+
+                        str += "<li>"+
+                            "<a href=\"#\" onclick=\"action('ADJUST_REVISI')\">"+
+                            "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
+                            "</li><hr>";
+                    } else {
+                        if ("ADJUST_FINAL" ==  response.status){
+                            str += "<li>"+
+                                "<a href=\"#\" onclick=\"action('ADJUST_FINAL')\">"+
+                                "<i class=\"fa fa-edit\"></i>Adjust Final</a>"+
+                                "</li><hr>";
+
+                            str += "<li>"+
+                                "<a href=\"#\" onclick=\"action('EDIT_REVISI')\">"+
+                                "<i class=\"fa fa-edit\"></i>Edit Revisi</a>"+
+                                "</li>";
+
+                            str += "<li>"+
+                                "<a href=\"#\" onclick=\"action('APPROVE_REVISI')\">"+
+                                "<i class=\"fa fa-edit\"></i>Approve Revisi</a>"+
+                                "</li>";
+
+                            str += "<li>"+
+                                "<a href=\"#\" onclick=\"action('ADJUST_REVISI')\">"+
+                                "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
+                                "</li><hr>";
+
+                        } else if ("APPROVE_FINAL" ==  response.status){
+                            str += "<li>"+
+                                "<a href=\"#\" onclick=\"action('ADJUST_FINAL')\">"+
+                                "<i class=\"fa fa-edit\"></i>Adjust Final</a>"+
+                                "</li><hr>";
+
+                            str += "<li>"+
+                                "<a href=\"#\" onclick=\"action('EDIT_REVISI')\">"+
+                                "<i class=\"fa fa-edit\"></i>Edit Revisi</a>"+
+                                "</li>";
+
+                            str += "<li>"+
+                                "<a href=\"#\" onclick=\"action('APPROVE_REVISI')\">"+
+                                "<i class=\"fa fa-edit\"></i>Approve Revisi</a>"+
+                                "</li>";
+
+                            str += "<li>"+
+                                "<a href=\"#\" onclick=\"action('ADJUST_REVISI')\">"+
+                                "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
+                                "</li><hr>";
+
+                        } else if ("EDIT_FINAL" ==  response.status){
+                            str += "<li>"+
+                                "<a href=\"#\" onclick=\"action('EDIT_FINAL')\">"+
+                                "<i class=\"fa fa-edit\"></i>Edit Final</a>"+
+                                "</li>";
+
+                            str += "<li>"+
+                                "<a href=\"#\" onclick=\"action('APPROVE_FINAL')\">"+
+                                "<i class=\"fa fa-edit\"></i>Approve Final</a>"+
+                                "</li>";
+
+                            str += "<li>"+
+                                "<a href=\"#\" onclick=\"action('ADJUST_FINAL')\">"+
+                                "<i class=\"fa fa-edit\"></i>Adjust Final</a>"+
+                                "</li><hr>";
+
+                            str += "<li>"+
+                                "<a href=\"#\" onclick=\"action('EDIT_REVISI')\">"+
+                                "<i class=\"fa fa-edit\"></i>Edit Revisi</a>"+
+                                "</li>";
+
+                            str += "<li>"+
+                                "<a href=\"#\" onclick=\"action('APPROVE_REVISI')\">"+
+                                "<i class=\"fa fa-edit\"></i>Approve Revisi</a>"+
+                                "</li>";
+
+                            str += "<li>"+
+                                "<a href=\"#\" onclick=\"action('ADJUST_REVISI')\">"+
+                                "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
+                                "</li><hr>";
+                        } else {
+                            if ("ADJUST_DRAFT" == response.status){
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('ADJUST_DRAFT')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Adjust Draft</a>"+
+                                    "</li><hr>";
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('EDIT_FINAL')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Edit Final</a>"+
+                                    "</li>";
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('APPROVE_FINAL')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Approve Final</a>"+
+                                    "</li>";
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('ADJUST_FINAL')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Adjust Final</a>"+
+                                    "</li><hr>";
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('EDIT_REVISI')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Edit Revisi</a>"+
+                                    "</li>";
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('APPROVE_REVISI')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Approve Revisi</a>"+
+                                    "</li>";
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('ADJUST_REVISI')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
+                                    "</li><hr>";
+                            } else if("APPROVE_DRAFT" == response.status){
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('ADJUST_DRAFT')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Adjust Draft</a>"+
+                                    "</li><hr>";
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('EDIT_FINAL')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Edit Final</a>"+
+                                    "</li>";
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('APPROVE_FINAL')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Approve Final</a>"+
+                                    "</li>";
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('ADJUST_FINAL')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Adjust Final</a>"+
+                                    "</li><hr>";
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('EDIT_REVISI')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Edit Revisi</a>"+
+                                    "</li>";
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('APPROVE_REVISI')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Approve Revisi</a>"+
+                                    "</li>";
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('ADJUST_REVISI')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
+                                    "</li><hr>";
+                            } else {
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('EDIT_DRAFT')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Edit Draft</a>"+
+                                    "</li>";
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('APPROVE_DRAFT')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Approve Draft</a>"+
+                                    "</li>";
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('ADJUST_DRAFT')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Adjust Draft</a>"+
+                                    "</li><hr>";
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('EDIT_FINAL')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Edit Final</a>"+
+                                    "</li>";
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('APPROVE_FINAL')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Approve Final</a>"+
+                                    "</li>";
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('ADJUST_FINAL')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Adjust Final</a>"+
+                                    "</li><hr>";
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('EDIT_REVISI')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Edit Revisi</a>"+
+                                    "</li>";
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('APPROVE_REVISI')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Approve Revisi</a>"+
+                                    "</li>";
+
+                                str += "<li>"+
+                                    "<a href=\"#\" onclick=\"action('ADJUST_REVISI')\">"+
+                                    "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
+                                    "</li><hr>";
+                            }
+                        }
+                    }
+                } else {
+                    str = "";
+                    str += "<li>"+
+                        "<span>"+
+                        "<i class=\"fa fa-info\"></i>Please Add</span>"+
+                        "</li><hr>";
+                }
+
+                $("#action-menu").html(str);
+            });
+        }
     }
-
 
     // exemple : post('/contact/', {name: 'Johnny Bravo'});
     function post(path, params) {
@@ -383,11 +585,15 @@
     }
 
     function formatRupiah(angka) {
-        if(angka != null && angka != '' && angka > 0){
+        if(angka != null && angka != ''){
             var reverse = angka.toString().split('').reverse().join(''),
                 ribuan = reverse.match(/\d{1,3}/g);
             ribuan = ribuan.join('.').split('').reverse().join('');
-            return ribuan;
+            if (angka > 0){
+                return ribuan;
+            } else {
+                return '<span style="color: red"> - '+ribuan+'</span>';
+            }
         }else{
             return 0;
         }
@@ -426,115 +632,86 @@
     }
 
     function add() {
-        var host = firstpath()+"/budgeting/add_budgeting.action";
+        var host = firstpath()+"/bgeksploitasi/add_bgeksploitasi.action";
         post(host);
     }
 
     function reset() {
-        var host = firstpath()+"/budgeting/initForm_budgeting.action";
+        var host = firstpath()+"/budgeting/initLabaRugi_budgeting.action";
         post(host);
     }
 
 
     function search() {
         var tahun = $("#sel-tahun").val();
-        var unit = $("#sel-unit").val();
-        var unitName = "Seluruh NMU";
         var status = $("#sel-status").val();
-
-        $("#alert-success").show();
-        $("#label-unit").text(unitName);
         $("#label-tahun").text(tahun);
+        BgEksploitasiAction.getListBranchBudgeting(tahun, function (list) {
 
-        $("#donut-all").html("");
-        $("#legend-all").html("");
-        dwr.engine.setAsync(true);
-        BudgetingAction.getListLabaRugi(tahun, "", status, function (response) {
-            dwr.engine.setAsync(false);
-            $("#alert-success").hide();
-            if (response.status == "error"){
-                $("#alert-error").show().fadeOut(5000);
-                $("#error-msg").text(response.msg);
-            } else {
-                var data = [];
-                var total = 0;
-                $.each(response.list, function (i, item) {
-                    data.push({label : item.tipeBudgeting, value : item.nilaiTotal});
-                    total += item.nilaiTotal;
-                })
+            var str = '';
+            $.each(list, function (i, item) {
+                str +=
+                    '<div class="row">' +
+                    '<div class="col-md-8 col-md-offset-2">' +
+                    '<h4>'+item.branchName+'</h4>' +
+                    '<table class="table table-bordered table-striped">' +
+                    '<thead id="head-budgeting">'+
+                    '<tr bgcolor="#90ee90">'+
+                    '<td align="">Jenis</td>'+
+                    '<td align="center">Nilai Total</td>' +
+                    '<td>Action</td>' +
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody id="body-data-budgeting" style="font-size: 13px">';
 
-                donutChart(data, "all", total);
-            }
-        });
+                BudgetingAction.getJenisTransBudgeting(tahun, item.branchId, status, function (datas) {
 
-        if (unit != ""){
-            unitName = $("#sel-unit :selected").text();
-            var str = '<div class="col-md-4 col-md-offset-4">' +
-                '<h3 align="center">'+unitName+'</h3>\n' +
-                '<div id="donut-'+unit+'"></div>\n' +
-                '<div id="legend-'+unit+'" class="donut-legend"></div>' +
-                '</div>';
-
-            $("#list-donut").html(str);
-            BudgetingAction.getListLabaRugi(tahun, unit, status, function (response) {
-                dwr.engine.setAsync(false);
-                $("#alert-success").hide();
-                if (response.status == "error"){
-                    $("#alert-error").show().fadeOut(5000);
-                    $("#error-msg").text(response.msg);
-                } else {
-                    data = [];
-                    var total = 0;
-                    $.each(response.list, function (i, item) {
-                        data.push({label : item.tipeBudgeting, value : item.nilaiTotal});
-                        total += item.nilaiTotal;
-                    })
-                    donutChart(data, unit, total);
-                }
-            });
-        } else {
-            dwr.engine.setAsync(false);
-            BranchAction.getDataBranch(function (list) {
-                var str = "";
-                $.each(list, function (i, br) {
-                    str += '<div class="col-md-3">' +
-                        '<h3 align="center">'+br.branchName+'</h3>\n' +
-                        '<div id="donut-'+br.branchId+'"></div>\n' +
-                        '<div id="legend-'+br.branchId+'" class="donut-legend"></div>' +
-                        '</div>';
-                });
-
-                $("#list-donut").html(str);
-            });
-
-            BranchAction.getDataBranch(function (list) {
-
-                $.each(list, function (i, br) {
-                    BudgetingAction.getListLabaRugi(tahun, br.branchId, status, function (response) {
-                        $("#alert-success").hide();
-                        if (response.status == "error"){
-                            $("#alert-error").show().fadeOut(5000);
-                            $("#error-msg").text(response.msg);
-                        } else {
-                            data = [];
-                            var total = 0;
-                            $.each(response.list, function (i, item) {
-                                data.push({label : item.tipeBudgeting, value : item.nilaiTotal});
-                                total += item.nilaiTotal;
-                            })
-                            donutChart(data, br.branchId, total);
-                        }
+                    $.each(datas, function (n, data) {
+                        str += '<tr>' +
+                            '<td>'+ warnaLabel(data.idJenisBudgeting, data.nama) +'</td>' +
+                            '<td align="right">'+ formatRupiah(data.nilaiTotal) +'</td>' +
+                            '<td align="center">'+ showBtn(data.idJenisBudgeting) +'</td>' +
+                            '</tr>';
                     });
                 });
-            });
-        }
 
+                str += '</tbody>' +
+                    '</table>' +
+                    '</div>' +
+                    '</div>'
+            });
+
+//            BgEksploitasiAction.checkIsAvaliable(tahun, function (flag) {
+//                if ("N" == flag){
+//                    $("#body-btn-save").html('<button class="btn btn-success" id="btn-save" onclick="saveApprove()"><i class="fa fa-check"></i> Approve </button>');
+//                }
+//                if ("Y" == flag){
+//                    $("#body-btn-save").html('<div class="alert alert-success" align="center" style="width: 65%">Telah Diapprove <i class="fa fa-check"><i/></div>');
+//                }
+//            });
+            $("#body-budgeting").html(str);
+        })
+    }
+
+    function warnaLabel(id, label){
+        if ("rugi" == id){
+            return '<span style="color: red;">'+label+'</span>';
+        } else {
+            return '<span>'+label+'</span>';
+        }
+    }
+
+    function showBtn(id){
+        if ("rugi" != id && "laba" != id){
+            return '<button class="btn btn-success" onclick="viewDetail(\''+id+'\')"><i class="fa fa-search"></i> View</budtton>';
+        }
+        return "";
     }
 
     function actionView(var1, var2) {
         var str = "";
         if (var2 == "5"){
-        str = "<button class='item-view btn btn-sm btn-success' data='"+var1+"'><i class='fa fa-search'></i></button>";
+            str = "<button class='item-view btn btn-sm btn-success' data='"+var1+"'><i class='fa fa-search'></i></button>";
         }
         return str;
     }
@@ -555,29 +732,29 @@
                 var investasi = false;
                 $.each(response.budgetingDetailList, function (i, item) {
                     str += "<tr>"+
-                            "<td>"+item.tipe+"</td>";
-                        if(item.divisiId == "INVS"){
-                            investasi = true;
-                            str += "<td class='val-master-id' style='display: none'>"+item.masterId+"</td>"+
-                                "<td class='val-master-name' style='display: none'>"+item.masterName+"</td>" +
-                                "<td style='display: none'>"+item.divisiId+"</td>";
-                        } else {
-                            str += "<td class='val-master-id' >"+item.masterId+"</td>"+
-                                    "<td class='val-master-name' >"+item.masterName+"</td>"+
-                                    "<td>"+item.divisiId+"</td>";
-                        }
+                        "<td>"+item.tipe+"</td>";
+                    if(item.divisiId == "INVS"){
+                        investasi = true;
+                        str += "<td class='val-master-id' style='display: none'>"+item.masterId+"</td>"+
+                            "<td class='val-master-name' style='display: none'>"+item.masterName+"</td>" +
+                            "<td style='display: none'>"+item.divisiId+"</td>";
+                    } else {
+                        str += "<td class='val-master-id' >"+item.masterId+"</td>"+
+                            "<td class='val-master-name' >"+item.masterName+"</td>"+
+                            "<td>"+item.divisiId+"</td>";
+                    }
 //                            "<td class='val-master-id' >"+item.masterId+"</td>"+
 //                            "<td class='val-master-name' >"+item.masterName+"</td>"+
 
                     str +=
-                            "<td>"+item.divisiName+"</td>"+
-                            "<td align='center'>"+item.qty+"</td>"+
-                            "<td align='right'>"+ formatRupiah(item.nilai)+"</td>"+
-                            "<td align='right'>"+ formatRupiah(item.subTotal)+"</td>"+
-                            "<td align='right'>"+ formatRupiah(item.saldoAkhir) +"</td>"+
-                            "<td align='right'>"+ formatSelisih(item.selisihSaldoAkhir) +"</td>"+
-                            "<td align='center'>" + actionViewPengadaan(investasi, item.idBudgetingDetail, item.tipe) + "</td>"+
-                            "</tr>";
+                        "<td>"+item.divisiName+"</td>"+
+                        "<td align='center'>"+item.qty+"</td>"+
+                        "<td align='right'>"+ formatRupiah(item.nilai)+"</td>"+
+                        "<td align='right'>"+ formatRupiah(item.subTotal)+"</td>"+
+                        "<td align='right'>"+ formatRupiah(item.saldoAkhir) +"</td>"+
+                        "<td align='right'>"+ formatSelisih(item.selisihSaldoAkhir) +"</td>"+
+                        "<td align='center'>" + actionViewPengadaan(investasi, item.idBudgetingDetail, item.tipe) + "</td>"+
+                        "</tr>";
                 });
 
                 if (investasi){
@@ -675,18 +852,18 @@
         TutuPeriodAction.saveTutupPeriod(unit, tahun, bulan, function(response){
             dwr.engine.setAsync(false);
             if (response.status == "error"){
-               searchPeriod();
-               $("#alert-error").show().fadeOut(5000);
-               $("#error-msg").text(response.msg);
-           } else {
-               searchPeriod();
-               $("#btn-tutup-"+unit).show();
-               $("#btn-lock-"+unit).show();
-               $("#alert-error").hide();
-               $("#alert-success").show().fadeOut(5000);
+                searchPeriod();
+                $("#alert-error").show().fadeOut(5000);
+                $("#error-msg").text(response.msg);
+            } else {
+                searchPeriod();
+                $("#btn-tutup-"+unit).show();
+                $("#btn-lock-"+unit).show();
+                $("#alert-error").hide();
+                $("#alert-success").show().fadeOut(5000);
 
-           }
-       });
+            }
+        });
     }
 
     function saveLock(unit, tahun, bulan){
@@ -725,11 +902,28 @@
         if ((unit && tahun) != ""){
 
             var form = {"budgeting.branchId":unit, "budgeting.tahun":tahun};
-            var host = firstpath()+"/budgeting/edit_budgeting.action?status=edit&trans="+var1;
+            var host = firstpath()+"/bgeksploitasi/edit_bgeksploitasi.action?status=edit&trans="+var1;
             post(host, form);
         } else {
             alert("Pilih Unit dan Tahun Dulu.")
         }
+    }
+
+    function initForm() {
+        var host = firstpath()+"/bgeksploitasi/initForm_bgeksploitasi.action";
+        post(host);
+    }
+
+    function saveApprove() {
+        var tahun = $("#sel-tahun").val();
+        BgEksploitasiAction.approveFinal(tahun, function (res) {
+            if (res.status == "success"){
+                alert("success");
+                initForm();
+            } else {
+                alert(res.msg);
+            }
+        });
     }
 
 </script>

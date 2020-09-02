@@ -395,12 +395,8 @@ public class BgEksploitasiAction {
                     }
                     results.add(result);
                 }
-                //
-
-
             }
         }
-
         return results;
     }
 

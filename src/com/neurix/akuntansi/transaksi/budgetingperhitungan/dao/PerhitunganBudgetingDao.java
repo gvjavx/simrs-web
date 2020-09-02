@@ -558,4 +558,62 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
         return params;
     }
 
+    public List<ParameterBudgeting> getListSumBudgetingTransByKategori(String tahun, String branchId, String idJenis, String status){
+
+        String SQL = "SELECT\n" +
+                "a.id,\n" +
+                "a.nama,\n" +
+                "a.id_jenis_budgeting,\n" +
+                "SUM(a.nilai_total)\n" +
+                "FROM (\n" +
+                "\tSELECT \n" +
+                "\ta.id,\n" +
+                "\ta.nama,\n" +
+                "\ta.id_jenis_budgeting,\n" +
+                "\tCASE WHEN b.nilai_total is null THEN 0 ELSE b.nilai_total END AS nilai_total\n" +
+                "\tFROM im_akun_kategori_parameter_budgeting a\n" +
+                "\tLEFT JOIN \n" +
+                "\t(\n" +
+                "\t\t\tSELECT \n" +
+                "\t\t\tb.id_kategori_budgeting,\n" +
+                "\t\t\td.nilai_total\n" +
+                "\t\t\tFROM im_akun_parameter_budgeting b \n" +
+                "\t\t\tINNER JOIN im_akun_parameter_budgeting_rekening c ON c.id = b.id_param_rekening\n" +
+                "\t\t\tINNER JOIN (SELECT * FROM im_akun_kode_rekening WHERE level = '5') e ON e.rekening_id = c.rekening_id\n" +
+                "\t\t\tINNER JOIN it_akun_budgeting d ON d.rekening_id = e.rekening_id\n" +
+                "\t\t\tWHERE d.branch_id = :unit\n" +
+                "\t\t\tAND d.tahun = :tahun\n" +
+                "\t\t\tAND d.status = :status\n" +
+                "\t\t\tGROUP BY b.id_kategori_budgeting, d.nilai_total\n" +
+                "\t) b ON b.id_kategori_budgeting = a.id\n" +
+                "\tWHERE a.id_jenis_budgeting LIKE :jenis\n" +
+                ") a\n" +
+                "GROUP BY \n" +
+                "a.id,\n" +
+                "a.nama,\n" +
+                "a.id_jenis_budgeting";
+
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("unit", branchId)
+                .setParameter("tahun", tahun)
+                .setParameter("jenis", idJenis)
+                .setParameter("status", status)
+                .list();
+
+        List<ParameterBudgeting> parameterBudgetings = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                ParameterBudgeting parameterBudgeting = new ParameterBudgeting();
+                parameterBudgeting.setIdKategoriBudgeting(obj[0].toString());
+                parameterBudgeting.setNama(obj[1].toString());
+                parameterBudgeting.setIdJenisBudgeting(obj[2].toString());
+                parameterBudgeting.setNilaiTotal((BigDecimal) obj[3]);
+                parameterBudgetings.add(parameterBudgeting);
+            }
+        }
+
+        return parameterBudgetings;
+    }
+
 }

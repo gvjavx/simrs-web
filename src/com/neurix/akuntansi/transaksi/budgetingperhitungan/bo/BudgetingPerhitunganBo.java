@@ -37,4 +37,5 @@ public interface BudgetingPerhitunganBo {
     public List<ParameterBudgeting> getListRefrensiBiaya(String tahun, String branchId, String rekeningId, String divisiId, String master);
     public ImAkunParameterBudgetingEntity getParameterBudgetingEntityById(String id) throws GeneralBOException;
     public ImAkunParameterBudgetingRekeningEntity getParameterBudgetingRekeningEntityById(String id) throws GeneralBOException;
+    public List<ParameterBudgeting> getListPerhitunganTransaksiBudgetingByJenis(String tahun, String unit, String idJenis, String status);
 }

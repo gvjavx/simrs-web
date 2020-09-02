@@ -574,4 +574,9 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
     public ImAkunParameterBudgetingRekeningEntity getParameterBudgetingRekeningEntityById(String id) throws GeneralBOException {
         return parameterBudgetingRekeningDao.getById("id", id);
     }
+
+    @Override
+    public List<ParameterBudgeting> getListPerhitunganTransaksiBudgetingByJenis(String tahun, String unit, String idJenis, String status) {
+        return perhitunganBudgetingDao.getListSumBudgetingTransByKategori(tahun, unit, idJenis, status);
+    }
 }

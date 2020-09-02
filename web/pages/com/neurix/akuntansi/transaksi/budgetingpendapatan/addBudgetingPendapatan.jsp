@@ -262,109 +262,33 @@
                     <div class="row">
                         <div class="col-md-8 col-md-offset-3">
                             <div id="form-master">
-                                <strong>Master</strong> <hr style="width: 80%;">
+                                <%--<strong>Master</strong> <hr style="width: 80%;">--%>
                                 <div class="row">
-                                    <label class="control-label col-sm-4">Master Id</label>
+                                    <label class="control-label col-sm-2"> <strong>Master</strong> </label>
                                     <div class="col-sm-6">
-                                        <input type="text" class="form-control" id="masterid" readonly/>
-                                        <%--<script>--%>
-                                            <%--$(document).ready(function() {--%>
-                                                <%--var functions, mapped;--%>
-                                                <%--$('#masterid').typeahead({--%>
-                                                    <%--minLength: 1,--%>
-                                                    <%--source: function (query, process) {--%>
-                                                        <%--functions = [];--%>
-                                                        <%--mapped = {};--%>
-                                                        <%--var data = [];--%>
-                                                        <%--dwr.engine.setAsync(false);--%>
-                                                        <%--MasterAction.initTypeaheadMaster(query,function (listdata) {--%>
-                                                            <%--data = listdata;--%>
-                                                        <%--});--%>
-                                                        <%--$.each(data, function (i, item) {--%>
-                                                            <%--var labelItem = item.nomorVendor + " | " + item.nama;--%>
-                                                            <%--mapped[labelItem] = {--%>
-                                                                <%--name :item.nama,--%>
-                                                                <%--id : item.nomorVendor--%>
-                                                            <%--};--%>
-                                                            <%--functions.push(labelItem);--%>
-                                                        <%--});--%>
-                                                        <%--process(functions);--%>
-                                                    <%--},--%>
-                                                    <%--updater: function (item) {--%>
-                                                        <%--var selectedObj = mapped[item];--%>
-                                                        <%--$("#namamaster").val(selectedObj.name);--%>
-                                                        <%--return selectedObj.id;--%>
-                                                    <%--}--%>
-                                                <%--});--%>
-                                            <%--});--%>
-                                        <%--</script>--%>
+                                        <h5 id="master-name"></h5>
+                                        <input type="hidden" class="form-control" id="masterid" readonly/>
                                     </div>
                                 </div>
-                                <%--<div class="row">--%>
-                                    <%--<label class="control-label col-sm-4">Nama Master</label>--%>
-                                    <%--<div class="col-sm-6">--%>
-                                        <%--<input type="text" class="form-control" id="namamaster" readonly/>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
                             </div>
 
                             <br>
                             <div id="form-divisi">
-                                <strong>Divisi</strong> <hr style="width: 80%;">
+                                <%--<strong>Divisi</strong> <hr style="width: 80%;">--%>
                                 <div class="row">
-                                    <label class="control-label col-sm-4">Divisi Id</label>
+                                    <label class="control-label col-sm-2"><strong>Divisi</strong></label>
                                     <div class="col-sm-6">
-                                        <input type="text" class="form-control" id="divisiid" readonly/>
-
-                                        <%--<script>--%>
-                                            <%--$(document).ready(function() {--%>
-                                                <%--var functions, mapped;--%>
-                                                <%--$('#divisiid').typeahead({--%>
-                                                    <%--minLength: 1,--%>
-                                                    <%--source: function (query, process) {--%>
-                                                        <%--functions = [];--%>
-                                                        <%--mapped = {};--%>
-                                                        <%--var data = [];--%>
-                                                        <%--dwr.engine.setAsync(false);--%>
-                                                        <%--PositionAction.typeAheadPosition(query,function (listdata) {--%>
-                                                            <%--data = listdata;--%>
-                                                        <%--});--%>
-                                                        <%--$.each(data, function (i, item) {--%>
-                                                            <%--var labelItem = item.kodering + " | " + item.positionName;--%>
-                                                            <%--mapped[labelItem] = {--%>
-                                                                <%--kode : item.kodering,--%>
-                                                                <%--name :item.positionName,--%>
-                                                                <%--id : item.positionId--%>
-                                                            <%--};--%>
-                                                            <%--functions.push(labelItem);--%>
-                                                        <%--});--%>
-                                                        <%--process(functions);--%>
-                                                    <%--},--%>
-                                                    <%--updater: function (item) {--%>
-                                                        <%--var selectedObj = mapped[item];--%>
-                                                        <%--$("#namadivisi").val(selectedObj.name);--%>
-                                                        <%--$("#positionid").val(selectedObj.id);--%>
-                                                        <%--return selectedObj.kode;--%>
-                                                    <%--}--%>
-                                                <%--});--%>
-                                            <%--});--%>
-                                        <%--</script>--%>
+                                        <h5 id="divisi-name"></h5>
+                                        <input type="hidden" class="form-control" id="divisiid" readonly/>
                                     </div>
                                 </div>
-                                <%--<div class="row">--%>
-                                    <%--<label class="control-label col-sm-4">Nama Divisi</label>--%>
-                                    <%--<div class="col-sm-6">--%>
-                                        <%--<input type="text" class="form-control" id="namadivisi" readonly/>--%>
-                                        <%--<input type="hidden" class="form-control" id="positionid" readonly/>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
                             </div>
 
                             <br>
                             <div id="form-periode">
-                                <strong>Periode</strong> <hr style="width: 80%;">
+                                <%--<strong>Periode</strong> <hr style="width: 80%;">--%>
                                 <div class="row">
-                                    <label class="control-label col-sm-4">Periode</label>
+                                    <label class="control-label col-sm-2"><strong>Periode</strong></label>
                                     <div class="col-sm-6">
                                         <select class="form-control" id="sel-periode">
                                             <option value="januari">Januari</option>
@@ -385,21 +309,16 @@
                             </div>
 
                             <br>
-                            <strong>Refrensi</strong><hr style="width: 80%;">
+                            <strong>Refrensi</strong><hr style="width: 100%;">
                             <div class="row">
-                                <div class="col-md-4"></div>
-                                <div class="col-md-6" id="body-refrensi"></div>
+                                <%--<div class="col-md-4"></div>--%>
+                                <div class="col-md-12" id="body-refrensi"></div>
                             </div>
 
                             <br>
-                            <strong>Nilai</strong><hr style="width: 80%;">
-                            <div class="row">
-                                <div class="col-md-12" align="right">
-                                    <%--<button class="btn btn-sm btn-info" onclick="showDetail()"><i class="fa fa-info"></i></button>--%>
-                                    <button class="btn btn-sm btn-warning" onclick="addPerhitungan()"><i class="fa fa-plus"></i></button>
-                                </div>
-                            </div>
-                            <br>
+                            <strong>Nilai</strong>
+                            <button class="btn btn-sm btn-warning" onclick="addPerhitungan()" style="float: right;"><i class="fa fa-plus"></i></button>
+                            <hr style="width: 100%;">
                             <div id="body-nilai">
                                 <%--<div class="row">--%>
                                 <%--<label class="control-label col-sm-4">Nilai Pendapatan</label>--%>
@@ -411,8 +330,8 @@
 
                             <br>
                             <div class="row">
-                                <div class="col-md-4"></div>
-                                <div class="col-md-6" id="display-hitung">
+                                <%--<div class="col-md-4"></div>--%>
+                                <div class="col-md-12" id="display-hitung">
 
                                 </div>
                             </div>
@@ -537,7 +456,7 @@
             });
 
             $("#body-nilai-dasar").html(str);
-            console.log(str);
+//            console.log(str);
         });
     }
 
@@ -590,7 +509,7 @@
             var str = "";
             $.each(list, function (i, item) {
                 str += '<tr>' +
-                    '<td>'+item.namaMaster+'</td>' +
+                    '<td id="label-master-'+item.masterId+'">'+item.namaMaster+'</td>' +
                     '<td align="right">'+ formatRupiah( item.nilaiTotal )+'</td>' +
                     '<td align="center" id="btn-span-'+i+'"><button class="btn btn-sm btn-primary" onclick="spanRow(\''+i+'\', \''+item.masterId+'\')"><i class="fa fa-plus"></i></button></td>' +
                     '</tr>' +
@@ -626,7 +545,7 @@
 
                 str += '<div class="row">' +
                     '<div class="col-md-8 col-md-offset-2">' +
-                    '<h4 id="label-head-'+item.id+'">' + item.namaDivisi +'</h4>' +
+                    '<h4 id="label-divisi-'+item.divisiId+'">' + item.namaDivisi +'</h4>' +
                     '<button class="btn btn-sm btn-primary" style="float: right;" onclick="showAdd(\''+item.id+'\', \''+item.divisiId+'\', \''+masterid+'\')"><i class="fa fa-plus"></i> Tambah</button>' +
                     '<table class="table table-bordered table-striped">' +
                     '<thead id="head-budgeting">' +
@@ -662,7 +581,7 @@
 //        $("#modal-add-hitung").modal('show');
         var idParam = $("#id-param").val();
         var str = "<div class='row'>" +
-                "<div class='col-md-4'></div>" +
+            "<div class=\"col-md-2\" id=\"label-"+n+"\" align='right' style='margin-top: 7px'>"+ hurufByIndex(n) +"</div>" +
                 "<div class=\"col-md-6\">" +
                 "<div id='body-total-"+ n + "-"+ idParam +"'>" +
 //                "<select class='form-control' id='total-" + n + "-"+ idParam +"'>";
@@ -681,7 +600,7 @@
         str += "</select>" +
             "</div>" +
             "</div>" +
-            "<div class=\"col-md-2\">"+
+            "<div class=\"col-md-4\">"+
                 "<select id='opr-"+ n +"-"+ idParam +"' class='form-control' onchange=\"showPerhitungan(this.value, \'"+idParam+"\')\">" +
                     "<option value=''>[Select]</option>" +
                     "<option value='='>(=) Sama Dengan</option>" +
@@ -701,17 +620,29 @@
     }
 
     function showPerhitungan(valop, idParam) {
-        var str = "<span>";
+        var str = '<div class="row" >';
         var operator = "";
         var nilaiTotal = 0;
         if("=" == valop){
+            str += '<div class="col-md-2" align="right" style="margin-top: 7px"><strong>Formula : </strong></div>' +
+                    '<div class="col-md-10"><h4>';
+                    for (i = 0; i<n; i++){
+                        var label   = $("#label-"+i).text();
+                        var opr     = $("#opr-" + i + "-" + idParam).val();
+                        str += ' ' + label + ' ' + (opr == "=" ? "" : opr) + ' ';
+                    };
+            str += "</h4></div>";
+            str += "</div>";
+            str += "<div class='row'>";
+            str += '<div class="col-md-2"></div>';
+            str += '<div class="col-md-10"><h4>'
+
             for (i = 0; i<n; i++){
                 var nilai   = $("#total-" + i + "-" + idParam).val();
                 var opr     = $("#opr-" + i + "-" + idParam).val();
                 var namaNilai = $("#total-" + i + "-" + idParam + " option:selected").text();
-//                console.log("i -> "+i);
-//                console.log("opr -> " + opr + " nilai -> "+ nilai);
-                str += " " + nilai + (namaNilai == "" ? " " : " ("+namaNilai+") ")  + opr + " ";
+                str += " " + nilai + " "  + (opr == "=" ? "" : opr) + " ";
+
                 if (operator == ""){
                     nilaiTotal = nilai;
                     operator = opr;
@@ -720,17 +651,21 @@
                     operator = opr;
                 }
 
-                if (i == n-1){
-                    str += nilaiTotal;
-                }
+//                if (i == n-1){
+//                    str += nilaiTotal;
+//                }
             }
-            str += "</span>";
-//            console.log("n -> "+n);
-//            console.log("i -> "+i);
-//            console.log("valop -> "+valop+", param -> "+idParam+", str -> " + str);
+            str += "</h4></div>";
+            str += "</div>";
+            str += "<div class='row'>";
+            str += '<div class="col-md-2"></div>';
+            str += '<div class="col-md-10"><h4>';
+            str += "= " + nilaiTotal;
+            str += "</h4></div>";
+            str += "</div>";
+
             $("#display-hitung").html(str);
         }
-
     }
 
     function hitung(nilai1, opr, nilai2){
@@ -767,6 +702,29 @@
         }
     }
 
+    function generateAlphabets() {
+        var alphabets = [];
+        var start = 'a'.charCodeAt(0);
+        var last  = 'z'.charCodeAt(0);
+        var n = 0;
+        for (var i = start; i <= last; ++i) {
+            alphabets.push({"no":n, "huruf":String.fromCharCode(i)});
+            n++;
+        }
+        return alphabets;
+    }
+
+    function hurufByIndex(ind) {
+        var alphabets = generateAlphabets();
+        var str = "";
+        $.each(alphabets, function (i, item) {
+            if (ind == item.no){
+                str = item.huruf;
+            };
+        });
+        return str;
+    }
+
     function showAdd(idParam, divisi, master) {
 
         if ("Y" != flagNilaiDasar){
@@ -777,17 +735,22 @@
             $("#id-param").val(idParam);
             listOfParam = [];
             n = 0;
+//            alert(JSON.stringify(generateAlphabets()));
 
+            var namaMaster = master.replace(/\./g,'\\.');
+            namaMaster = $("#label-master-"+namaMaster).text();
+
+            var namaDivisi = divisi.replace(/\./g,'\\.');
+            namaDivisi = $("#label-divisi-"+namaDivisi).text();
 
             var label = $("#label-head-"+idParam).text();
 
             var str = "<div class=\"row\">" +
-                "<label class=\"col-md-4\">Nilai Pendapatan</label>" +
+                "<div class=\"col-md-2\" id=\"label-"+n+"\" align='right' style='margin-top: 7px'>"+ hurufByIndex(n) +"</div>" +
                 "<div class=\"col-md-6\">" +
                 "<input type=\"number\" class=\"form-control\" id=\"total-"+n+"-"+idParam+"\" />" +
                 "</div>" +
-                "<div class=\"col-md-2\">"+
-//            "<div class=\"col-md-4\">"+
+                "<div class=\"col-md-4\">"+
                 "<select id='opr-"+ n +"-"+ idParam +"' class='form-control' onchange=\"showPerhitungan(this.value, \'"+idParam+"\')\">" +
                 "<option value=''>[Select]</option>" +
                 "<option value='='>(=) Sama Dengan</option>" +
@@ -806,6 +769,8 @@
             $("#masterid").val(master);
             $("#divisiid").val(divisi);
             $("#label-edit").text(label);
+            $("#master-name").text(namaMaster);
+            $("#divisi-name").text(namaDivisi);
             $("#body-nilai").html(str);
 
             BgPendapatanAction.getListPendapatanBudgeting(tahun, unit, idParam, divisi, master, function (list) {

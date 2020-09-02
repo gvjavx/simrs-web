@@ -5,6 +5,9 @@ import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
 import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.transaksi.budgeting.bo.BudgetingBo;
 import com.neurix.akuntansi.transaksi.budgeting.model.*;
+import com.neurix.akuntansi.transaksi.budgetingperhitungan.bo.BudgetingPerhitunganBo;
+import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ImAkunJenisBudgetingEntity;
+import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ParameterBudgeting;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.authorization.company.model.ImBranches;
@@ -1799,6 +1802,72 @@ public class BudgetingAction {
         logger.info("[BudgetingAction.initLabaRugi] END <<<");
         return "search_laba_rugi";
     }
+
+    public List<ParameterBudgeting> getJenisTransBudgeting(String tahun, String branchId, String status){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
+        ParameterBudgeting parameterBudgeting = new ParameterBudgeting();
+        parameterBudgeting.setFlag("Y");
+        List<ImAkunJenisBudgetingEntity> jenisBudgetingEntities =  budgetingPerhitunganBo.getListEntityJenisBudgetingByCriteria(parameterBudgeting);
+        List<ParameterBudgeting> results = new ArrayList<>();
+
+        if (jenisBudgetingEntities.size() > 0){
+            int i = 0;
+            BigDecimal jmlPendapatan = new BigDecimal(0);
+            BigDecimal jmlBiaya = new BigDecimal(0);
+            for (ImAkunJenisBudgetingEntity jenisBudgetingEntity : jenisBudgetingEntities){
+                ParameterBudgeting result = new ParameterBudgeting();
+                result.setIdJenisBudgeting(jenisBudgetingEntity.getId());
+                result.setNama(jenisBudgetingEntity.getNamaJenis());
+
+                List<ParameterBudgeting> listKategoriBudgeting = getListKategoriBudgeting(tahun, branchId, jenisBudgetingEntity.getId(), status);
+                if (listKategoriBudgeting.size() > 0){
+                    BigDecimal nilaiTotal = hitungTotalFromListBudgeting(listKategoriBudgeting);
+                    if ("PDT".equalsIgnoreCase(jenisBudgetingEntity.getId())){
+                        jmlPendapatan = jmlPendapatan.add(nilaiTotal);
+                    } else {
+                        jmlBiaya = jmlBiaya.add(nilaiTotal);
+                    }
+                    result.setNilaiTotal(nilaiTotal);
+                }
+
+                results.add(result);
+                i++;
+
+                // tambahkan hasil perhitungan laba rugi
+                if (i == jenisBudgetingEntities.size()){
+                    result = new ParameterBudgeting();
+                    BigDecimal nilaiTotal = jmlPendapatan.subtract(jmlBiaya);
+                    if (nilaiTotal.compareTo(new BigDecimal(0)) == -1){
+                        result.setIdJenisBudgeting("rugi");
+                        result.setNama("Rugi");
+                        result.setNilaiTotal(nilaiTotal);
+                    } else {
+                        result.setIdJenisBudgeting("laba");
+                        result.setNama("Laba");
+                        result.setNilaiTotal(nilaiTotal);
+                    }
+                    results.add(result);
+                }
+            }
+        }
+        return results;
+    }
+
+    public List<ParameterBudgeting> getListKategoriBudgeting(String tahun, String branchId, String idJenisBudgeting, String status){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
+        return budgetingPerhitunganBo.getListPerhitunganTransaksiBudgetingByJenis(tahun, branchId, idJenisBudgeting, status);
+    }
+
+    private BigDecimal hitungTotalFromListBudgeting(List<ParameterBudgeting> params){
+        BigDecimal nilaiTotal = new BigDecimal(0);
+        for (ParameterBudgeting param : params){
+            nilaiTotal = nilaiTotal.add(param.getNilaiTotal());
+        }
+        return nilaiTotal;
+    }
+
 
     public void setBudgetingBoProxy(BudgetingBo budgetingBoProxy) {
         this.budgetingBoProxy = budgetingBoProxy;
