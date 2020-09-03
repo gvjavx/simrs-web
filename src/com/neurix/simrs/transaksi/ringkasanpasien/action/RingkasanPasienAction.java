@@ -152,7 +152,7 @@ public class RingkasanPasienAction {
         return list;
     }
 
-    public CrudResponse saveDelete(String idDetailCheckup, String keterangan) {
+    public CrudResponse saveDelete(String idDetailCheckup, String keterangan, String dataPasien) {
         CrudResponse response = new CrudResponse();
         String userLogin = CommonUtil.userLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
@@ -166,6 +166,25 @@ public class RingkasanPasienAction {
                 ringkasanPasien.setLastUpdate(time);
                 ringkasanPasien.setLastUpdateWho(userLogin);
                 response = ringkasanPasienBo.saveDelete(ringkasanPasien);
+                if("success".equalsIgnoreCase(response.getStatus())){
+                    try {
+                        JSONObject obj = new JSONObject(dataPasien);
+                        RekamMedikBo rekamMedikBo = (RekamMedikBo) ctx.getBean("rekamMedikBoProxy");
+                        if (obj != null) {
+                            StatusPengisianRekamMedis status = new StatusPengisianRekamMedis();
+                            status.setNoCheckup(obj.getString("no_checkup"));
+                            status.setIdDetailCheckup(obj.getString("id_detail_checkup"));
+                            status.setIdPasien(obj.getString("id_pasien"));
+                            status.setIdRekamMedisPasien(obj.getString("id_rm"));
+                            status.setLastUpdateWho(userLogin);
+                            status.setLastUpdate(time);
+                            response = rekamMedikBo.saveEdit(status);
+                        }
+                    }catch (JSONException e){
+                        response.setStatus("error");
+                        response.setMsg(e.getMessage());
+                    }
+                }
             } catch (GeneralBOException e) {
                 logger.error("Found Error" + e.getMessage());
             }

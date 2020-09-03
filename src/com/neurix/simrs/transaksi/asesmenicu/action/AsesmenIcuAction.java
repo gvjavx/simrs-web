@@ -158,6 +158,46 @@ public class AsesmenIcuAction {
         }
         return list;
     }
+
+    public CrudResponse saveDelete(String idDetailCheckup, String keterangan, String dataPasien) {
+        CrudResponse response = new CrudResponse();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        AsesmenIcuBo asesmenIcuBo = (AsesmenIcuBo) ctx.getBean("asesmenIcuBoProxy");
+        if (!"".equalsIgnoreCase(idDetailCheckup) && !"".equalsIgnoreCase(keterangan)) {
+            try {
+                AsesmenIcu asesmenIcu = new AsesmenIcu();
+                asesmenIcu.setIdDetailCheckup(idDetailCheckup);
+                asesmenIcu.setKeterangan(keterangan);
+                asesmenIcu.setLastUpdate(time);
+                asesmenIcu.setLastUpdateWho(userLogin);
+                response = asesmenIcuBo.saveDelete(asesmenIcu);
+                if("success".equalsIgnoreCase(response.getStatus())){
+                    try {
+                        JSONObject obj = new JSONObject(dataPasien);
+                        RekamMedikBo rekamMedikBo = (RekamMedikBo) ctx.getBean("rekamMedikBoProxy");
+                        if (obj != null) {
+                            StatusPengisianRekamMedis status = new StatusPengisianRekamMedis();
+                            status.setNoCheckup(obj.getString("no_checkup"));
+                            status.setIdDetailCheckup(obj.getString("id_detail_checkup"));
+                            status.setIdPasien(obj.getString("id_pasien"));
+                            status.setIdRekamMedisPasien(obj.getString("id_rm"));
+                            status.setLastUpdateWho(userLogin);
+                            status.setLastUpdate(time);
+                            response = rekamMedikBo.saveEdit(status);
+                        }
+                    }catch (JSONException e){
+                        response.setStatus("error");
+                        response.setMsg(e.getMessage());
+                    }
+                }
+            } catch (GeneralBOException e) {
+                logger.error("Found Error" + e.getMessage());
+            }
+        }
+        return response;
+    }
     public static Logger getLogger() {
         return logger;
     }

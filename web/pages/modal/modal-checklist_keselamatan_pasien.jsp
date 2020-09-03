@@ -13,6 +13,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_op_checklist_keselamatan_pasien"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_checklist_keselamatan_pasien">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_checklist_keselamatan_pasiena"></p>
+                    </div>
                     <button type="button" class="btn btn-success" onclick="showModalOperasi('add_checklist_keselamatan')"><i class="fa fa-plus"></i> Checklist
                     </button>
                 </div>
@@ -23,6 +27,7 @@
                             <td>Checklist Keselamatan Pasien Operasi</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_add_checklist_keselamatan" class="hvr-grow" onclick="detailOperasi('add_checklist_keselamatan')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_add_checklist_keselamatan" class="hvr-grow" onclick="conOP('add_checklist_keselamatan', 'checklist_keselamatan_pasien')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

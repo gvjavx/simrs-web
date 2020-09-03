@@ -276,164 +276,63 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     inap.setStatusBayar(obj[20] == null ? "" : obj[20].toString());
                     inap.setIdJenisPeriksa(obj[19] == null ? "" : obj[19].toString());
 
-                    if ("1".equalsIgnoreCase(inap.getStatusPeriksa())) {
-                        if ("umum".equalsIgnoreCase(inap.getIdJenisPeriksa())) {
-                            RawatInap rawatInap = new RawatInap();
-                            if ("Y".equalsIgnoreCase(inap.getStatusBayar())) {
-                                rawatInap.setIsBayar("Y");
-                            } else {
-                                rawatInap.setIsBayar("N");
-                            }
+                    RawatInap rawatInap = new RawatInap();
 
-                            rawatInap.setIdDetailCheckup(obj[0].toString());
-                            rawatInap.setNoCheckup(obj[1].toString());
-                            rawatInap.setIdPasien(obj[2] == null ? "" : obj[2].toString());
-                            rawatInap.setNamaPasien(obj[3] == null ? "" : obj[3].toString());
-                            String jalan = obj[4] == null ? "" : obj[4].toString();
-                            rawatInap.setCreatedDate(obj[5] == null ? null : (Timestamp) obj[5]);
-                            rawatInap.setDesaId(obj[6] == null ? "" : obj[6].toString());
-                            rawatInap.setStatusPeriksa(obj[7].toString());
-                            rawatInap.setStatusPeriksaName(obj[8].toString());
-                            rawatInap.setKeteranganSelesai(obj[9] == null ? "" : obj[9].toString());
-                            rawatInap.setIdRawatInap(obj[10].toString());
-                            rawatInap.setIdRuangan(obj[11].toString());
-                            rawatInap.setNoRuangan(obj[12].toString());
-                            rawatInap.setNamaRangan(obj[13].toString());
-                            rawatInap.setKelasRuanganName(obj[14].toString());
-                            rawatInap.setIdKelas(obj[15].toString());
-                            rawatInap.setNoSep(obj[16] == null ? "" : obj[16].toString());
-                            rawatInap.setKlaimBpjsFlag(obj[17] == null ? "" : obj[17].toString());
-                            rawatInap.setStatusBayar(obj[18] == null ? "" : obj[18].toString());
-                            rawatInap.setIdJenisPeriksa(obj[19] == null ? "" : obj[19].toString());
-                            rawatInap.setKategoriRuangan(obj[23] == null ? "" : obj[23].toString());
-                            rawatInap.setJenisPeriksaPasien(obj[24] == null ? "" : obj[24].toString());
-
-                            if (!"".equalsIgnoreCase(rawatInap.getDesaId())) {
-                                List<Object[]> objDesaList = getListAlamatByDesaId(rawatInap.getDesaId());
-                                if (!objDesaList.isEmpty()) {
-                                    for (Object[] objDesa : objDesaList) {
-
-                                        String alamatLengkap =
-                                                "Desa. " + objDesa[0].toString() +
-                                                        " Kec. " + objDesa[1].toString() +
-                                                        " " + objDesa[2].toString() +
-                                                        " Prov. " + objDesa[3].toString();
-
-                                        if (!"".equalsIgnoreCase(jalan)) {
-                                            jalan = jalan + ", " + alamatLengkap;
-                                        } else {
-                                            jalan = alamatLengkap;
-                                        }
-
-                                        rawatInap.setDesa(objDesa[0].toString());
-                                        rawatInap.setKecamatan(objDesa[1].toString());
-                                    }
-                                }
-                            }
-                            rawatInap.setAlamat(jalan);
-                            rawatInapList.add(rawatInap);
+                    if ("umum".equalsIgnoreCase(inap.getIdJenisPeriksa())) {
+                        if ("Y".equalsIgnoreCase(inap.getStatusBayar())) {
+                            rawatInap.setIsBayar("Y");
                         } else {
-                            RawatInap rawatInap = new RawatInap();
-                            rawatInap.setIdDetailCheckup(obj[0].toString());
-                            rawatInap.setNoCheckup(obj[1].toString());
-                            rawatInap.setIdPasien(obj[2] == null ? "" : obj[2].toString());
-                            rawatInap.setNamaPasien(obj[3] == null ? "" : obj[3].toString());
-                            String jalan = obj[4] == null ? "" : obj[4].toString();
-                            rawatInap.setCreatedDate(obj[5] == null ? null : (Timestamp) obj[5]);
-                            rawatInap.setDesaId(obj[6] == null ? "" : obj[6].toString());
-                            rawatInap.setStatusPeriksa(obj[7].toString());
-                            rawatInap.setStatusPeriksaName(obj[8].toString());
-                            rawatInap.setKeteranganSelesai(obj[9] == null ? "" : obj[9].toString());
-                            rawatInap.setIdRawatInap(obj[10].toString());
-                            rawatInap.setIdRuangan(obj[11].toString());
-                            rawatInap.setNoRuangan(obj[12].toString());
-                            rawatInap.setNamaRangan(obj[13].toString());
-                            rawatInap.setKelasRuanganName(obj[14].toString());
-                            rawatInap.setIdKelas(obj[15].toString());
-                            rawatInap.setNoSep(obj[16] == null ? "" : obj[16].toString());
-                            rawatInap.setKlaimBpjsFlag(obj[17] == null ? "" : obj[17].toString());
-                            rawatInap.setStatusBayar(obj[18] == null ? "" : obj[18].toString());
-                            rawatInap.setIdJenisPeriksa(obj[19] == null ? "" : obj[19].toString());
-                            rawatInap.setKategoriRuangan(obj[23] == null ? "" : obj[23].toString());
-                            rawatInap.setJenisPeriksaPasien(obj[24] == null ? "" : obj[24].toString());
-
-                            if (!"".equalsIgnoreCase(rawatInap.getDesaId())) {
-                                List<Object[]> objDesaList = getListAlamatByDesaId(rawatInap.getDesaId());
-                                if (!objDesaList.isEmpty()) {
-                                    for (Object[] objDesa : objDesaList) {
-
-                                        String alamatLengkap =
-                                                "Desa. " + objDesa[0].toString() +
-                                                        " Kec. " + objDesa[1].toString() +
-                                                        " " + objDesa[2].toString() +
-                                                        " Prov. " + objDesa[3].toString();
-
-                                        if (!"".equalsIgnoreCase(jalan)) {
-                                            jalan = jalan + ", " + alamatLengkap;
-                                        } else {
-                                            jalan = alamatLengkap;
-                                        }
-
-                                        rawatInap.setDesa(objDesa[0].toString());
-                                        rawatInap.setKecamatan(objDesa[1].toString());
-                                    }
-                                }
-                            }
-
-                            rawatInap.setAlamat(jalan);
-                            rawatInapList.add(rawatInap);
+                            rawatInap.setIsBayar("N");
                         }
-                    } else {
-                        RawatInap rawatInap = new RawatInap();
-                        rawatInap.setIdDetailCheckup(obj[0].toString());
-                        rawatInap.setNoCheckup(obj[1].toString());
-                        rawatInap.setIdPasien(obj[2] == null ? "" : obj[2].toString());
-                        rawatInap.setNamaPasien(obj[3] == null ? "" : obj[3].toString());
-                        String jalan = obj[4] == null ? "" : obj[4].toString();
-                        rawatInap.setCreatedDate(obj[5] == null ? null : (Timestamp) obj[5]);
-                        rawatInap.setDesaId(obj[6] == null ? "" : obj[6].toString());
-                        rawatInap.setStatusPeriksa(obj[7].toString());
-                        rawatInap.setStatusPeriksaName(obj[8].toString());
-                        rawatInap.setKeteranganSelesai(obj[9] == null ? "" : obj[9].toString());
-                        rawatInap.setIdRawatInap(obj[10].toString());
-                        rawatInap.setIdRuangan(obj[11].toString());
-                        rawatInap.setNoRuangan(obj[12].toString());
-                        rawatInap.setNamaRangan(obj[13].toString());
-                        rawatInap.setKelasRuanganName(obj[14].toString());
-                        rawatInap.setIdKelas(obj[15].toString());
-                        rawatInap.setNoSep(obj[16] == null ? "" : obj[16].toString());
-                        rawatInap.setKlaimBpjsFlag(obj[17] == null ? "" : obj[17].toString());
-                        rawatInap.setStatusBayar(obj[18] == null ? "" : obj[18].toString());
-                        rawatInap.setIdJenisPeriksa(obj[19] == null ? "" : obj[19].toString());
-                        rawatInap.setKategoriRuangan(obj[23] == null ? "" : obj[23].toString());
-                        rawatInap.setJenisPeriksaPasien(obj[24] == null ? "" : obj[24].toString());
-
-                        if (!"".equalsIgnoreCase(rawatInap.getDesaId())) {
-                            List<Object[]> objDesaList = getListAlamatByDesaId(rawatInap.getDesaId());
-                            if (!objDesaList.isEmpty()) {
-                                for (Object[] objDesa : objDesaList) {
-
-                                    String alamatLengkap =
-                                            "Desa. " + objDesa[0].toString() +
-                                                    " Kec. " + objDesa[1].toString() +
-                                                    " " + objDesa[2].toString() +
-                                                    " Prov. " + objDesa[3].toString();
-
-                                    if (!"".equalsIgnoreCase(jalan)) {
-                                        jalan = jalan + ", " + alamatLengkap;
-                                    } else {
-                                        jalan = alamatLengkap;
-                                    }
-
-                                    rawatInap.setDesa(objDesa[0].toString());
-                                    rawatInap.setKecamatan(objDesa[1].toString());
-                                }
-                            }
-                        }
-
-                        rawatInap.setAlamat(jalan);
-                        rawatInapList.add(rawatInap);
                     }
+
+                    rawatInap.setIdDetailCheckup(obj[0].toString());
+                    rawatInap.setNoCheckup(obj[1].toString());
+                    rawatInap.setIdPasien(obj[2] == null ? "" : obj[2].toString());
+                    rawatInap.setNamaPasien(obj[3] == null ? "" : obj[3].toString());
+                    String jalan = obj[4] == null ? "" : obj[4].toString();
+                    rawatInap.setCreatedDate(obj[5] == null ? null : (Timestamp) obj[5]);
+                    rawatInap.setDesaId(obj[6] == null ? "" : obj[6].toString());
+                    rawatInap.setStatusPeriksa(obj[7].toString());
+                    rawatInap.setStatusPeriksaName(obj[8].toString());
+                    rawatInap.setKeteranganSelesai(obj[9] == null ? "" : obj[9].toString());
+                    rawatInap.setIdRawatInap(obj[10].toString());
+                    rawatInap.setIdRuangan(obj[11].toString());
+                    rawatInap.setNoRuangan(obj[12].toString());
+                    rawatInap.setNamaRangan(obj[13].toString());
+                    rawatInap.setKelasRuanganName(obj[14].toString());
+                    rawatInap.setIdKelas(obj[15].toString());
+                    rawatInap.setNoSep(obj[16] == null ? "" : obj[16].toString());
+                    rawatInap.setKlaimBpjsFlag(obj[17] == null ? "" : obj[17].toString());
+                    rawatInap.setStatusBayar(obj[18] == null ? "" : obj[18].toString());
+                    rawatInap.setIdJenisPeriksa(obj[19] == null ? "" : obj[19].toString());
+                    rawatInap.setKategoriRuangan(obj[23] == null ? "" : obj[23].toString());
+                    rawatInap.setJenisPeriksaPasien(obj[24] == null ? "" : obj[24].toString());
+
+                    if (!"".equalsIgnoreCase(rawatInap.getDesaId())) {
+                        List<Object[]> objDesaList = getListAlamatByDesaId(rawatInap.getDesaId());
+                        if (!objDesaList.isEmpty()) {
+                            for (Object[] objDesa : objDesaList) {
+
+                                String alamatLengkap =
+                                        "Desa. " + objDesa[0].toString() +
+                                                " Kec. " + objDesa[1].toString() +
+                                                " " + objDesa[2].toString() +
+                                                " Prov. " + objDesa[3].toString();
+
+                                if (!"".equalsIgnoreCase(jalan)) {
+                                    jalan = jalan + ", " + alamatLengkap;
+                                } else {
+                                    jalan = alamatLengkap;
+                                }
+
+                                rawatInap.setDesa(objDesa[0].toString());
+                                rawatInap.setKecamatan(objDesa[1].toString());
+                            }
+                        }
+                    }
+                    rawatInap.setAlamat(jalan);
+                    rawatInapList.add(rawatInap);
                 }
             }
         }

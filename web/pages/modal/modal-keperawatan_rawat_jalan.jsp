@@ -168,7 +168,7 @@
                         <div class="form-group">
                             <label class="col-md-3">Riwayat Alergi</label>
                             <div class="col-md-9">
-                                <textarea rows="3" class="form-control" id="af5"></textarea>
+                                <textarea rows="3" class="form-control alergi-pasien" id="af5"></textarea>
                             </div>
                         </div>
                     </div>

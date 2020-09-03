@@ -14,6 +14,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_op_instruksi_pasca_anestesi"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_instruksi_pasca_anestesi">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_instruksi_pasca_anestesi"></p>
+                    </div>
                     <button type="button" onclick="showModalOperasi('add_instruksi_pasca_anestesi')" class="btn btn-success"><i class="fa fa-plus"></i> Instruksi Pasca Anestesi
                     </button>
                 </div>
@@ -26,6 +30,7 @@
                                 <img id="btn_op_add_instruksi_pasca_anestesi" class="hvr-grow"
                                      onclick="detailOperasi('add_instruksi_pasca_anestesi')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_add_instruksi_pasca_anestesi" class="hvr-grow" onclick="conOP('add_instruksi_pasca_anestesi', 'instruksi_pasca_anestesi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

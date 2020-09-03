@@ -414,6 +414,9 @@ ADD COLUMN tipe VARCHAR (100),
 ADD COLUMN nama_terang VARCHAR (100),
 ADD COLUMN sip VARCHAR (100);
 
+-- 03-09-2020
+ALTER TABLE it_simrs_detail_icu
+ADD COLUMN id_detail_checkup VARCHAR(50);
 
 
 

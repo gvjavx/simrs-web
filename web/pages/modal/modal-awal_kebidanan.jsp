@@ -14,6 +14,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_rb_awal_kebidanan"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_awal_kebidanan">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_awal_kebidanan"></p>
+                    </div>
                     <button type="button" onclick="showModalRB('awal_kebidanan_rb')" class="btn btn-success"><i class="fa fa-plus"></i> Asesmen
                     </button>
                 </div>
@@ -26,6 +30,8 @@
                                 <img id="btn_rb_awal_kebidanan_rb" class="hvr-grow"
                                      onclick="detailRB('awal_kebidanan_rb')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+
+                                <img id="delete_awal_kebidanan_rb" class="hvr-grow" onclick="conRB('awal_kebidanan_rb', 'awal_kebidanan')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

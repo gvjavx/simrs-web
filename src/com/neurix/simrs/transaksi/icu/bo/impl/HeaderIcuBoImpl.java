@@ -114,6 +114,7 @@ public class HeaderIcuBoImpl implements HeaderIcuBo {
                 detailIcuEntity.setCreatedWho(bean.getCreatedWho());
                 detailIcuEntity.setLastUpdate(bean.getLastUpdate());
                 detailIcuEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                detailIcuEntity.setIdDetailChekcup(bean.getIdDetailCheckup());
 
                 try {
                     detailIcuDao.addAndSave(detailIcuEntity);
@@ -137,6 +138,48 @@ public class HeaderIcuBoImpl implements HeaderIcuBo {
     @Override
     public Boolean cekData(String id, String waktu, String kategori) throws GeneralBOException {
         return headerIcuDao.cekData(id, waktu, kategori);
+    }
+
+    @Override
+    public CrudResponse saveDelete(HeaderIcu bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        ItSimrsDetailIcuEntity detailIcuEntity = detailIcuDao.getById("idDetailIcu", bean.getIdDetailIcu());
+        if (detailIcuEntity != null) {
+            List<ItSimrsDetailIcuEntity> detailIcuEntityList = new ArrayList<>();
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("id_detail_checkup", detailIcuEntity.getIdDetailChekcup());
+            hsCriteria.put("created_date", detailIcuEntity.getCreatedDate());
+            try {
+                detailIcuEntityList = detailIcuDao.getByCriteria(hsCriteria);
+            } catch (HibernateException e) {
+                response.setStatus("error");
+                response.setMsg("Found Error, " + e.getMessage());
+            }
+
+            if (detailIcuEntityList.size() > 0) {
+                for (ItSimrsDetailIcuEntity entity : detailIcuEntityList) {
+                    entity.setFlag("N");
+                    entity.setAction("D");
+                    entity.setLastUpdate(bean.getLastUpdate());
+                    entity.setLastUpdateWho(bean.getLastUpdateWho());
+                    try {
+                        detailIcuDao.updateAndSave(entity);
+                        response.setStatus("success");
+                        response.setMsg("Berhasil");
+                    } catch (HibernateException e) {
+                        response.setStatus("error");
+                        response.setMsg("Found Error, " + e.getMessage());
+                    }
+                }
+            } else {
+                response.setStatus("error");
+                response.setMsg("Data tidak ditemukan...!");
+            }
+        } else {
+            response.setStatus("error");
+            response.setMsg("Data tidak ditemukan...!");
+        }
+        return response;
     }
 
     public static Logger getLogger() {

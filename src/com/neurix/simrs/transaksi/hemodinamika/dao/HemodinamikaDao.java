@@ -54,6 +54,7 @@ public class HemodinamikaDao extends GenericDao<ItSimrsHemodinamikaEntity, Strin
             String SQL = "SELECT id_hemodinamika FROM it_simrs_hemodinamika\n" +
                     "WHERE id_detail_checkup = :id\n" +
                     "AND waktu = :wkt\n" +
+                    "AND flag = :'Y'\n" +
                     "AND CAST(created_date AS date) = CURRENT_DATE";
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)

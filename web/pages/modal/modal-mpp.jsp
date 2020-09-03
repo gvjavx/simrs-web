@@ -775,6 +775,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_mpp_impementasi_mpp"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_impementasi_mpp">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_impementasi_mpp"></p>
+                    </div>
                     <div class="btn-group">
                         <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
                         </button>
@@ -800,36 +804,42 @@
                             <td>Pelaksanaan Rencana MPP</td>
                             <td width="20%" align="center">
                                 <img id="btn_mpp_rencana_mpp" class="hvr-grow" onclick="detailFormMpp('rencana_mpp')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_rencana_mpp" class="hvr-grow" onclick="conMPP('rencana_mpp', 'impementasi_mpp')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_mpp_monitoring_mpp">
                             <td>Monitoring</td>
                             <td width="20%" align="center">
                                 <img id="btn_mpp_monitoring_mpp" class="hvr-grow" onclick="detailFormMpp('monitoring_mpp')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_monitoring_mpp" class="hvr-grow" onclick="conMPP('monitoring_mpp', 'impementasi_mpp')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_mpp_fasilitas_pelayanan">
                             <td>Memfasilitasi Pelayanan</td>
                             <td width="20%" align="center">
                                 <img id="btn_mpp_fasilitas_pelayanan" class="hvr-grow" onclick="detailFormMpp('fasilitas_pelayanan')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_fasilitas_pelayanan" class="hvr-grow" onclick="conMPP('fasilitas_pelayanan', 'impementasi_mpp')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_mpp_advokasi">
                             <td>Advokasi Pelayanan Pasien</td>
                             <td width="20%" align="center">
                                 <img id="btn_mpp_advokasi" class="hvr-grow" onclick="detailFormMpp('advokasi')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_advokasi" class="hvr-grow" onclick="conMPP('advokasi', 'impementasi_mpp')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_mpp_hasil_pelayanan">
                             <td>Hasil Pelayanan</td>
                             <td width="20%" align="center">
                                 <img id="btn_mpp_hasil_pelayanan" class="hvr-grow" onclick="detailFormMpp('hasil_pelayanan')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_hasil_pelayanan" class="hvr-grow" onclick="conMPP('hasil_pelayanan', 'impementasi_mpp')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_mpp_terminasi">
                             <td>Terminasi MPP</td>
                             <td width="20%" align="center">
                                 <img id="btn_mpp_terminasi" class="hvr-grow" onclick="detailFormMpp('terminasi')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_terminasi" class="hvr-grow" onclick="conMPP('terminasi', 'impementasi_mpp')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

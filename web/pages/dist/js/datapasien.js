@@ -29,6 +29,8 @@ function setDataPasien() {
     var namaDok = $('.nama_dokter').length;
     var labPas = $('.lab-pasien').length;
     var radioPas = $('.radiologi-pasien').length;
+    var sipRi = $('.sip_dokter_ri').length;
+    var namaDokRi = $('.nama_dokter_ri').length;
 
     if (tensi > 0 || gejala > 0 || bb > 0 || tb > 0) {
         dwr.engine.setAsync(true);
@@ -152,6 +154,17 @@ function setDataPasien() {
                 if (res != '') {
                     $('.sip_dokter').val(res.sip);
                     $('.nama_dokter').val(res.namaDokter);
+                }
+            }
+        });
+    }
+    if(sipRi > 0 && namaDokRi > 0){
+        dwr.engine.setAsync(true);
+        CheckupAction.getDataDokterSip(idDetailCheckup, "RI", {
+            callback: function (res) {
+                if (res != '') {
+                    $('.sip_dokter_ri').val(res.sip);
+                    $('.nama_dokter_ri').val(res.namaDokter);
                 }
             }
         });

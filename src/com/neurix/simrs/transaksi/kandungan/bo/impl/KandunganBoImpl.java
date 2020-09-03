@@ -169,6 +169,7 @@ public class KandunganBoImpl implements KandunganBo {
                 entity.setLastUpdateWho(bean.getLastUpdateWho());
                 entity.setLastUpdate(bean.getLastUpdate());
                 entity.setFlag("N");
+                entity.setAction("D");
                 try {
                     kandunganDao.updateAndSave(entity);
                     response.setStatus("success");
@@ -179,6 +180,27 @@ public class KandunganBoImpl implements KandunganBo {
                     logger.error("Found Error, "+e.getMessage());
                     return response;
                 }
+            }
+        }
+        return response;
+    }
+
+    @Override
+    public CrudResponse saveDeleteById(Kandungan bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        ItSimrsAsesmenKandunganEntity kandunganEntity = kandunganDao.getById("idAsesmenKandungan", bean.getIdAsesmenKandungan());
+        if(kandunganEntity != null){
+            kandunganEntity.setFlag("N");
+            kandunganEntity.setAction("D");
+            kandunganEntity.setLastUpdate(bean.getLastUpdate());
+            kandunganEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            try {
+                kandunganDao.updateAndSave(kandunganEntity);
+                response.setStatus("success");
+                response.setMsg("Berhasil");
+            }catch (HibernateException e){
+                response.setStatus("error");
+                response.setMsg(e.getMessage());
             }
         }
         return response;

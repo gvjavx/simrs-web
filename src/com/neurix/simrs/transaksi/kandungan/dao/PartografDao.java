@@ -77,6 +77,7 @@ public class PartografDao extends GenericDao<ItSimrsPartografEntity, String> {
                 "rr\n" +
                 "FROM it_simrs_partograf\n" +
                 "WHERE id_detail_checkup = :id\n" +
+                "WHERE flag = 'Y'\n" +
                 "AND CAST(created_date AS DATE) = to_date(:tgl, 'dd-MM-yyyy')";
 
         List<Object[]> result = new ArrayList<>();

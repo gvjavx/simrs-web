@@ -675,7 +675,7 @@
                                                                 $('#suku').val(selectedObj.suku);
                                                                 $('#img_ktp').val(selectedObj.imgKtp);
                                                                 $('#img-upload').attr('src', selectedObj.urlktp);
-//                                                            $('#penjamin').val("002");
+                                                                $('#no_telp').val(selectedObj.notelp);
                                                                 $('#provinsi').val(selectedObj.prov);
                                                                 $('#kabupaten').val(selectedObj.kota);
                                                                 $('#kecamatan').val(selectedObj.kec);
@@ -796,6 +796,7 @@
                                                         $('#kabupaten11').val(selectedObj.idKota);
                                                         $('#kecamatan11').val(selectedObj.idKec);
                                                         $('#desa11').val(selectedObj.idDesa);
+                                                        $('#no_telp').val(selectedObj.notelp);
                                                         if (selectedObj.isLama) {
                                                             $('#kunjungan').val("Lama").attr('disabled', true);
                                                             $('#kunjungan_val').val("Lama");
@@ -1054,9 +1055,7 @@
                                             <label class="col-md-4" style="margin-top: 7px">No Telp.</label>
                                             <div class="col-md-8">
                                                 <s:textfield id="no_telp" name="headerCheckup.noTelp"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px"
-                                                             data-inputmask="'mask': ['+62 999-9999-9999']"
-                                                             data-mask=""/>
+                                                             cssClass="form-control" cssStyle="margin-top: 7px"/>
                                             </div>
                                         </div>
                                     </div>
@@ -1512,7 +1511,7 @@
                                         <div class="form-group" style="display: inline;">
                                             <div class="col-md-offset-2 col-md-8 text-center" style="margin-top: 7px">
                                                 <button type="button" id="btn-save" class="btn btn-success" onclick="confirm()"><i
-                                                        class="fa fa-arrow-right"></i> Save
+                                                        class="fa fa-check"></i> Save
                                                 </button>
                                                 <%--<a type="button" id="btn-rm" style="display:none;"--%>
                                                    <%--class="btn btn-primary"--%>

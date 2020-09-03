@@ -10,4 +10,5 @@ public interface KandunganBo {
     public List<Kandungan> getByCriteria(Kandungan bean) throws GeneralBOException;
     public CrudResponse saveAdd(List<Kandungan> list) throws GeneralBOException;
     public CrudResponse saveDelete(Kandungan bean) throws GeneralBOException;
+    public CrudResponse saveDeleteById(Kandungan bean) throws GeneralBOException;
 }

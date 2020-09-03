@@ -2040,8 +2040,16 @@ function saveRB(jenis, ket) {
         var va6 = $('#dp6').val();
         var va7 = $('#dp7').val();
         var va8 = $('#dp8').val();
-
-        if (va1 && va2 && va3 && va4 && va5 && va6 & va7 && va8 != '') {
+        console.log(va1);
+        console.log(va2);
+        console.log(va3);
+        console.log(va4);
+        console.log(va5);
+        console.log(va6);
+        console.log(va7);
+        console.log(va8);
+        // if (va1 && va2 && va3 && va4 && va5 && va6 & va7 && va8 != '') {
+        //     console.log('tes');
             data.push({
                 'parameter': 'Nama',
                 'jawaban': va1,
@@ -2098,8 +2106,9 @@ function saveRB(jenis, ket) {
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
+            console.log(data);
             cek = true;
-        }
+        // }
     }
 
     if ("janin_ibu_persalinan" == jenis) {
@@ -2376,7 +2385,7 @@ function detailRB(jenis) {
                             '<td align="center">' + cekItemIsNull(item.tensi) + '</td>' +
                             '<td align="center">' + cekItemIsNull(item.suhu) + '</td>' +
                             '<td align="center">' + cekItemIsNull(item.rr) + '</td>' +
-                            '<td align="center">' + '<i class="fa fa-trash hvr-grow" style="color: red"></i>' + '</td>' +
+                            '<td align="center">' + '<i id="delete_'+item.idPartograf+'" onclick="conRB(\''+jenis+'\',\'partograf\', \''+item.idPartograf+'\')" class="fa fa-trash hvr-grow" style="color: red"></i>' + '</td>' +
                             '</tr>';
                         cekData = true;
                     });
@@ -2519,8 +2528,13 @@ function detailRB(jenis) {
                                 $.each(jml, function (ix, itemx) {
                                     td += '<td>' + itemx + '</td>';
                                 });
+
+                                var action = '<td align="center">' +
+                                    '<i id="delete_'+item.idAsesmenKandungan+'" onclick="conRB(\''+jenis+'\', \'partograf\', \''+item.idAsesmenKandungan+'\', \'Y\')" class="fa fa-trash hvr-grow" style="color: red"></i>' +
+                                    '</td>';
+
                                 if (td != '') {
-                                    body += '<tr>' + td + '</tr>';
+                                    body += '<tr>' + td + action + '</tr>';
                                 }
                             } else if("riwayat_kandungan" == item.tipe){
 
@@ -2528,7 +2542,6 @@ function detailRB(jenis) {
                                 var tempTr = '';
                                 $.each(jml, function (ix, itemx) {
                                     var td = itemx.split("|");
-                                    console.log(td);
                                     var tempTd = "";
                                     $.each(td, function (ir, itemr) {
                                         tempTd += '<td>'+itemr+'</td>';
@@ -2637,6 +2650,7 @@ function detailRB(jenis) {
                             '<td>Kontraksi Uterus</td>' +
                             '<td>Kandung Kemih</td>' +
                             '<td>Darah yang keluar</td>' +
+                            '<td align="center">Action</td>' +
                             '</tr>';
                     }
                 }
@@ -3457,6 +3471,72 @@ function showChart(jenis, tanggal) {
                     }
                     $('#body_temp').html(setTable);
                 }
+            }
+        }
+    });
+}
+
+function conRB(jenis, ket, idAsesmen, isKala) {
+    $('#tanya').text("Yakin mengahapus data ini ?");
+    $('#modal-confirm-rm').modal({show: true, backdrop: 'static'});
+    if (idAsesmen != undefined && idAsesmen != '') {
+        $('#save_con_rm').attr('onclick', 'delRBC(\'' + jenis + '\', \'' + ket + '\', \'' + idAsesmen + '\', \''+isKala+'\')');
+    } else {
+        $('#save_con_rm').attr('onclick', 'delRB(\'' + jenis + '\', \'' + ket + '\')');
+    }
+}
+
+function delRBC(jenis, ket, idAsesmen, isKala) {
+    $('#modal-confirm-rm').modal('hide');
+    var dataPasien = {
+        'no_checkup': noCheckup,
+        'id_detail_checkup': idDetailCheckup,
+        'id_pasien': idPasien,
+        'id_rm': tempidRm
+    }
+    var result = JSON.stringify(dataPasien);
+    startIconSpin('delete_' + idAsesmen);
+    dwr.engine.setAsync(true);
+    KandunganAction.deletePartograf(idAsesmen, isKala, {
+        callback: function (res) {
+            if (res.status == "success") {
+                stopIconSpin('delete_' + idAsesmen);
+                $('#modal-rb-'+ket).scrollTop(0);
+                $('#warning_rb_'+ket).show().fadeOut(5000);
+                $('#msg_rb_'+ket).text("Berhasil menghapus data...");
+            } else {
+                stopIconSpin('delete_' + idAsesmen);
+                $('#modal-rb-'+ket).scrollTop(0);
+                $('#warn_'+ket).show().fadeOut(5000);
+                $('#msg_'+ket).text(res.msg);
+            }
+        }
+    });
+}
+
+function delRB(jenis, ket) {
+    $('#modal-confirm-rm').modal('hide');
+    var dataPasien = {
+        'no_checkup': noCheckup,
+        'id_detail_checkup': idDetailCheckup,
+        'id_pasien': idPasien,
+        'id_rm': tempidRm
+    }
+    var result = JSON.stringify(dataPasien);
+    startSpin('delete_' + jenis);
+    dwr.engine.setAsync(true);
+    KandunganAction.saveDelete(idDetailCheckup, jenis, result, {
+        callback: function (res) {
+            if (res.status == "success") {
+                stopSpin('delete_' + jenis);
+                $('#modal-rb-' + ket).scrollTop(0);
+                $('#warning_rb_' + ket).show().fadeOut(5000);
+                $('#msg_rb_' + ket).text("Berhasil menghapus data...");
+            } else {
+                stopSpin('delete_' + jenis);
+                $('#modal-rb-' + ket).scrollTop(0);
+                $('#warn_' + ket).show().fadeOut(5000);
+                $('#msg_' + ket).text(res.msg);
             }
         }
     });

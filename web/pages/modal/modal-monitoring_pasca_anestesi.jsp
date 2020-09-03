@@ -14,6 +14,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_op_monitoring_pasca_anestesi"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_monitoring_pasca_anestesi">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_monitoring_pasca_anestesi"></p>
+                    </div>
                     <button type="button" onclick="showModalOperasi('data_pasca_anestesi')" class="btn btn-success"><i class="fa fa-plus"></i> Data Pasca Anestesi
                     </button>
                     <button type="button" onclick="showModalOperasi('mon_pasca_anestesi')" class="btn btn-success"><i class="fa fa-plus"></i> Monitoring Pasca Anestesi
@@ -28,6 +32,7 @@
                                 <img id="btn_op_data_pasca_anestesi" class="hvr-grow"
                                      onclick="detailOperasi('data_pasca_anestesi')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_data_pasca_anestesi" class="hvr-grow" onclick="conOP('data_pasca_anestesi', 'monitoring_pasca_anestesi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_op_mon_pasca_anestesi">

@@ -138,6 +138,7 @@ public class PartografBoImpl implements PartografBo {
             partografEntity.setLastUpdateWho(bean.getLastUpdateWho());
             partografEntity.setLastUpdate(bean.getLastUpdate());
             partografEntity.setFlag("N");
+            partografEntity.setAction("D");
             try {
                 partografDao.updateAndSave(partografEntity);
                 response.setStatus("success");

@@ -491,7 +491,7 @@
                     <%--</div>--%>
 
                     <div class="box-header with-border"></div>
-                    <div class="box-header with-border">
+                    <div class="box-header with-border" id="pos_rm">
                         <div class="row">
                             <s:if test='rawatInap.kategoriRuangan == "rawat_inap"'>
                                 <div class="col-md-6">

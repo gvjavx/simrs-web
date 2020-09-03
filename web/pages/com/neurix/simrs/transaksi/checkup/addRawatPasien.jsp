@@ -1606,7 +1606,7 @@
                                         <div class="form-group" style="display: inline;">
                                             <div class="col-md-offset-2 col-md-8 text-center" style="margin-top: 7px">
                                                 <button type="button" id="btn-save" class="btn btn-success" onclick="confirm()"><i
-                                                        class="fa fa-arrow-right"></i> Save
+                                                        class="fa fa-check"></i> Save
                                                 </button>
 
                                                 <%--<a type="button" id="btn-rm" style="display:none;"--%>

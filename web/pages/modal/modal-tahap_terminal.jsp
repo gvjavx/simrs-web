@@ -14,6 +14,11 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_icu_tahap_terminal"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_tahap_terminal">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_tahap_terminal"></p>
+                    </div>
+
                     <div class="btn-group">
                         <button type="button" onclick="showModalICU('terminal')" class="btn btn-success"><i class="fa fa-plus"></i> Asesmen
                         </button>
@@ -26,6 +31,7 @@
                             <td>Asesmen Pasien Tahap Terminal</td>
                             <td width="20%" align="center">
                                 <img id="btn_icu_terminal" class="hvr-grow" onclick="detailICU('terminal')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_terminal" class="hvr-grow" onclick="conICU('terminal', 'tahap_terminal')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

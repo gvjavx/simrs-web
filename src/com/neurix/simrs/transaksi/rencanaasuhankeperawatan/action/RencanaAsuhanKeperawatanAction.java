@@ -197,6 +197,26 @@ public class RencanaAsuhanKeperawatanAction {
         return list;
     }
 
+    public CrudResponse saveDelete(String idAsesmen) {
+        CrudResponse response = new CrudResponse();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RencanaAsuhanKeperawatanBo rencanaAsuhanKeperawatanBo = (RencanaAsuhanKeperawatanBo) ctx.getBean("rencanaAsuhanKeperawatanBoProxy");
+        if (!"".equalsIgnoreCase(idAsesmen) && idAsesmen != null) {
+            try {
+                RencanaAsuhanKeperawatan rencanaAsuhanKeperawatan = new RencanaAsuhanKeperawatan();
+                rencanaAsuhanKeperawatan.setIdRencanaAsuhanKeperawatan(idAsesmen);
+                rencanaAsuhanKeperawatan.setLastUpdate(time);
+                rencanaAsuhanKeperawatan.setLastUpdateWho(userLogin);
+                response = rencanaAsuhanKeperawatanBo.saveDelete(rencanaAsuhanKeperawatan);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error" + e.getMessage());
+            }
+        }
+        return response;
+    }
+
     public static Logger getLogger() {
         return logger;
     }

@@ -163,7 +163,7 @@ public class KandunganAction {
         return list;
     }
 
-    public CrudResponse delete(String idDetailCheckup, String keterangan) {
+    public CrudResponse saveDelete(String idDetailCheckup, String keterangan, String dataPasien) {
         CrudResponse response = new CrudResponse();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         KandunganBo kandunganBo = (KandunganBo) ctx.getBean("kandunganBoProxy");
@@ -175,6 +175,25 @@ public class KandunganAction {
                 kandungan.setLastUpdate(time);
                 kandungan.setLastUpdateWho(userLogin);
                 response = kandunganBo.saveDelete(kandungan);
+                if("success".equalsIgnoreCase(response.getStatus())){
+                    try {
+                        JSONObject obj = new JSONObject(dataPasien);
+                        RekamMedikBo rekamMedikBo = (RekamMedikBo) ctx.getBean("rekamMedikBoProxy");
+                        if (obj != null) {
+                            StatusPengisianRekamMedis status = new StatusPengisianRekamMedis();
+                            status.setNoCheckup(obj.getString("no_checkup"));
+                            status.setIdDetailCheckup(obj.getString("id_detail_checkup"));
+                            status.setIdPasien(obj.getString("id_pasien"));
+                            status.setIdRekamMedisPasien(obj.getString("id_rm"));
+                            status.setLastUpdateWho(userLogin);
+                            status.setLastUpdate(time);
+                            response = rekamMedikBo.saveEdit(status);
+                        }
+                    }catch (JSONException e){
+                        response.setStatus("error");
+                        response.setMsg(e.getMessage());
+                    }
+                }
             } catch (GeneralBOException e) {
                 response.setStatus("error");
                 response.setMsg("Found Error, "+e.getMessage());
@@ -335,17 +354,26 @@ public class KandunganAction {
         return list;
     }
 
-    public CrudResponse deletePartograf(String idPatograf) {
+    public CrudResponse deletePartograf(String idPatograf, String isKala) {
         CrudResponse response = new CrudResponse();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PartografBo partografBo = (PartografBo) ctx.getBean("partografBoProxy");
+        KandunganBo kandunganBo = (KandunganBo) ctx.getBean("kandunganBoProxy");
         if (!"".equalsIgnoreCase(idPatograf)) {
             try {
-                Partograf partograf = new Partograf();
-                partograf.setIdPartograf(idPatograf);
-                partograf.setLastUpdate(time);
-                partograf.setLastUpdateWho(userLogin);
-                response = partografBo.saveDelete(partograf);
+                if("Y".equalsIgnoreCase(isKala)){
+                    Kandungan kandungan = new Kandungan();
+                    kandungan.setIdAsesmenKandungan(idPatograf);
+                    kandungan.setLastUpdate(time);
+                    kandungan.setLastUpdateWho(userLogin);
+                    response = kandunganBo.saveDeleteById(kandungan);
+                }else{
+                    Partograf partograf = new Partograf();
+                    partograf.setIdPartograf(idPatograf);
+                    partograf.setLastUpdate(time);
+                    partograf.setLastUpdateWho(userLogin);
+                    response = partografBo.saveDelete(partograf);
+                }
             } catch (GeneralBOException e) {
                 response.setStatus("error");
                 response.setMsg("Found Error, "+e.getMessage());

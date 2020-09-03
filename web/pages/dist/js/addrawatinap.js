@@ -541,7 +541,7 @@ function listSelectTindakanKategori(val) {
         idDokter = dataDokter[0];
         idPelayanan = dataDokter[1];
 
-        CheckupDetailAction.getListComboTindakanKategori(idPelayanan, idPelayanan, function (response) {
+        CheckupDetailAction.getListComboTindakanKategori(idPelayanan, kategoriRuangan, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idKategoriTindakan + "'>" + item.kategoriTindakan + "</option>";
@@ -585,6 +585,8 @@ function toContent() {
         window.location.reload(true);
     }else if(back == 13){
         window.location.href = 'add_'+urlPages+'.action?id='+idDetailCheckup+'&idx='+idHref;
+    }else if(back == 14){
+        desti = '#pos_rm';
     }
 
     $('html, body').animate({
@@ -2935,5 +2937,5 @@ function printPernyataanRM(kode, idRM){
     window.open(contextPath + '/rekammedik/printSuratPernyataan_rekammedik?id=' + idDetailCheckup + '&tipe=' + kode + '&ids=' + idRM, '_blank');
     $('#modal-confirm-rm').modal('hide');
     $('#info_dialog').dialog('open');
-    $('#close_pos').val(12);
+    $('#close_pos').val(14);
 }
