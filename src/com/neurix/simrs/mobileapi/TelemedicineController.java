@@ -1422,6 +1422,12 @@ public class TelemedicineController implements ModelDriven<Object> {
             }
 
             model.setMessage(response.getStatus());
+        } else if (action.equalsIgnoreCase("cobaGabung")) {
+            try {
+                telemedicBoProxy.cobaGabung(path1, path2);
+            } catch (GeneralBOException e){
+                logger.error("[TelemedicineController.approveAsuransi] Error, " + e.getMessage());
+            }
         }
 
         logger.info("[TelemedicineController.create] end process POST / <<<");
