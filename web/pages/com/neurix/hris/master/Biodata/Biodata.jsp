@@ -1069,7 +1069,6 @@
                                             <s:else>
                                                 <s:select list="#initComboTipe.listComboGolongan" id="golongan1" name="biodata.golongan"
                                                           listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                                <s:hidden id="golongan1" name="biodata.golongan" />
                                             </s:else>
 
                                         </table>
