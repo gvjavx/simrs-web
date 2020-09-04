@@ -542,6 +542,10 @@
                 <value>sshconfig/com/neurix/akuntansi/master/tipeLaporan/hibernate/ImAkunTipeLaporanEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/tipePayroll/hibernate/ImHrisTipePayrollEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/statusAbsensi/hibernate/ImHrisStatusAbsensiEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/statusAbsensi/hibernate/ImHrisStatusAbsensiHistoryEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/tipePayroll/hibernate/ImHrisTipePayrollHistoryEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/payrollPtkp/hibernate/ImHrisPayrollPtkpHistoryEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/master/tipeLaporan/hibernate/ImAkunTipeLaporanHistoryEntity.hbm.xml</value>
             </list>
         </property>
     </bean>

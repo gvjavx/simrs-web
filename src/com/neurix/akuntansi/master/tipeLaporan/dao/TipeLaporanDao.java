@@ -2,7 +2,8 @@ package com.neurix.akuntansi.master.tipeLaporan.dao;
 
 import com.neurix.akuntansi.master.tipeLaporan.model.ImAkunTipeLaporanEntity;
 import com.neurix.common.dao.GenericDao;
-import com.neurix.hris.master.payrollPtkp.model.ImHrisPayrollPtkpEntity;
+import com.neurix.akuntansi.master.tipeLaporan.model.ImAkunTipeLaporanEntity;
+import com.neurix.akuntansi.master.tipeLaporan.model.ImAkunTipeLaporanHistoryEntity;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -55,9 +56,21 @@ public class TipeLaporanDao extends GenericDao<ImAkunTipeLaporanEntity, String> 
     public String getNextTipeLaporanId() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_tipe_laporan')");
         Iterator<BigInteger> iter=query.list().iterator();
-        String sId = String.format("%01d", iter.next());
+        String sId = String.format("%02d", iter.next());
 
         return "TL"+sId;
+    }
+
+    public String getNextTipeLaporanHistoryId() throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_tipe_laporan_history')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%02d", iter.next());
+
+        return "HT"+sId;
+    }
+
+    public void addAndSaveHistory(ImAkunTipeLaporanHistoryEntity entity) throws HibernateException {
+        this.sessionFactory.getCurrentSession().save(entity);
     }
 
     public List<ImAkunTipeLaporanEntity> checkData(String tipeLaporanName) throws HibernateException {

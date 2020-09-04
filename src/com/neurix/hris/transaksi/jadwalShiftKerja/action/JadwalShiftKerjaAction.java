@@ -15,6 +15,7 @@ import com.neurix.hris.transaksi.jadwalShiftKerja.bo.JadwalShiftKerjaBo;
 import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalKerjaDTO;
 import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalShiftKerja;
 import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalShiftKerjaDetail;
+import com.neurix.simrs.transaksi.CrudResponse;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -866,6 +867,14 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
 
         logger.info("[JadwalShiftKerjaAction.cekTanggal] end process >>>");
         return status;
+    }
+
+    public CrudResponse cekLibur (String tanggalAwal, String tanggalAkhir){
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        JadwalShiftKerjaBo jadwalShiftKerjaBo = (JadwalShiftKerjaBo) ctx.getBean("jadwalShiftKerjaBoProxy");
+        response = jadwalShiftKerjaBo.getListLibur(tanggalAwal, tanggalAkhir);
+        return response;
     }
 
     @Override

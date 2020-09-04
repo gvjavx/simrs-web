@@ -1,7 +1,9 @@
 package com.neurix.hris.master.statusAbsensi.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.hris.master.cuti.model.ImCutiHistoryEntity;
 import com.neurix.hris.master.statusAbsensi.model.ImHrisStatusAbsensiEntity;
+import com.neurix.hris.master.statusAbsensi.model.ImHrisStatusAbsensiHistoryEntity;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -54,9 +56,21 @@ public class StatusAbsensiDao extends GenericDao<ImHrisStatusAbsensiEntity, Stri
     public String getNextStatusAbsensiId() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_status_absensi')");
         Iterator<BigInteger> iter=query.list().iterator();
-        String sId = String.format("%01d", iter.next());
+        String sId = String.format("%02d", iter.next());
 
         return "SA"+sId;
+    }
+
+    public String getNextStatusAbsensiHistoryId() throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_status_absensi_history')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%02d", iter.next());
+
+        return "HS"+sId;
+    }
+
+    public void addAndSaveHistory(ImHrisStatusAbsensiHistoryEntity entity) throws HibernateException {
+        this.sessionFactory.getCurrentSession().save(entity);
     }
 
     public List<ImHrisStatusAbsensiEntity> checkData(String statusAbsensiName) throws HibernateException {
