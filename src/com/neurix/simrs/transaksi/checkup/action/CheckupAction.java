@@ -3617,6 +3617,26 @@ public class CheckupAction extends BaseMasterAction {
         return listRM;
     }
 
+    public List<RekamMedisPasien> getRiwayatListRekammedisPasien(String id, String tipePelayanan, String jenis) {
+
+        logger.info("[CheckupAction.getListRekammedisPasien] START process >>>");
+
+        List<RekamMedisPasien> listRM = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RekamMedisPasienBo rekamMedisPasienBo = (RekamMedisPasienBo) ctx.getBean("rekamMedisPasienBoProxy");
+
+        if(tipePelayanan != null && !"".equalsIgnoreCase(tipePelayanan) && id != null && !"".equalsIgnoreCase(id)){
+            try {
+                listRM = rekamMedisPasienBo.getRiwayatListRekamMedis(id, tipePelayanan ,jenis);
+            }catch (GeneralBOException e){
+                logger.error("Found Error, "+e.getMessage());
+            }
+        }
+
+        logger.info("[CheckupAction.getListRekammedisPasien] END process >>>");
+        return listRM;
+    }
+
     public List<Dokter> getListDokterByBranchId(String idDokter) {
 
         logger.info("[CheckupAction.getListDokterByBranchId] START process >>>");

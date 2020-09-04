@@ -41,7 +41,7 @@
                             <td width="20%" align="center"><img id="btn_sps_anamnesa_pemeriksaan_paru" class="hvr-grow"
                                                                 onclick="detailSPS('anamnesa_pemeriksaan_paru')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_anamnesa_pemeriksaan_paru" class="hvr-grow" onclick="conSPS('anamnesa_pemeriksaan_paru', 'spesialis_paru')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_anamnesa_pemeriksaan_paru" class="hvr-grow btn-hide" onclick="conSPS('anamnesa_pemeriksaan_paru', 'spesialis_paru')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_sps_edukasi_paru">
@@ -49,7 +49,7 @@
                             <td width="20%" align="center"><img id="btn_sps_edukasi_paru" class="hvr-grow"
                                                                 onclick="detailSPS('edukasi_paru')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_edukasi_paru" class="hvr-grow" onclick="conSPS('edukasi_paru', 'spesialis_paru')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_edukasi_paru" class="hvr-grow btn-hide" onclick="conSPS('edukasi_paru', 'spesialis_paru')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
