@@ -158,12 +158,27 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
             result.setPositionId((String) row[6]);
             result.setPositionName((String) row[7]);
             result.setGolonganId((String) row[8]);
-            Integer level = (Integer) row[9];
+
+            Integer level = 0;
+            if (row[9]!=null){
+                level = (Integer) row[9];
+            }
+
             result.setGolonganName(String.valueOf(level));
             result.setKelompokId((String) row[10]);
-            result.setPoint(Integer.parseInt(row[11].toString()));
+            if (row[11]!=null){
+                result.setPoint(Integer.parseInt(row[11].toString()));
+            }else{
+                result.setPoint(0);
+            }
             result.setStatusKeluarga((String) row[12]);
-            result.setJumlahAnak(Integer.valueOf(row[13].toString()));
+
+            if (row[13]!=null){
+                result.setJumlahAnak(Integer.valueOf(row[13].toString()));
+            }else{
+                result.setJumlahAnak(0);
+            }
+
             if (row[14]!=null){
                 result.setMultifikator(Double.valueOf(row[14].toString()).intValue() + "");
             }

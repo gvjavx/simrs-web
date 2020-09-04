@@ -433,12 +433,12 @@
                                     <label class="col-md-4" style="margin-top: 7px">Upload Faktur Pajak</label>
                                     <div class="col-md-6">
                                         <div class="input-group" id="img_file"  style="margin-top: 7px">
-                              <span class="input-group-btn">
-                              <span class="btn btn-default btn-file">
-                                   Browse… <s:file id="imgInp" accept=".jpg" name="fileUpload"
-                                                   onchange="$('#img_file').css('border','')"></s:file>
-                                                        </span>
-                                                        </span>
+                                          <span class="input-group-btn">
+                                            <span class="btn btn-default btn-file">
+                                               Browse… <s:file id="imgInp" accept=".jpg" name="fileUpload"
+                                                               onchange="$('#img_file').css('border','')"></s:file>
+                                            </span>
+                                            </span>
                                             <input type="text" class="form-control" readonly id="namaFile">
                                         </div>
                                         <canvas id="img_faktur_canvas" style="display: none"></canvas>
@@ -1024,7 +1024,6 @@
             } else {
                 if (log) alert(log);
             }
-
         });
     });
     $('#btnViewFaktur').click(function () {

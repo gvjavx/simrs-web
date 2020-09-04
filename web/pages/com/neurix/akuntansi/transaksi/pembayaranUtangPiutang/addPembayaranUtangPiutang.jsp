@@ -567,7 +567,7 @@
                                 <div class="col-md-8">
                                     <div class="input-group" id="img_file"  style="margin-top: 7px">
                               <span class="input-group-btn">
-                              <span class="btn btn-default btn-file">
+                              <span class="btn btn-default btn-file btn-file-1">
                                    Browse… <s:file id="imgInp" accept=".jpg" name="fileUpload"
                                                    onchange="$('#img_file').css('border','')"></s:file>
                                                         </span>
@@ -1072,7 +1072,16 @@
                     <div class="row" style="margin-top: 7px">
                         <label class="control-label col-sm-4">Lampiran (PDF/JPEG/PNG) </label>
                         <div class="col-sm-8">
-                            <input type="file" id="file" class="form-control modal_lampiran" name="fileUpload" accept="application/pdf,image/jpeg,image/png">
+                            <div class="input-group" id="img_file2"  style="margin-top: 7px">
+                                          <span class="input-group-btn">
+                                            <span class="btn btn-default btn-file btn-file-2">
+                                               Browse… <s:file id="imgInp2" accept=".jpg" name="fileUpload2"
+                                                               onchange="$('#img_file2').css('border','')"></s:file>
+                                            </span>
+                                            </span>
+                                <input type="text" class="form-control" readonly id="namaFile2">
+                            </div>
+                            <canvas id="img_faktur_canvas2" style="display: none"></canvas>
                         </div>
                     </div>
                     <br>
@@ -1122,6 +1131,24 @@
     </div>
 </div>
 
+<div id="modal-view-lampiran" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">View Lampiran</h4>
+            </div>
+            <div class="modal-body">
+                <img src="" class="img-responsive" id="my-image">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
     function selectPembayaran(){
@@ -1165,14 +1192,13 @@
         var canvas = document.getElementById('img_faktur_canvas');
         var ctx = canvas.getContext('2d');
 
-        $(document).on('change', '.btn-file :file', function () {
+        $(document).on('change', '.btn-file-1 :file', function () {
             var input = $(this),
                 label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
             input.trigger('fileselect', [label]);
         });
 
-        $('.btn-file :file').on('fileselect', function (event, label) {
-
+        $('.btn-file-1 :file').on('fileselect', function (event, label) {
             var input = $(this).parents('.input-group').find(':text'),
                 log = label;
 
@@ -1477,6 +1503,7 @@
                 alert(msg);
             }
         });
+
         window.loadDetailPembayaran = function () {
             $('.detailPembayaranTable').find('tbody').remove();
             $('.detailPembayaranTable').find('thead').remove();
@@ -1880,6 +1907,120 @@
         }
     }
 
+    $('#btnAddLampiran').click(function () {
+        var namaLampiran = $('#mod_nama_lampiran').val();
+        var canvas = document.getElementById('img_faktur_canvas2');
+        var dataURL = canvas.toDataURL("image/png"),
+            dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+
+        if (namaLampiran !=''&&canvas!=''){
+            PembayaranUtangPiutangAction.saveSessionLampiran(namaLampiran, dataURL, function (result) {
+                if (result == "") {
+                    loadLampiran();
+                    $('#mod_nama_lampiran').val("");
+                    $('#img_faktur_canvas2').val("");
+                } else {
+                    alert(result);
+                }
+            });
+        } else{
+            var msg="";
+            if (namaLampiran==""){
+                msg+="Nama Lampiran masih kosong. \n"
+            }
+            if (canvas==""){
+                msg+="Gambar belum diupload \n"
+            }
+            alert(msg);
+        }
+    });
+
+    $('.tabelLampiran').on('click', '.item-delete-lampiran', function () {
+        var nama = $(this).attr('nama');
+        if (nama != '') {
+            PembayaranUtangPiutangAction.deleteSessionLampiran(nama, function (result) {
+                alert("data berhasil dihapus");
+                loadLampiran();
+            });
+        };
+    });
+
+    window.loadLampiran = function () {
+        $('.tabelLampiran').find('tbody').remove();
+        $('.tabelLampiran').find('thead').remove();
+        dwr.engine.setAsync(false);
+        var tmp_table = "";
+        PembayaranUtangPiutangAction.loadSessionLampiran(function (listdata) {
+            tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
+                "<th style='text-align: center; background-color:  #30d196'>No</th>" +
+                "<th style='text-align: center; background-color:  #30d196'>Nama Lampiran</th>" +
+                "<th style='text-align: center; background-color:  #30d196'>View</th>" +
+                "<th style='text-align: center; background-color:  #30d196'>Delete</th>" +
+                "</tr></thead>";
+            var i = i;
+            $.each(listdata, function (i, item) {
+                tmp_table += '<tr style="font-size: 12px;" ">' +
+                    '<td >' + (i + 1) + '</td>' +
+                    '<td align="center">' + item.namaLampiran + '</td>' +
+                    '<td align="center">' +
+                    "<a href='javascript:;' class ='item-view-lampiran' nama ='" + item.namaLampiran + "'>" +
+                    "<img border='0' src='<s:url value='/pages/images/icons8-search-25.png'/>'>" +
+                    '</a>' +
+                    '</td>' +
+                    '<td align="center">' +
+                    "<a href='javascript:;' class ='item-delete-lampiran' nama ='" + item.namaLampiran + "' >" +
+                    "<img border='0' src='<s:url value='/pages/images/icons8-trash-can-25.png'/>'>" +
+                    '</a>' +
+                    '</td>' +
+                    "</tr>";
+            });
+            $('.tabelLampiran').append(tmp_table);
+        });
+    };
+
+    $('.tabelLampiran').on('click', '.item-view-lampiran', function(){
+        var judul = $(this).attr('nama');
+        dwr.engine.setAsync(false);
+        PembayaranUtangPiutangAction.loadImageSessionLaporan(judul,function (data) {
+            $("#my-image").attr("src", "data:image/png;base64,"+data);
+        });
+        $('#modal-view-lampiran').find('.modal-title').text(judul);
+        $('#modal-view-lampiran').modal('show');
+    });
+
+    $(document).ready(function () {
+        var canvas = document.getElementById('img_faktur_canvas2');
+        var ctx = canvas.getContext('2d');
+
+        $(document).on('change', '.btn-file-2 :file', function () {
+            var input = $(this),
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [label]);
+        });
+
+        $('.btn-file-2 :file').on('fileselect', function (event, label) {
+            var input = $(this).parents('.input-group').find(':text'),
+                log = label;
+
+            if (input.length) {
+                input.val(log);
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    var img = new Image();
+                    img.onload = function () {
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(img, 0, 0);
+                    };
+                    img.src = event.target.result;
+                };
+                reader.readAsDataURL(event.target.files[0]);
+            } else {
+                if (log) alert(log);
+            }
+        });
+    });
 </script>
 <%@ include file="/pages/common/footer.jsp" %>
 <%@ include file="/pages/common/lastScript.jsp" %>

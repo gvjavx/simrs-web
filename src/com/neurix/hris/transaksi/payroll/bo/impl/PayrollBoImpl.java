@@ -1807,7 +1807,6 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     }
                     // cek apakah anak > 25 tahun
                     payrollEntity.setJumlahAnak(cekJumlahAnak(payrollEntity.getNip(), payrollEntity.getBranchId()));
-                    payroll.setJumlahAnak(payrollEntity.getJumlahAnak());
                     payroll.setGender(payrollEntity.getGender());
                     payroll.setDanaPensiunName(payrollEntity.getDanaPensiunName());
                     payroll.setFlagPjs(payrollEntity.getFlagPjs());
@@ -21095,9 +21094,12 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
     private int cekJumlahAnak(String nip, String branchId){
         index++;
         ImBiodataEntity biodataEntity = biodataDao.getById("nip", nip);
-        int jumlahAnak = biodataEntity.getJumlahAnak().intValue();
+        int jumlahAnak = 0;
 
-        if(branchId.equalsIgnoreCase("KD01")){
+        try {
+            if (biodataEntity.getJumlahAnak()!=null){
+                jumlahAnak = biodataEntity.getJumlahAnak().intValue();
+            }
             int anak = 0 ;
             List<ImKeluargaEntity> keluargaEntities = new ArrayList<>();
             keluargaEntities = keluargaDao.getListKeluargaById("", biodataEntity.getNip());
@@ -21113,11 +21115,15 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 }
             }
             jumlahAnak = anak;
+
+            if(jumlahAnak > 3){
+                jumlahAnak = 3;
+            }
+        }catch (Exception e){
+            String status = "ERROR : Saat Pengecekan jumlah anak pada NIP : "+nip;
+            throw new GeneralBOException(status);
         }
 
-        if(jumlahAnak > 3){
-            jumlahAnak = 3;
-        }
         return jumlahAnak;
     }
 

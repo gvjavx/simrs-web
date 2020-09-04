@@ -79,8 +79,6 @@
                 <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
                 <!--<prop key="hibernate.connection.username">postgres</prop>-->
                 <!--<prop key="hibernate.connection.password">postgres</prop>-->
-
-
             </props>
         </property>
         <property name="mappingResources">
@@ -449,6 +447,7 @@
                 <value>sshconfig/com/neurix/akuntansi/transaksi/laporanAkuntansi/hibernate/ItLaporanAkuntansiEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/hibernate/ImPembayaranUtangPiutangEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/hibernate/ImPembayaranUtangPiutangDetailEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/hibernate/ItAkunLampiranEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/jurnal/hibernate/ItJurnalEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/jurnal/hibernate/ItJurnalPendingEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/jurnal/hibernate/ItJurnalDetailEntity.hbm.xml</value>
