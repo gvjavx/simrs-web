@@ -838,3 +838,38 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
 
     CREATE SEQUENCE seq_nilai_pengadaan;
 <<< //
+
+// >>> 2020-08-03
+
+    CREATE TABLE im_user_vendor (
+        id VARCHAR(30) NOT NULL,
+        user_id VARCHAR(100),
+        id_vendor VARCHAR(30),
+        flag VARCHAR(1),
+        action VARCHAR(1),
+        created_date timestamp without time zone,
+        created_who VARCHAR(100),
+        last_update timestamp without time zone,
+        last_update_who VARCHAR(100),
+        CONSTRAINT im_user_vendor_pk PRIMARY KEY (id)
+    );
+
+    CREATE SEQUENCE seq_user_vendor;
+
+    CREATE TABLE it_simrs_doc_po (
+    	id VARCHAR(30) NOT NULL,
+    	id_item VARCHAR(100),
+    	id_permintaan_obat_vendor VARCHAR(30),
+    	jenis_nomor VARCHAR(100),
+    	tipe VARCHAR(10),
+    	flag VARCHAR(1),
+    	action VARCHAR(1),
+    	created_date timestamp without time zone,
+    	created_who VARCHAR(100),
+    	last_update timestamp without time zone,
+    	last_update_who VARCHAR(100),
+    	CONSTRAINT it_simrs_doc_po_pk PRIMARY KEY (id)
+    );
+
+    CREATE SEQUENCE seq_doc_po;
+<<< //

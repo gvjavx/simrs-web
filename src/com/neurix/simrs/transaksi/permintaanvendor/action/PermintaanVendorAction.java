@@ -22,10 +22,7 @@ import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.permintaanresep.bo.PermintaanResepBo;
 import com.neurix.simrs.transaksi.permintaanvendor.bo.PermintaanVendorBo;
-import com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat;
-import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
-import com.neurix.simrs.transaksi.permintaanvendor.model.MtSimrsPermintaanVendorEntity;
-import com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor;
+import com.neurix.simrs.transaksi.permintaanvendor.model.*;
 import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
 import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatBatch;
@@ -1416,6 +1413,70 @@ public class PermintaanVendorAction extends BaseMasterAction {
         java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
         DateFormat df = new SimpleDateFormat(type);
         return df.format(date);
+    }
+
+    public String initFormVendor(){
+        String userId = CommonUtil.userIdLogin();
+        PermintaanVendor permintaanVendor = new PermintaanVendor();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
+        ImUserVendorEntity userVendorEntity = permintaanVendorBo.getEntityUserVendorByIdUser(userId);
+        if (userVendorEntity != null){
+            permintaanVendor.setIdVendor(userVendorEntity.getIdVendor());
+        }
+        setPermintaanVendor(permintaanVendor);
+        eraseAllSession();
+        return "search_vendor";
+    }
+
+    public String searchPoVendor(){
+        return "search_vendor";
+    }
+
+    private void eraseAllSession(){
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResult");
+    }
+
+    public CrudResponse getListPermintaanVendor(String idPermintaan, String idApproval, String idVendor){
+
+        CrudResponse response = new CrudResponse();
+        PermintaanVendor permintaanVendor = new PermintaanVendor();
+        permintaanVendor.setTipeTransaksi("request");
+        permintaanVendor.setIdPermintaanVendor(idPermintaan);
+        permintaanVendor.setIdApprovalObat(idApproval);
+        permintaanVendor.setIdVendor(idVendor);
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
+
+        List<PermintaanVendor> listOfPemintaanVendor = new ArrayList();
+        try {
+            listOfPemintaanVendor = permintaanVendorBo.getByCriteria(permintaanVendor);
+            response.setStatus("success");
+//            response.setList(listOfPemintaanVendor);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            logger.error("[PermintaanVendorAction.getListPermintaanVendor] Error when searching permintan vendor by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            String errorMsg = "[PermintaanVendorAction.getListPermintaanVendor] Error when searching permintan vendor by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin."+ e;
+//            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
+            response.setStatus("error");
+            response.setMsg(errorMsg);
+            return response;
+        }
+
+        setPermintaanVendor(permintaanVendor);
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResult");
+        session.setAttribute("listOfResult", listOfPemintaanVendor);
+        return response;
+    }
+
+    public String addPoVendor(){
+        PermintaanVendor permintaanVendor = new PermintaanVendor();
+        permintaanVendor.setIdPermintaanVendor(this.id);
+        setPermintaanVendor(permintaanVendor);
+        return "add_po_vendor";
     }
 
 

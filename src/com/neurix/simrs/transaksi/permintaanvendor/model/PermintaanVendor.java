@@ -58,7 +58,6 @@ public class PermintaanVendor{
     private Date tanggalFaktur;
     private String noInvoice;
     private String noDo;
-
     private String tipeTransaksi;
 
     public String getTipeTransaksi() {

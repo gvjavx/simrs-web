@@ -21,8 +21,10 @@ import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.obatpoli.model.MtSimrsObatPoliEntity;
 import com.neurix.simrs.transaksi.permintaanvendor.bo.PermintaanVendorBo;
+import com.neurix.simrs.transaksi.permintaanvendor.dao.DocPoDao;
 import com.neurix.simrs.transaksi.permintaanvendor.dao.PermintaanVendorDao;
 import com.neurix.simrs.transaksi.permintaanvendor.dao.TempObatGejalaDao;
+import com.neurix.simrs.transaksi.permintaanvendor.dao.UserVendorDao;
 import com.neurix.simrs.transaksi.permintaanvendor.model.*;
 import com.neurix.simrs.transaksi.riwayatbarang.dao.RiwayatBarangDao;
 import com.neurix.simrs.transaksi.riwayatbarang.dao.TransaksiStokDao;
@@ -67,6 +69,8 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
     private TransaksiStokDao transaksiStokDao;
     private BranchDao branchDao;
     private BatasTutupPeriodDao batasTutupPeriodDao;
+    private UserVendorDao userVendorDao;
+    private DocPoDao docPoDao;
 
     @Override
     public List<PermintaanVendor> getByCriteria(PermintaanVendor bean) throws GeneralBOException {
@@ -1935,6 +1939,11 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         return vendor;
     }
 
+    @Override
+    public ImUserVendorEntity getEntityUserVendorByIdUser(String userId) throws GeneralBOException {
+        return userVendorDao.getById("userId", userId);
+    }
+
     // for get sequence id
 
     private String nextIdPermintanVendor() {
@@ -2020,6 +2029,10 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         return id;
     }
 
+    private String getNextIdDocPo(){
+        return "DOC" + docPoDao.getNextSeq();
+    }
+
     public static Logger getLogger() {
         return logger;
     }
@@ -2074,5 +2087,13 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
     public void setBatasTutupPeriodDao(BatasTutupPeriodDao batasTutupPeriodDao) {
         this.batasTutupPeriodDao = batasTutupPeriodDao;
+    }
+
+    public void setUserVendorDao(UserVendorDao userVendorDao) {
+        this.userVendorDao = userVendorDao;
+    }
+
+    public void setDocPoDao(DocPoDao docPoDao) {
+        this.docPoDao = docPoDao;
     }
 }
