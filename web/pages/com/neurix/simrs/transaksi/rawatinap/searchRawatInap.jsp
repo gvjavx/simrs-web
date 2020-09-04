@@ -67,9 +67,9 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Status</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'0':'Antrian','1':'Periksa','2':'Rujuk','3':'Selesai'}" cssStyle="margin-top: 7px"
-                                                  id="status" name="rawatInap.statusPeriksa"
-                                                  headerKey="" headerValue="[Select one]"
+                                        <s:select list="#{'3':'Selesai'}" cssStyle="margin-top: 7px"
+                                                  id="status" name="rawatInap.status"
+                                                  headerKey="1" headerValue="Periksa"
                                                   cssClass="form-control select2"/>
                                     </div>
                                 </div>
@@ -190,6 +190,7 @@
                                     <td align="center">
                                         <s:url var="add_rawat_inap" namespace="/rawatinap" action="add_rawatinap" escapeAmp="false">
                                             <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
+                                            <s:param name="idx"><s:property value="idRawatInap"/></s:param>
                                         </s:url>
                                         <s:a href="%{add_rawat_inap}">
                                             <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">

@@ -42,12 +42,29 @@ public class ItSimrsHeaderChekupEntity implements Serializable {
     private String idAntrianOnline;
 
     private String flagCall;
-    private String anamnese;
-
     private String tensi;
     private String suhu;
     private String nadi;
     private String rr;
+
+    private String autoanamnesis;
+    private String heteroanamnesis;
+
+    public String getAutoanamnesis() {
+        return autoanamnesis;
+    }
+
+    public void setAutoanamnesis(String autoanamnesis) {
+        this.autoanamnesis = autoanamnesis;
+    }
+
+    public String getHeteroanamnesis() {
+        return heteroanamnesis;
+    }
+
+    public void setHeteroanamnesis(String heteroanamnesis) {
+        this.heteroanamnesis = heteroanamnesis;
+    }
 
     public String getTensi() {
         return tensi;
@@ -79,14 +96,6 @@ public class ItSimrsHeaderChekupEntity implements Serializable {
 
     public void setRr(String rr) {
         this.rr = rr;
-    }
-
-    public String getAnamnese() {
-        return anamnese;
-    }
-
-    public void setAnamnese(String anamnese) {
-        this.anamnese = anamnese;
     }
 
     public String getIdAntrianOnline() {

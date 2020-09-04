@@ -12,6 +12,7 @@
           p:penyewaanLahanDao-ref="penyewaanLahanDao"
           p:branchDao-ref="branchDao"
           p:pembayaranDao-ref="pembayaranDao"
+          p:masterVendorDao-ref="masterVendorDao"
     />
 
     <bean id="penyewaanLahanBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

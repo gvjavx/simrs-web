@@ -69,6 +69,8 @@ public class AsesmenSpesialisBoImpl implements AsesmenSpesialisBo {
                     asesmenSpesialis.setCreatedWho(entity.getCreatedWho());
                     asesmenSpesialis.setLastUpdate(entity.getLastUpdate());
                     asesmenSpesialis.setLastUpdateWho(entity.getLastUpdateWho());
+                    asesmenSpesialis.setNamaTerang(entity.getNamaTerang());
+                    asesmenSpesialis.setSip(entity.getSip());
                     list.add(asesmenSpesialis);
                 }
             }
@@ -80,30 +82,42 @@ public class AsesmenSpesialisBoImpl implements AsesmenSpesialisBo {
     public CrudResponse saveAdd(List<AsesmenSpesialis> list) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
         if(list.size() > 0){
-            for (AsesmenSpesialis bean: list){
-                ItSimrsAsesmenSpesialisEntity asesmenUgdEntity = new ItSimrsAsesmenSpesialisEntity();
-                asesmenUgdEntity.setIdAsesmenPoliSpesialis("ASP"+asesmenSpesialisDao.getNextSeq());
-                asesmenUgdEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
-                asesmenUgdEntity.setParameter(bean.getParameter());
-                asesmenUgdEntity.setJawaban(bean.getJawaban());
-                asesmenUgdEntity.setKeterangan(bean.getKeterangan());
-                asesmenUgdEntity.setJenis(bean.getJenis());
-                asesmenUgdEntity.setTipe(bean.getTipe());
-                asesmenUgdEntity.setAction(bean.getAction());
-                asesmenUgdEntity.setFlag(bean.getFlag());
-                asesmenUgdEntity.setCreatedDate(bean.getCreatedDate());
-                asesmenUgdEntity.setCreatedWho(bean.getCreatedWho());
-                asesmenUgdEntity.setLastUpdate(bean.getLastUpdate());
-                asesmenUgdEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            AsesmenSpesialis asesmenSpesialis = list.get(0);
+            AsesmenSpesialis as = new AsesmenSpesialis();
+            as.setIdDetailCheckup(asesmenSpesialis.getIdDetailCheckup());
+            as.setKeterangan(asesmenSpesialis.getKeterangan());
+            List<AsesmenSpesialis> asesmenSpesialisList = getByCriteria(as);
+            if(asesmenSpesialisList.size() > 0){
+                response.setStatus("error");
+                response.setMsg("Found Error, Data yang anda masukan sudah tersedia...!");
+            }else{
+                for (AsesmenSpesialis bean: list){
+                    ItSimrsAsesmenSpesialisEntity spesialisEntity = new ItSimrsAsesmenSpesialisEntity();
+                    spesialisEntity.setIdAsesmenPoliSpesialis("ASP"+asesmenSpesialisDao.getNextSeq());
+                    spesialisEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
+                    spesialisEntity.setParameter(bean.getParameter());
+                    spesialisEntity.setJawaban(bean.getJawaban());
+                    spesialisEntity.setKeterangan(bean.getKeterangan());
+                    spesialisEntity.setJenis(bean.getJenis());
+                    spesialisEntity.setTipe(bean.getTipe());
+                    spesialisEntity.setAction(bean.getAction());
+                    spesialisEntity.setFlag(bean.getFlag());
+                    spesialisEntity.setCreatedDate(bean.getCreatedDate());
+                    spesialisEntity.setCreatedWho(bean.getCreatedWho());
+                    spesialisEntity.setLastUpdate(bean.getLastUpdate());
+                    spesialisEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    spesialisEntity.setNamaTerang(bean.getNamaTerang());
+                    spesialisEntity.setSip(bean.getSip());
 
-                try {
-                    asesmenSpesialisDao.addAndSave(asesmenUgdEntity);
-                    response.setStatus("success");
-                    response.setMsg("Berhasil");
-                }catch (HibernateException e){
-                    response.setStatus("error");
-                    response.setMsg("Found Error "+e.getMessage());
-                    logger.error(e.getMessage());
+                    try {
+                        asesmenSpesialisDao.addAndSave(spesialisEntity);
+                        response.setStatus("success");
+                        response.setMsg("Berhasil");
+                    }catch (HibernateException e){
+                        response.setStatus("error");
+                        response.setMsg("Found Error "+e.getMessage());
+                        logger.error(e.getMessage());
+                    }
                 }
             }
         }

@@ -12,7 +12,11 @@
     />
 
     <bean id="antrianOnlineController" class="com.neurix.simrs.mobileapi.AntrianOnlineController"
-          p:antrianOnlineBoProxy-ref="antrianOnlineBoProxy"/>
+          p:antrianOnlineBoProxy-ref="antrianOnlineBoProxy"
+
+    />
+
+
 
     <bean id="antrianOnlineBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="antrianOnlineBo">

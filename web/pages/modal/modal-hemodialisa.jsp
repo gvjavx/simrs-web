@@ -33,6 +33,14 @@
                                 Diagnosa Keperawatan</a></li>
                             <li><a onclick="showModalHD('intervensi')" style="cursor: pointer"><i
                                     class="fa fa-plus"></i> Intervensi Keperawatan</a></li>
+                            <li><a onclick="showModalHD('terintegrasi')" style="cursor: pointer"><i
+                                    class="fa fa-plus"></i> Catatan Terintegrasi</a></li>
+                            <li><a onclick="showModalHD('instruksi_medik')" style="cursor: pointer"><i
+                                    class="fa fa-plus"></i> Instruksi Medik</a></li>
+                            <li><a onclick="showModalHD('observasi_tindakan')" style="cursor: pointer"><i
+                                    class="fa fa-plus"></i> Observasi Tindakan</a></li>
+                            <li><a onclick="showModalHD('penyulit_hd')" style="cursor: pointer"><i
+                                    class="fa fa-plus"></i> Penyulit Selama HD</a></li>
                         </ul>
                     </div>
                 </div>
@@ -71,6 +79,34 @@
                             <td>Intervensi Keperawatan (Rekapitulasi pre-intra dalam post-HD)</td>
                             <td width="20%" align="center">
                                 <img id="btn_hd_intervensi" class="hvr-grow" onclick="detailMonHD('intervensi')"
+                                     src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                            </td>
+                        </tr>
+                        <tr id="row_hd_terintegrasi">
+                            <td>Catatan Terintegrasi</td>
+                            <td width="20%" align="center">
+                                <img id="btn_hd_terintegrasi" class="hvr-grow" onclick="detailCPPT('terintegrasi', 'monitoring_hd', 'hd')"
+                                     src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                            </td>
+                        </tr>
+                        <tr id="row_hd_instruksi_medik">
+                            <td>Instruksi Medik</td>
+                            <td width="20%" align="center">
+                                <img id="btn_hd_instruksi_medik" class="hvr-grow" onclick="detailMonHD('instruksi_medik')"
+                                     src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                            </td>
+                        </tr>
+                        <tr id="row_hd_observasi_tindakan">
+                            <td>Observasi Tindakan</td>
+                            <td width="20%" align="center">
+                                <img id="btn_hd_observasi_tindakan" class="hvr-grow" onclick="detailObservasi('observasi_tindakan')"
+                                     src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                            </td>
+                        </tr>
+                        <tr id="row_hd_penyulit_hd">
+                            <td>Penyulit Selama HD</td>
+                            <td width="20%" align="center">
+                                <img id="btn_hd_penyulit_hd" class="hvr-grow" onclick="detailMonHD('penyulit_hd')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
@@ -278,7 +314,7 @@
                             <label class="col-md-3" style="margin-top: 7px">Tekanan Darah</label>
                             <div class="col-md-3">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input type="number" class="form-control tensi-pasien" id="pkj8">
+                                    <input class="form-control tensi-pasien" id="pkj8">
                                     <div class="input-group-addon" style="font-size: 10px; width: 50px">
                                         mmHg
                                     </div>
@@ -695,7 +731,7 @@
                         <p id="msg_hd_pemeriksaan"></p>
                     </div>
                     <div class="row">
-                        <label class="col-md-5">Pemeriksaan penunjang (Lab, RX, lain-lain)</label>
+                        <label class="col-md-5">Pemeriksaan penunjang (Lab, RO, lain-lain)</label>
                         <div class="col-md-6">
                             <textarea class="form-control penunjang-medis" rows="3" style="margin-top: 7px" id="pem1"></textarea>
                         </div>
@@ -705,7 +741,7 @@
                         <div class="col-md-12">Gizi (dikaji tiap 3-6 bulan atau diulangi jika dianggap terjadi
                             perburukan asupan gizi)
                         </div>
-                        <label class="col-md-5">Tanggal</label>
+                        <label class="col-md-5 jarak">Tanggal</label>
                         <div class="col-md-6">
                             <div class="input-group" style="margin-top: 7px">
                                 <div class="input-group-addon">
@@ -714,11 +750,11 @@
                                 <input class="form-control tgl" id="pem2">
                             </div>
                         </div>
-                        <label class="col-md-5">Score</label>
+                        <label class="col-md-5 jarak">Score</label>
                         <div class="col-md-6">
                             <input class="form-control" style="margin-top: 7px" id="pem3" type="number">
                         </div>
-                        <label class="col-md-5">Rekomendasi</label>
+                        <label class="col-md-5 jarak">Rekomendasi</label>
                         <div class="col-md-6">
                             <textarea rows="4" class="form-control" style="margin-top: 7px" id="pem4"></textarea>
                         </div>
@@ -1181,6 +1217,883 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-hd-terintegrasi">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Catatan Terintegrasi
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none"
+                     id="warning_hd_terintegrasi">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_hd_terintegrasi"></p>
+                </div>
+                <div class="box-body">
+                    <div class="form-group" style="display: none">
+                        <div class="col-md-1">
+                            <input type="color" style="margin-left: -6px; margin-top: -8px"
+                                   class="js-color-picker  color-picker pull-left">
+                        </div>
+                        <div class="col-md-9">
+                            <input type="range" style="margin-top: -8px" class="js-line-range" min="1" max="72"
+                                   value="1">
+                        </div>
+                        <div class="col-md-2">
+                            <div style="margin-top: -8px;" class="js-range-value">1 px</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Tanggal</label>
+                            <div class="col-md-4">
+                                <div class="input-group" style="margin-top: 7px">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input class="form-control tgl" id="cppt1">
+                                </div>
+                            </div>
+                            <label class="col-md-1" style="margin-top: 7px">Jam</label>
+                            <div class="col-md-3">
+                                <div class="input-group" style="margin-top: 7px">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input class="form-control jam" id="cppt2">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">PPA</label>
+                            <div class="col-md-8">
+                                <select class="form-control" id="cppt3" style="margin-top: 7px">
+                                    <option value="">[Select One]</option>
+                                    <option value="Dokter">Dokter</option>
+                                    <option value="Perawat">Perawat</option>
+                                    <option value="Apoteker">Apoteker</option>
+                                    <option value="Gizi">Gizi</option>
+                                    <option value="Bidan">Bidan</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3"><b>S</b>ubjective</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" id="cppt4"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3" ><b>O</b>bjective</label>
+                            <div class="col-md-4">
+                                <span>Tensi </span> <small>(mmHg)</small>
+                                <input class="form-control" id="cppt5_tensi">
+                            </div>
+                            <div class="col-md-4">
+                                <span>Suhu </span> <small>(&#8451)</small>
+                                <input class="form-control" id="cppt5_suhu" type="number">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-4">
+                                <span>Nadi </span> <small>(x/menit)</small>
+                                <input class="form-control" id="cppt5_nadi" type="number">
+                            </div>
+                            <div class="col-md-4">
+                                <span>RR </span> <small>(x/menit)</small>
+                                <input class="form-control" id="cppt5_rr" type="number">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-8">
+                                <textarea class="form-control" id="ket_cppt5"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3" ><b>A</b>ssesment</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" id="cppt6"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3" ><b>P</b>lanning</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" id="cppt7"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3" >Instruksi</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" id="cppt8"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-6 text-center">
+                                <label>TTD Petugas</label>
+                                <canvas class="paint-canvas-ttd" id="cppt9" width="220"
+                                        onmouseover="paintTtd('cppt9')"></canvas>
+                                <input class="form-control" id="nama_petugas" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control" id="sip_petugas" placeholder="SIP">
+                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('cppt9')"><i
+                                        class="fa fa-trash"></i> Clear
+                                </button>
+                            </div>
+                            <div class="col-md-6 text-center">
+                                <label>TTD DPJP</label>
+                                <canvas class="paint-canvas-ttd" id="cppt10" width="220"
+                                        onmouseover="paintTtd('cppt10')"></canvas>
+                                <input class="form-control" id="nama_dpjp" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control" id="sip_dpjp" placeholder="SIP">
+                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('cppt10')"><i
+                                        class="fa fa-trash"></i> Clear
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_hd_terintegrasi" class="btn btn-success pull-right"
+                        onclick="saveCPPT('terintegrasi','monitoring_hd', 'hd')"><i class="fa fa-check"></i>
+                    Save
+                </button>
+                <button id="load_hd_terintegrasi" style="display: none; cursor: no-drop" type="button"
+                        class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-hd-instruksi_medik">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Instrruksi Medis
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="alert alert-danger alert-dismissible" style="display: none"
+                         id="warning_hd_instruksi_medik">
+                        <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                        <p id="msg_hd_instruksi_medik"></p>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3">Resep HD</label>
+                            <div class="col-md-2">
+                                <div class="custom02">
+                                    <input type="radio" onclick="showKetHD(this.value, 'im1')" value="Inisiasi" id="im11" name="im1" /><label for="im11">Inisiasi</label>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="custom02">
+                                    <input type="radio" onclick="showKetHD(this.value, 'im1')" value="Akut" id="im12" name="im1" /><label for="im12">Akut</label>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="custom02">
+                                    <input type="radio" onclick="showKetHD(this.value, 'im1')" value="Rutin" id="im13" name="im1" /><label for="im13">Rutin</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="custom02">
+                                    <input type="radio" onclick="showKetHD(this.value, 'im1')" value="Pre-OP" id="im14" name="im1" /><label for="im14">Pre-OP</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-2">
+                                <div class="custom02">
+                                    <input type="radio" onclick="showKetHD(this.value, 'im1')" value="Bled" id="im15" name="im1" /><label for="im15">Bled</label>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="custom02">
+                                    <input type="radio" onclick="showKetHD(this.value, 'im1')" value="Lain-Lain" id="im16" name="im1" /><label for="im16">Lain-Lain</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="display: none" id="form-im1">
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-8">
+                                <input class="form-control" id="ket_im1">
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <span>HD<small> (jam)</small></span>
+                                <input class="form-control" id="im2">
+                            </div>
+                            <div class="col-md-3">
+                                <span>QB<small> (ml/menit)</small></span>
+                                <input class="form-control" id="im3">
+                            </div>
+                            <div class="col-md-3">
+                                <span>QD<small> (ml/menit)</small></span>
+                                <input class="form-control" id="im4">
+                            </div>
+                            <div class="col-md-3">
+                                <span>UF Goal<small> (ml)</small></span>
+                                <input class="form-control" id="im5">
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3">Prog Profilling</label>
+                            <div class="col-md-1">
+                                <div class="custom02">
+                                    <input type="radio" value="Na" id="im61" name="im6" /><label for="im61">Na</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <input class="form-control" id="ket_im611">
+                            </div>
+                            <label class="col-md-1">UF</label>
+                            <div class="col-md-3">
+                                <input class="form-control" id="ket_im612">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-2">
+                                <div class="custom02">
+                                    <input type="radio" value="Bicarbonat" id="im62" name="im6" /><label for="im62">Bicarbonat</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <input class="form-control" id="ket_im621">
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3">Dialisat</label>
+                            <div class="col-md-2">
+                                <div class="custom02">
+                                    <input type="radio" value="Bicarbonat" id="im71" name="im7" /><label for="im71">Bicarbonat</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <input class="form-control" id="ket_im71" onchange="$('#im71').val('Bicarbonat, '+this.value)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-2">
+                                <div class="custom02">
+                                    <input type="radio" value="Conductivity" id="im72" name="im7" /><label for="im72">Conductivity</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <input class="form-control" id="ket_im72" onchange="$('#im72').val('Conductivity, '+this.value)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-2">
+                                <div class="custom02">
+                                    <input type="radio" value="Temperatur" id="im73" name="im7" /><label for="im73">Temperatur</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <input class="form-control" id="ket_im73" onchange="$('#im73').val('Temperatur, '+this.value)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <label class="col-md-12"><b>Heparinisasi</b></label>
+                        <div class="form-group">
+                            <label class="col-md-3">Dosis Sirkulasi</label>
+                            <div class="col-md-8">
+                                <input class="form-control" id="im8" placeholder="lu">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3">Dosis Awal</label>
+                            <div class="col-md-8">
+                                <input class="form-control" id="im9" placeholder="lu">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <label class="col-md-12"><b>Dosis Maintenance</b></label>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <div class="form-check">
+                                    <input type="checkbox" name="im10" id="im101" value="Continue">
+                                    <label for="im101"></label> Continue
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <input class="form-control" id="im10" placeholder="lu/jam" onchange="$('#im101').val('Continue, '+this.value+' lu/jam')">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <div class="form-check">
+                                    <input type="checkbox" name="im10" id="im0111" value="Intermitten">
+                                    <label for="im0111"></label> Intermitten
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <input class="form-control" id="im011" onchange="$('#im0111').val('Intermitten, '+this.value)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <div class="form-check">
+                                    <input type="checkbox" name="im10" id="im0121" value="LMWH">
+                                    <label for="im0121"></label> LMWH
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <input class="form-control" id="im012" onchange="$('#im0121').val('LMWH, '+this.value)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <div class="col-md-5">
+                                <div class="form-check">
+                                    <input type="checkbox" name="im10" id="im0131" value="Tanpa Heparin, Penyebab">
+                                    <label for="im0131"></label> Tanpa Heparin, Penyebab
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <input class="form-control" id="im013" onchange="$('#im0131').val('Tanpa Heparin, Penyebab, '+this.value)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="form-check">
+                                    <input type="checkbox" name="im10" id="im0141" value="Program bila NaCI 0.9% 100 cc/jam/1/2jam">
+                                    <label for="im0141"></label> Program bila NaCI 0.9% 100 cc/jam/1/2jam
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3">Catatan lain / Resep Obat</label>
+                            <div class="col-md-8">
+                                <textarea rows="3" class="form-control" id="im015"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis"></hr>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-6 text-center">
+                                <label>TTD Dokter</label>
+                                <canvas class="paint-canvas-ttd" id="im016" width="220"
+                                        onmouseover="paintTtd('im016')"></canvas>
+                                <input class="form-control" id="im_nama_petugas" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control" id="im_sip_petugas" placeholder="SIP">
+                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('im016')"><i
+                                        class="fa fa-trash"></i> Clear
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_hd_instruksi_medik" class="btn btn-success pull-right"
+                        onclick="saveMonHD('instruksi_medik','monitoring_hd')"><i class="fa fa-check"></i> Save
+                </button>
+                <button id="load_hd_instruksi_medik" style="display: none; cursor: no-drop" type="button"
+                        class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-hd-observasi_tindakan">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Observasi Tindakan
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="alert alert-danger alert-dismissible" style="display: none"
+                         id="warning_hd_observasi_tindakan">
+                        <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                        <p id="msg_hd_observasi_tindakan"></p>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Tanggal</label>
+                            <div class="col-md-4">
+                                <div class="input-group" style="margin-top: 7px">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input class="form-control tgl" id="obs1">
+                                </div>
+                            </div>
+                            <label class="col-md-1" style="margin-top: 7px">Jam</label>
+                            <div class="col-md-4">
+                                <div class="input-group" style="margin-top: 7px">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input class="form-control jam" id="obs2">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3">Observasi</label>
+                            <div class="col-md-9">
+                                <select class="form-control" id="obs3">
+                                    <option value="">[Select One]</option>
+                                    <option value="Pre HD">Pre HD</option>
+                                    <option value="Intra HD">Intra HD</option>
+                                    <option value="Post HD">Post HD</option>
+                                    <option value="Ovo HD">Ovo HD</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3">QB (ml/menit)</label>
+                            <div class="col-md-3">
+                                <input class="form-control" id="obs4" type="number">
+                            </div>
+                            <label class="col-md-3">Tek. Darah (mmHg)</label>
+                            <div class="col-md-3">
+                                <input class="form-control" id="obs5">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3">Nadi (x/menit)</label>
+                            <div class="col-md-3">
+                                <input class="form-control" id="obs6" type="number">
+                            </div>
+                            <label class="col-md-3">Suhu (&#8451)</label>
+                            <div class="col-md-3">
+                                <input class="form-control" id="obs7" type="number">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3">RR (x/menit)</label>
+                            <div class="col-md-3">
+                                <input class="form-control" id="obs8" type="number">
+                            </div>
+                            <label class="col-md-3">Cairan Masuk</label>
+                            <div class="col-md-3">
+                                <input class="form-control" id="obs9" type="number">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3">Makan Minum</label>
+                            <div class="col-md-3">
+                                <input class="form-control" id="obs10" type="number">
+                            </div>
+                            <label class="col-md-3">Muntah</label>
+                            <div class="col-md-3">
+                                <input class="form-control" id="obs11" type="number">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3">UF Gaol</label>
+                            <div class="col-md-3">
+                                <input class="form-control" id="obs12" type="number">
+                            </div>
+                            <label class="col-md-3">Keterangan</label>
+                            <div class="col-md-3">
+                                <input class="form-control" id="obs13" type="number">
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-6 text-center">
+                                <span>Paraf</span>
+                                <canvas class="paint-canvas-ttd" id="obs14" width="230"
+                                        onmouseover="paintTtd('obs14')"></canvas>
+                                <input class="form-control" id="nama_terang_obs14" placeholder="Nama Terang">
+                                <input class="form-control" id="sip_obs14" placeholder="SIP" style="margin-top: 3px">
+                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('obs14')"><i class="fa fa-trash"></i>
+                                    Clear
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_hd_observasi_tindakan" class="btn btn-success pull-right"
+                        onclick="saveObservasi('observasi_tindakan','monitoring_hd')"><i class="fa fa-check"></i> Save
+                </button>
+                <button id="load_hd_observasi_tindakan" style="display: none; cursor: no-drop" type="button"
+                        class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-hd-penyulit_hd">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Penyulit Selama HD
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="alert alert-danger alert-dismissible" style="display: none"
+                         id="warning_hd_penyulit_hd">
+                        <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                        <p id="msg_hd_penyulit_hd"></p>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="phd1" id="phd11" value="Masalah Akses">
+                                    <label for="phd11"></label> Masalah Akses
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="phd1" id="phd12" value="Hipotebel">
+                                    <label for="phd12"></label> Hipotebel
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="phd1" id="phd13" value="Menggigil/Dingin">
+                                    <label for="phd13"></label> Menggigil/Dingin
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="phd1" id="phd14" value="Firat Use">
+                                    <label for="phd14"></label> Firat Use
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="phd1" id="phd15" value="Perdarahan">
+                                    <label for="phd15"></label> Perdarahan
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="phd1" id="phd16" value="Hipertensi">
+                                    <label for="phd16"></label> Hipertensi
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="phd1" id="phd17" value="Hiperkalemia">
+                                    <label for="phd17"></label> Hiperkalemia
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="phd1" id="phd18" value="Nyeri Dada">
+                                    <label for="phd18"></label> Nyeri Dada
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="phd1" id="phd19" value="Kram Otot">
+                                    <label for="phd19"></label> Kram Otot
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="phd1" id="phd110" value="Mual & Muntah">
+                                    <label for="phd110"></label> Mual & Muntah
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="phd1" id="phd111" value="Sakit Kepala">
+                                    <label for="phd111"></label> Sakit Kepala
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="phd1" id="phd112" value="Anemia">
+                                    <label for="phd112"></label> Anemia
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="phd1" id="phd113" value="Gatal-Gatal">
+                                    <label for="phd113"></label> Gatal-Gatal
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="phd1" id="phd114" value="Demam">
+                                    <label for="phd114"></label> Demam
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="phd1" id="phd115" value="Lain-Lain" onclick="showCheck(this.id)">
+                                    <label for="phd115"></label> Lain-Lain
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="display: none" id="form-hd_phd115">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <input class="form-control" id="ket_phd115" onchange="$('#phd115').val(this.value)">
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="col-md-12">Evaluasi Keperawatan</div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3"><b>S</b>ubjective</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" id="phd2"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3" ><b>O</b>bjective</label>
+                            <div class="col-md-4">
+                                <span>Tensi </span> <small>(mmHg)</small>
+                                <input class="form-control" id="phd2_tensi">
+                            </div>
+                            <div class="col-md-4">
+                                <span>Suhu </span> <small>(&#8451)</small>
+                                <input class="form-control" id="phd2_suhu" type="number">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-4">
+                                <span>Nadi </span> <small>(x/menit)</small>
+                                <input class="form-control" id="phd2_nadi" type="number">
+                            </div>
+                            <div class="col-md-4">
+                                <span>RR </span> <small>(x/menit)</small>
+                                <input class="form-control" id="phd2_rr" type="number">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-8">
+                                <textarea class="form-control" id="ket_phd2"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3" ><b>A</b>ssesment</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" id="phd3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3" ><b>P</b>lanning</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" id="phd4"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3" >Edukasi</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" id="phd5"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3" >Discharge Planning</label>
+                            <div class="col-md-8">
+                                <input class="form-control" id="phd6">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3" >Catatan Yang Akan Datang</label>
+                            <div class="col-md-8">
+                                <input class="form-control" id="phd7">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3" >Askes Vaskuler Oleh</label>
+                            <div class="col-md-8">
+                                <input class="form-control" id="phd8">
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <span>TTD Pasien</span>
+                                <canvas class="paint-canvas-ttd" id="phd9" width="230"
+                                        onmouseover="paintTtd('phd9')"></canvas>
+                                <input class="form-control" id="nama_terang_phd9" placeholder="Nama Terang">
+                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('phd9')"><i class="fa fa-trash"></i>
+                                    Clear
+                                </button>
+                            </div>
+                            <div class="col-md-6">
+                                <span>TTD Petugas</span>
+                                <canvas class="paint-canvas-ttd" id="phd10" width="230"
+                                        onmouseover="paintTtd('phd10')"></canvas>
+                                <input class="form-control" id="nama_terang_phd10" placeholder="Nama Terang">
+                                <input class="form-control" id="sip_phd10" placeholder="SIP" style="margin-top: 3px">
+                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('phd10')"><i class="fa fa-trash"></i>
+                                    Clear
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-6 text-center">
+                                <span>TTD Nama Perawat Yang Bertugas</span>
+                                <canvas class="paint-canvas-ttd" id="phd011" width="230"
+                                        onmouseover="paintTtd('phd011')"></canvas>
+                                <input class="form-control" id="nama_terang_phd011" placeholder="Nama Terang">
+                                <input class="form-control" id="sip_phd011" placeholder="SIP" style="margin-top: 3px">
+                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('phd011')"><i class="fa fa-trash"></i>
+                                    Clear
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_hd_penyulit_hd" class="btn btn-success pull-right"
+                        onclick="saveMonHD('penyulit_hd','monitoring_hd')"><i class="fa fa-check"></i> Save
+                </button>
+                <button id="load_hd_penyulit_hd" style="display: none; cursor: no-drop" type="button"
+                        class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modal-hd-asesmen_hd">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -1372,9 +2285,11 @@
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-3">TTD Dokter</label>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <canvas class="paint-canvas-ttd" id="asse22"
                                         onmouseover="paintTtd('asse22')"></canvas>
+                                <input class="form-control" id="nama_terang_asse22" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control" id="sip_asse22" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('asse22')"><i class="fa fa-trash"></i>
                                     Clear
@@ -1399,64 +2314,35 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-hd-tranfusi_hd">
+<div class="modal fade" id="modal-hd-tindakan_medis_hd">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-md"></i> Tindakan Medis Transfusi Darah
+                <h4 class="modal-title"><i class="fa fa-user-md"></i> Persetujuan Tindakan Medis
                 </h4>
             </div>
             <div class="modal-body">
                 <div class="box-body btn-hide">
                     <div class="alert alert-success alert-dismissible" style="display: none"
-                         id="warning_hd_tranfusi_hd">
+                         id="warning_hd_tindakan_medis_hd">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
-                        <p id="msg_hd_tranfusi_hd"></p>
+                        <p id="msg_hd_tindakan_medis_hd"></p>
                     </div>
                     <div class="btn-group">
-                        <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
+                        <button type="button" class="btn btn-success" onclick="showModalHD('tindakan_medis')"><i class="fa fa-plus"></i> Persetujuan Tindakan Medis
                         </button>
-                        <button type="button" class="btn btn-success dropdown-toggle"
-                                data-toggle="dropdown" style="height: 34px">
-                            <span class="caret"></span>
-                            <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a onclick="showModalHD('tranfusi_informasi')" style="cursor: pointer"><i
-                                    class="fa fa-plus"></i> Informasi</a></li>
-                            <li><a onclick="showModalHD('tranfusi_penyataan')" style="cursor: pointer"><i
-                                    class="fa fa-plus"></i> Pernyataan</a></li>
-                            <li><a onclick="showModalHD('tranfusi_persetujuan')" style="cursor: pointer"><i
-                                    class="fa fa-plus"></i> Persetujuan</a></li>
-                        </ul>
                     </div>
                 </div>
                 <div class="box-body">
-                    <table class="table" id="tabel_hd_tranfusi_hd">
+                    <table class="table" id="tabel_hd_tindakan_medis">
                         <tbody>
-                        <tr id="row_hd_tranfusi_informasi">
-                            <td>Informasi</td>
+                        <tr id="row_hd_tindakan_medis">
+                            <td>Persetujuan Tindakan Medis</td>
                             <td width="20%" align="center">
-                                <img id="btn_hd_tranfusi_informasi" class="hvr-grow"
-                                     onclick="detailMonHD('tranfusi_informasi')"
-                                     src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                            </td>
-                        </tr>
-                        <tr id="row_hd_tranfusi_penyataan">
-                            <td>Pernyataan</td>
-                            <td width="20%" align="center">
-                                <img id="btn_hd_tranfusi_penyataan" class="hvr-grow"
-                                     onclick="detailMonHD('tranfusi_penyataan')"
-                                     src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                            </td>
-                        </tr>
-                        <tr id="row_hd_tranfusi_persetujuan">
-                            <td>Persetujuan</td>
-                            <td width="20%" align="center">
-                                <img id="btn_hd_tranfusi_persetujuan" class="hvr-grow"
-                                     onclick="detailMonHD('tranfusi_persetujuan')"
+                                <img id="btn_hd_tindakan_medis" class="hvr-grow"
+                                     onclick="detailMonHD('tindakan_medis')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
@@ -1472,375 +2358,187 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-hd-tranfusi_informasi">
-    <div class="modal-dialog" style="width: 60%">
+<div class="modal fade" id="modal-hd-tindakan_medis">
+    <div class="modal-dialog" style="width: 55%">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Informasi
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Persetujuan Tindakan Medis
                 </h4>
             </div>
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none"
-                     id="warning_hd_tranfusi_informasi">
+                     id="warning_hd_tindakan_medis">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    <p id="msg_hd_tranfusi_informasi"></p>
+                    <p id="msg_hd_tindakan_medis"></p>
                 </div>
                 <div class="box-body">
-                    <table class="table">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 10px">Pilih Tindakan Medis</label>
+                            <div class="col-md-6">
+                                <select class="form-control select2" id="tindakan_medis_hd" style="width: 100%" onchange="pilihTindakanMedis(this.value, 'tindakan_medis_hd')">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="garis">
+                <div class="box-body" style="display: none" id="form-tindakan_medis_hd">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3">Tanggal</label>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input class="form-control tgl" id="hd1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3">Dokter Pelaksana Tindakan</label>
+                            <div class="col-md-6">
+                                <input class="form-control" id="hd2">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3">Pemberi Informasi</label>
+                            <div class="col-md-6">
+                                <input class="form-control" id="hd3">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3">Penerima Informasi</label>
+                            <div class="col-md-6">
+                                <input class="form-control" id="hd4">
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <hr class="garis">
+                    <table class="table table-bordered" style="font-size: 12px">
                         <thead>
-                        <td width="30%"><b>Jenis Informasi</b></td>
-                        <td><b>Isi Informasi</b></td>
-                        <td width="15%" align="center"><b>Check (<i class="fa fa-check"></i>)</b></td>
+                        <tr style="font-weight: bold">
+                            <td>Jenis Informasi</td>
+                            <td>Isi Informasi</td>
+                            <td align="center">Check(<i class="fa fa-check"></i>)</td>
+                        </tr>
                         </thead>
-                        <tbody>
-                        <tr>
-                            <td>Diagnosis (WD dan DD)</td>
-                            <td>
-                                <div class="row">
-                                    <input style="margin-left: 15px" class="form-control" id="ti1">
-                                </div>
-                            </td>
-                            <td align="center">
-                                <div class="form-check" style="margin-top: 7px;">
-                                    <input type="checkbox" name="ti2" id="ti21" value="Ya">
-                                    <label for="ti21"></label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Dasar diagnosis</td>
-                            <td>Wawancara riwayat penyakit, pemeriksaan fisik, pemeriksaan laboratorium</td>
-                            <td align="center">
-                                <div class="form-check" style="margin-top: 7px;">
-                                    <input type="checkbox" name="ti3" id="ti31" value="Ya">
-                                    <label for="ti31"></label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Tindakan Kedokteran</td>
-                            <td>Tranfusi Darah</td>
-                            <td align="center">
-                                <div class="form-check" style="margin-top: 7px;">
-                                    <input type="checkbox" name="ti4" id="ti41" value="Ya">
-                                    <label for="ti41"></label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Indikasi Tindakan</td>
-                            <td>Untuk perbaiakan keadaan umum pada kondisi anemia</td>
-                            <td align="center">
-                                <div class="form-check" style="margin-top: 7px;">
-                                    <input type="checkbox" name="ti5" id="ti51" value="Ya">
-                                    <label for="ti51"></label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Tata Cara</td>
-                            <td>Memasukkan darah/produk darah melalui jalur intravena sesua prosedur yang dijelaskan
-                                secara lisan
-                            </td>
-                            <td align="center">
-                                <div class="form-check" style="margin-top: 7px;">
-                                    <input type="checkbox" name="ti6" id="ti61" value="Ya">
-                                    <label for="ti61"></label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Tujuan</td>
-                            <td>Meningkatkan kadar produk sarah yang dibutuhkan sesuai target</td>
-                            <td align="center">
-                                <div class="form-check" style="margin-top: 7px;">
-                                    <input type="checkbox" name="ti7" id="ti71" value="Ya">
-                                    <label for="ti71"></label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Resiko</td>
-                            <td>Reaksi tranfusi ringan sampai syok (termasuk berbagai kemungkinan yang tidak diprediksi
-                                sebelumnya)
-                            </td>
-                            <td align="center">
-                                <div class="form-check" style="margin-top: 7px;">
-                                    <input type="checkbox" name="ti8" id="ti81" value="Ya">
-                                    <label for="ti81"></label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Komplikasi</td>
-                            <td>Reaksi tranfusi ringan sampai syok (termasuk berbagai kemungkinan yang tidak diprediksi
-                                sebelumnya)
-                            </td>
-                            <td align="center">
-                                <div class="form-check" style="margin-top: 7px;">
-                                    <input type="checkbox" name="ti9" id="ti91" value="Ya">
-                                    <label for="ti91"></label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Prognosis</td>
-                            <td>
-                                <div class="row">
-                                    <input style="margin-left: 15px" class="form-control" id="ti10">
-                                </div>
-                            </td>
-                            <td align="center">
-                                <div class="form-check" style="margin-top: 7px;">
-                                    <input type="checkbox" name="ti11" id="ti111" value="Ya">
-                                    <label for="ti111"></label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Alternatif</td>
-                            <td>
-                                Pemberian zat besi per oral dengan risiko keadaan umum dapat semakin lemah dan proses
-                                penyembuhan menjadi lebih lama
-                            </td>
-                            <td align="center">
-                                <div class="form-check" style="margin-top: 7px;">
-                                    <input type="checkbox" name="ti12" id="ti121" value="Ya">
-                                    <label for="ti121"></label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Perkiraan Biaya</td>
-                            <td>
-                                <div class="row">
-                                    <div class="form-group">
-                                        <label style="margin-left: 15px">Sesuai ketentuan sebagai:</label> <input
-                                            style="margin-left: 15px" class="form-control" id="ti13">
-                                    </div>
-                                </div>
-                            </td>
-                            <td align="center">
-                                <div class="form-check" style="margin-top: 7px;">
-                                    <input type="checkbox" name="ti14" id="ti141" value="Ya">
-                                    <label for="ti141"></label>
-                                </div>
-                            </td>
-                        </tr>
+                        <tbody id="body_tindakan_medis_hd">
                         </tbody>
                     </table>
-                </div>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                </button>
-                <button id="save_hd_tranfusi_informasi" class="btn btn-success pull-right"
-                        onclick="saveMonHD('tranfusi_informasi','tranfusi_hd')"><i class="fa fa-check"></i> Save
-                </button>
-                <button id="load_hd_tranfusi_informasi" style="display: none; cursor: no-drop" type="button"
-                        class="btn btn-success"><i
-                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modal-hd-tranfusi_penyataan">
-    <div class="modal-dialog modal-md" style="width: 55%">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a; color: white">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Pernyataan
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-danger alert-dismissible" style="display: none"
-                     id="warning_hd_tranfusi_penyataan">
-                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    <p id="msg_hd_tranfusi_penyataan"></p>
-                </div>
-                <div class="box-body">
-                    <div class="row">
-                        <div class="form-group" style="display: none">
+                    <br>
+                    <hr class="garis">
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-7" style="text-align: justify">Dengan ini menyatakan bahwa saya telah menerangkan hal-hal di atas secara benar dan jelas dengan memberikan kesempatakan bertanya dan atau diskusi kepada pasien dan/atau keluarganya sedemikian rupa sehingga telah memahaminya</label>
+                            <div class="col-md-4">
+                                <canvas class="paint-canvas-ttd" id="ttd1" width="220" height="100"
+                                        onmouseover="paintTtd('ttd1')"></canvas>
+                                <input style="margin-left: 10px" class="form-control" id="nama_terang_ttd1" placeholder="Nama Terang">
+                                <input style="margin-left: 10px; margin-top: 3px" class="form-control" id="sip_ttd1" placeholder="SIP">
+                            </div>
                             <div class="col-md-1">
-                                <input type="color" style="margin-left: -6px; margin-top: -8px"
-                                       class="js-color-picker  color-picker pull-left">
-                            </div>
-                            <div class="col-md-9">
-                                <input type="range" style="margin-top: -8px" class="js-line-range" min="1" max="72"
-                                       value="1">
-                            </div>
-                            <div class="col-md-2">
-                                <div style="margin-top: -8px;" class="js-range-value">1 px</div>
+                                <button style="margin-left: -42px; margin-top: 10px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('ttd1')"><i
+                                        class="fa fa-trash"></i>
+                                </button>
                             </div>
                         </div>
-                        <table class="table">
-                            <tbody>
-                            <tr>
-                                <td style="text-align: justify">
-                                    <div class="row">
-                                        <label style="margin-left: 15px">Dengan ini menyatakan bahwa saya</label>
-                                        <input style="margin-left: 15px; width: 80%" class="form-control" id="tpe1">
-                                        <label style="margin-left: 15px">telah menerangkan hal-hal di atas secara benar
-                                            dan jelas dan memberikan kesempatan untuk bertanya dan/atau
-                                            berdiskusi</label>
-                                    </div>
-
-                                </td>
-                                <td>
-                                    <canvas class="paint-canvas-ttd" id="tranfusi_penyataan1"
-                                            onmouseover="paintTtd('tranfusi_penyataan1')"></canvas>
-                                    <button style="margin-left: 8px" type="button" class="btn btn-danger"
-                                            onclick="removePaint('tranfusi_penyataan1')"><i class="fa fa-trash"></i>
-                                        Clear
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: justify">
-                                    <div class="row">
-                                        <label style="margin-left: 15px">Dengan ini menyatakan bahwa saya</label>
-                                        <input style="margin-left: 15px; width: 80%" class="form-control nama-pasien" id="tpe2">
-                                        <label style="margin-left: 15px">telah menerima informasi sebagimana di atas
-                                            yang saya beri tanda/ paraf di kolom kanannya serta telah diberi kesempatan
-                                            untuk bertanya/berdiskusi, dan telah memahaminya</label>
-                                    </div>
-                                </td>
-                                <td>
-                                    <canvas class="paint-canvas-ttd" id="tranfusi_penyataan2"
-                                            onmouseover="paintTtd('tranfusi_penyataan2')"></canvas>
-                                    <button style="margin-left: 8px" type="button" class="btn btn-danger"
-                                            onclick="removePaint('tranfusi_penyataan2')"><i class="fa fa-trash"></i>
-                                        Clear
-                                    </button>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
                     </div>
-                </div>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                </button>
-                <button id="save_hd_tranfusi_penyataan" class="btn btn-success pull-right"
-                        onclick="saveMonHD('tranfusi_penyataan','tranfusi_hd')"><i class="fa fa-check"></i> Save
-                </button>
-                <button id="load_hd_tranfusi_penyataan" style="display: none; cursor: no-drop" type="button"
-                        class="btn btn-success"><i
-                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modal-hd-tranfusi_persetujuan">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a; color: white">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Persetujuan
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-danger alert-dismissible" style="display: none"
-                     id="warning_hd_tranfusi_persetujuan">
-                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    <p id="msg_hd_tranfusi_persetujuan"></p>
-                </div>
-                <div class="box-body">
-                    <div class="row">
+                    <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-4">Nama</label>
-                            <div class="col-md-6">
-                                <input class="form-control" id="tperse1">
+                            <label class="col-md-7" style="text-align: justify">Dengan ini menyatakan bahwa saya telah menerima informasi sebagaimana di atas dan telah memahaminya</label>
+                            <div class="col-md-4">
+                                <canvas class="paint-canvas-ttd" id="ttd2" width="220" height="100"
+                                        onmouseover="paintTtd('ttd2')"></canvas>
+                                <input style="margin-left: 10px" class="form-control" id="nama_terang_ttd2" placeholder="Nama Terang">
+                            </div>
+                            <div class="col-md-1">
+                                <button style="margin-left: -42px; margin-top: 10px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('ttd2')"><i
+                                        class="fa fa-trash"></i>
+                                </button>
                             </div>
                         </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-4" style="margin-top: 7px">Umur</label>
-                            <div class="col-md-6">
-                                <input class="form-control" id="tperse2" style="margin-top: 7px">
+                            <label class="col-md-12" style="text-align: justify">Biaya adalah perkiraan biaya yang harus dibayarkan oleh pihak pasien erdasarkan perkiraan dalam kasus-kasus sewajarnya dan tidak mengikat kedua belah pihak apabila ada perluasan</label>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3">Nama</label>
+                            <div class="col-md-4">
+                                <input class="form-control" id="hd5">
+                            </div>
+                            <label class="col-md-2">Tanggal Lahir</label>
+                            <div class="col-md-3">
+                                <input class="form-control ptr-tgl" id="hd6">
                             </div>
                         </div>
+                    </div>
+                    <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-4" style="margin-top: 7px">Jenis Kelamin</label>
-                            <div class="col-md-6">
-                                <select class="form-control" id="tperse3" style="margin-top: 7px">
+                            <label class="col-md-3">Jenis Kelamin</label>
+                            <div class="col-md-4">
+                                <select class="form-control" id="hd7">
                                     <option value="">[Select One]</option>
                                     <option value="Laki-Laki">Laki-Laki</option>
                                     <option value="Perempuan">Perempuan</option>
                                 </select>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-4" style="margin-top: 7px">Alamat</label>
-                            <div class="col-md-6">
-                                <textarea class="form-control" id="tperse4" style="margin-top: 7px"></textarea>
+                            <label class="col-md-2">Tindakan</label>
+                            <div class="col-md-3">
+                                <input class="form-control" readonly id="tindakan_medis_tindakan_medis_hd">
                             </div>
                         </div>
+                    </div>
+                    <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-4" style="margin-top: 7px">Dengan ini menyatakan</label>
-                            <div class="col-md-6">
-                                <select class="form-control" id="tperse5" style="margin-top: 7px">
-                                    <option value="">[Select One]</option>
-                                    <option value="Setuju">Setuju</option>
-                                    <option value="Menolak">Menolak</option>
-                                </select>
+                            <label class="col-md-3">Nama Pasien</label>
+                            <div class="col-md-4">
+                                <input class="form-control nama-pasien" id="hd9" readonly>
+                            </div>
+                            <label class="col-md-2">Tanggal Lahir Pasien</label>
+                            <div class="col-md-3">
+                                <input class="form-control tgl-lahir-pasien" id="hd10" readonly>
                             </div>
                         </div>
+                    </div>
+                    <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-4" style="margin-top: 7px">Tindakan</label>
-                            <div class="col-md-6">
-                                <input class="form-control" id="tperse6" style="margin-top: 7px" value="Transfusi darah"
-                                       readonly>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-4" style="margin-top: 7px">Nama Pasien</label>
-                            <div class="col-md-6">
-                                <input class="form-control nama-pasien" id="tperse7" style="margin-top: 7px">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-4" style="margin-top: 7px">Umur</label>
-                            <div class="col-md-6">
-                                <input class="form-control umur-pasien" id="tperse8" style="margin-top: 7px">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-4" style="margin-top: 7px">Jenis Kelamin</label>
-                            <div class="col-md-6">
-                                <input class="form-control jenis-kelamin" id="tperse9" style="margin-top: 7px">
-                                <%--<select class="form-control" id="tperse9" style="margin-top: 7px">--%>
-                                    <%--<option value="">[Select One]</option>--%>
-                                    <%--<option value="Laki-Laki">Laki-Laki</option>--%>
-                                    <%--<option value="Perempuan">Perempuan</option>--%>
-                                <%--</select>--%>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-4" style="margin-top: 7px">Alamat</label>
-                            <div class="col-md-6">
-                                <textarea class="form-control alamat-pasien" id="tperse10" style="margin-top: 7px"></textarea>
+                            <label class="col-md-3">Alamat Pasien</label>
+                            <div class="col-md-9">
+                                <textarea class="form-control alamat-pasien" id="hd11"></textarea>
                             </div>
                         </div>
                     </div>
                     <hr class="garis">
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-4">TTD Yang Menyatakan</label>
-                            <div class="col-md-6">
-                                <canvas class="paint-canvas-ttd" id="tperse11"
-                                        onmouseover="paintTtd('tperse11')"></canvas>
-                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
-                                        onclick="removePaint('tperse11')"><i class="fa fa-trash"></i>
-                                    Clear
+                            <div class="col-md-offset-3 col-md-5">
+                                <label style="margin-left: 8px">TTD Yang Menyatakan</label>
+                                <canvas class="paint-canvas-ttd" id="ttd3" width="220" height="100"
+                                        onmouseover="paintTtd('ttd3')"></canvas>
+                                <input class="form-control" id="nama_terang_ttd3" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control" id="sip_ttd3" placeholder="SIP">
+                            </div>
+                            <div class="col-md-1">
+                                <button style="margin-left: -100px; margin-top: 35px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('ttd3')"><i
+                                        class="fa fa-trash"></i>
                                 </button>
                             </div>
                         </div>
@@ -1848,27 +2546,28 @@
                     <hr class="garis">
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-4">TTD Saksi</label>
-                            <div class="col-md-6">
-                                <canvas class="paint-canvas-ttd" id="tperse12"
-                                        onmouseover="paintTtd('tperse12')"></canvas>
-                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
-                                        onclick="removePaint('tperse12')"><i class="fa fa-trash"></i>
-                                    Clear
+                            <div class="col-md-5">
+                                <span>Saksi I</span>
+                                <canvas class="paint-canvas-ttd" id="ttd4" width="220" height="100"
+                                        onmouseover="paintTtd('ttd4')"></canvas>
+                                <input class="form-control" id="nama_terang_ttd4" placeholder="Nama Terang">
+                            </div>
+                            <div class="col-md-1">
+                                <button style="margin-left: -100px; margin-top: 10px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('ttd4')"><i
+                                        class="fa fa-trash"></i>
                                 </button>
                             </div>
-                        </div>
-                    </div>
-                    <hr class="garis">
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-4">TTD Pendamping</label>
-                            <div class="col-md-6">
-                                <canvas class="paint-canvas-ttd" id="tperse13"
-                                        onmouseover="paintTtd('tperse13')"></canvas>
-                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
-                                        onclick="removePaint('tperse13')"><i class="fa fa-trash"></i>
-                                    Clear
+                            <div class="col-md-5">
+                                <span>Saksi II</span>
+                                <canvas class="paint-canvas-ttd" id="ttd5" width="220" height="100"
+                                        onmouseover="paintTtd('ttd5')"></canvas>
+                                <input class="form-control" id="nama_terang_ttd5" placeholder="Nama Terang">
+                            </div>
+                            <div class="col-md-1">
+                                <button style="margin-left: -100px; margin-top: 10px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('ttd5')"><i
+                                        class="fa fa-trash"></i>
                                 </button>
                             </div>
                         </div>
@@ -1878,10 +2577,11 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_hd_tranfusi_persetujuan" class="btn btn-success pull-right"
-                        onclick="saveMonHD('tranfusi_persetujuan','tranfusi_hd')"><i class="fa fa-check"></i> Save
+                <button id="save_hd_tindakan_medis" class="btn btn-success pull-right"
+                        onclick="saveMonHD('tindakan_medis','tindakan_medis_hd')"><i class="fa fa-check"></i>
+                    Save
                 </button>
-                <button id="load_hd_tranfusi_persetujuan" style="display: none; cursor: no-drop" type="button"
+                <button id="load_hd_tindakan_medis" style="display: none; cursor: no-drop" type="button"
                         class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
@@ -1889,6 +2589,7 @@
         </div>
     </div>
 </div>
+
 
 <div class="modal fade" id="modal-hd-persetujuan_hd">
     <div class="modal-dialog modal-lg">
@@ -2522,14 +3223,28 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Reaksi</label>
+                            <div class="col-md-6">
+                                <select style="margin-top: 7px" class="form-control" id="ct_rekasi" onchange="selectReaksi(this.value)">
+                                    <option value="">[Select One]</option>
+                                    <option value="Tidak Ada Reaksi">Tidak Ada Reaksi</option>
+                                    <option value="Reaksi Ringan">Reaksi Ringan</option>
+                                    <option value="Reaksi Sedang Berat">Reaksi Sedang Berat</option>
+                                    <option value="Reaksi Yang Mengancam Jiwa">Reaksi Yang Mengancam Jiwa</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row" style="display: none" id="form_tidak_ada">
+                        <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Tidak ada reaksi</label>
                             <div class="col-md-6">
                                 <input class="form-control" id="ct6" style="margin-top: 7px">
                             </div>
                         </div>
                     </div>
-                    <hr class="garis">
-                    <div class="row">
+                    <div class="row" style="display: none" id="form_ringan">
                         <div class="form-group">
                             <label class="col-md-12">Reaksi Ringan</label>
                         </div>
@@ -2549,8 +3264,7 @@
                             </div>
                         </div>
                     </div>
-                    <hr class="garis">
-                    <div class="row">
+                    <div class="row" style="display: none" id="form_berat">
                         <div class="form-group">
                             <label class="col-md-12">Reaksi Sedang Berat</label>
                         </div>
@@ -2645,7 +3359,7 @@
                             </div>
                         </div>
                     </div>
-                    <hr class="garis">
+                    <div style="display: none" id="form_mengancam">
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-12">Reaksi yang mengancam jiwa</label>
@@ -2776,6 +3490,7 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
                     </div>
                 </div>
             </div>
@@ -2970,6 +3685,8 @@
                             <label class="col-md-4" style="margin-top: 7px">Tanda Tangan</label>
                             <div class="col-md-6">
                                 <canvas style="margin-left: -1px;" onmouseover="paintTtd('hd_ttd_dokter')" class="paint-canvas-ttd" id="hd_ttd_dokter"></canvas>
+                                <input class="form-control" id="nama_terang_hd_ttd_dokter" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control" id="sip_hd_ttd_dokter" placeholder="SIP">
                                 <button style="margin-top: -5px; margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('hd_ttd_dokter')"><i class="fa fa-trash"></i> Clear
                                 </button>
                             </div>
@@ -3074,9 +3791,15 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-4" style="margin-top: 7px">No Asuransi/ BPJS/ Swasta</label>
+                            <label class="col-md-4" style="margin-top: 7px">No Asuransi</label>
                             <div class="col-md-7">
-                                <input class="form-control no-bpjs" id="ph4" style="margin-top: 7px">
+                                <input class="form-control" id="ph4_1" style="margin-top: 7px">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">No BPJS</label>
+                            <div class="col-md-7">
+                                <input class="form-control no-bpjs" id="ph4_2" style="margin-top: 7px">
                             </div>
                         </div>
                     </div>
@@ -3156,6 +3879,8 @@
                             <div class="col-md-6">
                                 <canvas class="paint-canvas-ttd" id="ph14"
                                         onmouseover="paintTtd('ph14')"></canvas>
+                                <input class="form-control" id="nama_terang_ph14" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control" id="sip_ph14" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ph14')"><i class="fa fa-trash"></i>
                                     Clear

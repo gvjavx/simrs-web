@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.ItAkunLampiranEntity">
+        <table name="it_akun_lampiran" schema="public"/>
+        <attributes>
+            <id name="lampiranId">
+                <column name="lampiran_id"/>
+            </id>
+            <basic name="namaLaporan">
+                <column name="nama_laporan"/>
+            </basic>
+            <basic name="url">
+                <column name="url"/>
+            </basic>
+            <basic name="transaksiId">
+                <column name="transaksi_id"/>
+            </basic>
+            <basic name="flag">
+                <column name="flag"/>
+            </basic>
+            <basic name="action">
+                <column name="action"/>
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date"/>
+            </basic>
+            <basic name="lastUpdate">
+                <column name="last_update"/>
+            </basic>
+            <basic name="createdWho">
+                <column name="created_who"/>
+            </basic>
+            <basic name="lastUpdateWho">
+                <column name="last_update_who"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

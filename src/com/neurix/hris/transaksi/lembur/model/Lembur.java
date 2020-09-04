@@ -44,6 +44,7 @@ public class Lembur extends BaseModel {
     private Date tanggalAkhirSetuju;
     private String notApprovalNote;
     private Double jamRealisasi;
+    private Double lamaHitungan;
 
     private boolean lemburApprove=false;
     private boolean lemburEdit=true;
@@ -67,6 +68,14 @@ public class Lembur extends BaseModel {
 
     private boolean isMobile = false;
     private String nipUserLogin;
+
+    public Double getLamaHitungan() {
+        return lamaHitungan;
+    }
+
+    public void setLamaHitungan(Double lamaHitungan) {
+        this.lamaHitungan = lamaHitungan;
+    }
 
     public String getOs() {
         return os;

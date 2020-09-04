@@ -757,6 +757,10 @@ public class LemburAction extends BaseMasterAction {
             if (iJamAwalKerja>=iJamAkhirDb){
                 hasil=hasil+CommonUtil.SubtractJamAwalDanJamAkhir (jamAwal,jamAkhir,"positif");
             }
+
+            if (iJamAwalKerja>=iJamAwalDb&&iJamAwalKerja<=iJamAkhirDb){
+                hasil = hasil+CommonUtil.SubtractJamAwalDanJamAkhir(sJamKerjaAkhirDb,jamAkhir,"positif");
+            }
         }else{
             hasil=CommonUtil.SubtractJamAwalDanJamAkhir (jamAwal,jamAkhir,"positif");
         }

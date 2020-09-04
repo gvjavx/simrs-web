@@ -55,6 +55,7 @@ public class RencanaAsuhanKeperawatanBoImpl implements RencanaAsuhanKeperawatanB
                     asuhan.setImplementasi(entity.getImplementasi());
                     asuhan.setEvaluasi(entity.getEvaluasi());
                     asuhan.setTtdPerawat(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_RM+entity.getTtdPerawat());
+                    asuhan.setTtdDokter(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_RM+entity.getTtdDokter());
                     asuhan.setKeterangan(entity.getKeterangan());
                     asuhan.setAction(entity.getAction());
                     asuhan.setFlag(entity.getFlag());
@@ -62,6 +63,9 @@ public class RencanaAsuhanKeperawatanBoImpl implements RencanaAsuhanKeperawatanB
                     asuhan.setCreatedWho(entity.getCreatedWho());
                     asuhan.setLastUpdate(entity.getLastUpdate());
                     asuhan.setLastUpdateWho(entity.getLastUpdateWho());
+                    asuhan.setNamaTerang(entity.getNamaTerang());
+                    asuhan.setNamaDokter(entity.getNamaDokter());
+                    asuhan.setSip(entity.getSip());
                     list.add(asuhan);
                 }
             }
@@ -92,6 +96,10 @@ public class RencanaAsuhanKeperawatanBoImpl implements RencanaAsuhanKeperawatanB
             asuhanKeperawatanEntity.setCreatedWho(bean.getCreatedWho());
             asuhanKeperawatanEntity.setLastUpdate(bean.getLastUpdate());
             asuhanKeperawatanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            asuhanKeperawatanEntity.setNamaTerang(bean.getNamaTerang());
+            asuhanKeperawatanEntity.setNamaDokter(bean.getNamaDokter());
+            asuhanKeperawatanEntity.setSip(bean.getSip());
+            asuhanKeperawatanEntity.setTtdDokter(bean.getTtdDokter());
 
             try {
                 rencanaAsuhanKeperawatanDao.addAndSave(asuhanKeperawatanEntity);

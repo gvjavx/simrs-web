@@ -83,7 +83,6 @@
                             <tr>
                                 <td align="center">
                                     <s:form id="pengajuanBiayaForm" method="post"  theme="simple" namespace="/pengajuanBiaya" action="searchPengajuan_pengajuanBiaya.action" cssClass="form-horizontal">
-                                        <s:hidden name="pengajuanBiaya.tipePembayaran" value="KK" />
                                         <table>
                                             <tr>
                                                 <td width="10%" align="center">
@@ -473,6 +472,27 @@
                             <input type="text" readonly class="form-control" id="mod_status_detail">
                         </div>
                     </div>
+                    <div class="form-group view-ipa">
+                        <label class="control-label col-sm-3" >Ijin Prinsip Atasan : </label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" readonly id="namaFileUpload">
+                        </div>
+                        <div class="col-sm-1">
+                            <a href="javascript:;" id="btnViewIpaUploaded">
+                                <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" name="icon_view">
+                            </a>
+                        </div>
+                        <script>
+                            $('#btnViewIpaUploaded').click(function () {
+                                dwr.engine.setAsync(false);
+                                var pengajuanId = $('#modPengajuanBiayaDetailIdDetail').val();
+                                PengajuanBiayaAction.searchPengajuanDetailImage(pengajuanId,function(data){
+                                    $("#my-image").attr("src", data);
+                                });
+                                $('#modal-view-ipa').modal('show');
+                            })
+                        </script>
+                    </div>
                     <div class="form-group" id="not_approval_note_detail">
                         <label class="control-label col-sm-3" >Keterangan Not Approve : </label>
                         <div class="col-sm-7">
@@ -480,6 +500,32 @@
                         </div>
                     </div>
                 </form>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-view-ipa">
+    <div class="modal-dialog modal-flat modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Ijin Prinsip Atasan</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                    <br>
+                    <br>
+                    <div class="row">
+                        <div class="form-group">
+                            <img src="" class="img-responsive" id="my-image">
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close </button>
@@ -510,7 +556,7 @@
                 "</tr></thead>";
             var i = i;
             $.each(listdata, function (i, item) {
-                var view ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'"  status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'" budget="'+item.stBudgetBiaya+'" noBudgetting="'+item.noBudgeting+'" notApprovalNote="'+item.notApprovalNote+'" statusSaatIni="'+item.statusSaatIni+'" tanggal="'+item.stTanggal+'" tanggalRealisasi="'+item.stTanggalRealisasi+'" class="item-detail" >\n' +
+                var view ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'"  fileName="'+item.fileName+'" status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'" budget="'+item.stBudgetBiaya+'" noBudgetting="'+item.noBudgeting+'" notApprovalNote="'+item.notApprovalNote+'" statusSaatIni="'+item.statusSaatIni+'" tanggal="'+item.stTanggal+'" tanggalRealisasi="'+item.stTanggalRealisasi+'" class="item-detail" >\n' +
                     '<img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" name="icon_edit">\n' +
                     '</a></td>';
                 var print ='<td></td>';
@@ -619,6 +665,8 @@
             $('#mod_tanggal_realisasi_detail').val($(this).attr('tanggalRealisasi'));
             $('#mod_budget_detail').val($(this).attr('budget'));
             $('#mod_status_detail').val($(this).attr('statusSaatIni'));
+            $('#namaFileUpload').val($(this).attr('fileName'));
+
             if ($(this).attr('notApprovalNote')!="null"){
                 $('#mod_not_approval_note_detail').val($(this).attr('notApprovalNote'));
             } else{

@@ -1,8 +1,14 @@
-function showModalOperasi(jenis) {
+function showModalOperasi(jenis, idRM, isSetIdRM) {
+    if(isSetIdRM == "Y"){
+        tempidRm = idRM;
+    }
     if(isReadRM){
         $('.btn-hide').hide();
     }else{
         $('.btn-hide').show();
+    }
+    if("tindakan_medis_op" == jenis){
+        selectOptionTM('ina', jenis);
     }
     setDataPasien();
     $('#modal-op-' + jenis).modal({show: true, backdrop: 'static'});
@@ -12,6 +18,14 @@ function saveDataOperasi(jenis, ket) {
     var data = [];
     var cek = false;
     var mlt = false;
+    var dataPasien = "";
+
+    dataPasien = {
+        'no_checkup' : noCheckup,
+        'id_detail_checkup' : idDetailCheckup,
+        'id_pasien' : idPasien,
+        'id_rm' : tempidRm
+    }
 
     if ("pre_operasi" == jenis) {
         var cekList1 = $('[name=cek_list1]:checked').val();
@@ -275,8 +289,11 @@ function saveDataOperasi(jenis, ket) {
         var tes1 = isBlank(canvasTtdPengirim);
         var tes2 = isBlank(canvasTtdPerawat);
 
+        var pengirim = $('#nama_terang_pengirim').val();
+        var perawat = $('#nama_terang_perawat').val();
+
         if (cekList171 && cekList172 && cekList181 && cekList182 && cekList191 && cekList192 && cekList201 && cekList202 &&
-            cekList211 && cekList212 && cekList221 && cekList222 && cekList231 && cekList232 && cekList241 && cekList242 != '' && !tes1 && !tes2) {
+            cekList211 && cekList212 && cekList221 && cekList222 && cekList231 && cekList232 && cekList241 && cekList242 && pengirim && perawat != '' && !tes1 && !tes2) {
             data.push({
                 'parameter': 'Kesadaran Umum',
                 'jawaban1': cekList171,
@@ -354,6 +371,7 @@ function saveDataOperasi(jenis, ket) {
                 'keterangan': 'penandaan_area',
                 'jenis': 'cek_list_pre_operasi',
                 'tipe': 'ttd',
+                'nama_terang' :pengirim,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -362,6 +380,7 @@ function saveDataOperasi(jenis, ket) {
                 'keterangan': 'penandaan_area',
                 'jenis': 'cek_list_pre_operasi',
                 'tipe': 'ttd',
+                'nama_terang' :perawat,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
@@ -374,7 +393,10 @@ function saveDataOperasi(jenis, ket) {
         var canvasArea = document.getElementById('area_canvas');
         var tes1 = isBlank(canvasTtdPasien);
         var tes2 = isBlank(canvasTtdDokter);
-        if (!tes1 && !tes2) {
+        var nama1 = $('#nama_terang_pasien').val();
+        var nama2 = $('#nama_terang_dokter').val();
+        var sip2 = $('#sip_dokter').val();
+        if (!tes1 && !tes2 && nama1 && nama2 && sip2 != '') {
 
             var areaPenanda = canvasArea.toDataURL("image/png"),
                 areaPenanda = areaPenanda.replace(/^data:image\/(png|jpg);base64,/, "");
@@ -399,6 +421,7 @@ function saveDataOperasi(jenis, ket) {
                 'jawaban1': ttdPasien,
                 'keterangan': 'penandaan_area',
                 'jenis': 'penandaan',
+                'nama_terang': nama1,
                 'tipe': 'ttd',
                 'id_detail_checkup': idDetailCheckup
             });
@@ -409,6 +432,8 @@ function saveDataOperasi(jenis, ket) {
                 'keterangan': 'penandaan_area',
                 'jenis': 'penandaan',
                 'tipe': 'ttd',
+                'nama_terang': nama2,
+                'sip': sip2,
                 'id_detail_checkup': idDetailCheckup
             });
 
@@ -676,6 +701,8 @@ function saveDataOperasi(jenis, ket) {
         var pa1 = $('#pa1').val();
         var pa2 = $('#pa2').val();
         var pa3 = $('#pa3').val();
+        var nama = $('#nama_terang_spesialis').val();
+        var sip = $('#sip_spesialis').val();
 
         var ttd1 = document.getElementById("ttd_spesialis");
         var cekTtd1 = isBlank(ttd1);
@@ -711,6 +738,8 @@ function saveDataOperasi(jenis, ket) {
                 'keterangan': jenis,
                 'jenis': 'pra_anestesi',
                 'tipe':'ttd',
+                'nama_terang': nama,
+                'sip': sip,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
@@ -1088,12 +1117,25 @@ function saveDataOperasi(jenis, ket) {
         var va17 = $('#lap17').val();
         var va18 = $('#lap18').val();
         var va19 = $('#lap19').val();
+        var nama = $('#nama_terang_sps').val();
+        var sip = $('#sip_sps').val();
+        var dataTemp = [];
+
+        var isi = $('.urutan_op');
+
+        $.each(isi, function (i, item) {
+            if(item.value != ''){
+                dataTemp.push({
+                    'cek_data': item.value
+                });
+            }
+        });
 
         var ttd1 = document.getElementById("ttd_lap_dokter");
 
         var cekTtd1 = isCanvasBlank(ttd1);
 
-        if (!cekTtd1) {
+        if (!cekTtd1 && isi.length == dataTemp.length) {
 
             var canv1 = ttd1.toDataURL("image/png"),
                 canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");
@@ -1219,9 +1261,33 @@ function saveDataOperasi(jenis, ket) {
             });
             data.push({
                 'parameter': 'Urutan Operasi',
-                'jawaban1': va19,
+                'jawaban1': '',
                 'keterangan': ket,
                 'jenis': jenis,
+                'tipe': 'penyataan',
+                'id_detail_checkup': idDetailCheckup
+            });
+            $.each(isi, function (i, item) {
+                var count = i+1;
+                var label = $('#label_op_'+count).text();
+                if(item.value != ''){
+                    data.push({
+                        'parameter': label,
+                        'jawaban1': item.value,
+                        'keterangan': ket,
+                        'jenis': jenis,
+                        'id_detail_checkup': idDetailCheckup
+                    });
+                }
+            });
+            data.push({
+                'parameter': 'TTD Dokter Operator',
+                'jawaban1': canv1,
+                'keterangan': ket,
+                'jenis': jenis,
+                'tipe': 'ttd',
+                'nama_terang': nama,
+                'sip': sip,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
@@ -1457,6 +1523,8 @@ function saveDataOperasi(jenis, ket) {
 
         var ttd1 = document.getElementById("ttd_dokter_spesialis");
         var cekTtd1 = isCanvasBlank(ttd1);
+        var nama = $('#nama_terang_sps').val();
+        var sip = $('#sip_sps').val();
 
         $.each(va1, function (i, item) {
             if(item.checked){
@@ -1527,6 +1595,8 @@ function saveDataOperasi(jenis, ket) {
                 'keterangan': jenis,
                 'jenis': ket,
                 'tipe': 'ttd',
+                'nama_terang': nama,
+                'sip': sip,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
@@ -1571,6 +1641,11 @@ function saveDataOperasi(jenis, ket) {
         var va31 = $('[name=kes31]:checked').val();
         var va32 = $('[name=kes32]');
         var va33 = $('#kes33').val();
+
+        var nama1 = $('#nama_terang_anestesi').val();
+        var nama2 = $('#nama_terang_aperator').val();
+        var nama3 = $('#nama_terang_sirkuler').val();
+        var sip = $('#sip_aperator').val();
 
         var v27 = "";
         var v30 = "";
@@ -1875,6 +1950,7 @@ function saveDataOperasi(jenis, ket) {
                 'keterangan': jenis,
                 'jenis': ket,
                 'tipe': 'ttd',
+                'nama_terang': nama1,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -1883,6 +1959,8 @@ function saveDataOperasi(jenis, ket) {
                 'keterangan': jenis,
                 'jenis': ket,
                 'tipe': 'ttd',
+                'nama_terang': nama2,
+                'sip': sip,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -1891,6 +1969,7 @@ function saveDataOperasi(jenis, ket) {
                 'keterangan': jenis,
                 'jenis': ket,
                 'tipe': 'ttd',
+                'nama_terang': nama3,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
@@ -1932,6 +2011,8 @@ function saveDataOperasi(jenis, ket) {
         var v9 = "";
         var v12 = "";
         var v13 = "";
+        var nama = $('#nama_terang_sps').val();
+        var sip = $('#sip_sps').val();
 
         $.each(va1, function (i, item) {
             if(item.checked){
@@ -2157,6 +2238,8 @@ function saveDataOperasi(jenis, ket) {
                 'keterangan': jenis,
                 'jenis': ket,
                 'tipe': 'ttd',
+                'nama_terang': nama,
+                'sip': sip,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
@@ -2180,11 +2263,13 @@ function saveDataOperasi(jenis, ket) {
         var va13 = $('#in13').val();
         var va14 = $('#in14').val();
         var va15 = $('#in15').val();
+        var nama = $('#nama_terang_sps').val();
+        var sip = $('#sip_sps').val();
 
         var ttd1 = document.getElementById("ttd1");
         var cekTtd1 = isCanvasBlank(ttd1);
 
-        if (va2 && va3 && va4 != undefined && va1 && va5 && va6 &&
+        if (va2 && va3 && va4 != undefined && va1 && va5 && va6 && nama && sip &&
             va7 && va8 && va9 && va10 && va11 && va12 && va13 && va14 && va15 != '' && !cekTtd1) {
 
             var canv1 = ttd1.toDataURL("image/png"),
@@ -2297,9 +2382,10 @@ function saveDataOperasi(jenis, ket) {
                 'keterangan': jenis,
                 'jenis': ket,
                 'tipe': 'ttd',
+                'nama_terang': nama,
+                'sip': sip,
                 'id_detail_checkup': idDetailCheckup
             });
-            console.log(data);
             cek = true;
         }
     }
@@ -2325,6 +2411,8 @@ function saveDataOperasi(jenis, ket) {
         var va16 = $('#in16').val();
         var va17 = $('#in17').val();
         var va18 = $('#in18').val();
+        var nama = $('#nama_terang_sps').val();
+        var sip = $('#sip_sps').val();
 
         var ttd1 = document.getElementById("ttd1");
         var cekTtd1 = isCanvasBlank(ttd1);
@@ -2457,6 +2545,8 @@ function saveDataOperasi(jenis, ket) {
                 'keterangan': jenis,
                 'jenis': ket,
                 'tipe': 'ttd',
+                'nama_terang': nama,
+                'sip': sip,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
@@ -2465,10 +2555,11 @@ function saveDataOperasi(jenis, ket) {
 
     if (cek) {
         var result = JSON.stringify(data);
+        var pasienData = JSON.stringify(dataPasien);
         $('#save_op_' + jenis).hide();
         $('#load_op_' + jenis).show();
         dwr.engine.setAsync(true);
-        AsesmenOperasiAction.saveAsesmenOperasi(result, {
+        AsesmenOperasiAction.saveAsesmenOperasi(result, pasienData, {
             callback: function (res) {
                 if (res.status == "success") {
                     $('#save_op_' + jenis).show();

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printPelepasanInformasi" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="1.9965000000000115"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="374"/>
 	<property name="ireport.y" value="90"/>
 	<style name="table">
 		<box>
@@ -153,9 +153,9 @@
 				</jr:Code128>
 			</componentElement>
 			<staticText>
-				<reportElement x="421" y="30" width="59" height="19" uuid="711bd471-61c7-4e26-a5f7-23f47f6c6eb4"/>
+				<reportElement x="434" y="31" width="59" height="19" uuid="711bd471-61c7-4e26-a5f7-23f47f6c6eb4"/>
 				<textElement>
-					<font fontName="Calibri" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[Printed date : ]]></text>
 			</staticText>
@@ -167,9 +167,9 @@
 				<text><![CDATA[Pelepasan Informasi]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy HH.mm.ss">
-				<reportElement x="480" y="30" width="75" height="19" uuid="c74fa1f1-4199-4fb4-8162-4173796d277f"/>
+				<reportElement x="493" y="31" width="75" height="19" uuid="c74fa1f1-4199-4fb4-8162-4173796d277f"/>
 				<textElement>
-					<font fontName="Calibri" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>

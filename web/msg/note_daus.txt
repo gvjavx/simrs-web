@@ -344,7 +344,6 @@ ALTER TABLE it_akun_pembayaran_utang_piutang_detail ALTER COLUMN no_nota type ch
 -- 02-08-2020
 --jika ingin mencoba proses PPN
 --insert into it_akun_pengajuan_setor values ('PSC001','KP','09','Y','admin','2020-08-02 00:00:00','2020-08-02 00:00:00','admin','2020-08-02 00:00:00','admin','U','Y',null,null,null,60000,'2020-08-02','2020',null,'N',null,null,'PPN',null,20000,50000,20000,null,'N',null,null);
-
 -- jika ingin clear data untuk akuntansi
 -- delete from it_hris_payroll;
 -- delete from it_hris_notifikasi;
@@ -398,3 +397,77 @@ ALTER TABLE im_mesin_absensi ADD COLUMN branch_id character varying (10);
 
 update im_functions set func_name='Kas/Bank Masuk' where func_name='Kas Masuk';
 update im_functions set func_name='Kas/Bank Keluar' where func_name='Kas Keluar';
+
+-- 24-08-2020
+ALTER TABLE im_akun_master ADD COLUMN no_rekening character varying(50);
+ALTER TABLE im_akun_master ADD COLUMN tipe_vendor character varying(50);
+
+update im_akun_master set no_rekening='-';
+update im_akun_master set tipe_vendor='umum' where nomor_master ilike '01.%';
+update im_akun_master set tipe_vendor='bpjs' where nomor_master ilike '02.%';
+update im_akun_master set tipe_vendor='lain' where nomor_master ilike '03.%';
+
+CREATE SEQUENCE seq_master_bpjs INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 95;
+CREATE SEQUENCE seq_master_sewa INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 1;
+CREATE SEQUENCE seq_master_lain INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 1;
+SELECT setval('seq_master', 467, true);
+
+-- 26-08-2020
+ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN nilai_pph numeric(25,2);
+ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN no_faktur character varying(50);
+ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN url_faktur_image character varying(100);
+
+ALTER TABLE it_hris_payroll_cuti ADD COLUMN tunjangan_pph numeric(25,2);
+ALTER TABLE it_hris_payroll_jasopr ADD COLUMN tunjangan_pph numeric(25,2);
+ALTER TABLE it_hris_payroll_insentif ADD COLUMN tunjangan_pph numeric(25,2);
+
+
+-- 27-08-2020
+ALTER TABLE it_akun_pembayaran_utang_piutang ADD COLUMN approval_keuangan_flag character varying(1);
+ALTER TABLE it_akun_pembayaran_utang_piutang ADD COLUMN approval_keuangan_id character varying(100);
+ALTER TABLE it_akun_pembayaran_utang_piutang ADD COLUMN approval_keuangan_name character varying(100);
+ALTER TABLE it_akun_pembayaran_utang_piutang ADD COLUMN approval_keuangan_date timestamp without time zone;
+
+ALTER TABLE it_akun_pembayaran_utang_piutang ADD COLUMN approval_kasub_keuangan_flag character varying(1);
+ALTER TABLE it_akun_pembayaran_utang_piutang ADD COLUMN approval_kasub_keuangan_id character varying(100);
+ALTER TABLE it_akun_pembayaran_utang_piutang ADD COLUMN approval_kasub_keuangan_name character varying(100);
+ALTER TABLE it_akun_pembayaran_utang_piutang ADD COLUMN approval_kasub_keuangan_date timestamp without time zone;
+
+ALTER TABLE im_company ADD COLUMN param_dapen_pegawai numeric (10,5);
+ALTER TABLE im_company ADD COLUMN param_biaya_jabatan numeric (20,0);
+
+update im_company set param_dapen_pegawai=6,param_biaya_jabatan=500000;
+
+CREATE TABLE public.it_akun_lampiran
+(
+    lampiran_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    nama_laporan character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    url character varying(100) COLLATE pg_catalog."default" NOT NULL,
+	transaksi_id character varying(30) COLLATE pg_catalog."default" NOT NULL,
+	flag character varying(1) COLLATE pg_catalog."default",
+    action character varying(1) COLLATE pg_catalog."default",
+    created_date timestamp without time zone,
+    last_update timestamp without time zone,
+    created_who character varying(100) COLLATE pg_catalog."default",
+    last_update_who character varying(100) COLLATE pg_catalog."default",
+    CONSTRAINT it_akun_lampiran_pkey PRIMARY KEY (lampiran_id)
+);
+CREATE SEQUENCE seq_lampiran INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 1;
+
+update im_hris_pegawai set golongan_id='APO' where golongan_id='APOAPO';
+
+ALTER TABLE it_akun_pengajuan_biaya_detail ADD COLUMN url_ipa character varying(100);
+
+-- 31-08-2020
+ALTER TABLE it_akun_pembayaran_utang_piutang_detail ALTER COLUMN no_nota type character varying (50);
+ALTER TABLE it_akun_pembayaran_utang_piutang_detail ALTER COLUMN master_id type character varying (30);
+
+-- 03-09-2020
+ALTER TABLE it_akun_pengajuan_biaya_detail ADD COLUMN rk_dikirim character varying(1);
+ALTER TABLE it_akun_pengajuan_biaya_detail ADD COLUMN coa_target character varying(30);
+ALTER TABLE it_akun_pengajuan_biaya_detail ADD COLUMN rk_id character varying(15);
+CREATE SEQUENCE seq_rk INCREMENT BY 1 MINVALUE 1 MAXVALUE 9999 START WITH 1 CYCLE;
+
+-- 04-09-2020
+-- jika coba ppn
+insert into it_akun_pengajuan_setor values ('PSC002','KP','10','Y','admin','2020-08-02 00:00:00','2020-08-02 00:00:00','admin','2020-08-02 00:00:00','admin','U','Y',null,null,null,0,'2020-08-02','2020',null,'N',null,null,'PPN',null,0,0,0,null,'N',null,null);

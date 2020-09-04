@@ -161,6 +161,10 @@ public class CommonConstant {
     public static final String APP_ID = "18016b16da294c7ab3255c5c792384b6";
 
     //AKUNTANSI
+    public final static String NAMA_GENERAL_MANAGER_KP = CommonUtil.getPropertyParams("nama.general.manager.kp");
+    public final static String NAMA_MANAGER_KEUANGAN_KP = CommonUtil.getPropertyParams("nama.manager.keuangan.kp");
+    public final static String NAMA_GENERAL_MANAGER_UNIT = CommonUtil.getPropertyParams("nama.general.manager.unit");
+    public final static String NAMA_MANAGER_KEUANGAN_UNIT = CommonUtil.getPropertyParams("nama.manager.keuangan.unit");
     public final static String COA_PAYROLL = CommonUtil.getPropertyParams("coa.bank.payroll");
     public final static String KELOMPOK_ID_PEJABAT_MUDA = CommonUtil.getPropertyParams("kelompok.id.pejabat.muda");
     public final static String KELOMPOK_ID_PEJABAT_MADYA = CommonUtil.getPropertyParams("kelompok.id.pejabat.madya");
@@ -170,6 +174,8 @@ public class CommonConstant {
     public final static String KELOMPOK_ID_BOC =CommonUtil.getPropertyParams("kelompok.id.boc");
     public final static String ROLE_ID_KARYAWAN = CommonUtil.getPropertyParams("role.id.karyawan");
     public final static String ROLE_ID_ADMIN_AKS = CommonUtil.getPropertyParams("role.id.admin.aks");
+    public final static String ROLE_ID_KASUB_KEU = CommonUtil.getPropertyParams("role.id.kasub.keu");
+    public final static String ROLE_ID_KA_KEU = CommonUtil.getPropertyParams("role.id.ka.keu");
     public final static String ROLE_ID_ADMIN_DIVISI = CommonUtil.getPropertyParams("role.id.admin.divisi");
     public final static String ROLE_ID_ADMIN = CommonUtil.getPropertyParams("role.id.admin");
     public final static String ID_KANPUS = "KP";
@@ -181,6 +187,8 @@ public class CommonConstant {
 
     public final static String REKENING_PPH21 = "00187";
     public final static String RESOURCE_PATH_FAKTUR_PAJAK = "/upload/faktur_pajak/";
+    public final static String RESOURCE_PATH_LAMPIRAN = "/upload/lampiran/";
+    public final static String RESOURCE_PATH_IPA = "/upload/ipa/";
     public final static String REK_BANK_BRI_TELE = "01041802112149";
     public final static String KODERING_FARMASI_RI = "02.02.01";
     public final static String KODERING_INSTALASI_RI = "03.04.01";
@@ -193,10 +201,10 @@ public class CommonConstant {
     //TELEMEDICINE
     public static final int ADD_JAM_BAYAR = 30; //MENIT
 
-    public final static String posisiKabidKeuanganKp = "P042";
-    public final static String posisiDirkeuKp = "P002";
-    public final static String posisiKadivKeuanganUnit = "";
-    public final static String posisiGmUnit = "";
+    public final static String posisiKabidKeuanganKp = CommonUtil.getPropertyParams("posisi.kabid.keuangan.kp");
+    public final static String posisiKasubbidKeuanganKp = CommonUtil.getPropertyParams("posisi.kasubbid.keuangan.kp");
+    public final static String posisiKadivKeuanganUnit = CommonUtil.getPropertyParams("posisi.kadiv.keuangan.unit");
+    public final static String posisiGmUnit = CommonUtil.getPropertyParams("posisi.ka.rs");
 
     // CONSTANT ID TRANSAKSI BILLING
     public final static String TRANSAKSI_ID_PROSES_PPN_KD_KOREKSI =CommonUtil.getPropertyParams("transaksi.id.proses.ppn.kd.koreksi");
@@ -209,6 +217,8 @@ public class CommonConstant {
     public final static String TRANSAKSI_ID_PENGIRIMAN_PENDAPATAN_KE_PUSAT =CommonUtil.getPropertyParams("transaksi.id.pengiriman.pendapatan.ke.pusat");
     public final static String TRANSAKSI_ID_PENERIMAAN_PENDAPATAN_DARI_UNIT =CommonUtil.getPropertyParams("transaksi.id.penerimaan.pendapatan.dari.unit");
     public final static String TRANSAKSI_ID_PERHITUNGAN_PENDAPATAN_DOKTER =CommonUtil.getPropertyParams("transaksi.id.perhitungan.pendapatan.dokter");
+    public final static String TRANSAKSI_ID_PEMBAYARAN_PENGAJUAN_BIAYA_UM_KURANG =CommonUtil.getPropertyParams("transaksi.id.pembayaran.pengajuan.biaya.um.kurang");
+    public final static String TRANSAKSI_ID_PEMBAYARAN_PENGAJUAN_BIAYA_UM_LEBIH =CommonUtil.getPropertyParams("transaksi.id.pembayaran.pengajuan.biaya.um.lebih");
     public final static String JUNK_MASTER_PIUTANG_PPN =CommonUtil.getPropertyParams("junk.master.piutang.ppn");
 
     //CONSTANT HCM

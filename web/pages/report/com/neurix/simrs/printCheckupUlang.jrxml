@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printResepPasien" language="groovy" pageWidth="421" pageHeight="595" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="1.948717100000018"/>
-	<property name="ireport.x" value="84"/>
-	<property name="ireport.y" value="271"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="312"/>
 	<parameter name="reportParams.tglCheckup" class="java.lang.String"/>
 	<parameter name="reportParams.logo" class="java.lang.String"/>
 	<parameter name="reportParams.nik" class="java.lang.String"/>
@@ -23,46 +23,24 @@
 	<parameter name="reportParams.dokter" class="java.lang.String"/>
 	<parameter name="reportParams.ttdDokter" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="reportParams.idDetailCheckup" class="java.lang.String"/>
+	<parameter name="reportParams.diagnosa" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT * FROM it_simrs_header_detail_checkup LIMIT 1]]>
+		<![CDATA[SELECT
+a.id_lab,
+a.id_lab_detail,
+b.nama_lab,
+c.nama_detail_periksa
+FROM it_simrs_order_periksa_lab a
+INNER JOIN im_simrs_lab b ON a.id_lab = b.id_lab
+INNER JOIN im_simrs_lab_detail c ON a.id_lab_detail = c.id_lab_detail
+WHERE id_detail_checkup = $P{reportParams.idDetailCheckup}]]>
 	</queryString>
-	<field name="id_detail_checkup" class="java.lang.String"/>
-	<field name="no_checkup" class="java.lang.String"/>
-	<field name="id_pelayanan" class="java.lang.String"/>
-	<field name="status_periksa" class="java.lang.String"/>
-	<field name="status_bayar" class="java.lang.String"/>
-	<field name="total_bayar" class="java.lang.Long"/>
-	<field name="keterangan_selesai" class="java.lang.String"/>
-	<field name="jenis_lab" class="java.lang.String"/>
-	<field name="branch_id" class="java.lang.String"/>
-	<field name="flag" class="java.lang.String"/>
-	<field name="action" class="java.lang.String"/>
-	<field name="created_date" class="java.sql.Timestamp"/>
-	<field name="created_who" class="java.lang.String"/>
-	<field name="last_update" class="java.sql.Timestamp"/>
-	<field name="last_update_who" class="java.lang.String"/>
-	<field name="tgl_antrian" class="java.sql.Timestamp"/>
-	<field name="tgl_cekup" class="java.sql.Date"/>
-	<field name="keterangan_cekup_ulang" class="java.lang.String"/>
-	<field name="cara_pasien_pulang" class="java.lang.String"/>
-	<field name="pendamping" class="java.lang.String"/>
-	<field name="tempat_tujuan" class="java.lang.String"/>
-	<field name="no_sep" class="java.lang.String"/>
-	<field name="tarif_bpjs" class="java.math.BigDecimal"/>
-	<field name="klaim_bpjs_flag" class="java.lang.String"/>
-	<field name="no_checkup_online" class="java.lang.String"/>
-	<field name="metode_pembayaran" class="java.lang.String"/>
-	<field name="invoice" class="java.lang.String"/>
-	<field name="no_jurnal" class="java.lang.String"/>
-	<field name="kode_cbg" class="java.lang.String"/>
-	<field name="url_ttd" class="java.lang.String"/>
-	<field name="is_kronis" class="java.lang.String"/>
-	<field name="cover_biaya" class="java.math.BigDecimal"/>
-	<field name="id_asuransi" class="java.lang.String"/>
-	<field name="id_paket" class="java.lang.String"/>
-	<field name="no_kartu_asuransi" class="java.lang.String"/>
+	<field name="id_lab" class="java.lang.String"/>
+	<field name="id_lab_detail" class="java.lang.String"/>
+	<field name="nama_lab" class="java.lang.String"/>
+	<field name="nama_detail_periksa" class="java.lang.String"/>
 	<title>
-		<band height="195" splitType="Stretch">
+		<band height="247" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="98" width="90" height="15" uuid="6c44ef7d-db93-4127-8056-c6e5dc48fb34"/>
 				<textElement verticalAlignment="Middle">
@@ -186,7 +164,7 @@
 			<staticText>
 				<reportElement x="248" y="39" width="59" height="19" uuid="3c3637e0-6fd2-4a08-b533-8300d9a210f7"/>
 				<textElement>
-					<font fontName="Calibri" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[Printed date : ]]></text>
 			</staticText>
@@ -201,7 +179,7 @@
 			<textField pattern="dd/MM/yyyy HH.mm.ss">
 				<reportElement x="306" y="39" width="75" height="19" uuid="e3b9414a-1edb-4492-833b-f989f0d441ae"/>
 				<textElement>
-					<font fontName="Calibri" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
@@ -266,22 +244,22 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Surat Keterangan Checkup Ulang"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Surat Keterangan Kontrol"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="94" y="131" width="110" height="54" uuid="73ea5d99-db53-4816-88b6-1cb9a972499d"/>
+				<reportElement x="94" y="131" width="110" height="35" uuid="73ea5d99-db53-4816-88b6-1cb9a972499d"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Top">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.ketCheckup} == null ? "" : $P{reportParams.ketCheckup}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{reportParams.diagnosa} == null ? "" : $P{reportParams.diagnosa}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="128" width="90" height="15" uuid="e422980d-1531-4e02-ba43-56529f5ec87e"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[Keterangan]]></text>
+				<text><![CDATA[Diagnosa]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="89" y="128" width="5" height="15" uuid="3415136f-f0db-4644-9597-ff2bddd6340c"/>
@@ -310,10 +288,66 @@
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[Tgl Checkup]]></text>
+				<text><![CDATA[Tgl Kontrol]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="175" width="90" height="15" uuid="36fbe366-07a5-4111-944c-1c3d0ecb785b"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Catatan Kontrol]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="94" y="178" width="287" height="54" uuid="58840fcc-ba7f-4a44-9e20-5f674d7f8a51"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.ketCheckup} == null ? "" : $P{reportParams.ketCheckup}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="90" y="175" width="5" height="15" uuid="9406be22-377d-4bcb-a0cb-fabe31aa43b7"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="94" y="232" width="287" height="15" uuid="471ec416-78b9-4a02-a809-b1c9336433ab"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nama_lab} == null ? "" : "Pemeriksaan <b>"+$F{nama_lab}+"</b> dengan parameter sebagai berikut :"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="90" y="232" width="5" height="15" uuid="c9d3f988-fe09-4d1d-8aa8-e9160c635bdb"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="232" width="91" height="15" uuid="37dd930c-65f9-4c99-aea2-7ffcd1d16b79"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Penunjang Medis]]></text>
 			</staticText>
 		</band>
 	</title>
+	<detail>
+		<band height="14">
+			<textField>
+				<reportElement x="94" y="0" width="288" height="14" uuid="78242d18-6b4d-4956-a105-de079b5f36f7"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nama_detail_periksa} == null ? "" : $F{nama_detail_periksa} ]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
 	<lastPageFooter>
 		<band height="71">
 			<staticText>

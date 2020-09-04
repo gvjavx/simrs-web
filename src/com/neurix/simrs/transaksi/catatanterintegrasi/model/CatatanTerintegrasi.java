@@ -11,7 +11,7 @@ public class CatatanTerintegrasi extends BaseModel {
     private String idDetailCheckup;
     private Timestamp waktu;
     private String ppa;
-    private String jenis;
+    private String subjective;
     private String intruksi;
     private String ttdPetugas;
     private String ttdDpjp;
@@ -22,6 +22,105 @@ public class CatatanTerintegrasi extends BaseModel {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String nadi;
+    private String suhu;
+    private String rr;
+    private String tensi;
+    private String objective;
+    private String assesment;
+    private String planning;
+    private String namaDokter;
+    private String namaPetugas;
+    private String sipDokter;
+    private String sipPetugas;
+
+    public String getNadi() {
+        return nadi;
+    }
+
+    public void setNadi(String nadi) {
+        this.nadi = nadi;
+    }
+
+    public String getSuhu() {
+        return suhu;
+    }
+
+    public void setSuhu(String suhu) {
+        this.suhu = suhu;
+    }
+
+    public String getRr() {
+        return rr;
+    }
+
+    public void setRr(String rr) {
+        this.rr = rr;
+    }
+
+    public String getTensi() {
+        return tensi;
+    }
+
+    public void setTensi(String tensi) {
+        this.tensi = tensi;
+    }
+
+    public String getObjective() {
+        return objective;
+    }
+
+    public void setObjective(String objective) {
+        this.objective = objective;
+    }
+
+    public String getAssesment() {
+        return assesment;
+    }
+
+    public void setAssesment(String assesment) {
+        this.assesment = assesment;
+    }
+
+    public String getPlanning() {
+        return planning;
+    }
+
+    public void setPlanning(String planning) {
+        this.planning = planning;
+    }
+
+    public String getNamaDokter() {
+        return namaDokter;
+    }
+
+    public void setNamaDokter(String namaDokter) {
+        this.namaDokter = namaDokter;
+    }
+
+    public String getNamaPetugas() {
+        return namaPetugas;
+    }
+
+    public void setNamaPetugas(String namaPetugas) {
+        this.namaPetugas = namaPetugas;
+    }
+
+    public String getSipDokter() {
+        return sipDokter;
+    }
+
+    public void setSipDokter(String sipDokter) {
+        this.sipDokter = sipDokter;
+    }
+
+    public String getSipPetugas() {
+        return sipPetugas;
+    }
+
+    public void setSipPetugas(String sipPetugas) {
+        this.sipPetugas = sipPetugas;
+    }
 
     public String getIdCatatanTerintegrasi() {
         return idCatatanTerintegrasi;
@@ -55,12 +154,12 @@ public class CatatanTerintegrasi extends BaseModel {
         this.ppa = ppa;
     }
 
-    public String getJenis() {
-        return jenis;
+    public String getSubjective() {
+        return subjective;
     }
 
-    public void setJenis(String jenis) {
-        this.jenis = jenis;
+    public void setSubjective(String subjective) {
+        this.subjective = subjective;
     }
 
     public String getIntruksi() {

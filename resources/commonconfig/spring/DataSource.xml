@@ -23,7 +23,7 @@
     <!--<bean id="dataSource"-->
           <!--class="org.springframework.jdbc.datasource.DriverManagerDataSource"-->
           <!--p:driverClassName="org.postgresql.Driver"-->
-          <!--p:url="jdbc:postgresql://localhost:5432/simrs_01062020"-->
+          <!--p:url="jdbc:postgresql://localhost:5432/go_medsys_nmu_24082020"-->
           <!--p:username="postgres"-->
           <!--p:password="postgres"/>-->
 
@@ -41,5 +41,6 @@
           p:url="jdbc:postgresql://db.gomedsys.local:5432/gomedsys_nmu"
           p:username="root"
           p:password="123456"/>
+
 
 </beans>

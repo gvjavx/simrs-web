@@ -188,4 +188,52 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
 
         return results;
     }
+
+    public List<Ruangan> getListRuanganKamar(Ruangan bean) throws HibernateException{
+        List<Ruangan> results = new ArrayList<>();
+        String idKelas = "";
+        String status = "";
+        String kategori = "%";
+        if(bean.getIdKelasRuangan() != null && !"".equalsIgnoreCase(bean.getIdRuangan())){
+            idKelas = "AND b.id_kelas_ruangan = '"+bean.getIdKelasRuangan()+"' \n";
+        }
+        if("Y".equalsIgnoreCase(bean.getStatusRuangan())){
+            status = "AND b.status_ruangan = 'Y'\n" +
+                     "AND b.sisa_kuota > 0 \n";
+        }
+        if(bean.getKategori() != null && !"".equalsIgnoreCase(bean.getKategori())){
+            kategori = bean.getKategori();
+        }
+        String query = "SELECT\n" +
+                "b.id_ruangan,\n" +
+                "b.nama_ruangan,\n" +
+                "b.no_ruangan,\n" +
+                "b.sisa_kuota\n" +
+                "FROM im_simrs_kelas_ruangan a\n" +
+                "INNER JOIN mt_simrs_ruangan b ON a.id_kelas_ruangan = b.id_kelas_ruangan\n" +
+                "WHERE a.kategori LIKE :kategori\n"
+                + idKelas + status +
+                "AND b.branch_id = :branchId\n" +
+                "ORDER BY b.nama_ruangan ASC";
+
+        List<Object[]> objects = new ArrayList<>();
+        objects = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .setParameter("branchId", bean.getBranchId())
+                .setParameter("kategori", kategori)
+                .list();
+
+        if(objects.size() > 0){
+            for (Object[] obj: objects){
+                Ruangan ruangan = new Ruangan();
+                ruangan.setIdRuangan(obj[0] == null ? null : obj[0].toString());
+                ruangan.setNamaRuangan(obj[1] == null ? null : obj[1].toString());
+                ruangan.setNoRuangan(obj[2] == null ? null : obj[2].toString());
+                ruangan.setSisaKuota(obj[3] == null ? null : new Integer(obj[3].toString()));
+                results.add(ruangan);
+            }
+        }
+
+        return results;
+    }
 }

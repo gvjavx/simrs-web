@@ -167,4 +167,41 @@ public class PembayaranUtangPiutangDao extends GenericDao<ImPembayaranUtangPiuta
         }
         return listOfResult;
     }
+
+
+    public List<PembayaranUtangPiutangDetail> searchPengajuanBiaya(String branchId){
+        List<PembayaranUtangPiutangDetail> listOfResult = new ArrayList<PembayaranUtangPiutangDetail>();
+
+        String query="select\n" +
+                "        pbd.pengajuan_biaya_detail_id,\n" +
+                "        pbd.branch_id,\n" +
+                "        pbd.divisi_id\n" +
+                "    from\n" +
+                "        it_akun_pengajuan_biaya_detail pbd\n" +
+                "    LEFT JOIN it_akun_jurnal j ON pbd.pengajuan_biaya_detail_id = j.pengajuan_biaya_id\n" +
+                "\tLEFT JOIN it_akun_jurnal_detail jd ON pbd.pengajuan_biaya_detail_id = jd.no_nota\n" +
+                "    where\n" +
+                "        pbd.branch_id='"+branchId+"'\n" +
+                "        and closed='Y'\n" +
+                "\t\tand j.no_jurnal is null\n" +
+                "        and (\n" +
+                "            j.registered_flag is null\n" +
+                "            OR j.registered_flag='N'\n" +
+                "        )\n" +
+                "\t\tand jd.no_jurnal is null\n" +
+                "        and pbd.flag='Y'";
+        List<Object[]> results ;
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).list();
+        PembayaranUtangPiutangDetail data;
+        if (results.size()>0){
+            for(Object[] rows: results){
+                data = new PembayaranUtangPiutangDetail();
+                data.setNoNota(rows[0].toString());
+                listOfResult.add(data);
+            }
+        }
+
+        return listOfResult;
+    }
 }
