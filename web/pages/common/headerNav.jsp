@@ -149,11 +149,12 @@
     }
     function loadUser () {
         NotifikasiAction.searchUser(function(data){
-            if (data=="1"){
+            if (data=="admin_hcm"){
                 $(".orangPensiun").show();
             }
-            if (data=="39"){
+            if (data=="admin_keu"){
                 $(".pengajuanBiaya").show();
+                $(".terimaRk").show();
             }
         });
     }
@@ -251,6 +252,27 @@
         $("#count9").html(tmp_jml_pengajuan);
     }
 
+    function loadRk(){
+        var tmp_data_rk= "";
+        var data = [];
+        var total=0;
+        dwr.engine.setAsync(false);
+        NotifikasiAction.searchTerimaRkPengajuan(function(listData){
+            data = listData;
+            $.each(data, function(i, item){
+                total = item.jmlApproval;
+
+                tmp_data_rk += "<li>"+
+                    "<a href='<s:property value="appname" />pengajuanBiaya/terimaRk_pengajuanBiaya.action?rkId="+item.rkId+"' >"+
+                    "<span class='label label-primary'>Terima RK</span> "+item.rkId+""+
+                    "</a>"+
+                    "</li>";
+            })
+        });
+        $(".count_rk").html(total);
+        $("#inner_rk").html(tmp_data_rk);
+    }
+
     function pushNotifResep(){
         cekNotifResep();
         setInterval(function () {
@@ -343,11 +365,13 @@
     $(document).ready(function() {
         $(".orangPensiun").hide();
         $(".pengajuanBiaya").hide();
+        $(".terimaRk").hide();
         loadDataLogin();
         loadUser();
         loadNotif();
         loadPegawaiCuti();
         loadPengajuanBiaya();
+        loadRk();
         cekRole();
 
         $('.pemberitahuan').on('click', function() {
@@ -498,7 +522,6 @@
                     </a>
                 </li>--%>
                 <li class="dropdown notifications-menu pengajuanBiaya">
-                    <!-- Menu toggle button -->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-money"></i>
                         <span class="label label-success" id="count8"></span>
@@ -506,12 +529,22 @@
                     <ul class="dropdown-menu">
                         <li class="header">Ada <span id="count9"></span> pengajuan biaya</li>
                         <li>
-                            <!-- Inner Menu: contains the notifications -->
                             <ul class="menu" id="inner8">
-                                <!-- end notification -->
                             </ul>
                         </li>
-                        <%--<li class="footer"><a href="#">View all</a></li>--%>
+                    </ul>
+                </li>
+                <li class="dropdown notifications-menu terimaRk">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-tasks"></i>
+                        <span class="label label-primary count_rk"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="header">Ada <span class="count_rk"></span> Penerimaan RK</li>
+                        <li>
+                            <ul class="menu" id="inner_rk">
+                            </ul>
+                        </li>
                     </ul>
                 </li>
                 <li class="dropdown notifications-menu orangPensiun">

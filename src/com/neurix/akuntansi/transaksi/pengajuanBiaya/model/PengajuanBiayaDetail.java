@@ -104,6 +104,116 @@ public class PengajuanBiayaDetail extends BaseModel {
     private BigDecimal ppn;
     private String stPpn;
 
+    private String urlIpa;
+    private String fileName;
+    private String flagUpload;
+
+    private BigDecimal uangMuka;
+    private String stUangMuka;
+    private String nipUangMuka;
+    private String buktiUangMuka;
+
+    private String rkDikirim;
+    private String coaTarget;
+    private String rkId;
+    private String branchIdUser;
+    private String statusKeuanganName;
+
+    public String getStatusKeuanganName() {
+        return statusKeuanganName;
+    }
+
+    public void setStatusKeuanganName(String statusKeuanganName) {
+        this.statusKeuanganName = statusKeuanganName;
+    }
+
+    public String getBranchIdUser() {
+        return branchIdUser;
+    }
+
+    public void setBranchIdUser(String branchIdUser) {
+        this.branchIdUser = branchIdUser;
+    }
+
+    public String getRkDikirim() {
+        return rkDikirim;
+    }
+
+    public void setRkDikirim(String rkDikirim) {
+        this.rkDikirim = rkDikirim;
+    }
+
+    public String getCoaTarget() {
+        return coaTarget;
+    }
+
+    public void setCoaTarget(String coaTarget) {
+        this.coaTarget = coaTarget;
+    }
+
+    public String getRkId() {
+        return rkId;
+    }
+
+    public void setRkId(String rkId) {
+        this.rkId = rkId;
+    }
+
+    public BigDecimal getUangMuka() {
+        return uangMuka;
+    }
+
+    public void setUangMuka(BigDecimal uangMuka) {
+        this.uangMuka = uangMuka;
+    }
+
+    public String getStUangMuka() {
+        return stUangMuka;
+    }
+
+    public void setStUangMuka(String stUangMuka) {
+        this.stUangMuka = stUangMuka;
+    }
+
+    public String getNipUangMuka() {
+        return nipUangMuka;
+    }
+
+    public void setNipUangMuka(String nipUangMuka) {
+        this.nipUangMuka = nipUangMuka;
+    }
+
+    public String getBuktiUangMuka() {
+        return buktiUangMuka;
+    }
+
+    public void setBuktiUangMuka(String buktiUangMuka) {
+        this.buktiUangMuka = buktiUangMuka;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public String getFlagUpload() {
+        return flagUpload;
+    }
+
+    public void setFlagUpload(String flagUpload) {
+        this.flagUpload = flagUpload;
+    }
+
+    public String getUrlIpa() {
+        return urlIpa;
+    }
+
+    public void setUrlIpa(String urlIpa) {
+        this.urlIpa = urlIpa;
+    }
 
     public BigDecimal getPpn() {
         return ppn;

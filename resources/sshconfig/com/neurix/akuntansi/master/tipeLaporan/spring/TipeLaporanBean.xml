@@ -10,6 +10,7 @@
 
     <bean id="tipeLaporanBo" class="com.neurix.akuntansi.master.tipeLaporan.bo.impl.TipeLaporanBoImpl"
           p:tipeLaporanDao-ref="tipeLaporanDao"
+          p:reportDetailDao-ref="reportDetailDao"
          
     />
 

@@ -3,6 +3,7 @@ package com.neurix.hris.transaksi.notifikasi.action;
 //import com.neurix.authorization.company.bo.AreaBo;
 import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.PengajuanBiaya;
 import com.neurix.common.action.BaseMasterAction;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.bo.BiodataBo;
@@ -778,7 +779,15 @@ public class NotifikasiAction extends BaseMasterAction{
         return "";
     }
     public String searchUser() {
-        return CommonUtil.roleIdAsLogin();
+        String status="";
+        String roleId = CommonUtil.roleIdAsLogin();
+        if (CommonConstant.ROLE_ID_ADMIN.equalsIgnoreCase(roleId)){
+            status="admin_hcm";
+        }else if (CommonConstant.ROLE_ID_ADMIN_AKS.equalsIgnoreCase(roleId)||CommonConstant.ROLE_ID_KASUB_KEU.equalsIgnoreCase(roleId)||CommonConstant.ROLE_ID_KA_KEU.equalsIgnoreCase(roleId)){
+            status="admin_keu";
+        }
+
+        return status;
     }
     public List<Notifikasi> searchNotif(){
         String userLoginId = CommonUtil.userIdLogin();
@@ -910,18 +919,31 @@ public class NotifikasiAction extends BaseMasterAction{
         NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
 
         try {
-            listOfResult = notifikasiBo.getPengajuanBiayaMenggantung();
+            listOfResult = notifikasiBo.getPengajuanBiayaMenggantung(CommonUtil.userBranchLogin());
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
                 logId = notifikasiBo.saveErrorMessage(e.getMessage(), "NotifikasiBo.searchPengajuanBiayaMenggantung");
             } catch (GeneralBOException e1) {
                 logger.error("[NotifikasiBo.searchPengajuanBiayaMenggantung] Error when saving error,", e1);
-//                return ERROR;
             }
             logger.error("[NotifikasiBo.searchPengajuanBiayaMenggantung] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
-//            return ERROR;
+        }
+        return listOfResult;
+    }
+
+    public List<Notifikasi> searchTerimaRkPengajuan(){
+        List<Notifikasi> listOfResult = new ArrayList<Notifikasi>();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
+
+        try {
+            listOfResult = notifikasiBo.getTerimaRkPengajuanBiaya(CommonUtil.userBranchLogin());
+        } catch (GeneralBOException e) {
+            logger.error("[NotifikasiBo.searchPengajuanBiayaMenggantung] Error when searching alat by criteria," + "[" + e + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + e + "] Found problem when searching data by criteria, please inform to your admin" );
         }
         return listOfResult;
     }

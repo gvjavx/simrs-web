@@ -27,14 +27,24 @@ import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.transaksi.riwayatbarang.model.TransaksiStok;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
+import sun.misc.BASE64Decoder;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -52,6 +62,15 @@ public class PengajuanBiayaAction extends BaseMasterAction {
     private PengajuanBiaya pengajuanBiaya;
     private PengajuanBiayaDetail pengajuanBiayaDetail;
     private List<PengajuanBiaya> listOfComboPengajuanBiaya = new ArrayList<PengajuanBiaya>();
+    private String rkId;
+
+    public String getRkId() {
+        return rkId;
+    }
+
+    public void setRkId(String rkId) {
+        this.rkId = rkId;
+    }
 
     public PengajuanBiayaDetail getPengajuanBiayaDetail() {
         return pengajuanBiayaDetail;
@@ -744,6 +763,7 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         if (branchId!=null){
             data.setBranchId(branchId);
             data2.setBranchId(branchId);
+            data2.setBranchIdUser(branchId);
         }else{
             data.setBranchId("");
             data2.setBranchId("");
@@ -758,7 +778,7 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         session.removeAttribute("listOfResult");
         logger.info("[PengajuanBiayaAction.initFormPengajuan] end process >>>");
 
-        if ("39".equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
+        if (CommonConstant.ROLE_ID_ADMIN_AKS.equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
             return "input_pengajuan_admin";
         }else{
             return "input_pengajuan";
@@ -983,7 +1003,14 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         return pengajuanBiayaBo.searchPengajuanDetail(pengajuanBiayaId);
     }
 
-    public void saveApproveAtasanPengajuan(String pengajuanId,String status,String jumlah){
+    public String searchPengajuanDetailImage(String pengajuanBiayaId) {
+        logger.info("[PengajuanBiayaAction.searchPengajuanDetail] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PengajuanBiayaBo pengajuanBiayaBo= (PengajuanBiayaBo) ctx.getBean("pengajuanBiayaBoProxy");
+        return pengajuanBiayaBo.searchPengajuanDetailImage(pengajuanBiayaId);
+    }
+
+    public void saveApproveAtasanPengajuan(String pengajuanId,String status,String jumlah,String gambar,String flagUpload){
         logger.info("[PengajuanBiayaAction.saveApproveAtasanPengajuan] start process >>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PengajuanBiayaBo pengajuanBiayaBo= (PengajuanBiayaBo) ctx.getBean("pengajuanBiayaBoProxy");
@@ -999,6 +1026,32 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         data.setAction("U");
         data.setLastUpdateWho(userLogin);
         data.setLastUpdate(updateTime);
+
+        if ("Y".equalsIgnoreCase(flagUpload)){
+            try {
+                BASE64Decoder decoder = new BASE64Decoder();
+                byte[] decodedBytes = decoder.decodeBuffer(gambar);
+                logger.info("Decoded upload data : " + decodedBytes.length);
+                String fileName = pengajuanId+"-"+dateFormater("MM")+dateFormater("yy")+".png";
+                String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_IPA+fileName;
+                logger.info("File save path : " + uploadFile);
+                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+                if (image == null) {
+                    logger.error("Buffered Image is null");
+                }else{
+                    File f = new File(uploadFile);
+                    // write the image
+                    ImageIO.write(image, "png", f);
+                    data.setUrlIpa(fileName);
+                    data.setFlagUpload("Y");
+                }
+            }catch (Exception e){
+                String error = "ERROR : "+e.getMessage();
+                logger.error(error);
+                throw new GeneralBOException(error);
+            }
+        }
 
         switch (status){
             case "KS":
@@ -1175,16 +1228,16 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         }
     }
 
-    public PengajuanBiaya getKeteranganPembuatanRk(String pengajuanId, String status){
+    public PengajuanBiaya getKeteranganPembuatanRk(ArrayList pengajuanId, String status,String coaKas,String branchId){
         logger.info("[PengajuanBiayaAction.getKeteranganPembuatanRk] start process >>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PengajuanBiayaBo pengajuanBiayaBo= (PengajuanBiayaBo) ctx.getBean("pengajuanBiayaBoProxy");
-        PengajuanBiaya data = pengajuanBiayaBo.getPengajuanBiayaForRk(pengajuanId,status);
+        PengajuanBiaya data = pengajuanBiayaBo.getPengajuanBiayaForRk(pengajuanId,status,coaKas,branchId);
         return data;
     }
 
-    public String rkPengajuanBiaya(String id,String coaKas,String stJumlah,String keterangan,String branchId,String status){
-        logger.info("[PengajuanBiayaAction.rkPengajuanBiaya] start process >>>");
+    public String rkPengajuanBiayaKp(String id,String coaKas,String branchId,String status) throws JSONException {
+        logger.info("[PengajuanBiayaAction.rkPengajuanBiayaKp] start process >>>");
         String response = "Berhasil membuat jurnal RK";
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BillingSystemBo billingSystemBo= (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
@@ -1192,12 +1245,29 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
         PengajuanBiayaBo pengajuanBiayaBo= (PengajuanBiayaBo) ctx.getBean("pengajuanBiayaBoProxy");
 
-        BigDecimal jumlah = BigDecimal.valueOf(Double.valueOf(stJumlah.replace(".","").replace(",","")));
+        BigDecimal jumlah = BigDecimal.ZERO;
+
+        List<PengajuanBiayaDetail> pengajuanBiayaDetailList = new ArrayList<>();
+
+
+        ArrayList<String> idPengajuan = new ArrayList<>();
+        JSONArray json = new JSONArray(id);
+        for (int i = 0; i < json.length(); i++) {
+            JSONObject obj = json.getJSONObject(i);
+            idPengajuan.add(obj.getString("id"));
+        }
+
+        for (int i = 0; i < idPengajuan.size(); i++){
+            pengajuanBiayaDetailList.add(pengajuanBiayaBo.getDetailById(idPengajuan.get(i)));
+        }
+
+        for (PengajuanBiayaDetail pengajuanBiayaDetail : pengajuanBiayaDetailList){
+            jumlah = jumlah.add(pengajuanBiayaDetail.getJumlah());
+        }
 
         //Membuat Jurnal
         //membuat RK pengiriman modal
         Map dataRk = new HashMap();
-
         //mencari coa RK
         Branch branch = branchBo.getBranchById(branchId,"Y");
         Map rkUnit = new HashMap();
@@ -1212,21 +1282,64 @@ public class PengajuanBiayaAction extends BaseMasterAction {
 
         if ("K".equalsIgnoreCase(status)){
             //membuat jurnal RK dari kantor pusat
-            billingSystemBo.createJurnal("59",dataRk,CommonConstant.ID_KANPUS,keterangan,"Y");
-            pengajuanBiayaBo.setRkSudahDikirim(id,coaKas);
-        }else if ("T".equalsIgnoreCase(status)){
-            // membuat jurnal rk dan jurnal biaya jika data sudah diterima unit
-            billingSystemBo.createJurnal("60",dataRk,branchId,keterangan,"Y");
-            pengajuanBiayaBo.cekApakahBisaDiClose(id);
-            pengajuanBiayaBo.setRkDiterima(id);
+            billingSystemBo.createJurnal(CommonConstant.TRANSAKSI_ID_KIRIM_RK,dataRk,CommonConstant.ID_KANPUS,getKeteranganPembuatanRk(idPengajuan,status,coaKas,branchId).getKeterangan(),"Y");
+            pengajuanBiayaBo.setRkSudahDikirim(idPengajuan,coaKas);
+
         }
+        return response;
+    }
+
+    public String rkPengajuanBiayaUnit(String rkId) {
+        logger.info("[PengajuanBiayaAction.rkPengajuanBiayaUnit] start process >>>");
+        String response = "Berhasil membuat jurnal RK";
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BillingSystemBo billingSystemBo= (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+        KodeRekeningBo kodeRekeningBo= (KodeRekeningBo) ctx.getBean("kodeRekeningBoProxy");
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        PengajuanBiayaBo pengajuanBiayaBo= (PengajuanBiayaBo) ctx.getBean("pengajuanBiayaBoProxy");
+
+        String branchId = "";
+        String coaKas = "";
+        String status = "T";
+        BigDecimal jumlah = BigDecimal.ZERO;
+        ArrayList<String> idPengajuan = new ArrayList<>();
+        List<PengajuanBiayaDetail> pengajuanBiayaDetailList = new ArrayList<>();
+        pengajuanBiayaDetailList = pengajuanBiayaBo.cariPengajuanBiayaDetailDenganRkId(rkId);
+
+        for (PengajuanBiayaDetail pengajuanBiayaDetail : pengajuanBiayaDetailList){
+            jumlah = jumlah.add(pengajuanBiayaDetail.getJumlah());
+            branchId = pengajuanBiayaDetail.getBranchId();
+            coaKas = pengajuanBiayaDetail.getCoaTarget();
+            idPengajuan.add(pengajuanBiayaDetail.getPengajuanBiayaDetailId());
+        }
+
+        //Membuat Jurnal
+        //membuat RK pengiriman modal
+        Map dataRk = new HashMap();
+        //mencari coa RK
+        Branch branch = branchBo.getBranchById(branchId,"Y");
+        Map rkUnit = new HashMap();
+        rkUnit.put("nilai",jumlah);
+        rkUnit.put("rekening_id",kodeRekeningBo.getRekeningIdByKodeRekening(branch.getCoaRk()));
+        dataRk.put("rk_kd_unit",rkUnit);
+
+        Map giro = new HashMap();
+        giro.put("nilai",jumlah);
+        giro.put("rekening_id",kodeRekeningBo.getRekeningIdByKodeRekening(coaKas));
+        dataRk.put("metode_bayar",giro);
+
+        // membuat jurnal rk dan jurnal biaya jika data sudah diterima unit
+        billingSystemBo.createJurnal(CommonConstant.TRANSAKSI_ID_TERIMA_RK,dataRk,branchId,getKeteranganPembuatanRk(idPengajuan,status,coaKas,branchId).getKeterangan(),"Y");
+//        pengajuanBiayaBo.cekApakahBisaDiClose(id);
+        pengajuanBiayaBo.setRkDiterima(idPengajuan);
         return response;
     }
 
     public PengajuanBiaya cekApakahBolehRk (String pengajuanId){
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PengajuanBiayaBo pengajuanBiayaBo= (PengajuanBiayaBo) ctx.getBean("pengajuanBiayaBoProxy");
-        return pengajuanBiayaBo.cekApakahBolehRk(pengajuanId);    }
+        return pengajuanBiayaBo.cekApakahBolehRk(pengajuanId);
+    }
 
     public String batalkanPengajuanBiaya(String pengajuanBiayaId,String keteranganBatal){
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -1282,6 +1395,13 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PengajuanBiayaBo pengajuanBiayaBo= (PengajuanBiayaBo) ctx.getBean("pengajuanBiayaBoProxy");
         return pengajuanBiayaBo.cariPengajuanBiayaDetail(pengajuanBiayaDetailId);
+    }
+
+    public List<PengajuanBiayaDetail> cariPengajuanBiayaDetailUangMuka(String pengajuanBiayaDetailId) {
+        logger.info("[PengajuanBiayaAction.cariPengajuanBiayaDetail] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PengajuanBiayaBo pengajuanBiayaBo= (PengajuanBiayaBo) ctx.getBean("pengajuanBiayaBoProxy");
+        return pengajuanBiayaBo.cariPengajuanBiayaDetailUangMuka(pengajuanBiayaDetailId);
     }
 
     public String cetakSurat(){
@@ -1424,14 +1544,54 @@ public class PengajuanBiayaAction extends BaseMasterAction {
 
         String branchId = CommonUtil.userBranchLogin();
         if (branchId!=null){
-            searchPengajuanBiayaDetail.setBranchId(branchId);
+            searchPengajuanBiayaDetail.setBranchIdUser(branchId);
         }else{
-            searchPengajuanBiayaDetail.setBranchId("");
+            searchPengajuanBiayaDetail.setBranchIdUser("");
         }
         setPengajuanBiayaDetail(searchPengajuanBiayaDetail);
         logger.info("[PengajuanBiayaAction.searchPengajuanAdmin] end process <<<");
 
         return "success_pengajuan_admin";
+    }
+
+    public String terimaRk() {
+        logger.info("[PengajuanBiayaAction.terimaRk] start process >>>");
+        PengajuanBiayaDetail searchPengajuanBiayaDetail = new PengajuanBiayaDetail();
+        searchPengajuanBiayaDetail.setFlag("Y");
+        searchPengajuanBiayaDetail.setRkId(getRkId());
+
+        List<PengajuanBiayaDetail> listOfsearchPengajuanBiayaDetail = new ArrayList();
+        try {
+            listOfsearchPengajuanBiayaDetail = pengajuanBiayaBoProxy.getByCriteriaDetail(searchPengajuanBiayaDetail);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = pengajuanBiayaBoProxy.saveErrorMessage(e.getMessage(), "PengajuanBiayaBO.terimaRk");
+            } catch (GeneralBOException e1) {
+                logger.error("[PengajuanBiayaAction.terimaRk] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[PengajuanBiayaAction.terimaRk] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            return ERROR;
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        session.removeAttribute("listOfResult");
+        session.setAttribute("listOfResult", listOfsearchPengajuanBiayaDetail);
+
+        String branchId = CommonUtil.userBranchLogin();
+        if (branchId!=null){
+            searchPengajuanBiayaDetail.setBranchIdUser(branchId);
+        }else{
+            searchPengajuanBiayaDetail.setBranchIdUser("");
+        }
+        setPengajuanBiayaDetail(searchPengajuanBiayaDetail);
+
+        logger.info("[PengajuanBiayaAction.terimaRk] end process <<<");
+
+        return "terima_rk";
     }
 
     public PengajuanBiayaDetail getForModalPopUpDetail(String pengajuanBiayaDetailId) {
@@ -1441,6 +1601,12 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         PengajuanBiayaDetail modalPopUpDetail = pengajuanBiayaBo.modalPopUpDetail(pengajuanBiayaDetailId);
 
         return modalPopUpDetail;
+    }
+
+    private String dateFormater(String type) {
+        java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
+        DateFormat df = new SimpleDateFormat(type);
+        return df.format(date);
     }
 
     public String paging(){

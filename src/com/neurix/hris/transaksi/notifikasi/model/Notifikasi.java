@@ -40,6 +40,16 @@ public class Notifikasi extends BaseModel {
     private String divisiName;
     private String keperluan;
 
+    //for terima RK
+    private String rkId;
+
+    public String getRkId() {
+        return rkId;
+    }
+
+    public void setRkId(String rkId) {
+        this.rkId = rkId;
+    }
 
     public String getPengajuanBiayaDetailId() {
         return pengajuanBiayaDetailId;

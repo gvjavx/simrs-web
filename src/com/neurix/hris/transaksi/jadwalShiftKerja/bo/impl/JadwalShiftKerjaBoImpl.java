@@ -14,6 +14,8 @@ import com.neurix.hris.master.groupShift.dao.GroupShiftDao;
 import com.neurix.hris.master.groupShift.model.GroupShift;
 import com.neurix.hris.master.groupShift.model.ImHrisGroupShift;
 import com.neurix.hris.master.kelompokPosition.model.ImKelompokPositionEntity;
+import com.neurix.hris.master.libur.dao.LiburDao;
+import com.neurix.hris.master.libur.model.ImLiburEntity;
 import com.neurix.hris.master.profesi.dao.ProfesiDao;
 import com.neurix.hris.master.profesi.model.ImProfesiEntity;
 import com.neurix.hris.master.shift.dao.ShiftDao;
@@ -24,11 +26,13 @@ import com.neurix.hris.transaksi.jadwalShiftKerja.dao.JadwalShiftKerjaDetailDao;
 import com.neurix.hris.transaksi.jadwalShiftKerja.model.*;
 import com.neurix.hris.transaksi.personilPosition.dao.PersonilPositionDao;
 import com.neurix.hris.transaksi.personilPosition.model.ItPersonilPositionEntity;
+import com.neurix.simrs.transaksi.CrudResponse;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
 
 import javax.servlet.http.HttpSession;
+import javax.xml.ws.Response;
 import java.sql.*;
 import java.sql.Date;
 import java.util.*;
@@ -52,6 +56,11 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
     private PositionDao positionDao;
     private PersonilPositionDao personilPositionDao;
     private ProfesiDao profesiDao;
+    private LiburDao liburDao;
+
+    public void setLiburDao(LiburDao liburDao) {
+        this.liburDao = liburDao;
+    }
 
     public ProfesiDao getProfesiDao() {
         return profesiDao;
@@ -651,5 +660,42 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
         }
         logger.info("[JadwalShiftKerjaBoImpl.getJadwalShiftKerjaByUnitAndTanggal] end process <<<");
         return dataFinal;
+    }
+
+    @Override
+    public CrudResponse getListLibur(String tanggalAwal, String tanggalAkhir) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        List<ImLiburEntity> imLiburEntityList = new ArrayList<>();
+
+        if (!"".equalsIgnoreCase(tanggalAwal) && !"".equalsIgnoreCase(tanggalAkhir)) {
+            try {
+                imLiburEntityList = liburDao.getLiburRange(Date.valueOf(tanggalAwal), Date.valueOf(tanggalAkhir));
+            }
+            catch (HibernateException e) {
+                response.setStatus("Error");
+                response.setMsg(e.getMessage());
+            }
+        }
+
+        if (!"".equalsIgnoreCase(tanggalAwal)) {
+            try {
+                imLiburEntityList = liburDao.getListLibur(Date.valueOf(tanggalAwal));
+            }
+            catch (HibernateException e) {
+                response.setStatus("Error");
+                response.setMsg(e.getMessage());
+            }
+        }
+
+        if(imLiburEntityList.size()>0) {
+            response.setStatus("error");
+            response.setMsg("Tanggal libur. Lanjutkan?");
+        }
+        else {
+            response.setStatus("success");
+            response.setMsg("Berhasil mengajukan shift");
+        }
+
+        return response;
     }
 }

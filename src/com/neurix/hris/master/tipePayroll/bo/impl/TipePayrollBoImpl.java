@@ -1,6 +1,7 @@
 package com.neurix.hris.master.tipePayroll.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.hris.master.tipePayroll.model.ImHrisTipePayrollHistoryEntity;
 import com.neurix.hris.master.tipePayroll.bo.TipePayrollBo;
 import com.neurix.hris.master.tipePayroll.dao.TipePayrollDao;
 import com.neurix.hris.master.tipePayroll.model.ImHrisTipePayrollEntity;
@@ -96,14 +97,28 @@ public class TipePayrollBoImpl implements TipePayrollBo {
                 throw new GeneralBOException("Nama Tipe Payroll sudah ada");
             } else {
                 ImHrisTipePayrollEntity imTipePayrollEntity = null;
+                String idHistory = "";
                 try {
                     // Get data from database by ID
                     imTipePayrollEntity = tipePayrollDao.getById("tipePayrollId", bean.getTipePayrollId());
+                    idHistory = tipePayrollDao.getNextTipePayrollHistoryId();
                 } catch (HibernateException e) {
                     logger.error("[TipePayrollBoImpl.saveEdit] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when searching data TipePayroll by Kode TipePayroll, please inform to your admin...," + e.getMessage());
                 }
                 if (imTipePayrollEntity != null) {
+                    ImHrisTipePayrollHistoryEntity imTipePayrollHistoryEntity = new ImHrisTipePayrollHistoryEntity();
+
+                    imTipePayrollHistoryEntity.setId(idHistory);
+                    imTipePayrollHistoryEntity.setTipePayrollId(imTipePayrollEntity.getTipePayrollId());
+                    imTipePayrollHistoryEntity.setTipePayrollName(imTipePayrollEntity.getTipePayrollName());
+                    imTipePayrollHistoryEntity.setFlag(imTipePayrollEntity.getFlag());
+                    imTipePayrollHistoryEntity.setAction(imTipePayrollEntity.getAction());
+                    imTipePayrollHistoryEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    imTipePayrollHistoryEntity.setLastUpdate(bean.getLastUpdate());
+                    imTipePayrollHistoryEntity.setCreatedWho(imTipePayrollEntity.getLastUpdateWho());
+                    imTipePayrollHistoryEntity.setCreatedDate(imTipePayrollEntity.getLastUpdate());
+
                     imTipePayrollEntity.setTipePayrollName(bean.getTipePayrollName());
                     imTipePayrollEntity.setFlag(bean.getFlag());
                     imTipePayrollEntity.setAction(bean.getAction());
@@ -112,6 +127,7 @@ public class TipePayrollBoImpl implements TipePayrollBo {
                     try {
                         // Update into database
                         tipePayrollDao.updateAndSave(imTipePayrollEntity);
+                        tipePayrollDao.addAndSaveHistory(imTipePayrollHistoryEntity);
                     } catch (HibernateException e) {
                         logger.error("[TipePayrollBoImpl.saveEdit] Error, " + e.getMessage());
                         throw new GeneralBOException("Found problem when saving update data TipePayroll, please info to your admin..." + e.getMessage());

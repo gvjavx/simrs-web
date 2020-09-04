@@ -1344,7 +1344,7 @@
     $('#btnSavePerbaikanSisaCuti').on('click', function () {
         CutiPegawaiAction.saveInisialisasi(function(data) {
             if (data!=""){
-                alert("User Sudah Pernah Memperbaiki Cuti");
+                alert("Perbaikan Cuti Tidak Bisa Dilakukan , User Sudah Memiliki Data Cuti");
             }else{
                 alert("perbaikan berhasil");
                 $('#modal-edit-inisialisasi').modal('hide');

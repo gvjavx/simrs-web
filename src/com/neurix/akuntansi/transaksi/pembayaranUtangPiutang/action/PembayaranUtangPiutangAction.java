@@ -709,6 +709,118 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         return "success_save_add_koreksi";
     }
 
+    public String saveAddKoreksiPengajuan(String pengajuanId,String kodeRekeningLawan,String metodeBayar,String stJumlahPembayaran,
+                                          String stNetto,String stPpn,String stPph, String kodeVendor,String stUangMuka,String nip,
+                                          String buktiUangMuka,String noFakturPajak,String uploadFakturPajak,String keterangan,String branchId,
+                                          String divisiId,String sumberDana){
+        logger.info("[PembayaranUtangPiutangAction.saveAddKoreksiPengajuan] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        String noJurnal="";
+        List<PembayaranUtangPiutangDetail> pembayaranUtangPiutangDetailList = (List<PembayaranUtangPiutangDetail>) session.getAttribute("listOfResultPembayaranDetail");
+        List<Lampiran> lampiranList= (List<Lampiran>) session.getAttribute("listOfResultLampiran");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PembayaranUtangPiutangBo pembayaranUtangPiutangBo = (PembayaranUtangPiutangBo) ctx.getBean("pembayaranUtangPiutangBoProxy");
+        KodeRekeningBo kodeRekeningBo = (KodeRekeningBo) ctx.getBean("kodeRekeningBoProxy");
+        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+
+        //convert ke bigdecimal
+        BigDecimal netto = new BigDecimal(stNetto.replace(".",""));;
+        BigDecimal ppn = BigDecimal.ZERO;
+        BigDecimal pph = BigDecimal.ZERO;
+        BigDecimal nilaiUangMuka = new BigDecimal(stUangMuka.replace(".",""));
+        BigDecimal jumlahPembayaran = new BigDecimal(stJumlahPembayaran.replace(".",""));
+
+        if (!"".equalsIgnoreCase(stPpn)){
+            ppn = new BigDecimal(stPpn.replace(".",""));
+        }
+
+        if (!"".equalsIgnoreCase(stPph)){
+            pph = new BigDecimal(stPph.replace(".",""));
+        }
+
+        String tipeTransaksi="";///////>>>>>>>>>>>>>>>>>>>
+        if (nilaiUangMuka.add(pph).compareTo(jumlahPembayaran.add(ppn))<0){
+            tipeTransaksi = CommonConstant.TRANSAKSI_ID_PEMBAYARAN_PENGAJUAN_BIAYA_UM_KURANG; // TIPE TRANSAKSI UANG MUKA KURANG
+        }else{
+            tipeTransaksi = CommonConstant.TRANSAKSI_ID_PEMBAYARAN_PENGAJUAN_BIAYA_UM_LEBIH;; // TIPE TRANSAKSI UANG MUKA LEBIH ATAU PAS
+        }
+
+        PembayaranUtangPiutang pembayaranUtangPiutang = new PembayaranUtangPiutang();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        pembayaranUtangPiutang.setTipeTransaksi(tipeTransaksi);
+        pembayaranUtangPiutang.setBayar(jumlahPembayaran);
+        pembayaranUtangPiutang.setMetodePembayaran(metodeBayar);
+        pembayaranUtangPiutang.setNoSlipBank("");
+        pembayaranUtangPiutang.setBranchId(branchId);
+        pembayaranUtangPiutang.setKeterangan(keterangan);
+        pembayaranUtangPiutang.setTipePembayaran("KR");
+        pembayaranUtangPiutang.setTanggal(new Date(new java.util.Date().getTime()));
+
+        pembayaranUtangPiutang.setCreatedWho(userLogin);
+        pembayaranUtangPiutang.setLastUpdate(updateTime);
+        pembayaranUtangPiutang.setCreatedDate(updateTime);
+        pembayaranUtangPiutang.setLastUpdateWho(userLogin);
+        pembayaranUtangPiutang.setAction("C");
+        pembayaranUtangPiutang.setFlag("Y");
+
+        try {
+            //get parameter pembayaran
+            Map dataPostingJurnal = new HashMap();
+            Map kas = new HashMap();
+            String rekeningIdBayar = kodeRekeningBo.getRekeningIdByKodeRekening(metodeBayar);
+            kas.put("rekening_id",rekeningIdBayar);
+            kas.put("nilai",netto);
+
+            Map mapPpn = new HashMap();
+            mapPpn.put("master_id",kodeVendor);
+            mapPpn.put("nilai",ppn);
+
+            Map mapPph = new HashMap();
+            mapPph.put("master_id",kodeVendor);
+            mapPph.put("nilai",pph);
+
+            Map uangMuka = new HashMap();
+            uangMuka.put("master_id",nip);
+            uangMuka.put("bukti",buktiUangMuka);
+            uangMuka.put("nilai",nilaiUangMuka);
+
+            Map bebanPokok = new HashMap();
+            String rekeningId = kodeRekeningBo.getRekeningIdByKodeRekening(kodeRekeningLawan);
+            bebanPokok.put("nilai",jumlahPembayaran);
+            bebanPokok.put("rekening_id",rekeningId);
+            bebanPokok.put("divisi_id",divisiId);
+
+            dataPostingJurnal.put("metode_bayar",kas);
+            dataPostingJurnal.put("ppn_masukan",mapPpn);
+            dataPostingJurnal.put("pph",mapPph);
+            dataPostingJurnal.put("beban",bebanPokok);
+            dataPostingJurnal.put("uang_muka",uangMuka);
+            dataPostingJurnal.put("pengajuan_id",pengajuanId);
+            dataPostingJurnal.put("sumber_dana",sumberDana);
+
+            Jurnal jurnal = billingSystemBo.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),dataPostingJurnal,branchId,keterangan,"N");
+            noJurnal = jurnal.getNoJurnal();
+            pembayaranUtangPiutang.setNoJurnal(noJurnal);
+            pembayaranUtangPiutangBo.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList,lampiranList);
+        }catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = pembayaranUtangPiutangBo.saveErrorMessage(e.getMessage(), "PembayaranUtangPiutangAction.saveAddKoreksiPengajuan");
+            } catch (GeneralBOException e1) {
+                logger.error("[PembayaranUtangPiutangAction.saveAddKoreksiPengajuan] Error when saving error,", e1);
+                throw new GeneralBOException(e1.getMessage());
+            }
+            logger.error("[PembayaranUtangPiutangAction.saveAddKoreksiPengajuan] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            throw new GeneralBOException(e.getMessage());
+        }
+
+        logger.info("[PembayaranUtangPiutangAction.saveAddKoreksiPengajuan] end process >>>");
+        return "success menambahkan koreksi pengajuan";
+    }
+
     @Override
     public String search() {
         logger.info("[PembayaranUtangPiutangAction.search] start process >>>");
@@ -812,6 +924,40 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         return "success_koreksi";
     }
 
+    public String searchKoreksiPengajuan() {
+        logger.info("[PembayaranUtangPiutangAction.searchKoreksiPengajuan] start process >>>");
+        PembayaranUtangPiutang searchPembayaranUtangPiutang = getPembayaranUtangPiutang();
+        List<PembayaranUtangPiutang> listOfsearchPembayaranUtangPiutang = new ArrayList();
+        try {
+            listOfsearchPembayaranUtangPiutang = pembayaranUtangPiutangBoProxy.getByCriteria(searchPembayaranUtangPiutang);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = pembayaranUtangPiutangBoProxy.saveErrorMessage(e.getMessage(), "PembayaranUtangPiutangBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[PembayaranUtangPiutangAction.searchKoreksiPengajuan] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[PembayaranUtangPiutangAction.searchKoreksiPengajuan] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            return ERROR;
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        session.removeAttribute("listOfResult");
+        session.removeAttribute("listOfResultKodeRekening");
+        session.removeAttribute("listPembayaranDetailModal");
+        session.setAttribute("listOfResult", listOfsearchPembayaranUtangPiutang);
+
+        searchPembayaranUtangPiutang.setBranchIdUser(CommonUtil.userBranchLogin());
+
+        setPembayaranUtangPiutang(searchPembayaranUtangPiutang);
+        logger.info("[PembayaranUtangPiutangAction.searchKoreksiPengajuan] end process <<<");
+
+        return "success_koreksi_pengajuan";
+    }
+
     @Override
     public String initForm() {
         logger.info("[PembayaranUtangPiutangAction.initForm] start process >>>");
@@ -867,6 +1013,24 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         session.removeAttribute("listOfResultPembayaranDetail");
         logger.info("[PembayaranUtangPiutangAction.initFormKoreksi] end process >>>");
         return "input_koreksi";
+    }
+
+    public String initFormKoreksiPengajuan() {
+        logger.info("[PembayaranUtangPiutangAction.initFormKoreksiPengajuan] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        String branchId = CommonUtil.userBranchLogin();
+        PembayaranUtangPiutang data = new PembayaranUtangPiutang();
+        if (branchId!=null){
+            data.setBranchId(branchId);
+            data.setBranchIdUser(branchId);
+        }else{
+            data.setBranchId("");
+        }
+        setPembayaranUtangPiutang(data);
+        session.removeAttribute("listOfResult");
+        session.removeAttribute("listOfResultPembayaranDetail");
+        logger.info("[PembayaranUtangPiutangAction.initFormKoreksiPengajuan] end process >>>");
+        return "input_koreksi_pengajuan";
     }
 
     public String saveDetailPembayaran(String kodeVendor,String namaVendor,String noNota,String jumlahPembayaran,
@@ -1136,6 +1300,35 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         return result;
     }
 
+    public List<PembayaranUtangPiutangDetail> searchPengajuanBiaya(String branchId) {
+        logger.info("[PembayaranUtangPiutangAction.searchPengajuanBiaya] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PembayaranUtangPiutangBo pembayaranUtangPiutangBo = (PembayaranUtangPiutangBo) ctx.getBean("pembayaranUtangPiutangBoProxy");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        List<PembayaranUtangPiutangDetail> listDataDb = pembayaranUtangPiutangBo.searchPengajuanBiaya(branchId);
+        List<PembayaranUtangPiutangDetail> listDataSession = (List<PembayaranUtangPiutangDetail>) session.getAttribute("listOfResultPembayaranDetail");
+        List<PembayaranUtangPiutangDetail> result= new ArrayList<>();
+        if (listDataSession==null){
+            result.addAll(listDataDb);
+        }else{
+            //jika sudah ada pada session tidak usah ditampilkan
+            for (PembayaranUtangPiutangDetail dataDb : listDataDb){
+                boolean ada = false;
+                for (PembayaranUtangPiutangDetail dataSession : listDataSession){
+                    if (dataDb.getNoNota().equalsIgnoreCase(dataSession.getNoNota())){
+                        ada=true;
+                        break;
+                    }
+                }
+                if (!ada){
+                    result.add(dataDb);
+                }
+            }
+        }
+        logger.info("[PembayaranUtangPiutangAction.searchPengajuanBiaya] end process >>>");
+        return result;
+    }
 
     public String getTipeMaster(String transaksiId) {
         logger.info("[PembayaranUtangPiutangAction.getTipeMaster] start process >>>");
@@ -1268,12 +1461,15 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         String itemFlag = "Y";
         PembayaranUtangPiutang modalPopUp = new PembayaranUtangPiutang();
         List<PembayaranUtangPiutangDetail> listDetail = new ArrayList<>();
+        List<Lampiran> lampiranList = new ArrayList<>();
         HttpSession session = ServletActionContext.getRequest().getSession();
         try {
             modalPopUp = init(itemId, itemFlag);
             if (modalPopUp!=null){
                 listDetail = pembayaranUtangPiutangBo.getDetailPembayaran(pembayaranId);
+                lampiranList = pembayaranUtangPiutangBo.getLampiranList(pembayaranId);
                 session.setAttribute("listPembayaranDetailModal",listDetail);
+                session.setAttribute("listOfResultLampiran",lampiranList);
             }
         } catch (GeneralBOException e) {
             Long logId = null;

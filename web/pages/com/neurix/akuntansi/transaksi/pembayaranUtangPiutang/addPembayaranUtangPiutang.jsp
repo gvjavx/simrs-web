@@ -202,6 +202,10 @@
                                                             getCoaLawanVendor();
                                                             $('.modal_vendor').val('');
                                                             $('#modal-add-vendor').modal('show');
+                                                        }else if (tipeMaster=="karyawan"){
+                                                            getCoaLawanKaryawan();
+                                                            $('.modal_karyawan').val('');
+                                                            $('#modal-add-karyawan').modal('show');
                                                         } else{
                                                             getCoaLawanLain();
                                                             $('#mod_id_lain').attr('readonly', true);
@@ -405,6 +409,11 @@
                                                 var option = '<option value="'+selectedObj.coaLawan+'">'+selectedObj.coaLawanName+'</option>';
                                                 $('#mod_coa_lawan').html(option);
                                                 $('#mod_jumlah_pembayaran').val(selectedObj.jumlah.replace(/[,]/g,"."));
+
+                                                var jumlah = selectedObj.jumlah.replace(/[,]/g,"");
+                                                var nilaiJumlah = parseInt(jumlah);
+                                                $('#mod_total_ppn').val(formatRupiahAtas(nilaiJumlah*10/100));
+                                                $('#mod_total_pph').val(formatRupiahAtas(nilaiJumlah*2/100));
                                                 isiKeteterangan();
                                                 return selectedObj.id;
                                             }
@@ -566,14 +575,14 @@
                                 <label class="col-md-4" style="margin-top: 7px">Upload Faktur Pajak</label>
                                 <div class="col-md-8">
                                     <div class="input-group" id="img_file"  style="margin-top: 7px">
-                              <span class="input-group-btn">
-                              <span class="btn btn-default btn-file btn-file-1">
-                                   Browse… <s:file id="imgInp" accept=".jpg" name="fileUpload"
-                                                   onchange="$('#img_file').css('border','')"></s:file>
-                                                        </span>
-                                                        </span>
+                                      <span class="input-group-btn">
+                                      <span class="btn btn-default btn-file btn-file-1">
+                                           Browse… <s:file id="imgInp" accept=".jpg" name="fileUpload"
+                                                           onchange="$('#img_file').css('border','')"></s:file>
+                                        </span>
+                                        </span>
                                             <input type="text" class="form-control" readonly id="namaFile">
-                                        </div>
+                                    </div>
                                     <canvas id="img_faktur_canvas" style="display: none"></canvas>
                                 </div>
                             </div>
@@ -955,6 +964,103 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-add-karyawan">
+    <div class="modal-dialog modal-flat modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Add Pengeluaran Kas Karyawan</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">COA Lawan</label>
+                                <div class="col-md-8">
+                                    <select class="form-control modal_karyawan" id="mod_coa_lawan_karyawan" style="margin-top: 7px">
+                                        <option value="" ></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group" id="kode_karyawan">
+                                <label class="col-md-4" style="margin-top: 7px">ID Karyawan</label>
+                                <div class="col-md-3">
+                                    <s:textfield id="mod_id_karyawan" onkeypress="$(this).css('border','')" wajib="Y"
+                                                 cssClass="form-control modal_karyawan" cssStyle="margin-top: 7px" />
+                                    <script>
+                                        $(document).ready(function() {
+                                            var functions, mapped;
+                                            $('#mod_id_karyawan').typeahead({
+                                                minLength: 1,
+                                                source: function (query, process) {
+                                                    functions = [];
+                                                    mapped = {};
+                                                    var data = [];
+                                                    var master = $('#tipeMaster').val();
+                                                    dwr.engine.setAsync(false);
+                                                    MasterAction.initTypeaheadMasterPembayaran(query,master,function (listdata) {
+                                                        data = listdata;
+                                                    });
+                                                    $.each(data, function (i, item) {
+                                                        var labelItem = item.nomorVendor + " | " + item.nama;
+                                                        mapped[labelItem] = {
+                                                            id: item.nomorVendor,
+                                                            nama: item.nama
+                                                        };
+                                                        functions.push(labelItem);
+                                                    });
+                                                    process(functions);
+                                                },
+                                                updater: function (item) {
+                                                    var selectedObj = mapped[item];
+                                                    $('#mod_nama_karyawan').val(selectedObj.nama);
+                                                    return selectedObj.id;
+                                                }
+                                            });
+                                        });
+                                    </script>
+                                </div>
+                                <div class="col-md-5">
+                                    <s:textfield id="mod_nama_karyawan" onkeypress="$(this).css('border','')" readonly="true"
+                                                 cssClass="form-control modal_karyawan" cssStyle="margin-top: 7px" />
+                                </div>
+                            </div>
+                            <div class="form-group" id="no_nota_view_karyawan">
+                                <label class="col-md-4" style="margin-top: 7px">No. Nota/Pengajuan</label>
+                                <div class="col-md-7">
+                                    <s:textfield id="mod_no_nota_karyawan" wajib="Y"
+                                                 cssClass="form-control modal_karyawan" readonly="true" cssStyle="margin-top: 7px"/>
+                                </div>
+                                <s:hidden id="mod_rekening_id_karyawan"/>
+                                <div class="col-md-1">
+                                    <a href="javascript:void(0)">
+                                        <img  style="margin-top: 10px" id="modBtnSearchNotaKaryawan" border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_view">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">Jumlah Pembayaran (RP)</label>
+                                <div class="col-md-8">
+                                    <s:textfield id="mod_jumlah_pembayaran_karyawan"  onkeyup="formatRupiah2(this)" cssClass="form-control modal_karyawan" cssStyle="margin-top: 7px;margin-bottom: 14px" />
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <a id="mod_btnSaveDetailKaryawan" type="button" class="btn btn-default btn-success"><i class="fa fa-plus"></i> Add</a>
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modal-add-lain">
     <div class="modal-dialog modal-flat modal-lg">
         <div class="modal-content">
@@ -1319,6 +1425,9 @@
                 $('#mod_no_nota_dokter').val(noNota);
                 $('#mod_jumlah_pembayaran_dokter').val(bayar);
                 $('#mod_rekening_id_dokter').val(rekeningId);
+            }else if (tipeMaster=="karyawan"){
+                $('#mod_no_nota_karyawan').val(noNota);
+                $('#mod_rekening_id_karyawan').val(rekeningId);
             }
             $("#modal-search-nota").modal('hide');
 
@@ -1404,7 +1513,7 @@
 
             var msg = "";
 
-            if (tanggalRealisasi!=""&&jumlahPengajuan!=""&&jumlahPembayaran!=""&&msg==""&&kodeVendor!=""&&namaVendor!=""&&noFakturPajak!=""&&cekCanvas!="") {
+            if (tanggalRealisasi!=""&&jumlahPengajuan!=""&&jumlahPembayaran!=""&&msg==""&&kodeVendor!=""&&namaVendor!="") {
                 jumlahPengajuan = jumlahPengajuan.replace(/[,]/g, "");
                 var nilaijumlahPembayaran = jumlahPembayaran.replace(/[.]/g, "");
                 var nilaiPengajuan = parseInt(jumlahPengajuan);
@@ -1414,30 +1523,65 @@
                 if (nilaiPengajuan-(nilaiPembayaran+nilaiPph-nilaiPpn)<0){
                     alert("jumlah Pembayaran + PPH - PPN lebih dari jumlah pengajuan");
                 }else if (nilaiPengajuan >= nilaiPembayaran && tglRealisasi <= currentTime) {
-                    PembayaranUtangPiutangAction.saveDetailPembayaran(kodeVendor, namaVendor, "", jumlahPembayaran, rekeningId, divisiId,
-                        divisiName, tipePengajuanBiaya, pengajuanBiayaDetailId, noBudgeting,jumlah_ppn,
-                        jumlah_pph,noFakturPajak,dataURL, function (result) {
-                            if (result == "") {
-                                loadDetailPembayaran();
-                                //dihitung totalbayarnya
-                                var totalBayar = $('#bayar').val();
-                                totalBayar = totalBayar.replace(/[.]/g, "");
-                                var strBayar = jumlahPembayaran.replace(/[.]/g, "");
-                                var intTotalBayar = 0;
-                                if (totalBayar != '') {
-                                    intTotalBayar = parseInt(totalBayar);
-                                }
-                                var intBayar = parseInt(strBayar);
-                                totalBayar = intTotalBayar + intBayar;
-                                var strTotalBayar = String(totalBayar);
-                                $('#bayar').val(formatRupiahAngka(strTotalBayar));
-                                $('#keperluan').val($('#mod_nama_kontrak').val());
-                                isiKeteterangan();
-                                $('#modal-add-pengajuan').modal('hide');
-                            } else {
-                                alert(result);
-                            }
-                        });
+                    if (noFakturPajak==""){
+                        if (confirm("Tidak memasukkan Faktur Pajak apakah anda ingin melanjutkan ?")){
+                            PembayaranUtangPiutangAction.saveDetailPembayaran(kodeVendor, namaVendor, "", jumlahPembayaran, rekeningId, divisiId,
+                                divisiName, tipePengajuanBiaya, pengajuanBiayaDetailId, noBudgeting,jumlah_ppn,
+                                jumlah_pph,noFakturPajak,dataURL, function (result) {
+                                    if (result == "") {
+                                        loadDetailPembayaran();
+                                        //dihitung totalbayarnya
+                                        var totalBayar = $('#bayar').val();
+                                        totalBayar = totalBayar.replace(/[.]/g, "");
+                                        var strBayar = jumlahPembayaran.replace(/[.]/g, "");
+                                        var intTotalBayar = 0;
+                                        if (totalBayar != '') {
+                                            intTotalBayar = parseInt(totalBayar);
+                                        }
+                                        var intBayar = parseInt(strBayar);
+                                        totalBayar = intTotalBayar + intBayar;
+                                        var strTotalBayar = String(totalBayar);
+                                        $('#bayar').val(formatRupiahAngka(strTotalBayar));
+                                        $('#keperluan').val($('#mod_nama_kontrak').val());
+                                        isiKeteterangan();
+                                        $('#modal-add-pengajuan').modal('hide');
+                                    } else {
+                                        alert(result);
+                                    }
+                                });
+                        }
+                    } else{
+                        if (cekCanvas!=""){
+                            PembayaranUtangPiutangAction.saveDetailPembayaran(kodeVendor, namaVendor, "", jumlahPembayaran, rekeningId, divisiId,
+                                divisiName, tipePengajuanBiaya, pengajuanBiayaDetailId, noBudgeting,jumlah_ppn,
+                                jumlah_pph,noFakturPajak,dataURL, function (result) {
+                                    if (result == "") {
+                                        loadDetailPembayaran();
+                                        //dihitung totalbayarnya
+                                        var totalBayar = $('#bayar').val();
+                                        totalBayar = totalBayar.replace(/[.]/g, "");
+                                        var strBayar = jumlahPembayaran.replace(/[.]/g, "");
+                                        var intTotalBayar = 0;
+                                        if (totalBayar != '') {
+                                            intTotalBayar = parseInt(totalBayar);
+                                        }
+                                        var intBayar = parseInt(strBayar);
+                                        totalBayar = intTotalBayar + intBayar;
+                                        var strTotalBayar = String(totalBayar);
+                                        $('#bayar').val(formatRupiahAngka(strTotalBayar));
+                                        $('#keperluan').val($('#mod_nama_kontrak').val());
+                                        isiKeteterangan();
+                                        $('#modal-add-pengajuan').modal('hide');
+                                    } else {
+                                        alert(result);
+                                    }
+                                });
+                        } else{
+                            alert("Faktur pajak belum diupload");
+                        }
+
+                    }
+
                 } else {
                     var msg = "";
                     if (nilaiPengajuan < nilaiPembayaran) {
@@ -1467,12 +1611,12 @@
                 if (namaVendor=="") {
                     msg += "Kode Vendor tidak valid atau vendor tidak ditemukan \n";
                 }
-                if (noFakturPajak=="") {
-                    msg += "No. Faktur Pajak Masih Kosong \n";
-                }
-                if (cekCanvas=="") {
-                    msg += "Belum Upload Faktur Pajak \n";
-                }
+                // if (noFakturPajak=="") {
+                //     msg += "No. Faktur Pajak Masih Kosong \n";
+                // }
+                // if (cekCanvas=="") {
+                //     msg += "Belum Upload Faktur Pajak \n";
+                // }
                 alert(msg);
             }
         });
@@ -1600,6 +1744,20 @@
                 $('#mod_coa_lawan_vendor').html(option);
             }else{
                 $('#mod_coa_lawan_vendor').html(option);
+            }
+        });
+    }
+    function getCoaLawanKaryawan() {
+        var option = '<option value=""></option>';
+        var tipeTransaksi = $('#tipe_transaksi option:selected').val();
+        KodeRekeningAction.getKodeRekeningLawanByTransId(tipeTransaksi,"D",function (res) {
+            if(res.length > 0){
+                $.each(res, function (i, item) {
+                    option += '<option value="'+item.kodeRekening+'">'+item.tampilanCoa+'</option>';
+                });
+                $('#mod_coa_lawan_karyawan').html(option);
+            }else{
+                $('#mod_coa_lawan_karyawan').html(option);
             }
         });
     }
@@ -1777,6 +1935,68 @@
         }
     });
 
+    $('#modBtnSearchNotaKaryawan').click(function () {
+        var masterId = $('#mod_id_karyawan').val();
+        var transaksiId = $('#tipe_transaksi').val();
+        var branchId = $('#branch_id').val();
+        var coaLawan = $('#mod_coa_lawan_karyawan').val();
+
+        $('#tabelDaftarNota').find('tbody').remove();
+        $('#tabelDaftarNota').find('thead').remove();
+        dwr.engine.setAsync(false);
+        var tmp_table = "";
+
+        var add=true;
+        if (coaLawan==""||branchId==""||transaksiId==""){
+            add=false;
+        }
+        if (add){
+            PembayaranUtangPiutangAction.searchPengajuanBiaya(branchId,function (listdata) {
+                tmp_table = "<thead style='font-size: 14px' ><tr class='active'>" +
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196 '>No</th>" +
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196'><input type='checkbox' id='checkAll'></th>"+
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196 '>Kode Vendor</th>" +
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>Rekening ID</th>" +
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>No. Nota</th>" +
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196 '>Tambah</th>" +
+                    "</tr></thead>";
+                var i = i;
+                $.each(listdata, function (i, item) {
+                    var combo = '<input type="checkbox" checked id="check_'+i+'">';
+                    tmp_table += '<tr style="font-size: 12px;" ">' +
+                        '<td align="center">' + (i + 1) + '</td>' +
+                        '<td align="center">' + combo + '</td>' +
+                        '<td align="center">' + masterId + '</td>' +
+                        '<td align="center">' + coaLawan + '</td>' +
+                        '<td align="center">' + item.noNota + '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-add-data' data ='" + item.noNota + "' rekeningId ='" + coaLawan + "'>" +
+                        "<img border='0' src='<s:url value='/pages/images/add_task1.png'/>' name='icon_add'>" +
+                        '</a>' +
+                        '</td>' +
+                        "</tr>";
+                });
+                $('#tabelDaftarNota').append(tmp_table);
+                $("#checkAll").change(function(){
+                    $('input:checkbox').not(this).prop('checked', this.checked);
+                });
+            });
+            $("#modal-search-nota").modal('show');
+        } else{
+            var msg="";
+            if (transaksiId==""){
+                msg+="Tipe Transaksi belum dipilih \n";
+            }
+            if (branchId==""){
+                msg+="Unit belum dipilih \n";
+            }
+            if (coaLawan==""){
+                msg+="Coa lawan belum dipilih \n";
+            }
+            alert(msg);
+        }
+    });
+
     $('#mod_btnSaveDetailVendor').click(function () {
         var kodeVendor=$('#mod_id_vendor').val();
         var namaVendor=$('#mod_nama_vendor').val();
@@ -1838,6 +2058,37 @@
             }
         });
     });
+    $('#mod_btnSaveDetailKaryawan').click(function () {
+        var kodeVendor=$('#mod_id_karyawan').val();
+        var namaVendor=$('#mod_nama_karyawan').val();
+        var noNota=$('#mod_no_nota_karyawan').val();
+        var rekeningId=$('#mod_coa_lawan_karyawan').val();
+        var jumlahPembayaran=$('#mod_jumlah_pembayaran_karyawan').val();
+
+        var tipePengajuanBiaya =$('#tipePengajuan').val();
+        //jika pengajuan biasa
+        PembayaranUtangPiutangAction.saveDetailPembayaran(kodeVendor,namaVendor,noNota,jumlahPembayaran,rekeningId,'','',tipePengajuanBiaya,'','',function (result) {
+            if (result==""){
+                loadDetailPembayaran();
+                //dihitung totalbayarnya
+                var totalBayar = $('#bayar').val();
+                totalBayar=totalBayar.replace(/[.]/g,"");
+                var strBayar=jumlahPembayaran.replace(/[.]/g,"");
+                var intTotalBayar=0;
+                if (totalBayar!=''){
+                    intTotalBayar = parseInt(totalBayar);
+                }
+                var intBayar = parseInt(strBayar);
+                totalBayar = intTotalBayar+intBayar;
+                var strTotalBayar = String(totalBayar);
+                $('#bayar').val(formatRupiahAngka(strTotalBayar));
+                $('#modal-add-karyawan').modal('hide');
+            } else{
+                alert(result);
+            }
+        });
+    });
+
     $('#mod_btnSaveDetailLain').click(function () {
         var idDivisi=$('#mod_id_lain').val();
         var namaDivisi=$('#mod_nama_divisi_lain').val();
@@ -1960,7 +2211,7 @@
             var i = i;
             $.each(listdata, function (i, item) {
                 tmp_table += '<tr style="font-size: 12px;" ">' +
-                    '<td >' + (i + 1) + '</td>' +
+                    '<td align="center">' + (i + 1) + '</td>' +
                     '<td align="center">' + item.namaLampiran + '</td>' +
                     '<td align="center">' +
                     "<a href='javascript:;' class ='item-view-lampiran' nama ='" + item.namaLampiran + "'>" +

@@ -438,4 +438,14 @@ public class AbsensiPegawaiDao extends GenericDao<AbsensiPegawaiEntity, String> 
         return absensiPegawaiList;
     }
 
+    public List<AbsensiPegawaiEntity> checkDataDelete(String statusAbsensi) throws HibernateException {
+
+        List<AbsensiPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(AbsensiPegawaiEntity.class)
+                .add(Restrictions.eq("statusAbsensi", statusAbsensi))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+
+        return results;
+    }
+
 }

@@ -57,4 +57,13 @@ public class LampiranDao extends GenericDao<ItAkunLampiranEntity, String> {
         String sId = String.format("%09d", iter.next());
         return "L"+sId;
     }
+
+    public List<ItAkunLampiranEntity> getByTransaksiId(String id) throws HibernateException {
+        List<ItAkunLampiranEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItAkunLampiranEntity.class)
+                .add(Restrictions.eq("transaksiId", id))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("lampiranId"))
+                .list();
+        return results;
+    }
 }

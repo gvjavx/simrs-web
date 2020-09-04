@@ -1,7 +1,9 @@
 package com.neurix.hris.master.tipePayroll.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.hris.master.statusAbsensi.model.ImHrisStatusAbsensiHistoryEntity;
 import com.neurix.hris.master.tipePayroll.model.ImHrisTipePayrollEntity;
+import com.neurix.hris.master.tipePayroll.model.ImHrisTipePayrollHistoryEntity;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -54,9 +56,21 @@ public class TipePayrollDao extends GenericDao<ImHrisTipePayrollEntity, String> 
     public String getNextTipePayrollId() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_tipe_payroll')");
         Iterator<BigInteger> iter=query.list().iterator();
-        String sId = String.format("%01d", iter.next());
+        String sId = String.format("%02d", iter.next());
 
         return "TP"+sId;
+    }
+
+    public String getNextTipePayrollHistoryId() throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_tipe_payroll_history')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%02d", iter.next());
+
+        return "HT"+sId;
+    }
+
+    public void addAndSaveHistory(ImHrisTipePayrollHistoryEntity entity) throws HibernateException {
+        this.sessionFactory.getCurrentSession().save(entity);
     }
 
     public List<ImHrisTipePayrollEntity> checkData(String tipePayrollName) throws HibernateException {

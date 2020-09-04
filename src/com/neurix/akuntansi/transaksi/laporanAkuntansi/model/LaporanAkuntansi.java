@@ -23,6 +23,8 @@ public class LaporanAkuntansi extends BaseModel {
     private String bulan;
     private String tahun;
     private String tipeLaporan;
+    private String judulGeneralManager;
+    private String judulManagerKeuangan;
     private String nipGeneralManager;
     private String namaGeneralManager;
     private String nipManagerKeuangan;
@@ -39,6 +41,22 @@ public class LaporanAkuntansi extends BaseModel {
     private String nip;
     private String koderingDivisi;
     private String levelKodeRekening;
+
+    public String getJudulGeneralManager() {
+        return judulGeneralManager;
+    }
+
+    public void setJudulGeneralManager(String judulGeneralManager) {
+        this.judulGeneralManager = judulGeneralManager;
+    }
+
+    public String getJudulManagerKeuangan() {
+        return judulManagerKeuangan;
+    }
+
+    public void setJudulManagerKeuangan(String judulManagerKeuangan) {
+        this.judulManagerKeuangan = judulManagerKeuangan;
+    }
 
     public String getKoderingDivisi() {
         return koderingDivisi;

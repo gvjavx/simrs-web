@@ -291,15 +291,19 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
         nama.setNamaGeneralManager("");
         nama.setNipManagerKeuangan("");
         nama.setNamaManagerKeuangan("");
-        String posisiManagerKeuangan="";
-        String posisiGeneralManager="";
+        String posisiManagerKeuangan;
+        String posisiGeneralManager;
 
         if (branchId.equalsIgnoreCase(CommonConstant.ID_KANPUS)){
-            posisiManagerKeuangan = CommonConstant.posisiKabidKeuanganKp;
-            posisiGeneralManager= CommonConstant.posisiDirkeuKp;
+            posisiManagerKeuangan = CommonConstant.posisiKasubbidKeuanganKp;
+            posisiGeneralManager= CommonConstant.posisiKabidKeuanganKp;
+            nama.setJudulGeneralManager(CommonConstant.NAMA_GENERAL_MANAGER_KP);
+            nama.setJudulManagerKeuangan(CommonConstant.NAMA_MANAGER_KEUANGAN_KP);
         }else {
             posisiManagerKeuangan = CommonConstant.posisiKadivKeuanganUnit;
             posisiGeneralManager= CommonConstant.posisiGmUnit;
+            nama.setJudulGeneralManager(CommonConstant.NAMA_GENERAL_MANAGER_UNIT);
+            nama.setJudulManagerKeuangan(CommonConstant.NAMA_MANAGER_KEUANGAN_UNIT);
         }
 
         //untuk manager keuangan

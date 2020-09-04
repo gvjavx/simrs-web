@@ -18,6 +18,7 @@
           p:profesiDao-ref="profesiDao"
           p:personilPositionDao-ref="personilPositionDao"
           p:positionDao-ref="positionDao"
+          p:liburDao-ref="liburDao"
     />
 
     <bean id="jadwalShiftKerjaBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

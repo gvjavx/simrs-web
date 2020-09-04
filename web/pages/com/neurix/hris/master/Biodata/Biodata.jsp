@@ -1067,7 +1067,7 @@
                                                           listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                             </s:elseif>
                                             <s:else>
-                                                <s:select list="#initComboTipe.listComboGolongan" id="golongan1" name="biodata.golongan" disabled="true"
+                                                <s:select list="#initComboTipe.listComboGolongan" id="golongan1" name="biodata.golongan"
                                                           listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                 <s:hidden id="golongan1" name="biodata.golongan" />
                                             </s:else>
@@ -1141,12 +1141,14 @@
                                             <s:if test="isDelete()">
                                                 <s:select list="#listComboDanaPensiun.listComboPayrollDanaPensiun"
                                                           id="danaPensiun" name="biodata.danaPensiun" disabled="true"
-                                                          listKey="danaPensiunId" listValue="danaPensiun" headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true" />
+                                                          listKey="danaPensiunId" listValue="danaPensiun" headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                                                <s:hidden id="danaPensiunHid" name="biodata.danaPensiun"/>
                                             </s:if>
                                             <s:else>
                                                 <s:select list="#listComboDanaPensiun.listComboPayrollDanaPensiun"
                                                           id="danaPensiun" name="biodata.danaPensiun" listKey="danaPensiunId"
                                                           listValue="danaPensiun" disabled="true" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                <s:hidden id="danaPensiunHid" name="biodata.danaPensiun"/>
                                             </s:else>
                                         </table>
                                     </td>
@@ -1332,7 +1334,7 @@
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <s:select list="#{'Y':'Y'}" id="shift" name="biodata.shift"
+                                                <s:select list="#{'Y':'Y'}" id="shift" name="biodata.shift" disabled="true"
                                                           headerKey="N" headerValue="N" cssClass="form-control" />
                                             </s:if>
                                             <s:else>
@@ -3109,8 +3111,7 @@
         if (id == "TP01") {
             $('#golongan1Group').show();
             $('#golongan2Group').hide();
-            $('#point').removeAttr('disabled');
-            $('#danaPensiun').removeAttr('disabled');
+            // $('#danaPensiun').removeAttr('disabled');
 //            $('#masaTanam').prop('disabled', 'true');
             /*$('#statusGiling').prop('disabled', 'true');
             $('#strukturGaji').empty();

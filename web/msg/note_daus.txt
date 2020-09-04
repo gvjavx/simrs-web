@@ -456,3 +456,15 @@ CREATE TABLE public.it_akun_lampiran
 CREATE SEQUENCE seq_lampiran INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 1;
 
 update im_hris_pegawai set golongan_id='APO' where golongan_id='APOAPO';
+
+ALTER TABLE it_akun_pengajuan_biaya_detail ADD COLUMN url_ipa character varying(100);
+
+-- 31-08-2020
+ALTER TABLE it_akun_pembayaran_utang_piutang_detail ALTER COLUMN no_nota type character varying (50);
+ALTER TABLE it_akun_pembayaran_utang_piutang_detail ALTER COLUMN master_id type character varying (30);
+
+-- 03-09-2020
+ALTER TABLE it_akun_pengajuan_biaya_detail ADD COLUMN rk_dikirim character varying(1);
+ALTER TABLE it_akun_pengajuan_biaya_detail ADD COLUMN coa_target character varying(30);
+ALTER TABLE it_akun_pengajuan_biaya_detail ADD COLUMN rk_id character varying(15);
+CREATE SEQUENCE seq_rk INCREMENT BY 1 MINVALUE 1 MAXVALUE 9999 START WITH 1 CYCLE;

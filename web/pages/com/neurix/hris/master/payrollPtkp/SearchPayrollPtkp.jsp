@@ -210,16 +210,16 @@
                                                 </s:if>
                                             </display:column>
 
-                                            <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                <s:url var="urlViewDelete" namespace="/payrollPtkp" action="delete_payrollPtkp" escapeAmp="false">
-                                                    <s:param name="id"><s:property value="#attr.row.idPtkp" /></s:param>
-                                                    <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                </s:url>
-                                                <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
-                                                </sj:a>
+                                            <%--<display:column media="html" title="Delete" style="text-align:center;font-size:9">--%>
+                                                <%--<s:url var="urlViewDelete" namespace="/payrollPtkp" action="delete_payrollPtkp" escapeAmp="false">--%>
+                                                    <%--<s:param name="id"><s:property value="#attr.row.idPtkp" /></s:param>--%>
+                                                    <%--<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>--%>
+                                                <%--</s:url>--%>
+                                                <%--<sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">--%>
+                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">--%>
+                                                <%--</sj:a>--%>
 
-                                            </display:column>
+                                            <%--</display:column>--%>
                                             <display:column property="idPtkp" sortable="true" title="ID PTKP" />
                                             <display:column property="statusKeluarga" sortable="true" title="Status Keluarga"  />
                                             <display:column property="jumlahTanggungan" sortable="true" title="Jumlah Tanggungan"  />
