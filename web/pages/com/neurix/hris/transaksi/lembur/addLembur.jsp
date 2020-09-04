@@ -39,17 +39,6 @@
                 }
             });
 
-
-            console.log(nip);
-            console.log(tglAwal);
-            console.log(tglAkhir);
-            console.log(tipeLembur);
-            console.log(ket);
-            console.log(ket2);
-            console.log(jamAwal);
-            console.log(jamAkhir);
-            console.log(lamaJam);
-
             if (nip != '' && tglAwal !=''&& tglAkhir !=''&& tipeLembur !=''&& ket == ''&&ket2 == ''&& jamAwal != ''&& jamAkhir != ''&& lamaJam == '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;

@@ -32,6 +32,8 @@ public interface PembayaranUtangPiutangBo extends BaseMasterBo<PembayaranUtangPi
 
     List<PembayaranUtangPiutangDetail> getDetailPembayaran(String pembayaranId) throws GeneralBOException;
 
+    List<Lampiran> getLampiranList(String pembayaranId) throws GeneralBOException;
+
     String getKodeRekeningKasJurnal(String noJurnal) throws GeneralBOException;
 
     ImTransEntity getTipeMaster(String transId) throws GeneralBOException;
@@ -43,4 +45,6 @@ public interface PembayaranUtangPiutangBo extends BaseMasterBo<PembayaranUtangPi
     String getPosisiCoaDiMappingJurnal(String transId, String coa) throws GeneralBOException;
 
     List<Notifikasi> approvePembayaran(PembayaranUtangPiutang bean) throws GeneralBOException;
+
+    List<PembayaranUtangPiutangDetail> searchPengajuanBiaya(String branchId) throws GeneralBOException;
 }

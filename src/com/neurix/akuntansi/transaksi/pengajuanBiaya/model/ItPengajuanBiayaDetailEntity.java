@@ -82,6 +82,44 @@ public class ItPengajuanBiayaDetailEntity implements Serializable {
     private BigDecimal pph;
     private BigDecimal ppn;
 
+    private String urlIpa;
+
+    private String rkDikirim;
+    private String coaTarget;
+    private String rkId;
+
+    public String getRkId() {
+        return rkId;
+    }
+
+    public void setRkId(String rkId) {
+        this.rkId = rkId;
+    }
+
+    public String getRkDikirim() {
+        return rkDikirim;
+    }
+
+    public void setRkDikirim(String rkDikirim) {
+        this.rkDikirim = rkDikirim;
+    }
+
+    public String getCoaTarget() {
+        return coaTarget;
+    }
+
+    public void setCoaTarget(String coaTarget) {
+        this.coaTarget = coaTarget;
+    }
+
+    public String getUrlIpa() {
+        return urlIpa;
+    }
+
+    public void setUrlIpa(String urlIpa) {
+        this.urlIpa = urlIpa;
+    }
+
     public BigDecimal getPpn() {
         return ppn;
     }

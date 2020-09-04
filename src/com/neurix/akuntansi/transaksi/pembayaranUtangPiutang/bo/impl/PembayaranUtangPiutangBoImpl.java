@@ -419,7 +419,7 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
         logger.info("[PembayaranUtangPiutangBoImpl.getSearchNotaPembayaran] start process >>>");
         List<PembayaranUtangPiutangDetail> listOfResult = new ArrayList<>();
         String unit="";
-        if (("KP").equalsIgnoreCase(branchId)){
+        if ((CommonConstant.ID_KANPUS).equalsIgnoreCase(branchId)){
             List<ImBranches> branchList = new ArrayList<>();
             branchList = branchDao.getAllBranch();
             int i = 1;
@@ -613,87 +613,97 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
                 throw new GeneralBOException("Found problem when saving new data PembayaranUtangPiutang, please info to your admin..." + e.getMessage());
             }
 
-            for (PembayaranUtangPiutangDetail data : pembayaranUtangPiutangDetailList){
-                BigDecimal jumlahPembayaran = new BigDecimal(data.getStJumlahPembayaran().replace(".",""));
-                BigDecimal ppn = BigDecimal.ZERO;
-                BigDecimal pph = BigDecimal.ZERO;
-                if ("Pengajuan Biaya".equalsIgnoreCase(bean.getTipeMaster())) {
-                    ppn = new BigDecimal(data.getStPpn().replace(".",""));
-                    pph = new BigDecimal(data.getStPph().replace(".",""));
-                }
-                ImPembayaranUtangPiutangDetailEntity pembayaranUtangPiutangDetailEntity = new ImPembayaranUtangPiutangDetailEntity();
-                String pembayaranUtangPiutangDetailId = pembayaranUtangPiutangDetailDao.getNextPembayaranUtangPiutangDetailId();
-                pembayaranUtangPiutangDetailEntity.setPembayaranUtangPiutangDetailId(pembayaranUtangPiutangDetailId);
-                pembayaranUtangPiutangDetailEntity.setPembayaranUtangPiutangId(pembayaranUtangPiutangId);
-                pembayaranUtangPiutangDetailEntity.setMasterId(data.getMasterId());
-                pembayaranUtangPiutangDetailEntity.setNoNota(data.getNoNota());
-                pembayaranUtangPiutangDetailEntity.setRekeningId(data.getRekeningId());
-                pembayaranUtangPiutangDetailEntity.setJumlahPembayaran(jumlahPembayaran);
-                pembayaranUtangPiutangDetailEntity.setDivisiId(data.getDivisiId());
-                pembayaranUtangPiutangDetailEntity.setPosisiCoa(data.getPosisiCoa());
-                pembayaranUtangPiutangDetailEntity.setPpn(ppn);
-                pembayaranUtangPiutangDetailEntity.setPph(pph);
-                pembayaranUtangPiutangDetailEntity.setNoFakturPajak(data.getNoFakturPajak());
-                pembayaranUtangPiutangDetailEntity.setUrlFakturImage(data.getUrlFakturImage());
+            if (pembayaranUtangPiutangDetailList!=null){
+                for (PembayaranUtangPiutangDetail data : pembayaranUtangPiutangDetailList){
+                    BigDecimal jumlahPembayaran = new BigDecimal(data.getStJumlahPembayaran().replace(".",""));
+                    BigDecimal ppn = BigDecimal.ZERO;
+                    BigDecimal pph = BigDecimal.ZERO;
+                    if ("Pengajuan Biaya".equalsIgnoreCase(bean.getTipeMaster())) {
+                        ppn = new BigDecimal(data.getStPpn().replace(".",""));
+                        pph = new BigDecimal(data.getStPph().replace(".",""));
+                    }
+                    ImPembayaranUtangPiutangDetailEntity pembayaranUtangPiutangDetailEntity = new ImPembayaranUtangPiutangDetailEntity();
+                    String pembayaranUtangPiutangDetailId = pembayaranUtangPiutangDetailDao.getNextPembayaranUtangPiutangDetailId();
+                    pembayaranUtangPiutangDetailEntity.setPembayaranUtangPiutangDetailId(pembayaranUtangPiutangDetailId);
+                    pembayaranUtangPiutangDetailEntity.setPembayaranUtangPiutangId(pembayaranUtangPiutangId);
+                    pembayaranUtangPiutangDetailEntity.setMasterId(data.getMasterId());
+                    pembayaranUtangPiutangDetailEntity.setNoNota(data.getNoNota());
+                    pembayaranUtangPiutangDetailEntity.setRekeningId(data.getRekeningId());
+                    pembayaranUtangPiutangDetailEntity.setJumlahPembayaran(jumlahPembayaran);
+                    pembayaranUtangPiutangDetailEntity.setDivisiId(data.getDivisiId());
+                    pembayaranUtangPiutangDetailEntity.setPosisiCoa(data.getPosisiCoa());
+                    pembayaranUtangPiutangDetailEntity.setPpn(ppn);
+                    pembayaranUtangPiutangDetailEntity.setPph(pph);
+                    pembayaranUtangPiutangDetailEntity.setNoFakturPajak(data.getNoFakturPajak());
+                    pembayaranUtangPiutangDetailEntity.setUrlFakturImage(data.getUrlFakturImage());
 
-                pembayaranUtangPiutangDetailEntity.setFlag(bean.getFlag());
-                pembayaranUtangPiutangDetailEntity.setAction(bean.getAction());
-                pembayaranUtangPiutangDetailEntity.setCreatedWho(bean.getCreatedWho());
-                pembayaranUtangPiutangDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                pembayaranUtangPiutangDetailEntity.setCreatedDate(bean.getCreatedDate());
-                pembayaranUtangPiutangDetailEntity.setLastUpdate(bean.getLastUpdate());
+                    pembayaranUtangPiutangDetailEntity.setFlag(bean.getFlag());
+                    pembayaranUtangPiutangDetailEntity.setAction(bean.getAction());
+                    pembayaranUtangPiutangDetailEntity.setCreatedWho(bean.getCreatedWho());
+                    pembayaranUtangPiutangDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    pembayaranUtangPiutangDetailEntity.setCreatedDate(bean.getCreatedDate());
+                    pembayaranUtangPiutangDetailEntity.setLastUpdate(bean.getLastUpdate());
 
-                try {
-                    // insert into database
-                    pembayaranUtangPiutangDetailDao.addAndSave(pembayaranUtangPiutangDetailEntity);
-                } catch (HibernateException e) {
-                    logger.error("[PembayaranUtangPiutangBoImpl.saveAdd] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving new data PembayaranUtangPiutang, please info to your admin..." + e.getMessage());
+                    try {
+                        // insert into database
+                        pembayaranUtangPiutangDetailDao.addAndSave(pembayaranUtangPiutangDetailEntity);
+                    } catch (HibernateException e) {
+                        logger.error("[PembayaranUtangPiutangBoImpl.saveAdd] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving new data PembayaranUtangPiutang, please info to your admin..." + e.getMessage());
+                    }
                 }
             }
 
-            for (Lampiran lampiran : lampiranList){
-                ItAkunLampiranEntity lampiranEntity = new ItAkunLampiranEntity();
-                try {
-                    BASE64Decoder decoder = new BASE64Decoder();
-                    byte[] decodedBytes = new byte[0];
-                    decodedBytes = decoder.decodeBuffer(lampiran.getUploadFile());
-                    logger.info("Decoded upload data : " + decodedBytes.length);
-                    String fileName = lampiran.getNamaLampiran().replace(" ","").substring(0,20)+dateFormater("MM")+dateFormater("yy")+".png";
-                    String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_LAMPIRAN+fileName;
-                    logger.info("File save path : " + uploadFile);
-                    BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+            if (lampiranList!=null){
+                for (Lampiran lampiran : lampiranList){
+                    ItAkunLampiranEntity lampiranEntity = new ItAkunLampiranEntity();
+                    try {
+                        BASE64Decoder decoder = new BASE64Decoder();
+                        byte[] decodedBytes = new byte[0];
+                        decodedBytes = decoder.decodeBuffer(lampiran.getUploadFile());
+                        logger.info("Decoded upload data : " + decodedBytes.length);
+                        String potNama = lampiran.getNamaLampiran().replace(" ","");
+                        if (potNama.length()>20){
+                            potNama = potNama.substring(0,20);
+                        }
+                        String randomNumber = "-"+String.valueOf(CommonUtil.getRandomNumberInts(1,999))+"-";
 
-                    if (image == null) {
-                        logger.error("Buffered Image is null");
-                    }else{
-                        File f = new File(uploadFile);
-                        // write the image
-                        ImageIO.write(image, "png", f);
-                        lampiranEntity.setUrl(fileName);
+                        String fileName = potNama+randomNumber+dateFormater("dd")+dateFormater("MM")+dateFormater("yy")+".png";
+                        String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_LAMPIRAN+fileName;
+                        logger.info("File save path : " + uploadFile);
+                        BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+                        if (image == null) {
+                            logger.error("Buffered Image is null");
+                        }else{
+                            File f = new File(uploadFile);
+                            // write the image
+                            ImageIO.write(image, "png", f);
+                            lampiranEntity.setUrl(fileName);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
 
-                String lampiranId =lampiranDao.getNextLampiranId();
-                lampiranEntity.setLampiranId(lampiranId);
-                lampiranEntity.setNamaLaporan(lampiran.getNamaLampiran());
-                lampiranEntity.setTransaksiId(pembayaranUtangPiutangId);
+                    String lampiranId =lampiranDao.getNextLampiranId();
+                    lampiranEntity.setLampiranId(lampiranId);
+                    lampiranEntity.setNamaLaporan(lampiran.getNamaLampiran());
+                    lampiranEntity.setTransaksiId(pembayaranUtangPiutangId);
 
-                lampiranEntity.setFlag(bean.getFlag());
-                lampiranEntity.setAction(bean.getAction());
-                lampiranEntity.setCreatedWho(bean.getCreatedWho());
-                lampiranEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                lampiranEntity.setCreatedDate(bean.getCreatedDate());
-                lampiranEntity.setLastUpdate(bean.getLastUpdate());
+                    lampiranEntity.setFlag(bean.getFlag());
+                    lampiranEntity.setAction(bean.getAction());
+                    lampiranEntity.setCreatedWho(bean.getCreatedWho());
+                    lampiranEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    lampiranEntity.setCreatedDate(bean.getCreatedDate());
+                    lampiranEntity.setLastUpdate(bean.getLastUpdate());
 
-                try {
-                    // insert into database
-                    lampiranDao.addAndSave(lampiranEntity);
-                } catch (HibernateException e) {
-                    logger.error("[PembayaranUtangPiutangBoImpl.saveAdd] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving new data PembayaranUtangPiutang, please info to your admin..." + e.getMessage());
+                    try {
+                        // insert into database
+                        lampiranDao.addAndSave(lampiranEntity);
+                    } catch (HibernateException e) {
+                        logger.error("[PembayaranUtangPiutangBoImpl.saveAdd] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving new data PembayaranUtangPiutang, please info to your admin..." + e.getMessage());
+                    }
                 }
             }
         }
@@ -759,6 +769,34 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
         logger.info("[PembayaranUtangPiutangBoImpl.getDetailPembayaran] end process <<<");
 
         return listOfResult;
+    }
+
+    @Override
+    public List<Lampiran> getLampiranList(String pembayaranId) throws GeneralBOException {
+        logger.info("[PembayaranUtangPiutangBoImpl.getLampiranList] start process >>>");
+        List<Lampiran> lampiranList= new ArrayList<>();
+
+        List<ItAkunLampiranEntity> lampiranEntityList ;
+        try {
+
+            lampiranEntityList = lampiranDao.getByTransaksiId(pembayaranId);
+        } catch (HibernateException e) {
+            logger.error("[PembayaranUtangPiutangBoImpl.getLampiranList] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        if(lampiranEntityList != null){
+            // Looping from dao to object and save in collection
+            for(ItAkunLampiranEntity data : lampiranEntityList){
+                Lampiran returnLampiran = new Lampiran();
+                returnLampiran.setNamaLampiran(data.getNamaLaporan());
+                returnLampiran.setUploadFile(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_LAMPIRAN+data.getUrl());
+                lampiranList.add(returnLampiran);
+            }
+        }
+        logger.info("[PembayaranUtangPiutangBoImpl.getLampiranList] end process <<<");
+
+        return lampiranList;
     }
 
     @Override
@@ -933,6 +971,37 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
         logger.info("[PembayaranUtangPiutangBoImpl.approvePembayaran] end process <<<");
 
         return notifikasiList;
+    }
+
+    @Override
+    public List<PembayaranUtangPiutangDetail> searchPengajuanBiaya(String branchId) throws GeneralBOException {
+        logger.info("[PembayaranUtangPiutangBoImpl.searchPengajuanBiaya] start process >>>");
+        List<PembayaranUtangPiutangDetail> listOfResult = new ArrayList<>();
+        List<PembayaranUtangPiutangDetail> pembayaranUtangPiutangDetailList ;
+
+        try {
+            pembayaranUtangPiutangDetailList = pembayaranUtangPiutangDao.searchPengajuanBiaya(branchId);
+        } catch (HibernateException e) {
+            logger.error("[PembayaranUtangPiutangBoImpl.searchPengajuanBiaya] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        if(pembayaranUtangPiutangDetailList != null){
+            PembayaranUtangPiutangDetail returnPembayaranUtangPiutangDetail;
+            // Looping from dao to object and save in collection
+            for(PembayaranUtangPiutangDetail pembayaranUtangPiutangDetail : pembayaranUtangPiutangDetailList){
+                returnPembayaranUtangPiutangDetail = new PembayaranUtangPiutangDetail();
+                if (pembayaranUtangPiutangDetail.getNoNota()==null){
+                    returnPembayaranUtangPiutangDetail.setNoNota("");
+                }else{
+                    returnPembayaranUtangPiutangDetail.setNoNota(pembayaranUtangPiutangDetail.getNoNota());
+                }
+                listOfResult.add(returnPembayaranUtangPiutangDetail);
+            }
+        }
+        logger.info("[PembayaranUtangPiutangBoImpl.searchPengajuanBiaya] end process <<<");
+
+        return listOfResult;
     }
 
     private String dateFormater(String type) {

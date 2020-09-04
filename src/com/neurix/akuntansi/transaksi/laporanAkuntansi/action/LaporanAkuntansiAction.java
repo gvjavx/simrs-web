@@ -694,6 +694,8 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
         Date now = new Date();
         reportParams.put("tanggal", CommonUtil.convertDateToString(now));
+        reportParams.put("judulGm", dataAtasan.getJudulGeneralManager());
+        reportParams.put("judulManagerKeu", dataAtasan.getJudulManagerKeuangan());
         reportParams.put("namaGeneralManager", dataAtasan.getNamaGeneralManager());
         reportParams.put("nipGeneralManager", dataAtasan.getNipGeneralManager());
         reportParams.put("namaManagerKeuangan", dataAtasan.getNamaManagerKeuangan());
@@ -749,6 +751,8 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
         Date now = new Date();
         reportParams.put("tanggal", CommonUtil.convertDateToString(now));
+        reportParams.put("judulGm", dataAtasan.getJudulGeneralManager());
+        reportParams.put("judulManagerKeu", dataAtasan.getJudulManagerKeuangan());
         reportParams.put("namaGeneralManager", dataAtasan.getNamaGeneralManager());
         reportParams.put("nipGeneralManager", dataAtasan.getNipGeneralManager());
         reportParams.put("namaManagerKeuangan", dataAtasan.getNamaManagerKeuangan());
@@ -804,6 +808,8 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         reportParams.put("branchId", unit);
         Date now = new Date();
         reportParams.put("tanggal", CommonUtil.convertDateToString(now));
+        reportParams.put("judulGm", dataAtasan.getJudulGeneralManager());
+        reportParams.put("judulManagerKeu", dataAtasan.getJudulManagerKeuangan());
         reportParams.put("namaGeneralManager", dataAtasan.getNamaGeneralManager());
         reportParams.put("nipGeneralManager", dataAtasan.getNipGeneralManager());
         reportParams.put("namaManagerKeuangan", dataAtasan.getNamaManagerKeuangan());
@@ -860,6 +866,8 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         reportParams.put("branchId", unit);
         Date now = new Date();
         reportParams.put("tanggal", CommonUtil.convertDateToString(now));
+        reportParams.put("judulGm", dataAtasan.getJudulGeneralManager());
+        reportParams.put("judulManagerKeu", dataAtasan.getJudulManagerKeuangan());
         reportParams.put("namaGeneralManager", dataAtasan.getNamaGeneralManager());
         reportParams.put("nipGeneralManager", dataAtasan.getNipGeneralManager());
         reportParams.put("namaManagerKeuangan", dataAtasan.getNamaManagerKeuangan());

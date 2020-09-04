@@ -21,6 +21,7 @@ import java.text.*;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Properties;
+import java.util.Random;
 
 /**
  * Created by IntelliJ IDEA.
@@ -1234,5 +1235,10 @@ public class CommonUtil {
         else if (minutes<45){hasil=hasil+0.5;}
         else if (minutes<60){hasil=hasil+0.5;}
         return hasil;
+    }
+
+    public static int getRandomNumberInts(int min, int max){
+        Random random = new Random();
+        return random.ints(min,(max+1)).findFirst().getAsInt();
     }
 }

@@ -21,6 +21,7 @@
           p:notifikasiDao-ref="notifikasiDao"
           p:jurnalDao-ref="jurnalDao"
           p:kodeRekeningDao-ref="kodeRekeningDao"
+          p:jurnalDetailDao-ref="jurnalDetailDao"
     />
 
     <bean id="pengajuanBiayaBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

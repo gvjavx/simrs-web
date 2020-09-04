@@ -80,7 +80,7 @@
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <s:form id="pembayaranUtangPiutangForm" method="post"  theme="simple" namespace="/pembayaranUtangPiutang" action="search_pembayaranUtangPiutang.action" cssClass="form-horizontal">
+                            <s:form id="pembayaranUtangPiutangForm" method="post"  theme="simple" namespace="/pembayaranUtangPiutang" action="searchKoreksi_pembayaranUtangPiutang.action" cssClass="form-horizontal">
                                 <s:hidden name="pembayaranUtangPiutang.tipePembayaran" value="KR" />
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Unit </label>
@@ -161,7 +161,7 @@
                                             Search
                                         </sj:submit>
 
-                                        <a href="add_pembayaranUtangPiutang.action" class="btn btn-success" ><i class="fa fa-plus"></i> Add Koreksi Kas/Bank</a>
+                                        <a href="addKoreksi_pembayaranUtangPiutang.action" class="btn btn-success" ><i class="fa fa-plus"></i> Add Koreksi Kas/Bank</a>
 
                                         <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initFormKoreksi_pembayaranUtangPiutang"/>'">
                                             <i class="fa fa-refresh"></i> Reset
@@ -232,7 +232,7 @@
                                     <td>No. Jurnal</td>
                                     <td>Transaksi</td>
                                     <td>Tanggal</td>
-                                    <td>Total Bayar (RP) </td>
+                                    <%--<td>Total Bayar (RP) </td>--%>
                                     <td align="center">View</td>
                                     <td align="center">Approval Keu.</td>
                                     <td align="center">Approval Kasub.</td>
@@ -244,11 +244,11 @@
                                 <s:iterator value="#session.listOfResult" var="row">
                                     <tr>
                                         <td style="text-align: center"><s:property value="pembayaranUtangPiutangId"/></td>
-                                        <td><s:property value="branchName"/></td>
+                                        <td style="text-align: center"><s:property value="branchName"/></td>
                                         <td style="text-align: center"><s:property value="noJurnal"/></td>
                                         <td><s:property value="stTipeTransaksi"/></td>
-                                        <td><s:property value="stTanggal"/></td>
-                                        <td style="text-align: right"><s:property value="stBayar"/></td>
+                                        <td style="text-align: center"><s:property value="stTanggal"/></td>
+                                        <%--<td style="text-align: right"><s:property value="stBayar"/></td>--%>
                                         <td align="center">
                                             <a href="javascript:;" data="<s:property value="%{#attr.row.pembayaranUtangPiutangId}"/>" class="item-view">
                                                 <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" >
@@ -283,7 +283,7 @@
                                             <s:elseif test='#row.approvalKasubKeuanganFlag == "N"'>
                                                 <img border="0" src="<s:url value="/pages/images/icon_failure.ico"/>">
                                             </s:elseif>
-                                            <s:elseif test='#row.jabatan == "kasub"'>
+                                            <s:elseif test='#row.jabatan == "kasub" && #row.approvalKeuanganFlag == "Y"'>
                                                 <a href="javascript:;" data="<s:property value="%{#attr.row.pembayaranUtangPiutangId}"/>" class="item-approve-kasub-keu">
                                                     <img border="0" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>">
                                                 </a>
@@ -293,7 +293,7 @@
                                             <s:if test='#row.registeredFlag == "Y"'>
                                                 <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>">
                                             </s:if>
-                                            <s:elseif test='#row.jabatan == "ka"'>
+                                            <s:elseif test='#row.jabatan == "ka" && #row.approvalKasubKeuanganFlag == "Y"'>
                                                 <a href="javascript:;" data="<s:property value="%{#attr.row.pembayaranUtangPiutangId}"/>" class="item-posting">
                                                     <img border="0" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>">
                                                 </a>
@@ -368,22 +368,22 @@
                                     <br>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <%--<div class="form-group">
                                 <label class="col-md-4">Metode Pembayaran</label>
                                 <div class="col-md-6">
                                     <s:textfield id="mod_metode_bayar" onkeypress="$(this).css('border','')" readonly="true"
                                                  cssClass="form-control"/>
                                     <br>
                                 </div>
-                            </div>
-                            <div class="form-group">
+                            </div>--%>
+                            <%--<div class="form-group">
                                 <label class="col-md-4">Total Bayar ( RP )</label>
                                 <div class="col-md-6">
                                     <s:textfield id="mod_total_bayar" onkeypress="$(this).css('border','')" readonly="true" cssStyle="text-align: right"
                                                  cssClass="form-control"/>
                                     <br>
                                 </div>
-                            </div>
+                            </div>--%>
                             <div class="form-group">
                                 <label class="col-md-4">No. Referensi</label>
                                 <div class="col-md-6">
@@ -413,6 +413,12 @@
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-primary" id="btnLampiran"><i class="fa fa-file"></i> Lampiran</button>
+                <script>
+                    $('#btnLampiran').click(function () {
+                        $('#modal-lampiran').modal('show');
+                    })
+                </script>
                 <button type="button" class="btn btn-success" id="btnApproveKeu" data-dismiss="modal"><i class="fa fa-arrow-right"></i> Approve Keu.</button>
                 <button type="button" class="btn btn-danger" id="btnNotApproveKeu" data-dismiss="modal"><i class="fa fa-close"></i> Not Approve Keu.</button>
                 <button type="button" class="btn btn-success" id="btnApproveKasub" data-dismiss="modal"><i class="fa fa-arrow-right"></i> Approve Kasub.</button>
@@ -441,6 +447,82 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modal-lampiran">
+    <div class="modal-dialog modal-flat modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Daftar Lampiran</h4>
+            </div>
+            <div class="modal-body">
+                <center class="box">
+                    <br>
+                    <br>
+                    <%--<div class="row">--%>
+                    <%--<label class="control-label col-sm-4">Nama Lampiran </label>--%>
+                    <%--<div class="col-sm-8">--%>
+                    <%--<s:textfield id="mod_nama_lampiran" onkeypress="$(this).css('border','')" cssClass="form-control modal_lampiran"/>--%>
+                    <%--</div>--%>
+                    <%--</div>--%>
+                    <%--<div class="row" style="margin-top: 7px">--%>
+                    <%--<label class="control-label col-sm-4">Lampiran (PDF/JPEG/PNG) </label>--%>
+                    <%--<div class="col-sm-8">--%>
+                    <%--<div class="input-group" id="img_file2"  style="margin-top: 7px">--%>
+                    <%--<span class="input-group-btn">--%>
+                    <%--<span class="btn btn-default btn-file btn-file-2">--%>
+                    <%--Browse… <s:file id="imgInp2" accept=".jpg" name="fileUpload2"--%>
+                    <%--onchange="$('#img_file2').css('border','')"></s:file>--%>
+                    <%--</span>--%>
+                    <%--</span>--%>
+                    <%--<input type="text" class="form-control" readonly id="namaFile2">--%>
+                    <%--</div>--%>
+                    <%--<canvas id="img_faktur_canvas2" style="display: none"></canvas>--%>
+                    <%--</div>--%>
+                    <%--</div>--%>
+                    <%--<br>--%>
+                    <%--<div class="row" style="margin-top: 7px">--%>
+                    <%--<center>--%>
+                    <%--<a id="btnAddLampiran" type="button" class="btn btn-default btn-success"><i class="fa fa-plus"></i> Tambah</a>--%>
+                    <%--</center>--%>
+                    <%--</div>--%>
+                    <%--<br>--%>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table style="width: 100%;" class="tabelLampiran table table-bordered">
+                            </table>
+                            <br>
+                        </div>
+                    </div>
+                </center>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<div id="modal-view-lampiran" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">View Lampiran</h4>
+            </div>
+            <div class="modal-body">
+                <img src="" class="img-responsive" id="my-image2">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).ready(function () {
         $('#tablePembayaranUtangPiutang').DataTable({
@@ -613,34 +695,42 @@
                 "<th style='text-align: center; color: #fff; background-color:  #30d196''>No. Vendor</th>" +
                 "<th style='text-align: center; color: #fff; background-color:  #30d196''>Divisi ID</th>" +
                 "<th style='text-align: center; color: #fff; background-color:  #30d196''>No. Nota</th>" +
-                "<th style='text-align: center; color: #fff; background-color:  #30d196''>Jml Pembayaran</th>" +
-                "<th style='text-align: center; color: #fff; background-color:  #30d196''>No. Faktur Pajak</th>" +
-                "<th style='text-align: center; color: #fff; background-color:  #30d196''>View Faktur Pajak</th>" +
+                "<th style='text-align: center; color: #fff; background-color:  #30d196''>Jumlah Debit</th>" +
+                "<th style='text-align: center; color: #fff; background-color:  #30d196''>Jumlah Kredit</th>" +
                 "</tr></thead>";
             var i = i;
+            var totalDebit = 0;
+            var totalKredit = 0;
             $.each(listdata, function (i, item) {
-                var view = '<td align="center"></td>';
-                if (item.noFakturPajak!=""){
-                    view = '<td align="center">' +
-                        "<a href='javascript:;' class ='item-view-faktur' data ='" + item.urlFakturImage + "' judul ='" + item.noFakturPajak + "' >" +
-                        "<img border='0' src='<s:url value='/pages/images/view.png'/>' name='icon_view'>" +
-                        '</a>' +
-                        '</td>';
+                var stDebit = "0";
+                var stKredit = "0";
+                if (item.posisiCoa=="D"){
+                    stDebit = item.stJumlahPembayaran;
+                    totalDebit=totalDebit+parseInt(stDebit.replace(/[,]/g,""));
+                }else {
+                    stKredit = item.stJumlahPembayaran;
+                    totalKredit=totalKredit+parseInt(stKredit.replace(/[,]/g,""));
                 }
-                tmp_table += '<tr style="font-size: 12px;">' +
+
+                tmp_table += '<tr style="font-size: 12px;" ">' +
                     '<td align="center">' + (i + 1) + '</td>' +
                     '<td align="center">' + item.pembayaranUtangPiutangDetailId + '</td>' +
                     '<td align="center">' + item.masterId + '</td>' +
-                    '<td align="center">' + item.divisiName + '</td>' +
+                    '<td align="center">' + item.divisiId + '</td>' +
                     '<td align="center">' + item.noNota + '</td>' +
-                    '<td align="right">' + item.stJumlahPembayaran + '</td>' +
-                    '<td align="center">' + item.noFakturPajak + '</td>' +
-                    view+
+                    '<td align="center">' + stDebit+ '</td>' +
+                    '<td align="center">' + stKredit+ '</td>' +
                     "</tr>";
             });
+            tmp_table += '<tr style="font-size: 12px;" ">' +
+                '<td align="center" colspan="5"> Jumlah </td>' +
+                '<td align="center">' + formatRupiahAtas(totalDebit)+ '</td>' +
+                '<td align="center">' + formatRupiahAtas(totalKredit)+ '</td>' +
+                "</tr>";
             $('.pembayaranTable').append(tmp_table);
         });
     };
+
 
     $('.pembayaranTable').on('click', '.item-view-faktur', function(){
         var id = $(this).attr('data');
@@ -650,6 +740,39 @@
         $('#modal-view-faktur').find('.modal-title').text(judul);
         $('#modal-view-faktur').modal('show');
     });
+    window.loadLampiran = function () {
+        $('.tabelLampiran').find('tbody').remove();
+        $('.tabelLampiran').find('thead').remove();
+        dwr.engine.setAsync(false);
+        var tmp_table = "";
+        PembayaranUtangPiutangAction.loadSessionLampiran(function (listdata) {
+            tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
+                "<th style='text-align: center; background-color:  #30d196'>No</th>" +
+                "<th style='text-align: center; background-color:  #30d196'>Nama Lampiran</th>" +
+                "<th style='text-align: center; background-color:  #30d196'>View</th>" +
+                "</tr></thead>";
+            var i = i;
+            $.each(listdata, function (i, item) {
+                tmp_table += '<tr style="font-size: 12px;" ">' +
+                    '<td align="center" >' + (i + 1) + '</td>' +
+                    '<td align="center">' + item.namaLampiran + '</td>' +
+                    '<td align="center">' +
+                    "<a href='javascript:;' class ='item-view-lampiran' nama ='" + item.namaLampiran + "' url ='" + item.uploadFile + "'>" +
+                    "<img border='0' src='<s:url value='/pages/images/icons8-search-25.png'/>'>" +
+                    '</a>' +
+                    '</td>' +
+                    "</tr>";
+            });
+            $('.tabelLampiran').append(tmp_table);
+        });
+    };
 
+    $('.tabelLampiran').on('click', '.item-view-lampiran', function(){
+        var judul = $(this).attr('nama');
+        var url = $(this).attr('url');
+        $('#modal-view-lampiran').find('.modal-title').text(judul);
+        $("#my-image2").attr("src", url);
+        $('#modal-view-lampiran').modal('show');
+    });
 </script>
 
