@@ -344,7 +344,6 @@ ALTER TABLE it_akun_pembayaran_utang_piutang_detail ALTER COLUMN no_nota type ch
 -- 02-08-2020
 --jika ingin mencoba proses PPN
 --insert into it_akun_pengajuan_setor values ('PSC001','KP','09','Y','admin','2020-08-02 00:00:00','2020-08-02 00:00:00','admin','2020-08-02 00:00:00','admin','U','Y',null,null,null,60000,'2020-08-02','2020',null,'N',null,null,'PPN',null,20000,50000,20000,null,'N',null,null);
-
 -- jika ingin clear data untuk akuntansi
 -- delete from it_hris_payroll;
 -- delete from it_hris_notifikasi;
@@ -468,3 +467,7 @@ ALTER TABLE it_akun_pengajuan_biaya_detail ADD COLUMN rk_dikirim character varyi
 ALTER TABLE it_akun_pengajuan_biaya_detail ADD COLUMN coa_target character varying(30);
 ALTER TABLE it_akun_pengajuan_biaya_detail ADD COLUMN rk_id character varying(15);
 CREATE SEQUENCE seq_rk INCREMENT BY 1 MINVALUE 1 MAXVALUE 9999 START WITH 1 CYCLE;
+
+-- 04-09-2020
+-- jika coba ppn
+insert into it_akun_pengajuan_setor values ('PSC002','KP','10','Y','admin','2020-08-02 00:00:00','2020-08-02 00:00:00','admin','2020-08-02 00:00:00','admin','U','Y',null,null,null,0,'2020-08-02','2020',null,'N',null,null,'PPN',null,0,0,0,null,'N',null,null);
