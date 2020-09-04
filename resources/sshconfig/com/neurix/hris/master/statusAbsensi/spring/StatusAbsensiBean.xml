@@ -10,6 +10,7 @@
 
     <bean id="statusAbsensiBo" class="com.neurix.hris.master.statusAbsensi.bo.impl.StatusAbsensiBoImpl"
           p:statusAbsensiDao-ref="statusAbsensiDao"
+          p:absensiPegawaiDao-ref="absensiPegawaiDao"
          
     />
 

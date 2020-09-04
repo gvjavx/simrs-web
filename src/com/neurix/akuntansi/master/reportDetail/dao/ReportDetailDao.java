@@ -85,4 +85,14 @@ public class ReportDetailDao extends GenericDao<ImReportDetailEntity, String> {
         List<ImReportDetailEntity> results = criteria.list();
         return results;
     }
+
+    public List<ImReportDetailEntity> checkDataDelete(String tipeLaporan) throws HibernateException {
+
+        List<ImReportDetailEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImReportDetailEntity.class)
+                .add(Restrictions.eq("tipeLaporan", tipeLaporan))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+
+        return results;
+    }
 }

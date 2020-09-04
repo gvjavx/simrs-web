@@ -51,12 +51,42 @@
                 var tglAwal = document.getElementById("tglAwal").value;
                 var tglAkhir = document.getElementById("tglAkhir").value;
                 if (unit!=""&&tglAwal!="") {
+                    var awal = tglAwal.split("/").reverse().join("-");
+                    var akhir = "";
+                    if(tglAkhir != ''){
+                        akhir = tglAkhir.split("/").reverse().join("-");
+                    }
                     dwr.engine.setAsync(false);
                     JadwalShiftKerjaAction.cekTanggal(unit,tglAwal,tglAkhir,function(listdata) {
                         if (listdata=="00"){
                             if (confirm('Do you want to save this record?')) {
-                                event.originalEvent.options.submit = true;
-                                $.publish('showDialog');
+                                JadwalShiftKerjaAction.cekLibur(awal,akhir,function(response) {
+                                    if (response.status=="error"){
+                                        if (confirm("ini adalah hari libur. Ingin melanjutkan?")){
+                                            event.originalEvent.options.submit = true;
+                                            $.publish('showDialog');
+                                            // if (confirm('Do you want to save this record?')) {
+                                            //     event.originalEvent.options.submit = true;
+                                            //     $.publish('showDialog');
+                                            // } else {
+                                            //     // Cancel Submit comes with 1.8.0
+                                            //     event.originalEvent.options.submit = false;
+                                            // }
+                                        }else{
+                                            event.originalEvent.options.submit = false;
+                                        }
+                                    } else{
+                                        event.originalEvent.options.submit = true;
+                                        $.publish('showDialog');
+                                        // if (confirm('Do you want to save this record?')) {
+                                        //     event.originalEvent.options.submit = true;
+                                        //     $.publish('showDialog');
+                                        // } else {
+                                        //     // Cancel Submit comes with 1.8.0
+                                        //     event.originalEvent.options.submit = false;
+                                        // }
+                                    }
+                                });
                             } else {
                                 // Cancel Submit comes with 1.8.0
                                 event.originalEvent.options.submit = false;

@@ -5,9 +5,11 @@ import com.neurix.hris.master.payrollPtkp.bo.PayrollPtkpBo;
 import com.neurix.hris.master.payrollPtkp.dao.PayrollPtkpDao;
 import com.neurix.hris.master.payrollPtkp.model.ImHrisPayrollPtkpEntity;
 import com.neurix.hris.master.payrollPtkp.model.PayrollPtkp;
+import com.neurix.hris.master.payrollPtkp.model.ImHrisPayrollPtkpHistoryEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -95,26 +97,29 @@ public class PayrollPtkpBoImpl implements PayrollPtkpBo {
             String payrollPtkp = bean.getIdPtkp();
 
             ImHrisPayrollPtkpEntity imPayrollPtkpEntity = null;
-            ImHrisPayrollPtkpEntity imPayrollPtkpHistoryEntity = new ImHrisPayrollPtkpEntity();
             try {
                 // Get data from database by ID
                 imPayrollPtkpEntity = payrollPtkpDao.getById("idPtkp", payrollPtkp);
-                //historyId = payrollPtkpDao.getNextSkalaGaji();
+                historyId = payrollPtkpDao.getNextPayrollPtkpHistoryId();
             } catch (HibernateException e) {
                 logger.error("[PayrollPtkpBoImpl.saveEdit] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data PayrollPtkp by Kode PayrollPtkp, please inform to your admin...," + e.getMessage());
             }
 
             if (imPayrollPtkpEntity != null) {
-                /*imPayrollPtkpHistoryEntity.setId(historyId);
-                imPayrollPtkpHistoryEntity.setPayrollPtkp(imPayrollPtkpEntity.getPayrollPtkp());
-                imPayrollPtkpHistoryEntity.setPayrollPtkpName(imPayrollPtkpEntity.getPayrollPtkpName());
+                ImHrisPayrollPtkpHistoryEntity imPayrollPtkpHistoryEntity = new ImHrisPayrollPtkpHistoryEntity();
+
+                imPayrollPtkpHistoryEntity.setId(historyId);
+                imPayrollPtkpHistoryEntity.setIdPtkp(imPayrollPtkpEntity.getIdPtkp());
+                imPayrollPtkpHistoryEntity.setStatusKeluarga(imPayrollPtkpEntity.getStatusKeluarga());
+                imPayrollPtkpHistoryEntity.setJumlahTanggungan(imPayrollPtkpEntity.getJumlahTanggungan());
+                imPayrollPtkpHistoryEntity.setNilai(java.lang.Integer.valueOf(imPayrollPtkpEntity.getNilai().toString()));
                 imPayrollPtkpHistoryEntity.setFlag(imPayrollPtkpEntity.getFlag());
                 imPayrollPtkpHistoryEntity.setAction(imPayrollPtkpEntity.getAction());
-                imPayrollPtkpHistoryEntity.setLastUpdateWho(imPayrollPtkpEntity.getLastUpdateWho());
-                imPayrollPtkpHistoryEntity.setLastUpdate(imPayrollPtkpEntity.getLastUpdate());
+                imPayrollPtkpHistoryEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                imPayrollPtkpHistoryEntity.setLastUpdate(bean.getLastUpdate());
                 imPayrollPtkpHistoryEntity.setCreatedWho(imPayrollPtkpEntity.getLastUpdateWho());
-                imPayrollPtkpHistoryEntity.setCreatedDate(imPayrollPtkpEntity.getLastUpdate());*/
+                imPayrollPtkpHistoryEntity.setCreatedDate(imPayrollPtkpEntity.getLastUpdate());
 
                 imPayrollPtkpEntity.setIdPtkp(bean.getIdPtkp());
                 imPayrollPtkpEntity.setStatusKeluarga(bean.getStatusKeluarga());
@@ -130,6 +135,7 @@ public class PayrollPtkpBoImpl implements PayrollPtkpBo {
                 try {
                     // Update into database
                     payrollPtkpDao.updateAndSave(imPayrollPtkpEntity);
+                    payrollPtkpDao.addAndSaveHistory(imPayrollPtkpHistoryEntity);
                     //payrollPtkpDao.addAndSaveHistory(imPayrollPtkpHistoryEntity);
                 } catch (HibernateException e) {
                     logger.error("[PayrollPtkpBoImpl.saveEdit] Error, " + e.getMessage());
