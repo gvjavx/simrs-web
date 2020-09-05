@@ -4,11 +4,10 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
-import com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat;
-import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
-import com.neurix.simrs.transaksi.permintaanvendor.model.ImUserVendorEntity;
-import com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor;
+import com.neurix.simrs.transaksi.permintaanvendor.model.*;
 import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
+import com.neurix.simrs.transaksi.transaksiobat.model.MtSimrsTransaksiObatDetailBatchEntity;
+import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatBatch;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import com.vividsolutions.jts.geom.LineSegment;
 import org.json.JSONException;
@@ -39,4 +38,7 @@ public interface PermintaanVendorBo {
     public List<TransaksiObatDetail> getListObatByBatch(String idPermintaan, Integer noBatch) throws GeneralBOException;
     public List<Obat> getSearchObat(String query, String branch) throws GeneralBOException;
     public ImUserVendorEntity getEntityUserVendorByIdUser(String userId) throws GeneralBOException;
+    public MtSimrsPermintaanVendorEntity getPermintaanVendorEntityById(String idPermintaan) throws GeneralBOException;
+    public void saveListBatch(List<MtSimrsTransaksiObatDetailBatchEntity> listBatchEntity) throws GeneralBOException;
+    public TransaksiObatBatch getBatchByIdTransAndNoBatch(String idTrans, String noBatch) throws GeneralBOException;
 }

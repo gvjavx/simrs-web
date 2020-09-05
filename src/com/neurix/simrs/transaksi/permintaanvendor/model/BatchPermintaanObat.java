@@ -23,6 +23,15 @@ public class BatchPermintaanObat {
     private String noInvoice;
     private String noDo;
     private String stTanggakFaktur;
+    private String jenis;
+
+    public String getJenis() {
+        return jenis;
+    }
+
+    public void setJenis(String jenis) {
+        this.jenis = jenis;
+    }
 
     public String getStTanggakFaktur() {
         return stTanggakFaktur;

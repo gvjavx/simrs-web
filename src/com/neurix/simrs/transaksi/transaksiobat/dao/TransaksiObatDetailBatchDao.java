@@ -57,6 +57,9 @@ public class TransaksiObatDetailBatchDao extends GenericDao<MtSimrsTransaksiObat
             if (mapCriteria.get("id_barang") != null){
                 criteria.add(Restrictions.eq("idBarang", (String) mapCriteria.get("id_barang")));
             }
+            if (mapCriteria.get("jenis") != null){
+                criteria.add(Restrictions.eq("jenis", (String) mapCriteria.get("jenis")));
+            }
         }
 
         // Order by
@@ -109,11 +112,12 @@ public class TransaksiObatDetailBatchDao extends GenericDao<MtSimrsTransaksiObat
                 "no_faktur,\n" +
                 "tanggal_faktur,\n" +
                 "no_invoice,\n" +
-                "no_do\n" +
+                "no_do,\n" +
+                "odb.jenis \n" +
                 "FROM mt_simrs_transaksi_obat_detail_batch odb\n" +
                 "INNER JOIN mt_simrs_transaksi_obat_detail od ON od.id_transaksi_obat_detail = odb.id_transaksi_obat_detail\n" +
                 "WHERE od.id_approval_obat = :idApproval\n" +
-                "GROUP BY no_batch, od.id_approval_obat, url_doc, no_faktur, tanggal_faktur, no_invoice, no_do";
+                "GROUP BY no_batch, od.id_approval_obat, url_doc, no_faktur, tanggal_faktur, no_invoice, no_do, odb.jenis";
 
         List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("idApproval", idApproval)
@@ -138,6 +142,7 @@ public class TransaksiObatDetailBatchDao extends GenericDao<MtSimrsTransaksiObat
                 batchPermintaanObat.setTanggalFaktur(obj[5] != null ? Date.valueOf(obj[5].toString()) : null);
                 batchPermintaanObat.setNoInvoice(obj[6] == null ? "" : obj[6].toString());
                 batchPermintaanObat.setNoDo(obj[7] == null ? "" : obj[7].toString());
+                batchPermintaanObat.setJenis(obj[8] == null ? "" : obj[8].toString());
                 results.add(batchPermintaanObat);
             }
         }

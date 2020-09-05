@@ -38,6 +38,24 @@ public class TransaksiObatBatch {
     private BigDecimal netto;
 
     private String urlDoc;
+    private String jenis;
+    private String stExpDate;
+
+    public String getStExpDate() {
+        return stExpDate;
+    }
+
+    public void setStExpDate(String stExpDate) {
+        this.stExpDate = stExpDate;
+    }
+
+    public String getJenis() {
+        return jenis;
+    }
+
+    public void setJenis(String jenis) {
+        this.jenis = jenis;
+    }
 
     public String getUrlDoc() {
         return urlDoc;

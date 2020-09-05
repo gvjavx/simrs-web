@@ -873,3 +873,8 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
 
     CREATE SEQUENCE seq_doc_po;
 <<< //
+
+// >>> 2020-09-04
+    ALTER TABLE mt_simrs_transaksi_obat_detail_batch
+    ADD COLUMN jenis VARCHAR(50);
+<<< //

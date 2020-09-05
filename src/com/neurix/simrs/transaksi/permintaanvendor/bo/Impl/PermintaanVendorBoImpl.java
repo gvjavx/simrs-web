@@ -35,6 +35,7 @@ import com.neurix.simrs.transaksi.transaksiobat.dao.ApprovalTransaksiObatDao;
 import com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailBatchDao;
 import com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailDao;
 import com.neurix.simrs.transaksi.transaksiobat.model.*;
+import io.agora.recording.common.Common;
 import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
@@ -1625,6 +1626,9 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         if (bean.getApproveFlag() != null && !"".equalsIgnoreCase(bean.getApproveFlag())) {
             hsCriteria.put("approve_flag", bean.getApproveFlag());
         }
+        if (bean.getJenis() != null && !"".equalsIgnoreCase(bean.getJenis())) {
+            hsCriteria.put("jenis", bean.getJenis());
+        }
 
         try {
             batchEntities = transaksiObatDetailBatchDao.getByCriteria(hsCriteria);
@@ -1942,6 +1946,59 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
     @Override
     public ImUserVendorEntity getEntityUserVendorByIdUser(String userId) throws GeneralBOException {
         return userVendorDao.getById("userId", userId);
+    }
+
+    @Override
+    public MtSimrsPermintaanVendorEntity getPermintaanVendorEntityById(String idPermintaan) throws GeneralBOException {
+        return permintaanVendorDao.getById("idPermintaanVendor", idPermintaan);
+    }
+
+    private ImtSimrsTransaksiObatDetailEntity getTransaksiObatDetailEntityById(String idTrans) throws GeneralBOException{
+        return transaksiObatDetailDao.getById("idTransaksiObatDetail", idTrans);
+    }
+
+    @Override
+    public void saveListBatch(List<MtSimrsTransaksiObatDetailBatchEntity> listBatchEntity) throws GeneralBOException {
+
+        if (listBatchEntity != null && listBatchEntity.size() > 0){
+            for (MtSimrsTransaksiObatDetailBatchEntity batchEntity : listBatchEntity){
+
+                batchEntity.setId(new BigInteger(getNextIdBatchObat()));
+                ImtSimrsTransaksiObatDetailEntity transEntity = getTransaksiObatDetailEntityById(batchEntity.getIdTransaksiObatDetail());
+                if (transEntity != null){
+                    batchEntity.setJenisSatuan(transEntity.getJenisSatuan());
+                }
+
+                try {
+                    transaksiObatDetailBatchDao.addAndSave(batchEntity);
+                } catch (HibernateException e){
+                    logger.error("[PermintaanVendorBoImpl.saveListBatch] ERROR when get data. " + e.getMessage());
+                    throw new GeneralBOException("[PermintaanVendorBoImpl.saveListBatch] ERROR when get data. " + e.getMessage());
+                }
+            }
+        }
+    }
+
+    @Override
+    public TransaksiObatBatch getBatchByIdTransAndNoBatch(String idTrans, String noBatch) throws GeneralBOException {
+
+        TransaksiObatBatch obatBatch = new TransaksiObatBatch();
+        obatBatch.setIdTransaksiObatDetail(idTrans);
+        obatBatch.setNoBatch(Integer.valueOf(noBatch));
+        obatBatch.setJenis("do");
+        List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities = getListEntityBatchObat(obatBatch);
+        if (batchEntities.size() > 0){
+            MtSimrsTransaksiObatDetailBatchEntity batchEntity = batchEntities.get(0);
+            obatBatch.setStExpDate(CommonUtil.stDate(batchEntity.getExpiredDate()));
+            obatBatch.setDiskon(batchEntity.getDiskon());
+            obatBatch.setBruto(batchEntity.getBruto());
+            obatBatch.setNetto(batchEntity.getNetto());
+            obatBatch.setQtyApprove(batchEntity.getQtyApprove());
+            obatBatch.setId(batchEntity.getId());
+            return obatBatch;
+        }
+
+        return null;
     }
 
     // for get sequence id

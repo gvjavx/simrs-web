@@ -390,6 +390,8 @@
           <param name="class" value="com.neurix.simrs.transaksi.transaksiobat.action.TransaksiObatAction"/>
       </create>
       <convert converter="bean" match="com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.transaksiobat.model.MtSimrsTransaksiObatDetailBatchEntity"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatBatch"/>
 
       <!--Permintaan Obat-->
       <create creator="new">

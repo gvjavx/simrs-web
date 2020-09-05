@@ -38,6 +38,15 @@ public class MtSimrsTransaksiObatDetailBatchEntity implements Serializable {
     private BigDecimal netto;
 
     private String urlDoc;
+    private String jenis;
+
+    public String getJenis() {
+        return jenis;
+    }
+
+    public void setJenis(String jenis) {
+        this.jenis = jenis;
+    }
 
     public String getUrlDoc() {
         return urlDoc;

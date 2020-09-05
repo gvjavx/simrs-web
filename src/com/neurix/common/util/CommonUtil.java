@@ -1098,6 +1098,12 @@ public class CommonUtil {
         return df.format(date);
     }
 
+    public static String stDate(Date date){
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+        return df.format(date);
+    }
+
+
     public static Timestamp getCurrentDateTimes(){
         return new Timestamp(System.currentTimeMillis());
     }

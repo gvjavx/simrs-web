@@ -205,9 +205,9 @@
                                                        id='pabrik<s:property value="idObat"/>'>
                                                     <%--<input id="cek_obat_<s:property value="idObat"/>" class="form-control" oninput="cekObat(this.value, '<s:property value="idObat"/>')">--%>
                                                     <div class="input-group-addon">
-                            <span id='status<s:property value="idObat"/>'></span>
-                        </div>
-                    </div>
+                                                <span id='status<s:property value="idObat"/>'></span>
+                                            </div>
+                                        </div>
                                             </s:else>
                                         <%--</s:else>--%>
                                     </td>
@@ -818,11 +818,33 @@
                         jml = parseInt(qty) - parseInt(sumQty);
                     }
 
-                    $('#app_expired').val('');
+                    var batch = null;
+                    PermintaanVendorAction.getTransaksiObatByIdTrans(idDetail, noBt, function(res){
+                        if (res != null){
+                            batch = res;
+//                            $('#val_diskon').val(batc.diskon);
+//                            $('#app_diskon').val(formatRupiah(diskon));
+//                            $('#val_bruto').val(bruto);
+//                            $('#app_bruto').val(formatRupiah(bruto));
+//                            $('#val_netto').val(netto);
+//                            $('#app_netto').val(formatRupiah(netto));
+                        }
+                    });
+
+                    if (batch != null){
+                        $('#app_expired').val(batch.stExpDate);
+                        $('#app_qty_app').val(batch.qtyApprove);
+                        diskon  = batch.diskon;
+                        bruto   = batch.bruto;
+                        netto   = batch.netto;
+                    } else {
+                        $('#app_expired').val('');
+                        $('#app_qty_app').val(jml);
+                    }
+
+                    $('#app_qty').val(qty);
                     $('#app_lembar_perbox, #kon_lembar').val(lembarPerBox);
                     $('#app_biji_perlembar, #kon_biji').val(bijiPerlembar);
-                    $('#app_qty').val(qty);
-                    $('#app_qty_app').val(jml);
                     if(diskon != null && diskon != ''
                         && bruto != null && bruto != ''
                         && netto != null && netto != ''){

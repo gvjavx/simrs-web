@@ -25,8 +25,10 @@ import com.neurix.simrs.transaksi.permintaanvendor.bo.PermintaanVendorBo;
 import com.neurix.simrs.transaksi.permintaanvendor.model.*;
 import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
 import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
+import com.neurix.simrs.transaksi.transaksiobat.model.MtSimrsTransaksiObatDetailBatchEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatBatch;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
+import io.agora.recording.common.Common;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -1436,6 +1438,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
     private void eraseAllSession(){
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
+        session.removeAttribute("listOfBatch");
     }
 
     public CrudResponse getListPermintaanVendor(String idPermintaan, String idApproval, String idVendor){
@@ -1473,10 +1476,160 @@ public class PermintaanVendorAction extends BaseMasterAction {
     }
 
     public String addPoVendor(){
+        logger.info("[PermintaanVendorAction.edit] START >>>>>>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
+        VendorBo vendorBo = (VendorBo) ctx.getBean("vendorBoProxy");
+
+        // get parameters
         PermintaanVendor permintaanVendor = new PermintaanVendor();
         permintaanVendor.setIdPermintaanVendor(this.id);
         setPermintaanVendor(permintaanVendor);
+
+        List<PermintaanVendor> permintaanVendorList = new ArrayList<>();
+        List<BatchPermintaanObat> listBatch = new ArrayList<>();
+
+        try {
+            permintaanVendorList = permintaanVendorBo.getByCriteria(permintaanVendor);
+        } catch (HibernateException e) {
+            logger.error("[PermintaanVendorAction.edit] ERROR error when get searh obat. ", e);
+            addActionError("[PermintaanVendorAction.edit] ERROR error when get searh obat. " + e.getMessage());
+        }
+
+        if (permintaanVendorList.size() > 0) {
+            PermintaanVendor requestVendor = permintaanVendorList.get(0);
+            String idApproval = requestVendor.getIdApprovalObat();
+
+            Vendor vendor = new Vendor();
+            vendor.setIdVendor(requestVendor.getIdVendor());
+            List<Vendor> vendorList = new ArrayList<>();
+
+            try {
+                vendorList = vendorBo.getByCriteria(vendor);
+            } catch (GeneralBOException e) {
+                logger.error("[PermintaanVendorAction.edit] ERROR error when get searh vendor. ", e);
+                addActionError("[PermintaanVendorAction.edit] ERROR error when get searh vendor. " + e.getMessage());
+            }
+
+            Vendor vendorResult = new Vendor();
+            if (!vendorList.isEmpty()) {
+                vendorResult = vendorList.get(0);
+                if (vendorResult != null) {
+                    setVendor(vendorResult);
+                }
+            }
+
+            try {
+                listBatch = permintaanVendorBo.getListBatchObatByIdApproval(idApproval);
+            } catch (GeneralBOException e){
+                logger.error("[PermintaanVendorAction.edit] ERROR error when get searh list batch. ", e);
+                addActionError("[PermintaanVendorAction.edit] ERROR error when get searh list batch. " + e.getMessage());
+            }
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfBatch");
+        session.setAttribute("listOfBatch", listBatch);
+        logger.info("[PermintaanVendorAction.edit] END <<<<<<<");
         return "add_po_vendor";
+    }
+
+    public List<TransaksiObatDetail> getListTransaksiAdd(String idPermintaan){
+
+        PermintaanVendor permintaanVendor = new PermintaanVendor();
+        permintaanVendor.setIdPermintaanVendor(idPermintaan);
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
+
+        List<PermintaanVendor> permintaanVendorList = new ArrayList<>();
+        try {
+            permintaanVendorList = permintaanVendorBo.getByCriteria(permintaanVendor);
+        } catch (HibernateException e) {
+            logger.error("[PermintaanVendorAction.getListTransaksiAdd] ERROR error when get searh obat. ", e);
+            addActionError("[PermintaanVendorAction.getListTransaksiAdd] ERROR error when get searh obat. " + e.getMessage());
+        }
+
+        if (permintaanVendorList.size() > 0){
+            return permintaanVendorList.get(0).getListOfTransaksiObatDetail();
+        }
+
+        return null;
+    }
+
+    public CrudResponse saveDo(String idPermintaan, String noDo, String noInvoice, String noFaktur, String tglFaktur, String jsonString) throws JSONException{
+
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = CommonUtil.getCurrentDateTimes();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
+
+        Integer noBatch = new Integer(0);
+        MtSimrsPermintaanVendorEntity permintaanVendorEntity = permintaanVendorBo.getPermintaanVendorEntityById(idPermintaan);
+        if (permintaanVendorEntity != null){
+            noBatch = permintaanVendorBo.getLastNoBatch(permintaanVendorEntity.getIdApprovalObat());
+        }
+        noBatch = noBatch + 1;
+
+        CrudResponse response = new CrudResponse();
+        List<MtSimrsTransaksiObatDetailBatchEntity> listBatchEntity = new ArrayList<>();
+        JSONArray json = new JSONArray(jsonString);
+        for (int i = 0; i < json.length(); i++) {
+            JSONObject obj = json.getJSONObject(i);
+            MtSimrsTransaksiObatDetailBatchEntity batchEntity = new MtSimrsTransaksiObatDetailBatchEntity();
+            if (!"".equalsIgnoreCase(obj.get("idtrans").toString())){
+                batchEntity.setIdTransaksiObatDetail(obj.get("idtrans") == null ? "" : obj.get("idtrans").toString());
+            }
+            if (!"".equalsIgnoreCase(obj.get("qty").toString())){
+                batchEntity.setQtyApprove(obj.get("qty") == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj.get("qty").toString()) );
+            }
+            if (!"".equalsIgnoreCase(obj.get("expdate").toString())){
+                batchEntity.setExpiredDate(obj.get("expdate") == null ? null : Date.valueOf(obj.get("expdate").toString()));
+            }
+            if (!"".equalsIgnoreCase(obj.get("diskon").toString())){
+                batchEntity.setDiskon(obj.get("diskon") == null ? new BigDecimal(String.valueOf(0)) : new BigDecimal(obj.get("diskon").toString()) );
+            }
+            if (!"".equalsIgnoreCase(obj.get("bruto").toString())){
+                batchEntity.setBruto(obj.get("bruto") == null ? new BigDecimal(String.valueOf(0)) : new BigDecimal(obj.get("bruto").toString()) );
+            }
+            if (!"".equalsIgnoreCase(obj.get("nett").toString())){
+                batchEntity.setNetto(obj.get("nett") == null ? new BigDecimal(String.valueOf(0)) : new BigDecimal(obj.get("nett").toString()) );
+            }
+
+            batchEntity.setJenis("do");
+            batchEntity.setNoBatch(noBatch);
+            batchEntity.setStatus("Y");
+            batchEntity.setFlag("Y");
+            batchEntity.setAction("C");
+            batchEntity.setNoDo(noDo);
+            batchEntity.setNoInvoice(noInvoice);
+            batchEntity.setNoFaktur(noFaktur);
+            batchEntity.setTanggalFaktur(!"".equalsIgnoreCase(tglFaktur) ? Date.valueOf(tglFaktur) : null);
+            batchEntity.setCreatedDate(time);
+            batchEntity.setCreatedWho(userLogin);
+            batchEntity.setLastUpdate(time);
+            batchEntity.setLastUpdateWho(userLogin);
+            listBatchEntity.add(batchEntity);
+        }
+
+        try {
+            permintaanVendorBo.saveListBatch(listBatchEntity);
+            response.setStatus("success");
+        } catch (GeneralBOException e){
+            logger.error("[PermintaanVendorAction.saveDo] ERROR. ", e);
+            response.setMsg("[PermintaanVendorAction.saveDo] ERROR. "+ e);
+            response.setStatus("error");
+            return response;
+        }
+        return response;
+    }
+
+    public TransaksiObatBatch getTransaksiObatByIdTrans(String idTrans, String noBatch){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
+        return permintaanVendorBo.getBatchByIdTransAndNoBatch(idTrans, noBatch);
     }
 
 

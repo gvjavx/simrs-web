@@ -70,7 +70,7 @@
                                 <td>
                                     <table>
                                         <s:label name="vendor.idVendor"></s:label>
-                                        <s:hidden name="permintaanVendor.idApprovalObat" id="id_approval"></s:hidden>
+                                        <%--<s:label name="permintaanVendor.idApprovalObat" id="id_approval"></s:label>--%>
                                         <s:hidden name="permintaanVendor.idPermintaanVendor" id="id_permintaan_vendor"></s:hidden>
                                     </table>
                                 </td>
@@ -323,7 +323,7 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Print List Obat Permintaan dengan No Batch <span id="detail_batch"></span>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Tambah DO <span id="detail_batch"></span>
                 </h4>
             </div>
             <div class="modal-body">
@@ -336,41 +336,68 @@
                         <div class="col-md-6">
                             <table class="table table-striped">
                                 <tr>
-                                    <td width="40%">Nomor Faktur</td>
-                                    <td><p id="det_no_faktur"></p></td>
+                                    <td width="40%">No. Faktur Pajak</td>
+                                    <td><input type="text" class="form-control" id="no-faktur"/></td>
                                 </tr>
                                 <tr>
                                     <td>Tanggal Faktur</td>
-                                    <td><p id="det_tlg_faktur"></p></td>
-                                </tr>
-                                <tr>
-                                    <td>Foto Doc</td>
-                                    <td><button id="det_img" class="btn btn-primary"><i class="fa fa-image"></i></button></td>
+                                    <td><input type="date" class="form-control" id="tgl-faktur"/></td>
                                 </tr>
                             </table>
                         </div>
                         <div class="col-md-6">
+                            <div style="float: left">Upload Faktur</div> <button class="btn btn-sm btn-warning" style="float: right;" onclick="addUploadFaktur()"><i class="fa fa-plus"></i></button>
+                            <input type="file" class="form-control" name="uploadFaktur" id="upload-faktur-0"/>
+                            <div id="body-upload-faktur-0"></div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
                             <table class="table table-striped">
                                 <tr>
-                                    <td width="40%">Nomor Invoice</td>
-                                    <td><p id="det_no_invoice"></p></td>
-                                </tr>
-                                <tr>
-                                    <td>No DO</td>
-                                    <td><p id="det_no_do"></p></td>
+                                    <td width="40%">No. Invoice</td>
+                                    <td><input type="text" class="form-control" id="no-invoice"/></td>
                                 </tr>
                             </table>
                         </div>
+                        <div class="col-md-6">
+                            <div style="float: left">Upload Invoice</div> <button class="btn btn-sm btn-warning" style="float: right;" onclick="addUploadInvoice()"><i class="fa fa-plus"></i></button>
+                            <input type="file" class="form-control" name="uploadInvoice" id="upload-invoice-0"/>
+                            <div id="body-upload-invoice-0"></div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-striped">
+                                <tr>
+                                    <td width="40%">No. DO</td>
+                                    <td><input type="text" class="form-control" id="no-do"/></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <div style="float: left">Upload DO</div> <button class="btn btn-sm btn-warning" style="float: right;" onclick="addUploadDo()"><i class="fa fa-plus"></i></button>
+                            <input type="file" class="form-control" name="uploadInvoice" id="upload-do-0"/>
+                            <div id="body-upload-do-0"></div>
+                        </div>
                     </div>
                 </div>
+                <br>
                 <div class="box">
-                    <table class="table table-striped table-bordered" id="tabel_detail">
+                    <table class="table table-striped table-bordered" id="tabel_detail" style="font-size: 13px;">
                         <thead>
-                        <td>ID Barang</td>
+                        <%--<td>ID Barang</td>--%>
                         <td>Nama Obat</td>
-                        <td align="center">Qty Approve</td>
+                        <td align="center">Qty</td>
                         <td align="center">Jenis Satuan</td>
-                        <td align="center">Action</td>
+                        <td align="center">Harga</td>
+                        <td align="center">Qty Dikirim</td>
+                        <td align="center">Exp Date</td>
+                        <td align="center">Diskon</td>
+                        <td align="center">Bruto</td>
+                        <td align="center">Nett</td>
                         </thead>
                         <tbody id="body_detail">
                         </tbody>
@@ -379,7 +406,7 @@
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                <button type="button" class="btn btn-success" onclick="saveDo()" ><i class="fa fa-check"></i> Save
                 </button>
             </div>
         </div>
@@ -466,11 +493,14 @@
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
-    var idApprovalObat = $('#id_approval').val();
+//    var idApprovalObat = $('#id_approval').val();
     var idpermintaanPo = $('#id_permintaan_vendor').val();
     var noPo = '<s:property value="id" />';
     var jenis = '<s:property value="tipe" />';
-
+    var n = 0;
+    var nFaktur = 0;
+    var nInvoice = 0;
+    var nDo = 0;
 
     $(document).ready(function () {
 
@@ -527,6 +557,42 @@
 
     });
 
+    // exemple : post('/contact/', {name: 'Johnny Bravo'});
+    function post(path, params) {
+
+        var method='post';
+        // The rest of this code assumes you are not using a library.
+        // It can be made less wordy if you use one.
+        const form = document.createElement('form');
+        form.method = method;
+        form.action = path;
+
+        for (const key in params) {
+            if (params.hasOwnProperty(key)) {
+                const hiddenField = document.createElement('input');
+                hiddenField.type = 'hidden';
+                hiddenField.name = key;
+                hiddenField.value = params[key];
+
+                form.appendChild(hiddenField);
+            }
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    function firstpath() {
+        var pathArray = window.location.pathname.split('/');
+        var first = pathArray[1];
+        return "/" + first;
+    }
+
+    function initAdd() {
+        var host = firstpath()+"/permintaanvendor/addPoVendor_permintaanvendor.action?id="+idpermintaanPo;
+        post(host);
+    }
+
     function formatRupiah(angka) {
         var reverse = angka.toString().split('').reverse().join(''),
                 ribuan = reverse.match(/\d{1,3}/g);
@@ -535,13 +601,97 @@
     }
 
     function addBatch(){
-        var tipe = '<s:property value="tipe"/>';
-        if(tipe == "reture"){
-            window.location.href = 'edit_permintaanpo.action?id='+idpermintaanPo+'&isBatch=Y&newBatch=Y&tipe=reture';
-        }else{
-            window.location.href = 'edit_permintaanpo.action?id='+idpermintaanPo+'&isBatch=Y&newBatch=Y';
-        }
+        nFaktur     = 0;
+        nInvoice    = 0;
+        nDo         = 0;
+        n           = 0;
+        $("#modal-detail").modal('show');
+        var idPermintaan = $("#id_permintaan_vendor").val();
+
+        PermintaanVendorAction.getListTransaksiAdd(idPermintaan, function (list) {
+
+            var str = '';
+            $.each(list, function (i, item) {
+                str += '<tr>' +
+                    '<td>'+item.namaObat+'</td>' +
+                    '<td>'+item.qty+'</td>' +
+                    '<td>'+item.jenisSatuan+'</td>' +
+                    '<td align="right">'+ formatRupiah(item.hargaPo) +'</td>' +
+                    '<td>' +
+                    '<input type="number" class="form-control" id="qty-approve-'+n+'" style="width: 70px;"/>' +
+                    '<input type="hidden" class="form-control" id="id-trans-'+n+'" value="'+item.idTransaksiObatDetail+'"/>' +
+                    '</td>' +
+                    '<td><input type="date" class="form-control" id="exp-date-'+n+'"/></td>' +
+                    '<td><input type="number" class="form-control" id="diskon-'+n+'"/></td>' +
+                    '<td><input type="number" class="form-control" id="bruto-'+n+'" onchange="hitungNett(\''+n+'\')"/></td>' +
+                    '<td><input type="number" class="form-control" id="nett-'+n+'" readonly/></td>' +
+                    '</tr>';
+                n++;
+            });
+
+            $("#body_detail").html(str);
+        });
     }
+
+    function hitungNett(ind) {
+        var diskon = $("#diskon-"+ind).val();
+        var bruto = $("#bruto-"+ind).val();
+        var total = parseInt(bruto) - parseInt(diskon);
+        $("#nett-"+ind).val(total);
+    }
+
+    function addUploadFaktur() {
+        nFaktur ++;
+        str = '<input type="file" class="form-control" name="uploadFaktur" id="upload-faktur-'+nFaktur+'"/>' +
+            '<div id="body-upload-faktur-'+nFaktur+'">';
+        var i = nFaktur - 1;
+        $("#body-upload-faktur-"+i).html(str);
+    }
+
+    function addUploadInvoice() {
+        nInvoice ++;
+        str = '<input type="file" class="form-controlN" name="uploadFaktur" id="upload-invoice-'+nFaktur+'"/>' +
+            '<div id="body-upload-invoice-'+nInvoice+'">';
+        var i = nInvoice - 1;
+        $("#body-upload-invoice-"+i).html(str);
+    }
+
+    function addUploadDo() {
+        nDo ++;
+        str = '<input type="file" class="form-control" name="uploadFaktur" id="upload-do-'+nDo+'"/>' +
+            '<div id="body-upload-do-'+nDo+'">';
+        var i = nDo - 1;
+        $("#body-upload-do-"+i).html(str);
+    }
+
+    function saveDo(){
+        var numberDo        = $("#no-do").val();
+        var invoice         = $("#no-invoice").val();
+        var faktur          = $("#no-faktur").val();
+        var tglfaktur       = $("#tgl-faktur").val();
+        var idPermintaan    = $("#id_permintaan_vendor").val();
+        var listOfTrans     = [];
+
+        for (i=0; i < n; i++){
+            var idTrans     = $("#id-trans-"+i).val();
+            var qty         = $("#qty-approve-"+i).val();
+            var expdate     = $("#exp-date-"+i).val();
+            var diskon      = $("#diskon-"+i).val();
+            var bruto       = $("#bruto-"+i).val();
+            var nett        = $("#nett-"+i).val();
+            listOfTrans.push({"idtrans":idTrans, "qty":qty, "expdate":expdate, "diskon":diskon, "bruto":bruto, "nett":nett});
+        }
+
+        var strJson = JSON.stringify(listOfTrans);
+        PermintaanVendorAction.saveDo(idPermintaan, numberDo, invoice, faktur, tglfaktur, strJson, function (res) {
+           if (res.status == "success"){
+               initAdd();
+           } else {
+               alert(res.msg);
+           }
+        });
+    }
+
 
     function updateBatch(noBatch){
         var tipe = '<s:property value="tipe"/>';

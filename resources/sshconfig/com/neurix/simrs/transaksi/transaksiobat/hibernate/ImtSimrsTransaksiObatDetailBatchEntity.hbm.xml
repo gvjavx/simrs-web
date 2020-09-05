@@ -85,6 +85,9 @@
         <property name="urlDoc">
             <column name="url_doc" sql-type="varchar" length="100" not-null="false" />
         </property>
+        <property name="jenis">
+            <column name="jenis" sql-type="varchar" length="50" not-null="false" />
+        </property>
 
     </class>
 </hibernate-mapping>
