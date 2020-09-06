@@ -59,6 +59,15 @@ public class PermintaanVendor{
     private String noInvoice;
     private String noDo;
     private String tipeTransaksi;
+    private String branchName;
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
 
     public String getTipeTransaksi() {
         return tipeTransaksi;

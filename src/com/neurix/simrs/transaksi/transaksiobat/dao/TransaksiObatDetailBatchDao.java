@@ -4,12 +4,14 @@ import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat;
 import com.neurix.simrs.transaksi.transaksiobat.model.MtSimrsTransaksiObatDetailBatchEntity;
+import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatBatch;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -193,6 +195,29 @@ public class TransaksiObatDetailBatchDao extends GenericDao<MtSimrsTransaksiObat
         }
     }
 
+    public BigInteger getJumlahApprove(String idTrans){
+
+        String SQL = "SELECT \n" +
+                "id_transaksi_obat_detail,\n" +
+                "SUM(qty_approve) qty_approve\n" +
+                "FROM mt_simrs_transaksi_obat_detail_batch\n" +
+                "WHERE id_transaksi_obat_detail = :id \n" +
+                "GROUP BY id_transaksi_obat_detail";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", idTrans)
+                .list();
+
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                if (obj[1] != null){
+                    BigDecimal nilai = (BigDecimal) obj[1];
+                    return new BigInteger(nilai.toString());
+                }
+            }
+        }
+        return new BigInteger(String.valueOf(0));
+    }
 
 
     public String getNextId(){

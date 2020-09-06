@@ -155,8 +155,8 @@
                         <table id="sortTable" class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>ID PO</td>
-                                <td>Nama Vendor</td>
+                                <td>No. PO</td>
+                                <td>Unit</td>
                                 <td>Tanggal Permintaan</td>
                                 <td>Status</td>
                                 <td align="center">Action</td>
@@ -166,7 +166,7 @@
                             <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
                                     <td><s:property value="idPermintaanVendor"/></td>
-                                    <td><s:property value="namaVendor"/></td>
+                                    <td><s:property value="branchName"/></td>
                                     <td><s:property value="stCreatedDate"/></td>
                                     <td><s:if test='#row.keterangan == "Telah Dikonfirmasi"'>
                                         <label class="label label-success"><s:property value="keterangan"/></label>
@@ -174,6 +174,7 @@
                                         <label class="label label-warning"><s:property value="keterangan"/></label>
                                     </s:else></td>
                                     <td align="center">
+                                        <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>" onclick="printPo('<s:property value="idPermintaanVendor"/>','<s:property value="idApprovalObat"/>')">
 
                                         <s:if test='#row.keterangan == "Telah Dikonfirmasi"'>
 
@@ -425,6 +426,12 @@
         return "/" + first;
     }
 
+    function printPo(idPermintaan, idApproval) {
+        var form = { "permintaanVendor.idPermintaanVendor":idPermintaan, "permintaanVendor.idApprovalObat":idApproval };
+        var host = firstpath()+"/permintaanvendor/printPo_permintaanvendor.action";
+        post(host, form);
+    }
+
     function initForm() {
         var host = firstpath()+"/permintaanvendor/initFormVendor_permintaanvendor.action";
         post(host);
@@ -448,7 +455,7 @@
                         '<td align="center">'+item.noBatch+'</td>' +
                         '<td>'+item.stLastUpdateWho+'</td>' +
                         '<td align="center">' +
-                        '<a target="_blank" href="printPermintaanPO_permintaanpo?id='+idPermintaan+'&noBatch='+item.noBatch+'">' +
+                        '<a target="_blank" href="printPermintaanPO_permintaanvendor?id='+idPermintaan+'&noBatch='+item.noBatch+'">' +
                         '<img src="<s:url value="/pages/images/icons8-print-25.png"/>">'+
                         '</a>'+
                         '<img style="cursor: pointer" onclick="showDetailListObat(\''+idPermintaan+'\',\''+item.noBatch+'\',\''+item.noFaktur+'\',\''+tgl+'\',\''+item.noInvoice+'\',\''+item.noDo+'\',\''+item.urlDoc+'\')" src="<s:url value="/pages/images/icons8-search-25.png"/>"></td>' +

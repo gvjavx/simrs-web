@@ -271,7 +271,7 @@
                                         <input class="form-control" id="lembar_perbox" type="number"
                                                style="margin-top: 7px"
                                                oninput="var warn =$('#war_po_lembar_perbox').is(':visible'); if (warn){$('#cor_po_lembar_perbox').show().fadeOut(3000);$('#war_po_lembar_perbox').hide()};"
-                                               onchange="cekFisik()"/>
+                                               onchange="cekFisik()" readonly/>
                                         <p style="color: red; display: none;"
                                            id="war_po_lembar_perbox"><i class="fa fa-times"></i> required</p>
                                         <p style="color: green; display: none;"
@@ -283,7 +283,7 @@
                                     <div class="col-md-8">
                                         <input class="form-control" id="biji_perlembar" type="number"
                                                style="margin-top: 7px" onchange="cekFisik()"
-                                               oninput="var warn =$('#war_po_biji_perlembar').is(':visible'); if (warn){$('#cor_po_biji_perlembar').show().fadeOut(3000);$('#war_po_biji_perlembar').hide()};"/>
+                                               oninput="var warn =$('#war_po_biji_perlembar').is(':visible'); if (warn){$('#cor_po_biji_perlembar').show().fadeOut(3000);$('#war_po_biji_perlembar').hide()};" readonly/>
                                         <p style="color: red; display: none;"
                                            id="war_po_biji_perlembar"><i class="fa fa-times"></i> required</p>
                                         <p style="color: green; display: none;"
@@ -365,7 +365,7 @@
                                 <div class="form-group">
                                     <div class="col-md-5 col-md-offset-4">
                                         <a type="button" class="btn btn-success" onclick="addToListPo()"><i
-                                                class="fa fa-plus"></i> Tambah</a>
+                                                class="fa fa-arrow-down"></i> Insert</a>
                                         <a type="button" class="btn btn-danger" onclick="reset()"><i
                                                 class="fa fa-refresh"></i>
                                             Reset</a>

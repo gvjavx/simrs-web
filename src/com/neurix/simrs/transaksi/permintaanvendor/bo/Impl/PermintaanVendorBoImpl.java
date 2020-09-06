@@ -91,6 +91,22 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                     permintaanVendor.setFlag(permintaanVendorEntity.getFlag());
                     permintaanVendor.setAction(permintaanVendorEntity.getAction());
                     permintaanVendor.setTipeTransaksi(permintaanVendorEntity.getTipeTransaksi());
+                    permintaanVendor.setBranchId(permintaanVendorEntity.getBranchId());
+
+                    if (permintaanVendorEntity.getBranchId() != null){
+                        ImBranchesPK branchesPK = new ImBranchesPK();
+                        branchesPK.setId(permintaanVendorEntity.getBranchId());
+
+                        Map hsCriteria = new HashMap();
+                        hsCriteria.put("branch_id", permintaanVendorEntity.getBranchId());
+                        hsCriteria.put("flag", "Y");
+
+                        List<ImBranches> branches = branchDao.getByCriteria(hsCriteria);
+                        if (branches != null && branches.size() > 0){
+                            ImBranches imBranches = branches.get(0);
+                            permintaanVendor.setBranchName(imBranches.getBranchName());
+                        }
+                    }
 
                     Vendor vendor = new Vendor();
                     vendor.setIdVendor(permintaanVendorEntity.getIdVendor());
@@ -163,7 +179,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                                 transaksiObatDetail.setQtyBox(transaksiObatDetailEntity.getQtyBox());
                                 transaksiObatDetail.setQtyLembar(transaksiObatDetailEntity.getQtyLembar());
                                 transaksiObatDetail.setQtyBiji(transaksiObatDetailEntity.getQtyBiji());
-                                transaksiObatDetail.setQty(transaksiObatDetailEntity.getQty());
+                                transaksiObatDetail.setQty(transaksiObatDetailEntity.getQty().subtract(getQtyApprove(transaksiObatDetailEntity.getIdTransaksiObatDetail())));
                                 transaksiObatDetail.setLembarPerBox(transaksiObatDetailEntity.getLembarPerBox());
                                 transaksiObatDetail.setBijiPerLembar(transaksiObatDetailEntity.getBijiPerLembar());
                                 transaksiObatDetail.setAverageHargaBox(transaksiObatDetailEntity.getAverageHargaBox());
@@ -212,6 +228,10 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
         logger.info("[PermintaanVendorBoImpl.getByCriteria] END <<<");
         return permintaanVendorList;
+    }
+
+    private BigInteger getQtyApprove(String idTrans){
+        return transaksiObatDetailBatchDao.getJumlahApprove(idTrans);
     }
 
     public List<MtSimrsPermintaanVendorEntity> getListEntityVendor(PermintaanVendor bean) throws GeneralBOException {
@@ -1989,16 +2009,34 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities = getListEntityBatchObat(obatBatch);
         if (batchEntities.size() > 0){
             MtSimrsTransaksiObatDetailBatchEntity batchEntity = batchEntities.get(0);
-            obatBatch.setStExpDate(CommonUtil.stDate(batchEntity.getExpiredDate()));
+            obatBatch.setStExpDate(CommonUtil.ddMMyyyyFormat(batchEntity.getExpiredDate()));
             obatBatch.setDiskon(batchEntity.getDiskon());
             obatBatch.setBruto(batchEntity.getBruto());
             obatBatch.setNetto(batchEntity.getNetto());
             obatBatch.setQtyApprove(batchEntity.getQtyApprove());
             obatBatch.setId(batchEntity.getId());
+            obatBatch.setNoFaktur(batchEntity.getNoFaktur());
+            obatBatch.setNoDo(batchEntity.getNoDo());
+            obatBatch.setNoInvoice(batchEntity.getNoInvoice());
+            obatBatch.setStTglFaktur(CommonUtil.ddMMyyyyFormat(batchEntity.getTanggalFaktur()));
             return obatBatch;
         }
 
         return null;
+    }
+
+    @Override
+    public List<TransaksiObatDetail> getListObatByBatchByDo(String idPermintaan, String noDo) throws GeneralBOException {
+        List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
+
+        if (idPermintaan != null && !"".equalsIgnoreCase(idPermintaan) && noDo != null && !"".equalsIgnoreCase(noDo)) {
+            try {
+                transaksiObatDetails = permintaanVendorDao.getListObatByBatchByDo(idPermintaan, noDo);
+            } catch (HibernateException e) {
+                logger.error("Found error when search obat list " + e.getMessage());
+            }
+        }
+        return transaksiObatDetails;
     }
 
     // for get sequence id

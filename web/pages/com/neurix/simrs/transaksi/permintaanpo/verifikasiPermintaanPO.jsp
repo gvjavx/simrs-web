@@ -762,7 +762,8 @@
                     $('#val_bruto').val(valBayar2);
                     var diskon = $('#val_diskon').val();
                     if(diskon != '' && parseInt(valBayar2) > parseInt(diskon)){
-                        var hasil = parseInt(valBayar2) - parseInt(diskon);
+                        var qtyApp = $("#app_qty_app").val()
+                        var hasil = (parseInt(valBayar2) * parseInt(qtyApp)) - parseInt(diskon);
                         $('#app_netto').val(formatRupiah(hasil));
                         $('#val_netto').val(hasil);
                     }else{
@@ -822,6 +823,7 @@
                     PermintaanVendorAction.getTransaksiObatByIdTrans(idDetail, noBt, function(res){
                         if (res != null){
                             batch = res;
+//                            console.log(res);
 //                            $('#val_diskon').val(batc.diskon);
 //                            $('#app_diskon').val(formatRupiah(diskon));
 //                            $('#val_bruto').val(bruto);

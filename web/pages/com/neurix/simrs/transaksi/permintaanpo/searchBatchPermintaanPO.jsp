@@ -93,6 +93,12 @@
                                     <table><s:label name="vendor.alamat"></s:label></table>
                                 </td>
                             </tr>
+                            <tr>
+                                <td><b>Scan DO</b></td>
+                                <td>
+                                    <table><input type="text" onchange="searchDo(this.value)" placeholder="Scan No. DO Here !" class="form-control" style="width: 30%;"/></table>
+                                </td>
+                            </tr>
                         </table>
                     </div>
                     <div class="box-header with-border"></div>
@@ -227,8 +233,8 @@
 </div>
 
 <div class="modal fade" id="modal-approve">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 1000px; margin-left: -40%;">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
@@ -243,12 +249,15 @@
                 <div class="box">
                     <table class="table table-striped table-bordered" id="tabel_approve">
                         <thead>
-                        <td>ID</td>
+                        <%--<td>ID</td>--%>
                         <td>Nama Obat</td>
                         <td align="center">Qty Request</td>
-                        <td align="center">Qty Total Approve</td>
+                        <td align="center">Qty Approve</td>
                         <td>Jenis Satuan</td>
-                        <td align="center">Harga (Rp.)</td>
+                        <%--<td align="center">Harga (Rp.)</td>--%>
+                        <td align="center">Diskon</td>
+                        <td align="center">Bruto</td>
+                        <td align="center">Netto</td>
                         </thead>
                         <tbody id="body_approve">
                         </tbody>
@@ -582,6 +591,92 @@
         $("#modal-upload").modal("show");
     }
 
+    function searchDo(noDo) {
+        $('#modal-approve').modal({show:true, backdrop:'static'});
+        var table = [];
+        var noBatch = null;
+        $('#body_approve').html('');
+        $('#app_no_batch').val('');
+        $('#app'+noBatch).hide();
+        $('#load'+noBatch).show();
+        $('#loading_data').show();
+        dwr.engine.setAsync(true);
+        PermintaanVendorAction.initApprovalByNoDo(idpermintaanPo, noDo, {
+            callback: function (response) {
+                if (response != null) {
+                    var dataDo = null;
+                    var ppn = 0.01;
+                    var total = 0;
+                    var subTotal = 0;
+                    var totalPpn = 0;
+                    $.each(response, function (i, item) {
+
+                        if (noBatch == null){
+                            noBatch = item.noBatch;
+                            $('#app_no_batch').val(item.noBatch);
+                        }
+
+                        var netto = (parseInt(item.bruto) - parseInt(item.diskon)) * parseInt(item.qtyApprove);
+
+                        table += "<tr>" +
+                            //                                "<td>" + item.idObat + "</td>" +
+                            "<td>" + item.namaObat + "</td>" +
+                            "<td align='center'>" + item.qty + "</td>" +
+                            "<td align='center'>" + item.qtyApprove + "</td>" +
+                            "<td>" + item.jenisSatuan + "</td>" +
+                            //                                "<td align='right'>" + formatRupiah(item.hargaPo) + "</td>" +
+                            "<td align='right'>" + formatRupiah(item.diskon) + "</td>" +
+                            "<td align='right'>" + formatRupiah(item.bruto) + "</td>" +
+                            "<td align='right'>" + formatRupiah(netto) + "</td>" +
+                            "</tr>";
+
+                        if (dataDo == null){
+                            PermintaanVendorAction.getTransaksiObatByIdTrans(item.idTransaksiObatDetail, noBatch, function (res) {
+                                if (res != null){
+                                    $("#app_no_faktur").val(res.noFaktur);
+                                    $("#app_tgl_faktur").val(res.stTglFaktur);
+                                    $("#app_no_invoice").val(res.noInvoice);
+                                    $("#app_no_do").val(res.noDo);
+                                }
+                            });
+                        }
+
+                        total = parseInt(total) + parseInt( nullEscape(netto) );
+                    });
+
+                    totalPpn = parseInt(total) * parseFloat(ppn);
+                    subTotal = parseInt(total) - parseInt(totalPpn);
+
+                    table += "<tr>" +
+                        "<td colspan='6' align='right'>Total</td>" +
+                        "<td align='right'>"+formatRupiah(total)+"</td>" +
+                        "</tr>";
+
+                    table += "<tr>" +
+                        "<td colspan='6' align='right'>PPN Masukan</td>" +
+                        "<td align='right'>"+formatRupiah(totalPpn)+"</td>" +
+                        "</tr>";
+
+                    table += "<tr>" +
+                        "<td colspan='6' align='right'>Sub Total</td>" +
+                        "<td align='right'>"+formatRupiah(subTotal)+"</td>" +
+                        "</tr>";
+
+                    $('#app'+noBatch).show();
+                    $('#load'+noBatch).hide();
+                    $('#loading_data').hide();
+                } else {
+                    alert("Data Tidak Ditemukan");
+//                    $('#app'+noBatch).show();
+//                    $('#load'+noBatch).hide();
+//                    $('#loading_data').hide();
+                }
+                $('#mod_batch').html(noBatch);
+                $('#body_approve').html(table);
+            }
+        });
+    }
+
     function confirmBatch(noBatch){
         $('#modal-approve').modal({show:true, backdrop:'static'});
         var table = [];
@@ -595,16 +690,58 @@
             callback: function (response) {
                 if (response != null) {
                     $('#app_no_batch').val(noBatch);
+                    var dataDo = null;
+                    var ppn = 0.01;
+                    var total = 0;
+                    var subTotal = 0;
+                    var totalPpn = 0;
                     $.each(response, function (i, item) {
+
+                        var netto = (parseInt(item.bruto) - parseInt(item.diskon)) * parseInt(item.qtyApprove);
+
                         table += "<tr>" +
-                                "<td>" + item.idObat + "</td>" +
+//                                "<td>" + item.idObat + "</td>" +
                                 "<td>" + item.namaObat + "</td>" +
                                 "<td align='center'>" + item.qty + "</td>" +
                                 "<td align='center'>" + item.qtyApprove + "</td>" +
                                 "<td>" + item.jenisSatuan + "</td>" +
-                                "<td align='right'>" + formatRupiah(item.hargaPo) + "</td>" +
+//                                "<td align='right'>" + formatRupiah(item.hargaPo) + "</td>" +
+                                "<td align='right'>" + formatRupiah(item.diskon) + "</td>" +
+                                "<td align='right'>" + formatRupiah(item.bruto) + "</td>" +
+                                "<td align='right'>" + formatRupiah(netto) + "</td>" +
                                 "</tr>";
+                        if (dataDo == null){
+                            PermintaanVendorAction.getTransaksiObatByIdTrans(item.idTransaksiObatDetail, noBatch, function (res) {
+                                if (res != null){
+                                    $("#app_no_faktur").val(res.noFaktur);
+                                    $("#app_tgl_faktur").val(res.stTglFaktur);
+                                    $("#app_no_invoice").val(res.noInvoice);
+                                    $("#app_no_do").val(res.noDo);
+                                }
+                            });
+                        }
+
+                        total = parseInt(total) + parseInt( nullEscape(netto) );
                     });
+
+                    totalPpn = parseInt(total) * parseFloat(ppn);
+                    subTotal = parseInt(total) - parseInt(totalPpn);
+
+                    table += "<tr>" +
+                        "<td colspan='6' align='right'>Total</td>" +
+                        "<td align='right'>"+formatRupiah(total)+"</td>" +
+                            "</tr>";
+
+                    table += "<tr>" +
+                        "<td colspan='6' align='right'>PPN Masukan</td>" +
+                        "<td align='right'>"+formatRupiah(totalPpn)+"</td>" +
+                        "</tr>";
+
+                    table += "<tr>" +
+                        "<td colspan='6' align='right'>Sub Total</td>" +
+                        "<td align='right'>"+formatRupiah(subTotal)+"</td>" +
+                        "</tr>";
+
                     $('#app'+noBatch).show();
                     $('#load'+noBatch).hide();
                     $('#loading_data').hide();
@@ -617,6 +754,12 @@
                 $('#body_approve').html(table);
             }
         });
+    }
+
+    function nullEscape(val){
+        if (val == null)
+            return 0;
+        return val;
     }
 
     function confirmDialog(){

@@ -66,33 +66,34 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td width="17%"><b>ID Vendor</b></td>
+                                <td width="17%"><b>Unit</b></td>
                                 <td>
                                     <table>
-                                        <s:label name="vendor.idVendor"></s:label>
+                                        <s:hidden name="vendor.idVendor"></s:hidden>
+                                        <s:label name="permintaanVendor.branchName"></s:label>
                                         <%--<s:label name="permintaanVendor.idApprovalObat" id="id_approval"></s:label>--%>
                                         <s:hidden name="permintaanVendor.idPermintaanVendor" id="id_permintaan_vendor"></s:hidden>
                                     </table>
                                 </td>
                             </tr>
-                            <tr>
-                                <td><b>Nama Vendor</b></td>
-                                <td>
-                                    <table><s:label name="vendor.namaVendor"></s:label></table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><b>No Telp.</b></td>
-                                <td>
-                                    <table><s:label name="vendor.noTelp"></s:label></table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><b>Alamat</b></td>
-                                <td>
-                                    <table><s:label name="vendor.alamat"></s:label></table>
-                                </td>
-                            </tr>
+                            <%--<tr>--%>
+                                <%--<td><b>Nama Vendor</b></td>--%>
+                                <%--<td>--%>
+                                    <%--<table><s:label name="vendor.namaVendor"></s:label></table>--%>
+                                <%--</td>--%>
+                            <%--</tr>--%>
+                            <%--<tr>--%>
+                                <%--<td><b>No Telp.</b></td>--%>
+                                <%--<td>--%>
+                                    <%--<table><s:label name="vendor.noTelp"></s:label></table>--%>
+                                <%--</td>--%>
+                            <%--</tr>--%>
+                            <%--<tr>--%>
+                                <%--<td><b>Alamat</b></td>--%>
+                                <%--<td>--%>
+                                    <%--<table><s:label name="vendor.alamat"></s:label></table>--%>
+                                <%--</td>--%>
+                            <%--</tr>--%>
                         </table>
                     </div>
                     <div class="box-header with-border"></div>
@@ -162,7 +163,7 @@
                                 <div class="box-header with-border">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <h3 class="box-title"><i class="fa fa-file-text-o"></i> Daftar Batch</h3>
+                                            <h3 class="box-title"><i class="fa fa-file-text-o"></i> Daftar DO</h3>
                                         </div>
                                         <div class="col-md-6">
                                             <a class="btn btn-success pull-right" onclick="addBatch()"><i class="fa fa-plus"></i> Tambah DO</a>
@@ -179,6 +180,7 @@
                                     <thead>
                                     <tr bgcolor="#90ee90">
                                         <td>No Batch</td>
+                                        <td>No DO</td>
                                         <td>Last Update</td>
                                         <td>Status</td>
                                         <td align="center">Action</td>
@@ -192,23 +194,27 @@
                                             <s:property value="noBatch"/>
                                         </span>
                                             </td>
+                                            <td>
+                                                <s:property value="noDo"/>
+                                            </td>
                                             <td><s:property value="stLastUpdateWho"/></td>
                                             <td>
                                                 <s:if test='#row.isApprove == "Y"'><span class="label label-warning">Prosess Approve</span></s:if>
                                                 <s:else><span class="label label-success">Telah di Approve</span></s:else>
                                             </td>
                                             <td align="center">
-                                                <s:if test='#row.isApprove == "Y"'>
-                                                    <a onclick="updateBatch('<s:property value="noBatch"/>')">
-                                                        <img class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
-                                                    </a>
-                                                    <a id='app<s:property value="noBatch"/>' onclick="confirmBatch('<s:property value="noBatch"/>')">
-                                                        <img class="hvr-grow" src="<s:url value="/pages/images/icons8-test-passed-23.png"/>" style="cursor: pointer;">
-                                                    </a>
-                                                </s:if>
-                                                <s:else>
-                                                    <img onclick="showDetailListObat('<s:property value="noBatch"/>','<s:property value="urlDoc"/>','<s:property value="noFaktur"/>','<s:property value="stTanggakFaktur"/>','<s:property value="noInvoice"/>','<s:property value="noDo"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
-                                                </s:else>
+                                                <%--<s:if test='#row.isApprove == "Y"'>--%>
+                                                    <%--&lt;%&ndash;<a onclick="updateBatch('<s:property value="noBatch"/>')">&ndash;%&gt;--%>
+                                                        <%--&lt;%&ndash;<img class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">&ndash;%&gt;--%>
+                                                    <%--&lt;%&ndash;</a>&ndash;%&gt;--%>
+                                                    <%--&lt;%&ndash;<a id='app<s:property value="noBatch"/>' onclick="confirmBatch('<s:property value="noBatch"/>')">&ndash;%&gt;--%>
+                                                        <%--&lt;%&ndash;<img class="hvr-grow" src="<s:url value="/pages/images/icons8-test-passed-23.png"/>" style="cursor: pointer;">&ndash;%&gt;--%>
+                                                    <%--&lt;%&ndash;</a>&ndash;%&gt;--%>
+                                                <%--</s:if>--%>
+                                                <%--<s:else>--%>
+                                                    <%--<img onclick="showDetailListObat('<s:property value="noBatch"/>','<s:property value="urlDoc"/>','<s:property value="noFaktur"/>','<s:property value="stTanggakFaktur"/>','<s:property value="noInvoice"/>','<s:property value="noDo"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">--%>
+                                                <%--</s:else>--%>
+                                                <img onclick="printDo('<s:property value="noBatch"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
                                                 <img id='load<s:property value="noBatch"/>' src="<s:url value="/pages/images/spinner.gif"/>" style="height: 35px; width: 35px; display: none">
                                             </td>
                                         </tr>
@@ -318,8 +324,8 @@
 </div>
 
 <div class="modal fade" id="modal-detail">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 1000px; margin-left: -40%;">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
@@ -588,6 +594,11 @@
         return "/" + first;
     }
 
+    function printDo(noBatch) {
+        var host = firstpath()+"/permintaanvendor/printPermintaanPO_permintaanvendor.action?id="+idpermintaanPo+"&noBatch="+noBatch;
+        post(host);
+    }
+
     function initAdd() {
         var host = firstpath()+"/permintaanvendor/addPoVendor_permintaanvendor.action?id="+idpermintaanPo;
         post(host);
@@ -636,7 +647,8 @@
     function hitungNett(ind) {
         var diskon = $("#diskon-"+ind).val();
         var bruto = $("#bruto-"+ind).val();
-        var total = parseInt(bruto) - parseInt(diskon);
+        var qtyApp = $("#qty-approve-"+ind).val();
+        var total = (parseInt(bruto) * parseInt(qtyApp)) - parseInt(diskon);
         $("#nett-"+ind).val(total);
     }
 

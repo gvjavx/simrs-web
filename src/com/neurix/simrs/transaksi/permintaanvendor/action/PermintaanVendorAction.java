@@ -2,8 +2,12 @@ package com.neurix.simrs.transaksi.permintaanvendor.action;
 
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
+import com.neurix.authorization.company.bo.AreaBo;
 import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.authorization.company.model.Area;
 import com.neurix.authorization.company.model.Branch;
+import com.neurix.authorization.company.model.ImAreas;
+import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.authorization.position.bo.PositionBo;
 import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.action.BaseMasterAction;
@@ -70,6 +74,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
     private File fileUpload;
     private String fileUploadFileName;
+
     private String fileUploadContentType;
 
     private String id;
@@ -1002,6 +1007,21 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
 //    }
 
+    public List<TransaksiObatDetail> initApprovalByNoDo(String idpermintaanPo, String noDo) {
+        List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
+
+        if (idpermintaanPo != null && !"".equalsIgnoreCase(idpermintaanPo) && noDo != null && !"".equalsIgnoreCase(noDo)) {
+            try {
+                transaksiObatDetails = permintaanVendorBo.getListObatByBatchByDo(idpermintaanPo, noDo);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error when search list obat " + e.getMessage());
+            }
+        }
+        return transaksiObatDetails;
+    }
+
     public List<TransaksiObatDetail> initApproval(String idpermintaanPo, Integer noBatchValue) {
         List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -1485,7 +1505,6 @@ public class PermintaanVendorAction extends BaseMasterAction {
         // get parameters
         PermintaanVendor permintaanVendor = new PermintaanVendor();
         permintaanVendor.setIdPermintaanVendor(this.id);
-        setPermintaanVendor(permintaanVendor);
 
         List<PermintaanVendor> permintaanVendorList = new ArrayList<>();
         List<BatchPermintaanObat> listBatch = new ArrayList<>();
@@ -1499,6 +1518,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
         if (permintaanVendorList.size() > 0) {
             PermintaanVendor requestVendor = permintaanVendorList.get(0);
+
             String idApproval = requestVendor.getIdApprovalObat();
 
             Vendor vendor = new Vendor();
@@ -1526,6 +1546,8 @@ public class PermintaanVendorAction extends BaseMasterAction {
                 logger.error("[PermintaanVendorAction.edit] ERROR error when get searh list batch. ", e);
                 addActionError("[PermintaanVendorAction.edit] ERROR error when get searh list batch. " + e.getMessage());
             }
+
+            setPermintaanVendor(requestVendor);
         }
 
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -1630,6 +1652,55 @@ public class PermintaanVendorAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
         return permintaanVendorBo.getBatchByIdTransAndNoBatch(idTrans, noBatch);
+    }
+
+    public String printPo(){
+        PermintaanVendor getPermintaan = getPermintaanVendor();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
+        AreaBo areaBo = (AreaBo) ctx.getBean("areaBoProxy");
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+
+        List<PermintaanVendor> permintaanVendors = permintaanVendorBo.getByCriteria(getPermintaan);
+        if (permintaanVendors.size() > 0){
+
+            String areaName = "";
+            String logo = "";
+            PermintaanVendor permintaanVendor = permintaanVendors.get(0);
+            if (permintaanVendor.getBranchId() != null){
+                Branch branch = branchBo.getBranchById(permintaanVendor.getBranchId(), "Y");
+                if (branch != null){
+
+                    logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + branch.getLogoName();
+                    Area area = areaBo.getAreaById(branch.getAreaId(), "Y");
+                    if (area != null){
+                        areaName = area.getAreaName();
+                    }
+                }
+            }
+
+            reportParams.put("idPermintaanVendor", permintaanVendor.getIdPermintaanVendor());
+            reportParams.put("idApproval", permintaanVendor.getIdApprovalObat());
+            reportParams.put("namaVendor", permintaanVendor.getNamaVendor());
+            reportParams.put("namaBranch", permintaanVendor.getBranchName());
+            reportParams.put("area", areaName);
+            reportParams.put("unit", permintaanVendor.getBranchName());
+            reportParams.put("logo", logo);
+            reportParams.put("petugas", permintaanVendor.getCreatedWho());
+
+
+            try {
+                preDownload();
+            } catch (SQLException e) {
+                logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+                return "search";
+            }
+
+        }
+
+        return "print_po_vendor";
     }
 
 

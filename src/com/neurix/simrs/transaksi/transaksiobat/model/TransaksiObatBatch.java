@@ -40,6 +40,15 @@ public class TransaksiObatBatch {
     private String urlDoc;
     private String jenis;
     private String stExpDate;
+    private String stTglFaktur;
+
+    public String getStTglFaktur() {
+        return stTglFaktur;
+    }
+
+    public void setStTglFaktur(String stTglFaktur) {
+        this.stTglFaktur = stTglFaktur;
+    }
 
     public String getStExpDate() {
         return stExpDate;

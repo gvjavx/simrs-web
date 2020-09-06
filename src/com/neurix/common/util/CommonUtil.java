@@ -1098,8 +1098,9 @@ public class CommonUtil {
         return df.format(date);
     }
 
-    public static String stDate(Date date){
-        SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+    public static String ddMMyyyyFormat(Date date){
+//        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         return df.format(date);
     }
 
