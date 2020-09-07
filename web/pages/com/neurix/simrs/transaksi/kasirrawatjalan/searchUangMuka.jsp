@@ -254,7 +254,7 @@
                             <thead >
                             <tr bgcolor="#90ee90">
                                 <td>ID Detail Checkup</td>
-                                <td>ID Pasien</td>
+                                <td>No RM</td>
                                 <td>Nama</td>
                                 <td>Nama Pelayanan</td>
                                 <td >Status</td>

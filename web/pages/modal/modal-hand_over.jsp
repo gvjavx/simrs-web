@@ -114,7 +114,7 @@
                         <div class="form-group">
                             <label class="col-md-3">Diagnoses</label>
                             <div class="col-md-9">
-                                <input class="form-control" id="ho5">
+                                <input class="form-control diagnosa-pasien" id="ho5">
                             </div>
                         </div>
                     </div>
@@ -303,6 +303,7 @@
                             <span class="text-center">Pemberi Operan</span>
                             <canvas style="margin-left: -1px;" width="250" onmouseover="paintTtd('ho28')" class="paint-canvas-ttd" id="ho28"></canvas>
                             <input class="form-control" placeholder="Nama Terang" id="nama_terang_ho28">
+                            <input style="margin-top: 3px" class="form-control" placeholder="NIP" id="nip_ho28">
                             <button style="margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('ho28')"><i class="fa fa-trash"></i> Clear
                             </button>
                         </div>
@@ -310,6 +311,7 @@
                             <span class="text-center">Penerima Operan</span>
                             <canvas style="margin-left: -1px;" width="250" onmouseover="paintTtd('ho29')" class="paint-canvas-ttd" id="ho29"></canvas>
                             <input class="form-control" placeholder="Nama Terang" id="nama_terang_ho29">
+                            <input style="margin-top: 3px" class="form-control" placeholder="NIP" id="nip_ho29">
                             <button style="margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('ho29')"><i class="fa fa-trash"></i> Clear
                             </button>
                         </div>

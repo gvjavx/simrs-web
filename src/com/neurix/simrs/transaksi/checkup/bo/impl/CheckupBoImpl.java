@@ -2672,8 +2672,8 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     }
 
     @Override
-    public String getPenunjangMedis(String idDetailCheckup) throws GeneralBOException {
-        return headerCheckupDao.getPenunjangMendis(idDetailCheckup);
+    public String getPenunjangMedis(String idDetailCheckup, String tipe) throws GeneralBOException {
+        return headerCheckupDao.getPenunjangMendis(idDetailCheckup, tipe);
     }
 
     @Override
@@ -2694,6 +2694,11 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     @Override
     public List<HeaderCheckup> getRiwayatPemeriksaan(String idPasien) throws GeneralBOException {
         return headerCheckupDao.getRiwayatPemeriksaan(idPasien);
+    }
+
+    @Override
+    public Dokter getNamaSipDokter(String id, String tipe) throws GeneralBOException {
+        return headerCheckupDao.getNamaSipDokter(id, tipe);
     }
 
     public ItSimrsHeaderChekupEntity getById(String columnName, String id) throws GeneralBOException {

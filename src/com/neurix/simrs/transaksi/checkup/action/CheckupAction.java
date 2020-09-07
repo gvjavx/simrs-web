@@ -581,6 +581,7 @@ public class CheckupAction extends BaseMasterAction {
 
                         if (pasien != null) {
                             checkup.setUrlKtp(pasien.getUrlKtp());
+                            checkup.setNoBpjs(pasien.getNoBpjs());
                         }
                     }
 
@@ -1401,9 +1402,9 @@ public class CheckupAction extends BaseMasterAction {
     public String getComboPelayananWithLab() {
 
         List<Pelayanan> pelayananList = new ArrayList<>();
-
+        String tipe = getTipe();
         try {
-            pelayananList = pelayananBoProxy.getListPelayananWithLab();
+            pelayananList = pelayananBoProxy.getListPelayananWithLab(tipe);
         } catch (HibernateException e) {
             logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
             addActionError(" Error when get data for combo listOfPelayanan" + e.getMessage());
@@ -1634,7 +1635,7 @@ public class CheckupAction extends BaseMasterAction {
         return headerDetailCheckupList;
     }
 
-    public List<Dokter> listOfDokter(String idPelayanan) {
+    public List<Dokter> listOfDokter(String idPelayanan, String notLike) {
         logger.info("[CheckupAction.listOfDokter] start process >>>");
 
         List<Dokter> dokterList = new ArrayList<>();
@@ -1644,7 +1645,7 @@ public class CheckupAction extends BaseMasterAction {
 
         if (idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)) {
             try {
-                dokterList = dokterBo.getDokterByPelayanan(idPelayanan);
+                dokterList = dokterBo.getDokterByPelayanan(idPelayanan, notLike);
             } catch (GeneralBOException e) {
                 logger.error("[CheckupAction.listOfDokter] Error when searching data, Found problem when searching data, please inform to your admin.", e);
             }
@@ -3393,9 +3394,10 @@ public class CheckupAction extends BaseMasterAction {
         List<HeaderCheckup> checkupList = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        String branchId = CommonUtil.userBranchLogin();
         if(idPasien != null){
             try {
-                checkupList = checkupBo.getHistoryPasien(idPasien, "");
+                checkupList = checkupBo.getHistoryPasien(idPasien, branchId);
             }catch (HibernateException e){
                 logger.error("Found Error "+e.getMessage());
             }
@@ -3515,7 +3517,10 @@ public class CheckupAction extends BaseMasterAction {
                 response = checkupBo.getAlergi(id);
             }
             if("penunjang_medis".equalsIgnoreCase(key)){
-                response = checkupBo.getPenunjangMedis(id);
+                response = checkupBo.getPenunjangMedis(id, null);
+            }
+            if("lab".equalsIgnoreCase(key) || "radiologi".equalsIgnoreCase(key)){
+                response = checkupBo.getPenunjangMedis(id, key);
             }
             if("resep".equalsIgnoreCase(key)){
                 response = checkupBo.getResepPasien(id);
@@ -3526,6 +3531,16 @@ public class CheckupAction extends BaseMasterAction {
             if("tindakan".equalsIgnoreCase(key)){
                 response = checkupBo.getTindakanRawat(id);
             }
+        }
+        return response;
+    }
+
+    public Dokter getDataDokterSip(String id, String key){
+        Dokter response = new Dokter();
+        if(id != null && !"".equalsIgnoreCase(id)){
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+            response = checkupBo.getNamaSipDokter(id, key);
         }
         return response;
     }
@@ -3602,7 +3617,27 @@ public class CheckupAction extends BaseMasterAction {
         return listRM;
     }
 
-    public List<Dokter> getListDokterByBranchId(String idDokter, String kategori) {
+    public List<RekamMedisPasien> getRiwayatListRekammedisPasien(String id, String tipePelayanan, String jenis) {
+
+        logger.info("[CheckupAction.getListRekammedisPasien] START process >>>");
+
+        List<RekamMedisPasien> listRM = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RekamMedisPasienBo rekamMedisPasienBo = (RekamMedisPasienBo) ctx.getBean("rekamMedisPasienBoProxy");
+
+        if(tipePelayanan != null && !"".equalsIgnoreCase(tipePelayanan) && id != null && !"".equalsIgnoreCase(id)){
+            try {
+                listRM = rekamMedisPasienBo.getRiwayatListRekamMedis(id, tipePelayanan ,jenis);
+            }catch (GeneralBOException e){
+                logger.error("Found Error, "+e.getMessage());
+            }
+        }
+
+        logger.info("[CheckupAction.getListRekammedisPasien] END process >>>");
+        return listRM;
+    }
+
+    public List<Dokter> getListDokterByBranchId(String idDokter) {
 
         logger.info("[CheckupAction.getListDokterByBranchId] START process >>>");
 
@@ -3613,7 +3648,7 @@ public class CheckupAction extends BaseMasterAction {
 
         if(branchId != null && !"".equalsIgnoreCase(branchId)){
             try {
-                dokterList = dokterBo.getListDokterByBranchId(branchId, idDokter, kategori);
+                dokterList = dokterBo.getListDokterByBranchId(branchId, idDokter);
             }catch (GeneralBOException e){
                 logger.error("Found Error, "+e.getMessage());
             }
@@ -3623,7 +3658,7 @@ public class CheckupAction extends BaseMasterAction {
         return dokterList;
     }
 
-    public List<Dokter> getListDokterByIdDetailCheckup(String idDetailCheckup, String kategori) {
+    public List<Dokter> getListDokterByIdDetailCheckup(String idDetailCheckup) {
 
         logger.info("[CheckupAction.getListDokterByBranchId] START process >>>");
 
@@ -3633,7 +3668,7 @@ public class CheckupAction extends BaseMasterAction {
 
         if(idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)){
             try {
-                dokterList = dokterBo.getListDokterByIdDetailCheckup(idDetailCheckup, kategori);
+                dokterList = dokterBo.getListDokterByIdDetailCheckup(idDetailCheckup);
             }catch (GeneralBOException e){
                 logger.error("Found Error, "+e.getMessage());
             }

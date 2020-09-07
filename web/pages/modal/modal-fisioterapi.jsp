@@ -13,6 +13,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_pengkajian_pengkajian"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="modal_warning">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_warning"></p>
+                    </div>
                     <button onclick="addFisioterapi('keadaan_umum')" class="btn btn-success"><i class="fa fa-plus"></i>
                         Keadaan Umum
                     </button>
@@ -37,6 +41,7 @@
                             <td width="20%" align="center"><img id="btn_keadaan_umum" class="hvr-grow"
                                                                 onclick="detailFisio('keadaan_umum')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_keadaan_umum" class="hvr-grow" onclick="conFS('keadaan_umum', 'pengkajian-fisioterapi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_psikologis">
@@ -44,6 +49,7 @@
                             <td width="20%" align="center"><img id="btn_psikologis" class="hvr-grow"
                                                                 onclick="detailFisio('psikologis')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_psikologis" class="hvr-grow" onclick="conFS('psikologis', 'pengkajian-fisioterapi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_nyeri">
@@ -51,6 +57,7 @@
                             <td width="20%" align="center"><img id="btn_nyeri" class="hvr-grow"
                                                                 onclick="detailFisio('nyeri')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="nyeri" class="hvr-grow" onclick="conFS('nyeri', 'pengkajian-fisioterapi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_jatuh">
@@ -58,6 +65,7 @@
                             <td width="20%" align="center"><img id="btn_jatuh" class="hvr-grow"
                                                                 onclick="detailFisio('jatuh')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_jatuh" class="hvr-grow" onclick="conFS('jatuh', 'pengkajian-fisioterapi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_pengkajian">
@@ -65,6 +73,7 @@
                             <td width="20%" align="center"><img id="btn_pengkajian" class="hvr-grow"
                                                                 onclick="detailFisio('pengkajian')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_pengkajian" class="hvr-grow" onclick="conFS('pengkajian', 'pengkajian-fisioterapi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -278,93 +287,48 @@
                         <p id="msg_nyeri"></p>
                     </div>
                     <div class="row">
-                        <div class="col-md-7">
-                            <div class="form-group">
-                                <label class="col-md-7" style="margin-top: 7px">Apakah terdapat keluhan nyeri</label>
-                                <div class="col-md-5">
-                                    <div class="custom02" style="margin-top: 7px">
-                                        <input onclick="cekNyeri(this.value, 'y_inten')" type="radio" value="Tidak" id="nyeri2" name="radio_nyeri_keluhan" /><label for="nyeri2">Tidak</label>
-                                        <input onclick="cekNyeri(this.value, 'y_inten')" type="radio" value="Ya" id="nyeri1" name="radio_nyeri_keluhan" /><label for="nyeri1">Ya</label>
-                                    </div>
+                        <div class="form-group">
+                            <label class="col-md-5" style="margin-top: 7px">Apakah terdapat keluhan nyeri</label>
+                            <div class="col-md-5">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input onclick="cekNyeri(this.value, 'y_inten')" type="radio" value="Tidak" id="nyeri2" name="radio_nyeri_keluhan" /><label for="nyeri2">Tidak</label>
+                                    <input onclick="cekNyeri(this.value, 'y_inten')" type="radio" value="Ya" id="nyeri1" name="radio_nyeri_keluhan" /><label for="nyeri1">Ya</label>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-md-7" style="margin-top: 7px">Lokasi</label>
-                                <div class="col-md-5">
-                                    <input class="form-control" style="margin-top: 7px;" id="y_lokasi">
-                                </div>
-                            </div>
-                            <%--<img src="<%= request.getContextPath() %>/pages/images/nyeri-1.jpg" style="width: 100%; margin-top: 20px">--%>
                         </div>
-                        <div class="col-md-5">
-                            <div class="form-group">
-                                <label class="col-md-3" style="margin-top: 7px">Jenis</label>
-                                <div class="col-md-9">
-                                    <div class="custom02" style="margin-top: 7px">
-                                        <input type="radio" value="Akut" id="nyeri3" name="radio_nyeri_jenis" /><label for="nyeri3">Akut</label>
-                                        <input type="radio" value="Kronis" id="nyeri4" name="radio_nyeri_jenis" /><label for="nyeri4">Kronis</label>
-                                    </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-5" style="margin-top: 7px">Lokasi</label>
+                            <div class="col-md-5">
+                                <input class="form-control" style="margin-top: 7px;" id="y_lokasi">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-5" style="margin-top: 7px">Jenis</label>
+                            <div class="col-md-5">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Akut" id="nyeri3" name="radio_nyeri_jenis" /><label for="nyeri3">Akut</label>
+                                    <input type="radio" value="Kronis" id="nyeri4" name="radio_nyeri_jenis" /><label for="nyeri4">Kronis</label>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-md-3" style="margin-top: 7px">Intensitas</label>
-                                <div class="col-md-8">
-                                    <input class="form-control" style="margin-top: 7px;" id="y_inten">
-                                </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-5" style="margin-top: 7px">Intensitas</label>
+                            <div class="col-md-5">
+                                <input class="form-control" style="margin-top: 7px;" id="y_inten">
                             </div>
-                            <%--<br>--%>
-                            <%--<img src="<%= request.getContextPath() %>/pages/images/nyeri-2.jpg" style="width: 100%; margin-top: 30px">--%>
                         </div>
                     </div>
                     <input id="temp_scala" type="hidden">
+                    <input id="temp_jenis" type="hidden">
                     <canvas id="choice_emoji" style="display: none"></canvas>
                     <hr class="garis">
-                    <div class="row" style="margin-top: 10px">
-                        <div class="form-group">
-                            <div class="col-md-2">
-                                <img src="<%= request.getContextPath() %>/pages/images/scala-0.png" class="nyeri"
-                                     style="width: 100%; cursor: no-drop;" id="0">
-                                <p class="text-center" style="font-size: 12px; margin-top: 10px">0</p>
-                                <p class="text-center" style="font-size: 12px; margin-top: -10px">Tidak Nyeri</p>
-                            </div>
-                            <div class="col-md-2">
-                                <img src="<%= request.getContextPath() %>/pages/images/scala-2.png" class="nyeri"
-                                     style="width: 100%; cursor: no-drop" id="2" >
-                                <p class="text-center" style="font-size: 12px; margin-top: 10px">2</p>
-                                <p class="text-center" style="font-size: 12px; margin-top: -10px">Sedikit Nyeri</p>
-                            </div>
-                            <div class="col-md-2">
-                                <img src="<%= request.getContextPath() %>/pages/images/scala-4.png" class="nyeri"
-                                     style="width: 100%; cursor: no-drop" id="4" >
-                                <p class="text-center" style="font-size: 12px; margin-top: 10px">4</p>
-                                <p class="text-center" style="font-size: 12px; margin-top: -10px">Sedikit Lebih Nyeri</p>
-                            </div>
-                            <div class="col-md-2">
-                                <img src="<%= request.getContextPath() %>/pages/images/scala-6.png" class="nyeri"
-                                     style="width: 100%; cursor: no-drop" id="6" >
-                                <p class="text-center" style="font-size: 12px; margin-top: 10px">6</p>
-                                <p class="text-center" style="font-size: 12px; margin-top: -10px">Lebih Nyeri</p>
-                            </div>
-                            <div class="col-md-2">
-                                <img src="<%= request.getContextPath() %>/pages/images/scala-8.png" class="nyeri"
-                                     style="width: 100%; cursor: no-drop" id="8" >
-                                <p class="text-center" style="font-size: 12px; margin-top: 10px">8</p>
-                                <p class="text-center" style="font-size: 12px; margin-top: -10px">Sangat Nyeri</p>
-                            </div>
-                            <div class="col-md-2">
-                                <img src="<%= request.getContextPath() %>/pages/images/scala-10.png" class="nyeri"
-                                     style="width: 100%; cursor: no-drop" id="10" >
-                                <p class="text-center" style="font-size: 12px; margin-top: 10px">10</p>
-                                <p class="text-center" style="font-size: 12px; margin-top: -10px">Nyeri Sangat Hebat</p>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="garis">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <img src="<%= request.getContextPath() %>/pages/images/scala-nyeri-number.jpg" style="width: 100%;">
-                        </div>
-                    </div>
+                    <div id="set_nyeri"></div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -397,41 +361,29 @@
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <label style="margin-top: 7px" class="col-md-3">Metode</label>
-                            <div class="col-md-8">
-                                <select class="form-control select2" style="width: 100%;" id="j_metode">
-                                    <option value="Morse">Morse</option>
-                                    <option value="Hampty">Hampty</option>
-                                    <option value="Dumpty">Dumpty</option>
-                                    <option value="Ontariosydney">Ontariosydney</option>
-                                </select>
+                            <label class="col-md-3">Tanggal</label>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input class="form-control tgl" id="ps01">
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label style="margin-top: 7px" class="col-md-3">Asesment Fisioterapi</label>
-                            <div class="col-md-8">
-                                <textarea class="form-control" rows="3" style="margin-top: 7px" id="j_asesment"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label style="margin-top: 7px" class="col-md-3">Rencana Asuhan</label>
-                            <div class="col-md-8">
-                                <textarea class="form-control" rows="3" style="margin-top: 7px" id="j_rencana"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label style="margin-top: 7px" class="col-md-3">Kategori</label>
-                            <div class="col-md-8">
-                                <input class="form-control" style="margin-top: 7px" id="j_kategori">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label style="margin-top: 7px" class="col-md-3">Skor</label>
-                            <div class="col-md-8">
-                                <input class="form-control" style="margin-top: 7px" id="j_skor">
+                            <label class="col-md-2">Jam</label>
+                            <div class="col-md-3">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input class="form-control jam" id="ps02">
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <hr class="garis">
+                    <input id="jenis_resiko" type="hidden">
+                    <div id="set_jatuh"></div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">

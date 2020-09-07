@@ -21,6 +21,15 @@ public class RekamMedisPasien {
     private String function;
     private String jumlahKategori;
     private String terisi;
+    private String tipeRM;
+
+    public String getTipeRM() {
+        return tipeRM;
+    }
+
+    public void setTipeRM(String tipeRM) {
+        this.tipeRM = tipeRM;
+    }
 
     public String getParameter() {
         return parameter;

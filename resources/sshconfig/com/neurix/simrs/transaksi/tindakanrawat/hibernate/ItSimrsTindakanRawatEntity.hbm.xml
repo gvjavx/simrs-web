@@ -57,7 +57,8 @@
         <property name="approveFlag">
             <column name="approve_flag" sql-type="varchar" length="1" not-null="false" />
         </property>
-
-
+        <property name="idPelayanan">
+            <column name="id_pelayanan"/>
+        </property>
     </class>
 </hibernate-mapping>

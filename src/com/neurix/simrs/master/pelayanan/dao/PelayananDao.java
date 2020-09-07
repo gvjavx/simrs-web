@@ -189,15 +189,18 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
         return sId;
     }
 
-    public List<Pelayanan> getListPelayananWithLab(){
-
+    public List<Pelayanan> getListPelayananWithLab(String tipe){
+        String ply = "('rawat_jalan')";
+        if("umum".equalsIgnoreCase(tipe)){
+            ply = "('rawat_jalan', 'lab', 'radiologi')";
+        }
         String SQL = "SELECT\n" +
                 "id_pelayanan,\n" +
                 "nama_pelayanan,\n" +
                 "tipe_pelayanan,\n" +
                 "kategori_pelayanan\n" +
                 "FROM im_simrs_pelayanan\n" +
-                "WHERE tipe_pelayanan IN ('rawat_jalan', 'lab', 'radiologi')\n" +
+                "WHERE tipe_pelayanan IN " + ply + "\n"+
                 "AND branch_id = :branchId\n" +
                 "ORDER BY nama_pelayanan ASC";
 

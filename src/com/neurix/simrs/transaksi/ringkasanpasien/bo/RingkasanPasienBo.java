@@ -9,4 +9,5 @@ import java.util.List;
 public interface RingkasanPasienBo {
     public List<RingkasanPasien> getByCriteria(RingkasanPasien bean) throws GeneralBOException;
     public CrudResponse saveAdd(List<RingkasanPasien> list) throws GeneralBOException;
+    public CrudResponse saveDelete(RingkasanPasien bean) throws GeneralBOException;
 }

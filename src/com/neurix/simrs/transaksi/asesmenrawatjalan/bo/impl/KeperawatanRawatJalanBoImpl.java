@@ -70,6 +70,7 @@ public class KeperawatanRawatJalanBoImpl implements KeperawatanRawatJalanBo {
                     keperawatanRawatJalan.setLastUpdateWho(entity.getLastUpdateWho());
                     keperawatanRawatJalan.setTipe(entity.getTipe());
                     keperawatanRawatJalan.setNamaTerang(entity.getNamaTerang());
+                    keperawatanRawatJalan.setSip(entity.getSip());
                     list.add(keperawatanRawatJalan);
                 }
             }
@@ -108,6 +109,7 @@ public class KeperawatanRawatJalanBoImpl implements KeperawatanRawatJalanBo {
                     keperawatanRawatJalanEntity.setLastUpdateWho(bean.getLastUpdateWho());
                     keperawatanRawatJalanEntity.setTipe(bean.getTipe());
                     keperawatanRawatJalanEntity.setNamaTerang(bean.getNamaTerang());
+                    keperawatanRawatJalanEntity.setSip(bean.getSip());
 
                     try {
                         keperawatanRawatJalanDao.addAndSave(keperawatanRawatJalanEntity);
@@ -120,6 +122,41 @@ public class KeperawatanRawatJalanBoImpl implements KeperawatanRawatJalanBo {
                     }
                 }
             }
+        }
+        return response;
+    }
+
+    @Override
+    public CrudResponse saveDelete(KeperawatanRawatJalan bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+        hsCriteria.put("keterangan", bean.getKeterangan());
+        List<ItSimrsAsesmenKeperawatanRawatJalanEntity> entityList = new ArrayList<>();
+
+        try {
+            entityList = keperawatanRawatJalanDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e) {
+            logger.error(e.getMessage());
+        }
+        if (entityList.size() > 0) {
+            for (ItSimrsAsesmenKeperawatanRawatJalanEntity entity : entityList) {
+                entity.setLastUpdate(bean.getLastUpdate());
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+                entity.setAction("D");
+                entity.setFlag("N");
+                try {
+                    keperawatanRawatJalanDao.updateAndSave(entity);
+                    response.setStatus("success");
+                    response.setMsg("Berhasil");
+                } catch (HibernateException e) {
+                    response.setStatus("error");
+                    response.setMsg(e.getMessage());
+                }
+            }
+        }else{
+            response.setStatus("error");
+            response.setMsg("Data tidak ditemukan...!");
         }
         return response;
     }

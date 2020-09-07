@@ -131,7 +131,7 @@ public class HemodialisaBoImpl implements HemodialisaBo {
     }
 
     @Override
-    public CrudResponse saveDetele(Hemodialisa bean) throws GeneralBOException {
+    public CrudResponse saveDelete(Hemodialisa bean) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
         Map hsCriteria = new HashMap();
         hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
@@ -145,16 +145,20 @@ public class HemodialisaBoImpl implements HemodialisaBo {
             logger.error(e.getMessage());
         }
         if(entityList.size() > 0){
-            ItSimrsHemodialisaEntity entity = entityList.get(0);
-            entity.setFlag("N");
-            entity.setLastUpdate(bean.getLastUpdate());
-            entity.setLastUpdateWho(bean.getLastUpdateWho());
-            try {
-                hemodialisaDao.updateAndSave(entity);
-            }catch (HibernateException e){
-                response.setStatus("error");
-                response.setMsg("Found Error, "+e.getMessage());
-                logger.error(e.getMessage());
+            for (ItSimrsHemodialisaEntity entity : entityList){
+                entity.setFlag("N");
+                entity.setAction("D");
+                entity.setLastUpdate(bean.getLastUpdate());
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+                try {
+                    hemodialisaDao.updateAndSave(entity);
+                    response.setStatus("success");
+                    response.setMsg("Berhasil");
+                }catch (HibernateException e){
+                    response.setStatus("error");
+                    response.setMsg("Found Error, "+e.getMessage());
+                    logger.error(e.getMessage());
+                }
             }
         }else{
             response.setStatus("error");

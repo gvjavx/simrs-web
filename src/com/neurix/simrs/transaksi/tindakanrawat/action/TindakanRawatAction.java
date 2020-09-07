@@ -10,6 +10,7 @@ import com.neurix.simrs.master.dokter.bo.DokterBo;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
@@ -136,8 +137,9 @@ public class TindakanRawatAction extends BaseMasterAction {
         return "init_add";
     }
 
-    public String saveTindakanRawat(String idDetailCheckup, String idTindakan, String idDokter, String tipeRawat, BigInteger qty, String jenisTransaksi){
+    public CrudResponse saveTindakanRawat(String idDetailCheckup, String idTindakan, String idDokter, String tipeRawat, BigInteger qty, String jenisTransaksi, String idPelayanan){
         logger.info("[TindakanRawatAction.saveTindakanRawat] start process >>>");
+        CrudResponse response = new CrudResponse();
         try {
             String userLogin = CommonUtil.userLogin();
             String userArea = CommonUtil.userBranchLogin();
@@ -153,6 +155,7 @@ public class TindakanRawatAction extends BaseMasterAction {
 
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             TindakanBo tindakanBo = (TindakanBo) ctx.getBean("tindakanBoProxy");
+            TindakanRawatBo tindakanRawatBo = (TindakanRawatBo) ctx.getBean("tindakanRawatBoProxy");
 
             try {
                 tindakanList = tindakanBo.getByCriteria(tindakan);
@@ -181,18 +184,16 @@ public class TindakanRawatAction extends BaseMasterAction {
             tindakanRawat.setLastUpdateWho(userLogin);
             tindakanRawat.setAction("C");
             tindakanRawat.setFlag("Y");
+            tindakanRawat.setIdPelayanan(idPelayanan);
 
-            TindakanRawatBo tindakanRawatBo = (TindakanRawatBo) ctx.getBean("tindakanRawatBoProxy");
-
-            tindakanRawatBo.saveAdd(tindakanRawat);
+            response = tindakanRawatBo.saveAdd(tindakanRawat);
 
         }catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[TindakanRawatAction.saveTindakanRawat] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            logger.error(e.getMessage());
+            response.setStatus("error");
+            response.setMsg(e.getMessage());
         }
-        return SUCCESS;
+        return response;
     }
 
     private void saveUpdateTindakanToInaCbg(String noCheckup, String idTindakan, BigInteger tarif) throws GeneralBOException{
@@ -240,14 +241,6 @@ public class TindakanRawatAction extends BaseMasterAction {
                 klaimDetailRequest.setDischargeStatus("1");
                 klaimDetailRequest.setDiagnosa(checkup.getDiagnosa());
                 klaimDetailRequest.setProcedure("");
-
-//                if (!"".equalsIgnoreCase(idTindakan)){
-//                    List<Tindakan> tindakans = new ArrayList<>();
-//                    try {
-//                        tindakans = tind
-//                    }
-//
-//                }
 
                 klaimDetailRequest.setTarifRsNonBedah("");
                 klaimDetailRequest.setTarifRsProsedurBedah("");
@@ -351,8 +344,9 @@ public class TindakanRawatAction extends BaseMasterAction {
         }
     }
 
-    public String editTindakanRawat(String idTindakanRawat, String idDetailCheckup, String idTindakan, String idDokter, String idPerawat, BigInteger qty, String jenisTransaksi){
+    public CrudResponse editTindakanRawat(String idTindakanRawat, String idDetailCheckup, String idTindakan, String idDokter, String tipeRawat, BigInteger qty, String jenisTransaksi, String idPelayanan){
         logger.info("[TindakanRawatAction.saveTindakanRawat] start process >>>");
+        CrudResponse response = new CrudResponse();
         try {
             String userLogin = CommonUtil.userLogin();
             String userArea = CommonUtil.userBranchLogin();
@@ -370,6 +364,7 @@ public class TindakanRawatAction extends BaseMasterAction {
 
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             TindakanBo tindakanBo = (TindakanBo) ctx.getBean("tindakanBoProxy");
+            TindakanRawatBo tindakanRawatBo = (TindakanRawatBo) ctx.getBean("tindakanRawatBoProxy");
 
             try {
                 tindakanList = tindakanBo.getByCriteria(tindakan);
@@ -396,17 +391,15 @@ public class TindakanRawatAction extends BaseMasterAction {
             tindakanRawat.setLastUpdate(updateTime);
             tindakanRawat.setLastUpdateWho(userLogin);
             tindakanRawat.setAction("U");
+            tindakanRawat.setIdPelayanan(idPelayanan);
 
-            TindakanRawatBo tindakanRawatBo = (TindakanRawatBo) ctx.getBean("tindakanRawatBoProxy");
-
-            tindakanRawatBo.saveEdit(tindakanRawat);
+            response = tindakanRawatBo.saveEdit(tindakanRawat);
 
         }catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[TindakanRawatAction.saveTindakanRawat] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            logger.error(e.getMessage());
+            response.setStatus("error");
+            response.setMsg(e.getMessage());
         }
-        return SUCCESS;
+        return response;
     }
 }

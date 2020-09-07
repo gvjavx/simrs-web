@@ -1,5 +1,5 @@
 <div class="modal fade" id="modal-icu-asesmen_icu">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog" style="width: 80%">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -12,6 +12,10 @@
                     <div class="alert alert-success alert-dismissible" style="display: none" id="warning_icu_asesmen_icu">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_icu_asesmen_icu"></p>
+                    </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_asesmen_icu">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_asesmen_icu"></p>
                     </div>
                     <div class="btn-group">
                         <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
@@ -52,6 +56,7 @@
                             <td>Identitas</td>
                             <td width="20%" align="center">
                                 <img id="btn_icu_identitas" class="hvr-grow" onclick="detailICU('identitas')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_identitas" class="hvr-grow" onclick="conICU('identitas', 'asesmen_icu')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_icu_alat_infasive">
@@ -1037,7 +1042,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-icu-chart_hemodinamika">
+<div class="modal fade" id="modal-icu-chart_hemodinamika_icu">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">

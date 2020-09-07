@@ -1,73 +1,25 @@
-function showModalMpp(jenis) {
+function showModalMpp(jenis, idRM, isSetIdRM) {
     if(isReadRM){
         $('.btn-hide').hide();
     }else{
         $('.btn-hide').show();
     }
-    if ("identifikasi" == jenis) {
-        $('#idn0').val(formaterDate(new Date)).datepicker({
-            dateFormat:'dd-mm-yy'
-        });
-        $('#idn00').val(formaterTime(new Date)).timepicker();
-    }
-    if ("asesmen" == jenis) {
-        $('#ases0').val(formaterDate(new Date)).datepicker({
-            dateFormat:'dd-mm-yy'
-        });
-        $('#ases00').val(formaterTime(new Date)).timepicker();
-    }
-    if ("identifikasi_resiko" == jenis) {
-        $('#ir1').val(formaterDate(new Date)).datepicker({
-            dateFormat:'dd-mm-yy'
-        });
-        $('#ir2').val(formaterTime(new Date)).timepicker();
-    }
-    if ("perencanaan_mpp" == jenis) {
-        $('#pm1').val(formaterDate(new Date));
-        $('#pm2').val(formaterTime(new Date)).timepicker();
-    }
-    if ("rencana_mpp" == jenis) {
-        $('#rc1').val(formaterDate(new Date)).datepicker({
-            dateFormat:'dd-mm-yy'
-        });
-        $('#rc2').val(formaterTime(new Date)).timepicker();
-    }
-    if ("monitoring_mpp" == jenis) {
-        $('#mm1').val(formaterDate(new Date)).datepicker({
-            dateFormat:'dd-mm-yy'
-        });
-        $('#mm2').val(formaterTime(new Date)).timepicker();
-    }
-    if ("fasilitas_pelayanan" == jenis) {
-        $('#fp1').val(formaterDate(new Date)).datepicker({
-            dateFormat:'dd-mm-yy'
-        });
-        $('#fp2').val(formaterTime(new Date)).timepicker();
-    }
-    if ("advokasi" == jenis) {
-        $('#ap1').val(formaterDate(new Date)).datepicker({
-            dateFormat:'dd-mm-yy'
-        });
-        $('#ap2').val(formaterTime(new Date)).timepicker();
-    }
-    if("hasil_pelayanan"){
-        $('#hp1').val(formaterDate(new Date)).datepicker({
-            dateFormat:'dd-mm-yy'
-        });
-        $('#hp2').val(formaterTime(new Date)).timepicker();
-    }
-    if("terminasi" == jenis){
-        $('#tp1').val(formaterDate(new Date)).datepicker({
-            dateFormat:'dd-mm-yy'
-        });
-        $('#tp2').val(formaterTime(new Date)).timepicker();
+    if(isSetIdRM == "Y"){
+        tempidRm = idRM;
     }
     $('#modal-mpp-' + jenis).modal({show: true, backdrop: 'static'});
+    setDataPasien();
 }
 
 function saveMpp(jenis, ket) {
     var data = [];
     var cek = false;
+    var dataPasien = {
+        'no_checkup': noCheckup,
+        'id_detail_checkup': idDetailCheckup,
+        'id_pasien': idPasien,
+        'id_rm': tempidRm
+    }
     if ("identifikasi" == jenis) {
         var va1 = $('#idn0').val();
         var va2 = $('#idn00').val();
@@ -506,10 +458,11 @@ function saveMpp(jenis, ket) {
 
     if (cek) {
         var result = JSON.stringify(data);
+        var pasienData = JSON.stringify(dataPasien);
         $('#save_mpp_' + jenis).hide();
         $('#load_mpp_' + jenis).show();
         dwr.engine.setAsync(true);
-        MppAction.saveMpp(result, {
+        MppAction.saveMpp(result,pasienData, {
             callback: function (res) {
                 if (res.status == "success") {
                     $('#save_mpp_' + jenis).show();
@@ -606,4 +559,36 @@ function showKetTp3(val){
         $('#tp_ket31').hide();
         $('#tp_ket32').hide();
     }
+}
+
+function conMPP(jenis, ket){
+    $('#tanya').text("Yakin mengahapus data ini ?");
+    $('#modal-confirm-rm').modal({show:true, backdrop:'static'});
+    $('#save_con_rm').attr('onclick', 'delMPP(\''+jenis+'\', \''+ket+'\')');
+}
+
+function delMPP(jenis, ket) {
+    $('#modal-confirm-rm').modal('hide');
+    var dataPasien = {
+        'no_checkup': noCheckup,
+        'id_detail_checkup': idDetailCheckup,
+        'id_pasien': idPasien,
+        'id_rm': tempidRm
+    }
+    var result = JSON.stringify(dataPasien);
+    startSpin('delete_'+jenis);
+    dwr.engine.setAsync(true);
+    MppAction.saveDelete(idDetailCheckup, jenis, result, {
+        callback: function (res) {
+            if (res.status == "success") {
+                stopSpin('delete_'+jenis);
+                $('#warning_mpp_' + ket).show().fadeOut(5000);
+                $('#msg_mpp_' + ket).text("Berhasil menghapus data...");
+            } else {
+                stopSpin('delete_'+jenis);
+                $('#warn_'+ket).show().fadeOut(5000);
+                $('#msg_'+ket).text(res.msg);
+            }
+        }
+    });
 }

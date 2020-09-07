@@ -51,7 +51,7 @@ public class RekamMedikBoImpl implements RekamMedikBo {
     public CrudResponse saveAdd(StatusPengisianRekamMedis bean) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
         if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup()) &&
-            bean.getIdRekamMedisPasien() != null && !"".equalsIgnoreCase(bean.getIdRekamMedisPasien())) {
+                bean.getIdRekamMedisPasien() != null && !"".equalsIgnoreCase(bean.getIdRekamMedisPasien())) {
 
             List<ItSimrsStatusPengisianRekamMedisEntity> entityList = new ArrayList<>();
             Map hsCriteria = new HashMap();
@@ -71,6 +71,8 @@ public class RekamMedikBoImpl implements RekamMedikBo {
                 if (entity != null) {
                     entity.setLastUpdate(bean.getLastUpdate());
                     entity.setLastUpdateWho(bean.getLastUpdateWho());
+                    entity.setAction("U");
+
                     int jmlKategori = 0;
                     int jumlah = 0;
                     int penambah = 1;
@@ -130,6 +132,60 @@ public class RekamMedikBoImpl implements RekamMedikBo {
                 } catch (HibernateException e) {
                     response.setStatus("error");
                     response.setMsg("Error When save status pengisian " + e.getMessage());
+                }
+            }
+        } else {
+            response.setMsg("ID detail Checkup tidak ada...!");
+            response.setStatus("error");
+        }
+        return response;
+    }
+
+    @Override
+    public CrudResponse saveEdit(StatusPengisianRekamMedis bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup()) &&
+                bean.getIdRekamMedisPasien() != null && !"".equalsIgnoreCase(bean.getIdRekamMedisPasien())) {
+            List<ItSimrsStatusPengisianRekamMedisEntity> entityList = new ArrayList<>();
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("id_rekam_medis_pasien", bean.getIdRekamMedisPasien());
+            hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+            try {
+                entityList = statusPengisianRekamMedisDao.getByCriteria(hsCriteria);
+            } catch (HibernateException e) {
+                response.setStatus("error");
+                response.setMsg("Found Error when search ID RM, " + e.getMessage());
+            }
+
+            ItSimrsStatusPengisianRekamMedisEntity entity = new ItSimrsStatusPengisianRekamMedisEntity();
+            if (entityList.size() > 0) {
+                entity = entityList.get(0);
+                if (entity != null) {
+                    entity.setLastUpdate(bean.getLastUpdate());
+                    entity.setLastUpdateWho(bean.getLastUpdateWho());
+                    entity.setAction("U");
+                    int jmlKategori = 0;
+                    int jumlah = 0;
+                    int pengurang = 1;
+                    if (entity.getJumlahKategori() != null && !"".equalsIgnoreCase(entity.getJumlahKategori())) {
+                        jmlKategori = Integer.valueOf(entity.getJumlahKategori());
+                    }
+
+                    jumlah = jmlKategori - pengurang;
+
+                    if ("0".equalsIgnoreCase(entity.getJumlahKategori())) {
+                        entity.setIsPengisian(null);
+                    }
+                    entity.setJumlahKategori(String.valueOf(jumlah));
+
+                    try {
+                        statusPengisianRekamMedisDao.updateAndSave(entity);
+                        response.setStatus("success");
+                        response.setMsg("Berhasil");
+                    } catch (HibernateException e) {
+                        response.setStatus("error");
+                        response.setMsg("Error When save status pengisian " + e.getMessage());
+                    }
                 }
             }
         } else {

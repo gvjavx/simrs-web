@@ -3,10 +3,16 @@ package com.neurix.simrs.transaksi.icu.action;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.CrudResponse;
+import com.neurix.simrs.transaksi.hemodinamika.bo.HemodinamikaBo;
+import com.neurix.simrs.transaksi.hemodinamika.model.Hemodinamika;
+import com.neurix.simrs.transaksi.icu.bo.DetailIcuBo;
 import com.neurix.simrs.transaksi.icu.bo.HeaderIcuBo;
+import com.neurix.simrs.transaksi.icu.model.DetailIcu;
 import com.neurix.simrs.transaksi.icu.model.HeaderIcu;
 import com.neurix.simrs.transaksi.rekammedik.bo.RekamMedikBo;
 import com.neurix.simrs.transaksi.rekammedik.model.StatusPengisianRekamMedis;
+import com.neurix.simrs.transaksi.respirasi.bo.RespirasiBo;
+import com.neurix.simrs.transaksi.respirasi.model.Respirasi;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -136,6 +142,45 @@ public class IcuAction {
         }
 
         return list;
+    }
+
+    public CrudResponse saveDelete(String idIcu, String tipe) {
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        HeaderIcuBo headerIcuBo = (HeaderIcuBo) ctx.getBean("headerIcuBoProxy");
+        HemodinamikaBo hemodinamikaBo = (HemodinamikaBo) ctx.getBean("hemodinamikaBoProxy");
+        RespirasiBo respirasiBo = (RespirasiBo) ctx.getBean("respirasiBoProxy");
+
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+
+        if (!"".equalsIgnoreCase(idIcu) && idIcu != null) {
+            try {
+                if("hemodinamika".equalsIgnoreCase(tipe)){
+                    Hemodinamika hemodinamika = new Hemodinamika();
+                    hemodinamika.setIdHemodinamika(idIcu);
+                    hemodinamika.setLastUpdate(time);
+                    hemodinamika.setLastUpdateWho(userLogin);
+                    response = hemodinamikaBo.saveDelete(hemodinamika);
+                }else if("respirasi".equalsIgnoreCase(tipe)){
+                    Respirasi respirasi = new Respirasi();
+                    respirasi.setIdRespirasi(idIcu);
+                    respirasi.setLastUpdate(time);
+                    respirasi.setLastUpdateWho(userLogin);
+                    response = respirasiBo.saveDelete(respirasi);
+                }else{
+                    HeaderIcu headerIcu = new HeaderIcu();
+                    headerIcu.setIdDetailIcu(idIcu);
+                    headerIcu.setLastUpdate(time);
+                    headerIcu.setLastUpdateWho(userLogin);
+                    response = headerIcuBo.saveDelete(headerIcu);
+                }
+            } catch (GeneralBOException e) {
+                logger.error("Found Error" + e.getMessage());
+            }
+        }
+
+        return response;
     }
 
     public static Logger getLogger() {

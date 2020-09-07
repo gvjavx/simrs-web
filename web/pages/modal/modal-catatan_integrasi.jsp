@@ -14,6 +14,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_ina_catatan_terintegrasi_ina"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_catatan_integrasi">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_catatan_integrasi"></p>
+                    </div>
                     <button class="btn btn-success btn-hide" onclick="showModalAsesmenRawatInap('catatan_integrasi_pasien_ina')"><i class="fa fa-plus"></i> Catatan Integrasi Pasien</button>
                 </div>
                 <div class="box-body">
@@ -192,8 +196,8 @@
                                     <label>TTD DPJP</label>
                                     <canvas class="paint-canvas-ttd" id="cppt10" width="220"
                                             onmouseover="paintTtd('cppt10')"></canvas>
-                                    <input class="form-control" id="nama_dpjp" placeholder="Nama Terang">
-                                    <input style="margin-top: 3px" class="form-control" id="sip_dpjp" placeholder="SIP">
+                                    <input class="form-control nama_dokter" id="nama_dpjp" placeholder="Nama Terang">
+                                    <input style="margin-top: 3px" class="form-control sip_dokter" id="sip_dpjp" placeholder="SIP">
                                     <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                             onclick="removePaint('cppt10')"><i
                                             class="fa fa-trash"></i> Clear

@@ -11,4 +11,5 @@ public interface RekamMedikBo {
     public List<HeaderDetailCheckup> getListPasien(HeaderDetailCheckup bean) throws GeneralBOException;
     public List<HeaderDetailCheckup> getDetailListRekamMedis(String idPasien) throws GeneralBOException;
     public CrudResponse saveAdd(StatusPengisianRekamMedis bean) throws GeneralBOException;
+    public CrudResponse saveEdit(StatusPengisianRekamMedis bean) throws GeneralBOException;
 }

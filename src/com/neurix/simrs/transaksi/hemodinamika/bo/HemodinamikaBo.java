@@ -10,4 +10,5 @@ public interface HemodinamikaBo {
     public List<Hemodinamika> getByCriteria(Hemodinamika bean) throws GeneralBOException;
     public CrudResponse saveAdd(Hemodinamika bean) throws GeneralBOException;
     public Boolean cekData(String id, String waktu) throws GeneralBOException;
+    public CrudResponse saveDelete(Hemodinamika bean) throws GeneralBOException;
 }

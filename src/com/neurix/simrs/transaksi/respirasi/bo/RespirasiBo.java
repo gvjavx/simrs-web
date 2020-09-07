@@ -11,4 +11,5 @@ public interface RespirasiBo {
     public List<Respirasi> getByCriteria(Respirasi bean) throws GeneralBOException;
     public CrudResponse saveAdd(Respirasi bean) throws GeneralBOException;
     public Boolean cekData(String id, String waktu) throws GeneralBOException;
+    public CrudResponse saveDelete(Respirasi bean) throws GeneralBOException;
 }

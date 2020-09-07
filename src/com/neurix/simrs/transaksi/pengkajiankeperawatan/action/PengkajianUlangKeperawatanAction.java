@@ -122,6 +122,27 @@ public class PengkajianUlangKeperawatanAction {
         return list;
     }
 
+    public CrudResponse saveDelete(String waktu, String idAsesmen, String dataPasien) {
+        CrudResponse response = new CrudResponse();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PengkajianUlangKeperawatanBo pengkajianUlangKeperawatanBo = (PengkajianUlangKeperawatanBo) ctx.getBean("pengkajianUlangKeperawatanBoProxy");
+        if (!"".equalsIgnoreCase(waktu) && !"".equalsIgnoreCase(idAsesmen)) {
+            try {
+                PengkajianUlangKeperawatan keperawatan = new PengkajianUlangKeperawatan();
+                keperawatan.setWaktu(waktu);
+                keperawatan.setIdPengkajianUlangKeperawatan(idAsesmen);
+                keperawatan.setLastUpdate(time);
+                keperawatan.setLastUpdateWho(userLogin);
+                response = pengkajianUlangKeperawatanBo.saveDelete(keperawatan);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error" + e.getMessage());
+            }
+        }
+        return response;
+    }
+
     public static Logger getLogger() {
         return logger;
     }

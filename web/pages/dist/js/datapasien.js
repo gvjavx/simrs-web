@@ -1,4 +1,4 @@
-function setDataPasien(){
+function setDataPasien() {
     var jam = $('.jam').length;
     var jam2 = $('.jam02').length;
     var tgl = $('.tgl').length;
@@ -25,17 +25,26 @@ function setDataPasien(){
 
     var resep = $('.resep-pasien').length;
     var tindakan = $('.tindakan-pasien').length;
+    var sip = $('.sip_dokter').length;
+    var namaDok = $('.nama_dokter').length;
+    var labPas = $('.lab-pasien').length;
+    var radioPas = $('.radiologi-pasien').length;
+    var sipRi = $('.sip_dokter_ri').length;
+    var namaDokRi = $('.nama_dokter_ri').length;
 
-    if(tensi > 0 || gejala > 0 || bb > 0 || tb > 0){
-        CheckupAction.getDataPemeriksaanFisik(noCheckup, function (res) {
-            if (res != '') {
-                tempTensi = res.tensi;
-                tempSuhu = res.suhu;
-                tempNadi = res.nadi;
-                tempRr = res.pernafasan;
-                tempBerat = res.berat;
-                tempTinggi = res.tinggi;
-                tempAnmnesa = res.anamnese;
+    if (tensi > 0 || gejala > 0 || bb > 0 || tb > 0) {
+        dwr.engine.setAsync(true);
+        CheckupAction.getDataPemeriksaanFisik(noCheckup, {
+            callback: function (res) {
+                if (res != '') {
+                    tempTensi = res.tensi;
+                    tempSuhu = res.suhu;
+                    tempNadi = res.nadi;
+                    tempRr = res.pernafasan;
+                    tempBerat = res.berat;
+                    tempTinggi = res.tinggi;
+                    tempAnmnesa = res.anamnese;
+                }
             }
         });
     }
@@ -60,23 +69,52 @@ function setDataPasien(){
         $('.anamnese').val(tempAnmnesa);
     }
     if (penMedis > 0) {
-        CheckupAction.getDataByKey(idDetailCheckup, "penunjang_medis", function (res) {
-            if (res != '') {
-                $('.penunjang-medis').val(res);
+        dwr.engine.setAsync(true);
+        CheckupAction.getDataByKey(idDetailCheckup, "penunjang_medis", {
+            callback: function (res) {
+                if (res != '') {
+                    $('.penunjang-medis').val(res);
+                }
+            }
+        });
+    }
+    if (labPas > 0) {
+        dwr.engine.setAsync(true);
+        CheckupAction.getDataByKey(idDetailCheckup, "lab", {
+            callback: function (res) {
+                if (res != '') {
+                    $('.lab-pasien').val(res);
+                }
+            }
+        });
+    }
+    if (radioPas > 0) {
+        dwr.engine.setAsync(true);
+        CheckupAction.getDataByKey(idDetailCheckup, "radiologi", {
+            callback: function (res) {
+                if (res != '') {
+                    $('.radiologi-pasien').val(res);
+                }
             }
         });
     }
     if (resep > 0) {
-        CheckupAction.getDataByKey(idDetailCheckup, "resep", function (res) {
-            if (res != '') {
-                $('.resep-pasien').val(res);
+        dwr.engine.setAsync(true);
+        CheckupAction.getDataByKey(idDetailCheckup, "resep", {
+            callback: function (res) {
+                if (res != '') {
+                    $('.resep-pasien').val(res);
+                }
             }
         });
     }
     if (tindakan > 0) {
-        CheckupAction.getDataByKey(idDetailCheckup, "tindakan", function (res) {
-            if (res != '') {
-                $('.tindakan-pasien').val(res);
+        dwr.engine.setAsync(true);
+        CheckupAction.getDataByKey(idDetailCheckup, "tindakan", {
+            callback: function (res) {
+                if (res != '') {
+                    $('.tindakan-pasien').val(res);
+                }
             }
         });
     }
@@ -90,7 +128,7 @@ function setDataPasien(){
         $('.no-bpjs').val(noBpjs);
     }
     if (age > 0) {
-        $('.umur-pasien').val(umur+' Tahun');
+        $('.umur-pasien').val(umur + ' Tahun');
     }
     if (jk > 0) {
         $('.jenis-kelamin').val(jenisKelamin);
@@ -99,9 +137,35 @@ function setDataPasien(){
         $('.diagnosa-pasien').val(diagnosa);
     }
     if (alr > 0) {
-        CheckupAction.getDataByKey(noCheckup, "alergi", function (res) {
-            if (res != '') {
-                $('.alergi-pasien').val(res);
+        dwr.engine.setAsync(true);
+        CheckupAction.getDataByKey(noCheckup, "alergi", {
+            callback: function (res) {
+                if (res != '') {
+                    $('.alergi-pasien').val(res);
+                }
+            }
+        });
+    }
+
+    if(sip > 0 && namaDok > 0){
+        dwr.engine.setAsync(true);
+        CheckupAction.getDataDokterSip(idDetailCheckup, "RJ", {
+            callback: function (res) {
+                if (res != '') {
+                    $('.sip_dokter').val(res.sip);
+                    $('.nama_dokter').val(res.namaDokter);
+                }
+            }
+        });
+    }
+    if(sipRi > 0 && namaDokRi > 0){
+        dwr.engine.setAsync(true);
+        CheckupAction.getDataDokterSip(idDetailCheckup, "RI", {
+            callback: function (res) {
+                if (res != '') {
+                    $('.sip_dokter_ri').val(res.sip);
+                    $('.nama_dokter_ri').val(res.namaDokter);
+                }
             }
         });
     }
@@ -111,13 +175,13 @@ function setDataPasien(){
     if (tb > 0) {
         $('.tinggi-pasien').val(tempTinggi);
     }
-    if(sel > 0){
+    if (sel > 0) {
         $('.select2').select2();
     }
-    if(idP > 0){
+    if (idP > 0) {
         $('.norm-pasien').val(idPasien);
     }
-    if(tglPasien > 0){
+    if (tglPasien > 0) {
         $('.tgl-lahir-pasien').val(tglLahir);
     }
     if (patTgl > 0) {
@@ -126,16 +190,16 @@ function setDataPasien(){
         });
         $('.ptr-tgl').inputmask('dd-mm-yyyy', {'placeholder': 'dd-mm-yyyy'});
     }
-    if(tensi > 0){
+    if (tensi > 0) {
         $('.tensi-pasien').val(tempTensi);
     }
-    if(suhu > 0){
+    if (suhu > 0) {
         $('.suhu-pasien').val(tempSuhu);
     }
-    if(nadi > 0){
+    if (nadi > 0) {
         $('.nadi-pasien').val(tempNadi);
     }
-    if(rr > 0){
+    if (rr > 0) {
         $('.rr-pasien').val(tempRr);
     }
 }

@@ -13,6 +13,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_sps_spesialis_neurologi"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="modal_warning">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_warning"></p>
+                    </div>
                     <div class="btn-group btn-hide">
                         <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
                         </button>
@@ -39,6 +43,8 @@
                             <td width="20%" align="center"><img id="btn_sps_anamnesa_neurologi" class="hvr-grow"
                                                                 onclick="detailSPS('anamnesa_neurologi')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+
+                                <img id="delete_anamnesa_neurologi" class="hvr-grow" onclick="conSPS('anamnesa_neurologi', 'spesialis_neurologi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_sps_pemeriksaan_neurologi">
@@ -46,6 +52,8 @@
                             <td width="20%" align="center"><img id="btn_sps_pemeriksaan_neurologi" class="hvr-grow"
                                                                 onclick="detailSPS('pemeriksaan_neurologi')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+
+                                <img id="delete_pemeriksaan_neurologi" class="hvr-grow" onclick="conSPS('pemeriksaan_neurologi', 'spesialis_neurologi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_sps_edukasi_neurologi">
@@ -53,6 +61,8 @@
                             <td width="20%" align="center"><img id="btn_sps_edukasi_neurologi" class="hvr-grow"
                                                                 onclick="detailSPS('edukasi_neurologi')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+
+                                <img id="delete_edukasi_neurologi" class="hvr-grow" onclick="conSPS('edukasi_neurologi', 'spesialis_neurologi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

@@ -25,6 +25,24 @@ public class PeriksaRadiologi{
 
     private String idLabDetail;
     private String namaDetailPeriksa;
+    private String urlImg;
+    private String idPemeriksa;
+
+    public String getIdPemeriksa() {
+        return idPemeriksa;
+    }
+
+    public void setIdPemeriksa(String idPemeriksa) {
+        this.idPemeriksa = idPemeriksa;
+    }
+
+    public String getUrlImg() {
+        return urlImg;
+    }
+
+    public void setUrlImg(String urlImg) {
+        this.urlImg = urlImg;
+    }
 
     public String getIdLabDetail() {
         return idLabDetail;

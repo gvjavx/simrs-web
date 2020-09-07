@@ -50,6 +50,9 @@
             <basic name="namaTerang">
                 <column name="nama_terang"/>
             </basic>
+            <basic name="sip">
+                <column name="sip"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

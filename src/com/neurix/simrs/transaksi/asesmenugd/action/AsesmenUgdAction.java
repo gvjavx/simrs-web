@@ -29,7 +29,7 @@ public class AsesmenUgdAction {
 
     public static transient Logger logger = Logger.getLogger(AsesmenUgdAction.class);
 
-    public CrudResponse saveAsesmenUgd(String data, String dataPasien){
+    public CrudResponse saveAsesmenUgd(String data, String dataPasien) {
         CrudResponse response = new CrudResponse();
         String userLogin = CommonUtil.userLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
@@ -46,20 +46,20 @@ public class AsesmenUgdAction {
                 asesmenUgd.setParameter(obj.getString("parameter"));
                 asesmenUgd.setIdDetailCheckup(obj.getString("id_detail_checkup"));
                 asesmenUgd.setKeterangan(obj.getString("keterangan"));
-                if(obj.has("jenis")){
+                if (obj.has("jenis")) {
                     asesmenUgd.setJenis(obj.getString("jenis"));
                 }
-                if(obj.has("skor")){
+                if (obj.has("skor")) {
                     asesmenUgd.setSkor(Integer.valueOf(obj.getString("skor")));
                 }
-                if(obj.has("nama_terang")){
+                if (obj.has("nama_terang")) {
                     asesmenUgd.setNamaTerang(obj.getString("nama_terang"));
                 }
-                if(obj.has("sip")){
+                if (obj.has("sip")) {
                     asesmenUgd.setSip(obj.getString("sip"));
                 }
-                if(obj.has("tipe")){
-                    if(obj.getString("tipe") != null && !"".equalsIgnoreCase(obj.getString("tipe"))){
+                if (obj.has("tipe")) {
+                    if ("ttd".equalsIgnoreCase(obj.getString("tipe")) && "gambar".equalsIgnoreCase(obj.getString("tipe"))) {
                         try {
                             BASE64Decoder decoder = new BASE64Decoder();
                             byte[] decodedBytes = decoder.decodeBuffer(obj.getString("jawaban"));
@@ -67,12 +67,12 @@ public class AsesmenUgdAction {
                             String wkt = time.toString();
                             String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
                             logger.info("PATTERN :" + patten);
-                            String fileName = obj.getString("id_detail_checkup") + "-"+i+"-" + patten + ".png";
+                            String fileName = obj.getString("id_detail_checkup") + "-" + i + "-" + patten + ".png";
                             String uploadFile = "";
-                            if("gambar".equalsIgnoreCase(obj.getString("tipe"))){
-                                uploadFile =  CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_IMG_RM + fileName;
-                            }else{
-                                uploadFile =  CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
+                            if ("ttd".equalsIgnoreCase(obj.getString("tipe"))) {
+                                uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
+                            } else {
+                                uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_IMG_RM + fileName;
                             }
                             BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
 
@@ -86,13 +86,15 @@ public class AsesmenUgdAction {
                                 ImageIO.write(image, "png", f);
                                 asesmenUgd.setJawaban(fileName);
                             }
-                        }catch (IOException e){
+                        } catch (IOException e) {
                             response.setStatus("Error");
                             response.setMsg("Found Error " + e.getMessage());
                         }
-                        asesmenUgd.setTipe(obj.getString("tipe"));
+                    } else {
+                        asesmenUgd.setJawaban(obj.getString("jawaban"));
                     }
-                }else{
+                    asesmenUgd.setTipe(obj.getString("tipe"));
+                } else {
                     asesmenUgd.setJawaban(obj.getString("jawaban"));
                 }
                 asesmenUgd.setAction("C");
@@ -105,10 +107,10 @@ public class AsesmenUgdAction {
             }
             try {
                 response = asesmenUgdBo.saveAdd(ugdList);
-                if("success".equalsIgnoreCase(response.getStatus())){
+                if ("success".equalsIgnoreCase(response.getStatus())) {
                     RekamMedikBo rekamMedikBo = (RekamMedikBo) ctx.getBean("rekamMedikBoProxy");
                     JSONObject obj = new JSONObject(dataPasien);
-                    if(obj != null){
+                    if (obj != null) {
                         StatusPengisianRekamMedis status = new StatusPengisianRekamMedis();
                         status.setNoCheckup(obj.getString("no_checkup"));
                         status.setIdDetailCheckup(obj.getString("id_detail_checkup"));
@@ -129,7 +131,7 @@ public class AsesmenUgdAction {
                 response.setMsg("Found Error " + e.getMessage());
                 return response;
             }
-        }catch (JSONException e){
+        } catch (JSONException e) {
             response.setStatus("Error");
             response.setMsg("Found Error " + e.getMessage());
         }
@@ -152,6 +154,48 @@ public class AsesmenUgdAction {
         }
         return list;
     }
+
+    public CrudResponse saveDelete(String idDetailCheckup, String keterangan, String dataPasien) {
+        CrudResponse response = new CrudResponse();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        String userLogin = CommonUtil.userLogin();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        AsesmenUgdBo asesmenUgdBo = (AsesmenUgdBo) ctx.getBean("asesmenUgdBoProxy");
+
+        if (!"".equalsIgnoreCase(idDetailCheckup) && !"".equalsIgnoreCase(keterangan)) {
+            try {
+                AsesmenUgd asesmenUgd = new AsesmenUgd();
+                asesmenUgd.setIdDetailCheckup(idDetailCheckup);
+                asesmenUgd.setKeterangan(keterangan);
+                asesmenUgd.setLastUpdate(time);
+                asesmenUgd.setLastUpdateWho(userLogin);
+                response = asesmenUgdBo.saveDelete(asesmenUgd);
+                if("success".equalsIgnoreCase(response.getStatus())){
+                    try {
+                        JSONObject obj = new JSONObject(dataPasien);
+                        RekamMedikBo rekamMedikBo = (RekamMedikBo) ctx.getBean("rekamMedikBoProxy");
+                        if (obj != null) {
+                            StatusPengisianRekamMedis status = new StatusPengisianRekamMedis();
+                            status.setNoCheckup(obj.getString("no_checkup"));
+                            status.setIdDetailCheckup(obj.getString("id_detail_checkup"));
+                            status.setIdPasien(obj.getString("id_pasien"));
+                            status.setIdRekamMedisPasien(obj.getString("id_rm"));
+                            status.setLastUpdateWho(userLogin);
+                            status.setLastUpdate(time);
+                            response = rekamMedikBo.saveEdit(status);
+                        }
+                    }catch (JSONException e){
+                        response.setStatus("error");
+                        response.setMsg(e.getMessage());
+                    }
+                }
+            } catch (GeneralBOException e) {
+                logger.error("Found Error" + e.getMessage());
+            }
+        }
+        return response;
+    }
+
     public static Logger getLogger() {
         return logger;
     }

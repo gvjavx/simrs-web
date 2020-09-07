@@ -13,6 +13,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_rj_keperawatan_rawat_jalan"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="modal_warning">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_warning"></p>
+                    </div>
                     <div class="btn-group btn-hide">
                         <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
                         </button>
@@ -43,6 +47,7 @@
                             <td width="20%" align="center"><img id="btn_rj_anamnesa_pemeriksaan_fisik" class="hvr-grow"
                                                                 onclick="detailRJ('anamnesa_pemeriksaan_fisik')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="del_anamnesa_pemeriksaan_fisik" class="hvr-grow" onclick="conKepRJ('anamnesa_pemeriksaan_fisik', 'keperawatan_rawat_jalan')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_rj_psiko_sosial">
@@ -50,6 +55,7 @@
                             <td width="20%" align="center"><img id="btn_rj_psiko_sosial" class="hvr-grow"
                                                                 onclick="detailRJ('psiko_sosial')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="del_psiko_sosial" class="hvr-grow" onclick="conKepRJ('psiko_sosial', 'keperawatan_rawat_jalan')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_rj_skrining_gizi">
@@ -57,6 +63,7 @@
                             <td width="20%" align="center"><img id="btn_rj_skrining_gizi" class="hvr-grow"
                                                                 onclick="detailRJ('skrining_gizi')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="del_skrining_gizi" class="hvr-grow" onclick="conKepRJ('skrining_gizi', 'keperawatan_rawat_jalan')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_rj_resiko_jatuh">
@@ -64,6 +71,7 @@
                             <td width="20%" align="center"><img id="btn_rj_resiko_jatuh" class="hvr-grow"
                                                                 onclick="detailRJ('resiko_jatuh')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="del_resiko_jatuh" class="hvr-grow" onclick="conKepRJ('resiko_jatuh', 'keperawatan_rawat_jalan')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_rj_nyeri">
@@ -71,6 +79,7 @@
                             <td width="20%" align="center"><img id="btn_rj_nyeri" class="hvr-grow"
                                                                 onclick="detailRJ('nyeri')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="del_nyeri" class="hvr-grow" onclick="conKepRJ('nyeri', 'keperawatan_rawat_jalan')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -159,7 +168,7 @@
                         <div class="form-group">
                             <label class="col-md-3">Riwayat Alergi</label>
                             <div class="col-md-9">
-                                <textarea rows="3" class="form-control" id="af5"></textarea>
+                                <textarea rows="3" class="form-control alergi-pasien" id="af5"></textarea>
                             </div>
                         </div>
                     </div>
@@ -549,6 +558,7 @@
                                 <label>TTD Perawat</label>
                                 <canvas style="margin-left: -1px;" width="250" onmouseover="paintTtd('ttdPerawat')" class="paint-canvas-ttd" id="ttdPerawat"></canvas>
                                 <input id="nama_terang" class="form-control" placeholder="Nama Terang">
+                                <input id="nip_perawat" class="form-control" placeholder="NIP">
                                 <button style="margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('ttdPerawat')"><i class="fa fa-trash"></i> Clear
                                 </button>
                             </div>

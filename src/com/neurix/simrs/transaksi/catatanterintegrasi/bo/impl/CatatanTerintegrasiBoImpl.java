@@ -24,27 +24,27 @@ public class CatatanTerintegrasiBoImpl implements CatatanTerintegrasiBo {
     public List<CatatanTerintegrasi> getByCriteria(CatatanTerintegrasi bean) throws GeneralBOException {
         List<CatatanTerintegrasi> list = new ArrayList<>();
 
-        if(bean != null){
+        if (bean != null) {
             Map hsCriteria = new HashMap();
-            if(bean.getIdCatatanTerintegrasi() != null && !"".equalsIgnoreCase(bean.getIdCatatanTerintegrasi())){
+            if (bean.getIdCatatanTerintegrasi() != null && !"".equalsIgnoreCase(bean.getIdCatatanTerintegrasi())) {
                 hsCriteria.put("id_catatan_terintegrasi", bean.getIdCatatanTerintegrasi());
             }
-            if(bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
+            if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
                 hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
             }
-            if(bean.getKeterangan() != null && !"".equalsIgnoreCase(bean.getKeterangan())){
+            if (bean.getKeterangan() != null && !"".equalsIgnoreCase(bean.getKeterangan())) {
                 hsCriteria.put("keterangan", bean.getKeterangan());
             }
 
             List<ItSimrsCatatanTerintegrasiEntity> entityList = new ArrayList<>();
             try {
                 entityList = catatanTerintegrasiDao.getByCriteria(hsCriteria);
-            }catch (HibernateException e){
+            } catch (HibernateException e) {
                 logger.error(e.getMessage());
             }
 
-            if(entityList.size() > 0){
-                for (ItSimrsCatatanTerintegrasiEntity entity: entityList){
+            if (entityList.size() > 0) {
+                for (ItSimrsCatatanTerintegrasiEntity entity : entityList) {
                     CatatanTerintegrasi catatan = new CatatanTerintegrasi();
                     catatan.setIdCatatanTerintegrasi(entity.getIdCatatanTerintegrasi());
                     catatan.setIdDetailCheckup(entity.getIdDetailCheckup());
@@ -52,8 +52,8 @@ public class CatatanTerintegrasiBoImpl implements CatatanTerintegrasiBo {
                     catatan.setPpa(entity.getPpa());
                     catatan.setSubjective(entity.getSubjective());
                     catatan.setIntruksi(entity.getIntruksi());
-                    catatan.setTtdPetugas(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_RM+entity.getTtdPetugas());
-                    catatan.setTtdDpjp(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_RM+entity.getTtdDpjp());
+                    catatan.setTtdPetugas(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getTtdPetugas());
+                    catatan.setTtdDpjp(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getTtdDpjp());
                     catatan.setKeterangan(entity.getKeterangan());
                     catatan.setAction(entity.getAction());
                     catatan.setFlag(entity.getFlag());
@@ -83,10 +83,10 @@ public class CatatanTerintegrasiBoImpl implements CatatanTerintegrasiBo {
     @Override
     public CrudResponse saveAdd(CatatanTerintegrasi bean) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
-        if(bean != null){
+        if (bean != null) {
 
             ItSimrsCatatanTerintegrasiEntity catatanTerintegrasiEntity = new ItSimrsCatatanTerintegrasiEntity();
-            catatanTerintegrasiEntity.setIdCatatanTerintegrasi("CTP"+catatanTerintegrasiDao.getNextSeq());
+            catatanTerintegrasiEntity.setIdCatatanTerintegrasi("CTP" + catatanTerintegrasiDao.getNextSeq());
             catatanTerintegrasiEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
             catatanTerintegrasiEntity.setWaktu(bean.getWaktu());
             catatanTerintegrasiEntity.setPpa(bean.getPpa());
@@ -117,13 +117,45 @@ public class CatatanTerintegrasiBoImpl implements CatatanTerintegrasiBo {
                 catatanTerintegrasiDao.addAndSave(catatanTerintegrasiEntity);
                 response.setStatus("success");
                 response.setMsg("Berhasil");
-            }catch (HibernateException e){
+            } catch (HibernateException e) {
                 response.setStatus("error");
-                response.setMsg("Found Error "+e.getMessage());
+                response.setMsg("Found Error " + e.getMessage());
                 logger.error(e.getMessage());
             }
         }
 
+        return response;
+    }
+
+    @Override
+    public CrudResponse saveDelete(CatatanTerintegrasi bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        ItSimrsCatatanTerintegrasiEntity entity = new ItSimrsCatatanTerintegrasiEntity();
+        try {
+            entity = catatanTerintegrasiDao.getById("idCatatanTerintegrasi", bean.getIdCatatanTerintegrasi());
+        } catch (HibernateException e) {
+            response.setStatus("error");
+            response.setMsg("Found Error, Data yang dicari tidak ditemukan...!");
+            logger.error(e.getMessage());
+        }
+        if (entity != null) {
+            entity.setFlag("N");
+            entity.setAction("D");
+            entity.setLastUpdate(bean.getLastUpdate());
+            entity.setLastUpdateWho(bean.getLastUpdateWho());
+            try {
+                catatanTerintegrasiDao.updateAndSave(entity);
+                response.setStatus("success");
+                response.setMsg("Berhasil");
+            } catch (HibernateException e) {
+                response.setStatus("error");
+                response.setMsg("Found Error, " + e.getMessage());
+                logger.error(e.getMessage());
+            }
+        } else {
+            response.setStatus("error");
+            response.setMsg("Found Error, Data yang dicari tidak ditemukan...!");
+        }
         return response;
     }
 

@@ -8,6 +8,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -25,10 +26,16 @@ public class DetailIcuDao extends GenericDao<ItSimrsDetailIcuEntity, String> {
 
         if (mapCriteria!=null) {
             if (mapCriteria.get("id_detail_icu")!=null) {
-                criteria.add(Restrictions.eq("idMonitoringTransfusiDarah", (String) mapCriteria.get("id_detail_icu")));
+                criteria.add(Restrictions.eq("idDetailIcu", (String) mapCriteria.get("id_detail_icu")));
             }
-            if (mapCriteria.get("id_header_id")!=null) {
-                criteria.add(Restrictions.eq("idDetailCheckup", (String) mapCriteria.get("id_header_id")));
+            if (mapCriteria.get("id_header_icu")!=null) {
+                criteria.add(Restrictions.eq("idHeaderIcu", (String) mapCriteria.get("id_header_icu")));
+            }
+            if (mapCriteria.get("id_detail_checkup")!=null) {
+                criteria.add(Restrictions.eq("idDetailCheckup", (String) mapCriteria.get("id_detail_checkup")));
+            }
+            if (mapCriteria.get("created_date")!=null) {
+                criteria.add(Restrictions.eq("createdDate", (Timestamp) mapCriteria.get("created_date")));
             }
         }
 

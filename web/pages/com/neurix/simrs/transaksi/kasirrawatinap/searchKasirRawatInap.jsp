@@ -733,6 +733,7 @@
             }
 
             $('#fin_jenis_pasien').html(jenisPasien.toUpperCase());
+            setLabelJenisPasien('fin_jenis_pasien', jenisPasien);
             $('#fin_no_sep').html(noSep);
             $('#fin_no_checkup').html(idDetailCheckup);
             $('#fin_nik').html(nik);

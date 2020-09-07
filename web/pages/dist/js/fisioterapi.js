@@ -7,14 +7,20 @@ function pengkajianFisioterapi(jenis, idRM, isSetIdRM) {
     }else{
         $('.btn-hide').show();
     }
-    setDataPasien();
     $('#modal-pengkajian-fisioterapi').modal({show: true, backdrop: 'static'});
+    setDataPasien();
 }
 
 function addFisioterapi(jenis) {
     if (jenis != '') {
-        setDataPasien();
+        if("nyeri" == jenis){
+            setNyeri('set_'+jenis, umur);
+        }
+        if("jatuh" == jenis){
+            setResikoJatuh('set_'+jenis, umur);
+        }
         $('#modal-fisio-' + jenis).modal({show: true, backdrop: 'static'});
+        setDataPasien();
     }
 }
 
@@ -87,40 +93,141 @@ function saveFisio(jenis){
     }
 
     if("nyeri" == jenis){
-        var check1 = $('[name=radio_nyeri_keluhan]:checked').val();
-        var check2 = $('[name=radio_nyeri_jenis]:checked').val();
-        var lokasi = $('#y_lokasi').val();
-        var inten  = $('#y_inten') .val();
-        var canvasArea = document.getElementById('choice_emoji');
-        var cvs = isCanvasBlank(canvasArea);
+        var va1 = $('[name=radio_nyeri_keluhan]:checked').val();
+        var va2 = $('#y_lokasi').val();
+        var va3 = $('[name=radio_nyeri_jenis]:checked').val();
+        var va4 = $('#y_inten').val();
+        var jen = $('#temp_jenis').val();
+        var nyeri = "";
+        var tipe = "";
+        if(jen == "emoji"){
+            nyeri = document.getElementById('choice_emoji');
+            tipe = "Wong Baker Pain Scale";
+        }else{
+            nyeri = document.getElementById('area_nyeri');
+            tipe = "Nomeric Rating Scale";
+        }
 
-        if(check1 != '' && check2 != '' && lokasi != '' && inten != ''){
-            data.push({'parameter':'Apakah terdapat keluhan nyeri','jawaban': check1, 'keterangan':jenis, 'id_detail_checkup':idDetailCheckup});
-            if(!cvs){
-                var canv = canvasArea.toDataURL("image/png"),
-                    canv = canv.replace(/^data:image\/(png|jpg);base64,/, "");
-                data.push({'parameter':'Scala Nyeri Paint','jawaban': canv, 'keterangan':jenis, 'id_detail_checkup':idDetailCheckup});
-            }
-            data.push({'parameter':'Lokasi','jawaban': lokasi, 'keterangan':jenis, 'id_detail_checkup':idDetailCheckup});
-            data.push({'parameter':'Intensitas','jawaban': inten, 'keterangan':jenis, 'id_detail_checkup':idDetailCheckup});
-            data.push({'parameter':'Jenis','jawaban': check2, 'keterangan':jenis, 'id_detail_checkup':idDetailCheckup});
+        if(va1 && va3 != undefined && va2 && va4 != ''){
+            data.push({
+                'parameter': 'Apakah terdapat keluhan nyeri',
+                'jawaban': va1,
+                'keterangan': jenis,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Lokasi',
+                'jawaban': va2,
+                'keterangan': jenis,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Jenis',
+                'jawaban': va3,
+                'keterangan': jenis,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Intensitas',
+                'jawaban': va4,
+                'keterangan': jenis,
+                'id_detail_checkup': idDetailCheckup
+            });
+
+            var canv1 = nyeri.toDataURL("image/png"),
+                canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");
+            data.push({
+                'parameter': tipe,
+                'jawaban': canv1,
+                'keterangan': jenis,
+                'jenis': ket,
+                'tipe': 'gambar',
+                'id_detail_checkup': idDetailCheckup
+            });
             cek = true;
         }
     }
 
     if("jatuh" == jenis){
-        var metode      = $('#j_metode').val();
-        var asesment = $('#j_asesment').val();
-        var rencana = $('#j_rencana').val();
-        var kategori = $('#j_kategori').val();
-        var skor = $('#j_skor').val();
+        var tgl  = $('#ps01').val();
+        var jam  = $('#ps02').val();
+        data.push({
+            'parameter': 'Tanggal Jam',
+            'jawaban': tgl+' '+jam,
+            'keterangan': jenis,
+            'id_detail_checkup': idDetailCheckup
+        });
+        var resikoJatuh = $('.resiko_jatuh');
+        var jenisResiko = $('#jenis_resiko').val();
+        var totalSkor = "";
+        if(resikoJatuh.length > 0){
+            $.each(resikoJatuh, function (i, item) {
+                var label = $('#label_resiko_jatuh'+i).text();
+                var resiko = $('[name=resiko_jatuh'+i+']:checked').val();
+                if(resiko != undefined){
+                    var isi = resiko.split("|")[0];
+                    var skor = resiko.split("|")[1];
+                    data.push({
+                        'parameter': label,
+                        'jawaban': isi,
+                        'skor': skor,
+                        'keterangan': jenis,
+                        'id_detail_checkup': idDetailCheckup
+                    });
+                    if(totalSkor != ''){
+                        totalSkor = parseInt(totalSkor) + parseInt(skor);
+                    }else{
+                        totalSkor = parseInt(skor);
+                    }
+                }
+            });
 
-        if(metode != '' && asesment != '' && rencana != '' && kategori != '' && skor != ''){
-            data.push({'parameter':'Metode','jawaban': metode, 'keterangan':jenis, 'id_detail_checkup':idDetailCheckup});
-            data.push({'parameter':'Asesment Fisioterapi','jawaban': asesment, 'keterangan':jenis, 'id_detail_checkup':idDetailCheckup});
-            data.push({'parameter':'Rencana Asuhan','jawaban': rencana, 'keterangan':jenis, 'id_detail_checkup':idDetailCheckup});
-            data.push({'parameter':'Kategori','jawaban': kategori, 'keterangan':jenis, 'id_detail_checkup':idDetailCheckup});
-            data.push({'parameter':'Skor','jawaban': skor, 'keterangan':jenis, 'id_detail_checkup':idDetailCheckup});
+            if(totalSkor != ''){
+                data.push({
+                    'parameter': 'Total Skor',
+                    'jawaban': ''+totalSkor,
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'tipe': 'total',
+                    'id_detail_checkup': idDetailCheckup
+                });
+
+                var kesimpulan = "";
+
+                if(jenisResiko == "humpty_dumpty"){
+                    if(parseInt(totalSkor) >= 7 && parseInt(totalSkor) <= 11){
+                        kesimpulan = "Rendah";
+                    }else if (parseInt(totalSkor) >= 12) {
+                        kesimpulan = "Tinggi";
+                    }
+                }else if(jenisResiko == "skala_morse"){
+                    if(parseInt(totalSkor) >= 0 && parseInt(totalSkor) <= 24){
+                        kesimpulan = "Rendah";
+                    }else if (parseInt(totalSkor) >= 25 && parseInt(totalSkor) <= 44) {
+                        kesimpulan = "Sedang";
+                    }else if (parseInt(totalSkor) >= 45) {
+                        kesimpulan = "Tinggi";
+                    }
+                }else if(jenisResiko == "geriatri"){
+                    if(parseInt(totalSkor) >= 0 && parseInt(totalSkor) <= 5){
+                        kesimpulan = "Rendah";
+                    }else if (parseInt(totalSkor) >= 6 && parseInt(totalSkor) <= 16) {
+                        kesimpulan = "Sedang";
+                    }else if (parseInt(totalSkor) >= 17) {
+                        kesimpulan = "Tinggi";
+                    }
+                }
+                data.push({
+                    'parameter': 'Resiko Jatuh',
+                    'jawaban': kesimpulan,
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'tipe': 'kesimpulan',
+                    'id_detail_checkup': idDetailCheckup
+                });
+            }
+        }
+        if(resikoJatuh.length == data.length - 3){
             cek = true;
         }
     }
@@ -195,11 +302,24 @@ function detailFisio(jenis) {
                             '<td width="40%">' + item.parameter + '</td>' +
                             '<td>' + '<ul style="margin-left: 10px;">'+li+'</ul>' + '</td>' +
                             '</tr>';
-                    }else if ("Scala Nyeri Paint" == item.parameter) {
-                        body += '<tr>' +
-                            '<td>' + item.parameter + '</td>' +
-                            '<td>' + '<img src="' + item.jawaban + '" style="width: 100px">' + '</td>' +
-                            '</tr>';
+                    }else if ("jatuh" == item.parameter) {
+                        if("total" == item.tipe){
+                            body += '<tr>' +
+                                '<td width="40%" colspan="2">' + item.parameter + '</td>' +
+                                '<td>' + item.jawaban + '</td>' +
+                                '</tr>';
+                        }else if("kesimpulan" == item.tipe){
+                            body += '<tr bgcolor="#ffebcd" style="font-weight: bold">' +
+                                '<td width="40%" colspan="2">' + item.parameter + '</td>' +
+                                '<td>' + item.jawaban + '</td>' +
+                                '</tr>';
+                        }else{
+                            body += '<tr>' +
+                                '<td width="40%">' + item.parameter + '</td>' +
+                                '<td>' + item.jawaban + '</td>' +
+                                '<td>' + cekItemIsNull(item.skor) + '</td>' +
+                                '</tr>';
+                        }
                     }else{
                         body += '<tr>' +
                             '<td width="40%">' + item.parameter + '</td>' +
@@ -361,4 +481,36 @@ function listTindakanPoli(idKategori){
     } else {
         $('#mon_tindakan').html('');
     }
+}
+
+function conFS(jenis, ket){
+    $('#tanya').text("Yakin mengahapus data ini ?");
+    $('#modal-confirm-rm').modal({show:true, backdrop:'static'});
+    $('#save_con_rm').attr('onclick', 'delFS(\''+jenis+'\', \''+ket+'\')');
+}
+
+function delFS(jenis, ket) {
+    $('#modal-confirm-rm').modal('hide');
+    var dataPasien = {
+        'no_checkup': noCheckup,
+        'id_detail_checkup': idDetailCheckup,
+        'id_pasien': idPasien,
+        'id_rm': tempidRm
+    }
+    var result = JSON.stringify(dataPasien);
+    startSpin('delete_'+jenis);
+    dwr.engine.setAsync(true);
+    AsesmenSpesialisAction.saveDelete(idDetailCheckup, jenis, result, {
+        callback: function (res) {
+            if (res.status == "success") {
+                stopSpin('delete_'+jenis);
+                $('#warning_' + ket).show().fadeOut(5000);
+                $('#msg_' + ket).text("Berhasil menghapus data...");
+            } else {
+                stopSpin('delete_'+jenis);
+                $('#modal_warning').show().fadeOut(5000);
+                $('#msg_warning').text(res.msg);
+            }
+        }
+    });
 }

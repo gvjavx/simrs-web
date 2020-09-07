@@ -294,6 +294,32 @@ public class StatusPeriksaBoImpl implements StatusPeriksaBo {
 
                                                     }
 
+                                                    List<ItSimrsRiwayatTindakanEntity> riwayatTindakanEntities = new ArrayList<>();
+                                                    Map hsCriteria = new HashMap();
+                                                    hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+                                                    try {
+                                                        riwayatTindakanEntities = riwayatTindakanDao.getByCriteria(hsCriteria);
+                                                    }catch (HibernateException e){
+                                                        response.setStatus("error");
+                                                        response.setMessage(e.getMessage());
+                                                    }
+
+                                                    if(riwayatTindakanEntities.size() > 0){
+                                                        for (ItSimrsRiwayatTindakanEntity entity: riwayatTindakanEntities){
+                                                            entity.setJenisPasien(bean.getIdJenisPeriksaPasien());
+                                                            entity.setLastUpdate(bean.getLastUpdate());
+                                                            entity.setLastUpdateWho(bean.getLastUpdateWho());
+                                                            try {
+                                                                riwayatTindakanDao.updateAndSave(entity);
+                                                                response.setStatus("success");
+                                                                response.setMessage("berhasil");
+                                                            }catch (HibernateException e){
+                                                                response.setStatus("error");
+                                                                response.setMessage(e.getMessage());
+                                                            }
+                                                        }
+                                                    }
+
                                                 } catch (HibernateException e) {
                                                     logger.error("[CheckupBoImpl.saveAdd] Error When Saving tindakan rawat" + e.getMessage());
                                                     throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When Saving tindakan rawat" + e.getMessage());

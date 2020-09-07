@@ -13,6 +13,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_sps_spesialis_tht"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="modal_warning">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_warning"></p>
+                    </div>
                     <div class="btn-group btn-hide">
                         <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
                         </button>
@@ -41,6 +45,7 @@
                             <td width="20%" align="center"><img id="btn_sps_keadaan_umum_tht" class="hvr-grow"
                                                                 onclick="detailSPS('keadaan_umum_tht')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_keadaan_umum_tht" class="hvr-grow" onclick="conSPS('keadaan_umum_tht', 'spesialis_tht')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_sps_tht_tht">
@@ -48,6 +53,7 @@
                             <td width="20%" align="center"><img id="btn_sps_tht_tht" class="hvr-grow"
                                                                 onclick="detailSPS('tht_tht')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_tht_tht" class="hvr-grow" onclick="conSPS('tht_tht', 'spesialis_tht')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_sps_pemeriksaan_tht">
@@ -55,6 +61,7 @@
                             <td width="20%" align="center"><img id="btn_sps_pemeriksaan_tht" class="hvr-grow"
                                                                 onclick="detailSPS('pemeriksaan_tht')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_pemeriksaan_tht" class="hvr-grow" onclick="conSPS('pemeriksaan_tht', 'spesialis_tht')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_sps_edukasi_tht">
@@ -62,6 +69,7 @@
                             <td width="20%" align="center"><img id="btn_sps_edukasi_tht" class="hvr-grow"
                                                                 onclick="detailSPS('edukasi_tht')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_edukasi_tht" class="hvr-grow" onclick="conSPS('edukasi_tht', 'spesialis_tht')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -130,9 +138,9 @@
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-3">Riwayat Alergi Obat</label>
+                            <label class="col-md-3">Riwayat Alergi</label>
                             <div class="col-md-9">
-                                <textarea rows="3" class="form-control alergi" id="kut5"></textarea>
+                                <textarea rows="3" class="form-control alergi-pasien" id="kut5"></textarea>
                             </div>
                         </div>
                     </div>
@@ -447,8 +455,8 @@
                             <div class="col-md-6">
                                 <label>TTD Dokter</label>
                                 <canvas style="margin-left: -1px;" width="250" onmouseover="paintTtd('et5')" class="paint-canvas-ttd" id="et5"></canvas>
-                                <input class="form-control" id="nama_terang_dokter" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control" id="sip_dokter" placeholder="SIP">
+                                <input class="form-control nama_dokter" id="nama_terang_dokter" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control sip_dokter" id="sip_dokter" placeholder="SIP">
                                 <button style="margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('et5')"><i class="fa fa-trash"></i> Clear
                                 </button>
                             </div>

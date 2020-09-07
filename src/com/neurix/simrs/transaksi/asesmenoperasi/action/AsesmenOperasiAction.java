@@ -33,7 +33,7 @@ public class AsesmenOperasiAction {
 
     public static transient Logger logger = Logger.getLogger(AsesmenOperasiAction.class);
 
-    public CrudResponse saveAsesmenOperasi(String data, String dataPasien){
+    public CrudResponse saveAsesmenOperasi(String data, String dataPasien) {
         CrudResponse response = new CrudResponse();
         String userLogin = CommonUtil.userLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
@@ -92,9 +92,9 @@ public class AsesmenOperasiAction {
                                 ImageIO.write(image, "png", f);
                                 asesmenOperasi.setJawaban1(fileName);
                             }
-                        }catch (IOException e){
+                        } catch (IOException e) {
                             response.setStatus("error");
-                            response.setMsg("Error when parse IO Images "+e.getMessage());
+                            response.setMsg("Error when parse IO Images " + e.getMessage());
                         }
                     } else {
                         if (obj.has("jawaban1")) {
@@ -146,10 +146,10 @@ public class AsesmenOperasiAction {
 
             try {
                 response = asesmenOperasiBo.saveAdd(operasiList);
-                if("success".equalsIgnoreCase(response.getStatus())){
+                if ("success".equalsIgnoreCase(response.getStatus())) {
                     RekamMedikBo rekamMedikBo = (RekamMedikBo) ctx.getBean("rekamMedikBoProxy");
                     JSONObject objt = new JSONObject(dataPasien);
-                    if(objt != null){
+                    if (objt != null) {
                         StatusPengisianRekamMedis status = new StatusPengisianRekamMedis();
                         status.setNoCheckup(objt.getString("no_checkup"));
                         status.setIdDetailCheckup(objt.getString("id_detail_checkup"));
@@ -170,9 +170,9 @@ public class AsesmenOperasiAction {
                 response.setMsg("Found Error " + e.getMessage());
                 return response;
             }
-        }catch (JSONException e){
+        } catch (JSONException e) {
             response.setStatus("error");
-            response.setMsg("Error when parse JSON array, "+e.getMessage());
+            response.setMsg("Error when parse JSON array, " + e.getMessage());
         }
         return response;
     }
@@ -268,6 +268,66 @@ public class AsesmenOperasiAction {
             }
         }
         return list;
+    }
+
+    public CrudResponse saveDelete(String idDetailCheckup, String keterangan, String dataPasien) {
+        CrudResponse response = new CrudResponse();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        AsesmenOperasiBo asesmenOperasiBo = (AsesmenOperasiBo) ctx.getBean("asesmenOperasiBoProxy");
+        if (!"".equalsIgnoreCase(idDetailCheckup) && !"".equalsIgnoreCase(keterangan)) {
+            try {
+                AsesmenOperasi operasi = new AsesmenOperasi();
+                operasi.setIdDetailCheckup(idDetailCheckup);
+                operasi.setKeterangan(keterangan);
+                operasi.setLastUpdate(time);
+                operasi.setLastUpdateWho(userLogin);
+                response = asesmenOperasiBo.saveDelete(operasi);
+                if ("success".equalsIgnoreCase(response.getStatus())) {
+                    try {
+                        JSONObject obj = new JSONObject(dataPasien);
+                        RekamMedikBo rekamMedikBo = (RekamMedikBo) ctx.getBean("rekamMedikBoProxy");
+                        if (obj != null) {
+                            StatusPengisianRekamMedis status = new StatusPengisianRekamMedis();
+                            status.setNoCheckup(obj.getString("no_checkup"));
+                            status.setIdDetailCheckup(obj.getString("id_detail_checkup"));
+                            status.setIdPasien(obj.getString("id_pasien"));
+                            status.setIdRekamMedisPasien(obj.getString("id_rm"));
+                            status.setLastUpdateWho(userLogin);
+                            status.setLastUpdate(time);
+                            response = rekamMedikBo.saveEdit(status);
+                        }
+                    } catch (JSONException e) {
+                        response.setStatus("error");
+                        response.setMsg(e.getMessage());
+                    }
+                }
+            } catch (GeneralBOException e) {
+                logger.error("Found Error" + e.getMessage());
+            }
+        }
+        return response;
+    }
+
+    public CrudResponse deleteMonAnestesi(String idMon) {
+        CrudResponse response = new CrudResponse();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        MonAnestesiBo monAnestesiBo = (MonAnestesiBo) ctx.getBean("monAnestesiBoProxy");
+        if (!"".equalsIgnoreCase(idMon) && idMon != null) {
+            try {
+                MonitoringAnestesi monitoringAnestesi = new MonitoringAnestesi();
+                monitoringAnestesi.setIdMonitoringAnestesi(idMon);
+                monitoringAnestesi.setLastUpdate(time);
+                monitoringAnestesi.setLastUpdateWho(userLogin);
+                response = monAnestesiBo.saveDelete(monitoringAnestesi);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error" + e.getMessage());
+            }
+        }
+        return response;
     }
 
     public static Logger getLogger() {

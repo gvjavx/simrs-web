@@ -20,21 +20,32 @@
                     </div>
                 </div>
                 <div class="box-body">
-                    <table style="font-size: 12px" class="table table-striped table-bordered" id="tabel_ina_asuhan">
-                        <thead>
-                        <tr>
-                            <td width="10%" style="vertical-align: middle" align="center">Tanggal Jam</td>
-                            <td width="20%" style="vertical-align: middle" align="center">Diagnosa Keperawatan</td>
-                            <td width="20%" style="vertical-align: middle" align="center">Hasil Luaran Keperawatan</td>
-                            <td width="20%" style="vertical-align: middle" align="center">Planning/ Rencana Tindakan</td>
-                            <td width="20%" style="vertical-align: middle" align="center">Implementasi</td>
-                            <td width="10%" style="vertical-align: middle" align="center">Evaluasi</td>
-                        </tr>
-                        </thead>
-                        <tbody id="body_asuhan">
+                    <%--<table style="font-size: 12px" class="table table-striped table-bordered" id="tabel_ina_asuhan">--%>
+                        <%--<thead>--%>
+                        <%--<tr>--%>
+                            <%--<td width="10%" style="vertical-align: middle" align="center">Tanggal Jam</td>--%>
+                            <%--<td width="20%" style="vertical-align: middle" align="center">Diagnosa Keperawatan</td>--%>
+                            <%--<td width="20%" style="vertical-align: middle" align="center">Hasil Luaran Keperawatan</td>--%>
+                            <%--<td width="20%" style="vertical-align: middle" align="center">Planning/ Rencana Tindakan</td>--%>
+                            <%--<td width="20%" style="vertical-align: middle" align="center">Implementasi</td>--%>
+                            <%--<td width="10%" style="vertical-align: middle" align="center">Evaluasi</td>--%>
+                        <%--</tr>--%>
+                        <%--</thead>--%>
+                        <%--<tbody id="body_asuhan">--%>
 
-                        </tbody>
-                    </table>
+                        <%--</tbody>--%>
+                    <%--</table>--%>
+                        <table class="table" id="tabel_hd_monitoring_hd">
+                            <tbody>
+                            <tr id="row_ina_asuhan_keperawatan_ina">
+                                <td>Rencana Asuhan Keperawatan Rawat Inap</td>
+                                <td width="20%" align="center">
+                                    <img id="btn_ina_asuhan_keperawatan_ina" class="hvr-grow" onclick="detailRA('asuhan_keperawatan_ina', 'asuhan', 'ina')"
+                                         src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">

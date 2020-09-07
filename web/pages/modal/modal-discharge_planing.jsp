@@ -14,6 +14,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_ina_discharge_planing"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_discharge_planing">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_discharge_planing"></p>
+                    </div>
                     <div class="btn-group">
                         <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
                         </button>
@@ -39,6 +43,7 @@
                                 <img id="btn_ina_kriteria_discharge_planing" class="hvr-grow"
                                      onclick="detailAsesmenRawatInap('kriteria_discharge_planing')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_kriteria_discharge_planing" class="hvr-grow" onclick="conRI('anamnesa_umum', 'discharge_planing')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_ina_kebutuhan_discharge_planing">
@@ -47,6 +52,7 @@
                                 <img id="btn_ina_kebutuhan_discharge_planing" class="hvr-grow"
                                      onclick="detailAsesmenRawatInap('kebutuhan_discharge_planing')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_kebutuhan_discharge_planing" class="hvr-grow" onclick="conRI('kebutuhan_discharge_planing', 'discharge_planing')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

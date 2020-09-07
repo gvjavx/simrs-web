@@ -117,6 +117,7 @@ public class AsesmenRawatInapBoImpl implements AsesmenRawatInapBo {
     private CrudResponse saveAsesmen(List<AsesmenRawatInap> list){
         CrudResponse response = new CrudResponse();
         for (AsesmenRawatInap bean : list) {
+
             ItSimrsAsesmenRawatInapEntity asesmenRawatInapEntity = new ItSimrsAsesmenRawatInapEntity();
             asesmenRawatInapEntity.setIdAsesmenKeperawatanRawatInap("ARI" + asesmenRawatInapDao.getNextSeq());
             asesmenRawatInapEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
@@ -157,6 +158,12 @@ public class AsesmenRawatInapBoImpl implements AsesmenRawatInapBo {
         Map hsCriteria = new HashMap();
         hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
         hsCriteria.put("keterangan", bean.getKeterangan());
+
+        if(bean.getIdAsesmenKeperawatanRawatInap() != null && !"".equalsIgnoreCase(bean.getIdAsesmenKeperawatanRawatInap())){
+            ItSimrsAsesmenRawatInapEntity entity = asesmenRawatInapDao.getById("idAsesmenKeperawatanRawatInap", bean.getIdAsesmenKeperawatanRawatInap());
+            hsCriteria.put("created_date", entity.getCreatedDate());
+        }
+
         try {
             entityList = asesmenRawatInapDao.getByCriteria(hsCriteria);
         } catch (HibernateException e) {
@@ -171,6 +178,7 @@ public class AsesmenRawatInapBoImpl implements AsesmenRawatInapBo {
                 inap.setLastUpdate(bean.getLastUpdate());
                 inap.setLastUpdateWho(bean.getLastUpdateWho());
                 inap.setFlag("N");
+                inap.setAction("D");
                 try {
                     asesmenRawatInapDao.updateAndSave(inap);
                     response.setStatus("success");

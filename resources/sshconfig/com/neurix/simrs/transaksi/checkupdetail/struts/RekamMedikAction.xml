@@ -222,6 +222,27 @@
                 <param name="reportParameters">reportParams</param>
             </result>
 
+            <result name="print_resume_medis_rawat_inap" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printResumeRawatInap.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
+            <result name="print_gawat_darurat" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printKeteranganGawatDarurat.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
+            <result name="print_hak_kewajiban_pasien" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printHakdanKewajibanPasien.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
         </action>
 
     </package>

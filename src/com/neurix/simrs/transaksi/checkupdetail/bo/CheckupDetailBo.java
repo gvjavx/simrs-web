@@ -24,7 +24,7 @@ import java.util.List;
 public interface CheckupDetailBo {
     public List<HeaderDetailCheckup> getByCriteria(HeaderDetailCheckup bean) throws GeneralBOException;
     public List<HeaderDetailCheckup> getSearchRawatJalan(HeaderDetailCheckup bean) throws GeneralBOException;
-    public void updateRuanganInap(String idRuangan, String idDetailCheckup) throws GeneralBOException;
+    public CrudResponse updateRuanganInap(String idRawatInap, String idRuangan, String idDetailCheckup) throws GeneralBOException;
     public CrudResponse saveEdit(HeaderDetailCheckup bean) throws GeneralBOException;
     public CrudResponse saveAdd(HeaderDetailCheckup bean) throws GeneralBOException;
     public BigInteger getSumOfTindakanByNoCheckup(String idDetailCheckup) throws GeneralBOException;

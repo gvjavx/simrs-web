@@ -161,6 +161,30 @@ public class RespirasiBoImpl implements RespirasiBo {
         return respirasiDao.cekData(id, waktu);
     }
 
+    @Override
+    public CrudResponse saveDelete(Respirasi bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        ItSimrsRespirasiEntity respirasiEntity = respirasiDao.getById("idRespirasi", bean.getIdRespirasi());
+        if(respirasiEntity != null){
+            respirasiEntity.setFlag("N");
+            respirasiEntity.setAction("D");
+            respirasiEntity.setLastUpdate(bean.getLastUpdate());
+            respirasiEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            try {
+                respirasiDao.updateAndSave(respirasiEntity);
+                response.setStatus("success");
+                response.setMsg("Berhasil");
+            }catch (HibernateException e){
+                response.setStatus("error");
+                response.setMsg(e.getMessage());
+            }
+        }else{
+            response.setStatus("error");
+            response.setMsg("Data tidak dutemukan...!");
+        }
+        return response;
+    }
+
     public static Logger getLogger() {
         return logger;
     }

@@ -8,7 +8,6 @@ function showModalRJ(jenis, idRM, isSetIdRM) {
         $('.btn-hide').show();
     }
 
-    setDataPasien();
     if("resiko_jatuh" == jenis){
         setResikoJatuh('set_'+jenis, umur);
     }
@@ -16,6 +15,7 @@ function showModalRJ(jenis, idRM, isSetIdRM) {
         setNyeri('set_'+jenis, umur);
     }
     $('#modal-rj-' + jenis).modal({show: true, backdrop: 'static'});
+    setDataPasien();
 }
 
 function saveRJ(jenis, ket) {
@@ -346,6 +346,7 @@ function saveRJ(jenis, ket) {
         var nyeri = "";
         var tipe = "";
         var namaTerang = $('#nama_terang').val();
+        var nip = $('#nip_perawat').val();
         var ttd = document.getElementById('ttdPerawat');
         if(jen == "emoji"){
             nyeri = document.getElementById('choice_emoji');
@@ -357,7 +358,7 @@ function saveRJ(jenis, ket) {
         var cvs1 = isCanvasBlank(nyeri);
         var cvs2 = isCanvasBlank(ttd);
 
-        if(va1 && va3 != undefined && va2 && va4 && namaTerang!= '' && !cvs1 && !cvs2){
+        if(va1 && va3 != undefined && va2 && va4 && namaTerang && nip != '' && !cvs1 && !cvs2){
             data.push({
                 'parameter': 'Apakah terdapat keluhan nyeri',
                 'jawaban': va1,
@@ -406,6 +407,7 @@ function saveRJ(jenis, ket) {
                 'jenis': ket,
                 'tipe': 'ttd',
                 'nama_terang': namaTerang,
+                'sip': nip,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
@@ -465,7 +467,10 @@ function detailRJ(jenis) {
                     if ("ttd" == item.tipe) {
                         body += '<tr>' +
                             '<td width="40%">' + item.parameter + '</td>' +
-                            '<td>' + '<img src="' + jwb + '" style="width: 100px"><p>'+item.namaTerang+'</p>' + '</td>' +
+                            '<td>' + '<img src="' + jwb + '" style="width: 100px">' +
+                            '<p>'+item.namaTerang+'</p>' +
+                            '<p>'+item.sip+'</p>' +
+                            '</td>' +
                             '</tr>';
                     }else if("gambar" == item.tipe){
                         body += '<tr>' +
@@ -542,4 +547,36 @@ function showKetRJ(val, ket) {
     } else {
         $('#form_'+ket).hide();
     }
+}
+
+function conKepRJ(jenis, ket){
+    $('#tanya').text("Yakin mengahapus data ini ?");
+    $('#modal-confirm-rm').modal({show:true, backdrop:'static'});
+    $('#save_con_rm').attr('onclick', 'delKepRJ(\''+jenis+'\', \''+ket+'\')');
+}
+
+function delKepRJ(jenis, ket) {
+    $('#modal-confirm-rm').modal('hide');
+    var dataPasien = {
+        'no_checkup': noCheckup,
+        'id_detail_checkup': idDetailCheckup,
+        'id_pasien': idPasien,
+        'id_rm': tempidRm
+    }
+    var result = JSON.stringify(dataPasien);
+    startSpin('del_'+jenis);
+    dwr.engine.setAsync(true);
+    KeperawatanRawatJalanAction.saveDelete(idDetailCheckup, jenis, result, {
+        callback: function (res) {
+            if (res.status == "success") {
+                stopSpin('del_'+jenis);
+                $('#warning_rj_' + ket).show().fadeOut(5000);
+                $('#msg_rj_' + ket).text("Berhasil menghapus data...");
+            } else {
+                stopSpin('del_'+jenis);
+                $('#modal_warning').show().fadeOut(5000);
+                $('#msg_warning').text(res.msg);
+            }
+        }
+    });
 }

@@ -140,11 +140,6 @@ ALTER TABLE it_simrs_header_detail_checkup
 ADD COLUMN flag_tppri character varying(1);
 
 -- Membuat Function
-Verifikasi Transaksi
-/veriftransaksi/initVerif_veriftransaksi.action
-/veriftransaksi/initVerif_veriftransaksi.action
-/veriftransaksi/searchVerif_veriftransaksi.action
-
 Pendaftaran Rawat Inap
 /rawatinap/initTppri_rawatinap.action
 /rawatinap/initTppri_rawatinap.action
@@ -354,12 +349,99 @@ Verif Asuransi
     Rawat Jalan
     /verifasrj/initVerif_verifasrj.action
     /verifasrj/initVerif_verifasrj.action
-    /verifasrj/searchVerifAns_verifasrj.action
+    /verifasrj/searchVerifAs_verifasrj.action
 
     Rawat Inap
     /verifasri/initVerif_verifasri.action
     /verifasri/initVerif_verifasri.action
-    /verifasri/searchVerifAns_verifasrj.action
+    /verifasri/searchVerifAs_verifasri.action
+
+-- 26-08-2020
+CREATE TABLE public.it_simrs_partograf
+(
+  id_partograf character varying(30) NOT NULL,
+  id_detail_checkup character varying(30),
+  waktu character varying(100),
+  djj character varying(100),
+  air_ketuban character varying(100),
+  molase character varying(100),
+  pembukaan character varying(100),
+  kontraksi character varying(100),
+  oksitosin character varying(100),
+  tetes character varying(100),
+  obat_cairan character varying(100),
+  nadi character varying(100),
+  tensi character varying(100),
+  suhu character varying(100),
+  rr character varying(100),
+  flag character varying(1),
+  action character varying(1),
+  created_who character varying(100),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  nama_terang character varying(100),
+  sip character varying(100),
+  ttd character varying(100),
+  CONSTRAINT pk_id_partograf PRIMARY KEY (id_partograf)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_partograf
+  OWNER TO postgres;
+
+CREATE SEQUENCE seq_partograf;
+
+-- 30-08-2020
+ALTER TABLE it_simrs_tindakan_rawat
+ADD COLUMN id_pelayanan VARCHAR(100);
+
+ALTER TABLE it_simrs_periksa_lab
+ADD COLUMN url_img VARCHAR(100);
+
+-- 31-08-2020
+ALTER TABLE it_simrs_asesmen_keperawatan_rawat_jalan
+ADD COLUMN sip VARCHAR(100);
+
+-- 01-09-2020
+ALTER TABLE it_simrs_fisioterapi
+ADD COLUMN skor VARCHAR (100),
+ADD COLUMN tipe VARCHAR (100);
+
+ALTER TABLE it_simrs_ringkasan_pasien
+ADD COLUMN tipe VARCHAR (100),
+ADD COLUMN nama_terang VARCHAR (100),
+ADD COLUMN sip VARCHAR (100);
+
+-- 03-09-2020
+ALTER TABLE it_simrs_detail_icu
+ADD COLUMN id_detail_checkup VARCHAR(50);
+
+-- 05-09-2020
+CREATE TABLE public.it_simrs_implementasi_perawat
+(
+  id_implementasi_perawat character varying(30) NOT NULL,
+  id_detail_checkup character varying(30),
+  waktu character varying(100),
+  keterangan text,
+  ttd character varying(100),
+  nama_terang character varying(100),
+  flag character varying(1),
+  action character varying(1),
+  created_who character varying(100),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  CONSTRAINT pk_id_implementasi_perawat PRIMARY KEY (id_implementasi_perawat)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_implementasi_perawat
+  OWNER TO postgres;
+
+CREATE SEQUENCE seq_implementasi_perawat;
 
 
 

@@ -13,6 +13,7 @@ import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
+import com.neurix.simrs.transaksi.checkupdetail.action.CheckupDetailAction;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.periksalab.bo.PeriksaLabBo;
@@ -29,8 +30,14 @@ import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
+import sun.misc.BASE64Decoder;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Array;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -335,7 +342,7 @@ public class PeriksaLabAction extends BaseMasterAction {
                 if (rekamMedisRawatJalanList.size() > 0) {
                     RekamMedisRawatJalan rawatJalan = new RekamMedisRawatJalan();
                     rawatJalan.setWaktu(new Timestamp(System.currentTimeMillis()));
-                    rawatJalan.setPemeriksaanFisik(checkupBo.getPenunjangMedis(idDetailCheckup));
+                    rawatJalan.setPemeriksaanFisik(checkupBo.getPenunjangMedis(idDetailCheckup, null));
                     rawatJalan.setDiagnosa(checkupBo.getDiagnosaPasien(idDetailCheckup));
                     rawatJalan.setLastUpdate(new Timestamp(System.currentTimeMillis()));
                     rawatJalan.setLastUpdateWho(CommonUtil.userLogin());
@@ -344,7 +351,7 @@ public class PeriksaLabAction extends BaseMasterAction {
                 } else {
                     RekamMedisRawatJalan rawatJalan = new RekamMedisRawatJalan();
                     rawatJalan.setWaktu(new Timestamp(System.currentTimeMillis()));
-                    rawatJalan.setPemeriksaanFisik(checkupBo.getPenunjangMedis(idDetailCheckup));
+                    rawatJalan.setPemeriksaanFisik(checkupBo.getPenunjangMedis(idDetailCheckup, null));
                     rawatJalan.setDiagnosa(checkupBo.getDiagnosaPasien(idDetailCheckup));
                     rawatJalan.setLastUpdate(new Timestamp(System.currentTimeMillis()));
                     rawatJalan.setLastUpdateWho(CommonUtil.userLogin());
@@ -561,28 +568,64 @@ public class PeriksaLabAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    public CheckResponse saveEditDokterLab(String idPeriksaLab, String idDokter) {
+    public CheckResponse saveEditDokterLab(String idPeriksaLab, String idDokter, String urlImg, String keterangan, String data) {
         logger.info("[PeriksaLabAction.saveEditDokterLab] start process >>>");
         CheckResponse response = new CheckResponse();
         try {
             String userLogin = CommonUtil.userLogin();
             String userArea = CommonUtil.userBranchLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-            PeriksaLab periksaLab = new PeriksaLab();
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
 
+            PeriksaLab periksaLab = new PeriksaLab();
             periksaLab.setIdPeriksaLab(idPeriksaLab);
             periksaLab.setIdDokter(idDokter);
             periksaLab.setLastUpdate(updateTime);
             periksaLab.setLastUpdateWho(userLogin);
             periksaLab.setAction("U");
+            periksaLab.setIdPemeriksa(userLogin);
 
-            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-            PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
+            if(urlImg != null && !"".equalsIgnoreCase(urlImg)){
+                try {
+                    BASE64Decoder decoder = new BASE64Decoder();
+                    byte[] decodedBytes = decoder.decodeBuffer(urlImg);
+                    String patten = updateTime.toString().replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                    String fileName = idPeriksaLab+"-"+patten+".png";
+                    String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_IMG_RM + fileName;
+                    BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
 
-            periksaLabBo.saveDokterLab(periksaLab);
-            response.setStatus("success");
-            response.setMessage("Berhasil");
+                    if (image == null) {
+                        logger.error("Buffered Image is null");
+                        response.setStatus("error");
+                        response.setMessage("Buffered Image is null");
+                    } else {
+                        File f = new File(uploadFile);
+                        ImageIO.write(image, "png", f);
+                        periksaLab.setUrlImg(fileName);
+                    }
+                }catch (IOException e){
+                    response.setStatus("error");
+                    response.setMessage("IO Error"+e.getMessage());
+                    return response;
+                }
+            }
 
+            response = periksaLabBo.saveDokterLab(periksaLab);
+            if ("just_lab".equalsIgnoreCase(keterangan)){
+                if("success".equalsIgnoreCase(response.getStatus())){
+                    CheckupDetailAction detailAction = new CheckupDetailAction();
+                    CrudResponse res = new CrudResponse();
+                    res = detailAction.closeTraksaksiPasien(data);
+                    if("success".equalsIgnoreCase(res.getStatus())){
+                        response.setStatus("success");
+                        response.setMessage("Berhasil");
+                    }else{
+                        response.setStatus("error");
+                        response.setMessage("Error"+res.getMsg());
+                    }
+                }
+            }
         } catch (GeneralBOException e) {
             response.setStatus("error");
             response.setMessage("Error"+e.getMessage());
