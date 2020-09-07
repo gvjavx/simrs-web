@@ -30,7 +30,7 @@
                                 <img id="btn_rb_asesmen_awal_bayi_rb" class="hvr-grow"
                                      onclick="detailRB('asesmen_awal_bayi_rb')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_asesmen_awal_bayi_rb" class="hvr-grow" onclick="conRB('asesmen_awal_bayi_rb', 'asesmen_awal_bayi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_asesmen_awal_bayi_rb" class="hvr-grow btn-hide" onclick="conRB('asesmen_awal_bayi_rb', 'asesmen_awal_bayi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

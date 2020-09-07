@@ -119,6 +119,43 @@ public class EdukasiPasienBoImpl implements EdukasiPasienBo {
         return response;
     }
 
+    @Override
+    public CrudResponse saveDelete(EdukasiPasien bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+        hsCriteria.put("keterangan", bean.getKeterangan());
+        List<ItSimrsEdukasiPasienEntity> entityList = new ArrayList<>();
+        try {
+            entityList = edukasiPasienDao.getByCriteria(hsCriteria);
+        }catch (HibernateException e){
+            response.setStatus("error");
+            response.setMsg("Found Error, Data yang dicari tidak ditemukan...!");
+            logger.error(e.getMessage());
+        }
+        if(entityList.size() > 0){
+            for (ItSimrsEdukasiPasienEntity entity : entityList){
+                entity.setFlag("N");
+                entity.setAction("D");
+                entity.setLastUpdate(bean.getLastUpdate());
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+                try {
+                    edukasiPasienDao.updateAndSave(entity);
+                    response.setStatus("success");
+                    response.setMsg("Berhasil");
+                }catch (HibernateException e){
+                    response.setStatus("error");
+                    response.setMsg("Found Error, "+e.getMessage());
+                    logger.error(e.getMessage());
+                }
+            }
+        }else{
+            response.setStatus("error");
+            response.setMsg("Found Error, Data yang dicari tidak ditemukan...!");
+        }
+        return response;
+    }
+
     public static Logger getLogger() {
         return logger;
     }

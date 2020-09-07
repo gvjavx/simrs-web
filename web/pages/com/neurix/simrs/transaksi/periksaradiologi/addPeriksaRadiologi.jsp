@@ -144,7 +144,7 @@
                                 </div>
                                 <table class="table table-striped">
                                     <tr>
-                                        <td ><b>Poli</b></td>
+                                        <td ><b>Pelayanan</b></td>
                                         <td>
                                             <table><s:label name="periksaLab.namaPelayanan"></s:label></table>
                                         </td>
@@ -614,8 +614,8 @@
         var kesimpulan  = $('#par_hasil').val();
 
         if (id != '' && kesimpulan != '') {
-            $('#save_ket').hide();
-            $('#load_ket').show();
+            $('#save_par').hide();
+            $('#load_par').show();
             dwr.engine.setAsync(true);
             PeriksaRadiologiAction.saveRadiologi(id, kesimpulan, {
                 callback: function (response) {
@@ -623,8 +623,8 @@
                         dwr.engine.setAsync(false);
                         $('#modal-edit-parameter').modal('hide');
                         $('#info_radiologi').show().fadeOut(5000);
-                        $('#save_ket').show();
-                        $('#load_ket').hide();
+                        $('#save_par').show();
+                        $('#load_par').hide();
                         $('#info_dialog').dialog('open');
                         $('#close_pos').val(2);
                         $('body').scrollTop(0);
@@ -632,8 +632,8 @@
                     } else {
                         $('#warning_par').show().fadeOut(5000);
                         $('#msg_par').text(response.getMessage);
-                        $('#save_ket').show();
-                        $('#load_ket').hide();
+                        $('#save_par').show();
+                        $('#load_par').hide();
 
                     }
                 }
@@ -740,7 +740,7 @@
         var idPasien = '<s:property value="periksaLab.idPasien"/>';
         var idPelayanan = '<s:property value="periksaLab.idPelayanan"/>';
         var metodePembayaran = '<s:property value="periksaLab.metodePembayaran"/>';
-        var jenisPasien = '<s:property value="periksaLab.idJenisPeriksaPasien"/>';
+        var jenisPasien = '<s:property value="periksaLab.idJenisPeriksa"/>';
         var idDetailCheckup = '<s:property value="periksaLab.idDetailCheckup"/>';
 
         var data = {
@@ -758,7 +758,6 @@
             finalImg = hasil;
         }
         var result = JSON.stringify(data);
-
         $('#waiting_dialog').dialog('open');
         dwr.engine.setAsync(true);
         PeriksaRadiologiAction.saveDokterRadiologi(idPeriksaLab, idDokter,  finalImg, keterangan, result, {
@@ -770,27 +769,6 @@
                     $('#info_dialog').dialog('open');
                     $('#close_pos').val(1);
                     $('body').scrollTop(0);
-                    // if("just_lab" == keterangan){
-                    //     CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, "selesai", "", "", "", "", "Pemeriksaan Radiologi", "", "", jenisPasien, "", "", "", idPasien, "", "", metodePembayaran, "lab", "", {callback : function (response) {
-                    //         if(response.status == "success"){
-                    //             $('#waiting_dialog').dialog('close');
-                    //             $('#save_ket').show();
-                    //             $('#load_ket').hide();
-                    //             $('#info_dialog').dialog('open');
-                    //             $('#close_pos').val(1);
-                    //             $('body').scrollTop(0);
-                    //         }else{
-                    //             console.log("error");
-                    //             $('#waiting_dialog').dialog('close');
-                    //             $('#error_dialog').dailog('open');
-                    //             $('#errorMessage').text(response.msg);
-                    //             $('#save_ket').hide();
-                    //             $('#load_ket').show();
-                    //         }
-                    //     }});
-                    // }else{
-                    //
-                    // }
                 }else{
                     $('#warning_rad').show().fadeOut(5000);
                     $('#msg_rad').text(res.message);

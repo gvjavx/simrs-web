@@ -858,6 +858,7 @@ function showModal(select) {
         $('#load_obat, #warning_obat, #war_ob_jenis_obat, #war_obat, #war_qty_obat').hide();
         $('#modal-obat').modal({show: true, backdrop: 'static'});
     } else if (select == 7) {
+        $('#resep_jenis_obat').val('').trigger('change');
         $('#resep_apotek').val('').trigger('change').attr('disabled', false);
         $('#resep_nama_obat').val('').trigger('change');
         $('#resep_keterangan').val('');
@@ -869,13 +870,24 @@ function showModal(select) {
         $('#save_resep_head').show();
         $('#load_resep_head').hide();
         $('#desti_apotek').html('');
-        $('#resep_apotek').attr("onchange", "var warn =$('#war_rep_apotek').is(':visible'); if (warn){$('#cor_rep_apotek').show().fadeOut(3000);$('#war_rep_apotek').hide()}; setObatPoli(this)");
+        $('#resep_jenis_obat').attr("onchange", "var warn =$('#war_jenis_pasien').is(':visible'); if (warn){$('#cor_jenis_pasien').show().fadeOut(3000);$('#war_jenis_pasien').hide()}; setObatPoli(this.value)");
+        $('#resep_apotek').attr("onchange", "var warn =$('#war_rep_apotek').is(':visible'); if (warn){$('#cor_rep_apotek').show().fadeOut(3000);$('#war_rep_apotek').hide()}");
         $('#resep_nama_obat').attr("onchange", "var warn =$('#war_rep_obat').is(':visible'); if (warn){$('#cor_rep_obat').show().fadeOut(3000);$('#war_rep_obat').hide()}; setStokObatApotek(this, \'\')");
         $('#resep_nama_obat_serupa').attr("onchange", "var warn =$('#war_rep_obat_serupa').is(':visible'); if (warn){$('#cor_rep_obat_serupa').show().fadeOut(3000);$('#war_rep_obat_serupa').hide()}; setStokObatApotek(this, \'serupa\')");
         $('#body_detail').html('');
         $('#modal-resep-head').modal({show: true, backdrop: 'static'});
         getJenisResep();
         resetComboObat();
+        var option = '<option value="">[Select One]</option>';
+        dwr.engine.setAsync(true);
+        CheckupAction.getListJenisObat(function (res) {
+            if(res.length > 0){
+                $.each(res, function (i, item) {
+                    option += '<option value="'+item.idJenisObat+'">'+item.namaJenisObat+'</option>';
+                });
+            }
+            $('#resep_jenis_obat').html(option);
+        });
     } else if (select == 8) {
         $('#alergi').val('');
         $('#load_alergi').hide();
@@ -2279,17 +2291,16 @@ function resetAll() {
     resetComboObat();
 }
 
-function setObatPoli(select) {
-    var idx = select.selectedIndex;
-    var poli = select.options[idx].value;
-    var idPel = poli.split('|')[0];
-    var namePel = poli.split('|')[1];
+function setObatPoli(jenis) {
+    var poli = $('#resep_jenis_obat').val();
     var option = "<option value=''>[Select One]</option>";
     var jenisPasien = $('#jenis_pasien').val();
 
     if (poli != '') {
-        ObatPoliAction.getSelectOptionObatByPoli(idPel, jenisPasien, function (response) {
-            if (response != null) {
+        var idPel = poli.split('|')[0];
+        var namePel = poli.split('|')[1];
+        ObatPoliAction.getSelectOptionObatByPoli(idPel, jenisPasien, jenis, function (response) {
+            if (response.length > 0) {
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idObat + "|" + item.namaObat + "|" + item.qtyBox + "|" + item.qtyLembar + "|" + item.qtyBiji + "|" + item.lembarPerBox + "|" + item.bijiPerLembar + "|" + item.flagKronis + "|" + item.harga + "'>" + item.namaObat + "</option>";
                 });
@@ -2297,7 +2308,7 @@ function setObatPoli(select) {
             }
         });
     } else {
-        option = "";
+        $('#resep_nama_obat').html(option);
     }
 }
 
@@ -2868,6 +2879,7 @@ function savePemeriksaanPasien() {
 }
 
 function printPernyataan(kode, idRm, flag, namaRm) {
+    $('#tanya').text("Apakah anda yakin print ?");
     $('#print_form').text(namaRm);
     $('#save_con_rm').attr('onclick', 'printPernyataanRM(\'' + kode + '\', \'' + idRm + '\')');
     $('#modal-confirm-rm').modal('show');

@@ -228,7 +228,8 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
                     "c.id_pelayanan,\n" +
                     "c.nama_pelayanan,\n" +
                     "c.branch_id,\n" +
-                    "c.tipe_pelayanan\n" +
+                    "c.tipe_pelayanan,\n" +
+                    "a.sip\n" +
                     "FROM im_simrs_dokter a\n" +
                     "INNER JOIN im_simrs_dokter_pelayanan b ON a.id_dokter = b.id_dokter\n" +
                     "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
@@ -247,6 +248,7 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
                     dokter.setNamaDokter(obj[1] != null ? obj[1].toString() : "");
                     dokter.setIdPelayanan(obj[2] != null ? obj[2].toString() : "");
                     dokter.setNamaPelayanan(obj[3] != null ? obj[3].toString() : "");
+                    dokter.setSip(obj[6] != null ? obj[6].toString() : "");
                     dokterList.add(dokter);
                 }
             }

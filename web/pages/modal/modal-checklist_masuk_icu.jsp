@@ -32,7 +32,7 @@
                                 <img id="btn_icu_pre_checklist_masuk_icu" class="hvr-grow"
                                      onclick="detailICU('checklist_kriteria')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_checklist_kriteria" class="hvr-grow" onclick="conICU('checklist_kriteria', 'checklist_masuk_icu')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_checklist_kriteria" class="hvr-grow btn-hide" onclick="conICU('checklist_kriteria', 'checklist_masuk_icu')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

@@ -27,7 +27,7 @@
                             <td>Checklist Keselamatan Pasien Operasi</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_add_checklist_keselamatan" class="hvr-grow" onclick="detailOperasi('add_checklist_keselamatan')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_add_checklist_keselamatan" class="hvr-grow" onclick="conOP('add_checklist_keselamatan', 'checklist_keselamatan_pasien')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_add_checklist_keselamatan" class="hvr-grow btn-hide" onclick="conOP('add_checklist_keselamatan', 'checklist_keselamatan_pasien')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

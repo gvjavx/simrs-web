@@ -56,7 +56,7 @@
                             <td>Identitas</td>
                             <td width="20%" align="center">
                                 <img id="btn_icu_identitas" class="hvr-grow" onclick="detailICU('identitas')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_identitas" class="hvr-grow" onclick="conICU('identitas', 'asesmen_icu')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_identitas" class="hvr-grow btn-hide" onclick="conICU('identitas', 'asesmen_icu')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_icu_alat_infasive">

@@ -3224,7 +3224,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    public CrudResponse saveUpdateRuangan(String idRawatInap, String idRuangan, String idDetailCheckup) {
+    public CrudResponse saveUpdateRuangan(String idRawatInap, String idRuangan, String idDetailCheckup, String tanggal) {
         logger.info("[CheckupDetailAction.saveUpdateRuangan] start process >>>");
         CrudResponse response = new CrudResponse();
         if (idRawatInap != null && !"".equalsIgnoreCase(idRawatInap) &&
@@ -3234,7 +3234,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
 
             try {
-                response = checkupDetailBo.updateRuanganInap(idRawatInap, idRuangan, idDetailCheckup);
+                response = checkupDetailBo.updateRuanganInap(idRawatInap, idRuangan, idDetailCheckup, tanggal);
             } catch (GeneralBOException e) {
                 response.setStatus("error");
                 response.setMsg("Found Error, "+e.getMessage());
@@ -3246,6 +3246,30 @@ public class CheckupDetailAction extends BaseMasterAction {
         }
 
         logger.info("[CheckupDetailAction.saveUpdateRuangan] end process >>>");
+        return response;
+    }
+
+    public CrudResponse savePindahRuangan(String idRawatInapNew, String idRawatInapPindah) {
+        logger.info("[CheckupDetailAction.savePindahRuangan] start process >>>");
+        CrudResponse response = new CrudResponse();
+        if (idRawatInapNew != null && !"".equalsIgnoreCase(idRawatInapNew) &&
+            idRawatInapPindah != null && !"".equalsIgnoreCase(idRawatInapPindah)) {
+
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+            try {
+                response = checkupDetailBo.updatePindahRuangan(idRawatInapNew, idRawatInapPindah);
+            } catch (GeneralBOException e) {
+                response.setStatus("error");
+                response.setMsg("Found Error, "+e.getMessage());
+                logger.error("[CheckupDetailAction.savePindahRuangan] Found problem when updating rawat inap, please inform to your admin.", e);
+            }
+        } else {
+            response.setStatus("error");
+            response.setMsg("Tidak ada data yang dikirim...!");
+        }
+
+        logger.info("[CheckupDetailAction.savePindahRuangan] end process >>>");
         return response;
     }
 

@@ -1,4 +1,17 @@
 function showModalRingkasanPasien(jenis, idRM, isSetIdRM) {
+    var idDpjp = $('.id_dpjp');
+    if(idDpjp.length > 0){
+        var dataDpjp = $('.id_dpjp')[0].value;
+        var namaDpjp = $('.nama_dpjp_ri');
+        var sipDpjp = $('.sip_dpjp_ri');
+        if(namaDpjp.length > 0){
+            $('.nama_dpjp_ri').val(dataDpjp.split("|")[3]);
+        }
+        if(sipDpjp.length > 0){
+            $('.sip_dpjp_ri').val(dataDpjp.split("|")[2]);
+        }
+    }
+
     if(isSetIdRM == "Y"){
         tempidRm = idRM;
     }

@@ -496,7 +496,6 @@
     var contextPath = '<%= request.getContextPath() %>';
     var tempidRm = "";
     var noCheckup = "";
-    var idDetailCheckup = "";
     var tempTensi = "";
     var tempSuhu = "";
     var tempNadi = "";
@@ -517,13 +516,14 @@
     function convertRp(id, val) {
         $('#'+id).val(formatRupiahAtas2(val));
     }
-    function detail(noCheckup, idDetailCheckup, tindakLanjut, keteranganSelesai) {
-        startSpinner('t_', idDetailCheckup);
+    function detail(noCheckup, idDCP, tindakLanjut, keteranganSelesai) {
+        idDetailCheckup = idDCP;
+        startSpinner('t_', idDCP);
         dwr.engine.setAsync(true);
-        CheckupAction.listDataPasien(idDetailCheckup,
+        CheckupAction.listDataPasien(idDCP,
             {callback:function (res) {
                     if (res.idPasien != null) {
-                        stopSpinner('t_', idDetailCheckup);
+                        stopSpinner('t_', idDCP);
                         $('#kelas_kamar').html('');
                         $('#kamar').html('');
                         getDokterDpjp('dokter_dpjp_1', null);
@@ -676,7 +676,7 @@
         CheckupAction.getListDokterByBranchId(idDpjp, function (res) {
             if (res.length > 0) {
                 $.each(res, function (i, item) {
-                    option += '<option value="' + item.idDokter + '|' + item.idPelayanan + '">' + item.namaDokter + ' - ' + item.namaPelayanan + '</option>';
+                    option += '<option value="' + item.idDokter + '|' + item.idPelayanan + '|'+item.sip+'|'+item.namaDokter+'">' + item.namaDokter + ' - ' + item.namaPelayanan + '</option>';
                 });
                 $('#'+id).html(option);
             } else {
@@ -849,6 +849,7 @@
     }
 
     function printPernyataan(kode, idRm, flag, namaRm) {
+        $('#tanya').text("Apakah anda yakin print ?");
         $('#print_form').text(namaRm);
         $('#save_con_rm').attr('onclick','printPernyataanRM(\''+kode+'\', \''+idRm+'\')');
         $('#modal-confirm-rm').modal('show');
@@ -923,6 +924,7 @@
         $('#modal-temp').load(context, function (res, status, xhr) {
         });
     }
+
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>

@@ -29,14 +29,14 @@
                             <td>Asesmen Pra Induksi</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_pra_induksi" class="hvr-grow" onclick="detailOperasi('pra_induksi')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_pra_induksi" class="hvr-grow" onclick="conOP('pra_induksi', 'catatan_anestesi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_pra_induksi" class="hvr-grow btn-hide" onclick="conOP('pra_induksi', 'catatan_anestesi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_op_perencanaan_anestesi">
                             <td>Perencenaan Teknik Anestesi</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_perencanaan_anestesi" class="hvr-grow" onclick="detailOperasi('perencanaan_anestesi')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_perencanaan_anestesi" class="hvr-grow" onclick="conOP('perencanaan_anestesi', 'catatan_anestesi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_perencanaan_anestesi" class="hvr-grow btn-hide" onclick="conOP('perencanaan_anestesi', 'catatan_anestesi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

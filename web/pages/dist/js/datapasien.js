@@ -10,6 +10,8 @@ function setDataPasien() {
     var age = $('.umur-pasien').length;
     var jk = $('.jenis-kelamin').length;
     var diag = $('.diagnosa-pasien').length;
+    var diagSen = $('.diagnosa-sekunder').length;
+    var diagPri = $('.diagnosa-primer').length;
     var alr = $('.alergi-pasien').length;
     var bb = $('.berat-pasien').length;
     var tb = $('.tinggi-pasien').length;
@@ -114,6 +116,26 @@ function setDataPasien() {
             callback: function (res) {
                 if (res != '') {
                     $('.tindakan-pasien').val(res);
+                }
+            }
+        });
+    }
+    if (diagSen > 0) {
+        dwr.engine.setAsync(true);
+        CheckupAction.getDataByKey(idDetailCheckup, "diagnosa_sekunder", {
+            callback: function (res) {
+                if (res != '') {
+                    $('.diagnosa_sekunder').val(res);
+                }
+            }
+        });
+    }
+    if (diagPri > 0) {
+        dwr.engine.setAsync(true);
+        CheckupAction.getDataByKey(idDetailCheckup, "diagnosa_primer", {
+            callback: function (res) {
+                if (res != '') {
+                    $('.diagnosa_primer').val(res);
                 }
             }
         });

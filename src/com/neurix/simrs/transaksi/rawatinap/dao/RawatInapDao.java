@@ -765,11 +765,15 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                 "c.kategori,\n" +
                 "c.id_kelas_ruangan,\n" +
                 "c.nama_kelas_ruangan,\n" +
-                "a.status\n" +
+                "a.status,\n" +
+                "a.tgl_masuk,\n" +
+                "a.tgl_keluar,\n" +
+                "a.keterangan\n" +
                 "FROM it_simrs_rawat_inap a\n" +
                 "INNER JOIN mt_simrs_ruangan b ON a.id_ruangan = b.id_ruangan\n" +
                 "INNER JOIN im_simrs_kelas_ruangan c ON b.id_kelas_ruangan = c.id_kelas_ruangan\n" +
-                "WHERE a.flag = 'Y' \n" + idRawatInap + idDetilCheckup;
+                "WHERE a.flag = 'Y' \n" + idRawatInap + idDetilCheckup +
+                "ORDER BY a.created_date ASC";
 
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -786,6 +790,9 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                 rawatInap.setIdKelasRuangan(objects[6] == null ? null : objects[6].toString());
                 rawatInap.setKelasRuanganName(objects[7] == null ? null : objects[7].toString());
                 rawatInap.setStatus(objects[8] == null ? null : objects[8].toString());
+                rawatInap.setTglMasuk(objects[9] == null ? null : (Timestamp) objects[9]);
+                rawatInap.setTglKeluar(objects[10] == null ? null : (Timestamp) objects[10]);
+                rawatInap.setKeterangan(objects[11] == null ? null : objects[11].toString());
                 rawatInapList.add(rawatInap);
             }
         }

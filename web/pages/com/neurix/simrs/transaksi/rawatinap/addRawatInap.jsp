@@ -825,9 +825,15 @@
                         <h3 class="box-title"><i class="fa fa-hospital-o"></i> Ruangan</h3>
                     </div>
                     <div class="box-body">
-                        <table class="table table-bordered table-striped">
+                        <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_update">
+                            <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                            <p id="msg_update"></p>
+                        </div>
+                        <table class="table table-bordered table-striped" id="tabel_ruangan">
                             <thead>
                             <tr bgcolor="#90ee90">
+                                <td>Tanggal Masuk</td>
+                                <td>Tanggal Keluar</td>
                                 <td>No Ruangan</td>
                                 <td>Nama Ruangan</td>
                                 <td>Kelas</td>
@@ -1695,6 +1701,19 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
+                        <label class="col-md-3 jarak">Tanggal Pindah</label>
+                        <div class="col-md-7">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input class="form-control ptr-tgl" id="tanggal_pindah">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Kelas Ruangan</label>
                         <div class="col-md-7">
                             <select class="form-control select2" style="margin-top: 7px; width: 100%" id="ruangan_kelas"
@@ -1785,6 +1804,21 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Jenis Obat</label>
+                        <div class="col-md-7">
+                            <select class="form-control select2" style="margin-top: 7px; width: 100%"
+                                    id="resep_jenis_obat">
+                                <option value="">[select one]</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_jenis_obat"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_jenis_obat"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
                         <div class="col-md-7">
                             <select class="form-control select2" style="margin-top: 7px; width: 100%"
@@ -1803,7 +1837,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Stok Obat (Biji)</label>
+                        <label class="col-md-3" style="margin-top: 7px">Stok Obat</label>
                         <div class="col-md-7">
                             <div class="input-group" style="margin-top: 7px; width: 40%">
                                 <input class="form-control" type="number" min="1" id="resep_stok_biji" readonly>

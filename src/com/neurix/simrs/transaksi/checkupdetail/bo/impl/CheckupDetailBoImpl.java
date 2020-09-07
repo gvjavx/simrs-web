@@ -59,6 +59,7 @@ import org.hibernate.HibernateException;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -299,6 +300,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 if (!"asuransi".equalsIgnoreCase(entity.getIdJenisPeriksaPasien())) {
                     entity.setFlagCover("Y");
                 }
+                if ("Y".equalsIgnoreCase(bean.getJustLab())) {
+                    entity.setStatusPeriksa("3");
+                }
 
                 entity.setLastUpdateWho(bean.getLastUpdateWho());
                 entity.setLastUpdate(bean.getLastUpdate());
@@ -313,9 +317,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                     response.setMsg("IError when update invoice, " + e.getMessage());
                 }
 
-                if("Y".equalsIgnoreCase(bean.getJustLab())){
+                if ("Y".equalsIgnoreCase(bean.getJustLab())) {
                     chekupEntity = headerCheckupDao.getById("noCheckup", entity.getNoCheckup());
-                    if(chekupEntity != null){
+                    if (chekupEntity != null) {
                         chekupEntity.setLastUpdate(bean.getLastUpdate());
                         chekupEntity.setLastUpdateWho(bean.getLastUpdateWho());
                         chekupEntity.setTglKeluar(bean.getLastUpdate());
@@ -323,7 +327,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                             headerCheckupDao.updateAndSave(chekupEntity);
                             response.setStatus("success");
                             response.setMsg("Berhasil");
-                        }catch (HibernateException e){
+                        } catch (HibernateException e) {
                             response.setStatus("error");
                             response.setMsg("IError when update invoice, " + e.getMessage());
                         }
@@ -337,6 +341,79 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         } catch (HibernateException e) {
             response.setStatus("error");
             response.setMsg("Error when update invoice, " + e.getMessage());
+        }
+        return response;
+    }
+
+    @Override
+    public CrudResponse updatePindahRuangan(String idRawatInapNew, String idRawatInapPindah) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        ItSimrsRawatInapEntity rawatInapEntityNew = new ItSimrsRawatInapEntity();
+        ItSimrsRawatInapEntity rawatInapEntityPindah = new ItSimrsRawatInapEntity();
+        try {
+            rawatInapEntityNew = rawatInapDao.getById("idRawatInap", idRawatInapNew);
+        } catch (HibernateException e) {
+            response.setStatus("error");
+            response.setMsg(e.getMessage());
+        }
+        if (rawatInapEntityNew != null) {
+            rawatInapEntityNew.setStatus("1");
+            rawatInapEntityNew.setKeterangan("sudah_pindah");
+            rawatInapEntityNew.setLastUpdate(new Timestamp(Calendar.getInstance().getTimeInMillis()));
+            rawatInapEntityNew.setLastUpdateWho(CommonUtil.userLogin());
+            try {
+                rawatInapDao.updateAndSave(rawatInapEntityNew);
+            } catch (HibernateException e) {
+                response.setStatus("error");
+                response.setMsg(e.getMessage());
+            }
+
+            try {
+                rawatInapEntityPindah = rawatInapDao.getById("idRawatInap", idRawatInapPindah);
+            } catch (HibernateException e) {
+                response.setStatus("error");
+                response.setMsg(e.getMessage());
+            }
+            if (rawatInapEntityPindah != null) {
+                rawatInapEntityPindah.setStatus("3");
+                rawatInapEntityPindah.setTglKeluar(new Timestamp(Calendar.getInstance().getTimeInMillis()));
+                rawatInapEntityPindah.setLastUpdate(new Timestamp(Calendar.getInstance().getTimeInMillis()));
+                rawatInapEntityPindah.setLastUpdateWho(CommonUtil.userLogin());
+                try {
+                    rawatInapDao.updateAndSave(rawatInapEntityPindah);
+                    response.setStatus("success");
+                    response.setMsg("Berhasil");
+                } catch (HibernateException e) {
+                    response.setStatus("error");
+                    response.setMsg(e.getMessage());
+                }
+
+                Ruangan ruangan = new Ruangan();
+                ruangan.setIdRuangan(rawatInapEntityPindah.getIdRuangan());
+                List<MtSimrsRuanganEntity> ruanganEntities = getListEntityRuangan(ruangan);
+
+                if (ruanganEntities.size() > 0) {
+                    MtSimrsRuanganEntity ruanganEntity = ruanganEntities.get(0);
+                    if (ruanganEntity != null) {
+                        ruanganEntity.setStatusRuangan("Y");
+                        ruanganEntity.setAction("U");
+                        ruanganEntity.setSisaKuota(ruanganEntity.getSisaKuota() + 1);
+                        ruanganEntity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+                        ruanganEntity.setLastUpdateWho(CommonUtil.userLogin());
+                        try {
+                            ruanganDao.updateAndSave(ruanganEntity);
+                            response.setStatus("success");
+                            response.setMsg("berhasil");
+                        } catch (HibernateException e) {
+                            response.setStatus("error");
+                            response.setMsg("Error" + e.getMessage());
+                        }
+                    }
+                }
+            }
+        } else {
+            response.setStatus("error");
+            response.setMsg("ID rawat inap tidak ditemukan...!");
         }
         return response;
     }
@@ -694,6 +771,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             rawatInap.setNoCheckup(bean.getNoCheckup());
             rawatInap.setCreatedDate(bean.getCreatedDate());
             rawatInap.setCreatedWho(bean.getCreatedWho());
+            rawatInap.setTglMasuk(bean.getCreatedDate());
+            rawatInap.setStatus("1");
             response = saveRawatInap(rawatInap);
         }
 
@@ -938,8 +1017,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             entity.setLastUpdate(bean.getCreatedDate());
             entity.setCreatedWho(bean.getCreatedWho());
             entity.setLastUpdateWho(bean.getCreatedWho());
-            entity.setTglMasuk(bean.getCreatedDate());
-            entity.setStatus("1");
+            entity.setTglMasuk(bean.getTglMasuk());
+            entity.setStatus(bean.getStatus());
+            entity.setKeterangan(bean.getKeterangan());
 
             try {
                 rawatInapDao.addAndSave(entity);
@@ -982,13 +1062,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     }
 
     @Override
-    public CrudResponse updateRuanganInap(String idRawatInap, String idRuangan, String idDetailCheckup) throws GeneralBOException {
+    public CrudResponse updateRuanganInap(String idRawatInap, String idRuangan, String idDetailCheckup, String tanggal) throws GeneralBOException {
         logger.info("[CheckupDetailBoImpl.updateRuanganInap] Start >>>>>>>>");
         CrudResponse response = new CrudResponse();
-        RawatInap rawatInap = new RawatInap();
-        rawatInap.setIdDetailCheckup(idDetailCheckup);
-        rawatInap.setFlag("Y");
-        List<ItSimrsRawatInapEntity> rawatInapEntities = getListEntityRawatInap(rawatInap);
 
         ItSimrsRawatInapEntity rawatInapEntity = new ItSimrsRawatInapEntity();
         try {
@@ -1000,34 +1076,13 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             response.setMsg("Error" + e.getMessage());
         }
         if (rawatInapEntity != null) {
-            rawatInapEntity.setStatus("3");
-            rawatInapEntity.setTglKeluar(new Timestamp(System.currentTimeMillis()));
+            rawatInapEntity.setKeterangan("pindah");
+//            rawatInapEntity.setStatus("3");
+//            rawatInapEntity.setTglKeluar(new Timestamp(System.currentTimeMillis()));
             rawatInapEntity.setLastUpdateWho(CommonUtil.userLogin());
             rawatInapEntity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
             try {
                 rawatInapDao.updateAndSave(rawatInapEntity);
-                Ruangan ruangan = new Ruangan();
-                ruangan.setIdRuangan(rawatInapEntity.getIdRuangan());
-                List<MtSimrsRuanganEntity> ruanganEntities = getListEntityRuangan(ruangan);
-
-                if (ruanganEntities.size() > 0) {
-                    MtSimrsRuanganEntity ruanganEntity = ruanganEntities.get(0);
-                    if (ruanganEntity != null) {
-                        ruanganEntity.setStatusRuangan("Y");
-                        ruanganEntity.setAction("U");
-                        ruanganEntity.setSisaKuota(ruanganEntity.getSisaKuota() + 1);
-                        ruanganEntity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
-                        ruanganEntity.setLastUpdateWho(CommonUtil.userLogin());
-                        try {
-                            ruanganDao.updateAndSave(ruanganEntity);
-                            response.setStatus("success");
-                            response.setMsg("berhasil");
-                        } catch (HibernateException e) {
-                            response.setStatus("error");
-                            response.setMsg("Error" + e.getMessage());
-                        }
-                    }
-                }
             } catch (HibernateException e) {
                 response.setStatus("error");
                 response.setMsg("Error" + e.getMessage());
@@ -1040,62 +1095,14 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 rawatInapNew.setIdDetailCheckup(idDetailCheckup);
                 rawatInapNew.setIdRuangan(idRuangan);
                 rawatInapNew.setNoCheckup(rawatInapEntity.getNoCheckup());
+                rawatInapNew.setTglMasuk(Timestamp.valueOf(tanggal));
                 rawatInapNew.setCreatedDate(new Timestamp(System.currentTimeMillis()));
                 rawatInapNew.setCreatedWho(CommonUtil.userLogin());
+                rawatInapNew.setKeterangan("new");
+                rawatInapNew.setStatus("0");
                 response = saveRawatInap(rawatInapNew);
             }
         }
-//        if (!rawatInapEntities.isEmpty() && rawatInapEntities.size() > 0) {
-//            for (ItSimrsRawatInapEntity rawatInapEntity : rawatInapEntities) {
-//                // get noCheckup
-//                noCheckup = rawatInapEntity.getNoCheckup();
-//                rawatInapEntity.setAction("U");
-//                rawatInapEntity.setTglKeluar(new Timestamp(System.currentTimeMillis()));
-//                rawatInapEntity.setStatus("3");
-//                rawatInapEntity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
-//                rawatInapEntity.setLastUpdateWho(CommonUtil.userLogin());
-//                try {
-//                    rawatInapDao.updateAndSave(rawatInapEntity);
-//                } catch (HibernateException e) {
-//                    logger.error("[CheckupDetailBoImpl.updateRuanganInap] Error when Update data transaksi inap ", e);
-//                    throw new GeneralBOException("[CheckupDetailBoImpl.updateRuanganInap] Error when Update data transaksi inap " + e.getMessage());
-//                }
-//
-//                if (rawatInapEntity.getIdRuangan() != null && !"".equalsIgnoreCase(rawatInapEntity.getIdRuangan())) {
-//                    Ruangan ruangan = new Ruangan();
-//                    ruangan.setIdRuangan(rawatInapEntity.getIdRuangan());
-//                    ruangan.setStatusRuangan("N");
-//                    List<MtSimrsRuanganEntity> ruanganEntities = getListEntityRuangan(ruangan);
-//
-//                    if (!ruanganEntities.isEmpty() && ruanganEntities.size() > 0) {
-//                        for (MtSimrsRuanganEntity ruanganEntity : ruanganEntities) {
-//                            ruanganEntity.setStatusRuangan("Y");
-//                            ruanganEntity.setAction("U");
-//                            ruanganEntity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
-//                            ruanganEntity.setLastUpdateWho(CommonUtil.userLogin());
-//
-//                            try {
-//                                ruanganDao.updateAndSave(ruanganEntity);
-//                            } catch (HibernateException e) {
-//                                logger.error("[CheckupDetailBoImpl.updateRuanganInap] Error when Update status master ruangan ", e);
-//                                throw new GeneralBOException("[CheckupDetailBoImpl.updateRuanganInap] Error when Update status master ruangan " + e.getMessage());
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//
-//            if (idRuangan != null && !"".equalsIgnoreCase(idRuangan) && idDetailCheckup != null && !"".equalsIgnoreCase(idRuangan) && noCheckup != null && !"".equalsIgnoreCase(noCheckup)) {
-//                // save new data to table rawat inap
-//                RawatInap rawatInapNew = new RawatInap();
-//                rawatInapNew.setIdDetailCheckup(idDetailCheckup);
-//                rawatInapNew.setIdRuangan(idRuangan);
-//                rawatInapNew.setNoCheckup(idDetailCheckup);
-//                rawatInapNew.setCreatedDate(new Timestamp(System.currentTimeMillis()));
-//                rawatInapNew.setCreatedWho(CommonUtil.userLogin());
-//                saveRawatInap(rawatInapNew);
-//            }
-//        }
         logger.info("[CheckupDetailBoImpl.updateRuanganInap] End <<<<<<<<<");
         return response;
     }

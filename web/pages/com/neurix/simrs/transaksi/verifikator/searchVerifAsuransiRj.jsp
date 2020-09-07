@@ -837,7 +837,7 @@
                         "<tr style='font-weight: bold'>" +
                         "<td colspan='2'>Total Biaya Yang Dibayar Pasien</td>" +
                         "<td>" +
-                        '<input type="hidden" id="h_pasien_bayar">' +
+                        '<input type="hidden" id="h_pasien_bayar" value="0">' +
                         '<input style="text-align: right" class="form-control" id="pasien_bayar" value="0">' +
                         "</td>" +
                         "<td></td>" +
