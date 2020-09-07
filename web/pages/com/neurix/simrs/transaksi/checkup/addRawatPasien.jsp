@@ -847,12 +847,17 @@
                                                             if("Y" == selectedObj.isCkp){
                                                                 $('#poli').val(selectedObj.idPelayanan).trigger('change').attr('disabled', true);
                                                                 $('#id_pelayanan_poli').val(selectedObj.idPelayanan);
+                                                            }else{
+                                                                $('#poli').val('').trigger('change').attr('disabled', false);
+                                                                $('#id_pelayanan_poli').val('');
                                                             }
 
                                                             $('#last_id_detail_checkup').val(selectedObj.lastIdDetail);
                                                             $('#is_order_lab').val(selectedObj.isOrder);
                                                             if(selectedObj.tglCkp != null){
                                                                 $('#tgl_checkup').html("Tanggal Checkup Ulang : <b>"+selectedObj.tglCkp+"</b>");
+                                                            }else{
+                                                                $('#tgl_checkup').html("");
                                                             }
                                                         }
 

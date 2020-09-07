@@ -549,12 +549,12 @@
             finalImg = hasil;
         }
         var result = JSON.stringify(data);
-
+        console.log(result);
         $('#waiting_dialog').dialog('open');
         $('#save_ket').hide();
         $('#load_ket').show();
         dwr.engine.setAsync(true);
-        PeriksaLabAction.saveEditDokterLab(idPeriksaLab, idDokter, finalImg, keterangan, data, {
+        PeriksaLabAction.saveEditDokterLab(idPeriksaLab, idDokter, finalImg, keterangan, result, {
             callback: function (response) {
                 if (response.status == "success") {
                     $('#success_dok').show().fadeOut(5000);
