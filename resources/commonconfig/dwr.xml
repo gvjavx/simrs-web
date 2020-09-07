@@ -473,6 +473,7 @@
       <convert converter="bean" match="com.neurix.simrs.transaksi.obatpoli.model.PermintaanObatPoli"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkup.model.AlertPasien"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.permintaanvendor.model.DocPo"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.pemeriksaanfisik.model.ItSimrsPemeriksaanFisikEntity"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.pemeriksaanfisik.model.PemeriksaanFisik"/>

@@ -353,7 +353,9 @@
                         </div>
                         <div class="col-md-6">
                             <div style="float: left">Upload Faktur</div> <button class="btn btn-sm btn-warning" style="float: right;" onclick="addUploadFaktur()"><i class="fa fa-plus"></i></button>
-                            <input type="file" class="form-control" name="uploadFaktur" id="upload-faktur-0"/>
+                            <button class="btn btn-sm btn-info" style="float: right;" onclick="viewUpload()"><i class="fa fa-image"></i></button>
+                            <input type="file" class="form-control" name="uploadFaktur" id="upload-faktur-0" onchange="uploadDoc('faktur', '0')"/>
+                            <canvas id="canvas-faktur-0" style="border: solid 1px #ccc; display: none" ></canvas>
                             <div id="body-upload-faktur-0"></div>
                         </div>
                     </div>
@@ -369,7 +371,9 @@
                         </div>
                         <div class="col-md-6">
                             <div style="float: left">Upload Invoice</div> <button class="btn btn-sm btn-warning" style="float: right;" onclick="addUploadInvoice()"><i class="fa fa-plus"></i></button>
-                            <input type="file" class="form-control" name="uploadInvoice" id="upload-invoice-0"/>
+                            <button class="btn btn-sm btn-info" style="float: right;" onclick="viewUpload('invoice')"><i class="fa fa-image"></i></button>
+                            <input type="file" class="form-control" name="uploadInvoice" id="upload-invoice-0" onchange="uploadDoc('invoice', '0')"/>
+                            <canvas id="canvas-invoice-0" style="border: solid 1px #ccc; display: none" ></canvas>
                             <div id="body-upload-invoice-0"></div>
                         </div>
                     </div>
@@ -385,7 +389,9 @@
                         </div>
                         <div class="col-md-6">
                             <div style="float: left">Upload DO</div> <button class="btn btn-sm btn-warning" style="float: right;" onclick="addUploadDo()"><i class="fa fa-plus"></i></button>
-                            <input type="file" class="form-control" name="uploadInvoice" id="upload-do-0"/>
+                            <button class="btn btn-sm btn-info" style="float: right;" onclick="viewUpload('do')"><i class="fa fa-image"></i></button>
+                            <input type="file" class="form-control" name="uploadInvoice" id="upload-do-0" onchange="uploadDoc('do', '0')"/>
+                            <canvas id="canvas-do-0" style="border: solid 1px #ccc; display: none" ></canvas>
                             <div id="body-upload-do-0"></div>
                         </div>
                     </div>
@@ -655,23 +661,26 @@
     function addUploadFaktur() {
         nFaktur ++;
         str = '<input type="file" class="form-control" name="uploadFaktur" id="upload-faktur-'+nFaktur+'"/>' +
-            '<div id="body-upload-faktur-'+nFaktur+'">';
+            '<canvas id="canvas-faktur-'+nFaktur+'" style="border: solid 1px #ccc; display: none" ></canvas>' +
+            '<div id="body-upload-faktur-'+nFaktur+'"></div>';
         var i = nFaktur - 1;
         $("#body-upload-faktur-"+i).html(str);
     }
 
     function addUploadInvoice() {
         nInvoice ++;
-        str = '<input type="file" class="form-controlN" name="uploadFaktur" id="upload-invoice-'+nFaktur+'"/>' +
-            '<div id="body-upload-invoice-'+nInvoice+'">';
+        str = '<input type="file" class="form-control" name="uploadInvoice" id="upload-invoice-'+nInvoice+'"/>' +
+            '<canvas id="canvas-invoice-'+nInvoice+'" style="border: solid 1px #ccc; display: none" ></canvas>' +
+            '<div id="body-upload-invoice-'+nInvoice+'"></div>';
         var i = nInvoice - 1;
         $("#body-upload-invoice-"+i).html(str);
     }
 
     function addUploadDo() {
         nDo ++;
-        str = '<input type="file" class="form-control" name="uploadFaktur" id="upload-do-'+nDo+'"/>' +
-            '<div id="body-upload-do-'+nDo+'">';
+        str = '<input type="file" class="form-control" name="uploadDo" id="upload-do-'+nDo+'"/>' +
+            '<canvas id="canvas-do-'+nDo+'" style="border: solid 1px #ccc; display: none" ></canvas>' +
+            '<div id="body-upload-do-'+nDo+'"></div>';
         var i = nDo - 1;
         $("#body-upload-do-"+i).html(str);
     }
@@ -683,6 +692,7 @@
         var tglfaktur       = $("#tgl-faktur").val();
         var idPermintaan    = $("#id_permintaan_vendor").val();
         var listOfTrans     = [];
+        var listOfimg       = [];
 
         for (i=0; i < n; i++){
             var idTrans     = $("#id-trans-"+i).val();
@@ -694,8 +704,39 @@
             listOfTrans.push({"idtrans":idTrans, "qty":qty, "expdate":expdate, "diskon":diskon, "bruto":bruto, "nett":nett});
         }
 
+        for (i=0 ; i <= nFaktur ; i++){
+            var canvas = document.getElementById('canvas-faktur-'+i);
+            var input = document.getElementById('upload-faktur-'+i);
+            if (input.files.length != 0){
+                var dataURL = canvas.toDataURL("image/png"), dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+                listOfimg.push({"jenisnomor":"faktur", "batch":"", "iditem":faktur, "img":dataURL});
+            }
+
+        }
+
+        for (i=0 ; i <= nInvoice ; i++){
+            var canvas = document.getElementById('canvas-invoice-'+i);
+            var input = document.getElementById('upload-invoice-'+i);
+            if (input.files.length != 0) {
+                var dataURL = canvas.toDataURL("image/png"), dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+                listOfimg.push({"jenisnomor":"invoice", "batch":"", "iditem":invoice, "img":dataURL});
+            }
+
+        }
+
+        for (i=0 ; i <= nDo ; i++){
+            var canvas = document.getElementById('canvas-do-'+i);
+            var input = document.getElementById('upload-do-'+i);
+            if (input.files.length != 0) {
+                var dataURL = canvas.toDataURL("image/png"), dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+                listOfimg.push({"jenisnomor":"do", "batch":"", "iditem":numberDo, "img":dataURL});
+            }
+
+        }
+
         var strJson = JSON.stringify(listOfTrans);
-        PermintaanVendorAction.saveDo(idPermintaan, numberDo, invoice, faktur, tglfaktur, strJson, function (res) {
+        var listimg = JSON.stringify(listOfimg);
+        PermintaanVendorAction.saveDo(idPermintaan, numberDo, invoice, faktur, tglfaktur, strJson, listimg, function (res) {
            if (res.status == "success"){
                initAdd();
            } else {
@@ -879,6 +920,23 @@
         $('#img_surat_po').attr('src',img);
         $('#modal-doc').modal('show');
     }
+
+function uploadDoc(tipe, ind){
+    var canvas = document.getElementById("canvas-"+tipe+"-"+ind);
+    var ctx = canvas.getContext('2d');
+    var reader = new FileReader();
+    reader.onload = function(event){
+        var img = new Image();
+        img.onload = function(){
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            ctx.drawImage(img,0,0);
+        }
+        img.src = event.target.result;
+    }
+    reader.readAsDataURL(event.target.files[0]);
+}
 
 </script>
 

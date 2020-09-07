@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.permintaanvendor.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat;
+import com.neurix.simrs.transaksi.permintaanvendor.model.DocPo;
 import com.neurix.simrs.transaksi.permintaanvendor.model.MtSimrsPermintaanVendorEntity;
 import com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
@@ -280,6 +281,61 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
             }
         }
         return detail;
+    }
+
+    public List<DocPo> getListDaftarDoc(String idPermintaan, String noBatch){
+
+        String SQL = "SELECT id_item, id_permintaan_obat_vendor, jenis_nomor, no_batch\n" +
+                "FROM it_simrs_doc_po \n" +
+                "WHERE id_permintaan_obat_vendor = :idPermintaan \n" +
+                "AND no_batch = :noBatch \n" +
+                "GROUP BY id_item, id_permintaan_obat_vendor, jenis_nomor, no_batch\n" +
+                "ORDER BY jenis_nomor";
+
+        List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idPermintaan", idPermintaan)
+                .setParameter("noBatch", new Integer(noBatch))
+                .list();
+
+        List<DocPo> docPoList = new ArrayList<>();
+        if (result.size() > 0){
+            for (Object[] obj : result){
+                DocPo docPo = new DocPo();
+                docPo.setIdItem(obj[0].toString());
+                docPo.setIdPermintaanObatVendor(obj[1] == null ? "" : obj[1].toString());
+                docPo.setJenisNomor(obj[2] == null ? "" : obj[2].toString());
+                docPo.setNoBatch(obj[3] == null ? new Integer(0) : (Integer) obj[3]);
+                docPoList.add(docPo);
+            }
+        }
+        return docPoList;
+
+    }
+
+    public List<DocPo> getListImg(String idItem){
+
+        String SQL = "SELECT \n" +
+                "id_item,\n" +
+                "url_img\n" +
+                "FROM it_simrs_doc_po\n" +
+                "WHERE id_item = :idItem \n" +
+                "ORDER BY created_date DESC";
+
+        List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idItem", idItem)
+                .list();
+
+        List<DocPo> docPoList = new ArrayList<>();
+        if (result.size() > 0){
+            for (Object[] obj : result){
+                DocPo docPo = new DocPo();
+                docPo.setIdItem(obj[0].toString());
+                docPo.setUrlImg(obj[1] == null ? "" : obj[1].toString());
+                docPoList.add(docPo);
+            }
+        }
+        return docPoList;
+
     }
 
     public String getNextSeq() {
