@@ -353,7 +353,7 @@
                         </div>
                         <div class="col-md-6">
                             <div style="float: left">Upload Faktur</div> <button class="btn btn-sm btn-warning" style="float: right;" onclick="addUploadFaktur()"><i class="fa fa-plus"></i></button>
-                            <button class="btn btn-sm btn-info" style="float: right;" onclick="viewUpload()"><i class="fa fa-image"></i></button>
+                            <%--<button class="btn btn-sm btn-info" style="float: right;" onclick="viewUpload()"><i class="fa fa-image"></i></button>--%>
                             <input type="file" class="form-control" name="uploadFaktur" id="upload-faktur-0" onchange="uploadDoc('faktur', '0')"/>
                             <canvas id="canvas-faktur-0" style="border: solid 1px #ccc; display: none" ></canvas>
                             <div id="body-upload-faktur-0"></div>
@@ -371,7 +371,7 @@
                         </div>
                         <div class="col-md-6">
                             <div style="float: left">Upload Invoice</div> <button class="btn btn-sm btn-warning" style="float: right;" onclick="addUploadInvoice()"><i class="fa fa-plus"></i></button>
-                            <button class="btn btn-sm btn-info" style="float: right;" onclick="viewUpload('invoice')"><i class="fa fa-image"></i></button>
+                            <%--<button class="btn btn-sm btn-info" style="float: right;" onclick="viewUpload('invoice')"><i class="fa fa-image"></i></button>--%>
                             <input type="file" class="form-control" name="uploadInvoice" id="upload-invoice-0" onchange="uploadDoc('invoice', '0')"/>
                             <canvas id="canvas-invoice-0" style="border: solid 1px #ccc; display: none" ></canvas>
                             <div id="body-upload-invoice-0"></div>
@@ -389,7 +389,7 @@
                         </div>
                         <div class="col-md-6">
                             <div style="float: left">Upload DO</div> <button class="btn btn-sm btn-warning" style="float: right;" onclick="addUploadDo()"><i class="fa fa-plus"></i></button>
-                            <button class="btn btn-sm btn-info" style="float: right;" onclick="viewUpload('do')"><i class="fa fa-image"></i></button>
+                            <%--<button class="btn btn-sm btn-info" style="float: right;" onclick="viewUpload('do')"><i class="fa fa-image"></i></button>--%>
                             <input type="file" class="form-control" name="uploadInvoice" id="upload-do-0" onchange="uploadDoc('do', '0')"/>
                             <canvas id="canvas-do-0" style="border: solid 1px #ccc; display: none" ></canvas>
                             <div id="body-upload-do-0"></div>

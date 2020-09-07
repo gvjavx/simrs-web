@@ -329,7 +329,7 @@
                         <div class="col-md-6">
                             <div style="float: left">Upload Faktur</div>
                             <button class="btn btn-sm btn-warning" style="float: right;" onclick="addUploadFaktur('faktur')"><i class="fa fa-plus"></i></button>
-                            <button class="btn btn-sm btn-info" style="float: right;" onclick="viewUpload()"><i class="fa fa-image"></i></button>
+                            <%--<button class="btn btn-sm btn-info" style="float: right;" onclick="viewUpload()"><i class="fa fa-image"></i></button>--%>
                             <input type="file" class="form-control" name="uploadFaktur" id="upload-faktur-0" onchange="uploadDoc('faktur', '0')"/>
                             <canvas id="canvas-faktur-0" style="border: solid 1px #ccc; display: none" ></canvas>
                             <div id="body-upload-faktur-0"></div>
@@ -347,7 +347,7 @@
                         </div>
                         <div class="col-md-6">
                             <div style="float: left">Upload Invoice</div> <button class="btn btn-sm btn-warning" style="float: right;" onclick="addUploadInvoice()"><i class="fa fa-plus"></i></button>
-                            <button class="btn btn-sm btn-info" style="float: right;" onclick="viewUpload('invoice')"><i class="fa fa-image"></i></button>
+                            <%--<button class="btn btn-sm btn-info" style="float: right;" onclick="viewUpload('invoice')"><i class="fa fa-image"></i></button>--%>
                             <input type="file" class="form-control" name="uploadInvoice" id="upload-invoice-0" onchange="uploadDoc('invoice', '0')"/>
                             <canvas id="canvas-invoice-0" style="border: solid 1px #ccc; display: none" ></canvas>
                             <div id="body-upload-invoice-0"></div>
@@ -365,10 +365,23 @@
                         </div>
                         <div class="col-md-6">
                             <div style="float: left">Upload DO</div> <button class="btn btn-sm btn-warning" style="float: right;" onclick="addUploadDo('do')"><i class="fa fa-plus"></i></button>
-                            <button class="btn btn-sm btn-info" style="float: right;" onclick="viewUpload('do')"><i class="fa fa-image"></i></button>
+                            <%--<button class="btn btn-sm btn-info" style="float: right;" onclick="viewUpload('do')"><i class="fa fa-image"></i></button>--%>
                             <input type="file" class="form-control" name="uploadInvoice" id="upload-do-0"  onchange="uploadDoc('do', '0')"/>
                             <canvas id="canvas-do-0" style="border: solid 1px #ccc; display: none" ></canvas>
                             <div id="body-upload-do-0"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-striped">
+                                <tr>
+                                    <td width="40%"></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info" style="float: right;" onclick="viewUpload()"><i class="fa fa-image"></i> View Uploaded Document</button>
+                                        <%--<input type="text" class="form-control" id="app_no_do"/>--%>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -536,7 +549,7 @@
 </div>
 
 <div class="modal fade" id="modal-view-img">
-    <div class="modal-dialog modal-fade">
+    <div class="modal-dialog modal-fade modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -726,7 +739,7 @@
                         if (dataDo == null){
                             PermintaanVendorAction.getTransaksiObatByIdTrans(item.idTransaksiObatDetail, noBatch, function (res) {
                                 if (res != null){
-                                    console.log(res);
+//                                    console.log(res);
                                     $("#app_no_faktur").val(res.noFaktur);
                                     $("#app_tgl_faktur").val(res.stTglFaktur);
                                     $("#app_no_invoice").val(res.noInvoice);
@@ -811,7 +824,7 @@
                         if (dataDo == null){
                             PermintaanVendorAction.getTransaksiObatByIdTrans(item.idTransaksiObatDetail, noBatch, function (res) {
                                 if (res != null){
-                                    console.log(res);
+//                                    console.log(res);
                                     $("#app_no_faktur").val(res.noFaktur);
                                     $("#app_tgl_faktur").val(res.stTglFaktur);
                                     $("#app_no_invoice").val(res.noInvoice);
@@ -1057,29 +1070,39 @@
 
             var str = '';
             $.each(list, function (i, item) {
+
                 str += '<div class="row">' +
                     '<div class="col-md-12">' +
-                    '<h4>'+item.jenisNomor.toUpperCase()+' - '+item.idItem+'</h4>' +
+                    '<h5>'+item.jenisNomor.toUpperCase()+' - '+item.idItem+'</h5>' +
                     '</div>' +
                     '<div class="col-md-12" id="body-img-'+item.idItem+'">';
 
-                PermintaanVendorAction.getListImg(item.idItem, function (listimg) {
-
-                    str += '<div class="row">';
-                    $.each(listimg, function (i, img) {
-                       str += '<div class="col-md-4">' +
-                           '<img src="'+ firstpath + '/'+img.urlImg+'" />' +
-                           '</div>';
-                    });
-                    str += '</div>';
-                });
-
                 str += '</div>' +
                     '</div>';
+
+                showImg(item.idItem);
             });
 
          $("#body-img").html(str);
         });
+    }
+
+    function showImg(idItem){
+        var first = firstpath();
+        PermintaanVendorAction.getListImg(idItem, function (listimg) {
+            console.log(listimg);
+            var str = '<div class="row">';
+            $.each(listimg, function (n, img) {
+
+                str += '<div class="col-md-4" align="center">' +
+                    '<img src="'+ first + '/images/upload/surat_po/'+img.urlImg+'" style="width: 300px"/>' +
+                    '</div>';
+            });
+            str += '</div>' +
+                '<br>';
+            $("#body-img-"+idItem).html(str);
+        });
+
     }
 
 </script>
