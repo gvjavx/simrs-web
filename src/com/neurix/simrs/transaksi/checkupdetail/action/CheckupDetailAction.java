@@ -1083,15 +1083,18 @@ public class CheckupDetailAction extends BaseMasterAction {
                     String idPelayanan = object.getString("id_pelayanan");
                     String jenisBayar = object.getString("metode_bayar");
                     String metodeBayar = "";
+                    String justLab = "";
+                    if(object.has("just_lab")){
+                        justLab = object.getString("just_lab");
+                    }
                     if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)) {
-                        response = cekAllTindakanRawat(idDetailCheckup);
+                        if(justLab != null && !"".equalsIgnoreCase(justLab)){
+                            response.setStatus("success");
+                        }else{
+                            response = cekAllTindakanRawat(idDetailCheckup);
+                        }
                         if ("success".equalsIgnoreCase(response.getStatus())) {
                             saveAddToRiwayatTindakan(idDetailCheckup, jenisPasien);
-//                            if ("asuransi".equalsIgnoreCase(jenisPasien) || "ptpn".equalsIgnoreCase(jenisPasien) || "paket_individu".equalsIgnoreCase(jenisPasien) || "paket_perusahaan".equalsIgnoreCase(jenisPasien)) {
-//                                metodeBayar = "non_tunai";
-//                            } else if ("umum".equalsIgnoreCase(jenisPasien)) {
-//                                metodeBayar = jenisBayar;
-//                            }
                             if ("ptpn".equalsIgnoreCase(jenisPasien) || "paket_individu".equalsIgnoreCase(jenisPasien) || "paket_perusahaan".equalsIgnoreCase(jenisPasien)) {
                                 metodeBayar = "non_tunai";
                             } else if ("umum".equalsIgnoreCase(jenisPasien)) {
@@ -1112,11 +1115,13 @@ public class CheckupDetailAction extends BaseMasterAction {
                                     }
                                 }
                             }
-
                             detailCheckup.setIdDetailCheckup(idDetailCheckup);
                             detailCheckup.setLastUpdateWho(user);
                             detailCheckup.setLastUpdate(now);
                             detailCheckup.setFlagCloseTraksaksi("Y");
+                            if(justLab != null && !"".equalsIgnoreCase(justLab)){
+                                detailCheckup.setJustLab(justLab);
+                            }
                             response = checkupDetailBo.updateDetailCheckup(detailCheckup);
                         }
                     } else {
@@ -4762,6 +4767,12 @@ public class CheckupDetailAction extends BaseMasterAction {
                 reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
                 reportParams.put("umur", tahun);
             }
+            reportParams.put("agama", checkup.getAgama());
+            reportParams.put("pekerjaan", checkup.getProfesi());
+            if (checkup.getCreatedDate() != null && !"".equalsIgnoreCase(checkup.getCreatedDate().toString())) {
+                String tglMasuk = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getCreatedDate());
+                reportParams.put("tglMasuk", tglMasuk);
+            }
 
             String content1 = "I.\tPersetujuan Untuk Perawatan dan Pengobatan\n" +
                     "a. Saya mengetahui bahwa Saya memiliki kondisi yang membutuhkan perawatan medis, Saya memberi izin kepada dokter dan profesi kesehatan lainnya untuk melakukan prosedur diagnostik dan untuk memberi pengobatan medis seperti yang diperlukan untuk penilaian secara profesional. Prosedur diagnostik dan perawatan medis termasuk tetapi tidak terbatas pada ECG, X Ray, Tes Darah, terapi fisik dan pemberiaan obat.\n" +
@@ -4777,8 +4788,9 @@ public class CheckupDetailAction extends BaseMasterAction {
                     "b. Perusahaan asuransi kesehatan BPJS atau perusahaan lainnya atau pihak lain yang menjamin pembiayaan saya\n" +
                     "c. Pihak lain yang saya kehendaki\n" +
                     "II.\tBarang-Barang Milik Pasien\n" +
-                    "a. Saya telah mengerti bahwa rumah sakit tidak bertanggung jawab atas semua kehilangan barang-barang milik saya, dan saya secara pribadi bertanggung jawab terhadap barang berharga yang saya miliki diantaranya uang, perhiasan, buku, cek, handphone, kartu kredit serta barang-barang berharga lainnya. dan apabila saya membutuhkan maka saya dapat menitipkan barang-barang saya kepada rumah sakit\n" +
-                    "III.Hak Pasien\n" +
+                    "a. Saya telah mengerti bahwa rumah sakit tidak bertanggung jawab atas semua kehilangan barang-barang milik saya, dan saya secara pribadi bertanggung jawab terhadap barang berharga yang saya miliki diantaranya uang, perhiasan, buku, cek, handphone, kartu kredit serta barang-barang berharga lainnya. dan apabila saya membutuhkan maka saya dapat menitipkan barang-barang saya kepada rumah sakit\n";
+
+            String content2 = "III.Hak Pasien\n" +
                     "(Sesuai Permenkes No 4 Tahun 2018)\n" +
                     "1. Memperoleh informasi mengenai tata tertib dan peraturan yang berlaku di rumah sakit \n" +
                     "2. Memperoleh informasi tentang hak dan kewajiban pasien \n" +
@@ -4797,9 +4809,8 @@ public class CheckupDetailAction extends BaseMasterAction {
                     "15. Mengajukan usul, saran perbaikan atas perlakukan rumah sakit terhadap dirinya\n" +
                     "16. Menolak bimbingan rohani yang tidak sesuai dengan agama dan kepercayaan yang dianutnya\n" +
                     "17. Menggugat atau menuntut rumah sakit apabila rumah sakit diduga memberikan pelayanan yang tidak sesuai dengan standart baik secara perdata maupun pidana\n" +
-                    "18. Mengeluhkan pelayanan rumah sakit yang tidak sesuai dengan stardar pelayanan melalui media\n";
-
-            String content2 = "IV. Kewajiban Pasien dan Keluarga Pasien\n" +
+                    "18. Mengeluhkan pelayanan rumah sakit yang tidak sesuai dengan stardar pelayanan melalui media\n"+
+                    "IV. Kewajiban Pasien dan Keluarga Pasien\n" +
                     "1. Mematuhi peraturan yang berlaku di Rumah Sakit Gatoel\n" +
                     "2. Menggunakan fasilitas rumah sakit " + branchName + " secara bertanggung jawab\n" +
                     "3. Menghormati hask pasien lain, pengunjung dan hak tenaga kesehatan serta petugas lainnya yang bekerja di rumah sakit\n" +
@@ -4813,21 +4824,27 @@ public class CheckupDetailAction extends BaseMasterAction {
             reportParams.put("data1", content1);
             reportParams.put("data2", content2);
 
-            if ("SP15".equalsIgnoreCase(tipe)) {
+            if ("SP15".equalsIgnoreCase(tipe) || "SP16".equalsIgnoreCase(tipe) || "SP17".equalsIgnoreCase(tipe)) {
                 String penunjang = checkupBoProxy.getPenunjangMedis(checkup.getIdDetailCheckup(), null);
                 String terapi = checkupBoProxy.getResepPasien(checkup.getIdDetailCheckup());
                 String diagnosaPrimer = checkupBoProxy.getDiagnosaPrimer(checkup.getIdDetailCheckup());
                 String diagnosaSekunder = checkupBoProxy.getDiagnosaSekunder(checkup.getIdDetailCheckup());
                 String tindakanIcd9 = checkupBoProxy.getTindakanRawatICD9(checkup.getIdDetailCheckup());
+                String lab = checkupBoProxy.getPenunjangMedis(checkup.getIdDetailCheckup(), "lab");
+                String radiologi = checkupBoProxy.getPenunjangMedis(checkup.getIdDetailCheckup(), "radiologi");
                 reportParams.put("penunjang", penunjang);
                 reportParams.put("diagnosaPrimer", diagnosaPrimer);
                 reportParams.put("diagnosaSekunder", diagnosaSekunder);
+                reportParams.put("diagnosa", diagnosaSekunder);
                 reportParams.put("terapi", terapi);
                 reportParams.put("tindakan", tindakanIcd9);
+                reportParams.put("lab", lab);
+                reportParams.put("radiologi", radiologi);
                 reportParams.put("keterangan", checkup.getCatatan());
                 DokterTeam dokterTeam = teamDokterBoProxy.getNamaDokter(checkup.getIdDetailCheckup());
                 reportParams.put("dokter", dokterTeam.getNamaDokter());
                 reportParams.put("sip", dokterTeam.getSip());
+                reportParams.put("diagnosaMasuk", diagnosaSekunder);
             }
         }
 
@@ -4918,6 +4935,9 @@ public class CheckupDetailAction extends BaseMasterAction {
             if ("CK03".equalsIgnoreCase(tipe)) {
                 return "print_lembar_konsultasi";
             }
+            if("CK04".equalsIgnoreCase(tipe)){
+                return "print_hak_kewajiban_pasien";
+            }
             if ("SP01".equalsIgnoreCase(tipe)) {
                 return "print_gagal_sep";
             }
@@ -4956,7 +4976,12 @@ public class CheckupDetailAction extends BaseMasterAction {
             if ("SP15".equalsIgnoreCase(tipe)) {
                 return "print_resume_medis_rawat_jalan";
             }
-
+            if ("SP16".equalsIgnoreCase(tipe)) {
+                return "print_resume_medis_rawat_inap";
+            }
+            if ("SP17".equalsIgnoreCase(tipe)) {
+                return "print_gawat_darurat";
+            }
             if ("SK01".equalsIgnoreCase(tipe)) {
                 return "print_keterangan_dokter";
             }
@@ -4974,6 +4999,9 @@ public class CheckupDetailAction extends BaseMasterAction {
             }
             if ("HV01".equalsIgnoreCase(tipe)) {
                 return "print_persetujuan_hiv";
+            }
+            if ("RI01".equalsIgnoreCase(tipe)) {
+                return "print_rawat_inap";
             }
             if ("RI01".equalsIgnoreCase(tipe)) {
                 return "print_rawat_inap";

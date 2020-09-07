@@ -5528,15 +5528,159 @@ function tindakanINA(jenis) {
     return dataCari;
 }
 
+function saveImpl(jenis, ket){
+    var dataPasien = {
+        'no_checkup' : noCheckup,
+        'id_detail_checkup' : idDetailCheckup,
+        'id_pasien' : idPasien,
+        'id_rm' : tempidRm
+    }
+    var data = "";
+    var va1 = $('#impl1').val();
+    var va2 = $('#impl2').val();
+    var va3 = $('#impl3').val();
+    var v4 = document.getElementById("impl4");
+    var va4 = isBlank(v4);
+    var nama = $('#nama_terang').val();
+    var sip = $('#sip').val();
 
-function conRI(jenis, ket, idAsesmen){
+    if (va1 && va2 && va3 && nama && sip != '' && !va4) {
+
+        var ttd = convertToDataURL(v4);
+
+        data = {
+            'id_detail_checkup': idDetailCheckup,
+            'waktu': va1 + ' ' + va2,
+            'keterangan': va3,
+            'nama_terang': nama,
+            'sip': sip,
+            'ttd': ttd
+        }
+
+        var result = JSON.stringify(data);
+        var pasienData = JSON.stringify(dataPasien);
+
+        $('#save_ina_' + jenis).hide();
+        $('#load_ina_' + jenis).show();
+        dwr.engine.setAsync(true);
+        AsesmenRawatInapAction.saveImplementasiPerawat(result, pasienData, {
+            callback: function (res) {
+                if (res.status == "success") {
+                    $('#save_ina_' + jenis).show();
+                    $('#load_ina_' + jenis).hide();
+                    $('#modal-ina-' + jenis).modal('hide');
+                    $('#warning_ina_' + ket).show().fadeOut(5000);
+                    $('#msg_ina_' + ket).text("Berhasil menambahkan data ....");
+                    $('#modal-ina-' + jenis).scrollTop(0);
+                    listCatatanPemberianObat();
+                } else {
+                    $('#save_ina_' + jenis).show();
+                    $('#load_ina_' + jenis).hide();
+                    $('#warning_ina_' + jenis).show().fadeOut(5000);
+                    $('#msg_ina_' + jenis).text(res.msg);
+                    $('#modal-ina-' + jenis).scrollTop(0);
+                }
+            }
+        });
+    } else {
+        $('#save_ina_' + jenis).show();
+        $('#load_ina_' + jenis).hide();
+        $('#warning_ina_' + jenis).show().fadeOut(5000);
+        $('#msg_ina_' + jenis).text("Silahkan cek kembali data inputan anda...");
+        $('#modal-ina-' + jenis).scrollTop(0);
+    }
+}
+
+function detailImpl(jenis){
+    var body = "";
+    var head = "";
+    var cekData = false;
+    AsesmenRawatInapAction.getListImplementasiPerawat(idDetailCheckup, function (res) {
+       if(res.length > 0){
+           $.each(res, function (i, item) {
+               body += '<tr>' +
+                   '<td width="13%">'+item.waktu+'</td>' +
+                   '<td>'+item.keterangan+'</td>' +
+                   '<td>'+'<img style="width: 100px" src="'+item.ttd+'">' +
+                   '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>' +
+                   '<p style="margin-top: -7px">'+cekItemIsNull(item.sip)+'</p></td>' +
+                   '<td align="center"><i id="delete_'+item.idImplementasiPerawat+'" onclick="conRI(\''+jenis+'\',\'implementasi_perawat\', \''+item.idImplementasiPerawat+'\', \'impl\')" class="fa fa-trash hvr-grow" style="color: red"></i></td>'
+                   '</tr>'
+           });
+           cekData = true;
+       }else{
+           body = '<tr><td>Data belum ada</td></tr>';
+       }
+
+       if(cekData){
+           head = '<tr>' +
+               '<td>Waktu</td>' +
+               '<td>Keterangan</td>' +
+               '<td width="20%">Nama/TTD</td>' +
+               '<td width="10%" align="center">Action</td>' +
+               '</tr>';
+       }
+        var table = '<table style="font-size: 12px" class="table table-bordered">' +
+            '<thead>' + head + '</thead>' +
+            '<tbody>' + body + '</tbody>' +
+            '</table>';
+
+        var newRow = $('<tr id="del_ina_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
+        newRow.insertAfter($('table').find('#row_ina_' + jenis));
+        var url = contextPath + '/pages/images/minus-allnew.png';
+        $('#btn_ina_' + jenis).attr('src', url);
+        $('#btn_ina_' + jenis).attr('onclick', 'delRowImplementasi(\'' + jenis + '\')');
+    });
+}
+
+function delRowImplementasi(id) {
+    $('#del_ina_' + id).remove();
+    var url = contextPath + '/pages/images/icons8-plus-25.png';
+    $('#btn_ina_' + id).attr('src', url);
+    $('#btn_ina_' + id).attr('onclick', 'detailImpl(\'' + id + '\')');
+}
+
+
+function conRI(jenis, ket, idAsesmen, tipe){
     $('#tanya').text("Yakin mengahapus data ini ?");
     $('#modal-confirm-rm').modal({show:true, backdrop:'static'});
     if(idAsesmen != undefined && idAsesmen != ''){
-        $('#save_con_rm').attr('onclick', 'delRIHand(\''+jenis+'\', \''+ket+'\', \''+idAsesmen+'\')');
+        if(tipe == "impl"){
+            $('#save_con_rm').attr('onclick', 'delImpl(\''+jenis+'\', \''+ket+'\', \''+idAsesmen+'\')');
+        }else{
+            $('#save_con_rm').attr('onclick', 'delRIHand(\''+jenis+'\', \''+ket+'\', \''+idAsesmen+'\')');
+        }
     }else{
         $('#save_con_rm').attr('onclick', 'delRI(\''+jenis+'\', \''+ket+'\')');
     }
+}
+
+function delImpl(jenis, ket, idAsesmen) {
+    $('#modal-confirm-rm').modal('hide');
+    var dataPasien = {
+        'no_checkup': noCheckup,
+        'id_detail_checkup': idDetailCheckup,
+        'id_pasien': idPasien,
+        'id_rm': tempidRm
+    }
+    var result = JSON.stringify(dataPasien);
+    startIconSpin('delete_'+idAsesmen);
+    dwr.engine.setAsync(true);
+    AsesmenRawatInapAction.saveDeleteImplementasiPerawat(idAsesmen, result, {
+        callback: function (res) {
+            if (res.status == "success") {
+                stopIconSpin('delete_'+idAsesmen);
+                $('#modal-ina-'+ket).scrollTop(0);
+                $('#warning_ina_' + ket).show().fadeOut(5000);
+                $('#msg_ina_' + ket).text("Berhasil menghapus data...");
+            } else {
+                stopIconSpin('delete_'+idAsesmen);
+                $('#modal-ina-'+ket).scrollTop(0);
+                $('#warn_'+ket).show().fadeOut(5000);
+                $('#msg_'+ket).text(res.msg);
+            }
+        }
+    });
 }
 
 function delRIHand(jenis, ket, idAsesmen) {

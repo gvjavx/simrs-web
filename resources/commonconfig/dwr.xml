@@ -661,6 +661,7 @@
           <param name="class" value="com.neurix.simrs.transaksi.asesmenrawatinap.action.AsesmenRawatInapAction"/>
       </create>
       <convert converter="bean" match="com.neurix.simrs.transaksi.asesmenrawatinap.model.AsesmenRawatInap"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.asesmenrawatinap.model.ImplementasiPerawat"/>
 
       <create creator="new">
           <param name="class" value="com.neurix.simrs.transaksi.pengkajiankeperawatan.action.PengkajianUlangKeperawatanAction"/>

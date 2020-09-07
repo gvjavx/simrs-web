@@ -731,45 +731,70 @@
 
     function savePeriksaLab(idDokter){
         $('#modal-confirm-dialog').modal('hide');
+
         var idPeriksaLab = '<s:property value="periksaLab.idPeriksaLab"/>';
         var url = document.getElementById("temp_canvas");
         var hasil = url.toDataURL("image/png"),
             hasil = hasil.replace(/^data:image\/(png|jpg);base64,/, "");
 
+        var idPasien = '<s:property value="periksaLab.idPasien"/>';
+        var idPelayanan = '<s:property value="periksaLab.idPelayanan"/>';
+        var metodePembayaran = '<s:property value="periksaLab.metodePembayaran"/>';
+        var jenisPasien = '<s:property value="periksaLab.idJenisPeriksaPasien"/>';
+        var idDetailCheckup = '<s:property value="periksaLab.idDetailCheckup"/>';
+
+        var data = {
+            'id_pasien':idPasien,
+            'id_detail_checkup': idDetailCheckup,
+            'jenis_pasien': jenisPasien,
+            'id_pelayanan': idPelayanan,
+            'metode_bayar': metodePembayaran,
+            'just_lab': "Y"
+        }
+        var img = $("#url_img").val();
+        var finalImg = "";
+
+        if(img != ''){
+            finalImg = hasil;
+        }
+        var result = JSON.stringify(data);
+
         $('#waiting_dialog').dialog('open');
         dwr.engine.setAsync(true);
-        PeriksaRadiologiAction.saveDokterRadiologi(idPeriksaLab, idDokter,  hasil, {
+        PeriksaRadiologiAction.saveDokterRadiologi(idPeriksaLab, idDokter,  finalImg, keterangan, result, {
             callback:function (res) {
                 if(res.status == "success"){
-                    if("just_lab" == keterangan){
-                        CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, "selesai", "", "", "", "", "Pemeriksaan Radiologi", "", "", jenisPasien, "", "", "", idPasien, "", "", metodePembayaran, "lab", "", {callback : function (response) {
-                            if(response.status == "success"){
-                                $('#waiting_dialog').dialog('close');
-                                $('#save_ket').show();
-                                $('#load_ket').hide();
-                                $('#info_dialog').dialog('open');
-                                $('#close_pos').val(1);
-                                $('body').scrollTop(0);
-                            }else{
-                                console.log("error");
-                                $('#waiting_dialog').dialog('close');
-                                $('#error_dialog').dailog('open');
-                                $('#errorMessage').text(response.msg);
-                                $('#save_ket').hide();
-                                $('#load_ket').show();
-                            }
-                        }});
-                    }else{
-                        $('#waiting_dialog').dialog('close');
-                        $('#save_ket').show();
-                        $('#load_ket').hide();
-                        $('#info_dialog').dialog('open');
-                        $('#close_pos').val(1);
-                        $('body').scrollTop(0);
-                    }
+                    $('#waiting_dialog').dialog('close');
+                    $('#save_ket').show();
+                    $('#load_ket').hide();
+                    $('#info_dialog').dialog('open');
+                    $('#close_pos').val(1);
+                    $('body').scrollTop(0);
+                    // if("just_lab" == keterangan){
+                    //     CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, "selesai", "", "", "", "", "Pemeriksaan Radiologi", "", "", jenisPasien, "", "", "", idPasien, "", "", metodePembayaran, "lab", "", {callback : function (response) {
+                    //         if(response.status == "success"){
+                    //             $('#waiting_dialog').dialog('close');
+                    //             $('#save_ket').show();
+                    //             $('#load_ket').hide();
+                    //             $('#info_dialog').dialog('open');
+                    //             $('#close_pos').val(1);
+                    //             $('body').scrollTop(0);
+                    //         }else{
+                    //             console.log("error");
+                    //             $('#waiting_dialog').dialog('close');
+                    //             $('#error_dialog').dailog('open');
+                    //             $('#errorMessage').text(response.msg);
+                    //             $('#save_ket').hide();
+                    //             $('#load_ket').show();
+                    //         }
+                    //     }});
+                    // }else{
+                    //
+                    // }
                 }else{
                     $('#warning_rad').show().fadeOut(5000);
                     $('#msg_rad').text(res.message);
+                    $('#waiting_dialog').dialog('close');
                 }
         }});
     }

@@ -280,4 +280,5 @@
     <import resource="sshconfig/com/neurix/akuntansi/transaksi/budgetingperhitungan/spring/BudgetingPerhitunganBean.xml"/>
 
     <import resource="sshconfig/com/neurix/simrs/transaksi/kandungan/spring/PartografBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/asesmenrawatinap/spring/ImplementasiPerawatBean.xml"/>
 </beans>

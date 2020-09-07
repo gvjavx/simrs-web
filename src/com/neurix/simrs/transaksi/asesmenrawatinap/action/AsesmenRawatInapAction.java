@@ -5,7 +5,9 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.asesmenrawatinap.bo.AsesmenRawatInapBo;
+import com.neurix.simrs.transaksi.asesmenrawatinap.bo.ImplementasiPerawatBo;
 import com.neurix.simrs.transaksi.asesmenrawatinap.model.AsesmenRawatInap;
+import com.neurix.simrs.transaksi.asesmenrawatinap.model.ImplementasiPerawat;
 import com.neurix.simrs.transaksi.rekammedik.bo.RekamMedikBo;
 import com.neurix.simrs.transaksi.rekammedik.model.StatusPengisianRekamMedis;
 import org.apache.log4j.Logger;
@@ -178,6 +180,129 @@ public class AsesmenRawatInapAction {
                 asesmenRawatInap.setIdAsesmenKeperawatanRawatInap(idAsesmen);
             }
             response = asesmenRawatInapBo.saveDelete(asesmenRawatInap);
+            if("success".equalsIgnoreCase(response.getStatus())){
+                try {
+                    JSONObject obj = new JSONObject(dataPasien);
+                    RekamMedikBo rekamMedikBo = (RekamMedikBo) ctx.getBean("rekamMedikBoProxy");
+                    if (obj != null) {
+                        StatusPengisianRekamMedis status = new StatusPengisianRekamMedis();
+                        status.setNoCheckup(obj.getString("no_checkup"));
+                        status.setIdDetailCheckup(obj.getString("id_detail_checkup"));
+                        status.setIdPasien(obj.getString("id_pasien"));
+                        status.setIdRekamMedisPasien(obj.getString("id_rm"));
+                        status.setLastUpdateWho(userLogin);
+                        status.setLastUpdate(time);
+                        response = rekamMedikBo.saveEdit(status);
+                    }
+                }catch (JSONException e){
+                    response.setStatus("error");
+                    response.setMsg(e.getMessage());
+                }
+            }
+        }else{
+            response.setStatus("error");
+            response.setMsg("ID detail Checkup tidak ditemukan...!");
+        }
+        return response;
+    }
+
+    public CrudResponse saveImplementasiPerawat(String data, String dataPasien){
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ImplementasiPerawatBo implementasiPerawatBo = (ImplementasiPerawatBo) ctx.getBean("implementasiPerawatBoProxy");
+        try {
+            JSONObject object = new JSONObject(data);
+            ImplementasiPerawat implementasiPerawat = new ImplementasiPerawat();
+            if(object != null){
+                implementasiPerawat.setIdDetailCheckup(object.getString("id_detail_checkup"));
+                implementasiPerawat.setWaktu(object.getString("waktu"));
+                implementasiPerawat.setKeterangan(object.getString("keterangan"));
+                implementasiPerawat.setNamaTerang(object.getString("nama_terang"));
+                implementasiPerawat.setSip(object.getString("sip"));
+                implementasiPerawat.setAction("C");
+                implementasiPerawat.setFlag("Y");
+                implementasiPerawat.setCreatedDate(time);
+                implementasiPerawat.setCreatedWho(userLogin);
+                implementasiPerawat.setLastUpdate(time);
+                implementasiPerawat.setLastUpdateWho(userLogin);
+                if(object.has("ttd")){
+                    if(!"".equalsIgnoreCase(object.getString("ttd"))){
+                        try {
+                            BASE64Decoder decoder = new BASE64Decoder();
+                            byte[] decodedBytes = decoder.decodeBuffer(object.getString("ttd"));
+                            String wkt = time.toString();
+                            String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                            String fileName = object.getString("id_detail_checkup") + "-" + patten + ".png";
+                            String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
+
+                            BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+                            if (image == null) {
+                                response.setStatus("error");
+                                response.setMsg("Buffered Image is null");
+                            } else {
+                                File f = new File(uploadFile);
+                                ImageIO.write(image, "png", f);
+                                implementasiPerawat.setTtd(fileName);
+                            }
+                        }catch (IOException e){
+                            response.setStatus("error");
+                            response.setMsg(e.getMessage());
+                        }
+                    }
+                }
+                response = implementasiPerawatBo.saveAdd(implementasiPerawat);
+                if("success".equalsIgnoreCase(response.getStatus())){
+                    RekamMedikBo rekamMedikBo = (RekamMedikBo) ctx.getBean("rekamMedikBoProxy");
+                    JSONObject obj = new JSONObject(dataPasien);
+                    if(obj != null){
+                        StatusPengisianRekamMedis status = new StatusPengisianRekamMedis();
+                        status.setNoCheckup(obj.getString("no_checkup"));
+                        status.setIdDetailCheckup(obj.getString("id_detail_checkup"));
+                        status.setIdPasien(obj.getString("id_pasien"));
+                        status.setIdRekamMedisPasien(obj.getString("id_rm"));
+                        status.setIsPengisian("Y");
+                        status.setAction("C");
+                        status.setFlag("Y");
+                        status.setCreatedWho(userLogin);
+                        status.setCreatedDate(time);
+                        status.setLastUpdateWho(userLogin);
+                        status.setLastUpdate(time);
+                        response = rekamMedikBo.saveAdd(status);
+                    }
+                }
+            }
+        }catch (JSONException e){
+            response.setStatus("error");
+            response.setMsg(e.getMessage());
+        }
+        return response;
+    }
+
+    public List<ImplementasiPerawat> getListImplementasiPerawat(String idDetailCheckup) {
+        List<ImplementasiPerawat> list = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ImplementasiPerawatBo implementasiPerawatBo = (ImplementasiPerawatBo) ctx.getBean("implementasiPerawatBoProxy");
+        if (!"".equalsIgnoreCase(idDetailCheckup)) {
+            try {
+                ImplementasiPerawat implementasiPerawat = new ImplementasiPerawat();
+                implementasiPerawat.setIdDetailCheckup(idDetailCheckup);
+                list = implementasiPerawatBo.getByCriteria(implementasiPerawat);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error" + e.getMessage());
+            }
+        }
+        return list;
+    }
+
+    public CrudResponse saveDeleteImplementasiPerawat(String idAsesmen, String dataPasien) {
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ImplementasiPerawatBo implementasiPerawatBo = (ImplementasiPerawatBo) ctx.getBean("implementasiPerawatBoProxy");
+        if (!"".equalsIgnoreCase(idAsesmen)) {
+            ImplementasiPerawat implementasiPerawat = new ImplementasiPerawat();
+            implementasiPerawat.setIdImplementasiPerawat(idAsesmen);
+            response = implementasiPerawatBo.saveDelete(implementasiPerawat);
             if("success".equalsIgnoreCase(response.getStatus())){
                 try {
                     JSONObject obj = new JSONObject(dataPasien);

@@ -522,42 +522,69 @@
     }
 
     function saveDokterLab(idDokter){
+        $('#modal-confirm-dialog').modal('hide');
         var url = document.getElementById("temp_canvas");
         var hasil = url.toDataURL("image/png"),
             hasil = hasil.replace(/^data:image\/(png|jpg);base64,/, "");
 
-        $('#modal-confirm-dialog').modal('hide');
+        var idPasien = '<s:property value="periksaLab.idPasien"/>';
+        var idPelayanan = '<s:property value="periksaLab.idPelayanan"/>';
+        var metodePembayaran = '<s:property value="periksaLab.metodePembayaran"/>';
+        var jenisPasien = '<s:property value="periksaLab.idJenisPeriksaPasien"/>';
+        var idDetailCheckup = '<s:property value="periksaLab.idDetailCheckup"/>';
+
+        var data = {
+            'id_pasien':idPasien,
+            'id_detail_checkup': idDetailCheckup,
+            'jenis_pasien': jenisPasien,
+            'id_pelayanan': idPelayanan,
+            'metode_bayar': metodePembayaran,
+            'just_lab': "Y"
+        }
+
+        var img = $("#url_img").val();
+        var finalImg = "";
+
+        if(img != ''){
+            finalImg = hasil;
+        }
+        var result = JSON.stringify(data);
+
+        $('#waiting_dialog').dialog('open');
         $('#save_ket').hide();
         $('#load_ket').show();
         dwr.engine.setAsync(true);
-        PeriksaLabAction.saveEditDokterLab(idPeriksaLab, idDokter, hasil, {
+        PeriksaLabAction.saveEditDokterLab(idPeriksaLab, idDokter, finalImg, keterangan, data, {
             callback: function (response) {
                 if (response.status == "success") {
-                    if("just_lab" == keterangan){
-                        CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, "selesai", "", "", "", "", "Pemeriksaan Lab", "", "", jenisPasien, "", "", "", idPasien, "", "", metodePembayaran, "lab", "", function (response) {
-                            if(response.status == "success"){
-                                $('#success_dok').show().fadeOut(5000);
-                                $('#save_ket').show();
-                                $('#load_ket').hide();
-                                $('#info_dialog').dialog('open');
-                                $('#close_pos').val(2);
-                                $('body').scrollTop(0);
-                            }else{
-                                $('#save_ket').show();
-                                $('#load_ket').hide();
-                                $('#warning_dok').show().fadeOut(5000);
-                                $('#msg_dok').text(response.msg);
-                            }
-                        });
-                    }else{
-                        $('#success_dok').show().fadeOut(5000);
-                        $('#save_ket').show();
-                        $('#load_ket').hide();
-                        $('#info_dialog').dialog('open');
-                        $('#close_pos').val(2);
-                        $('body').scrollTop(0);
-                    }
+                    $('#success_dok').show().fadeOut(5000);
+                    $('#save_ket').show();
+                    $('#load_ket').hide();
+                    $('#waiting_dialog').dialog('close');
+                    $('#info_dialog').dialog('open');
+                    $('#close_pos').val(2);
+                    $('body').scrollTop(0);
+                    // if("just_lab" == keterangan){
+                    //     CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, "selesai", "", "", "", "", "Pemeriksaan Lab", "", "", jenisPasien, "", "", "", idPasien, "", "", metodePembayaran, "lab", "", function (response) {
+                    //         if(response.status == "success"){
+                    //             $('#success_dok').show().fadeOut(5000);
+                    //             $('#save_ket').show();
+                    //             $('#load_ket').hide();
+                    //             $('#info_dialog').dialog('open');
+                    //             $('#close_pos').val(2);
+                    //             $('body').scrollTop(0);
+                    //         }else{
+                    //             $('#save_ket').show();
+                    //             $('#load_ket').hide();
+                    //             $('#warning_dok').show().fadeOut(5000);
+                    //             $('#msg_dok').text(response.msg);
+                    //         }
+                    //     });
+                    // }else{
+                    //
+                    // }
                 } else {
+                    $('#waiting_dialog').dialog('close');
                     $('#save_ket').show();
                     $('#load_ket').hide();
                     $('#warning_dok').show().fadeOut(5000);

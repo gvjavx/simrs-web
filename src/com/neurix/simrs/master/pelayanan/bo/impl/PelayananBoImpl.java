@@ -543,8 +543,8 @@ public class PelayananBoImpl implements PelayananBo{
     }
 
     @Override
-    public List<Pelayanan> getListPelayananWithLab() throws GeneralBOException {
-        return pelayananDao.getListPelayananWithLab();
+    public List<Pelayanan> getListPelayananWithLab(String tipe) throws GeneralBOException {
+        return pelayananDao.getListPelayananWithLab(tipe);
     }
     @Override
     public List<ImSimrsPelayananEntity> getByCriteria(Map criteria) throws GeneralBOException {

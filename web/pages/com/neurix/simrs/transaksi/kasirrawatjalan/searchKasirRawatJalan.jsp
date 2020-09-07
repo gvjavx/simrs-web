@@ -53,7 +53,7 @@
                         <div class="form-group">
                             <s:form id="kasirjalanForm" method="post" namespace="/kasirjalan" action="search_kasirjalan.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">ID Pasien</label>
+                                    <label class="control-label col-sm-4">NO RM</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="id_pasien" cssStyle="margin-top: 7px"
                                                      name="headerDetailCheckup.idPasien" required="false"
@@ -199,7 +199,7 @@
                             <thead >
                             <tr bgcolor="#90ee90">
                                 <td>ID Detail Checkup</td>
-                                <td>ID Pasien</td>
+                                <td>NO RM</td>
                                 <td>Nama</td>
                                 <td>Status Periksa</td>
                                 <td >Status</td>

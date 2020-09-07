@@ -8,9 +8,11 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
+import com.neurix.simrs.transaksi.checkupdetail.action.CheckupDetailAction;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.periksalab.bo.PeriksaLabBo;
@@ -341,7 +343,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
         return response;
     }
 
-    public CheckResponse saveDokterRadiologi(String idPeriksaLab, String idDokter, String urlImg) {
+    public CheckResponse saveDokterRadiologi(String idPeriksaLab, String idDokter, String urlImg, String keterangan, String data) {
 
         logger.info("[PeriksaRadiologiAction.saveRadiologi] start process >>>");
         CheckResponse response = new CheckResponse();
@@ -376,7 +378,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
                     } else {
                         File f = new File(uploadFile);
                         ImageIO.write(image, "png", f);
-                        periksaLab.setUrlImg(fileName);
+                        periksaRadiologi.setUrlImg(fileName);
                     }
                 }catch (IOException e){
                     response.setStatus("error");
@@ -386,7 +388,20 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
             }
 
             response = periksaRadiologiBo.saveDokterRadiologi(periksaRadiologi);
-
+            if ("just_lab".equalsIgnoreCase(keterangan)){
+                if("success".equalsIgnoreCase(response.getStatus())){
+                    CheckupDetailAction detailAction = new CheckupDetailAction();
+                    CrudResponse res = new CrudResponse();
+                    res = detailAction.closeTraksaksiPasien(data);
+                    if("success".equalsIgnoreCase(res.getStatus())){
+                        response.setStatus("success");
+                        response.setMessage("Berhasil");
+                    }else{
+                        response.setStatus("error");
+                        response.setMessage("Error"+res.getMsg());
+                    }
+                }
+            }
         } catch (GeneralBOException e) {
             logger.error("Found Error");
             response.setStatus("error");

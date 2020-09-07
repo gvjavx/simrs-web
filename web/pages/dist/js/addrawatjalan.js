@@ -1160,7 +1160,7 @@ function saveDiagnosa(id) {
         jenisDiagnosa = panjang.length + 1;
     }
 
-    if (idDetailCheckup != '' && idDiag != '' && jenisDiagnosa != '') {
+    if (idDetailCheckup != '' && idDiag != '' && jenisDiagnosa != '' && ketDiagnosa != '') {
 
         $('#save_diagnosa').hide();
         $('#load_diagnosa').show();
@@ -2407,7 +2407,7 @@ function saveICD9(id) {
     var jenisPasien = $('#jenis_pasien').val();
     var data = "";
 
-    if (idDetailCheckup != '' && idIcd9 != '') {
+    if (idDetailCheckup != '' && idIcd9 != '' && ketIcd9 != '') {
 
         data = {
             'id_detail_checkup': idDetailCheckup,
@@ -2890,4 +2890,21 @@ function resetComboObat() {
 
 function setRekamMedis() {
     getListRekamMedis(jenisTrans, jenisPelayanan, idDetailCheckup);
+}
+
+function cekParameter(val){
+    $('.parameter').on('select2:select', function(e) {
+        var data = e.params.data;
+        if(data.id == "LDB00000001"){
+            $('#lab_parameter option').prop('selected', true);
+        }
+    });
+
+    $('.parameter').on('select2:unselect', function(e) {
+        var data = e.params.data;
+        if(data.id == "LDB00000001"){
+            console.log('masuk out');
+            $('#lab_parameter').find("option").prop("selected", false);
+        }
+    });
 }

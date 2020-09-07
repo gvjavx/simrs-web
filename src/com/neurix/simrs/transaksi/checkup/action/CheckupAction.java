@@ -1402,9 +1402,9 @@ public class CheckupAction extends BaseMasterAction {
     public String getComboPelayananWithLab() {
 
         List<Pelayanan> pelayananList = new ArrayList<>();
-
+        String tipe = getTipe();
         try {
-            pelayananList = pelayananBoProxy.getListPelayananWithLab();
+            pelayananList = pelayananBoProxy.getListPelayananWithLab(tipe);
         } catch (HibernateException e) {
             logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
             addActionError(" Error when get data for combo listOfPelayanan" + e.getMessage());

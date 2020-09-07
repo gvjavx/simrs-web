@@ -162,11 +162,11 @@ public class RekamMedisPasienDao extends GenericDao<ImSimrsRekamMedisPasienEntit
                 if (jenis != null) {
                     String notIn = "";
                     if("ugd_anak".equalsIgnoreCase(jenis)){
-                        notIn = "('ugd_dewasa', 'ugd_geriatri')";
+                        notIn = "AND a.jenis NOT IN ('ugd_dewasa', 'ugd_geriatri') \n";
                     }else if("ugd_dewasa".equalsIgnoreCase(jenis)){
-                        notIn = "('ugd_anak', 'ugd_geriatri')";
+                        notIn = "AND a.jenis NOT IN ('ugd_anak', 'ugd_geriatri') \n";
                     }else if("ugd_geriatri".equalsIgnoreCase(jenis)){
-                        notIn = "('ugd_dewasa', 'ugd_anak')";
+                        notIn = "AND a.jenis NOT IN ('ugd_dewasa', 'ugd_anak') \n";
                     }
 
                     SQL = "SELECT \n" +
@@ -189,8 +189,7 @@ public class RekamMedisPasienDao extends GenericDao<ImSimrsRekamMedisPasienEntit
                             "\tFROM im_simrs_rekam_medis_pasien a \n" +
                             "\tINNER JOIN im_simrs_rekam_medis_pelayanan b \n" +
                             "\tON a.id_rekam_medis_pasien = b.id_rekam_medis_pasien \n" +
-                            "\tWHERE b.tipe_pelayanan = :tipePelayanan\n" +
-                            "\tAND a.jenis NOT IN " + notIn+"\n"+
+                            "\tWHERE b.tipe_pelayanan = :tipePelayanan\n" + notIn +
                             "\tAND a.keterangan = 'form' \n"+
                             "\tUNION ALL\n" +
                             "\tSELECT  \n" +

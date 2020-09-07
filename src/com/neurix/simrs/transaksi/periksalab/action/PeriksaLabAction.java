@@ -13,6 +13,7 @@ import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
+import com.neurix.simrs.transaksi.checkupdetail.action.CheckupDetailAction;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.periksalab.bo.PeriksaLabBo;
@@ -567,7 +568,7 @@ public class PeriksaLabAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    public CheckResponse saveEditDokterLab(String idPeriksaLab, String idDokter, String urlImg) {
+    public CheckResponse saveEditDokterLab(String idPeriksaLab, String idDokter, String urlImg, String keterangan, String data) {
         logger.info("[PeriksaLabAction.saveEditDokterLab] start process >>>");
         CheckResponse response = new CheckResponse();
         try {
@@ -611,7 +612,20 @@ public class PeriksaLabAction extends BaseMasterAction {
             }
 
             response = periksaLabBo.saveDokterLab(periksaLab);
-
+            if ("just_lab".equalsIgnoreCase(keterangan)){
+                if("success".equalsIgnoreCase(response.getStatus())){
+                    CheckupDetailAction detailAction = new CheckupDetailAction();
+                    CrudResponse res = new CrudResponse();
+                    res = detailAction.closeTraksaksiPasien(data);
+                    if("success".equalsIgnoreCase(res.getStatus())){
+                        response.setStatus("success");
+                        response.setMessage("Berhasil");
+                    }else{
+                        response.setStatus("error");
+                        response.setMessage("Error"+res.getMsg());
+                    }
+                }
+            }
         } catch (GeneralBOException e) {
             response.setStatus("error");
             response.setMessage("Error"+e.getMessage());

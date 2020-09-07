@@ -1511,9 +1511,9 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Parameter</label>
                         <div class="col-md-7">
-                            <select class="form-control select2" multiple style="margin-top: 7px; width: 100%"
+                            <select class="form-control select2 parameter" multiple style="margin-top: 7px; width: 100%"
                                     id="lab_parameter"
-                                    onchange="var warn =$('#war_parameter').is(':visible'); if (warn){$('#cor_parameter').show().fadeOut(3000);$('#war_parameter').hide()}">
+                                    onchange="var warn =$('#war_parameter').is(':visible'); if (warn){$('#cor_parameter').show().fadeOut(3000);$('#war_parameter').hide()}; cekParameter()">
                                 <option value=''>[Select One]</option>
                             </select>
                         </div>

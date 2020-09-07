@@ -703,7 +703,6 @@
                                                                 $('#suku').val(selectedObj.suku);
                                                                 $('#img_ktp').val(selectedObj.imgKtp);
                                                                 $('#img-upload').attr('src', selectedObj.urlktp);
-//                                                            $('#penjamin').val("002");
                                                                 $('#provinsi').val(selectedObj.prov);
                                                                 $('#kabupaten').val(selectedObj.kota);
                                                                 $('#kecamatan').val(selectedObj.kec);
@@ -806,7 +805,7 @@
                                                     },
                                                     updater: function (item) {
                                                         var selectedObj = mapped[item];
-
+                                                        console.log(selectedObj);
                                                         alertPasien(selectedObj.id);
                                                         alertObatKronis(selectedObj.id);
                                                         getRiwayatPemeriksaan(selectedObj.id);

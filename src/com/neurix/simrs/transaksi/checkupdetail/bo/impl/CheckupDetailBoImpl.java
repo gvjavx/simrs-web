@@ -283,6 +283,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     public CrudResponse updateDetailCheckup(HeaderDetailCheckup bean) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
         try {
+            ItSimrsHeaderChekupEntity chekupEntity = new ItSimrsHeaderChekupEntity();
             ItSimrsHeaderDetailCheckupEntity entity = new ItSimrsHeaderDetailCheckupEntity();
             entity = checkupDetailDao.getById("idDetailCheckup", bean.getIdDetailCheckup());
             if (entity != null) {
@@ -310,6 +311,23 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 } catch (HibernateException e) {
                     response.setStatus("error");
                     response.setMsg("IError when update invoice, " + e.getMessage());
+                }
+
+                if("Y".equalsIgnoreCase(bean.getJustLab())){
+                    chekupEntity = headerCheckupDao.getById("noCheckup", entity.getNoCheckup());
+                    if(chekupEntity != null){
+                        chekupEntity.setLastUpdate(bean.getLastUpdate());
+                        chekupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                        chekupEntity.setTglKeluar(bean.getLastUpdate());
+                        try {
+                            headerCheckupDao.updateAndSave(chekupEntity);
+                            response.setStatus("success");
+                            response.setMsg("Berhasil");
+                        }catch (HibernateException e){
+                            response.setStatus("error");
+                            response.setMsg("IError when update invoice, " + e.getMessage());
+                        }
+                    }
                 }
 
             } else {
@@ -466,7 +484,11 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             }
 
             // update tgl kluar if selesai
-            if ("selesai".equalsIgnoreCase(bean.getTindakLanjut()) || "rujuk_rs_lain".equalsIgnoreCase(bean.getTindakLanjut())) {
+            if ("selesai".equalsIgnoreCase(bean.getTindakLanjut()) ||
+                    "rujuk_rs_lain".equalsIgnoreCase(bean.getTindakLanjut()) ||
+                    "kontrol_ulang".equalsIgnoreCase(bean.getTindakLanjut()) ||
+                    "lanjut_biaya".equalsIgnoreCase(bean.getTindakLanjut())) {
+
                 HeaderCheckup headerCheckup = new HeaderCheckup();
                 headerCheckup.setNoCheckup(entity.getNoCheckup());
                 List<ItSimrsHeaderChekupEntity> headerChekupEntities = getListEntityCheckup(headerCheckup);
@@ -990,7 +1012,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
                 if (ruanganEntities.size() > 0) {
                     MtSimrsRuanganEntity ruanganEntity = ruanganEntities.get(0);
-                    if(ruanganEntity != null){
+                    if (ruanganEntity != null) {
                         ruanganEntity.setStatusRuangan("Y");
                         ruanganEntity.setAction("U");
                         ruanganEntity.setSisaKuota(ruanganEntity.getSisaKuota() + 1);

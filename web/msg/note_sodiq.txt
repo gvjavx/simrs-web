@@ -418,6 +418,31 @@ ADD COLUMN sip VARCHAR (100);
 ALTER TABLE it_simrs_detail_icu
 ADD COLUMN id_detail_checkup VARCHAR(50);
 
+-- 05-09-2020
+CREATE TABLE public.it_simrs_implementasi_perawat
+(
+  id_implementasi_perawat character varying(30) NOT NULL,
+  id_detail_checkup character varying(30),
+  waktu character varying(100),
+  keterangan text,
+  ttd character varying(100),
+  nama_terang character varying(100),
+  flag character varying(1),
+  action character varying(1),
+  created_who character varying(100),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  CONSTRAINT pk_id_implementasi_perawat PRIMARY KEY (id_implementasi_perawat)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_implementasi_perawat
+  OWNER TO postgres;
+
+CREATE SEQUENCE seq_implementasi_perawat;
+
 
 
 

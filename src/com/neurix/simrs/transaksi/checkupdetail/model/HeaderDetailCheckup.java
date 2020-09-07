@@ -191,6 +191,15 @@ public class HeaderDetailCheckup extends BaseModel{
     private String isCover;
     private BigDecimal pasienBayar;
     private String isBayar;
+    private String justLab;
+
+    public String getJustLab() {
+        return justLab;
+    }
+
+    public void setJustLab(String justLab) {
+        this.justLab = justLab;
+    }
 
     public String getIsBayar() {
         return isBayar;

@@ -947,7 +947,7 @@ function saveDiagnosa(id) {
     var jenisDiagnosa = $('#nosa_jenis_diagnosa').val();
     var jenisPasien = $('#id_jenis_pasien').val();
 
-    if (idDetailCheckup != '' && idDiag != '' && jenisDiagnosa != '') {
+    if (idDetailCheckup != '' && idDiag != '' && jenisDiagnosa != '' && ketDiagnosa != '') {
 
         $('#save_diagnosa').hide();
         $('#load_diagnosa').show();
@@ -2426,7 +2426,7 @@ function saveICD9(id) {
     var jenisPasien = $('#id_jenis_pasien').val();
     var data = "";
 
-    if (idDetailCheckup != '' && idIcd9 != '') {
+    if (idDetailCheckup != '' && idIcd9 != '' && ketIcd9 != '') {
 
         data = {
             'id_detail_checkup' :idDetailCheckup,

@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.periksalab.bo.impl;
 
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.kategorilab.dao.KategoriLabDao;
@@ -97,6 +98,9 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
                     periksaLab.setLastUpdate(periksaLabEntity.getLastUpdate());
                     periksaLab.setLastUpdateWho(periksaLabEntity.getLastUpdateWho());
                     periksaLab.setApproveFlag(periksaLabEntity.getApproveFlag());
+                    if(periksaLabEntity.getUrlImg() != null && !"".equalsIgnoreCase(periksaLabEntity.getUrlImg())){
+                        periksaLab.setUrlImg(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_IMG_RM+periksaLabEntity.getUrlImg());
+                    }
 
                     periksaLabList.add(periksaLab);
                 }
