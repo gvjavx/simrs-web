@@ -38,6 +38,12 @@
             <basic name="lastUpdateWho">
                 <column name="last_update_who"/>
             </basic>
+            <basic name="urlImg">
+                <column name="url_img"/>
+            </basic>
+            <basic name="noBatch">
+                <column name="no_batch"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

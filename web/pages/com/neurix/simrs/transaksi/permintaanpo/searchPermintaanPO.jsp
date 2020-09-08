@@ -513,8 +513,8 @@
 
     function printPo(idPermintaan, idApproval) {
         var form = { "permintaanVendor.idPermintaanVendor":idPermintaan, "permintaanVendor.idApprovalObat":idApproval };
-        var host = firstpath()+"/permintaanvendor/printPo_permintaanvendor.action";
-        post(host);
+        var host = firstpath()+"/permintaanpo/printPo_permintaanpo.action";
+        post(host, form);
     }
 
 

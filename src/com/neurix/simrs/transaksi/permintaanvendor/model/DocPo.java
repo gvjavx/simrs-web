@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 /**
  * Created by reza on 03/09/20.
  */
-public class ItSimrsDocPoEntity {
+public class DocPo {
     private String id;
     private String idItem;
     private String idPermintaanObatVendor;
@@ -129,7 +129,7 @@ public class ItSimrsDocPoEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ItSimrsDocPoEntity that = (ItSimrsDocPoEntity) o;
+        DocPo that = (DocPo) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (idItem != null ? !idItem.equals(that.idItem) : that.idItem != null) return false;

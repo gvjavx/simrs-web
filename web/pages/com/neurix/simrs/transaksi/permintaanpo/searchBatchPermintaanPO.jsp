@@ -267,48 +267,121 @@
                 </div>
                 <div class="box-header with-border"></div>
                 <div class="box-body">
+                    <%--<div class="row">--%>
+
+                        <%--<div class="col-md-6">--%>
+                            <%--<div class="form-group">--%>
+                                <%--<label class="col-md-4">No Faktur</label>--%>
+                                <%--<div class="col-md-8">--%>
+                                    <%--<input class="form-control" id="app_no_faktur">--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                            <%--<div class="form-group">--%>
+                                <%--<label class="col-md-4" style="margin-top: 7px">Tanggal Faktur</label>--%>
+                                <%--<div class="col-md-8">--%>
+                                    <%--<input style="margin-top: 7px" class="form-control datepicker2 datemask2" id="app_tgl_faktur">--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                            <%--<div class="form-group">--%>
+                                <%--<label class="col-md-4" style="margin-top: 7px">Foto Doc PO</label>--%>
+                                <%--<div class="col-md-8">--%>
+                                    <%--<div class="input-group" style="margin-top: 7px" id="app_doc">--%>
+                                    <%--<span class="input-group-btn">--%>
+                                    <%--<span class="btn btn-default btn-file">--%>
+                                    <%--Browse… <input type="file" id="imgInp" accept=".jpg" onchange="$('#img_file').css('border','')">--%>
+                                    <%--</span>--%>
+                                    <%--</span>--%>
+                                    <%--<input type="text" class="form-control" readonly>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                                <%--<canvas id="img_canvas" style="border: solid 1px #ccc; display: none"></canvas>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                        <%--<div class="col-md-6">--%>
+                            <%--<div class="form-group">--%>
+                                <%--<label class="col-md-4">No Invoice</label>--%>
+                                <%--<div class="col-md-8">--%>
+                                    <%--<input class="form-control" id="app_no_invoice">--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                            <%--<div class="form-group">--%>
+                                <%--<label class="col-md-4" style="margin-top: 7px">No DO</label>--%>
+                                <%--<div class="col-md-8">--%>
+                                    <%--<input style="margin-top: 7px" class="form-control" id="app_no_do">--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="col-md-4">No Faktur</label>
-                                <div class="col-md-8">
-                                    <input class="form-control" id="app_no_faktur">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-4" style="margin-top: 7px">Tanggal Faktur</label>
-                                <div class="col-md-8">
-                                    <input style="margin-top: 7px" class="form-control datepicker2 datemask2" id="app_tgl_faktur">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-4" style="margin-top: 7px">Foto Doc PO</label>
-                                <div class="col-md-8">
-                                    <div class="input-group" style="margin-top: 7px" id="app_doc">
-                                    <span class="input-group-btn">
-                                    <span class="btn btn-default btn-file">
-                                    Browse… <input type="file" id="imgInp" accept=".jpg" onchange="$('#img_file').css('border','')">
-                                    </span>
-                                    </span>
-                                    <input type="text" class="form-control" readonly>
-                                    </div>
-                                </div>
-                                <canvas id="img_canvas" style="border: solid 1px #ccc; display: none"></canvas>
-                            </div>
+                            <table class="table table-striped">
+                                <tr>
+                                    <td width="40%">No. Faktur Pajak</td>
+                                    <td><input type="text" class="form-control" id="app_no_faktur"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Tanggal Faktur</td>
+                                    <td><input type="date" class="form-control" id="app_tgl_faktur"/></td>
+                                </tr>
+                            </table>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="col-md-4">No Invoice</label>
-                                <div class="col-md-8">
-                                    <input class="form-control" id="app_no_invoice">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-4" style="margin-top: 7px">No DO</label>
-                                <div class="col-md-8">
-                                    <input style="margin-top: 7px" class="form-control" id="app_no_do">
-                                </div>
-                            </div>
+                            <div style="float: left">Upload Faktur</div>
+                            <button class="btn btn-sm btn-warning" style="float: right;" onclick="addUploadFaktur('faktur')"><i class="fa fa-plus"></i></button>
+                            <%--<button class="btn btn-sm btn-info" style="float: right;" onclick="viewUpload()"><i class="fa fa-image"></i></button>--%>
+                            <input type="file" class="form-control" name="uploadFaktur" id="upload-faktur-0" onchange="uploadDoc('faktur', '0')"/>
+                            <canvas id="canvas-faktur-0" style="border: solid 1px #ccc; display: none" ></canvas>
+                            <div id="body-upload-faktur-0"></div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-striped">
+                                <tr>
+                                    <td width="40%">No. Invoice</td>
+                                    <td><input type="text" class="form-control" id="app_no_invoice"/></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <div style="float: left">Upload Invoice</div> <button class="btn btn-sm btn-warning" style="float: right;" onclick="addUploadInvoice()"><i class="fa fa-plus"></i></button>
+                            <%--<button class="btn btn-sm btn-info" style="float: right;" onclick="viewUpload('invoice')"><i class="fa fa-image"></i></button>--%>
+                            <input type="file" class="form-control" name="uploadInvoice" id="upload-invoice-0" onchange="uploadDoc('invoice', '0')"/>
+                            <canvas id="canvas-invoice-0" style="border: solid 1px #ccc; display: none" ></canvas>
+                            <div id="body-upload-invoice-0"></div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-striped">
+                                <tr>
+                                    <td width="40%">No. DO</td>
+                                    <td><input type="text" class="form-control" id="app_no_do"/></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <div style="float: left">Upload DO</div> <button class="btn btn-sm btn-warning" style="float: right;" onclick="addUploadDo('do')"><i class="fa fa-plus"></i></button>
+                            <%--<button class="btn btn-sm btn-info" style="float: right;" onclick="viewUpload('do')"><i class="fa fa-image"></i></button>--%>
+                            <input type="file" class="form-control" name="uploadInvoice" id="upload-do-0"  onchange="uploadDoc('do', '0')"/>
+                            <canvas id="canvas-do-0" style="border: solid 1px #ccc; display: none" ></canvas>
+                            <div id="body-upload-do-0"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-striped">
+                                <tr>
+                                    <td width="40%"></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info" style="float: right;" onclick="viewUpload()"><i class="fa fa-image"></i> View Uploaded Document</button>
+                                        <%--<input type="text" class="form-control" id="app_no_do"/>--%>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -347,15 +420,16 @@
                                 <tr>
                                     <td width="40%">Nomor Faktur</td>
                                     <td><p id="det_no_faktur"></p></td>
+                                    <td><button class="btn btn-sm btn-info" style="float: right"><i class="fa fa-image"></i></button></td>
                                 </tr>
                                 <tr>
                                     <td>Tanggal Faktur</td>
                                     <td><p id="det_tlg_faktur"></p></td>
                                 </tr>
-                                <tr>
-                                    <td>Foto Doc</td>
-                                    <td><button id="det_img" class="btn btn-primary"><i class="fa fa-image"></i></button></td>
-                                </tr>
+                                <%--<tr>--%>
+                                    <%--<td>Foto Doc</td>--%>
+                                    <%--<td><button id="det_img" class="btn btn-primary"><i class="fa fa-image"></i></button></td>--%>
+                                <%--</tr>--%>
                             </table>
                         </div>
                         <div class="col-md-6">
@@ -363,10 +437,12 @@
                                 <tr>
                                     <td width="40%">Nomor Invoice</td>
                                     <td><p id="det_no_invoice"></p></td>
+                                    <td><button class="btn btn-sm btn-info" style="float: right"><i class="fa fa-image"></i></button></td>
                                 </tr>
                                 <tr>
                                     <td>No DO</td>
                                     <td><p id="det_no_do"></p></td>
+                                    <td><button class="btn btn-sm btn-info" style="float: right"><i class="fa fa-image"></i></button></td>
                                 </tr>
                             </table>
                         </div>
@@ -472,14 +548,40 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-view-img">
+    <div class="modal-dialog modal-fade modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> View Uplaoded Documment
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div id="body-img">
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
-    var idApprovalObat = $('#id_approval').val();
-    var idpermintaanPo = $('#id_permintaan_vendor').val();
-    var noPo = '<s:property value="id" />';
-    var jenis = '<s:property value="tipe" />';
-
+    var idApprovalObat  = $('#id_approval').val();
+    var idpermintaanPo  = $('#id_permintaan_vendor').val();
+    var noPo            = '<s:property value="id" />';
+    var jenis           = '<s:property value="tipe" />';
+    var nFaktur         = 0;
+    var nInvoice        = 0;
+    var nDo             = 0;
+    var n               = 0;
 
     $(document).ready(function () {
 
@@ -592,6 +694,10 @@
     }
 
     function searchDo(noDo) {
+        n           = 0;
+        nFaktur     = 0;
+        nInvoice    = 0;
+        nDo         = 0;
         $('#modal-approve').modal({show:true, backdrop:'static'});
         var table = [];
         var noBatch = null;
@@ -633,6 +739,7 @@
                         if (dataDo == null){
                             PermintaanVendorAction.getTransaksiObatByIdTrans(item.idTransaksiObatDetail, noBatch, function (res) {
                                 if (res != null){
+//                                    console.log(res);
                                     $("#app_no_faktur").val(res.noFaktur);
                                     $("#app_tgl_faktur").val(res.stTglFaktur);
                                     $("#app_no_invoice").val(res.noInvoice);
@@ -678,6 +785,10 @@
     }
 
     function confirmBatch(noBatch){
+        n           = 0;
+        nFaktur     = 0;
+        nInvoice    = 0;
+        nDo         = 0;
         $('#modal-approve').modal({show:true, backdrop:'static'});
         var table = [];
         $('#body_approve').html('');
@@ -713,6 +824,7 @@
                         if (dataDo == null){
                             PermintaanVendorAction.getTransaksiObatByIdTrans(item.idTransaksiObatDetail, noBatch, function (res) {
                                 if (res != null){
+//                                    console.log(res);
                                     $("#app_no_faktur").val(res.noFaktur);
                                     $("#app_tgl_faktur").val(res.stTglFaktur);
                                     $("#app_no_invoice").val(res.noInvoice);
@@ -769,36 +881,75 @@
         var tglFaktur   = tgl.split("-").reverse().join("-");
         var noInvoice   = $('#app_no_invoice').val();
         var noDo        = $('#app_no_do').val();
-        var canvas = document.getElementById('img_canvas');
-        var dataURL = canvas.toDataURL("image/png"),
-            dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
-        var data = "";
 
-        if(noFaktur != '' && tglFaktur != '' && noInvoice != '' && noDo != '' && dataURL){
+//        if (tgl == null || tgl == ""){
+//            return alert("tanggal tidak ditemukan");
+//        } else {
+//            return alert(tgl);
+//        }
+//        var canvas = document.getElementById('img_canvas');
+//        var dataURL = canvas.toDataURL("image/png"),
+//            dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+        var data = "";
+        var listOfimg = [];
+        if(noFaktur != '' && tglFaktur != '' && noInvoice != '' && noDo != ''){
             data = {
                 'no_batch':noBatch,
                 'no_faktur':noFaktur,
-                'tgl_faktur':tglFaktur,
+                'tgl_faktur':tgl,
                 'no_invoice':noInvoice,
                 'no_do':noDo,
-                'img_url':dataURL
+                'img_url':""
             }
+
+            for (i=0 ; i <= nFaktur ; i++){
+                var canvas = document.getElementById('canvas-faktur-'+i);
+                var input = document.getElementById('upload-faktur-'+i);
+                if (input.files.length != 0){
+                    var dataURL = canvas.toDataURL("image/png"), dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+                    listOfimg.push({"jenisnomor":"faktur", "batch":noBatch, "iditem":noFaktur, "img":dataURL});
+                }
+
+            }
+
+            for (i=0 ; i <= nInvoice ; i++){
+                var canvas = document.getElementById('canvas-invoice-'+i);
+                var input = document.getElementById('upload-invoice-'+i);
+                if (input.files.length != 0) {
+                    var dataURL = canvas.toDataURL("image/png"), dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+                    listOfimg.push({"jenisnomor":"invoice", "batch":noBatch, "iditem":noInvoice, "img":dataURL});
+                }
+
+            }
+
+            for (i=0 ; i <= nDo ; i++){
+                var canvas = document.getElementById('canvas-do-'+i);
+                var input = document.getElementById('upload-do-'+i);
+                if (input.files.length != 0) {
+                    var dataURL = canvas.toDataURL("image/png"), dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+                    listOfimg.push({"jenisnomor":"do", "batch":noBatch, "iditem":noDo, "img":dataURL});
+                }
+
+            }
+
+            console.log(listOfimg);
             var result = JSON.stringify(data);
+            var listimg = JSON.stringify(listOfimg);
             $('#modal-confirm-dialog').modal('show');
-            $('#save_con').attr('onclick', 'approveBatch(\''+result+'\')');
+            $('#save_con').attr('onclick', 'approveBatch(\''+result+'\', \''+listimg+'\')');
         }else{
             $('#warning_app').show().fadeOut(5000);
             $('#msg_app').text("Silahkan cek kembali data inputan anda...!");
         }
 
     }
-    function approveBatch(data){
+    function approveBatch(data, listimg){
         $('#modal-confirm-dialog').modal('hide');
         $('#save_approve').hide();
         $('#load_approve').show();
 
         dwr.engine.setAsync(true);
-        PermintaanVendorAction.saveApproveBatch(idpermintaanPo, data, jenis, {
+        PermintaanVendorAction.saveApproveBatch(idpermintaanPo, data, jenis, listimg, {
             callback: function (response) {
                 if(response.status = "success"){
                     $('#info_dialog').dialog('open');
@@ -859,6 +1010,99 @@
         console.log(img);
         $('#img_surat_po').attr('src',img);
         $('#modal-doc').modal('show');
+    }
+
+    function addUploadFaktur() {
+        nFaktur ++;
+        str = '<input type="file" class="form-control" name="uploadFaktur" id="upload-faktur-'+nFaktur+'" onchange="uploadDoc(\'faktur\', \''+nFaktur+'\')"/>' +
+            '<canvas id="canvas-faktur-'+nFaktur+'" style="border: solid 1px #ccc; display: none" ></canvas>' +
+            '<div id="body-upload-faktur-'+nFaktur+'"></div>';
+        var i = nFaktur - 1;
+        $("#body-upload-faktur-"+i).html(str);
+    }
+
+    function addUploadInvoice() {
+        nInvoice ++;
+        str = '<input type="file" class="form-control" name="uploadInvoice" id="upload-invoice-'+nInvoice+'"  onchange="uploadDoc(\'invoice\', \''+nInvoice+'\')"/>' +
+            '<canvas id="canvas-invoice-'+nInvoice+'" style="border: solid 1px #ccc; display: none" ></canvas>' +
+            '<div id="body-upload-invoice-'+nInvoice+'"></div>';
+        var i = nInvoice - 1;
+        $("#body-upload-invoice-"+i).html(str);
+    }
+
+    function addUploadDo() {
+        nDo ++;
+        str = '<input type="file" class="form-control" name="uploadDo" id="upload-do-'+nDo+'" onchange="uploadDoc(\'do\', \''+nDo+'\')"/>' +
+            '<canvas id="canvas-do-'+nDo+'" style="border: solid 1px #ccc; display: none" ></canvas>' +
+            '<div id="body-upload-do-'+nDo+'"></div>';
+        var i = nDo - 1;
+        $("#body-upload-do-"+i).html(str);
+    }
+
+    function uploadDoc(tipe, ind){
+        var canvas = document.getElementById("canvas-"+tipe+"-"+ind);
+        var ctx = canvas.getContext('2d');
+        var reader = new FileReader();
+        reader.onload = function(event){
+            var img = new Image();
+            img.onload = function(){
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                ctx.drawImage(img,0,0);
+            }
+            img.src = event.target.result;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
+    function firstpath() {
+        var pathArray = window.location.pathname.split('/');
+        var first = pathArray[1];
+        return "/" + first;
+    }
+
+    function viewUpload() {
+        $("#modal-view-img").modal('show');
+        var batch = $("#mod_batch").text();
+        $("#body-img").html("");
+        PermintaanVendorAction.getListItemDoc(idpermintaanPo, batch, function (list) {
+
+            var str = '';
+            $.each(list, function (i, item) {
+
+                str += '<div class="row">' +
+                    '<div class="col-md-12">' +
+                    '<h5>'+item.jenisNomor.toUpperCase()+' - '+item.idItem+'</h5>' +
+                    '</div>' +
+                    '<div class="col-md-12" id="body-img-'+item.idItem+'">';
+
+                str += '</div>' +
+                    '</div>';
+
+                showImg(item.idItem);
+            });
+
+         $("#body-img").html(str);
+        });
+    }
+
+    function showImg(idItem){
+        var first = firstpath();
+        PermintaanVendorAction.getListImg(idItem, function (listimg) {
+            console.log(listimg);
+            var str = '<div class="row">';
+            $.each(listimg, function (n, img) {
+
+                str += '<div class="col-md-4" align="center">' +
+                    '<img src="'+ first + '/images/upload/surat_po/'+img.urlImg+'" style="width: 300px"/>' +
+                    '</div>';
+            });
+            str += '</div>' +
+                '<br>';
+            $("#body-img-"+idItem).html(str);
+        });
+
     }
 
 </script>

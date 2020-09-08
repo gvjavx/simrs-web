@@ -2018,7 +2018,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             obatBatch.setNoFaktur(batchEntity.getNoFaktur());
             obatBatch.setNoDo(batchEntity.getNoDo());
             obatBatch.setNoInvoice(batchEntity.getNoInvoice());
-            obatBatch.setStTglFaktur(CommonUtil.ddMMyyyyFormat(batchEntity.getTanggalFaktur()));
+            obatBatch.setStTglFaktur(CommonUtil.yyyyMMddFormat(batchEntity.getTanggalFaktur()));
             return obatBatch;
         }
 
@@ -2037,6 +2037,31 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             }
         }
         return transaksiObatDetails;
+    }
+
+    @Override
+    public void saveListDocVendor(List<ItSimrsDocPoEntity> docPoEntities) throws GeneralBOException {
+        if (docPoEntities.size() > 0){
+            for (ItSimrsDocPoEntity docPoEntity : docPoEntities){
+                docPoEntity.setId(getNextIdDocPo());
+
+                try {
+                    docPoDao.addAndSave(docPoEntity);
+                } catch (HibernateException e){
+                    logger.error("Found error when save doc po " , e);
+                }
+            }
+        }
+    }
+
+    @Override
+    public List<DocPo> getListItemDoc(String idPermintaanVendor, String noBatch) throws GeneralBOException {
+        return permintaanVendorDao.getListDaftarDoc(idPermintaanVendor, noBatch);
+    }
+
+    @Override
+    public List<DocPo> getListImgByItem(String idItem) throws GeneralBOException {
+        return permintaanVendorDao.getListImg(idItem);
     }
 
     // for get sequence id
@@ -2125,7 +2150,8 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
     }
 
     private String getNextIdDocPo(){
-        return "DOC" + docPoDao.getNextSeq();
+        String curDate = CommonUtil.stDateSeq();
+        return "DOC" + curDate + docPoDao.getNextSeq();
     }
 
     public static Logger getLogger() {

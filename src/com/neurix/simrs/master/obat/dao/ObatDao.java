@@ -1,5 +1,6 @@
 package com.neurix.simrs.master.obat.dao;
 
+import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.Aging;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.common.util.CommonUtil;
@@ -789,5 +790,101 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             }
         }
         return obat;
+    }
+
+    public List<Aging> getAgingStokObat(String branchId, String idPelayanan, String periode){
+
+        if (idPelayanan == null || "".equalsIgnoreCase(idPelayanan)){
+            idPelayanan = "%";
+        }
+
+        String SQL = "SELECT\n" +
+                "br.branch_id,\n" +
+                "a.*,\n" +
+                "pl.nama_pelayanan,\n" +
+                "br.branch_name\n" +
+                "FROM\n" +
+                "(\n" +
+                "\tSELECT \n" +
+                "\ta.id_barang,\n" +
+                "\ta.nama_obat,\n" +
+                "\tCASE WHEN a.qty_d - a.qty_k <= 0 THEN 0 ELSE a.qty_d - a.qty_k END AS qty,\n" +
+                "\ta.registered_date,\n" +
+                "\ta.id_pelayanan\n" +
+                "\tFROM\n" +
+                "\t(\n" +
+                "\t\tSELECT\n" +
+                "\t\ttso.id_barang,\n" +
+                "\t\ttso.nama_obat,\n" +
+                "\t\tSUM(tso.qty_d) AS qty_d,\n" +
+                "\t\tSUM(tso.qty_k) AS qty_k,\n" +
+                "\t\ttso.registered_date,\n" +
+                "\t\ttso.id_pelayanan\n" +
+                "\t\tFROM \n" +
+                "\t\t(\n" +
+                "\t\t\tSELECT \n" +
+                "\t\t\tts.id_barang,\n" +
+                "\t\t\tob.nama_obat,\n" +
+                "\t\t\tCASE WHEN ts.tipe = 'D' THEN SUM(ts.qty) ELSE 0 END AS qty_d,\n" +
+                "\t\t\tCASE WHEN ts.tipe = 'K' THEN SUM(ts.qty) ELSE 0 END AS qty_k,\n" +
+                "\t\t\tts.registered_date,\n" +
+                "\t\t\tts.id_pelayanan\n" +
+                "\t\t\tFROM it_simrs_transaksi_stok ts\n" +
+                "\t\t\tINNER JOIN im_simrs_obat ob ON ob.id_barang = ts.id_barang\n" +
+                "\t\t\tWHERE to_date( cast(ts.registered_date as TEXT), 'MM-yyyy') \n" +
+                "\t\t\t< ( to_date(:periode, 'MM-yyyy')+ Interval '1 month') \n" +
+                "\t\t\tGROUP BY \n" +
+                "\t\t\tts.id_barang,\n" +
+                "\t\t\tob.nama_obat,\n" +
+                "\t\t\tts.tipe,\n" +
+                "\t\t\tts.registered_date,\n" +
+                "\t\t\tts.id_pelayanan\n" +
+                "\t\t\tORDER BY ts.id_pelayanan, ob.nama_obat, ts.registered_date, ts.id_barang\n" +
+                "\t\t) tso\n" +
+                "\t\tGROUP BY\n" +
+                "\t\ttso.id_barang,\n" +
+                "\t\ttso.nama_obat,\n" +
+                "\t\ttso.registered_date,\n" +
+                "\t\ttso.id_pelayanan\n" +
+                "\t\tORDER BY id_pelayanan, registered_date, id_barang\n" +
+                "\t) a\n" +
+                "\tGROUP BY\n" +
+                "\ta.id_barang,\n" +
+                "\ta.nama_obat,\n" +
+                "\ta.registered_date,\n" +
+                "\ta.id_pelayanan,\n" +
+                "\ta.qty_d,\n" +
+                "\ta.qty_k\n" +
+                "\tORDER BY id_pelayanan, registered_date, id_barang\n" +
+                ") a \n" +
+                "INNER JOIN im_simrs_pelayanan pl ON pl.id_pelayanan = a.id_pelayanan\n" +
+                "INNER JOIN im_branches br ON br.branch_id = pl.branch_id\n" +
+                "WHERE qty > 0\n" +
+                "AND br.branch_id LIKE :unit \n" +
+                "AND pl.id_pelayanan LIKE :pelayanan \n" +
+                "ORDER BY \n" +
+                "pl.id_pelayanan DESC, a.registered_date, a.nama_obat, a.id_barang;";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("unit", branchId)
+                .setParameter("pelayanan", idPelayanan)
+                .setParameter("periode", periode)
+                .list();
+
+        List<Aging> agingList = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] row : results){
+                Aging data = new Aging();
+                data.setKodeRekening((String) row[0]);
+                data.setNoNota((String) row[2] + " (" + (String) row[1] + ")");
+                data.setTotal(BigDecimal.valueOf(Double.parseDouble(row[3].toString())));
+                data.setTglJurnal((Date) row[4]);
+                data.setMasterId((String) row[5]);
+                data.setNamaMaster((String) row[6]);
+                data.setNamaRekening((String) row[7]);
+                agingList.add(data);
+            }
+        }
+        return agingList;
     }
 }
