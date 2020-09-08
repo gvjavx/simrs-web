@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportPo" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4a519167-419f-4da6-aa9e-cbfe1137f46d">
-	<property name="ireport.zoom" value="2.3579476910000063"/>
+	<property name="ireport.zoom" value="1.2100000000000029"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="134"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="reportParams.idApproval" class="java.lang.String"/>
 	<parameter name="reportParams.noPo" class="java.lang.String"/>
 	<parameter name="reportParams.namaVendor" class="java.lang.String"/>
@@ -12,6 +12,7 @@
 	<parameter name="reportParams.logo" class="java.lang.String"/>
 	<parameter name="reportParams.createdWho" class="java.lang.String"/>
 	<parameter name="reportParams.idPermintaanVendor" class="java.lang.String"/>
+	<parameter name="reportParams.petugas" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
 a.*,
@@ -28,9 +29,7 @@ FROM
 	INNER JOIN (SELECT id_obat, nama_obat FROM im_simrs_obat GROUP BY id_obat, nama_obat) ob ON ob.id_obat = odt.id_obat
 	INNER JOIN mt_simrs_approval_transaksi_obat ato ON ato.id_approval_obat = odt.id_approval_obat
 	WHERE odt.id_approval_obat = $P{reportParams.idApproval}
-)a
-
-]]>
+)a]]>
 	</queryString>
 	<field name="id_obat" class="java.lang.String"/>
 	<field name="nama_obat" class="java.lang.String"/>
@@ -257,6 +256,23 @@ FROM
 	<pageFooter>
 		<band height="54" splitType="Stretch"/>
 	</pageFooter>
+	<lastPageFooter>
+		<band height="100">
+			<staticText>
+				<reportElement x="385" y="10" width="120" height="20" uuid="deaf38d6-5666-4738-9ba6-70dd78128561"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Petugas Gudang]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="385" y="68" width="180" height="20" uuid="93afd76e-41fa-41dd-a2d7-e771f938e40c"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.petugas} == null ? "" : $P{reportParams.petugas}]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
 	<summary>
 		<band height="42" splitType="Stretch"/>
 	</summary>
