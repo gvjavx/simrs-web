@@ -32,7 +32,7 @@
                                 <img id="btn_ring_pre_admisi" class="hvr-grow"
                                      onclick="detailRingkasanPasien('pre_admisi')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_pre_admisi" class="hvr-grow" onclick="conRing('pre_admisi', 'admisi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_pre_admisi" class="hvr-grow btn-hide" onclick="conRing('pre_admisi', 'admisi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

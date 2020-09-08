@@ -40,28 +40,28 @@
                             <td>Identifikasi / Skrining</td>
                             <td width="20%" align="center">
                                 <img id="btn_mpp_identifikasi" class="hvr-grow" onclick="detailFormMpp('identifikasi')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_identifikasi" class="hvr-grow" onclick="conMPP('identifikasi', 'evaluasi_awal')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_identifikasi" class="hvr-grow btn-hide" onclick="conMPP('identifikasi', 'evaluasi_awal')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_mpp_asesmen">
                             <td>Asesmen</td>
                             <td width="20%" align="center">
                                 <img id="btn_mpp_asesmen" class="hvr-grow" onclick="detailFormMpp('asesmen')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_asesmen" class="hvr-grow" onclick="conMPP('asesmen', 'evaluasi_awal')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_asesmen" class="hvr-grow btn-hide" onclick="conMPP('asesmen', 'evaluasi_awal')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_mpp_identifikasi_resiko">
                             <td>Identifikasi Masalah Resiko</td>
                             <td width="20%" align="center">
                                 <img id="btn_mpp_identifikasi_resiko" class="hvr-grow" onclick="detailFormMpp('identifikasi_resiko')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_identifikasi_resiko" class="hvr-grow" onclick="conMPP('identifikasi_resiko', 'evaluasi_awal')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_identifikasi_resiko" class="hvr-grow btn-hide" onclick="conMPP('identifikasi_resiko', 'evaluasi_awal')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_mpp_perencanaan_mpp">
                             <td>Perencanaan Manajemen Pelaksanaan Pasien (MPP)</td>
                             <td width="20%" align="center">
                                 <img id="btn_mpp_perencanaan_mpp" class="hvr-grow" onclick="detailFormMpp('perencanaan_mpp')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_perencanaan_mpp" class="hvr-grow" onclick="conMPP('perencanaan_mpp', 'evaluasi_awal')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_perencanaan_mpp" class="hvr-grow btn-hide" onclick="conMPP('perencanaan_mpp', 'evaluasi_awal')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -99,7 +99,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input class="form-control datepicker2" id="idn0">
+                                    <input class="form-control tgl" id="idn0">
                                 </div>
                             </div>
                             <label class="col-md-2">Jam</label>
@@ -108,7 +108,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-clock-o"></i>
                                     </div>
-                                    <input class="form-control time" id="idn00">
+                                    <input class="form-control jam" id="idn00">
                                 </div>
                             </div>
                         </div>
@@ -330,7 +330,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input class="form-control datepicker2" id="ases0">
+                                    <input class="form-control tgl" id="ases0">
                                 </div>
                             </div>
                             <label class="col-md-2">Jam</label>
@@ -339,7 +339,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-clock-o"></i>
                                     </div>
-                                    <input class="form-control time" id="ases00">
+                                    <input class="form-control jam" id="ases00">
                                 </div>
                             </div>
                         </div>
@@ -663,7 +663,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input class="form-control datepicker2" id="ir1">
+                                    <input class="form-control tgl" id="ir1">
                                 </div>
                             </div>
                         </div>
@@ -674,7 +674,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-clock-o"></i>
                                     </div>
-                                    <input class="form-control time" id="ir2">
+                                    <input class="form-control jam" id="ir2">
                                 </div>
                             </div>
                         </div>
@@ -723,7 +723,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input class="form-control datepicker2" id="pm1">
+                                    <input class="form-control tgl" id="pm1">
                                 </div>
                             </div>
                         </div>
@@ -734,7 +734,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-clock-o"></i>
                                     </div>
-                                    <input class="form-control time" id="pm2">
+                                    <input class="form-control jam" id="pm2">
                                 </div>
                             </div>
                         </div>
@@ -804,42 +804,42 @@
                             <td>Pelaksanaan Rencana MPP</td>
                             <td width="20%" align="center">
                                 <img id="btn_mpp_rencana_mpp" class="hvr-grow" onclick="detailFormMpp('rencana_mpp')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_rencana_mpp" class="hvr-grow" onclick="conMPP('rencana_mpp', 'impementasi_mpp')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_rencana_mpp" class="hvr-grow btn-hide" onclick="conMPP('rencana_mpp', 'impementasi_mpp')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_mpp_monitoring_mpp">
                             <td>Monitoring</td>
                             <td width="20%" align="center">
                                 <img id="btn_mpp_monitoring_mpp" class="hvr-grow" onclick="detailFormMpp('monitoring_mpp')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_monitoring_mpp" class="hvr-grow" onclick="conMPP('monitoring_mpp', 'impementasi_mpp')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_monitoring_mpp" class="hvr-grow btn-hide" onclick="conMPP('monitoring_mpp', 'impementasi_mpp')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_mpp_fasilitas_pelayanan">
                             <td>Memfasilitasi Pelayanan</td>
                             <td width="20%" align="center">
                                 <img id="btn_mpp_fasilitas_pelayanan" class="hvr-grow" onclick="detailFormMpp('fasilitas_pelayanan')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_fasilitas_pelayanan" class="hvr-grow" onclick="conMPP('fasilitas_pelayanan', 'impementasi_mpp')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_fasilitas_pelayanan" class="hvr-grow btn-hide" onclick="conMPP('fasilitas_pelayanan', 'impementasi_mpp')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_mpp_advokasi">
                             <td>Advokasi Pelayanan Pasien</td>
                             <td width="20%" align="center">
                                 <img id="btn_mpp_advokasi" class="hvr-grow" onclick="detailFormMpp('advokasi')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_advokasi" class="hvr-grow" onclick="conMPP('advokasi', 'impementasi_mpp')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_advokasi" class="hvr-grow btn-hide" onclick="conMPP('advokasi', 'impementasi_mpp')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_mpp_hasil_pelayanan">
                             <td>Hasil Pelayanan</td>
                             <td width="20%" align="center">
                                 <img id="btn_mpp_hasil_pelayanan" class="hvr-grow" onclick="detailFormMpp('hasil_pelayanan')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_hasil_pelayanan" class="hvr-grow" onclick="conMPP('hasil_pelayanan', 'impementasi_mpp')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_hasil_pelayanan" class="hvr-grow btn-hide" onclick="conMPP('hasil_pelayanan', 'impementasi_mpp')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_mpp_terminasi">
                             <td>Terminasi MPP</td>
                             <td width="20%" align="center">
                                 <img id="btn_mpp_terminasi" class="hvr-grow" onclick="detailFormMpp('terminasi')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_terminasi" class="hvr-grow" onclick="conMPP('terminasi', 'impementasi_mpp')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_terminasi" class="hvr-grow btn-hide" onclick="conMPP('terminasi', 'impementasi_mpp')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -877,7 +877,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input class="form-control datepicker2" id="rc1">
+                                    <input class="form-control tgl" id="rc1">
                                 </div>
                             </div>
                         </div>
@@ -888,7 +888,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-clock-o"></i>
                                     </div>
-                                    <input class="form-control time" id="rc2">
+                                    <input class="form-control jam" id="rc2">
                                 </div>
                             </div>
                         </div>
@@ -937,7 +937,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input class="form-control" id="mm1">
+                                    <input class="form-control tgl" id="mm1">
                                 </div>
                             </div>
                         </div>
@@ -948,7 +948,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-clock-o"></i>
                                     </div>
-                                    <input class="form-control time" id="mm2">
+                                    <input class="form-control jam" id="mm2">
                                 </div>
                             </div>
                         </div>
@@ -997,7 +997,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input class="form-control" id="fp1">
+                                    <input class="form-control tgl" id="fp1">
                                 </div>
                             </div>
                         </div>
@@ -1008,7 +1008,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-clock-o"></i>
                                     </div>
-                                    <input class="form-control time" id="fp2">
+                                    <input class="form-control jam" id="fp2">
                                 </div>
                             </div>
                         </div>
@@ -1089,7 +1089,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input class="form-control" id="ap1">
+                                    <input class="form-control tgl" id="ap1">
                                 </div>
                             </div>
                             <label class="col-md-1">Jam</label>
@@ -1098,7 +1098,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-clock-o"></i>
                                     </div>
-                                    <input class="form-control time" id="ap2">
+                                    <input class="form-control jam" id="ap2">
                                 </div>
                             </div>
                         </div>
@@ -1206,7 +1206,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input class="form-control" id="hp1">
+                                    <input class="form-control tgl" id="hp1">
                                 </div>
                             </div>
                         </div>
@@ -1217,7 +1217,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-clock-o"></i>
                                     </div>
-                                    <input class="form-control time" id="hp2">
+                                    <input class="form-control jam" id="hp2">
                                 </div>
                             </div>
                         </div>
@@ -1266,7 +1266,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input class="form-control" id="tp1">
+                                    <input class="form-control tgl" id="tp1">
                                 </div>
                             </div>
                         </div>
@@ -1277,7 +1277,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-clock-o"></i>
                                     </div>
-                                    <input class="form-control time" id="tp2">
+                                    <input class="form-control jam" id="tp2">
                                 </div>
                             </div>
                         </div>

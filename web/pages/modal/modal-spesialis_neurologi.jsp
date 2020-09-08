@@ -44,7 +44,7 @@
                                                                 onclick="detailSPS('anamnesa_neurologi')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
 
-                                <img id="delete_anamnesa_neurologi" class="hvr-grow" onclick="conSPS('anamnesa_neurologi', 'spesialis_neurologi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_anamnesa_neurologi" class="hvr-grow btn-hide" onclick="conSPS('anamnesa_neurologi', 'spesialis_neurologi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_sps_pemeriksaan_neurologi">
@@ -53,7 +53,7 @@
                                                                 onclick="detailSPS('pemeriksaan_neurologi')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
 
-                                <img id="delete_pemeriksaan_neurologi" class="hvr-grow" onclick="conSPS('pemeriksaan_neurologi', 'spesialis_neurologi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_pemeriksaan_neurologi" class="hvr-grow btn-hide" onclick="conSPS('pemeriksaan_neurologi', 'spesialis_neurologi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_sps_edukasi_neurologi">
@@ -62,7 +62,7 @@
                                                                 onclick="detailSPS('edukasi_neurologi')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
 
-                                <img id="delete_edukasi_neurologi" class="hvr-grow" onclick="conSPS('edukasi_neurologi', 'spesialis_neurologi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_edukasi_neurologi" class="hvr-grow btn-hide" onclick="conSPS('edukasi_neurologi', 'spesialis_neurologi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

@@ -443,6 +443,12 @@ ALTER TABLE public.it_simrs_implementasi_perawat
 
 CREATE SEQUENCE seq_implementasi_perawat;
 
+-- 08-09-2020
+ALTER TABLE it_simrs_edukasi_pasien_teritegrasi
+ADD COLUMN nama_terang VARCHAR(100),
+ADD COLUMN sip VARCHAR(100),
+ADD COLUMN nama_staf VARCHAR(100);
+
 
 
 

@@ -31,7 +31,7 @@
                             <td>Asesmen Pasien Tahap Terminal</td>
                             <td width="20%" align="center">
                                 <img id="btn_icu_terminal" class="hvr-grow" onclick="detailICU('terminal')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_terminal" class="hvr-grow" onclick="conICU('terminal', 'tahap_terminal')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_terminal" class="hvr-grow btn-hide" onclick="conICU('terminal', 'tahap_terminal')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

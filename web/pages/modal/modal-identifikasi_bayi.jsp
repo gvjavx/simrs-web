@@ -33,7 +33,7 @@
                                      onclick="detailRB('identifikasi_bayi_lahir')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
 
-                                <img id="delete_identifikasi_bayi_lahir" class="hvr-grow" onclick="conRB('identifikasi_bayi_lahir', 'identifikasi_bayi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_identifikasi_bayi_lahir" class="hvr-grow btn-hide" onclick="conRB('identifikasi_bayi_lahir', 'identifikasi_bayi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_rb_pernyataan_bayi_lahir">
@@ -42,7 +42,7 @@
                                 <img id="btn_rb_pernyataan_bayi_lahir" class="hvr-grow"
                                      onclick="detailRB('pernyataan_bayi_lahir')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_pernyataan_bayi_lahir" class="hvr-grow" onclick="conRB('pernyataan_bayi_lahir', 'identifikasi_bayi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_pernyataan_bayi_lahir" class="hvr-grow btn-hide" onclick="conRB('pernyataan_bayi_lahir', 'identifikasi_bayi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

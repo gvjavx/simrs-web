@@ -32,7 +32,7 @@
                                 <img id="btn_sps_asesmen_gigi" class="hvr-grow"
                                      onclick="detailSPS('asesmen_gigi')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_asesmen_gigi" class="hvr-grow" onclick="conSPS('asesmen_gigi', 'spesialis_gigi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_asesmen_gigi" class="hvr-grow btn-hide" onclick="conSPS('asesmen_gigi', 'spesialis_gigi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_sps_rencana_gigi_pasien">
@@ -41,7 +41,7 @@
                                 <img id="btn_sps_rencana_gigi_pasien" class="hvr-grow"
                                      onclick="detailSPS('rencana_gigi_pasien')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_rencana_gigi_pasien" class="hvr-grow" onclick="conSPS('rencana_gigi_pasien', 'spesialis_gigi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_rencana_gigi_pasien" class="hvr-grow btn-hide" onclick="conSPS('rencana_gigi_pasien', 'spesialis_gigi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

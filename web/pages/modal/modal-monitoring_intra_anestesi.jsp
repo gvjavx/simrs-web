@@ -32,7 +32,7 @@
                                 <img id="btn_op_data_intra_anestesi" class="hvr-grow"
                                      onclick="detailOperasi('data_intra_anestesi')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_data_intra_anestesi" class="hvr-grow" onclick="conOP('data_intra_anestesi', 'monitoring_intra_anestesi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_data_intra_anestesi" class="hvr-grow btn-hide" onclick="conOP('data_intra_anestesi', 'monitoring_intra_anestesi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_op_mon_intra_anestesi">

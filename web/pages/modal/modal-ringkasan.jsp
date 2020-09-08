@@ -672,7 +672,7 @@
                                 <img id="btn_ring_ringkasan_keluar_pasien" class="hvr-grow"
                                      onclick="detailRingkasanPasien('ringkasan_keluar_pasien')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_ringkasan_keluar_pasien" class="hvr-grow" onclick="conRing('ringkasan_keluar_pasien', 'ringkasan_keluar')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_ringkasan_keluar_pasien" class="hvr-grow btn-hide" onclick="conRing('ringkasan_keluar_pasien', 'ringkasan_keluar')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

@@ -4,7 +4,7 @@
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-md"></i> Transfer Pasien Antar Pasien
+                <h4 class="modal-title"><i class="fa fa-user-md"></i> Transfer Pasien Antar Ruangan
                 </h4>
             </div>
             <div class="modal-body">
@@ -45,7 +45,7 @@
                                 <img id="btn_ina_data_ruangan" class="hvr-grow"
                                      onclick="detailAsesmenRawatInap('data_ruangan')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_data_ruangan" class="hvr-grow" onclick="conRI('data_ruangan', 'transfer_pasien')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_data_ruangan" class="hvr-grow btn-hide" onclick="conRI('data_ruangan', 'transfer_pasien')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_ina_catatan_klinis">
@@ -54,7 +54,7 @@
                                 <img id="btn_ina_catatan_klinis" class="hvr-grow"
                                      onclick="detailAsesmenRawatInap('catatan_klinis')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_catatan_klinis" class="hvr-grow" onclick="conRI('catatan_klinis', 'transfer_pasien')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_catatan_klinis" class="hvr-grow btn-hide" onclick="conRI('catatan_klinis', 'transfer_pasien')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_ina_kondisi_serah_terima">
@@ -63,7 +63,7 @@
                                 <img id="btn_ina_kondisi_serah_terima" class="hvr-grow"
                                      onclick="detailAsesmenRawatInap('kondisi_serah_terima')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_kondisi_serah_terima" class="hvr-grow" onclick="conRI('kondisi_serah_terima', 'transfer_pasien')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_kondisi_serah_terima" class="hvr-grow btn-hide" onclick="conRI('kondisi_serah_terima', 'transfer_pasien')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

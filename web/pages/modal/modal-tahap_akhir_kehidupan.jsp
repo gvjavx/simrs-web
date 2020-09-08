@@ -30,14 +30,14 @@
                             <td>Pengkajian Medis</td>
                             <td width="20%" align="center">
                                 <img id="btn_icu_pengkajian_medik" class="hvr-grow" onclick="detailICU('pengkajian_medik')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_pengkajian_medik" class="hvr-grow" onclick="conICU('pengkajian_medik', 'tahap_akhir_kehidupan')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_pengkajian_medik" class="hvr-grow btn-hide" onclick="conICU('pengkajian_medik', 'tahap_akhir_kehidupan')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_icu_pengkajian_keperawatan">
                             <td>Pengkajian Keperawatan</td>
                             <td width="20%" align="center">
                                 <img id="btn_icu_pengkajian_keperawatan" class="hvr-grow" onclick="detailICU('pengkajian_keperawatan')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_pengkajian_keperawatan" class="hvr-grow" onclick="conICU('pengkajian_keperawatan', 'tahap_akhir_kehidupan')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_pengkajian_keperawatan" class="hvr-grow btn-hide" onclick="conICU('pengkajian_keperawatan', 'tahap_akhir_kehidupan')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

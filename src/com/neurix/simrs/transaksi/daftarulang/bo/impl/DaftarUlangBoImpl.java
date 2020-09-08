@@ -162,7 +162,7 @@ public class DaftarUlangBoImpl implements DaftarUlangBo {
         if("asuransi".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
             detailCheckupEntity.setIdAsuransi(bean.getIdAsuransi());
             detailCheckupEntity.setNoKartuAsuransi(bean.getNoKartuAsuransi());
-            detailCheckupEntity.setCoverBiaya(bean.getCoverBiaya());
+//            detailCheckupEntity.setCoverBiaya(bean.getCoverBiaya());
         }
 
         try {

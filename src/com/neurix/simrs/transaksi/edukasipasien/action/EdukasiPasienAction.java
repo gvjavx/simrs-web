@@ -128,6 +128,15 @@ public class EdukasiPasienAction {
                     }
                 }
 
+                if (obj.has("nama_staf")) {
+                    edukasiPasien.setNamaStaf(obj.getString("nama_staf"));
+                }
+                if (obj.has("nama_terang")) {
+                    edukasiPasien.setNamaTerang(obj.getString("nama_terang"));
+                }
+                if (obj.has("sip")) {
+                    edukasiPasien.setSip(obj.getString("sip"));
+                }
                 edukasiPasien.setAction("C");
                 edukasiPasien.setFlag("Y");
                 edukasiPasien.setCreatedWho(userLogin);

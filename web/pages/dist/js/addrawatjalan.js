@@ -1371,6 +1371,7 @@ function listLab() {
 
     PeriksaLabAction.listOrderLab(idDetailCheckup, function (response) {
         data = response;
+        console.log(data);
         if (data.length > 0) {
             $.each(data, function (i, item) {
                 var pemeriksaan = "-";
@@ -1398,7 +1399,11 @@ function listLab() {
                     lab = item.labName;
                 }
                 if (item.approveFlag == "Y") {
-                    btn = '<a target="_blank" href="printLabRadiologi_checkupdetail.action?id=' + idDetailCheckup + '&tipe=' + tipe + '&lab=' + item.idPeriksaLab + '"><img border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-print-25.png" style="cursor: pointer;"></a>';
+                    if(item.urlImg != null){
+                        btn = '<img onclick="labLuar(\''+lab+'\', \''+item.urlImg+'\')" border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
+                    }else{
+                        btn = '<a target="_blank" href="printLabRadiologi_checkupdetail.action?id=' + idDetailCheckup + '&tipe=' + tipe + '&lab=' + item.idPeriksaLab + '"><img border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-print-25.png" style="cursor: pointer;"></a>';
+                    }
                 }
 
                 if ("paket_perusahaan" == jenisPeriksaPasien || "paket_individu" == jenisPeriksaPasien) {
@@ -1424,6 +1429,12 @@ function listLab() {
     });
 
     $('#body_lab').html(table);
+}
+
+function labLuar(kategori, url){
+    $('#title_lab_luar').text("Detail Hasil "+kategori+" Luar");
+    $('#img_lab_luar').attr('src',url);
+    $('#modal-lab_luar').modal({show:true, backdrop:'static'});
 }
 
 function saveObat(idInap) {
@@ -2645,12 +2656,16 @@ function getListRekamMedis(tipePelayanan, jenis, id) {
                 labelPrint = '<span style="color: #367fa9; font-weight: bold">' + terIsiPrint + '</span>';
 
                 if (item.jenis == 'ringkasan_rj') {
-                    li += '<li><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '"><i class="fa fa-file-o"></i>' + item.namaRm + '</a></li>'
-                } else {
-                    if (item.keterangan == 'form') {
-                        li += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')"><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '">' + icons + item.namaRm + ' ' + labelTerisi + tolText + '</a></li>'
-                    } else if (item.keterangan == "surat") {
-                        li += '<li ' + tol + '><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\',\'' + item.namaRm + '\')' + '">' + icons2 + item.namaRm + ' ' + labelPrint + tolText + '</a></li>'
+                    li += '<li><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '"><i class="fa fa-television"></i>' + item.namaRm + '</a></li>'
+                }else {
+                    if (item.function == 'addMonitoringFisioterapi') {
+                        li += '<li><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '"><i class="fa fa-television"></i>' + item.namaRm + '</a></li>'
+                    }else{
+                        if (item.keterangan == 'form') {
+                            li += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')"><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '">' + icons + item.namaRm + ' ' + labelTerisi + tolText + '</a></li>'
+                        } else if (item.keterangan == "surat") {
+                            li += '<li ' + tol + '><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\',\'' + item.namaRm + '\')' + '">' + icons2 + item.namaRm + ' ' + labelPrint + tolText + '</a></li>'
+                        }
                     }
                 }
             });

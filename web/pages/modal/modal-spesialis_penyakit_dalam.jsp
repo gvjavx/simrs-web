@@ -44,7 +44,7 @@
                             <td width="20%" align="center"><img id="btn_sps_anamnesa_pd" class="hvr-grow"
                                                                 onclick="detailSPS('anamnesa_pd')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_anamnesa_pd" class="hvr-grow" onclick="conSPS('anamnesa_pd', 'spesialis_penyakit_dalam')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_anamnesa_pd" class="hvr-grow btn-hide" onclick="conSPS('anamnesa_pd', 'spesialis_penyakit_dalam')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_sps_pemeriksaan_pd">
@@ -52,7 +52,7 @@
                             <td width="20%" align="center"><img id="btn_sps_pemeriksaan_pd" class="hvr-grow"
                                                                 onclick="detailSPS('pemeriksaan_pd')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_pemeriksaan_pd" class="hvr-grow" onclick="conSPS('pemeriksaan_pd', 'spesialis_penyakit_dalam')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_pemeriksaan_pd" class="hvr-grow btn-hide" onclick="conSPS('pemeriksaan_pd', 'spesialis_penyakit_dalam')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_sps_edukasi_pd">
@@ -60,7 +60,7 @@
                             <td width="20%" align="center"><img id="btn_sps_edukasi_pd" class="hvr-grow"
                                                                 onclick="detailSPS('edukasi_pd')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_edukasi_pd" class="hvr-grow" onclick="conSPS('edukasi_pd', 'spesialis_penyakit_dalam')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_edukasi_pd" class="hvr-grow btn-hide" onclick="conSPS('edukasi_pd', 'spesialis_penyakit_dalam')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

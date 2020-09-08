@@ -45,7 +45,7 @@
                             <td>Data Partograf</td>
                             <td width="20%" align="center">
                                 <img id="btn_rb_data_partograf" class="hvr-grow" onclick="detailRB('data_partograf')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img class="hvr-grow" onclick="conRB('data_partograf', 'partograf')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_data_partograf" class="hvr-grow btn-hide" onclick="conRB('data_partograf', 'partograf')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_rb_janin_ibu_persalinan">
@@ -58,14 +58,14 @@
                             <td>Catatan Persalinan</td>
                             <td width="20%" align="center">
                                 <img id="btn_rb_catatan_persalinan" class="hvr-grow" onclick="detailRB('catatan_persalinan')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_catatan_persalinan" class="hvr-grow" onclick="conRB('catatan_persalinan', 'partograf')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_catatan_persalinan" class="hvr-grow btn-hide" onclick="conRB('catatan_persalinan', 'partograf')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_rb_kala1">
                             <td>Kala I</td>
                             <td width="20%" align="center">
                                 <img id="btn_rb_kala1" class="hvr-grow" onclick="detailRB('kala1')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_kala1" class="hvr-grow" onclick="conRB('kala1', 'partograf')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_kala1" class="hvr-grow btn-hide" onclick="conRB('kala1', 'partograf')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_rb_kala2">
@@ -79,21 +79,21 @@
                             <td>Kala III</td>
                             <td width="20%" align="center">
                                 <img id="btn_rb_kala3" class="hvr-grow" onclick="detailRB('kala3')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_kala3" class="hvr-grow" onclick="conRB('kala3', 'partograf')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_kala3" class="hvr-grow btn-hide" onclick="conRB('kala3', 'partograf')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_rb_kala4">
                             <td>Kala IV</td>
                             <td width="20%" align="center">
                                 <img id="btn_rb_kala4" class="hvr-grow" onclick="detailRB('kala4')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_kala4" class="hvr-grow" onclick="conRB('kala4', 'partograf')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_kala4" class="hvr-grow btn-hide" onclick="conRB('kala4', 'partograf')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_rb_bayi_baru_lahir">
                             <td>Bayi Bayu Lahir</td>
                             <td width="20%" align="center">
                                 <img id="btn_rb_bayi_baru_lahir" class="hvr-grow" onclick="detailRB('bayi_baru_lahir')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_bayi_baru_lahir" class="hvr-grow" onclick="conRB('bayi_baru_lahir', 'partograf')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_bayi_baru_lahir" class="hvr-grow btn-hide" onclick="conRB('bayi_baru_lahir', 'partograf')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_rb_pemantauan_kalan4">
