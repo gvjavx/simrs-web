@@ -12,7 +12,6 @@
 	<parameter name="reportParams.logo" class="java.lang.String"/>
 	<parameter name="reportParams.petugas" class="java.lang.String"/>
 	<parameter name="reportParams.idPermintaanVendor" class="java.lang.String"/>
-	<parameter name="reportParams.petugas" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
 a.*,
