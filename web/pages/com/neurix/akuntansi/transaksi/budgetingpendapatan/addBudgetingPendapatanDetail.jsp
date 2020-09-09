@@ -431,7 +431,7 @@
             var str = "";
             $.each(res.list, function (i, item) {
                 str += "<tr>" +
-                        "<td>"+item.nama+"</td>" +
+                        "<td>"+item.nama+"</td>"
                         "<td align='right'>"+ formatRupiah(nullEscape(item.nilaiTotal)) +"</td>" +
                         "<td align='center'>" +
                         "<button class='btn btn-sm btn-primary' onclick=\"add(\'"+item.id+"\',\'"+branch+"\',\'"+tahun+"\',\'"+ item.nama +"\')\"><i class='fa fa-edit'></i></button> " +

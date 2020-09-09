@@ -1119,15 +1119,16 @@ public class ObatAction extends BaseMasterAction {
         Branch branch = branchBo.getBranchById(branchLogin,"Y");
         List<Aging> agingList = obatBo.getListAging(branch.getBranchId(), obat.getIdPelayanan(), periodeAging);
         for(Aging data: agingList){
+            Aging newData = new Aging();
 
-            data.setTotal(data.getTotal().abs());
-            data.setJumlah1(new BigDecimal(0));
-            data.setJumlah2(new BigDecimal(0));
-            data.setJumlah3(new BigDecimal(0));
-            data.setJumlah4(new BigDecimal(0));
-            data.setJumlah5(new BigDecimal(0));
-            data.setJumlah6(new BigDecimal(0));
-            data.setJumlah7(new BigDecimal(0));
+            newData.setTotal(data.getTotalAwal().abs());
+            newData.setJumlah1(new BigDecimal(0));
+            newData.setJumlah2(new BigDecimal(0));
+            newData.setJumlah3(new BigDecimal(0));
+            newData.setJumlah4(new BigDecimal(0));
+            newData.setJumlah5(new BigDecimal(0));
+            newData.setJumlah6(new BigDecimal(0));
+            newData.setJumlah7(new BigDecimal(0));
 
             //Tentukan posisi umur aging.
             //Yaitu dengan mengammbil periode sedang berjalan (tanggal aging di cetak) dan periode tanggal dari jurnal tersebut
@@ -1152,34 +1153,40 @@ public class ObatAction extends BaseMasterAction {
 
             //umur 0 s/d 1 bulan
             if(agingPosition<=1){
-                data.setJumlah1(data.getTotal().abs());
+                newData.setJumlah1(data.getTotal().abs());
             }
             //umur 1 s/d 2 bulan
             else if(agingPosition<=2 && agingPosition>1){
-                data.setJumlah2(data.getTotal().abs());
+                newData.setJumlah2(data.getTotal().abs());
             }
             //umur 2 s/d 3 bulan
             else if(agingPosition<=3 && agingPosition>2){
-                data.setJumlah3(data.getTotal().abs());
+                newData.setJumlah3(data.getTotal().abs());
             }
             //umur 3 s/d 6 bulan
             else if(agingPosition<=6 && agingPosition>3){
-                data.setJumlah4(data.getTotal().abs());
+                newData.setJumlah4(data.getTotal().abs());
             }
             //umur 6 s/d 12 bulan
             else if(agingPosition<=12 && agingPosition>6){
-                data.setJumlah5(data.getTotal().abs());
+                newData.setJumlah5(data.getTotal().abs());
             }
             //umur 1 s/d 2 tahun
             else if(agingPosition<=24 && agingPosition>12){
-                data.setJumlah6(data.getTotal().abs());
+                newData.setJumlah6(data.getTotal().abs());
             }
             //umur > 2 tahun
             else{
-                data.setJumlah7(data.getTotal().abs());
+                newData.setJumlah7(data.getTotal().abs());
             }
 
-            myList.add(data);
+            newData.setNoNota(data.getNoNota());
+            newData.setKodeRekening(data.getKodeRekening());
+            newData.setTglJurnal(data.getTglJurnal());
+            newData.setMasterId(data.getMasterId());
+            newData.setNamaMaster(data.getNamaMaster());
+            newData.setNamaRekening(data.getNamaRekening());
+            myList.add(newData);
         }
 
         if(myList.size()>0){
