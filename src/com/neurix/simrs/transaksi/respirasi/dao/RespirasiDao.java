@@ -54,7 +54,7 @@ public class RespirasiDao extends GenericDao<ItSimrsRespirasiEntity, String> {
             String SQL = "SELECT id_respirasi FROM it_simrs_respirasi\n" +
                     "WHERE id_detail_checkup = :id\n" +
                     "AND waktu = :wkt\n" +
-                    "AND flag = :'Y'\n" +
+                    "AND flag = 'Y'\n" +
                     "AND CAST(created_date AS date) = CURRENT_DATE";
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)

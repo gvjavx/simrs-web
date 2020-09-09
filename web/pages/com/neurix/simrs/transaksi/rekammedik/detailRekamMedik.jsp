@@ -731,11 +731,11 @@
                     <table class="table table-bordered" style="font-size: 12px;">
                         <thead>
                         <tr style="font-weight: bold">
-                            <td>Pelayanan</td>
-                            <td>No Transaksi</td>
-                            <td>Waktu</td>
+                            <td width="30%">Pelayanan</td>
+                            <%--<td>No Transaksi</td>--%>
+                            <td width="15%">Waktu</td>
                             <td>Keterangan</td>
-                            <td>Catatan</td>
+                            <td width="16%">Catatan</td>
                             <td width="8%">Telemedic</td>
                         </tr>
                         </thead>
@@ -847,6 +847,31 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-lab_luar">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> <span id="title_lab_luar"></span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <img id="img_lab_luar" style="width: 100%">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="modal-temp"></div>
 <%@ include file="/pages/modal/modalRingkasanRawatJalan.jsp" %>
 
@@ -897,7 +922,9 @@
 <script type='text/javascript' src='<s:url value="/pages/dist/js/datapasien.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/icu.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/kandungan.js"/>'></script>
-<script type='text/javascript' src='<s:url value="/pages/dist/js/addrawatjalan.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenrawatjalan.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/cppt.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/rencana_asuahan.js"/>'></script>
 
 <script type='text/javascript'>
 
@@ -973,6 +1000,20 @@
             $(this).find('.dropdown-menu').first().stop(true, true).slideUp(350);
         });
     });
+
+    function printPernyataan(kode, idRm, flag, namaRm) {
+        $('#tanya').text("Apakah anda yakin print ?");
+        $('#print_form').text(namaRm);
+        $('#save_con_rm').attr('onclick', 'printPernyataanRM(\'' + kode + '\', \'' + idRm + '\')');
+        $('#modal-confirm-rm').modal('show');
+    }
+
+    function printPernyataanRM(kode, idRM) {
+        window.open(contextPath + '/rekammedik/printSuratPernyataan_rekammedik?id=' + idDetailCheckup + '&tipe=' + kode + '&ids=' + idRM, '_blank');
+        $('#modal-confirm-rm').modal('hide');
+        $('#info_dialog').dialog('open');
+        $('#close_pos').val(14);
+    }
 
 </script>
 

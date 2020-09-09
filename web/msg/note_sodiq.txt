@@ -356,6 +356,8 @@ Verif Asuransi
     /verifasri/initVerif_verifasri.action
     /verifasri/searchVerifAs_verifasri.action
 
+
+-- BELUM DI RUN DI DATABASE
 -- 26-08-2020
 CREATE TABLE public.it_simrs_partograf
 (
@@ -448,6 +450,130 @@ ALTER TABLE it_simrs_edukasi_pasien_teritegrasi
 ADD COLUMN nama_terang VARCHAR(100),
 ADD COLUMN sip VARCHAR(100),
 ADD COLUMN nama_staf VARCHAR(100);
+
+
+-- 09-09-2020
+-- insert to table pelayanan
+INSERT INTO im_simrs_pelayanan VALUES
+('PYN00000033',
+'Ruang Bersalin',
+'Y',
+'C',
+now(),
+'migrasi',
+now(),
+'migrasi',
+null,
+null,
+'ruang_bersalin',
+'RS01',
+null,
+null,
+null),
+('PYN00000034',
+'ICU',
+'Y',
+'C',
+now(),
+'migrasi',
+now(),
+'migrasi',
+null,
+null,
+'rawat_intensif',
+'RS01',
+null,
+null,
+null),
+('PYN00000035',
+'Kamar Operasi',
+'Y',
+'C',
+now(),
+'migrasi',
+now(),
+'migrasi',
+null,
+null,
+'kamar_operasi',
+'RS01',
+null,
+null,
+null);
+
+-- insert to table kategori tindakan
+INSERT INTO im_simrs_kategori_tindakan VALUES
+('KAT00000041',
+'Kamar Operasi',
+'Y',
+now(),
+'migrasi',
+now(),
+'migrasi',
+'C');
+
+--insert to kategori tindakan pelayanan
+INSERT INTO im_simrs_kategori_tindakan_pelayanan VALUES
+('KTP00000037',
+'KAT00000027',
+'PYN00000031',
+'Y',
+'C',
+'migrasi',
+now(),
+'migrasi',
+now()),
+('KTP00000038',
+'KAT00000026',
+'PYN00000032',
+'Y',
+'C',
+'migrasi',
+now(),
+'migrasi',
+now()),
+('KTP00000039',
+'KAT00000002',
+'PYN00000033',
+'Y',
+'C',
+'migrasi',
+now(),
+'migrasi',
+now()),
+('KTP00000040',
+'KAT00000003',
+'PYN00000034',
+'Y',
+'C',
+'migrasi',
+now(),
+'migrasi',
+now()),
+('KTP00000041',
+'KAT00000041',
+'PYN00000035',
+'Y',
+'C',
+'migrasi',
+now(),
+'migrasi',
+now());
+
+ALTER TABLE im_simrs_kategori_lab
+ADD COLUMN kategori VARCHAR(100);
+
+UPDATE im_simrs_kategori_lab
+SET nama_kategori = 'Radiologi',
+kategori = 'radiologi'
+WHERE id_kategori_lab = 'KAL00000001';
+
+UPDATE im_simrs_kategori_lab
+SET nama_kategori = 'Laboratorium',
+kategori = 'lab'
+WHERE id_kategori_lab = 'KAL00000002';
+
+
 
 
 

@@ -72,7 +72,7 @@
                             <td>Kala II</td>
                             <td width="20%" align="center">
                                 <img id="btn_rb_kala2" class="hvr-grow" onclick="detailRB('kala2')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img class="hvr-grow" onclick="conRB('data_partograf', 'partograf')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img class="hvr-grow btn-hide" onclick="conRB('data_partograf', 'partograf')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_rb_kala3">

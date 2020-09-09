@@ -1025,7 +1025,7 @@
                                             <div class="col-md-8">
                                                 <%--<s:if test='tipe == "bpjs" || tipe == "ptpn"'>--%>
                                                         <s:textfield id="diagnosa_awal" style="margin-top: 7px"
-                                                                     name="headerCheckup.diagnosa"
+                                                                     name="headerCheckup.diagnosa" autocomplete="off"
                                                                      onkeypress="$(this).css('border','')"
                                                                      cssClass="form-control" required="false"/>
                                                         <s:hidden name="headerCheckup.jenisTransaksi"/>

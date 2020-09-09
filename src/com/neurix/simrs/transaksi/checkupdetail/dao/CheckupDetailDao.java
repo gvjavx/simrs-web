@@ -2176,7 +2176,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 if (detailCheckup.getFlagCover() != null && !"".equalsIgnoreCase(detailCheckup.getFlagCover())) {
                     flagCloseTransaksi = "AND b.flag_close_traksaksi IS NOT NULL AND b.flag_cover IS NOT NULL \n";
                 } else {
-                    flagCloseTransaksi = "AND b.flag_close_traksaksi IS NULL AND b.flag_cover IS NULL \n";
+                    flagCloseTransaksi = "AND b.flag_close_traksaksi IS NULL OR b.flag_cover IS NULL \n";
                 }
             } else {
                 idJenisPeriksaPasien = "AND b.id_jenis_periksa_pasien NOT IN ('bpjs', 'ptpn','asuransi')\n";

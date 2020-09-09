@@ -306,6 +306,8 @@ public class RekamMedisPasienDao extends GenericDao<ImSimrsRekamMedisPasienEntit
             }else{
                 spesialis = "('keperawatan_rawat_jalan', 'ringkasan_rj')";
             }
+        }else{
+            spesialis = "('keperawatan_rawat_jalan', 'ringkasan_rj')";
         }
         String SQL = "SELECT * FROM (SELECT \n" +
                 "a.*,  \n" +

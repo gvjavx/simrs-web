@@ -16,7 +16,7 @@ function viewAllRekamMedis() {
     var tp = '<li><span class="fa-li"><i class="fa fa-list-ul"></i></span><b>TPPRI</b></li>';
     var su = '<li><span class="fa-li"><i class="fa fa-list-ul"></i></span><b>Surat Pernyataan dan Keterangan</b></li>';
     var temp = "";
-    startLoad()
+    startLoad();
     dwr.engine.setAsync(true);
     CheckupAction.getRiwayatListRekammedisPasien(idDetailCheckup, tipePelayanan, kategoriPelayanan, {
         callback: function (res) {
@@ -83,7 +83,7 @@ function viewAllRekamMedis() {
                         ko += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')"><span class="hvr-grow"><span class="fa-li">' + icons + '</span>' + item.namaRm + tolText + '</span></li>';
                     }
                     if ("surat" == item.tipeRM) {
-                        su += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')"><span class="hvr-grow"><span class="fa-li">' + icons + '</span>' + item.namaRm + ' ' + labelPrint + tolText + '</span></li>';
+                        su += '<li ' + tol + ' onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'N\')"><span class="hvr-grow"><span class="fa-li">' + icons + '</span>' + item.namaRm + ' ' + labelPrint + tolText + '</span></li>';
                     }
 
                 });
@@ -169,19 +169,31 @@ function viewHistory() {
                 var tele = "";
 
                 if ("resep" == item.keterangan || "laboratorium" == item.keterangan || "radiologi" == item.keterangan) {
-                    btn = '<img class="hvr-grow" id="btn_' + item.idRiwayatTindakan + '" \n' +
-                        'onclick="detailTindakan(\'' + item.idRiwayatTindakan + '\',\'' + item.idTindakan + '\',\'' + item.keterangan + '\')"\n' +
-                        'src="' + contextPath + '/pages/images/icons8-plus-25.png">';
+                    if ("laboratorium" == item.keterangan || "radiologi" == item.keterangan) {
+                        if (item.urlLab != null && item.urlLab != '') {
+                            btn = '<img onclick="labLuar(\'' + item.namaTindakan + '\', \'' + item.urlLab + '\')" border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
+                        } else {
+                            btn = '<img class="hvr-grow" id="btn_' + item.idRiwayatTindakan + '" \n' +
+                                'onclick="detailTindakan(\'' + item.idRiwayatTindakan + '\',\'' + item.idTindakan + '\',\'' + item.keterangan + '\')"\n' +
+                                'src="' + contextPath + '/pages/images/icons8-plus-25.png">';
+                        }
+                    } else {
+                        btn = '<img class="hvr-grow" id="btn_' + item.idRiwayatTindakan + '" \n' +
+                            'onclick="detailTindakan(\'' + item.idRiwayatTindakan + '\',\'' + item.idTindakan + '\',\'' + item.keterangan + '\')"\n' +
+                            'src="' + contextPath + '/pages/images/icons8-plus-25.png">';
+                    }
                 }
                 if (item.idDetailCheckup != null && item.idDetailCheckup != '') {
-                    icon = '<a href="detail_rekammedis.action?idPasien=' + idPasien + '&id=' + item.idDetailCheckup + '"><i class="fa fa-search"></i></a>';
+                    icon = '<a href="detail_rekammedis.action?idPasien=' + idPasien + '&id=' + item.idDetailCheckup + '"><i class="fa fa-search hvr-grow"></i></a>';
                     if (item.videoRm != null) {
                         tele = '<img style="cursor: pointer" src="' + contextPath + '/pages/images/icons8-movie-beginning-30.png" onclick="viewTelemedic(\'' + item.videoRm + '\', \'' + item.tglTindakan + '\')">';
                     }
                 }
                 table += '<tr id="row_' + item.idRiwayatTindakan + '">' +
-                    '<td>' + icon + ' ' + cekDataNull(item.namaPelayanan) + '<p style="margin-left: 10px">' + cekDataNull(item.diagnosa) + cekDataNull(item.namaDiagnosa) + '</p></td>' +
-                    '<td>' + cekDataNull(item.idDetailCheckup) + '</td>' +
+                    '<td><b>' + icon + ' ' + cekDataNull(item.idDetailCheckup) +
+                    '<p style="margin-left: 15px">' + cekDataNull(item.namaPelayanan) + '</p></b>' +
+                    '<p style="margin-left: 15px">' + cekDataNull(item.diagnosa) + cekDataNull(item.namaDiagnosa) + '</p></td>' +
+                    // '<td>' + cekDataNull(item.idDetailCheckup) + '</td>' +
                     '<td>' + cekDataNull(item.tglTindakan) + '</td>' +
                     '<td>' + cekDataNull(item.namaTindakan) + ' <div class="pull-right">' + btn + '</div></td>' +
                     '<td>' + cekDataNull(item.keteranganKeluar) + '</td>' +
@@ -312,3 +324,11 @@ function carouselSwipe(id) {
     }, 520);
 
 }
+
+function labLuar(kategori, url){
+    $('#title_lab_luar').text("Detail Hasil "+kategori+" Luar");
+    $('#img_lab_luar').attr('src',url);
+    $('#modal-lab_luar').modal({show:true, backdrop:'static'});
+}
+
+

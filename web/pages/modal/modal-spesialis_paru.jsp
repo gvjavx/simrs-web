@@ -122,7 +122,7 @@
                     <div class="row jarak">
                         <label class="col-md-4">Diagnosa Banding</label>
                         <div class="col-md-8">
-                            <textarea rows="2" class="form-control diagnosa-pasien" id="pt4"></textarea>
+                            <textarea rows="2" class="form-control" id="pt4"></textarea>
                         </div>
                     </div>
                     <div class="row jarak">

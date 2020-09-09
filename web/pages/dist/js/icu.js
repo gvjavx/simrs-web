@@ -2601,8 +2601,6 @@ function listInputan(jenis) {
 
             var bod = body.split("|");
             var bb = "";
-            console.log(body);
-            console.log(bod);
             $.each(bod, function (i, item) {
                 bb += '<tr>' + item + '</tr>';
             });

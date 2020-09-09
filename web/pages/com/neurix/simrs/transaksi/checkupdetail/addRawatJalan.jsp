@@ -1155,7 +1155,7 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Alergi</label>
                         <div class="col-md-7">
-                            <input class="form-control" id="alergi"
+                            <input class="form-control" id="alergi" autocomplete="off"
                                    oninput="var warn =$('#war_alergi').is(':visible'); if (warn){$('#cor_alergi').show().fadeOut(3000);$('#war_alergi').hide()}">
                         </div>
                         <div class="col-md-2">
@@ -1370,7 +1370,7 @@
                         <label class="col-md-3">Diagnosa</label>
                         <div class="col-md-7">
                         <s:textfield id="nosa_id_diagnosa" style="margin-top: 7px"
-                                     name="headerCheckup.diagnosa"
+                                     name="headerCheckup.diagnosa" autocomplete="off"
                                      onkeypress="var warn =$('#war_diagnosa_bpjs').is(':visible'); if (warn){$('#cor_diagnosa_bpjs').show().fadeOut(3000);$('#war_diagnosa_bpjs').hide()}; searchDiagnosa(this.id)"
                                      cssClass="form-control" required="false"/>
                         </div>
@@ -1424,7 +1424,7 @@
                     <div class="form-group">
                         <label class="col-md-3">ICD9</label>
                         <div class="col-md-7">
-                            <s:textfield id="id_icd9" style="margin-top: 7px"
+                            <s:textfield id="id_icd9" style="margin-top: 7px" autocomplete="off"
                                          onkeypress="var warn =$('#war_id_icd9').is(':visible'); if (warn){$('#cor_id_icd9').show().fadeOut(3000);$('#war_id_icd9').hide()}; searchICD9(this.id)"
                                          cssClass="form-control" required="false"/>
                         </div>

@@ -1166,7 +1166,7 @@ function listLab() {
 
     PeriksaLabAction.listOrderLab(idDetailCheckup, function (response) {
         data = response;
-        if (data != null) {
+        if (data.length > 0) {
             $.each(data, function (i, item) {
                 var pemeriksaan = "-";
                 var status = "-";
@@ -1194,7 +1194,11 @@ function listLab() {
                     lab = item.labName;
                 }
                 if(item.approveFlag == "Y"){
-                    btn = '<a target="_blank" href="printLabRadiologi_rawatinap.action?id='+idDetailCheckup+'&tipe='+tipe+'&lab='+item.idPeriksaLab+'"><img border="0" class="hvr-grow" src="'+pathImages+'/pages/images/icons8-print-25.png" style="cursor: pointer;"></a>';
+                    if(item.urlImg != null){
+                        btn = '<img onclick="labLuar(\''+lab+'\', \''+item.urlImg+'\')" border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
+                    }else{
+                        btn = '<a target="_blank" href="printLabRadiologi_rawatinap.action?id='+idDetailCheckup+'&tipe='+tipe+'&lab='+item.idPeriksaLab+'"><img border="0" class="hvr-grow" src="'+pathImages+'/pages/images/icons8-print-25.png" style="cursor: pointer;"></a>';
+                    }
                 }
 
                 table += "<tr>" +
@@ -1209,6 +1213,12 @@ function listLab() {
     });
 
     $('#body_lab').html(table);
+}
+
+function labLuar(kategori, url){
+    $('#title_lab_luar').text("Detail Hasil "+kategori+" Luar");
+    $('#img_lab_luar').attr('src',url);
+    $('#modal-lab_luar').modal({show:true, backdrop:'static'});
 }
 
 function listSelectObat(select) {

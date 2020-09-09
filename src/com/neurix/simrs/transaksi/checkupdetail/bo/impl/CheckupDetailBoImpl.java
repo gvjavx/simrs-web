@@ -302,6 +302,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 }
                 if ("Y".equalsIgnoreCase(bean.getJustLab())) {
                     entity.setStatusPeriksa("3");
+                    entity.setKeteranganSelesai("Selesai");
+                    entity.setTindakLanjut("selesai");
                 }
 
                 entity.setLastUpdateWho(bean.getLastUpdateWho());
