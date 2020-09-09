@@ -34,6 +34,9 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/BudgetingAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/KodeRekeningAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/BgEksploitasiAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/BgPendapatanAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/BgNominasiAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/BgInvestasiAction.js"/>'></script>
     <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.bootstrap3.js"/>"></script>
     <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.js"/>"></script>
     <script src="<s:url value="/pages/plugins/tree/lodash.js"/>"></script>
@@ -242,7 +245,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-file"></i> View Detail Budgeting
+                <h4 class="modal-title"><i class="fa fa-file"></i> View Budgeting
                 </h4>
             </div>
             <div class="modal-body">
@@ -253,6 +256,25 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-view-detail">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-file"></i> View Detail Budgeting
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h4 id="label-view-budgeting-detail" style="margin: auto"></h4>
+                <br>
+                <div id="body-view-budgeting-detail"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <div class="modal fade" id="modal-view-pengadaan">
     <div class="modal-dialog modal-lg">
@@ -732,7 +754,7 @@
                 str += '<tr>' +
                     '<td>'+item.nama+'</td>' +
                     '<td align="right">'+formatRupiah(item.nilaiTotal)+'</td>' +
-                    '<td align="center" width="150px"><button class="btn btn-sm btn-primary" onclick=""><i class="fa fa-plus"></i></button></td>' +
+                    '<td align="center" width="150px"><button class="btn btn-sm btn-success" onclick="viewDataDetail(\''+id+'\',\''+branchId+'\',\''+tahun+'\',\''+item.idKategoriBudgeting+'\')"><i class="fa fa-search"></i></button></td>' +
                     '</tr>';
             });
 
@@ -741,6 +763,206 @@
 
             $("#body-view-budgeting").html(str);
         });
+    }
+
+    function viewDataDetail(idJenis, unit, tahun, idKategori) {
+        $("#modal-view-detail").modal('show');
+        if ("PDT" == idJenis){
+            BgPendapatanAction.getListMasterBudgeting(idKategori, unit, tahun, function (list) {
+                var str = '<table class="table table-bordered table-striped">' +
+                    '<thead>' +
+                    '<tr>' +
+                    '<td>Master</td>' +
+                    '<td align="right">Nilai</td>' +
+                    '<td align="center">Action</td>' +
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody>';
+
+                $.each(list, function (i, item) {
+                    str += '<tr>' +
+                        '<td id="label-master-'+item.masterId+'">'+item.namaMaster+'</td>' +
+                        '<td align="right">'+ formatRupiah( item.nilaiTotal )+'</td>' +
+                        '<td align="center" id="btn-span-'+i+'"><button class="btn btn-sm btn-success" onclick="spanRowPdt(\''+i+'\', \''+item.masterId+'\',\''+idKategori+'\')"><i class="fa fa-plus"></i></button></td>' +
+                        '</tr>' +
+                        '<tr style="display: none" id="row-master-'+i+'">' +
+                        '<td colspan="3" id="body-divisi-'+i+'">' +
+                        '</td>' +
+                        '</tr>';
+                });
+
+                str += '</tbody>' +
+                    '</table>';
+
+                $("#body-view-budgeting-detail").html(str);
+            });
+        } else if ("INV" == idJenis){
+            BgInvestasiAction.getListDivisiBudgeting(idKategori, idJenis, unit, tahun, function (list) {
+                var str = '<table class="table table-bordered table-striped">' +
+                    '<thead>' +
+                    '<tr>' +
+                    '<td>Nama</td>' +
+                    '<td align="right">Nilai</td>' +
+                    '<td align="center">Action</td>' +
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody>';
+                $.each(list, function (i, item) {
+                    str += '<tr>' +
+                        '<td id="label-divisi-'+item.divisiId+'">' + item.namaDivisi + '</td>' +
+                        '<td align="right">' + formatRupiah(item.nilaiTotal) + '</td>' +
+                        '<td align="center" id="btn-span-' + i + '"><button class="btn btn-sm btn-success" onclick="spanRow(\'' + i + '\', \'' + item.divisiId + '\', \''+idKategori+'\')"><i class="fa fa-plus"></i></button></td>' +
+                        '</tr>' +
+                        '<tr style="display: none" id="row-master-' + i + '">' +
+                        '<td colspan="3" id="body-divisi-' + i + '">' +
+                        '</td>' +
+                        '</tr>';
+                });
+
+                str += '</tbody>' +
+                    '</table>';
+
+
+                $("#body-view-budgeting-detail").html(str);
+            });
+        } else if ("BYA" == idJenis){
+            BgNominasiAction.getListDivisiBudgeting(idKategori, idJenis, unit, tahun, function (list) {
+                var str = '<table class="table table-bordered table-striped">' +
+                    '<thead>' +
+                    '<tr>' +
+                    '<td>Divisi</td>' +
+                    '<td align="right">Nilai</td>' +
+                    '<td align="center">Action</td>' +
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody>';
+                $.each(list, function (i, item) {
+                    str += '<tr>' +
+                        '<td id="label-divisi-'+item.divisiId+'">' + item.namaDivisi + '</td>' +
+                        '<td align="right">' + formatRupiah(item.nilaiTotal) + '</td>' +
+                        '<td align="center" id="btn-span-' + i + '"><button class="btn btn-sm btn-success" onclick="spanRow(\'' + i + '\', \'' + item.divisiId + '\', \''+idKategori+'\')"><i class="fa fa-plus"></i></button></td>' +
+                        '</tr>' +
+                        '<tr style="display: none" id="row-master-' + i + '">' +
+                        '<td colspan="3" id="body-divisi-' + i + '">' +
+                        '</td>' +
+                        '</tr>';
+                });
+
+                str += '</tbody>' +
+                    '</table>';
+
+
+                $("#body-view-budgeting-detail").html(str);
+            });
+        }
+    }
+
+    function spanRowPdt(i, master, idKategori) {
+        $("#row-master-"+i).show();
+        var btn = '<button class="btn btn-sm btn-success" onclick="unSpanRowPdt(\''+i+'\', \''+master+'\',\''+idKategori+'\')"><i class="fa fa-minus"></i></button>';
+        $("#btn-span-"+i).html(btn);
+        listDivisi(i, master, idKategori);
+    }
+
+    function unSpanRowPdt(i, master, idKategori) {
+        $("#row-master-"+i).hide();
+        var btn = '<button class="btn btn-sm btn-success" onclick="spanRowPdt(\''+i+'\', \''+master+'\',\''+idKategori+'\')"><i class="fa fa-plus"></i></button>';
+        $("#btn-span-"+i).html(btn);
+    }
+
+    function spanRow(i, divisiId, idKategori) {
+        $("#row-master-"+i).show();
+        var btn = '<button class="btn btn-sm btn-success" onclick="unSpanRow(\''+i+'\', \''+divisiId+'\', \''+idKategori+'\')"><i class="fa fa-minus"></i></button>';
+        $("#btn-span-"+i).html(btn);
+    //        listDivisi(i, master);
+        listRekening(i, divisiId, idKategori);
+    }
+
+    function unSpanRow(i, divisiId, idKategori) {
+        $("#row-master-"+i).hide();
+        var btn = '<button class="btn btn-sm btn-success" onclick="spanRow(\''+i+'\', \''+divisiId+'\', \''+idKategori+'\')"><i class="fa fa-plus"></i></button>';
+        $("#btn-span-"+i).html(btn);
+    }
+
+    function listDivisi(i, masterid, idKategori) {
+
+        BgPendapatanAction.getListDivisiBudgeting(idKategori, masterid, function (list) {
+
+            var str = '';
+            $.each(list, function (i, item) {
+
+                str += '<div class="row">' +
+                    '<div class="col-md-8 col-md-offset-2">' +
+                    '<h4 id="label-divisi-'+item.divisiId+'">' + item.namaDivisi +'</h4>' +
+//                    '<button class="btn btn-sm btn-primary" style="float: right;" onclick="showAdd(\''+item.id+'\', \''+item.divisiId+'\', \''+masterid+'\')"><i class="fa fa-plus"></i> Tambah</button>' +
+                    '<table class="table table-bordered table-striped">' +
+                    '<thead id="head-budgeting">' +
+                    '<tr bgcolor="#90ee90">' +
+                    '<td>Periode</td>' +
+                    '<td align="right">Nilai</td>' +
+                    //                    '<td align="center">Action</td>' +
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody id="body-budgeting-data-'+ item.id +'">';
+
+                BgPendapatanAction.getListDataParam(item.id, function (listDatas) {
+
+                    $.each(listDatas, function (n, data) {
+                        str += '<tr>' +
+                            '<td>'+data.periode+'</td>' +
+                            '<td align="right">'+ formatRupiah( data.nilaiTotal )+'</td>' +
+                            '</tr>';
+                    });
+                });
+
+                str += '</tbody>' +
+                    '</table>' +
+                    '</div>' +
+                    '</div>' +
+                    '<br/>' ;
+            });
+            $("#body-divisi-"+i).html(str);
+        })
+    }
+
+    function listRekening(i, divisiId, idKategori) {
+        BgInvestasiAction.getListRekeningByDivisi(idKategori, divisiId, function (list) {
+            var str = '';
+            $.each(list, function (i, item) {
+
+                str += '<div class="row">' +
+                    '<div class="col-md-8 col-md-offset-2">' +
+                    '<h4 id="label-head-'+item.idParameter+'">' + item.nama +'</h4>' +
+    //                '<button class="btn btn-sm btn-primary" style="float: right;" onclick="showAdd(\''+item.idParameter+'\', \''+item.divisiId+'\', \'INV\')"><i class="fa fa-plus"></i> Tambah</button>' +
+                    '<table class="table table-bordered table-striped">' +
+                    '<thead id="head-budgeting">' +
+                    '<tr bgcolor="#90ee90">' +
+                    '<td>Periode</td>' +
+                    '<td>Nilai</td>' +
+                    '<td align="center">Action</td>' +
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody id="body-budgeting-data-'+ item.idParameter +'">';
+
+                BgInvestasiAction.getListDataParam(item.idParameter, function (listDatas) {
+
+                    $.each(listDatas, function (n, data) {
+                        str += '<tr>' +
+                            '<td>'+data.periode+'</td>' +
+                            '<td align="right">'+ formatRupiah( data.nilaiTotal )+'</td>' +
+                            '<td align="center"><button class="btn btn-sm btn-success" onclick="viewListPengadaan(\''+ data.idNilaiParameter +'\')"><i class="fa fa-search"></i></button></td>' +
+                            '</tr>';
+                    });
+                });
+
+                str += '</tbody>' +
+                    '</table>' +
+                    '</div>' +
+                    '</div>' +
+                    '<br/>' ;
+            });
+            $("#body-divisi-"+i).html(str);
+        })
     }
 
     function actionView(var1, var2) {
