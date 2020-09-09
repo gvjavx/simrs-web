@@ -462,7 +462,7 @@
                         '<a target="_blank" href="printPermintaanPO_permintaanvendor?id='+idPermintaan+'&noBatch='+item.noBatch+'">' +
                         '<img src="<s:url value="/pages/images/icons8-print-25.png"/>">'+
                         '</a>'+
-                        '<img style="cursor: pointer" onclick="showDetailListObat(\''+idPermintaan+'\',\''+item.noBatch+'\',\''+item.noFaktur+'\',\''+tgl+'\',\''+item.noInvoice+'\',\''+item.noDo+'\',\''+item.urlDoc+'\')" src="<s:url value="/pages/images/icons8-search-25.png"/>"></td>' +
+                        <%--'<img style="cursor: pointer" onclick="showDetailListObat(\''+idPermintaan+'\',\''+item.noBatch+'\',\''+item.noFaktur+'\',\''+tgl+'\',\''+item.noInvoice+'\',\''+item.noDo+'\',\''+item.urlDoc+'\')" src="<s:url value="/pages/images/icons8-search-25.png"/>"></td>' +--%>
                         '</tr>';
                 });
                 $('#body_bat').html(table);

@@ -570,7 +570,7 @@
     });
 
     // exemple : post('/contact/', {name: 'Johnny Bravo'});
-    function post(path, params) {
+    function post(path, params, target) {
 
         var method='post';
         // The rest of this code assumes you are not using a library.
@@ -578,6 +578,10 @@
         const form = document.createElement('form');
         form.method = method;
         form.action = path;
+
+        if (target != null && target != ""){
+            form.target = target;
+        }
 
         for (const key in params) {
             if (params.hasOwnProperty(key)) {
@@ -602,7 +606,7 @@
 
     function printDo(noBatch) {
         var host = firstpath()+"/permintaanvendor/printPermintaanPO_permintaanvendor.action?id="+idpermintaanPo+"&noBatch="+noBatch;
-        post(host);
+        post(host,"","_blank");
     }
 
     function initAdd() {
