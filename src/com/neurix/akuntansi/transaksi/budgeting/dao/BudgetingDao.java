@@ -165,8 +165,12 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
 
     public Budgeting getCheckTransaksi(String branchId, String tahun){
 
+        if (branchId == null || "".equalsIgnoreCase(branchId)){
+            branchId = "%";
+        }
+
         String SQL = "SELECT branch_id, tahun, status, last_update, last_update_who FROM it_akun_budgeting\n" +
-                "WHERE branch_id = :unit\n" +
+                "WHERE branch_id LIKE :unit\n" +
                 "AND tahun = :tahun\n" +
                 "ORDER BY last_update DESC\n" +
                 "LIMIT 1";
