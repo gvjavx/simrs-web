@@ -325,7 +325,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="col-md-4" style="margin-top: 7px">Harga</label>
+                                    <label class="col-md-4" style="margin-top: 7px">Harga Awal / Item</label>
                                     <div class="col-md-8">
                                         <div class="input-group date">
                                             <div class="input-group-addon" style="margin-top: 7px">
