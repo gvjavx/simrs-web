@@ -270,67 +270,7 @@
                 <h4 id="label-view-budgeting-detail" style="margin: auto"></h4>
                 <br>
                 <div id="body-view-budgeting-detail"></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="modal fade" id="modal-view-pengadaan">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-file"></i> View Investasi
-                </h4>
-            </div>
-            <div class="modal-body">
-                <input type="hidden" id="view-id-pengadaan">
-                <table style="font-size: 15px; margin-bottom: 10px;" class="table">
-                    <tbody>
-                    <tr>
-                        <td width="20%">Tahun</td>
-                        <td>:</td>
-                        <td id="tahun-view-pengadaan"></td>
-                    </tr>
-                    <tr>
-                        <td>Unit</td>
-                        <td>:</td>
-                        <td id="unit-view-pengadaan"></td>
-                    </tr>
-                    <tr>
-                        <td>COA </td>
-                        <td>:</td>
-                        <td id="coa-view-pengadaan"></td>
-                    </tr>
-                    <tr>
-                        <td>Periode </td>
-                        <td>:</td>
-                        <td id="periode-view-pengadaan"></td>
-                    </tr>
-                    </tbody>
-                </table>
-                <table class="table table-bordered table-striped">
-                    <thead id="head-budgeting-view-pengadaan" style="font-size: 13px">
-                    <tr bgcolor="#90ee90">
-                        <td>Nama Investasi</td>
-                        <td>No Kontrak</td>
-                        <td align="center">Qty</td>
-                        <td align="center">Nilai</td>
-                        <td align="center">Sub Total</td>
-                        <td align="center">Nilai Kontrak</td>
-                        <td align="center">Realisasi</td>
-                        <td align="center">Selisih</td>
-                    </tr>
-                    </thead>
-                    <tbody id="body-budgeting-view-pengadaan" style="font-size: 13px">
-                    </tbody>
-                    <%--<input type="hidden" id="index-period"/>--%>
-                    <%--<input type="hidden" id="index-branch"/>--%>
-                    <%--<input type="hidden" id="bulan"/>--%>
-                    <%--<input type="hidden" id="tahun"/>--%>
-                </table>
+                <input type="hidden" id="jenis-budgeting">
             </div>
         </div>
     </div>
@@ -392,6 +332,30 @@
                 <%--</button>--%>
                 <button type="button" class="btn btn-sm btn-success" id="ok_con"><i class="fa fa-check"></i> Ok
                 </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-view-pengadaan">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Data Pengadaan </h4>
+            </div>
+            <div class="modal-body">
+                <span id="label-tipe"></span> <span id="label-periode"></span>
+                <br>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-12" id="body-list-pengadaan">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
             </div>
         </div>
     </div>
@@ -829,6 +793,7 @@
 
     function viewDataDetail(idJenis, unit, tahun, idKategori) {
         $("#modal-view-detail").modal('show');
+        $("#jenis-budgeting").val(idJenis);
         if ("PDT" == idJenis){
             BgPendapatanAction.getListMasterBudgeting(idKategori, unit, tahun, function (list) {
                 var str = '<table class="table table-bordered table-striped">' +
@@ -936,7 +901,6 @@
         $("#row-master-"+i).show();
         var btn = '<button class="btn btn-sm btn-success" onclick="unSpanRow(\''+i+'\', \''+divisiId+'\', \''+idKategori+'\')"><i class="fa fa-minus"></i></button>';
         $("#btn-span-"+i).html(btn);
-    //        listDivisi(i, master);
         listRekening(i, divisiId, idKategori);
     }
 
@@ -988,6 +952,7 @@
     }
 
     function listRekening(i, divisiId, idKategori) {
+        var jenis = $("#jenis-budgeting").val();
         BgInvestasiAction.getListRekeningByDivisi(idKategori, divisiId, function (list) {
             var str = '';
             $.each(list, function (i, item) {
@@ -1012,7 +977,13 @@
                         str += '<tr>' +
                             '<td>'+data.periode+'</td>' +
                             '<td align="right">'+ formatRupiah( data.nilaiTotal )+'</td>' +
-                            '<td align="center"><button class="btn btn-sm btn-success" onclick="viewListPengadaan(\''+ data.idNilaiParameter +'\')"><i class="fa fa-search"></i></button></td>' +
+                            '<td align="center">';
+
+                        if ("INV" == jenis){
+                            str += '<button class="btn btn-sm btn-success" onclick="viewListPengadaan(\''+ data.idNilaiParameter +'\')">';
+                        }
+
+                           str += '<i class="fa fa-search"></i></button></td>' +
                             '</tr>';
                     });
                 });
@@ -1027,7 +998,35 @@
         })
     }
 
-    function actionView(var1, var2) {
+function viewListPengadaan(id) {
+    $("#modal-view-pengadaan").modal('show');
+    BgInvestasiAction.getListPengadaan(id, function (res) {
+        var str = '<table class="table table-bordered table-striped">' +
+            '<thead>' +
+            '<tr>' +
+            '<td>Nama</td>' +
+            '<td align="right">Nilai</td>' +
+            '<td align="center">Qty</td>' +
+            '<td align="right">Total</td>' +
+            '</tr>' +
+            '</thead>' +
+            '<tbody>';
+        $.each(res, function (i,item) {
+            str += '<tr>' +
+                '<td>'+item.nama+'</td>' +
+                '<td align="right">'+ formatRupiah(item.nilai) +'</td>' +
+                '<td align="center">'+item.qty+'</td>' +
+                '<td align="right">'+ formatRupiah(item.nilaiTotal)+'</td>' +
+                '</tr>';
+        });
+        str += '</tbody>' +
+            '</table>';
+        $("#body-list-pengadaan").html(str);
+    });
+}
+
+
+function actionView(var1, var2) {
         var str = "";
         if (var2 == "5"){
         str = "<button class='item-view btn btn-sm btn-success' data='"+var1+"'><i class='fa fa-search'></i></button>";
@@ -1062,8 +1061,6 @@
                                     "<td class='val-master-name' >"+item.masterName+"</td>"+
                                     "<td>"+item.divisiId+"</td>";
                         }
-//                            "<td class='val-master-id' >"+item.masterId+"</td>"+
-//                            "<td class='val-master-name' >"+item.masterName+"</td>"+
 
                     str +=
                             "<td>"+item.divisiName+"</td>"+
@@ -1158,45 +1155,6 @@
         });
 
 
-    }
-
-    function saveTutup(unit, tahun, bulan) {
-
-        dwr.engine.setAsync(true);
-
-        $("#btn-tutup-"+unit).hide();
-        $("#btn-lock-"+unit).hide();
-        $("#load-save-"+unit).text("Processing Tutup Period ... ");
-
-        TutuPeriodAction.saveTutupPeriod(unit, tahun, bulan, function(response){
-            dwr.engine.setAsync(false);
-            if (response.status == "error"){
-               searchPeriod();
-               $("#alert-error").show().fadeOut(5000);
-               $("#error-msg").text(response.msg);
-           } else {
-               searchPeriod();
-               $("#btn-tutup-"+unit).show();
-               $("#btn-lock-"+unit).show();
-               $("#alert-error").hide();
-               $("#alert-success").show().fadeOut(5000);
-
-           }
-       });
-    }
-
-    function saveLock(unit, tahun, bulan){
-        TutuPeriodAction.saveLockPeriod(unit, tahun, bulan, function(response){
-            if (response.status == "error"){
-                $("#alert-error").show().fadeOut(5000);
-                $("#error-msg").text(response.msg);
-            } else {
-                $("#alert-error").hide();
-                $("#alert-success").show().fadeOut(5000);
-
-                searchPeriod();
-            }
-        });
     }
 
     function setNullToString(params){

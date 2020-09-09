@@ -404,7 +404,13 @@ public class BgEksploitasiAction {
     public List<ParameterBudgeting> getListKategoriBudgeting(String tahun, String branchId, String idJenisBudgeting){
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
-        return budgetingPerhitunganBo.getListSumOfKategoriBudgeting(idJenisBudgeting, tahun, branchId);
+        List<ParameterBudgeting> listKategori =  budgetingPerhitunganBo.getListSumOfKategoriBudgeting(idJenisBudgeting, tahun, branchId);
+//        if (listKategori != null && listKategori.size() > 0){
+//            for (ParameterBudgeting kategori : listKategori){
+//
+//            }
+//        }
+        return listKategori;
     }
 
     private BigDecimal hitungTotalFromListBudgeting(List<ParameterBudgeting> params){

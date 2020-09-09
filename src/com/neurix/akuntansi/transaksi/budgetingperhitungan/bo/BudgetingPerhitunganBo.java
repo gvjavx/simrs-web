@@ -20,6 +20,7 @@ public interface BudgetingPerhitunganBo {
     public List<PerhitunganBudgeting> getListPendapatanObat(String branchId, String bulan, String tahun, String tipe) throws GeneralBOException;
     public List<ParameterBudgeting> getSearchListParameterBudgeting(ParameterBudgeting bean) throws GeneralBOException;
     public BigDecimal hitungNilaiBudgeting(List<ItAkunPerhitunganBudgetingEntity> beans) throws GeneralBOException;
+    public BigDecimal hitungNilaiBudgetingForRutin(List<ItAkunPerhitunganBudgetingEntity> beans) throws GeneralBOException;
     public void saveAddPerhitunganBudgeting(List<ItAkunNilaiParameterBudgetingEntity> nilaiParameters, List<ItAkunPerhitunganBudgetingEntity> listPerhitungan, List<ItAkunNilaiParameterPengadaaanEntity> listPengadaaan, PerhitunganBudgeting bean) throws GeneralBOException;
     public String getNextIdNilaiParameter(String branchId, String tahun, String idNilai) throws GeneralBOException;
     public List<KategoriParameter> getListKategoriParameter(KategoriParameter bean) throws GeneralBOException;
@@ -39,4 +40,5 @@ public interface BudgetingPerhitunganBo {
     public ImAkunParameterBudgetingRekeningEntity getParameterBudgetingRekeningEntityById(String id) throws GeneralBOException;
     public List<ParameterBudgeting> getListPerhitunganTransaksiBudgetingByJenis(String tahun, String unit, String idJenis, String status);
     public List<ParameterBudgeting> getListPendapatan(String branchId, String tahun, String master, String divisi) throws GeneralBOException;
+    public String getNextIdBiayaRutin() throws GeneralBOException;
 }

@@ -5,40 +5,34 @@ import java.math.BigInteger;
 import java.sql.Timestamp;
 
 /**
- * Created by reza on 14/08/20.
+ * Created by reza on 09/09/20.
  */
-public class ItAkunPerhitunganBudgetingEntity {
+public class ItAkunNilaiBiayaRutinEntity {
     private String id;
-    private String idParameterBudgeting;
-    private BigDecimal nilai;
-    private String operator;
-    private String branchId;
-    private String tahun;
-    private Integer urutan;
+    private String nama;
+    private String idNilaiParameter;
+    private BigDecimal nilaiTotal;
     private String flag;
     private String action;
     private Timestamp createdDate;
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
-    private String idNilaiParameter;
-    private String idBiayaRutin;
-    private String namaBiayaRutin;
 
-    public String getNamaBiayaRutin() {
-        return namaBiayaRutin;
+    public String getId() {
+        return id;
     }
 
-    public void setNamaBiayaRutin(String namaBiayaRutin) {
-        this.namaBiayaRutin = namaBiayaRutin;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getIdBiayaRutin() {
-        return idBiayaRutin;
+    public String getNama() {
+        return nama;
     }
 
-    public void setIdBiayaRutin(String idBiayaRutin) {
-        this.idBiayaRutin = idBiayaRutin;
+    public void setNama(String nama) {
+        this.nama = nama;
     }
 
     public String getIdNilaiParameter() {
@@ -49,60 +43,12 @@ public class ItAkunPerhitunganBudgetingEntity {
         this.idNilaiParameter = idNilaiParameter;
     }
 
-    public String getTahun() {
-        return tahun;
+    public BigDecimal getNilaiTotal() {
+        return nilaiTotal;
     }
 
-    public void setTahun(String tahun) {
-        this.tahun = tahun;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getIdParameterBudgeting() {
-        return idParameterBudgeting;
-    }
-
-    public void setIdParameterBudgeting(String idParameterBudgeting) {
-        this.idParameterBudgeting = idParameterBudgeting;
-    }
-
-    public BigDecimal getNilai() {
-        return nilai;
-    }
-
-    public void setNilai(BigDecimal nilai) {
-        this.nilai = nilai;
-    }
-
-    public String getOperator() {
-        return operator;
-    }
-
-    public void setOperator(String operator) {
-        this.operator = operator;
-    }
-
-    public String getBranchId() {
-        return branchId;
-    }
-
-    public void setBranchId(String branchId) {
-        this.branchId = branchId;
-    }
-
-    public Integer getUrutan() {
-        return urutan;
-    }
-
-    public void setUrutan(Integer urutan) {
-        this.urutan = urutan;
+    public void setNilaiTotal(BigDecimal nilaiTotal) {
+        this.nilaiTotal = nilaiTotal;
     }
 
     public String getFlag() {
@@ -158,15 +104,13 @@ public class ItAkunPerhitunganBudgetingEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ItAkunPerhitunganBudgetingEntity that = (ItAkunPerhitunganBudgetingEntity) o;
+        ItAkunNilaiBiayaRutinEntity that = (ItAkunNilaiBiayaRutinEntity) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (idParameterBudgeting != null ? !idParameterBudgeting.equals(that.idParameterBudgeting) : that.idParameterBudgeting != null)
+        if (nama != null ? !nama.equals(that.nama) : that.nama != null) return false;
+        if (idNilaiParameter != null ? !idNilaiParameter.equals(that.idNilaiParameter) : that.idNilaiParameter != null)
             return false;
-        if (nilai != null ? !nilai.equals(that.nilai) : that.nilai != null) return false;
-        if (operator != null ? !operator.equals(that.operator) : that.operator != null) return false;
-        if (branchId != null ? !branchId.equals(that.branchId) : that.branchId != null) return false;
-        if (urutan != null ? !urutan.equals(that.urutan) : that.urutan != null) return false;
+        if (nilaiTotal != null ? !nilaiTotal.equals(that.nilaiTotal) : that.nilaiTotal != null) return false;
         if (flag != null ? !flag.equals(that.flag) : that.flag != null) return false;
         if (action != null ? !action.equals(that.action) : that.action != null) return false;
         if (createdDate != null ? !createdDate.equals(that.createdDate) : that.createdDate != null) return false;
@@ -181,11 +125,9 @@ public class ItAkunPerhitunganBudgetingEntity {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (idParameterBudgeting != null ? idParameterBudgeting.hashCode() : 0);
-        result = 31 * result + (nilai != null ? nilai.hashCode() : 0);
-        result = 31 * result + (operator != null ? operator.hashCode() : 0);
-        result = 31 * result + (branchId != null ? branchId.hashCode() : 0);
-        result = 31 * result + (urutan != null ? urutan.hashCode() : 0);
+        result = 31 * result + (nama != null ? nama.hashCode() : 0);
+        result = 31 * result + (idNilaiParameter != null ? idNilaiParameter.hashCode() : 0);
+        result = 31 * result + (nilaiTotal != null ? nilaiTotal.hashCode() : 0);
         result = 31 * result + (flag != null ? flag.hashCode() : 0);
         result = 31 * result + (action != null ? action.hashCode() : 0);
         result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);

@@ -32,6 +32,34 @@ public class ParameterBudgeting {
     private String idParamRekening;
     private String status;
 
+    private String idBiayaRutin;
+    private String namaBiayaRutin;
+    private BigDecimal nilaiBiyaRutin;
+
+    public String getIdBiayaRutin() {
+        return idBiayaRutin;
+    }
+
+    public void setIdBiayaRutin(String idBiayaRutin) {
+        this.idBiayaRutin = idBiayaRutin;
+    }
+
+    public String getNamaBiayaRutin() {
+        return namaBiayaRutin;
+    }
+
+    public void setNamaBiayaRutin(String namaBiayaRutin) {
+        this.namaBiayaRutin = namaBiayaRutin;
+    }
+
+    public BigDecimal getNilaiBiyaRutin() {
+        return nilaiBiyaRutin;
+    }
+
+    public void setNilaiBiyaRutin(BigDecimal nilaiBiyaRutin) {
+        this.nilaiBiyaRutin = nilaiBiyaRutin;
+    }
+
     public String getStatus() {
         return status;
     }

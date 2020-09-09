@@ -14,6 +14,7 @@ import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -24,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by reza on 14/08/20.
@@ -40,6 +42,11 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
     private KodeRekeningDao kodeRekeningDao;
     private ParameterBudgetingRekeningDao parameterBudgetingRekeningDao;
     private NilaiPengadaanDao nilaiPengadaanDao;
+    private BiayaRutinDao biayaRutinDao;
+
+    public void setBiayaRutinDao(BiayaRutinDao biayaRutinDao) {
+        this.biayaRutinDao = biayaRutinDao;
+    }
 
     public void setNilaiPengadaanDao(NilaiPengadaanDao nilaiPengadaanDao) {
         this.nilaiPengadaanDao = nilaiPengadaanDao;
@@ -214,6 +221,36 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
         return nilai;
     }
 
+    @Override
+    public BigDecimal hitungNilaiBudgetingForRutin(List<ItAkunPerhitunganBudgetingEntity> beans) throws GeneralBOException {
+
+        List<BigDecimal> listNilai = new ArrayList<>();
+        BigDecimal nilai = new BigDecimal(0);
+        String opr = "";
+
+        for (ItAkunPerhitunganBudgetingEntity perhitunganEntity : beans){
+            if ("".equalsIgnoreCase(opr)){
+                nilai = perhitunganEntity.getNilai();
+                opr = perhitunganEntity.getOperator();
+            } else {
+                if ("=".equalsIgnoreCase(perhitunganEntity.getOperator())){
+                    nilai = hitung(nilai, opr, perhitunganEntity.getNilai());
+                    listNilai.add(nilai);
+                    nilai = new BigDecimal(0);
+                } else {
+                    nilai = hitung(nilai, opr, perhitunganEntity.getNilai());
+                    opr = perhitunganEntity.getOperator();
+                }
+            }
+        }
+
+        BigDecimal nilaiTotal = new BigDecimal(0);
+        for (BigDecimal hitungNilai : listNilai){
+            nilaiTotal = nilaiTotal.add(hitungNilai);
+        }
+        return nilaiTotal;
+    }
+
     private BigDecimal hitung(BigDecimal n1, String opr, BigDecimal n2){
 
         MathContext m = new MathContext(3);
@@ -274,6 +311,26 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
                             throw new GeneralBOException("[BudgetingPerhitunganBoImpl.saveAddPerhitunganBudgeting] ERROR when save perhitungan. ", e);
                         }
                     }
+
+                    // save add to biaya rutin;
+                    List<ItAkunNilaiBiayaRutinEntity> biayaRutinEntityList = convertPerhitunganToBiayaRutin(filterListPerhitungan);
+                    if (biayaRutinEntityList.size() > 0){
+                        for (ItAkunNilaiBiayaRutinEntity nilaiBiayaRutinEntity : biayaRutinEntityList){
+
+                            nilaiBiayaRutinEntity.setCreatedDate(bean.getCreatedDate());
+                            nilaiBiayaRutinEntity.setCreatedWho(bean.getCreatedWho());
+                            nilaiBiayaRutinEntity.setLastUpdate(bean.getLastUpdate());
+                            nilaiBiayaRutinEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                            nilaiBiayaRutinEntity.setFlag(bean.getFlag());
+                            nilaiBiayaRutinEntity.setAction(bean.getAction());
+                            try {
+                                biayaRutinDao.addAndSave(nilaiBiayaRutinEntity);
+                            } catch (HibernateException e){
+                                logger.error("[BudgetingPerhitunganBoImpl.saveAddPerhitunganBudgeting] ERROR when save biaya rutin. ", e);
+                                throw new GeneralBOException("[BudgetingPerhitunganBoImpl.saveAddPerhitunganBudgeting] ERROR when save biaya rutin. ", e);
+                            }
+                        }
+                    }
                 }
             }
 
@@ -300,6 +357,43 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
                 }
             }
         }
+    }
+
+    private List<ItAkunNilaiBiayaRutinEntity> convertPerhitunganToBiayaRutin(List<ItAkunPerhitunganBudgetingEntity> listPerhitungan){
+
+        // grouping dari perhitungan ke nilai Biaya Rutin;
+        List<ItAkunNilaiBiayaRutinEntity> listBiayaRutin = new ArrayList<>();
+        List<ItAkunPerhitunganBudgetingEntity> perhitungans = listPerhitungan.stream().filter(p->p.getIdBiayaRutin() != null && !"".equalsIgnoreCase(p.getIdBiayaRutin())).collect(Collectors.toList());
+        for (ItAkunPerhitunganBudgetingEntity perhitunganEntity : perhitungans){
+            ItAkunNilaiBiayaRutinEntity biayaRutinEntity = new ItAkunNilaiBiayaRutinEntity();
+            if (listBiayaRutin.size() == 0){
+                biayaRutinEntity.setIdNilaiParameter(perhitunganEntity.getIdNilaiParameter());
+                biayaRutinEntity.setId(perhitunganEntity.getIdBiayaRutin());
+                biayaRutinEntity.setNama(perhitunganEntity.getNamaBiayaRutin());
+                listBiayaRutin.add(biayaRutinEntity);
+            } else {
+                List<ItAkunNilaiBiayaRutinEntity> filterRutin = listBiayaRutin.stream().filter(p->p.getId().equalsIgnoreCase(perhitunganEntity.getIdBiayaRutin())).collect(Collectors.toList());
+                if (filterRutin.size() == 0){
+                    biayaRutinEntity.setIdNilaiParameter(perhitunganEntity.getIdNilaiParameter());
+                    biayaRutinEntity.setId(perhitunganEntity.getIdBiayaRutin());
+                    biayaRutinEntity.setNama(perhitunganEntity.getNamaBiayaRutin());
+                    listBiayaRutin.add(biayaRutinEntity);
+                }
+            }
+        }
+
+        // mencari nilai total
+        if (listBiayaRutin.size() > 0){
+            for (ItAkunNilaiBiayaRutinEntity biayaRutinEntity : listBiayaRutin){
+                List<ItAkunPerhitunganBudgetingEntity> perhitunganFilter = perhitungans.stream().filter(p->p.getIdBiayaRutin().equalsIgnoreCase(biayaRutinEntity.getId())).collect(Collectors.toList());
+                if (perhitunganFilter.size() > 0){
+                    BigDecimal nilaiTotal = hitungNilaiBudgeting(perhitunganFilter);
+                    biayaRutinEntity.setNilaiTotal(nilaiTotal);
+                }
+            }
+        }
+
+        return listBiayaRutin;
     }
 
     @Override
@@ -583,5 +677,10 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
     @Override
     public List<ParameterBudgeting> getListPendapatan(String branchId, String tahun, String master, String divisi) throws GeneralBOException {
         return perhitunganBudgetingDao.getListPendapatan(branchId, master, divisi, tahun);
+    }
+
+    @Override
+    public String getNextIdBiayaRutin() throws GeneralBOException {
+        return "IYR"+ CommonUtil.stDateSeq() + biayaRutinDao.getNextSeq();
     }
 }

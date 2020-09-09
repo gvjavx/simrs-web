@@ -585,6 +585,12 @@ public class BgNominasiAction {
             if (!"".equalsIgnoreCase(obj.get("opr").toString())){
                 perhitungan.setOperator(obj.get("opr").toString());
             }
+            if (!"".equalsIgnoreCase(obj.get("id_rutin").toString())){
+                perhitungan.setIdBiayaRutin(obj.get("id_rutin").toString());
+            }
+            if (!"".equalsIgnoreCase(obj.get("nama_rutin").toString())){
+                perhitungan.setNamaBiayaRutin(obj.get("nama_rutin").toString());
+            }
             perhitungan.setUrutan(i);
             perhitungan.setIdParameterBudgeting(idParam);
             perhitungan.setIdNilaiParameter(idNilaiParam);
@@ -597,7 +603,12 @@ public class BgNominasiAction {
         // hasil perhitungan untuk nilai pada parameter budgeting;
         String finalIdNilaiParam = idNilaiParam;
         List<ItAkunPerhitunganBudgetingEntity> listPerhitungan = sessionPerhitungan.stream().filter(p->p.getIdNilaiParameter().equalsIgnoreCase(finalIdNilaiParam)).collect(Collectors.toList());
-        BigDecimal nilaiBudgeting = budgetingPerhitunganBo.hitungNilaiBudgeting(listPerhitungan);
+        BigDecimal nilaiBudgeting = new BigDecimal(0);
+        if ("KTB000005".equalsIgnoreCase(idKategori)){
+            nilaiBudgeting = budgetingPerhitunganBo.hitungNilaiBudgetingForRutin(listPerhitungan);
+        } else {
+            nilaiBudgeting = budgetingPerhitunganBo.hitungNilaiBudgeting(listPerhitungan);
+        }
         if (listPerhitungan.size() > 0 && !isNew) {
 
             // set nilai ke session Params

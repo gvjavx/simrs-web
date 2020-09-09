@@ -925,7 +925,7 @@
         for (i=0; i<n;i++){
             var nilai   = $("#total-" + i + "-" + idParam).val();
             var opr     = $("#opr-" + i + "-" + idParam).val();
-            listData.push({"nilai":nilai, "opr":opr});
+            listData.push({"nilai":nilai, "opr":opr, "id_rutin":"", "nama_rutin":""});
         }
 
         var stJson = JSON.stringify(listData);

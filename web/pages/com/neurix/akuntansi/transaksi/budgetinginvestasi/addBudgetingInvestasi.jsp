@@ -351,32 +351,22 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-view-pendapatan">
+<div class="modal fade" id="modal-view-pengadaan">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-info"></i> Data Pendapatan </h4>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Data Pengadaan </h4>
             </div>
             <div class="modal-body">
                 <span id="label-tipe"></span> <span id="label-periode"></span>
                 <br>
                 <div class="form-group">
                     <div class="row">
-                        <div class="col-md-12">
-                            <table class="table table-bordered table-striped tree" style="font-size: 13px; margin-top: 7px;">
-                                <thead>
-                                <tr bgcolor="#90ee90" id="head-list-pendapatan">
-
-                                </tr>
-                                </thead>
-                                <tbody id="body-list-pendapatan">
-                                </tbody>
-                            </table>
+                        <div class="col-md-12" id="body-list-pengadaan">
                         </div>
                     </div>
-
                 </div>
             </div>
             <div class="modal-footer">
@@ -598,6 +588,34 @@
             $("#body-divisi-"+i).html(str);
         })
     }
+
+    function viewListPengadaan(id) {
+        $("#modal-view-pengadaan").modal('show');
+        BgInvestasiAction.getListPengadaanByNilaiParam(id, function (res) {
+            var str = '<table class="table table-bordered table-striped">' +
+                '<thead>' +
+                '<tr>' +
+                '<td>Nama</td>' +
+                '<td align="right">Nilai</td>' +
+                '<td align="center">Qty</td>' +
+                '<td align="right">Total</td>' +
+                '</tr>' +
+                '</thead>' +
+                '<tbody>';
+            $.each(res, function (i,item) {
+                str += '<tr>' +
+                    '<td>'+item.nama+'</td>' +
+                    '<td align="right">'+ formatRupiah(item.nilai) +'</td>' +
+                    '<td align="center">'+item.qty+'</td>' +
+                    '<td align="right">'+ formatRupiah(item.nilaiTotal)+'</td>' +
+                    '</tr>';
+            });
+            str += '</tbody>' +
+                '</table>';
+            $("#body-list-pengadaan").html(str);
+        });
+    }
+
     function addButton(id, divisiId, masterid) {
 //        BudgetingAction.checkTransaksiBudgeting(unit, tahun, function (res) {
             if (flagNilaiDasar == "Y"){

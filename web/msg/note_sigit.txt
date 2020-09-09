@@ -884,3 +884,32 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     ADD COLUMN url_img TEXT,
     ADD COLUMN no_batch INTEGER
 <<< //
+
+// >>> 2020-09-09
+    CREATE SEQUENCE seq_nilai_biaya_rutin;
+
+    ALTER TABLE it_akun_perhitungan_budgeting
+    ADD COLUMN id_biaya_rutin VARCHAR(50);
+
+    CREATE TABLE public.it_akun_nilai_biaya_rutin
+    (
+        id character varying(50) COLLATE pg_catalog."default" NOT NULL,
+        nama text COLLATE pg_catalog."default",
+        id_nilai_parameter character varying(50) COLLATE pg_catalog."default",
+        nilai_total numeric,
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        CONSTRAINT it_akun_nilai_biaya_rutin_pkey PRIMARY KEY (id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.it_akun_nilai_biaya_rutin
+        OWNER to postgres;
+<<<//
