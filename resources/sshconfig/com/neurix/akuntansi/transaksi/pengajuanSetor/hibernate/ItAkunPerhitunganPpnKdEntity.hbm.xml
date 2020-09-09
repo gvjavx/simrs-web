@@ -107,6 +107,12 @@
             <basic name="statusB2">
                 <column name="status_b2"/>
             </basic>
+            <basic name="piutangPpnKeluaran">
+                <column name="piutang_pajak_keluaran"/>
+            </basic>
+            <basic name="buktiPiutangPpnKeluaran">
+                <column name="bukti_piutang_pajak_keluaran"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

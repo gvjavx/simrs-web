@@ -471,3 +471,32 @@ CREATE SEQUENCE seq_rk INCREMENT BY 1 MINVALUE 1 MAXVALUE 9999 START WITH 1 CYCL
 -- 04-09-2020
 -- jika coba ppn
 insert into it_akun_pengajuan_setor values ('PSC002','KP','10','Y','admin','2020-08-02 00:00:00','2020-08-02 00:00:00','admin','2020-08-02 00:00:00','admin','U','Y',null,null,null,0,'2020-08-02','2020',null,'N',null,null,'PPN',null,0,0,0,null,'N',null,null);
+
+--08-09-2020
+
+CREATE TABLE it_akun_perhitungan_kembali_unit
+(
+    perhitungan_kembali_unit_id character varying(15) COLLATE pg_catalog."default" NOT NULL,
+    perhitungan_ppn_kd_id character varying(15) COLLATE pg_catalog."default" NOT NULL,
+    branch_id character varying(4) COLLATE pg_catalog."default" NOT NULL,
+    pajak_masukan numeric(25,2) NOT NULL,
+    perhitungan_kembali_1 numeric(25,2) NOT NULL,
+    perhitungan_kembali_2 numeric(25,2) NOT NULL,
+    perhitungan_pm_sudah_dibuku numeric(25,2) NOT NULL,
+    perhitungan_pm_ymh_dibuku numeric(25,2) NOT NULL,
+    bulan character varying(2) COLLATE pg_catalog."default" NOT NULL,
+    tahun character varying(4) COLLATE pg_catalog."default" NOT NULL,
+    flag character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    action character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    created_who character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    last_update_who character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    created_date timestamp without time zone NOT NULL,
+    last_update timestamp without time zone NOT NULL,
+    CONSTRAINT it_akun_perhitungan_kembali_unit_pkey PRIMARY KEY (perhitungan_kembali_unit_id)
+);
+
+CREATE SEQUENCE IF NOT EXISTS seq_perhitungan_kembali_unit INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 1;
+
+--09-09-2020
+ALTER TABLE it_akun_perhitungan_ppn_kd ADD COLUMN piutang_pajak_keluaran numeric(25,2);
+ALTER TABLE it_akun_perhitungan_ppn_kd ADD COLUMN bukti_piutang_pajak_keluaran character varying(30);
