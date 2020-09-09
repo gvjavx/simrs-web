@@ -452,6 +452,7 @@
                     "<input type=\"number\" class=\"form-control\" id=\"edit_"+item.idNilaiDasar+"\" value=\""+item.nilai+"\" align='right' readonly/>" +
                     "</div>" +
                     "</div>";
+                flagNilaiDasar = "Y";
             });
             $("#body-nilai-dasar").html(str);
             //console.log(str);
@@ -462,7 +463,7 @@
     function checkTransaksi() {
         BudgetingAction.checkTransaksiBudgeting(unit, tahun, function (res) {
             if (res.branchId != null && res.branchId != ""){
-                flagNilaiDasar = "";
+//                flagNilaiDasar = "";
                 $("#btn-save").hide();
             }
         });
