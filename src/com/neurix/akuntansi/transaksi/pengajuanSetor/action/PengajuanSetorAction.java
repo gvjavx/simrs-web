@@ -1458,6 +1458,11 @@ public class PengajuanSetorAction extends BaseMasterAction {
         PerhitunganPpnKd perhitunganPpnKdB3 = pengajuanSetorBoProxy.getPerhitunganPpnKdList(search,"B3");
         List<ProsesPpnKd> prosesPpnKdListB3 = pengajuanSetorBoProxy.getProsesPpnKdList(perhitunganPpnKdB3.getPerhitunganPpnKdId());
 
+
+        //set status B2 semua
+        perhitunganPpnKdNormal.setStatusB2(perhitunganPpnKdB2.getStatusB2());
+        perhitunganPpnKdB3.setStatusB2(perhitunganPpnKdB2.getStatusB2());
+
         //Perhitungan Kembali
         PerhitunganKembaliPpn perhitunganKembaliPpn = pengajuanSetorBoProxy.getPerhitunganKembali(search);
 
@@ -1534,28 +1539,28 @@ public class PengajuanSetorAction extends BaseMasterAction {
 
             for (Branch branch : branchNew ){
                 // jurnal 1 > pengelompokan ppn keluaran
-                String keteranganJurnal1 = "Pengelompokan PPN Keluaran";
+                String keteranganJurnal1 = "Pengelompokan PPN Keluaran pada periode bulan "+bulan+" tahun "+tahun+" unit : "+branch.getBranchName();
                 Map dataPengelompokanPpnKeluaran = pengajuanSetorBo.getBillingForPostingPengelompokanPpnKeluaran(bulan,tahun,branch.getBranchId());
                 Jurnal jurnalPengelompokanPpnKeluaran = billingSystemBo.createJurnal(CommonConstant.TRANSAKSI_ID_PENGELOMPOKAN_PPN_KELUARAN,dataPengelompokanPpnKeluaran,branch.getBranchId(),keteranganJurnal1,"Y");
 
                 // jurnal 2 > pengelompokan ppn masukan
-                String keteranganJurnal2 = "pengelompokan ppn masukan";
+                String keteranganJurnal2 = "pengelompokan ppn masukan pada periode bulan "+bulan+" tahun "+tahun+" unit : "+branch.getBranchName();
                 Map dataPengelompokanPpnMasukan = pengajuanSetorBo.getBillingForPostingPengelompokanPpnMasukan(bulan,tahun,branch.getBranchId());
                 Jurnal jurnalPengelompokanPpnMasukan = billingSystemBo.createJurnal(CommonConstant.TRANSAKSI_ID_PENGELOMPOKAN_PPN_MASUKAN,dataPengelompokanPpnMasukan,branch.getBranchId(),keteranganJurnal2,"Y");
 
                 // jurnal 3 > ppn keluaran dijadikan RK
-                String keteranganJurnal3 = "ppn keluaran dijadikan RK";
+                String keteranganJurnal3 = "ppn keluaran dijadikan RK pada periode bulan "+bulan+" tahun "+tahun+" unit : "+branch.getBranchName();
                 Map dataPpnKeluaranRk = pengajuanSetorBo.getBillingForPostingPpnKeluaranRk(branch.getBranchId(),dataPengelompokanPpnKeluaran);
                 Jurnal jurnalPpnKeluaranRk = billingSystemBo.createJurnal(CommonConstant.TRANSAKSI_ID_PPN_KELUARAN_DIJADIKAN_RK,dataPpnKeluaranRk,branch.getBranchId(),keteranganJurnal3,"Y");
 
                 // jurnal 4 > ppn masukan dijadikan RK
-                String keteranganJurnal4 = "ppn masukan dijadikan RK";
+                String keteranganJurnal4 = "ppn masukan dijadikan RK pada periode bulan "+bulan+" tahun "+tahun+" unit : "+branch.getBranchName();
                 Map dataPpnMasukanRk = pengajuanSetorBo.getBillingForPostingPpnMasukanRk(branch.getBranchId(),dataPengelompokanPpnMasukan);
                 Jurnal jurnalPpnMasukanRk = billingSystemBo.createJurnal(CommonConstant.TRANSAKSI_ID_PPN_MASUKAN_DIJADIKAN_RK,dataPpnMasukanRk,branch.getBranchId(),keteranganJurnal4,"Y");
 
                 // jurnal 5 > RK dijadikan ppn keluaran
                 Map dataRkPpnKeluaran = pengajuanSetorBo.getBillingForPostingRkPpnKeluaran(branch.getBranchId(),dataPpnKeluaranRk,buktiJurnal5);
-                String keteranganJurnal5 = "RK dijadikan ppn keluaran";
+                String keteranganJurnal5 = "RK dijadikan ppn keluaran pada periode bulan "+bulan+" tahun "+tahun+" unit : "+branch.getBranchName();
                 Jurnal jurnalRkPpnKeluaran = billingSystemBo.createJurnal(CommonConstant.TRANSAKSI_ID_RK_DIJADIKAN_PPN_KELUARAN,dataRkPpnKeluaran,CommonConstant.ID_KANPUS,keteranganJurnal5,"Y");
                 if ("".equalsIgnoreCase(buktiJurnal5)){
                     buktiJurnal5=jurnalRkPpnKeluaran.getSumber();
@@ -1565,7 +1570,7 @@ public class PengajuanSetorAction extends BaseMasterAction {
 
                 // jurnal 6 > RK dijadikan ppn masukan
                 Map dataRkPpnMasukan = pengajuanSetorBo.getBillingForPostingRkPpnMasukan(branch.getBranchId(),dataPpnMasukanRk,buktiJurnal6);
-                String keteranganJurnal6 = "RK dijadikan ppn masukan";
+                String keteranganJurnal6 = "RK dijadikan ppn masukan pada periode bulan "+bulan+" tahun "+tahun+" unit : "+branch.getBranchName();
                 Jurnal jurnalRkPpnMasukan = billingSystemBo.createJurnal(CommonConstant.TRANSAKSI_ID_RK_DIJADIKAN_PPN_MASUKAN,dataRkPpnMasukan,CommonConstant.ID_KANPUS,keteranganJurnal6,"Y");
                 if ("".equalsIgnoreCase(buktiJurnal6)){
                     buktiJurnal6=jurnalRkPpnKeluaran.getSumber();
@@ -1576,11 +1581,11 @@ public class PengajuanSetorAction extends BaseMasterAction {
 
             // jurnal 7 > pengurang ppn keluaran
             Map dataPengurangPpnKeluaran = pengajuanSetorBo.getBillingForPostingPengurangPpnKeluaran(bulan,tahun,totalKeluaranJurnal5,buktiJurnal5,totalMasukanJurnal6,buktiJurnal6);
-            String keteranganJurnal7 = "pengurang ppn keluaran";
+            String keteranganJurnal7 = "pengurang ppn keluaran pada periode bulan "+bulan+" tahun "+tahun;
             Jurnal jurnalPengurangPpnKeluaran = billingSystemBo.createJurnal(CommonConstant.TRANSAKSI_ID_PENGURANG_PPN_KELUARAN,dataPengurangPpnKeluaran,CommonConstant.ID_KANPUS,keteranganJurnal7,"Y");
 
             // jurnal 8 > pembayaran ppn keluaran
-            String keteranganJurnal8 = "pembayaran ppn keluaran";
+            String keteranganJurnal8 = "pembayaran ppn keluaran pada periode bulan "+bulan+" tahun "+tahun;
             Map piutangPpnKeluaran = (Map) dataPengurangPpnKeluaran.get("piutang_ppn_keluaran");
             BigDecimal piutangPajakKeluaran = (BigDecimal) piutangPpnKeluaran.get("nilai");
             Map ppnKeluaranJurnal7 = (Map) dataPengurangPpnKeluaran.get("ppn_keluaran");
@@ -1596,29 +1601,22 @@ public class PengajuanSetorAction extends BaseMasterAction {
             String buktiBiayaObatRj = jurnalPengurangPpnKeluaran.getSumber();
             for (Branch branch : branchNew ){
                 // jurnal 9 > pembagian biaya untuk RK tiap unit
-                String keteranganJurnal9 = "pembagian biaya untuk RK tiap unit";
+                String keteranganJurnal9 = "pembagian biaya untuk RK tiap unit pada periode bulan "+bulan+" tahun "+tahun+" unit : "+branch.getBranchName();
                 Map dataPembagianRkUntukUnit = pengajuanSetorBo.getBillingForPostingPembagianRkUntukUnit(bulan,tahun,branch.getBranchId(),buktiBiayaObatRj);
                 Jurnal jurnalPembagianRkUntukUnit = billingSystemBo.createJurnal(CommonConstant.TRANSAKSI_ID_PEMBAGIAN_BIAYA_UNTUK_RK_TIAP_UNIT,dataPembagianRkUntukUnit,CommonConstant.ID_KANPUS,keteranganJurnal9,"Y");
 
                 // jurnal 10 > penerimaan biaya untuk RK tiap unit
-                String keteranganJurnal10 = "penerimaan biaya untuk RK tiap unit";
+                String keteranganJurnal10 = "penerimaan biaya untuk RK tiap unit pada periode bulan "+bulan+" tahun "+tahun+" unit : "+branch.getBranchName();
                 Map dataPenerimaanRkUntukUnit = pengajuanSetorBo.getBillingForPostingPenerimaanRkUntukUnit(bulan,tahun,branch.getBranchId());
                 Jurnal jurnalPenerimaanRkUntukUnit = billingSystemBo.createJurnal(CommonConstant.TRANSAKSI_ID_PENERIMAAN_BIAYA_UNTUK_RK_TIAP_UNIT,dataPenerimaanRkUntukUnit,branch.getBranchId(),keteranganJurnal10,"Y");
             }
-
-//            //untuk posting jurnal Koreksi
-//            Map dataPostingJurnalKoreksi = pengajuanSetorBo.getBillingForPostingProsesPpnKoreksi(bulan,tahun);
-//            Jurnal jurnalPostingKoreksi = billingSystemBo.createJurnal(CommonConstant.TRANSAKSI_ID_PROSES_PPN_KD_KOREKSI,dataPostingJurnalKoreksi,CommonConstant.ID_KANPUS,keterangan,"Y");
-//
-//            //Untuk Posting Jurnal kas Keluar
-//            Map dataPostingJurnalKasKeluar = pengajuanSetorBo.getBillingForPostingProsesPpnKasKeluar(bulan,tahun,kas);
-//            Jurnal jurnalPostingKasKeluar = billingSystemBo.createJurnal(CommonConstant.TRANSAKSI_ID_PROSES_PPN_KD_KAS_KELUAR,dataPostingJurnalKasKeluar,CommonConstant.ID_KANPUS,keterangan,"Y");
 
             PerhitunganPpnKd data = new PerhitunganPpnKd();
             data.setBulan(bulan);
             data.setTahun(tahun);
             data.setBuktiPiutangPpnKeluaran(buktiPiutangPpnKeluaran);
             data.setPiutangPpnKeluaran(sisaPiutangPpnKeluaran);
+            data.setKeterangan(keterangan);
             data.setApprovalDate(updateTime);
             data.setApprovalFlag("Y");
             data.setApprovalWho(userLogin);
@@ -1651,10 +1649,12 @@ public class PengajuanSetorAction extends BaseMasterAction {
         try {
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             PengajuanSetorBo pengajuanSetorBo = (PengajuanSetorBo) ctx.getBean("pengajuanSetorBoProxy");
-            PerhitunganPpnKd data = new PerhitunganPpnKd();
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
+            PerhitunganPpnKd data = new PerhitunganPpnKd();
+            data.setBulan(bulan);
+            data.setTahun(tahun);
             data.setCancelDate(updateTime);
             data.setCancelFlag("Y");
             data.setCancelWho(userLogin);

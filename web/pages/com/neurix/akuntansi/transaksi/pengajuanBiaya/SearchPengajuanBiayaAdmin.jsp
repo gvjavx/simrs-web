@@ -372,7 +372,7 @@
                                                     <s:iterator value="#session.listOfResult" var="row">
                                                             <s:if test='pengajuanBiayaDetail.branchIdUser == "KP"'>
                                                             <td align="center">
-                                                                <s:if test='#row.pengajuanBiayaDetailId == ""||#row.rkId != ""||#row.statusKeuangan != "KP"'>
+                                                                <s:if test='#row.pengajuanBiayaDetailId == ""||#row.statusKeuangan != "KP"||#row.rkId!= null'>
                                                                 </s:if>
                                                                 <s:else>
                                                                     <div class="form-check">

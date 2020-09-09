@@ -388,7 +388,7 @@
                                                         coaLawan: item.coa,
                                                         coaLawanName: item.coaName,
                                                         noKontrak: item.noKontrak,
-                                                        namaKontrak: item.namaKontrak,
+                                                        namaKontrak: item.keperluanName,
                                                         jumlah: item.stJumlah
                                                     };
                                                     functions.push(labelItem);

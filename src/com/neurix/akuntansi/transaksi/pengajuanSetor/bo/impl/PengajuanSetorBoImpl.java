@@ -824,6 +824,7 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
                 perhitunganPpnKdEntity.setApprovalFlag(bean.getApprovalFlag());
                 perhitunganPpnKdEntity.setPiutangPpnKeluaran(bean.getPiutangPpnKeluaran());
                 perhitunganPpnKdEntity.setBuktiPiutangPpnKeluaran(bean.getBuktiPiutangPpnKeluaran());
+                perhitunganPpnKdEntity.setKeterangan(bean.getKeterangan());
 
                 perhitunganPpnKdEntity.setFlag(bean.getFlag());
                 perhitunganPpnKdEntity.setAction(bean.getAction());
@@ -1890,6 +1891,7 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
         result.setJumlahTidakTerutang(data.getJumlahTidakTerutang());
         result.setPenyerahanBarangDanJasa(data.getPenyerahanBarangDanJasa());
         result.setTipe(data.getTipe());
+        result.setStatusB2(data.getStatusB2());
 
         //convert to numeric
         result.setStPpnMasukan(CommonUtil.numbericFormat(result.getPpnMasukan(),"###,###"));

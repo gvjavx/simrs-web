@@ -42,6 +42,15 @@ public class ItAkunPerhitunganPpnKdEntity implements Serializable {
     private String statusB2;
     private BigDecimal piutangPpnKeluaran;
     private String buktiPiutangPpnKeluaran;
+    private String keterangan;
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
 
     public BigDecimal getPiutangPpnKeluaran() {
         return piutangPpnKeluaran;

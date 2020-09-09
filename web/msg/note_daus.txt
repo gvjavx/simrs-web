@@ -500,3 +500,4 @@ CREATE SEQUENCE IF NOT EXISTS seq_perhitungan_kembali_unit INCREMENT BY 1 MINVAL
 --09-09-2020
 ALTER TABLE it_akun_perhitungan_ppn_kd ADD COLUMN piutang_pajak_keluaran numeric(25,2);
 ALTER TABLE it_akun_perhitungan_ppn_kd ADD COLUMN bukti_piutang_pajak_keluaran character varying(30);
+ALTER TABLE it_akun_perhitungan_ppn_kd ADD COLUMN keterangan character varying(200);

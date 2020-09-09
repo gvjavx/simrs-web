@@ -330,6 +330,7 @@ public class PerhitunganPpnKdDao extends GenericDao<ItAkunPerhitunganPpnKdEntity
                 "  bulan = '"+bulanSebelumnya+"' \n" +
                 "  and tahun = '"+tahunSebelumnya+"' \n" +
                 "  and tipe = 'B2' \n" +
+                "  and cancel_flag = 'N' \n" +
                 "  and flag = 'Y'\n";
         Object results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query).uniqueResult();
@@ -353,6 +354,7 @@ public class PerhitunganPpnKdDao extends GenericDao<ItAkunPerhitunganPpnKdEntity
                 "where \n" +
                 "  bulan = '"+bulanSebelumnya+"' \n" +
                 "  and tahun = '"+tahunSebelumnya+"' \n" +
+                "  and cancel_flag = 'N' \n" +
                 "  and tipe = 'B2' \n" +
                 "  and flag = 'Y'\n";
         Object results = this.sessionFactory.getCurrentSession()

@@ -142,7 +142,7 @@
                                                 <div class="col-md-6">
                                                     <div class="row">
                                                         <div class="form-group">
-                                                            <label class="control-label col-sm-4" style="margin-top: 14px;margin-left: 20px">Lebih Bayar (RP) </label>
+                                                            <label class="control-label col-sm-4 txt_kurang_bayar_normal" style="margin-top: 14px;margin-left: 20px">Lebih Bayar (RP) </label>
                                                             <div class="col-sm-6">
                                                                 <s:textfield name="perhitunganPpnKd.stKurangBayar" id="kurang_bayar_normal" cssStyle="text-align: right;margin-top: 7px"
                                                                              readonly="true" cssClass="form-control" />
@@ -160,7 +160,7 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="form-group">
-                                                            <label class="control-label col-sm-4" style="margin-top: 14px;margin-left: 20px"><b>Total Lebih Bayar (RP)</b> </label>
+                                                            <label class="control-label col-sm-4 txt_total_kurang_bayar_normal" style="margin-top: 14px;margin-left: 20px"><b>Total Lebih Bayar (RP)</b> </label>
                                                             <div class="col-sm-6">
                                                                 <s:textfield name="perhitunganPpnKd.stTotalKurangBayar" id="total_kurang_bayar_normal" cssStyle="text-align: right;margin-top: 7px"
                                                                              readonly="true" cssClass="form-control" />
@@ -730,6 +730,13 @@
             $('#lb_bulan_yll_normal').val(data.stLbBulanYll);
             $('#perhitungan_kembali_normal').val(data.stPerhitunganKembali);
             $('#total_kurang_bayar_normal').val(data.stTotalKurangBayar);
+            $('.txt_kurang_bayar_normal').html("Lebih Bayar (RP)");
+            $('.txt_total_kurang_bayar_normal').html("Total Lebih Bayar (RP)");
+
+            if (data.statusB2=="kurang_bayar"){
+                $('.txt_kurang_bayar_normal').html("Kurang Bayar (RP)");
+                $('.txt_total_kurang_bayar_normal').html("Total Kurang Bayar (RP)");
+            }
         });
     };
 
