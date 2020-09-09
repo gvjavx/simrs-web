@@ -360,6 +360,7 @@
     $( document ).ready(function() {
         chekTipe();
         choose();
+        checkTransaksi();
     });
 
     var tipe        = '<s:property value="budgeting.tipe"/>';
@@ -456,6 +457,14 @@
 //            //console.log(listOfId);
 //        });
 
+    }
+
+    function checkTransaksi() {
+        BudgetingAction.checkTransaksiBudgeting(unit, tahun, function (res) {
+            if (res.branchId != null && res.branchId != ""){
+                $("#btn-save").hide();
+            }
+        });
     }
 
     function search() {

@@ -38,4 +38,5 @@ public interface BudgetingPerhitunganBo {
     public ImAkunParameterBudgetingEntity getParameterBudgetingEntityById(String id) throws GeneralBOException;
     public ImAkunParameterBudgetingRekeningEntity getParameterBudgetingRekeningEntityById(String id) throws GeneralBOException;
     public List<ParameterBudgeting> getListPerhitunganTransaksiBudgetingByJenis(String tahun, String unit, String idJenis, String status);
+    public List<ParameterBudgeting> getListPendapatan(String branchId, String tahun, String master, String divisi) throws GeneralBOException;
 }

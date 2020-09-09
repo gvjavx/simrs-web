@@ -260,9 +260,6 @@ public class BgPendapatanAction {
             return response;
         }
 
-
-
-
         logger.info("[BgPendapatanAction.getListParametersBudgeting] END <<<");
         return response;
     }
@@ -764,5 +761,9 @@ public class BgPendapatanAction {
         return String.valueOf(intTahun-1);
     }
 
-
+    public List<ParameterBudgeting> getListPendapatan(String brancid, String tahun, String master, String divisi){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
+        return budgetingPerhitunganBo.getListPendapatan(brancid, tahun, master, divisi);
+    }
 }

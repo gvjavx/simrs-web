@@ -616,4 +616,55 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
         return parameterBudgetings;
     }
 
+    public List<ParameterBudgeting> getListPendapatan(String branchId, String masterId, String divisiId, String tahun){
+
+        String SQL = "SELECT \n" +
+                "a.periode, \n" +
+                "a.master_id, \n" +
+                "a.divisi_id,\n" +
+                "a.bulan,\n" +
+                "SUM(a.jumlah) as jumlah\n" +
+                "FROM \n" +
+                "(\n" +
+                "\tSELECT\n" +
+                "\ta.divisi_id,\n" +
+                "\ta.master_id,\n" +
+                "\tCAST(EXTRACT(MONTH FROM c.tanggal_jurnal) AS VARCHAR) as periode,\n" +
+                "\tsubstring(b.activity_id from 1 for 3) as tipe,\n" +
+                "\tCAST(EXTRACT(MONTH FROM c.tanggal_jurnal) AS VARCHAR) as bulan,\n" +
+                "\tb.jumlah\n" +
+                "\tFROM it_akun_jurnal_detail a\n" +
+                "\tINNER JOIN it_akun_jurnal_detail_activity b ON b.jurnal_detail_id = a.jurnal_detail_id\n" +
+                "\tINNER JOIN it_akun_jurnal c ON c.no_jurnal = a.no_jurnal\n" +
+                "\tWHERE c.branch_id LIKE :unit \n" +
+                "\tAND a.divisi_id LIKE :divisi \n" +
+                "\tAND a.master_id LIKE :master \n" +
+                "\tAND \tCAST (EXTRACT(YEAR FROM c.tanggal_jurnal) AS VARCHAR) = :tahun \n" +
+                ")a\n" +
+                "GROUP BY a.divisi_id, a.master_id, a.periode, a.tipe, a.bulan\n" +
+                "ORDER BY a.periode, a.bulan, a.master_id, a.divisi_id";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("tahun", tahun)
+                .setParameter("unit", branchId)
+                .setParameter("master", masterId)
+                .setParameter("divisi", divisiId)
+                .list();
+
+        String[] namaBulan = {"","Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","november","Desember"};
+
+
+        List<ParameterBudgeting> listOfResults = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                ParameterBudgeting param = new ParameterBudgeting();
+                param.setPeriode(namaBulan[Integer.valueOf(obj[3].toString())]);
+                param.setNilaiTotal((BigDecimal) obj[4]);
+                listOfResults.add(param);
+            }
+        }
+
+        return listOfResults;
+    }
+
 }

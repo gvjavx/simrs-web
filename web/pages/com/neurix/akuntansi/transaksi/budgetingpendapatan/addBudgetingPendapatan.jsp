@@ -424,6 +424,7 @@
         nilaiDasar();
 //        showListParameter();
         showListMaster();
+        checkTransaksi();
     });
 
     var flagNilaiDasar  = "";
@@ -460,14 +461,22 @@
         });
     }
 
+    function checkTransaksi() {
+        BudgetingAction.checkTransaksiBudgeting(unit, tahun, function (res) {
+            if (res.branchId != null && res.branchId != ""){
+                flagNilaiDasar = "";
+            }
+        });
+    }
+
     function showListParameter() {
         BgPendapatanAction.getListParameterByIdKategori(idKategori, function (list) {
             var str = "";
             $.each(list, function (i, item) {
                 str += '<div class="row">' +
                     '<div class="col-md-8 col-md-offset-2">' +
-                    '<h4 id="label-head-'+item.id+'">' + item.nama +'</h4>' +
-                    '<button class="btn btn-sm btn-primary" style="float: right;" onclick="showAdd(\''+item.id+'\')"><i class="fa fa-plus"></i> Tambah</button>' +
+                    '<h4 id="label-head-'+item.id+'">' + item.nama +'</h4>' + addButton(item.id) +
+//                    '<button class="btn btn-sm btn-primary" style="float: right;" onclick="showAdd(\''+item.id+'\')"><i class="fa fa-plus"></i> Tambah</button>' +
                     '<table class="table table-bordered table-striped tree">' +
                     '<thead id="head-budgeting">' +
                     '<tr bgcolor="#90ee90">' +
@@ -502,6 +511,15 @@
             $("#list-body-budgeting").html(str);
 
         });
+    }
+
+    function addButton(id, divisiId, masterid) {
+//        BudgetingAction.checkTransaksiBudgeting(unit, tahun, function (res) {
+            if (flagNilaiDasar == "Y"){
+                return '<button class="btn btn-sm btn-primary" style="float: right;" onclick="showAdd(\''+id+'\', \''+divisiId+'\', \''+masterid+'\')"><i class="fa fa-plus"></i> Tambah</button>';
+            }
+            return "";
+//        })
     }
 
     function showListMaster() {
@@ -545,8 +563,8 @@
 
                 str += '<div class="row">' +
                     '<div class="col-md-8 col-md-offset-2">' +
-                    '<h4 id="label-divisi-'+item.divisiId+'">' + item.namaDivisi +'</h4>' +
-                    '<button class="btn btn-sm btn-primary" style="float: right;" onclick="showAdd(\''+item.id+'\', \''+item.divisiId+'\', \''+masterid+'\')"><i class="fa fa-plus"></i> Tambah</button>' +
+                    '<h4 id="label-divisi-'+item.divisiId+'">' + item.namaDivisi +'</h4>' + addButton(item.id, item.divisiId, masterid) +
+//                    '<button class="btn btn-sm btn-primary" style="float: right;" onclick="showAdd(\''+item.id+'\', \''+item.divisiId+'\', \''+masterid+'\')"><i class="fa fa-plus"></i> Tambah</button>' +
                     '<table class="table table-bordered table-striped">' +
                     '<thead id="head-budgeting">' +
                     '<tr bgcolor="#90ee90">' +
@@ -773,11 +791,11 @@
             $("#divisi-name").text(namaDivisi);
             $("#body-nilai").html(str);
 
-            BgPendapatanAction.getListPendapatanBudgeting(tahun, unit, idParam, divisi, master, function (list) {
+            BgPendapatanAction.getListPendapatan(unit, tahun, master, divisi, function (list) {
                 var str1 = '<table class="table table-bordered table-striped" style="font-size: 13px;">' +
                     '<thead>' +
                     '<tr>' +
-                    '<td>Refrensi</td>' +
+                    '<td>Periode</td>' +
                     '<td align="center">Nilai Total</td>' +
                     '</tr>' +
                     '</thead>' +
@@ -785,7 +803,7 @@
 
                 $.each(list, function (i, item) {
                     str1 += '<tr>' +
-                            '<td>'+item.nama+'</td>' +
+                            '<td>'+item.periode+'</td>' +
                             '<td align="right">'+ formatRupiah(item.nilaiTotal) +'</td>' +
                             '</tr>';
 

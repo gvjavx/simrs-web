@@ -579,4 +579,9 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
     public List<ParameterBudgeting> getListPerhitunganTransaksiBudgetingByJenis(String tahun, String unit, String idJenis, String status) {
         return perhitunganBudgetingDao.getListSumBudgetingTransByKategori(tahun, unit, idJenis, status);
     }
+
+    @Override
+    public List<ParameterBudgeting> getListPendapatan(String branchId, String tahun, String master, String divisi) throws GeneralBOException {
+        return perhitunganBudgetingDao.getListPendapatan(branchId, master, divisi, tahun);
+    }
 }

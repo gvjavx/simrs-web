@@ -360,8 +360,10 @@
     $( document ).ready(function() {
         chekTipe();
         choose();
+        checkTransaksi();
     });
 
+    var flagNilaiDasar = "";
     var tipe        = '<s:property value="budgeting.tipe"/>';
     var flagDisable = '<s:property value="budgeting.flagDisable"/>';
     var unit        = '<s:property value="budgeting.branchId"/>';
@@ -455,7 +457,15 @@
             //console.log(str);
             //console.log(listOfId);
         });
+    }
 
+    function checkTransaksi() {
+        BudgetingAction.checkTransaksiBudgeting(unit, tahun, function (res) {
+            if (res.branchId != null && res.branchId != ""){
+                flagNilaiDasar = "";
+                $("#btn-save").hide();
+            }
+        });
     }
 
     function search() {
@@ -646,20 +656,26 @@
 //        var unit = $("#sel-unit").val();
         var tipe = $("#sel-tipe").val();
 
-        showDialog('loading');
-        dwr.engine.setAsync(true);
-        BgNominasiAction.saveAdd(unit, tahun, tipe, function (res) {
-            dwr.engine.setAsync(false);
-            if (res.status == "success"){
-                showDialog('success');
-                $('#ok_con').on('click', function () {
-                    initForm();
-                });
-            } else {
-                showDialog('error');
-                $("#msg_fin_error_waiting").text(res.msg);
-            }
-        });
+        if (flagNilaiDasar != "Y"){
+            alert("Belum Ada Nilai Dasar Untuk Tahun Tersebut");
+        } else {
+            showDialog('loading');
+            dwr.engine.setAsync(true);
+            BgNominasiAction.saveAdd(unit, tahun, tipe, function (res) {
+                dwr.engine.setAsync(false);
+                if (res.status == "success"){
+                    showDialog('success');
+                    $('#ok_con').on('click', function () {
+                        initForm();
+                    });
+                } else {
+                    showDialog('error');
+                    $("#msg_fin_error_waiting").text(res.msg);
+                }
+            });
+
+        }
+
 
 
 //        BudgetingAction.checkTransaksiBudgeting(unit, tahun, function(response){

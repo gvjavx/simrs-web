@@ -414,6 +414,7 @@
 //        showListParameter();
 //        showListMaster();
         listDivisi();
+        checkTransaksi();
     });
 
     var flagNilaiDasar  = "";
@@ -447,6 +448,14 @@
 
             $("#body-nilai-dasar").html(str);
 //            console.log(str);
+        });
+    }
+
+    function checkTransaksi() {
+        BudgetingAction.checkTransaksiBudgeting(unit, tahun, function (res) {
+            if (res.branchId != null && res.branchId != ""){
+                flagNilaiDasar = "";
+            }
         });
     }
 
@@ -554,8 +563,8 @@
 
                 str += '<div class="row">' +
                     '<div class="col-md-8 col-md-offset-2">' +
-                    '<h4 id="label-head-'+item.idParameter+'">' + item.nama +'</h4>' +
-                    '<button class="btn btn-sm btn-primary" style="float: right;" onclick="showAdd(\''+item.idParameter+'\', \''+item.divisiId+'\', \'BYA\')"><i class="fa fa-plus"></i> Tambah</button>' +
+                    '<h4 id="label-head-'+item.idParameter+'">' + item.nama +'</h4>' + addButton(item.idParameter, item.divisiId, "BYA") +
+//                    '<button class="btn btn-sm btn-primary" style="float: right;" onclick="showAdd(\''+item.idParameter+'\', \''+item.divisiId+'\', \'BYA\')"><i class="fa fa-plus"></i> Tambah</button>' +
                     '<table class="table table-bordered table-striped">' +
                     '<thead id="head-budgeting">' +
                     '<tr bgcolor="#90ee90">' +
@@ -584,6 +593,15 @@
             });
             $("#body-divisi-"+i).html(str);
         })
+    }
+
+    function addButton(id, divisiId, masterid) {
+//        BudgetingAction.checkTransaksiBudgeting(unit, tahun, function (res) {
+            if (flagNilaiDasar == "Y"){
+                return '<button class="btn btn-sm btn-primary" style="float: right;" onclick="showAdd(\''+id+'\', \''+divisiId+'\', \''+masterid+'\')"><i class="fa fa-plus"></i> Tambah</button>';
+            }
+        return "";
+//        })
     }
 
     function addPerhitungan() {
