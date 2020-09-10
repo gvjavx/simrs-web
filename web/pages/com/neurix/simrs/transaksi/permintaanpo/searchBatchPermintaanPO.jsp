@@ -343,6 +343,10 @@
                                     <td width="40%">No. Invoice</td>
                                     <td><input type="text" class="form-control" id="app_no_invoice"/></td>
                                 </tr>
+                                <tr>
+                                    <td width="40%">Tgl Jatuh Tempo</td>
+                                    <td><input type="date" class="form-control" id="tgl-invoice"/></td>
+                                </tr>
                             </table>
                         </div>
                         <div class="col-md-6">
@@ -360,6 +364,10 @@
                                 <tr>
                                     <td width="40%">No. DO</td>
                                     <td><input type="text" class="form-control" id="app_no_do"/></td>
+                                </tr>
+                                <tr>
+                                    <td width="40%">Tgl Do</td>
+                                    <td><input type="date" class="form-control" id="tgl-do"/></td>
                                 </tr>
                             </table>
                         </div>
@@ -882,6 +890,9 @@
         var noInvoice   = $('#app_no_invoice').val();
         var noDo        = $('#app_no_do').val();
 
+        var tglInvoice  = $('#tgl-invoice').val();
+        var tglDo       = $('#tgl-do').val();
+
 //        if (tgl == null || tgl == ""){
 //            return alert("tanggal tidak ditemukan");
 //        } else {
@@ -899,8 +910,12 @@
                 'tgl_faktur':tgl,
                 'no_invoice':noInvoice,
                 'no_do':noDo,
-                'img_url':""
+                'img_url':"",
+                'tgl_invoice':tglInvoice,
+                'tgl_do':tglDo
             }
+
+            console.log(data);
 
             for (i=0 ; i <= nFaktur ; i++){
                 var canvas = document.getElementById('canvas-faktur-'+i);

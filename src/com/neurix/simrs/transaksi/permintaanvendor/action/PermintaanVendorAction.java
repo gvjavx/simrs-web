@@ -688,6 +688,8 @@ public class PermintaanVendorAction extends BaseMasterAction {
         String tglFaktur = "";
         String noInvoice = "";
         String noDo = "";
+        String tglInvoice = "";
+        String tglDo = "";
 
         JSONObject obj = new JSONObject(data);
 
@@ -698,6 +700,8 @@ public class PermintaanVendorAction extends BaseMasterAction {
             tglFaktur = obj.getString("tgl_faktur");
             noInvoice = obj.getString("no_invoice");
             noDo = obj.getString("no_do");
+            tglInvoice = obj.getString("tgl_invoice");
+            tglDo = obj.getString("tgl_do");
 
             if(obj.getString("img_url") != null && !"".equalsIgnoreCase(obj.getString("img_url"))){
                 BASE64Decoder decoder = new BASE64Decoder();
@@ -777,6 +781,8 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
         permintaanVendor.setNoFaktur(noFaktur);
         permintaanVendor.setTanggalFaktur(Date.valueOf(tglFaktur));
+        permintaanVendor.setTglInvoice( "".equalsIgnoreCase(tglInvoice) ? null : Date.valueOf(tglInvoice));
+        permintaanVendor.setTglDo( "".equalsIgnoreCase(tglDo) ? null : Date.valueOf(tglDo));
         permintaanVendor.setNoInvoice(noInvoice);
         permintaanVendor.setNoDo(noDo);
         permintaanVendor.setIdPelayanan(pelayananId);
@@ -1639,7 +1645,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
         return null;
     }
 
-    public CrudResponse saveDo(String idPermintaan, String noDo, String noInvoice, String noFaktur, String tglFaktur, String jsonString , String listImg) throws JSONException, IOException {
+    public CrudResponse saveDo(String idPermintaan, String noDo, String noInvoice, String noFaktur, String tglFaktur, String jsonString , String listImg, String tglInvoice, String tglDo) throws JSONException, IOException {
 
         String userLogin = CommonUtil.userLogin();
         Timestamp time = CommonUtil.getCurrentDateTimes();
@@ -1688,6 +1694,8 @@ public class PermintaanVendorAction extends BaseMasterAction {
             batchEntity.setNoInvoice(noInvoice);
             batchEntity.setNoFaktur(noFaktur);
             batchEntity.setTanggalFaktur(!"".equalsIgnoreCase(tglFaktur) ? Date.valueOf(tglFaktur) : null);
+            batchEntity.setTglInvoice(!"".equalsIgnoreCase(tglInvoice) ? Date.valueOf(tglInvoice) : null);
+            batchEntity.setTglDo(!"".equalsIgnoreCase(tglDo) ? Date.valueOf(tglDo) : null);
             batchEntity.setCreatedDate(time);
             batchEntity.setCreatedWho(userLogin);
             batchEntity.setLastUpdate(time);

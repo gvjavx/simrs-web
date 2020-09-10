@@ -39,6 +39,24 @@ public class MtSimrsTransaksiObatDetailBatchEntity implements Serializable {
 
     private String urlDoc;
     private String jenis;
+    private Date tglDo;
+    private Date tglInvoice;
+
+    public Date getTglDo() {
+        return tglDo;
+    }
+
+    public void setTglDo(Date tglDo) {
+        this.tglDo = tglDo;
+    }
+
+    public Date getTglInvoice() {
+        return tglInvoice;
+    }
+
+    public void setTglInvoice(Date tglInvoice) {
+        this.tglInvoice = tglInvoice;
+    }
 
     public String getJenis() {
         return jenis;

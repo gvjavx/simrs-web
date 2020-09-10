@@ -224,30 +224,52 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
     @Override
     public BigDecimal hitungNilaiBudgetingForRutin(List<ItAkunPerhitunganBudgetingEntity> beans) throws GeneralBOException {
 
-        List<BigDecimal> listNilai = new ArrayList<>();
-        BigDecimal nilai = new BigDecimal(0);
-        String opr = "";
 
-        for (ItAkunPerhitunganBudgetingEntity perhitunganEntity : beans){
-            if ("".equalsIgnoreCase(opr)){
-                nilai = perhitunganEntity.getNilai();
-                opr = perhitunganEntity.getOperator();
-            } else {
-                if ("=".equalsIgnoreCase(perhitunganEntity.getOperator())){
-                    nilai = hitung(nilai, opr, perhitunganEntity.getNilai());
-                    listNilai.add(nilai);
-                    nilai = new BigDecimal(0);
-                } else {
-                    nilai = hitung(nilai, opr, perhitunganEntity.getNilai());
-                    opr = perhitunganEntity.getOperator();
-                }
+//        List<BigDecimal> listNilai = new ArrayList<>();
+//        BigDecimal nilai = new BigDecimal(0);
+//        String opr = "";
+//        String idBiayaTemp = "";
+//
+//        for (ItAkunPerhitunganBudgetingEntity perhitunganEntity : beans){
+//            if ("".equalsIgnoreCase(opr)){
+//                idBiayaTemp = perhitunganEntity.getIdBiayaRutin();
+//                nilai = perhitunganEntity.getNilai();
+//                opr = perhitunganEntity.getOperator();
+//                if ("=".equalsIgnoreCase(perhitunganEntity.getOperator())){
+//                    listNilai.add(nilai);
+//                    nilai = new BigDecimal(0);
+//                }
+//            } else {
+//                if ("=".equalsIgnoreCase(perhitunganEntity.getOperator())){
+//                    nilai = hitung(nilai, opr, perhitunganEntity.getNilai());
+//                    listNilai.add(nilai);
+//                    nilai = new BigDecimal(0);
+//                } else {
+//                    if (!idBiayaTemp.equalsIgnoreCase(perhitunganEntity.getIdBiayaRutin())){
+//                        listNilai.add(nilai);
+//                        nilai = perhitunganEntity.getNilai();
+//                        opr = perhitunganEntity.getOperator();
+//                    } else {
+//                        nilai = hitung(nilai, opr, perhitunganEntity.getNilai());
+//                        opr = perhitunganEntity.getOperator();
+//                    }
+//                }
+//            }
+//        }
+//
+//        BigDecimal nilaiTotal = new BigDecimal(0);
+//        for (BigDecimal hitungNilai : listNilai){
+//            nilaiTotal = nilaiTotal.add(hitungNilai);
+//        }
+
+        BigDecimal nilaiTotal = new BigDecimal(0);
+        List<ItAkunNilaiBiayaRutinEntity> biayaRutinEntityList = convertPerhitunganToBiayaRutin(beans);
+        if (biayaRutinEntityList.size() > 0){
+            for (ItAkunNilaiBiayaRutinEntity biayaRutinEntity : biayaRutinEntityList){
+                nilaiTotal = nilaiTotal.add(biayaRutinEntity.getNilaiTotal());
             }
         }
 
-        BigDecimal nilaiTotal = new BigDecimal(0);
-        for (BigDecimal hitungNilai : listNilai){
-            nilaiTotal = nilaiTotal.add(hitungNilai);
-        }
         return nilaiTotal;
     }
 

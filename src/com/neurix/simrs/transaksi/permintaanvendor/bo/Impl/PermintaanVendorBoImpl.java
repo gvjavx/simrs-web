@@ -788,6 +788,8 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                             batchEntity.setNoInvoice(bean.getNoInvoice());
                             batchEntity.setNoDo(bean.getNoDo());
                             batchEntity.setUrlDoc(bean.getUrlDoc());
+                            batchEntity.setTglDo(bean.getTglDo());
+                            batchEntity.setTglInvoice(bean.getTglInvoice());
 
                             try {
                                 transaksiObatDetailBatchDao.updateAndSave(batchEntity);

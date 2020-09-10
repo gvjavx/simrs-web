@@ -306,7 +306,8 @@
 
                             <br>
                             <strong>Nilai</strong>
-                            <button class="btn btn-sm btn-warning" onclick="addPerhitungan()" style="float: right;"><i class="fa fa-plus"></i></button>
+                            <button class="btn btn-sm btn-warning" onclick="addItem()" style="float: right;" id="btn-add-item"><i class="fa fa-plus"></i> Tambah Item</button>
+                            <button class="btn btn-sm btn-warning" onclick="addPerhitungan(0)" style="float: right; display: none;" id="btn-add-perhitungan"><i class="fa fa-plus"></i></button>
                             <hr style="width: 100%;">
                             <div id="body-nilai">
                                 <%--<div class="row">--%>
@@ -341,6 +342,7 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <span id="nilai-total" style="margin-right: 20px;"></span>
                 <button type="button" class="btn btn-success" id="save_con" onclick="addCoa()"><i class="fa fa-check"></i> Save</button>
             </div>
         </div>
@@ -419,7 +421,9 @@
 
     var flagNilaiDasar  = "";
     var listOfParam     = [];
-    var n               = 0;
+    var n               = [];
+    var nn              = 0;
+    var listNilaiTotal  = [];
     var tipe            = '<s:property value="budgeting.tipe"/>';
     var flagDisable     = '<s:property value="budgeting.flagDisable"/>';
     var idKategori      = '<s:property value="budgeting.idKategoriBudgeting"/>';
@@ -604,31 +608,24 @@
 //        })
     }
 
-    function addPerhitungan() {
+    function addPerhitungan(nn) {
 //        $("#modal-add-hitung").modal('show');
         var idParam = $("#id-param").val();
         var str = "<div class='row'>" +
-            "<div class=\"col-md-2\" id=\"label-"+n+"\" align='right' style='margin-top: 7px'>"+ hurufByIndex(n) +"</div>" +
+            "<div class=\"col-md-2\" id=\"label-"+nn+"-"+n[nn]+"\" align='right' style='margin-top: 7px'>"+ hurufByIndex(n[nn]) +"</div>" +
                 "<div class=\"col-md-6\">" +
-                "<div id='body-total-"+ n + "-"+ idParam +"'>" +
-//                "<select class='form-control' id='total-" + n + "-"+ idParam +"'>";
-                "<select class='form-control' id='total-" + n + "-"+ idParam +"' onchange=\"changeInput(\'total-" + n + "-" + idParam + "\', this.value)\">";
+                "<div id='body-total-"+ nn + "-"+ n[nn] + "-" + idParam +"'>" +
+                "<select class='form-control' id='total-" + nn + "-" + n[nn] + "-"+ idParam +"' onchange=\"changeInput(\'total-" + nn + "-" + n[nn] + "-" + idParam + "\', this.value)\">";
 
         str += "<option value=''>[Select One]</option>" +
                 "<option value='combo'>Combo Nilai Dasar</option>"+
                 "<option value='input'>Input Manual</option>";
 
-//            BudgetingNilaiDasarAction.getListNilaiDasarEdit(tahun, function (list) {
-//                $.each(list, function (i, item) {
-//                    str += "<option value='"+item.nilai+"' >"+item.keterangan+"</option>";
-//                });
-//            });
-
         str += "</select>" +
             "</div>" +
             "</div>" +
             "<div class=\"col-md-4\">"+
-                "<select id='opr-"+ n +"-"+ idParam +"' class='form-control' onchange=\"showPerhitungan(this.value, \'"+idParam+"\')\">" +
+                "<select id='opr-" + nn + "-"+ n[nn] +"-"+ idParam +"' class='form-control' onchange=\"showPerhitungan(this.value, \'"+idParam+"\', \'"+nn+"\')\">" +
                     "<option value=''>[Select]</option>" +
                     "<option value='='>(=) Sama Dengan</option>" +
                     "<option value='*'>(X) Kali</option>" +
@@ -639,36 +636,37 @@
             "</div>" +
             "</div>";
 
-        n = n + 1;
-        var i = n - 1;
-        str += "<div id='hitung-"+ n +"'></div>";
-        $("#hitung-" + i ).html(str);
-        console.log("n = " + i);
+        n[nn] = n[nn] + 1;
+        var i = n[nn] - 1;
+        str += "<div id='hitung-" + nn + "-" + n[nn] +"'></div>";
+        $("#hitung-" + nn + "-" + i ).html(str);
+//        console.log("n = " + i);
+        console.log(n[nn]);
     }
 
-    function showPerhitungan(valop, idParam) {
+    function showPerhitungan(valop, idParam, nn) {
         var str = '<div class="row" >';
         var operator = "";
         var nilaiTotal = 0;
         if("=" == valop){
-            str += '<div class="col-md-2" align="right" style="margin-top: 7px"><strong>Formula : </strong></div>' +
-                    '<div class="col-md-10"><h4>';
-                    for (i = 0; i<n; i++){
-                        var label   = $("#label-"+i).text();
-                        var opr     = $("#opr-" + i + "-" + idParam).val();
+            str += '<div class="col-md-2" align="right"><strong>f : </strong></div>' +
+                    '<div class="col-md-10">';
+                    for (i = 0; i<n[nn]; i++){
+                        var label   = $("#label-" + nn + "-"+i).text();
+                        var opr     = $("#opr-" + nn + "-" + i + "-" + idParam).val();
                         str += ' ' + label + ' ' + (opr == "=" ? "" : opr) + ' ';
                     };
-            str += "</h4></div>";
+            str += "</div>";
             str += "</div>";
             str += "<div class='row'>";
             str += '<div class="col-md-2"></div>';
-            str += '<div class="col-md-10"><h4>'
+            str += '<div class="col-md-10">';
 
-            for (i = 0; i<n; i++){
-                var nilai   = $("#total-" + i + "-" + idParam).val();
-                var opr     = $("#opr-" + i + "-" + idParam).val();
-                var namaNilai = $("#total-" + i + "-" + idParam + " option:selected").text();
-                str += " " + nilai + " "  + (opr == "=" ? "" : opr) + " ";
+            for (i = 0; i<n[nn]; i++){
+                var nilai   = $("#total-" + nn + "-" + i + "-" + idParam).val();
+                var opr     = $("#opr-" + nn + "-" + i + "-" + idParam).val();
+                var namaNilai = $("#total-" + nn + "-" + i + "-" + idParam + " option:selected").text();
+                str += " " + formatRupiah(nilai) + " "  + (opr == "=" ? "" : opr) + " ";
 
                 if (operator == ""){
                     nilaiTotal = nilai;
@@ -682,17 +680,27 @@
 //                    str += nilaiTotal;
 //                }
             }
-            str += "</h4></div>";
+            str += "</div>";
             str += "</div>";
             str += "<div class='row'>";
-            str += '<div class="col-md-2"></div>';
-            str += '<div class="col-md-10"><h4>';
-            str += "= " + nilaiTotal;
-            str += "</h4></div>";
+            str += '<div class="col-md-2" align="right">=</div>';
+            str += '<div class="col-md-10">';
+            str += '<strong>' + formatRupiah(nilaiTotal) + '</strong>';
+            str += "</div>";
             str += "</div>";
 
-            $("#display-hitung").html(str);
+            listNilaiTotal[nn] = nilaiTotal;
+            $("#display-hitung-"+nn).html(str);
         }
+        totalPerhitungan();
+    }
+
+    function totalPerhitungan() {
+        var nilai = 0;
+        for (i=0; i < listNilaiTotal.length ; i++){
+            nilai = parseInt(nilai) + parseInt(listNilaiTotal[i]);
+        };
+        $("#nilai-total").html('<strong>' + formatRupiah(nilai) + '</strong>');
     }
 
     function hitung(nilai1, opr, nilai2){
@@ -754,6 +762,8 @@
 
     function showAdd(idParam, divisi, master) {
 
+        console.log(idKategori);
+
         if ("Y" != flagNilaiDasar){
             alert("Nilai Dasar Belum Ada untuk Tahun Tersebut");
         } else {
@@ -761,18 +771,34 @@
             $("#modal-add").modal('show');
             $("#id-param").val(idParam);
             listOfParam = [];
-            n = 0;
+            nn = 0;
+            n[nn] = 0;
             var label = $("#label-head-" + idParam).text();
             var namaDivisi = divisi.replace(/\./g,'\\.');
             namaDivisi = $("#label-divisi-"+namaDivisi).text();
 
-            var str = "<div class=\"row\">" +
-                "<div class=\"col-md-2\" id=\"label-"+n+"\" align='right' style='margin-top: 7px'>"+ hurufByIndex(n) +"</div>" +
+
+            var str = "";
+                str += '<div id="body-item-biaya-'+nn+'">';
+
+                if ("KTB000005" == idKategori){
+                    str += '<div class="row">' +
+                        '<div class="col-md-2" align="right" style="margin-top: 7px">Item</div>' +
+                        '<div class="col-md-6"><input type="text" id="item-biaya-'+nn+'" class="form-control"></div>' +
+                        '<div class="col-md-4"><button class="btn btn-sm btn-warning" onclick="addPerhitungan(\''+nn+'\')" style="float: right;"><i class="fa fa-plus"></i></button></div>' +
+                        '</div>';
+                } else {
+                    $("#btn-add-perhitungan").show();
+                    $("#btn-add-item").hide();
+                }
+
+                str += "<div class=\"row\">" +
+                "<div class=\"col-md-2\" id=\"label-"+nn+"-"+n[nn]+"\" align='right' style='margin-top: 7px'>"+ hurufByIndex(n[nn]) +"</div>" +
                 "<div class=\"col-md-6\">" +
-                "<input type=\"number\" class=\"form-control\" id=\"total-"+n+"-"+idParam+"\" />" +
+                "<input type=\"number\" class=\"form-control\" id=\"total-"+nn+"-"+n[nn]+"-"+idParam+"\" />" +
                 "</div>" +
                 "<div class=\"col-md-4\">"+
-                "<select id='opr-"+ n +"-"+ idParam +"' class='form-control' onchange=\"showPerhitungan(this.value, \'"+idParam+"\')\">" +
+                "<select id='opr-"+nn+"-"+ n[nn] +"-"+ idParam +"' class='form-control' onchange=\"showPerhitungan(this.value, \'"+idParam+"\', \'"+nn+"\')\">" +
                 "<option value=''>[Select]</option>" +
                 "<option value='='>(=) Sama Dengan</option>" +
                 "<option value='*'>(X) Kali</option>" +
@@ -783,8 +809,18 @@
                 "</div>" +
                 "</div>";
 
-            n = n + 1;
-            str += "<div id='hitung-"+ n +"'></div>";
+            n[nn] = n[nn] + 1;
+            str += "<div id='hitung-"+ nn +"-"+ n[nn] +"'></div>";
+            str += '</div>';
+            str += '<div class="row">' +
+                    '<div class="col-md-2"></div>'+
+                    '<div class="col-md-6"><div style="border:solid grey 1px; min-height: 50px; min-width: 200px;border-radius: 5px;" id="display-hitung-'+nn+'"></div></div>'+
+                    '<div class="col-md-4"></div>'+
+                '</div>';
+            nn = nn + 1;
+            n[nn] = 0;
+            str += '<div id="body-item-biaya-'+nn+'"></div>';
+
             listOfParam.push({"id":"total-"+idParam, "opr":"="});
             $("#id-param").val(idParam);
             $("#masterid").val(master);
@@ -816,6 +852,50 @@
                 $("#body-refrensi").html(str1);
             })
         }
+    }
+
+    function addItem() {
+        var idParam = $("#id-param").val();
+        var i       = 0;
+        n[nn]       = 0;
+        var str     = "";
+        str += '<br>';
+        str += '<div id="body-item-biaya-'+nn+'">';
+        str += '<div class="row">' +
+            '<div class="col-md-2" align="right" style="margin-top: 7px">Item</div>' +
+            '<div class="col-md-6"><input type="text" id="item-biaya-'+nn+'" class="form-control"></div>' +
+            '<div class="col-md-4"><button class="btn btn-sm btn-warning" onclick="addPerhitungan(\''+nn+'\')" style="float: right;"><i class="fa fa-plus"></i></button></div>' +
+            '</div>';
+
+        str += "<div class=\"row\">" +
+            "<div class=\"col-md-2\" id=\"label-"+nn+"-"+n[nn]+"\" align='right' style='margin-top: 7px'>"+ hurufByIndex(n[nn]) +"</div>" +
+            "<div class=\"col-md-6\">" +
+            "<input type=\"number\" class=\"form-control\" id=\"total-"+ nn +"-"+ n[nn] +"-"+idParam+"\" />" +
+            "</div>" +
+            "<div class=\"col-md-4\">"+
+            "<select id='opr-"+ nn +"-"+ n[nn] +"-"+ idParam +"' class='form-control' onchange=\"showPerhitungan(this.value, \'"+idParam+"\', \'"+nn+"\')\">" +
+            "<option value=''>[Select]</option>" +
+            "<option value='='>(=) Sama Dengan</option>" +
+            "<option value='*'>(X) Kali</option>" +
+            "<option value='+'>(+) Tambah</option>" +
+            "<option value='-'>(-) Kurangi</option>" +
+            "<option value='/'>(/) Bagi</option>" +
+            "</select>" +
+            "</div>" +
+            "</div>";
+
+        n[nn] = n[nn] + 1;
+        str += "<div id='hitung-"+ nn +"-"+ n[nn] +"'></div>";
+        str += '</div>';
+        str += '<div class="row">' +
+            '<div class="col-md-2"></div>'+
+            '<div class="col-md-6"><div style="border:solid grey 1px; min-height: 50px; min-width: 200px;border-radius: 5px;" id="display-hitung-'+nn+'"></div></div>'+
+            '<div class="col-md-4"></div>'+
+            '</div>';
+        nn = nn + 1;
+        str += '<div id="body-item-biaya-'+nn+'"></div>';
+        var ii = nn - 1;
+        $("#body-item-biaya-"+ii).html(str);
     }
 
     function stBulan(bulan) {
@@ -922,20 +1002,25 @@
         var masterId    = $("#masterid").val();
         var periode     = $("#sel-periode").val();
 
-        for (i=0; i<n;i++){
-            var nilai   = $("#total-" + i + "-" + idParam).val();
-            var opr     = $("#opr-" + i + "-" + idParam).val();
-            listData.push({"nilai":nilai, "opr":opr, "id_rutin":"", "nama_rutin":""});
+        for (a=0; a<nn; a++ ){
+            var itemBiaya = $("#item-biaya-"+a).val() == null ? "" : $("#item-biaya-"+a).val();
+            for (i=0; i<n[a];i++){
+                var nilai   = $("#total-" +a+ "-" + i + "-" + idParam).val();
+                var opr     = $("#opr-" +a+ "-" + i + "-" + idParam).val();
+                listData.push({"nilai":nilai, "opr":opr, "id_rutin":periode+"-"+idParam+"-"+a, "nama_rutin":itemBiaya});
+            }
         }
+        console.log(listData);
 
         var stJson = JSON.stringify(listData);
-//        dwr.engine.setAsync(true);
+        console.log(listData);
+        dwr.engine.setAsync(true);
         BgNominasiAction.setPerhitunganToSession(idParam, stJson, masterId, divisiId, tahun, unit, idKategori, periode, function (res) {
 //            dwr.engine.setAsync(false);
             if (res.status == "success"){
                 refreshAdd();
             } else {
-
+                alert("Gagal Menyimpan");
             }
         });
 

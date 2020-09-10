@@ -300,12 +300,24 @@
                                     <input class="form-control" id="app_no_invoice">
                                 </div>
                             </div>
+                            <%--<div class="form-group">--%>
+                                <%--<label class="col-md-4">Tgl Jatuh Tempo</label>--%>
+                                <%--<div class="col-md-8">--%>
+                                    <%--<input type="date" class="form-control" id="tgl-invoice">--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
                             <div class="form-group">
                                 <label class="col-md-4" style="margin-top: 7px">No DO</label>
                                 <div class="col-md-8">
                                     <input style="margin-top: 7px" class="form-control" id="app_no_do">
                                 </div>
                             </div>
+                            <%--<div class="form-group">--%>
+                                <%--<label class="col-md-4" style="margin-top: 7px">Tgl DO</label>--%>
+                                <%--<div class="col-md-8">--%>
+                                    <%--<input type="date" style="margin-top: 7px" class="form-control" id="tgl-do">--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
                         </div>
                     </div>
                 </div>
@@ -367,6 +379,10 @@
                                     <td width="40%">No. Invoice</td>
                                     <td><input type="text" class="form-control" id="no-invoice"/></td>
                                 </tr>
+                                <tr>
+                                    <td width="40%">Tgl Jatuh Tempo</td>
+                                    <td><input type="date" class="form-control" id="tgl-invoice"></td>
+                                </tr>
                             </table>
                         </div>
                         <div class="col-md-6">
@@ -384,6 +400,10 @@
                                 <tr>
                                     <td width="40%">No. DO</td>
                                     <td><input type="text" class="form-control" id="no-do"/></td>
+                                </tr>
+                                <tr>
+                                    <td width="40%">Tgl. DO</td>
+                                    <td><input type="date" style="margin-top: 7px" class="form-control" id="tgl-do"></td>
                                 </tr>
                             </table>
                         </div>
@@ -695,6 +715,8 @@
         var faktur          = $("#no-faktur").val();
         var tglfaktur       = $("#tgl-faktur").val();
         var idPermintaan    = $("#id_permintaan_vendor").val();
+        var tglInvoice      = $('#tgl-invoice').val();
+        var tglDo           = $('#tgl-do').val();
         var listOfTrans     = [];
         var listOfimg       = [];
 
@@ -740,7 +762,7 @@
 
         var strJson = JSON.stringify(listOfTrans);
         var listimg = JSON.stringify(listOfimg);
-        PermintaanVendorAction.saveDo(idPermintaan, numberDo, invoice, faktur, tglfaktur, strJson, listimg, function (res) {
+        PermintaanVendorAction.saveDo(idPermintaan, numberDo, invoice, faktur, tglfaktur, strJson, listimg, tglInvoice, tglDo, function (res) {
            if (res.status == "success"){
                initAdd();
            } else {
@@ -830,6 +852,8 @@
         var noBatch     = $('#app_no_batch').val();
         var noFaktur    = $('#app_no_faktur').val();
         var tgl         = $('#app_tgl_faktur').val();
+        var tglInvoice  = $('#tgl-invoice').val();
+        var tglDo       = $('#tgl-do').val();
         var tglFaktur   = tgl.split("-").reverse().join("-");
         var noInvoice   = $('#app_no_invoice').val();
         var noDo        = $('#app_no_do').val();
@@ -845,7 +869,9 @@
                 'tgl_faktur':tglFaktur,
                 'no_invoice':noInvoice,
                 'no_do':noDo,
-                'img_url':dataURL
+                'img_url':dataURL,
+                'tgl_invoice':tglInvoice,
+                'tgl_do':tglDo
             }
             var result = JSON.stringify(data);
             $('#modal-confirm-dialog').modal('show');
