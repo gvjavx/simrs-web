@@ -677,7 +677,7 @@ public class BgNominasiAction {
         perhitunganBudgeting.setTipe(tipe);
 
         try {
-            budgetingPerhitunganBo.saveAddPerhitunganBudgeting(convertNilaiParameterToEntity(sessionNilaiParam), sessionPerhitungan, new ArrayList<>(), perhitunganBudgeting);
+            budgetingPerhitunganBo.saveAddPerhitunganBudgeting(convertNilaiParameterToEntity(sessionNilaiParam), generateIdItemRutinIfExist(sessionPerhitungan), new ArrayList<>(), perhitunganBudgeting);
             response.setStatus("success");
         } catch (GeneralBOException e){
             logger.info("[BgNominasiAction.saveAdd] ERROR ", e);
@@ -727,6 +727,44 @@ public class BgNominasiAction {
         }
 
         return entities;
+    }
+
+    // untuk merubah idBiayaRutin sementara dari listPerhitungan ke idBiayaRutin dari generate ID;
+    private List<ItAkunPerhitunganBudgetingEntity> generateIdItemRutinIfExist(List<ItAkunPerhitunganBudgetingEntity> listPerhitungan){
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
+
+        // untuk menyimpan idBiayaRutin dari listPerhitungan
+        String idItemTemp = "";
+
+        // untuk menyimpan idBiayaRutin dari generate id
+        String idItemRutin = "";
+        for (ItAkunPerhitunganBudgetingEntity perhitungan : listPerhitungan){
+
+            // filter idbiayarutin tidak null
+            if (perhitungan.getIdBiayaRutin() != null && !"".equalsIgnoreCase(perhitungan.getIdBiayaRutin())){
+               // var idItemTemp & idItemRutin jika kosong maka isi;
+                if ("".equalsIgnoreCase(idItemTemp) && "".equalsIgnoreCase(idItemRutin)){
+                    idItemTemp = perhitungan.getIdBiayaRutin();
+                    idItemRutin = budgetingPerhitunganBo.getNextIdBiayaRutin();
+                    perhitungan.setIdBiayaRutin(idItemRutin);
+                } else {
+                    // jika ada check apakah idItemTemp dan idBiayaRutin apakah sama
+                    // jika sama pakai set kembali idBiayaRutin dengan idItemRutin yang telah digenerate sebelumnya
+                    if (idItemTemp.equalsIgnoreCase(perhitungan.getIdBiayaRutin())){
+                        perhitungan.setIdBiayaRutin(idItemRutin);
+                    } else {
+                        // jika tidak sama maka generate baru
+                        // memperbarui idItemTemp dan idItemRutin;
+                        idItemTemp = perhitungan.getIdBiayaRutin();
+                        idItemRutin = budgetingPerhitunganBo.getNextIdBiayaRutin();
+                    }
+                }
+            }
+
+        }
+        return listPerhitungan;
     }
 
     private List<Budgeting> convertParamToListBudgeting(List<ParameterBudgeting> listParam, String tahun, String unit){
