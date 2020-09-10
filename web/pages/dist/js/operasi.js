@@ -3372,7 +3372,7 @@ function detailMonAnestesi(jenis) {
                         '<td>' + item.iso + '</td>' +
                         '<td>' + item.sevo + '</td>' +
                         '<td>' + item.infus + '</td>' +
-                        '<td align="center">' + '<i onclick="conOP(\'' + jenis + '\', \'' + ket + '\', \'' + item.idMonitoringAnestesi + '\')" class="fa fa-trash" style="color: red"></i>' + '</td>' +
+                        '<td align="center">' + '<i onclick="conOP(\'' + jenis + '\', \'monitoing_intra_anestesi\', \'' + item.idMonitoringAnestesi + '\')" class="fa fa-trash" style="color: red"></i>' + '</td>' +
                         '</tr>';
                 }
                 if ("mon_pasca_anestesi" == jenis) {
@@ -3381,7 +3381,7 @@ function detailMonAnestesi(jenis) {
                         '<td>' + item.rr + '</td>' +
                         '<td>' + item.nadi + '</td>' +
                         '<td>' + item.tensi + '</td>' +
-                        '<td align="center">' + '<i onclick="conOP(\'' + jenis + '\', \'' + ket + '\', \'' + item.idMonitoringAnestesi + '\')" class="fa fa-trash" style="color: red"></i>' + '</td>' +
+                        '<td align="center">' + '<i onclick="conOP(\'' + jenis + '\', \'monitoing_intra_anestesi\', \'' + item.idMonitoringAnestesi + '\')" class="fa fa-trash" style="color: red"></i>' + '</td>' +
                         '</tr>';
                 }
             });

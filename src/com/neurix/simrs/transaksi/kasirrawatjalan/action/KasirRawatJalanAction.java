@@ -236,7 +236,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         headerDetailCheckup.setBranchId(CommonUtil.userBranchLogin());
         headerDetailCheckup.setTypeTransaction("kasir");
-        headerDetailCheckup.setNotLike("bpjs");
+//        headerDetailCheckup.setNotLike("bpjs");
 
         try {
             listOfsearchHeaderDetailCheckup = checkupDetailBoProxy.getSearchRawatJalan(headerDetailCheckup);

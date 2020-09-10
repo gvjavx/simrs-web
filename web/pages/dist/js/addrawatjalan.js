@@ -2303,7 +2303,7 @@ function resetAll() {
 }
 
 function setObatPoli(jenis) {
-    var poli = $('#resep_jenis_obat').val();
+    var poli = $('#resep_apotek').val();
     var option = "<option value=''>[Select One]</option>";
     var jenisPasien = $('#jenis_pasien').val();
 
