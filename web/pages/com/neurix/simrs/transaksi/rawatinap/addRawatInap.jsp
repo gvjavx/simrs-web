@@ -1701,13 +1701,21 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3 jarak">Tanggal Pindah</label>
-                        <div class="col-md-7">
+                        <label class="col-md-3 jarak">Tanggal & Jam</label>
+                        <div class="col-md-4">
                             <div class="input-group">
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </div>
                                 <input class="form-control ptr-tgl" id="tanggal_pindah">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-clock-o"></i>
+                                </div>
+                                <input class="form-control ptr-jam" id="jam_pindah">
                             </div>
                         </div>
                     </div>

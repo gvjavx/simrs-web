@@ -43,7 +43,7 @@
                                 <img id="btn_ina_kriteria_discharge_planing" class="hvr-grow"
                                      onclick="detailAsesmenRawatInap('kriteria_discharge_planing')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_kriteria_discharge_planing" class="hvr-grow btn-hide" onclick="conRI('anamnesa_umum', 'discharge_planing')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_kriteria_discharge_planing" class="hvr-grow btn-hide" onclick="conRI('kriteria_discharge_planing', 'discharge_planing')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_ina_kebutuhan_discharge_planing">

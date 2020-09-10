@@ -432,12 +432,12 @@ function setForm(id, jenis){
             temp += '<div class="row '+jarak+'">\n' +
                 '<div class="form-group">\n' +
                 '    <label class="col-md-12" id="parameter'+i+'">'+item.parameter+'</label>\n' +
+                '<input type="hidden" name="jawaban'+i+'" value="">'+
                 '</div>\n' +
                 '</div>';
         }
     });
     if(temp != ''){
         $('#'+id).html(temp);
-        setDataPasien();
     }
 }

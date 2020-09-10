@@ -3339,7 +3339,7 @@ function detailMonAnestesi(jenis) {
     AsesmenOperasiAction.getListMonAnestesi(idDetailCheckup, jenis, function (res) {
         if (res.length > 0) {
             $.each(res, function (i, item) {
-
+                console.log(res);
                 var tanggal = converterDate(new Date(item.createdDate));
 
                 var tempTgl = "";
@@ -3372,7 +3372,7 @@ function detailMonAnestesi(jenis) {
                         '<td>' + item.iso + '</td>' +
                         '<td>' + item.sevo + '</td>' +
                         '<td>' + item.infus + '</td>' +
-                        '<td align="center">' + '<i onclick="conOP(\'' + jenis + '\', \'monitoing_intra_anestesi\', \'' + item.idMonitoringAnestesi + '\')" class="fa fa-trash" style="color: red"></i>' + '</td>' +
+                        '<td align="center">' + '<i onclick="conOP(\'' + jenis + '\', \'monitoring_intra_anestesi\', \'' + item.idMonitoringAnestesi + '\')" class="fa fa-trash hvr-grow" style="color: red"></i>' + '</td>' +
                         '</tr>';
                 }
                 if ("mon_pasca_anestesi" == jenis) {
@@ -3381,7 +3381,7 @@ function detailMonAnestesi(jenis) {
                         '<td>' + item.rr + '</td>' +
                         '<td>' + item.nadi + '</td>' +
                         '<td>' + item.tensi + '</td>' +
-                        '<td align="center">' + '<i onclick="conOP(\'' + jenis + '\', \'monitoing_intra_anestesi\', \'' + item.idMonitoringAnestesi + '\')" class="fa fa-trash" style="color: red"></i>' + '</td>' +
+                        '<td align="center">' + '<i onclick="conOP(\'' + jenis + '\', \'monitoring_pasca_anestesi\', \'' + item.idMonitoringAnestesi + '\')" class="fa fa-trash hvr-grow" style="color: red"></i>' + '</td>' +
                         '</tr>';
                 }
             });
@@ -3399,7 +3399,7 @@ function detailMonAnestesi(jenis) {
                     '<td>Iso</td>' +
                     '<td>Sevo</td>' +
                     '<td>Infus</td>' +
-                    '<td>Action</td>' +
+                    '<td align="center">Action</td>' +
                     '</tr>';
             }
             if ("mon_pasca_anestesi" == jenis) {
@@ -3408,7 +3408,7 @@ function detailMonAnestesi(jenis) {
                     '<td>RR</td>' +
                     '<td>Nadi</td>' +
                     '<td>Tensi</td>' +
-                    '<td>Action</td>' +
+                    '<td align="center">Action</td>' +
                     '</tr>';
             }
         } else {
@@ -3430,7 +3430,7 @@ function detailMonAnestesi(jenis) {
 
 function delRowMon(id) {
     $('#del_op_' + id).remove();
-    var url = contextPath + '/pages/images/icons8-plus-25.png';
+    var url = contextPath + '/pages/images/icons8-add-list-25.png';
     $('#btn_op_' + id).attr('src', url);
     $('#btn_op_' + id).attr('onclick', 'detailMonAnestesi(\'' + id + '\')');
 }
@@ -3502,7 +3502,7 @@ function showChartAnestesi(jenis) {
                         waktu += '<td>' + item.waktu + '</td>';
                         temp1 += '<td>' + item.anest + '</td>';
                         temp2 += '<td>' + item.o2 + '</td>'
-                        temp3 += '<td>' + item.n2O + '</td>';
+                        temp3 += '<td>' + item.n2o + '</td>';
                         temp4 += '<td>' + item.ethran + '</td>';
                         temp5 += '<td>' + item.iso + '</td>';
                         temp6 += '<td>' + item.sevo + '</td>';
@@ -3510,7 +3510,6 @@ function showChartAnestesi(jenis) {
                     });
                     if (waktu != '') {
                         temp = '<tr>'+waktu+'</tr>' +
-                            '<tr>'+waktu+'</tr>' +
                             '<tr>'+temp1+'</tr>' +
                             '<tr>'+temp2+'</tr>' +
                             '<tr>'+temp3+'</tr>' +
@@ -3551,6 +3550,7 @@ function conOP(jenis, ket, idAsesmen) {
 }
 
 function delOPM(jenis, ket, idAsesmen) {
+    console.log(ket);
     $('#modal-confirm-rm').modal('hide');
     var dataPasien = {
         'no_checkup': noCheckup,
@@ -3561,18 +3561,18 @@ function delOPM(jenis, ket, idAsesmen) {
     var result = JSON.stringify(dataPasien);
     startIconSpin('delete_' + idAsesmen);
     dwr.engine.setAsync(true);
-    AsesmenRawatInapAction.deleteMonAnestesi(idAsesmen, result, {
+    AsesmenOperasiAction.deleteMonAnestesi(idAsesmen, {
         callback: function (res) {
             if (res.status == "success") {
                 stopIconSpin('delete_' + idAsesmen);
-                $('#modal-ina-monitoring_intra_anestesi').scrollTop(0);
-                $('#warning_ina_monitoring_intra_anestesi').show().fadeOut(5000);
-                $('#msg_ina_monitoring_intra_anestesi').text("Berhasil menghapus data...");
+                $('#modal-op-'+ket).scrollTop(0);
+                $('#warning_op_'+ket).show().fadeOut(5000);
+                $('#msg_op_'+ket).text("Berhasil menghapus data...");
             } else {
                 stopIconSpin('delete_' + idAsesmen);
-                $('#modal-ina-monitoring_intra_anestesi').scrollTop(0);
-                $('#warn_monitoring_intra_anestesi').show().fadeOut(5000);
-                $('#msg_monitoring_intra_anestesi').text(res.msg);
+                $('#modal-op-'+ket).scrollTop(0);
+                $('#warn_'+ket).show().fadeOut(5000);
+                $('#msg_'+ket).text(res.msg);
             }
         }
     });

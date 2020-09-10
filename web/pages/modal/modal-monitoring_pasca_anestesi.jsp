@@ -40,7 +40,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_op_mon_pasca_anestesi" class="hvr-grow"
                                      onclick="detailMonAnestesi('mon_pasca_anestesi')"
-                                     src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                     src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
                             </td>
                         </tr>
                         </tbody>

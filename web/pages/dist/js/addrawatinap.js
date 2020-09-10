@@ -1700,6 +1700,8 @@ function editRuangan(kelas, ruang, idRawatInap) {
         dateFormat: 'dd-mm-yy'
     });
     $('.ptr-tgl').inputmask('dd-mm-yyyy', {'placeholder': 'dd-mm-yyyy'});
+    $('.ptr-jam').timepicker();
+    $('.ptr-jam').inputmask('hh:mm', {'placeholder': 'hh:mm'});
     getKelasKamar('rawat_inap');
     $('#load_ruangan, #war_ruangan_kelas, #war_ruangan_ruang').hide();
     $('#ruangan_kelas').val(kelas).trigger('change');
@@ -1786,7 +1788,13 @@ function listRuanganInap() {
                 }else if(item.status = "0"){
                     status = "Menunggu Konfirmasi";
                     if(item.keterangan == "new"){
-                        btn = '<img border="0" class="hvr-grow" onclick="conUpdateRuangan(\''+item.idRawatInap+'\')" src="'+pathImages+'/pages/images/icons8-power-off-button-25.png" style="cursor: pointer;">';
+                        var date1 = converterDate(new Date(item.tglMasuk));
+                        var date2 = converterDate(new Date());
+                        if(date1 == date2){
+                            btn = '<img border="0" class="hvr-grow" onclick="conUpdateRuangan(\''+item.idRawatInap+'\')" src="'+pathImages+'/pages/images/icons8-power-off-button-25.png" style="cursor: pointer;">';
+                        }else{
+                            btn = '';
+                        }
                     }else{
                         btn = '';
                     }
@@ -1814,18 +1822,20 @@ function listRuanganInap() {
 function saveEditRuang() {
 
     var tanggalPindah = $('#tanggal_pindah').val();
+    var jamPindah = $('#jam_pindah').val();
     var idKelas = $('#ruangan_kelas').val();
     var idRuang = $('#ruangan_ruang').val();
     var idRuangBefore = $('#h_id_kamar').val();
     var idRawatInap = $('#h_id_rawat_inap').val();
 
     if(idRuangBefore != idRuang){
-        if (idDetailCheckup != '' && idKelas != '' && idRuang != '' && tanggalPindah != '') {
+        if (idDetailCheckup != '' && idKelas != '' && idRuang != '' && tanggalPindah && jamPindah != '') {
             var tgl = tanggalPindah.split("-").reverse().join("-");
             $('#save_ruang').hide();
             $('#load_ruang').show();
+            console.log(jamPindah);
             dwr.engine.setAsync(true);
-            CheckupDetailAction.saveUpdateRuangan(idRawatInap, idRuang, idDetailCheckup, tgl+" 00:00:00", {
+            CheckupDetailAction.saveUpdateRuangan(idRawatInap, idRuang, idDetailCheckup, tgl+" "+jamPindah+":00", {
                 callback: function (response) {
                     if (response.status == "success") {
                         dwr.engine.setAsync(false);

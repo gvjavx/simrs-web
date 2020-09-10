@@ -51,7 +51,7 @@
                         <tr id="row_rb_janin_ibu_persalinan">
                             <td>Kondisi Ibu, Janin & Kemajuan Persalinan</td>
                             <td width="20%" align="center">
-                                <img id="btn_rb_janin_ibu_persalinan" class="hvr-grow" onclick="detailRB('janin_ibu_persalinan')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="btn_rb_janin_ibu_persalinan" class="hvr-grow" onclick="detailRB('janin_ibu_persalinan')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
                             </td>
                         </tr>
                         <tr id="row_rb_catatan_persalinan">
@@ -99,7 +99,7 @@
                         <tr id="row_rb_pemantauan_kalan4">
                             <td>Pemantauan Kala IV</td>
                             <td width="20%" align="center">
-                                <img id="btn_rb_pemantauan_kalan4" class="hvr-grow" onclick="detailRB('pemantauan_kalan4')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="btn_rb_pemantauan_kalan4" class="hvr-grow" onclick="detailRB('pemantauan_kalan4')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
                             </td>
                         </tr>
                         </tbody>
