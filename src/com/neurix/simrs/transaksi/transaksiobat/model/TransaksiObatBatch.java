@@ -41,6 +41,24 @@ public class TransaksiObatBatch {
     private String jenis;
     private String stExpDate;
     private String stTglFaktur;
+    private String stTglInvoice;
+    private String stTglDo;
+
+    public String getStTglInvoice() {
+        return stTglInvoice;
+    }
+
+    public void setStTglInvoice(String stTglInvoice) {
+        this.stTglInvoice = stTglInvoice;
+    }
+
+    public String getStTglDo() {
+        return stTglDo;
+    }
+
+    public void setStTglDo(String stTglDo) {
+        this.stTglDo = stTglDo;
+    }
 
     public String getStTglFaktur() {
         return stTglFaktur;

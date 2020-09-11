@@ -213,7 +213,16 @@
                                                     </a>
                                                 </s:if>
                                                 <s:else>
-                                                    <img onclick="showDetailListObat('<s:property value="noBatch"/>','<s:property value="urlDoc"/>','<s:property value="noFaktur"/>','<s:property value="stTanggakFaktur"/>','<s:property value="noInvoice"/>','<s:property value="noDo"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
+                                                    <img onclick="showDetailListObat('<s:property value="noBatch"/>',
+                                                            '<s:property value="urlDoc"/>',
+                                                            '<s:property value="noFaktur"/>',
+                                                            '<s:property value="stTanggakFaktur"/>',
+                                                            '<s:property value="noInvoice"/>',
+                                                            '<s:property value="noDo"/>',
+                                                            '<s:property value="stTglInvoice"/>',
+                                                            '<s:property value="stTglDo" />'
+                                                            )"
+                                                         class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
                                                 </s:else>
                                                 <img id='load<s:property value="noBatch"/>' src="<s:url value="/pages/images/spinner.gif"/>" style="height: 35px; width: 35px; display: none">
                                             </td>
@@ -448,9 +457,17 @@
                                     <td><button class="btn btn-sm btn-info" style="float: right"><i class="fa fa-image"></i></button></td>
                                 </tr>
                                 <tr>
+                                    <td width="40%">Tgl Jatuh Tempo Invoice</td>
+                                    <td><p id="view-tgl-invoice"></p></td>
+                                </tr>
+                                <tr>
                                     <td>No DO</td>
                                     <td><p id="det_no_do"></p></td>
                                     <td><button class="btn btn-sm btn-info" style="float: right"><i class="fa fa-image"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td width="40%">Tgl Do</td>
+                                    <td><p id="view-tgl-do"></p></td>
                                 </tr>
                             </table>
                         </div>
@@ -752,6 +769,8 @@
                                     $("#app_tgl_faktur").val(res.stTglFaktur);
                                     $("#app_no_invoice").val(res.noInvoice);
                                     $("#app_no_do").val(res.noDo);
+                                    $("#tgl-invoice").val(res.stTglInvoice);
+                                    $("#tgl-do").val(res.stTglDo);
                                 }
                             });
                         }
@@ -837,6 +856,8 @@
                                     $("#app_tgl_faktur").val(res.stTglFaktur);
                                     $("#app_no_invoice").val(res.noInvoice);
                                     $("#app_no_do").val(res.noDo);
+                                    $("#tgl-invoice").val(res.stTglInvoice);
+                                    $("#tgl-do").val(res.stTglDo);
                                 }
                             });
                         }
@@ -981,7 +1002,7 @@
             }});
     }
 
-    function showDetailListObat(noBatch, img, noFaktur, tglFaktur, noInvoice, noDo){
+    function showDetailListObat(noBatch, img, noFaktur, tglFaktur, noInvoice, noDo, tglInvoice, tglDo){
 
         console.log(img);
         $('#det_img').attr('onclick','showDoc(\''+img+'\')');
@@ -994,6 +1015,8 @@
         $('#modal-detail').modal({show:true, backdrop:'static'});
         $('#loading_detail').show();
         $('#detail_batch').text(noBatch);
+        $('#view-tgl-invoice').text(tglInvoice);
+        $('#view-tgl-do').text(tglDo);
 
         dwr.engine.setAsync(true);
         var table = "";

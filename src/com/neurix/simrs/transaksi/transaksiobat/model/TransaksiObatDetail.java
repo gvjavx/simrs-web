@@ -87,6 +87,15 @@ public class TransaksiObatDetail extends BaseModel {
     private String idPelayananTujuan;
 
     private String ttdDokter;
+    private BigInteger qtyAfter;
+
+    public BigInteger getQtyAfter() {
+        return qtyAfter;
+    }
+
+    public void setQtyAfter(BigInteger qtyAfter) {
+        this.qtyAfter = qtyAfter;
+    }
 
     public String getTtdDokter() {
         return ttdDokter;

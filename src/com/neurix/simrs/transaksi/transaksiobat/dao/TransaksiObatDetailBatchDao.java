@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.transaksiobat.dao;
 
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat;
 import com.neurix.simrs.transaksi.transaksiobat.model.MtSimrsTransaksiObatDetailBatchEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatBatch;
@@ -115,11 +116,14 @@ public class TransaksiObatDetailBatchDao extends GenericDao<MtSimrsTransaksiObat
                 "tanggal_faktur,\n" +
                 "no_invoice,\n" +
                 "no_do,\n" +
-                "odb.jenis \n" +
+                "odb.jenis ,\n" +
+                "odb.tgl_invoice,\n" +
+                "odb.tgl_do\n" +
                 "FROM mt_simrs_transaksi_obat_detail_batch odb\n" +
                 "INNER JOIN mt_simrs_transaksi_obat_detail od ON od.id_transaksi_obat_detail = odb.id_transaksi_obat_detail\n" +
                 "WHERE od.id_approval_obat = :idApproval\n" +
-                "GROUP BY no_batch, od.id_approval_obat, url_doc, no_faktur, tanggal_faktur, no_invoice, no_do, odb.jenis";
+//                "GROUP BY no_batch, od.id_approval_obat, url_doc, no_faktur, tanggal_faktur, no_invoice, no_do, odb.jenis";
+                "GROUP BY no_batch, od.id_approval_obat, url_doc, no_faktur, tanggal_faktur, no_invoice, no_do, odb.jenis, odb.tgl_invoice, odb.tgl_do";
 
         List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("idApproval", idApproval)
@@ -145,6 +149,10 @@ public class TransaksiObatDetailBatchDao extends GenericDao<MtSimrsTransaksiObat
                 batchPermintaanObat.setNoInvoice(obj[6] == null ? "" : obj[6].toString());
                 batchPermintaanObat.setNoDo(obj[7] == null ? "" : obj[7].toString());
                 batchPermintaanObat.setJenis(obj[8] == null ? "" : obj[8].toString());
+                Date tglInvoice = obj[9] == null ? null : (Date) obj[9];
+                Date tglDo = obj[10] == null ? null : (Date) obj[10];
+                batchPermintaanObat.setStTglInvoice(tglInvoice != null ? CommonUtil.ddMMyyyyFormat(tglInvoice) : "");
+                batchPermintaanObat.setStTglDo(tglDo != null ? CommonUtil.ddMMyyyyFormat(tglDo) : "");
                 results.add(batchPermintaanObat);
             }
         }

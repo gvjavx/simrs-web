@@ -655,7 +655,7 @@
             $.each(list, function (i, item) {
                 str += '<tr>' +
                     '<td>'+item.namaObat+'</td>' +
-                    '<td>'+item.qty+'</td>' +
+                    '<td>'+item.qtyAfter+'</td>' +
                     '<td>'+item.jenisSatuan+'</td>' +
                     '<td align="right">'+ formatRupiah(item.hargaPo) +'</td>' +
                     '<td>' +

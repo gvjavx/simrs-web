@@ -179,7 +179,8 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                                 transaksiObatDetail.setQtyBox(transaksiObatDetailEntity.getQtyBox());
                                 transaksiObatDetail.setQtyLembar(transaksiObatDetailEntity.getQtyLembar());
                                 transaksiObatDetail.setQtyBiji(transaksiObatDetailEntity.getQtyBiji());
-                                transaksiObatDetail.setQty(transaksiObatDetailEntity.getQty().subtract(getQtyApprove(transaksiObatDetailEntity.getIdTransaksiObatDetail())));
+                                transaksiObatDetail.setQty(transaksiObatDetailEntity.getQty());
+                                transaksiObatDetail.setQtyAfter(transaksiObatDetailEntity.getQty().subtract(getQtyApprove(transaksiObatDetailEntity.getIdTransaksiObatDetail())));
                                 transaksiObatDetail.setLembarPerBox(transaksiObatDetailEntity.getLembarPerBox());
                                 transaksiObatDetail.setBijiPerLembar(transaksiObatDetailEntity.getBijiPerLembar());
                                 transaksiObatDetail.setAverageHargaBox(transaksiObatDetailEntity.getAverageHargaBox());
@@ -2020,7 +2021,9 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             obatBatch.setNoFaktur(batchEntity.getNoFaktur());
             obatBatch.setNoDo(batchEntity.getNoDo());
             obatBatch.setNoInvoice(batchEntity.getNoInvoice());
-            obatBatch.setStTglFaktur(CommonUtil.yyyyMMddFormat(batchEntity.getTanggalFaktur()));
+            obatBatch.setStTglFaktur(batchEntity.getTanggalFaktur() != null ? CommonUtil.yyyyMMddFormat(batchEntity.getTanggalFaktur()) : null);
+            obatBatch.setStTglInvoice(batchEntity.getTglInvoice() != null ? CommonUtil.yyyyMMddFormat(batchEntity.getTglInvoice()) : null);
+            obatBatch.setStTglDo(batchEntity.getTglDo() != null ? CommonUtil.yyyyMMddFormat(batchEntity.getTglDo()) : null);
             return obatBatch;
         }
 
