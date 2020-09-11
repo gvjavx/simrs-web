@@ -70,6 +70,8 @@
             <interceptor-ref name="ivelinStack" />
             <result name="search">/pages/com/neurix/akuntansi/transaksi/budgetinginvestasi/searchBudgetingInvestasi.jsp</result>
             <result name="add">/pages/com/neurix/akuntansi/transaksi/budgetinginvestasi/addBudgetingInvestasi.jsp</result>
+            <result name="add_kp">/pages/com/neurix/akuntansi/transaksi/budgetinginvestasi/addBudgetingInvestaiKp.jsp</result>
+            <result name="add_detail">/pages/com/neurix/akuntansi/transaksi/budgetinginvestasi/addBudgetingInvestasiDetail.jsp</result>
             <result name="edit">/pages/com/neurix/akuntansi/transaksi/budgetinginvestasi/editBudgetingInvestasi.jsp</result>
             <result name="edit_detail">/pages/com/neurix/akuntansi/transaksi/budgetinginvestasi/editBudgetingDetailInvestasi.jsp</result>
         </action>

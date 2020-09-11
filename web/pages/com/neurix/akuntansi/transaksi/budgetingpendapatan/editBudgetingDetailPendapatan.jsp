@@ -77,7 +77,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Edit Budgeting Detail Investasi</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Edit Budgeting Detail Pendapatan</h3>
                     </div>
                     <div class="box-body">
 
@@ -119,6 +119,7 @@
                                     <tr bgcolor="#90ee90">
                                         <td style="width: 20%">COA</td>
                                         <td align="center">Keterangan</td>
+                                        <td align="center" id="head-draft" style="display: none">Nilai Draft</td>
                                         <td align="center">Total</td>
                                         <td align="center">Selisih</td>
                                     </tr>
@@ -210,8 +211,9 @@
                                                                 mapped = {};
                                                                 var data = [];
                                                                 dwr.engine.setAsync(false);
-                                                                PositionAction.typeHeadPosition(query,function (listdata) {
+                                                                PositionAction.typeAheadPosition(query,function (listdata) {
                                                                     data = listdata;
+                                                                    console.log(data);
                                                                 });
                                                                 $.each(data, function (i, item) {
                                                                     var labelItem = item.kodering + " | " + item.positionName;
@@ -1342,9 +1344,9 @@
     function back() {
 
         if (trans != "" && trans != null){
-            var host = firstpath()+"/bginvestasi/edit_bginvestasi.action?status="+status+"&trans="+trans;
+            var host = firstpath()+"/bgpendapatan/edit_bgpendapatan.action?status="+status+"&trans="+trans;
         } else {
-            var host = firstpath()+"/bginvestasi/add_bginvestasi.action?status="+status+"&tipe=detail&trans="+trans;
+            var host = firstpath()+"/bgpendapatan/add_bgpendapatan.action?status="+status+"&tipe=detail&trans="+trans;
         }
 
         post(host, form);
@@ -1428,7 +1430,7 @@
     }
 
     function refresh() {
-        var host = firstpath()+"/bginvestasi/edit_bginvestasi.action?status="+status+"&id="+rekeningid+"&tipe=detail&trans="+trans;
+        var host = firstpath()+"/bgpendapatan/edit_bgpendapatan.action?status="+status+"&id="+rekeningid+"&tipe=detail&trans="+trans;
         post(host, form);
     }
 
@@ -1557,11 +1559,16 @@
 //            console.log(response);
             data = response;
             data2 = new Array();
+            var isDraft = "";
             $.each(data, function(i,item){
 //                console.log(item.rekeningId);
+                if (isDraft == "" && item.flagNilaiTotal == "Y"){
+                    isDraft = "Y";
+                }
                 data2.push({_id : item.rekeningId, level : item.level,  nama : item.namaKodeRekening, parent : item.parentId, coa : item.kodeRekening,
                     nilaiTotal : item.nilaiTotal, quartal1 : item.quartal1, quartal2: item.quartal2, quartal3 : item.quartal3, quartal4 : item.quartal4,
-                    semester1 : item.semester1, semester2:item.semester2, stLevel: item.stLevel, selisih : item.selisih});
+                    semester1 : item.semester1, semester2:item.semester2, stLevel: item.stLevel, selisih : item.selisih, nilaiAwal : item.nilaiAwal
+                });
 
             });
             function hierarhySort(hashArr, key, result) {
@@ -1591,19 +1598,34 @@
                 if(data2[i].parent == "-"){
                     strList += '<tr style="font-size: 12px;" class=" treegrid-' + data2[i]._id+ '">' +
                         '<td >' + data2[i].coa + '</td>' +
-                        '<td >' + data2[i].nama + '</td>' +
-                        "<td align='right'>"+formatRupiah(data2[i].nilaiTotal)+"</td>"+
+                        '<td >' + data2[i].nama + '</td>' ;
+
+                    if (isDraft == "Y"){
+                        strList += "<td align='right'>"+formatRupiah(data2[i].nilaiAwal)+"</td>";
+                    }
+
+                    strList += "<td align='right'>"+formatRupiah(data2[i].nilaiTotal)+"</td>"+
                         "<td align='right'>"+formatRupiah(data2[i].selisih)+"</td>"+
                         "</tr>";
                 } else {
+
                     strList += '<tr style="font-size: 12px" class=" treegrid-' + data2[i]._id + ' treegrid-parent-' + data2[i].parent + '">' +
                         + '<td style="border: 2px solid black;">' +
                         '<td >' + data2[i].coa + '</td>' +
-                        '<td >' + data2[i].nama + '</td>' +
-                        "<td align='right'>"+formatRupiah(data2[i].nilaiTotal)+"</td>"+
+                        '<td >' + data2[i].nama + '</td>' ;
+
+                    if (isDraft == "Y"){
+                        strList += "<td align='right'>"+formatRupiah(data2[i].nilaiAwal)+"</td>";
+                    }
+
+                    strList += "<td align='right'>"+formatRupiah(data2[i].nilaiTotal)+"</td>"+
                         "<td align='right'>"+formatRupiah(data2[i].selisih)+"</td>"+
                         "</tr>";
                 }
+            }
+
+            if (isDraft == "Y"){
+                $("#head-draft").show();
             }
             $("#body-budgeting").html(strList);
             $('.tree').treegrid({

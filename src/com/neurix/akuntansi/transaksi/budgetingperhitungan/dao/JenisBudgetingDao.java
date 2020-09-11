@@ -21,11 +21,12 @@ public class JenisBudgetingDao extends GenericDao<ImAkunJenisBudgetingEntity, St
 
     @Override
     public List<ImAkunJenisBudgetingEntity> getByCriteria(Map mapCriteria) {
-        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItAkunBudgetingEntity.class);
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImAkunJenisBudgetingEntity.class);
 
-        if (mapCriteria.get("id_budgeting") != null){
-            criteria.add(Restrictions.eq("idBudgeting", mapCriteria.get("id_budgeting").toString()));
-        }
+        if (mapCriteria.get("id") != null)
+            criteria.add(Restrictions.eq("id", mapCriteria.get("id").toString()));
+        if (mapCriteria.get("flag") != null)
+            criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
 
         return criteria.list();
     }

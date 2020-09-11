@@ -1,5 +1,6 @@
 package com.neurix.simrs.master.obat.bo.impl;
 
+import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.Aging;
 import com.neurix.akuntansi.transaksi.tutupperiod.dao.BatasTutupPeriodDao;
 import com.neurix.akuntansi.transaksi.tutupperiod.model.ItSimrsBatasTutupPeriodEntity;
 import com.neurix.common.exception.GeneralBOException;
@@ -2178,5 +2179,10 @@ public class ObatBoImpl implements ObatBo {
     @Override
     public ImSimrsBentukBarangEntity getBentukBarangById(String idBentuk) throws GeneralBOException {
         return bentukBarangDao.getById("idBentuk", idBentuk);
+    }
+
+    @Override
+    public List<Aging> getListAging(String branchId, String idPelayanan, String periode) throws GeneralBOException {
+        return obatDao.getAgingStokObat(branchId, idPelayanan, periode);
     }
 }

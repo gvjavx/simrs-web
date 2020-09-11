@@ -692,7 +692,7 @@
                 }
             });
 
-            KasirRawatJalanAction.getListUangMuka(idDetailCheckup, function (response) {
+            KasirRawatJalanAction.getListUangMuka(idDetailCheckup, null, function (response) {
                 dataTindakan = response;
                 if (dataTindakan != null) {
                     $.each(dataTindakan, function (i, item) {
@@ -843,7 +843,7 @@
                 $('#ref_desa').html(response.namaDesa);
             }
         });
-        KasirRawatJalanAction.getListUangMuka(idDetailCheckup, function (response) {
+        KasirRawatJalanAction.getListUangMuka(idDetailCheckup, null, function (response) {
             dataTindakan = response;
             if (dataTindakan != null) {
                 var table = "";

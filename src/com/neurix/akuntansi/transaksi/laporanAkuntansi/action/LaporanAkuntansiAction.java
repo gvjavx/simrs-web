@@ -1628,7 +1628,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         if(myList.size()>0){
             List<Aging> forReport = new ArrayList<>();
 
-            myList.addAll(forReport);
+//            myList.addAll(forReport);
             reportParams.put("reportTitle", titleReport);
             reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
             reportParams.put("cabangId", dataLaporan.getUnit());

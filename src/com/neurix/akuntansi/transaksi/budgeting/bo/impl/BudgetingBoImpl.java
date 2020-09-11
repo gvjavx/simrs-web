@@ -80,7 +80,14 @@ public class BudgetingBoImpl implements BudgetingBo {
                 budgeting.setBranchId(budgetingEntity.getBranchId());
                 budgeting.setRekeningId(budgetingEntity.getRekeningId());
                 budgeting.setStatus(budgetingEntity.getStatus());
-                budgeting.setNilaiTotal(nullEscape(budgetingEntity.getNilaiTotal()));
+
+                boolean withNilaiTotal = !"APPROVE_DRAFT".equalsIgnoreCase(budgetingEntity.getStatus()) && !"ADJUST_DRAFT".equalsIgnoreCase(budgetingEntity.getStatus());
+                if (withNilaiTotal || "investasi".equalsIgnoreCase(bean.getTipeBudgeting())){
+                    budgeting.setNilaiTotal(nullEscape(budgetingEntity.getNilaiTotal()));
+                } else {
+                    budgeting.setFlagNilaiTotal("Y");
+                    budgeting.setNilaiTotal(new BigDecimal(0));
+                }
                 budgeting.setNilaiAwal(nullEscape(budgetingEntity.getNilaiTotal()));
                 budgeting.setTipe(budgetingEntity.getTipe());
                 budgeting.setSemester1(nullEscape(budgetingEntity.getSemester1()));
@@ -297,7 +304,11 @@ public class BudgetingBoImpl implements BudgetingBo {
     }
 
     @Override
-    public Boolean foundWithSameStatus(String tahun, String branchId, String status) {
+    public Boolean foundWithSameStatus(String tahun, String branchId, String status, String tipe) {
+
+        if (tipe != null && !"".equalsIgnoreCase(tipe)){
+            return budgetingDao.checkIfSameStatusAndTipe(branchId, tahun, status, tipe);
+        }
         return budgetingDao.checkIfSameStatus(branchId, tahun, status);
     }
 
@@ -517,75 +528,84 @@ public class BudgetingBoImpl implements BudgetingBo {
 
                         newChilds.add(budgetingNew);
 
-                        List<BudgetingDetail> details = budgetingDetails.stream().filter( p -> p.getRekeningId().equalsIgnoreCase(kodeRekeningEntity.getRekeningId())).collect(Collectors.toList());
-                        if (details.size() > 0){
-                            for (BudgetingDetail budgetingDetail : details){
+                        if (budgetingDetails != null && budgetingDetails.size() > 0){
+                            List<BudgetingDetail> details = budgetingDetails.stream().filter( p -> p.getRekeningId().equalsIgnoreCase(kodeRekeningEntity.getRekeningId())).collect(Collectors.toList());
+                            if (details.size() > 0){
+                                for (BudgetingDetail budgetingDetail : details){
 
-                                ItAkunBudgetingDetailEntity budgetingDetailEntity = new ItAkunBudgetingDetailEntity();
-                                budgetingDetailEntity.setIdBudgetingDetail(generateBudgetingDetailId());
-                                budgetingDetailEntity.setIdBudgeting(budgetingEntity.getIdBudgeting());
+                                    ItAkunBudgetingDetailEntity budgetingDetailEntity = new ItAkunBudgetingDetailEntity();
+                                    budgetingDetailEntity.setIdBudgetingDetail(generateBudgetingDetailId());
+                                    budgetingDetailEntity.setIdBudgeting(budgetingEntity.getIdBudgeting());
 
-                                if (budgetingDetail != null && !"".equalsIgnoreCase(budgetingDetail.getMasterId())){
-                                    budgetingDetailEntity.setMasterId(budgetingDetail.getMasterId());
-                                }
+                                    if (budgetingDetail != null && !"".equalsIgnoreCase(budgetingDetail.getMasterId())){
+                                        budgetingDetailEntity.setMasterId(budgetingDetail.getMasterId());
+                                    }
 
-                                if (budgetingDetailEntity.getMasterId() != null){
-                                    budgetingDetailEntity.setNoBudgetingDetail(budgetingEntity.getNoTrans()+"-"+budgetingDetail.getTipe()+"-"+budgetingDetail.getDivisiId()+"-"+budgetingDetail.getMasterId());
-                                } else {
-                                    budgetingDetailEntity.setNoBudgetingDetail(budgetingEntity.getNoTrans()+"-"+budgetingDetail.getTipe()+"-"+budgetingDetail.getDivisiId());
-                                }
+                                    if (budgetingDetailEntity.getMasterId() != null){
+                                        budgetingDetailEntity.setNoBudgetingDetail(budgetingEntity.getNoTrans()+"-"+budgetingDetail.getTipe()+"-"+budgetingDetail.getDivisiId()+"-"+budgetingDetail.getMasterId());
+                                    } else {
+                                        budgetingDetailEntity.setNoBudgetingDetail(budgetingEntity.getNoTrans()+"-"+budgetingDetail.getTipe()+"-"+budgetingDetail.getDivisiId());
+                                    }
 
-                                budgetingDetailEntity.setNoBudgeting(budgetingEntity.getNoBudgeting());
-                                budgetingDetailEntity.setDivisiId(budgetingDetail.getDivisiId());
-                                budgetingDetailEntity.setNilai(budgetingDetail.getNilai());
-                                budgetingDetailEntity.setQty(budgetingDetail.getQty());
-                                budgetingDetailEntity.setSubTotal(budgetingDetail.getSubTotal());
-                                budgetingDetailEntity.setTipe(budgetingDetail.getTipe());
-                                budgetingDetailEntity.setFlag(bean.getFlag());
-                                budgetingDetailEntity.setAction(bean.getAction());
-                                budgetingDetailEntity.setCreatedDate(bean.getCreatedDate());
-                                budgetingDetailEntity.setCreatedWho(bean.getCreatedWho());
-                                budgetingDetailEntity.setLastUpdate(bean.getLastUpdate());
-                                budgetingDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                                budgetingDetailEntity.setPositionId(budgetingDetail.getPositionId());
+                                    budgetingDetailEntity.setNoBudgeting(budgetingEntity.getNoBudgeting());
+                                    budgetingDetailEntity.setDivisiId(budgetingDetail.getDivisiId());
+                                    budgetingDetailEntity.setNilai(budgetingDetail.getNilai());
+                                    budgetingDetailEntity.setQty(budgetingDetail.getQty());
+                                    budgetingDetailEntity.setSubTotal(budgetingDetail.getSubTotal());
+                                    budgetingDetailEntity.setTipe(budgetingDetail.getTipe());
+                                    budgetingDetailEntity.setFlag(bean.getFlag());
+                                    budgetingDetailEntity.setAction(bean.getAction());
+                                    budgetingDetailEntity.setCreatedDate(bean.getCreatedDate());
+                                    budgetingDetailEntity.setCreatedWho(bean.getCreatedWho());
+                                    budgetingDetailEntity.setLastUpdate(bean.getLastUpdate());
+                                    budgetingDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                                    budgetingDetailEntity.setPositionId(budgetingDetail.getPositionId());
 
-                                try {
-                                    budgetingDetailDao.addAndSave(budgetingDetailEntity);
-                                } catch (HibernateException e){
-                                    logger.error("[BudgetingBoImpl.saveAddBudgeting] ERROR. ",e);
-                                    throw new GeneralBOException("[BudgetingBoImpl.saveAddBudgeting] ERROR. "+e);
-                                }
+                                    try {
+                                        budgetingDetailDao.addAndSave(budgetingDetailEntity);
+                                    } catch (HibernateException e){
+                                        logger.error("[BudgetingBoImpl.saveAddBudgeting] ERROR. ",e);
+                                        throw new GeneralBOException("[BudgetingBoImpl.saveAddBudgeting] ERROR. "+e);
+                                    }
 
-                                List<BudgetingPengadaan> pengadaans = budgetingPengadaans.stream().filter( p -> p.getIdBudgetingDetail().equalsIgnoreCase(budgetingDetail.getIdBudgetingDetail())).collect(Collectors.toList());
-                                if (pengadaans.size() > 0){
-                                    for (BudgetingPengadaan budgetingPengadaan : pengadaans){
-
-                                        ItAkunBudgetingPengadaanEntity pengadaanEntity = new ItAkunBudgetingPengadaanEntity();
-                                        pengadaanEntity.setIdPengadaan(generateBudgetingPengadaan());
-                                        pengadaanEntity.setNoBudgetingDetail(budgetingDetailEntity.getNoBudgetingDetail());
-                                        pengadaanEntity.setIdBudgetingDetail(budgetingDetailEntity.getIdBudgetingDetail());
-                                        pengadaanEntity.setNamPengadaan(budgetingPengadaan.getNamPengadaan());
-                                        pengadaanEntity.setNilai(budgetingPengadaan.getNilai());
-                                        pengadaanEntity.setQty(budgetingPengadaan.getQty());
-                                        pengadaanEntity.setSubTotal(budgetingPengadaan.getSubTotal());
-                                        pengadaanEntity.setTipe(budgetingPengadaan.getTipe());
-                                        pengadaanEntity.setFlag(bean.getFlag());
-                                        pengadaanEntity.setAction(bean.getAction());
-                                        pengadaanEntity.setCreatedDate(bean.getCreatedDate());
-                                        pengadaanEntity.setCreatedWho(bean.getCreatedWho());
-                                        pengadaanEntity.setLastUpdate(bean.getLastUpdate());
-                                        pengadaanEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                                        if (budgetingPengadaan.getNoPengadaan() != null && !"".equalsIgnoreCase(budgetingPengadaan.getNoPengadaan())){
-                                            pengadaanEntity.setNoPengadaan(budgetingPengadaan.getNoPengadaan());
+                                    if (budgetingPengadaans != null && budgetingPengadaans.size() > 0) {
+                                        List<BudgetingPengadaan> pengadaans = new ArrayList<>();
+                                        if ("ADD".equalsIgnoreCase(bean.getJenis())){
+                                            pengadaans = budgetingPengadaans.stream().filter( p -> p.getIdNilaiParam().equalsIgnoreCase(budgetingDetail.getIdNilaiParam())).collect(Collectors.toList());
                                         } else {
-                                            pengadaanEntity.setNoPengadaan(budgetingDetailEntity.getNoBudgetingDetail()+"-"+pengadaanEntity.getIdPengadaan());
+                                            pengadaans = budgetingPengadaans.stream().filter( p -> p.getIdBudgetingDetail().equalsIgnoreCase(budgetingDetail.getIdBudgetingDetail())).collect(Collectors.toList());
                                         }
+                                        if (pengadaans.size() > 0){
+                                            for (BudgetingPengadaan budgetingPengadaan : pengadaans){
 
-                                        try {
-                                            budgetingPengadaanDao.addAndSave(pengadaanEntity);
-                                        } catch (HibernateException e){
-                                            logger.error("[BudgetingBoImpl.saveAddBudgeting] ERROR. ",e);
-                                            throw new GeneralBOException("[BudgetingBoImpl.saveAddBudgeting] ERROR. "+e);
+                                                ItAkunBudgetingPengadaanEntity pengadaanEntity = new ItAkunBudgetingPengadaanEntity();
+                                                pengadaanEntity.setIdPengadaan(generateBudgetingPengadaan());
+                                                pengadaanEntity.setNoBudgetingDetail(budgetingDetailEntity.getNoBudgetingDetail());
+                                                pengadaanEntity.setIdBudgetingDetail(budgetingDetailEntity.getIdBudgetingDetail());
+                                                pengadaanEntity.setNamPengadaan(budgetingPengadaan.getNamPengadaan());
+                                                pengadaanEntity.setNilai(budgetingPengadaan.getNilai());
+                                                pengadaanEntity.setQty(budgetingPengadaan.getQty());
+                                                pengadaanEntity.setSubTotal(budgetingPengadaan.getSubTotal());
+                                                pengadaanEntity.setTipe(budgetingPengadaan.getTipe());
+                                                pengadaanEntity.setFlag(bean.getFlag());
+                                                pengadaanEntity.setAction(bean.getAction());
+                                                pengadaanEntity.setCreatedDate(bean.getCreatedDate());
+                                                pengadaanEntity.setCreatedWho(bean.getCreatedWho());
+                                                pengadaanEntity.setLastUpdate(bean.getLastUpdate());
+                                                pengadaanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                                                if (budgetingPengadaan.getNoPengadaan() != null && !"".equalsIgnoreCase(budgetingPengadaan.getNoPengadaan())){
+                                                    pengadaanEntity.setNoPengadaan(budgetingPengadaan.getNoPengadaan());
+                                                } else {
+                                                    pengadaanEntity.setNoPengadaan(budgetingDetailEntity.getNoBudgetingDetail()+"-"+pengadaanEntity.getIdPengadaan());
+                                                }
+
+                                                try {
+                                                    budgetingPengadaanDao.addAndSave(pengadaanEntity);
+                                                } catch (HibernateException e){
+                                                    logger.error("[BudgetingBoImpl.saveAddBudgeting] ERROR. ",e);
+                                                    throw new GeneralBOException("[BudgetingBoImpl.saveAddBudgeting] ERROR. "+e);
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -1512,5 +1532,16 @@ public class BudgetingBoImpl implements BudgetingBo {
         budgetingList.add(budgetingPengadaan);
         logger.info("[BudgetingBoImpl.getTerminPembayaran] END <<<<");
         return  budgetingList;
+    }
+
+    @Override
+    public List<Budgeting> getListLabaRugi(String tahun, String unit, String status) {
+        logger.info("[BudgetingBoImpl.getListLabaRugi] START >>>");
+        return budgetingDao.getListLabaRugi(tahun, unit, status);
+    }
+
+    @Override
+    public String ceckAvailBudgetingByTahun(String tahun) {
+        return budgetingDao.checkAvailBudgetingByTahun(tahun);
     }
 }

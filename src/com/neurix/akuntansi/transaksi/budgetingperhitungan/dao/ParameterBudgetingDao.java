@@ -27,6 +27,9 @@ public class ParameterBudgetingDao extends GenericDao<ImAkunParameterBudgetingEn
         if (mapCriteria.get("id_jenis_budgeting") != null){
             criteria.add(Restrictions.eq("idJenisBudgeting", mapCriteria.get("id_jenis_budgeting").toString()));
         }
+        if (mapCriteria.get("id_kategori_budgeting") != null){
+            criteria.add(Restrictions.eq("idKategoriBudgeting", mapCriteria.get("id_kategori_budgeting").toString()));
+        }
         return criteria.list();
     }
 }

@@ -37,7 +37,15 @@ public class BudgetingDetail{
     private BigDecimal saldoAkhir;
     private BigDecimal selisihSaldoAkhir;
     private Integer bulan;
+    private String idNilaiParam;
 
+    public String getIdNilaiParam() {
+        return idNilaiParam;
+    }
+
+    public void setIdNilaiParam(String idNilaiParam) {
+        this.idNilaiParam = idNilaiParam;
+    }
 
     public static Comparator<BudgetingDetail> tipePeriodeSorting = new Comparator<BudgetingDetail>() {
 

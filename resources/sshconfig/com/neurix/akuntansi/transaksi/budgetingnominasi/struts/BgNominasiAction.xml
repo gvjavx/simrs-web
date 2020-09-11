@@ -69,6 +69,11 @@
                 class="com.neurix.akuntansi.transaksi.budgetingnominasi.action.BgNominasiAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
             <result name="search">/pages/com/neurix/akuntansi/transaksi/budgetingnominasi/searchBudgetingNominasi.jsp</result>
+            <result name="add">/pages/com/neurix/akuntansi/transaksi/budgetingnominasi/addBudgetingNominasi.jsp</result>
+            <result name="add_detail">/pages/com/neurix/akuntansi/transaksi/budgetingnominasi/addBudgetingNominasiDetail.jsp</result>
+            <result name="add_kp">/pages/com/neurix/akuntansi/transaksi/budgetingnominasi/addBudgetingNominasiKp.jsp</result>
+            <result name="edit">/pages/com/neurix/akuntansi/transaksi/budgetingnominasi/editBudgetingNominasi.jsp</result>
+            <result name="edit_detail">/pages/com/neurix/akuntansi/transaksi/budgetingnominasi/editBudgetingDetailNominasi.jsp</result>
         </action>
 
         <action name="paging_displaytag_jurnal"
