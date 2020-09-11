@@ -507,6 +507,7 @@
         var metode="";
         var bukti = "";
         var namaAsuransi = "";
+        var idJenisPasien = "";
 
         var url = '<s:url value="/pages/images/spinner.gif"/>';
         $('#t_'+idDetailCheckup).attr('src',url).css('width', '30px', 'height', '40px');
@@ -546,6 +547,7 @@
                         desa = response.namaDesa;
                         noSep = response.noSep;
                         namaAsuransi = response.namaAsuransi;
+                        idJenisPasien = response.idJenisPeriksaPasien;
 
                         if(response.metodePembayaran == "tunai"){
                             metode = "tunai";
@@ -580,9 +582,8 @@
                 $("#body_uang_muka").html(str);
             });
 
-            KasirRawatJalanAction.getListTindakanRawat(idDetailCheckup, function (response) {
+            KasirRawatJalanAction.getListTindakanRawat(idDetailCheckup, idJenisPasien, function (response) {
                 dataTindakan = response;
-                console.log(response);
                 if (dataTindakan != null) {
                     var total = 0;
                     var totalObat = 0;

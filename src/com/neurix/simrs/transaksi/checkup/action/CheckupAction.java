@@ -568,7 +568,7 @@ public class CheckupAction extends BaseMasterAction {
                     checkup.setIdJenisPeriksaPasien(online.getIdJenisPeriksaPasien());
 
                     Pasien pasien = new Pasien();
-                    pasien.setIdPasien(idPasien);
+                    pasien.setIdPasien(online.getIdPasien());
                     List<Pasien> pasienList = new ArrayList<>();
 
                     try {

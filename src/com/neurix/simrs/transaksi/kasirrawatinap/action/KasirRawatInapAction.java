@@ -190,7 +190,7 @@ public class KasirRawatInapAction extends BaseMasterAction {
         return "search";
     }
 
-    public List<RiwayatTindakan> getListTindakanRawat(String idDetail) {
+    public List<RiwayatTindakan> getListTindakanRawat(String idDetail, String jenisPasien) {
         List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
 
         if (idDetail != null && !"".equalsIgnoreCase(idDetail)) {
@@ -199,6 +199,9 @@ public class KasirRawatInapAction extends BaseMasterAction {
             KasirRawatInapBo kasirRawatInapBo = (KasirRawatInapBo) ctx.getBean("kasirRawatInapBoProxy");
 
             RiwayatTindakan tindakanRawat = new RiwayatTindakan();
+            if("bpjs".equalsIgnoreCase(jenisPasien) || "asuransi".equalsIgnoreCase(jenisPasien)){
+                tindakanRawat.setJenisPasien("umum");
+            }
             tindakanRawat.setIdDetailCheckup(idDetail);
             tindakanRawat.setBranchId(CommonUtil.userBranchLogin());
 
