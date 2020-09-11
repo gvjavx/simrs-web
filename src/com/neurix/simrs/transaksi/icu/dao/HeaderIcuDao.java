@@ -65,6 +65,7 @@ public class HeaderIcuDao extends GenericDao<ItSimrsHeaderIcuEntity, String> {
                     "ON a.id_header_icu = b.id_header_icu\n" +
                     "WHERE a.id_detail_checkup = :id\n" +
                     "AND a.kategori = :kategori \n"+
+                    "AND b.flag = 'Y' \n"+
                     "ORDER BY CAST(b.created_date AS date), b.waktu ASC";
 
             List<Object[]> result = new ArrayList<>();
@@ -99,6 +100,7 @@ public class HeaderIcuDao extends GenericDao<ItSimrsHeaderIcuEntity, String> {
                     "ON a.id_header_icu = b.id_header_icu\n" +
                     "WHERE a.id_detail_checkup = :id\n" +
                     "AND b.waktu = :waktu\n" +
+                    "AND b.flag = 'Y'\n" +
                     "AND a.kategori = :kategori\n" +
                     "AND CAST(b.created_date AS DATE) = CURRENT_DATE";
 

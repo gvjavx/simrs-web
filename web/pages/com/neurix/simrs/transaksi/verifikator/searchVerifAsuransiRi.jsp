@@ -211,7 +211,7 @@
                                             <img src="<s:url value="/pages/images/icon_success.ico"/>">
                                         </s:if>
                                         <s:else>
-                                            <img id="spin_<s:property value="idDetailCheckup"/>" onclick="detail('<s:property value="noCheckup"/>','<s:property value="idDetailCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>" style="cursor: pointer;">
+                                            <img id="spin_<s:property value="idDetailCheckup"/>" onclick="detail('<s:property value="noCheckup"/>','<s:property value="idDetailCheckup"/>','<s:property value="flagCloseTraksaksi"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>" style="cursor: pointer;">
                                         </s:else>
                                     </td>
                                 </tr>
@@ -476,11 +476,12 @@
                     setLabelJenisPasien('jenis_pasien', res.idJenisPeriksaPasien);
                     $('#save_fin').show();
                     $('#load_fin').hide();
-                    if(flagClose == "Y"){
+                    if(res.flagCloseTransaksi == "Y"){
                         $('#form-close').hide();
                         $('#form-cover').show();
                         $('#save_fin').html("<i class='fa fa-check'></i> Update Cover");
                         $('#save_fin').attr('onclick', 'confirm()');
+                        listTindakanApprove(noCheckup, idDetailCheckup, res.idJenisPeriksaPasien);
                     }else{
                         $('#form-close').show();
                         $('#form-cover').hide();
@@ -766,9 +767,6 @@
                         $('#success').show().fadeOut(5000);
                         $('#msg_suc').text("Traksaksi berhasil di close, silahkan update cover asuransi dibawah...!");
                         listTindakanApprove(noCheckup, idDetailCheckup, jenisPasien);
-                        // $('#modal-detail').modal('hide');
-                        // $('#info_dialog').dialog('open');
-                        // $('body').scrollTop(0);
                     } else {
                         $('#save_fin').show();
                         $('#load_fin').hide();
@@ -785,6 +783,7 @@
         var table = "";
         var data = [];
         var trfTtl = 0;
+        $('#body_tindakan_cover').html('');
         $('#loading_page').show();
         dwr.engine.setAsync(true);
         VerifikatorAction.getListTindakanRawat(noCheckup, idDetailCheckup, jenis,
@@ -837,7 +836,7 @@
                                 "<tr style='font-weight: bold'>" +
                                 "<td colspan='2'>Total Biaya Yang Dibayar Pasien</td>" +
                                 "<td>" +
-                                '<input type="hidden" id="h_pasien_bayar">' +
+                                '<input type="hidden" id="h_pasien_bayar" value="0">' +
                                 '<input style="text-align: right" class="form-control" id="pasien_bayar" value="0">' +
                                 "</td>" +
                                 "<td></td>" +

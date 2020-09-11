@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printSuratPenolakanTindakan" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="1.1269722013523757"/>
+	<property name="ireport.zoom" value="1.2396694214876134"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="48"/>
+	<property name="ireport.y" value="174"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -480,6 +480,20 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.noBpjs} == null ? "" : $P{reportParams.noBpjs}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="411" y="210" width="5" height="20" uuid="40c173cc-f07c-4986-bfd3-8683da725f71"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="210" width="111" height="20" uuid="0d96efd5-ba24-45dd-8a86-a0ccae3de43c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Selisih Bayar]]></text>
+			</staticText>
 		</band>
 	</title>
 	<lastPageFooter>

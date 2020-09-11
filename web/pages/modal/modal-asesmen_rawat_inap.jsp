@@ -14,6 +14,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_ina_asesmen_keperawatan_ri"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_asesmen_keperawatan_ri">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_asesmen_keperawatan_ri"></p>
+                    </div>
                     <div class="btn-group">
                         <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
                         </button>
@@ -57,6 +61,7 @@
                                 <img id="btn_ina_riwayat_kesehatan" class="hvr-grow"
                                      onclick="detailAsesmenRawatInap('riwayat_kesehatan')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_riwayat_kesehatan" class="hvr-grow btn-hide" onclick="conRI('riwayat_kesehatan', 'asesmen_keperawatan_ri')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_ina_keadaan_umum">
@@ -65,6 +70,7 @@
                                 <img id="btn_ina_keadaan_umum" class="hvr-grow"
                                      onclick="detailAsesmenRawatInap('keadaan_umum')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_keadaan_umum" class="hvr-grow btn-hide" onclick="conRI('keadaan_umum', 'asesmen_keperawatan_ri')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_ina_pemeriksaan_fisik">
@@ -73,6 +79,7 @@
                                 <img id="btn_ina_pemeriksaan_fisik" class="hvr-grow"
                                      onclick="detailAsesmenRawatInap('pemeriksaan_fisik')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_pemeriksaan_fisik" class="hvr-grow btn-hide" onclick="conRI('pemeriksaan_fisik', 'asesmen_keperawatan_ri')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_ina_resiko_dekubitus">
@@ -81,6 +88,7 @@
                                 <img id="btn_ina_resiko_dekubitus" class="hvr-grow"
                                      onclick="detailAsesmenRawatInap('resiko_dekubitus')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_resiko_dekubitus" class="hvr-grow btn-hide" onclick="conRI('resiko_dekubitus', 'asesmen_keperawatan_ri')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_ina_nyeri">
@@ -89,6 +97,7 @@
                                 <img id="btn_ina_nyeri" class="hvr-grow"
                                      onclick="detailAsesmenRawatInap('nyeri')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_nyeri" class="hvr-grow btn-hide" onclick="conRI('nyeri', 'asesmen_keperawatan_ri')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_ina_funsional">
@@ -97,6 +106,7 @@
                                 <img id="btn_ina_funsional" class="hvr-grow"
                                      onclick="detailAsesmenRawatInap('funsional')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_funsional" class="hvr-grow btn-hide" onclick="conRI('funsional', 'asesmen_keperawatan_ri')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_ina_resiko_jatuh">
@@ -105,6 +115,7 @@
                                 <img id="btn_ina_resiko_jatuh" class="hvr-grow"
                                      onclick="detailAsesmenRawatInap('resiko_jatuh')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_resiko_jatuh" class="hvr-grow btn-hide" onclick="conRI('resiko_jatuh', 'asesmen_keperawatan_ri')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_ina_psiko_social">
@@ -113,6 +124,7 @@
                                 <img id="btn_ina_psiko_social" class="hvr-grow"
                                      onclick="detailAsesmenRawatInap('psiko_social')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_psiko_social" class="hvr-grow btn-hide" onclick="conRI('psiko_social', 'asesmen_keperawatan_ri')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_ina_skrining_nutrisi">
@@ -121,6 +133,7 @@
                                 <img id="btn_ina_skrining_nutrisi" class="hvr-grow"
                                      onclick="detailAsesmenRawatInap('skrining_nutrisi')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_skrining_nutrisi" class="hvr-grow btn-hide" onclick="conRI('skrining_nutrisi', 'asesmen_keperawatan_ri')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_ina_neurologi">
@@ -129,6 +142,7 @@
                                 <img id="btn_ina_neurologi" class="hvr-grow"
                                      onclick="detailAsesmenRawatInap('neurologi')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_neurologi" class="hvr-grow btn-hide" onclick="conRI('neurologi', 'asesmen_keperawatan_ri')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_ina_genitourinaria">
@@ -137,6 +151,7 @@
                                 <img id="btn_ina_genitourinaria" class="hvr-grow"
                                      onclick="detailAsesmenRawatInap('genitourinaria')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_genitourinaria" class="hvr-grow btn-hide" onclick="conRI('genitourinaria', 'asesmen_keperawatan_ri')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -1913,7 +1928,7 @@
                                 <canvas class="paint-canvas-ttd" id="gen2" width="220"
                                         onmouseover="paintTtd('gen2')"></canvas>
                                 <input class="form-control" id="nama_terang_gen2" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control" id="sip_gen2" placeholder="SIP">
+                                <input style="margin-top: 3px" class="form-control" id="sip_gen2" placeholder="NIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('gen2')"><i
                                         class="fa fa-trash"></i> Clear
@@ -1923,8 +1938,8 @@
                                 <label>TTD DPJP</label>
                                 <canvas class="paint-canvas-ttd" id="gen3" width="220"
                                         onmouseover="paintTtd('gen3')"></canvas>
-                                <input class="form-control" id="nama_terang_gen3" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control" id="sip_gen3" placeholder="SIP">
+                                <input class="form-control nama_dokter" id="nama_terang_gen3" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control sip_dokter" id="sip_gen3" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('gen3')"><i
                                         class="fa fa-trash"></i> Clear

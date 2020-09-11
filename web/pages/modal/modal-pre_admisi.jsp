@@ -14,6 +14,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_ring_admisi"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_admisi">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_admisi"></p>
+                    </div>
                     <div class="btn-group">
                         <button type="button" onclick="showModalRingkasanPasien('pre_admisi')" class="btn btn-success"><i class="fa fa-plus"></i> Pre Admisi
                         </button>
@@ -28,6 +32,7 @@
                                 <img id="btn_ring_pre_admisi" class="hvr-grow"
                                      onclick="detailRingkasanPasien('pre_admisi')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_pre_admisi" class="hvr-grow btn-hide" onclick="conRing('pre_admisi', 'admisi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -43,7 +48,7 @@
 </div>
 
 <div class="modal fade" id="modal-ring-pre_admisi">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -102,7 +107,7 @@
                                 <input onclick="showKetRing(this.value, 'pre_kontak')" type="radio" value="Ya" id="pre04-01" name="pre04" /><label for="pre04-01">Ya</label>
                                 <input onclick="showKetRing(this.value, 'pre_kontak')" type="radio" value="Tidak" id="pre04-02" name="pre04" /><label for="pre04-02">Tidak</label>
                             </div>
-                            <input style="display: none" class="form-control" id="form-ring-pre_kontak">
+                            <input style="display: none" class="form-control" id="form-ring-pre_kontak" placeholder="No HP" type="number">
                         </div>
                     </div>
                 </div>
@@ -138,6 +143,27 @@
                                 <option value="Lainnya">Lainnya</option>
                             </select>
                             <textarea style="display: none; margin-top: 7px" class="form-control" id="pre_ket_alergi"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <hr class="garis">
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <label>TTD petugas</label>
+                            <canvas style="margin-left: -1px;" width="250" onmouseover="paintTtd('et4')" class="paint-canvas-ttd" id="et4"></canvas>
+                            <input class="form-control" id="nama_petugas" placeholder="Nama Terang">
+                            <input style="margin-top: 3px" class="form-control" id="nip_petugas" placeholder="NIP">
+                            <button style="margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('et4')"><i class="fa fa-trash"></i> Clear
+                            </button>
+                        </div>
+                        <div class="col-md-6">
+                            <label>TTD Dokter</label>
+                            <canvas style="margin-left: -1px;" width="250" onmouseover="paintTtd('et5')" class="paint-canvas-ttd" id="et5"></canvas>
+                            <input class="form-control nama_dpjp_ri" id="nama_dokter" placeholder="Nama Terang">
+                            <input style="margin-top: 3px" class="form-control sip_dpjp_ri" id="sip_dokter" placeholder="SIP">
+                            <button style="margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('et5')"><i class="fa fa-trash"></i> Clear
+                            </button>
                         </div>
                     </div>
                 </div>

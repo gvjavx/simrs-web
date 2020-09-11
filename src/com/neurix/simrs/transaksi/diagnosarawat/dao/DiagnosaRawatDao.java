@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.diagnosarawat.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
 import com.neurix.simrs.transaksi.diagnosarawat.model.ItSimrsDiagnosaRawatEntity;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -8,6 +9,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -50,11 +52,32 @@ public class DiagnosaRawatDao extends GenericDao<ItSimrsDiagnosaRawatEntity, Str
         } else if (mapCriteria.get("order_created") != null){
             criteria.addOrder(Order.desc("createdDate"));
         } else {
-            criteria.addOrder(Order.desc("idDiagnosa"));
+            criteria.addOrder(Order.asc("idDiagnosa"));
         }
 
         List<ItSimrsDiagnosaRawatEntity> results = criteria.list();
         return results;
+    }
+
+    public Boolean cekDiagnosa(DiagnosaRawat bean){
+        Boolean res = false;
+
+        String SQL = "SELECT\n" +
+                "id_diagnosa_rawat\n" +
+                "FROM it_simrs_diagnosa_rawat\n" +
+                "WHERE id_detail_checkup = :id\n" +
+                "AND jenis_diagnosa = :jenis\n";
+        List<Object[]> result = new ArrayList<>();
+
+        result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", bean.getIdDetailCheckup())
+                .setParameter("jenis", bean.getJenisDiagnosa())
+                .list();
+
+        if(result.size() > 0){
+            res = true;
+        }
+        return res;
     }
 
     public String getNextSeq(){

@@ -379,26 +379,27 @@
                                         </select>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="col-md-4" style="margin-top: 10px">No Kartu</label>
                                     <div class="col-md-8">
                                         <input class="form-control" style="margin-top: 7px" id="no_kartu">
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="col-md-4" style="margin-top: 10px">Cover Biaya</label>
-                                    <div class="col-md-8">
-                                        <div class="input-group" style="margin-top: 7px">
-                                            <div class="input-group-addon">
-                                                Rp.
-                                            </div>
-                                            <input class="form-control" id="cover_biaya">
-                                            <input type="hidden" id="val_cover_biaya">
-                                        </div>
-                                    </div>
-                                </div>
+                                <input type="hidden" id="val_cover_biaya">
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="col-md-4" style="margin-top: 10px">Cover Biaya</label>--%>
+                                    <%--<div class="col-md-8">--%>
+                                        <%--<div class="input-group" style="margin-top: 7px">--%>
+                                            <%--<div class="input-group-addon">--%>
+                                                <%--Rp.--%>
+                                            <%--</div>--%>
+                                            <%--<input class="form-control" id="cover_biaya">--%>
+                                            <%--<input type="hidden" id="val_cover_biaya">--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                             </div>
                         </div>
                         <div class="box-header with-border"></div>

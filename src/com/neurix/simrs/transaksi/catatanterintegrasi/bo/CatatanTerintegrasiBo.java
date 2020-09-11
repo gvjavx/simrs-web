@@ -9,4 +9,5 @@ import java.util.List;
 public interface CatatanTerintegrasiBo {
     public List<CatatanTerintegrasi> getByCriteria(CatatanTerintegrasi bean) throws GeneralBOException;
     public CrudResponse saveAdd(CatatanTerintegrasi bean) throws GeneralBOException;
+    public CrudResponse saveDelete(CatatanTerintegrasi bean) throws GeneralBOException;
 }

@@ -147,16 +147,39 @@ public class DiagnosaRawatAction extends BaseMasterAction {
             diagnosaRawat.setAction("C");
             diagnosaRawat.setFlag("Y");
 
-            if ("bpjs".equalsIgnoreCase(jenisPasien) || "ptpn".equalsIgnoreCase(jenisPasien)) {
-                response = updateCoverBpjs(idDetailCheckup, idDiagnosa);
-                if ("success".equalsIgnoreCase(response.getStatus())) {
-                    response = diagnosaRawatBo.saveAdd(diagnosaRawat);
-                }else{
+            if("diagnosa_utama".equalsIgnoreCase(jenisDiagnosa) || "diagnosa_awal".equalsIgnoreCase(jenisDiagnosa)){
+                DiagnosaRawat dr = new DiagnosaRawat();
+                dr.setIdDetailCheckup(idDetailCheckup);
+                dr.setJenisDiagnosa(jenisDiagnosa);
+                Boolean cek = diagnosaRawatBo.cekDiagnosa(dr);
+                if(cek){
                     response.setStatus("error");
-                    response.setMsg("Found Error When "+response.getMsg());
+                    response.setMsg("Data "+jenisDiagnosa.replace("_", " ").toUpperCase()+" sudah ada ...!");
+                }else{
+                    if ("bpjs".equalsIgnoreCase(jenisPasien) || "ptpn".equalsIgnoreCase(jenisPasien)) {
+                        response = updateCoverBpjs(idDetailCheckup, idDiagnosa);
+                        if ("success".equalsIgnoreCase(response.getStatus())) {
+                            response = diagnosaRawatBo.saveAdd(diagnosaRawat);
+                        }else{
+                            response.setStatus("error");
+                            response.setMsg("Found Error When "+response.getMsg());
+                        }
+                    } else {
+                        response = diagnosaRawatBo.saveAdd(diagnosaRawat);
+                    }
                 }
-            } else {
-                response = diagnosaRawatBo.saveAdd(diagnosaRawat);
+            }else{
+                if ("bpjs".equalsIgnoreCase(jenisPasien) || "ptpn".equalsIgnoreCase(jenisPasien)) {
+                    response = updateCoverBpjs(idDetailCheckup, idDiagnosa);
+                    if ("success".equalsIgnoreCase(response.getStatus())) {
+                        response = diagnosaRawatBo.saveAdd(diagnosaRawat);
+                    }else{
+                        response.setStatus("error");
+                        response.setMsg("Found Error When "+response.getMsg());
+                    }
+                } else {
+                    response = diagnosaRawatBo.saveAdd(diagnosaRawat);
+                }
             }
 
         } catch (GeneralBOException e) {

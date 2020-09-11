@@ -15,6 +15,15 @@ public class DetailIcu extends BaseModel {
     private Timestamp createdDate;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String idDetailChekcup;
+
+    public String getIdDetailChekcup() {
+        return idDetailChekcup;
+    }
+
+    public void setIdDetailChekcup(String idDetailChekcup) {
+        this.idDetailChekcup = idDetailChekcup;
+    }
 
     public String getWaktu() {
         return waktu;

@@ -2,40 +2,25 @@ function showModalRingkasanPasien(jenis, idRM, isSetIdRM) {
     if(isSetIdRM == "Y"){
         tempidRm = idRM;
     }
+    $('#modal-ring-' + jenis).modal({show: true, backdrop: 'static'});
     if (isReadRM) {
         $('.btn-hide').hide();
     } else {
+        setDataPasien();
+        var idDpjp = $('.id_dpjp');
+        if(idDpjp.length > 0){
+            var dataDpjp = $('.id_dpjp')[0].value;
+            var namaDpjp = $('.nama_dpjp_ri');
+            var sipDpjp = $('.sip_dpjp_ri');
+            if(namaDpjp.length > 0){
+                $('.nama_dpjp_ri').val(dataDpjp.split("|")[3]);
+            }
+            if(sipDpjp.length > 0){
+                $('.sip_dpjp_ri').val(dataDpjp.split("|")[2]);
+            }
+        }
         $('.btn-hide').show();
     }
-
-    var jam = $('.jam').length;
-    var tgl = $('.tgl').length;
-    var tglPattern = $('.tgl-pattern').length;
-    var jamPattern = $('.jam-pattern').length;
-
-    if (jam > 0) {
-        $('.jam').timepicker();
-        $('.jam').val(formaterTime(new Date()));
-    }
-    if (tgl > 0) {
-        $('.tgl').datepicker({
-            dateFormat: 'dd-mm-yy'
-        });
-        $('.tgl').val(formaterDate(new Date()));
-        $('.tgl').inputmask('dd-mm-yyyy', {'placeholder': 'dd-mm-yyyy'});
-    }
-    if (tglPattern > 0) {
-        $('.tgl-pattern').datepicker({
-            dateFormat: 'dd-mm-yy'
-        });
-        $('.tgl-pattern').inputmask('dd-mm-yyyy', {'placeholder': 'dd-mm-yyyy'});
-    }
-    if (jamPattern > 0) {
-        $('.jam-pattern').timepicker();
-        $('.jam-pattern').inputmask('hh:mm', {'placeholder': 'hh:mm'});
-    }
-
-    $('#modal-ring-' + jenis).modal({show: true, backdrop: 'static'});
 }
 
 function saveRingkasanPasien(jenis, ket) {
@@ -669,7 +654,18 @@ function saveRingkasanPasien(jenis, ket) {
             }
         }
 
-        if(check1 && check2 && check3 && check4 && check5 && check6 != undefined){
+        var ttd1 = document.getElementById("et4");
+        var ttd2 = document.getElementById("et5");
+
+        var nama1 = $('#nama_petugas').val();
+        var sip1 = $('#nip_petugas').val();
+        var nama2 = $('#nama_dokter').val();
+        var sip2 = $('#sip_dokter').val();
+
+        var cek1 = isCanvasBlank(ttd1);
+        var cek2 = isCanvasBlank(ttd2);
+
+        if(check1 && check2 && check3 && check4 && check5 && check6 != undefined && nama1 && sip1 && nama2 && sip2 != '' && !cek1 && !cek2){
             var va1 = check1;
             var va2 = check2;
             var va3 = check3;
@@ -738,6 +734,27 @@ function saveRingkasanPasien(jenis, ket) {
                 'jenis': 'admisi',
                 'id_detail_checkup': idDetailCheckup
             });
+
+            var cvs1 = convertToDataURL(ttd1);
+            var cvs2 = convertToDataURL(ttd2);
+            data.push({
+                'parameter': 'TTD Petugas',
+                'jawaban': cvs1,
+                'keterangan': jenis,
+                'jenis': 'admisi',
+                'nama_terang': nama1,
+                'sip':sip1,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'TTD Dokter',
+                'jawaban': cvs2,
+                'keterangan': jenis,
+                'jenis': 'admisi',
+                'nama_terang': nama2,
+                'sip':sip2,
+                'id_detail_checkup': idDetailCheckup
+            });
             cek = true;
         }
     }
@@ -774,7 +791,13 @@ function saveRingkasanPasien(jenis, ket) {
 }
 
 function detailRingkasanPasien(jenis) {
-    var idDetailCheckup = $('#h_id_detail_pasien').val();
+    var cekId = "";
+    var idDetail = $('#h_id_detail_pasien').val();
+    if(idDetail != null && idDetail != ''){
+        cekId = idDetail;
+    }else{
+        cekId = idDetailCheckup;
+    }
     if (jenis != '') {
         var head = "";
         var body = "";
@@ -784,7 +807,7 @@ function detailRingkasanPasien(jenis) {
         var tgl = "";
         var cekData = false;
 
-        RingkasanPasienAction.getListDetail(idDetailCheckup, jenis, function (res) {
+        RingkasanPasienAction.getListDetail(cekId, jenis, function (res) {
             if (res.length > 0) {
                 $.each(res, function (i, item) {
                     var jwb = "";
@@ -1103,4 +1126,38 @@ function showKetRing(value, ket) {
             $('#form-ring-' + ket).hide();
         }
     }
+}
+
+function conRing(jenis, id){
+    $('#tanya').text("Yakin mengahapus data ini ?");
+    $('#modal-confirm-rm').modal({show:true, backdrop:'static'});
+    $('#save_con_rm').attr('onclick', 'delRing(\''+jenis+'\', \''+id+'\')');
+}
+
+function delRing(jenis, ket) {
+    $('#modal-confirm-rm').modal('hide');
+    var dataPasien = {
+        'no_checkup': noCheckup,
+        'id_detail_checkup': idDetailCheckup,
+        'id_pasien': idPasien,
+        'id_rm': tempidRm
+    }
+    var result = JSON.stringify(dataPasien);
+    startSpin('delete_'+jenis);
+    dwr.engine.setAsync(true);
+    RingkasanPasienAction.saveDelete(idDetailCheckup, jenis, result, {
+        callback: function (res) {
+            if (res.status == "success") {
+                stopSpin('delete_'+jenis);
+                $('#modal-ring-'+ket).scrollTop(0);
+                $('#warning_ring_' + ket).show().fadeOut(5000);
+                $('#msg_ring_' + ket).text("Berhasil menghapus data...");
+            } else {
+                stopSpin('delete_'+jenis);
+                $('#modal-ring-'+ket).scrollTop(0);
+                $('#warn_'+ket).show().fadeOut(5000);
+                $('#msg_'+ket).text(res.msg);
+            }
+        }
+    });
 }

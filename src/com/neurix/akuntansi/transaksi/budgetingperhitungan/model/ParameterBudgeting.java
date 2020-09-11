@@ -1,5 +1,6 @@
 package com.neurix.akuntansi.transaksi.budgetingperhitungan.model;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
@@ -17,6 +18,152 @@ public class ParameterBudgeting {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private BigDecimal nilaiTotal;
+    private String tahun;
+    private String branchId;
+    private String idParameter;
+    private String masterId;
+    private String divisiId;
+    private String idKategoriBudgeting;
+    private String namaMaster;
+    private String namaDivisi;
+    private String idNilaiParameter;
+    private String periode;
+    private String idParamRekening;
+    private String status;
+
+    private String idBiayaRutin;
+    private String namaBiayaRutin;
+    private BigDecimal nilaiBiyaRutin;
+
+    public String getIdBiayaRutin() {
+        return idBiayaRutin;
+    }
+
+    public void setIdBiayaRutin(String idBiayaRutin) {
+        this.idBiayaRutin = idBiayaRutin;
+    }
+
+    public String getNamaBiayaRutin() {
+        return namaBiayaRutin;
+    }
+
+    public void setNamaBiayaRutin(String namaBiayaRutin) {
+        this.namaBiayaRutin = namaBiayaRutin;
+    }
+
+    public BigDecimal getNilaiBiyaRutin() {
+        return nilaiBiyaRutin;
+    }
+
+    public void setNilaiBiyaRutin(BigDecimal nilaiBiyaRutin) {
+        this.nilaiBiyaRutin = nilaiBiyaRutin;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getIdParamRekening() {
+        return idParamRekening;
+    }
+
+    public void setIdParamRekening(String idParamRekening) {
+        this.idParamRekening = idParamRekening;
+    }
+
+    public String getPeriode() {
+        return periode;
+    }
+
+    public void setPeriode(String periode) {
+        this.periode = periode;
+    }
+
+    public String getIdNilaiParameter() {
+        return idNilaiParameter;
+    }
+
+    public void setIdNilaiParameter(String idNilaiParameter) {
+        this.idNilaiParameter = idNilaiParameter;
+    }
+
+    public String getNamaMaster() {
+        return namaMaster;
+    }
+
+    public void setNamaMaster(String namaMaster) {
+        this.namaMaster = namaMaster;
+    }
+
+    public String getNamaDivisi() {
+        return namaDivisi;
+    }
+
+    public void setNamaDivisi(String namaDivisi) {
+        this.namaDivisi = namaDivisi;
+    }
+
+    public String getIdKategoriBudgeting() {
+        return idKategoriBudgeting;
+    }
+
+    public void setIdKategoriBudgeting(String idKategoriBudgeting) {
+        this.idKategoriBudgeting = idKategoriBudgeting;
+    }
+
+    public BigDecimal getNilaiTotal() {
+        return nilaiTotal;
+    }
+
+    public void setNilaiTotal(BigDecimal nilaiTotal) {
+        this.nilaiTotal = nilaiTotal;
+    }
+
+    public String getIdParameter() {
+        return idParameter;
+    }
+
+    public void setIdParameter(String idParameter) {
+        this.idParameter = idParameter;
+    }
+
+    public String getMasterId() {
+        return masterId;
+    }
+
+    public void setMasterId(String masterId) {
+        this.masterId = masterId;
+    }
+
+    public String getDivisiId() {
+        return divisiId;
+    }
+
+    public void setDivisiId(String divisiId) {
+        this.divisiId = divisiId;
+    }
+
+    public String getTahun() {
+        return tahun;
+    }
+
+    public void setTahun(String tahun) {
+        this.tahun = tahun;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
 
     public String getId() {
         return id;
@@ -104,45 +251,5 @@ public class ParameterBudgeting {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ParameterBudgeting that = (ParameterBudgeting) o;
-
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (nama != null ? !nama.equals(that.nama) : that.nama != null) return false;
-        if (rekeningId != null ? !rekeningId.equals(that.rekeningId) : that.rekeningId != null) return false;
-        if (idJenisBudgeting != null ? !idJenisBudgeting.equals(that.idJenisBudgeting) : that.idJenisBudgeting != null)
-            return false;
-        if (tipe != null ? !tipe.equals(that.tipe) : that.tipe != null) return false;
-        if (flag != null ? !flag.equals(that.flag) : that.flag != null) return false;
-        if (action != null ? !action.equals(that.action) : that.action != null) return false;
-        if (createdDate != null ? !createdDate.equals(that.createdDate) : that.createdDate != null) return false;
-        if (createdWho != null ? !createdWho.equals(that.createdWho) : that.createdWho != null) return false;
-        if (lastUpdate != null ? !lastUpdate.equals(that.lastUpdate) : that.lastUpdate != null) return false;
-        if (lastUpdateWho != null ? !lastUpdateWho.equals(that.lastUpdateWho) : that.lastUpdateWho != null)
-            return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (nama != null ? nama.hashCode() : 0);
-        result = 31 * result + (rekeningId != null ? rekeningId.hashCode() : 0);
-        result = 31 * result + (idJenisBudgeting != null ? idJenisBudgeting.hashCode() : 0);
-        result = 31 * result + (tipe != null ? tipe.hashCode() : 0);
-        result = 31 * result + (flag != null ? flag.hashCode() : 0);
-        result = 31 * result + (action != null ? action.hashCode() : 0);
-        result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
-        result = 31 * result + (createdWho != null ? createdWho.hashCode() : 0);
-        result = 31 * result + (lastUpdate != null ? lastUpdate.hashCode() : 0);
-        result = 31 * result + (lastUpdateWho != null ? lastUpdateWho.hashCode() : 0);
-        return result;
     }
 }

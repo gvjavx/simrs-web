@@ -209,6 +209,7 @@ public class BudgetingNilaiDasarBoImpl implements BudgetingNilaiDasarBo {
                 nilaiDasar = new BudgetingNilaiDasar();
                 nilaiDasar.setIdNilaiDasar(masterNilaiDasar.getId());
                 nilaiDasar.setKeterangan(masterNilaiDasar.getNamaNilaiDasar());
+                nilaiDasar.setTipe(masterNilaiDasar.getTipe());
                 List<ItAkunBudgetingNilaiDasarEntity> filterTransList = transNilaiDasars.stream().filter( p -> p.getIdNilaiDasar().equalsIgnoreCase(masterNilaiDasar.getId())).collect(Collectors.toList());
                 if (filterTransList.size() > 0)
                     nilaiDasar.setNilai(filterTransList.get(0).getNilai());
@@ -229,6 +230,7 @@ public class BudgetingNilaiDasarBoImpl implements BudgetingNilaiDasarBo {
                     nilaiDasar = new BudgetingNilaiDasar();
                     nilaiDasar.setIdNilaiDasar(masterNilaiDasar.getId());
                     nilaiDasar.setKeterangan(masterNilaiDasar.getNamaNilaiDasar());
+                    nilaiDasar.setTipe(masterNilaiDasar.getTipe());
                     List<ItAkunBudgetingNilaiDasarEntity> filterTransList = transNilaiDasars.stream().filter( p -> p.getIdNilaiDasar().equalsIgnoreCase(masterNilaiDasar.getId())).collect(Collectors.toList());
                     if (filterTransList.size() > 0)
                         nilaiDasar.setNilai(filterTransList.get(0).getNilai());
@@ -244,12 +246,43 @@ public class BudgetingNilaiDasarBoImpl implements BudgetingNilaiDasarBo {
                     nilaiDasar = new BudgetingNilaiDasar();
                     nilaiDasar.setIdNilaiDasar(masterNilaiDasar.getId());
                     nilaiDasar.setKeterangan(masterNilaiDasar.getNamaNilaiDasar());
+                    nilaiDasar.setTipe(masterNilaiDasar.getTipe());
                     results.add(nilaiDasar);
                 }
             }
         }
 
         logger.info("[BudgetingNilaiDasarBoImpl.getListMasterNilaiDasarAdd] END <<<");
+        return results;
+    }
+
+    @Override
+    public List<BudgetingNilaiDasar> getTransNilaiDasarByTahun(BudgetingNilaiDasar bean) throws GeneralBOException {
+        logger.info("[BudgetingNilaiDasarBoImpl.getTransNilaiDasarByTahun] START >>>");
+
+        List<ItAkunBudgetingNilaiDasarEntity> transNilaiDasars = getTransBudgetingNilaiDasarEntity(bean);
+        List<ImAkunBudgetingNilaiDasarEntity> masterNilaiDasars = getListMasterNilaiDasarEntityByCriteria(bean);
+        List<BudgetingNilaiDasar> results = new ArrayList<>();
+        if (transNilaiDasars != null && transNilaiDasars.size() > 0){
+            for (ImAkunBudgetingNilaiDasarEntity masterNilaiDasar : masterNilaiDasars){
+                BudgetingNilaiDasar nilaiDasar = new BudgetingNilaiDasar();
+                nilaiDasar.setIdNilaiDasar(masterNilaiDasar.getId());
+                nilaiDasar.setKeterangan(masterNilaiDasar.getNamaNilaiDasar());
+                nilaiDasar.setTipe(masterNilaiDasar.getTipe());
+
+                List<ItAkunBudgetingNilaiDasarEntity> filterTransList = transNilaiDasars.stream().filter( p -> p.getIdNilaiDasar().equalsIgnoreCase(masterNilaiDasar.getId())).collect(Collectors.toList());
+                if (filterTransList.size() > 0)
+                    nilaiDasar.setNilai(filterTransList.get(0).getNilai());
+                if ("persen".equalsIgnoreCase(masterNilaiDasar.getTipe())){
+                    nilaiDasar.setNilaiTotal(nilaiDasar.getNilai().divide(new BigDecimal(100), BigDecimal.ROUND_HALF_UP, 2));
+                } else {
+                    nilaiDasar.setNilaiTotal(nilaiDasar.getNilai());
+                }
+                results.add(nilaiDasar);
+            }
+        }
+
+        logger.info("[BudgetingNilaiDasarBoImpl.getTransNilaiDasarByTahun] END <<<");
         return results;
     }
 

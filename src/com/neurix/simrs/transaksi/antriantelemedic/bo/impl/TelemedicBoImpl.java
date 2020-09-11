@@ -1718,6 +1718,73 @@ public class TelemedicBoImpl implements TelemedicBo {
         return crudResponse;
     }
 
+    @Override
+    public String cobaGabung(String path1, String path2) {
+
+        List<String> listPath = new ArrayList<>();
+        listPath.add(path1);
+        listPath.add(path2);
+
+        List<Movie> listMovie = new ArrayList<>();
+
+
+        for (int i = 0; i < listPath.size(); i++) {
+            Movie movie = new Movie();
+            String path = listPath.get(i);
+            try {
+                movie = MovieCreator.build(CommonUtil.getPropertyParams("upload.folder") + path);
+            } catch (IOException e){
+                logger.error("[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+                throw new GeneralBOException("[[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+            }
+
+            listMovie.add(movie);
+        }
+
+        Movie newMovie = listMovie.get(0);
+
+        for (int i = 1; i < listMovie.size(); i++) {
+            List<Track> tracks = listMovie.get(i).getTracks();
+            for (Track item : tracks) {
+                try {
+                    newMovie.addTrack(new AppendTrack(item, item));
+                } catch (IOException e){
+                    logger.error("[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+                    throw new GeneralBOException("[[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+                }
+            }
+        }
+
+        Container out = new DefaultMp4Builder().build(newMovie);
+
+        String path = "/upload/video_rm/coba.mp4";
+
+        try {
+            FileOutputStream fos = new FileOutputStream(new File(CommonUtil.getPropertyParams("upload.folder")+path));
+            for ( Box item : out.getBoxes()) {
+                try {
+                    item.getBox(fos.getChannel());
+                } catch (IOException e){
+                    logger.error("[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+                    throw new GeneralBOException("[[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+                }
+            }
+
+            try {
+                fos.close();
+            } catch (IOException e){
+                logger.error("[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+                throw new GeneralBOException("[[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+            }
+        } catch (FileNotFoundException e) {
+            logger.error("[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+            throw new GeneralBOException("[[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+        }
+        return path;
+
+
+    }
+
     private String gabungVideo(List<ItSimrsVideoRmEntity> listVideoRm) {
 
         List<Movie> listMovie = new ArrayList<>();

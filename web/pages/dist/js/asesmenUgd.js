@@ -49,12 +49,10 @@ function showAsesmenUgd(jenis, idRM, isSetIdRM) {
     $('#modal-aud_asesmen-ugd').modal({show: true, backdrop: 'static'});
 }
 
-function addAsesmenUgd(jenis) {
+function addAsesmenUgd(jenis, idRM, isSetIdRM) {
     if (jenis != '') {
-        setDataPasien();
-        var selec = $('.select2').length;
-        if(selec > 0){
-            $('.select2').select2();
+        if(isSetIdRM == "Y"){
+            tempidRm = idRM;
         }
         if("anamnesa" == jenis){
             var url = "";
@@ -68,7 +66,11 @@ function addAsesmenUgd(jenis) {
         if("asuhan_medis" == jenis){
             listTindakanKategoriPoli();
         }
+        if("triase" == jenis){
+            setNyeri('set_nyeri', umur);
+        }
         $('#modal-aud-' + jenis).modal({show: true, backdrop: 'static'});
+        setDataPasien();
     }
 }
 
@@ -92,8 +94,6 @@ function saveAsesmenUgd(jenis, keterangan) {
                 $.each(triase, function (idx, itemx) {
                     var label = $('#label_trias_'+idx).text();
                     var isi = $('[name=trias_'+idx+']:checked').val();
-                    console.log(label);
-                    console.log(isi);
                     if(isi != undefined && isi != ''){
                         data.push({
                             'parameter': label,
@@ -106,7 +106,6 @@ function saveAsesmenUgd(jenis, keterangan) {
                 });
                 cek = true;
             }
-            console.log(data);
         }
 
         if ("pre_hospital" == jenis) {
@@ -1457,6 +1456,139 @@ function saveAsesmenUgd(jenis, keterangan) {
             }
         }
 
+        if ("triase" == jenis) {
+            var va1 = $('[name=tr1]:checked').val();
+            var va2 = $('#tr2').val();
+            var va3 = $('#tr3').val();
+            var va4 = $('#tr4').val();
+            var va5 = $('#tr5').val();
+            var va6 = $('#tr6').val();
+            var va7 = $('#tr7').val();
+            var va8 = $('#tr8').val();
+            var va9 = $('#tr9').val();
+            var va10 = $('#tr10').val();
+            var va11 = $('#tr11').val();
+
+            var ny1 = $('[name=radio_nyeri_keluhan]:checked').val();
+            var ny2 = $('#y_lokasi').val();
+            var ny3 = $('[name=radio_nyeri_jenis]:checked').val();
+            var ny4 = $('#y_inten').val();
+            var jen = $('#temp_jenis').val();
+            var nyeri = "";
+            var tipe = "";
+
+            var nama = $('#nama_terang_tr12').val();
+            var sip = $('#sip_tr12').val();
+            var ttd = document.getElementById('tr12');
+
+            if(jen == "emoji"){
+                nyeri = document.getElementById('choice_emoji');
+                tipe = "Wong Baker Pain Scale";
+            }else{
+                nyeri = document.getElementById('area_nyeri');
+                tipe = "Nomeric Rating Scale";
+            }
+
+            var cekTtd = isCanvasBlank(ttd);
+
+            if( va1 && ny1 && ny3 != undefined && va2 && va3 && va4 && va5 && va6 &&
+                va7 && va8 && va9 && va10 && va11 && ny2 && ny4 && nama && sip != '' && !cekTtd){
+
+                var canv1 = convertToDataURL(nyeri);
+                var canv2 = convertToDataURL(ttd);
+
+                data.push({
+                    'parameter': 'Triase',
+                    'jawaban': va1,
+                    'keterangan': jenis,
+                    'jenis': keterangan,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Keluhan',
+                    'jawaban': va2,
+                    'keterangan': jenis,
+                    'jenis': keterangan,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Vital Sign',
+                    'jawaban': 'Tensi '+va3+' mmHg, Nadi '+va4+' x/menit, Suhu '+va5+' C, RR '+va6+' x/menit',
+                    'keterangan': jenis,
+                    'jenis': keterangan,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'GCS (EVM)',
+                    'jawaban': 'E '+va7+', V '+va8+', M '+va9,
+                    'keterangan': jenis,
+                    'jenis': keterangan,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Apakah terdapat keluhan nyeri',
+                    'jawaban': ny1,
+                    'keterangan': jenis,
+                    'jenis': keterangan,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Lokasi',
+                    'jawaban': ny2,
+                    'keterangan': jenis,
+                    'jenis': keterangan,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Jenis',
+                    'jawaban': ny3,
+                    'keterangan': jenis,
+                    'jenis': keterangan,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Intensitas',
+                    'jawaban': ny4,
+                    'keterangan': jenis,
+                    'jenis': keterangan,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': tipe,
+                    'jawaban': canv1,
+                    'keterangan': jenis,
+                    'jenis': keterangan,
+                    'tipe': 'gambar',
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Diagnosa',
+                    'jawaban': va10,
+                    'keterangan': jenis,
+                    'jenis': keterangan,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Terapi',
+                    'jawaban': va11,
+                    'keterangan': jenis,
+                    'jenis': keterangan,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'TTD Dokter IGD',
+                    'jawaban': canv2,
+                    'keterangan': jenis,
+                    'jenis': keterangan,
+                    'tipe': 'ttd',
+                    'nama_terang': nama,
+                    'sip': sip,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                cek = true;
+            }
+        }
+
         if (cek) {
             var result = JSON.stringify(data);
             var pasienData = JSON.stringify(dataPasien);
@@ -1820,4 +1952,36 @@ function setDataTriase(val){
     }else{
        $('#set_triase').html('');
     }
+}
+
+function conUGD(jenis, ket){
+    $('#tanya').text("Yakin mengahapus data ini ?");
+    $('#modal-confirm-rm').modal({show:true, backdrop:'static'});
+    $('#save_con_rm').attr('onclick', 'delUGD(\''+jenis+'\', \''+ket+'\')');
+}
+
+function delUGD(jenis, ket) {
+    $('#modal-confirm-rm').modal('hide');
+    var dataPasien = {
+        'no_checkup': noCheckup,
+        'id_detail_checkup': idDetailCheckup,
+        'id_pasien': idPasien,
+        'id_rm': tempidRm
+    }
+    var result = JSON.stringify(dataPasien);
+    startSpin('delete_'+jenis);
+    dwr.engine.setAsync(true);
+    AsesmenUgdAction.saveDelete(idDetailCheckup, jenis, result, {
+        callback: function (res) {
+            if (res.status == "success") {
+                stopSpin('delete_'+jenis);
+                $('#warning_aud_' + ket).show().fadeOut(5000);
+                $('#msg_aud_' + ket).text("Berhasil menghapus data...");
+            } else {
+                stopSpin('delete_'+jenis);
+                $('#modal_warning').show().fadeOut(5000);
+                $('#msg_warning').text(res.msg);
+            }
+        }
+    });
 }

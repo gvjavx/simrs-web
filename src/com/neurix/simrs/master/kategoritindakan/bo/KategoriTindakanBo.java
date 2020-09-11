@@ -9,7 +9,7 @@ import java.util.List;
 public interface KategoriTindakanBo extends BaseMasterBo<KategoriTindakan>{
 
     public List<KategoriTindakan> getByCriteria(KategoriTindakan bean) throws GeneralBOException;
-    public List<KategoriTindakan> getListKategoriTindakan(String idPelayanan) throws GeneralBOException;
+    public List<KategoriTindakan> getListKategoriTindakan(String idPelayanan, String kategori) throws GeneralBOException;
 
     public List<KategoriTindakan> getDataByCriteria(KategoriTindakan bean) throws GeneralBOException;
 }

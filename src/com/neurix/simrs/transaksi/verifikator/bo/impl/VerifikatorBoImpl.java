@@ -123,6 +123,8 @@ public class VerifikatorBoImpl implements VerifikatorBo {
             if(entity != null){
 
                 entity.setKlaimBpjsFlag("Y");
+                entity.setFlagCloseTraksaksi("Y");
+                entity.setFlagCover("Y");
                 entity.setAction("U");
                 entity.setLastUpdate(bean.getLastUpdate());
                 entity.setLastUpdateWho(bean.getLastUpdateWho());

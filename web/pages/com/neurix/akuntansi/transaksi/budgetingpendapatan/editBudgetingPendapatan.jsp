@@ -74,7 +74,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Budgeting </h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Budgeting Pendapatan</h3>
                     </div>
                     <div class="box-body">
                         <%--<s:form id="kasirjalanForm" method="post" namespace="/kasirjalan" action="search_kasirjalan.action" theme="simple" cssClass="form-horizontal">--%>
@@ -159,6 +159,7 @@
                                     <tr bgcolor="#90ee90">
                                         <%--<td style="width: 20%">COA</td>--%>
                                         <td align="center">Keterangan</td>
+                                        <td align="center" id="head-draft" style="display: none">Nilai Draft</td>
                                         <s:if test='budgeting.tipe == "quartal"'>
                                             <td align="center">Total</td>
                                             <td align="center">Kuartal 1</td>
@@ -347,12 +348,12 @@
     }
 
     function detail(id){
-        var host = firstpath()+"/bginvestasi/edit_bginvestasi.action?status="+status+"&id="+id+"&trans="+trans;
+        var host = firstpath()+"/bgpendapatan/edit_bgpendapatan.action?status="+status+"&id="+id+"&trans="+trans;
         post(host, form);
     }
 
     function refresh() {
-        var host = firstpath()+"/bginvestasi/add_bginvestasi.action?status="+status+"&tipe=detail";
+        var host = firstpath()+"/bgpendapatan/add_bgpendapatan.action?status="+status+"&tipe=detail";
         post(host, form);
     }
 
@@ -365,7 +366,7 @@
     }
 
     function initForm() {
-        var host = firstpath()+"/bginvestasi/initForm_bginvestasi.action";
+        var host = firstpath()+"/bgpendapatan/initForm_bgpendapatan.action";
         post(host);
     }
 
@@ -389,13 +390,18 @@
             console.log(response);
             data = response;
             data2 = new Array();
+            var isDraft = "";
             $.each(data, function(i,item){
                 console.log(item.rekeningId);
+                if (isDraft == "" && item.flagNilaiTotal == "Y"){
+                    isDraft = "Y";
+                }
                 data2.push({_id : item.rekeningId, level : item.level,  nama : item.namaKodeRekening, parent : item.parentId, coa : item.kodeRekening,
                     nilaiTotal : item.nilaiTotal, quartal1 : item.quartal1, quartal2: item.quartal2, quartal3 : item.quartal3, quartal4 : item.quartal4,
                     semester1 : item.semester1, semester2:item.semester2, stLevel: item.stLevel, selisih : item.selisih,
                     januari : item.januari, februari : item.februari, maret : item.maret, april : item.april, mei : item.mei, juni : item.juni,
-                    juli : item.juli, agustus : item.agustus, september : item.september, oktober : item.oktober, november : item.november, desember : item.desember
+                    juli : item.juli, agustus : item.agustus, september : item.september, oktober : item.oktober, november : item.november, desember : item.desember,
+                    nilaiAwal : item.nilaiAwal
                 });
 
             });
@@ -426,7 +432,7 @@
                 if(data2[i].parent == "-"){
                     strList += '<tr style="font-size: 10px;" class=" treegrid-' + data2[i]._id+ '">' +
 //                        '<td >' + data2[i].coa + '</td>' +
-                        '<td >' + data2[i].nama + '</td>' + barisNilai(data2[i]) +
+                        '<td >' + data2[i].nama + '</td>' + barisNilai(data2[i], isDraft) +
                         "<td align='right'>"+formatRupiah(data2[i].selisih)+"</td>"+
                         "<td align='center'>"+buttonEdit(data2[i]._id, data2[i].stLevel)+"</td>"+
                         "</tr>";
@@ -434,11 +440,15 @@
                     strList += '<tr style="font-size: 10px" class=" treegrid-' + data2[i]._id + ' treegrid-parent-' + data2[i].parent + '">' +
                         + '<td style="border: 2px solid black;">' +
 //                        '<td >' + data2[i].coa + '</td>' +
-                        '<td >' + data2[i].nama + '</td>' + barisNilai(data2[i]) +
+                        '<td >' + data2[i].nama + '</td>' + barisNilai(data2[i], isDraft) +
                         "<td align='right'>"+formatRupiah(data2[i].selisih)+"</td>"+
                         "<td align='center'>"+buttonEdit(data2[i]._id, data2[i].stLevel)+"</td>"+
                         "</tr>";
                 }
+            }
+
+            if (isDraft == "Y"){
+                $("#head-draft").show();
             }
             $("#body-budgeting").html(strList);
             $('.tree').treegrid({
@@ -448,9 +458,13 @@
         });
     }
 
-    function barisNilai(data){
+    function barisNilai(data, isDraft){
 
         var str = "";
+        if (isDraft == "Y"){
+            str += "<td align='right'>"+formatRupiah(data.nilaiAwal)+"</td>";
+        }
+
         if (tipe == "semester"){
             str += "<td align='right'>"+formatRupiah(data.nilaiTotal)+"</td>"+
                 "<td align='right'>"+formatRupiah(data.semester1)+"</td>"+

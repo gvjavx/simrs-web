@@ -10,9 +10,13 @@
             <div class="modal-body">
                 <div class="box-body btn-hide">
                     <div class="alert alert-success alert-dismissible" style="display: none"
-                         id="warning_op_monitoing_intra_anestesi">
+                         id="warning_op_monitoring_intra_anestesi">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
-                        <p id="msg_op_monitoing_intra_anestesi"></p>
+                        <p id="msg_op_monitoring_intra_anestesi"></p>
+                    </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_monitoring_intra_anestesi">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_monitoring_intra_anestesi"></p>
                     </div>
                     <button type="button" onclick="showModalOperasi('data_intra_anestesi')" class="btn btn-success"><i class="fa fa-plus"></i> Data Intra Anestesi
                     </button>
@@ -28,6 +32,7 @@
                                 <img id="btn_op_data_intra_anestesi" class="hvr-grow"
                                      onclick="detailOperasi('data_intra_anestesi')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_data_intra_anestesi" class="hvr-grow btn-hide" onclick="conOP('data_intra_anestesi', 'monitoring_intra_anestesi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_op_mon_intra_anestesi">
@@ -35,7 +40,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_op_mon_intra_anestesi" class="hvr-grow"
                                      onclick="detailMonAnestesi('mon_intra_anestesi')"
-                                     src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                     src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
                             </td>
                         </tr>
                         </tbody>
@@ -436,8 +441,8 @@
                             <div class="col-md-6">
                                 <label>TTD Dokter</label>
                                 <canvas style="margin-left: -1px;" width="250" onmouseover="paintTtd('ttd1')" class="paint-canvas-ttd" id="ttd1"></canvas>
-                                <input class="form-control" id="nama_terang_sps" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control" id="sip_sps" placeholder="SIP">
+                                <input class="form-control nama_dokter" id="nama_terang_sps" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control sip_dokter" id="sip_sps" placeholder="SIP">
                                 <button style="margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('ttd1')"><i class="fa fa-trash"></i> Clear
                                 </button>
                             </div>
@@ -678,7 +683,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button id="save_op_mon_intra_anestesi" class="btn btn-success pull-right"
-                        onclick="saveMonAnestesi('mon_intra_anestesi','monitoing_intra_anestesi')"><i class="fa fa-check"></i>
+                        onclick="saveMonAnestesi('mon_intra_anestesi','monitoring_intra_anestesi')"><i class="fa fa-check"></i>
                     Save
                 </button>
                 <button id="load_op_mon_intra_anestesi" style="display: none; cursor: no-drop" type="button"
@@ -710,7 +715,7 @@
                         <hr class="garis">
                         <div class="row" style="font-size: 10px">
                             <div class="form-group">
-                                <div class="col-md-offset-1 col-md-1">
+                                <div class="col-md-offset-5 col-md-1">
                                     <i class="fa fa-circle" style="color: #ff0000"></i> RR
                                 </div>
                                 <div class="col-md-1">
@@ -719,27 +724,14 @@
                                 <div class="col-md-1">
                                     <i class="fa fa-circle" style="color: #00cc00"></i> Tensi
                                 </div>
-                                <div class="col-md-1">
-                                    <i class="fa fa-circle" style="color: #ff9933"></i> Anest
-                                </div>
-                                <div class="col-md-1">
-                                    <i class="fa fa-circle" style="color: #cc6600"></i> O2
-                                </div>
-                                <div class="col-md-1">
-                                    <i class="fa fa-circle" style="color: #ffff66"></i> N2O
-                                </div>
-                                <div class="col-md-1">
-                                    <i class="fa fa-circle" style="color: #cc6699;"></i> Ethran
-                                </div>
-                                <div class="col-md-1">
-                                    <i class="fa fa-circle" style="color: #666633"></i> Iso
-                                </div>
-                                <div class="col-md-1">
-                                    <i class="fa fa-circle" style="color: #802000"></i> Sevo
-                                </div>
-                                <div class="col-md-1">
-                                    <i class="fa fa-circle" style="color: #009933"></i> Infus
-                                </div>
+                            </div>
+                        </div>
+                        <div class="row jarak">
+                            <div class="box-body">
+                                <table class="table table-striped table-bordered" style="font-size: 12px">
+                                    <tbody id="temp_body">
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

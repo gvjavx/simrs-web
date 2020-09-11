@@ -653,7 +653,7 @@
                                     "<td align='right'>" + formatRupiah(tarif) + "</td>" +
                                     "<td>" + kategori + "</td>" +
                                     "<td>" +
-                                    '<select class="form-control" id="jen' + i + '">' +
+                                    '<select style="width: 100%;" class="form-control select-2" id="jen' + i + '">' +
                                     '<option value="bpjs" ' + choice2 + '>BPJS</option>' +
                                     '<option value="ptpn" ' + choice1 + '>PTPN</option>' +
                                     '</select>' +
@@ -661,22 +661,37 @@
                                     "<td align='center'>" + '<input value="' + statusVal + '" type="hidden" id="status' + i + '">' + '<img id="btn' + i + '" class="hvr-grow" style="cursor: pointer" ' + onclick + ' src="' + btn + '">' + "</td>" +
                                     "</tr>";
                             } else {
-                                $('#jp').hide();
+                                $('#jp').show();
+                                var choice1 = "";
+                                var choice2 = "";
+                                if (item.jenisPasien == "umum") {
+                                    choice1 = "selected";
+                                }
+                                if (item.jenisPasien == "bpjs") {
+                                    choice2 = "selected";
+                                }
                                 table += "<tr>" +
                                     "<td>" + tgl + "</td>" +
                                     "<td>" + tindakan + "</td>" +
                                     "<td align='right'>" + formatRupiah(tarif) + "</td>" +
                                     "<td>" + kategori + "</td>" +
+                                    "<td>" +
+                                    '<select style="width: 100%;" class="form-control select-2" id="jen' + i + '">' +
+                                    '<option value="bpjs" ' + choice2 + '>BPJS</option>' +
+                                    '<option value="umum" ' + choice1 + '>UMUM</option>' +
+                                    '</select>' +
+                                    "</td>" +
                                     "<td align='center'>" + '<input value="' + statusVal + '" type="hidden" id="status' + i + '">' + '<img id="btn' + i + '" class="hvr-grow" style="cursor: pointer" ' + onclick + ' src="' + btn + '">' + "</td>" +
                                     "</tr>";
                             }
                         });
 
-                        if (jenisPasien == "ptpn") {
-                            table = table + '<tr><td colspan="2">Total</td><td align="right">' + formatRupiah(total) + '</td><td></td><td></td><td></td></tr>'
-                        } else {
-                            table = table + '<tr><td colspan="2">Total</td><td align="right">' + formatRupiah(total) + '</td><td></td><td></td></tr>'
-                        }
+                        table = table + '<tr><td colspan="2">Total</td><td align="right">' + formatRupiah(total) + '</td><td></td><td></td><td></td></tr>'
+                        // if (jenisPasien == "ptpn") {
+                        //
+                        // } else {
+                        //     table = table + '<tr><td colspan="2">Total</td><td align="right">' + formatRupiah(total) + '</td><td></td><td></td></tr>'
+                        // }
                         $('#body_tindakan').html(table);
                     }
                     if(cekPending){

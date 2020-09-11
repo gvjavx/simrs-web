@@ -8,9 +8,11 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
+import com.neurix.simrs.transaksi.checkupdetail.action.CheckupDetailAction;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.periksalab.bo.PeriksaLabBo;
@@ -22,8 +24,14 @@ import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
+import sun.misc.BASE64Decoder;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -335,7 +343,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
         return response;
     }
 
-    public CheckResponse saveDokterRadiologi(String idPeriksaLab, String idDokter) {
+    public CheckResponse saveDokterRadiologi(String idPeriksaLab, String idDokter, String urlImg, String keterangan, String data) {
 
         logger.info("[PeriksaRadiologiAction.saveRadiologi] start process >>>");
         CheckResponse response = new CheckResponse();
@@ -343,6 +351,8 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
             String userLogin = CommonUtil.userLogin();
             String userArea = CommonUtil.userBranchLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            PeriksaRadiologiBo periksaRadiologiBo = (PeriksaRadiologiBo) ctx.getBean("periksaRadiologiBoProxy");
 
             PeriksaRadiologi periksaRadiologi = new PeriksaRadiologi();
             periksaRadiologi.setIdPeriksaLab(idPeriksaLab);
@@ -350,11 +360,48 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
             periksaRadiologi.setLastUpdate(updateTime);
             periksaRadiologi.setLastUpdateWho(userLogin);
             periksaRadiologi.setAction("U");
+            periksaRadiologi.setIdPemeriksa(userLogin);
 
-            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-            PeriksaRadiologiBo periksaRadiologiBo = (PeriksaRadiologiBo) ctx.getBean("periksaRadiologiBoProxy");
+            if(urlImg != null && !"".equalsIgnoreCase(urlImg)){
+                try {
+                    BASE64Decoder decoder = new BASE64Decoder();
+                    byte[] decodedBytes = decoder.decodeBuffer(urlImg);
+                    String patten = updateTime.toString().replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                    String fileName = idPeriksaLab+"-"+patten+".png";
+                    String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_IMG_RM + fileName;
+                    BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+                    if (image == null) {
+                        logger.error("Buffered Image is null");
+                        response.setStatus("error");
+                        response.setMessage("Buffered Image is null");
+                    } else {
+                        File f = new File(uploadFile);
+                        ImageIO.write(image, "png", f);
+                        periksaRadiologi.setUrlImg(fileName);
+                    }
+                }catch (IOException e){
+                    response.setStatus("error");
+                    response.setMessage("IO Error"+e.getMessage());
+                    return response;
+                }
+            }
+
             response = periksaRadiologiBo.saveDokterRadiologi(periksaRadiologi);
-
+            if ("just_lab".equalsIgnoreCase(keterangan)){
+                if("success".equalsIgnoreCase(response.getStatus())){
+                    CheckupDetailAction detailAction = new CheckupDetailAction();
+                    CrudResponse res = new CrudResponse();
+                    res = detailAction.closeTraksaksiPasien(data);
+                    if("success".equalsIgnoreCase(res.getStatus())){
+                        response.setStatus("success");
+                        response.setMessage("Berhasil");
+                    }else{
+                        response.setStatus("error");
+                        response.setMessage("Error"+res.getMsg());
+                    }
+                }
+            }
         } catch (GeneralBOException e) {
             logger.error("Found Error");
             response.setStatus("error");

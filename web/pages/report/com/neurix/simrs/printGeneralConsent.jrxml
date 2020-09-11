@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printGeneralConsent" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="0.7697371773460616"/>
+	<property name="ireport.zoom" value="1.1269722013523695"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table">
@@ -65,7 +65,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="187" splitType="Stretch">
+		<band height="169" splitType="Stretch">
 			<line>
 				<reportElement x="0" y="60" width="555" height="1" uuid="2c08112b-c50d-4893-862a-474998eb7574"/>
 			</line>
@@ -203,20 +203,10 @@
 			<textField>
 				<reportElement x="0" y="0" width="555" height="520" uuid="cc401598-13e7-4c1e-a1f7-63ffb7ce35cd"/>
 				<box leftPadding="1"/>
-				<textElement textAlignment="Justified" verticalAlignment="Top">
+				<textElement textAlignment="Justified" verticalAlignment="Top" markup="styled">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.data1} == null ? "" : $P{reportParams.data1}]]></textFieldExpression>
-			</textField>
-		</band>
-		<band height="287">
-			<textField>
-				<reportElement x="2" y="0" width="553" height="287" uuid="59b446a0-c891-4be4-8fe4-5b18f75e5bb9"/>
-				<box leftPadding="1"/>
-				<textElement textAlignment="Justified" verticalAlignment="Top">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.data2} == null ? "" : $P{reportParams.data2}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{reportParams.data1}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

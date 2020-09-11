@@ -502,12 +502,12 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
     }
 
     @Override
-    public List<Dokter> getDokterByPelayanan(String idPelayanan) throws GeneralBOException {
+    public List<Dokter> getDokterByPelayanan(String idPelayanan, String notLike) throws GeneralBOException {
         List<Dokter> dokterList = new ArrayList<>();
 
         if (idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)) {
             try {
-                dokterList = dokterDao.getListDokterByPelayanan(idPelayanan);
+                dokterList = dokterDao.getListDokterByPelayanan(idPelayanan, notLike);
             } catch (HibernateException e) {
                 logger.error("Found Error when search " + e.getMessage());
             }
@@ -644,13 +644,13 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
     }
 
     @Override
-    public List<Dokter> getListDokterByBranchId(String branchId, String idDokter, String kategori) throws GeneralBOException {
-        return dokterDao.getListDokterByBranchId(branchId, idDokter, kategori);
+    public List<Dokter> getListDokterByBranchId(String branchId, String idDokter) throws GeneralBOException {
+        return dokterDao.getListDokterByBranchId(branchId, idDokter);
     }
 
     @Override
-    public List<Dokter> getListDokterByIdDetailCheckup(String idDetailChekcup, String kategori) throws GeneralBOException {
-        return dokterDao.getListDokterByIdDetailCheckup(idDetailChekcup, kategori);
+    public List<Dokter> getListDokterByIdDetailCheckup(String idDetailChekcup) throws GeneralBOException {
+        return dokterDao.getListDokterByIdDetailCheckup(idDetailChekcup);
     }
 
     public void setDokterDao(DokterDao dokterDao) {

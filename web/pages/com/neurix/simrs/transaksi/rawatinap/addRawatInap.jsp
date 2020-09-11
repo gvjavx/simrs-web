@@ -394,6 +394,7 @@
                                                                             }"
                                 >
                                     <s:hidden id="close_pos"></s:hidden>
+                                    <s:hidden id="h_id_href"></s:hidden>
                                     <img border="0" src="<s:url value="/pages/images/icon_success.png"/>"
                                          name="icon_success">
                                     Record has been saved successfully.
@@ -490,7 +491,7 @@
                     <%--</div>--%>
 
                     <div class="box-header with-border"></div>
-                    <div class="box-header with-border">
+                    <div class="box-header with-border" id="pos_rm">
                         <div class="row">
                             <s:if test='rawatInap.kategoriRuangan == "rawat_inap"'>
                                 <div class="col-md-6">
@@ -503,47 +504,48 @@
                         </div>
                     </div>
                     <div class="box-body">
-                        <div class="row">
-                            <s:if test='rawatInap.kategoriRuangan == "rawat_inap"'>
-                                <div class="col-md-6">
-                                    <button class="btn btn-primary" onclick="showModalPlan('<s:property value="rawatInap.idDetailCheckup"/>','','suster')">
-                                        <i class="fa fa-calendar"></i> Schedule Rawat
-                                    </button>
-                                    <div class="btn-group btn-hide dropdown">
-                                        <button type="button" class="btn btn-info"><i class="fa fa-edit"></i> Observasi dan Pemberian
-                                        </button>
-                                        <button type="button" class="btn btn-info dropdown-toggle"
-                                                data-toggle="dropdown" style="height: 34px">
-                                            <span class="caret"></span>
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu" role="menu">
-                                            <li><a onclick="showModalCairan('<s:property value="rawatInap.idDetailCheckup"/>')" style="cursor: pointer"><i
-                                                    class="fa fa-file-o"></i> Form Observasi Cairan</a></li>
-                                            <li><a onclick="showModalMonVitalSign('<s:property value="rawatInap.idDetailCheckup"/>')" style="cursor: pointer"><i
-                                                    class="fa fa-file-o"></i> Form Observasi Vital Sign</a></li>
-                                            <li><a onclick="showModalPemberianObat('<s:property value="rawatInap.idDetailCheckup"/>','parenteral')" style="cursor: pointer"><i
-                                                    class="fa fa-file-o"></i> Form Pemberian Obat Parenteral</a></li>
-                                            <li><a onclick="showModalPemberianObat('<s:property value="rawatInap.idDetailCheckup"/>','nonparenteral')" style="cursor: pointer"><i
-                                                    class="fa fa-file-o"></i> Form Pemberian Obat Non Parenteral</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </s:if>
-                            <div class="col-md-6">
-                                <div class="btn-group btn-hide dropdown">
-                                    <button onclick="setRekamMedis()" type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Asesmen
-                                    </button>
-                                    <button onclick="setRekamMedis()" type="button" class="btn btn-primary dropdown-toggle"
-                                            data-toggle="dropdown" style="height: 34px">
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu" id="asesmen_ri">
-                                    </ul>
-                                </div>
-                            </div>
-                            </div>
+                       <div class="row">
+                           <s:if test='rawatInap.kategoriRuangan == "rawat_inap"'>
+                               <div class="col-md-6">
+                                   <button class="btn btn-primary" onclick="showModalPlan('<s:property value="rawatInap.idDetailCheckup"/>','','suster')">
+                                       <i class="fa fa-calendar"></i> Schedule Rawat
+                                   </button>
+                                   <div class="btn-group btn-hide dropdown">
+                                       <button type="button" class="btn btn-info"><i class="fa fa-edit"></i> Observasi dan Pemberian
+                                       </button>
+                                       <button type="button" class="btn btn-info dropdown-toggle"
+                                               data-toggle="dropdown" style="height: 34px">
+                                           <span class="caret"></span>
+                                           <span class="sr-only">Toggle Dropdown</span>
+                                       </button>
+                                       <ul class="dropdown-menu" role="menu">
+                                           <li><a onclick="showModalCairan('<s:property value="rawatInap.idDetailCheckup"/>')" style="cursor: pointer"><i
+                                                   class="fa fa-file-o"></i> Form Observasi Cairan</a></li>
+                                           <li><a onclick="showModalMonVitalSign('<s:property value="rawatInap.idDetailCheckup"/>')" style="cursor: pointer"><i
+                                                   class="fa fa-file-o"></i> Form Observasi Vital Sign</a></li>
+                                           <li><a onclick="showModalPemberianObat('<s:property value="rawatInap.idDetailCheckup"/>','parenteral')" style="cursor: pointer"><i
+                                                   class="fa fa-file-o"></i> Form Pemberian Obat Parenteral</a></li>
+                                           <li><a onclick="showModalPemberianObat('<s:property value="rawatInap.idDetailCheckup"/>','nonparenteral')" style="cursor: pointer"><i
+                                                   class="fa fa-file-o"></i> Form Pemberian Obat Non Parenteral</a></li>
+                                       </ul>
+                                   </div>
+                               </div>
+                           </s:if>
+                           <div class="col-md-6">
+                               <div class="btn-group btn-hide dropdown">
+                                   <button onclick="setRekamMedis()" type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Asesmen
+                                   </button>
+                                   <button onclick="setRekamMedis()" type="button" class="btn btn-primary dropdown-toggle"
+                                           data-toggle="dropdown" style="height: 34px">
+                                       <span class="caret"></span>
+                                       <span class="sr-only">Toggle Dropdown</span>
+                                   </button>
+                                   <ul class="dropdown-menu" role="menu" id="asesmen_ri">
+                                   </ul>
+                               </div>
+                           </div>
+                       </div>
+                    </div>
                     <div class="box-header with-border" id="pos_dok">
                     </div>
                     <div class="box-header with-border">
@@ -721,11 +723,12 @@
                         <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
                                 onclick="showModal(2)"><i class="fa fa-plus"></i> Tambah Tindakan
                         </button>
-                        <table class="table table-bordered table-striped">
+                        <table class="table table-bordered table-striped" id="tabel_tindakan">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>Tanggal</td>
                                 <td>Tindakan</td>
+                                <td>Dokter</td>
                                 <td align="center">Tarif (Rp.)</td>
                                 <td align="center">Qty</td>
                                 <td align="center">Total (Rp.)</td>
@@ -822,12 +825,19 @@
                         <h3 class="box-title"><i class="fa fa-hospital-o"></i> Ruangan</h3>
                     </div>
                     <div class="box-body">
-                        <table class="table table-bordered table-striped">
+                        <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_update">
+                            <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                            <p id="msg_update"></p>
+                        </div>
+                        <table class="table table-bordered table-striped" id="tabel_ruangan">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>Nama Ruangan</td>
+                                <td>Tanggal Masuk</td>
+                                <td>Tanggal Keluar</td>
                                 <td>No Ruangan</td>
+                                <td>Nama Ruangan</td>
                                 <td>Kelas</td>
+                                <td>Status</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -861,123 +871,6 @@
 
                     <div class="box-header with-border">
                     </div>
-                    <%--<div class="box-header with-border">--%>
-                        <%--<div class="alert alert-danger alert-dismissible" style="display: none" id="warning_all">--%>
-                            <%--<h4><i class="icon fa fa-ban"></i> Warning!</h4>--%>
-                            <%--<p id="msg_all_war"></p>--%>
-                        <%--</div>--%>
-                        <%--<div class="alert alert-success alert-dismissible" style="display: none" id="success_all">--%>
-                            <%--<h4><i class="icon fa fa-info"></i> Info!</h4>--%>
-                            <%--<p id="msg_all_suc"></p>--%>
-                        <%--</div>--%>
-                        <%--<div class="row">--%>
-                            <%--<div class="col-md-12">--%>
-                                <%--<div class="form-group">--%>
-                                    <%--<div class="col-md-offset-4 col-md-4 text-center">--%>
-                                        <%--<a class="btn btn-success" id="save_all" onclick="confirmSaveAllTindakan()"><i class="fa fa-check"></i> Save All Tindakan</a>--%>
-                                        <%--<button style="display: none; cursor: no-drop;" type="button"--%>
-                                                <%--class="btn btn-success" id="load_all"><i class="fa fa-spinner fa-spin"></i>--%>
-                                            <%--Sedang Menyimpan...--%>
-                                        <%--</button>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-
-                    <%--<div class="box-header with-border">--%>
-                    <%--</div>--%>
-                    <%--<div class="box-header with-border">--%>
-                        <%--<h3 class="box-title"><i class="fa fa-navicon"></i> Keterangan (Jika sudah pulang / selesai rawat inap)</h3>--%>
-                    <%--</div>--%>
-                    <%--<div class="box-body">--%>
-                        <%--<div class="alert alert-danger alert-dismissible" style="display: none" id="warning_ket">--%>
-                            <%--<h4><i class="icon fa fa-ban"></i> Warning!</h4>--%>
-                            <%--Silahkan cek kembali data inputan!--%>
-                        <%--</div>--%>
-                        <%--<div class="row">--%>
-                            <%--<div class="col-md-3">--%>
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="col-md-4" style="margin-top: 10px">Keterangan</label>--%>
-                                    <%--<div class="col-md-8">--%>
-                                        <%--<select class="form-control select2" id="keterangan" style="width: 100%"--%>
-                                                <%--onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()}; selectKeterangan(this.value)">--%>
-                                            <%--<option value=''>[Select One]</option>--%>
-                                            <%--<option value='selesai'>Selesai</option>--%>
-                                            <%--<option value='lanjut_biaya'>Lanjut Biaya</option>--%>
-                                            <%--<option value='rujuk_rs_lain'>Rujuk RS Lain</option>--%>
-                                        <%--</select>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-4">--%>
-                                <%--<div id="form-selesai" style="display: none">--%>
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="col-md-5" style="margin-top: 7px; margin-bottom: -2px;">Catatan Selesai</label>--%>
-                                    <%--<div class="col-md-7">--%>
-                                        <%--<s:action id="initComboKet" namespace="/checkupdetail"--%>
-                                                  <%--name="getListComboKeteranganKeluar_checkupdetail"/>--%>
-                                        <%--<s:select list="#initComboKet.listOfKeterangan" id="ket_selesai"--%>
-                                                  <%--name="headerCheckup.idPelayanan" listKey="keterangan"--%>
-                                                  <%--listValue="keterangan" cssStyle="width: 100%"--%>
-                                                  <%--onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()}; showFormCekup(this)"--%>
-                                                  <%--headerKey="" headerValue="[Select one]"--%>
-                                                  <%--cssClass="form-control select2"/>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="col-md-5" style="margin-top: 7px; margin-bottom: -2px;">Cara Pasien </label>--%>
-                                    <%--<div class="col-md-7">--%>
-                                        <%--<s:select list="#{'Jalan':'Jalan','Pakai kursi Roda':'Pakai kursi Roda','Pakai stretcher':'Pakai stretcher'}" cssStyle="margin-top: 7px; width: 100%"--%>
-                                                  <%--id="ket_cara"--%>
-                                                  <%--headerKey="" headerValue="[Select One]"--%>
-                                                  <%--cssClass="form-control select2"/>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="col-md-5" style="margin-top: 7px; margin-bottom: -2px;">Didampingi Oleh</label>--%>
-                                    <%--<div class="col-md-7">--%>
-                                        <%--<s:select list="#{'Petugas':'Petugas','Keluarga/teman':'Keluarga/teman'}" cssStyle="margin-top: 7px; width: 100%"--%>
-                                                  <%--id="ket_pendamping"--%>
-                                                  <%--headerKey="" headerValue="[Select One]"--%>
-                                                  <%--cssClass="form-control select2"/>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="col-md-5" style="margin-top: 7px; margin-bottom: -2px;">Tempat Tujuan</label>--%>
-                                    <%--<div class="col-md-7">--%>
-                                        <%--<s:select list="#{'Rumah':'Rumah','Dirujuk Ke':'Dirujuk Ke','Rehabilitas':'Rehabilitas'}" cssStyle="margin-top: 7px; width: 100%"--%>
-                                                  <%--id="ket_tujuan"--%>
-                                                  <%--headerKey="" headerValue="[Select One]"--%>
-                                                  <%--cssClass="form-control select2"/>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                            <%--</div>--%>
-
-                            <%--<div class="col-md-5">--%>
-                                <%--<div class="form-group" id="form-cekup" style="display: none">--%>
-                                    <%--<div class="form-group">--%>
-                                        <%--<label class="col-md-5" style="margin-top: 7px">Tanggal Chekup Ulang</label>--%>
-                                        <%--<div class="col-md-7">--%>
-                                            <%--<div class="input-group date">--%>
-                                                <%--<div class="input-group-addon">--%>
-                                                    <%--<i class="fa fa-calendar"></i>--%>
-                                                <%--</div>--%>
-                                                <%--<s:textfield id="tgl_cekup" cssClass="form-control datepicker"/>--%>
-                                            <%--</div>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                    <%--<div class="form-group">--%>
-                                        <%--<label class="col-md-5" style="margin-top: 7px">Catatan</label>--%>
-                                        <%--<div class="col-md-7">--%>
-                                            <%--<s:textarea cssStyle="margin-top: 7px" cssClass="form-control" rows="5" id="cekup_ket"></s:textarea>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-navicon"></i> Keterangan (Jika sudah pulang / selesai pemeriksaan)</h3>
                     </div>
@@ -1000,14 +893,29 @@
                                                     onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()}; selectKeterangan(this.value)">
                                                 <option value="">[Select One]</option>
                                                 <s:if test='rawatInap.kategoriRuangan == "rawat_inap"'>
-                                                    <option value="selesai">Selesai</option>
-                                                    <option value="rawat_intensif">Rawat Intensif</option>
-                                                    <option value="rawat_isolasi">Rawat Isolasi</option>
-                                                    <option value="kamar_operasi">Kamar Operasi</option>
-                                                    <option value="ruang_bersalin">Ruang Bersalin</option>
-                                                    <option value="rujuk_rs_lain">Dirujuk</option>
-                                                    <option value="kontrol_ulang">Kontrol Ulang</option>
-                                                    <option value="lanjut_biaya">Lanjut Biaya</option>
+                                                    <s:if test='rawatInap.idJenisPeriksa == "umum" || rawatInap.idJenisPeriksa == "ptpn"'>
+                                                        <option value="selesai">Selesai</option>
+                                                        <option value="rawat_intensif">Rawat Intensif</option>
+                                                        <option value="rawat_isolasi">Rawat Isolasi</option>
+                                                        <option value="kamar_operasi">Kamar Operasi</option>
+                                                        <option value="ruang_bersalin">Ruang Bersalin</option>
+                                                        <option value="rujuk_rs_lain">Dirujuk</option>
+                                                        <option value="kontrol_ulang">Kontrol Ulang</option>
+                                                    </s:if>
+                                                    <s:elseif test='rawatInap.idJenisPeriksa == "bpjs" || rawatInap.idJenisPeriksa == "asuransi"'>
+                                                        <option value="selesai">Selesai</option>
+                                                        <option value="rawat_intensif">Rawat Intensif</option>
+                                                        <option value="rawat_isolasi">Rawat Isolasi</option>
+                                                        <option value="kamar_operasi">Kamar Operasi</option>
+                                                        <option value="ruang_bersalin">Ruang Bersalin</option>
+                                                        <option value="rujuk_rs_lain">Dirujuk</option>
+                                                        <option value="kontrol_ulang">Kontrol Ulang</option>
+                                                        <option value="lanjut_biaya">Lanjut Biaya</option>
+                                                    </s:elseif>
+                                                    <s:else>
+                                                        <option value="selesai">Selesai</option>
+                                                        <option value="kontrol_ulang">Kontrol Ulang</option>
+                                                    </s:else>
                                                 </s:if>
                                                 <s:elseif test='rawatInap.kategoriRuangan == "rawat_intensif"'>
                                                     <s:if test='rawatInap.isStay == "Y"'>
@@ -1282,7 +1190,7 @@
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_dokter">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    Silahkan cek kembali data inputan!
+                    <p id="msg_dokter"></p>
                 </div>
                 <div class="row">
                     <div class="form-group">
@@ -1326,7 +1234,7 @@
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_tindakan">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    Silahkan cek kembali data inputan dan jumlah harus lebih dari 0
+                    <p id="msg_tindakan"></p>
                 </div>
                 <div class="row">
                     <div class="form-group">
@@ -1421,7 +1329,7 @@
                             <label class="col-md-3">Diagnosa</label>
                             <div class="col-md-7">
                                 <s:textfield id="nosa_id_diagnosa" style="margin-top: 7px"
-                                             name="headerCheckup.diagnosa"
+                                             name="headerCheckup.diagnosa" autocomplete="off"
                                              onkeypress="var warn =$('#war_diagnosa_bpjs').is(':visible'); if (warn){$('#cor_diagnosa_bpjs').show().fadeOut(3000);$('#war_diagnosa_bpjs').hide()}; searchDiagnosa(this.id)"
                                              cssClass="form-control" required="false"/>
                                 <s:hidden name="headerCheckup.jenisTransaksi"/>
@@ -1449,7 +1357,8 @@
                                     onchange="var warn =$('#war_jenis_diagnosa').is(':visible'); if (warn){$('#cor_jenis_diagnosa').show().fadeOut(3000);$('#war_jenis_diagnosa').hide()}">
                                 <option value="">[select one]</option>
                                 <option value="diagnosa_awal">Diagnosa Awal</option>
-                                <option value="diagnosa_akhir">Diagnosa Akhir</option>
+                                <option value="diagnosa_utama">Diagnosa Utama</option>
+                                <option value="diagnosa_sekunder">Diagnosa Sekunder</option>
                             </select>
                         </div>
                         <div class="col-md-2">
@@ -1493,7 +1402,7 @@
                     <div class="form-group">
                         <label class="col-md-3">ICD9</label>
                         <div class="col-md-7">
-                            <s:textfield id="id_icd9" style="margin-top: 7px"
+                            <s:textfield id="id_icd9" style="margin-top: 7px" autocomplete="off"
                                          onkeypress="var warn =$('#war_id_icd9').is(':visible'); if (warn){$('#cor_id_icd9').show().fadeOut(3000);$('#war_id_icd9').hide()}; searchICD9(this.id)"
                                          cssClass="form-control" required="false"/>
                         </div>
@@ -1788,21 +1697,46 @@
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_ruangan">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    Silahkan cek kembali data inputan!
+                    <p id="msg_ruangan"></p>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3 jarak">Tanggal & Jam</label>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input class="form-control ptr-tgl" id="tanggal_pindah">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-clock-o"></i>
+                                </div>
+                                <input class="form-control ptr-jam" id="jam_pindah">
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Kelas Ruangan</label>
                         <div class="col-md-7">
-                            <s:action id="initKelas" namespace="/checkupdetail"
-                                      name="getListComboKelasRuangan_checkupdetail"/>
-                            <s:select
-                                    onchange="var warn =$('#war_ruangan_kelas').is(':visible'); if (warn){$('#cor_ruangan_kelas').show().fadeOut(3000);$('#war_ruangan_kelas').hide()}; listSelectRuangan(this)"
-                                    list="#initKelas.listOfKelasRuangan" id="ruangan_kelas"
-                                    listKey="idKelasRuangan" cssStyle="width: 100%"
-                                    listValue="namaKelasRuangan"
-                                    headerKey="" headerValue="[Select one]"
-                                    cssClass="form-control select2"/>
+                            <select class="form-control select2" style="margin-top: 7px; width: 100%" id="ruangan_kelas"
+                                onchange="var warn =$('#war_ruangan_kelas').is(':visible'); if (warn){$('#cor_ruangan_kelas').show().fadeOut(3000);$('#war_ruangan_kelas').hide()}; listSelectRuangan(this.value)">
+                                <option value="">[select one]</option>
+                            </select>
+                            <%--<s:action id="initKelas" namespace="/checkupdetail"--%>
+                                      <%--name="getListComboKelasRuangan_checkupdetail"/>--%>
+                            <%--<s:select--%>
+                                    <%--onchange="var warn =$('#war_ruangan_kelas').is(':visible'); if (warn){$('#cor_ruangan_kelas').show().fadeOut(3000);$('#war_ruangan_kelas').hide()}; listSelectRuangan(this.value)"--%>
+                                    <%--list="#initKelas.listOfKelasRuangan" id="ruangan_kelas"--%>
+                                    <%--listKey="idKelasRuangan" cssStyle="width: 100%"--%>
+                                    <%--listValue="namaKelasRuangan"--%>
+                                    <%--headerKey="" headerValue="[Select one]"--%>
+                                    <%--cssClass="form-control select2"/>--%>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
@@ -1811,6 +1745,8 @@
                                id="cor_ruangan_kelas"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
+                    <input type="hidden" id="h_id_rawat_inap">
+                    <input type="hidden" id="h_id_kamar">
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Ruangan</label>
                         <div class="col-md-7">
@@ -1876,6 +1812,21 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Jenis Obat</label>
+                        <div class="col-md-7">
+                            <select class="form-control select2" style="margin-top: 7px; width: 100%"
+                                    id="resep_jenis_obat">
+                                <option value="">[select one]</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_jenis_obat"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_jenis_obat"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
                         <div class="col-md-7">
                             <select class="form-control select2" style="margin-top: 7px; width: 100%"
@@ -1894,7 +1845,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Stok Obat (Biji)</label>
+                        <label class="col-md-3" style="margin-top: 7px">Stok Obat</label>
                         <div class="col-md-7">
                             <div class="input-group" style="margin-top: 7px; width: 40%">
                                 <input class="form-control" type="number" min="1" id="resep_stok_biji" readonly>
@@ -3233,7 +3184,9 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> View Detail Rencana Rawat</h4>
             </div>
             <div class="modal-body" id="body-view-plan-detail">
-                <br>
+                <div class="text-center">
+                    <h4 id="empty_plan"></h4>
+                </div>
                 <div id="body-list-plan-pagi"></div>
                 <br>
                 <div id="body-list-plan-siang"></div>
@@ -3607,6 +3560,58 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-detail_lab">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Detail Penunjang Medis</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                        <td>Pemeriksaan</td>
+                        <td>Jenis Penunjang</td>
+                        <tbody id="body_detail_lab">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-lab_luar">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> <span id="title_lab_luar"></span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <img id="img_lab_luar" style="width: 100%">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="mask"></div>
 
 <div id="modal-temp"></div>
@@ -3617,21 +3622,22 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
+                <h4 class="modal-title"><i class="fa fa-info"></i> Konfirmasi
                 </h4>
             </div>
             <div class="modal-body">
-                <h5 class="text-center">Do you want print this?</h5>
-                <h5 class="text-center" id="print_form"></h5>
+                <h4 class="text-center" id="tanya"></h4>
+                <h4 class="text-center" id="print_form"></h4>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Tidak
                 </button>
-                <button type="button" class="btn btn-sm btn-default" id="save_con_rm"><i class="fa fa-arrow-right"></i> Yes            </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con_rm"><i class="fa fa-check"></i> Ya            </button>
             </div>
         </div>
     </div>
 </div>
+
 
 <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenOperasiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/MppAction.js"/>'></script>
@@ -3670,6 +3676,8 @@
 <script type='text/javascript' src='<s:url value="/pages/dist/js/cppt.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/resikojatuh.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/tindakan_medis.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/custome_form.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/rencana_asuahan.js"/>'></script>
 
 
 <script type='text/javascript'>

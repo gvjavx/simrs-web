@@ -17,6 +17,42 @@ public class ImAkunParameterBudgetingEntity {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String idKategoriBudgeting;
+    private String masterId;
+    private String divisiId;
+    private String idParamRekening;
+
+    public String getIdParamRekening() {
+        return idParamRekening;
+    }
+
+    public void setIdParamRekening(String idParamRekening) {
+        this.idParamRekening = idParamRekening;
+    }
+
+    public String getMasterId() {
+        return masterId;
+    }
+
+    public void setMasterId(String masterId) {
+        this.masterId = masterId;
+    }
+
+    public String getDivisiId() {
+        return divisiId;
+    }
+
+    public void setDivisiId(String divisiId) {
+        this.divisiId = divisiId;
+    }
+
+    public String getIdKategoriBudgeting() {
+        return idKategoriBudgeting;
+    }
+
+    public void setIdKategoriBudgeting(String idKategoriBudgeting) {
+        this.idKategoriBudgeting = idKategoriBudgeting;
+    }
 
     public String getId() {
         return id;

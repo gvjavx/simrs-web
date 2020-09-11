@@ -16,12 +16,12 @@ public interface DokterBo extends BaseMasterBo<Dokter> {
     public boolean editLatLon(String idDokter, String lat, String lon) throws GeneralBOException;
     public boolean editFlagCall(String idDokter, String flagCall) throws GeneralBOException;
     public boolean editFlagTele(String idDokter, String flagTele) throws GeneralBOException;
-    public List<Dokter> getDokterByPelayanan(String idPelayanan) throws GeneralBOException;
+    public List<Dokter> getDokterByPelayanan(String idPelayanan, String notLike) throws GeneralBOException;
     public List<Dokter> getDokterById(String idDokter) throws GeneralBOException;
 
     public List<Dokter> getSearchByCriteria(Dokter bean) throws GeneralBOException;
     List<Dokter> typeaheadDokter(String dokterName) throws GeneralBOException;
 
-    public List<Dokter> getListDokterByBranchId(String branchId, String idDokter, String kategori) throws GeneralBOException;
-    public List<Dokter> getListDokterByIdDetailCheckup(String idDetailChekcup, String kategori) throws GeneralBOException;
+    public List<Dokter> getListDokterByBranchId(String branchId, String idDokter) throws GeneralBOException;
+    public List<Dokter> getListDokterByIdDetailCheckup(String idDetailChekcup) throws GeneralBOException;
 }

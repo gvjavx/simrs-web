@@ -14,6 +14,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_puk_pengkajian"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="modal_warning">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_warning"></p>
+                    </div>
                     <div class="btn-group">
                         <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
                         </button>
@@ -1188,6 +1192,33 @@
                                 <div class="custom02" style="margin-top: 7px">
                                     <input type="radio" value="Ya" id="pak82" name="pak8" /><label for="pak82">Ya</label>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-6 text-center">
+                                <label>TTD Perawat</label>
+                                <canvas class="paint-canvas-ttd" id="gen2" width="220"
+                                        onmouseover="paintTtd('gen2')"></canvas>
+                                <input class="form-control" id="nama_terang_gen2" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control" id="sip_gen2" placeholder="NIP">
+                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('gen2')"><i
+                                        class="fa fa-trash"></i> Clear
+                                </button>
+                            </div>
+                            <div class="col-md-6 text-center">
+                                <label>TTD DPJP</label>
+                                <canvas class="paint-canvas-ttd" id="gen3" width="220"
+                                        onmouseover="paintTtd('gen3')"></canvas>
+                                <input class="form-control nama_dokter" id="nama_terang_gen3" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control sip_dokter" id="sip_gen3" placeholder="SIP">
+                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('gen3')"><i
+                                        class="fa fa-trash"></i> Clear
+                                </button>
                             </div>
                         </div>
                     </div>

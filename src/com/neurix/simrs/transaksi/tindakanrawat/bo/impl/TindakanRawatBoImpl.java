@@ -12,6 +12,7 @@ import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.master.tindakan.dao.TindakanDao;
 import com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
@@ -56,8 +57,9 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
     }
 
     @Override
-    public void saveAdd(TindakanRawat bean) throws GeneralBOException {
+    public CrudResponse saveAdd(TindakanRawat bean) throws GeneralBOException {
         logger.info("[TindakanRawatBoImpl.saveAdd] Start >>>>>>>");
+        CrudResponse response = new CrudResponse();
 
         if (bean != null ){
             String id = getNextTindakanRawatId();
@@ -79,24 +81,29 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
                 tindakanRawatEntity.setLastUpdate(bean.getLastUpdate());
                 tindakanRawatEntity.setLastUpdateWho(bean.getLastUpdateWho());
                 tindakanRawatEntity.setApproveFlag(bean.getApproveFlag());
+                tindakanRawatEntity.setIdPelayanan(bean.getIdPelayanan());
 
                 try {
                     tindakanRawatDao.addAndSave(tindakanRawatEntity);
+                    response.setStatus("success");
+                    response.setMsg("Berhasil");
                 } catch (HibernateException e) {
                     logger.error("[TindakanRawatBoImpl.saveAdd] Error when insert tindakan rawat ", e);
-                    throw new GeneralBOException("[TindakanRawatBoImpl.saveAdd] Error when insert tindakan rawat " + e.getMessage());
+                    response.setStatus("error");
+                    response.setMsg(e.getMessage());
                 }
             }
         }
         // update total biaya pada di detail checkup
-        updateDetailCheckup(bean);
+//        updateDetailCheckup(bean);
         logger.info("[TindakanRawatBoImpl.saveAdd] End <<<<<<");
+        return response;
     }
 
     @Override
-    public void saveEdit(TindakanRawat bean) throws GeneralBOException {
+    public CrudResponse saveEdit(TindakanRawat bean) throws GeneralBOException {
         logger.info("[TindakanRawatBoImpl.saveEdit] Start >>>>>>>");
-
+        CrudResponse response = new CrudResponse();
         if (bean != null && bean.getIdTindakanRawat() != null && !"".equalsIgnoreCase(bean.getIdTindakanRawat())){
 
             TindakanRawat tindakanRawat = new TindakanRawat();
@@ -116,19 +123,23 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
                 tindakanRawatEntity.setAction(bean.getAction());
                 tindakanRawatEntity.setLastUpdate(bean.getLastUpdate());
                 tindakanRawatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                tindakanRawatEntity.setIdPelayanan(bean.getIdPelayanan());
 
                 try {
                     tindakanRawatDao.updateAndSave(tindakanRawatEntity);
+                    response.setStatus("success");
+                    response.setMsg("Berhasil");
                 }catch (HibernateException e){
                     logger.error("[TindakanRawatBoImpl.saveAdd] Error when update tindakan rawat ", e);
-                    throw new GeneralBOException("[TindakanRawatBoImpl.saveAdd] Error when update tindakan rawat " + e.getMessage());
+                    response.setStatus("error");
+                    response.setMsg(e.getMessage());
                 }
             }
-
             // update total biaya pada di detail checkup
-            updateDetailCheckup(bean);
+//            updateDetailCheckup(bean);
         }
         logger.info("[TindakanRawatBoImpl.saveEdit] End <<<<<<");
+        return response;
     }
 
     @Override
@@ -269,6 +280,7 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
             tindakanRawat.setLastUpdate(entity.getLastUpdate());
             tindakanRawat.setLastUpdateWho(entity.getLastUpdateWho());
             tindakanRawat.setApproveFlag(entity.getApproveFlag());
+            tindakanRawat.setIdPelayanan(entity.getIdPelayanan());
 
             if (entity.getIdDokter() != null && !"".equalsIgnoreCase(entity.getIdDokter())){
                 List<ImSimrsDokterEntity> listDokter = getDokterList(entity.getIdDokter());

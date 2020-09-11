@@ -14,6 +14,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_hd_monitoring_hd"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_monitoring_hd">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_monitoring_hd"></p>
+                    </div>
                     <div class="btn-group">
                         <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
                         </button>
@@ -52,6 +56,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_pengkajian" class="hvr-grow" onclick="detailMonHD('pengkajian')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_monitoring_hd" class="hvr-grow btn-hide" onclick="conHD('pengkajian', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_hd_resiko_jatuh">
@@ -59,6 +64,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_resiko_jatuh" class="hvr-grow" onclick="detailMonHD('resiko_jatuh')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_resiko_jatuh" class="hvr-grow btn-hide" onclick="conHD('resiko_jatuh', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_hd_pemeriksaan">
@@ -66,6 +72,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_pemeriksaan" class="hvr-grow" onclick="detailMonHD('pemeriksaan')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_pemeriksaan" class="hvr-grow btn-hide" onclick="conHD('pemeriksaan', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_hd_diagnosa">
@@ -73,6 +80,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_diagnosa" class="hvr-grow" onclick="detailMonHD('diagnosa')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_diagnosa" class="hvr-grow btn-hide" onclick="conHD('diagnosa', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_hd_intervensi">
@@ -80,6 +88,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_intervensi" class="hvr-grow" onclick="detailMonHD('intervensi')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_intervensi" class="hvr-grow btn-hide" onclick="conHD('intervensi', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_hd_terintegrasi">
@@ -94,6 +103,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_instruksi_medik" class="hvr-grow" onclick="detailMonHD('instruksi_medik')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_instruksi_medik" class="hvr-grow btn-hide" onclick="conHD('instruksi_medik', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_hd_observasi_tindakan">
@@ -108,6 +118,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_penyulit_hd" class="hvr-grow" onclick="detailMonHD('penyulit_hd')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_penyulit_hd" class="hvr-grow btn-hide" onclick="conHD('penyulit_hd', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -1365,8 +1376,8 @@
                                 <label>TTD DPJP</label>
                                 <canvas class="paint-canvas-ttd" id="cppt10" width="220"
                                         onmouseover="paintTtd('cppt10')"></canvas>
-                                <input class="form-control" id="nama_dpjp" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control" id="sip_dpjp" placeholder="SIP">
+                                <input class="form-control nama_dokter" id="nama_dpjp" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control sip_dokter" id="sip_dpjp" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('cppt10')"><i
                                         class="fa fa-trash"></i> Clear
@@ -1783,8 +1794,8 @@
                                 <span>Paraf</span>
                                 <canvas class="paint-canvas-ttd" id="obs14" width="230"
                                         onmouseover="paintTtd('obs14')"></canvas>
-                                <input class="form-control" id="nama_terang_obs14" placeholder="Nama Terang">
-                                <input class="form-control" id="sip_obs14" placeholder="SIP" style="margin-top: 3px">
+                                <input class="form-control nama_dokter" id="nama_terang_obs14" placeholder="Nama Terang">
+                                <input class="form-control sip_dokter" id="sip_obs14" placeholder="SIP" style="margin-top: 3px">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('obs14')"><i class="fa fa-trash"></i>
                                     Clear
@@ -2052,8 +2063,8 @@
                                 <span>TTD Petugas</span>
                                 <canvas class="paint-canvas-ttd" id="phd10" width="230"
                                         onmouseover="paintTtd('phd10')"></canvas>
-                                <input class="form-control" id="nama_terang_phd10" placeholder="Nama Terang">
-                                <input class="form-control" id="sip_phd10" placeholder="SIP" style="margin-top: 3px">
+                                <input class="form-control nama_dokter" id="nama_terang_phd10" placeholder="Nama Terang">
+                                <input class="form-control sip_dokter" id="sip_phd10" placeholder="SIP" style="margin-top: 3px">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('phd10')"><i class="fa fa-trash"></i>
                                     Clear
@@ -2110,6 +2121,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_hd_asesmen_hd"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_asesmen_hd">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_asesmen_hd"></p>
+                    </div>
                     <button onclick="showModalHD('asesmen_awal')" class="btn btn-success"><i class="fa fa-plus"></i>
                         Asesmen Awal
                     </button>
@@ -2122,6 +2137,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_asesmen_awal" class="hvr-grow" onclick="detailMonHD('asesmen_awal')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_asesmen_awal" class="hvr-grow btn-hide" onclick="conHD('asesmen_awal', 'asesmen_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -2135,7 +2151,6 @@
         </div>
     </div>
 </div>
-
 
 <div class="modal fade" id="modal-hd-asesmen_awal">
     <div class="modal-dialog modal-md">
@@ -2288,8 +2303,8 @@
                             <div class="col-md-6">
                                 <canvas class="paint-canvas-ttd" id="asse22"
                                         onmouseover="paintTtd('asse22')"></canvas>
-                                <input class="form-control" id="nama_terang_asse22" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control" id="sip_asse22" placeholder="SIP">
+                                <input class="form-control nama_dokter" id="nama_terang_asse22" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control sip_dokter" id="sip_asse22" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('asse22')"><i class="fa fa-trash"></i>
                                     Clear
@@ -2582,489 +2597,6 @@
                     Save
                 </button>
                 <button id="load_hd_tindakan_medis" style="display: none; cursor: no-drop" type="button"
-                        class="btn btn-success"><i
-                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="modal fade" id="modal-hd-persetujuan_hd">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a; color: white">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-md"></i> Persetujuan HD
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div class="box-body btn-hide">
-                    <div class="alert alert-success alert-dismissible" style="display: none"
-                         id="warning_hd_persetujuan_hd">
-                        <h4><i class="icon fa fa-info"></i> Info!</h4>
-                        <p id="msg_hd_persetujuan_hd"></p>
-                    </div>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
-                        </button>
-                        <button type="button" class="btn btn-success dropdown-toggle"
-                                data-toggle="dropdown" style="height: 34px">
-                            <span class="caret"></span>
-                            <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a onclick="showModalHD('persetujuan_hd_informasi')" style="cursor: pointer"><i
-                                    class="fa fa-plus"></i> Informasi</a></li>
-                            <li><a onclick="showModalHD('persetujuan_hd_penyataan')" style="cursor: pointer"><i
-                                    class="fa fa-plus"></i> Pernyataan</a></li>
-                            <li><a onclick="showModalHD('persetujuan_hd_persetujuan')" style="cursor: pointer"><i
-                                    class="fa fa-plus"></i> Persetujuan</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="box-body">
-                    <table class="table" id="tabel_hd_persetujuan_hd">
-                        <tbody>
-                        <tr id="row_hd_persetujuan_hd_informasi">
-                            <td>Informasi</td>
-                            <td width="20%" align="center">
-                                <img id="btn_hd_persetujuan_hd_informasi" class="hvr-grow"
-                                     onclick="detailMonHD('persetujuan_hd_informasi')"
-                                     src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                            </td>
-                        </tr>
-                        <tr id="row_hd_persetujuan_hd_penyataan">
-                            <td>Pernyataan</td>
-                            <td width="20%" align="center">
-                                <img id="btn_hd_persetujuan_hd_penyataan" class="hvr-grow"
-                                     onclick="detailMonHD('persetujuan_hd_penyataan')"
-                                     src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                            </td>
-                        </tr>
-                        <tr id="row_hd_persetujuan_hd_persetujuan">
-                            <td>Persetujuan</td>
-                            <td width="20%" align="center">
-                                <img id="btn_hd_persetujuan_hd_persetujuan" class="hvr-grow"
-                                     onclick="detailMonHD('persetujuan_hd_persetujuan')"
-                                     src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modal-hd-persetujuan_hd_informasi">
-    <div class="modal-dialog" style="width: 60%">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a; color: white">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Informasi
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-danger alert-dismissible" style="display: none"
-                     id="warning_hd_persetujuan_hd_informasi">
-                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    <p id="msg_hd_persetujuan_hd_informasi"></p>
-                </div>
-                <div class="box-body">
-                    <table class="table">
-                        <thead>
-                        <td width="30%"><b>Jenis Informasi</b></td>
-                        <td><b>Isi Informasi</b></td>
-                        <td width="15%" align="center"><b>Check (<i class="fa fa-check"></i>)</b></td>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>Diagnosis (WD dan DD)</td>
-                            <td>
-                                CKD V on HD
-                            </td>
-                            <td align="center">
-                                <div class="form-check" style="margin-top: 7px;">
-                                    <input type="checkbox" name="tti1" id="tti11" value="Ya">
-                                    <label for="tti11"></label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Dasar diagnosis</td>
-                            <td>Riwayat penyakit, pemeriksaan fisik, pemeriksaan penunjang</td>
-                            <td align="center">
-                                <div class="form-check" style="margin-top: 7px;">
-                                    <input type="checkbox" name="tti2" id="tti21" value="Ya">
-                                    <label for="tti21"></label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Tindakan Kedokteran</td>
-                            <td>Hemodialisa</td>
-                            <td align="center">
-                                <div class="form-check" style="margin-top: 7px;">
-                                    <input type="checkbox" name="tti3" id="tti31" value="Ya">
-                                    <label for="tti31"></label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Indikasi Tindakan</td>
-                            <td>CKD V, gangguan eletronik, produk sampah ginjal dalam kadar toksik, sindroma kelebihan
-                                cairan. Kegawatan dibidang nefrologi (hipertensi, oedema paru, encepalopati reumia,
-                                anuria/oliguria)
-                            </td>
-                            <td align="center">
-                                <div class="form-check" style="margin-top: 7px;">
-                                    <input type="checkbox" name="tti4" id="tti41" value="Ya">
-                                    <label for="tti41"></label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Tata Cara</td>
-                            <td>Pembuluh darah arteri dan vena dihubungkan dengan mesin hemodialisa yang menganalisa
-                                darah, lalu sampah dan cairan dipindahkan dari tubuh dan darah kembali ke tubuh
-                            </td>
-                            <td align="center">
-                                <div class="form-check" style="margin-top: 7px;">
-                                    <input type="checkbox" name="tti5" id="tti51" value="Ya">
-                                    <label for="tti51"></label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Tujuan</td>
-                            <td>Mengatur keseimbangan eletronik, keseimbangan cairan dan membersihkan tubuh dari sampah
-                                ginjal
-                            </td>
-                            <td align="center">
-                                <div class="form-check" style="margin-top: 7px;">
-                                    <input type="checkbox" name="tti6" id="tti61" value="Ya">
-                                    <label for="tti61"></label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Resiko</td>
-                            <td>Pendarahan, pembengkakan dan infeksi di tempat penusukan, mual-muntah, kontaminasi air
-                                yang digunakan hemodialisa, kram otot, penurunan tekanan darah, gejala
-                                ketidakseimbangan, irama jantung tidak teratur, reaksi cairan dialisat, kematian
-                            </td>
-                            <td align="center">
-                                <div class="form-check" style="margin-top: 7px;">
-                                    <input type="checkbox" name="tti7" id="tti71" value="Ya">
-                                    <label for="tti71"></label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Prognosis</td>
-                            <td>
-                                Dubia ad malam
-                            </td>
-                            <td align="center">
-                                <div class="form-check" style="margin-top: 7px;">
-                                    <input type="checkbox" name="tti8" id="tti81" value="Ya">
-                                    <label for="tti81"></label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Alternattif</td>
-                            <td>
-                                CAPD, Cangkok ginjal
-                            </td>
-                            <td align="center">
-                                <div class="form-check" style="margin-top: 7px;">
-                                    <input type="checkbox" name="tti9" id="tti91" value="Ya">
-                                    <label for="tti91"></label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Perkiraan Biaya</td>
-                            <td>
-                                <div class="row">
-                                    <div class="form-group">
-                                        <input style="margin-left: 15px" class="form-control" id="tti10">
-                                    </div>
-                                </div>
-                            </td>
-                            <td align="center">
-                                <div class="form-check" style="margin-top: 7px;">
-                                    <input type="checkbox" name="tti11" id="tti111" value="Ya">
-                                    <label for="tti111"></label>
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                </button>
-                <button id="save_hd_persetujuan_hd_informasi" class="btn btn-success pull-right"
-                        onclick="saveMonHD('persetujuan_hd_informasi','persetujuan_hd')"><i class="fa fa-check"></i>
-                    Save
-                </button>
-                <button id="load_hd_persetujuan_hd_informasi" style="display: none; cursor: no-drop" type="button"
-                        class="btn btn-success"><i
-                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modal-hd-persetujuan_hd_penyataan">
-    <div class="modal-dialog modal-md" style="width: 55%">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a; color: white">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Pernyataan
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-danger alert-dismissible" style="display: none"
-                     id="warning_hd_persetujuan_hd_penyataan">
-                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    <p id="msg_hd_persetujuan_hd_penyataan"></p>
-                </div>
-                <div class="box-body">
-                    <div class="row">
-                        <div class="form-group" style="display: none">
-                            <div class="col-md-1">
-                                <input type="color" style="margin-left: -6px; margin-top: -8px"
-                                       class="js-color-picker  color-picker pull-left">
-                            </div>
-                            <div class="col-md-9">
-                                <input type="range" style="margin-top: -8px" class="js-line-range" min="1" max="72"
-                                       value="1">
-                            </div>
-                            <div class="col-md-2">
-                                <div style="margin-top: -8px;" class="js-range-value">1 px</div>
-                            </div>
-                        </div>
-                        <table class="table">
-                            <tbody>
-                            <tr>
-                                <td style="text-align: justify">
-                                    <div class="row">
-                                        <label style="margin-left: 15px">Dengan ini menyatakan bahwa saya</label>
-                                        <input style="margin-left: 15px; width: 80%" class="form-control" id="ttpe1">
-                                        <label style="margin-left: 15px">telah menerangkan hal-hal di atas secara benar
-                                            dan jelas dan memberikan kesempatan untuk bertanya dan/atau
-                                            berdiskusi</label>
-                                    </div>
-
-                                </td>
-                                <td>
-                                    <canvas class="paint-canvas-ttd" id="persetujuan_hd_penyataan1"
-                                            onmouseover="paintTtd('persetujuan_hd_penyataan1')"></canvas>
-                                    <button style="margin-left: 8px" type="button" class="btn btn-danger"
-                                            onclick="removePaint('persetujuan_hd_penyataan1')"><i
-                                            class="fa fa-trash"></i> Clear
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: justify">
-                                    <div class="row">
-                                        <label style="margin-left: 15px">Dengan ini menyatakan bahwa saya</label>
-                                        <input style="margin-left: 15px; width: 80%" class="form-control nama-pasien" id="ttpe2">
-                                        <label style="margin-left: 15px">telah menerima informasi sebagimana di atas
-                                            yang saya beri tanda/ paraf di kolom kanannya serta telah diberi kesempatan
-                                            untuk bertanya/berdiskusi, dan telah memahaminya</label>
-                                    </div>
-                                </td>
-                                <td>
-                                    <canvas class="paint-canvas-ttd" id="persetujuan_hd_penyataan2"
-                                            onmouseover="paintTtd('persetujuan_hd_penyataan2')"></canvas>
-                                    <button style="margin-left: 8px" type="button" class="btn btn-danger"
-                                            onclick="removePaint('persetujuan_hd_penyataan2')"><i
-                                            class="fa fa-trash"></i> Clear
-                                    </button>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                </button>
-                <button id="save_hd_persetujuan_hd_penyataan" class="btn btn-success pull-right"
-                        onclick="saveMonHD('persetujuan_hd_penyataan','persetujuan_hd')"><i class="fa fa-check"></i>
-                    Save
-                </button>
-                <button id="load_hd_persetujuan_hd_penyataan" style="display: none; cursor: no-drop" type="button"
-                        class="btn btn-success"><i
-                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modal-hd-persetujuan_hd_persetujuan">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a; color: white">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Persetujuan
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-danger alert-dismissible" style="display: none"
-                     id="warning_hd_persetujuan_hd_persetujuan">
-                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    <p id="msg_hd_persetujuan_hd_persetujuan"></p>
-                </div>
-                <div class="box-body">
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-4">Nama</label>
-                            <div class="col-md-6">
-                                <input class="form-control" id="pperse1">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-4" style="margin-top: 7px">Umur</label>
-                            <div class="col-md-6">
-                                <input class="form-control" id="pperse2" style="margin-top: 7px">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-4" style="margin-top: 7px">Jenis Kelamin</label>
-                            <div class="col-md-6">
-                                <select class="form-control" id="pperse3" style="margin-top: 7px">
-                                    <option value="">[Select One]</option>
-                                    <option value="Laki-Laki">Laki-Laki</option>
-                                    <option value="Perempuan">Perempuan</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-4" style="margin-top: 7px">Alamat</label>
-                            <div class="col-md-6">
-                                <textarea class="form-control" id="pperse4" style="margin-top: 7px"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-4" style="margin-top: 7px">Dengan ini menyatakan</label>
-                            <div class="col-md-6">
-                                <select class="form-control" id="pperse5" style="margin-top: 7px">
-                                    <option value="">[Select One]</option>
-                                    <option value="Setuju">Setuju</option>
-                                    <option value="Menolak">Menolak</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-4" style="margin-top: 7px">Tindakan</label>
-                            <div class="col-md-6">
-                                <input class="form-control" id="pperse6" style="margin-top: 7px"
-                                       value="Tindakan medis hemodialisa" readonly>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-4" style="margin-top: 7px">Nama Pasien</label>
-                            <div class="col-md-6">
-                                <input class="form-control nama-pasien" id="pperse7" style="margin-top: 7px">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-4" style="margin-top: 7px">Umur</label>
-                            <div class="col-md-6">
-                                <input class="form-control umur-pasien" id="pperse8" style="margin-top: 7px">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-4" style="margin-top: 7px">Jenis Kelamin</label>
-                            <div class="col-md-6">
-                                <input class="form-control jenis-kelamin" id="pperse9" style="margin-top: 7px">
-                                <%--<select class="form-control" id="pperse9" style="margin-top: 7px">--%>
-                                    <%--<option value="">[Select One]</option>--%>
-                                    <%--<option value="Laki-Laki">Laki-Laki</option>--%>
-                                    <%--<option value="Perempuan">Perempuan</option>--%>
-                                <%--</select>--%>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-4" style="margin-top: 7px">Alamat</label>
-                            <div class="col-md-6">
-                                <textarea class="form-control alamat-pasien" id="pperse10" style="margin-top: 7px"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="garis">
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-4">TTD Yang Menyatakan</label>
-                            <div class="col-md-6">
-                                <canvas class="paint-canvas-ttd" id="pperse11"
-                                        onmouseover="paintTtd('pperse11')"></canvas>
-                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
-                                        onclick="removePaint('pperse11')"><i class="fa fa-trash"></i>
-                                    Clear
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="garis">
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-4">TTD Saksi</label>
-                            <div class="col-md-6">
-                                <canvas class="paint-canvas-ttd" id="pperse12"
-                                        onmouseover="paintTtd('pperse12')"></canvas>
-                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
-                                        onclick="removePaint('pperse12')"><i class="fa fa-trash"></i>
-                                    Clear
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="garis">
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-4">TTD Pendamping</label>
-                            <div class="col-md-6">
-                                <canvas class="paint-canvas-ttd" id="pperse13"
-                                        onmouseover="paintTtd('pperse13')"></canvas>
-                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
-                                        onclick="removePaint('pperse13')"><i class="fa fa-trash"></i>
-                                    Clear
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                </button>
-                <button id="save_hd_persetujuan_hd_persetujuan" class="btn btn-success pull-right"
-                        onclick="saveMonHD('persetujuan_hd_persetujuan','persetujuan_hd')"><i class="fa fa-check"></i>
-                    Save
-                </button>
-                <button id="load_hd_persetujuan_hd_persetujuan" style="display: none; cursor: no-drop" type="button"
                         class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
@@ -3526,6 +3058,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_hd_travelling"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_travelling">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_travelling"></p>
+                    </div>
                     <button class="btn btn-success" onclick="showModalHD('travelling_dialysis')"><i class="fa fa-plus"></i> Travelling Dialysis</button>
                 </div>
                 <div class="box-body">
@@ -3536,6 +3072,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_travelling_dialysis" class="hvr-grow" onclick="detailMonHD('travelling_dialysis')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_travelling_dialysis" class="hvr-grow btn-hide" onclick="conHD('travelling_dialysis', 'travelling')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -3594,7 +3131,7 @@
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Terapi</label>
                             <div class="col-md-6">
-                                <textarea class="form-control" id="td5" style="margin-top: 7px"></textarea>
+                                <textarea class="form-control resep-pasien" id="td5" style="margin-top: 7px"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
@@ -3685,9 +3222,9 @@
                             <label class="col-md-4" style="margin-top: 7px">Tanda Tangan</label>
                             <div class="col-md-6">
                                 <canvas style="margin-left: -1px;" onmouseover="paintTtd('hd_ttd_dokter')" class="paint-canvas-ttd" id="hd_ttd_dokter"></canvas>
-                                <input class="form-control" id="nama_terang_hd_ttd_dokter" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control" id="sip_hd_ttd_dokter" placeholder="SIP">
-                                <button style="margin-top: -5px; margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('hd_ttd_dokter')"><i class="fa fa-trash"></i> Clear
+                                <input class="form-control nama_dokter" id="nama_terang_hd_ttd_dokter" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control sip_dokter" id="sip_hd_ttd_dokter" placeholder="SIP">
+                                <button style="margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('hd_ttd_dokter')"><i class="fa fa-trash"></i> Clear
                                 </button>
                             </div>
                         </div>
@@ -3725,6 +3262,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_hd_perencanaan_hemodialisa"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_perencanaan_hemodialisa">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_perencanaan_hemodialisa"></p>
+                    </div>
                     <button class="btn btn-success" onclick="showModalHD('perencanaan_hemodialisa_pasien')"><i class="fa fa-plus"></i> Perencanaan Hemodialisa</button>
                 </div>
                 <div class="box-body">
@@ -3735,6 +3276,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_perencanaan_hemodialisa_pasien" class="hvr-grow" onclick="detailMonHD('perencanaan_hemodialisa_pasien')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_perencanaan_hemodialisa_pasien" class="hvr-grow btn-hide" onclick="conHD('perencanaan_hemodialisa_pasien', 'perencanaan_hemodialisa')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -3879,8 +3421,8 @@
                             <div class="col-md-6">
                                 <canvas class="paint-canvas-ttd" id="ph14"
                                         onmouseover="paintTtd('ph14')"></canvas>
-                                <input class="form-control" id="nama_terang_ph14" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control" id="sip_ph14" placeholder="SIP">
+                                <input class="form-control nama_dokter" id="nama_terang_ph14" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control sip_dokter" id="sip_ph14" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ph14')"><i class="fa fa-trash"></i>
                                     Clear

@@ -54,6 +54,7 @@ public interface TelemedicBo {
 
     public CrudResponse insertVideoRm(String idDetailCheckup, String path, String tipe);
     public CrudResponse updateVideoRmOnDetailCheckup(String idDetailCheckup, String path);
+    public String cobaGabung(String path1, String path2);
 
 
 }

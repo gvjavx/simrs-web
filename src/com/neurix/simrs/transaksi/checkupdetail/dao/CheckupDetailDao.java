@@ -164,7 +164,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             String jenisPasien = "%";
             String statusBayar = "";
 
-            String notLike = "";
+            String tipePelayanan = "";
 
             if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())) {
                 idPasien = bean.getIdPasien();
@@ -198,25 +198,30 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 jenisPasien = bean.getIdJenisPeriksaPasien();
             }
 
-            if (bean.getStatusBayar() != null && !"".equalsIgnoreCase(bean.getStatusBayar())) {
-                statusBayar = "\n AND dt.status_bayar = '" + bean.getStatusBayar() + "'\n";
-            } else {
-                statusBayar = "\n AND dt.status_bayar is null \n";
+            if ("kasir".equalsIgnoreCase(bean.getTypeTransaction())) {
+                if (bean.getStatusBayar() != null && !"".equalsIgnoreCase(bean.getStatusBayar())) {
+                    statusBayar = "\n AND dt.status_bayar = '" + bean.getStatusBayar() + "'\n";
+                } else {
+                    statusBayar = "\n AND dt.status_bayar IS NULL AND dt.flag_close_traksaksi = 'Y' AND dt.flag_cover = 'Y'\n";
+                }
             }
 
             String forRekanan = "";
-            if ("asuransi".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "ptpn".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
-                forRekanan = "\n AND dt.invoice is null OR dt.invoice = '' \n";
+            if ("asuransi".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) ||
+                    "ptpn".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) ||
+                    "bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
+
+                if("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+                    forRekanan = "\n AND dt.invoice IS NOT NULL\n";
+                }else{
+                    forRekanan = "\n AND dt.invoice IS NULL OR dt.invoice = '' \n";
+                }
+
             }
 
-//            if(bean.getNotLike() != null && !"".equalsIgnoreCase(bean.getNotLike())){
-//                notLike = "\n AND hd.id_jenis_periksa_pasien NOT LIKE '"+bean.getNotLike()+"' \n";
-//            }
-
-            String uangMukaNotNull = "";
-//            if ("0".equalsIgnoreCase(statusPeriksa)){
-//                uangMukaNotNull = "\n AND um.id_detail_checkup is not null AND um.status_bayar = 'Y'";
-//            }
+            if ("rawat_jalan".equalsIgnoreCase(bean.getTipePelayanan())) {
+                tipePelayanan = "AND ply.tipe_pelayanan = 'rawat_jalan' \n";
+            }
 
             String SQL = "\n" +
                     "SELECT \n" +
@@ -236,11 +241,14 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "dt.id_jenis_periksa_pasien, \n" +
                     "um.id, \n" +
                     "um.id_detail_checkup, \n" +
-                    "dt.tgl_cekup\n" +
+                    "dt.tgl_cekup, \n" +
+                    "jp.keterangan as jenis_pasien\n" +
                     "FROM \n" +
                     "it_simrs_header_checkup hd\n" +
                     "INNER JOIN it_simrs_header_detail_checkup dt ON dt.no_checkup = hd.no_checkup\n" +
                     "INNER JOIN im_simrs_status_pasien st ON st.id_status_pasien = dt.status_periksa\n" +
+                    "INNER JOIN im_simrs_jenis_periksa_pasien jp ON dt.id_jenis_periksa_pasien = jp.id_jenis_periksa_pasien \n" +
+                    "INNER JOIN im_simrs_pelayanan ply ON dt.id_pelayanan = ply.id_pelayanan \n" +
                     "LEFT JOIN it_simrs_rawat_inap ri ON ri.id_detail_checkup = dt.id_detail_checkup\n" +
                     "LEFT JOIN it_simrs_uang_muka_pendaftaran um ON um.id_detail_checkup = dt.id_detail_checkup\n" +
                     "WHERE ri.id_detail_checkup is null\n" +
@@ -251,8 +259,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "AND dt.id_jenis_periksa_pasien LIKE :jenisPasien \n" +
                     "AND dt.is_kronis IS NULL \n" +
                     "AND dt.id_transaksi_online IS NULL \n" +
-                    "AND dt.status_periksa LIKE :status " + statusBayar + forRekanan;
-
+                    "AND dt.status_periksa LIKE :status \n" + statusBayar + forRekanan + tipePelayanan;
 
             String order = "\n ORDER BY dt.tgl_antrian ASC";
             if ("kasir".equalsIgnoreCase(bean.getTypeTransaction())) {
@@ -263,7 +270,6 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             if (!"".equalsIgnoreCase(dateFrom) && !"".equalsIgnoreCase(dateTo)) {
 
                 SQL = SQL + "\n AND CAST(hd.created_date AS date) >= to_date(:dateFrom, 'dd-MM-yyyy') AND CAST(hd.created_date AS date) <= to_date(:dateTo, 'dd-MM-yyyy')" + order;
-
 
                 results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                         .setParameter("idPasien", idPasien)
@@ -294,204 +300,60 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 for (Object[] obj : results) {
 
                     HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
-
                     detailCheckup.setStatusPeriksa(obj[7] == null ? "" : obj[7].toString());
                     detailCheckup.setIdJenisPeriksaPasien(obj[13] == null ? "" : obj[13].toString());
                     detailCheckup.setStatusBayar(obj[12] == null ? "" : obj[12].toString());
 
-                    if ("0".equalsIgnoreCase(detailCheckup.getStatusPeriksa()) || "1".equalsIgnoreCase(detailCheckup.getStatusPeriksa())) {
-
-                        if ("umum".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
-
-                            if (bean.getStatusBayar() != null) {
-                                HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
-                                headerDetailCheckup.setIdDetailCheckup(obj[0].toString());
-                                headerDetailCheckup.setNoCheckup(obj[1].toString());
-                                headerDetailCheckup.setIdPasien(obj[2] == null ? "" : obj[2].toString());
-                                headerDetailCheckup.setNamaPasien(obj[3] == null ? "" : obj[3].toString());
-
-                                String jalan = obj[4] == null ? "" : obj[4].toString();
-
-                                headerDetailCheckup.setCreatedDate(obj[5] == null ? null : (Timestamp) obj[5]);
-                                headerDetailCheckup.setDesaId(obj[6] == null ? "" : obj[6].toString());
-                                headerDetailCheckup.setStatusPeriksa(obj[7].toString());
-                                headerDetailCheckup.setStatusPeriksaName(obj[8].toString());
-                                headerDetailCheckup.setKeteranganSelesai(obj[9] == null ? "" : obj[9].toString());
-                                headerDetailCheckup.setKlaimBpjsFlag(obj[10] == null ? "" : obj[10].toString());
-                                headerDetailCheckup.setStatusBayar(obj[11] == null ? "" : obj[11].toString());
-                                headerDetailCheckup.setIdJenisPeriksaPasien(obj[13] == null ? "" : obj[13].toString());
-                                headerDetailCheckup.setTglCekup(obj[16] != null ? java.sql.Date.valueOf(obj[16].toString()) : null);
-
-                                if (!"".equalsIgnoreCase(headerDetailCheckup.getDesaId())) {
-                                    List<Object[]> objDesaList = getListAlamatByDesaId(headerDetailCheckup.getDesaId());
-                                    if (!objDesaList.isEmpty()) {
-                                        for (Object[] objDesa : objDesaList) {
-
-                                            String alamatLengkap =
-                                                    "Desa. " + objDesa[0].toString() +
-                                                            " Kec. " + objDesa[1].toString() +
-                                                            " " + objDesa[2].toString() +
-                                                            " Prov. " + objDesa[3].toString();
-
-                                            if (!"".equalsIgnoreCase(jalan)) {
-                                                jalan = jalan + ", " + alamatLengkap;
-                                            } else {
-                                                jalan = alamatLengkap;
-                                            }
-
-                                            headerDetailCheckup.setDesa(objDesa[0] == null ? "" : objDesa[0].toString());
-                                            headerDetailCheckup.setKecamatan(objDesa[1] == null ? "" : objDesa[1].toString());
-
-                                        }
-                                    }
-                                }
-
-                                headerDetailCheckup.setAlamat(jalan);
-                                checkupList.add(headerDetailCheckup);
-
-                            } else {
-
-                                if ("Y".equalsIgnoreCase(detailCheckup.getStatusBayar())) {
-
-                                    HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
-                                    headerDetailCheckup.setIdDetailCheckup(obj[0].toString());
-                                    headerDetailCheckup.setNoCheckup(obj[1].toString());
-                                    headerDetailCheckup.setIdPasien(obj[2] == null ? "" : obj[2].toString());
-                                    headerDetailCheckup.setNamaPasien(obj[3] == null ? "" : obj[3].toString());
-
-                                    String jalan = obj[4] == null ? "" : obj[4].toString();
-
-                                    headerDetailCheckup.setCreatedDate(obj[5] == null ? null : (Timestamp) obj[5]);
-                                    headerDetailCheckup.setDesaId(obj[6] == null ? "" : obj[6].toString());
-                                    headerDetailCheckup.setStatusPeriksa(obj[7].toString());
-                                    headerDetailCheckup.setStatusPeriksaName(obj[8].toString());
-                                    headerDetailCheckup.setKeteranganSelesai(obj[9] == null ? "" : obj[9].toString());
-                                    headerDetailCheckup.setKlaimBpjsFlag(obj[10] == null ? "" : obj[10].toString());
-                                    headerDetailCheckup.setStatusBayar(obj[11] == null ? "" : obj[11].toString());
-                                    headerDetailCheckup.setIdJenisPeriksaPasien(obj[13] == null ? "" : obj[13].toString());
-                                    headerDetailCheckup.setTglCekup(obj[16] != null ? java.sql.Date.valueOf(obj[16].toString()) : null);
-
-                                    if (!"".equalsIgnoreCase(headerDetailCheckup.getDesaId())) {
-                                        List<Object[]> objDesaList = getListAlamatByDesaId(headerDetailCheckup.getDesaId());
-                                        if (!objDesaList.isEmpty()) {
-                                            for (Object[] objDesa : objDesaList) {
-
-                                                String alamatLengkap =
-                                                        "Desa. " + objDesa[0].toString() +
-                                                                " Kec. " + objDesa[1].toString() +
-                                                                " " + objDesa[2].toString() +
-                                                                " Prov. " + objDesa[3].toString();
-
-                                                if (!"".equalsIgnoreCase(jalan)) {
-                                                    jalan = jalan + ", " + alamatLengkap;
-                                                } else {
-                                                    jalan = alamatLengkap;
-                                                }
-
-                                                headerDetailCheckup.setDesa(objDesa[0] == null ? "" : objDesa[0].toString());
-                                                headerDetailCheckup.setKecamatan(objDesa[1] == null ? "" : objDesa[1].toString());
-
-                                            }
-                                        }
-                                    }
-
-                                    headerDetailCheckup.setAlamat(jalan);
-                                    checkupList.add(headerDetailCheckup);
-                                }
-                            }
+                    HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
+                    if ("umum".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
+                        if ("Y".equalsIgnoreCase(detailCheckup.getStatusBayar())) {
+                            headerDetailCheckup.setIsBayar("Y");
                         } else {
-                            HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
-                            headerDetailCheckup.setIdDetailCheckup(obj[0].toString());
-                            headerDetailCheckup.setNoCheckup(obj[1].toString());
-                            headerDetailCheckup.setIdPasien(obj[2] == null ? "" : obj[2].toString());
-                            headerDetailCheckup.setNamaPasien(obj[3] == null ? "" : obj[3].toString());
-
-                            String jalan = obj[4] == null ? "" : obj[4].toString();
-
-                            headerDetailCheckup.setCreatedDate(obj[5] == null ? null : (Timestamp) obj[5]);
-                            headerDetailCheckup.setDesaId(obj[6] == null ? "" : obj[6].toString());
-                            headerDetailCheckup.setStatusPeriksa(obj[7].toString());
-                            headerDetailCheckup.setStatusPeriksaName(obj[8].toString());
-                            headerDetailCheckup.setKeteranganSelesai(obj[9] == null ? "" : obj[9].toString());
-                            headerDetailCheckup.setKlaimBpjsFlag(obj[10] == null ? "" : obj[10].toString());
-                            headerDetailCheckup.setStatusBayar(obj[11] == null ? "" : obj[11].toString());
-                            headerDetailCheckup.setIdJenisPeriksaPasien(obj[13] == null ? "" : obj[13].toString());
-                            headerDetailCheckup.setTglCekup(obj[16] != null ? java.sql.Date.valueOf(obj[16].toString()) : null);
-
-                            if (!"".equalsIgnoreCase(headerDetailCheckup.getDesaId())) {
-                                List<Object[]> objDesaList = getListAlamatByDesaId(headerDetailCheckup.getDesaId());
-                                if (!objDesaList.isEmpty()) {
-                                    for (Object[] objDesa : objDesaList) {
-
-                                        String alamatLengkap =
-                                                "Desa. " + objDesa[0].toString() +
-                                                        " Kec. " + objDesa[1].toString() +
-                                                        " " + objDesa[2].toString() +
-                                                        " Prov. " + objDesa[3].toString();
-
-                                        if (!"".equalsIgnoreCase(jalan)) {
-                                            jalan = jalan + ", " + alamatLengkap;
-                                        } else {
-                                            jalan = alamatLengkap;
-                                        }
-
-                                        headerDetailCheckup.setDesa(objDesa[0] == null ? "" : objDesa[0].toString());
-                                        headerDetailCheckup.setKecamatan(objDesa[1] == null ? "" : objDesa[1].toString());
-
-                                    }
-                                }
-                            }
-
-                            headerDetailCheckup.setAlamat(jalan);
-                            checkupList.add(headerDetailCheckup);
+                            headerDetailCheckup.setIsBayar("N");
                         }
-                    } else {
-
-                        HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
-                        headerDetailCheckup.setIdDetailCheckup(obj[0].toString());
-                        headerDetailCheckup.setNoCheckup(obj[1].toString());
-                        headerDetailCheckup.setIdPasien(obj[2] == null ? "" : obj[2].toString());
-                        headerDetailCheckup.setNamaPasien(obj[3] == null ? "" : obj[3].toString());
-
-                        String jalan = obj[4] == null ? "" : obj[4].toString();
-
-                        headerDetailCheckup.setCreatedDate(obj[5] == null ? null : (Timestamp) obj[5]);
-                        headerDetailCheckup.setDesaId(obj[6] == null ? "" : obj[6].toString());
-                        headerDetailCheckup.setStatusPeriksa(obj[7].toString());
-                        headerDetailCheckup.setStatusPeriksaName(obj[8].toString());
-                        headerDetailCheckup.setKeteranganSelesai(obj[9] == null ? "" : obj[9].toString());
-                        headerDetailCheckup.setKlaimBpjsFlag(obj[10] == null ? "" : obj[10].toString());
-                        headerDetailCheckup.setStatusBayar(obj[11] == null ? "" : obj[11].toString());
-                        headerDetailCheckup.setIdJenisPeriksaPasien(obj[13] == null ? "" : obj[13].toString());
-                        headerDetailCheckup.setTglCekup(obj[16] != null ? java.sql.Date.valueOf(obj[16].toString()) : null);
-
-                        if (!"".equalsIgnoreCase(headerDetailCheckup.getDesaId())) {
-                            List<Object[]> objDesaList = getListAlamatByDesaId(headerDetailCheckup.getDesaId());
-                            if (!objDesaList.isEmpty()) {
-                                for (Object[] objDesa : objDesaList) {
-
-                                    String alamatLengkap =
-                                            "Desa. " + objDesa[0].toString() +
-                                                    " Kec. " + objDesa[1].toString() +
-                                                    " " + objDesa[2].toString() +
-                                                    " Prov. " + objDesa[3].toString();
-
-                                    if (!"".equalsIgnoreCase(jalan)) {
-                                        jalan = jalan + ", " + alamatLengkap;
-                                    } else {
-                                        jalan = alamatLengkap;
-                                    }
-
-                                    headerDetailCheckup.setDesa(objDesa[0] == null ? "" : objDesa[0].toString());
-                                    headerDetailCheckup.setKecamatan(objDesa[1] == null ? "" : objDesa[1].toString());
-
-                                }
-                            }
-                        }
-
-                        headerDetailCheckup.setAlamat(jalan);
-                        checkupList.add(headerDetailCheckup);
                     }
+
+                    headerDetailCheckup.setIdDetailCheckup(obj[0].toString());
+                    headerDetailCheckup.setNoCheckup(obj[1].toString());
+                    headerDetailCheckup.setIdPasien(obj[2] == null ? "" : obj[2].toString());
+                    headerDetailCheckup.setNamaPasien(obj[3] == null ? "" : obj[3].toString());
+                    String jalan = obj[4] == null ? "" : obj[4].toString();
+                    headerDetailCheckup.setCreatedDate(obj[5] == null ? null : (Timestamp) obj[5]);
+                    headerDetailCheckup.setDesaId(obj[6] == null ? "" : obj[6].toString());
+                    headerDetailCheckup.setStatusPeriksa(obj[7].toString());
+                    headerDetailCheckup.setStatusPeriksaName(obj[8].toString());
+                    headerDetailCheckup.setKeteranganSelesai(obj[9] == null ? "" : obj[9].toString());
+                    headerDetailCheckup.setKlaimBpjsFlag(obj[10] == null ? "" : obj[10].toString());
+                    headerDetailCheckup.setStatusBayar(obj[11] == null ? "" : obj[11].toString());
+                    headerDetailCheckup.setIdJenisPeriksaPasien(obj[13] == null ? "" : obj[13].toString());
+                    headerDetailCheckup.setTglCekup(obj[16] != null ? java.sql.Date.valueOf(obj[16].toString()) : null);
+                    headerDetailCheckup.setJenisPeriksaPasien(obj[17] != null ? obj[17].toString() : null);
+
+                    if (!"".equalsIgnoreCase(headerDetailCheckup.getDesaId())) {
+                        List<Object[]> objDesaList = getListAlamatByDesaId(headerDetailCheckup.getDesaId());
+                        if (!objDesaList.isEmpty()) {
+                            for (Object[] objDesa : objDesaList) {
+
+                                String alamatLengkap =
+                                        "Desa. " + objDesa[0].toString() +
+                                                " Kec. " + objDesa[1].toString() +
+                                                " " + objDesa[2].toString() +
+                                                " Prov. " + objDesa[3].toString();
+
+                                if (!"".equalsIgnoreCase(jalan)) {
+                                    jalan = jalan + ", " + alamatLengkap;
+                                } else {
+                                    jalan = alamatLengkap;
+                                }
+
+                                headerDetailCheckup.setDesa(objDesa[0] == null ? "" : objDesa[0].toString());
+                                headerDetailCheckup.setKecamatan(objDesa[1] == null ? "" : objDesa[1].toString());
+
+                            }
+                        }
+                    }
+                    headerDetailCheckup.setAlamat(jalan);
+                    checkupList.add(headerDetailCheckup);
                 }
             }
         }
@@ -910,12 +772,12 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             dateTo = bean.getStDateTo();
         }
 
-        if(bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())){
+        if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())) {
             idPasien = bean.getIdPasien();
         }
 
-        if(bean.getNamaPasien() != null && !"".equalsIgnoreCase(bean.getNamaPasien())){
-            namaPasien = "%"+bean.getNamaPasien() +"%";
+        if (bean.getNamaPasien() != null && !"".equalsIgnoreCase(bean.getNamaPasien())) {
+            namaPasien = "%" + bean.getNamaPasien() + "%";
         }
 
         if ("Y".equalsIgnoreCase(bean.getStatusBayar())) {
@@ -1010,7 +872,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         String jenisPasien = "%";
         if (!"".equalsIgnoreCase(jenis)) {
             jenisPasien = jenis;
-        } else if ("ptpn".equalsIgnoreCase(jenis)){
+        } else if ("ptpn".equalsIgnoreCase(jenis)) {
             jenisPasien = "bpjs";
         }
 
@@ -1249,7 +1111,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                         "dt.keterangan_selesai,\n" +
                         "dt.id_jenis_periksa_pasien,\n" +
                         "jp.keterangan AS jenis_periksa,\n" +
-                        "um.status_bayar\n"+
+                        "um.status_bayar\n" +
                         "FROM \n" +
                         "it_simrs_header_checkup hd\n" +
                         "INNER JOIN it_simrs_header_detail_checkup dt ON dt.no_checkup = hd.no_checkup\n" +
@@ -1303,9 +1165,9 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
 
                 if (!results.isEmpty()) {
                     for (Object[] obj : results) {
-                        if("umum".equalsIgnoreCase(obj[10].toString())){
-                            if(obj[12] != null){
-                                if("Y".equalsIgnoreCase(obj[12].toString())){
+                        if ("umum".equalsIgnoreCase(obj[10].toString())) {
+                            if (obj[12] != null) {
+                                if ("Y".equalsIgnoreCase(obj[12].toString())) {
                                     HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
                                     headerDetailCheckup.setIdDetailCheckup(obj[0].toString());
                                     headerDetailCheckup.setNoCheckup(obj[1].toString());
@@ -1350,7 +1212,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                                     checkupList.add(headerDetailCheckup);
                                 }
                             }
-                        }else{
+                        } else {
                             HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
                             headerDetailCheckup.setIdDetailCheckup(obj[0].toString());
                             headerDetailCheckup.setNoCheckup(obj[1].toString());
@@ -1416,7 +1278,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                         "f.id_kelas_ruangan,\n" +
                         "b.id_jenis_periksa_pasien,\n" +
                         "jp.keterangan AS jenis_periksa,\n" +
-                        "um.status_bayar\n"+
+                        "um.status_bayar\n" +
                         "FROM it_simrs_header_checkup a\n" +
                         "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                         "INNER JOIN im_simrs_status_pasien c ON b.status_periksa = c.id_status_pasien\n" +
@@ -1471,7 +1333,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
 
                 if (!results.isEmpty()) {
                     for (Object[] obj : results) {
-                        if("umum".equalsIgnoreCase(obj[16].toString())) {
+                        if ("umum".equalsIgnoreCase(obj[16].toString())) {
                             if (obj[18] != null) {
                                 if ("Y".equalsIgnoreCase(obj[18].toString())) {
                                     HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
@@ -1521,7 +1383,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                                     checkupList.add(headerDetailCheckup);
                                 }
                             }
-                        }else{
+                        } else {
                             HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
                             headerDetailCheckup.setIdDetailCheckup(obj[0].toString());
                             headerDetailCheckup.setNoCheckup(obj[1].toString());
@@ -2126,10 +1988,10 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
 
         if (bean != null) {
             if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())) {
-                idPasien = "%"+bean.getIdPasien()+"%";
+                idPasien = "%" + bean.getIdPasien() + "%";
             }
             if (bean.getNamaPasien() != null && !"".equalsIgnoreCase(bean.getNamaPasien())) {
-                nama = "%"+bean.getNamaPasien()+"%";
+                nama = "%" + bean.getNamaPasien() + "%";
             }
             if (bean.getJenisKelamin() != null && !"".equalsIgnoreCase(bean.getJenisKelamin())) {
                 jenisKelamin = bean.getJenisKelamin();
@@ -2189,11 +2051,11 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     String jk = "";
                     detailCheckup.setIdPasien(obj[0] != null ? obj[0].toString() : "");
                     detailCheckup.setNamaPasien(obj[1] != null ? obj[1].toString() : "");
-                    if(obj[2] != null){
-                        if("L".equalsIgnoreCase(obj[2].toString())){
+                    if (obj[2] != null) {
+                        if ("L".equalsIgnoreCase(obj[2].toString())) {
                             jk = "Laki-Laki";
                         }
-                        if("P".equalsIgnoreCase(obj[2].toString())){
+                        if ("P".equalsIgnoreCase(obj[2].toString())) {
                             jk = "Perempuan";
                         }
 
@@ -2202,14 +2064,14 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     detailCheckup.setTempatLahir(obj[3] != null ? obj[3].toString() : "");
                     detailCheckup.setTglLahir(obj[4] != null ? obj[4].toString() : "");
                     detailCheckup.setDesa(obj[5] != null ? obj[5].toString() : "");
-                    if(!"".equalsIgnoreCase(detailCheckup.getTempatLahir()) && !"".equalsIgnoreCase(detailCheckup.getTglLahir())){
+                    if (!"".equalsIgnoreCase(detailCheckup.getTempatLahir()) && !"".equalsIgnoreCase(detailCheckup.getTglLahir())) {
                         String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(java.sql.Date.valueOf(detailCheckup.getTglLahir()));
-                        detailCheckup.setTempatTglLahir(detailCheckup.getTempatLahir()+", "+formatDate);
+                        detailCheckup.setTempatTglLahir(detailCheckup.getTempatLahir() + ", " + formatDate);
                     }
 
-                    if(obj[7] != null && obj[8] != null){
+                    if (obj[7] != null && obj[8] != null) {
                         String tglPeriksa = new SimpleDateFormat("dd-MM-yyyy").format(Timestamp.valueOf(obj[7].toString()));
-                        detailCheckup.setPemeriksaanTerakhir(tglPeriksa+", "+obj[8].toString());
+                        detailCheckup.setPemeriksaanTerakhir(tglPeriksa + ", " + obj[8].toString());
                     }
                     detailCheckup.setIdDetailCheckup(obj[9] != null ? obj[9].toString() : "");
                     detailCheckup.setNoCheckup(obj[10] != null ? obj[10].toString() : "");
@@ -2247,11 +2109,11 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 for (Object[] obj : results) {
                     HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
                     detailCheckup.setNoCheckup(obj[0] != null ? obj[0].toString() : "");
-                    if(obj[1] != null){
+                    if (obj[1] != null) {
                         String tglMasuk = new SimpleDateFormat("dd-MM-yyyy HH:mm").format(Timestamp.valueOf(obj[1].toString()));
                         detailCheckup.setStTanggalMasuk(tglMasuk);
                     }
-                    if(obj[2] != null){
+                    if (obj[2] != null) {
                         String tglKeluar = new SimpleDateFormat("dd-MM-yyyy HH:mm").format(Timestamp.valueOf(obj[2].toString()));
                         detailCheckup.setStTanggalKeluar(tglKeluar);
                     }
@@ -2272,28 +2134,28 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         return sId;
     }
 
-    public BigDecimal getBiayaByNoSep(String nosep){
+    public BigDecimal getBiayaByNoSep(String nosep) {
         BigDecimal total = new BigDecimal(0);
-        String query="SELECT\n" +
+        String query = "SELECT\n" +
                 "\tsum(total_tarif) as total_tarif\n" +
                 "FROM\n" +
                 "\tit_simrs_header_detail_checkup dc\n" +
                 "\tLEFT JOIN it_simrs_riwayat_tindakan rt ON dc.id_detail_checkup=rt.id_detail_checkup\n" +
                 "WHERE\n" +
-                "\tdc.no_sep='"+nosep+"'";
+                "\tdc.no_sep='" + nosep + "'";
         Object results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query).uniqueResult();
-        if (results!=null){
+        if (results != null) {
             total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
-        }else{
+        } else {
             total = BigDecimal.valueOf(0);
         }
         return total;
     }
 
-    public List<HeaderDetailCheckup> getListVerifTransaksi(HeaderDetailCheckup detailCheckup){
+    public List<HeaderDetailCheckup> getListVerifTransaksi(HeaderDetailCheckup detailCheckup) {
         List<HeaderDetailCheckup> response = new ArrayList<>();
-        if(detailCheckup != null){
+        if (detailCheckup != null) {
             String idPasien = "";
             String idPelayanan = "";
             String nama = "";
@@ -2304,39 +2166,39 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             String isNull = "";
             String idJenisPeriksaPasien = "";
 
-            if(detailCheckup.getIdPasien() != null && !"".equalsIgnoreCase(detailCheckup.getIdPasien())){
-                idPasien = "AND a.id_pasien LIKE '%"+detailCheckup.getIdPasien()+"%' \n";
+            if (detailCheckup.getIdPasien() != null && !"".equalsIgnoreCase(detailCheckup.getIdPasien())) {
+                idPasien = "AND a.id_pasien LIKE '%" + detailCheckup.getIdPasien() + "%' \n";
             }
-            if(detailCheckup.getIdPelayanan() != null && !"".equalsIgnoreCase(detailCheckup.getIdPelayanan())){
-                idPelayanan = "AND b.id_pelayanan = "+detailCheckup.getIdPelayanan()+" \n";
+            if (detailCheckup.getIdPelayanan() != null && !"".equalsIgnoreCase(detailCheckup.getIdPelayanan())) {
+                idPelayanan = "AND b.id_pelayanan = " + detailCheckup.getIdPelayanan() + " \n";
             }
-            if(detailCheckup.getNamaPasien() != null && !"".equalsIgnoreCase(detailCheckup.getNamaPasien())){
-                nama = "AND a.nama ILIKE '%"+detailCheckup.getNamaPasien()+"%' \n";
+            if (detailCheckup.getNamaPasien() != null && !"".equalsIgnoreCase(detailCheckup.getNamaPasien())) {
+                nama = "AND a.nama ILIKE '%" + detailCheckup.getNamaPasien() + "%' \n";
             }
-            if(detailCheckup.getIdDetailCheckup() != null && !"".equalsIgnoreCase(detailCheckup.getIdDetailCheckup())){
-                idDetailCheckup = "AND b.id_detail_checkup LIKE '%"+detailCheckup.getIdDetailCheckup()+"%' \n";
+            if (detailCheckup.getIdDetailCheckup() != null && !"".equalsIgnoreCase(detailCheckup.getIdDetailCheckup())) {
+                idDetailCheckup = "AND b.id_detail_checkup LIKE '%" + detailCheckup.getIdDetailCheckup() + "%' \n";
             }
 
-            if("Y".equalsIgnoreCase(detailCheckup.getIsCover())){
+            if ("Y".equalsIgnoreCase(detailCheckup.getIsCover())) {
                 idJenisPeriksaPasien = "AND b.id_jenis_periksa_pasien = 'asuransi' \n";
-                if(detailCheckup.getFlagCover() != null && !"".equalsIgnoreCase(detailCheckup.getFlagCover())){
-                    flagCloseTransaksi = "AND b.flag_close_traksaksi IS NOT NULL AND b.flag_cover IS NOT NULL \n";
-                }else{
-                    flagCloseTransaksi = "AND b.flag_close_traksaksi IS NULL AND b.flag_cover IS NULL \n";
+                if (detailCheckup.getFlagCover() != null && !"".equalsIgnoreCase(detailCheckup.getFlagCover())) {
+                    flagCloseTransaksi = "AND b.flag_cover IS NOT NULL \n";
+                } else {
+                    flagCloseTransaksi = "AND b.flag_cover IS NULL \n";
                 }
-            }else{
+            } else {
                 idJenisPeriksaPasien = "AND b.id_jenis_periksa_pasien NOT IN ('bpjs', 'ptpn','asuransi')\n";
-                if(detailCheckup.getFlagCloseTraksaksi() != null && !"".equalsIgnoreCase(detailCheckup.getFlagCloseTraksaksi())){
+                if (detailCheckup.getFlagCloseTraksaksi() != null && !"".equalsIgnoreCase(detailCheckup.getFlagCloseTraksaksi())) {
                     flagCloseTransaksi = "AND b.flag_close_traksaksi IS NOT NULL \n";
-                }else{
+                } else {
                     flagCloseTransaksi = "AND b.flag_close_traksaksi IS NULL \n";
                 }
             }
 
-            if(detailCheckup.getTipePelayanan().equalsIgnoreCase("rawat_jalan")){
+            if (detailCheckup.getTipePelayanan().equalsIgnoreCase("rawat_jalan")) {
                 tipePelayanan = "LEFT JOIN it_simrs_rawat_inap d ON b.id_detail_checkup = d.id_detail_checkup \n";
                 isNull = "AND d.id_detail_checkup IS NULL \n";
-            }else{
+            } else {
                 tipePelayanan = "INNER JOIN " +
                         "(SELECT * FROM (SELECT *, \n" +
                         "rank() OVER (PARTITION BY id_detail_checkup ORDER BY created_date ASC) \n" +
@@ -2344,9 +2206,9 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                         ") a WHERE a.rank = 1) d ON b.id_detail_checkup = d.id_detail_checkup \n";
             }
 
-            if(detailCheckup.getBranchId() != null && !"".equalsIgnoreCase(detailCheckup.getBranchId())){
-                branchId = "AND a.branch_id LIKE '"+detailCheckup.getBranchId()+"'";
-            }else{
+            if (detailCheckup.getBranchId() != null && !"".equalsIgnoreCase(detailCheckup.getBranchId())) {
+                branchId = "AND a.branch_id LIKE '" + detailCheckup.getBranchId() + "'";
+            } else {
                 branchId = "AND a.branch_id LIKE '%'";
             }
 
@@ -2367,7 +2229,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_jenis_periksa_pasien c ON b.id_jenis_periksa_pasien = c.id_jenis_periksa_pasien\n"
-                     + tipePelayanan +
+                    + tipePelayanan +
                     "WHERE b.status_periksa = '3' \n" + idJenisPeriksaPasien
                     + isNull + idPasien + idPelayanan +
                     nama + idDetailCheckup +
@@ -2375,8 +2237,8 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .list();
-            if(result.size() > 0){
-                for (Object[] obj: result){
+            if (result.size() > 0) {
+                for (Object[] obj : result) {
                     HeaderDetailCheckup detail = new HeaderDetailCheckup();
                     detail.setNoCheckup(obj[0] == null ? null : obj[0].toString());
                     detail.setIdPasien(obj[1] == null ? null : obj[1].toString());

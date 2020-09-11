@@ -476,11 +476,12 @@
                     setLabelJenisPasien('jenis_pasien', res.idJenisPeriksaPasien);
                     $('#save_fin').show();
                     $('#load_fin').hide();
-                    if(flagClose == "Y"){
+                    if(res.flagCloseTransaksi == "Y"){
                         $('#form-close').hide();
                         $('#form-cover').show();
                         $('#save_fin').html("<i class='fa fa-check'></i> Update Cover");
                         $('#save_fin').attr('onclick', 'confirm()');
+                        listTindakanApprove(noCheckup, idDetailCheckup, res.idJenisPeriksaPasien);
                     }else{
                         $('#form-close').show();
                         $('#form-cover').hide();
@@ -785,6 +786,7 @@
         var table = "";
         var data = [];
         var trfTtl = 0;
+        $('#body_tindakan_cover').html('');
         $('#loading_page').show();
         dwr.engine.setAsync(true);
         VerifikatorAction.getListTindakanRawat(noCheckup, idDetailCheckup, jenis,
@@ -837,7 +839,7 @@
                         "<tr style='font-weight: bold'>" +
                         "<td colspan='2'>Total Biaya Yang Dibayar Pasien</td>" +
                         "<td>" +
-                        '<input type="hidden" id="h_pasien_bayar">' +
+                        '<input type="hidden" id="h_pasien_bayar" value="0">' +
                         '<input style="text-align: right" class="form-control" id="pasien_bayar" value="0">' +
                         "</td>" +
                         "<td></td>" +

@@ -115,6 +115,24 @@ public class RawatInap {
     private String idRuangLama;
     private String status;
     private BigInteger lamakamar;
+    private String isKasir;
+    private String isBayar;
+
+    public String getIsBayar() {
+        return isBayar;
+    }
+
+    public void setIsBayar(String isBayar) {
+        this.isBayar = isBayar;
+    }
+
+    public String getIsKasir() {
+        return isKasir;
+    }
+
+    public void setIsKasir(String isKasir) {
+        this.isKasir = isKasir;
+    }
 
     public BigInteger getLamakamar() {
         return lamakamar;

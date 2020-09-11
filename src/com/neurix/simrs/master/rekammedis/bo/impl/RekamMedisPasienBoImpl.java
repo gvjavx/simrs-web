@@ -74,6 +74,11 @@ public class RekamMedisPasienBoImpl implements RekamMedisPasienBo {
         return rekamMedisPasienDao.getListRekamMedisByPelayanan(tipePelayanan, jenis, id);
     }
 
+    @Override
+    public List<RekamMedisPasien> getRiwayatListRekamMedis(String id, String tipePelayanan, String jenis) throws GeneralBOException {
+        return rekamMedisPasienDao.getRiwayatRekamMedis(id, tipePelayanan, jenis);
+    }
+
     public static Logger getLogger() {
         return logger;
     }

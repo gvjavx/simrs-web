@@ -14,6 +14,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_icu_tahap_akhir_kehidupan"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_tahap_akhir_kehidupan">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_tahap_akhir_kehidupan"></p>
+                    </div>
                         <button type="button" onclick="showModalICU('pengkajian_medik')" class="btn btn-success"><i class="fa fa-plus"></i> Pengkajian Medik
                         </button>
                         <button type="button" onclick="showModalICU('pengkajian_keperawatan')" class="btn btn-success"><i class="fa fa-plus"></i> Pengkajian Keperawatan
@@ -26,12 +30,14 @@
                             <td>Pengkajian Medis</td>
                             <td width="20%" align="center">
                                 <img id="btn_icu_pengkajian_medik" class="hvr-grow" onclick="detailICU('pengkajian_medik')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_pengkajian_medik" class="hvr-grow btn-hide" onclick="conICU('pengkajian_medik', 'tahap_akhir_kehidupan')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_icu_pengkajian_keperawatan">
                             <td>Pengkajian Keperawatan</td>
                             <td width="20%" align="center">
                                 <img id="btn_icu_pengkajian_keperawatan" class="hvr-grow" onclick="detailICU('pengkajian_keperawatan')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_pengkajian_keperawatan" class="hvr-grow btn-hide" onclick="conICU('pengkajian_keperawatan', 'tahap_akhir_kehidupan')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

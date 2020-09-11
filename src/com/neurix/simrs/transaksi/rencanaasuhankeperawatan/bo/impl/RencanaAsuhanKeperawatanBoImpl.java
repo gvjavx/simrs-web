@@ -115,6 +115,29 @@ public class RencanaAsuhanKeperawatanBoImpl implements RencanaAsuhanKeperawatanB
         return response;
     }
 
+    @Override
+    public CrudResponse saveDelete(RencanaAsuhanKeperawatan bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        ItSimrsRencanaAsuhanKeperawatanEntity entity = rencanaAsuhanKeperawatanDao.getById("idRencanaAsuhanKeperawatan", bean.getIdRencanaAsuhanKeperawatan());
+        if(entity != null){
+            entity.setFlag("N");
+            entity.setLastUpdate(bean.getLastUpdate());
+            entity.setLastUpdateWho(bean.getLastUpdateWho());
+            try {
+                rencanaAsuhanKeperawatanDao.updateAndSave(entity);
+                response.setStatus("success");
+                response.setMsg("Berhasil");
+            }catch (HibernateException e){
+                response.setStatus("error");
+                response.setMsg(e.getMessage());
+            }
+        }else{
+            response.setStatus("error");
+            response.setMsg("Data tidak ditemukan...!");
+        }
+        return response;
+    }
+
     public static Logger getLogger() {
         return logger;
     }

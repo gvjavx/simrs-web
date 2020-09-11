@@ -14,6 +14,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_icu_checklist_masuk_icu"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_checklist_masuk_icu">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_checklist_masuk_icu"></p>
+                    </div>
                     <div class="btn-group">
                         <button type="button" onclick="showModalICU('checklist_kriteria')" class="btn btn-success"><i class="fa fa-plus"></i> Checklist
                         </button>
@@ -28,6 +32,7 @@
                                 <img id="btn_icu_pre_checklist_masuk_icu" class="hvr-grow"
                                      onclick="detailICU('checklist_kriteria')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_checklist_kriteria" class="hvr-grow btn-hide" onclick="conICU('checklist_kriteria', 'checklist_masuk_icu')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

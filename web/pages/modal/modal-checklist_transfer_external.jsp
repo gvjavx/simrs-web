@@ -8,12 +8,16 @@
                 </h4>
             </div>
             <div class="modal-body">
+                <div class="alert alert-success alert-dismissible" style="display: none"
+                     id="warning_ina_checklist_transfer_external">
+                    <h4><i class="icon fa fa-info"></i> Info!</h4>
+                    <p id="msg_ina_checklist_transfer_external"></p>
+                </div>
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_checklist_transfer_external">
+                    <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                    <p id="msg_checklist_transfer_external"></p>
+                </div>
                 <div class="box-body btn-hide">
-                    <div class="alert alert-success alert-dismissible" style="display: none"
-                         id="warning_ina_checklist_transfer_external">
-                        <h4><i class="icon fa fa-info"></i> Info!</h4>
-                        <p id="msg_ina_checklist_transfer_external"></p>
-                    </div>
                     <div class="btn-group">
                         <button type="button" onclick="showModalAsesmenRawatInap('transfer_external')" class="btn btn-success"><i class="fa fa-plus"></i> Checklist Persiapan
                         </button>
@@ -28,6 +32,7 @@
                                 <img id="btn_ina_transfer_external" class="hvr-grow"
                                      onclick="detailAsesmenRawatInap('transfer_external')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_transfer_external" class="hvr-grow btn-hide" onclick="conRI('transfer_external', 'checklist_transfer_external')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

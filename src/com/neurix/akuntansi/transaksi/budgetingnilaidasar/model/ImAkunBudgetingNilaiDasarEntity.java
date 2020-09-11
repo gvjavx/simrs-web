@@ -17,6 +17,15 @@ public class ImAkunBudgetingNilaiDasarEntity {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private Integer urutan;
+    private String tipe;
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
 
     public Integer getUrutan() {
         return urutan;

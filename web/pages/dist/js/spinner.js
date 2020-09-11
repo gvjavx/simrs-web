@@ -26,3 +26,20 @@ function setLabelJenisPasien(id, jenis){
         $('#'+id).attr('style', 'background-color: #cc3399; color: white; border-radius: 5px; border: 1px solid black; padding: 5px');
     }
 }
+function startSpin(id){
+    var url = contextPathHeader+'/pages/images/spinner.gif';
+    $('#'+id).attr('src',url).css('width', '30px', 'height', '40px');
+}
+function stopSpin(id){
+    var url = contextPathHeader+'/pages/images/cancel-flat-new.png';
+    $('#'+id).attr('src',url).css('width', '', 'height', '');
+}
+
+function startIconSpin(id){
+    $('#'+id).removeClass("fa fa fa-trash");
+    $('#'+id).addClass("fa fa-circle-o-notch fa-spin");
+}
+function stopIconSpin(id){
+    $('#'+id).removeClass("fa fa-circle-o-notch fa-spin");
+    $('#'+id).addClass("fa fa fa-trash");
+}

@@ -9,4 +9,5 @@ import java.util.List;
 public interface AsesmenIcuBo {
     public List<AsesmenIcu> getByCriteria(AsesmenIcu bean) throws GeneralBOException;
     public CrudResponse saveAdd(List<AsesmenIcu> list) throws GeneralBOException;
+    public CrudResponse saveDelete(AsesmenIcu bean) throws GeneralBOException;
 }

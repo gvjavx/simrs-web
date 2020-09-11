@@ -170,7 +170,7 @@ public class BudgetingNilaiDasarAction {
 
         List<BudgetingNilaiDasar> budgetingNilaiDasars = new ArrayList<>();
         try {
-            budgetingNilaiDasars = budgetingNilaiDasarBo.getListMasterNilaiDasarAdd(budgetingNilaiDasar);
+            budgetingNilaiDasars = budgetingNilaiDasarBo.getTransNilaiDasarByTahun(budgetingNilaiDasar);
         } catch (GeneralBOException e){
             logger.error("[BudgetingNilaiDasarAction.getListNilaiDasarEdit] ERROR. ", e);
         }

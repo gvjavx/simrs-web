@@ -16,4 +16,5 @@ public interface BudgetingNilaiDasarBo {
     public void saveTransBudgeting(List<BudgetingNilaiDasar> budgetingNilaiDasarList) throws GeneralBOException;
     public List<ImAkunBudgetingNilaiDasarEntity> getListMasterNilaiDasarEntityByCriteria(BudgetingNilaiDasar bean) throws GeneralBOException;
     public List<BudgetingNilaiDasar> getListMasterNilaiDasarAdd(BudgetingNilaiDasar bean) throws GeneralBOException;
+    public List<BudgetingNilaiDasar> getTransNilaiDasarByTahun(BudgetingNilaiDasar bean) throws GeneralBOException;
 }

@@ -77,37 +77,37 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <label class="control-label col-sm-2">Unit</label>
-                                        <div class="col-sm-2">
+                                    <%--<div class="row">--%>
+                                        <%--<label class="control-label col-sm-2">Unit</label>--%>
+                                        <%--<div class="col-sm-2">--%>
 
-                                            <s:if test='budgeting.flagKp == "Y"'>
-                                                <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                                <s:select list="#initComboBranch.listOfComboBranch" id="sel-unit" name="budgeting.branchId"
-                                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select Value]" cssClass="form-control" onchange="changeAction(this.value)"/>
+                                            <%--<s:if test='budgeting.flagKp == "Y"'>--%>
+                                                <%--<s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>--%>
+                                                <%--<s:select list="#initComboBranch.listOfComboBranch" id="sel-unit" name="budgeting.branchId"--%>
+                                                          <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select Value]" cssClass="form-control" onchange="changeAction(this.value)"/>--%>
 
-                                            </s:if>
-                                            <s:else>
-                                                <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                                <s:select list="#initComboBranch.listOfComboBranch" name="budgeting.branchId"
-                                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select Value]" cssClass="form-control" onchange="changeAction(this.value)" disabled="true"/>
-                                                <%--<input type="hidden" id="sel-unit" name="budgeting.branchId"/>--%>
-                                                <s:hidden id="sel-unit" name="budgeting.branchId"/>
-                                            </s:else>
-                                        </div>
-                                    </div>
+                                            <%--</s:if>--%>
+                                            <%--<s:else>--%>
+                                                <%--<s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>--%>
+                                                <%--<s:select list="#initComboBranch.listOfComboBranch" name="budgeting.branchId"--%>
+                                                          <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select Value]" cssClass="form-control" onchange="changeAction(this.value)" disabled="true"/>--%>
+                                                <%--&lt;%&ndash;<input type="hidden" id="sel-unit" name="budgeting.branchId"/>&ndash;%&gt;--%>
+                                                <%--<s:hidden id="sel-unit" name="budgeting.branchId"/>--%>
+                                            <%--</s:else>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
 
-                                    <div class="row">
-                                        <label class="control-label col-sm-2">Tipe Budgeting</label>
-                                        <div class="col-sm-2">
-                                            <select class="form-control" id="sel-tipe">
-                                                <option value="tahunan">Tahunan</option>
-                                                <option value="bulanan">Bulanan</option>
-                                                <option value="semester">Semester</option>
-                                                <option value="quartal">Quartal</option>
-                                            </select>
-                                        </div>
-                                    </div>
+                                    <%--<div class="row">--%>
+                                        <%--<label class="control-label col-sm-2">Tipe Budgeting</label>--%>
+                                        <%--<div class="col-sm-2">--%>
+                                            <%--<select class="form-control" id="sel-tipe">--%>
+                                                <%--<option value="tahunan">Tahunan</option>--%>
+                                                <%--<option value="bulanan">Bulanan</option>--%>
+                                                <%--<option value="semester">Semester</option>--%>
+                                                <%--<option value="quartal">Quartal</option>--%>
+                                            <%--</select>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
 
                                 </div>
                             </div>

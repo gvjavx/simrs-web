@@ -14,6 +14,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_sps_spesialis_gigi"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="modal_warning">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_warning"></p>
+                    </div>
                         <button type="button" onclick="showModalSPS('asesmen_gigi')" class="btn btn-success"><i class="fa fa-plus"></i> Asesmen Gigi
                         </button>
                         <button type="button" onclick="showModalSPS('rencana_gigi_pasien')" class="btn btn-success"><i class="fa fa-plus"></i> Rencana Perawatan Gigi
@@ -28,6 +32,7 @@
                                 <img id="btn_sps_asesmen_gigi" class="hvr-grow"
                                      onclick="detailSPS('asesmen_gigi')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_asesmen_gigi" class="hvr-grow btn-hide" onclick="conSPS('asesmen_gigi', 'spesialis_gigi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_sps_rencana_gigi_pasien">
@@ -36,6 +41,7 @@
                                 <img id="btn_sps_rencana_gigi_pasien" class="hvr-grow"
                                      onclick="detailSPS('rencana_gigi_pasien')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_rencana_gigi_pasien" class="hvr-grow btn-hide" onclick="conSPS('rencana_gigi_pasien', 'spesialis_gigi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -171,7 +177,7 @@
                         <div class="form-group">
                             <label class="col-md-3">Terapi</label>
                             <div class="col-md-9">
-                                <textarea rows="2" id="ag7" class="form-control"/></div>
+                                <textarea rows="2" id="ag7" class="form-control resep-pasien"/></div>
                         </div>
                     </div>
                     <div class="row jarak">
@@ -438,8 +444,8 @@
                                 <label style="margin-left: 8px">TTD</label>
                                 <canvas class="paint-canvas-ttd" id="gg013" width="220"
                                         onmouseover="paintTtd('gg013')"></canvas>
-                                <input class="form-control" id="nama_terang_gg013" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control" id="sip_gg013" placeholder="SIP">
+                                <input class="form-control nama_dokter" id="nama_terang_gg013" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control sip_dokter" id="sip_gg013" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('gg013')"><i
                                         class="fa fa-trash"></i> Clear

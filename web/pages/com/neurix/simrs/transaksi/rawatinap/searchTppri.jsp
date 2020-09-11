@@ -136,7 +136,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <br>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
                                     <div class="col-sm-4" style="margin-top: 7px">
@@ -192,6 +191,12 @@
                                         >
                                             <center><img border="0" src="<s:url value="/pages/images/spinner.gif"/>" alt="Loading..."/></center>
                                         </sj:dialog>
+                                        <div class="col-md-1">
+                                            <input type="color" style="margin-left: -6px; margin-top: -8px" class="js-color-picker  color-picker pull-left">
+                                        </div>
+                                        <div class="col-md-9">
+                                            <input type="range" style="margin-top: -8px" class="js-line-range" min="1" max="72" value="1">
+                                        </div>
                                     </div>
                                 </div>
                             </s:form>
@@ -454,47 +459,71 @@
     </div>
 </div>
 
+<div id="modal-temp"></div>
+
 <div class="modal fade" id="modal-confirm-rm">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
+                <h4 class="modal-title"><i class="fa fa-info"></i> Konfirmasi
                 </h4>
             </div>
             <div class="modal-body">
-                <h5 class="text-center">Do you want print this?</h5>
-                <h5 class="text-center" id="print_form"></h5>
+                <h4 class="text-center" id="tanya"></h4>
+                <h4 class="text-center" id="print_form"></h4>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Tidak
                 </button>
-                <button type="button" class="btn btn-sm btn-default" id="save_con_rm"><i class="fa fa-arrow-right"></i> Yes            </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con_rm"><i class="fa fa-check"></i> Ya            </button>
             </div>
         </div>
     </div>
 </div>
-<div id="modal-temp"></div>
+
 <script type='text/javascript' src='<s:url value="/dwr/interface/RingkasanPasienAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
+
+<script type="text/javascript" src="<s:url value="/pages/dist/js/datapasien.js"/>"></script>
 <script type="text/javascript" src="<s:url value="/pages/dist/js/ringkasanpasien.js"/>"></script>
+<script type="text/javascript" src="<s:url value="/pages/dist/js/paintTtd.js"/>"></script>
 
 <script type='text/javascript'>
 
     var isReadRM = false;
     var contextPath = '<%= request.getContextPath() %>';
     var tempidRm = "";
+    var noCheckup = "";
+    var tempTensi = "";
+    var tempSuhu = "";
+    var tempNadi = "";
+    var tempRr = "";
+    var tempBerat = "";
+    var tempTinggi = "";
+    var tempAnmnesa = "";
+    var idDetailCheckup = "";
+    var namaPasien = "";
+    var alamatLengkap = "";
+    var noBpjs = "";
+    var umur = "";
+    var jenisKelamin = "";
+    var diagnosa = "";
+    var idPasien = "";
+    var tglLahir = "";
 
     function convertRp(id, val) {
         $('#'+id).val(formatRupiahAtas2(val));
     }
-    function detail(noCheckup, idDetailCheckup, tindakLanjut, keteranganSelesai) {
-        startSpinner('t_', idDetailCheckup);
+    function detail(noCheckup, idDCP, tindakLanjut, keteranganSelesai) {
+        idDetailCheckup = idDCP;
+        startSpinner('t_', idDCP);
         dwr.engine.setAsync(true);
-        CheckupAction.listDataPasien(idDetailCheckup,
+        CheckupAction.listDataPasien(idDCP,
             {callback:function (res) {
                     if (res.idPasien != null) {
-                        stopSpinner('t_', idDetailCheckup);
+                        stopSpinner('t_', idDCP);
                         $('#kelas_kamar').html('');
                         $('#kamar').html('');
                         getDokterDpjp('dokter_dpjp_1', null);
@@ -644,10 +673,10 @@
 
     function getDokterDpjp(id, idDpjp) {
         var option = '<option value="">[Select One]</option>';
-        CheckupAction.getListDokterByBranchId(idDpjp, "rawat_jalan", function (res) {
+        CheckupAction.getListDokterByBranchId(idDpjp, function (res) {
             if (res.length > 0) {
                 $.each(res, function (i, item) {
-                    option += '<option value="' + item.idDokter + '|' + item.idPelayanan + '">' + item.namaDokter + ' - ' + item.namaPelayanan + '</option>';
+                    option += '<option value="' + item.idDokter + '|' + item.idPelayanan + '|'+item.sip+'|'+item.namaDokter+'">' + item.namaDokter + ' - ' + item.namaPelayanan + '</option>';
                 });
                 $('#'+id).html(option);
             } else {
@@ -820,6 +849,7 @@
     }
 
     function printPernyataan(kode, idRm, flag, namaRm) {
+        $('#tanya').text("Apakah anda yakin print ?");
         $('#print_form').text(namaRm);
         $('#save_con_rm').attr('onclick','printPernyataanRM(\''+kode+'\', \''+idRm+'\')');
         $('#modal-confirm-rm').modal('show');
@@ -832,7 +862,6 @@
     }
 
     function getListRekamMedis(tipePelayanan, jenis, id) {
-        console.log(id);
         var li = "";
         CheckupAction.getListRekammedisPasien(tipePelayanan, jenis, id, function (res) {
             if (res.length > 0) {
@@ -842,6 +871,7 @@
                     var icons = '<i class="fa fa-file-o"></i>';
                     var icons2 = '<i class="fa fa-print"></i>';
                     var tol = "";
+                    var tolText = "";
                     var labelTerisi = "";
                     var constan = 0;
                     var terIsi = 0;
@@ -861,10 +891,10 @@
                         if (item.createdDate != null) {
                             conver = converterDate(new Date(item.createdDate));
                             tgl = '<label class="label label-success">' + conver + '</label>';
-                            tol = 'title="Mengisi tanggal ' + conver + '"';
+                            tol = 'class="box-rm"';
+                            tolText = '<span class="box-rmtext">Tanggal mengisi ' + conver + '</span>';
                         }
                         icons = '<i class="fa fa-check" style="color: #449d44"></i>';
-                        // cek = '<i class="fa fa-check" style="color: #449d44"></i>';
                         icons2 = '<i class="fa fa-check" style="color: #449d44"></i>';
                     }
 
@@ -875,9 +905,9 @@
                         li += '<li><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '"><i class="fa fa-file-o"></i>' + item.namaRm + '</a></li>'
                     } else {
                         if (item.keterangan == 'form') {
-                            li += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')"><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '">' + icons + item.namaRm + ' ' +labelTerisi +'</a></li>'
+                            li += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')"><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '">' + icons + item.namaRm + ' ' +labelTerisi +tolText+'</a></li>'
                         } else if (item.keterangan == "surat") {
-                            li += '<li><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\',\'' + item.namaRm + '\')' + '">' + icons2 + item.namaRm + ' '+ labelPrint + '</a></li>'
+                            li += '<li '+tol+'><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\',\'' + item.namaRm + '\')' + '">' + icons2 + item.namaRm + ' '+ labelPrint + tolText+ '</a></li>'
                         }
                     }
                 });
@@ -894,6 +924,7 @@
         $('#modal-temp').load(context, function (res, status, xhr) {
         });
     }
+
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>

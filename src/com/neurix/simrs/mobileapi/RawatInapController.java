@@ -2,6 +2,7 @@ package com.neurix.simrs.mobileapi;
 
 import com.google.gson.Gson;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.mobileapi.model.PlanKegiatanRawatMobile;
 import com.neurix.simrs.master.diagnosa.bo.DiagnosaBo;
 import com.neurix.simrs.master.diagnosa.model.Diagnosa;
@@ -131,6 +132,15 @@ public class RawatInapController implements ModelDriven<Object> {
     private String isMobile;
 
     private String idJenisPeriksaPasien;
+    private String tglMasuk;
+
+    public String getTglMasuk() {
+        return tglMasuk;
+    }
+
+    public void setTglMasuk(String tglMasuk) {
+        this.tglMasuk = tglMasuk;
+    }
 
     public String getIdJenisPeriksaPasien() {
         return idJenisPeriksaPasien;
@@ -689,6 +699,7 @@ public class RawatInapController implements ModelDriven<Object> {
             rawatInap.setIdKelas(idKelas);
             rawatInap.setIdRuangan(idRuangan);
             rawatInap.setIdDetailCheckup(idDetailCheckup);
+            rawatInap.setStatus("1");
 
             try {
                 result = rawatInapBoProxy.getSearchRawatInap(rawatInap);
@@ -715,6 +726,7 @@ public class RawatInapController implements ModelDriven<Object> {
                     rawatInapMobile.setAlamat(item.getAlamat());
                     rawatInapMobile.setNamaRangan(item.getNamaRangan());
                     rawatInapMobile.setNoSep(item.getNoSep());
+                    rawatInapMobile.setIdJenisPeriksa(item.getIdJenisPeriksa());
 
                     listOfRawatInap.add(rawatInapMobile);
                 }
@@ -768,7 +780,7 @@ public class RawatInapController implements ModelDriven<Object> {
             model.setTglLahir(headerCheckups.get(0).getTglLahir() != null ? headerCheckups.get(0).getTglLahir().toString() : null);
             String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(headerCheckups.get(0).getTglLahir());
             model.setTempatTglLahir(headerCheckups.get(0).getTempatLahir()+", "+formatDate);
-            model.setIdJenisPeriksa(headerCheckups.get(0).getIdJenisPeriksaPasien());
+            model.setIdJenisPeriksa(result.get(0).getIdJenisPeriksa());
             model.setNik(headerCheckups.get(0).getNoKtp());
             model.setUrlKtp(headerCheckups.get(0).getUrlKtp());
             model.setNoSep(result.get(0).getNoSep());
@@ -785,7 +797,7 @@ public class RawatInapController implements ModelDriven<Object> {
             }
 
             JenisPriksaPasien jenisPriksaPasien = new JenisPriksaPasien();
-            jenisPriksaPasien.setIdJenisPeriksaPasien(headerCheckups.get(0).getIdJenisPeriksaPasien());
+            jenisPriksaPasien.setIdJenisPeriksaPasien(result.get(0).getIdJenisPeriksa());
 
             try {
                  jenisPriksaPasiens = jenisPriksaPasienBoProxy.getListAllJenisPeriksa(jenisPriksaPasien);
@@ -890,7 +902,7 @@ public class RawatInapController implements ModelDriven<Object> {
             List<KategoriTindakan> result = new ArrayList<>();
 
             try {
-                result = kategoriTindakanBoProxy.getListKategoriTindakan(idPelayanan);
+                result = kategoriTindakanBoProxy.getListKategoriTindakan(idPelayanan, null);
             } catch (GeneralBOException e){
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }

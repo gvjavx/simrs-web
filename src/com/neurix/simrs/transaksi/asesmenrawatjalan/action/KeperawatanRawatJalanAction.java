@@ -98,6 +98,9 @@ public class KeperawatanRawatJalanAction {
                 if(obj.has("nama_terang")){
                     keperawatanRawatJalan.setNamaTerang(obj.getString("nama_terang"));
                 }
+                if(obj.has("sip")){
+                    keperawatanRawatJalan.setSip(obj.getString("sip"));
+                }
 
                 keperawatanRawatJalan.setAction("C");
                 keperawatanRawatJalan.setFlag("Y");
@@ -157,6 +160,44 @@ public class KeperawatanRawatJalanAction {
             }
         }
         return list;
+    }
+
+    public CrudResponse saveDelete(String idDetailCheckup, String keterangan, String dataPasien) {
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        KeperawatanRawatJalanBo keperawatanRawatJalanBo = (KeperawatanRawatJalanBo) ctx.getBean("keperawatanRawatJalanBoProxy");
+        if (!"".equalsIgnoreCase(idDetailCheckup) && !"".equalsIgnoreCase(keterangan)) {
+            try {
+                KeperawatanRawatJalan keperawatanRawatJalan = new KeperawatanRawatJalan();
+                keperawatanRawatJalan.setIdDetailCheckup(idDetailCheckup);
+                keperawatanRawatJalan.setKeterangan(keterangan);
+                keperawatanRawatJalan.setLastUpdate(time);
+                keperawatanRawatJalan.setLastUpdateWho(userLogin);
+                response = keperawatanRawatJalanBo.saveDelete(keperawatanRawatJalan);
+                if("success".equalsIgnoreCase(response.getStatus())){
+                    try {
+                        JSONObject obj = new JSONObject(dataPasien);
+                        RekamMedikBo rekamMedikBo = (RekamMedikBo) ctx.getBean("rekamMedikBoProxy");
+                        if (obj != null) {
+                            StatusPengisianRekamMedis status = new StatusPengisianRekamMedis();
+                            status.setNoCheckup(obj.getString("no_checkup"));
+                            status.setIdDetailCheckup(obj.getString("id_detail_checkup"));
+                            status.setIdPasien(obj.getString("id_pasien"));
+                            status.setIdRekamMedisPasien(obj.getString("id_rm"));
+                            status.setLastUpdateWho(userLogin);
+                            status.setLastUpdate(time);
+                            response = rekamMedikBo.saveEdit(status);
+                        }
+                    }catch (JSONException e){
+                        response.setStatus("error");
+                        response.setMsg(e.getMessage());
+                    }
+                }
+            } catch (GeneralBOException e) {
+                logger.error("Found Error" + e.getMessage());
+            }
+        }
+        return response;
     }
 
     public static Logger getLogger() {

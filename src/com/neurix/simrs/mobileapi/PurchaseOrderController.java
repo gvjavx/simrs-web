@@ -435,6 +435,7 @@ public class PurchaseOrderController implements ModelDriven<Object> {
             }
         }
 
+
         if (jsonObatBaru != null && !jsonObatBaru.equalsIgnoreCase("")){
             try {
                 jsonArray = new JSONArray(jsonObatLama);

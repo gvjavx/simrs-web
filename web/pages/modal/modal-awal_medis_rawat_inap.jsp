@@ -14,6 +14,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_ina_awal_medis_rawat_inap"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_awal_medis_rawat_inap">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_awal_medis_rawat_inap"></p>
+                    </div>
                     <div class="btn-group">
                         <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
                         </button>
@@ -39,6 +43,7 @@
                                 <img id="btn_ina_s_o" class="hvr-grow"
                                      onclick="detailAsesmenRawatInap('s_o')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_s_o" class="hvr-grow btn-hide" onclick="conRI('s_o', 'awal_medis_rawat_inap')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_ina_a_p">
@@ -47,6 +52,7 @@
                                 <img id="btn_ina_a_p" class="hvr-grow"
                                      onclick="detailAsesmenRawatInap('a_p')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_a_p" class="hvr-grow btn-hide" onclick="conRI('a_p', 'awal_medis_rawat_inap')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -141,7 +147,7 @@
                         <div class="form-group">
                             <label class="col-md-4">Laborat</label>
                             <div class="col-md-8">
-                                <textarea class="form-control" id="so6"></textarea>
+                                <textarea class="form-control lab-pasien" id="so6"></textarea>
                             </div>
                         </div>
                     </div>
@@ -149,7 +155,7 @@
                         <div class="form-group">
                             <label class="col-md-4">Radiologi</label>
                             <div class="col-md-8">
-                                <textarea class="form-control" id="so7"></textarea>
+                                <textarea class="form-control radiologi-pasien" id="so7"></textarea>
                             </div>
                         </div>
                     </div>
@@ -215,7 +221,7 @@
                         <div class="form-group">
                             <label class="col-md-4">Pemeriksaan Penunjang</label>
                             <div class="col-md-8">
-                                <textarea class="form-control" id="ap3"></textarea>
+                                <textarea class="form-control penunjang-medis" id="ap3"></textarea>
                             </div>
                         </div>
                     </div>
@@ -273,8 +279,8 @@
                         <div class="col-md-6">
                             <span class="text-center">TTD DPJP</span>
                             <canvas style="margin-left: -1px;" width="250" onmouseover="paintTtd('ap9')" class="paint-canvas-ttd" id="ap9"></canvas>
-                            <input class="form-control" placeholder="Nama Terang" id="nama_terang_ap9">
-                            <input style="margin-top: 3px" class="form-control" placeholder="SIP" id="sip_ap9">
+                            <input class="form-control nama_dokter" placeholder="Nama Terang" id="nama_terang_ap9">
+                            <input style="margin-top: 3px" class="form-control sip_dokter" placeholder="SIP" id="sip_ap9">
                             <button style="margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('ap9')"><i class="fa fa-trash"></i> Clear
                             </button>
                         </div>

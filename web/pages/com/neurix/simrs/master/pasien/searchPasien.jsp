@@ -12,6 +12,8 @@
     </style>
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/PasienAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/ProvinsiAction.js"/>'></script>
+
     <script type='text/javascript'>
 
         $( document ).ready(function() {
@@ -63,7 +65,7 @@
                         <div class="form-group">
                             <s:form id="pasienForm" method="post" namespace="/pasien" action="search_pasien.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">ID Pasien</label>
+                                    <label class="control-label col-sm-4">NO RM</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="id_pasien" cssStyle="margin-top: 7px"
                                                      name="pasien.idPasien" required="false"
@@ -166,7 +168,7 @@
                         <table id="sortTable" class="table table-bordered table-striped tablePasien">
                             <thead >
                             <tr bgcolor="#90ee90">
-                                <td>ID Pasien</td>
+                                <td>NO RM</td>
                                 <td>Nama</td>
                                 <td>Jenis Kelamin</td>
                                 <td>Tempat, Tgl Lahir</td>
@@ -399,14 +401,27 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-user"></i> Detail Data Pasien</h4>
             </div>
             <div class="modal-body">
-                <div class="box-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_edit">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_war_edit"></p>
+                </div>
+                <div class="alert alert-success alert-dismissible" style="display: none" id="success_edit">
+                    <h4><i class="icon fa fa-info"></i> Info!</h4>
+                    <p id="msg_suc_edit"></p>
+                </div>
+                <input type="hidden" id="h_id_pasien">
+                <div class="box-body" style="display:none;" id="form-detail">
                     <div class="row">
                         <div class="col-md-6">
                             <img id="img_ktp" style="height: 200px; width: 100%">
                             <table class="table table-striped" style="margin-top: 20px">
                                 <tr>
-                                    <td><b>ID Pasien</b></td>
+                                    <td><b>NO RM</b></td>
                                     <td><span id="an_id_pasien"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>NO Bpjs</b></td>
+                                    <td><span id="an_no_bpjs"></span></td>
                                 </tr>
                                 <tr>
                                     <td><b>NIK</b></td>
@@ -460,11 +475,129 @@
                                 </tr>
                             </table>
                         </div>
+                    </div>
+                </div>
+                <div class="box-body" style="display:none;" id="form-edit">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>NO RM</label>
+                                <input class="form-control" readonly id="add_no_rm" oninput="$(this).css('border','')">
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 7px">NO BPJS</label>
+                                <input class="form-control" id="add_no_bpjs" oninput="$(this).css('border','')">
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 7px">NIK</label>
+                                <input class="form-control" id="add_nik" oninput="$(this).css('border','')">
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 7px">Nama</label>
+                                <input class="form-control" id="add_nama" oninput="$(this).css('border','')">
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 7px">Jenis Kelamin</label>
+                                <select class="form-control" id="add_jk" onchange="$(this).css('border','')">
+                                    <option value="">[Select One]</option>
+                                    <option value="L">Laki-Laki</option>
+                                    <option value="P">Perempuan</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 7px">Tempat Lahir</label>
+                                <input class="form-control" id="add_tempat_lahir" oninput="$(this).css('border','')">
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 7px">Tanggal Lahir</label>
+                                <input class="form-control datepicker datemask" id="add_tanggal_lahir" onchange="$(this).css('border','')">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Agama</label>
+                                <select class="form-control" id="add_agama" onchange="$(this).css('border','')">
+                                    <option value="">[Select One]</option>
+                                    <option value="Islam">Islam</option>
+                                    <option value="Kristen">Kristen</option>
+                                    <option value="Katolik">Katolik</option>
+                                    <option value="Hindu">Hindu</option>
+                                    <option value="Konguchu">Konguchu</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 7px">Profesi</label>
+                                <input class="form-control" id="add_profesi">
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 7px">Suku</label>
+                                <input class="form-control" id="add_suku">
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 7px">Alamat</label>
+                                <input class="form-control" id="add_alamat">
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 7px">No Telp</label>
+                                <input class="form-control" id="add_no_telp">
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 7px">Provinsi</label>
+                                <input class="form-control" id="add_provinsi" oninput="$(this).css('border','')">
+                                <input type="hidden" id="add_id_provinsi">
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 7px">Kota</label>
+                                <input class="form-control" id="add_kota" oninput="$(this).css('border','')">
+                                <input type="hidden" id="add_id_kota">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Kecamatan</label>
+                                <input class="form-control" id="add_kecamatan" oninput="$(this).css('border','')">
+                                <input type="hidden" id="add_id_kecamatan">
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 7px">Kelurahan/Desa</label>
+                                <input class="form-control" id="add_desa" oninput="$(this).css('border','')">
+                                <input type="hidden" id="add_id_desa">
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 7px">Flag</label>
+                                <select class="form-control" id="add_flag" onchange="$(this).css('border','')">
+                                    <option value="">[Select One]</option>
+                                    <option value="Y">Y</option>
+                                    <option value="N">N</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 7px">Foto Identitas</label>
+                                <div class="input-group" id="img_file">
+                              <span class="input-group-btn">
+                              <span class="btn btn-default btn-file">
+                               Browse… <s:file id="imgInp" accept=".jpg" name="fileUpload"
+                                               onchange="$('#img_file').css('border',''); setCanvas('img_ktp_canvas')"></s:file>
+                                                    </span>
+                                                    </span>
+                                    <input type="text" class="form-control" readonly>
+                                </div>
+                                <canvas id="img_ktp_canvas" style="border: solid 1px #ccc; width: 100%"></canvas>
+                                <input type="hidden" id="add_img_ktp">
+                            </div>
 
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
+                <button id="btn_edit" value="edit" type="button" onclick="setEdit()" class="btn btn-primary pull-left"><i class="fa fa-edit"></i> <span id="label_btn">Edit</span>
+                </button>
+                <button style="display: none" id="btn_save" type="button" onclick="conEdit()" class="btn btn-success pull-left"><i class="fa fa-check"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success pull-left" id="load_save"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
             </div>
@@ -526,72 +659,90 @@
     }
 
     function detail(pasiendId) {
-
-        var table = "";
-        var nik = "";
-        var namaPasien = "";
-        var jenisKelamin = "";
-        var tglLahir = "";
-        var agama = "";
-        var suku = "";
-        var alamat = "";
-        var provinsi = "";
-        var kabupaten = "";
-        var kecamatan = "";
-        var desa = "";
-        var idPasien = "";
-
         var url = '<s:url value="/pages/images/spinner.gif"/>';
         $('#t'+pasiendId).attr('src',url).css('width', '30px', 'height', '40px');
-
-
+        $('#btn_edit').val("edit");
+        $('#label_btn').text('Edit');
+        $('#btn_edit').removeClass("btn btn-warning pull-left");
+        $('#btn_edit').addClass("btn btn-primary pull-left");
+        $('#btn_save').hide();
+        $('#form-detail').show();
+        $('#form-edit').hide();
+        $('#load_save').hide();
         setTimeout(function () {
-
+            dataPasienSet(pasiendId);
             var url = '<s:url value="/pages/images/icons8-view-25.png"/>';
             $('#t'+pasiendId).attr('src',url).css('width', '', 'height', '');
-
-            PasienAction.getDataPasien(pasiendId, function (response) {
-                console.log(response);
-                if (response != null) {
-
-                    nik = response.noKtp;
-                    namaPasien = response.nama;
-
-                    if (response.jenisKelamin == "L") {
-                        jenisKelamin = "Laki-Laki";
-                    } else {
-                        jenisKelamin = "Perempuan";
-                    }
-
-                    tglLahir = response.tempatLahir + ", " + formateDate(response.tglLahir);
-                    agama = response.agama;
-                    suku = response.suku;
-                    alamat = response.jalan;
-                    provinsi = response.provinsi;
-                    kabupaten = response.kota;
-                    kecamatan = response.kecamatan;
-                    desa = response.desa;
-                    idPasien = response.idPasien;
-                    $('#img_ktp').attr('src',response.urlKtp);
-                }
-            });
-
-            $('#an_id_pasien').html(idPasien);
-            $('#an_nik').html(nik);
-            $('#an_nama').html(namaPasien);
-            $('#an_jenis_kelamin').html(jenisKelamin);
-            $('#an_tgl').html(tglLahir);
-            $('#an_agama').html(agama);
-            $('#an_suku').html(suku);
-            $('#an_alamat').html(alamat);
-            $('#an_provinsi').html(provinsi);
-            $('#an_kabupaten').html(kabupaten);
-            $('#an_kecamatan').html(kecamatan);
-            $('#an_desa').html(desa);
             $('#modal-detail').modal({show:true, backdrop:'static'});
         }, 100);
     }
 
+    function dataPasienSet(pasiendId){
+        PasienAction.getDataPasien(pasiendId, function (response) {
+            if (response != null) {
+                var jenisKelamin = "";
+                var tglLahir = "";
+
+                if (response.jenisKelamin == "L") {
+                    jenisKelamin = "Laki-Laki";
+                } else {
+                    jenisKelamin = "Perempuan";
+                }
+                tglLahir = response.tempatLahir + ", " + formateDate(response.tglLahir);
+
+                $('#h_id_pasien').val(response.idPasien);
+                $('#an_id_pasien').html(response.idPasien);
+                $('#an_no_bpjs').html(response.noBpjs);
+                $('#an_nik').html(response.noKtp);
+                $('#an_nama').html(response.nama);
+                $('#an_jenis_kelamin').html(jenisKelamin);
+                $('#an_tgl').html(tglLahir);
+                $('#an_agama').html(response.agama);
+                $('#an_suku').html(response.suku);
+                $('#an_alamat').html(response.jalan);
+                $('#an_provinsi').html(response.provinsi);
+                $('#an_kabupaten').html(response.kota);
+                $('#an_kecamatan').html(response.kecamatan);
+                $('#an_desa').html(response.desa);
+                $('#img_ktp').attr('src',response.urlKtp);
+
+                $('#add_no_rm').val(response.idPasien);
+                $('#add_no_bpjs').val(response.noBpjs);
+                $('#add_flag').val(response.flag);
+                $('#add_nik').val(response.noKtp);
+                $('#add_nama').val(response.nama);
+                $('#add_jk').val(response.jenisKelamin);
+                $('#add_tempat_lahir').val(response.tempatLahir);
+                $('#add_tanggal_lahir').val(response.tglLahir);
+                $('#add_agama').val(response.agama);
+                $('#add_profesi').val(response.profesi);
+                $('#add_suku').val(response.suku);
+                $('#add_alamat').val(response.jalan);
+                $('#add_no_telp').val(response.noTelp);
+                $('#add_provinsi').val(response.provinsi);
+                $('#add_id_provinsi').val(response.provinsiId);
+                $('#add_kota').val(response.kota);
+                $('#add_id_kota').val(response.kotaId);
+                $('#add_kecamatan').val(response.kecamatan);
+                $('#add_id_kecamatan').val(response.kecamatanId);
+                $('#add_desa').val(response.desa);
+                $('#add_id_desa').val(response.desaId);
+                $('#add_img_ktp').val(response.imgKtp);
+                if(response.urlKtp != null){
+                    var canvas = document.getElementById('img_ktp_canvas');
+                    var ctx = canvas.getContext('2d');
+                    var img = new Image();
+                    img.src = response.urlKtp;
+                    img.onload = function (ev) {
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(img, 0, 0);
+                    }
+                }
+            }
+        });
+    }
     function formateDate(tanggal){
 
         var tgl = "";
@@ -710,71 +861,292 @@
         i++;
     }
 
-    /*function user_register(user_id, user_name) {
-        regStats = 0;
-        regCt = -1;
-        try
-        {
-            timer_register.stop();
+    function setEdit(){
+        var text = $('#btn_edit').val();
+        var idPasien = $('#h_id_pasien').val();
+        if(text == "edit"){
+            dataPasienSet(idPasien);
+            $('#btn_edit').val("batal_edit");
+            $('#label_btn').text('Batal Edit');
+            $('#btn_edit').removeClass("btn btn-primary pull-left");
+            $('#btn_edit').addClass("btn btn-warning pull-left");
+            $('#btn_save').show();
+            $('#form-detail').hide();
+            $('#form-edit').show();
+        }else{
+            $('#btn_edit').val("edit");
+            $('#label_btn').text('Edit');
+            $('#btn_edit').removeClass("btn btn-warning pull-left");
+            $('#btn_edit').addClass("btn btn-primary pull-left");
+            $('#btn_save').hide();
+            $('#form-detail').show();
+            $('#form-edit').hide();
+            $('#load_save').hide();
         }
-        catch(err)
-        {
-            console.log('Registration timer has been init');
-        }
-        var limit = 4;
-        var ct = 1;
-        var timeout = 5000;
-
-        timer_register = $.timer(timeout, function() {
-            console.log("'"+user_name+"' registration checking...");
-            user_checkregister(user_id,$("#user_finger_"+user_id).html());
-            if (ct>=limit || regStats==1)
-            {
-                timer_register.stop();
-                console.log("'"+user_name+"' registration checking end");
-                if (ct>=limit && regStats==0)
-                {
-                    alert("'"+user_name+"' registration fail!");
-                }
-                if (regStats==1)
-                {
-                    $("#user_finger_"+user_id).html(regCt);
-                    alert("'"+user_name+"' registration success!");
-                    load('http://localhost:8080/simrs/');
-                }
-            }
-            ct++;
-        });
     }
 
-    function user_checkregister(user_id, current) {
-        $.ajax({
-            url			:	"user.php?action=checkreg&user_id="+user_id+"&current="+current,
-            type		:	"GET",
-            success		:	function(data)
-            {
-                try
-                {
-                    var res = jQuery.parseJSON(data);
-                    if (res.result)
-                    {
-                        regStats = 1;
-                        $.each(res, function(key, value){
-                            if (key=='current')
-                            {
-                                regCt = value;
-                            }
-                        });
-                    }
-                }
-                catch(err)
-                {
-                    alert(err.message);
-                }
+    function setCanvas(canvas){
+        var canvas = document.getElementById(canvas);
+        var ctx = canvas.getContext('2d');
+        var reader = new FileReader();
+        reader.onload = function(event){
+            var img = new Image();
+            img.onload = function(){
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                ctx.drawImage(img,0,0);
             }
-        });
-    }*/
+            img.src = event.target.result;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+        $('#add_img_ktp').val('ganti');
+    }
 
+    function conEdit(){
+        $('#modal-confirm-dialog').modal({show:true, backdrop:'static'});
+        $('#save_con').attr('onclick','saveEditPasien()');
+    }
+
+    function saveEditPasien(){
+        $('#modal-confirm-dialog').modal('hide');
+        var data = "";
+        var idPasien = $('#add_no_rm').val();
+        var noTelp = $('#add_no_telp').val();
+        var noBpjs = $('#add_no_bpjs').val();
+        var nik = $('#add_nik').val();
+        var nama = $('#add_nama').val();
+        var jk = $('#add_jk').val();
+        var tempatLahir = $('#add_tempat_lahir').val();
+        var tanggalLahir = $('#add_tanggal_lahir').val();
+        var agama = $('#add_agama').val();
+        var profesi = $('#add_profesi').val();
+        var suku = $('#add_suku').val();
+        var alamat = $('#add_alamat').val();
+        var provinsi = $('#add_id_provinsi').val();
+        var kota = $('#add_id_kota').val();
+        var kecamatan = $('#add_id_kecamatan').val();
+        var desa = $('#add_id_desa').val();
+        var flag = $('#add_flag').val();
+        var canvas = document.getElementById('img_ktp_canvas');
+        var dataURL = canvas.toDataURL("image/png"),
+            dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+
+        var cekGanti = $('#add_img_ktp').val();
+        var images = "";
+        if(cekGanti == "ganti"){
+            images = dataURL;
+        }else{
+            images = '';
+        }
+
+        if( nik != '' && nama != '' && jk != '' && tempatLahir != '' && tanggalLahir != '' &&
+            agama != '' && provinsi != '' && kota != '' && kecamatan != '' && desa != ''){
+
+            data = {
+                'id_pasien':idPasien,
+                'nik':nik,
+                'no_bpjs':noBpjs,
+                'nama':nama,
+                'jk':jk,
+                'tempat_lahir':tempatLahir,
+                'tanggal_lahir':tanggalLahir,
+                'agama':agama,
+                'profesi':profesi,
+                'suku':suku,
+                'alamat':alamat,
+                'desa_id':desa,
+                'no_telp':noTelp,
+                'flag':flag,
+                'img_ktp':images
+            };
+
+            var objectString = JSON.stringify(data);
+            $('#btn_save').hide();
+            $('#load_save').show();
+            dwr.engine.setAsync(true);
+            PasienAction.saveEditPasien(objectString, {callback: function (response) {
+                    if(response.status == "success"){
+                        dataPasienSet(idPasien);
+                        $('#success_edit').show().fadeOut(5000);
+                        $('#msg_suc_edit').text("Berhasil mengupdate data pasien....");
+                        $('#btn_edit').val("edit");
+                        $('#label_btn').text('Edit');
+                        $('#btn_edit').removeClass("btn btn-warning pull-left");
+                        $('#btn_edit').addClass("btn btn-primary pull-left");
+                        $('#btn_save').hide();
+                        $('#load_save').hide();
+                        $('#form-detail').show();
+                        $('#form-edit').hide();
+                    }else{
+                        $('#btn_save').show();
+                        $('#load_save').hide();
+                        $('#warning_edit').show().fadeOut(5000);
+                        $('#msg_war_edit').text(response.msg);
+                    }
+                }});
+        }else{
+            $('#warning_edit').show().fadeOut(5000);
+            $('#msg_war_edit').text("Silahkan cek kembali data inputan anda...!");
+            if(nik == ''){
+                $('#add_nik').css('border','solid 1px red');
+            }
+            if(nama == ''){
+                $('#add_nama').css('border','solid 1px red');
+            }
+            if(jk == ''){
+                $('#add_jk').css('border','solid 1px red');
+            }
+            if(tempatLahir == ''){
+                $('#add_tempat_lahir').css('border','solid 1px red');
+            }
+            if(tanggalLahir == ''){
+                $('#add_tanggal_lahir').css('border','solid 1px red');
+            }
+            if(agama == ''){
+                $('#add_agama').css('border','solid 1px red');
+            }
+            if(provinsi == ''){
+                $('#add_provinsi').css('border','solid 1px red');
+            }
+            if(kota == ''){
+                $('#add_kota').css('border','solid 1px red');
+            }
+            if(kecamatan == ''){
+                $('#add_kecamatan').css('border','solid 1px red');
+            }
+            if(desa == ''){
+                $('#add_desa').css('border','solid 1px red');
+            }
+            if(flag == ''){
+                $('#flag').css('border','solid 1px red');
+            }
+        }
+
+    }
+
+    var functions, mapped;
+    $('#add_provinsi').typeahead({
+        minLength: 1,
+        source: function (query, process) {
+            functions = [];
+            mapped = {};
+
+            var data = [];
+            dwr.engine.setAsync(false);
+            ProvinsiAction.initComboProvinsi(query, function (listdata) {
+                data = listdata;
+            });
+
+            $.each(data, function (i, item) {
+                var labelItem = item.provinsiName;
+                mapped[labelItem] = {id: item.provinsiId, label: labelItem};
+                functions.push(labelItem);
+            });
+
+            process(functions);
+        },
+        updater: function (item) {
+            var selectedObj = mapped[item];
+            var namaAlat = selectedObj.label;
+            document.getElementById("add_id_provinsi").value = selectedObj.id;
+            prov = selectedObj.id;
+            return namaAlat;
+        }
+    });
+
+    $('#add_kota').typeahead({
+        minLength: 1,
+        source: function (query, process) {
+            functions = [];
+            mapped = {};
+
+            var data = [];
+            dwr.engine.setAsync(false);
+            ProvinsiAction.initComboKota(query, prov, function (listdata) {
+                data = listdata;
+            });
+            //alert(prov);
+            $.each(data, function (i, item) {
+                //alert(item.kotaName);
+                var labelItem = item.kotaName;
+                mapped[labelItem] = {id: item.kotaId, label: labelItem};
+                functions.push(labelItem);
+            });
+
+            process(functions);
+        },
+        updater: function (item) {
+            var selectedObj = mapped[item];
+            var namaAlat = selectedObj.label;
+            document.getElementById("add_id_kota").value = selectedObj.id;
+
+            kab = selectedObj.id;
+            return namaAlat;
+        }
+    });
+
+    $('#add_kecamatan').typeahead({
+        minLength: 1,
+        source: function (query, process) {
+            functions = [];
+            mapped = {};
+
+            var data = [];
+            dwr.engine.setAsync(false);
+            ProvinsiAction.initComboKecamatan(query, kab, function (listdata) {
+                data = listdata;
+            });
+            //alert(prov);
+            $.each(data, function (i, item) {
+                //alert(item.kotaName);
+                var labelItem = item.kecamatanName;
+                mapped[labelItem] = {id: item.kecamatanId, label: labelItem};
+                functions.push(labelItem);
+            });
+
+            process(functions);
+        },
+        updater: function (item) {
+            var selectedObj = mapped[item];
+            var namaAlat = selectedObj.label;
+            document.getElementById("add_id_kecamatan").value = selectedObj.id;
+
+            kec = selectedObj.id;
+            return namaAlat;
+        }
+    });
+
+    $('#add_desa').typeahead({
+        minLength: 1,
+        source: function (query, process) {
+            functions = [];
+            mapped = {};
+
+            var data = [];
+            dwr.engine.setAsync(false);
+            ProvinsiAction.initComboDesa(query, kec, function (listdata) {
+                data = listdata;
+            });
+            //alert(prov);
+            $.each(data, function (i, item) {
+                //alert(item.kotaName);
+                var labelItem = item.desaName;
+                mapped[labelItem] = {id: item.desaId, label: labelItem};
+                functions.push(labelItem);
+            });
+
+            process(functions);
+        },
+        updater: function (item) {
+            var selectedObj = mapped[item];
+            var namaAlat = selectedObj.label;
+            document.getElementById("add_id_desa").value = selectedObj.id;
+
+            desa = selectedObj.id;
+            return namaAlat;
+        }
+    });
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>

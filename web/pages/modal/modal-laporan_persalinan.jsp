@@ -14,6 +14,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_rb_laporan_persalinan"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_laporan_persalinan">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_laporan_persalinan"></p>
+                    </div>
                     <button type="button" onclick="showModalRB('data_laporan_persalinan_rb')" class="btn btn-success"><i class="fa fa-plus"></i> Data Laporan
                     </button>
                     <button type="button" onclick="showModalRB('laporan_persalinan_rb')" class="btn btn-success"><i class="fa fa-plus"></i> Laporan Persalinan
@@ -28,6 +32,7 @@
                                 <img id="btn_rb_data_laporan_persalinan_rb" class="hvr-grow"
                                      onclick="detailRB('data_laporan_persalinan_rb')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_data_laporan_persalinan_rb" class="hvr-grow btn-hide" onclick="conRB('data_laporan_persalinan_rb', 'laporan_persalinan')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_rb_laporan_persalinan_rb">
@@ -36,6 +41,7 @@
                                 <img id="btn_rb_laporan_persalinan_rb" class="hvr-grow"
                                      onclick="detailRB('laporan_persalinan_rb')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_laporan_persalinan_rb" class="hvr-grow btn-hide" onclick="conRB('laporan_persalinan_rb', 'laporan_persalinan')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
