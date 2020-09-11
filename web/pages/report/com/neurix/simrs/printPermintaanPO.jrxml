@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printResepPasien" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="1.3636363636363658"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="2.415765000000005"/>
+	<property name="ireport.x" value="321"/>
+	<property name="ireport.y" value="214"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -82,77 +82,77 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId} AND e.no_ba
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="179" splitType="Stretch">
+		<band height="193" splitType="Stretch">
 			<line>
 				<reportElement x="0" y="60" width="555" height="1" uuid="2c08112b-c50d-4893-862a-474998eb7574"/>
 			</line>
 			<staticText>
 				<reportElement x="0" y="88" width="94" height="20" uuid="6c44ef7d-db93-4127-8056-c6e5dc48fb34"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[Nama Vendor]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="108" width="94" height="20" uuid="a5b9a80e-195a-4a19-a403-96703a2a8764"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[Email]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="128" width="94" height="20" uuid="f460e830-099e-4f5e-8a66-6c0df7fc255d"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[No. Telepon]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="148" width="94" height="20" uuid="965ee103-5b85-4b9c-9f39-4912ae949d04"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[Alamat]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="68" width="94" height="20" uuid="3ec64ed1-e2b1-43c7-990e-b5ef6bdabd53"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[ID Vendor]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="91" y="68" width="5" height="20" uuid="27bb378b-d5ad-4e5d-84d1-73a09bac82ed"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="91" y="88" width="5" height="20" uuid="c68a50c7-f5e0-4775-aaff-1bfefa19e52d"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="91" y="108" width="5" height="20" uuid="3f134a74-d8ce-4e88-8153-5afc04245054"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="91" y="128" width="5" height="20" uuid="64e71867-e434-4315-9330-2660670831dd"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="91" y="148" width="5" height="20" uuid="90a2f6a7-3ca2-4703-b1fb-c39413a844c3"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
@@ -160,7 +160,7 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId} AND e.no_ba
 				<reportElement x="96" y="68" width="159" height="20" uuid="ba387fca-a220-41d7-86a0-f7bdbc0958e7"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.idVendor} == null ? "" : $P{reportParams.idVendor}]]></textFieldExpression>
 			</textField>
@@ -168,7 +168,7 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId} AND e.no_ba
 				<reportElement x="96" y="88" width="159" height="20" uuid="85597b11-0127-46c5-9839-b72b43d88ddd"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.namaVendor} == null ? "" : $P{reportParams.namaVendor}]]></textFieldExpression>
 			</textField>
@@ -176,7 +176,7 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId} AND e.no_ba
 				<reportElement x="96" y="108" width="159" height="20" uuid="6ea987d3-b994-439c-849a-28abc91b7a06"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.email} == null ? "" : $P{reportParams.email}]]></textFieldExpression>
 			</textField>
@@ -184,7 +184,7 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId} AND e.no_ba
 				<reportElement x="96" y="128" width="159" height="20" uuid="befa0515-1d3b-4974-8d29-6745a598e43e"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.noTelp} == null ? "" : $P{reportParams.noTelp}]]></textFieldExpression>
 			</textField>
@@ -192,7 +192,7 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId} AND e.no_ba
 				<reportElement x="96" y="148" width="159" height="20" uuid="b26a9b04-6ba9-4730-bd24-ae3f8668c18e"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.alamat} == null ? "" : $P{reportParams.alamat}]]></textFieldExpression>
 			</textField>
@@ -200,14 +200,14 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId} AND e.no_ba
 				<reportElement x="0" y="31" width="173" height="20" uuid="7c5f8646-c682-47f4-96ff-a3c3cc2dd1d9"/>
 				<box leftPadding="0"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
+					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.area} == null ? "" : $P{reportParams.area}]]></textFieldExpression>
 			</textField>
 			<componentElement>
 				<reportElement x="435" y="0" width="120" height="32" uuid="6a2de382-dadd-4d81-bb84-315f70cece67"/>
 				<jr:Code128 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" textPosition="bottom">
-					<jr:codeExpression><![CDATA[$P{reportParams.permintaanId}]]></jr:codeExpression>
+					<jr:codeExpression><![CDATA[$F{no_do} == null ? "" : $F{no_do}]]></jr:codeExpression>
 				</jr:Code128>
 			</componentElement>
 			<staticText>
@@ -220,9 +220,9 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId} AND e.no_ba
 			<staticText>
 				<reportElement x="143" y="8" width="268" height="20" uuid="89ca5627-7e73-4cd1-918e-9a81c49ef79d"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
+					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Purchase Order Obat]]></text>
+				<text><![CDATA[Delivery Order]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy HH.mm.ss">
 				<reportElement x="480" y="30" width="75" height="19" uuid="c74fa1f1-4199-4fb4-8162-4173796d277f"/>
@@ -239,21 +239,21 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId} AND e.no_ba
 				<reportElement x="0" y="43" width="173" height="20" uuid="6f411b53-a957-4ce8-9bf4-3f379b53b1d2"/>
 				<box leftPadding="0"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
+					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.unit} == null ? "" : $P{reportParams.unit}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="302" y="68" width="94" height="20" uuid="637f9e91-5b8a-4fb2-8665-e08e2fecb9fc"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[No Faktur]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="302" y="148" width="94" height="20" uuid="88033535-46f8-48c7-a9ca-27cd042511a1"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[Tanggal Penyerahan]]></text>
 			</staticText>
@@ -261,21 +261,21 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId} AND e.no_ba
 				<reportElement x="398" y="128" width="157" height="20" uuid="690bed17-3da9-47e5-bc27-fa9e7f92d353"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{no_do} == null ? "" : $F{no_do}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="393" y="88" width="5" height="20" uuid="3c972027-cdaa-4ad0-b251-851a0f89e1eb"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="302" y="108" width="94" height="20" uuid="fb998a44-5b02-4064-9cd5-3298e7aab6c3"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[No Invoice]]></text>
 			</staticText>
@@ -283,14 +283,14 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId} AND e.no_ba
 				<reportElement x="398" y="108" width="157" height="20" uuid="3f1f2605-1f0f-4023-85bc-a9a3990bbb60"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{no_invoice} == null ? "" : $F{no_invoice}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="302" y="128" width="94" height="20" uuid="7625ba3a-607c-4311-bf32-dbc1265d651a"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[No DO]]></text>
 			</staticText>
@@ -298,14 +298,14 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId} AND e.no_ba
 				<reportElement x="398" y="88" width="157" height="20" uuid="e67e3ab2-9004-4586-bac5-b298ecd3af0f"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{tgl_faktur} == null ? "" : $F{tgl_faktur}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="302" y="88" width="94" height="20" uuid="9ba56a93-ee72-4aad-94e8-7786b3472b8c"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[Tanggal Faktur]]></text>
 			</staticText>
@@ -313,28 +313,28 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId} AND e.no_ba
 				<reportElement x="398" y="68" width="157" height="20" uuid="bf96c570-a4d1-47e2-ab58-009a8badc839"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{no_faktur} == null ? "" : $F{no_faktur}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="393" y="128" width="5" height="20" uuid="700fb410-8ebf-4dab-997c-1eda318964ee"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="393" y="148" width="5" height="20" uuid="999a4508-8a60-4aa0-8564-406b1a6ac111"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="393" y="68" width="5" height="20" uuid="d71f53c6-a590-4d3c-8f43-71b20ede63ce"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
@@ -342,17 +342,39 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId} AND e.no_ba
 				<reportElement x="398" y="148" width="157" height="20" uuid="44c99ba6-95c0-4d83-bd6d-641df647120c"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{tgl_cair} == null ? "" : $F{tgl_cair}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="393" y="108" width="5" height="20" uuid="a4bbef8b-02bb-41e6-8032-64bff6e6d3ba"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="302" y="168" width="91" height="20" uuid="51701faa-fef9-439b-a310-b96499460f82"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[No. PO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="393" y="168" width="5" height="20" uuid="d42ad614-3bb0-4f15-ba64-3383ef84ae2a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="398" y="168" width="157" height="20" uuid="1484ddcc-5833-41e8-96ef-39fcc70c1095"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.permintaanId} == null ? "" : $P{reportParams.permintaanId}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<columnHeader>
@@ -367,7 +389,7 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId} AND e.no_ba
 					<rightPen lineStyle="Dashed" lineColor="#CCCCCC"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font size="8" isBold="false"/>
+					<font fontName="SansSerif" size="8" isBold="false"/>
 				</textElement>
 				<text><![CDATA[ID Obat]]></text>
 			</staticText>
@@ -381,7 +403,7 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId} AND e.no_ba
 					<rightPen lineStyle="Dashed" lineColor="#CCCCCC"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font size="8" isBold="false"/>
+					<font fontName="SansSerif" size="8" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Nama Obat]]></text>
 			</staticText>
@@ -395,7 +417,7 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId} AND e.no_ba
 					<rightPen lineStyle="Dashed" lineColor="#CCCCCC"/>
 				</box>
 				<textElement textAlignment="Justified" verticalAlignment="Middle">
-					<font size="8" isBold="false"/>
+					<font fontName="SansSerif" size="8" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Jenis Satuan]]></text>
 			</staticText>
@@ -409,7 +431,7 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId} AND e.no_ba
 					<rightPen lineStyle="Dashed" lineColor="#CCCCCC"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" isBold="false"/>
+					<font fontName="SansSerif" size="8" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Qty Approve]]></text>
 			</staticText>
@@ -423,7 +445,7 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId} AND e.no_ba
 					<rightPen lineStyle="Dashed" lineColor="#CCCCCC"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" isBold="false"/>
+					<font fontName="SansSerif" size="8" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Qty Request]]></text>
 			</staticText>
@@ -441,7 +463,7 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId} AND e.no_ba
 					<rightPen lineStyle="Dashed" lineColor="#CCCCCC"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{id_obat}]]></textFieldExpression>
 			</textField>
@@ -455,7 +477,7 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId} AND e.no_ba
 					<rightPen lineStyle="Dashed" lineColor="#CCCCCC"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nama_obat}]]></textFieldExpression>
 			</textField>
@@ -469,7 +491,7 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId} AND e.no_ba
 					<rightPen lineStyle="Dashed" lineColor="#CCCCCC"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{qty}]]></textFieldExpression>
 			</textField>
@@ -483,7 +505,7 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId} AND e.no_ba
 					<rightPen lineStyle="Dashed" lineColor="#CCCCCC"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{qty_approve}]]></textFieldExpression>
 			</textField>
@@ -497,7 +519,7 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId} AND e.no_ba
 					<rightPen lineStyle="Dashed" lineColor="#CCCCCC"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{jenis_satuan}]]></textFieldExpression>
 			</textField>
@@ -513,14 +535,16 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId} AND e.no_ba
 		<band height="78">
 			<staticText>
 				<reportElement x="375" y="0" width="120" height="20" uuid="d3e125c9-26ad-42f4-ad47-ad847b93236d"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
 				<text><![CDATA[Petugas Gudang]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="375" y="58" width="180" height="20" uuid="e01ac0fe-3c84-4a49-bbb1-cb3f78374680"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
-					<font isUnderline="true"/>
+					<font fontName="SansSerif" isUnderline="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.petugas} == null ? "" : $P{reportParams.petugas}]]></textFieldExpression>
 			</textField>

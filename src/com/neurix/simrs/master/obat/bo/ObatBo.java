@@ -1,6 +1,7 @@
 package com.neurix.simrs.master.obat.bo;
 
 import com.neurix.akuntansi.master.reportDetail.model.ReportDetail;
+import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.Aging;
 import com.neurix.common.bo.BaseMasterBo;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.obat.model.*;
@@ -52,4 +53,5 @@ public interface ObatBo{
     public String generateIdKandungan() throws GeneralBOException;
     public List<ImSimrsBentukBarangEntity> getLitBentukBarangByFlag(String flag) throws GeneralBOException;
     public ImSimrsBentukBarangEntity getBentukBarangById(String idBentuk) throws GeneralBOException;
+    public List<Aging> getListAging(String branchId, String idPelayanan, String periode) throws GeneralBOException;
 }

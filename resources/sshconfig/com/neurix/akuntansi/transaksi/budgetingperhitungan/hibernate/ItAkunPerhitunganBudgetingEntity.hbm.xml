@@ -44,6 +44,12 @@
             <basic name="lastUpdateWho">
                 <column name="last_update_who"/>
             </basic>
+            <basic name="idNilaiParameter">
+                <column name="id_nilai_parameter"/>
+            </basic>
+            <basic name="idBiayaRutin">
+                <column name="id_biaya_rutin"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

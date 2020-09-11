@@ -20,6 +20,24 @@ public class BudgetingNilaiDasar {
     private String lastUpdateWho;
     private Timestamp lastUpdate;
     private String keterangan;
+    private String tipe;
+    private BigDecimal nilaiTotal;
+
+    public BigDecimal getNilaiTotal() {
+        return nilaiTotal;
+    }
+
+    public void setNilaiTotal(BigDecimal nilaiTotal) {
+        this.nilaiTotal = nilaiTotal;
+    }
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
 
     public String getKeterangan() {
         return keterangan;

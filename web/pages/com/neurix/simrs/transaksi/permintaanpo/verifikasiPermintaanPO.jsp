@@ -205,9 +205,9 @@
                                                        id='pabrik<s:property value="idObat"/>'>
                                                     <%--<input id="cek_obat_<s:property value="idObat"/>" class="form-control" oninput="cekObat(this.value, '<s:property value="idObat"/>')">--%>
                                                     <div class="input-group-addon">
-                            <span id='status<s:property value="idObat"/>'></span>
-                        </div>
-                    </div>
+                                                <span id='status<s:property value="idObat"/>'></span>
+                                            </div>
+                                        </div>
                                             </s:else>
                                         <%--</s:else>--%>
                                     </td>
@@ -510,7 +510,7 @@
                             <s:textfield type="number" min="1" cssClass="form-control"
                                          cssStyle="margin-top: 7px" id="app_lembar_perbox"
                                          onchange="cekFisik()"
-                                         onkeypress="var warn =$('#war_app_lembar_perbox').is(':visible'); if (warn){$('#cor_app_lembar_perbox').show().fadeOut(3000);$('#war_app_lembar_perbox').hide()}"></s:textfield>
+                                         onkeypress="var warn =$('#war_app_lembar_perbox').is(':visible'); if (warn){$('#cor_app_lembar_perbox').show().fadeOut(3000);$('#war_app_lembar_perbox').hide()}" readonly="true"></s:textfield>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
@@ -525,7 +525,7 @@
                             <s:textfield type="number" min="1" cssClass="form-control"
                                          cssStyle="margin-top: 7px" id="app_biji_perlembar"
                                          onchange="cekFisik()"
-                                         onkeypress="var warn =$('#war_app_biji_perlembar').is(':visible'); if (warn){$('#cor_app_biji_perlembar').show().fadeOut(3000);$('#war_app_biji_perlembar').hide()}"></s:textfield>
+                                         onkeypress="var warn =$('#war_app_biji_perlembar').is(':visible'); if (warn){$('#cor_app_biji_perlembar').show().fadeOut(3000);$('#war_app_biji_perlembar').hide()}" readonly="true"></s:textfield>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
@@ -546,6 +546,12 @@
                                id="war_app_qty"><i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_app_qty"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Harga Awal</label>
+                        <div class="col-md-7">
+                            <input tipe="text" class="form-control" id="harga-awal" style="margin-top: 7px" readonly/>
                         </div>
                     </div>
                     <div class="form-group">
@@ -762,7 +768,8 @@
                     $('#val_bruto').val(valBayar2);
                     var diskon = $('#val_diskon').val();
                     if(diskon != '' && parseInt(valBayar2) > parseInt(diskon)){
-                        var hasil = parseInt(valBayar2) - parseInt(diskon);
+                        var qtyApp = $("#app_qty_app").val()
+                        var hasil = (parseInt(valBayar2) * parseInt(qtyApp)) - parseInt(diskon);
                         $('#app_netto').val(formatRupiah(hasil));
                         $('#val_netto').val(hasil);
                     }else{
@@ -818,28 +825,60 @@
                         jml = parseInt(qty) - parseInt(sumQty);
                     }
 
-                    $('#app_expired').val('');
+                    var batch = null;
+                    PermintaanVendorAction.getTransaksiObatByIdTrans(idDetail, noBt, function(res){
+                        if (res != null){
+                            batch = res;
+                            console.log(res);
+//                            $('#val_diskon').val(batc.diskon);
+//                            $('#app_diskon').val(formatRupiah(diskon));
+//                            $('#val_bruto').val(bruto);
+//                            $('#app_bruto').val(formatRupiah(bruto));
+//                            $('#val_netto').val(netto);
+//                            $('#app_netto').val(formatRupiah(netto));
+                        }
+                    });
+
+                    if (batch != null){
+                        $('#app_expired').val(batch.stExpDate);
+                        $('#app_qty_app').val(batch.qtyApprove);
+                        diskon  = batch.diskon;
+                        bruto   = batch.bruto;
+                        netto   = batch.netto;
+                    } else {
+                        $('#app_expired').val('');
+                        $('#app_qty_app').val(jml);
+                    }
+                    $("#harga-awal").val(formatRupiah(harga));
+                    $('#app_qty').val(qty);
                     $('#app_lembar_perbox, #kon_lembar').val(lembarPerBox);
                     $('#app_biji_perlembar, #kon_biji').val(bijiPerlembar);
-                    $('#app_qty').val(qty);
-                    $('#app_qty_app').val(jml);
-                    if(diskon != null && diskon != ''
-                        && bruto != null && bruto != ''
-                        && netto != null && netto != ''){
-                        $('#val_diskon').val(diskon);
-                        $('#app_diskon').val(formatRupiah(diskon));
-                        $('#val_bruto').val(bruto);
-                        $('#app_bruto').val(formatRupiah(bruto));
-                        $('#val_netto').val(netto);
-                        $('#app_netto').val(formatRupiah(netto));
-                    }else{
-                        $('#val_diskon').val('');
-                        $('#app_diskon').val('');
-                        $('#val_bruto').val('');
-                        $('#app_bruto').val('');
-                        $('#val_netto').val('');
-                        $('#app_netto').val('');
-                    }
+
+//                    if(diskon != null && diskon != ''
+//                        && bruto != null && bruto != ''
+//                        && netto != null && netto != ''){
+//                        $('#val_diskon').val(diskon);
+//                        $('#app_diskon').val(formatRupiah(diskon));
+//                        $('#val_bruto').val(bruto);
+//                        $('#app_bruto').val(formatRupiah(bruto));
+//                        $('#val_netto').val(netto);
+//                        $('#app_netto').val(formatRupiah(netto));
+//                    }else{
+//                        $('#val_diskon').val('');
+//                        $('#app_diskon').val('');
+//                        $('#val_bruto').val('');
+//                        $('#app_bruto').val('');
+//                        $('#val_netto').val('');
+//                        $('#app_netto').val('');
+//                    }
+
+                    $('#val_diskon').val(nullEscape (diskon));
+                    $('#app_diskon').val(formatRupiah(diskon));
+                    $('#val_bruto').val(nullEscape(bruto));
+                    $('#app_bruto').val(formatRupiah(bruto));
+                    $('#val_netto').val(nullEscape(netto));
+                    $('#app_netto').val(formatRupiah(netto));
+
                     $('#save_approve').attr('onclick', 'confirmSaveApprove(\'' + selectedObj.id + '\', \'' + idDetail + '\', \'' + selectedObj.idPabrik + '\', \'' + noBt + '\')').show();
                     $('#save_approve').show();
                     $('#load_approve').hide();
@@ -854,6 +893,12 @@
                 return selectedObj.id;
             }
         });
+    }
+
+    function nullEscape(val){
+        if (val == null || val == '')
+            return 0;
+        return val;
     }
 
     function toContent(){

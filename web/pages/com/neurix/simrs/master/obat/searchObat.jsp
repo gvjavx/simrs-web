@@ -139,6 +139,9 @@
                                                 <li><a href="initPrintReportRiwayat_obat.action?type=sumary">
                                                     <i class="fa fa-print"></i> Print Saldo Obat Opname
                                                 </a>
+                                                <li><a href="initReportAging_obat.action">
+                                                    <i class="fa fa-print"></i> Print Aging Persediaan
+                                                </a>
                                                 </li>
                                             </ul>
                                         </div>
