@@ -908,25 +908,27 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
 
             if(result.size() > 0){
                 for (Object[] obj: result){
-                    if("Makanan".equalsIgnoreCase(obj[3].toString())){
-                        if(!"".equalsIgnoreCase(makanan)){
-                            makanan = makanan+", "+obj[2].toString();
-                        }else{
-                            makanan = obj[2].toString();
+                    if(obj[3] != null){
+                        if("Makanan".equalsIgnoreCase(obj[3].toString())){
+                            if(!"".equalsIgnoreCase(makanan)){
+                                makanan = makanan+", "+obj[2].toString();
+                            }else{
+                                makanan = obj[2].toString();
+                            }
                         }
-                    }
-                    if("Obat".equalsIgnoreCase(obj[3].toString())){
-                        if(!"".equalsIgnoreCase(makanan)){
-                            obat = obat+", "+obj[2].toString();
-                        }else{
-                            obat = obj[2].toString();
+                        if("Obat".equalsIgnoreCase(obj[3].toString())){
+                            if(!"".equalsIgnoreCase(makanan)){
+                                obat = obat+", "+obj[2].toString();
+                            }else{
+                                obat = obj[2].toString();
+                            }
                         }
-                    }
-                    if("Lain-Lain".equalsIgnoreCase(obj[3].toString())){
-                        if(!"".equalsIgnoreCase(makanan)){
-                            lainLain = lainLain+", "+obj[2].toString();
-                        }else{
-                            lainLain = obj[2].toString();
+                        if("Lain-Lain".equalsIgnoreCase(obj[3].toString())){
+                            if(!"".equalsIgnoreCase(makanan)){
+                                lainLain = lainLain+", "+obj[2].toString();
+                            }else{
+                                lainLain = obj[2].toString();
+                            }
                         }
                     }
                 }
