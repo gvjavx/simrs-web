@@ -29,8 +29,8 @@
 	</parameter>
 	<parameter name="reportParams.areaId" class="java.lang.String"/>
 	<parameter name="reportParams.tipeLaporan" class="java.lang.String"/>
-	<parameter name="judulGm" class="java.lang.String"/>
-	<parameter name="judulManagerKeu" class="java.lang.String"/>
+	<parameter name="reportParams.judulGm" class="java.lang.String"/>
+	<parameter name="reportParams.judulManagerKeu" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
   a.kode_rekening as koderekening,
@@ -890,7 +890,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{judulManagerKeu}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{reportParams.judulManagerKeu}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField" x="2" y="98" width="179" height="14" uuid="371c6577-efae-46ea-a0ff-e0bfe5ed790c"/>
@@ -903,7 +903,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{judulGm}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{reportParams.judulGm}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField" x="2" y="150" width="179" height="14" uuid="e60e427b-4f37-4cc3-8904-61a552011e6d"/>

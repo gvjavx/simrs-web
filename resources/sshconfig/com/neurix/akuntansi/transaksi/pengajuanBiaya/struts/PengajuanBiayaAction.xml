@@ -85,6 +85,9 @@
             <result name="init_add_pengajuan">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/addPengajuanBiaya.jsp</result>
             <result name="success_save_add_pengajuan">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/addPengajuanBiaya.jsp</result>
 
+            <result name="init_do">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/SearchPembayaranDo.jsp</result>
+            <result name="success_pengajuan_rk">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/SearchPembayaranDo.jsp</result>
+
             <result name="cetak_surat_pengajuan_biaya" type="jasper">
                 <param name="location">/pages/report/com/neurix/akuntansi/FormPengajuanBiaya.jasper</param>
                 <param name="connection">connection</param>

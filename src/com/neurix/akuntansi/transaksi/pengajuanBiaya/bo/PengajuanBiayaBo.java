@@ -2,6 +2,7 @@ package com.neurix.akuntansi.transaksi.pengajuanBiaya.bo;
 
 import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.PengajuanBiaya;
 import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.PengajuanBiayaDetail;
+import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.PengajuanBiayaRk;
 import com.neurix.common.bo.BaseMasterBo;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
@@ -73,4 +74,12 @@ public interface PengajuanBiayaBo extends BaseMasterBo<PengajuanBiaya> {
     String searchPengajuanDetailImage(String pengajuanId) throws GeneralBOException;
 
     PengajuanBiaya getPengajuanBiayaForRk(ArrayList pengajuanId, String status, String coaKas, String branchId) throws GeneralBOException;
+
+    List<PengajuanBiayaRk> getDaftarPembayaranDo(PengajuanBiayaRk bean) throws GeneralBOException;
+
+    void savePembayaranPengajuanDo(List<PengajuanBiayaRk> beanList) throws GeneralBOException;
+
+    void approvePengajuanBiayaRk(List<PengajuanBiayaRk> beanList) throws GeneralBOException;
+
+    void savePembayaranPengajuanDoFinal(List<PengajuanBiayaRk> beanList,String noJurnal,String metodeBayar) throws GeneralBOException;
 }

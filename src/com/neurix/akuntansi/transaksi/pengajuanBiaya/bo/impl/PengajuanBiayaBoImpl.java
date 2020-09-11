@@ -4,6 +4,8 @@ import com.neurix.akuntansi.master.kodeRekening.dao.KodeRekeningDao;
 import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
 import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.master.mappingJurnal.dao.MappingJurnalDao;
+import com.neurix.akuntansi.master.masterVendor.dao.MasterVendorDao;
+import com.neurix.akuntansi.master.masterVendor.model.ImMasterVendorEntity;
 import com.neurix.akuntansi.master.trans.dao.TransDao;
 import com.neurix.akuntansi.transaksi.budgeting.dao.BudgetingPengadaanDao;
 import com.neurix.akuntansi.transaksi.budgeting.model.ItAkunBudgetingPengadaanEntity;
@@ -14,13 +16,12 @@ import com.neurix.akuntansi.transaksi.jurnal.model.ItJurnalEntity;
 import com.neurix.akuntansi.transaksi.pengajuanBiaya.bo.PengajuanBiayaBo;
 import com.neurix.akuntansi.transaksi.pengajuanBiaya.dao.PengajuanBiayaDao;
 import com.neurix.akuntansi.transaksi.pengajuanBiaya.dao.PengajuanBiayaDetailDao;
-import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.ImPengajuanBiayaEntity;
-import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.ItPengajuanBiayaDetailEntity;
-import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.PengajuanBiaya;
-import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.PengajuanBiayaDetail;
+import com.neurix.akuntansi.transaksi.pengajuanBiaya.dao.PengajuanBiayaRkDao;
+import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.*;
 import com.neurix.akuntansi.transaksi.pengajuanSetor.model.PengajuanSetorDetail;
 import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.company.model.ImBranches;
+import com.neurix.authorization.company.model.ImBranchesPK;
 import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.authorization.user.dao.UserDao;
@@ -63,6 +64,24 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
     private PositionDao positionDao;
     private BudgetingPengadaanDao budgetingPengadaanDao;
     private NotifikasiDao notifikasiDao;
+    private PengajuanBiayaRkDao pengajuanBiayaRkDao;
+    private MasterVendorDao masterVendorDao;
+
+    public MasterVendorDao getMasterVendorDao() {
+        return masterVendorDao;
+    }
+
+    public void setMasterVendorDao(MasterVendorDao masterVendorDao) {
+        this.masterVendorDao = masterVendorDao;
+    }
+
+    public PengajuanBiayaRkDao getPengajuanBiayaRkDao() {
+        return pengajuanBiayaRkDao;
+    }
+
+    public void setPengajuanBiayaRkDao(PengajuanBiayaRkDao pengajuanBiayaRkDao) {
+        this.pengajuanBiayaRkDao = pengajuanBiayaRkDao;
+    }
 
     public NotifikasiDao getNotifikasiDao() {
         return notifikasiDao;
@@ -2092,5 +2111,223 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
         }
         logger.info("[PengajuanBiayaBoImpl.getPengajuanBiayaForRk] end process <<<");
         return result;
+    }
+
+    @Override
+    public List<PengajuanBiayaRk> getDaftarPembayaranDo(PengajuanBiayaRk bean) throws GeneralBOException {
+        logger.info("[PengajuanBiayaBoImpl.getPengajuanBiayaForRk] start process >>>");
+        List<ItAkunPengajuanBiayaRkEntity> pengajuanBiayaRkEntityList = new ArrayList<>();
+        List<PengajuanBiayaRk> pengajuanBiayaRkList = new ArrayList<>();
+        if (bean != null) {
+            if ("B".equalsIgnoreCase(bean.getStatus())){
+                pengajuanBiayaRkEntityList = pengajuanBiayaRkDao.getPembayaranDoBelumDibayar(bean);
+                for (ItAkunPengajuanBiayaRkEntity entity : pengajuanBiayaRkEntityList){
+                    pengajuanBiayaRkList.add(convertPengajuanBiayaRk(entity));
+                }
+            }else{
+                Map hsCriteria = new HashMap();
+                hsCriteria.put("flag","Y");
+                if (bean.getPengajuanBiayaRkId() != null && !"".equalsIgnoreCase(bean.getPengajuanBiayaRkId())) {
+                    hsCriteria.put("pengajuan_biaya_rk_id", bean.getPengajuanBiayaRkId());
+                }
+                if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())) {
+                    hsCriteria.put("branch_id", bean.getBranchId());
+                }
+                if (bean.getMasterId() != null && !"".equalsIgnoreCase(bean.getMasterId())) {
+                    hsCriteria.put("master_id", bean.getMasterId());
+                }
+                if (bean.getStatus() != null && !"".equalsIgnoreCase(bean.getStatus())) {
+                    hsCriteria.put("status", bean.getStatus());
+                }
+                if (bean.getNoTransaksi() != null && !"".equalsIgnoreCase(bean.getNoTransaksi())) {
+                    hsCriteria.put("no_transaksi", bean.getNoTransaksi());
+                }
+                if (bean.getRkId() != null && !"".equalsIgnoreCase(bean.getRkId())) {
+                    hsCriteria.put("rk_id", bean.getRkId());
+                }
+                if (bean.getStTanggalDari() != null && !"".equalsIgnoreCase(bean.getStTanggalDari())) {
+                    Timestamp tanggalDari = CommonUtil.convertToTimestamp(bean.getStTanggalDari());
+                    hsCriteria.put("tanggal_dari", tanggalDari);
+                }
+                if (bean.getStTanggalSelesai() != null && !"".equalsIgnoreCase(bean.getStTanggalSelesai())) {
+                    Timestamp tanggalSelesai = CommonUtil.convertToTimestamp(bean.getStTanggalSelesai());
+                    hsCriteria.put("tanggal_selesai", tanggalSelesai);
+                }
+
+                pengajuanBiayaRkEntityList = pengajuanBiayaRkDao.getByCriteria(hsCriteria);
+                for (ItAkunPengajuanBiayaRkEntity entity : pengajuanBiayaRkEntityList){
+                    pengajuanBiayaRkList.add(convertPengajuanBiayaRk(entity));
+                }
+            }
+        }
+        logger.info("[PengajuanBiayaBoImpl.getPengajuanBiayaForRk] end process <<<");
+        return pengajuanBiayaRkList;
+    }
+
+    private PengajuanBiayaRk convertPengajuanBiayaRk(ItAkunPengajuanBiayaRkEntity entity){
+        PengajuanBiayaRk data = new PengajuanBiayaRk();
+        data.setPengajuanBiayaRkId(entity.getPengajuanBiayaRkId());
+        data.setNoTransaksi(entity.getNoTransaksi());
+        data.setMasterId(entity.getMasterId());
+        data.setJumlah(entity.getJumlah());
+        data.setStJumlah(CommonUtil.numbericFormat(entity.getJumlah(),"###,###"));
+        data.setStatus(entity.getStatus());
+        data.setTglInvoice(entity.getTglInvoice());
+        data.setRkId(entity.getRkId());
+        data.setApproveKeuFlag(entity.getApproveKeuFlag());
+        data.setApproveKeuDate(entity.getApproveKeuDate());
+        data.setAproveKeuId(entity.getAproveKeuId());
+        data.setBranchId(entity.getBranchId());
+        data.setTanggalPengajuan(entity.getTanggalPengajuan());
+        data.setNoFaktur(entity.getNoFaktur());
+        data.setNoInvoice(entity.getNoInvoice());
+        data.setTglFaktur(entity.getTglFaktur());
+        data.setNoJurnal(entity.getNoJurnal());
+        data.setMetodeBayar(entity.getMetodeBayar());
+
+        if (entity.getMetodeBayar()!=null){
+            data.setMetodeBayarName(kodeRekeningDao.getNamaRekeningByCoa(entity.getMetodeBayar()));
+        }
+
+        if (entity.getTanggalPengajuan()!=null){
+            data.setStTanggalPengajuan(CommonUtil.convertDateToString(entity.getTanggalPengajuan()));
+        }
+        if (entity.getTglDo()!=null){
+            data.setStTanggalDo(CommonUtil.convertDateToString(entity.getTglDo()));
+        }
+        if (entity.getTglFaktur()!=null){
+            data.setStTanggalFaktur(CommonUtil.convertDateToString(entity.getTglFaktur()));
+        }
+        if (entity.getTglInvoice()!=null){
+            data.setStTanggalInvoice(CommonUtil.convertDateToString(entity.getTglInvoice()));
+        }
+
+        if (entity.getBranchId()!=null){
+            ImBranchesPK pk = new ImBranchesPK();
+            pk.setId(entity.getBranchId());
+
+            data.setBranchName(branchDao.getById(pk,"Y").getBranchName());
+        }
+        if (entity.getMasterId()!=null){
+            data.setMasterName(masterVendorDao.getById("nomorMaster",entity.getMasterId()).getNama());
+        }
+
+        switch (entity.getStatus()){
+            case "B":
+                data.setStatusName("Belum Pengajuan");
+                break;
+            case "K":
+                data.setStatusName("Menunggu Kantor Pusat");
+                break;
+            case "R":
+                data.setStatusName("Sudah Di RK ( Belum Dibayar )");
+                break;
+            case "D":
+                data.setStatusName("Sudah Dibayar");
+                break;
+        }
+
+        data.setTglDo(entity.getTglDo());
+        return data;
+    }
+
+    @Override
+    public  void savePembayaranPengajuanDo(List<PengajuanBiayaRk> beanList) throws GeneralBOException {
+        logger.info("[PengajuanBiayaBoImpl.savePembayaranPengajuanDo] start process >>>");
+        if (beanList!=null) {
+            for (PengajuanBiayaRk bean : beanList){
+                if (bean.isSave()){
+                    String id = pengajuanBiayaRkDao.getNextId();
+                    ItAkunPengajuanBiayaRkEntity entity = new ItAkunPengajuanBiayaRkEntity();
+                    entity.setPengajuanBiayaRkId(id);
+                    entity.setNoTransaksi(bean.getNoTransaksi());
+                    entity.setMasterId(bean.getMasterId());
+                    entity.setJumlah(bean.getJumlah());
+                    entity.setStatus(bean.getStatus());
+                    entity.setTglInvoice(bean.getTglInvoice());
+                    entity.setBranchId(bean.getBranchId());
+                    entity.setTanggalPengajuan(new Date(new java.util.Date().getTime()));
+                    entity.setNoFaktur(bean.getNoFaktur());
+                    entity.setNoInvoice(bean.getNoInvoice());
+                    entity.setTglFaktur(bean.getTglFaktur());
+                    entity.setTglDo(bean.getTglDo());
+
+                    entity.setCreatedDate(bean.getCreatedDate());
+                    entity.setLastUpdate(bean.getLastUpdate());
+                    entity.setCreatedWho(bean.getCreatedWho());
+                    entity.setLastUpdateWho(bean.getLastUpdateWho());
+                    entity.setFlag(bean.getFlag());
+                    entity.setAction(bean.getAction());
+                    try {
+                        // insert into database
+                        pengajuanBiayaRkDao.addAndSave(entity);
+                    } catch (HibernateException e) {
+                        logger.error("[PengajuanBiayaBoImpl.savePembayaranPengajuanDo] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving new data, please info to your admin..." + e.getMessage());
+                    }
+                }
+            }
+        }
+        logger.info("[PengajuanBiayaBoImpl.savePembayaranPengajuanDo] end process <<<");
+    }
+
+    @Override
+    public  void approvePengajuanBiayaRk(List<PengajuanBiayaRk> beanList) throws GeneralBOException {
+        logger.info("[PengajuanBiayaBoImpl.approvePengajuanBiayaRk] start process >>>");
+        if (beanList!=null) {
+            String rkId = pengajuanBiayaDetailDao.getNextRkId();
+            for (PengajuanBiayaRk bean : beanList){
+                if (bean.isSave()){
+                    ItAkunPengajuanBiayaRkEntity entity = pengajuanBiayaRkDao.getById("pengajuanBiayaRkId",bean.getPengajuanBiayaRkId());
+
+                    entity.setRkId(rkId);
+                    entity.setAproveKeuId(bean.getAproveKeuId());
+                    entity.setApproveKeuDate(bean.getApproveKeuDate());
+                    entity.setApproveKeuFlag(bean.getApproveKeuFlag());
+                    entity.setStatus(bean.getStatus());
+
+                    entity.setLastUpdate(bean.getLastUpdate());
+                    entity.setLastUpdateWho(bean.getLastUpdateWho());
+                    entity.setAction(bean.getAction());
+                    try {
+                        // insert into database
+                        pengajuanBiayaRkDao.addAndSave(entity);
+                    } catch (HibernateException e) {
+                        logger.error("[PengajuanBiayaBoImpl.approvePengajuanBiayaRk] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving new data, please info to your admin..." + e.getMessage());
+                    }
+                }
+            }
+        }
+        logger.info("[PengajuanBiayaBoImpl.approvePengajuanBiayaRk] end process <<<");
+    }
+
+    @Override
+    public  void savePembayaranPengajuanDoFinal(List<PengajuanBiayaRk> beanList,String noJurnal,String metodeBayar) throws GeneralBOException {
+        logger.info("[PengajuanBiayaBoImpl.savePembayaranPengajuanDoFinal] start process >>>");
+        if (beanList!=null) {
+            String rkId = pengajuanBiayaDetailDao.getNextRkId();
+            for (PengajuanBiayaRk bean : beanList){
+                if (bean.isSave()){
+                    ItAkunPengajuanBiayaRkEntity entity = pengajuanBiayaRkDao.getById("pengajuanBiayaRkId",bean.getPengajuanBiayaRkId());
+
+                    entity.setNoJurnal(noJurnal);
+                    entity.setMetodeBayar(metodeBayar);
+                    entity.setStatus(bean.getStatus());
+
+                    entity.setLastUpdate(bean.getLastUpdate());
+                    entity.setLastUpdateWho(bean.getLastUpdateWho());
+                    entity.setAction(bean.getAction());
+                    try {
+                        // insert into database
+                        pengajuanBiayaRkDao.updateAndSave(entity);
+                    } catch (HibernateException e) {
+                        logger.error("[PengajuanBiayaBoImpl.savePembayaranPengajuanDoFinal] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving new data, please info to your admin..." + e.getMessage());
+                    }
+                }
+            }
+        }
+        logger.info("[PengajuanBiayaBoImpl.savePembayaranPengajuanDoFinal] end process <<<");
     }
 }
