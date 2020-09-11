@@ -2399,8 +2399,18 @@ public class VerifikatorAction extends BaseMasterAction {
                     String idUm = "";
                     if (detailCheckupUangMuka.size() > 0) {
                         for (HeaderDetailCheckup detailCheckup : detailCheckupUangMuka) {
+                            if(!"umum".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
+                                if ("R".equalsIgnoreCase(detailCheckup.getFlagRefund())){
+                                    response.setStatus("error");
+                                    response.setMsg("Silahkan lakukan Refund Uang Muka Pasien terlebih dahulu...!");
+                                    return response;
+                                }
+                            }
                             jumlahUm = new BigDecimal(detailCheckup.getJumlahUangMukaDibayar());
                             idUm = detailCheckup.getNoUangMuka();
+                        }
+                        if(!"umum".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
+                            jumlahUm = new BigDecimal(0);
                         }
                     }
 

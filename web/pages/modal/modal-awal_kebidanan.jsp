@@ -31,7 +31,7 @@
                                      onclick="detailRB('awal_kebidanan_rb')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
 
-                                <img id="delete_awal_kebidanan_rb" class="hvr-grow" onclick="conRB('awal_kebidanan_rb', 'awal_kebidanan')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_awal_kebidanan_rb" class="hvr-grow btn-hide" onclick="conRB('awal_kebidanan_rb', 'awal_kebidanan')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

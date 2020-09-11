@@ -672,7 +672,7 @@
                                 <img id="btn_ring_ringkasan_keluar_pasien" class="hvr-grow"
                                      onclick="detailRingkasanPasien('ringkasan_keluar_pasien')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_ringkasan_keluar_pasien" class="hvr-grow" onclick="conRing('ringkasan_keluar_pasien', 'ringkasan_keluar')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_ringkasan_keluar_pasien" class="hvr-grow btn-hide" onclick="conRing('ringkasan_keluar_pasien', 'ringkasan_keluar')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -771,7 +771,7 @@
                         <div class="form-group">
                             <label class="col-md-3">Diagnosa Utama</label>
                             <div class="col-md-8">
-                                <textarea class="form-control" id="rkp3" rows="3"></textarea>
+                                <textarea class="form-control diagnosa-primer" id="rkp3" rows="3"></textarea>
                             </div>
                         </div>
                     </div>
@@ -779,7 +779,7 @@
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Diagnosa Sekunder</label>
                             <div class="col-md-8">
-                                <textarea class="form-control" id="rkp4" rows="3" style="margin-top: 7px"></textarea>
+                                <textarea class="form-control diagnosa-sekunder" id="rkp4" rows="3" style="margin-top: 7px"></textarea>
                             </div>
                         </div>
                     </div>
@@ -803,7 +803,7 @@
                             </div>
                             <label class="col-md-2">Tanggal</label>
                             <div class="col-md-3">
-                                <input class="form-control tgl-pattern" id="rkp6">
+                                <input class="form-control tgl" id="rkp6">
                             </div>
                         </div>
                         <div class="form-group">
@@ -813,7 +813,7 @@
                             </div>
                             <label class="col-md-2" style="margin-top: 7px">Tanggal</label>
                             <div class="col-md-3">
-                                <input class="form-control tgl-pattern" style="margin-top: 7px" id="rkp8">
+                                <input class="form-control tgl" style="margin-top: 7px" id="rkp8">
                             </div>
                         </div>
                         <div class="form-group">
@@ -823,7 +823,7 @@
                             </div>
                             <label class="col-md-2" style="margin-top: 7px">Tanggal</label>
                             <div class="col-md-3">
-                                <input class="form-control tgl-pattern" style="margin-top: 7px" id="rkp10">
+                                <input class="form-control tgl" style="margin-top: 7px" id="rkp10">
                             </div>
                         </div>
                     </div>
@@ -853,11 +853,11 @@
                         <div class="form-group">
                             <label class="col-md-3">Keluar RS</label>
                             <div class="col-md-3">
-                                <input class="form-control tgl-pattern" id="krs1">
+                                <input class="form-control tgl" id="krs1">
                             </div>
                             <label class="col-md-1">Jam</label>
                             <div class="col-md-2">
-                                <input class="form-control jam-pattern" id="krs2">
+                                <input class="form-control jam" id="krs2">
                             </div>
                             <label class="col-md-1">Lama Dirawat</label>
                             <div class="col-md-2">

@@ -30,7 +30,7 @@
                             <td>Asesmen Triase</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_triase" class="hvr-grow" onclick="detailAud('triase')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_triase" class="hvr-grow" onclick="conUGD('triase', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_triase" class="hvr-grow btn-hide" onclick="conUGD('triase', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

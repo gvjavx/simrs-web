@@ -43,7 +43,7 @@
                                 <img id="btn_ina_s_o" class="hvr-grow"
                                      onclick="detailAsesmenRawatInap('s_o')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_s_o" class="hvr-grow" onclick="conRI('s_o', 'awal_medis_rawat_inap')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_s_o" class="hvr-grow btn-hide" onclick="conRI('s_o', 'awal_medis_rawat_inap')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_ina_a_p">
@@ -52,7 +52,7 @@
                                 <img id="btn_ina_a_p" class="hvr-grow"
                                      onclick="detailAsesmenRawatInap('a_p')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_a_p" class="hvr-grow" onclick="conRI('a_p', 'awal_medis_rawat_inap')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_a_p" class="hvr-grow btn-hide" onclick="conRI('a_p', 'awal_medis_rawat_inap')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

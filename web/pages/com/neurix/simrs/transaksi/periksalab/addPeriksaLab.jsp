@@ -144,7 +144,7 @@
                                 </div>
                                 <table class="table table-striped">
                                     <tr>
-                                        <td><b>Poli</b></td>
+                                        <td><b>Pelayanan</b></td>
                                         <td>
                                             <table><s:label name="periksaLab.namaPelayanan"></s:label></table>
                                         </td>
@@ -203,6 +203,25 @@
                                     <img border="0" src="<s:url value="/pages/images/icon_success.png"/>"
                                          name="icon_success">
                                     Record has been saved successfully.
+                                </sj:dialog>
+
+                                <sj:dialog id="waiting_dialog" openTopics="showDialogLoading"
+                                           closeTopics="closeDialog" modal="true"
+                                           resizable="false"
+                                           height="250" width="600" autoOpen="false"
+                                           title="Saving ...">
+                                    Please don't close this window, server is processing your request ...
+                                    <br>
+                                    <center>
+                                        <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                             src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                             name="image_indicator_write">
+                                        <br>
+                                        <img class="spin" border="0"
+                                             style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                             src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                             name="image_indicator_write">
+                                    </center>
                                 </sj:dialog>
 
                             </div>
@@ -530,7 +549,7 @@
         var idPasien = '<s:property value="periksaLab.idPasien"/>';
         var idPelayanan = '<s:property value="periksaLab.idPelayanan"/>';
         var metodePembayaran = '<s:property value="periksaLab.metodePembayaran"/>';
-        var jenisPasien = '<s:property value="periksaLab.idJenisPeriksaPasien"/>';
+        var jenisPasien = '<s:property value="periksaLab.idJenisPeriksa"/>';
         var idDetailCheckup = '<s:property value="periksaLab.idDetailCheckup"/>';
 
         var data = {
@@ -549,12 +568,9 @@
             finalImg = hasil;
         }
         var result = JSON.stringify(data);
-
         $('#waiting_dialog').dialog('open');
-        $('#save_ket').hide();
-        $('#load_ket').show();
         dwr.engine.setAsync(true);
-        PeriksaLabAction.saveEditDokterLab(idPeriksaLab, idDokter, finalImg, keterangan, data, {
+        PeriksaLabAction.saveEditDokterLab(idPeriksaLab, idDokter, finalImg, keterangan, result, {
             callback: function (response) {
                 if (response.status == "success") {
                     $('#success_dok').show().fadeOut(5000);
@@ -564,25 +580,6 @@
                     $('#info_dialog').dialog('open');
                     $('#close_pos').val(2);
                     $('body').scrollTop(0);
-                    // if("just_lab" == keterangan){
-                    //     CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, "selesai", "", "", "", "", "Pemeriksaan Lab", "", "", jenisPasien, "", "", "", idPasien, "", "", metodePembayaran, "lab", "", function (response) {
-                    //         if(response.status == "success"){
-                    //             $('#success_dok').show().fadeOut(5000);
-                    //             $('#save_ket').show();
-                    //             $('#load_ket').hide();
-                    //             $('#info_dialog').dialog('open');
-                    //             $('#close_pos').val(2);
-                    //             $('body').scrollTop(0);
-                    //         }else{
-                    //             $('#save_ket').show();
-                    //             $('#load_ket').hide();
-                    //             $('#warning_dok').show().fadeOut(5000);
-                    //             $('#msg_dok').text(response.msg);
-                    //         }
-                    //     });
-                    // }else{
-                    //
-                    // }
                 } else {
                     $('#waiting_dialog').dialog('close');
                     $('#save_ket').show();

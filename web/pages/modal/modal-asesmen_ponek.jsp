@@ -30,7 +30,7 @@
                                 <img id="btn_rb_asesmen_ponek_rb" class="hvr-grow"
                                      onclick="detailRB('asesmen_ponek_rb')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_asesmen_ponek_rb" class="hvr-grow" onclick="conRB('asesmen_ponek_rb', 'asesmen_ponek')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_asesmen_ponek_rb" class="hvr-grow btn-hide" onclick="conRB('asesmen_ponek_rb', 'asesmen_ponek')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

@@ -32,7 +32,7 @@ public class DetailIcuDao extends GenericDao<ItSimrsDetailIcuEntity, String> {
                 criteria.add(Restrictions.eq("idHeaderIcu", (String) mapCriteria.get("id_header_icu")));
             }
             if (mapCriteria.get("id_detail_checkup")!=null) {
-                criteria.add(Restrictions.eq("idDetailCheckup", (String) mapCriteria.get("id_detail_checkup")));
+                criteria.add(Restrictions.eq("idDetailChekcup", (String) mapCriteria.get("id_detail_checkup")));
             }
             if (mapCriteria.get("created_date")!=null) {
                 criteria.add(Restrictions.eq("createdDate", (Timestamp) mapCriteria.get("created_date")));

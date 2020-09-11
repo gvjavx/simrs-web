@@ -30,7 +30,7 @@
                                 <img id="btn_op_add_instruksi_pasca_anestesi" class="hvr-grow"
                                      onclick="detailOperasi('add_instruksi_pasca_anestesi')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_add_instruksi_pasca_anestesi" class="hvr-grow" onclick="conOP('add_instruksi_pasca_anestesi', 'instruksi_pasca_anestesi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_add_instruksi_pasca_anestesi" class="hvr-grow btn-hide" onclick="conOP('add_instruksi_pasca_anestesi', 'instruksi_pasca_anestesi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

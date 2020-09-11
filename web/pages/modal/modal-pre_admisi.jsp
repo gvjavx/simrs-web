@@ -32,7 +32,7 @@
                                 <img id="btn_ring_pre_admisi" class="hvr-grow"
                                      onclick="detailRingkasanPasien('pre_admisi')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_pre_admisi" class="hvr-grow" onclick="conRing('pre_admisi', 'admisi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_pre_admisi" class="hvr-grow btn-hide" onclick="conRing('pre_admisi', 'admisi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -160,8 +160,8 @@
                         <div class="col-md-6">
                             <label>TTD Dokter</label>
                             <canvas style="margin-left: -1px;" width="250" onmouseover="paintTtd('et5')" class="paint-canvas-ttd" id="et5"></canvas>
-                            <input class="form-control" id="nama_dokter" placeholder="Nama Terang">
-                            <input style="margin-top: 3px" class="form-control" id="sip_dokter" placeholder="SIP">
+                            <input class="form-control nama_dpjp_ri" id="nama_dokter" placeholder="Nama Terang">
+                            <input style="margin-top: 3px" class="form-control sip_dpjp_ri" id="sip_dokter" placeholder="SIP">
                             <button style="margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('et5')"><i class="fa fa-trash"></i> Clear
                             </button>
                         </div>

@@ -32,7 +32,7 @@
                                 <img id="btn_rb_data_laporan_persalinan_rb" class="hvr-grow"
                                      onclick="detailRB('data_laporan_persalinan_rb')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_data_laporan_persalinan_rb" class="hvr-grow" onclick="conRB('data_laporan_persalinan_rb', 'laporan_persalinan')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_data_laporan_persalinan_rb" class="hvr-grow btn-hide" onclick="conRB('data_laporan_persalinan_rb', 'laporan_persalinan')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_rb_laporan_persalinan_rb">
@@ -41,7 +41,7 @@
                                 <img id="btn_rb_laporan_persalinan_rb" class="hvr-grow"
                                      onclick="detailRB('laporan_persalinan_rb')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_laporan_persalinan_rb" class="hvr-grow" onclick="conRB('laporan_persalinan_rb', 'laporan_persalinan')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_laporan_persalinan_rb" class="hvr-grow btn-hide" onclick="conRB('laporan_persalinan_rb', 'laporan_persalinan')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

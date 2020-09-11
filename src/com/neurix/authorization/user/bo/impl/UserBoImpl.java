@@ -595,7 +595,7 @@ public class UserBoImpl implements UserBo {
                                 menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-bar-chart\"></i><span> " + menuName + "</span></a></li>";
                         }else if (menuName.equalsIgnoreCase("Pendaftaran Rawat Jalan")) {
                             menuNameString = "<li id=\"pendaftaran\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-user-md\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Pel. Rawat Jalan")) {
+                        }else if (menuName.equalsIgnoreCase("Ply. Rawat Jalan")) {
                             menuNameString = "<li id=\"rawat_jalan\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-stethoscope\"></i><span> " + menuName + "</span></a></li>";
                         }else if (menuName.equalsIgnoreCase("Rawat Inap")) {
                             menuNameString = "<li id=\"rawat_inap\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-medkit\"></i><span> " + menuName + "</span></a></li>";
@@ -713,7 +713,7 @@ public class UserBoImpl implements UserBo {
                             icon="<i class=\"fa fa-user-md\"></i>";
                             idLi = "pendaftaran_active";
                             openLu = "pendaftaran_open";
-                        }else if (("Pel. Rawat Inap").equalsIgnoreCase(menuName)){
+                        }else if (("Ply. Rawat Inap").equalsIgnoreCase(menuName)){
                             icon="<i class=\"fa fa-medkit\"></i>";
                             idLi = "pel_ri_active";
                             openLu = "pel_ri_open";

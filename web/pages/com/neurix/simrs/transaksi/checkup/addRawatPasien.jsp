@@ -847,12 +847,17 @@
                                                             if("Y" == selectedObj.isCkp){
                                                                 $('#poli').val(selectedObj.idPelayanan).trigger('change').attr('disabled', true);
                                                                 $('#id_pelayanan_poli').val(selectedObj.idPelayanan);
+                                                            }else{
+                                                                $('#poli').val('').trigger('change').attr('disabled', false);
+                                                                $('#id_pelayanan_poli').val('');
                                                             }
 
                                                             $('#last_id_detail_checkup').val(selectedObj.lastIdDetail);
                                                             $('#is_order_lab').val(selectedObj.isOrder);
                                                             if(selectedObj.tglCkp != null){
                                                                 $('#tgl_checkup').html("Tanggal Checkup Ulang : <b>"+selectedObj.tglCkp+"</b>");
+                                                            }else{
+                                                                $('#tgl_checkup').html("");
                                                             }
                                                         }
 
@@ -1020,7 +1025,7 @@
                                             <div class="col-md-8">
                                                 <%--<s:if test='tipe == "bpjs" || tipe == "ptpn"'>--%>
                                                         <s:textfield id="diagnosa_awal" style="margin-top: 7px"
-                                                                     name="headerCheckup.diagnosa"
+                                                                     name="headerCheckup.diagnosa" autocomplete="off"
                                                                      onkeypress="$(this).css('border','')"
                                                                      cssClass="form-control" required="false"/>
                                                         <s:hidden name="headerCheckup.jenisTransaksi"/>

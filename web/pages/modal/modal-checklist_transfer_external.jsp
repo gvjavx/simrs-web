@@ -32,7 +32,7 @@
                                 <img id="btn_ina_transfer_external" class="hvr-grow"
                                      onclick="detailAsesmenRawatInap('transfer_external')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_transfer_external" class="hvr-grow" onclick="conRI('transfer_external', 'checklist_transfer_external')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_transfer_external" class="hvr-grow btn-hide" onclick="conRI('transfer_external', 'checklist_transfer_external')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

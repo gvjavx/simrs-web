@@ -56,7 +56,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_pengkajian" class="hvr-grow" onclick="detailMonHD('pengkajian')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_monitoring_hd" class="hvr-grow" onclick="conHD('pengkajian', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_monitoring_hd" class="hvr-grow btn-hide" onclick="conHD('pengkajian', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_hd_resiko_jatuh">
@@ -64,7 +64,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_resiko_jatuh" class="hvr-grow" onclick="detailMonHD('resiko_jatuh')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_resiko_jatuh" class="hvr-grow" onclick="conHD('resiko_jatuh', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_resiko_jatuh" class="hvr-grow btn-hide" onclick="conHD('resiko_jatuh', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_hd_pemeriksaan">
@@ -72,7 +72,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_pemeriksaan" class="hvr-grow" onclick="detailMonHD('pemeriksaan')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_pemeriksaan" class="hvr-grow" onclick="conHD('pemeriksaan', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_pemeriksaan" class="hvr-grow btn-hide" onclick="conHD('pemeriksaan', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_hd_diagnosa">
@@ -80,7 +80,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_diagnosa" class="hvr-grow" onclick="detailMonHD('diagnosa')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_diagnosa" class="hvr-grow" onclick="conHD('diagnosa', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_diagnosa" class="hvr-grow btn-hide" onclick="conHD('diagnosa', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_hd_intervensi">
@@ -88,7 +88,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_intervensi" class="hvr-grow" onclick="detailMonHD('intervensi')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_intervensi" class="hvr-grow" onclick="conHD('intervensi', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_intervensi" class="hvr-grow btn-hide" onclick="conHD('intervensi', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_hd_terintegrasi">
@@ -103,7 +103,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_instruksi_medik" class="hvr-grow" onclick="detailMonHD('instruksi_medik')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_instruksi_medik" class="hvr-grow" onclick="conHD('instruksi_medik', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_instruksi_medik" class="hvr-grow btn-hide" onclick="conHD('instruksi_medik', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_hd_observasi_tindakan">
@@ -118,7 +118,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_penyulit_hd" class="hvr-grow" onclick="detailMonHD('penyulit_hd')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_penyulit_hd" class="hvr-grow" onclick="conHD('penyulit_hd', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_penyulit_hd" class="hvr-grow btn-hide" onclick="conHD('penyulit_hd', 'monitoring_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -2137,7 +2137,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_asesmen_awal" class="hvr-grow" onclick="detailMonHD('asesmen_awal')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_asesmen_awal" class="hvr-grow" onclick="conHD('asesmen_awal', 'asesmen_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_asesmen_awal" class="hvr-grow btn-hide" onclick="conHD('asesmen_awal', 'asesmen_hd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -3072,7 +3072,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_travelling_dialysis" class="hvr-grow" onclick="detailMonHD('travelling_dialysis')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_travelling_dialysis" class="hvr-grow" onclick="conHD('travelling_dialysis', 'travelling')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_travelling_dialysis" class="hvr-grow btn-hide" onclick="conHD('travelling_dialysis', 'travelling')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -3276,7 +3276,7 @@
                             <td width="20%" align="center">
                                 <img id="btn_hd_perencanaan_hemodialisa_pasien" class="hvr-grow" onclick="detailMonHD('perencanaan_hemodialisa_pasien')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_perencanaan_hemodialisa_pasien" class="hvr-grow" onclick="conHD('perencanaan_hemodialisa_pasien', 'perencanaan_hemodialisa')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_perencanaan_hemodialisa_pasien" class="hvr-grow btn-hide" onclick="conHD('perencanaan_hemodialisa_pasien', 'perencanaan_hemodialisa')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

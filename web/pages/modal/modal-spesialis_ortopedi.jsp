@@ -44,7 +44,7 @@
                                                                 onclick="detailSPS('anamnesa_ortopedi')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
 
-                                <img id="delete_anamnesa_ortopedi" class="hvr-grow" onclick="conSPS('anamnesa_ortopedi', 'spesialis_ortopedi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_anamnesa_ortopedi" class="hvr-grow btn-hide" onclick="conSPS('anamnesa_ortopedi', 'spesialis_ortopedi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_sps_pemeriksaan_ortopedi">
@@ -53,7 +53,7 @@
                                                                 onclick="detailSPS('pemeriksaan_ortopedi')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
 
-                                <img id="delete_pemeriksaan_ortopedi" class="hvr-grow" onclick="conSPS('pemeriksaan_ortopedi', 'spesialis_ortopedi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_pemeriksaan_ortopedi" class="hvr-grow btn-hide" onclick="conSPS('pemeriksaan_ortopedi', 'spesialis_ortopedi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_sps_edukasi_ortopedi">
@@ -62,7 +62,7 @@
                                                                 onclick="detailSPS('edukasi_ortopedi')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
 
-                                <img id="delete_edukasi_ortopedi" class="hvr-grow" onclick="conSPS('edukasi_ortopedi', 'spesialis_ortopedi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_edukasi_ortopedi" class="hvr-grow btn-hide" onclick="conSPS('edukasi_ortopedi', 'spesialis_ortopedi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

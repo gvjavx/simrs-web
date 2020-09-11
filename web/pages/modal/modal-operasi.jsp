@@ -38,14 +38,14 @@
                             <td>Persiapan Pasien Pre Operasi</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_pre_operasi" class="hvr-grow" onclick="detailOperasi('pre_operasi')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_pre_operasi" class="hvr-grow" onclick="conOP('pre_operasi', 'ceklist_operasi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_pre_operasi" class="hvr-grow btn-hide" onclick="conOP('pre_operasi', 'ceklist_operasi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_op_kondisi_pasien">
                             <td>Kondisi Pasien Saat Serah Terima</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_kondisi_pasien" class="hvr-grow" onclick="detailOperasi('kondisi_pasien')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_kondisi_pasien" class="hvr-grow" onclick="conOP('kondisi_pasien', 'ceklist_operasi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_kondisi_pasien" class="hvr-grow btn-hide" onclick="conOP('kondisi_pasien', 'ceklist_operasi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -657,7 +657,7 @@
                             <td>Hasil Penandaan Area Operasi</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_penandaan_area" class="hvr-grow" onclick="detailOperasi('penandaan_area')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_penandaan_area" class="hvr-grow" onclick="conOP('penandaan_area', 'penandaan_area')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_penandaan_area" class="hvr-grow btn-hide" onclick="conOP('penandaan_area', 'penandaan_area')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -819,35 +819,35 @@
                             <td>Anamnesa</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_anamnesa" class="hvr-grow" onclick="detailOperasi('anamnesa')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_anamnesa" class="hvr-grow" onclick="conOP('anamnesa', 'pra_anestesi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_anamnesa" class="hvr-grow btn-hide" onclick="conOP('anamnesa', 'pra_anestesi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_op_pemeriksaan_fisik">
                             <td>Pemeriksaan Fisik</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_pemeriksaan_fisik" class="hvr-grow" onclick="detailOperasi('pemeriksaan_fisik')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_pemeriksaan_fisik" class="hvr-grow" onclick="conOP('pemeriksaan_fisik', 'pra_anestesi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_pemeriksaan_fisik" class="hvr-grow btn-hide" onclick="conOP('pemeriksaan_fisik', 'pra_anestesi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_op_pemeriksaan_penunjang">
                             <td>Hasil Pemeriksaan Penunjang</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_pemeriksaan_penunjang" class="hvr-grow" onclick="detailOperasi('pemeriksaan_penunjang')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_pemeriksaan_penunjang" class="hvr-grow" onclick="conOP('pemeriksaan_penunjang', 'pra_anestesi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_pemeriksaan_penunjang" class="hvr-grow btn-hide" onclick="conOP('pemeriksaan_penunjang', 'pra_anestesi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_op_status_fisik">
                             <td>Status Fisik</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_status_fisik" class="hvr-grow" onclick="detailOperasi('status_fisik')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_status_fisik" class="hvr-grow" onclick="conOP('status_fisik', 'pra_anestesi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_status_fisik" class="hvr-grow btn-hide" onclick="conOP('status_fisik', 'pra_anestesi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_op_persiapan_anestesi">
                             <td>Persiapan Anestesi</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_persiapan_anestesi" class="hvr-grow" onclick="detailOperasi('persiapan_anestesi')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_persiapan_anestesi" class="hvr-grow" onclick="conOP('persiapan_anestesi', 'pra_anestesi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_persiapan_anestesi" class="hvr-grow btn-hide" onclick="conOP('persiapan_anestesi', 'pra_anestesi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -1790,21 +1790,21 @@
                             <td>Penilain Pasca General Anestesi Pasien Dewasa (Aldrette Score)</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_rr_dewasa" class="hvr-grow" onclick="detailOperasi('rr_dewasa')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_rr_dewasa" class="hvr-grow" onclick="conOP('rr_dewasa', 'pindah_rr')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_rr_dewasa" class="hvr-grow btn-hide" onclick="conOP('rr_dewasa', 'pindah_rr')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_op_rr_anak_anak">
                             <td>Penilain Pasca General Anestesi Pasien Anak-Anak (Stewart Score)</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_rr_anak_anak" class="hvr-grow" onclick="detailOperasi('rr_anak_anak')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_rr_anak_anak" class="hvr-grow" onclick="conOP('rr_anak_anak', 'pindah_rr')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_rr_anak_anak" class="hvr-grow btn-hide" onclick="conOP('rr_anak_anak', 'pindah_rr')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_op_rr_sab">
                             <td>Penilain Pasca Regional Anestesi Pasien SAB/Epidural (Bromage Score)</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_rr_sab" class="hvr-grow" onclick="detailOperasi('rr_sab')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_rr_sab" class="hvr-grow" onclick="conOP('rr_sab', 'pindah_rr')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_rr_sab" class="hvr-grow btn-hide" onclick="conOP('rr_sab', 'pindah_rr')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -2165,7 +2165,7 @@
                             <td>Laporan Operasi</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_laporan_operasi" class="hvr-grow" onclick="detailOperasi('laporan_operasi')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_add_laporan_operasi" class="hvr-grow" onclick="conOP('add_laporan_operasi', 'laporan_operasi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_add_laporan_operasi" class="hvr-grow btn-hide" onclick="conOP('add_laporan_operasi', 'laporan_operasi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

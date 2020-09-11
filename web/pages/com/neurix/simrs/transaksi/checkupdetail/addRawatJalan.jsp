@@ -1155,7 +1155,7 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Alergi</label>
                         <div class="col-md-7">
-                            <input class="form-control" id="alergi"
+                            <input class="form-control" id="alergi" autocomplete="off"
                                    oninput="var warn =$('#war_alergi').is(':visible'); if (warn){$('#cor_alergi').show().fadeOut(3000);$('#war_alergi').hide()}">
                         </div>
                         <div class="col-md-2">
@@ -1370,7 +1370,7 @@
                         <label class="col-md-3">Diagnosa</label>
                         <div class="col-md-7">
                         <s:textfield id="nosa_id_diagnosa" style="margin-top: 7px"
-                                     name="headerCheckup.diagnosa"
+                                     name="headerCheckup.diagnosa" autocomplete="off"
                                      onkeypress="var warn =$('#war_diagnosa_bpjs').is(':visible'); if (warn){$('#cor_diagnosa_bpjs').show().fadeOut(3000);$('#war_diagnosa_bpjs').hide()}; searchDiagnosa(this.id)"
                                      cssClass="form-control" required="false"/>
                         </div>
@@ -1424,7 +1424,7 @@
                     <div class="form-group">
                         <label class="col-md-3">ICD9</label>
                         <div class="col-md-7">
-                            <s:textfield id="id_icd9" style="margin-top: 7px"
+                            <s:textfield id="id_icd9" style="margin-top: 7px" autocomplete="off"
                                          onkeypress="var warn =$('#war_id_icd9').is(':visible'); if (warn){$('#cor_id_icd9').show().fadeOut(3000);$('#war_id_icd9').hide()}; searchICD9(this.id)"
                                          cssClass="form-control" required="false"/>
                         </div>
@@ -1681,6 +1681,21 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Jenis Obat</label>
+                        <div class="col-md-7">
+                            <select class="form-control select2" style="margin-top: 7px; width: 100%"
+                                    id="resep_jenis_obat">
+                                <option value="">[select one]</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_jenis_obat"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_jenis_obat"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
                         <div class="col-md-7">
                             <select class="form-control select2" style="margin-top: 7px; width: 100%"
@@ -1732,7 +1747,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Stok Obat (Biji)</label>
+                            <label class="col-md-3" style="margin-top: 7px">Stok Obat</label>
                             <div class="col-md-7">
                                 <div class="input-group" style="margin-top: 7px; width: 40%">
                                     <input class="form-control" type="number" min="1" id="resep_stok_biji_serupa" readonly>
@@ -2093,6 +2108,31 @@
                         <tbody id="body_detail_lab">
                         </tbody>
                     </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-lab_luar">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> <span id="title_lab_luar"></span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <img id="img_lab_luar" style="width: 100%">
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">

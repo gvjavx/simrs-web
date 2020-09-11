@@ -56,91 +56,96 @@
                             <td>Identitas</td>
                             <td width="20%" align="center">
                                 <img id="btn_icu_identitas" class="hvr-grow" onclick="detailICU('identitas')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_identitas" class="hvr-grow" onclick="conICU('identitas', 'asesmen_icu')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_identitas" class="hvr-grow btn-hide" onclick="conICU('identitas', 'asesmen_icu')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_icu_alat_infasive">
                             <td>Alat Infasive</td>
                             <td width="20%" align="center">
                                 <img id="btn_icu_alat_infasive" class="hvr-grow" onclick="detailICU('alat_infasive')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_alat_infasive" class="hvr-grow btn-hide" onclick="conICU('alat_infasive', 'asesmen_icu')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_icu_resiko_jatuh">
                             <td>Skala Resiko Jatuh</td>
                             <td width="20%" align="center">
                                 <img id="btn_icu_resiko_jatuh" class="hvr-grow" onclick="detailICU('resiko_jatuh')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_resiko_jatuh" class="hvr-grow btn-hide" onclick="conICU('resiko_jatuh', 'asesmen_icu')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_icu_decobitus">
                             <td>Derajat Decobitus</td>
                             <td width="20%" align="center">
                                 <img id="btn_icu_decobitus" class="hvr-grow" onclick="detailICU('decobitus')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_decobitus" class="hvr-grow btn-hide" onclick="conICU('decobitus', 'asesmen_icu')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_icu_nyeri">
                             <td>Skala Nyeri</td>
                             <td width="20%" align="center">
                                 <img id="btn_icu_nyeri" class="hvr-grow" onclick="detailICU('nyeri')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_nyeri" class="hvr-grow btn-hide" onclick="conICU('nyeri', 'asesmen_icu')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_icu_gcs">
                             <td>GCS <small>(Glasgow Coma Scale)</small></td>
                             <td width="20%" align="center">
                                 <img id="btn_icu_gcs" class="hvr-grow" onclick="detailICU('gcs')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_gcs" class="hvr-grow btn-hide" onclick="conICU('gcs', 'asesmen_icu')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_icu_hemodinamika_icu">
                             <td>Hemodinamika</td>
                             <td width="20%" align="center">
-                                <img id="btn_icu_hemodinamika_icu" class="hvr-grow" onclick="listHemodinamika('hemodinamika_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="btn_icu_hemodinamika_icu" class="hvr-grow" onclick="listHemodinamika('hemodinamika_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
                             </td>
                         </tr>
                         <tr id="row_icu_respirasi_icu">
                             <td>Respirasi</td>
                             <td width="20%" align="center">
-                                <img id="btn_icu_respirasi_icu" class="hvr-grow" onclick="listRespirasi('respirasi_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="btn_icu_respirasi_icu" class="hvr-grow" onclick="listRespirasi('respirasi_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
                             </td>
                         </tr>
                         <tr id="row_icu_keseimbangan_icu">
                             <td>Keseimbangan</td>
                             <td width="20%" align="center">
-                                <img id="btn_icu_keseimbangan_icu" class="hvr-grow" onclick="listInputan('keseimbangan_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="btn_icu_keseimbangan_icu" class="hvr-grow" onclick="listInputan('keseimbangan_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
                             </td>
                         </tr>
                         <tr id="row_icu_injeksi_icu">
                             <td>Injeksi ICU</td>
                             <td width="20%" align="center">
-                                <img id="btn_icu_injeksi_icu" class="hvr-grow" onclick="listInputan('injeksi_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="btn_icu_injeksi_icu" class="hvr-grow" onclick="listInputan('injeksi_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
                             </td>
                         </tr>
                         <tr id="row_icu_oral_icu">
                             <td>Oral</td>
                             <td width="20%" align="center">
-                                <img id="btn_icu_oral_icu" class="hvr-grow" onclick="listInputan('oral_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="btn_icu_oral_icu" class="hvr-grow" onclick="listInputan('oral_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
                             </td>
                         </tr>
                         <tr id="row_icu_lain_icu">
                             <td>Lain-Lain</td>
                             <td width="20%" align="center">
-                                <img id="btn_icu_lain_icu" class="hvr-grow" onclick="listInputan('lain_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="btn_icu_lain_icu" class="hvr-grow" onclick="listInputan('lain_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
                             </td>
                         </tr>
                         <tr id="row_icu_intakea_icu">
                             <td>Intakea ICU</td>
                             <td width="20%" align="center">
-                                <img id="btn_icu_intakea_icu" class="hvr-grow" onclick="listInputan('intakea_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="btn_icu_intakea_icu" class="hvr-grow" onclick="listInputan('intakea_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
                             </td>
                         </tr>
                         <tr id="row_icu_output_icu">
                             <td>Output ICU</td>
                             <td width="20%" align="center">
-                                <img id="btn_icu_output_icu" class="hvr-grow" onclick="listInputan('output_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="btn_icu_output_icu" class="hvr-grow" onclick="listInputan('output_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
                             </td>
                         </tr>
                         <tr id="row_icu_asuhan_keperawatan_icu">
                             <td>Rencana Asuhan Keperawatan</td>
                             <td width="20%" align="center">
-                                <img id="btn_icu_asuhan_keperawatan_icu" class="hvr-grow" onclick="listAsuhanKeperawatanICU('asuhan_keperawatan_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="btn_icu_asuhan_keperawatan_icu" class="hvr-grow" onclick="listAsuhanKeperawatanICU('asuhan_keperawatan_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
                             </td>
                         </tr>
                         </tbody>

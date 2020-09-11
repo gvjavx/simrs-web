@@ -3,6 +3,7 @@ package com.neurix.simrs.master.pasien.bo;
 import com.neurix.common.bo.GeneralBo;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.pasien.model.*;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.paketperiksa.model.PaketPasien;
 
@@ -14,7 +15,8 @@ import java.util.List;
 public interface PasienBo extends GeneralBo {
     public List<Pasien> getByCriteria(Pasien bean) throws GeneralBOException;
     public void saveAdd(Pasien pasien) throws GeneralBOException;
-    public void saveEdit(Pasien pasien) throws GeneralBOException;
+    public CrudResponse saveEdit(Pasien pasien) throws GeneralBOException;
+    public Boolean cekNikPasien(String nik) throws GeneralBOException;
     public void saveDelete(Pasien bean) throws GeneralBOException;
     public List<Pasien> getListComboPasien(String query) throws GeneralBOException;
 

@@ -30,7 +30,7 @@
                                 <img id="btn_rb_awal_kandungan_rb" class="hvr-grow"
                                      onclick="detailRB('awal_kandungan_rb')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_awal_kandungan_rb" class="hvr-grow" onclick="conRB('awal_kandungan_rb', 'awal_kandungan')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="delete_awal_kandungan_rb" class="hvr-grow btn-hide" onclick="conRB('awal_kandungan_rb', 'awal_kandungan')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

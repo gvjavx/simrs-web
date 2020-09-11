@@ -2,13 +2,25 @@ function showModalRingkasanPasien(jenis, idRM, isSetIdRM) {
     if(isSetIdRM == "Y"){
         tempidRm = idRM;
     }
+    $('#modal-ring-' + jenis).modal({show: true, backdrop: 'static'});
     if (isReadRM) {
         $('.btn-hide').hide();
     } else {
+        setDataPasien();
+        var idDpjp = $('.id_dpjp');
+        if(idDpjp.length > 0){
+            var dataDpjp = $('.id_dpjp')[0].value;
+            var namaDpjp = $('.nama_dpjp_ri');
+            var sipDpjp = $('.sip_dpjp_ri');
+            if(namaDpjp.length > 0){
+                $('.nama_dpjp_ri').val(dataDpjp.split("|")[3]);
+            }
+            if(sipDpjp.length > 0){
+                $('.sip_dpjp_ri').val(dataDpjp.split("|")[2]);
+            }
+        }
         $('.btn-hide').show();
     }
-    $('#modal-ring-' + jenis).modal({show: true, backdrop: 'static'});
-    setDataPasien();
 }
 
 function saveRingkasanPasien(jenis, ket) {
@@ -779,7 +791,13 @@ function saveRingkasanPasien(jenis, ket) {
 }
 
 function detailRingkasanPasien(jenis) {
-    var idDetailCheckup = $('#h_id_detail_pasien').val();
+    var cekId = "";
+    var idDetail = $('#h_id_detail_pasien').val();
+    if(idDetail != null && idDetail != ''){
+        cekId = idDetail;
+    }else{
+        cekId = idDetailCheckup;
+    }
     if (jenis != '') {
         var head = "";
         var body = "";
@@ -789,7 +807,7 @@ function detailRingkasanPasien(jenis) {
         var tgl = "";
         var cekData = false;
 
-        RingkasanPasienAction.getListDetail(idDetailCheckup, jenis, function (res) {
+        RingkasanPasienAction.getListDetail(cekId, jenis, function (res) {
             if (res.length > 0) {
                 $.each(res, function (i, item) {
                     var jwb = "";

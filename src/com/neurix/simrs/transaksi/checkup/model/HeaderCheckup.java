@@ -156,6 +156,33 @@ public class HeaderCheckup {
     private String heteroanamnesis;
     private String catatan;
     private String anamnese;
+    private String flagCloseTransaksi;
+    private String flagCover;
+    private String urlLab;
+
+    public String getUrlLab() {
+        return urlLab;
+    }
+
+    public void setUrlLab(String urlLab) {
+        this.urlLab = urlLab;
+    }
+
+    public String getFlagCloseTransaksi() {
+        return flagCloseTransaksi;
+    }
+
+    public void setFlagCloseTransaksi(String flagCloseTransaksi) {
+        this.flagCloseTransaksi = flagCloseTransaksi;
+    }
+
+    public String getFlagCover() {
+        return flagCover;
+    }
+
+    public void setFlagCover(String flagCover) {
+        this.flagCover = flagCover;
+    }
 
     public String getAnamnese() {
         return anamnese;

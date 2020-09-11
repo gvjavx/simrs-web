@@ -742,8 +742,10 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "c.kategori_pelayanan,\n" +
                     "c.tipe_pelayanan,\n"+
                     "b.is_stay, \n"+
-                    "b.kelas_pasien,\n"+
-                    "b.catatan \n"+
+                    "b.kelas_pasien, \n"+
+                    "b.catatan, \n"+
+                    "b.flag_close_traksaksi, \n"+
+                    "b.flag_cover \n"+
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
@@ -842,6 +844,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setIsStay(obj[52] == null ? "" : obj[52].toString());
                     checkup.setKelasPasien(obj[53] == null ? "" : obj[53].toString());
                     checkup.setCatatan(obj[54] == null ? "" : obj[54].toString());
+                    checkup.setFlagCloseTransaksi(obj[55] == null ? null : obj[55].toString());
+                    checkup.setFlagCover(obj[56] == null ? null : obj[56].toString());
                     HeaderCheckup hdr = getPemeriksaanFisik(obj[0].toString());
                     checkup.setTensi(hdr.getTensi());
                     checkup.setSuhu(hdr.getSuhu());
@@ -1332,7 +1336,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "b.keterangan_selesai, \n" +
                     "b.video_rm,\n" +
                     "e.id_diagnosa,\n" +
-                    "e.keterangan_diagnosa\n" +
+                    "e.keterangan_diagnosa, \n" +
+                    "f.url_img \n"+
                     "FROM it_simrs_header_checkup  a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN it_simrs_riwayat_tindakan c ON b.id_detail_checkup = c.id_detail_checkup\n" +
@@ -1343,6 +1348,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "rank() OVER (PARTITION BY id_detail_checkup ORDER BY created_date DESC)\n" +
                     "FROM it_simrs_diagnosa_rawat\n" +
                     ")a WHERE rank = 1) e ON b.id_detail_checkup = e.id_detail_checkup\n" +
+                    "LEFT JOIN it_simrs_periksa_lab f ON c.id_tindakan = f.id_periksa_lab \n"+
                     "WHERE a.id_pasien = :id \n" +
                     "AND a.branch_id = :branchId \n" +
                     "AND b.status_periksa = '3'\n" +
@@ -1383,6 +1389,9 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     }
                     checkup.setKeterangan(obj[7] == null ? "" : obj[7].toString());
                     checkup.setVideoRm(obj[9] == null ? null : CommonConstant.EXTERNAL_IMG_URI + obj[9].toString());
+                    if(obj[12] != null){
+                        checkup.setUrlLab(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_IMG_RM+obj[12].toString());
+                    }
                     checkupList.add(checkup);
                 }
             }
@@ -1642,7 +1651,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
             String SQL = "SELECT\n" +
                     "c.nama_pelayanan,\n" +
                     "aa.id_diagnosa,\n" +
-                    "aa.keterangan_diagnosa\n" +
+                    "aa.keterangan_diagnosa,\n" +
+                    "a.created_date\n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
@@ -1669,6 +1679,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setNamaPelayanan(obj[0] == null ? "" : obj[0].toString());
                     checkup.setDiagnosa(obj[1] == null ? "" : obj[1].toString());
                     checkup.setNamaDiagnosa(obj[2] == null ? "" : obj[2].toString());
+                    checkup.setCreatedDate(obj[3] == null ? null : (Timestamp) obj[3]);
                     response.add(checkup);
                 }
             }

@@ -204,10 +204,10 @@ function saveRJ(jenis, ket) {
         var va4 = undefined;
         var va4d = $('[name=gz4]:checked').val();
         if(va4d != undefined){
-            var ket = $('#ket_gz4').val();
+            var a = $('#ket_gz4').val();
             if(va4d == "Lain-Lain"){
-                if(ket != ''){
-                    va4 = ket;
+                if(a != ''){
+                    va4 = a;
                 }
             }else{
                 va4 = va4d;

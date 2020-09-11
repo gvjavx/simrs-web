@@ -652,6 +652,7 @@
         var noSep;
         var cekTindakan = false;
         var jenisPasien = "";
+        var jenisPasienName = "";
         var total = 0;
         var idPasien = "";
         var id = "";
@@ -659,15 +660,11 @@
         var url = '<s:url value="/pages/images/spinner.gif"/>';
         $('#t_'+idDetailCheckup).attr('src',url).css('width', '30px', 'height', '40px');
 
-
         setTimeout(function () {
-
             var url = '<s:url value="/pages/images/icon_payment.ico"/>';
             $('#t_'+idDetailCheckup).attr('src',url).css('width', '', 'height', '');
-
             CheckupAction.listDataPasien(idDetailCheckup, function (response) {
                 if (response != null) {
-                    // $.each(dataPasien, function (i, item) {
                         var tanggal = response.tglLahir;
                         var dateFormat = converterDate(new Date(tanggal));
                         noCheckup = response.noCheckup;
@@ -690,14 +687,13 @@
                         desa = response.namaDesa;
                         noSep = response.noSep;
                         jenisPasien = response.idJenisPeriksaPasien;
+                        jenisPasienName = response.statusPeriksaName;
                         $('#fin_no_rm').html(response.idPasien);
-                    // });
                 }
             });
 
             KasirRawatJalanAction.getListUangMuka(idDetailCheckup, function (response) {
                 dataTindakan = response;
-                console.log(response);
                 if (dataTindakan != null) {
                     $.each(dataTindakan, function (i, item) {
                         var tanggal = "";
@@ -723,15 +719,14 @@
                 }
             });
 
-            console.log(total);
-
             if(jenisPasien == "bpjs"){
                 $('#no_sep_show').show();
             }else {
                 $('#no_sep_show').hide();
             }
 
-            $('#fin_jenis_pasien').html(jenisPasien.toUpperCase());
+            $('#fin_jenis_pasien').html(jenisPasien);
+            setLabelJenisPasien('fin_jenis_pasien', jenisPasien);
             $('#fin_no_sep').html(noSep);
             $('#fin_no_checkup').html(idDetailCheckup);
             $('#fin_nik').html(nik);

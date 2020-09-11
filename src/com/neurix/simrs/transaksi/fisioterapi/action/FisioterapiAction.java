@@ -234,6 +234,20 @@ public class FisioterapiAction {
         return response;
     }
 
+    public List<MonitoringFisioterapi> getKunjunganFisioterapi(String idPasien) {
+        List<MonitoringFisioterapi> list = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        FisioterapiBo fisioterapiBo = (FisioterapiBo) ctx.getBean("fisioterapiBoProxy");
+        if (!"".equalsIgnoreCase(idPasien) && idPasien != null) {
+            try {
+                list = fisioterapiBo.getKunjunganFisio(idPasien, CommonUtil.userBranchLogin());
+            } catch (GeneralBOException e) {
+                logger.error("Found Error" + e.getMessage());
+            }
+        }
+        return list;
+    }
+
     public static Logger getLogger() {
         return logger;
     }

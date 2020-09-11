@@ -318,6 +318,7 @@
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkup.model.ItSImrsCheckupAlergiEntity"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkup.model.CheckupAlergi"/>
       <convert converter="bean" match="com.neurix.simrs.master.rekammedis.model.RekamMedisPasien"/>
+      <convert converter="bean" match="com.neurix.simrs.master.jenisobat.model.JenisObat"/>
 
       <!--Team Dokter -->
       <create creator="new">

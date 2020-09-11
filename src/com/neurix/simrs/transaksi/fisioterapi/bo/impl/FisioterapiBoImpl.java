@@ -7,6 +7,7 @@ import com.neurix.simrs.transaksi.fisioterapi.bo.FisioterapiBo;
 import com.neurix.simrs.transaksi.fisioterapi.dao.FisioterapiDao;
 import com.neurix.simrs.transaksi.fisioterapi.model.Fisioterapi;
 import com.neurix.simrs.transaksi.fisioterapi.model.ItSimrsFisioterapiEntity;
+import com.neurix.simrs.transaksi.fisioterapi.model.MonitoringFisioterapi;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -79,30 +80,41 @@ public class FisioterapiBoImpl implements FisioterapiBo {
     public CrudResponse saveAdd(List<Fisioterapi> list) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
         if (list.size() > 0) {
-            for (Fisioterapi bean : list) {
-                ItSimrsFisioterapiEntity fisioterapi = new ItSimrsFisioterapiEntity();
-                fisioterapi.setIdFisioterapi("FIS" + fisioterapiDao.getNextSeq());
-                fisioterapi.setIdDetailCheckup(bean.getIdDetailCheckup());
-                fisioterapi.setParameter(bean.getParameter());
-                fisioterapi.setJawaban(bean.getJawaban());
-                fisioterapi.setKeterangan(bean.getKeterangan());
-                fisioterapi.setAction(bean.getAction());
-                fisioterapi.setFlag(bean.getFlag());
-                fisioterapi.setCreatedDate(bean.getCreatedDate());
-                fisioterapi.setCreatedWho(bean.getCreatedWho());
-                fisioterapi.setLastUpdate(bean.getLastUpdate());
-                fisioterapi.setLastUpdateWho(bean.getLastUpdateWho());
-                fisioterapi.setSkor(bean.getSkor());
-                fisioterapi.setTipe(bean.getTipe());
+            Fisioterapi fisio = list.get(0);
+            Fisioterapi fisiote = new Fisioterapi();
+            fisiote.setIdDetailCheckup(fisio.getIdDetailCheckup());
+            fisiote.setKeterangan(fisio.getKeterangan());
+            List<Fisioterapi> fisioterapiList = getByCriteria(fisiote);
 
-                try {
-                    fisioterapiDao.addAndSave(fisioterapi);
-                    response.setStatus("success");
-                    response.setMsg("Berhasil");
-                } catch (HibernateException e) {
-                    response.setStatus("error");
-                    response.setMsg("Found Error " + e.getMessage());
-                    logger.error(e.getMessage());
+            if(fisioterapiList.size() > 0){
+                response.setStatus("error");
+                response.setMsg("Found Error, Data yang anda masukan sudah ada...!");
+            }else{
+                for (Fisioterapi bean : list) {
+                    ItSimrsFisioterapiEntity fisioterapi = new ItSimrsFisioterapiEntity();
+                    fisioterapi.setIdFisioterapi("FIS" + fisioterapiDao.getNextSeq());
+                    fisioterapi.setIdDetailCheckup(bean.getIdDetailCheckup());
+                    fisioterapi.setParameter(bean.getParameter());
+                    fisioterapi.setJawaban(bean.getJawaban());
+                    fisioterapi.setKeterangan(bean.getKeterangan());
+                    fisioterapi.setAction(bean.getAction());
+                    fisioterapi.setFlag(bean.getFlag());
+                    fisioterapi.setCreatedDate(bean.getCreatedDate());
+                    fisioterapi.setCreatedWho(bean.getCreatedWho());
+                    fisioterapi.setLastUpdate(bean.getLastUpdate());
+                    fisioterapi.setLastUpdateWho(bean.getLastUpdateWho());
+                    fisioterapi.setSkor(bean.getSkor());
+                    fisioterapi.setTipe(bean.getTipe());
+
+                    try {
+                        fisioterapiDao.addAndSave(fisioterapi);
+                        response.setStatus("success");
+                        response.setMsg("Berhasil");
+                    } catch (HibernateException e) {
+                        response.setStatus("error");
+                        response.setMsg("Found Error " + e.getMessage());
+                        logger.error(e.getMessage());
+                    }
                 }
             }
         }
@@ -142,6 +154,11 @@ public class FisioterapiBoImpl implements FisioterapiBo {
             response.setMsg("Tidak ada data traksaksi...!");
         }
         return response;
+    }
+
+    @Override
+    public List<MonitoringFisioterapi> getKunjunganFisio(String idPasien, String branchId) throws GeneralBOException {
+        return fisioterapiDao.getListMon(idPasien, branchId);
     }
 
     public static Logger getLogger() {
