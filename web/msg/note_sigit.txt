@@ -686,7 +686,9 @@
 >>>>>>> sigit/dev
 =======
 
-// >>> 2020-08-21
+==================================================================================================
+-- EXECUTE DARI SINI --
+-- 2020-08-21
 
 UPDATE im_akun_kode_rekening SET tipe_budgeting = null;
 UPDATE im_akun_kode_rekening SET tipe_budgeting = 'biaya' WHERE kode_rekening LIKE '5%';
@@ -697,9 +699,8 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '04' WHERE kode_rekening LIKE '1%';
 UPDATE im_akun_kode_rekening SET tipe_coa = '03', flag_divisi = 'Y' WHERE kode_rekening LIKE '5%';
 UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master = 'Y' WHERE kode_rekening LIKE '4%';
 
-<<< //
 
-// >>> 2020-08-23
+-- 2020-08-23
 
     -- Table: public.im_akun_kategori_parameter_budgeting
 
@@ -763,20 +764,14 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
 
     CREATE SEQUENCE seq_nilai_budgeting;
 
-<<< //
-
-// >>> 2020-08-26
-
+-- 2020-08-26
     ALTER TABLE it_akun_nilai_parameter_budgeting
     ADD COLUMN periode VARCHAR(100);
 
     ALTER TABLE it_akun_nilai_parameter_budgeting
     ADD COLUMN periode VARCHAR(100);
 
-<<< //
-
-// >>> 2020-08-27
-
+-- 2020-08-27
     ALTER TABLE im_akun_parameter_budgeting
     ADD COLUMN divisi_id VARCHAR(30),
     ADD COLUMN master_id VARCHAR(30);
@@ -784,10 +779,7 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     ALTER TABLE im_akun_budgeting_nilai_dasar
     ADD COLUMN tipe VARCHAR(30);
 
-<<< //
-
-// >>> 2020-08-28
-
+-- 2020-08-28
     -- Table: public.im_akun_parameter_budgeting_rekening
 
     -- DROP TABLE public.im_akun_parameter_budgeting_rekening;
@@ -818,10 +810,7 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     ALTER TABLE im_akun_parameter_budgeting
     ADD COLUMN id_param_rekening VARCHAR(30);
 
-<<< //
-
-// >>> 2020-08-30
-
+-- 2020-08-30
     -- Table: public.it_akun_nilai_parameter_pengadaaan
 
     -- DROP TABLE public.it_akun_nilai_parameter_pengadaaan;
@@ -852,9 +841,8 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
 
 
     CREATE SEQUENCE seq_nilai_pengadaan;
-<<< //
 
-// >>> 2020-08-03
+--2020-08-03
 
     CREATE TABLE im_user_vendor (
         id VARCHAR(30) NOT NULL,
@@ -887,20 +875,17 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     );
 
     CREATE SEQUENCE seq_doc_po;
-<<< //
 
-// >>> 2020-09-04
+-- 2020-09-04
     ALTER TABLE mt_simrs_transaksi_obat_detail_batch
     ADD COLUMN jenis VARCHAR(50);
-<<< //
 
-// >>> 2020-09-06
+-- 2020-09-06
     ALTER TABLE it_simrs_doc_po
     ADD COLUMN url_img TEXT,
     ADD COLUMN no_batch INTEGER
-<<< //
 
-// >>> 2020-09-09
+-- 2020-09-09
     CREATE SEQUENCE seq_nilai_biaya_rutin;
 
     ALTER TABLE it_akun_perhitungan_budgeting
@@ -928,9 +913,6 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     ALTER TABLE public.it_akun_nilai_biaya_rutin
         OWNER to postgres;
 
-
     ALTER TABLE mt_simrs_transaksi_obat_detail_batch
     ADD COLUMN tgl_invoice DATE,
     ADD COLUMN tgl_do DATE;
-<<<//
->>>>>>> sigit/dev

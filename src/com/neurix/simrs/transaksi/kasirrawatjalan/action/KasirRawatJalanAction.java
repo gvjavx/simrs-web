@@ -668,8 +668,10 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         KasirRawatJalanBo kasirRawatJalanBo = (KasirRawatJalanBo) ctx.getBean("kasirRawatJalanBoProxy");
         UangMuka uangMuka = new UangMuka();
         uangMuka.setIdDetailCheckup(idDetailCheckup);
-        uangMuka.setStatusBayar(statusBayar);
-        uangMuka.setFlagRefund("Y");
+        if(statusBayar != null && !"".equalsIgnoreCase(statusBayar)){
+            uangMuka.setStatusBayar(statusBayar);
+            uangMuka.setFlagRefund("Y");
+        }
         List<UangMuka> obatDetailList = new ArrayList<>();
 
         if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)) {

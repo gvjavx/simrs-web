@@ -356,8 +356,8 @@ Verif Asuransi
     /verifasri/initVerif_verifasri.action
     /verifasri/searchVerifAs_verifasri.action
 
-
--- BELUM DI RUN DI DATABASE
+=====================================================================================================
+-- EXECUTE DARI SINI --
 -- 26-08-2020
 CREATE TABLE public.it_simrs_partograf
 (
