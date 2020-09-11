@@ -276,7 +276,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         return "search";
     }
 
-    public List<RiwayatTindakan> getListTindakanRawat(String idDetail) {
+    public List<RiwayatTindakan> getListTindakanRawat(String idDetail, String jenisPasien) {
         List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
         if (idDetail != null && !"".equalsIgnoreCase(idDetail)) {
             List<RiwayatTindakan> result = new ArrayList<>();
@@ -284,6 +284,9 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             KasirRawatJalanBo kasirRawatJalanBo = (KasirRawatJalanBo) ctx.getBean("kasirRawatJalanBoProxy");
 
             RiwayatTindakan tindakanRawat = new RiwayatTindakan();
+            if("bpjs".equalsIgnoreCase(jenisPasien) || "asuransi".equalsIgnoreCase(jenisPasien)){
+                tindakanRawat.setJenisPasien("umum");
+            }
             tindakanRawat.setIdDetailCheckup(idDetail);
             tindakanRawat.setBranchId(CommonUtil.userBranchLogin());
 
@@ -666,6 +669,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         UangMuka uangMuka = new UangMuka();
         uangMuka.setIdDetailCheckup(idDetailCheckup);
         uangMuka.setStatusBayar(statusBayar);
+        uangMuka.setFlagRefund("Y");
         List<UangMuka> obatDetailList = new ArrayList<>();
 
         if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)) {

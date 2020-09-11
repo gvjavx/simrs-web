@@ -2182,9 +2182,9 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             if ("Y".equalsIgnoreCase(detailCheckup.getIsCover())) {
                 idJenisPeriksaPasien = "AND b.id_jenis_periksa_pasien = 'asuransi' \n";
                 if (detailCheckup.getFlagCover() != null && !"".equalsIgnoreCase(detailCheckup.getFlagCover())) {
-                    flagCloseTransaksi = "b.flag_cover IS NOT NULL \n";
+                    flagCloseTransaksi = "AND b.flag_cover IS NOT NULL \n";
                 } else {
-                    flagCloseTransaksi = "b.flag_cover IS NULL \n";
+                    flagCloseTransaksi = "AND b.flag_cover IS NULL \n";
                 }
             } else {
                 idJenisPeriksaPasien = "AND b.id_jenis_periksa_pasien NOT IN ('bpjs', 'ptpn','asuransi')\n";
