@@ -10,6 +10,7 @@ import com.neurix.akuntansi.transaksi.budgeting.dao.BudgetingDao;
 import com.neurix.akuntansi.transaksi.budgeting.dao.BudgetingDetailDao;
 import com.neurix.akuntansi.transaksi.budgeting.dao.BudgetingPengadaanDao;
 import com.neurix.akuntansi.transaksi.budgeting.model.*;
+import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ParameterBudgeting;
 import com.neurix.akuntansi.transaksi.saldoakhir.dao.SaldoAkhirDao;
 import com.neurix.akuntansi.transaksi.saldoakhir.dao.SaldoAkhirDetailDao;
 import com.neurix.akuntansi.transaksi.saldoakhir.model.ItAkunSaldoAkhirDetailEntity;
@@ -1543,5 +1544,15 @@ public class BudgetingBoImpl implements BudgetingBo {
     @Override
     public String ceckAvailBudgetingByTahun(String tahun) {
         return budgetingDao.checkAvailBudgetingByTahun(tahun);
+    }
+
+    @Override
+    public List<ParameterBudgeting> getListBudgetingRealisasi(String idJenisBudgeting, String unit, String tahun) {
+        return budgetingDao.getListBudgeting(idJenisBudgeting, unit, tahun);
+    }
+
+    @Override
+    public List<ParameterBudgeting> getListBudgetingRealisasiPerperiode(String idJenisBudgeting, String unit, String tahun, String divisiId, String masterId) {
+        return budgetingDao.getListBudgetingDetail(idJenisBudgeting, unit, tahun, divisiId, masterId);
     }
 }

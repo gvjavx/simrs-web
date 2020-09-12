@@ -167,8 +167,8 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-md-6 col-md-offset-4" style="margin-top: 10px">
-                                        <button class="btn btn-success" onclick="search()"><i class="fa fa-search"></i> Search</button>
+                                    <div class="col-md-6 col-md-offset-5" style="margin-top: 10px">
+                                        <%--<button class="btn btn-success" onclick="search()"><i class="fa fa-search"></i> Search</button>--%>
                                         <%--<s:if test='budgeting.flagKp == "Y"'>--%>
                                             <%--<button class="btn btn-primary" onclick="add()" id="btn-add"><i class="fa fa-plus"></i> Add</button>--%>
                                         <%--</s:if>--%>
@@ -191,58 +191,58 @@
                     </div>
 
                     <div class="box-header with-border"></div>
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-th-list"></i> List Data Budgeting :
-                        <strong><span id="label-tahun"></span> - <span id="label-unit"></span></strong>
-                        </h3>
-                    </div>
-                    <div class="box-body">
+                    <%--<div class="box-header with-border">--%>
+                        <%--<h3 class="box-title"><i class="fa fa-th-list"></i> List Data Budgeting :--%>
+                        <%--<strong><span id="label-tahun"></span> - <span id="label-unit"></span></strong>--%>
+                        <%--</h3>--%>
+                    <%--</div>--%>
+                    <%--<div class="box-body">--%>
 
-                        <%--<div class="alert alert-info alert-dismissable" id="alert-info">--%>
-                        <%--<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>--%>
-                        <%--<strong>Info!</strong> Pilih Priode Kemudian Choose--%>
+                        <%--&lt;%&ndash;<div class="alert alert-info alert-dismissable" id="alert-info">&ndash;%&gt;--%>
+                        <%--&lt;%&ndash;<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>&ndash;%&gt;--%>
+                        <%--&lt;%&ndash;<strong>Info!</strong> Pilih Priode Kemudian Choose&ndash;%&gt;--%>
+                        <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
+
+                        <%--<div class="alert alert-success alert-dismissable" id="alert-success" style="display: none">--%>
+                            <%--<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>--%>
+                            <%--<center><h5><strong>Loading ...</strong> Mencari data </h5></center>--%>
                         <%--</div>--%>
 
-                        <div class="alert alert-success alert-dismissable" id="alert-success" style="display: none">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                            <center><h5><strong>Loading ...</strong> Mencari data </h5></center>
-                        </div>
+                        <%--<div class="alert alert-warning alert-dismissable" id="alert-error" style="display: none">--%>
+                            <%--<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>--%>
+                            <%--<strong>Error!</strong><span id="error-msg"></span>--%>
+                        <%--</div>--%>
 
-                        <div class="alert alert-warning alert-dismissable" id="alert-error" style="display: none">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                            <strong>Error!</strong><span id="error-msg"></span>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <table class="tree table table-bordered table-striped">
-                                    <thead id="head-budgeting">
-                                        <tr bgcolor="#90ee90">
-                                            <td style="width: 20%">COA</td>
-                                            <td align="">Keterangan</td>
-                                            <td align="center">Nilai Draf</td>
-                                            <td align="center">Nilai Final</td>
-                                            <td align="center">Nilai Revisi</td>
-                                            <td align="">No. Budgeting</td>
-                                            <td>Action</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="body-budgeting" style="font-size: 13px">
-                                    </tbody>
-                                    <%--<input type="hidden" id="index-period"/>--%>
-                                    <%--<input type="hidden" id="index-branch"/>--%>
-                                    <%--<input type="hidden" id="bulan"/>--%>
-                                    <%--<input type="hidden" id="tahun"/>--%>
-                                </table>
-                            </div>
-                        </div>
-
-                        <%--<div class="form-group">--%>
-                            <%--<div class="col-md-4 col-md-offset-5">--%>
-                                <%--<button class="btn btn-success" style="display: none" id="btn-save" onclick="saveBatasPeriod()"><i class="fa fa-check"></i> Save </button>--%>
+                        <%--<div class="row">--%>
+                            <%--<div class="col-md-12">--%>
+                                <%--<table class="tree table table-bordered table-striped">--%>
+                                    <%--<thead id="head-budgeting">--%>
+                                        <%--<tr bgcolor="#90ee90">--%>
+                                            <%--<td style="width: 20%">COA</td>--%>
+                                            <%--<td align="">Keterangan</td>--%>
+                                            <%--<td align="center">Nilai Draf</td>--%>
+                                            <%--<td align="center">Nilai Final</td>--%>
+                                            <%--<td align="center">Nilai Revisi</td>--%>
+                                            <%--<td align="">No. Budgeting</td>--%>
+                                            <%--<td>Action</td>--%>
+                                        <%--</tr>--%>
+                                    <%--</thead>--%>
+                                    <%--<tbody id="body-budgeting" style="font-size: 13px">--%>
+                                    <%--</tbody>--%>
+                                    <%--&lt;%&ndash;<input type="hidden" id="index-period"/>&ndash;%&gt;--%>
+                                    <%--&lt;%&ndash;<input type="hidden" id="index-branch"/>&ndash;%&gt;--%>
+                                    <%--&lt;%&ndash;<input type="hidden" id="bulan"/>&ndash;%&gt;--%>
+                                    <%--&lt;%&ndash;<input type="hidden" id="tahun"/>&ndash;%&gt;--%>
+                                <%--</table>--%>
                             <%--</div>--%>
                         <%--</div>--%>
-                    </div>
+
+                        <%--&lt;%&ndash;<div class="form-group">&ndash;%&gt;--%>
+                            <%--&lt;%&ndash;<div class="col-md-4 col-md-offset-5">&ndash;%&gt;--%>
+                                <%--&lt;%&ndash;<button class="btn btn-success" style="display: none" id="btn-save" onclick="saveBatasPeriod()"><i class="fa fa-check"></i> Save </button>&ndash;%&gt;--%>
+                            <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
+                        <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
+                    <%--</div>--%>
                 </div>
             </div>
         </div>

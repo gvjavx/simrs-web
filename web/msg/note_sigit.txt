@@ -36,7 +36,7 @@
     ALTER TABLE public.it_simrs_antrian_telemedic
         OWNER to postgres;
 
-<<< //
+--
 
 
 // 2020-06-10 >>>
@@ -98,7 +98,7 @@
     ALTER TABLE public.it_simrs_antrian_telemedic ADD branch_id VARCHAR(10) NULL;
 
 
-<<< //
+--
 
 // 2020-06-12 >>>
 
@@ -106,7 +106,7 @@
     ALTER TABLE public.it_simrs_header_detail_checkup ADD id_transaksi_online VARCHAR(100) NULL;
     ALTER TABLE public.mt_simrs_permintaan_resep ADD id_transaksi_online VARCHAR(100) NULL;
 
-<<< //
+--
 
 // 2020-06-16 >>>
 
@@ -146,7 +146,7 @@
     ALTER TABLE it_akun_saldo_akhir_detail
         ADD COLUMN kd_barang VARCHAR(100);
 
-<<< //
+--
 
 // 2020-06-17 >>>
 
@@ -169,7 +169,7 @@
 
     ALTER TABLE it_akun_jurnal
         ADD COLUMN pengajuan_biaya_id VARCHAR(50);
-<<< //
+--
 
 // 2020-06-18 >>>
 
@@ -199,7 +199,7 @@
         ADD COLUMN desa_id VARCHAR(30),
         ADD alamat text,
         ADD no_telp VARCHAR(30);
-<<< //
+--
 
 // 2020-06-22 >>>
 
@@ -252,16 +252,16 @@
     ALTER TABLE it_simrs_antrian_telemedic
     ADD COLUMN flag_eresep VARCHAR(1),
     ADD COLUMN url_foto_resep text;
-<<< //
+--
 
 // 2020-06-26 >>>
     ALTER TABLE it_simrs_antrian_telemedic ADD COLUMN jumlah_cover NUMERIC;
-<<< //
+--
 
 // 2020-06-29 >>>
     ALTER TABLE it_simrs_antrian_telemedic
     ADD COLUMN no_jurnal VARCHAR(30);
-<<< //
+--
 
 // 2020-06-30 >>>
     ALTER TABLE it_simrs_antrian_telemedic
@@ -273,7 +273,7 @@
 
     ALTER TABLE it_simrs_pengiriman_obat
     ADD COLUMN flag_terkirim VARCHAR(1);
-<<< ///
+--/
 
 // 2020-07-08 >>>
     CREATE SEQUENCE seq_kandungan_obat;
@@ -323,7 +323,7 @@
 
     ALTER TABLE public.im_simrs_kandungan_obat_detail
         OWNER to postgres;
-<<< ///
+--/
 
 // 2020-07-16 >>>
     -- Table: public.im_simrs_setting_harga_pengiriman
@@ -353,7 +353,7 @@
         OWNER to postgres;
 
     CREATE SEQUENCE seq_setting_harga_pengiriman;
-<<< //
+--
 
 // 2020-07-17 >>>
     ALTER TABLE it_simrs_header_detail_checkup
@@ -392,14 +392,14 @@
 
     ALTER TABLE it_simrs_struk_asuransi
         ADD COLUMN id_antrian_telemedic VARCHAR(50);
-<<< //
+--
 
-// >>> 2020-07-20
+-- 2020-07-20
     ALTER TABLE it_simrs_header_detail_checkup
         ADD COLUMN dibayar_pasien NUMERIC;
-<<< //
+--
 
-// >>> 2020-07-23
+-- 2020-07-23
     -- Table: public.it_simrs_batal_dokter_telemedic
 
     -- DROP TABLE public.it_simrs_batal_dokter_telemedic;
@@ -456,21 +456,21 @@
     CREATE SEQUENCE seq_batal_telemedic;
 
     ALTER TABLE it_simrs_batal_dokter_telemedic ADD COLUMN batal_date DATE;
-<<< //
+--
 
-// >>> 2020-07-24
+-- 2020-07-24
     ALTER TABLE it_simrs_batal_telemedic ADD COLUMN kembali_konsultasi NUMERIC;
     ALTER TABLE it_simrs_batal_telemedic ADD COLUMN flag_kembali_konsultasi VARCHAR(1);
     ALTER TABLE it_simrs_batal_telemedic ADD COLUMN kembali_resep NUMERIC;
     ALTER TABLE it_simrs_batal_telemedic ADD COLUMN flag_kembali_resep VARCHAR(1);
-<<< //
+--
 
-// >>> 2020-08-05
+-- 2020-08-05
     ALTER TABLE im_akun_kode_rekening
     ADD COLUMN tipe_budgeting VARCHAR(50);
-<<< //
+--
 
-// >>> 2020-08-06
+-- 2020-08-06
     -- Table: public.it_notifikasi_admin_telemedic
 
     -- DROP TABLE public.it_notifikasi_admin_telemedic;
@@ -502,7 +502,7 @@
     CREATE SEQUENCE seq_notifikasi_admin_telemedic;
 //>>>
 
-// >>> 2020-08-07
+-- 2020-08-07
     -- Table: public.im_akun_budgeting_nilai_dasar
 
     -- DROP TABLE public.im_akun_budgeting_nilai_dasar;
@@ -562,11 +562,11 @@
     CREATE SEQUENCE seq_trans_budgeting_nilai_dasar;
 // <<<
 
-// >>> 2020-08-10
+-- 2020-08-10
     ALTER TABLE im_akun_budgeting_nilai_dasar ADD COLUMN urutan INTEGER;
 // <<<
 
-// >>> 2020-08-13
+-- 2020-08-13
     -- Table: public.im_simrs_header_tindakan
 
     -- DROP TABLE public.im_simrs_header_tindakan;
@@ -597,9 +597,9 @@
 
     ALTER TABLE im_simrs_tindakan ADD id_header_tindakan VARCHAR(30);
     CREATE SEQUENCE seq_header_tindakan;
-<<< //
+--
 
-// >>> 2020-08-14
+-- 2020-08-14
     CREATE TABLE public.im_akun_jenis_budgeting
     (
         id character varying(50) COLLATE pg_catalog."default" NOT NULL,
@@ -669,9 +669,9 @@
         OWNER to postgres;
 
     CREATE SEQUENCE seq_perhitungan_budgeting;
-<<< //
+--
 
-// >>> 2020-08-21
+-- 2020-08-21
 
 UPDATE im_akun_kode_rekening SET tipe_budgeting = null;
 UPDATE im_akun_kode_rekening SET tipe_budgeting = 'biaya' WHERE kode_rekening LIKE '5%';
@@ -682,9 +682,9 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '04' WHERE kode_rekening LIKE '1%';
 UPDATE im_akun_kode_rekening SET tipe_coa = '03', flag_divisi = 'Y' WHERE kode_rekening LIKE '5%';
 UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master = 'Y' WHERE kode_rekening LIKE '4%';
 
-<<< //
+--
 
-// >>> 2020-08-23
+-- 2020-08-23
 
     -- Table: public.im_akun_kategori_parameter_budgeting
 
@@ -748,19 +748,19 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
 
     CREATE SEQUENCE seq_nilai_budgeting;
 
-<<< //
+--
 
-// >>> 2020-08-26
-
-    ALTER TABLE it_akun_nilai_parameter_budgeting
-    ADD COLUMN periode VARCHAR(100);
+-- 2020-08-26
 
     ALTER TABLE it_akun_nilai_parameter_budgeting
     ADD COLUMN periode VARCHAR(100);
 
-<<< //
+    ALTER TABLE it_akun_nilai_parameter_budgeting
+    ADD COLUMN periode VARCHAR(100);
 
-// >>> 2020-08-27
+--
+
+-- 2020-08-27
 
     ALTER TABLE im_akun_parameter_budgeting
     ADD COLUMN divisi_id VARCHAR(30),
@@ -769,9 +769,9 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     ALTER TABLE im_akun_budgeting_nilai_dasar
     ADD COLUMN tipe VARCHAR(30);
 
-<<< //
+--
 
-// >>> 2020-08-28
+-- 2020-08-28
 
     -- Table: public.im_akun_parameter_budgeting_rekening
 
@@ -803,9 +803,9 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     ALTER TABLE im_akun_parameter_budgeting
     ADD COLUMN id_param_rekening VARCHAR(30);
 
-<<< //
+--
 
-// >>> 2020-08-30
+-- 2020-08-30
 
     -- Table: public.it_akun_nilai_parameter_pengadaaan
 
@@ -837,9 +837,9 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
 
 
     CREATE SEQUENCE seq_nilai_pengadaan;
-<<< //
+--
 
-// >>> 2020-08-03
+-- 2020-08-03
 
     CREATE TABLE im_user_vendor (
         id VARCHAR(30) NOT NULL,
@@ -872,20 +872,20 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     );
 
     CREATE SEQUENCE seq_doc_po;
-<<< //
+--
 
-// >>> 2020-09-04
+-- 2020-09-04
     ALTER TABLE mt_simrs_transaksi_obat_detail_batch
     ADD COLUMN jenis VARCHAR(50);
-<<< //
+--
 
-// >>> 2020-09-06
+-- 2020-09-06
     ALTER TABLE it_simrs_doc_po
     ADD COLUMN url_img TEXT,
     ADD COLUMN no_batch INTEGER
-<<< //
+--
 
-// >>> 2020-09-09
+-- 2020-09-09
     CREATE SEQUENCE seq_nilai_biaya_rutin;
 
     ALTER TABLE it_akun_perhitungan_budgeting
@@ -918,3 +918,10 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     ADD COLUMN tgl_invoice DATE,
     ADD COLUMN tgl_do DATE;
 <<<//
+
+-- 2020-09-11
+
+     ALTER TABLE it_akun_perhitungan_budgeting
+     ADD COLUMN nama_biaya_rutin TEXT;
+
+--

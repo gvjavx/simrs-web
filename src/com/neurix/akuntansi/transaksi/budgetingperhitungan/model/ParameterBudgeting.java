@@ -35,6 +35,24 @@ public class ParameterBudgeting {
     private String idBiayaRutin;
     private String namaBiayaRutin;
     private BigDecimal nilaiBiyaRutin;
+    private BigDecimal realisasi;
+    private BigDecimal totalRealisasi;
+
+    public BigDecimal getRealisasi() {
+        return realisasi;
+    }
+
+    public void setRealisasi(BigDecimal realisasi) {
+        this.realisasi = realisasi;
+    }
+
+    public BigDecimal getTotalRealisasi() {
+        return totalRealisasi;
+    }
+
+    public void setTotalRealisasi(BigDecimal totalRealisasi) {
+        this.totalRealisasi = totalRealisasi;
+    }
 
     public String getIdBiayaRutin() {
         return idBiayaRutin;

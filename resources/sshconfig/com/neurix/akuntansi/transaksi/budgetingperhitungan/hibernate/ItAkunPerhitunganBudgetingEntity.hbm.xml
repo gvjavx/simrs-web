@@ -50,6 +50,9 @@
             <basic name="idBiayaRutin">
                 <column name="id_biaya_rutin"/>
             </basic>
+            <basic name="namaBiayaRutin">
+                <column name="nama_biaya_rutin"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

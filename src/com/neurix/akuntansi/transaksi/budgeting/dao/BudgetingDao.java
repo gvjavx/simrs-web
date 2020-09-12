@@ -2,9 +2,12 @@ package com.neurix.akuntansi.transaksi.budgeting.dao;
 
 import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
 import com.neurix.akuntansi.transaksi.budgeting.model.Budgeting;
+import com.neurix.akuntansi.transaksi.budgeting.model.BudgetingDetail;
 import com.neurix.akuntansi.transaksi.budgeting.model.ItAkunBudgetingEntity;
+import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ParameterBudgeting;
 import com.neurix.akuntansi.transaksi.saldoakhir.model.SaldoAkhir;
 import com.neurix.common.dao.GenericDao;
+import com.neurix.common.util.CommonUtil;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
@@ -377,5 +380,249 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
         } else {
             return "N";
         }
+    }
+
+    public List<ParameterBudgeting> getListBudgeting(String tipeBudgeting, String unit, String tahun){
+
+        String idJenisBudgeting = tipeBudgeting;
+        if ("PDT".equalsIgnoreCase(tipeBudgeting)){
+            tipeBudgeting = "pendapatan";
+        }
+        if ("INV".equalsIgnoreCase(tipeBudgeting)){
+            tipeBudgeting = "investasi";
+        }
+        if ("BYA".equalsIgnoreCase(tipeBudgeting)){
+            tipeBudgeting = "biaya";
+        }
+
+        String SQL = "SELECT \n" +
+                "kd.rekening_id,\n" +
+                "kd.nama_kode_rekening,\n" +
+                "SUM(bgd.sub_total) as total,\n" +
+                "bgd.divisi_id,\n" +
+                "ps.position_name,\n" +
+                "bgd.master_id,\n" +
+                "ms.nama\n" +
+                "FROM \n" +
+                "it_akun_budgeting bg\n" +
+                "INNER JOIN im_akun_kode_rekening kd ON kd.rekening_id = bg.rekening_id\n" +
+                "INNER JOIN it_akun_budgeting_detail bgd ON bgd.id_budgeting = bg.id_budgeting\n" +
+                "LEFT JOIN im_position ps ON ps.kodering = bgd.divisi_id\n" +
+                "LEFT JOIN im_akun_master ms ON ms.nomor_master = bgd.master_id\n" +
+                "WHERE \n" +
+                "kd.level = '5'\n" +
+                "AND kd.tipe_budgeting LIKE :tipeBudgeting \n" +
+                "AND bg.branch_id LIKE :unit \n" +
+                "AND bg.tahun = :tahun \n" +
+                "AND bg.nilai_total > 0\n" +
+                "GROUP BY\n" +
+                "kd.rekening_id,\n" +
+                "kd.nama_kode_rekening,\n" +
+                "bgd.divisi_id,\n" +
+                "ps.position_name,\n" +
+                "bgd.master_id,\n" +
+                "ms.nama\n" +
+                "ORDER BY \n" +
+                "bgd.master_id, bgd.divisi_id, kd.rekening_id";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("tipeBudgeting", tipeBudgeting)
+                .setParameter("tahun", tahun)
+                .setParameter("unit", unit)
+                .list();
+
+        List<ParameterBudgeting>  budgetingList = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                ParameterBudgeting budgeting = new ParameterBudgeting();
+                budgeting.setRekeningId(obj[0].toString());
+                budgeting.setNama(obj[1].toString());
+                budgeting.setNilaiTotal(obj[2] == null ? new BigDecimal(0) : (BigDecimal) obj[2]);
+                budgeting.setDivisiId(obj[3] == null ? "" : obj[3].toString());
+                budgeting.setNamaDivisi(obj[4] == null ? "" : obj[4].toString());
+                budgeting.setMasterId(obj[5] == null ? "" : obj[5].toString());
+                budgeting.setNamaMaster(obj[6] == null ? "" : obj[6].toString());
+                if ("investasi".equalsIgnoreCase(tipeBudgeting)){
+                    budgeting.setNamaDivisi("Investasi");
+                }
+                budgeting.setBranchId(unit);
+                budgeting.setTahun(tahun);
+                budgeting.setIdJenisBudgeting(idJenisBudgeting);
+
+                BigDecimal realisasi = getNilaiRealisai(budgeting.getBranchId(), budgeting.getMasterId(), budgeting.getDivisiId(), budgeting.getRekeningId(), "", tahun);
+                budgeting.setRealisasi(realisasi);
+                budgeting.setTotalRealisasi(budgeting.getNilaiTotal().subtract(realisasi));
+                budgetingList.add(budgeting);
+            }
+        }
+        return budgetingList;
+    }
+
+    public List<ParameterBudgeting> getListBudgetingDetail(String tipeBudgeting, String unit, String tahun, String divisiId, String masterId){
+
+        String idJenisBudgeting = tipeBudgeting;
+        String whereMaster = "";
+        String whereDivisi = "";
+
+        if ("PDT".equalsIgnoreCase(tipeBudgeting)){
+            divisiId = divisiId == null || "".equalsIgnoreCase(divisiId) ? "%" : divisiId;
+            masterId = masterId == null || "".equalsIgnoreCase(divisiId) ? "%" : masterId;
+
+            whereDivisi = "AND bgd.divisi_id LIKE '"+divisiId+"' \n";
+            whereMaster = "AND bgd.master_id LIKE '"+masterId+"' \n";
+            tipeBudgeting = "pendapatan";
+        }
+        if ("INV".equalsIgnoreCase(tipeBudgeting)){
+            divisiId = divisiId == null || "".equalsIgnoreCase(divisiId) ? "%" : divisiId;
+            whereDivisi = "AND bgd.divisi_id LIKE '"+divisiId+"' \n";
+            whereMaster = "AND bgd.master_id is null \n";
+            tipeBudgeting = "investasi";
+
+        }
+        if ("BYA".equalsIgnoreCase(tipeBudgeting)){
+            divisiId = divisiId == null || "".equalsIgnoreCase(divisiId) ? "%" : divisiId;
+            whereDivisi = "AND bgd.divisi_id LIKE '"+divisiId+"' \n";
+            whereMaster = "AND bgd.master_id is null \n";
+            tipeBudgeting = "biaya";
+        }
+//        if ("INVS".equalsIgnoreCase(divisiId)){
+//            divisiId = "%";
+//        }
+//
+//        if (masterId == null || "".equalsIgnoreCase(masterId)){
+//            masterId = "%";
+//        }
+
+        String SQL = "SELECT \n" +
+                "kd.rekening_id,\n" +
+                "kd.nama_kode_rekening,\n" +
+                "bgd.sub_total,\n" +
+                "bgd.divisi_id,\n" +
+                "ps.position_name,\n" +
+                "bgd.master_id,\n" +
+                "ms.nama,\n" +
+                "bgd.tipe\n" +
+                "FROM \n" +
+                "it_akun_budgeting bg\n" +
+                "INNER JOIN im_akun_kode_rekening kd ON kd.rekening_id = bg.rekening_id\n" +
+                "INNER JOIN it_akun_budgeting_detail bgd ON bgd.id_budgeting = bg.id_budgeting\n" +
+                "LEFT JOIN im_position ps ON ps.kodering = bgd.divisi_id\n" +
+                "LEFT JOIN im_akun_master ms ON ms.nomor_master = bgd.master_id\n" +
+                "WHERE \n" +
+                "kd.level = '5'\n" +
+                "AND kd.tipe_budgeting LIKE :tipeBudgeting \n" +
+                "AND bg.branch_id LIKE :unit \n" +
+                "AND bg.tahun = :tahun \n" +
+                "AND bg.nilai_total > 0\n" + whereDivisi + whereMaster +
+//                "AND bgd.divisi_id LIKE :divisiId \n" +
+//                "AND bgd.master_id LIKE :masterId \n" +
+                "ORDER BY \n" +
+                "bgd.master_id, bgd.divisi_id, bg.rekening_id";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("tipeBudgeting", tipeBudgeting)
+                .setParameter("tahun", tahun)
+                .setParameter("unit", unit)
+                .list();
+
+        List<ParameterBudgeting>  budgetingList = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                ParameterBudgeting budgeting = new ParameterBudgeting();
+                budgeting.setRekeningId(obj[0].toString());
+                budgeting.setNama(obj[1].toString());
+                budgeting.setNilaiTotal(obj[2] == null ? new BigDecimal(0) : (BigDecimal) obj[2]);
+                budgeting.setDivisiId(obj[3] == null ? "" : obj[3].toString());
+                budgeting.setNamaDivisi(obj[4] == null ? "" : obj[4].toString());
+                budgeting.setMasterId(obj[5] == null ? "" : obj[5].toString());
+                budgeting.setNamaMaster(obj[6] == null ? "" : obj[6].toString());
+                budgeting.setPeriode(obj[7] == null ? "" : obj[7].toString());
+                budgeting.setBranchId(unit);
+                budgeting.setTahun(tahun);
+                budgeting.setIdJenisBudgeting(idJenisBudgeting);
+
+                BigDecimal realisasi = getNilaiRealisai(budgeting.getBranchId(), budgeting.getMasterId(), budgeting.getDivisiId(), budgeting.getRekeningId(), CommonUtil.convertStringBulanToNumber(budgeting.getPeriode()), tahun);
+                budgeting.setRealisasi(realisasi);
+                budgeting.setTotalRealisasi(budgeting.getNilaiTotal().subtract(realisasi));
+                budgetingList.add(budgeting);
+            }
+        }
+        return budgetingList;
+    }
+
+    public BigDecimal getNilaiRealisai(String branchId, String masterId, String divisiId, String noRekening, String bulan, String tahun){
+
+        if (divisiId == null || "".equalsIgnoreCase(divisiId)){
+            divisiId = "%";
+        }
+
+        if (masterId == null || "".equalsIgnoreCase(masterId)){
+            masterId = "%";
+        }
+
+        if (bulan == null || "".equalsIgnoreCase(bulan)){
+            bulan = "%";
+        }
+
+
+        String SQL = "SELECT\n" +
+                "b.branch_id,\n" +
+                "b.rekening_id,\n" +
+                "b.master_id,\n" +
+                "b.divisi_id,\n" +
+                "ABS(b.jumlah_debit - b.jumlah_kredit) AS total\n" +
+                "FROM \n" +
+                "(\n" +
+                "\tSELECT\n" +
+                "\ta.branch_id,\n" +
+                "\ta.rekening_id,\n" +
+                "\ta.master_id,\n" +
+                "\ta.divisi_id,\n" +
+                "\tSUM(a.jumlah_debit) AS jumlah_debit,\n" +
+                "\tSUM(a.jumlah_kredit) AS jumlah_kredit\n" +
+                "\tFROM\n" +
+                "\t(\n" +
+                "\t\tSELECT\n" +
+                "\t\tj.registered_date,\n" +
+                "\t\tj.branch_id,\n" +
+                "\t\tjd.rekening_id,\n" +
+                "\t\tjd.master_id,\n" +
+                "\t\tjd.divisi_id,\n" +
+                "\t\tjd.jumlah_debit,\n" +
+                "\t\tjd.jumlah_kredit\n" +
+                "\t\tFROM it_akun_jurnal_detail jd\n" +
+                "\t\tINNER JOIN it_akun_jurnal j ON j.no_jurnal = jd.no_jurnal\n" +
+                "\t\tWHERE j.branch_id LIKE :unit \n" +
+                "\t\tAND CAST(EXTRACT(YEAR FROM j.registered_date) AS VARCHAR) LIKE :tahun \n" +
+                "\t\tAND CAST(EXTRACT(MONTH FROM j.registered_date) AS VARCHAR) LIKE :bulan \n" +
+                "\t\tAND jd.divisi_id LIKE :divisi \n" +
+                "\t\tAND jd.master_id LIKE :master \n" +
+                "\t\tAND jd.rekening_id LIKE :rekening \n" +
+                "\t) a\n" +
+                "\tGROUP BY \n" +
+                "\ta.branch_id,\n" +
+                "\ta.rekening_id,\n" +
+                "\ta.master_id,\n" +
+                "\ta.divisi_id\n" +
+                ") b";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("unit", branchId)
+                .setParameter("master", masterId)
+                .setParameter("divisi", divisiId)
+                .setParameter("tahun", tahun)
+                .setParameter("bulan", bulan)
+                .setParameter("rekening", noRekening)
+                .list();
+
+        BigDecimal nilaiTotal = new BigDecimal(0);
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                BigDecimal total = (BigDecimal) obj[4];
+                nilaiTotal = nilaiTotal.add(total);
+            }
+        }
+
+        return  nilaiTotal;
     }
 }
