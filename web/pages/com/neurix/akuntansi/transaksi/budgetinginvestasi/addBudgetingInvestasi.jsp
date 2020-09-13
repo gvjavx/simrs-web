@@ -260,7 +260,7 @@
             <div class="modal-body">
                 <div class="form-group">
                     <div class="row">
-                        <div class="col-md-8 col-md-offset-3">
+                        <div class="col-md-12">
                             <div id="form-master">
                                 <%--<strong>Master</strong> <hr style="width: 80%;">--%>
                                 <div class="row">
@@ -289,7 +289,7 @@
                                 <%--<strong>Periode</strong> <hr style="width: 80%;">--%>
                                 <div class="row">
                                     <label class="control-label col-sm-2"><strong>Periode</strong></label>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-4">
                                         <select class="form-control" id="sel-periode">
                                             <option value="januari">Januari</option>
                                             <option value="februari">Februari</option>
@@ -629,12 +629,15 @@
 //        $("#modal-add-hitung").modal('show');
         var idParam = $("#id-param").val();
         var str = "<div class='row'>" +
-            "<div class=\"col-md-5\"><input type='text' class=\"form-control\" id=\"nama-"+n+"-" +idParam+ "\" placeholder='Nama'/></div>" +
-            "<div class=\"col-md-4\">" +
-            "<input class='form-control' id='total-"+ n + "-"+ idParam +"' placeholder='Nilai' />" +
+            "<div class=\"col-md-4\"><input type='text' class=\"form-control\" id=\"nama-"+n+"-" +idParam+ "\" placeholder='Nama'/></div>" +
+            "<div class=\"col-md-3\">" +
+            "<input type='number' class='form-control' id='total-"+ n + "-"+ idParam +"' placeholder='Nilai'  onchange=\"hitungInvestasi(\'"+n+"\')\" />" +
             "</div>" +
-            "<div class=\"col-md-3\">"+
-            "<input type=\"number\" class=\"form-control\" id=\"qty-"+n+"-"+idParam+"\" placeholder='Qty' />" +
+            "<div class=\"col-md-2\">"+
+            "<input type=\"number\" class=\"form-control\" id=\"qty-"+n+"-"+idParam+"\" placeholder='Qty'  onchange=\"hitungInvestasi(\'"+n+"\')\" />" +
+            "</div>" +
+            "<div class=\"col-md-3\">" +
+            "<input type=\"number\" class='form-control' id='total-nilai-"+ n + "-"+ idParam +"' placeholder='Total Nilai' readonly />" +
             "</div>" +
             "</div>";
 
@@ -643,6 +646,18 @@
         str += "<div id='hitung-"+ n +"'></div>";
         $("#hitung-" + i ).html(str);
         console.log("n = " + i);
+    }
+
+    function hitungInvestasi(id) {
+        console.log("mulai hitung -> "+id);
+        var idParam     = $("#id-param").val();
+        var qty         = $("#qty-"+id+"-"+idParam).val();
+        var nilai       = $("#total-"+id+"-"+idParam).val();
+
+        var totalnilai = parseInt(nullEscape(nilai)) * parseInt(nullEscape(qty));
+        console.log("hitung -> "+ totalnilai)
+
+        $("#total-nilai-"+id+"-"+idParam).val(formatRupiah(totalnilai));
     }
 
     function changeInput(id, value) {
@@ -679,12 +694,15 @@
             var label = $("#label-head-"+idParam).text();
 
             var str = "<div class=\"row\">" +
-                "<div class=\"col-md-5\"><input type='text' class=\"form-control\" id=\"nama-"+n+"-" +idParam+ "\" placeholder='Nama'/></div>" +
-                "<div class=\"col-md-4\">" +
-                "<input type=\"number\" class=\"form-control\" id=\"total-"+n+"-"+idParam+"\" placeholder='Nilai' />" +
+                "<div class=\"col-md-4\"><input type='text' class=\"form-control\" id=\"nama-"+n+"-" +idParam+ "\" placeholder='Nama'/></div>" +
+                "<div class=\"col-md-3\">" +
+                "<input type='number' class='form-control' id='total-"+ n + "-"+ idParam +"' placeholder='Nilai' onchange=\"hitungInvestasi(\'"+n+"\')\" />" +
                 "</div>" +
-                "<div class=\"col-md-3\">"+
-                "<input type=\"number\" class=\"form-control\" id=\"qty-"+n+"-"+idParam+"\" placeholder='Qty' />" +
+                "<div class=\"col-md-2\">"+
+                "<input type=\"number\" class=\"form-control\" id=\"qty-"+n+"-"+idParam+"\" placeholder='Qty'  onchange=\"hitungInvestasi(\'"+n+"\')\" />" +
+                "</div>" +
+                "<div class=\"col-md-3\">" +
+                "<input type=\"number\" class='form-control' id='total-nilai-"+ n + "-"+ idParam +"' placeholder='Total Nilai' readonly />" +
                 "</div>" +
                 "</div>";
 
@@ -702,164 +720,6 @@
             $("#body-nilai").html(str);
         }
 
-    }
-
-    function showDetail() {
-
-        var idParam = $("#id-param").val();
-        var label = $("#label-edit").text();
-        $("#label-tipe").text(label);
-        $("#label-periode").text("Periode Januari Hingga " + stBulan(getDateParted('MONTH') - 1) + " " + tahun);
-
-        $("#modal-view-pendapatan").modal('show');
-        var head = "";
-        var str = "";
-        var total = "";
-        var totalDiskon = "";
-        if (idParam == "PDTRJTDN"){
-            head = "<td>Nama</td>" +
-                "<td>Harga</td>"+
-                "<td>Harga Diskon</td>"+
-                "<td>Qty</td>" +
-                "<td>Total</td>"+
-                "<td>Total Diskon</td>";
-
-            BgInvestasiAction.getListPendapatanTindakan(unit, tahun, "RJ", function (list) {
-                $.each(list, function (i, item) {
-                    str += "<tr>" +
-                        "<td>"+item.namaTindakan+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.harga)+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.hargaDiskon)+"</td>" +
-                        "<td>"+item.qty+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.totalHarga)+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.totalHargaDiskon)+"</td>" +
-                        "</tr>";
-
-                    total += parseInt(item.totalHarga);
-                    totalDiskon += parseInt(nullEscape(item.totalHargaDiskon));
-                });
-                str += "<tr>" +
-                    "<td align='right' colspan='4'>Total : </td>" +
-                    "<td align='right'>"+ total +"</td>" +
-                    "<td align='right'>"+ totalDiskon +"</td>" +
-                    "</tr>";
-
-                $("#head-list-pendapatan").html(head);
-                $("#body-list-pendapatan").html(str);
-            });
-        }
-        if (idParam == "PDTRITDN"){
-            head = "<td>Nama</td>" +
-                "<td>Harga</td>"+
-                "<td>Harga Diskon</td>"+
-                "<td>Qty</td>" +
-                "<td>Total</td>"+
-                "<td>Total Diskon</td>";
-
-            BgInvestasiAction.getListPendapatanTindakan(unit, tahun, "RI", function (list) {
-                $.each(list, function (i, item) {
-                    str += "<tr>" +
-                        "<td>"+item.namaTindakan+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.harga)+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.hargaDiskon)+"</td>" +
-                        "<td>"+item.qty+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.totalHarga)+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.totalHargaDiskon)+"</td>" +
-                        "</tr>";
-
-                    total += parseInt(item.totalHarga);
-                    totalDiskon += parseInt(nullEscape(item.totalHargaDiskon));
-                });
-                str += "<tr>" +
-                    "<td align='right' colspan='4'>Total : </td>" +
-                    "<td align='right'>"+ total +"</td>" +
-                    "<td align='right'>"+ totalDiskon +"</td>" +
-                    "</tr>";
-
-                $("#head-list-pendapatan").html(head);
-                $("#body-list-pendapatan").html(str);
-            });
-        }
-        if (idParam == "PDTRIKMR"){
-
-        }
-        if (idParam == "PDTRJOBT"){
-            head = "<td>Nama</td>" +
-                "<td>Harga</td>"+
-                "<td>Harga Diskon</td>"+
-                "<td>Qty</td>" +
-                "<td>Total</td>"+
-                "<td>Total Diskon</td>";
-
-            BgInvestasiAction.getListPendapatanObat(unit, tahun, "RJ", function (list) {
-                $.each(list, function (i, item) {
-                    str += "<tr>" +
-                        "<td>"+item.namaTindakan+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.harga)+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.hargaDiskon)+"</td>" +
-                        "<td>"+item.qty+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.totalHarga)+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.totalHargaDiskon)+"</td>" +
-                        "</tr>";
-
-                    total += parseInt(item.totalHarga);
-                    totalDiskon += parseInt(nullEscape(item.totalHargaDiskon));
-                });
-                str += "<tr>" +
-                    "<td align='right' colspan='4'>Total : </td>" +
-                    "<td align='right'>"+ total +"</td>" +
-                    "<td align='right'>"+ totalDiskon +"</td>" +
-                    "</tr>";
-
-                $("#head-list-pendapatan").html(head);
-                $("#body-list-pendapatan").html(str);
-            });
-        }
-        if (idParam == "PDTRIOBT"){
-            head = "<td>Nama</td>" +
-                "<td>Harga</td>"+
-                "<td>Harga Diskon</td>"+
-                "<td>Qty</td>" +
-                "<td>Total</td>"+
-                "<td>Total Diskon</td>";
-
-            BgInvestasiAction.getListPendapatanObat(unit, tahun, "RI", function (list) {
-                $.each(list, function (i, item) {
-                    str += "<tr>" +
-                        "<td>"+item.namaTindakan+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.harga)+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.hargaDiskon)+"</td>" +
-                        "<td>"+item.qty+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.totalHarga)+"</td>" +
-                        "<td align='right'>"+ formatRupiah(item.totalHargaDiskon)+"</td>" +
-                        "</tr>";
-
-                    total += parseInt(item.totalHarga);
-                    totalDiskon += parseInt(nullEscape(item.totalHargaDiskon));
-                });
-                str += "<tr>" +
-                    "<td align='right' colspan='4'>Total : </td>" +
-                    "<td align='right'>"+ total +"</td>" +
-                    "<td align='right'>"+ totalDiskon +"</td>" +
-                    "</tr>";
-
-                $("#head-list-pendapatan").html(head);
-                $("#body-list-pendapatan").html(str);
-            });
-
-        }
-        if (idParam == "PDTRJLAB"){
-
-        }
-        if (idParam == "PDTRJRGI"){
-
-        }
-        if (idParam == "PDTRILAB"){
-
-        }
-        if (idParam == "PDTRIRGI"){
-
-        }
     }
 
     function stBulan(bulan) {

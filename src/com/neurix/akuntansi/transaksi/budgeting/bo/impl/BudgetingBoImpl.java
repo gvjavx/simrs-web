@@ -144,6 +144,12 @@ public class BudgetingBoImpl implements BudgetingBo {
                     budgeting.setFlagDivisi(kodeRekeningEntity.getFlagDivisi());
                     budgeting.setFlagMaster(kodeRekeningEntity.getFlagMaster());
                     budgeting.setTipeBudgeting(kodeRekeningEntity.getTipeBudgeting());
+
+                    // nilai realisasi
+                    String strDivisi = "Y".equalsIgnoreCase(budgeting.getFlagDivisi()) ? "%" : null;
+                    String strMaster = "Y".equalsIgnoreCase(budgeting.getFlagMaster()) ? "%" : null;
+                    BigDecimal realisasi = budgetingDao.getNilaiRealisaiByKodeRekening(bean.getBranchId(), strMaster, strDivisi, kodeRekeningEntity.getKodeRekening(), "%", bean.getTahun());
+                    budgeting.setRealisasi(realisasi);
                 }
 
                 // mencari list periode;

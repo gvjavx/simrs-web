@@ -761,8 +761,6 @@
             var namaDivisi = divisi.replace(/\./g,'\\.');
             namaDivisi = $("#label-divisi-"+namaDivisi).text();
 
-            var label = $("#label-head-"+idParam).text();
-
             var str = "<div class=\"row\">" +
                 "<div class=\"col-md-2\" id=\"label-"+n+"\" align='right' style='margin-top: 7px'>"+ hurufByIndex(n) +"</div>" +
                 "<div class=\"col-md-6\">" +
@@ -786,7 +784,7 @@
             $("#id-param").val(idParam);
             $("#masterid").val(master);
             $("#divisiid").val(divisi);
-            $("#label-edit").text(label);
+            $("#label-edit").text(namaKategori);
             $("#master-name").text(namaMaster);
             $("#divisi-name").text(namaDivisi);
             $("#body-nilai").html(str);

@@ -260,7 +260,7 @@
             <div class="modal-body">
                 <div class="form-group">
                     <div class="row">
-                        <div class="col-md-8 col-md-offset-3">
+                        <div class="col-md-8 col-md-offset-2">
                             <input type="hidden" class="form-control" id="masterid" readonly/>
                             <div id="form-divisi">
                                 <%--<strong>Divisi</strong> <hr style="width: 80%;">--%>

@@ -636,13 +636,18 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
 
     public BigDecimal getNilaiRealisai(String branchId, String masterId, String divisiId, String noRekening, String bulan, String tahun){
 
-        if (divisiId == null || "".equalsIgnoreCase(divisiId)){
-            divisiId = "%";
-        }
+        if (divisiId == null || "INVS".equalsIgnoreCase(divisiId))
+            divisiId = "is NULL ";
+        else
+            divisiId = "LIKE '"+divisiId+"'";
 
-        if (masterId == null || "".equalsIgnoreCase(masterId)){
-            masterId = "%";
-        }
+        if (masterId == null)
+            masterId = "is NULL ";
+        else
+            masterId = "LIKE '"+masterId+"'";
+
+        String whereMaster = "AND jd.master_id "+masterId+" \n";
+        String whereDivisi = "AND jd.divisi_id "+divisiId+" \n";
 
         if (bulan == null || "".equalsIgnoreCase(bulan)){
             bulan = "%";
@@ -678,9 +683,9 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
                 "\t\tINNER JOIN it_akun_jurnal j ON j.no_jurnal = jd.no_jurnal\n" +
                 "\t\tWHERE j.branch_id LIKE :unit \n" +
                 "\t\tAND CAST(EXTRACT(YEAR FROM j.registered_date) AS VARCHAR) LIKE :tahun \n" +
-                "\t\tAND CAST(EXTRACT(MONTH FROM j.registered_date) AS VARCHAR) LIKE :bulan \n" +
-                "\t\tAND jd.divisi_id LIKE :divisi \n" +
-                "\t\tAND jd.master_id LIKE :master \n" +
+                "\t\tAND CAST(EXTRACT(MONTH FROM j.registered_date) AS VARCHAR) LIKE :bulan \n" + whereDivisi + whereMaster +
+//                "\t\tAND jd.divisi_id LIKE :divisi \n" +
+//                "\t\tAND jd.master_id LIKE :master \n" +
                 "\t\tAND jd.rekening_id LIKE :rekening \n" +
                 "\t) a\n" +
                 "\tGROUP BY \n" +
@@ -692,11 +697,89 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("unit", branchId)
-                .setParameter("master", masterId)
-                .setParameter("divisi", divisiId)
                 .setParameter("tahun", tahun)
                 .setParameter("bulan", bulan)
-                .setParameter("rekening", noRekening)
+                .setParameter("rekening", noRekening + "%")
+                .list();
+
+        BigDecimal nilaiTotal = new BigDecimal(0);
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                BigDecimal total = (BigDecimal) obj[4];
+                nilaiTotal = nilaiTotal.add(total);
+            }
+        }
+
+        return  nilaiTotal;
+    }
+
+    public BigDecimal getNilaiRealisaiByKodeRekening(String branchId, String masterId, String divisiId, String noRekening, String bulan, String tahun){
+
+        if (divisiId == null || "INVS".equalsIgnoreCase(divisiId))
+            divisiId = "is NULL ";
+        else
+            divisiId = "LIKE '"+divisiId+"'";
+
+        if (masterId == null)
+            masterId = "is NULL ";
+        else
+            masterId = "LIKE '"+masterId+"'";
+
+        String whereMaster = "AND jd.master_id "+masterId+" \n";
+        String whereDivisi = "AND jd.divisi_id "+divisiId+" \n";
+
+        if (bulan == null || "".equalsIgnoreCase(bulan)){
+            bulan = "%";
+        }
+
+
+        String SQL = "SELECT\n" +
+                "b.branch_id,\n" +
+                "b.rekening_id,\n" +
+                "b.master_id,\n" +
+                "b.divisi_id,\n" +
+                "ABS(b.jumlah_debit - b.jumlah_kredit) AS total\n" +
+                "FROM \n" +
+                "(\n" +
+                "\tSELECT\n" +
+                "\ta.branch_id,\n" +
+                "\ta.rekening_id,\n" +
+                "\ta.master_id,\n" +
+                "\ta.divisi_id,\n" +
+                "\tSUM(a.jumlah_debit) AS jumlah_debit,\n" +
+                "\tSUM(a.jumlah_kredit) AS jumlah_kredit\n" +
+                "\tFROM\n" +
+                "\t(\n" +
+                "\t\tSELECT\n" +
+                "\t\tj.registered_date,\n" +
+                "\t\tj.branch_id,\n" +
+                "\t\tjd.rekening_id,\n" +
+                "\t\tjd.master_id,\n" +
+                "\t\tjd.divisi_id,\n" +
+                "\t\tjd.jumlah_debit,\n" +
+                "\t\tjd.jumlah_kredit\n" +
+                "\t\tFROM it_akun_jurnal_detail jd\n" +
+                "\t\tINNER JOIN it_akun_jurnal j ON j.no_jurnal = jd.no_jurnal\n" +
+                "\t\tINNER JOIN im_akun_kode_rekening kd ON kd.rekening_id = jd.rekening_id\n" +
+                "\t\tWHERE j.branch_id LIKE :unit \n" +
+                "\t\tAND CAST(EXTRACT(YEAR FROM j.registered_date) AS VARCHAR) LIKE :tahun \n" +
+                "\t\tAND CAST(EXTRACT(MONTH FROM j.registered_date) AS VARCHAR) LIKE :bulan \n" + whereDivisi + whereMaster +
+//                "\t\tAND jd.divisi_id LIKE :divisi \n" +
+//                "\t\tAND jd.master_id LIKE :master \n" +
+                "\t\tAND kd.kode_rekening LIKE :rekening \n" +
+                "\t) a\n" +
+                "\tGROUP BY \n" +
+                "\ta.branch_id,\n" +
+                "\ta.rekening_id,\n" +
+                "\ta.master_id,\n" +
+                "\ta.divisi_id\n" +
+                ") b";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("unit", branchId)
+                .setParameter("tahun", tahun)
+                .setParameter("bulan", bulan)
+                .setParameter("rekening", noRekening + "%")
                 .list();
 
         BigDecimal nilaiTotal = new BigDecimal(0);

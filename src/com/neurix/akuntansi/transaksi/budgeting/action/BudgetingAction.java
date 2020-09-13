@@ -27,7 +27,8 @@ import org.springframework.web.context.ContextLoader;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.Timestamp;
+import java.sql.*;
+import java.sql.Date;
 import java.util.*;
 import java.util.stream.Collectors;
 /**
@@ -472,6 +473,9 @@ public class BudgetingAction {
         List<BudgetingDetail> sessionDetail = (List<BudgetingDetail>) session.getAttribute("listOfDetail");
         List<BudgetingPengadaan> sessionPengadaan = (List<BudgetingPengadaan>) session.getAttribute("listOfPengadaan");
 
+        Date dateNow = new Date(System.currentTimeMillis());
+        Integer bulanIni = Integer.valueOf(CommonUtil.getDateParted(dateNow, "MONTH"));
+
         Budgeting budgeting = getBudgeting();
 
         Budgeting budgetingNew = new Budgeting();
@@ -567,13 +571,13 @@ public class BudgetingAction {
                                 List<BudgetingDetail> budgetingDetails = budgetingBoProxy.getListBudgetingDetailByNoBudgeting(budgetingData.getIdBudgeting());
                                 if (budgetingDetails.size() > 0){
                                     budgetingDetailList.addAll(budgetingDetails);
-
                                     for (BudgetingDetail budgetingDetail : budgetingDetails){
 
                                         if ("bulanan".equalsIgnoreCase(budgetingData.getTipe())){
                                             if (budgetingData.getListPeriode().size() > 0){
-                                                List<BudgetingPeriode> periodes = budgetingData.getListPeriode().stream().filter(p -> p.getNamaBulan().equalsIgnoreCase(budgetingDetail.getTipe())).collect(Collectors.toList());
-                                                if (periodes.size() > 0){
+                                                boolean notEdit = Integer.valueOf(CommonUtil.convertStringBulanToNumber(budgetingDetail.getTipe())) < bulanIni;
+//                                                List<BudgetingPeriode> periodes = budgetingData.getListPeriode().stream().filter(p -> p.getNamaBulan().equalsIgnoreCase(budgetingDetail.getTipe())).collect(Collectors.toList());
+                                                if (notEdit){
                                                     budgetingDetail.setFlagEdit("N");
                                                 }
                                             }
@@ -1381,13 +1385,25 @@ public class BudgetingAction {
             return budgetingBo.checkBudgeting(branch, tahun);
     }
 
-    public List<Budgeting> getListOfCoaBudgetingSession(){
+    public List<Budgeting> getListOfCoaBudgetingSession(String kodeRekening){
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<Budgeting> budgetingSessionList = (List<Budgeting>) session.getAttribute("listOfCoa");
 
         Collections.sort(budgetingSessionList, Budgeting.getKodeRekeningSorting());
         if (budgetingSessionList != null){
-            return budgetingSessionList;
+            if (kodeRekening != null && !"".equalsIgnoreCase(kodeRekening)){
+                String hurufPertama = kodeRekening.substring(0,1);
+                List<Budgeting> filterBudgeting = new ArrayList<>();
+                for (Budgeting budgeting : budgetingSessionList){
+                    if (budgeting.getKodeRekening().substring(0,1).equalsIgnoreCase(hurufPertama)){
+                        filterBudgeting.add(budgeting);
+                    }
+                }
+                return filterBudgeting;
+            } else {
+                return budgetingSessionList;
+            }
+
         }
         return new ArrayList<>();
     }

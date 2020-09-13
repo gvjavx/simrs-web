@@ -762,7 +762,7 @@ public class CommonUtil {
 
     public static String convertStringBulanToNumber(String bulan){
         String stBulan = "";
-        switch (bulan){
+        switch (bulan.toLowerCase()){
             case "januari" :
                 stBulan = "1";
                 break;
