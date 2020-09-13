@@ -1552,7 +1552,43 @@ public class BudgetingBoImpl implements BudgetingBo {
     }
 
     @Override
-    public List<ParameterBudgeting> getListBudgetingRealisasiPerperiode(String idJenisBudgeting, String unit, String tahun, String divisiId, String masterId) {
-        return budgetingDao.getListBudgetingDetail(idJenisBudgeting, unit, tahun, divisiId, masterId);
+    public List<ParameterBudgeting> getListBudgetingRealisasiPerperiode(String idJenisBudgeting, String unit, String tahun, String divisiId, String masterId, String rekeningId) {
+        int n = 12;
+        List<ParameterBudgeting> listOfResults = new ArrayList<>();
+        List<ParameterBudgeting> listRealisasi = budgetingDao.getListBudgetingDetailPerPeriode(idJenisBudgeting, unit, tahun, divisiId, masterId, rekeningId);
+        for (int i = 1; i<=n ; i++){
+            ParameterBudgeting parameterBudgeting = new ParameterBudgeting();
+            String bulan = i <= 9 ? "0" + String.valueOf(i) : String.valueOf(i);
+            parameterBudgeting.setPeriode(CommonUtil.convertNumberToStringBulan(bulan));
+            parameterBudgeting.setNilaiTotal(new BigDecimal(0));
+            parameterBudgeting.setRealisasi(new BigDecimal(0));
+            parameterBudgeting.setTotalRealisasi(new BigDecimal(0));
+            if (listRealisasi != null && listRealisasi.size() > 0){
+                int finalI = i;
+                List<ParameterBudgeting> filterReaalisasi = listRealisasi.stream().filter(p->p.getBulan().equalsIgnoreCase(String.valueOf(finalI))).collect(Collectors.toList());
+                if (filterReaalisasi != null && filterReaalisasi.size() > 0){
+                    for (ParameterBudgeting budgeting : filterReaalisasi){
+                        budgeting.setPeriode(CommonUtil.convertNumberToStringBulan(bulan));
+                        listOfResults.add(budgeting);
+                    }
+                } else {
+                    BigDecimal nilaiRealisai = budgetingDao.getNilaiRealisai(unit, masterId, divisiId, rekeningId, String.valueOf(i), tahun);
+                    parameterBudgeting.setRealisasi(nilaiRealisai);
+                    parameterBudgeting.setTotalRealisasi(parameterBudgeting.getNilaiTotal().subtract(nilaiRealisai));
+                    listOfResults.add(parameterBudgeting);
+                }
+            } else {
+                BigDecimal nilaiRealisai = budgetingDao.getNilaiRealisai(unit, masterId, divisiId, rekeningId, String.valueOf(i), tahun);
+                parameterBudgeting.setRealisasi(nilaiRealisai);
+                parameterBudgeting.setTotalRealisasi(parameterBudgeting.getNilaiTotal().subtract(nilaiRealisai));
+                listOfResults.add(parameterBudgeting);
+            }
+        }
+        return listOfResults;
+    }
+
+    @Override
+    public List<ParameterBudgeting> getListBudgetingRealisasiPerKodeRekening(String idJenisBudgeting, String unit, String tahun, String divisiId, String masterId) {
+        return budgetingDao.getListBudgetingPerRekening(idJenisBudgeting, unit, tahun, divisiId, masterId);
     }
 }

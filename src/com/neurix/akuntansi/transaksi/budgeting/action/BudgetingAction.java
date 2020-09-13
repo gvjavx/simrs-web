@@ -1874,10 +1874,16 @@ public class BudgetingAction {
         return budgetingBo.getListBudgetingRealisasi(idJenis, unit, tahun);
     }
 
-    public List<ParameterBudgeting> getListBudgetingPerPeriode(String idJenis, String unit, String tahun, String divisi, String master){
+    public List<ParameterBudgeting> getListBudgetingPerPeriode(String idJenis, String unit, String tahun, String divisi, String master, String rekeningId){
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
-        return budgetingBo.getListBudgetingRealisasiPerperiode(idJenis, unit, tahun, divisi, master);
+        return budgetingBo.getListBudgetingRealisasiPerperiode(idJenis, unit, tahun, divisi, master, rekeningId);
+    }
+
+    public List<ParameterBudgeting> getListBudgetingPerRekening(String idJenis, String unit, String tahun, String divisi, String master){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
+        return budgetingBo.getListBudgetingRealisasiPerKodeRekening(idJenis, unit, tahun, divisi, master);
     }
 
 

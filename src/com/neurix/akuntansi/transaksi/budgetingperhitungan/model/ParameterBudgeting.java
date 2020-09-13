@@ -37,6 +37,15 @@ public class ParameterBudgeting {
     private BigDecimal nilaiBiyaRutin;
     private BigDecimal realisasi;
     private BigDecimal totalRealisasi;
+    private String bulan;
+
+    public String getBulan() {
+        return bulan;
+    }
+
+    public void setBulan(String bulan) {
+        this.bulan = bulan;
+    }
 
     public BigDecimal getRealisasi() {
         return realisasi;

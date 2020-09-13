@@ -257,7 +257,8 @@
                 <table class="table table-bordered table-striped">
                     <thead id="head-budgeting-view" style="font-size: 13px">
                     <tr bgcolor="#90ee90">
-                        <td>Periode</td>
+                        <%--<td>Periode</td>--%>
+                        <td>Rekening</td>
                         <td align="center">Sub Total</td>
                         <td align="center">Realisasi</td>
                         <td align="center">Selisih</td>
@@ -265,6 +266,57 @@
                     </tr>
                     </thead>
                     <tbody id="body-budgeting-view-detail" style="font-size: 11px">
+                    </tbody>
+                    <%--<input type="hidden" id="index-period"/>--%>
+                    <%--<input type="hidden" id="index-branch"/>--%>
+                    <%--<input type="hidden" id="bulan"/>--%>
+                    <%--<input type="hidden" id="tahun"/>--%>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-view-detail-periode">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-file"></i> View Detail Budgeting Per Periode
+                </h4>
+            </div>
+            <div class="modal-body">
+                <%--<table style="font-size: 15px; margin-bottom: 10px;" class="table">--%>
+                <%--<tbody>--%>
+                <%--<tr>--%>
+                <%--<td width="20%">Master</td>--%>
+                <%--<td>:</td>--%>
+                <%--<td id="master-view"></td>--%>
+                <%--</tr>--%>
+                <%--<tr>--%>
+                <%--<td>Divisi</td>--%>
+                <%--<td>:</td>--%>
+                <%--<td id="divisi-view"></td>--%>
+                <%--</tr>--%>
+                <%--<tr>--%>
+                <%--<td>Rekening </td>--%>
+                <%--<td>:</td>--%>
+                <%--<td id="coa-view"></td>--%>
+                <%--</tr>--%>
+                <%--</tbody>--%>
+                <%--</table>--%>
+                <table class="table table-bordered table-striped">
+                    <thead id="head-budgeting-view" style="font-size: 13px">
+                    <tr bgcolor="#90ee90">
+                        <td>Periode</td>
+                        <td align="center">Sub Total</td>
+                        <td align="center">Realisasi</td>
+                        <td align="center">Selisih</td>
+                        <td align="center">Action</td>
+                    </tr>
+                    </thead>
+                    <tbody id="body-budgeting-view-detail-periode" style="font-size: 11px">
                     </tbody>
                     <%--<input type="hidden" id="index-period"/>--%>
                     <%--<input type="hidden" id="index-branch"/>--%>
@@ -747,16 +799,16 @@
                    '<td align="right">'+ formatRupiah(item.nilaiTotal)+'</td>' +
                    '<td align="right">'+ formatRupiah(item.realisasi) +'</td>' +
                    '<td align="right">'+ formatRupiah(parseInt(item.nilaiTotal) - parseInt(item.realisasi)) +'</td>' +
-                   '<td align="center"><button class="btn btn-sm btn-success" onclick="viewDetailPerPeriode(\''+id+'\',\''+unit+'\',\''+tahun+'\', \''+item.divisiId+'\', \''+item.masterId+'\')"><i class="fa fa-search"></i></button></td>' +
+                   '<td align="center"><button class="btn btn-sm btn-success" onclick="viewDetailPerRekening(\''+id+'\',\''+unit+'\',\''+tahun+'\', \''+item.divisiId+'\', \''+item.masterId+'\')"><i class="fa fa-search"></i></button></td>' +
                    '</tr>';
            })
             $("#body-budgeting-view").html(str);
         });
     }
 
-    function viewDetailPerPeriode(id, unit, tahun, divisi, master) {
-        $("#modal-view-detail").modal('show');
-        BudgetingAction.getListBudgetingPerPeriode(id, unit, tahun, divisi, master, function(res){
+    function viewDetailPerPeriode(id, unit, tahun, divisi, master, rekening) {
+        $("#modal-view-detail-periode").modal('show');
+        BudgetingAction.getListBudgetingPerPeriode(id, unit, tahun, divisi, master, rekening, function(res){
             var str = "";
             $.each(res, function (i, item) {
                 str += '<tr>' +
@@ -766,6 +818,24 @@
                     '<td align="right">'+ formatRupiah(item.realisasi) +'</td>' +
                     '<td align="right">'+ formatRupiah(item.totalRealisasi) +'</td>' +
                     '<td align="center"></td>' +
+                    '</tr>';
+            })
+            $("#body-budgeting-view-detail-periode").html(str);
+        });
+    }
+
+    function viewDetailPerRekening(id, unit, tahun, divisi, master) {
+        $("#modal-view-detail").modal('show');
+        BudgetingAction.getListBudgetingPerRekening(id, unit, tahun, divisi, master, function(res){
+            var str = "";
+            $.each(res, function (i, item) {
+                str += '<tr>' +
+//                   '<td>'+item.periode+'</td>' +
+                    '<td>'+item.nama+'</td>' +
+                    '<td align="right">'+ formatRupiah(item.nilaiTotal)+'</td>' +
+                    '<td align="right">'+ formatRupiah(item.realisasi) +'</td>' +
+                    '<td align="right">'+ formatRupiah(item.totalRealisasi) +'</td>' +
+                    '<td align="center"><button class="btn btn-sm btn-success" onclick="viewDetailPerPeriode(\''+id+'\',\''+unit+'\',\''+tahun+'\', \''+item.divisiId+'\', \''+item.masterId+'\', \''+item.rekeningId+'\')"><i class="fa fa-search"></i></button></td>' +
                     '</tr>';
             })
             $("#body-budgeting-view-detail").html(str);
