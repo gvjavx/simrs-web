@@ -573,6 +573,10 @@ SET nama_kategori = 'Laboratorium',
 kategori = 'lab'
 WHERE id_kategori_lab = 'KAL00000002';
 
+-- 14-09-2020
+ALTER TABLE it_simrs_paket_pasien
+ADD COLUMN flag_selesai VARCHAR(1);
+
 
 
 

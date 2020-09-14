@@ -1651,6 +1651,21 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Jenis Obat</label>
+                        <div class="col-md-7">
+                            <select class="form-control select2" style="margin-top: 7px; width: 100%"
+                                    id="resep_jenis_obat">
+                                <option value="">[select one]</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_jenis_obat"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_jenis_obat"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
                         <div class="col-md-7">
                             <select class="form-control select2" style="margin-top: 7px; width: 100%"
