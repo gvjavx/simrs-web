@@ -849,18 +849,9 @@
     }
 
     function btnListDetail(periode){
-        var idJenis     = $("#view-id").val();
-        var rekening    = $("#view-id-detail-rekening").val();
-        var divisi      = $("#view-divisi-id").val();
-        var tahun       = $("#view-id-tahun").val();
-        var status      = $("#sel-status").val();
-        var unit        = $("#view-id-unit").val();
         var str = "";
         if (idJenis == "INV"){
             str = '<button class="btn btn-sm btn-success" onclick="viewPengadaan(\''+periode+'\')"><i class="fa fa-bars"></i></button>';
-        }
-        if (idJenis == "BYA"){
-            str = '<button class="btn btn-sm btn-success" onclick="viewListBiayaRutin()"><i class="fa fa-bars"></i></button>';
         }
         return str;
     }
