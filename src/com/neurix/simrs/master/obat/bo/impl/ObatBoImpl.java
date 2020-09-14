@@ -1499,7 +1499,7 @@ public class ObatBoImpl implements ObatBo {
                         trans.setNamaObat(namaObat);
                         trans.setRegisteredDate(stok.getRegisteredDate());
                         trans.setCreatedDate(stok.getCreatedDate());
-                        trans.setKeterangan(stok.getKeterangan());
+                        trans.setKeterangan(stok.getIdBarang() +" - "+stok.getKeterangan());
                         trans.setTipe(stok.getTipe());
 
                         TransaksiStok minStok = listOfTransaksi.get(n-1);
@@ -1549,7 +1549,7 @@ public class ObatBoImpl implements ObatBo {
                         trans.setNamaObat(namaObat);
                         trans.setRegisteredDate(stok.getRegisteredDate());
                         trans.setCreatedDate(stok.getCreatedDate());
-                        trans.setKeterangan(stok.getKeterangan());
+                        trans.setKeterangan(stok.getIdBarang() +" - "+stok.getKeterangan());
                         trans.setTipe(stok.getTipe());
 
                         TransaksiStok minStok = listOfTransaksi.get(n-1);

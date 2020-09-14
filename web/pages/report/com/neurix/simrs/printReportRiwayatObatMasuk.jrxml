@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printReportRiwayatObatMasuk" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b1f1d46d-b0ce-493a-8119-1250c2de0d06">
-	<property name="ireport.zoom" value="1.0000000000000062"/>
+	<property name="ireport.zoom" value="1.4641000000000095"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="100"/>
 	<parameter name="reportParams.logo" class="java.lang.String"/>
 	<parameter name="reportParams.area" class="java.lang.String"/>
 	<parameter name="reportParams.unit" class="java.lang.String"/>
@@ -35,6 +35,7 @@
 	<field name="qtyLalu" class="java.lang.String"/>
 	<field name="totalLalu" class="java.lang.String"/>
 	<field name="subTotalLalu" class="java.lang.String"/>
+	<field name="idBarang" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -329,8 +330,8 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{registeredDate}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="55" y="1" width="99" height="20" uuid="0e421ae7-a67a-49e1-a6e2-9a5229c66f10"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="55" y="1" width="99" height="20" uuid="0e421ae7-a67a-49e1-a6e2-9a5229c66f10"/>
 				<box leftPadding="3" rightPadding="3"/>
 				<textElement verticalAlignment="Middle">
 					<font size="7"/>

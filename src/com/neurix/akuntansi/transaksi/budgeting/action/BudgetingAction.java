@@ -1902,6 +1902,12 @@ public class BudgetingAction {
         return budgetingBo.getListBudgetingRealisasiPerKodeRekening(idJenis, unit, tahun, divisi, master);
     }
 
+    public String getIdBudgetingDetailInvestasi(String status, String unit, String tahun, String tipe, String divisi){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
+        return budgetingBo.getIdBudgetingDetailInvestasi(status, unit, tahun, divisi, tipe);
+    }
+
 
     public void setBudgetingBoProxy(BudgetingBo budgetingBoProxy) {
         this.budgetingBoProxy = budgetingBoProxy;

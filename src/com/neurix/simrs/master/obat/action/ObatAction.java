@@ -1186,6 +1186,8 @@ public class ObatAction extends BaseMasterAction {
             newData.setMasterId(data.getMasterId());
             newData.setNamaMaster(data.getNamaMaster());
             newData.setNamaRekening(data.getNamaRekening());
+            newData.setIdItem(data.getIdItem());
+            newData.setNamaItem(data.getNamaItem());
             myList.add(newData);
         }
 
@@ -1193,7 +1195,7 @@ public class ObatAction extends BaseMasterAction {
 //            List<Aging> forReport = new ArrayList<>();
 //
 //            myList.addAll(forReport);
-            reportParams.put("reportTitle", "AGING STOK OBAT");
+            reportParams.put("reportTitle", "AGING PERSEDIAAN OBAT");
             reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
             reportParams.put("cabangId", branch.getBranchId());
             reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(obat.getBulan())+" "+obat.getTahun());

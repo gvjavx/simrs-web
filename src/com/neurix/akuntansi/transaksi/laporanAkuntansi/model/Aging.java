@@ -38,6 +38,24 @@ public class Aging implements Serializable {
 
     private String grup;
     private BigDecimal totalAwal;
+    private String idItem;
+    private String namaItem;
+
+    public String getNamaItem() {
+        return namaItem;
+    }
+
+    public void setNamaItem(String namaItem) {
+        this.namaItem = namaItem;
+    }
+
+    public String getIdItem() {
+        return idItem;
+    }
+
+    public void setIdItem(String idItem) {
+        this.idItem = idItem;
+    }
 
     public BigDecimal getTotalAwal() {
         return totalAwal;

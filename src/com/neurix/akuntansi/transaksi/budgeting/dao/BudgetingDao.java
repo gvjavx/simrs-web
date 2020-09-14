@@ -792,4 +792,41 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
 
         return  nilaiTotal;
     }
+
+    public String getIdBudgetingDetailInvestasiByCriteria(String branchId, String tipe, String tahun, String status, String divisi){
+
+        String jenis = "investasi";
+        if ("INVS".equalsIgnoreCase(divisi) || divisi == null || "".equalsIgnoreCase(divisi)){
+            divisi = "%";
+        }
+        String SQL = "SELECT \n" +
+                "bgd.id_budgeting_detail,\n" +
+                "bg.branch_id\n" +
+                "FROM it_akun_budgeting_detail bgd \n" +
+                "INNER JOIN it_akun_budgeting bg ON bg.id_budgeting = bgd.id_budgeting\n" +
+                "INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = bg.rekening_id\n" +
+                "WHERE bgd.tipe ILIKE :tipe \n" +
+                "AND bg.tahun = :tahun\n" +
+                "AND bg.status ILIKE :status \n" +
+                "AND bg.branch_id = :unit \n" +
+                "AND bgd.divisi_id ILIKE :divisi \n" +
+                "AND kr.tipe_budgeting = :jenis";
+
+        List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("divisi", divisi)
+                .setParameter("unit", branchId)
+                .setParameter("tahun", tahun)
+                .setParameter("tipe", tipe)
+                .setParameter("status", status)
+                .setParameter("jenis", jenis)
+                .list();
+
+        if (result.size() > 0){
+            for (Object[] obj : result){
+                return obj[0] == null ? "" : obj[0].toString();
+            }
+        }
+
+        return "";
+    }
 }

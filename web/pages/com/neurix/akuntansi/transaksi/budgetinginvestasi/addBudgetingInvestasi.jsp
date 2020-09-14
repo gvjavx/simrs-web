@@ -654,10 +654,13 @@
         var qty         = $("#qty-"+id+"-"+idParam).val();
         var nilai       = $("#total-"+id+"-"+idParam).val();
 
+        console.log("qty hitung -> "+qty);
+        console.log("nilai hitung -> "+nilai);
+
         var totalnilai = parseInt(nullEscape(nilai)) * parseInt(nullEscape(qty));
         console.log("hitung -> "+ totalnilai)
-
-        $("#total-nilai-"+id+"-"+idParam).val(formatRupiah(totalnilai));
+//        var formatedTotal = formatRupiah(totalnilai);
+        $("#total-nilai-"+id+"-"+idParam).val(totalnilai);
     }
 
     function changeInput(id, value) {
@@ -833,6 +836,7 @@
             listData.push({"nilai":nilai, "qty":qty, "nama":nama});
         }
 
+        console.log(listData);
         var stJson = JSON.stringify(listData);
 //        dwr.engine.setAsync(true);
         BgInvestasiAction.setPerhitunganToSession(idParam, stJson, masterId, divisiId, tahun, unit, idKategori, periode, function (res) {

@@ -49,4 +49,5 @@ public interface BudgetingBo {
     public List<ParameterBudgeting> getListBudgetingRealisasi(String idJenisBudgeting, String unit, String tahun);
     public List<ParameterBudgeting> getListBudgetingRealisasiPerperiode(String idJenisBudgeting, String unit, String tahun, String divisiId, String masterId, String rekeningId);
     public List<ParameterBudgeting> getListBudgetingRealisasiPerKodeRekening(String idJenisBudgeting, String unit, String tahun, String divisiId, String masterId);
+    public String getIdBudgetingDetailInvestasi(String status, String unit, String tahun, String divisi, String tipe);
 }

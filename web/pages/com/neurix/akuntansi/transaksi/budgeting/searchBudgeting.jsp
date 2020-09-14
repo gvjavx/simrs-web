@@ -202,6 +202,8 @@
             </div>
             <div class="modal-body">
                 <input type="hidden" id="view-id">
+                <input type="hidden" id="view-id-tahun">
+                <input type="hidden" id="view-id-unit">
                 <table class="table table-bordered table-striped">
                     <thead id="head-budgeting-view" style="font-size: 13px">
                     <tr bgcolor="#90ee90">
@@ -318,7 +320,9 @@
                     </thead>
                     <tbody id="body-budgeting-view-detail-periode" style="font-size: 11px">
                     </tbody>
-                    <%--<input type="hidden" id="index-period"/>--%>
+                    <input type="hidden" id="view-id-detail-rekening">
+                    <input type="hidden" id="view-divisi-id">
+                <%--<input type="hidden" id="index-period"/>--%>
                     <%--<input type="hidden" id="index-branch"/>--%>
                     <%--<input type="hidden" id="bulan"/>--%>
                     <%--<input type="hidden" id="tahun"/>--%>
@@ -351,11 +355,11 @@
                         <td>:</td>
                         <td id="unit-view-pengadaan"></td>
                     </tr>
-                    <tr>
-                        <td>COA </td>
-                        <td>:</td>
-                        <td id="coa-view-pengadaan"></td>
-                    </tr>
+                    <%--<tr>--%>
+                        <%--<td>COA </td>--%>
+                        <%--<td>:</td>--%>
+                        <%--<td id="coa-view-pengadaan"></td>--%>
+                    <%--</tr>--%>
                     <tr>
                         <td>Periode </td>
                         <td>:</td>
@@ -789,6 +793,9 @@
 
     function viewDetail(id, unit, tahun) {
         $("#modal-view").modal('show');
+        $("#view-id").val(id);
+        $("#view-id-unit").val(unit);
+        $("#view-id-tahun").val(tahun);
         BudgetingAction.getListBudgetingRealisasi(id, unit, tahun, function(res){
            var str = "";
            $.each(res, function (i, item) {
@@ -798,7 +805,7 @@
                    '<td>'+item.namaDivisi+'</td>' +
                    '<td align="right">'+ formatRupiah(item.nilaiTotal)+'</td>' +
                    '<td align="right">'+ formatRupiah(item.realisasi) +'</td>' +
-                   '<td align="right">'+ formatRupiah(parseInt(item.nilaiTotal) - parseInt(item.realisasi)) +'</td>' +
+                   '<td align="right">'+ formatSelisih(parseInt(item.nilaiTotal) - parseInt(item.realisasi)) +'</td>' +
                    '<td align="center"><button class="btn btn-sm btn-success" onclick="viewDetailPerRekening(\''+id+'\',\''+unit+'\',\''+tahun+'\', \''+item.divisiId+'\', \''+item.masterId+'\')"><i class="fa fa-search"></i></button></td>' +
                    '</tr>';
            })
@@ -808,20 +815,58 @@
 
     function viewDetailPerPeriode(id, unit, tahun, divisi, master, rekening) {
         $("#modal-view-detail-periode").modal('show');
+        $("#view-id-detail-rekening").val(rekening);
+        $("#view-divisi-id").val(divisi);
         BudgetingAction.getListBudgetingPerPeriode(id, unit, tahun, divisi, master, rekening, function(res){
             var str = "";
+            var nilaiTotal      = 0;
+            var realisasi       = 0;
+            var totalRealisai   = 0;
             $.each(res, function (i, item) {
                 str += '<tr>' +
-//                   '<td>'+item.periode+'</td>' +
                     '<td>'+item.periode+'</td>' +
-                    '<td align="right">'+ formatRupiah(item.nilaiTotal)+'</td>' +
-                    '<td align="right">'+ formatRupiah(item.realisasi) +'</td>' +
-                    '<td align="right">'+ formatRupiah(item.totalRealisasi) +'</td>' +
-                    '<td align="center"></td>' +
+                    '<td align="right">'+ formatRupiah(parseInt(item.nilaiTotal))+'</td>' +
+                    '<td align="right">'+ formatRupiah(parseInt(item.realisasi)) +'</td>' +
+                    '<td align="right">'+ formatSelisih(parseInt(item.totalRealisasi)) +'</td>' +
+                    '<td align="center">'+btnListDetail(item.periode)+'</td>' +
                     '</tr>';
+
+                nilaiTotal = parseInt(nilaiTotal) + parseInt(setNullToString(item.nilaiTotal));
+                realisasi = parseInt(realisasi) + parseInt(setNullToString(item.realisasi));
+                totalRealisai = parseInt(totalRealisai) + parseInt(setNullToString(item.totalRealisasi));
             })
+
+            str += '<tr>' +
+                '<td align="right">Total </td>' +
+                '<td align="right">'+ formatRupiah(nilaiTotal)+'</td>' +
+                '<td align="right">'+ formatRupiah(realisasi) +'</td>' +
+                '<td align="right">'+ formatSelisih(totalRealisai) +'</td>' +
+                '<td align="center"></td>' +
+                '</tr>';
+
             $("#body-budgeting-view-detail-periode").html(str);
         });
+    }
+
+    function btnListDetail(periode){
+        var idJenis     = $("#view-id").val();
+        var rekening    = $("#view-id-detail-rekening").val();
+        var divisi      = $("#view-divisi-id").val();
+        var tahun       = $("#view-id-tahun").val();
+        var status      = $("#sel-status").val();
+        var unit        = $("#view-id-unit").val();
+        var str = "";
+        if (idJenis == "INV"){
+            str = '<button class="btn btn-sm btn-success" onclick="viewPengadaan(\''+periode+'\')"><i class="fa fa-bars"></i></button>';
+        }
+        if (idJenis == "BYA"){
+            str = '<button class="btn btn-sm btn-success" onclick="viewListBiayaRutin()"><i class="fa fa-bars"></i></button>';
+        }
+        return str;
+    }
+
+    function viewListPengadaan(){
+
     }
 
     function viewDetailPerRekening(id, unit, tahun, divisi, master) {
@@ -834,7 +879,7 @@
                     '<td>'+item.nama+'</td>' +
                     '<td align="right">'+ formatRupiah(item.nilaiTotal)+'</td>' +
                     '<td align="right">'+ formatRupiah(item.realisasi) +'</td>' +
-                    '<td align="right">'+ formatRupiah(item.totalRealisasi) +'</td>' +
+                    '<td align="right">'+ formatSelisih(item.totalRealisasi) +'</td>' +
                     '<td align="center"><button class="btn btn-sm btn-success" onclick="viewDetailPerPeriode(\''+id+'\',\''+unit+'\',\''+tahun+'\', \''+item.divisiId+'\', \''+item.masterId+'\', \''+item.rekeningId+'\')"><i class="fa fa-search"></i></button></td>' +
                     '</tr>';
             })
@@ -936,43 +981,57 @@
         }
     }
 
-    function viewPengadaan(var1, var2) {
+    function viewPengadaan(periode) {
 
         $("#modal-view-pengadaan").modal('show');
 
-        var tahun = $("#tahun-view").text();
-        var unit = $("#unit-view").text();
-        var coa = $("#coa-view").text();
+        var idJenis     = $("#view-id").val();
+        var rekening    = $("#view-id-detail-rekening").val();
+        var divisi      = $("#view-divisi-id").val();
+        var tahun       = $("#view-id-tahun").val();
+        var status      = $("#sel-status").val();
+        var unit        = $("#view-id-unit").val();
+
+//        var tahun = $("#tahun-view").text();
+//        var unit = $("#unit-view").text();
+//        var coa = $("#coa-view").text();
 
         $("#tahun-view-pengadaan").text(tahun);
         $("#unit-view-pengadaan").text(unit);
-        $("#coa-view-pengadaan").text(coa);
-        $("#periode-view-pengadaan").text(var2.toUpperCase());
+//        $("#coa-view-pengadaan").text(coa);
+        $("#periode-view-pengadaan").text(periode.toUpperCase());
 
-        BudgetingAction.viewPengadaan(var1, function (response) {
 
-            if (response.length > 0){
 
-                var str = "";
-                $.each(response, function(i, item){
-                    str += "<tr>" +
-                        "<td>"+ item.namPengadaan+"</td>" +
-                        "<td>"+item.noKontrak+"</td>" +
-                        "<td align='right'>"+ item.qty+"</td>" +
-                        "<td align='right'>"+ formatRupiah( item.nilai ) +"</td>" +
-                        "<td align='right'>"+ formatRupiah( item.subTotal )+"</td>" +
-                        "<td align='right'>"+ formatRupiah( item.nilaiKontrak ) +"</td>" +
-                        "<td align='right'>"+ formatRupiah( item.realisasi ) +"</td>" +
-                        "<td align='right'>"+ formatSelisih( item.selisih ) +"</td>" +
-                        "</tr>";
-                });
-
-                $("#body-budgeting-view-pengadaan").html(str);
-            }
-
+        var var1 = "";
+        BudgetingAction.getIdBudgetingDetailInvestasi(status, unit, tahun, periode, divisi, function (res) {
+           var1 = res;
         });
 
+        if (var1 != ""){
+            BudgetingAction.viewPengadaan(var1, function (response) {
 
+                if (response.length > 0){
+
+                    var str = "";
+                    $.each(response, function(i, item){
+                        var total =  item.nilai * item.qty;
+                        var selisih = parseInt(total) - parseInt(item.realisasi);
+                        str += "<tr>" +
+                            "<td>"+ item.namPengadaan+"</td>" +
+                            "<td>"+item.noKontrak+"</td>" +
+                            "<td align='right'>"+ item.qty+"</td>" +
+                            "<td align='right'>"+ formatRupiah( item.nilai ) +"</td>" +
+                            "<td align='right'>"+ formatRupiah( total )+"</td>" +
+                            "<td align='right'>"+ formatRupiah( item.nilaiKontrak ) +"</td>" +
+                            "<td align='right'>"+ formatRupiah( item.realisasi ) +"</td>" +
+                            "<td align='right'>"+ formatSelisih( selisih ) +"</td>" +
+                            "</tr>";
+                    });
+                    $("#body-budgeting-view-pengadaan").html(str);
+                }
+            });
+        }
     }
 
     function saveTutup(unit, tahun, bulan) {
@@ -1016,7 +1075,7 @@
 
     function setNullToString(params){
         if (params == null){
-            return " - ";
+            return 0;
         } else {
             return params;
         }

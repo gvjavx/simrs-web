@@ -1154,7 +1154,14 @@ public class BudgetingBoImpl implements BudgetingBo {
 
                 if (!"".equalsIgnoreCase(budgetingDetail.getPositionId()) && budgetingDetail.getPositionId() != null){
                     ImPosition position = positionDao.getById("positionId", budgetingDetail.getPositionId());
-                    budgetingDetail.setDivisiName(position.getPositionName());
+                    if (position != null){
+                        budgetingDetail.setDivisiName(position.getPositionName());
+                    }
+                }  else if (budgetingDetail.getDivisiId() != null && !"".equalsIgnoreCase(budgetingDetail.getDivisiId())){
+                    ImPosition position = positionDao.getById("kodering", budgetingDetail.getDivisiId());
+                    if (position != null){
+                        budgetingDetail.setDivisiName(position.getPositionName());
+                    }
                 }
 
                 if (!"".equalsIgnoreCase(budgetingDetail.getMasterId())){
@@ -1596,5 +1603,10 @@ public class BudgetingBoImpl implements BudgetingBo {
     @Override
     public List<ParameterBudgeting> getListBudgetingRealisasiPerKodeRekening(String idJenisBudgeting, String unit, String tahun, String divisiId, String masterId) {
         return budgetingDao.getListBudgetingPerRekening(idJenisBudgeting, unit, tahun, divisiId, masterId);
+    }
+
+    @Override
+    public String getIdBudgetingDetailInvestasi(String status, String unit, String tahun, String divisi, String tipe) {
+        return budgetingDao.getIdBudgetingDetailInvestasiByCriteria(unit, tipe, tahun, status, divisi);
     }
 }
