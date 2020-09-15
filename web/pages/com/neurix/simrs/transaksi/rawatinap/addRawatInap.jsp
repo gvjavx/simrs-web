@@ -3724,6 +3724,8 @@
     var kelasPasienBpjs = '<s:property value="rawatInap.idKelas"/>';
     var tempidRm = "";
     var urlPages = "";
+    var idRuangan = '<s:property value="rawatInap.idRuangan"/>';
+    var namaRuangan = '<s:property value="rawatInap.namaRangan"/>';
 
     if (month.length < 2) {
         month = "0"+month;

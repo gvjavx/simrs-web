@@ -838,7 +838,7 @@ function saveTindakan(id) {
             });
         } else {
             dwr.engine.setAsync(true);
-            TindakanRawatAction.saveTindakanRawat(idDetailCheckup, idTindakan, idDok, "RI", qty, idJenisPeriksa, idPelayanan, {
+            TindakanRawatAction.saveTindakanRawat(idDetailCheckup, idTindakan, idDok, "RI", qty, idJenisPeriksa, idPelayanan, idRuangan, {
                 callback: function (response) {
                     if (response.status == "success") {
                         dwr.engine.setAsync(false);

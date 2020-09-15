@@ -577,6 +577,18 @@ WHERE id_kategori_lab = 'KAL00000002';
 ALTER TABLE it_simrs_paket_pasien
 ADD COLUMN flag_selesai VARCHAR(1);
 
+-- 15-09-2020
+ALTER TABLE it_simrs_tindakan_rawat
+ADD COLUMN id_ruangan VARCHAR(100);
+
+ALTER TABLE it_simrs_riwayat_tindakan
+ADD COLUMN id_ruangan VARCHAR(100);
+
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN flag_sisa VARCHAR(1);
+
+
+
 
 
 
