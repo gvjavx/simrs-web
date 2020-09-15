@@ -1,4 +1,4 @@
-// 2020-06-08 >>>
+-- 2020-06-08 >>>
 
     CREATE SEQUENCE sq_antrian_telemedic;
 
@@ -39,7 +39,7 @@
 --
 
 
-// 2020-06-10 >>>
+-- 2020-06-10 >>>
 
 
     ALTER TABLE public.im_roles ALTER COLUMN role_name TYPE VARCHAR(100) USING role_name::VARCHAR(100);
@@ -100,7 +100,7 @@
 
 --
 
-// 2020-06-12 >>>
+-- 2020-06-12 >>>
 
     ALTER TABLE public.it_simrs_header_checkup ADD id_antrian_online VARCHAR(100) NULL;
     ALTER TABLE public.it_simrs_header_detail_checkup ADD id_transaksi_online VARCHAR(100) NULL;
@@ -108,7 +108,7 @@
 
 --
 
-// 2020-06-16 >>>
+-- 2020-06-16 >>>
 
     CREATE SEQUENCE seq_resep_online;
 
@@ -148,7 +148,7 @@
 
 --
 
-// 2020-06-17 >>>
+-- 2020-06-17 >>>
 
     ALTER TABLE public.it_simrs_resep_online ADD keterangan TEXT NULL;
 
@@ -171,7 +171,7 @@
         ADD COLUMN pengajuan_biaya_id VARCHAR(50);
 --
 
-// 2020-06-18 >>>
+-- 2020-06-18 >>>
 
     CREATE TABLE public.it_simrs_pengiriman_obat
     (
@@ -201,9 +201,9 @@
         ADD no_telp VARCHAR(30);
 --
 
-// 2020-06-22 >>>
+-- 2020-06-22 >>>
 
-    // function Pengiriman Obat ==========
+    -- function Pengiriman Obat ==========
 
     "Search Pengiriman Obat"        "/reseponline/searchApprovedResep_reseponline.action"
     "init form Pengiriman Obat"     "/reseponline/initForm_reseponline.action"
@@ -211,7 +211,7 @@
 
     role : admin apotek
 
-    // ===================================
+    -- ===================================
 
     # function :
     - search verifikasi online		/onlinepaymentverif/search_onlinepaymentverif.action
@@ -254,16 +254,16 @@
     ADD COLUMN url_foto_resep text;
 --
 
-// 2020-06-26 >>>
+-- 2020-06-26 >>>
     ALTER TABLE it_simrs_antrian_telemedic ADD COLUMN jumlah_cover NUMERIC;
 --
 
-// 2020-06-29 >>>
+-- 2020-06-29 >>>
     ALTER TABLE it_simrs_antrian_telemedic
     ADD COLUMN no_jurnal VARCHAR(30);
 --
 
-// 2020-06-30 >>>
+-- 2020-06-30 >>>
     ALTER TABLE it_simrs_antrian_telemedic
     ADD COLUMN no_sep VARCHAR(50);
 
@@ -275,7 +275,7 @@
     ADD COLUMN flag_terkirim VARCHAR(1);
 --/
 
-// 2020-07-08 >>>
+-- 2020-07-08 >>>
     CREATE SEQUENCE seq_kandungan_obat;
     CREATE SEQUENCE seq_kandungan_obat_detail;
 
@@ -325,7 +325,7 @@
         OWNER to postgres;
 --/
 
-// 2020-07-16 >>>
+-- 2020-07-16 >>>
     -- Table: public.im_simrs_setting_harga_pengiriman
 
     -- DROP TABLE public.im_simrs_setting_harga_pengiriman;
@@ -355,7 +355,7 @@
     CREATE SEQUENCE seq_setting_harga_pengiriman;
 --
 
-// 2020-07-17 >>>
+-- 2020-07-17 >>>
     ALTER TABLE it_simrs_header_detail_checkup
     ADD COLUMN cover_diatanggung numeric;
 
@@ -500,7 +500,7 @@
         OWNER to postgres;
 
     CREATE SEQUENCE seq_notifikasi_admin_telemedic;
-//>>>
+-->>>
 
 -- 2020-08-07
     -- Table: public.im_akun_budgeting_nilai_dasar
@@ -525,7 +525,7 @@
     )
     TABLESPACE pg_default;
 
-    ================================================================================
+--================================================================================
 
     ALTER TABLE public.im_akun_budgeting_nilai_dasar
         OWNER to postgres;
@@ -557,14 +557,14 @@
     ALTER TABLE public.it_akun_budgeting_nilai_dasar
         OWNER to postgres;
 
-    ================================================================================
+--================================================================================
     CREATE SEQUENCE seq_budgeting_nilai_dasar;
     CREATE SEQUENCE seq_trans_budgeting_nilai_dasar;
-// <<<
+-- <<<
 
 -- 2020-08-10
     ALTER TABLE im_akun_budgeting_nilai_dasar ADD COLUMN urutan INTEGER;
-// <<<
+-- <<<
 
 -- 2020-08-13
     -- Table: public.im_simrs_header_tindakan
@@ -619,7 +619,7 @@
 
     ALTER TABLE public.im_akun_jenis_budgeting
         OWNER to postgres;
-=================================================================================================
+--=================================================================================================
     CREATE TABLE public.im_akun_parameter_budgeting
     (
         id character varying(30) COLLATE pg_catalog."default" NOT NULL,
@@ -642,7 +642,7 @@
 
     ALTER TABLE public.im_akun_parameter_budgeting
         OWNER to postgres;
-=================================================================================================
+--=================================================================================================
     CREATE TABLE public.it_akun_perhitungan_budgeting
     (
         id character varying(50) COLLATE pg_catalog."default" NOT NULL,
@@ -917,7 +917,7 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     ALTER TABLE mt_simrs_transaksi_obat_detail_batch
     ADD COLUMN tgl_invoice DATE,
     ADD COLUMN tgl_do DATE;
-<<<//
+--
 
 -- 2020-09-11
 
